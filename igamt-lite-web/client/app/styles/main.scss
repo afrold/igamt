@@ -1,0 +1,346 @@
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+/* Space out content a bit */
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+
+  /* Make the masthead heading the same height as the navigation */
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+
+  .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+  }
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+
+  p + h4 {
+    margin-top: 28px;
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 100%;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+#cf-validator-body {
+  background: #f5f5f5;
+}
+
+#cf-validator-footer {
+  text-align: center;
+  font-size: .9em;
+}
+
+
+#appheader {
+  float: none;
+  font-family: Verdana;
+  font-weight: bold;
+  background-color: #021a4c;
+  margin-left: 0px;
+}
+
+
+#apptitle {
+  margin-bottom: 5px;
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 32px;
+  color: #F3C60D;
+}
+
+.navbar-collapse {
+  background: #ffec9d;
+  background-color: #ffec9d;
+  filter: none;
+  border: 0px;
+  border-radius: 0px;
+  border-bottom: 1px solid #ffcc00;
+}
+
+.nav {
+  //  background: #ffec9d;
+}
+
+.navbar .nav > .active > a, .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+  background-color: #ffcc00;
+}
+
+.nav > .active > a {
+  background-color: #ffcc00;
+}
+
+.nav > a {
+  background-color: #ffcc00;
+}
+
+.nav-tabs > .active > a:hover {
+  background-color: #ffcc00;
+}
+
+.nav-tabs > a:hover {
+  color: #ffcc00;
+}
+
+.nav > li > a:hover {
+  background-color: #ffec9d;
+  border-color: #ffec9d;
+  border-bottom: 0px solid #ffcc00;
+}
+
+#appsubtitle {
+  font-size: 14px;
+  margin-left: 10px;
+  color: #ffcc00;
+  text-shadow: none;
+}
+
+
+.cf-validator-footeritem {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.cf-validator-footerImage {
+  height: 60px;
+}
+
+.cf-validator-footerTextItem {
+  padding-right: 20px;
+  padding-left: 20px;
+  width: 350px;
+}
+
+
+.navbar .nav > li > a {
+  text-shadow: none;
+}
+
+/* a bit brutal, but it works... */
+.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
+  background-color: #ffcc00;
+}
+
+.dropdown-menu {
+  background-color: #ffec9d;
+}
+
+.dropdown-menu li > a {
+  color: #666666;
+}
+
+.dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
+  background-image: none;
+  background-color: #ffcc00;
+  color: #222222;
+}
+
+.navbar .nav > li > .dropdown-menu:before {
+
+}
+
+.navbar .nav > li > .dropdown-menu:after {
+  border-bottom: 6px solid #ffec9d;
+}
+
+.nav-tabs > li > a {
+  color: #666666;
+  border-radius: 0px;
+}
+
+.nav-tabs > li > a:hover {
+  color: #222222;
+}
+
+.navbar-text > a {
+  color: #666666;
+}
+
+.navbar-text > a:hover {
+  color: #222222;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #ffcc00;
+  cursor: pointer;
+}
+
+.nav-tabs > .active > a {
+  border: 1px solid #ffcc00;
+}
+
+.nav-tabs > .active > a:hover {
+  border: 1px solid #ffcc00;
+}
+
+.dark-gray {
+  background-color: #f0f0f0;
+}
+
+.gridStyle {
+  border: 1px solid rgb(212,212,212);
+  width: 400px;
+  height: 300px;
+}
+
+.cf-artifact-select{
+  margin-bottom: 20px;
+}
+
+
+.container-fluid  .row {
+  margin: 0;
+}
+
+.gridStyle {
+  border: 1px solid rgb(212,212,212);
+  width: 100%;
+  margin-top: 10px;
+}
+
+.cf-word-wrap {
+  white-space: pre-wrap; /* css-3 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+  word-break: break-all;
+}
+
+.trim-info {
+  max-width: 150px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 15px;
+  position: relative;
+}
+
+.igl-tree-table{
+  font-size: 11px;
+}
+
+.igl-tree{
+  font-size: 11px;
+}
+
+div.ngRow.selected {
+  background: #ffef8f;
+}
+
+.container {
+  margin:0 auto;
+  width:98%;
+}
+
+.tooltip-inner{
+  color: #000000;
+  background-color:lightgray;
+}
+
+.emptyResult {
+  margin-top: 20px;
+}
+
+ul.result-settings {
+  padding: 5px 10px 0;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.resultTab{
+  margin-left:20px;
+  width:98%;
+}
+
+.igl-centered {
+  margin: auto;
+  width:95%;
+}
+
+.test-details {
+  margin-top: 20px;
+  margin-left: 20px;
+  width:95%;
+}
+
+.test-info-container {
+  margin-bottom: 20px;
+}
+
+.test-details-content{
+  text-align: left;
+}
+
+
+

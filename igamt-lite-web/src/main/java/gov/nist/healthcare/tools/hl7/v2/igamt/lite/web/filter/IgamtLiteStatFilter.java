@@ -9,7 +9,7 @@
  * modified versions bear some notice that they have been modified.
  */
 
-package gov.nist.healthcare.tools.hl7.v2.iz.tool.web.config.filter;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.filter;
 
 import gov.nist.healthcare.mu.core.stat.servlet.StatFilter;
 
@@ -21,6 +21,6 @@ import javax.servlet.annotation.WebFilter;
  * 
  */
 @WebFilter(asyncSupported = true, dispatcherTypes = DispatcherType.ASYNC)
-public class IZStatFilter extends StatFilter {
+public class IgamtLiteStatFilter extends StatFilter {
 
 }

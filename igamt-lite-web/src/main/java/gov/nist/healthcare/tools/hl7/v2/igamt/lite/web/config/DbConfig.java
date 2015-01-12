@@ -9,7 +9,7 @@
  * modified versions bear some notice that they have been modified.
  */
 
-package gov.nist.healthcare.tools.hl7.v2.iz.tool.web.config;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
 import java.util.Properties;
 
@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories("gov.nist.healthcare.tools")
-@PropertySource(value = "classpath:iztool-config.properties")
+@PropertySource(value = "classpath:igamtlite-config.properties")
 @EnableTransactionManagement(proxyTargetClass = true)
 public class DbConfig {
 
@@ -78,7 +78,6 @@ public class DbConfig {
 		lef.setPackagesToScan("gov.nist.healthcare.tools");
 		lef.setJpaProperties(jpaProperties());
 		lef.setPersistenceUnitName(env.getProperty("jpa.persistenceUnitName"));
-		// lef.setPersistenceUnitManager(persistenceUnitManager);
 		lef.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
 		return lef;
 	}

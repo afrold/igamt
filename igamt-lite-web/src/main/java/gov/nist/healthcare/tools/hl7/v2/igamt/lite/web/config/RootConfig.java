@@ -9,8 +9,7 @@
  * modified versions bear some notice that they have been modified.
  */
 
-package gov.nist.healthcare.tools.hl7.v2.iz.tool.web.config;
-
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
 /**
  * @author Harold Affo (NIST)

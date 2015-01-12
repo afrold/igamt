@@ -11,11 +11,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
- 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter;
 
 /**
  * @author Harold Affo (NIST)
@@ -25,5 +21,4 @@ import org.springframework.remoting.jaxws.SimpleJaxWsServiceExporter;
 @Configuration
 public class WebBeanConfig {
 
- 
 }

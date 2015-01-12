@@ -1,7 +1,7 @@
 /**
  * 
  */
-package gov.nist.healthcare.tools.hl7.v2.iz.tool.web.filter;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.filter;
 
 import java.io.IOException;
 

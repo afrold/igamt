@@ -9,41 +9,28 @@
  * modified versions bear some notice that they have been modified.
  */
 
-package gov.nist.healthcare.tools.hl7.v2.iz.tool.web.config;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
-import gov.nist.healthcare.tools.core.models.ConnectivityTestContext;
-import gov.nist.healthcare.tools.core.models.ContextFreeTestContext;
-import gov.nist.healthcare.tools.core.models.EnvelopeTestContext;
-import gov.nist.healthcare.tools.core.models.Message;
-import gov.nist.healthcare.tools.core.models.Profile;
-import gov.nist.healthcare.tools.core.models.SutType;
-import gov.nist.healthcare.tools.core.models.TestCase;
-import gov.nist.healthcare.tools.core.models.TestPlan;
-import gov.nist.healthcare.tools.core.models.TestStory;
-import gov.nist.healthcare.tools.core.repo.ConnectivityTestContextRepository;
-import gov.nist.healthcare.tools.core.repo.ConnectivityTransactionRepository;
-import gov.nist.healthcare.tools.core.repo.ContextFreeTestContextRepository;
-import gov.nist.healthcare.tools.core.repo.EnvelopeTestContextRepository;
-import gov.nist.healthcare.tools.core.repo.TestCaseRepository;
-import gov.nist.healthcare.tools.core.repo.TestPlanRepository;
-import gov.nist.healthcare.tools.core.repo.UserRepository;
-import gov.nist.healthcare.tools.hl7.v2.iz.tool.domain.IZTestType;
-
-import java.io.IOException;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.io.input.BOMInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class Bootstrap implements InitializingBean {
 
-	private final Logger LOG = LoggerFactory.getLogger(Bootstrap.class);
+	private final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
 
-	 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+	 */
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
 }

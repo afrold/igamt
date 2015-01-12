@@ -3,16 +3,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>igamt-lite-web</artifactId>
 	<name>igamt-lite-web</name>
-	<description>Igamt-lite tool</description>
+	<description>igamt-lite tool</description>
 	<packaging>war</packaging>
 	<parent>
 		<groupId>gov.nist.healthcare.tools.hl7.v2.igamt.lite</groupId>
 		<artifactId>igamt-lite</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
 	<build>
-		<finalName>Igamt-lite</finalName>
+		<finalName>igamt-lite</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>
