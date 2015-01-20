@@ -8,10 +8,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 @Entity
 public class Group extends SegmentRefOrGroup {
@@ -19,10 +22,12 @@ public class Group extends SegmentRefOrGroup {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;
+	@GenericGenerator(name = "GROUP_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.GroupIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_group"))
+	@GeneratedValue(generator = "GROUP_ID_GENERATOR")
+	protected String id;
 
 	@OneToMany(cascade = CascadeType.ALL)
+	@OrderColumn(name = "position", nullable = false)
 	protected List<SegmentRefOrGroup> segmentsOrGroups = new ArrayList<SegmentRefOrGroup>();
 
 	@NotNull
@@ -42,11 +47,11 @@ public class Group extends SegmentRefOrGroup {
 	// TODO. Only for backward compatibility. Remove later
 	protected String uuid;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

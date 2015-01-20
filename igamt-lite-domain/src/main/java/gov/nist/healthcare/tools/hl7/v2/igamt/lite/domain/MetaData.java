@@ -15,6 +15,7 @@ public class MetaData implements java.io.Serializable {
 	@NotNull
 	@Column(nullable = false)
 	protected String name;
+
 	@NotNull
 	@Column(nullable = false)
 	protected String orgName;

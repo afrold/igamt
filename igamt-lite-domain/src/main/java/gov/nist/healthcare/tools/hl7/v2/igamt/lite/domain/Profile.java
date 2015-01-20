@@ -2,17 +2,21 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 public class Profile implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;
+	@GenericGenerator(name = "PROFILE_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.ProfileIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_profile"))
+	@GeneratedValue(generator = "PROFILE_ID_GENERATOR")
+	protected String id;
 
 	protected String type;
 
@@ -26,19 +30,22 @@ public class Profile implements java.io.Serializable {
 	protected Encodings encodings;
 
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
 	protected Segments segments;
 
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
 	protected Datatypes datatypes;
 
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
 	protected Messages messages;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

@@ -8,11 +8,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 @Entity
 public class Datatype implements java.io.Serializable {
@@ -20,14 +23,16 @@ public class Datatype implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;
+	@GenericGenerator(name = "DATATYPE_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.DatatypeIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_field"))
+	@GeneratedValue(generator = "DATATYPE_ID_GENERATOR")
+	protected String id;
 
 	@NotNull
 	@Column(nullable = false)
 	protected String displayName;
 
 	@OneToMany(mappedBy = "datatype", cascade = CascadeType.ALL)
+	@OrderColumn(name = "position", nullable = false)
 	protected List<Component> components = new ArrayList<Component>();
 
 	@NotNull
@@ -43,11 +48,11 @@ public class Datatype implements java.io.Serializable {
 	// TODO. Only for backward compatibility. Remove later
 	protected String uuid;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
