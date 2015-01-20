@@ -50,7 +50,7 @@ public class Segments implements java.io.Serializable {
 	public void addSegment(Segment s) {
 		if (s.getSegments() != null) {
 			throw new IllegalArgumentException(
-					"This segment already below to a different segments");
+					"This segment already belong to a different segment library");
 		}
 		segments.add(s);
 		s.setSegments(this);

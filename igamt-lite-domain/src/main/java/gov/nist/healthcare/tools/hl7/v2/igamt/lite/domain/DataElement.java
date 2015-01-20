@@ -49,4 +49,79 @@ public abstract class DataElement implements java.io.Serializable {
 	@Column(nullable = true)
 	protected String table; // SHould hold reference to the table
 
+	// TODO. Only for backward compatibility. Remove later
+	protected String uuid;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Usage getUsage() {
+		return usage;
+	}
+
+	public void setUsage(Usage usage) {
+		this.usage = usage;
+	}
+
+	public Datatype getDatatype() {
+		return datatype;
+	}
+
+	public void setDatatype(Datatype datatype) {
+		this.datatype = datatype;
+	}
+
+	public BigInteger getMinLength() {
+		return minLength;
+	}
+
+	public void setMinLength(BigInteger minLength) {
+		this.minLength = minLength;
+	}
+
+	public String getMaxLength() {
+		return maxLength;
+	}
+
+	public void setMaxLength(String maxLength) {
+		this.maxLength = maxLength;
+	}
+
+	public String getConfLength() {
+		return confLength;
+	}
+
+	public void setConfLength(String confLength) {
+		this.confLength = confLength;
+	}
+
+	public String getTable() {
+		return table;
+	}
+
+	public void setTable(String table) {
+		this.table = table;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
 }

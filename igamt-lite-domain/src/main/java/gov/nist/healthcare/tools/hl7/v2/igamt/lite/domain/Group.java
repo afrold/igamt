@@ -39,6 +39,9 @@ public class Group extends SegmentRefOrGroup {
 	@Column(nullable = false)
 	protected String max;
 
+	// TODO. Only for backward compatibility. Remove later
+	protected String uuid;
+
 	public Long getId() {
 		return id;
 	}
@@ -85,6 +88,14 @@ public class Group extends SegmentRefOrGroup {
 
 	public void setMax(String max) {
 		this.max = max;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 }

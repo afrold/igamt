@@ -42,6 +42,9 @@ public class Message implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	protected Messages messages;
 
+	// TODO. Only for backward compatibility. Remove later
+	protected String uuid;
+
 	public Long getId() {
 		return id;
 	}
@@ -96,6 +99,14 @@ public class Message implements java.io.Serializable {
 
 	public void setMessages(Messages messages) {
 		this.messages = messages;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 }

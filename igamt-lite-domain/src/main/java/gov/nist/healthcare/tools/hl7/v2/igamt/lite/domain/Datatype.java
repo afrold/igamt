@@ -40,6 +40,9 @@ public class Datatype implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	protected Datatypes datatypes;
 
+	// TODO. Only for backward compatibility. Remove later
+	protected String uuid;
+
 	public Long getId() {
 		return id;
 	}

@@ -96,4 +96,12 @@ public class Segment implements java.io.Serializable {
 		field.setSegment(this);
 	}
 
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
 }
