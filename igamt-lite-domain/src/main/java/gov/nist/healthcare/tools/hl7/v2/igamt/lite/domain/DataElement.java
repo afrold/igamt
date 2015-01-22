@@ -39,6 +39,7 @@ public abstract class DataElement implements java.io.Serializable {
 	@Column(nullable = true)
 	protected String table; // SHould hold reference to the table
 
+	//FIXME Check this. UUID doesn't need for Component and Field
 	// TODO. Only for backward compatibility. Remove later
 	protected String uuid;
 

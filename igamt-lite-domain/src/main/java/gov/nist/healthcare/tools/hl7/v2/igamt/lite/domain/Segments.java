@@ -52,8 +52,22 @@ public class Segments implements java.io.Serializable {
 			throw new IllegalArgumentException(
 					"This segment already belong to a different segment library");
 		}
+		
+		for(Segment st:segments){
+			if(st.getUuid().equals(s.getUuid())){
+				return;
+			}
+		}
+		
 		segments.add(s);
 		s.setSegments(this);
 	}
+
+	@Override
+	public String toString() {
+		return "Segments [id=" + id + ", segments=" + segments + "]";
+	}
+	
+	
 
 }

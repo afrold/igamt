@@ -104,4 +104,21 @@ public class Datatype implements java.io.Serializable {
 		c.setDatatype(this);
 	}
 
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	@Override
+	public String toString() {
+		return "Datatype [id=" + id + ", displayName=" + displayName
+				+ ", components=" + components + ", name=" + name
+				+ ", description=" + description + ", uuid=" + uuid + "]";
+	}
+	
+	
+
 }

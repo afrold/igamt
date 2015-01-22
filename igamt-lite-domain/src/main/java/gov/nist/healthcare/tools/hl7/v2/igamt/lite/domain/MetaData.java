@@ -35,4 +35,46 @@ public class MetaData implements java.io.Serializable {
 		return HashCodeBuilder.reflectionHashCode(this, "name", "orgName",
 				"version", "status", "topics", "noteToTesters");
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getTopics() {
+		return topics;
+	}
+
+	public void setTopics(String topics) {
+		this.topics = topics;
+	}
+	
+	
 }

@@ -35,4 +35,11 @@ public class Encodings implements java.io.Serializable {
 		this.encoding = encoding;
 	}
 
+	@Override
+	public String toString() {
+		return "Encodings [id=" + id + ", encoding=" + encoding + "]";
+	}
+	
+	
+
 }

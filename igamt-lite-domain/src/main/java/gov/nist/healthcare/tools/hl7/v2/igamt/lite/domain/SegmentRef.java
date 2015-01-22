@@ -81,4 +81,12 @@ public class SegmentRef extends SegmentRefOrGroup {
 		this.max = max;
 	}
 
+	@Override
+	public String toString() {
+		return "SegmentRef [id=" + id + ", segment=" + segment + ", usage="
+				+ usage + ", min=" + min + ", max=" + max + "]";
+	}
+	
+	
+
 }

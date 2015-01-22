@@ -42,9 +42,11 @@ public class Message implements java.io.Serializable {
 	@OneToMany(cascade = CascadeType.ALL)
 	protected List<SegmentRefOrGroup> segmentRefOrGroups;
 
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	protected Messages messages;
 
+	//TODO CHECK this. UUID is needed?
 	// TODO. Only for backward compatibility. Remove later
 	protected String uuid;
 
@@ -112,4 +114,15 @@ public class Message implements java.io.Serializable {
 		this.uuid = uuid;
 	}
 
+	@Override
+	public String toString() {
+		return "Message [id=" + id + ", type=" + type + ", event=" + event
+				+ ", structID=" + structID + ", description=" + description
+				+ ", segmentRefOrGroups=" + segmentRefOrGroups + ", uuid="
+				+ uuid + "]";
+	}
+
+
+	
+	
 }

@@ -116,4 +116,15 @@ public class Profile implements java.io.Serializable {
 		this.messages.setProfile(this);
 	}
 
+	@Override
+	public String toString() {
+		return "Profile [id=" + id + ", type=" + type + ", hl7Version="
+				+ hl7Version + ", schemaVersion=" + schemaVersion
+				+ ", metaData=" + metaData + ", encodings=" + encodings
+				+ ", segments=" + segments + ", datatypes=" + datatypes
+				+ ", messages=" + messages + "]";
+	}
+	
+	
+
 }

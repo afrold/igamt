@@ -56,6 +56,13 @@ public class Datatypes implements java.io.Serializable {
 			throw new IllegalArgumentException(
 					"This datatype already below to a different datatypes");
 		}
+		
+		for(Datatype dt:datatypes){
+			if(dt.getUuid().equals(d.getUuid())){
+				return;
+			}
+		}
+		
 		datatypes.add(d);
 		d.setDatatypes(this);
 	}

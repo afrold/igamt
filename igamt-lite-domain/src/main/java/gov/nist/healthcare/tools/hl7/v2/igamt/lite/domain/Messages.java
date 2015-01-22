@@ -60,4 +60,11 @@ public class Messages implements java.io.Serializable {
 		m.setMessages(this);
 	}
 
+	@Override
+	public String toString() {
+		return "Messages [id=" + id + ", messages=" + messages + "]";
+	}
+	
+	
+
 }

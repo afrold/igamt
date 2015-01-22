@@ -107,4 +107,13 @@ public class Segment implements java.io.Serializable {
 		this.uuid = uuid;
 	}
 
+	@Override
+	public String toString() {
+		return "Segment [id=" + id + ", uuid=" + uuid + ", displayName="
+				+ displayName + ", fields=" + fields + ", name=" + name
+				+ ", description=" + description + "]";
+	}
+	
+	
+
 }

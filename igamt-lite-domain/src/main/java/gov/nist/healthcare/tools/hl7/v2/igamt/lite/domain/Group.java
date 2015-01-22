@@ -103,4 +103,13 @@ public class Group extends SegmentRefOrGroup {
 		this.uuid = uuid;
 	}
 
+	@Override
+	public String toString() {
+		return "Group [id=" + id + ", segmentsOrGroups=" + segmentsOrGroups
+				+ ", name=" + name + ", usage=" + usage + ", min=" + min
+				+ ", max=" + max + ", uuid=" + uuid + "]";
+	}
+
+
+	
 }
