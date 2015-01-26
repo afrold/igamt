@@ -124,7 +124,4 @@ public class Profile implements java.io.Serializable {
 				+ ", segments=" + segments + ", datatypes=" + datatypes
 				+ ", messages=" + messages + "]";
 	}
-	
-	
-
 }

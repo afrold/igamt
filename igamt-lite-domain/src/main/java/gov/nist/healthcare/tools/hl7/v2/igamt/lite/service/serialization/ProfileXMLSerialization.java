@@ -52,15 +52,7 @@ public class ProfileXMLSerialization {
 		
 		this.deserializeMetaData(profile, elmConformanceProfile);
 		this.deserializeEncodings(profile, elmConformanceProfile);
-		
-		
-		
 		this.deserializeMessages(profile, elmConformanceProfile);
-		
-		
-		System.out.println(profile.getSegments().getSegments().size());
-		System.out.println(profile.getDatatypes().getDatatypes().size());
-		
 		
 		return profile;
 	}
@@ -334,18 +326,13 @@ public class ProfileXMLSerialization {
 	
 	public static void main(String[] args) throws IOException {
 		ProfileXMLSerialization test = new ProfileXMLSerialization();
-		Profile profile = test.deserializeXMLToProfile(new String(Files.readAllBytes(Paths.get("C://Users//jungyubw//Desktop//VXU new Profile//Profile.xml"))));
-//		System.out.println(profile.toString());
+		Profile profile = test.deserializeXMLToProfile(new String(Files.readAllBytes(Paths.get("src//main//resources//Profile.xml"))));
 		
-		System.out.println("----------------------------------------------------------------------------------------------------------");
+		for(Datatype d : profile.getDatatypes().getDatatypes()){
+			System.out.println(d.getName());
+		}
+		System.out.println(profile.toString());
 		
-		profile = test.deserializeXMLToProfile(new String(Files.readAllBytes(Paths.get("C://Users//jungyubw//Desktop//VXU new Profile//Profile (2).xml"))));
-//		System.out.println(profile.toString());
-		
-		System.out.println("----------------------------------------------------------------------------------------------------------");
-		
-		profile = test.deserializeXMLToProfile(new String(Files.readAllBytes(Paths.get("C://Users//jungyubw//Desktop//VXU new Profile//Profile (3).xml"))));
-//		System.out.println(profile.toString());
-		
+		System.out.println("----------------------------------------------------------------------------------------------------------");		
 	}
 }

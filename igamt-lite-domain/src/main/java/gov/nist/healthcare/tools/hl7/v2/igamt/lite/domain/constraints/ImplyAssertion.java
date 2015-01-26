@@ -1,9 +1,9 @@
-package gov.nist.healthcare.hl7tools.igmatlite.domain;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
-public class AndAssertion extends Assertion{
+public class ImplyAssertion extends Assertion{
 	private Assertion firstChildAssertion;
 	private Assertion SecondChildAssertion;
-	public AndAssertion() {
+	public ImplyAssertion() {
 		super();
 	}
 	public Assertion getFirstChildAssertion() {

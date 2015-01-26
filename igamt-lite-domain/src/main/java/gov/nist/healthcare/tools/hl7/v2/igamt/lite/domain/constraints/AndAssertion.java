@@ -1,9 +1,9 @@
-package gov.nist.healthcare.hl7tools.igmatlite.domain;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
-public class OrAssertion extends Assertion{
+public class AndAssertion extends Assertion{
 	private Assertion firstChildAssertion;
 	private Assertion SecondChildAssertion;
-	public OrAssertion() {
+	public AndAssertion() {
 		super();
 	}
 	public Assertion getFirstChildAssertion() {
