@@ -49,6 +49,13 @@ public class Standard implements java.io.Serializable{
 	public void setStandardDescription(String standardDescription) {
 		this.standardDescription = standardDescription;
 	}
+	@Override
+	public String toString() {
+		return "Standard [standardId=" + standardId + ", standardVersion="
+				+ standardVersion + ", standardDate=" + standardDate
+				+ ", standardURL=" + standardURL + ", standardDescription="
+				+ standardDescription + "]";
+	}
 	
 	
 

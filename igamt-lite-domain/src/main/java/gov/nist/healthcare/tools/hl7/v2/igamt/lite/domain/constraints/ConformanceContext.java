@@ -92,6 +92,16 @@ public class ConformanceContext implements Serializable{
 	public void setGroupContext(Context groupContext) {
 		this.groupContext = groupContext;
 	}
+
+	@Override
+	public String toString() {
+		return "ConformanceContext [id=" + id + ", uuid=" + uuid
+				+ ", metaData=" + metaData + ", datatypeContext="
+				+ datatypeContext + ", segmentContext=" + segmentContext
+				+ ", groupContext=" + groupContext + "]";
+	}
+	
+	
 	
 	
 }

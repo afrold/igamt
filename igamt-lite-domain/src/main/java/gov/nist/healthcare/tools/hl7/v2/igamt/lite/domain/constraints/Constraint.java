@@ -38,5 +38,65 @@ public class Constraint implements Serializable{
 	@Column(nullable = false)
 	@Lob
 	protected Assertion assertion;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getConstraintId() {
+		return constraintId;
+	}
+
+	public void setConstraintId(String constraintId) {
+		this.constraintId = constraintId;
+	}
+
+	public String getConstraintTag() {
+		return constraintTag;
+	}
+
+	public void setConstraintTag(String constraintTag) {
+		this.constraintTag = constraintTag;
+	}
+
+	public Reference getReference() {
+		return reference;
+	}
+
+	public void setReference(Reference reference) {
+		this.reference = reference;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Assertion getAssertion() {
+		return assertion;
+	}
+
+	public void setAssertion(Assertion assertion) {
+		this.assertion = assertion;
+	}
+
+	@Override
+	public String toString() {
+		return "Constraint [id=" + id + ", constraintId=" + constraintId
+				+ ", constraintTag=" + constraintTag + ", reference="
+				+ reference + ", description=" + description + ", assertion="
+				+ assertion + "]";
+	}
+	
+	
+	
+	
 	
 }

@@ -6,6 +6,13 @@
 	
 	<MetaData>
 		<Description>Conformance context sample</Description>
+		<Authors>
+			<Author FirstName="Jungyub" LastName="Woo" Email="jungyub.woo@gmail.com"/>
+			<Author FirstName="Jungyub" LastName="Woo" Email="jungyubw@gmail.com"/>
+		</Authors>
+		<Standard ID="QQQ" Version="1.0" Date="2014-10-30" URL="Nist.gov">
+			<Description>Sample STD</Description>
+		</Standard>
 	</MetaData>
 	 
 	<Datatype>

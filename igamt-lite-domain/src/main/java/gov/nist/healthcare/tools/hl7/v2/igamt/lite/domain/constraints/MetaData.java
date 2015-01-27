@@ -42,6 +42,12 @@ public class MetaData implements java.io.Serializable{
 
 	public void setStandard(Standard standard) {
 		this.standard = standard;
+	}
+
+	@Override
+	public String toString() {
+		return "MetaData [description=" + description + ", authors=" + authors
+				+ ", standard=" + standard + "]";
 	} 
 	
 	

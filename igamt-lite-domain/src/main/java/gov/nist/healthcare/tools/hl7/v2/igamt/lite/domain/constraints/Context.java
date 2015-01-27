@@ -26,4 +26,30 @@ public class Context implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL)
 	protected Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Set<ByNameOrByID> getByNameOrByIDs() {
+		return byNameOrByIDs;
+	}
+
+	public void setByNameOrByIDs(Set<ByNameOrByID> byNameOrByIDs) {
+		this.byNameOrByIDs = byNameOrByIDs;
+	}
+
+	@Override
+	public String toString() {
+		return "Context [id=" + id + ", byNameOrByIDs=" + byNameOrByIDs + "]";
+	}
+	
+	
+	
+	
+	
+
 }
