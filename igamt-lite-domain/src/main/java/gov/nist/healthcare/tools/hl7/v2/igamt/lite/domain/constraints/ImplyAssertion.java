@@ -1,6 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 public class ImplyAssertion extends Assertion{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4785214553466976879L;
 	private Assertion firstChildAssertion;
 	private Assertion SecondChildAssertion;
 	public ImplyAssertion() {

@@ -1,6 +1,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
+
 public class PresenceAssertion extends Assertion {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4116237163848338922L;
 	private String path;
 
 	

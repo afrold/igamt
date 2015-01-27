@@ -16,28 +16,28 @@ import org.hibernate.id.IdentifierGenerator;
  * @author Jungyub Woo
  * 
  */
-public class TableLibraryIdGenerator implements IdentifierGenerator {
+public class ConformanceContextIdGenerator implements IdentifierGenerator {
 
-	private static Logger log = Logger.getLogger(TableLibraryIdGenerator.class);
+	private static Logger log = Logger.getLogger(ConformanceContextIdGenerator.class);
 
 	@Override
 	public Serializable generate(SessionImplementor session, Object object)
 			throws HibernateException {
-		String prefix = "TABLELIBRARY_";
+		String prefix = "CONFORMANCECONTEXT_";
 		Connection connection = session.connection();
 		try {
 			PreparedStatement ps = connection
-					.prepareStatement("SELECT nextval ('seq_table_library') as nextval");
+					.prepareStatement("SELECT nextval ('seq_conformance_context') as nextval");
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				int id = rs.getInt("nextval");
 				String code = prefix + id;
-				log.debug("Generated TableLibrary Id: " + code);
+				log.debug("Generated Conformance Context Id: " + code);
 				return code;
 			}
 		} catch (SQLException e) {
 			log.error(e);
-			throw new HibernateException("Unable to generate Table Library Sequence");
+			throw new HibernateException("Unable to generate Conformance Context Sequence");
 		}
 		return null;
 	}

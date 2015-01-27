@@ -1,6 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
-public class SimpleValueAssertion {
+public class SimpleValueAssertion extends Assertion{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4832620459321582705L;
 	private String path;
 	private String operator;
 	private String value;

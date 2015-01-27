@@ -1,6 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 public class XorAssertion extends Assertion{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2351231775482738709L;
 	private Assertion firstChildAssertion;
 	private Assertion SecondChildAssertion;
 	public XorAssertion() {

@@ -1,7 +1,17 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 import java.io.Serializable;
-import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 public class ConformanceContext implements Serializable{
 
@@ -10,243 +20,78 @@ public class ConformanceContext implements Serializable{
 	 */
 	private static final long serialVersionUID = 1051694737992020403L;
 
-	private long id;
-	private String uuid;
-	
-	//META-Description
-	private String description;
-	
-	//META-Author
-	private String firstNameAuthor;
-	private String lastNameAuthor;
-	private String email;
-	
-	//META-Standard 
-	private String standardId;
-	private String standardVersion;
-	private String standardDate;
-	private String standardURL;
-	private String standardDescription;
-	
-	//Constraints
-	private Set<Constraint> datatypeConstraints;
-	private Set<Constraint> segmentConstraints;
-	private Set<Constraint> groupConstraints;
-	
-	
-	
-	public ConformanceContext() {
-		// TODO Auto-generated constructor stub
-	}
+	@Id
+	@GenericGenerator(name = "CONFORMANCECONTEXT_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.ConformanceContextIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_conformance_context"))
+	@GeneratedValue(generator = "CONFORMANCECONTEXT_ID_GENERATOR")
+	protected String id;
 
+	@NotNull
+	@Column(nullable = false)
+	protected String uuid;
+	
+	@NotNull
+	@Column(nullable = false)
+	protected MetaData metaData;
+	
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
+	private Context datatypeContext;
+	
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
+	private Context segmentContext;
+	
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
+	private Context groupContext;
 
-
-	public ConformanceContext(long id, String uuid, String description,
-			String firstNameAuthor, String lastNameAuthor, String email,
-			String standardId, String standardVersion, String standardDate,
-			String standardURL, String standardDescription,
-			Set<Constraint> datatypeConstraints,
-			Set<Constraint> segmentConstraints, Set<Constraint> groupConstraints) {
-		super();
-		this.id = id;
-		this.uuid = uuid;
-		this.description = description;
-		this.firstNameAuthor = firstNameAuthor;
-		this.lastNameAuthor = lastNameAuthor;
-		this.email = email;
-		this.standardId = standardId;
-		this.standardVersion = standardVersion;
-		this.standardDate = standardDate;
-		this.standardURL = standardURL;
-		this.standardDescription = standardDescription;
-		this.datatypeConstraints = datatypeConstraints;
-		this.segmentConstraints = segmentConstraints;
-		this.groupConstraints = groupConstraints;
-	}
-
-
-
-	public long getId() {
+	public String getId() {
 		return id;
 	}
 
-
-
-	public void setId(long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
-
-
 
 	public String getUuid() {
 		return uuid;
 	}
 
-
-
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
 
-
-
-	public String getDescription() {
-		return description;
+	public MetaData getMetaData() {
+		return metaData;
 	}
 
-
-
-	public void setDescription(String description) {
-		this.description = description;
+	public void setMetaData(MetaData metaData) {
+		this.metaData = metaData;
 	}
 
-
-
-	public String getFirstNameAuthor() {
-		return firstNameAuthor;
+	public Context getDatatypeContext() {
+		return datatypeContext;
 	}
 
-
-
-	public void setFirstNameAuthor(String firstNameAuthor) {
-		this.firstNameAuthor = firstNameAuthor;
+	public void setDatatypeContext(Context datatypeContext) {
+		this.datatypeContext = datatypeContext;
 	}
 
-
-
-	public String getLastNameAuthor() {
-		return lastNameAuthor;
+	public Context getSegmentContext() {
+		return segmentContext;
 	}
 
-
-
-	public void setLastNameAuthor(String lastNameAuthor) {
-		this.lastNameAuthor = lastNameAuthor;
+	public void setSegmentContext(Context segmentContext) {
+		this.segmentContext = segmentContext;
 	}
 
-
-
-	public String getEmail() {
-		return email;
+	public Context getGroupContext() {
+		return groupContext;
 	}
 
-
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setGroupContext(Context groupContext) {
+		this.groupContext = groupContext;
 	}
-
-
-
-	public String getStandardId() {
-		return standardId;
-	}
-
-
-
-	public void setStandardId(String standardId) {
-		this.standardId = standardId;
-	}
-
-
-
-	public String getStandardVersion() {
-		return standardVersion;
-	}
-
-
-
-	public void setStandardVersion(String standardVersion) {
-		this.standardVersion = standardVersion;
-	}
-
-
-
-	public String getStandardDate() {
-		return standardDate;
-	}
-
-
-
-	public void setStandardDate(String standardDate) {
-		this.standardDate = standardDate;
-	}
-
-
-
-	public String getStandardURL() {
-		return standardURL;
-	}
-
-
-
-	public void setStandardURL(String standardURL) {
-		this.standardURL = standardURL;
-	}
-
-
-
-	public String getStandardDescription() {
-		return standardDescription;
-	}
-
-
-
-	public void setStandardDescription(String standardDescription) {
-		this.standardDescription = standardDescription;
-	}
-
-
-
-	public Set<Constraint> getDatatypeConstraints() {
-		return datatypeConstraints;
-	}
-
-
-
-	public void setDatatypeConstraints(Set<Constraint> datatypeConstraints) {
-		this.datatypeConstraints = datatypeConstraints;
-	}
-
-
-
-	public Set<Constraint> getSegmentConstraints() {
-		return segmentConstraints;
-	}
-
-
-
-	public void setSegmentConstraints(Set<Constraint> segmentConstraints) {
-		this.segmentConstraints = segmentConstraints;
-	}
-
-
-
-	public Set<Constraint> getGroupConstraints() {
-		return groupConstraints;
-	}
-
-
-
-	public void setGroupConstraints(Set<Constraint> groupConstraints) {
-		this.groupConstraints = groupConstraints;
-	}
-
-
-
-	@Override
-	public String toString() {
-		return "ConformanceContext [id=" + id + ", uuid=" + uuid
-				+ ", description=" + description + ", firstNameAuthor="
-				+ firstNameAuthor + ", lastNameAuthor=" + lastNameAuthor
-				+ ", email=" + email + ", standardId=" + standardId
-				+ ", standardVersion=" + standardVersion + ", standardDate="
-				+ standardDate + ", standardURL=" + standardURL
-				+ ", standardDescription=" + standardDescription
-				+ ", datatypeConstraints=" + datatypeConstraints
-				+ ", segmentConstraints=" + segmentConstraints
-				+ ", groupConstraints=" + groupConstraints + "]";
-	}
-
+	
 	
 }

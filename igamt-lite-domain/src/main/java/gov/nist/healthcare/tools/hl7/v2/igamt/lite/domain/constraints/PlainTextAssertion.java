@@ -1,6 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 public class PlainTextAssertion extends Assertion {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8181670374107150272L;
 	private String path;
 	private String text;
 	private boolean ignoreCase;

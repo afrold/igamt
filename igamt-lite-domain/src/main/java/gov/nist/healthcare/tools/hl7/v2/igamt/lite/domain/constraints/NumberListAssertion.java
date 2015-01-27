@@ -1,6 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 public class NumberListAssertion extends Assertion {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6143251147840061214L;
 	private String path;
 	private String csv;
 	public NumberListAssertion() {

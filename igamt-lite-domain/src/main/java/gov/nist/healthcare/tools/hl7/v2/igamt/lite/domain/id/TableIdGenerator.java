@@ -32,7 +32,7 @@ public class TableIdGenerator implements IdentifierGenerator {
 			if (rs.next()) {
 				int id = rs.getInt("nextval");
 				String code = prefix + id;
-				log.debug("Generated Table Id: " + code);
+				log.debug("Table Table Id: " + code);
 				return code;
 			}
 		} catch (SQLException e) {
