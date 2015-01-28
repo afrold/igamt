@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
@@ -20,8 +20,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class TableXMLSerialization {
+public class TableSerializationImpl implements TableSerialization{
 
+	@Override
 	public TableLibrary deserializeXMLToTableLibrary(String xmlContents) {
 		Document tableLibraryDoc = this.stringToDom(xmlContents);
 		TableLibrary tableLibrary = new TableLibrary();
@@ -37,6 +38,11 @@ public class TableXMLSerialization {
 		this.deserializeXMLToTable(elmTableLibrary, tableLibrary);
 		
 		return tableLibrary;
+	}
+	
+	@Override
+	public String serializeTableLibraryToXML(TableLibrary tableLibrary) {
+		return null;
 	}
 
 	private void deserializeXMLToTable(Element elmTableLibrary, TableLibrary tableLibrary) {
@@ -86,10 +92,6 @@ public class TableXMLSerialization {
 		
 	}
 
-	public void serializeTableLibraryToXML(TableLibrary tableLibrary) {
-
-	}
-
 	private Document stringToDom(String xmlSource) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setNamespaceAware(true);
@@ -110,7 +112,7 @@ public class TableXMLSerialization {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		TableXMLSerialization test = new TableXMLSerialization();
+		TableSerializationImpl test = new TableSerializationImpl();
 		TableLibrary tableLibrary = test.deserializeXMLToTableLibrary(new String(Files.readAllBytes(Paths.get("src//main//resources//VXU ValueSets.xml"))));
 		
 		System.out.println(tableLibrary.toString());

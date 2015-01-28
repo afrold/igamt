@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Author;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
@@ -41,8 +41,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class ConstraintsXMLSerialization {
+public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 
+	@Override
 	public ConformanceContext deserializeXMLToConformanceContext(String xmlContents) {
 		Document conformanceContextDoc = this.stringToDom(xmlContents);
 		ConformanceContext conformanceContext = new ConformanceContext();
@@ -58,8 +59,9 @@ public class ConstraintsXMLSerialization {
 		return conformanceContext;
 	}
 	
-	public void serializeTableLibraryToXML(TableLibrary tableLibrary) {
-
+	@Override
+	public String serializeTableLibraryToXML(TableLibrary tableLibrary) {
+		return null;
 	}
 	
 	private void deserializeXMLToContextType(Element elmConformanceContext, ConformanceContext conformanceContext) {
@@ -660,7 +662,7 @@ public class ConstraintsXMLSerialization {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		ConstraintsXMLSerialization test = new ConstraintsXMLSerialization();
+		ConstraintsSerializationImpl test = new ConstraintsSerializationImpl();
 		ConformanceContext conformanceContext = test.deserializeXMLToConformanceContext(new String(Files.readAllBytes(Paths.get("src//main//resources//ConfContextSample.xml"))));
 		
 		System.out.println(conformanceContext.toString());

@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.serialization;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -36,8 +36,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class ProfileXMLSerialization {
+public class ProfileSerializationImpl implements ProfileSerialization{
 
+	@Override
 	public Profile deserializeXMLToProfile(String xmlContents) {
 		Document profileDoc = this.stringToDom(xmlContents);
 		Profile profile = new Profile();
@@ -57,8 +58,9 @@ public class ProfileXMLSerialization {
 		return profile;
 	}
 
-	public void serializeProfileToXML(Profile profile) {
-
+	@Override
+	public String serializeProfileToXML(Profile profile) {
+		return null;
 	}
 	
 	private void deserializeMetaData(Profile profile, Element elmConformanceProfile){
@@ -325,7 +327,7 @@ public class ProfileXMLSerialization {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		ProfileXMLSerialization test = new ProfileXMLSerialization();
+		ProfileSerializationImpl test = new ProfileSerializationImpl();
 		Profile profile = test.deserializeXMLToProfile(new String(Files.readAllBytes(Paths.get("src//main//resources//Profile.xml"))));
 		
 		for(Datatype d : profile.getDatatypes().getDatatypes()){

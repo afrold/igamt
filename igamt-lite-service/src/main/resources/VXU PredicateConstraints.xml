@@ -1,0 +1,2167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConformanceContext UUID="7c074a43-b9c4-48f5-9cce-419f15e0cdca" xsi:noNamespaceSchemaLocation="ConformanceContext.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <MetaData>
+        <Description>Conformance context for VXU_V04</Description>
+    </MetaData>
+    <Segment>
+        <ByID ID="PID_IZ 1_5">
+            <Constraint ID="[PID_IZ 1_5]29[1]">
+                <Description>If the value of PID_IZ 1_5.30 (Patient Death Indicator) is 'Y'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <PlainText Path="29[1]" Text="Y" IgnoreCase="true"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="29[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="PD1_IZ 1_5">
+            <Constraint ID="[PD1_IZ 1_5]13[1]">
+                <Description>If PD1_IZ 1_5.12 (Protection Indicator) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="12"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="13[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[PD1_IZ 1_5]17[1]">
+                <Description>If PD1_IZ 1_5.16 (Immunization Registry Status) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="16"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="17[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[PD1_IZ 1_5]18[1]">
+                <Description>If PD1_IZ 1_5.11 (Publicity Code) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="11"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="18[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="RXA_IZ 1_5">
+            <Constraint ID="[RXA_IZ 1_5]7[1]">
+                <Description>If the value of RXA_IZ 1_5.6 (Administered Amount) is not '999'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="7[1]" Text="999" IgnoreCase="true"/>
+                            </NOT>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <NOT>
+                                    <PlainText Path="7[1]" Text="999" IgnoreCase="true"/>
+                                </NOT>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[RXA_IZ 1_5]9[1]">
+                <Description>If the value of RXA_IZ 1_5.20 (Completion Status) is one of List Values: 'CP','PA'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <StringList Path="9[1]" CSV="CP,PA"/>
+                        <Presence Path="9[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[RXA_IZ 1_5]15[1]">
+                <Description>If the value of RXA_IZ 1_5.9[1].1 (Identifier) is '00' AND if the value of RXA_IZ 1_5.20 (Completion Status) is one of List Values: 'CP','PA'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <FORALL>
+                            <PlainText Path="15[1]" Text="00" IgnoreCase="true"/>
+                            <StringList Path="15[1]" CSV="CP,PA"/>
+                        </FORALL>
+                        <Presence Path="15[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[RXA_IZ 1_5]17[1]">
+                <Description>If the value of RXA_IZ 1_5.9[1].1 (Identifier) is '00'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <PlainText Path="17[1]" Text="00" IgnoreCase="true"/>
+                        <Presence Path="17[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[RXA_IZ 1_5]18[1]">
+                <Description>If the value of RXA_IZ 1_5.20 (Completion Status) is 'RE'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <PlainText Path="18[1]" Text="RE" IgnoreCase="true"/>
+                            <Presence Path="18[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="18[1]" Text="RE" IgnoreCase="true"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="18[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[RXA_IZ 1_5]21[1]">
+                <Description>If the value of RXA_IZ 1_5.5.1 (Identifier) is not '998'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <PlainText Path="21[1]" Text="998" IgnoreCase="true"/>
+                        </NOT>
+                        <Presence Path="21[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="OBX_IZ 1_5">
+            <Constraint ID="[OBX_IZ 1_5]6[1]">
+                <Description>If the value of OBX_IZ 1_5.2 (Value Type) is one of List Values: 'NM','SN'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <StringList Path="6[1]" CSV="NM,SN"/>
+                        <Presence Path="6[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+    </Segment>
+    <Datatype>
+        <ByID ID="HD_IZ">
+            <Constraint ID="[HD_IZ]1[1]">
+                <Description>If the HD_IZ_16.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="1[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]2[1]">
+                <Description>If the HD_IZ_16.1 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="1"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]3[1]">
+                <Description>If the HD_IZ_16.2 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="2"/>
+                            <Presence Path="3[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="2"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="3[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="EI_IZ_VXU_1.5">
+            <Constraint ID="[EI_IZ_VXU_1.5]2[1]">
+                <Description>If EI_IZ_VXU_1.5.3 (Universal ID) is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="5.3"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[EI_IZ_VXU_1.5]3[1]">
+                <Description>If EI_IZ_VXU_1.5.2 (Namespace ID) is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="5.2"/>
+                        </NOT>
+                        <Presence Path="3[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[EI_IZ_VXU_1.5]4[1]">
+                <Description>If EI_IZ_VXU_1.5.3 (Universal ID) is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="5.3"/>
+                            <Presence Path="4[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="5.3"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="4[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XON_IZ">
+            <Constraint ID="[XON_IZ]6[1]">
+                <Description>If the XON_IZ_131.10 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <Presence Path="10"/>
+                        <Presence Path="6[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XON_IZ]7[1]">
+                <Description>If the XON_IZ_131.10 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="10"/>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="10"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XON_IZ]10[1]">
+                <Description>If the XON_IZ_131.1 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <Presence Path="1"/>
+                        <Presence Path="10[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XON_IZ">
+            <Constraint ID="[XON_IZ]6[1]">
+                <Description>If the XON_IZ_131.10 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <Presence Path="10"/>
+                        <Presence Path="6[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XON_IZ]7[1]">
+                <Description>If the XON_IZ_131.10 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="10"/>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="10"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XON_IZ]10[1]">
+                <Description>If the XON_IZ_131.1 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <Presence Path="1"/>
+                        <Presence Path="10[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CX_IZ">
+            <Constraint ID="[CX_IZ]3[1]">
+                <Description>If the CX_IZ_237.2 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="3[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XTN_IZ">
+            <Constraint ID="[XTN_IZ]4[1]">
+                <Description>If the value of XTN_IZ_34.2(Telecommunication Use Code) is 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            <Presence Path="4[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="4[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]6[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <NOT>
+                                <PlainText Path="6[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="6[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]7[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <NOT>
+                                    <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                                </NOT>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CX_IZ">
+            <Constraint ID="[CX_IZ]3[1]">
+                <Description>If the CX_IZ_237.2 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="3[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="HD_IZ">
+            <Constraint ID="[HD_IZ]1[1]">
+                <Description>If the HD_IZ_16.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="1[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]2[1]">
+                <Description>If the HD_IZ_16.1 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="1"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]3[1]">
+                <Description>If the HD_IZ_16.2 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="2"/>
+                            <Presence Path="3[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="2"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="3[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CX_IZ">
+            <Constraint ID="[CX_IZ]3[1]">
+                <Description>If the CX_IZ_237.2 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="3[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XCN_IZ">
+            <Constraint ID="[XCN_IZ]9[1]">
+                <Description>If the XCN_IZ_94.1 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="1"/>
+                            <Presence Path="9[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="1"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="9[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XCN_IZ]12[1]">
+                <Description>If the XCN_IZ_94.11 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="11"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="12[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XCN_IZ">
+            <Constraint ID="[XCN_IZ]9[1]">
+                <Description>If the XCN_IZ_94.1 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="1"/>
+                            <Presence Path="9[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="1"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="9[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XCN_IZ]12[1]">
+                <Description>If the XCN_IZ_94.11 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="11"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="12[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XCN_IZ">
+            <Constraint ID="[XCN_IZ]9[1]">
+                <Description>If the XCN_IZ_94.1 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="1"/>
+                            <Presence Path="9[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="1"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="9[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XCN_IZ]12[1]">
+                <Description>If the XCN_IZ_94.11 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="11"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="12[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XCN_IZ">
+            <Constraint ID="[XCN_IZ]9[1]">
+                <Description>If the XCN_IZ_94.1 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="1"/>
+                            <Presence Path="9[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="1"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="9[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XCN_IZ]12[1]">
+                <Description>If the XCN_IZ_94.11 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="11"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="12[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CX_IZ">
+            <Constraint ID="[CX_IZ]3[1]">
+                <Description>If the CX_IZ_237.2 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="3[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CX_IZ">
+            <Constraint ID="[CX_IZ]3[1]">
+                <Description>If the CX_IZ_237.2 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="3[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="HD_IZ">
+            <Constraint ID="[HD_IZ]1[1]">
+                <Description>If the HD_IZ_16.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="1[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]2[1]">
+                <Description>If the HD_IZ_16.1 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="1"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]3[1]">
+                <Description>If the HD_IZ_16.2 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="2"/>
+                            <Presence Path="3[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="2"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="3[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XCN_IZ">
+            <Constraint ID="[XCN_IZ]9[1]">
+                <Description>If the XCN_IZ_94.1 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="1"/>
+                            <Presence Path="9[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="1"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="9[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XCN_IZ]12[1]">
+                <Description>If the XCN_IZ_94.11 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="11"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="12[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="HD_IZ">
+            <Constraint ID="[HD_IZ]1[1]">
+                <Description>If the HD_IZ_16.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="1[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]2[1]">
+                <Description>If the HD_IZ_16.1 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="1"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]3[1]">
+                <Description>If the HD_IZ_16.2 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="2"/>
+                            <Presence Path="3[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="2"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="3[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CX_IZ">
+            <Constraint ID="[CX_IZ]3[1]">
+                <Description>If the CX_IZ_237.2 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="3[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="HD_IZ">
+            <Constraint ID="[HD_IZ]1[1]">
+                <Description>If the HD_IZ_16.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="1[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]2[1]">
+                <Description>If the HD_IZ_16.1 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="1"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]3[1]">
+                <Description>If the HD_IZ_16.2 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="2"/>
+                            <Presence Path="3[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="2"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="3[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CX_IZ">
+            <Constraint ID="[CX_IZ]3[1]">
+                <Description>If the CX_IZ_237.2 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="3[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="HD_IZ">
+            <Constraint ID="[HD_IZ]1[1]">
+                <Description>If the HD_IZ_16.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="1[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]2[1]">
+                <Description>If the HD_IZ_16.1 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="1"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]3[1]">
+                <Description>If the HD_IZ_16.2 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="2"/>
+                            <Presence Path="3[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="2"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="3[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XTN_IZ">
+            <Constraint ID="[XTN_IZ]4[1]">
+                <Description>If the value of XTN_IZ_34.2(Telecommunication Use Code) is 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            <Presence Path="4[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="4[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]6[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <NOT>
+                                <PlainText Path="6[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="6[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]7[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <NOT>
+                                    <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                                </NOT>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XTN_IZ">
+            <Constraint ID="[XTN_IZ]4[1]">
+                <Description>If the value of XTN_IZ_34.2(Telecommunication Use Code) is 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            <Presence Path="4[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="4[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]6[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <NOT>
+                                <PlainText Path="6[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="6[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]7[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <NOT>
+                                    <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                                </NOT>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XTN_IZ">
+            <Constraint ID="[XTN_IZ]4[1]">
+                <Description>If the value of XTN_IZ_34.2(Telecommunication Use Code) is 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            <Presence Path="4[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="4[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]6[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <NOT>
+                                <PlainText Path="6[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="6[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]7[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <NOT>
+                                    <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                                </NOT>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CX_IZ">
+            <Constraint ID="[CX_IZ]3[1]">
+                <Description>If the CX_IZ_237.2 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="3[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="HD_IZ">
+            <Constraint ID="[HD_IZ]1[1]">
+                <Description>If the HD_IZ_16.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="1[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]2[1]">
+                <Description>If the HD_IZ_16.1 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="1"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]3[1]">
+                <Description>If the HD_IZ_16.2 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="2"/>
+                            <Presence Path="3[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="2"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="3[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XTN_IZ">
+            <Constraint ID="[XTN_IZ]4[1]">
+                <Description>If the value of XTN_IZ_34.2(Telecommunication Use Code) is 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            <Presence Path="4[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="4[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]6[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <NOT>
+                                <PlainText Path="6[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="6[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]7[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <NOT>
+                                    <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                                </NOT>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XTN_IZ">
+            <Constraint ID="[XTN_IZ]4[1]">
+                <Description>If the value of XTN_IZ_34.2(Telecommunication Use Code) is 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            <Presence Path="4[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="4[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="4[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]6[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <NOT>
+                                <PlainText Path="6[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="6[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XTN_IZ]7[1]">
+                <Description>If the value of XTN_IZ.2 (Telecommunication Use Code) is not 'NET'.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <NOT>
+                                <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                            </NOT>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <NOT>
+                                    <PlainText Path="7[1]" Text="NET" IgnoreCase="true"/>
+                                </NOT>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XON_IZ">
+            <Constraint ID="[XON_IZ]6[1]">
+                <Description>If the XON_IZ_131.10 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <Presence Path="10"/>
+                        <Presence Path="6[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XON_IZ]7[1]">
+                <Description>If the XON_IZ_131.10 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="10"/>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="10"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XON_IZ]10[1]">
+                <Description>If the XON_IZ_131.1 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <Presence Path="1"/>
+                        <Presence Path="10[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="HD_IZ">
+            <Constraint ID="[HD_IZ]1[1]">
+                <Description>If the HD_IZ_16.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="1[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]2[1]">
+                <Description>If the HD_IZ_16.1 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="1"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]3[1]">
+                <Description>If the HD_IZ_16.2 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="2"/>
+                            <Presence Path="3[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="2"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="3[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XON_IZ">
+            <Constraint ID="[XON_IZ]6[1]">
+                <Description>If the XON_IZ_131.10 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <Presence Path="10"/>
+                        <Presence Path="6[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XON_IZ]7[1]">
+                <Description>If the XON_IZ_131.10 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="10"/>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="10"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XON_IZ]10[1]">
+                <Description>If the XON_IZ_131.1 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <Presence Path="1"/>
+                        <Presence Path="10[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="HD_IZ">
+            <Constraint ID="[HD_IZ]1[1]">
+                <Description>If the HD_IZ_16.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="1[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]2[1]">
+                <Description>If the HD_IZ_16.1 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="1"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]3[1]">
+                <Description>If the HD_IZ_16.2 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="2"/>
+                            <Presence Path="3[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="2"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="3[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="EI_IZ">
+            <Constraint ID="[EI_IZ]3[1]">
+                <Description>If the EI_IZ_271.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="3[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[EI_IZ]4[1]">
+                <Description>If the EI_IZ_271.3 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="3"/>
+                            <Presence Path="4[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="3"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="4[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="EI_IZ">
+            <Constraint ID="[EI_IZ]2[1]">
+                <Description>If EI_IZ.3 (Universal ID) is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="3"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[EI_IZ]3[1]">
+                <Description>If the EI_IZ_271.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="3[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[EI_IZ]4[1]">
+                <Description>If the EI_IZ_271.3 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="3"/>
+                            <Presence Path="4[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="3"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="4[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XCN_IZ">
+            <Constraint ID="[XCN_IZ]9[1]">
+                <Description>If the XCN_IZ_94.1 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="1"/>
+                            <Presence Path="9[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="1"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="9[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XCN_IZ]12[1]">
+                <Description>If the XCN_IZ_94.11 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="11"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="12[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CE_IZ">
+            <Constraint ID="[CE_IZ]5[1]">
+                <Description>If the CE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CE_IZ]6[1]">
+                <Description>If the CE_IZ.4 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="CWE_IZ">
+            <Constraint ID="[CWE_IZ]3[1]">
+                <Description>If the CWE_IZ.1 (Identifier) is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="1"/>
+                            <Presence Path="3[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="1"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="3[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CWE_IZ]5[1]">
+                <Description>If the CWE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="4"/>
+                        </NOT>
+                        <NOT>
+                            <Presence Path="5[1]"/>
+                        </NOT>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[CWE_IZ]6[1]">
+                <Description>If the CWE_IZ.4 (Alternate Identifier) is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="4"/>
+                            <Presence Path="6[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="4"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="6[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="XON_IZ">
+            <Constraint ID="[XON_IZ]6[1]">
+                <Description>If the XON_IZ_131.10 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <Presence Path="10"/>
+                        <Presence Path="6[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XON_IZ]7[1]">
+                <Description>If the XON_IZ_131.10 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="10"/>
+                            <Presence Path="7[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="10"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="7[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[XON_IZ]10[1]">
+                <Description>If the XON_IZ_131.1 is valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <Presence Path="1"/>
+                        <Presence Path="10[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="HD_IZ">
+            <Constraint ID="[HD_IZ]1[1]">
+                <Description>If the HD_IZ_16.2 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="2"/>
+                        </NOT>
+                        <Presence Path="1[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]2[1]">
+                <Description>If the HD_IZ_16.1 is not valued.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <Presence Path="1"/>
+                        </NOT>
+                        <Presence Path="2[1]"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="[HD_IZ]3[1]">
+                <Description>If the HD_IZ_16.2 is valued.</Description>
+                <Assertion>
+                    <AND>
+                        <IMPLY>
+                            <Presence Path="2"/>
+                            <Presence Path="3[1]"/>
+                        </IMPLY>
+                        <IMPLY>
+                            <NOT>
+                                <Presence Path="2"/>
+                            </NOT>
+                            <NOT>
+                                <Presence Path="3[1]"/>
+                            </NOT>
+                        </IMPLY>
+                    </AND>
+                </Assertion>
+            </Constraint>
+        </ByID>
+    </Datatype>
+</ConformanceContext>
