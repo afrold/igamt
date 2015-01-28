@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion;
 
 
 public class PresenceAssertion extends Assertion {
@@ -19,5 +19,10 @@ public class PresenceAssertion extends Assertion {
 
 	public void setPath(String path) {
 		this.path = path;
+	}
+
+	@Override
+	public String toString() {
+		return "PresenceAssertion [path=" + path + "]";
 	}
 }

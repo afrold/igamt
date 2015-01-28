@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion;
 
 public class PathValueAssertion extends Assertion {
 	/**
@@ -31,6 +31,13 @@ public class PathValueAssertion extends Assertion {
 	}
 	public void setOperator(String operator) {
 		this.operator = operator;
+	}
+
+
+	@Override
+	public String toString() {
+		return "PathValueAssertion [path1=" + path1 + ", path2=" + path2
+				+ ", operator=" + operator + "]";
 	}
 	
 	

@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion;
 
 public class PlainTextAssertion extends Assertion {
 	/**
@@ -35,6 +35,12 @@ public class PlainTextAssertion extends Assertion {
 
 	public void setIgnoreCase(boolean ignoreCase) {
 		this.ignoreCase = ignoreCase;
+	}
+
+	@Override
+	public String toString() {
+		return "PlainTextAssertion [path=" + path + ", text=" + text
+				+ ", ignoreCase=" + ignoreCase + "]";
 	}
 	
 	

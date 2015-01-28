@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion;
 
 public class NotAssertion extends Assertion{
 	/**
@@ -19,6 +19,11 @@ public class NotAssertion extends Assertion{
 
 	public void setChildAssertion(Assertion childAssertion) {
 		this.childAssertion = childAssertion;
+	}
+
+	@Override
+	public String toString() {
+		return "NotAssertion [childAssertion=" + childAssertion + "]";
 	}
 	
 	

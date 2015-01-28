@@ -1,13 +1,13 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion;
 
-public class ImplyAssertion extends Assertion{
+public class XorAssertion extends Assertion{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4785214553466976879L;
+	private static final long serialVersionUID = -2351231775482738709L;
 	private Assertion firstChildAssertion;
 	private Assertion SecondChildAssertion;
-	public ImplyAssertion() {
+	public XorAssertion() {
 		super();
 	}
 	public Assertion getFirstChildAssertion() {
@@ -21,6 +21,11 @@ public class ImplyAssertion extends Assertion{
 	}
 	public void setSecondChildAssertion(Assertion secondChildAssertion) {
 		SecondChildAssertion = secondChildAssertion;
+	}
+	@Override
+	public String toString() {
+		return "XorAssertion [firstChildAssertion=" + firstChildAssertion
+				+ ", SecondChildAssertion=" + SecondChildAssertion + "]";
 	}
 
 

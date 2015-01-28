@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion;
 
 public class StringListAssertion extends Assertion {
 	/**
@@ -21,5 +21,9 @@ public class StringListAssertion extends Assertion {
 	}
 	public void setCsv(String csv) {
 		this.csv = csv;
+	}
+	@Override
+	public String toString() {
+		return "StringListAssertion [path=" + path + ", csv=" + csv + "]";
 	}
 }

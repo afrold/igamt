@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.Assertion;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;

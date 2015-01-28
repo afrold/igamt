@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion;
 
 public class SimpleValueAssertion extends Assertion{
 	/**
@@ -35,6 +35,11 @@ public class SimpleValueAssertion extends Assertion{
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	@Override
+	public String toString() {
+		return "SimpleValueAssertion [path=" + path + ", operator=" + operator
+				+ ", value=" + value + ", type=" + type + "]";
 	}
 	
 	

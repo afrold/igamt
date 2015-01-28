@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion;
 
 public class FormatAssertion extends Assertion {
 	/**
@@ -26,6 +26,11 @@ public class FormatAssertion extends Assertion {
 
 	public void setRegex(String regex) {
 		this.regex = regex;
+	}
+
+	@Override
+	public String toString() {
+		return "FormatAssertion [path=" + path + ", regex=" + regex + "]";
 	}
 	
 	
