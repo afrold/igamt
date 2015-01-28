@@ -14,6 +14,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import nu.xom.Attribute;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -41,10 +43,56 @@ public class TableSerializationImpl implements TableSerialization{
 	}
 	
 	@Override
-	public String serializeTableLibraryToXML(TableLibrary tableLibrary) {
-		return null;
+	public TableLibrary deserializeXMLToTableLibrary(nu.xom.Document xmlDoc) {
+		return deserializeXMLToTableLibrary(xmlDoc.toString());
+	}
+	
+	@Override
+	public String serializeTableLibraryToXML(TableLibrary tableLibrary) {				
+		return this.serializeTableLibraryToDoc(tableLibrary).toXML();
 	}
 
+	@Override
+	public nu.xom.Document serializeTableLibraryToDoc(TableLibrary tableLibrary) {
+		nu.xom.Element elmTableLibrary = new nu.xom.Element("TableLibrary");
+		elmTableLibrary.setNamespaceURI("http://www.nist.gov/healthcare/data");
+		elmTableLibrary.addAttribute(new Attribute("TableLibraryIdentifier", tableLibrary.getTableLibraryIdentifier()));
+		elmTableLibrary.addAttribute(new Attribute("Status", tableLibrary.getStatus()));
+		elmTableLibrary.addAttribute(new Attribute("TableLibraryVersion", tableLibrary.getTableLibraryVersion()));
+		elmTableLibrary.addAttribute(new Attribute("OrganizationName", tableLibrary.getOrganizationName()));
+		elmTableLibrary.addAttribute(new Attribute("Name", tableLibrary.getName()));
+		elmTableLibrary.addAttribute(new Attribute("Description", tableLibrary.getDescription()));
+		
+		for(Table t: tableLibrary.getTables().getTables()){			
+			nu.xom.Element elmTableDefinition = new nu.xom.Element("TableDefinition");
+			elmTableDefinition.addAttribute(new Attribute("AlternateId", (t.getMappingAlternateId()==null)?"":t.getMappingAlternateId()));
+			elmTableDefinition.addAttribute(new Attribute("Id", (t.getMappingId()==null)?"":t.getMappingId()));
+			elmTableDefinition.addAttribute(new Attribute("Name", (t.getName()==null)?"":t.getName()));
+			elmTableDefinition.addAttribute(new Attribute("Version", (t.getVersion()==0)?"":"" + t.getVersion()));
+			elmTableDefinition.addAttribute(new Attribute("Codesys", (t.getCodesys()==null)?"":t.getCodesys()));
+			elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid()==null)?"":t.getOid()));
+			elmTableDefinition.addAttribute(new Attribute("Type", (t.getType()==null)?"":t.getType()));
+			
+			elmTableLibrary.appendChild(elmTableDefinition);
+			
+			if(t.getCodes() != null){
+				for (Code c: t.getCodes()){
+					nu.xom.Element elmTableElement = new nu.xom.Element("TableElement");
+					elmTableElement.addAttribute(new Attribute("Code", (c.getCode()==null)?"":c.getCode()));
+					elmTableElement.addAttribute(new Attribute("DisplayName", (c.getDisplayName()==null)?"":c.getDisplayName()));
+					elmTableElement.addAttribute(new Attribute("Codesys", (c.getCodesys()==null)?"":c.getCodesys()));
+					elmTableElement.addAttribute(new Attribute("Source", (c.getSource()==null)?"":c.getSource()));
+					elmTableDefinition.appendChild(elmTableElement);
+				}
+			}
+			
+		}
+		
+		nu.xom.Document doc = new nu.xom.Document(elmTableLibrary);
+				
+		return doc;
+	}
+	
 	private void deserializeXMLToTable(Element elmTableLibrary, TableLibrary tableLibrary) {
 		Tables tables = new Tables();
 		
@@ -73,6 +121,7 @@ public class TableSerializationImpl implements TableSerialization{
 		tableLibrary.setTables(tables);
 		
 	}
+	
 
 	private void deserializeXMLToCode(Element elmTable, Table tableObj) {
 		NodeList nodes = elmTable.getElementsByTagName("TableElement");
@@ -117,6 +166,10 @@ public class TableSerializationImpl implements TableSerialization{
 		
 		System.out.println(tableLibrary.toString());
 		
-		System.out.println("----------------------------------------------------------------------------------------------------------");		
+		System.out.println("----------------------------------------------------------------------------------------------------------");
+		
+		System.out.println(test.serializeTableLibraryToXML(tableLibrary));
 	}
+
+	
 }

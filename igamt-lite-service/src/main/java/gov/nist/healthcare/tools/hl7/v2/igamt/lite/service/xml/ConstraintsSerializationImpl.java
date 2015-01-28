@@ -640,8 +640,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 		
 	}
 
-
-
 	private Document stringToDom(String xmlSource) {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setNamespaceAware(true);
