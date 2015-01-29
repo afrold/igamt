@@ -11,6 +11,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.MetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Standard;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.AndAssertion;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.Assertion;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.ExistAssertion;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.ForAllAssertion;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.FormatAssertion;
@@ -24,7 +25,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.SimpleValueAssertion;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.StringListAssertion;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.XorAssertion;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -35,6 +35,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import nu.xom.Attribute;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -43,6 +45,16 @@ import org.xml.sax.SAXException;
 
 public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 
+	@Override
+	public String serializeTableLibraryToXML(ConformanceContext conformanceContext) {
+		return this.serializeTableLibraryToDoc(conformanceContext).toXML();
+	}
+	
+	@Override
+	public ConformanceContext deserializeXMLToConformanceContext(nu.xom.Document xmlDoc) {
+		return this.deserializeXMLToConformanceContext(xmlDoc.toXML());
+	}
+	
 	@Override
 	public ConformanceContext deserializeXMLToConformanceContext(String xmlContents) {
 		Document conformanceContextDoc = this.stringToDom(xmlContents);
@@ -58,20 +70,223 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 		
 		return conformanceContext;
 	}
-	
+
 	@Override
-	public String serializeTableLibraryToXML(TableLibrary tableLibrary) {
-		return null;
+	public nu.xom.Document serializeTableLibraryToDoc(ConformanceContext conformanceContext) {
+		nu.xom.Element e = new nu.xom.Element("ConformanceContext");
+		e.addAttribute(new Attribute("UUID", conformanceContext.getUuid()));
+		e.addNamespaceDeclaration("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+		e.addAttribute(new Attribute("xsi:noNamespaceSchemaLocation", "http://www.w3.org/2001/XMLSchema-instance", "ConformanceContext.xsd"));
+		
+		nu.xom.Element metaData_Elm = new nu.xom.Element("MetaData");
+		nu.xom.Element metaData_Description_Elm = new nu.xom.Element("Description");
+		metaData_Description_Elm.appendChild(conformanceContext.getMetaData().getDescription());
+		metaData_Elm.appendChild(metaData_Description_Elm);
+		
+		nu.xom.Element authors_Elm = new nu.xom.Element("Authors");
+		
+		for(Author a:conformanceContext.getMetaData().getAuthors()){
+			nu.xom.Element author_Elm = new nu.xom.Element("Author");
+			author_Elm.addAttribute(new Attribute("FirstName", a.getFirstName()));
+			author_Elm.addAttribute(new Attribute("LastName", a.getLastName()));
+			if(a.getEmail()!=null) author_Elm.addAttribute(new Attribute("Email", a.getEmail()));
+			authors_Elm.appendChild(author_Elm);
+		}
+		
+		if(conformanceContext.getMetaData().getAuthors().size() > 0 ){
+			metaData_Elm.appendChild(authors_Elm);
+		}
+		
+		if(conformanceContext.getMetaData().getStandard() != null) {
+			Standard standardObj = conformanceContext.getMetaData().getStandard();
+			nu.xom.Element standard_Elm = new nu.xom.Element("Standard");
+			standard_Elm.addAttribute(new Attribute("ID", (standardObj.getStandardId()==null)?"":standardObj.getStandardId()));
+			standard_Elm.addAttribute(new Attribute("Version", (standardObj.getStandardVersion()==null)?"":standardObj.getStandardVersion()));
+			if(standardObj.getStandardDate() != null) standard_Elm.addAttribute(new Attribute("Date", standardObj.getStandardDate()));
+			if(standardObj.getStandardURL() != null) standard_Elm.addAttribute(new Attribute("URL", standardObj.getStandardURL()));
+			if(standardObj.getStandardDescription() != null) standard_Elm.appendChild(standardObj.getStandardDescription());
+			
+			e.appendChild(metaData_Elm);
+		}
+
+		nu.xom.Element dataType_Elm = new nu.xom.Element("Datatype");
+		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getDatatypeContext().getByNameOrByIDs()){
+			nu.xom.Element dataTypeConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
+			if(dataTypeConstaint != null) dataType_Elm.appendChild(dataTypeConstaint);
+		}
+		e.appendChild(dataType_Elm);
+		
+		nu.xom.Element segment_Elm = new nu.xom.Element("Segment");
+		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getSegmentContext().getByNameOrByIDs()){
+			nu.xom.Element segmentConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
+			if(segmentConstaint != null) segment_Elm.appendChild(segmentConstaint);
+		}
+		e.appendChild(segment_Elm);
+		
+		nu.xom.Element group_Elm = new nu.xom.Element("Group");
+		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getGroupContext().getByNameOrByIDs()){
+			nu.xom.Element groupConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
+			if(groupConstaint != null) group_Elm.appendChild(groupConstaint);
+		}
+		e.appendChild(group_Elm);
+		
+		return new nu.xom.Document(e);
 	}
 	
+	private nu.xom.Element serializeByNameOrByID(ByNameOrByID byNameOrByIDObj) {
+		if(byNameOrByIDObj instanceof ByName){
+			ByName byNameObj = (ByName)byNameOrByIDObj;
+			nu.xom.Element elmByName = new nu.xom.Element("ByName");
+			elmByName.addAttribute(new Attribute("Name", byNameObj.getByName()));
+			
+			for(Constraint c:byNameObj.getConstraints()){
+				nu.xom.Element elmConstaint = this.serializeConstaint(c);
+				if(elmConstaint != null) elmByName.appendChild(elmConstaint);
+			}
+			
+			return elmByName;
+		}else if(byNameOrByIDObj instanceof ByID){
+			ByID byIDObj = (ByID)byNameOrByIDObj;
+			nu.xom.Element elmByID = new nu.xom.Element("ByID");
+			elmByID.addAttribute(new Attribute("ID", byIDObj.getByID()));
+			
+			for(Constraint c:byIDObj.getConstraints()){
+				nu.xom.Element elmConstaint = this.serializeConstaint(c);
+				if(elmConstaint != null) elmByID.appendChild(elmConstaint);
+			}
+
+			return elmByID;
+		}
+		
+		return null;
+	}
+
+	private nu.xom.Element serializeConstaint(Constraint c) {
+		nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
+		elmConstraint.addAttribute(new Attribute("ID", c.getConstraintId()));
+		if(c.getConstraintTag() != null && !c.getConstraintTag().equals("")) elmConstraint.addAttribute(new Attribute("Tag", c.getConstraintTag()));
+		if(c.getReference() != null){
+			Reference referenceObj = c.getReference();
+			nu.xom.Element elmReference = new nu.xom.Element("Reference");
+			if(referenceObj.getChapter() != null && !referenceObj.getChapter().equals("")) elmReference.addAttribute(new Attribute("Chapter", referenceObj.getChapter()));
+			if(referenceObj.getSection() != null && !referenceObj.getSection().equals("")) elmReference.addAttribute(new Attribute("Section", referenceObj.getSection()));
+			if(referenceObj.getPage() == 0) elmReference.addAttribute(new Attribute("Page", "" + referenceObj.getPage()));
+			if(referenceObj.getUrl() != null && !referenceObj.getUrl().equals("")) elmReference.addAttribute(new Attribute("URL", referenceObj.getUrl()));
+			elmConstraint.appendChild(elmReference);
+		}
+		nu.xom.Element elmDescription = new nu.xom.Element("Description");
+		elmDescription.appendChild(c.getDescription());
+		elmConstraint.appendChild(elmDescription);
+		
+		nu.xom.Element elmAssertion = new nu.xom.Element("Assertion");
+		elmAssertion.appendChild(this.serializeAssertion(c.getAssertion()));
+		elmConstraint.appendChild(elmAssertion);
+		
+		return elmConstraint;
+	}
+
+	private nu.xom.Element serializeAssertion(Assertion a) {
+		if(a instanceof PlainTextAssertion){
+			PlainTextAssertion plainTextAssertion = (PlainTextAssertion)a;
+			nu.xom.Element elmPlainText = new nu.xom.Element("PlainText");
+			elmPlainText.addAttribute(new Attribute("Path", plainTextAssertion.getPath()));
+			elmPlainText.addAttribute(new Attribute("Text", plainTextAssertion.getText()));
+			elmPlainText.addAttribute(new Attribute("IgnoreCase", "" + plainTextAssertion.isIgnoreCase()));
+			return elmPlainText;
+		}else if(a instanceof PathValueAssertion){
+			PathValueAssertion pathValueAssertion = (PathValueAssertion)a;
+			nu.xom.Element elmPathValue = new nu.xom.Element("PathValue");
+			elmPathValue.addAttribute(new Attribute("Path1", pathValueAssertion.getPath1()));
+			elmPathValue.addAttribute(new Attribute("Operator", pathValueAssertion.getOperator()));
+			elmPathValue.addAttribute(new Attribute("Path2", "" + pathValueAssertion.getPath2()));
+			return elmPathValue;
+		}else if(a instanceof PresenceAssertion){
+			PresenceAssertion presenceAssertion = (PresenceAssertion)a;
+			nu.xom.Element elmPresence = new nu.xom.Element("Presence");
+			elmPresence.addAttribute(new Attribute("Path", presenceAssertion.getPath()));
+			return elmPresence;
+		}else if(a instanceof SimpleValueAssertion){
+			SimpleValueAssertion simpleValueAssertion = (SimpleValueAssertion)a;
+			nu.xom.Element elmSimpleValue = new nu.xom.Element("SimpleValue");
+			elmSimpleValue.addAttribute(new Attribute("Path", simpleValueAssertion.getPath()));
+			elmSimpleValue.addAttribute(new Attribute("Operator", simpleValueAssertion.getOperator()));
+			elmSimpleValue.addAttribute(new Attribute("Value", "" + simpleValueAssertion.getValue()));
+			if(simpleValueAssertion.getType() != null) elmSimpleValue.addAttribute(new Attribute("Type", "" + simpleValueAssertion.getType()));
+ 			return elmSimpleValue;
+		}else if(a instanceof StringListAssertion){
+			StringListAssertion stringListAssertion = (StringListAssertion)a;
+			nu.xom.Element elmStringList = new nu.xom.Element("StringList");
+			elmStringList.addAttribute(new Attribute("Path", stringListAssertion.getPath()));
+			elmStringList.addAttribute(new Attribute("CSV", stringListAssertion.getCsv()));
+			return elmStringList;
+		}else if(a instanceof FormatAssertion){
+			FormatAssertion formatAssertion = (FormatAssertion)a;
+			nu.xom.Element elmFormat = new nu.xom.Element("Format");
+			elmFormat.addAttribute(new Attribute("Path", formatAssertion.getPath()));
+			elmFormat.addAttribute(new Attribute("CSV", formatAssertion.getRegex()));
+			return elmFormat;
+		}else if(a instanceof NumberListAssertion){
+			NumberListAssertion numberListAssertion = (NumberListAssertion)a;
+			nu.xom.Element elmNumberList = new nu.xom.Element("NumberList");
+			elmNumberList.addAttribute(new Attribute("Path", numberListAssertion.getPath()));
+			elmNumberList.addAttribute(new Attribute("CSV", numberListAssertion.getCsv()));
+			return elmNumberList;
+		}else if(a instanceof AndAssertion){
+			AndAssertion andAssertion = (AndAssertion)a;
+			nu.xom.Element elmAND = new nu.xom.Element("AND");
+			elmAND.appendChild(this.serializeAssertion(andAssertion.getFirstChildAssertion()));
+			elmAND.appendChild(this.serializeAssertion(andAssertion.getSecondChildAssertion()));
+			return elmAND;
+		}else if(a instanceof ExistAssertion){
+			ExistAssertion existAssertion = (ExistAssertion)a;
+			nu.xom.Element elmEXIST = new nu.xom.Element("EXIST");
+			for(Assertion child:existAssertion.getChildAssertions()){
+				elmEXIST.appendChild(this.serializeAssertion(child));
+			}
+			return elmEXIST;
+		}else if(a instanceof ForAllAssertion){
+			ForAllAssertion forAllAssertio = (ForAllAssertion)a;
+			nu.xom.Element elmFORALL = new nu.xom.Element("FORALL");
+			for(Assertion child:forAllAssertio.getChildAssertions()){
+				elmFORALL.appendChild(this.serializeAssertion(child));
+			}
+			return elmFORALL;
+		}else if(a instanceof ImplyAssertion){
+			ImplyAssertion implyAssertion = (ImplyAssertion)a;
+			nu.xom.Element elmIMPLY = new nu.xom.Element("IMPLY");
+			elmIMPLY.appendChild(this.serializeAssertion(implyAssertion.getFirstChildAssertion()));
+			elmIMPLY.appendChild(this.serializeAssertion(implyAssertion.getSecondChildAssertion()));
+			return elmIMPLY;
+		}else if(a instanceof NotAssertion){
+			NotAssertion notAssertion = (NotAssertion)a;
+			nu.xom.Element elmNOT = new nu.xom.Element("NOT");
+			elmNOT.appendChild(this.serializeAssertion(notAssertion.getChildAssertion()));
+			return elmNOT;
+		}else if(a instanceof OrAssertion){
+			OrAssertion orAssertion = (OrAssertion)a;
+			nu.xom.Element elmOR = new nu.xom.Element("OR");
+			elmOR.appendChild(this.serializeAssertion(orAssertion.getFirstChildAssertion()));
+			elmOR.appendChild(this.serializeAssertion(orAssertion.getSecondChildAssertion()));
+			return elmOR;
+		}else if(a instanceof XorAssertion){
+			XorAssertion xorAssertion = (XorAssertion)a;
+			nu.xom.Element elmXOR = new nu.xom.Element("XOR");
+			elmXOR.appendChild(this.serializeAssertion(xorAssertion.getFirstChildAssertion()));
+			elmXOR.appendChild(this.serializeAssertion(xorAssertion.getSecondChildAssertion()));
+			return elmXOR;
+		}
+		
+		return null;
+	}
+
 	private void deserializeXMLToContextType(Element elmConformanceContext, ConformanceContext conformanceContext) {
 		Context datatypeContextObj = new Context();
 		Context segmentContextObj = new Context();
 		Context groupContextObj = new Context();
 		
 		this.deserializeXMLToContext((Element)elmConformanceContext.getElementsByTagName("Datatype").item(0), datatypeContextObj);
-		this.deserializeXMLToContext((Element)elmConformanceContext.getElementsByTagName("Segment").item(0), datatypeContextObj);
-		this.deserializeXMLToContext((Element)elmConformanceContext.getElementsByTagName("Group").item(0), datatypeContextObj);
+		this.deserializeXMLToContext((Element)elmConformanceContext.getElementsByTagName("Segment").item(0), segmentContextObj);
+		this.deserializeXMLToContext((Element)elmConformanceContext.getElementsByTagName("Group").item(0), groupContextObj);
 		
 		conformanceContext.setDatatypeContext(datatypeContextObj);
 		conformanceContext.setSegmentContext(segmentContextObj);
@@ -665,6 +880,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 		
 		System.out.println(conformanceContext.toString());
 		
-		System.out.println("----------------------------------------------------------------------------------------------------------");		
+		System.out.println("----------------------------------------------------------------------------------------------------------");
+		System.out.println(test.serializeTableLibraryToXML(conformanceContext));
 	}
 }

@@ -45,6 +45,8 @@ public class Segment implements java.io.Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	protected Segments segments;
+	
+	//FIXME DynamicMapping is missing for Segment
 
 	public String getId() {
 		return id;

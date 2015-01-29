@@ -25,10 +25,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import nu.xom.Attribute;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,6 +40,111 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class ProfileSerializationImpl implements ProfileSerialization{
+
+	@Override
+	public Profile deserializeXMLToProfile(nu.xom.Document xmlDoc) {
+		return this.deserializeXMLToProfile(xmlDoc.toXML());
+	}
+
+	@Override
+	public String serializeProfileToXML(Profile profile) {
+		return this.serializeProfileToDoc(profile).toXML();
+	}
+	
+	@Override
+	public nu.xom.Document serializeProfileToDoc(Profile profile) {
+		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
+		//FIXME: The ID need to be fixed in IGAMT, it has to be something 
+		// predictable since it will be used while writing constrains
+		e.addAttribute(new Attribute("ID", UUID.randomUUID().toString()));
+		e.addAttribute(new Attribute("Type", profile.getType()));
+		e.addAttribute(new Attribute("HL7Version", profile.getHl7Version()));
+		e.addAttribute(new Attribute("SchemaVersion", profile.getSchemaVersion()));
+		
+		if(profile.getMetaData() != null){
+			nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
+			MetaData metaDataObj = profile.getMetaData();
+			elmMetaData.addAttribute(new Attribute("Name", metaDataObj.getName()));
+			elmMetaData.addAttribute(new Attribute("OrgName", metaDataObj.getOrgName()));
+			if(metaDataObj.getVersion() != null) elmMetaData.addAttribute(new Attribute("Version", metaDataObj.getVersion()));
+			if(metaDataObj.getStatus() != null) elmMetaData.addAttribute(new Attribute("Status", metaDataObj.getStatus()));
+			if(metaDataObj.getTopics() != null) elmMetaData.addAttribute(new Attribute("Topics", metaDataObj.getTopics()));
+			
+			e.appendChild(elmMetaData);
+		}
+		
+		if(profile.getEncodings() != null && profile.getEncodings().getEncoding().size() > 0){
+			nu.xom.Element elmEncodings = new nu.xom.Element("Encodings");
+			for(String s:profile.getEncodings().getEncoding()){
+				nu.xom.Element elmEncoding = new nu.xom.Element("Encoding");
+				elmEncoding.appendChild(s);
+				elmEncodings.appendChild(elmEncoding);
+			}
+			e.appendChild(elmEncodings);
+		}
+		
+		nu.xom.Element ms = new nu.xom.Element("Messages");
+		ms.appendChild( _serialize(m) );
+		e.appendChild(ms);
+		
+		nu.xom.Element ss = new nu.xom.Element("Segments");
+		for(Segment s: profile.getSegments().getSegments()){
+			ss.appendChild(this.serializeSegment(s));
+		}
+		e.appendChild(ss);
+		
+		nu.xom.Element ds = new nu.xom.Element("Datatypes");
+		for(Datatype d:profile.getDatatypes().getDatatypes()){
+			ds.appendChild(this.serializeDatatype(d));
+		}
+		e.appendChild(ds);
+		
+		
+		nu.xom.Document doc = new nu.xom.Document(e);
+		
+		return doc;
+	}
+	
+	private nu.xom.Element serializeSegment(Segment s) {
+		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
+		elmSegment.addAttribute(new Attribute("ID", s.getUuid()));
+		elmSegment.addAttribute(new Attribute("Name", s.getName()));
+		elmSegment.addAttribute(new Attribute("Description", s.getDescription()));		
+		for(Field f:s.getFields()){
+			nu.xom.Element elmField = new nu.xom.Element("Field");
+			elmField.addAttribute(new Attribute("Name", f.getName()));
+			elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
+			elmField.addAttribute(new Attribute("Datatype", f.getDatatype().getUuid()));
+			elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
+			elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
+			elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
+			if(f.getMaxLength() != null) elmField.addAttribute(new Attribute("MaxLength", f.getMaxLength()));
+			if(f.getConfLength() != null) elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
+			if(f.getTable() != null) elmField.addAttribute(new Attribute("Table", f.getTable()));
+			if(f.getItemNo() != null) elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
+			elmSegment.appendChild(elmField);
+		}
+		return elmSegment;
+	}
+
+	private nu.xom.Element serializeDatatype(Datatype d) {
+		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
+		elmDatatype.addAttribute(new Attribute("ID", d.getUuid()));
+		elmDatatype.addAttribute(new Attribute("Name", d.getName()));
+		elmDatatype.addAttribute(new Attribute("Description", d.getDescription()));		
+		for(Component c:d.getComponents()){
+			nu.xom.Element elmComponent = new nu.xom.Element("Component");
+			elmComponent.addAttribute(new Attribute("Name", c.getName()));
+			elmComponent.addAttribute(new Attribute("Usage", c.getUsage().toString()));
+			elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype().getUuid()));
+			elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
+			if(c.getMaxLength() != null) elmComponent.addAttribute(new Attribute("MaxLength", c.getMaxLength()));
+			if(c.getConfLength() != null) elmComponent.addAttribute(new Attribute("ConfLength", c.getConfLength()));
+			if(c.getTable() != null) elmComponent.addAttribute(new Attribute("Table", c.getTable()));
+			elmDatatype.appendChild(elmComponent);
+		}
+		return elmDatatype;
+	}
 
 	@Override
 	public Profile deserializeXMLToProfile(String xmlContents) {
@@ -56,11 +164,6 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		this.deserializeMessages(profile, elmConformanceProfile);
 		
 		return profile;
-	}
-
-	@Override
-	public String serializeProfileToXML(Profile profile) {
-		return null;
 	}
 	
 	private void deserializeMetaData(Profile profile, Element elmConformanceProfile){
