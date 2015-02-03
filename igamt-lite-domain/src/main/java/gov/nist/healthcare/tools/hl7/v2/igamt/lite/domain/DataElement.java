@@ -1,6 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
+
 import java.math.BigInteger;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;
@@ -35,9 +39,15 @@ public abstract class DataElement implements java.io.Serializable {
 	protected String maxLength;
 
 	protected String confLength;
-
+	
 	@Column(nullable = true)
-	protected String table; // SHould hold reference to the table
+	protected Table table;
+	
+	@Column(nullable = true)
+	protected Constraint predicate;
+	
+	@Column(nullable = true)
+	protected Set<Constraint> conformanceStatements;
 
 	//FIXME Check this. UUID doesn't need for Component and Field
 	// TODO. Only for backward compatibility. Remove later
@@ -91,11 +101,11 @@ public abstract class DataElement implements java.io.Serializable {
 		this.confLength = confLength;
 	}
 
-	public String getTable() {
+	public Table getTable() {
 		return table;
 	}
 
-	public void setTable(String table) {
+	public void setTable(Table table) {
 		this.table = table;
 	}
 
@@ -106,5 +116,23 @@ public abstract class DataElement implements java.io.Serializable {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
+
+	public Constraint getPredicate() {
+		return predicate;
+	}
+
+	public void setPredicate(Constraint predicate) {
+		this.predicate = predicate;
+	}
+
+	public Set<Constraint> getConformanceStatements() {
+		return conformanceStatements;
+	}
+
+	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
+		this.conformanceStatements = conformanceStatements;
+	}
+	
+	
 
 }

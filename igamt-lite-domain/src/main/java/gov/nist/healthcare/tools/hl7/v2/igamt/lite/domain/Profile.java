@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceContext;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
+
 import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -40,6 +43,14 @@ public class Profile implements java.io.Serializable {
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	protected Messages messages;
+	
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
+	protected ConformanceContext conformanceContext;
+	
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
+	protected TableLibrary tableLibrary;
 
 	public String getId() {
 		return id;
@@ -114,6 +125,22 @@ public class Profile implements java.io.Serializable {
 	public void setMessages(Messages messages) {
 		this.messages = messages;
 		this.messages.setProfile(this);
+	}
+	
+	public ConformanceContext getConformanceContext() {
+		return conformanceContext;
+	}
+
+	public void setConformanceContext(ConformanceContext conformanceContext) {
+		this.conformanceContext = conformanceContext;
+	}
+
+	public TableLibrary getTableLibrary() {
+		return tableLibrary;
+	}
+
+	public void setTableLibrary(TableLibrary tableLibrary) {
+		this.tableLibrary = tableLibrary;
 	}
 
 	@Override
