@@ -23,18 +23,15 @@ public class Component extends DataElement {
 		super();
 	}
 
-	//FIXME is it Lazy?
 	@ManyToOne(fetch = FetchType.LAZY)
-	protected Datatype datatype;
+	protected Datatype belongTo;
 
-	@Override
-	public Datatype getDatatype() {
-		return datatype;
+	public Datatype getBelongTo() {
+		return belongTo;
 	}
 
-	@Override
-	public void setDatatype(Datatype datatype) {
-		this.datatype = datatype;
+	public void setBelongTo(Datatype belongTo) {
+		this.belongTo = belongTo;
 	}
 
 	public String getId() {
@@ -53,7 +50,4 @@ public class Component extends DataElement {
 				+ ", table=" + table + ", uuid=" + uuid + "]";
 	}
 
-
-
-	
 }
