@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ConformanceContext UUID="283305e9-c873-4ba2-81ee-eef16788dabf" xsi:noNamespaceSchemaLocation="ConformanceContext.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ConformanceContext UUID="4d1034cd-6d1d-45f5-9220-b8b481877136" xsi:noNamespaceSchemaLocation="ConformanceContext.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <MetaData>
         <Description>Conformance context for VXU_V04</Description>
     </MetaData>
     <Segment>
-        <ByID ID="MSH_IZ 1_5_Z22">
+        <ByID ID="8dfae017-9261-46e0-98f9-d1bea58734af">
             <Constraint ID="IZ-12">
                 <Description>The value of MSH_IZ 1_5_Z22.1 (Field Separator) SHALL be '|'.</Description>
                 <Assertion>
@@ -30,7 +30,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="PID_IZ 1_5">
+        <ByID ID="3c154e39-15c4-4cda-8c48-eed164e150ab">
             <Constraint ID="IZ-46">
                 <Description>The value of PID_IZ 1_5.1 (Set ID - PID) SHALL be '1'.</Description>
                 <Assertion>
@@ -38,7 +38,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="ORC_IZ 1_5">
+        <ByID ID="cf952532-0a4c-49ff-8d53-6f800f3a7f70">
             <Constraint ID="IZ-25">
                 <Description>The value of ORC_IZ 1_5.1 (Order Control) SHALL be 'RE'.</Description>
                 <Assertion>
@@ -46,7 +46,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="RXA_IZ 1_5">
+        <ByID ID="092444dd-273b-4b2d-84bd-0f0ddd06cf59">
             <Constraint ID="IZ-28">
                 <Description>The value of RXA_IZ 1_5.1 (Give Sub-ID Counter) SHALL be '0'.</Description>
                 <Assertion>
@@ -104,7 +104,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="OBX_IZ 1_5">
+        <ByID ID="bf920a45-9357-4b9e-9870-64782f913637">
             <Constraint ID="IZ-21">
                 <Description>The value of OBX_IZ 1_5.2 (Value Type) SHALL be one of List Values: 'CE','NM','ST','DT','ID','TS'.</Description>
                 <Assertion>
@@ -120,7 +120,7 @@
         </ByID>
     </Segment>
     <Datatype>
-        <ByID ID="HD_IZ">
+        <ByID ID="5d62ecfe-7a05-4d34-b034-361171a92f2f">
             <Constraint ID="IZ-5">
                 <Description>The value of HD_IZ.2 (Universal ID) SHALL be formatted with ISO compliant OID.</Description>
                 <Assertion>
@@ -137,7 +137,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="TS_Z">
+        <ByID ID="a981cef8-eb2d-44c7-9b19-2f7fdc18ade3">
             <Constraint ID="DT[TS_YYYYMMDDHHMM]_CS_1">
                 <Description>The value of TS_YYYYMMDDHHMM.1 (Time) SHALL be formatted with YYYY[MM[DD]][+/-ZZZZ].</Description>
                 <Assertion>
@@ -145,7 +145,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="MSG_IZ_VXU">
+        <ByID ID="a8aac8aa-9d18-4ed3-82fc-7c20fd404fb4">
             <Constraint ID="IZ-17">
                 <Description>The value of MSG_IZ_VXU.1 (Message Code) SHALL be 'VXU'.</Description>
                 <Assertion>
@@ -165,7 +165,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="VID_IZ">
+        <ByID ID="15fba479-611e-4c04-b52d-27bd3a081559">
             <Constraint ID="IZ-7">
                 <Description>The value of VID_IZ.1 (Version ID) SHALL be '2.5.1'.</Description>
                 <Assertion>
@@ -173,7 +173,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="EI_IZ_VXU_1.5">
+        <ByID ID="47e97ed4-2b5f-4b1f-a76d-92a2b09c823e">
             <Constraint ID="IZ-43">
                 <Description>The value of EI_IZ_VXU_1.5.1 (Entity Identifier) SHALL be 'Z22'.</Description>
                 <Assertion>
@@ -199,7 +199,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="TS_NZ">
+        <ByID ID="b24b9b4c-aec9-496d-95d2-871d4920e2ef">
             <Constraint ID="DT[TS_YYYYMMDD]_CS_1">
                 <Description>The value of TS_YYYYMMDD.1 (Time) SHALL be formatted with YYYY[MM[DD]].</Description>
                 <Assertion>
@@ -207,7 +207,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="HD_IZ">
+        <ByID ID="b91a5480-6f87-4cb0-84d1-532ad6976748">
             <Constraint ID="NONAME">
                 <Description>The value of HD_IZ_16.3 SHALL be 'ISO'.</Description>
                 <Assertion>
@@ -215,7 +215,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="HD_IZ">
+        <ByID ID="4de1799a-5779-4087-87f2-499432fcf1a1">
             <Constraint ID="NONAME">
                 <Description>The value of HD_IZ_16.3 SHALL be 'ISO'.</Description>
                 <Assertion>
@@ -223,7 +223,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="HD_IZ">
+        <ByID ID="b5357c78-8877-4b7b-b85d-cfc9fdd5c899">
             <Constraint ID="NONAME">
                 <Description>The value of HD_IZ_16.3 SHALL be 'ISO'.</Description>
                 <Assertion>
@@ -231,7 +231,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="HD_IZ">
+        <ByID ID="4cb22882-ce13-4252-afb3-17ff5015dc6b">
             <Constraint ID="NONAME">
                 <Description>The value of HD_IZ_16.3 SHALL be 'ISO'.</Description>
                 <Assertion>
@@ -239,7 +239,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="HD_IZ">
+        <ByID ID="d556501c-4ee7-4641-8495-e7f7072783e8">
             <Constraint ID="NONAME">
                 <Description>The value of HD_IZ_16.3 SHALL be 'ISO'.</Description>
                 <Assertion>
@@ -247,7 +247,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="HD_IZ">
+        <ByID ID="ecef1773-528c-43aa-ad74-622f47e727ea">
             <Constraint ID="NONAME">
                 <Description>The value of HD_IZ_16.3 SHALL be 'ISO'.</Description>
                 <Assertion>
@@ -255,7 +255,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="HD_IZ">
+        <ByID ID="5fe497a5-ac86-4897-b025-7913fbd94d16">
             <Constraint ID="NONAME">
                 <Description>The value of HD_IZ_16.3 SHALL be 'ISO'.</Description>
                 <Assertion>
@@ -263,7 +263,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="HD_IZ">
+        <ByID ID="d02fd7ec-1642-426e-8dbf-b5f5808ad30b">
             <Constraint ID="NONAME">
                 <Description>The value of HD_IZ_16.3 SHALL be 'ISO'.</Description>
                 <Assertion>
@@ -271,7 +271,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="EI_IZ">
+        <ByID ID="67e132e5-6e3b-4ba5-8458-a270092b4aff">
             <Constraint ID="IZ-4">
                 <Description>The value of EI_IZ.4 (Universal ID Type) SHALL be 'ISO'.</Description>
                 <Assertion>
@@ -279,7 +279,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="EI_IZ">
+        <ByID ID="7ef16384-d27a-4212-b401-5fad9646be2a">
             <Constraint ID="IZ-3">
                 <Description>The value of EI_IZ.3 (Universal ID) SHALL be formatted with ISO-compliant OID.</Description>
                 <Assertion>
@@ -293,7 +293,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="TS_M">
+        <ByID ID="270dcbc5-4963-4d2f-a131-9c97b8e6f73d">
             <Constraint ID="DT[TS_YYYYMMDD]_CS_1">
                 <Description>The value of TS_M.1 (Time) SHALL be formatted with YYYY[MM].</Description>
                 <Assertion>
@@ -301,7 +301,7 @@
                 </Assertion>
             </Constraint>
         </ByID>
-        <ByID ID="HD_IZ">
+        <ByID ID="133e201c-89da-42e3-bcf5-2da215b5cf43">
             <Constraint ID="NONAME">
                 <Description>The value of HD_IZ_16.3 SHALL be 'ISO'.</Description>
                 <Assertion>
@@ -310,4 +310,5 @@
             </Constraint>
         </ByID>
     </Datatype>
+    <Group/>
 </ConformanceContext>

@@ -4,9 +4,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import nu.xom.Document;
 
 public interface ProfileSerialization {
-	Profile deserializeXMLToProfile(String xmlContents);
+	Profile deserializeXMLToProfile(String xmlContentsProfile, String xmlValueSet, String xmlPredicates, String xmlConformanceStatements);
 	
-	Profile deserializeXMLToProfile(Document xmlDoc);
+	Profile deserializeXMLToProfile(Document docProfile, Document docValueSet, Document docPredicates, Document docConformanceStatements);
 	
 	String serializeProfileToXML(Profile profile);
 	

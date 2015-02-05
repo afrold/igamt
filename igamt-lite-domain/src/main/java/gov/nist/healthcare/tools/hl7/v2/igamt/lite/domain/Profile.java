@@ -46,7 +46,11 @@ public class Profile implements java.io.Serializable {
 	
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
-	protected ConformanceContext conformanceContext;
+	protected ConformanceContext conformanceStatementsLibrary;
+	
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
+	protected ConformanceContext predicatesLibrary;
 	
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
@@ -127,12 +131,21 @@ public class Profile implements java.io.Serializable {
 		this.messages.setProfile(this);
 	}
 	
-	public ConformanceContext getConformanceContext() {
-		return conformanceContext;
+	public ConformanceContext getConformanceStatementsLibrary() {
+		return conformanceStatementsLibrary;
 	}
 
-	public void setConformanceContext(ConformanceContext conformanceContext) {
-		this.conformanceContext = conformanceContext;
+	public void setConformanceStatementsLibrary(
+			ConformanceContext conformanceStatementsLibrary) {
+		this.conformanceStatementsLibrary = conformanceStatementsLibrary;
+	}
+
+	public ConformanceContext getPredicatesLibrary() {
+		return predicatesLibrary;
+	}
+
+	public void setPredicatesLibrary(ConformanceContext predicatesLibrary) {
+		this.predicatesLibrary = predicatesLibrary;
 	}
 
 	public TableLibrary getTableLibrary() {

@@ -15,6 +15,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -42,9 +44,34 @@ import org.xml.sax.SAXException;
 public class ProfileSerializationImpl implements ProfileSerialization{
 
 	@Override
-	public Profile deserializeXMLToProfile(nu.xom.Document xmlDoc) {
-		return this.deserializeXMLToProfile(xmlDoc.toXML());
+	public Profile deserializeXMLToProfile(String xmlContentsProfile, String xmlValueSet, String xmlPredicates, String xmlConformanceStatements) {
+		Document profileDoc = this.stringToDom(xmlContentsProfile);
+		Profile profile = new Profile();
+		
+		Element elmConformanceProfile = (Element)profileDoc.getElementsByTagName("ConformanceProfile").item(0);
+		profile.setId(elmConformanceProfile.getAttribute("ID"));
+		profile.setType(elmConformanceProfile.getAttribute("Type"));
+		profile.setHl7Version(elmConformanceProfile.getAttribute("HL7Version"));
+		profile.setSchemaVersion(elmConformanceProfile.getAttribute("SchemaVersion"));
+		profile.setSegments(new Segments());
+		profile.setDatatypes(new Datatypes());
+		
+		profile.setTableLibrary(new TableSerializationImpl().deserializeXMLToTableLibrary(xmlValueSet));
+		profile.setConformanceStatementsLibrary(new ConstraintsSerializationImpl().deserializeXMLToConformanceContext(xmlConformanceStatements));
+		profile.setPredicatesLibrary(new ConstraintsSerializationImpl().deserializeXMLToConformanceContext(xmlPredicates));
+		
+		this.deserializeMetaData(profile, elmConformanceProfile);
+		this.deserializeEncodings(profile, elmConformanceProfile);
+		this.deserializeMessages(profile, elmConformanceProfile);
+		
+		return profile;
 	}
+
+	@Override
+	public Profile deserializeXMLToProfile(nu.xom.Document docProfile, nu.xom.Document docValueSet, nu.xom.Document docPredicates, nu.xom.Document docConformanceStatements) {
+		return this.deserializeXMLToProfile(docProfile.toXML(), docValueSet.toXML(), docPredicates.toXML(), docConformanceStatements.toXML());
+	}
+	
 
 	@Override
 	public String serializeProfileToXML(Profile profile) {
@@ -196,26 +223,6 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		}
 		return elmDatatype;
 	}
-
-	@Override
-	public Profile deserializeXMLToProfile(String xmlContents) {
-		Document profileDoc = this.stringToDom(xmlContents);
-		Profile profile = new Profile();
-		
-		Element elmConformanceProfile = (Element)profileDoc.getElementsByTagName("ConformanceProfile").item(0);
-		profile.setId(elmConformanceProfile.getAttribute("ID"));
-		profile.setType(elmConformanceProfile.getAttribute("Type"));
-		profile.setHl7Version(elmConformanceProfile.getAttribute("HL7Version"));
-		profile.setSchemaVersion(elmConformanceProfile.getAttribute("SchemaVersion"));
-		profile.setSegments(new Segments());
-		profile.setDatatypes(new Datatypes());
-		
-		this.deserializeMetaData(profile, elmConformanceProfile);
-		this.deserializeEncodings(profile, elmConformanceProfile);
-		this.deserializeMessages(profile, elmConformanceProfile);
-		
-		return profile;
-	}
 	
 	private void deserializeMetaData(Profile profile, Element elmConformanceProfile){
 		NodeList nodes = elmConformanceProfile.getElementsByTagName("MetaData");
@@ -318,7 +325,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		}
 	}
 	
-	private void deserializeField(Element elmConformanceProfile, Element segmentElm, Segment segmentObj, Datatypes datatypes){
+	private void deserializeField(Profile profile, Element elmConformanceProfile, Element segmentElm, Segment segmentObj, Datatypes datatypes){
 		NodeList nodes = segmentElm.getChildNodes();
 		
 		for(int i=0; i<nodes.getLength(); i++){
@@ -334,18 +341,18 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 				fieldObj.setMinLength(new BigInteger(elmField.getAttribute("MinLength")));
 				fieldObj.setName(elmField.getAttribute("Name"));
 				fieldObj.setSegment(segmentObj);
-				fieldObj.setTable(elmField.getAttribute("Table"));
+				fieldObj.setTable(this.findTable(elmField.getAttribute("Table"), profile.getTableLibrary()));
 				fieldObj.setUsage(Usage.fromValue(elmField.getAttribute("Usage")));
 				fieldObj.setUuid(null);
 				
-				this.deserializeDTForField(elmConformanceProfile, fieldObj, elmField.getAttribute("Datatype"), datatypes);
+				this.deserializeDTForField(profile, elmConformanceProfile, fieldObj, elmField.getAttribute("Datatype"), datatypes);
 				
 				segmentObj.getFields().add(fieldObj);
 			}
 		}
 	}
 	
-	private void deserializeDTForField(Element elmConformanceProfile, Field fieldObj, String ref, Datatypes datatypes){
+	private void deserializeDTForField(Profile profile, Element elmConformanceProfile, Field fieldObj, String ref, Datatypes datatypes){
 		Element datatypeElm = this.findDataTypeElm(elmConformanceProfile, ref);
 		
 		if(datatypeElm == null){
@@ -369,7 +376,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 					componentObj.setMaxLength(elmComponent.getAttribute("MaxLength"));
 					componentObj.setMinLength(new BigInteger(elmComponent.getAttribute("MinLength")));
 					componentObj.setName(elmComponent.getAttribute("Name"));
-					componentObj.setTable(elmComponent.getAttribute("Table"));
+					componentObj.setTable(this.findTable(elmComponent.getAttribute("Table"), profile.getTableLibrary()));
 					componentObj.setUsage(Usage.fromValue(elmComponent.getAttribute("Usage")));
 					componentObj.setUuid(elmComponent.getAttribute("ID"));
 					
@@ -385,7 +392,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		}
 	}
 	
-	private void deserializeDTForComponent(Element elmConformanceProfile, Component parentComponentObj, String ref, Datatypes datatypes){
+	private void deserializeDTForComponent(Profile profile, Element elmConformanceProfile, Component parentComponentObj, String ref, Datatypes datatypes){
 		Element datatypeElm = this.findDataTypeElm(elmConformanceProfile, ref);
 		
 		if(datatypeElm == null){
@@ -410,11 +417,11 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 					componentObj.setMaxLength(elmComponent.getAttribute("MaxLength"));
 					componentObj.setMinLength(new BigInteger(elmComponent.getAttribute("MinLength")));
 					componentObj.setName(elmComponent.getAttribute("Name"));
-					componentObj.setTable(elmComponent.getAttribute("Table"));
+					componentObj.setTable(this.findTable(elmComponent.getAttribute("Table"), profile.getTableLibrary()));
 					componentObj.setUsage(Usage.fromValue(elmComponent.getAttribute("Usage")));
 					componentObj.setUuid(elmComponent.getAttribute("ID"));
 					
-					this.deserializeDTForComponent(elmConformanceProfile, componentObj, elmComponent.getAttribute("Datatype"), datatypes);
+					this.deserializeDTForComponent(profile, elmConformanceProfile, componentObj, elmComponent.getAttribute("Datatype"), datatypes);
 					
 					datatypeObj.getComponents().add(componentObj);
 				}
@@ -498,9 +505,20 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		return null;
 	}
 	
+	private Table findTable(String mappingId, TableLibrary tableLibrary){
+		for(Table t:tableLibrary.getTables().getTables()){
+			if(t.getMappingId().equals(mappingId)) return t;
+		}
+		
+		return null;
+	}
+	
 	public static void main(String[] args) throws IOException {
 		ProfileSerializationImpl test = new ProfileSerializationImpl();
-		Profile profile = test.deserializeXMLToProfile(new String(Files.readAllBytes(Paths.get("src//main//resources//Profile.xml"))));
+		Profile profile = test.deserializeXMLToProfile(new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//Profile.xml"))),
+				new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//ValueSets.xml"))),
+				new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//PredicateConstraints.xml"))),
+				new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//ConformanceStatementConstraints.xml"))));
 		System.out.println(test.serializeProfileToXML(profile));		
 	}
 }

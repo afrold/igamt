@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ConformanceContext UUID="7c074a43-b9c4-48f5-9cce-419f15e0cdca" xsi:noNamespaceSchemaLocation="ConformanceContext.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ConformanceContext UUID="78ba66cf-77e7-4cbb-95b0-845c52678e6a" xsi:noNamespaceSchemaLocation="ConformanceContext.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <MetaData>
         <Description>Conformance context for VXU_V04</Description>
     </MetaData>
@@ -2164,4 +2164,5 @@
             </Constraint>
         </ByID>
     </Datatype>
+    <Group/>
 </ConformanceContext>
