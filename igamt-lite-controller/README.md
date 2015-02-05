@@ -1,14 +1,27 @@
 # NIST MU3-IZ Application 
 
 ## Overview
-
--
-
-
+ 
 ## Prerequisites
 
+###Setting up Apache Tomcat - MysqlDB
+AAdd the following in context.xml bnefore </context> under $TOMCATHOME/conf folder
+<Resource 
+	name="jdbc/igl_jndi" 
+	auth="Container" 
+	type="javax.sql.DataSource" 
+	maxActive="100" 
+	maxIdle="30" 
+	maxWait="10000"
+	username="user" 
+	password="secret" 
+	driverClassName="com.mysql.jdbc.Driver" 
+	url="jdbc:mysql://localhost:3306/igamt_lite"/>
+Note : - The mysql server must have the schema name igamt_lite.
+
+
 ### Java
-The system runs with Java version -
+The system runs with Java version  1.7
 
 ## Running the application
 
@@ -16,26 +29,6 @@ The system runs with Java version -
 
 ### Running the app during development
  
-1. run `mvn -Denv=dev tomcat7:run-war`
-2. navigate your browser to `http://hostname:port/mu3-iz/index.html` to see the app running in your
-   browser.
-
-### Running front-end unit tests - TODO Verify it is valid
-
-in a separate tab - `./scripts/test.sh`
-
-### Running front-end end to end tests
-
-To run the e2e tests:
-in a separate tab - `mvn -Denv=dev tomcat7:run-war`
-in a separate tab - `./scripts/e2e-test.sh`
-or in the browser open `http://hostname:port/test/e2e/runner.html`
-
-### Running the back-end tests
-
-run `mvn test`
-
--
 
 ## Application Directory Layout
 
