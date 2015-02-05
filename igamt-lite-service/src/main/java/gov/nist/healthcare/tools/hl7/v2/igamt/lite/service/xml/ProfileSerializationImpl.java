@@ -8,7 +8,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
@@ -90,7 +90,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		
 		if(profile.getMetaData() != null){
 			nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
-			MetaData metaDataObj = profile.getMetaData();
+			ProfileMetaData metaDataObj = profile.getMetaData();
 			elmMetaData.addAttribute(new Attribute("Name", metaDataObj.getName()));
 			elmMetaData.addAttribute(new Attribute("OrgName", metaDataObj.getOrgName()));
 			if(metaDataObj.getVersion() != null) elmMetaData.addAttribute(new Attribute("Version", metaDataObj.getVersion()));
@@ -227,7 +227,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 	private void deserializeMetaData(Profile profile, Element elmConformanceProfile){
 		NodeList nodes = elmConformanceProfile.getElementsByTagName("MetaData");
 		if(nodes != null && nodes.getLength() != 0){
-			MetaData metaData = new MetaData();
+			ProfileMetaData metaData = new ProfileMetaData();
 			Element elmMetaData = (Element)nodes.item(0);
 			metaData.setName(elmMetaData.getAttribute("Name"));
 			metaData.setOrgName(elmMetaData.getAttribute("OrgName"));

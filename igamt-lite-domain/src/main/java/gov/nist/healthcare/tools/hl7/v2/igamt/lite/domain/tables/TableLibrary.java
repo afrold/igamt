@@ -4,42 +4,38 @@ import java.io.Serializable;
 
 import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
-public class TableLibrary implements Serializable{
+public class TableLibrary implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2904036105687742572L;
-	
-	@Id
-	@GenericGenerator(name = "TABLELIBRARY_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.TableLibraryIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_table_library"))
-	@GeneratedValue(generator = "TABLELIBRARY_ID_GENERATOR")
-	protected String id;
-	
-	
-	protected String tableLibraryIdentifier;
-	protected String status;
-	protected String tableLibraryVersion;
-	protected String organizationName;
-	protected String name;
-	protected String description;
-	
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(unique = true)
-	protected Tables tables;
 
-	public String getId() {
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	private String tableLibraryIdentifier;
+	private String status;
+	private String tableLibraryVersion;
+	private String organizationName;
+	private String name;
+	private String description;
+
+	@JoinColumn(unique = true)
+	@OneToOne(optional = false, mappedBy = "tableLibrary", cascade = CascadeType.PERSIST)
+	private Tables tables;
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -107,6 +103,5 @@ public class TableLibrary implements Serializable{
 				+ ", organizationName=" + organizationName + ", name=" + name
 				+ ", description=" + description + ", tables=" + tables + "]";
 	}
-	
-	
+
 }

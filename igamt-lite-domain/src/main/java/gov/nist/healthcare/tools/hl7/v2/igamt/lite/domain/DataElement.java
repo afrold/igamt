@@ -6,17 +6,33 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
 import java.math.BigInteger;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-@MappedSuperclass
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.Filters;
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Filters({ @Filter(name = "length", condition = ":maxLength != '*' and :minLength <= :maxLength or :maxLength == '*'") })
 public abstract class DataElement implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	protected Long id;
 
 	@NotNull
 	@Column(nullable = false)
@@ -27,8 +43,7 @@ public abstract class DataElement implements java.io.Serializable {
 	@Enumerated(EnumType.STRING)
 	protected Usage usage;
 
-	@NotNull
-	@Column(nullable = false)
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	protected Datatype datatype;
 
 	@Min(1)
@@ -39,19 +54,15 @@ public abstract class DataElement implements java.io.Serializable {
 	protected String maxLength;
 
 	protected String confLength;
-	
+
 	@Column(nullable = true)
 	protected Table table;
-	
+
 	@Column(nullable = true)
 	protected Constraint predicate;
-	
+
 	@Column(nullable = true)
 	protected Set<Constraint> conformanceStatements;
-
-	//FIXME Check this. UUID doesn't need for Component and Field
-	// TODO. Only for backward compatibility. Remove later
-	protected String uuid;
 
 	public String getName() {
 		return name;
@@ -109,14 +120,6 @@ public abstract class DataElement implements java.io.Serializable {
 		this.table = table;
 	}
 
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-
 	public Constraint getPredicate() {
 		return predicate;
 	}
@@ -132,7 +135,5 @@ public abstract class DataElement implements java.io.Serializable {
 	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
 		this.conformanceStatements = conformanceStatements;
 	}
-	
-	
 
 }

@@ -12,7 +12,7 @@
 		<module>igamt-lite-domain</module>
 		<module>igamt-lite-repo</module>
 		<module>igamt-lite-service</module>
-		<module>igamt-lite-web</module>
+		<module>igamt-lite-controller</module>
 	</modules>
 
 	<properties>

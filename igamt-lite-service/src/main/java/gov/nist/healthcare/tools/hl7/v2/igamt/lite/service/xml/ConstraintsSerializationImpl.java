@@ -1,13 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Author;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Author;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceContext;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.MetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConstraintMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Standard;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.AndAssertion;
@@ -807,7 +807,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 	}
 
 	private void deserializeXMLToMetaData(Element elmMetaData, ConformanceContext conformanceContext) {
-		MetaData metaDataObj = new MetaData();
+		ConstraintMetaData metaDataObj = new ConstraintMetaData();
 		
 		metaDataObj.setDescription(elmMetaData.getAttribute("Description"));
 
@@ -822,7 +822,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 		conformanceContext.setMetaData(metaDataObj);
 	}
 
-	private void deserializeXMLToStandard(NodeList standard, MetaData metaDataObj) {
+	private void deserializeXMLToStandard(NodeList standard, ConstraintMetaData metaDataObj) {
 		if(standard != null && standard.getLength() == 1){
 			Standard standardObj = new Standard();
 			Element elmStandard = (Element)standard.item(0);
@@ -841,7 +841,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 		
 	}
 
-	private void deserializeXMLToAuthors(NodeList authors, MetaData metaDataObj) {
+	private void deserializeXMLToAuthors(NodeList authors, ConstraintMetaData metaDataObj) {
 		for(int i=0; i<authors.getLength(); i++){
 			Element elmAuthor = (Element)authors.item(i);
 			Author author = new Author();

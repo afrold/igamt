@@ -17,16 +17,15 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class ProfileService {
-	
+
 	@Autowired
 	private ProfileRepository profileRepository;
 
@@ -38,11 +37,11 @@ public class ProfileService {
 		return profileRepository.save(p);
 	}
 
-	public void delete(String id) {
+	public void delete(Long id) {
 		profileRepository.delete(id);
 	}
 
-	public Profile findOne(String id) {
+	public Profile findOne(Long id) {
 		return profileRepository.findOne(id);
 	}
 

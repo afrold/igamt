@@ -17,16 +17,15 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ComponentRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class ComponentService {
-	
+
 	@Autowired
 	private ComponentRepository componentRepository;
 
@@ -38,11 +37,11 @@ public class ComponentService {
 		return componentRepository.save(c);
 	}
 
-	public void delete(String id) {
+	public void delete(Long id) {
 		componentRepository.delete(id);
 	}
 
-	public Component findOne(String id) {
+	public Component findOne(Long id) {
 		return componentRepository.findOne(id);
 	}
 

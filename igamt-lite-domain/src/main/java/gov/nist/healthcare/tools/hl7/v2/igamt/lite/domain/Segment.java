@@ -1,20 +1,19 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 @Entity
 public class Segment implements java.io.Serializable {
@@ -22,46 +21,43 @@ public class Segment implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GenericGenerator(name = "SEGMENT_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.SegmentIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_segment"))
-	@GeneratedValue(generator = "SEGMENT_ID_GENERATOR")
-	protected String id;
-
-	// TODO. Only for backward compatibility. Remove later
-	protected String uuid;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	@NotNull
 	@Column(nullable = false)
-	protected String displayName;
+	private String label;
 
 	@OneToMany(mappedBy = "segment", cascade = CascadeType.ALL)
-	protected List<Field> fields = new ArrayList<Field>();
+	@OrderColumn(name = "position", nullable = false)
+	private final Set<Field> fields = new LinkedHashSet<Field>();
 
 	@NotNull
 	@Column(nullable = false)
-	protected String name;
+	private String name;
 
 	@Column(nullable = true)
-	protected String description;
+	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	protected Segments segments;
-	
-	//FIXME DynamicMapping is missing for Segment
+	private Segments segments;
 
-	public String getId() {
+	// FIXME DynamicMapping is missing for Segment
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getDisplayName() {
-		return displayName;
+	public String getLabel() {
+		return label;
 	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public String getName() {
@@ -80,12 +76,8 @@ public class Segment implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public List<Field> getFields() {
+	public Set<Field> getFields() {
 		return fields;
-	}
-
-	public void setFields(List<Field> fields) {
-		this.fields = fields;
 	}
 
 	public Segments getSegments() {
@@ -97,25 +89,44 @@ public class Segment implements java.io.Serializable {
 	}
 
 	public void addField(Field field) {
+		if (field.getSegment() != null) {
+			throw new IllegalArgumentException("The field " + field.getName()
+					+ " already belongs to segment "
+					+ field.getSegment().getLabel());
+		}
 		fields.add(field);
 		field.setSegment(this);
 	}
 
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	@Override
+	public String toString() {
+		return "Segment [id=" + id + "label=" + label + ", fields=" + fields
+				+ ", name=" + name + ", description=" + description + "]";
 	}
 
 	@Override
-	public String toString() {
-		return "Segment [id=" + id + ", uuid=" + uuid + ", displayName="
-				+ displayName + ", fields=" + fields + ", name=" + name
-				+ ", description=" + description + "]";
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
-	
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Segment other = (Segment) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
 
 }

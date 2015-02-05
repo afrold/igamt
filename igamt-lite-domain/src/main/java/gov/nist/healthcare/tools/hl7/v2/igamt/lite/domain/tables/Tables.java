@@ -19,10 +19,10 @@ public class Tables implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;
+	private Long id;
 
 	@OneToMany(mappedBy = "tables", cascade = CascadeType.ALL)
-	protected Set<Table> tables = new HashSet<Table>();
+	private Set<Table> tables = new HashSet<Table>();
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private TableLibrary tableLibrary;
@@ -64,6 +64,5 @@ public class Tables implements java.io.Serializable {
 	public String toString() {
 		return "Tables [id=" + id + ", tables=" + tables + "]";
 	}
-	
-	
+
 }

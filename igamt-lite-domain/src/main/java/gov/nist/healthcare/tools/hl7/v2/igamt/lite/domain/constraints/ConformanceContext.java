@@ -3,69 +3,51 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
-public class ConformanceContext implements Serializable{
+@Entity
+public class ConformanceContext implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1051694737992020403L;
-
 	@Id
-	@GenericGenerator(name = "CONFORMANCECONTEXT_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.ConformanceContextIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_conformance_context"))
-	@GeneratedValue(generator = "CONFORMANCECONTEXT_ID_GENERATOR")
-	protected String id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-	@NotNull
-	@Column(nullable = false)
-	protected String uuid;
-	
-	@NotNull
-	@Column(nullable = false)
-	protected MetaData metaData;
-	
+	private ConstraintMetaData metaData;
+
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Context datatypeContext;
-	
+
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Context segmentContext;
-	
+
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Context groupContext;
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-
-	public MetaData getMetaData() {
+	public ConstraintMetaData getMetaData() {
 		return metaData;
 	}
 
-	public void setMetaData(MetaData metaData) {
+	public void setMetaData(ConstraintMetaData metaData) {
 		this.metaData = metaData;
 	}
 
@@ -95,13 +77,8 @@ public class ConformanceContext implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ConformanceContext [id=" + id + ", uuid=" + uuid
-				+ ", metaData=" + metaData + ", datatypeContext="
-				+ datatypeContext + ", segmentContext=" + segmentContext
-				+ ", groupContext=" + groupContext + "]";
+		return "ConformanceContext [id=" + id + ", metaData=" + metaData
+				+ ", datatypeContext=" + datatypeContext + ", segmentContext="
+				+ segmentContext + ", groupContext=" + groupContext + "]";
 	}
-	
-	
-	
-	
 }

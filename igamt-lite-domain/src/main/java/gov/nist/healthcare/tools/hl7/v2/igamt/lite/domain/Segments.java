@@ -19,7 +19,7 @@ public class Segments implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;
+	private Long id;
 
 	@OneToMany(mappedBy = "segments", cascade = CascadeType.ALL)
 	private final Set<Segment> segments = new HashSet<Segment>();
@@ -52,13 +52,6 @@ public class Segments implements java.io.Serializable {
 			throw new IllegalArgumentException(
 					"This segment already belong to a different segment library");
 		}
-		
-		for(Segment st:segments){
-			if(st.getUuid().equals(s.getUuid())){
-				return;
-			}
-		}
-		
 		segments.add(s);
 		s.setSegments(this);
 	}
@@ -67,7 +60,5 @@ public class Segments implements java.io.Serializable {
 	public String toString() {
 		return "Segments [id=" + id + ", segments=" + segments + "]";
 	}
-	
-	
 
 }

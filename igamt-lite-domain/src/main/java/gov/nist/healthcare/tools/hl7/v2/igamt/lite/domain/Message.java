@@ -1,60 +1,54 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 @Entity
 public class Message implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-
 	@Id
-	@GenericGenerator(name = "MESSAGE_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.MessageIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_message"))
-	@GeneratedValue(generator = "MESSAGE_ID_GENERATOR")
-	protected String id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	@NotNull
 	@Column(nullable = false)
-	protected String type;
+	private String type;
 	@NotNull
 	@Column(nullable = false)
-	protected String event;
+	private String event;
 
 	@NotNull
 	@Column(nullable = false)
-	protected String structID;
+	private String structID;
 
 	@Column(nullable = true)
-	protected String description;
+	private String description;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	protected List<SegmentRefOrGroup> segmentRefOrGroups;
-
+	@OrderColumn(name = "position", nullable = false)
+	private Set<SegmentRefOrGroup> segmentRefOrGroups = new LinkedHashSet<SegmentRefOrGroup>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	protected Messages messages;
+	private Messages messages;
 
-	//TODO CHECK this. UUID is needed?
-	// TODO. Only for backward compatibility. Remove later
-	protected String uuid;
-
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -90,14 +84,6 @@ public class Message implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public List<SegmentRefOrGroup> getSegmentRefOrGroups() {
-		return segmentRefOrGroups;
-	}
-
-	public void setSegmentRefOrGroups(List<SegmentRefOrGroup> segmentRefOrGroups) {
-		this.segmentRefOrGroups = segmentRefOrGroups;
-	}
-
 	public Messages getMessages() {
 		return messages;
 	}
@@ -106,23 +92,19 @@ public class Message implements java.io.Serializable {
 		this.messages = messages;
 	}
 
-	public String getUuid() {
-		return uuid;
+	public Set<SegmentRefOrGroup> getSegmentRefOrGroups() {
+		return segmentRefOrGroups;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setSegmentRefOrGroups(Set<SegmentRefOrGroup> segmentRefOrGroups) {
+		this.segmentRefOrGroups = segmentRefOrGroups;
 	}
 
 	@Override
 	public String toString() {
 		return "Message [id=" + id + ", type=" + type + ", event=" + event
 				+ ", structID=" + structID + ", description=" + description
-				+ ", segmentRefOrGroups=" + segmentRefOrGroups + ", uuid="
-				+ uuid + "]";
+				+ ", segmentRefOrGroups=" + segmentRefOrGroups + "]";
 	}
 
-
-	
-	
 }

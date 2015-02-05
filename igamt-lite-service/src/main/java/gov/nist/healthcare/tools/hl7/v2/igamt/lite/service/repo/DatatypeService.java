@@ -17,12 +17,13 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.beans.factory.annotation.Autowired;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 
-@Repository
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
 public class DatatypeService {
 
 	@Autowired
@@ -36,11 +37,11 @@ public class DatatypeService {
 		return datatypeRepository.save(p);
 	}
 
-	public void delete(String id) {
+	public void delete(Long id) {
 		datatypeRepository.delete(id);
 	}
 
-	public Datatype findOne(String id) {
+	public Datatype findOne(Long id) {
 		return datatypeRepository.findOne(id);
 	}
 

@@ -4,27 +4,29 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Context implements Serializable{
+public class Context implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -3037628238620317355L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	protected Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+	private Long id;
+
+	@OneToMany
+	@JoinTable(name = "Context_ByNameOrByID", joinColumns = @JoinColumn(name = "Context"), inverseJoinColumns = @JoinColumn(name = "ByNameOrByID"))
+	private Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
 
 	public Long getId() {
 		return id;
@@ -46,10 +48,5 @@ public class Context implements Serializable{
 	public String toString() {
 		return "Context [id=" + id + ", byNameOrByIDs=" + byNameOrByIDs + "]";
 	}
-	
-	
-	
-	
-	
 
 }

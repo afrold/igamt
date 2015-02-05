@@ -19,10 +19,10 @@ public class Messages implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;
+	private Long id;
 
 	@OneToMany(mappedBy = "messages", cascade = CascadeType.ALL)
-	protected Set<Message> messages = new HashSet<Message>();
+	private Set<Message> messages = new HashSet<Message>();
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Profile profile;
@@ -64,7 +64,5 @@ public class Messages implements java.io.Serializable {
 	public String toString() {
 		return "Messages [id=" + id + ", messages=" + messages + "]";
 	}
-	
-	
 
 }

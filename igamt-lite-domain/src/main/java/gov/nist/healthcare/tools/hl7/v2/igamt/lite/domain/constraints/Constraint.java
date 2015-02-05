@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.assertion.Assertion;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -9,11 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Constraint implements Serializable{
+public class Constraint implements Serializable {
 
 	/**
 	 * 
@@ -22,24 +19,23 @@ public class Constraint implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected long id;
-	
+	private Long id;
+
 	@NotNull
 	@Column(nullable = false)
-	protected String constraintId;
-	
-	protected String constraintTag;
-	
-	protected Reference reference;
-	
+	private String constraintId;
+
+	private String constraintTag;
+
+	private Reference reference;
+
 	@NotNull
 	@Column(nullable = false)
-	protected String description;
-	
+	private String description;
+
 	@NotNull
 	@Column(nullable = false)
-	@Lob
-	protected Assertion assertion;
+	private String assertion;
 
 	public long getId() {
 		return id;
@@ -81,11 +77,11 @@ public class Constraint implements Serializable{
 		this.description = description;
 	}
 
-	public Assertion getAssertion() {
+	public String getAssertion() {
 		return assertion;
 	}
 
-	public void setAssertion(Assertion assertion) {
+	public void setAssertion(String assertion) {
 		this.assertion = assertion;
 	}
 
@@ -96,9 +92,5 @@ public class Constraint implements Serializable{
 				+ reference + ", description=" + description + ", assertion="
 				+ assertion + "]";
 	}
-	
-	
-	
-	
-	
+
 }

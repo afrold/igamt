@@ -17,12 +17,11 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class SegmentService {
@@ -37,11 +36,11 @@ public class SegmentService {
 		return segmentRepository.save(c);
 	}
 
-	public void delete(String id) {
+	public void delete(Long id) {
 		segmentRepository.delete(id);
 	}
 
-	public Segment findOne(String id) {
+	public Segment findOne(Long id) {
 		return segmentRepository.findOne(id);
 	}
 

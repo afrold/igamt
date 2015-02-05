@@ -9,54 +9,50 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
 @Entity
-public class Table implements Serializable{
+public class Table implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 734059059225906039L;
 
-
 	@Id
-	@GenericGenerator(name = "TABLE_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.TableIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_table"))
-	@GeneratedValue(generator = "TABLE_ID_GENERATOR")
-	protected String id;
-	
-	protected String mappingAlternateId;
-	
-	@NotNull
-	@Column(nullable = false)
-	protected String mappingId;
-	
-	@NotNull
-	@Column(nullable = false)
-	protected String name;
-	
-	protected int version;
-	protected String codesys;
-	protected String oid;
-	protected String type;
-	
-	@OneToMany(cascade = CascadeType.ALL)
-	protected Set<Code> codes = new HashSet<Code>();
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	protected Tables tables;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-	public String getId() {
+	private String mappingAlternateId;
+
+	@NotNull
+	@Column(nullable = false)
+	private String mappingId;
+
+	@NotNull
+	@Column(nullable = false)
+	private String name;
+
+	private int version;
+	private String codesys;
+	private String oid;
+	private String type;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	private Set<Code> codes = new HashSet<Code>();
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Tables tables;
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -139,8 +135,5 @@ public class Table implements Serializable{
 				+ version + ", codesys=" + codesys + ", oid=" + oid + ", type="
 				+ type + ", codes=" + codes + "]";
 	}
-	
-	
-	
-	
+
 }

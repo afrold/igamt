@@ -1,21 +1,19 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 @Entity
 public class Datatype implements java.io.Serializable {
@@ -23,53 +21,45 @@ public class Datatype implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GenericGenerator(name = "DATATYPE_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.DatatypeIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_field"))
-	@GeneratedValue(generator = "DATATYPE_ID_GENERATOR")
-	protected String id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	@NotNull
 	@Column(nullable = false)
-	protected String displayName;
+	private String label;
 
 	@OneToMany(mappedBy = "datatype", cascade = CascadeType.ALL)
-	@OrderColumn(name = "position", nullable = false)
-	protected List<Component> components = new ArrayList<Component>();
+	@OrderColumn(name = "position", nullable = true)
+	private final Set<Component> components = new LinkedHashSet<Component>();
 
 	@NotNull
 	@Column(nullable = false)
-	protected String name;
+	private String name;
 
 	@Column(nullable = true)
-	protected String description;
+	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	protected Datatypes datatypes;
+	private Datatypes datatypes;
 
-	// TODO. Only for backward compatibility. Remove later
-	protected String uuid;
-
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getDisplayName() {
-		return displayName;
+	public String getLabel() {
+		return label;
 	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
-	public List<Component> getComponents() {
+	public Set<Component> getComponents() {
 		return components;
-	}
-
-	public void setComponents(List<Component> components) {
-		this.components = components;
 	}
 
 	public String getName() {
@@ -104,21 +94,11 @@ public class Datatype implements java.io.Serializable {
 		c.setDatatype(this);
 	}
 
-	public String getUuid() {
-		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
-
 	@Override
 	public String toString() {
-		return "Datatype [id=" + id + ", displayName=" + displayName
-				+ ", components=" + components + ", name=" + name
-				+ ", description=" + description + ", uuid=" + uuid + "]";
+		return "Datatype [id=" + id + ", label=" + label + ", components="
+				+ components + ", name=" + name + ", description="
+				+ description + "]";
 	}
-	
-	
 
 }

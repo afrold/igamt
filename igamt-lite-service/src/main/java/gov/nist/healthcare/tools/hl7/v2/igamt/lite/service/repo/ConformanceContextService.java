@@ -17,11 +17,11 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.beans.factory.annotation.Autowired;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceContext;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConformanceContextRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class ConformanceContextService {
@@ -37,11 +37,11 @@ public class ConformanceContextService {
 		return conformanceContextRepository.save(p);
 	}
 
-	public void delete(String id) {
+	public void delete(Long id) {
 		conformanceContextRepository.delete(id);
 	}
 
-	public ConformanceContext findOne(String id) {
+	public ConformanceContext findOne(Long id) {
 		return conformanceContextRepository.findOne(id);
 	}
 

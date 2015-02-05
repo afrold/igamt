@@ -18,9 +18,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.MetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConstraintMetaData;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MetaDataConstraintRepository extends JpaRepository<MetaData, String> {
+public interface MetaDataConstraintRepository extends JpaRepository<ConstraintMetaData, String> {
 	
 }

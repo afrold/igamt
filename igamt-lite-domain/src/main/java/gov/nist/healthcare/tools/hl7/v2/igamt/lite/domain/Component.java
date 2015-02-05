@@ -3,11 +3,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 
 @Entity
 public class Component extends DataElement {
@@ -15,16 +13,15 @@ public class Component extends DataElement {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GenericGenerator(name = "COMPONENT_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.ComponentIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_component"))
-	@GeneratedValue(generator = "COMPONENT_ID_GENERATOR")
-	protected String id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	public Component() {
 		super();
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	protected Datatype belongTo;
+	private Datatype belongTo;
 
 	public Datatype getBelongTo() {
 		return belongTo;
@@ -34,11 +31,11 @@ public class Component extends DataElement {
 		this.belongTo = belongTo;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -47,7 +44,7 @@ public class Component extends DataElement {
 		return "Component [id=" + id + ", datatype=" + datatype + ", name="
 				+ name + ", usage=" + usage + ", minLength=" + minLength
 				+ ", maxLength=" + maxLength + ", confLength=" + confLength
-				+ ", table=" + table + ", uuid=" + uuid + "]";
+				+ ", table=" + table + "]";
 	}
 
 }

@@ -4,63 +4,67 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-
+@Entity
 public class Profile implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GenericGenerator(name = "PROFILE_ID_GENERATOR", strategy = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.id.ProfileIdGenerator", parameters = @Parameter(name = "sequence", value = "seq_profile"))
-	@GeneratedValue(generator = "PROFILE_ID_GENERATOR")
-	protected String id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-	protected String type;
+	private String type;
 
-	protected String hl7Version;
+	private String hl7Version;
 
-	protected String schemaVersion;
+	private String schemaVersion;
 
-	protected MetaData metaData;
+	private ProfileMetaData metaData;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	protected Encodings encodings;
+	private Encodings encodings;
 
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
-	protected Segments segments;
+	private Segments segments;
 
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
-	protected Datatypes datatypes;
+	private Datatypes datatypes;
 
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
-	protected Messages messages;
-	
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(unique = true)
-	protected ConformanceContext conformanceStatementsLibrary;
-	
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(unique = true)
-	protected ConformanceContext predicatesLibrary;
-	
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(unique = true)
-	protected TableLibrary tableLibrary;
+	private Messages messages;
 
-	public String getId() {
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
+	private ConformanceContext conformanceStatements;
+
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
+	private ConformanceContext predicates;
+
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(unique = true)
+	private TableLibrary tableLibrary;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(unique = true)
+	private Author author;
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -88,11 +92,11 @@ public class Profile implements java.io.Serializable {
 		this.schemaVersion = schemaVersion;
 	}
 
-	public MetaData getMetaData() {
+	public ProfileMetaData getMetaData() {
 		return metaData;
 	}
 
-	public void setMetaData(MetaData metaData) {
+	public void setMetaData(ProfileMetaData metaData) {
 		this.metaData = metaData;
 	}
 
@@ -130,22 +134,22 @@ public class Profile implements java.io.Serializable {
 		this.messages = messages;
 		this.messages.setProfile(this);
 	}
-	
-	public ConformanceContext getConformanceStatementsLibrary() {
-		return conformanceStatementsLibrary;
+
+	public ConformanceContext getConformanceStatements() {
+		return conformanceStatements;
 	}
 
-	public void setConformanceStatementsLibrary(
-			ConformanceContext conformanceStatementsLibrary) {
-		this.conformanceStatementsLibrary = conformanceStatementsLibrary;
+	public void setConformanceStatements(
+			ConformanceContext conformanceStatements) {
+		this.conformanceStatements = conformanceStatements;
 	}
 
-	public ConformanceContext getPredicatesLibrary() {
-		return predicatesLibrary;
+	public ConformanceContext getPredicates() {
+		return predicates;
 	}
 
-	public void setPredicatesLibrary(ConformanceContext predicatesLibrary) {
-		this.predicatesLibrary = predicatesLibrary;
+	public void setPredicates(ConformanceContext predicates) {
+		this.predicates = predicates;
 	}
 
 	public TableLibrary getTableLibrary() {
@@ -154,6 +158,14 @@ public class Profile implements java.io.Serializable {
 
 	public void setTableLibrary(TableLibrary tableLibrary) {
 		this.tableLibrary = tableLibrary;
+	}
+
+	public Author getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Author author) {
+		this.author = author;
 	}
 
 	@Override

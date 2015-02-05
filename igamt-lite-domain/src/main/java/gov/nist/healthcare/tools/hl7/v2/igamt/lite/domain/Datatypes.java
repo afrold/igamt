@@ -19,10 +19,10 @@ public class Datatypes implements java.io.Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;
+	private Long id;
 
 	@OneToMany(mappedBy = "datatypes", cascade = CascadeType.ALL)
-	private Set<Datatype> datatypes = new HashSet<Datatype>();
+	private final Set<Datatype> datatypes = new HashSet<Datatype>();
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Profile profile;
@@ -39,10 +39,6 @@ public class Datatypes implements java.io.Serializable {
 		return datatypes;
 	}
 
-	public void setDatatypes(Set<Datatype> datatypes) {
-		this.datatypes = datatypes;
-	}
-
 	public Profile getProfile() {
 		return profile;
 	}
@@ -54,15 +50,8 @@ public class Datatypes implements java.io.Serializable {
 	public void addDatatype(Datatype d) {
 		if (d.getDatatypes() != null) {
 			throw new IllegalArgumentException(
-					"This datatype already below to a different datatypes");
+					"This datatype already belogs to a different datatypes");
 		}
-		
-		for(Datatype dt:datatypes){
-			if(dt.getUuid().equals(d.getUuid())){
-				return;
-			}
-		}
-		
 		datatypes.add(d);
 		d.setDatatypes(this);
 	}
