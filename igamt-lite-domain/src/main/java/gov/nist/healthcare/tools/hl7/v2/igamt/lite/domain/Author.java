@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Author implements java.io.Serializable {
 
@@ -21,9 +23,11 @@ public class Author implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@JsonIgnore
 	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	private User user;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	private Set<Profile> profiles = new HashSet<Profile>();
 

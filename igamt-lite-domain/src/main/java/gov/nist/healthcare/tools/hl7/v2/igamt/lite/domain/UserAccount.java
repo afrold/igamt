@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class UserAccount implements Serializable {
 
@@ -20,10 +22,12 @@ public class UserAccount implements Serializable {
 
 	private String username;
 
+	@JsonIgnore
 	private String password;
 
 	private String email;
 
+	@JsonIgnore
 	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	private User user;
 

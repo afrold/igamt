@@ -20,6 +20,8 @@ import javax.persistence.OrderColumn;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class DynamicMapping implements Serializable {
 
@@ -38,6 +40,7 @@ public class DynamicMapping implements Serializable {
 	@Column(nullable = false)
 	private String max;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Segment segment;
 

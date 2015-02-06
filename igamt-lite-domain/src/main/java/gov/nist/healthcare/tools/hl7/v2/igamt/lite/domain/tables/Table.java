@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Table implements Serializable {
 
@@ -45,6 +47,7 @@ public class Table implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL)
 	private Set<Code> codes = new HashSet<Code>();
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Tables tables;
 

@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Tables implements java.io.Serializable {
 
@@ -24,6 +26,7 @@ public class Tables implements java.io.Serializable {
 	@OneToMany(mappedBy = "tables", cascade = CascadeType.ALL)
 	private Set<Table> tables = new HashSet<Table>();
 
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private TableLibrary tableLibrary;
 
