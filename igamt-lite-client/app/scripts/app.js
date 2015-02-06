@@ -16,7 +16,10 @@ var app = angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'ui.bootstrap',
+    'smart-table',
+        'restangular'
   ]);
 
 app.config(function ($routeProvider) {
@@ -47,7 +50,7 @@ app.config(function ($routeProvider) {
         });
 });
 
-app.run(function ($rootScope, $location) {
+app.run(function ($rootScope, $location,Restangular) {
     $rootScope.$watch(function () {
         return $location.path();
     }, function (newLocation, oldLocation) {
@@ -65,6 +68,16 @@ app.run(function ($rootScope, $location) {
             $rootScope.activePath = path;
         }
     };
+
+
+    Restangular.setBaseUrl('/api/v1');
+    Restangular.setExtraFields(['name']);
+    Restangular.setResponseExtractor(function(response, operation) {
+        return response.data;
+    });
+
+
+
 });
 
 

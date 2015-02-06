@@ -32,6 +32,10 @@ public class Segment implements java.io.Serializable {
 	@OrderColumn(name = "position", nullable = false)
 	private final Set<Field> fields = new LinkedHashSet<Field>();
 
+	@OneToMany(mappedBy = "segment", cascade = CascadeType.ALL)
+	@OrderColumn(name = "position", nullable = false)
+	private final Set<DynamicMapping> dynamicMappings = new LinkedHashSet<DynamicMapping>();
+
 	@NotNull
 	@Column(nullable = false)
 	private String name;
@@ -96,6 +100,20 @@ public class Segment implements java.io.Serializable {
 		}
 		fields.add(field);
 		field.setSegment(this);
+	}
+
+	public void addDynamicMapping(DynamicMapping d) {
+		if (d.getSegment() != null) {
+			throw new IllegalArgumentException("The DynamicMapping "
+					+ " already belongs to a different segment "
+					+ d.getSegment().getLabel());
+		}
+		dynamicMappings.add(d);
+		d.setSegment(this);
+	}
+
+	public Set<DynamicMapping> getDynamicMappings() {
+		return dynamicMappings;
 	}
 
 	@Override
