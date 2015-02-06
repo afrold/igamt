@@ -1,1 +1,6 @@
 *.classpath
+*.settings*
+*target*
+*.project*
+*.classpath*
+*bower-components*
