@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Segment implements java.io.Serializable {
 
@@ -43,6 +45,7 @@ public class Segment implements java.io.Serializable {
 	@Column(nullable = true)
 	private String description;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Segments segments;
 

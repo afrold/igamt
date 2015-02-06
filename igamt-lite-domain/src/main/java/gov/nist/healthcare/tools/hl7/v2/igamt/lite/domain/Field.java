@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Field extends DataElement implements java.io.Serializable {
 
@@ -28,6 +30,7 @@ public class Field extends DataElement implements java.io.Serializable {
 	@OneToOne(optional = false)
 	private Datatype datatype;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Segment segment;
 

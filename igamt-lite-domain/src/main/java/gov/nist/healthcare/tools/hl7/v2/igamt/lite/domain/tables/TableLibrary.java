@@ -28,7 +28,7 @@ public class TableLibrary implements Serializable {
 	private String description;
 
 	@JoinColumn(unique = true)
-	@OneToOne(optional = false, mappedBy = "tableLibrary", cascade = CascadeType.PERSIST)
+	@OneToOne(optional = false, mappedBy = "tableLibrary", cascade = CascadeType.ALL)
 	private Tables tables;
 
 	public Long getId() {
