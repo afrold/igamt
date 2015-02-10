@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class ByNameOrByID implements java.io.Serializable {
+public abstract class ByNameOrByID implements java.io.Serializable, Cloneable {
 
 	/**
 	 * 
@@ -45,5 +45,13 @@ public abstract class ByNameOrByID implements java.io.Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	@Override
+    public ByNameOrByID clone() throws CloneNotSupportedException {
+		ByNameOrByID clonedByNameOrByID = (ByNameOrByID) super.clone();
+		clonedByNameOrByID.setConstraints(new HashSet<Constraint>(constraints));
+		clonedByNameOrByID.setId(null);
+        return clonedByNameOrByID;
+    }
 
 }

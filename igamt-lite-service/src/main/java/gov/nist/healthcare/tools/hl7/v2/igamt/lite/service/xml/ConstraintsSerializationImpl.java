@@ -13,8 +13,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Standard;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

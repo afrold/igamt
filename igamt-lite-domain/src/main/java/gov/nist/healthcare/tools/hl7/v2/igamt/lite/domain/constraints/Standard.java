@@ -5,7 +5,7 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 @Embeddable
-public class Standard implements java.io.Serializable {
+public class Standard implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -68,5 +68,11 @@ public class Standard implements java.io.Serializable {
 				+ ", standardURL=" + standardURL + ", standardDescription="
 				+ standardDescription + "]";
 	}
+	
+	@Override
+    public Standard clone() throws CloneNotSupportedException {
+		Standard clonedStandard = (Standard) super.clone();
+        return clonedStandard;
+    }
 
 }

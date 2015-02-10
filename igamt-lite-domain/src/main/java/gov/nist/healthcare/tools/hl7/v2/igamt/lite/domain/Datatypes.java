@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Datatypes implements java.io.Serializable {
+public class Datatypes implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,5 +58,13 @@ public class Datatypes implements java.io.Serializable {
 		datatypes.add(d);
 		d.setDatatypes(this);
 	}
+	
+	@Override
+    public Datatypes clone() throws CloneNotSupportedException {
+		Datatypes clonedDatatypes = (Datatypes) super.clone();
+		clonedDatatypes.setId(null);
+		//NOT for FINAL
+        return clonedDatatypes;
+    }
 
 }

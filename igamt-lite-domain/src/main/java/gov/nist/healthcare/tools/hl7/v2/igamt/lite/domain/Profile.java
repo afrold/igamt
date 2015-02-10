@@ -182,6 +182,20 @@ public class Profile implements java.io.Serializable, Cloneable {
 	@Override
     public Profile clone() throws CloneNotSupportedException {
 		Profile clonedProfile = (Profile) super.clone();
+		clonedProfile.setId(null);
+		clonedProfile.setAuthor(this.author.clone());
+		clonedProfile.setConformanceStatements(this.conformanceStatements.clone());
+		clonedProfile.setDatatypes(this.datatypes.clone());
+		clonedProfile.getDatatypes().setProfile(this);		
+//		clonedProfile.setEncodings(this.encodings.clone());
+		clonedProfile.setHl7Version(this.hl7Version);
+//		clonedProfile.setMessages(this.messages.clone());
+//		clonedProfile.setMetaData(this.metaData.clone());
+		clonedProfile.setPredicates(this.predicates.clone());
+		clonedProfile.setSchemaVersion(schemaVersion);
+//		clonedProfile.setSegments(segments.clone());
+//		clonedProfile.setTableLibrary(tableLibrary.clone());
+		clonedProfile.setType(type);
         return clonedProfile;
     }
 

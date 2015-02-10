@@ -22,7 +22,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.clone.ProfileClone;
 
 import java.io.IOException;
 import java.io.StringReader;

@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class Constraint implements Serializable {
+public class Constraint implements Serializable, Cloneable {
 
 	/**
 	 * 
@@ -37,11 +37,11 @@ public class Constraint implements Serializable {
 	@Column(nullable = false)
 	private String assertion;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -92,5 +92,13 @@ public class Constraint implements Serializable {
 				+ reference + ", description=" + description + ", assertion="
 				+ assertion + "]";
 	}
+	
+	@Override
+    public Constraint clone() throws CloneNotSupportedException {
+		Constraint clonedConstraint = (Constraint) super.clone();
+		clonedConstraint.setId(null);
+		clonedConstraint.setReference(reference.clone());
+        return clonedConstraint;
+    }
 
 }

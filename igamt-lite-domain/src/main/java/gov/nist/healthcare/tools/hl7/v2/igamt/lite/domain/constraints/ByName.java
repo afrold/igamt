@@ -30,4 +30,10 @@ public class ByName extends ByNameOrByID {
 				+ constraints + "]";
 	}
 
+	@Override
+    public ByName clone() throws CloneNotSupportedException {
+		ByName clonedByName = (ByName) super.clone();
+		clonedByName.setId(null);
+        return clonedByName;
+    }
 }

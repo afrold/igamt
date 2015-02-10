@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 @Entity
-public class User implements Serializable {
+public class User implements Serializable, Cloneable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -71,4 +71,11 @@ public class User implements Serializable {
 		return "Author [id=" + id + ", firstName=" + firstname + ", lastName="
 				+ lastname + "]";
 	}
+	
+	@Override
+    public User clone() throws CloneNotSupportedException {
+		User clonedUser = (User) super.clone();
+		clonedUser.setId(null);
+        return clonedUser;
+    }
 }

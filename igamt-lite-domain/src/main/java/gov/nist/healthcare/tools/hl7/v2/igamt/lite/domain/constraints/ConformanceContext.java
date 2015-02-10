@@ -11,7 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
-public class ConformanceContext implements Serializable {
+public class ConformanceContext implements Serializable, Cloneable {
 
 	/**
 	 * 
@@ -81,4 +81,15 @@ public class ConformanceContext implements Serializable {
 				+ ", datatypeContext=" + datatypeContext + ", segmentContext="
 				+ segmentContext + ", groupContext=" + groupContext + "]";
 	}
+	
+	@Override
+    public ConformanceContext clone() throws CloneNotSupportedException {
+		ConformanceContext clonedConformanceContext = (ConformanceContext) super.clone();
+		clonedConformanceContext.setDatatypeContext(datatypeContext.clone());
+		clonedConformanceContext.setGroupContext(groupContext.clone());
+		clonedConformanceContext.setId(null);
+		clonedConformanceContext.setMetaData(metaData.clone());
+		clonedConformanceContext.setSegmentContext(segmentContext.clone());
+        return clonedConformanceContext;
+    }
 }
