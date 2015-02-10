@@ -9,7 +9,12 @@ public enum Usage {
 	}
 
 	public static Usage fromValue(String v) {
-		return valueOf(v);
+		try{
+			return valueOf(v);
+		}catch (IllegalArgumentException e){
+			return valueOf("C");
+		}
+		
 	}
 
 }

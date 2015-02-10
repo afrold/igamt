@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Profile implements java.io.Serializable {
+public class Profile implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -174,6 +174,16 @@ public class Profile implements java.io.Serializable {
 				+ hl7Version + ", schemaVersion=" + schemaVersion
 				+ ", metaData=" + metaData + ", encodings=" + encodings
 				+ ", segments=" + segments + ", datatypes=" + datatypes
-				+ ", messages=" + messages + "]";
+				+ ", messages=" + messages + ", conformanceStatements="
+				+ conformanceStatements + ", predicates=" + predicates
+				+ ", tableLibrary=" + tableLibrary + ", author=" + author + "]";
 	}
+	
+	@Override
+    public Profile clone() throws CloneNotSupportedException {
+		Profile clonedProfile = (Profile) super.clone();
+        return clonedProfile;
+    }
+
+
 }

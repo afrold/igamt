@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -14,8 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Datatype implements java.io.Serializable {
@@ -40,8 +41,13 @@ public class Datatype implements java.io.Serializable {
 
 	@Column(nullable = true)
 	private String description;
+	
+	@Column(nullable = true)
+	protected Set<Constraint> predicates = new HashSet<Constraint>();
 
-	@JsonIgnore
+	@Column(nullable = true)
+	protected Set<Constraint> conformanceStatements = new HashSet<Constraint>();
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Datatypes datatypes;
 
@@ -87,6 +93,22 @@ public class Datatype implements java.io.Serializable {
 
 	public void setDatatypes(Datatypes datatypes) {
 		this.datatypes = datatypes;
+	}
+
+	public Set<Constraint> getPredicates() {
+		return predicates;
+	}
+
+	public void setPredicates(Set<Constraint> predicates) {
+		this.predicates = predicates;
+	}
+
+	public Set<Constraint> getConformanceStatements() {
+		return conformanceStatements;
+	}
+
+	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
+		this.conformanceStatements = conformanceStatements;
 	}
 
 	public void addComponent(Component c) {

@@ -159,17 +159,4 @@ public class TableSerializationImpl implements TableSerialization{
 		}
 		return null;
 	}
-	
-	public static void main(String[] args) throws IOException {
-		TableSerializationImpl test = new TableSerializationImpl();
-		TableLibrary tableLibrary = test.deserializeXMLToTableLibrary(new String(Files.readAllBytes(Paths.get("src//main//resources//VXU ValueSets.xml"))));
-		
-		System.out.println(tableLibrary.toString());
-		
-		System.out.println("----------------------------------------------------------------------------------------------------------");
-		
-		System.out.println(test.serializeTableLibraryToXML(tableLibrary));
-	}
-
-	
 }

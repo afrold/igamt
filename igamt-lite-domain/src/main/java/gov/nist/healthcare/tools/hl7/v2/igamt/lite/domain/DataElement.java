@@ -1,10 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
 
 import java.math.BigInteger;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -57,12 +55,12 @@ public abstract class DataElement implements java.io.Serializable {
 
 	@Column(nullable = true)
 	protected Table table;
-
+	
 	@Column(nullable = true)
-	protected Constraint predicate;
-
+	protected String bindingStrength;
+	
 	@Column(nullable = true)
-	protected Set<Constraint> conformanceStatements;
+	protected String bindingLocation;
 
 	public String getName() {
 		return name;
@@ -120,20 +118,30 @@ public abstract class DataElement implements java.io.Serializable {
 		this.table = table;
 	}
 
-	public Constraint getPredicate() {
-		return predicate;
+	public String getBindingStrength() {
+		return bindingStrength;
 	}
 
-	public void setPredicate(Constraint predicate) {
-		this.predicate = predicate;
+	public void setBindingStrength(String bindingStrength) {
+		this.bindingStrength = bindingStrength;
 	}
 
-	public Set<Constraint> getConformanceStatements() {
-		return conformanceStatements;
+	public String getBindingLocation() {
+		return bindingLocation;
 	}
 
-	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
-		this.conformanceStatements = conformanceStatements;
+	public void setBindingLocation(String bindingLocation) {
+		this.bindingLocation = bindingLocation;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
 
 }
