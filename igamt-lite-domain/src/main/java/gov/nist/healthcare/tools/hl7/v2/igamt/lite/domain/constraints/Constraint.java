@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Views;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -9,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.map.annotate.JsonView;
+
 @Entity
 public class Constraint implements Serializable {
 
@@ -17,6 +21,7 @@ public class Constraint implements Serializable {
 	 */
 	private static final long serialVersionUID = 5723342171557075960L;
 
+	@JsonView({Views.Segment.class,Views.Profile.class,Views.Datatype.class})
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

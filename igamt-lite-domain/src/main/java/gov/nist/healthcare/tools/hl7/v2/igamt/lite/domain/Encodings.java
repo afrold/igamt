@@ -7,23 +7,33 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.validation.constraints.NotNull;
+
+import org.codehaus.jackson.map.annotate.JsonView;
 
 @Embeddable
 public class Encodings implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@JsonView({Views.Profile.class})
 	@ElementCollection
-	@CollectionTable
-	@Column(nullable = false)
-	private Set<Encoding> encodings = new HashSet<Encoding>();
+	@CollectionTable	
+	@NotNull
+ 	@Enumerated(EnumType.STRING)
+	private Set<EncodingType> values = new HashSet<EncodingType>();
 
-	public Set<Encoding> getEncodings() {
-		return encodings;
+	public Set<EncodingType> getValues() {
+		return values;
 	}
 
-	public void setEncodings(Set<Encoding> encodings) {
-		this.encodings = encodings;
+	public void setValues(Set<EncodingType> values) {
+		this.values = values;
 	}
+
+	 
+	 
 
 }

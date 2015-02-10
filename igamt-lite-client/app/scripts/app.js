@@ -19,7 +19,8 @@ var app = angular
     'ngTouch',
     'ui.bootstrap',
     'smart-table',
-        'restangular'
+    'restangular',
+    'ngMockE2E'
   ]);
 
 app.config(function ($routeProvider) {
@@ -69,22 +70,20 @@ app.run(function ($rootScope, $location,Restangular) {
         }
     };
 
-
-    Restangular.setBaseUrl('/api/v1');
-    Restangular.setExtraFields(['name']);
-    Restangular.setResponseExtractor(function(response, operation) {
-        return response.data;
-    });
+    Restangular.setBaseUrl('/api/v1/profiles/');
+//    Restangular.setResponseExtractor(function(response, operation) {
+//        return response.data;
+//    });
 
 
 
 });
 
-
-angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
-    .controller('CarouselController', ['$scope', '$timeout', '$transition', '$q', function ($scope, $timeout, $transition, $q) {
-    }]).directive('carousel', [function () {
-        return {
-
-        }
-    }]);
+//
+//angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
+//    .controller('CarouselController', ['$scope', '$timeout', '$transition', '$q', function ($scope, $timeout, $transition, $q) {
+//    }]).directive('carousel', [function () {
+//        return {
+//
+//        }
+//    }]);

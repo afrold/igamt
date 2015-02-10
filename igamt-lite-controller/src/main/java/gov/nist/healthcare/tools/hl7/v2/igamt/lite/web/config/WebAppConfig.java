@@ -17,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 
@@ -40,31 +42,33 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		configurer.enable();
 	}
 
-	/*
-	 * Here we register the Hibernate4Module into an ObjectMapper, then set this
-	 * custom-configured ObjectMapper to the MessageConverter and return it to
-	 * be added to the HttpMessageConverters of our application
-	 */
-	public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
-		MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
-
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.enable(SerializationFeature.INDENT_OUTPUT);
-		mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-
-		// Registering Hibernate4Module to support lazy objects
-		mapper.registerModule(new Hibernate4Module());
-
-		messageConverter.setObjectMapper(mapper);
-		return messageConverter;
-
-	}
-
+//	/*
+//	 * Here we register the Hibernate4Module into an ObjectMapper, then set this
+//	 * custom-configured ObjectMapper to the MessageConverter and return it to
+//	 * be added to the HttpMessageConverters of our application
+//	 */
+//	public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
+//		MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
+//
+//	
+//		messageConverter.setObjectMapper(mapper);
+//		return messageConverter;
+//
+//	}
+// 
+ 
 	@Override
 	public void configureMessageConverters(
 			List<HttpMessageConverter<?>> converters) {
-		// Here we add our custom-configured HttpMessageConverter
-		converters.add(jacksonMessageConverter());
+		
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.disable(SerializationFeature.INDENT_OUTPUT);
+		mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+		// Registering Hibernate4Module to support lazy objects
+		mapper.registerModule(new Hibernate4Module());       
+		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+		builder.configure(mapper);
+        converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
 		super.configureMessageConverters(converters);
 	}
 

@@ -4,13 +4,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @Entity
 public class SegmentRef extends SegmentRefOrGroup {
 
 	private static final long serialVersionUID = 1L;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	private Segment segment;
+ 	@OneToOne(cascade = CascadeType.ALL)
+ 	private Segment segment;
 
 	public Segment getSegment() {
 		return segment;

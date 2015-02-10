@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.codehaus.jackson.map.annotate.JsonView;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -14,6 +16,7 @@ public class Component extends DataElement {
 
 	private static final long serialVersionUID = 1L;
 
+	@JsonView({Views.Component.class,Views.Datatype.class})
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

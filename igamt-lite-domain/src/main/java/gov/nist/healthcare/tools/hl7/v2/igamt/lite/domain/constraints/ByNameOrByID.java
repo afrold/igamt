@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Views;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
+import org.codehaus.jackson.map.annotate.JsonView;
+
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class ByNameOrByID implements java.io.Serializable {
@@ -21,7 +25,8 @@ public abstract class ByNameOrByID implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -5212340093784881862L;
-
+	
+	@JsonView(Views.Profile.class)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;

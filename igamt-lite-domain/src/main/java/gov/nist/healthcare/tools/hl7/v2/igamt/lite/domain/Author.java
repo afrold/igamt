@@ -27,8 +27,7 @@ public class Author implements java.io.Serializable {
 	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	private User user;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+ 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	private Set<Profile> profiles = new HashSet<Profile>();
 
 	public Long getId() {

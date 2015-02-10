@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Views;
+
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
@@ -10,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import org.codehaus.jackson.map.annotate.JsonView;
+
 @Entity
 public class ConformanceContext implements Serializable {
 
@@ -17,20 +21,26 @@ public class ConformanceContext implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1051694737992020403L;
+	
+	@JsonView({Views.Profile.class})
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@JsonView({Views.Profile.class})
 	private ConstraintMetaData metaData;
 
+	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Context datatypeContext;
 
+	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Context segmentContext;
-
+	
+	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Context groupContext;

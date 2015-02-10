@@ -2,24 +2,21 @@
  * Created by haffo on 2/2/15.
  */
 
+angular.module('igl').run(function($httpBackend,CustomProfileDataModel,PredefinedProfileDataModel) {
 
-(function(ng){
+    $httpBackend.whenGET('/api/v1/profiles/customProfiles').respond(function(method, url, data, headers) {
+         var profiles = CustomProfileDataModel.findAll();
+        return [200, profiles, {}];
+    });
 
-    if(!document.URL.match(/\?fake/)){
-        return;
-    }
 
-    init();
+    $httpBackend.whenGET('/api/v1/profiles/predefinedProfiles').respond(function(method, url, data, headers) {
+        var profiles =  PredefinedProfileDataModel.findAll();
+        return [200, profiles, {}];
+    });
 
-    function init(){
-        ng.module ('igl').config(function($provide){
+    $httpBackend.whenGET(/views\//).passThrough();
 
-        }).run(function($httpBackEnd){
-            //fake/api/getMotion
-            $httpBackend.whenGET('/fake/api/v1/user/1/profiles').respond(function(method, url, data, headers) {
-                return
-            });
-        });
-    }
 
-})(angular);
+});
+

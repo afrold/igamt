@@ -15,42 +15,49 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.map.annotate.JsonView;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Segment implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	@JsonView(Views.Profile.class)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotNull
+ 	@NotNull
+ 	@JsonView({Views.Profile.class})
 	@Column(nullable = false)
 	private String label;
 
+ 	@JsonView({Views.Profile.class})
 	@OneToMany(mappedBy = "segment", cascade = CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = false)
 	private final Set<Field> fields = new LinkedHashSet<Field>();
 
+	@JsonView({Views.Profile.class})
 	@OneToMany(mappedBy = "segment", cascade = CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = false)
 	private final Set<DynamicMapping> dynamicMappings = new LinkedHashSet<DynamicMapping>();
 
+	@JsonView({Views.Profile.class})
 	@NotNull
 	@Column(nullable = false)
 	private String name;
 
+	@JsonView({Views.Profile.class})
 	@Column(nullable = true)
 	private String description;
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	
+ 	@ManyToOne(fetch = FetchType.LAZY)
 	private Segments segments;
 
-	// FIXME DynamicMapping is missing for Segment
-
+ 
 	public Long getId() {
 		return id;
 	}

@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.map.annotate.JsonView;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -16,17 +18,21 @@ public class Field extends DataElement implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@JsonView({Views.Profile.class})
 	@Column(nullable = true)
 	private String itemNo;
 
+	@JsonView({Views.Profile.class})
 	@NotNull
 	@Column(nullable = false)
 	private BigInteger min;
 
+	@JsonView({Views.Profile.class})
 	@NotNull
 	@Column(nullable = false)
 	private String max;
 
+	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false)
 	private Datatype datatype;
 

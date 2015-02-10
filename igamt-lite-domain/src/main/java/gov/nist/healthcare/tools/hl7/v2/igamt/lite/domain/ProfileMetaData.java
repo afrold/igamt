@@ -6,22 +6,30 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.codehaus.jackson.map.annotate.JsonView;
 
 @Embeddable
 public class ProfileMetaData implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@JsonView({Views.Profile.class})
 	@NotNull
 	@Column(nullable = false)
 	private String name;
 
+	@JsonView({Views.Profile.class})
 	@NotNull
 	@Column(nullable = false)
 	private String orgName;
 
+	@JsonView({Views.Profile.class})
 	private String version;
+	
+	@JsonView({Views.Profile.class})
 	private String status;
+	
+	@JsonView({Views.Profile.class})
 	private String topics;
 
 	@Override

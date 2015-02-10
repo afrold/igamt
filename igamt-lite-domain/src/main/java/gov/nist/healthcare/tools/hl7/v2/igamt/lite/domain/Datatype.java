@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.map.annotate.JsonView;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -22,22 +24,27 @@ public class Datatype implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	@JsonView({Views.Profile.class,Views.Field.class,Views.Component.class})
+ 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-
+	
+	@JsonView({Views.Datatype.class})
 	@NotNull
 	@Column(nullable = false)
 	private String label;
-
+	
+	@JsonView({Views.Datatype.class})
 	@OneToMany(mappedBy = "datatype", cascade = CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = true)
 	private final Set<Component> components = new LinkedHashSet<Component>();
 
+	@JsonView({Views.Datatype.class})
 	@NotNull
 	@Column(nullable = false)
 	private String name;
-
+	
+	@JsonView({Views.Datatype.class})
 	@Column(nullable = true)
 	private String description;
 

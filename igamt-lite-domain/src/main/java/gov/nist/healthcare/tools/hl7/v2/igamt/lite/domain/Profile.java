@@ -13,49 +13,64 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
+import org.codehaus.jackson.map.annotate.JsonView;
+
 @Entity
 public class Profile implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@JsonView({Views.Profile.class})
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@JsonView({Views.Profile.class})
 	private String type;
-
+	
+	@JsonView({Views.Profile.class})
 	private String hl7Version;
 
+	@JsonView({Views.Profile.class})
 	private String schemaVersion;
 
+	@JsonView({Views.Profile.class})
 	private ProfileMetaData metaData;
 
+	@JsonView({Views.Profile.class})
 	private Encodings encodings;
 
+	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Segments segments;
 
+	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Datatypes datatypes;
 
+	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Messages messages;
 
+	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private ConformanceContext conformanceStatements;
 
+	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private ConformanceContext predicates;
 
+	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private TableLibrary tableLibrary;
 
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(unique = true)
 	private Author author;
