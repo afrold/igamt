@@ -8,32 +8,11 @@
  */
 
 // Declare factory
-angular.module('igl').factory('CustomProfiles', function(Restangular) {
-    return Restangular.service('customProfiles');
-});
-
-
-// Declare factory
-angular.module('igl').factory('PredefinedProfiles', function(Restangular) {
-    return Restangular.service('predefinedProfiles');
-});
-
-
-// Declare factory
 angular.module('igl').factory('Profiles', function(Restangular) {
-    return {
-        customs: Restangular.service('customProfiles'),
-        predefined: Restangular.service('predefinedProfiles')
-    }
+     return Restangular.service('profiles');
 });
 
 
-angular.module('igl').factory('Profile', function(Restangular) {
-    return {
-        object: Restangular.service('customProfiles'),
-        clone: Restangular.service('predefinedProfiles')
-    }
-});
 
 
 

@@ -81,8 +81,8 @@ angular.module('igl').service('PredefinedProfileDataModel', function PredefinedP
             "hl7Version": "2.5.1",
             "schemaVersion": "2.5",
             "metaData": {
-                "name": "Predefined VU Profile",
-                "orgName": "",
+                "name": "VXU_V04",
+                "orgName": "NIST",
                 "version": "1",
                 "status": "",
                 "topics": ""

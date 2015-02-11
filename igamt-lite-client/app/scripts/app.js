@@ -9,21 +9,21 @@
  * Main module of the application.
  */
 var app = angular
-  .module('igl', [
-    'ngAnimate',
-    'ngCookies',
-    'ngMessages',
-    'ngResource',
-    'ngRoute',
-    'ngSanitize',
-    'ngTouch',
-    'ui.bootstrap',
-    'smart-table',
-    'restangular',
-    'ngMockE2E'
-  ]);
+    .module('igl', [
+        'ngAnimate',
+        'ngCookies',
+        'ngMessages',
+        'ngResource',
+        'ngRoute',
+        'ngSanitize',
+        'ngTouch',
+        'ui.bootstrap',
+        'smart-table',
+        'restangular',
+        'ngMockE2E'
+    ]);
 
-app.config(function ($routeProvider) {
+app.config(function ($routeProvider, RestangularProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'views/home.html'
@@ -32,7 +32,7 @@ app.config(function ($routeProvider) {
             templateUrl: 'views/home.html'
         })
         .when('/profiles', {
-            templateUrl: 'views/profiles.html'
+            templateUrl: 'views/dashboard.html'
         })
         .when('/doc', {
             templateUrl: 'views/doc.html'
@@ -49,9 +49,25 @@ app.config(function ($routeProvider) {
         .otherwise({
             redirectTo: '/'
         });
+
+    RestangularProvider.setBaseUrl('/api/');
+
+    RestangularProvider.addElementTransformer('profiles', false, function (profile) {
+        profile.addRestangularMethod('clone', 'post', 'clone');
+        return profile;
+    });
+
 });
 
-app.run(function ($rootScope, $location,Restangular) {
+app.run(function ($rootScope, $location, Restangular) {
+
+    $rootScope.profile = {};
+    $rootScope.settings = {step : 0};
+    $rootScope.statuses = ['Draft', 'Active', 'Superceded', 'Withdrawn'];
+    $rootScope.hl7Versions = ['2.0', '2.1', '2.2', '2.3','2.3.1', '2.4','2.5','2.5.1','2.6','2.7','2.8'];
+    $rootScope.schemaVersions = ['1.0', '1.5', '2.0', '2.5'];
+
+
     $rootScope.$watch(function () {
         return $location.path();
     }, function (newLocation, oldLocation) {
@@ -70,11 +86,10 @@ app.run(function ($rootScope, $location,Restangular) {
         }
     };
 
-    Restangular.setBaseUrl('/api/v1/profiles/');
+    Restangular.setBaseUrl('/api/');
 //    Restangular.setResponseExtractor(function(response, operation) {
 //        return response.data;
 //    });
-
 
 
 });

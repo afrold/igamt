@@ -300,8 +300,14 @@ div.ngRow.selected {
 
 .container {
   margin:0 auto;
-  width:98%;
+  width:100%;
 }
+
+
+.row {
+  margin-left:10px;
+ }
+
 
 .tooltip-inner{
   color: #000000;
@@ -341,6 +347,8 @@ ul.result-settings {
 .test-details-content{
   text-align: left;
 }
+
+
 
 
 

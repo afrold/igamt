@@ -25,15 +25,7 @@ public class Profile implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@JsonView({Views.Profile.class})
-	private String type;
 	
-	@JsonView({Views.Profile.class})
-	private String hl7Version;
-
-	@JsonView({Views.Profile.class})
-	private String schemaVersion;
-
 	@JsonView({Views.Profile.class})
 	private ProfileMetaData metaData;
 

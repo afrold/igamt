@@ -1,16 +1,15 @@
-<div class="container" ng-controller="ProfileListCtrl" ng-init="init()">
-
-    <div class="row" ng-show="settings.step == null || settings.step == 0">
-
-        <h3> List Of Predefined Profiles </h3>
-        <hr>
-        <div class="panel panel-info">
+<div ng-controller="ProfileListCtrl" ng-init="init()">
+    <div class="row">
+        <div class="page-header">
+        <h3>Predefined Profiles </h3>
+        </div>
+        <div>
             <!-- Default panel contents -->
-            <div class="panel-heading"><i class="fa fa-list"></i>&nbsp;
-                Predefined Profiles
-            </div>
-            <div class="panel-body">
-                <table st-table="tmpPredefineds" st-safe-src="predefineds"
+            <!--<div class="panel-heading"><i class="fa fa-list"></i>&nbsp;-->
+                <!--Predefined Profiles-->
+            <!--</div>-->
+            <!--<div class="panel-body">-->
+                <table st-table="preloadeds"
                        class="profile-list table table-striped table-bordered">
                     <thead>
                     <tr>
@@ -23,8 +22,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="row in tmpPredefineds">
-                         <td>
+                    <tr ng-repeat="row in preloadeds">
+                        <td>
                             <span ng-bind="row.metaData.name"></span>
                         </td>
                         <td ng-bind-html="row.hl7Version"></td>
@@ -33,33 +32,33 @@
                         <td ng-bind-html="row.metaData.date"></td>
                         <td>
                             <button title="Create Copy" type="button" class="btn btn-xs btn-primary"
-                                    ng-click="create(row)">
-                                <span><i class="fa fa-plus-square fa-sm"></i>&nbsp; Create</span>
+                                    ng-click="clone(row)">
+                                <span><i class="fa fa-plus-square fa-sm"></i>&nbsp; Clone</span>
                             </button>
                         </td>
                     </tr>
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-center">
-                            <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
-                        </td>
-                    </tr>
+                    <!--<tfoot>-->
+                    <!--<tr>-->
+                        <!--<td colspan="4" class="text-center">-->
+                            <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
 
-                    </tfoot>
+                    <!--</tfoot>-->
                 </table>
-            </div>
+            <!--</div>-->
         </div>
-
-        <h3> List Of Custom Profiles </h3>
-        <hr>
-        <div class="panel panel-info">
-            <!-- Default panel contents -->
-            <div class="panel-heading"><i class="fa fa-list"></i>&nbsp;
-                User Profiles
-            </div>
-            <div class="panel-body">
-                <table st-table="tmpCustoms" st-safe-src="customs"
+        <div class="page-header">
+        <h3>Custom Profiles </h3>
+       </div>
+        <div>
+            <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+            <!--<div class="panel-heading"><i class="fa fa-list"></i>&nbsp;-->
+                <!--User Profiles-->
+            <!--</div>-->
+            <!--<div class="panel-body">-->
+                <table st-table="customs"
                        class="profile-list table table-striped table-bordered">
                     <thead>
                     <tr>
@@ -73,8 +72,8 @@
                     </thead>
                     <tbody>
 
-                    <tr ng-repeat="row in tmpCustoms">
-                         <td>
+                    <tr ng-repeat="row in customs">
+                        <td>
                             <span ng-bind="row.metaData.name"></span>
                         </td>
                         <td ng-bind-html="row.hl7Version"></td>
@@ -83,8 +82,8 @@
                         <td ng-bind-html="row.metaData.date"></td>
                         <td>
                             <button title="Create Copy" type="button" class="btn btn-xs btn-primary"
-                                    ng-click="create(row)">
-                                <span><i class="fa fa-plus-square fa-sm"></i>&nbsp; Create</span>
+                                    ng-click="clone(row)">
+                                <span><i class="fa fa-plus-square fa-sm"></i>&nbsp; Clone</span>
                             </button>
                             <button title="Edit" type="button" class="btn btn-xs btn-primary"
                                     ng-click="edit(row)">
@@ -97,23 +96,23 @@
                         </td>
                     </tr>
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-center">
-                            <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
-                        </td>
-                    </tr>
-                    </tfoot>
+                    <!--<tfoot>-->
+                    <!--<tr>-->
+                        <!--<td colspan="4" class="text-center">-->
+                            <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tfoot>-->
 
                 </table>
-            </div>
+            <!--</div>-->
         </div>
     </div>
+</div>
 
 
-</div>
-</div>
-</div>
+
+
 
 
 
