@@ -22,16 +22,17 @@ public class Encodings implements java.io.Serializable {
 	@ElementCollection
 	@CollectionTable	
 	@NotNull
- 	@Enumerated(EnumType.STRING)
-	private Set<EncodingType> values = new HashSet<EncodingType>();
+ 	private Set<Encoding> encodings = new HashSet<Encoding>();
 
-	public Set<EncodingType> getValues() {
-		return values;
+	public Set<Encoding> getEncodings() {
+		return encodings;
 	}
 
-	public void setValues(Set<EncodingType> values) {
-		this.values = values;
+	public void setEncodings(Set<Encoding> encodings) {
+		this.encodings = encodings;
 	}
+
+	 
 
 	 
 	 
