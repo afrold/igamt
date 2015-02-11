@@ -5,7 +5,7 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 @Embeddable
-public class ConstraintMetaData implements java.io.Serializable {
+public class ConstraintMetaData implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,5 +36,12 @@ public class ConstraintMetaData implements java.io.Serializable {
 		return "MetaData [description=" + description + ", standard="
 				+ standard + "]";
 	}
+	
+	@Override
+    public ConstraintMetaData clone() throws CloneNotSupportedException {
+		ConstraintMetaData clonedConstraintMetaData = (ConstraintMetaData) super.clone();
+		clonedConstraintMetaData.setStandard(standard.clone());
+        return clonedConstraintMetaData;
+    }
 
 }

@@ -1,10 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
 
 import java.math.BigInteger;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,60 +18,49 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.codehaus.jackson.map.annotate.JsonView;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.Filters;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-//@Filters({ @Filter(name = "length", condition = ":maxLength != '*' and :minLength <= :maxLength or :maxLength == '*'") })
+@Filters({ @Filter(name = "length", condition = ":maxLength != '*' and :minLength <= :maxLength or :maxLength == '*'") })
 public abstract class DataElement implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonView({Views.Segment.class,Views.Profile.class})
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
 
-	@JsonView({Views.Segment.class,Views.Profile.class,Views.Datatype.class})
 	@NotNull
 	@Column(nullable = false)
 	protected String name;
 
-	@JsonView({Views.Segment.class,Views.Profile.class,Views.Datatype.class})
 	@NotNull
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	protected Usage usage;
 
-	@JsonView({Views.Segment.class,Views.Profile.class,Views.Datatype.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	protected Datatype datatype;
 
-	@JsonView({Views.Segment.class,Views.Profile.class,Views.Datatype.class})
 	@Min(1)
 	protected BigInteger minLength;
 
-	@JsonView({Views.Segment.class,Views.Profile.class,Views.Datatype.class})
 	@NotNull
 	@Column(nullable = false)
 	protected String maxLength;
 
-	@JsonView({Views.Segment.class,Views.Profile.class,Views.Datatype.class})
 	protected String confLength;
 
-	@JsonView({Views.Segment.class,Views.Profile.class,Views.Datatype.class})
 	@Column(nullable = true)
 	protected Table table;
-
-	@JsonView({Views.Segment.class,Views.Profile.class,Views.Datatype.class})
+	
 	@Column(nullable = true)
-	protected Constraint predicate;
-
-	@JsonView({Views.Profile.class})
+	protected String bindingStrength;
+	
 	@Column(nullable = true)
-	protected Set<Constraint> conformanceStatements;
+	protected String bindingLocation;
 
 	public String getName() {
 		return name;
@@ -131,20 +118,30 @@ public abstract class DataElement implements java.io.Serializable {
 		this.table = table;
 	}
 
-	public Constraint getPredicate() {
-		return predicate;
+	public String getBindingStrength() {
+		return bindingStrength;
 	}
 
-	public void setPredicate(Constraint predicate) {
-		this.predicate = predicate;
+	public void setBindingStrength(String bindingStrength) {
+		this.bindingStrength = bindingStrength;
 	}
 
-	public Set<Constraint> getConformanceStatements() {
-		return conformanceStatements;
+	public String getBindingLocation() {
+		return bindingLocation;
 	}
 
-	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
-		this.conformanceStatements = conformanceStatements;
+	public void setBindingLocation(String bindingLocation) {
+		this.bindingLocation = bindingLocation;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	
 
 }

@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Views;
-
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -11,17 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
-import org.codehaus.jackson.map.annotate.JsonView;
-
 @Entity
-public class Constraint implements Serializable {
+public class Constraint implements Serializable, Cloneable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5723342171557075960L;
 
-	@JsonView({Views.Segment.class,Views.Profile.class,Views.Datatype.class})
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -42,11 +37,11 @@ public class Constraint implements Serializable {
 	@Column(nullable = false)
 	private String assertion;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -97,5 +92,13 @@ public class Constraint implements Serializable {
 				+ reference + ", description=" + description + ", assertion="
 				+ assertion + "]";
 	}
+	
+	@Override
+    public Constraint clone() throws CloneNotSupportedException {
+		Constraint clonedConstraint = (Constraint) super.clone();
+		clonedConstraint.setId(null);
+		clonedConstraint.setReference(reference.clone());
+        return clonedConstraint;
+    }
 
 }

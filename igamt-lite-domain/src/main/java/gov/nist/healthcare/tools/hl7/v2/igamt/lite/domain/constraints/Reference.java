@@ -3,7 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Reference implements java.io.Serializable {
+public class Reference implements java.io.Serializable,Cloneable {
 	
 	/**
 	 * 
@@ -40,5 +40,9 @@ public class Reference implements java.io.Serializable {
 		this.url = url;
 	}
 	
-	
+	@Override
+    public Reference clone() throws CloneNotSupportedException {
+		Reference clonedReference = (Reference) super.clone();
+        return clonedReference;
+    }
 }

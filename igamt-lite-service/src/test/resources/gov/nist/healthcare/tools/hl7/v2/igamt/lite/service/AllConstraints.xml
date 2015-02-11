@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ConformanceContext UUID="9b180194-0391-4245-a0b8-fe2712502190" xsi:noNamespaceSchemaLocation="ConformanceContext.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ConformanceContext UUID="5db184be-4664-4d98-a02f-b543419155d7" xsi:noNamespaceSchemaLocation="ConformanceContext.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <MetaData>
         <Description>Conformance context for VXU_V04</Description>
     </MetaData>
@@ -16,6 +16,12 @@
                     </IMPLY>
                 </Assertion>
             </Constraint>
+            <Constraint ID="IZ-5">
+                <Description>The value of HD.2 (Universal ID) SHALL be formatted with ISO-compliant OID.</Description>
+                <Assertion>
+                    <Format Path="2[1]" Regex="[0-2](\.(0|[1-9][0-9]*))*"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[HD_IZ]2[1]">
                 <Description>If the HD_IZ_16.1 is not valued.</Description>
                 <Assertion>
@@ -25,6 +31,12 @@
                         </NOT>
                         <Presence Path="2[1]"/>
                     </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-6">
+                <Description>The value of HD.3 (Universal ID Type) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="3[1]" Text="ISO" IgnoreCase="true"/>
                 </Assertion>
             </Constraint>
             <Constraint ID="[HD_IZ]3[1]">
@@ -47,6 +59,34 @@
                 </Assertion>
             </Constraint>
         </ByID>
+        <ByID ID="a8aac8aa-9d18-4ed3-82fc-7c20fd404fb4">
+            <Constraint ID="IZ-17">
+                <Description>The value of MSG_IZ_VXU.1 (Message Code) SHALL be 'VXU'.</Description>
+                <Assertion>
+                    <PlainText Path="1[1]" Text="VXU" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-17">
+                <Description>The value of MSG_IZ_VXU.2 (Trigger Event) SHALL be 'V04'.</Description>
+                <Assertion>
+                    <PlainText Path="2[1]" Text="V04" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-17">
+                <Description>The value of MSG_IZ_VXU.3 (Message Structure) SHALL be 'VXU_V04'.</Description>
+                <Assertion>
+                    <PlainText Path="3[1]" Text="VXU_V04" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+        </ByID>
+        <ByID ID="15fba479-611e-4c04-b52d-27bd3a081559">
+            <Constraint ID="IZ-7">
+                <Description>The value of VID_IZ.1 (Version ID) SHALL be '2.5.1'.</Description>
+                <Assertion>
+                    <PlainText Path="1[1]" Text="2.5.1" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+        </ByID>
         <ByID ID="15390281-ff2c-4152-bd9a-1c7bfd588282">
             <Constraint ID="[EI_IZ]2[1]">
                 <Description>If EI_IZ.3 (Universal ID) is not valued.</Description>
@@ -59,6 +99,12 @@
                     </IMPLY>
                 </Assertion>
             </Constraint>
+            <Constraint ID="IZ-3">
+                <Description>The value of EI.3 (Universal ID) SHALL be formatted with ISO-compliant OID.</Description>
+                <Assertion>
+                    <Format Path="3[1]" Regex="[0-2](\.(0|[1-9][0-9]*))*"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[EI_IZ]3[1]">
                 <Description>If EI_IZ.2 (Namespace ID) is not valued.</Description>
                 <Assertion>
@@ -68,6 +114,12 @@
                         </NOT>
                         <Presence Path="3[1]"/>
                     </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-4">
+                <Description>The value of EI.4 (Universal ID Type) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="4[1]" Text="ISO" IgnoreCase="true"/>
                 </Assertion>
             </Constraint>
             <Constraint ID="[EI_IZ]4[1]">
@@ -348,6 +400,12 @@
                     </IMPLY>
                 </Assertion>
             </Constraint>
+            <Constraint ID="NONAME">
+                <Description>The value of HD_IZ.3 (null) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="3[1]" Text="ISO" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[HD_IZ]3[1]">
                 <Description>If the HD_IZ_16.2 is valued.</Description>
                 <Assertion>
@@ -593,6 +651,12 @@
                     </IMPLY>
                 </Assertion>
             </Constraint>
+            <Constraint ID="NONAME">
+                <Description>The value of HD_IZ.3 (null) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="3[1]" Text="ISO" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[HD_IZ]3[1]">
                 <Description>If the HD_IZ_16.2 is valued.</Description>
                 <Assertion>
@@ -668,6 +732,12 @@
                         </NOT>
                         <Presence Path="2[1]"/>
                     </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="NONAME">
+                <Description>The value of HD_IZ.3 (null) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="3[1]" Text="ISO" IgnoreCase="true"/>
                 </Assertion>
             </Constraint>
             <Constraint ID="[HD_IZ]3[1]">
@@ -762,6 +832,12 @@
                     </IMPLY>
                 </Assertion>
             </Constraint>
+            <Constraint ID="NONAME">
+                <Description>The value of HD_IZ.3 (null) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="3[1]" Text="ISO" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[HD_IZ]3[1]">
                 <Description>If the HD_IZ_16.2 is valued.</Description>
                 <Assertion>
@@ -818,6 +894,12 @@
                         </NOT>
                         <Presence Path="2[1]"/>
                     </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="NONAME">
+                <Description>The value of HD_IZ.3 (null) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="3[1]" Text="ISO" IgnoreCase="true"/>
                 </Assertion>
             </Constraint>
             <Constraint ID="[HD_IZ]3[1]">
@@ -1293,6 +1375,12 @@
                     </IMPLY>
                 </Assertion>
             </Constraint>
+            <Constraint ID="NONAME">
+                <Description>The value of HD_IZ.3 (null) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="3[1]" Text="ISO" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[HD_IZ]3[1]">
                 <Description>If the HD_IZ_16.2 is valued.</Description>
                 <Assertion>
@@ -1561,6 +1649,12 @@
                     </IMPLY>
                 </Assertion>
             </Constraint>
+            <Constraint ID="NONAME">
+                <Description>The value of HD_IZ.3 (null) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="3[1]" Text="ISO" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[HD_IZ]3[1]">
                 <Description>If the HD_IZ_16.2 is valued.</Description>
                 <Assertion>
@@ -1641,6 +1735,12 @@
                         </NOT>
                         <Presence Path="2[1]"/>
                     </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="NONAME">
+                <Description>The value of HD_IZ.3 (null) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="3[1]" Text="ISO" IgnoreCase="true"/>
                 </Assertion>
             </Constraint>
             <Constraint ID="[HD_IZ]3[1]">
@@ -1743,6 +1843,12 @@
                     </IMPLY>
                 </Assertion>
             </Constraint>
+            <Constraint ID="IZ-3">
+                <Description>The value of EI.3 (Universal ID) SHALL be formatted with ISO-compliant OID.</Description>
+                <Assertion>
+                    <Format Path="3[1]" Regex="[0-2](\.(0|[1-9][0-9]*))*"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[EI_IZ]3[1]">
                 <Description>If EI_IZ_DT.2 (Namespace ID) is not valued.</Description>
                 <Assertion>
@@ -1752,6 +1858,12 @@
                         </NOT>
                         <Presence Path="3[1]"/>
                     </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-4">
+                <Description>The value of EI.4 (Universal ID Type) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="4[1]" Text="ISO" IgnoreCase="true"/>
                 </Assertion>
             </Constraint>
             <Constraint ID="[EI_IZ]4[1]">
@@ -1775,6 +1887,12 @@
             </Constraint>
         </ByID>
         <ByID ID="e4d75932-33ea-4874-b035-47a1c708a05a">
+            <Constraint ID="IZ-3">
+                <Description>The value of EI.3 (Universal ID) SHALL be formatted with ISO-compliant OID.</Description>
+                <Assertion>
+                    <Format Path="3[1]" Regex="[0-2](\.(0|[1-9][0-9]*))*"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[EI_IZ]3[1]">
                 <Description>If the EI_IZ_271.2 is not valued.</Description>
                 <Assertion>
@@ -1784,6 +1902,12 @@
                         </NOT>
                         <Presence Path="3[1]"/>
                     </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-4">
+                <Description>The value of EI.4 (Universal ID Type) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="4[1]" Text="ISO" IgnoreCase="true"/>
                 </Assertion>
             </Constraint>
             <Constraint ID="[EI_IZ]4[1]">
@@ -1989,6 +2113,12 @@
                     </IMPLY>
                 </Assertion>
             </Constraint>
+            <Constraint ID="NONAME">
+                <Description>The value of HD_IZ.3 (null) SHALL be 'ISO'.</Description>
+                <Assertion>
+                    <PlainText Path="3[1]" Text="ISO" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[HD_IZ]3[1]">
                 <Description>If the HD_IZ_16.2 is valued.</Description>
                 <Assertion>
@@ -2011,7 +2141,63 @@
         </ByID>
     </Datatype>
     <Segment>
+        <ByID ID="8dfae017-9261-46e0-98f9-d1bea58734af">
+            <Constraint ID="IZ-12">
+                <Description>The value of MSH_IZ 1_5_Z22.1 (Field Separator) SHALL be '|'.</Description>
+                <Assertion>
+                    <PlainText Path="1[1]" Text="|" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-13">
+                <Description>The value of MSH_IZ 1_5_Z22.2 (Encoding Characters) SHALL be '^~\&amp;'.</Description>
+                <Assertion>
+                    <PlainText Path="2[1]" Text="^~\&amp;" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-?DT?">
+                <Description>The value of MSH_IZ 1_5_Z22.7.1 (Time) SHALL be formatted with YYYYMMDD.</Description>
+                <Assertion>
+                    <Format Path="7[1].1[1]" Regex="([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])).*"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-42">
+                <Description>The value of MSH_IZ 1_5_Z22.15 (Accept Acknowledgment Type) SHALL be 'ER'.</Description>
+                <Assertion>
+                    <PlainText Path="15[1]" Text="ER" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-16">
+                <Description>The value of MSH_IZ 1_5_Z22.16 (Application Acknowledgment Type) SHALL be 'AL'.</Description>
+                <Assertion>
+                    <PlainText Path="16[1]" Text="AL" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-43-1">
+                <Description>The value of MSH_IZ 1_5_Z22.1 (Field Separator) SHALL be 'Z22'.</Description>
+                <Assertion>
+                    <PlainText Path="1[1]" Text="Z22" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-43-2">
+                <Description>The value of MSH_IZ 1_5_Z22.2 (Encoding Characters) SHALL be 'CDCPHINVS'.</Description>
+                <Assertion>
+                    <PlainText Path="2[1]" Text="CDCPHINVS" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+        </ByID>
         <ByID ID="3c154e39-15c4-4cda-8c48-eed164e150ab">
+            <Constraint ID="IZ-46">
+                <Description>The value of PID_IZ 1_5.1 (Set ID - PID) SHALL be '1'.</Description>
+                <Assertion>
+                    <PlainText Path="1[1]" Text="1" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="PID_7_DT_IZ">
+                <Description>The value of PID_IZ 1_5.7.1 (Time) SHALL be formatted with YYYYMMDD.</Description>
+                <Assertion>
+                    <Format Path="7[1].1[1]" Regex="([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])).*"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[PID_IZ 1_5]29[1]">
                 <Description>If the value of PID_IZ 1_5.30 (Patient Death Indicator) is 'Y'.</Description>
                 <Assertion>
@@ -2067,7 +2253,68 @@
                 </Assertion>
             </Constraint>
         </ByID>
+        <ByID ID="cf952532-0a4c-49ff-8d53-6f800f3a7f70">
+            <Constraint ID="IZ-25">
+                <Description>The value of ORC_IZ 1_5.1 (Order Control) SHALL be 'RE'.</Description>
+                <Assertion>
+                    <PlainText Path="1[1]" Text="RE" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+        </ByID>
         <ByID ID="092444dd-273b-4b2d-84bd-0f0ddd06cf59">
+            <Constraint ID="IZ-28">
+                <Description>The value of RXA_IZ 1_5.1 (Give Sub-ID Counter) SHALL be '0'.</Description>
+                <Assertion>
+                    <PlainText Path="1[1]" Text="0" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID=" IZ-29">
+                <Description>The value of RXA_IZ 1_5.1 (Give Sub-ID Counter) SHALL be '1'.</Description>
+                <Assertion>
+                    <PlainText Path="1[1]" Text="1" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="RXA_3_IZ_DT">
+                <Description>The value of RXA_IZ 1_5.3.1 (Time) SHALL be formatted with YYYYMMDD.</Description>
+                <Assertion>
+                    <Format Path="3[1].1[1]" Regex="([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])).*"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-30">
+                <Description>RXA_IZ 1_5.3.1 (Time) SHALL be identical to the RXA_IZ 1_5.4.1 (Time).</Description>
+                <Assertion>
+                    <PathValue Path1="3[1].1[1]" Operator="EQ" Path2="4.1[1]"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-48">
+                <Description>If the value of RXA_IZ 1_5.20 (Completion Status) is 'RE', then the value of RXA_IZ 1_5.6 (Administered Amount) SHALL be '999'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <PlainText Path="20[1]" Text="RE" IgnoreCase="true"/>
+                        <PlainText Path="6[1]" Text="999" IgnoreCase="true"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ_50">
+                <Description>If the value of RXA_IZ 1_5.9[1].1 (Identifier) is not '00', then the value of RXA_IZ 1_5.6 (Administered Amount) SHALL be '999'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <NOT>
+                            <PlainText Path="9[1].1[1]" Text="00" IgnoreCase="true"/>
+                        </NOT>
+                        <PlainText Path="6[1]" Text="999" IgnoreCase="true"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-49">
+                <Description>If the value of RXA_IZ 1_5.1 (Give Sub-ID Counter) is '998', then the value of RXA_IZ 1_5.6 (Administered Amount) SHALL be '999'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <PlainText Path="1[1]" Text="998" IgnoreCase="true"/>
+                        <PlainText Path="6[1]" Text="999" IgnoreCase="true"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[RXA_IZ 1_5]7[1]">
                 <Description>If the value of RXA_IZ 1_5.6 (Administered Amount) is not '999'.</Description>
                 <Assertion>
@@ -2140,6 +2387,15 @@
                     </AND>
                 </Assertion>
             </Constraint>
+            <Constraint ID="IZ-32">
+                <Description>If RXA_IZ 1_5.18[1].1 (Identifier) is valued, then the value of RXA_IZ 1_5.20 (Completion Status) SHALL be 'RE'.</Description>
+                <Assertion>
+                    <IMPLY>
+                        <Presence Path="18[1].1[1]"/>
+                        <PlainText Path="20[1]" Text="RE" IgnoreCase="true"/>
+                    </IMPLY>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[RXA_IZ 1_5]21[1]">
                 <Description>If the value of RXA_IZ 1_5.5.1 (Identifier) is not '998'.</Description>
                 <Assertion>
@@ -2153,6 +2409,12 @@
             </Constraint>
         </ByID>
         <ByID ID="bf920a45-9357-4b9e-9870-64782f913637">
+            <Constraint ID="IZ-21">
+                <Description>The value of OBX_IZ 1_5.2 (Value Type) SHALL be one of List Values: 'CE','NM','ST','DT','ID','TS'.</Description>
+                <Assertion>
+                    <StringList Path="2[1]" CSV="CE,NM,ST,DT,ID,TS"/>
+                </Assertion>
+            </Constraint>
             <Constraint ID="[OBX_IZ 1_5]6[1]">
                 <Description>If the value of OBX_IZ 1_5.2 (Value Type) is one of List Values: 'NM','SN'.</Description>
                 <Assertion>
@@ -2160,6 +2422,18 @@
                         <StringList Path="2[1]" CSV="NM,SN"/>
                         <Presence Path="6[1]"/>
                     </IMPLY>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="IZ-22">
+                <Description>The value of OBX_IZ 1_5.11 (Observation Result Status) SHALL be 'F'.</Description>
+                <Assertion>
+                    <PlainText Path="11[1]" Text="F" IgnoreCase="true"/>
+                </Assertion>
+            </Constraint>
+            <Constraint ID="OBX_14_IZ_DT">
+                <Description>The value of OBX_IZ 1_5.14.1 (Time) SHALL be formatted with YYYYMMDD.</Description>
+                <Assertion>
+                    <Format Path="14[1].1[1]" Regex="([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])).*"/>
                 </Assertion>
             </Constraint>
         </ByID>

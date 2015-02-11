@@ -13,7 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Context implements Serializable {
+public class Context implements Serializable, Cloneable {
 
 	/**
 	 * 
@@ -49,4 +49,11 @@ public class Context implements Serializable {
 		return "Context [id=" + id + ", byNameOrByIDs=" + byNameOrByIDs + "]";
 	}
 
+	@Override
+    public Context clone() throws CloneNotSupportedException {
+		Context clonedContext = (Context) super.clone();
+		clonedContext.setByNameOrByIDs(new HashSet<ByNameOrByID>(byNameOrByIDs));
+		clonedContext.setId(null);
+        return clonedContext;
+    }
 }

@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,40 +18,36 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
 
-import org.codehaus.jackson.map.annotate.JsonView;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Datatype implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonView({Views.Profile.class,Views.Field.class,Views.Component.class})
- 	@Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@JsonView({Views.Datatype.class})
+
 	@NotNull
 	@Column(nullable = false)
 	private String label;
-	
-	@JsonView({Views.Datatype.class})
+
 	@OneToMany(mappedBy = "datatype", cascade = CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = true)
 	private final Set<Component> components = new LinkedHashSet<Component>();
 
-	@JsonView({Views.Datatype.class})
 	@NotNull
 	@Column(nullable = false)
 	private String name;
-	
-	@JsonView({Views.Datatype.class})
+
 	@Column(nullable = true)
 	private String description;
+	
+	@Column(nullable = true)
+	protected Set<Constraint> predicates = new HashSet<Constraint>();
 
-	@JsonIgnore
+	@Column(nullable = true)
+	protected Set<Constraint> conformanceStatements = new HashSet<Constraint>();
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Datatypes datatypes;
 
@@ -94,6 +93,22 @@ public class Datatype implements java.io.Serializable {
 
 	public void setDatatypes(Datatypes datatypes) {
 		this.datatypes = datatypes;
+	}
+
+	public Set<Constraint> getPredicates() {
+		return predicates;
+	}
+
+	public void setPredicates(Set<Constraint> predicates) {
+		this.predicates = predicates;
+	}
+
+	public Set<Constraint> getConformanceStatements() {
+		return conformanceStatements;
+	}
+
+	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
+		this.conformanceStatements = conformanceStatements;
 	}
 
 	public void addComponent(Component c) {

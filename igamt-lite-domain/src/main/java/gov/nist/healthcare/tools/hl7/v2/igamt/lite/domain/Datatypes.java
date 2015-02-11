@@ -12,25 +12,22 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import org.codehaus.jackson.map.annotate.JsonView;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Datatypes implements java.io.Serializable {
+public class Datatypes implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonView(Views.Profile.class)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@JsonView(Views.Profile.class)
 	@OneToMany(mappedBy = "datatypes", cascade = CascadeType.ALL)
 	private final Set<Datatype> datatypes = new HashSet<Datatype>();
 
- 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Profile profile;
 
 	public Long getId() {
@@ -61,5 +58,13 @@ public class Datatypes implements java.io.Serializable {
 		datatypes.add(d);
 		d.setDatatypes(this);
 	}
+	
+	@Override
+    public Datatypes clone() throws CloneNotSupportedException {
+		Datatypes clonedDatatypes = (Datatypes) super.clone();
+		clonedDatatypes.setId(null);
+		//NOT for FINAL
+        return clonedDatatypes;
+    }
 
 }

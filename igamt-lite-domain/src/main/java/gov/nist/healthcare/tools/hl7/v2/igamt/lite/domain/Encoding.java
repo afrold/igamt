@@ -9,6 +9,11 @@ public class Encoding implements java.io.Serializable {
 
 	private String value;
 
+	public Encoding(String value) {
+		super();
+		this.value = value;
+	}
+
 	public String getValue() {
 		return value;
 	}

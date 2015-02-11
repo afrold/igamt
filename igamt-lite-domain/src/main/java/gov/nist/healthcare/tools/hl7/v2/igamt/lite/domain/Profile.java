@@ -13,56 +13,49 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import org.codehaus.jackson.map.annotate.JsonView;
-
 @Entity
-public class Profile implements java.io.Serializable {
+public class Profile implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonView({Views.Profile.class})
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	
-	@JsonView({Views.Profile.class})
+	private String type;
+
+	private String hl7Version;
+
+	private String schemaVersion;
+
 	private ProfileMetaData metaData;
 
-	@JsonView({Views.Profile.class})
 	private Encodings encodings;
 
-	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Segments segments;
 
-	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Datatypes datatypes;
 
-	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private Messages messages;
 
-	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private ConformanceContext conformanceStatements;
 
-	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private ConformanceContext predicates;
 
-	@JsonView({Views.Profile.class})
 	@OneToOne(optional = false, cascade = CascadeType.ALL)
 	@JoinColumn(unique = true)
 	private TableLibrary tableLibrary;
 
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(unique = true)
 	private Author author;
@@ -181,6 +174,30 @@ public class Profile implements java.io.Serializable {
 				+ hl7Version + ", schemaVersion=" + schemaVersion
 				+ ", metaData=" + metaData + ", encodings=" + encodings
 				+ ", segments=" + segments + ", datatypes=" + datatypes
-				+ ", messages=" + messages + "]";
+				+ ", messages=" + messages + ", conformanceStatements="
+				+ conformanceStatements + ", predicates=" + predicates
+				+ ", tableLibrary=" + tableLibrary + ", author=" + author + "]";
 	}
+	
+	@Override
+    public Profile clone() throws CloneNotSupportedException {
+		Profile clonedProfile = (Profile) super.clone();
+		clonedProfile.setId(null);
+		clonedProfile.setAuthor(this.author.clone());
+		clonedProfile.setConformanceStatements(this.conformanceStatements.clone());
+		clonedProfile.setDatatypes(this.datatypes.clone());
+		clonedProfile.getDatatypes().setProfile(this);		
+//		clonedProfile.setEncodings(this.encodings.clone());
+		clonedProfile.setHl7Version(this.hl7Version);
+//		clonedProfile.setMessages(this.messages.clone());
+//		clonedProfile.setMetaData(this.metaData.clone());
+		clonedProfile.setPredicates(this.predicates.clone());
+		clonedProfile.setSchemaVersion(schemaVersion);
+//		clonedProfile.setSegments(segments.clone());
+//		clonedProfile.setTableLibrary(tableLibrary.clone());
+		clonedProfile.setType(type);
+        return clonedProfile;
+    }
+
+
 }

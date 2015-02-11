@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Author implements java.io.Serializable {
+public class Author implements java.io.Serializable , Cloneable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -27,7 +27,8 @@ public class Author implements java.io.Serializable {
 	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	private User user;
 
- 	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+	@JsonIgnore
+	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
 	private Set<Profile> profiles = new HashSet<Profile>();
 
 	public Long getId() {
@@ -53,5 +54,14 @@ public class Author implements java.io.Serializable {
 	public void setProfiles(Set<Profile> profiles) {
 		this.profiles = profiles;
 	}
+	
+	@Override
+    public Author clone() throws CloneNotSupportedException {
+		Author clonedAuthor = (Author) super.clone();
+		clonedAuthor.setId(null);
+		clonedAuthor.setProfiles(new HashSet<Profile>(this.profiles));
+		clonedAuthor.setUser(user.clone());
+        return clonedAuthor;
+    }
 
 }

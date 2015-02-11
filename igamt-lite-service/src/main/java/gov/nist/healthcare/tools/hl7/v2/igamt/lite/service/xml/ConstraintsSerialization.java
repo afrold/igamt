@@ -8,7 +8,7 @@ public interface ConstraintsSerialization {
 	
 	ConformanceContext deserializeXMLToConformanceContext(Document xmlDoc);
 	
-	String serializeTableLibraryToXML(ConformanceContext conformanceContext);
+	String serializeConformanceContextToXML(ConformanceContext conformanceContext);
 	
-	Document serializeTableLibraryToDoc(ConformanceContext conformanceContext);
+	Document serializeConformanceContextToDoc(ConformanceContext conformanceContext);
 }
