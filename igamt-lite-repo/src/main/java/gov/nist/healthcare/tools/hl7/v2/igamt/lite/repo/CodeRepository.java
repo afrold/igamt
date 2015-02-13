@@ -17,10 +17,10 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SegmentRefRepository extends JpaRepository<SegmentRef, Long> {
-	
+public interface CodeRepository extends JpaRepository<Code, Long> {
+
 }

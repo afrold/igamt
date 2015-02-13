@@ -17,10 +17,9 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.UserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SegmentRefRepository extends JpaRepository<SegmentRef, Long> {
+public interface UserRepository extends JpaRepository<UserAccount, Long> {
 	
 }

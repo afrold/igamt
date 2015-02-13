@@ -18,7 +18,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
