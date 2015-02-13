@@ -19,12 +19,13 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRefRepository;
 
 
-@Repository
+@Service
 public class SegmentRefService {
 	@Autowired
 	private SegmentRefRepository segmentRefRepository;

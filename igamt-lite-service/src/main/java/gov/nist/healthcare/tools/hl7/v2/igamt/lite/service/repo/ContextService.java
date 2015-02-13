@@ -18,11 +18,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ContextRepository;
 
-@Repository
+@Service
 public class ContextService {
 
 	@Autowired
