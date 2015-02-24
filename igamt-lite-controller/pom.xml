@@ -87,9 +87,10 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
 
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
@@ -104,9 +105,9 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-hibernate4</artifactId>
-			<version>2.2.3</version>
+			<version>2.4</version>
 		</dependency>
-
+ -->
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
@@ -200,6 +201,13 @@
 			<artifactId>icu4j</artifactId>
 			<version>3.4.4</version>
 		</dependency>
+		
+				<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
 
 
 	</dependencies>

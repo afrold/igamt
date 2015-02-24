@@ -14,6 +14,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 body {
   padding-top: 20px;
   padding-bottom: 20px;
+//  background-color: #f5f5f9;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -314,41 +315,16 @@ div.ngRow.selected {
   background-color:lightgray;
 }
 
-.emptyResult {
-  margin-top: 20px;
-}
-
-ul.result-settings {
-  padding: 5px 10px 0;
-  max-height: 300px;
-  overflow-y: scroll;
-}
-
-.profile-list{
-  margin-top:20px;
-  width:98%;
-}
 
 .igl-centered {
   margin: auto;
   width:95%;
 }
 
-.test-details {
-  margin-top: 20px;
-  margin-left: 20px;
-  width:95%;
+
+.st-selected{
+  border-left:4px solid black;
 }
-
-.test-info-container {
-  margin-bottom: 20px;
-}
-
-.test-details-content{
-  text-align: left;
-}
-
-
 
 
 

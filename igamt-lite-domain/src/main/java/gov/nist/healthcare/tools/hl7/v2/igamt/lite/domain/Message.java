@@ -16,6 +16,7 @@ import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Message implements java.io.Serializable {
@@ -39,6 +40,7 @@ public class Message implements java.io.Serializable {
 	@Column(nullable = true)
 	private String description;
 
+	@JsonProperty("children")
 	@OneToMany(cascade = CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = false)
 	private Set<SegmentRefOrGroup> segmentRefOrGroups = new LinkedHashSet<SegmentRefOrGroup>();

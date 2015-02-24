@@ -1,11 +1,10 @@
-<div class="container" ng-show="settings.step == null || settings.step == 0">
+<div class="container" ng-if="context.page === null || context.page === 'list'">
     <div ng-include="'views/listProfiles.html'"></div>
 </div>
 
-<div class="container" ng-show="settings.step == 1">
-    <div ng-include="'views/editProfile.html'"></div>
+<div class="container" ng-if="context.page === 'edit'">
+    <div ng-include="'views/edit/editProfile.html'"></div>
 </div>
-
 
 
 

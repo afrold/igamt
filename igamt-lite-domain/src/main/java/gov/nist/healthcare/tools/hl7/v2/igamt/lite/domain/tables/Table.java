@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -45,6 +47,7 @@ public class Table implements Serializable {
 	private String type;
 
 	@OneToMany(cascade = CascadeType.ALL)
+  	@JoinTable(name = "Table_Code", joinColumns = @JoinColumn(name = "Table"), inverseJoinColumns = @JoinColumn(name = "Code"))
 	private Set<Code> codes = new HashSet<Code>();
 
 	@JsonIgnore

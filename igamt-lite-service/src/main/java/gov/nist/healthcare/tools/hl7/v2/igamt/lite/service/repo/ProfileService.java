@@ -44,5 +44,9 @@ public class ProfileService {
 	public Profile findOne(Long id) {
 		return profileRepository.findOne(id);
 	}
-
+	
+	public Iterable<Profile> findAllPreloaded(){
+		return profileRepository.findAllPreloaded();
+	}
+	
 }

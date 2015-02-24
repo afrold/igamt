@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -7,7 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import org.codehaus.jackson.map.annotate.JsonView;
+ 
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,15 +18,16 @@ public class Component extends DataElement {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonView({Views.Component.class,Views.Datatype.class})
-	@Id
+ 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	public Component() {
 		super();
+		this.type = Constant.COMPONENT;
 	}
 
+	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Datatype belongTo;
@@ -44,6 +47,8 @@ public class Component extends DataElement {
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+
 
 	@Override
 	public String toString() {

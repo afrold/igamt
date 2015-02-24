@@ -19,6 +19,7 @@ var app = angular
         'ngTouch',
         'ui.bootstrap',
         'smart-table',
+        'ngTreetable',
         'restangular',
         'ngMockE2E'
     ]);
@@ -59,15 +60,23 @@ app.config(function ($routeProvider, RestangularProvider) {
 
 });
 
-app.run(function ($rootScope, $location, Restangular) {
+app.run(function ($rootScope, $location, Restangular,CustomDataModel) {
 
     $rootScope.profile = {};
-    $rootScope.settings = {step : 0};
+    $rootScope.message = {};
+    $rootScope.datatype = {};
+    $rootScope.valuesSet = {};
+    $rootScope.predicate = {};
+    $rootScope.confStatement = {};
     $rootScope.statuses = ['Draft', 'Active', 'Superceded', 'Withdrawn'];
     $rootScope.hl7Versions = ['2.0', '2.1', '2.2', '2.3','2.3.1', '2.4','2.5','2.5.1','2.6','2.7','2.8'];
     $rootScope.schemaVersions = ['1.0', '1.5', '2.0', '2.5'];
+    $rootScope.segmentsMap = {};
+    $rootScope.pages = ['list', 'edit', 'read'];
+    $rootScope.context = {page : $rootScope.pages[0]};
 
-
+    $rootScope.context.page = $rootScope.pages[1];
+    $rootScope.profile = CustomDataModel.findOneFullProfile(2);
     $rootScope.$watch(function () {
         return $location.path();
     }, function (newLocation, oldLocation) {

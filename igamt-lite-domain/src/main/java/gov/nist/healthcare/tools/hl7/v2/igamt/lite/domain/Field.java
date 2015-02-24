@@ -9,31 +9,40 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
-import org.codehaus.jackson.map.annotate.JsonView;
+ 
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * 
+ * @author Harold Affo (harold.affo@nist.gov)
+ * Feb 13, 2015
+ */
 @Entity
 public class Field extends DataElement implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	@JsonView({Views.Profile.class})
-	@Column(nullable = true)
+	
+	public Field() {
+		super();
+		type = Constant.FIELD;
+	}
+	
+ 	@Column(nullable = true)
 	private String itemNo;
 
-	@JsonView({Views.Profile.class})
-	@NotNull
+ 	@NotNull
 	@Column(nullable = false)
 	private BigInteger min;
 
-	@JsonView({Views.Profile.class})
-	@NotNull
+ 	@NotNull
 	@Column(nullable = false)
 	private String max;
 
-	@JsonView({Views.Profile.class})
-	@OneToOne(optional = false)
+ 	@JsonIgnoreProperties({"components", "label", "name","description","predicates","conformanceStatements","datatypes"})
+ 	@OneToOne(optional = false)
 	private Datatype datatype;
 
 	@JsonIgnore

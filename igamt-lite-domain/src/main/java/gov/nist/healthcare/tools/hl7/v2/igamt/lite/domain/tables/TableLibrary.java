@@ -1,6 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Views;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.View;
 
 import java.io.Serializable;
 
@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-import org.codehaus.jackson.map.annotate.JsonView;
 
 @Entity
 public class TableLibrary implements Serializable {
@@ -22,31 +21,23 @@ public class TableLibrary implements Serializable {
 	 */
 	private static final long serialVersionUID = -2904036105687742572L;
 
-	@JsonView({Views.Profile.class})
-	@Id
+ 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@JsonView({Views.Profile.class})
-	private String tableLibraryIdentifier;
+ 	private String tableLibraryIdentifier;
 	
-	@JsonView({Views.Profile.class})
-	private String status;
+ 	private String status;
 	
-	@JsonView({Views.Profile.class})
-	private String tableLibraryVersion;
+ 	private String tableLibraryVersion;
 	
-	@JsonView({Views.Profile.class})
-	private String organizationName;
+ 	private String organizationName;
 	
-	@JsonView({Views.Profile.class})
-	private String name;
+ 	private String name;
 	
-	@JsonView({Views.Profile.class})
-	private String description;
+ 	private String description;
 
-	@JsonView({Views.Profile.class})
-	@JoinColumn(unique = true)
+ 	@JoinColumn(unique = true)
 	@OneToOne(optional = false, mappedBy = "tableLibrary", cascade = CascadeType.ALL)
 	private Tables tables;
 

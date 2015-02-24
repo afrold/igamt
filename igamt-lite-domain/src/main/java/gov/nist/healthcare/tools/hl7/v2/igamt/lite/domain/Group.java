@@ -15,6 +15,11 @@ public class Group extends SegmentRefOrGroup {
 
 	private static final long serialVersionUID = 1L;
 
+	public Group() {
+		super();
+		type = Constant.GROUP;
+	}
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = false)
 	private Set<SegmentRefOrGroup> segmentsOrGroups = new LinkedHashSet<SegmentRefOrGroup>();

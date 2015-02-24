@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -21,10 +22,11 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.Filters;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Filters({ @Filter(name = "length", condition = ":maxLength != '*' and :minLength <= :maxLength or :maxLength == '*'") })
-public abstract class DataElement implements java.io.Serializable {
+public abstract class DataElement extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,9 +43,6 @@ public abstract class DataElement implements java.io.Serializable {
 	@Enumerated(EnumType.STRING)
 	protected Usage usage;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	protected Datatype datatype;
-
 	@Min(1)
 	protected BigInteger minLength;
 
@@ -53,14 +52,29 @@ public abstract class DataElement implements java.io.Serializable {
 
 	protected String confLength;
 
-	@Column(nullable = true)
-	protected Table table;
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@JoinColumn(name="DATAELEMENT_TABLE")
+ 	protected Table table;
 	
 	@Column(nullable = true)
 	protected String bindingStrength;
 	
 	@Column(nullable = true)
 	protected String bindingLocation;
+	
+
+ 	@JsonIgnoreProperties({"components", "label", "name","description","predicates","conformanceStatements","datatypes"})
+	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	protected Datatype datatype;
+	
+
+	public Datatype getDatatype() {
+		return datatype;
+	}
+
+	public void setDatatype(Datatype datatype) {
+		this.datatype = datatype;
+	}
 
 	public String getName() {
 		return name;
@@ -76,14 +90,6 @@ public abstract class DataElement implements java.io.Serializable {
 
 	public void setUsage(Usage usage) {
 		this.usage = usage;
-	}
-
-	public Datatype getDatatype() {
-		return datatype;
-	}
-
-	public void setDatatype(Datatype datatype) {
-		this.datatype = datatype;
 	}
 
 	public BigInteger getMinLength() {

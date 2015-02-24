@@ -26,17 +26,17 @@ public class Code implements Serializable {
 
 	@NotNull
 	@Column(nullable = false)
-	private String displayName;
+	private String label;
 
 	private String codesys;
 
 	private String source;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -47,13 +47,13 @@ public class Code implements Serializable {
 	public void setCode(String code) {
 		this.code = code;
 	}
-
-	public String getDisplayName() {
-		return displayName;
+ 
+	public String getLabel() {
+		return label;
 	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public String getCodesys() {
@@ -74,7 +74,7 @@ public class Code implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Code [code=" + code + ", displayName=" + displayName
+		return "Code [code=" + code + ", label=" + label
 				+ ", codesys=" + codesys + ", source=" + source + "]";
 	}
 

@@ -25,6 +25,7 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -42,33 +43,37 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		configurer.enable();
 	}
 
-//	/*
-//	 * Here we register the Hibernate4Module into an ObjectMapper, then set this
-//	 * custom-configured ObjectMapper to the MessageConverter and return it to
-//	 * be added to the HttpMessageConverters of our application
-//	 */
-//	public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
-//		MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
-//
-//	
-//		messageConverter.setObjectMapper(mapper);
-//		return messageConverter;
-//
-//	}
-// 
- 
+	// /*
+	// * Here we register the Hibernate4Module into an ObjectMapper, then set
+	// this
+	// * custom-configured ObjectMapper to the MessageConverter and return it to
+	// * be added to the HttpMessageConverters of our application
+	// */
+	// public MappingJackson2HttpMessageConverter jacksonMessageConverter() {
+	// MappingJackson2HttpMessageConverter messageConverter = new
+	// MappingJackson2HttpMessageConverter();
+	//
+	//
+	// messageConverter.setObjectMapper(mapper);
+	// return messageConverter;
+	//
+	// }
+	//
+
 	@Override
 	public void configureMessageConverters(
 			List<HttpMessageConverter<?>> converters) {
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.disable(SerializationFeature.INDENT_OUTPUT);
 		mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+		mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, false);
 		// Registering Hibernate4Module to support lazy objects
-		mapper.registerModule(new Hibernate4Module());       
+		mapper.registerModule(new Hibernate4Module());
 		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
 		builder.configure(mapper);
-        converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
+		converters
+				.add(new MappingJackson2HttpMessageConverter(builder.build()));
 		super.configureMessageConverters(converters);
 	}
 

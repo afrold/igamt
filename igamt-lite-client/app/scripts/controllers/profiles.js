@@ -11,7 +11,7 @@ angular.module('igl')
         $scope.tmpCustoms = [];
         $scope.error = null;
         $scope.user = {id: 2};
-        // step: 0; list of profile
+         // step: 0; list of profile
         // step 1: edit profile
 
 
@@ -19,14 +19,14 @@ angular.module('igl')
          * init the controller
          */
         $scope.init = function () {
+            $rootScope.context.page = $rootScope.pages[0];
             $scope.preloadeds = Restangular.all('profiles/preloaded').getList().$object;
             $scope.customs = Restangular.all('profiles').getList({userId:$scope.user.id}).$object;
          };
 
         $scope.clone = function (profile) {
-            $scope.settings.step = 0;
-            Restangular.all('profiles').post({targetId: profile.id}).then(function(profile) {
-                $scope.customs.push(profile);
+            Restangular.all('profiles').post({targetId: profile.id, preloaded: profile.preloaded}).then(function(res) {
+                $scope.customs.push(res);
             },function(error){
                 $scope.error = error;
             });
@@ -34,9 +34,9 @@ angular.module('igl')
 
         $scope.edit = function (profile) {
             Restangular.one('profiles',profile.id).get().then(function(profile) {
-                $scope.settings.step = 1;
+                $rootScope.context.page = $rootScope.pages[1];
                 $rootScope.profile = profile;
-                $rootScope.backUp = Restangular.copy($rootScope.profile);
+                //$rootScope.backUp = Restangular.copy($rootScope.profile);
             },function(error){
                 $scope.error = error;
             });
@@ -51,7 +51,6 @@ angular.module('igl')
                 $scope.error = error;
             });
         };
-
 
     });
 
@@ -69,14 +68,14 @@ angular.module('igl')
         };
 
         $scope.cancel = function(){
-            $scope.settings.step = 0;
+            $rootScope.context.page = $rootScope.pages[0];
             $scope.changes = [];
             $rootScope.profile =null;
         };
 
         $scope.delete = function () {
             $rootScope.profile.remove().then(function () {
-                $scope.settings.step = 0;
+                $rootScope.context.page = $rootScope.pages[0];
                 var index = $scope.customs.indexOf( $rootScope.profile);
                 if (index > -1) $scope.customs.splice(index, 1);
                 $rootScope.backUp = null;

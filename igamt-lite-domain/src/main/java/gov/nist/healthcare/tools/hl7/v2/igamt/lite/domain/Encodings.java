@@ -11,15 +11,13 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 
-import org.codehaus.jackson.map.annotate.JsonView;
-
+ 
 @Embeddable
 public class Encodings implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonView({Views.Profile.class})
-	@ElementCollection
+ 	@ElementCollection
 	@CollectionTable	
 	@NotNull
  	private Set<Encoding> encodings = new HashSet<Encoding>();

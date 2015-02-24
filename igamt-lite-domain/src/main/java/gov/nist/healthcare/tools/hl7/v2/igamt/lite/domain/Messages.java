@@ -12,8 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import org.codehaus.jackson.map.annotate.JsonView;
-
+ 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -21,15 +20,14 @@ public class Messages implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonView({Views.Profile.class})
-	@Id
+ 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@JsonView({Views.Profile.class})
-	@OneToMany(mappedBy = "messages", cascade = CascadeType.ALL)
+ 	@OneToMany(mappedBy = "messages", cascade = CascadeType.ALL)
 	private Set<Message> messages = new HashSet<Message>();
 
+ 	@JsonIgnore
  	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Profile profile;
 

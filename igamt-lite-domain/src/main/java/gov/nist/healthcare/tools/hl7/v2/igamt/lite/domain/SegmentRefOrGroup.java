@@ -19,8 +19,7 @@ import org.hibernate.annotations.Filters;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Filters({ @Filter(name = "cardinality", condition = "(:max != '*' and :min <= :max) or :max == '*'") })
-public abstract class SegmentRefOrGroup implements java.io.Serializable {
+public abstract class SegmentRefOrGroup extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 

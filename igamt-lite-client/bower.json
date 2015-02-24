@@ -16,7 +16,8 @@
     "angular-bootstrap": "~0.12.0",
     "angular-smart-table": "~1.4.10",
     "restangular": "~1.4.0",
-    "angular-mocks": "~1.3.13"
+    "angular-mocks": "~1.3.13",
+    "angular-treetable": "*"
   },
   "devDependencies": {
     "angular-mocks": "~1.3.0",

@@ -18,6 +18,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Datatype implements java.io.Serializable {
 
@@ -31,6 +36,7 @@ public class Datatype implements java.io.Serializable {
 	@Column(nullable = false)
 	private String label;
 
+	@JsonProperty("children")
 	@OneToMany(mappedBy = "datatype", cascade = CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = true)
 	private final Set<Component> components = new LinkedHashSet<Component>();
@@ -48,6 +54,7 @@ public class Datatype implements java.io.Serializable {
 	@Column(nullable = true)
 	protected Set<Constraint> conformanceStatements = new HashSet<Constraint>();
 
+ 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Datatypes datatypes;
 

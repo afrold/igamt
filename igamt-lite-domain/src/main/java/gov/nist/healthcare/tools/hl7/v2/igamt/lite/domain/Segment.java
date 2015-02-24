@@ -13,50 +13,59 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 @Entity
-public class Segment implements java.io.Serializable {
+public class Segment extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	public Segment() {
+		super();
+		type = Constant.SEGMENT;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotNull
+ 	@NotNull
 	@Column(nullable = false)
 	private String label;
 
-	@OneToMany(mappedBy = "segment", cascade = CascadeType.ALL)
+ 	@OneToMany(mappedBy = "segment", cascade = CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = false)
 	private final Set<Field> fields = new LinkedHashSet<Field>();
 
-	@OneToMany(mappedBy = "segment", cascade = CascadeType.ALL)
+ 	@OneToMany(mappedBy = "segment", cascade = CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = false)
 	private final Set<DynamicMapping> dynamicMappings = new LinkedHashSet<DynamicMapping>();
+	
 	@NotNull
-
-	@Column(nullable = false)
+ 	@Column(nullable = false)
 	private String name;
 
-	@Column(nullable = true)
+ 	@Column(nullable = true)
 	private String description;
 	
-	@Column(nullable = true)
+  	@OneToMany(cascade = CascadeType.ALL)
+ 	@JoinTable(name = "Segment_Predicate", joinColumns = @JoinColumn(name = "Segment"), inverseJoinColumns = @JoinColumn(name = "Predicate"))
 	protected Set<Constraint> predicates = new HashSet<Constraint>();
 
-	@Column(nullable = true)
+ 	@OneToMany(cascade = CascadeType.ALL)
+ 	@JoinTable(name = "Segment_ConformanceStatement", joinColumns = @JoinColumn(name = "Segment"), inverseJoinColumns = @JoinColumn(name = "ConformanceStatement"))
 	protected Set<Constraint> conformanceStatements = new HashSet<Constraint>();
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Segments segments;
-
-	// FIXME DynamicMapping is missing for Segment
 
 	public Long getId() {
 		return id;

@@ -6,11 +6,19 @@ import javax.persistence.OneToOne;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 public class SegmentRef extends SegmentRefOrGroup {
 
 	private static final long serialVersionUID = 1L;
 
+	public SegmentRef() {
+		super();
+		type = Constant.SEGMENT;
+	}
+	
+ 	@JsonIgnoreProperties({"fields", "label","dynamicMappings", "name","description","predicates","conformanceStatements","segments"})
  	@OneToOne(cascade = CascadeType.ALL)
  	private Segment segment;
 

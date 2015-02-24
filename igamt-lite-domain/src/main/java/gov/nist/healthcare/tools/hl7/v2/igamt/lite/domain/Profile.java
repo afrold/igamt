@@ -12,22 +12,31 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
+ 
 @Entity
 public class Profile implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
+	@JsonView({View.Summary.class })
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	private String type;
+	@JsonView({View.Summary.class})
+ 	private String type;
 
+	@JsonView({View.Summary.class})
 	private String hl7Version;
 
+	@JsonView({View.Summary.class})
 	private String schemaVersion;
 
+	@JsonView({View.Summary.class})
 	private ProfileMetaData metaData;
 
 	private Encodings encodings;
@@ -60,6 +69,13 @@ public class Profile implements java.io.Serializable, Cloneable {
 	@JoinColumn(unique = true)
 	private Author author;
 
+	@JsonView({View.Summary.class})
+ 	private Boolean preloaded; 
+ 	
+ 	@JsonView({View.Summary.class})
+ 	@Version // version from the db
+  	private int version;
+	
 	public Long getId() {
 		return id;
 	}
@@ -166,6 +182,23 @@ public class Profile implements java.io.Serializable, Cloneable {
 
 	public void setAuthor(Author author) {
 		this.author = author;
+	}
+	
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
+	public Boolean getPreloaded() {
+		return preloaded;
+	}
+
+	public void setPreloaded(Boolean preloaded) {
+		this.preloaded = preloaded;
 	}
 
 	@Override

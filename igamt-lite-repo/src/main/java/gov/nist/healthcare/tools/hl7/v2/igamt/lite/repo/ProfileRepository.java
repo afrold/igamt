@@ -17,10 +17,17 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.List;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
-
+	
+	@Query("select profile from Profile profile where profile.preloaded = true")
+	List<Profile> findAllPreloaded();
+	
+	
 }
