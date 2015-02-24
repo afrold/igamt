@@ -13,12 +13,13 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessagesRepository;
 
 
-@Repository
+@Service
 public class MessagesService {
 	@Autowired
 	private MessagesRepository messagesRepository;

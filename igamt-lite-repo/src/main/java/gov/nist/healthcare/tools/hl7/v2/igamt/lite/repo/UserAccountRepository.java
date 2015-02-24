@@ -9,34 +9,17 @@
  * modified versions bear some notice that they have been modified.
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+/**
+ * 
+ * @author Olivier MARIE-ROSE
+ * 
+ */
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Service
-public class MessageService {
-	@Autowired
-	private MessageRepository messageRepository;
-
-	public Iterable<Message> findAll() {
-		return messageRepository.findAll();
-	}
-
-	public Message save(Message c) {
-		return messageRepository.save(c);
-	}
-
-	public void delete(Long id) {
-		messageRepository.delete(id);
-	}
-
-	public Message findOne(Long id) {
-		return messageRepository.findOne(id);
-	}
-
+public interface UserAccountRepository extends JpaRepository<User, Long> {
+	
 }
