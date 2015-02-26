@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -24,10 +25,11 @@ public class ProfileMetaData implements java.io.Serializable {
 	@Column(nullable = false)
 	private String orgName;
 
-	@Deprecated // version should be found in the profile
-	@JsonView({View.Summary.class})
-	private String version;
-	
+//	@Deprecated // version should be found in the profile
+//	@JsonView({View.Summary.class})
+//	@Version
+//	private String version;
+//	
 	@JsonView({View.Summary.class})
 	private String status;
 	
@@ -62,13 +64,13 @@ public class ProfileMetaData implements java.io.Serializable {
 		this.orgName = orgName;
 	}
 
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
+//	public String getVersion() {
+//		return version;
+//	}
+//
+//	public void setVersion(String version) {
+//		this.version = version;
+//	}
 
 	public String getStatus() {
 		return status;

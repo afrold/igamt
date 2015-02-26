@@ -74,7 +74,7 @@ public class Profile implements java.io.Serializable, Cloneable {
  	
  	@JsonView({View.Summary.class})
  	@Version // version from the db
-  	private int version;
+  	private Integer version;
 	
 	public Long getId() {
 		return id;
@@ -185,11 +185,16 @@ public class Profile implements java.io.Serializable, Cloneable {
 	}
 	
 
-	public int getVersion() {
+	public Integer getVersion() {
 		return version;
 	}
 
-	public void setVersion(int version) {
+	/**
+	 * Do not set the version. Hibernate set the version automatically
+	 * @param version
+	 * @return
+	 */
+	public void setVersion(Integer version) {
 		this.version = version;
 	}
 

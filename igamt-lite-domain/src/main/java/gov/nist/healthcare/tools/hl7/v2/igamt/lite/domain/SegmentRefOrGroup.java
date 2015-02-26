@@ -24,7 +24,7 @@ public abstract class SegmentRefOrGroup extends DataModel implements java.io.Ser
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	protected Long id;
 
 	@NotNull

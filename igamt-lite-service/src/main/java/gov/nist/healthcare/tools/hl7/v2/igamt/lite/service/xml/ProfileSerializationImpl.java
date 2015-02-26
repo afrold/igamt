@@ -115,7 +115,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 			ProfileMetaData metaDataObj = profile.getMetaData();
 			elmMetaData.addAttribute(new Attribute("Name", metaDataObj.getName()));
 			elmMetaData.addAttribute(new Attribute("OrgName", metaDataObj.getOrgName()));
-			if(metaDataObj.getVersion() != null) elmMetaData.addAttribute(new Attribute("Version", metaDataObj.getVersion()));
+//			if(metaDataObj.getVersion() != null) elmMetaData.addAttribute(new Attribute("Version", metaDataObj.getVersion()));
 			if(metaDataObj.getStatus() != null) elmMetaData.addAttribute(new Attribute("Status", metaDataObj.getStatus()));
 			if(metaDataObj.getTopics() != null) elmMetaData.addAttribute(new Attribute("Topics", metaDataObj.getTopics()));
 			
@@ -337,7 +337,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 			Element elmMetaData = (Element)nodes.item(0);
 			metaData.setName(elmMetaData.getAttribute("Name"));
 			metaData.setOrgName(elmMetaData.getAttribute("OrgName"));
-			metaData.setVersion(elmMetaData.getAttribute("Version"));
+//			metaData.setVersion(elmMetaData.getAttribute("Version"));
 			metaData.setStatus(elmMetaData.getAttribute("Status"));
 			metaData.setTopics(elmMetaData.getAttribute("Topics"));
 			profile.setMetaData(metaData);

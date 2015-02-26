@@ -24,7 +24,7 @@ public class Author implements java.io.Serializable , Cloneable{
 	private Long id;
 
 	@JsonIgnore
-	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	private User user;
 
 	@JsonIgnore

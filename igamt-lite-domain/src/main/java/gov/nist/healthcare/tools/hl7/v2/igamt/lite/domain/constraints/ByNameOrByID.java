@@ -23,7 +23,7 @@ public abstract class ByNameOrByID implements java.io.Serializable, Cloneable {
 	private static final long serialVersionUID = -5212340093784881862L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	protected Long id;
 
 	@OneToMany

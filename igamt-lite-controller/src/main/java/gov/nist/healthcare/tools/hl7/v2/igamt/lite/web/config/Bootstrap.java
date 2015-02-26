@@ -11,16 +11,25 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
+
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Bootstrap implements InitializingBean {
 
 	private final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
-
+	
+	@Autowired	
+	ProfileRepository profileRepository;
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -29,8 +38,13 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		// TODO Auto-generated method stub
-
+		
+		// load VXU profile
+		Profile profile = new ProfileSerializationImpl().deserializeXMLToProfile(IOUtils.toString(this.getClass().getResourceAsStream("/profiles/vxu/Profile.xml"), "UTF-8"),
+				IOUtils.toString(this.getClass().getResourceAsStream("/profiles/vxu/ValueSets.xml"), "UTF-8"),
+				IOUtils.toString(this.getClass().getResourceAsStream("/profiles/vxu/PredicateConstraints.xml"), "UTF-8"),
+				IOUtils.toString(this.getClass().getResourceAsStream("/profiles/vxu/ConformanceStatementConstraints.xml"), "UTF-8"));
+		
 	}
 
 }

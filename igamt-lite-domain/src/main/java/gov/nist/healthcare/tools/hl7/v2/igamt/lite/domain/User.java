@@ -31,7 +31,7 @@ public class User implements Serializable, Cloneable{
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private UserAccount userAccount;
 
-	@OneToOne
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 	private Author author;
 
 	public Long getId() {

@@ -1,27 +1,22 @@
 <div ng-controller="MessageListCtrl" ng-init="init()">
     <div class="row">
         <div class="page-header">
-            <h3>List of Messages</h3>
+            <h3>Messages</h3>
         </div>
         <div>
-            <table st-table="tmpMessages" st-safe-src="messages"
+            <table st-table="messages"
                    class="table table-striped table-bordered">
                 <thead>
                 <tr>
                     <th></th>
-                    <th st-sort="type">Type</th>
-                    <th st-sort="event">Event</th>
-                    <th st-sort="structID">Struct ID</th>
+                    <th>Type</th>
+                    <th>Event</th>
+                    <th>Struct ID</th>
                     <th>Description</th>
-                </tr>
-                <tr>
-                    <th colspan="5">
-                        <input st-search placeholder="Search" class="input-sm form-control" type="search"/>
-                    </th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr st-select-row="row" st-select-mode="single" ng-repeat="row in tmpMessages">
+                <tr st-select-row="row" st-select-mode="single" ng-repeat="row in messages">
                     <td cs-select="row"><input ng-click="select(row)" type="radio"></td>
                     <td ng-bind="row.type"></td>
                     <td ng-bind-html="row.event"></td>
@@ -29,23 +24,15 @@
                     <td ng-bind-html="row.description"></td>
                 </tr>
                 </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="5" class="text-center">
-                        <div st-pagination="" st-items-by-page="5" st-displayed-pages="7"></div>
-                    </td>
-                </tr>
-                </tfoot>
             </table>
         </div>
     </div>
 </div>
 
-
 <div ng-controller="MessageEditCtrl" ng-show="message !== null" ng-init="init()">
     <div class="row">
         <div class="page-header">
-            <h3>Edit Message: {{message.type}}^{{message.event}}^{{message.structID}}</h3>
+            <h3>Message: {{message.type}}^{{message.event}}^{{message.structID}}</h3>
         </div>
         <div>
             <div class="row" style="margin-top: 20px">

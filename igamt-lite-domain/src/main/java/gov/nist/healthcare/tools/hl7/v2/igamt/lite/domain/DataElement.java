@@ -31,7 +31,7 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.TABLE)
 	protected Long id;
 
 	@NotNull

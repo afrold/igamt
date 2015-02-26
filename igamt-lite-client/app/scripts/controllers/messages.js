@@ -45,7 +45,6 @@ angular.module('igl')
             }, function (messageId) {
                 if (messageId != null) {
                     $scope.loading = true;
-                    $scope.nodeData = [];
                     $scope.nodeData = $rootScope.message.children;
                     if( $scope.params)
                     $scope.params.refresh();

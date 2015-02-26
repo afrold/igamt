@@ -40,10 +40,10 @@ public class Field extends DataElement implements java.io.Serializable {
  	@NotNull
 	@Column(nullable = false)
 	private String max;
-
- 	@JsonIgnoreProperties({"components", "label", "name","description","predicates","conformanceStatements","datatypes"})
- 	@OneToOne(optional = false)
-	private Datatype datatype;
+//
+// 	@JsonIgnoreProperties({"components", "label", "name","description","predicates","conformanceStatements","datatypes"})
+// 	@OneToOne(optional = false,insert="false" update="false")
+//	private Datatype datatype;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)

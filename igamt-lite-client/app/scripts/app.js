@@ -24,7 +24,7 @@ var app = angular
         'ngMockE2E'
     ]);
 
-app.config(function ($routeProvider, RestangularProvider) {
+app.config(function ($routeProvider, RestangularProvider,$httpProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'views/home.html'
@@ -58,9 +58,14 @@ app.config(function ($routeProvider, RestangularProvider) {
         return profile;
     });
 
+
+    $httpProvider.responseInterceptors.push('503Interceptor');
+    $httpProvider.responseInterceptors.push('sessionTimeoutInterceptor');
+
+
 });
 
-app.run(function ($rootScope, $location, Restangular,CustomDataModel) {
+app.run(function ($rootScope, $location, Restangular,CustomDataModel,$modal) {
 
     $rootScope.profile = {};
     $rootScope.message = {};
@@ -100,8 +105,66 @@ app.run(function ($rootScope, $location, Restangular,CustomDataModel) {
 //        return response.data;
 //    });
 
+    $rootScope.showError = function (error) {
+        var modalInstance = $modal.open({
+            templateUrl: 'ErrorDlgDetails.html',
+            controller: 'ErrorDetailsCtrl',
+            resolve: {
+                error: function () {
+                    return error;
+                }
+            }
+        });
+        modalInstance.result.then(function (error) {
+            $rootScope.error = error;
+        }, function () {
+        });
+    };
+
+
 
 });
+
+
+app.factory('503Interceptor', function ($injector, $q, $rootScope) {
+    return function (responsePromise) {
+        return responsePromise.then(null, function (errResponse) {
+            if (errResponse.status === 503) {
+                $rootScope.showError(errResponse);
+            } else {
+                return $q.reject(errResponse);
+            }
+        });
+    };
+}).factory('sessionTimeoutInterceptor', function ($injector, $q,$rootScope) {
+    return function (responsePromise) {
+        return responsePromise.then(null, function (errResponse) {
+            if (errResponse.reason === "The session has expired") {
+                $rootScope.showError(errResponse);
+            } else {
+                return $q.reject(errResponse);
+            }
+        });
+    };
+});
+
+
+app.controller('ErrorDetailsCtrl', function ($scope, $modalInstance, error) {
+    $scope.error = error;
+    $scope.ok = function () {
+        $modalInstance.close($scope.error);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
+
+
+
+
 
 //
 //angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
