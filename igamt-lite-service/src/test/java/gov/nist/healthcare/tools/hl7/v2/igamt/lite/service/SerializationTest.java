@@ -24,10 +24,10 @@ public class SerializationTest {
 				IOUtils.toString(this.getClass().getResourceAsStream("ValueSets.xml"), "UTF-8"),
 				IOUtils.toString(this.getClass().getResourceAsStream("PredicateConstraints.xml"), "UTF-8"),
 				IOUtils.toString(this.getClass().getResourceAsStream("ConformanceStatementConstraints.xml"), "UTF-8"));
-		assertEquals(55, profile.getPredicates().getDatatypeContext().getByNameOrByIDs().size());
-		assertEquals(4, profile.getPredicates().getSegmentContext().getByNameOrByIDs().size());
-		assertEquals(15, profile.getConformanceStatements().getDatatypeContext().getByNameOrByIDs().size());
-		assertEquals(5, profile.getConformanceStatements().getSegmentContext().getByNameOrByIDs().size()); 
+		assertEquals(55, profile.getPredicates().getDatatypes().getByNameOrByIDs().size());
+		assertEquals(4, profile.getPredicates().getSegments().getByNameOrByIDs().size());
+		assertEquals(15, profile.getConformanceStatements().getDatatypes().getByNameOrByIDs().size());
+		assertEquals(5, profile.getConformanceStatements().getSegments().getByNameOrByIDs().size()); 
 		assertEquals(1, profile.getMessages().getMessages().size()); 
     }
 }

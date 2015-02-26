@@ -25,15 +25,15 @@ public class ConformanceContext implements Serializable, Cloneable {
 
 	@OneToOne(optional = false)
 	@JoinColumn(unique = true)
-	private Context datatypeContext;
+	private Context datatypes;
 
 	@OneToOne(optional = false)
 	@JoinColumn(unique = true)
-	private Context segmentContext;
+	private Context segments;
 
 	@OneToOne(optional = false)
 	@JoinColumn(unique = true)
-	private Context groupContext;
+	private Context groups;
 
 	public Long getId() {
 		return id;
@@ -51,45 +51,48 @@ public class ConformanceContext implements Serializable, Cloneable {
 		this.metaData = metaData;
 	}
 
-	public Context getDatatypeContext() {
-		return datatypeContext;
+	 
+
+	 
+	public Context getDatatypes() {
+		return datatypes;
 	}
 
-	public void setDatatypeContext(Context datatypeContext) {
-		this.datatypeContext = datatypeContext;
+	public void setDatatypes(Context datatypes) {
+		this.datatypes = datatypes;
 	}
 
-	public Context getSegmentContext() {
-		return segmentContext;
+	public Context getSegments() {
+		return segments;
 	}
 
-	public void setSegmentContext(Context segmentContext) {
-		this.segmentContext = segmentContext;
+	public void setSegments(Context segments) {
+		this.segments = segments;
 	}
 
-	public Context getGroupContext() {
-		return groupContext;
+	public Context getGroups() {
+		return groups;
 	}
 
-	public void setGroupContext(Context groupContext) {
-		this.groupContext = groupContext;
+	public void setGroups(Context groups) {
+		this.groups = groups;
 	}
 
 	@Override
 	public String toString() {
 		return "ConformanceContext [id=" + id + ", metaData=" + metaData
-				+ ", datatypeContext=" + datatypeContext + ", segmentContext="
-				+ segmentContext + ", groupContext=" + groupContext + "]";
+				+ ", datatypeContext=" + datatypes + ", segmentContext="
+				+ segments + ", groupContext=" + groups + "]";
 	}
 	
 	@Override
     public ConformanceContext clone() throws CloneNotSupportedException {
 		ConformanceContext clonedConformanceContext = (ConformanceContext) super.clone();
-		clonedConformanceContext.setDatatypeContext(datatypeContext.clone());
-		clonedConformanceContext.setGroupContext(groupContext.clone());
+		clonedConformanceContext.setDatatypes(datatypes.clone());
+		clonedConformanceContext.setGroups(groups.clone());
 		clonedConformanceContext.setId(null);
 		clonedConformanceContext.setMetaData(metaData.clone());
-		clonedConformanceContext.setSegmentContext(segmentContext.clone());
+		clonedConformanceContext.setSegments(segments.clone());
         return clonedConformanceContext;
     }
 }

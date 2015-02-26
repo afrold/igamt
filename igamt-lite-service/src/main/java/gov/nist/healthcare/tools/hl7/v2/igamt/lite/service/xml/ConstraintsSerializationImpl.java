@@ -102,21 +102,21 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 		e.appendChild(metaData_Elm);
 
 		nu.xom.Element dataType_Elm = new nu.xom.Element("Datatype");
-		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getDatatypeContext().getByNameOrByIDs()){
+		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getDatatypes().getByNameOrByIDs()){
 			nu.xom.Element dataTypeConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
 			if(dataTypeConstaint != null) dataType_Elm.appendChild(dataTypeConstaint);
 		}
 		e.appendChild(dataType_Elm);
 		
 		nu.xom.Element segment_Elm = new nu.xom.Element("Segment");
-		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getSegmentContext().getByNameOrByIDs()){
+		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getSegments().getByNameOrByIDs()){
 			nu.xom.Element segmentConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
 			if(segmentConstaint != null) segment_Elm.appendChild(segmentConstaint);
 		}
 		e.appendChild(segment_Elm);
 		
 		nu.xom.Element group_Elm = new nu.xom.Element("Group");
-		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getGroupContext().getByNameOrByIDs()){
+		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getGroups().getByNameOrByIDs()){
 			nu.xom.Element groupConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
 			if(groupConstaint != null) group_Elm.appendChild(groupConstaint);
 		}
@@ -295,9 +295,9 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 		this.deserializeXMLToContext((Element)elmConformanceContext.getElementsByTagName("Segment").item(0), segmentContextObj);
 		this.deserializeXMLToContext((Element)elmConformanceContext.getElementsByTagName("Group").item(0), groupContextObj);
 		
-		conformanceContext.setDatatypeContext(datatypeContextObj);
-		conformanceContext.setSegmentContext(segmentContextObj);
-		conformanceContext.setGroupContext(groupContextObj);
+		conformanceContext.setDatatypes(datatypeContextObj);
+		conformanceContext.setSegments(segmentContextObj);
+		conformanceContext.setGroups(groupContextObj);
 		
 	}
 

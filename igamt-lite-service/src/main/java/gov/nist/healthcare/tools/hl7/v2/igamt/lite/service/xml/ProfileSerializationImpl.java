@@ -174,8 +174,8 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		//[Woo] I assumed the default name could be base name.
 		datatypeObj.setLabel(elmDatatype.getAttribute("Name"));
 		datatypeObj.setName(elmDatatype.getAttribute("Name"));
-		datatypeObj.setPredicates(this.findConstraints(profile.getPredicates().getDatatypeContext(), elmDatatype.getAttribute("ID")));
-		datatypeObj.setConformanceStatements(this.findConstraints(profile.getConformanceStatements().getDatatypeContext(), elmDatatype.getAttribute("ID")));
+		datatypeObj.setPredicates(this.findConstraints(profile.getPredicates().getDatatypes(), elmDatatype.getAttribute("ID")));
+		datatypeObj.setConformanceStatements(this.findConstraints(profile.getConformanceStatements().getDatatypes(), elmDatatype.getAttribute("ID")));
 		
 		NodeList nodes = elmDatatype.getChildNodes();
 		for(int i=0; i < nodes.getLength(); i++){
@@ -411,8 +411,8 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		//[Woo] I assumed the default name could be base name.
 		segmentObj.setLabel(segmentElm.getAttribute("Name"));
 		segmentObj.setName(segmentElm.getAttribute("Name"));
-		segmentObj.setPredicates(this.findConstraints(profile.getPredicates().getSegmentContext(), segmentElm.getAttribute("ID")));
-		segmentObj.setConformanceStatements(this.findConstraints(profile.getConformanceStatements().getSegmentContext(), segmentElm.getAttribute("ID")));
+		segmentObj.setPredicates(this.findConstraints(profile.getPredicates().getSegments(), segmentElm.getAttribute("ID")));
+		segmentObj.setConformanceStatements(this.findConstraints(profile.getConformanceStatements().getSegments(), segmentElm.getAttribute("ID")));
 		
 		NodeList fields = segmentElm.getElementsByTagName("Field");
 		for(int i=0; i<fields.getLength(); i++){
