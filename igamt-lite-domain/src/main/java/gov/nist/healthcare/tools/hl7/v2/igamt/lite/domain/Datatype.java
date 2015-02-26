@@ -37,7 +37,7 @@ public class Datatype implements java.io.Serializable {
 	private String label;
 
 	@JsonProperty("children")
-	@OneToMany(mappedBy = "belongTo", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "belongTo",cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	@OrderColumn(name = "position", nullable = true)
 	private final Set<Component> components = new LinkedHashSet<Component>();
 

@@ -19,7 +19,14 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * 
+ * @author Harold Affo (harold.affo@nist.gov)
+ * Feb 26, 2015
+ * 
+ */
 @Entity
+@javax.persistence.Table(name="IGTable")
 public class Table implements Serializable {
 
 	/**

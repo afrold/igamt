@@ -24,13 +24,9 @@ public class Messages implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
- 	@OneToMany(mappedBy = "messages", cascade = CascadeType.ALL)
+ 	@OneToMany(mappedBy = "messages")
 	private Set<Message> messages = new HashSet<Message>();
-
- 	@JsonIgnore
- 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Profile profile;
-
+ 
 	public Long getId() {
 		return id;
 	}
@@ -47,13 +43,6 @@ public class Messages implements java.io.Serializable {
 		this.messages = messages;
 	}
 
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
 
 	public void addMessage(Message m) {
 		if (m.getMessages() != null) {

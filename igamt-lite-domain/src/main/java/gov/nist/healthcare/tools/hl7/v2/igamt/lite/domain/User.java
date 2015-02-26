@@ -28,11 +28,8 @@ public class User implements Serializable, Cloneable{
 	@Column(nullable = false)
 	private String lastname;
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private UserAccount userAccount;
-
-	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-	private Author author;
 
 	public Long getId() {
 		return id;

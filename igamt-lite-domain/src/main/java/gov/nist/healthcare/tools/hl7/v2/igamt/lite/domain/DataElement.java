@@ -39,7 +39,7 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
 	protected String name;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(name = "usagee", nullable = false) // usage is a key word in mysql
 	@Enumerated(EnumType.STRING)
 	protected Usage usage;
 
@@ -52,7 +52,7 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
 
 	protected String confLength;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@OneToOne(optional = true)
 	@JoinColumn(name="DATAELEMENT_TABLE")
  	protected Table table;
 	
@@ -64,7 +64,7 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
 	
 
  	@JsonIgnoreProperties({"components", "label", "name","description","predicates","conformanceStatements","datatypes"})
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@OneToOne(optional = false)
 	protected Datatype datatype;
 	
 

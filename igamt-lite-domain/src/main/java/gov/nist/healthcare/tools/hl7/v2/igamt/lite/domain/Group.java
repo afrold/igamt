@@ -20,7 +20,7 @@ public class Group extends SegmentRefOrGroup {
 		type = Constant.GROUP;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany
 	@OrderColumn(name = "position", nullable = false)
 	private Set<SegmentRefOrGroup> segmentsOrGroups = new LinkedHashSet<SegmentRefOrGroup>();
 

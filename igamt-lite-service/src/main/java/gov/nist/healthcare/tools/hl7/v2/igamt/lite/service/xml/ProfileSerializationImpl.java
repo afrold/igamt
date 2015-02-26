@@ -376,7 +376,6 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 				
 				messages.add(messageObj);
 			}
-			messagesObj.setProfile(profile);
 			messagesObj.setMessages(messages);
 			profile.setMessages(messagesObj);
 		}

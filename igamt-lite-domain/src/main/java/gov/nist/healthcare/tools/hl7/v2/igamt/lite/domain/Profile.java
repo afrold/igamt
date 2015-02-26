@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
  
@@ -41,32 +42,26 @@ public class Profile implements java.io.Serializable, Cloneable {
 
 	private Encodings encodings;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(unique = true)
+	@OneToOne(optional = false)
 	private Segments segments;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(unique = true)
+	@OneToOne(optional = false)
 	private Datatypes datatypes;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(unique = true)
+	@OneToOne(optional = false)
 	private Messages messages;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(unique = true)
+	@OneToOne(optional = false)
 	private ConformanceContext conformanceStatements;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(unique = true)
+	@OneToOne(optional = false)
 	private ConformanceContext predicates;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
-	@JoinColumn(unique = true)
+	@OneToOne(optional = false)
 	private TableLibrary tableLibrary;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(unique = true)
 	private Author author;
 
 	@JsonView({View.Summary.class})
@@ -130,8 +125,7 @@ public class Profile implements java.io.Serializable, Cloneable {
 
 	public void setSegments(Segments segments) {
 		this.segments = segments;
-		this.segments.setProfile(this);
-	}
+ 	}
 
 	public Datatypes getDatatypes() {
 		return datatypes;
@@ -139,8 +133,7 @@ public class Profile implements java.io.Serializable, Cloneable {
 
 	public void setDatatypes(Datatypes datatypes) {
 		this.datatypes = datatypes;
-		this.datatypes.setProfile(this);
-	}
+ 	}
 
 	public Messages getMessages() {
 		return messages;
@@ -148,8 +141,7 @@ public class Profile implements java.io.Serializable, Cloneable {
 
 	public void setMessages(Messages messages) {
 		this.messages = messages;
-		this.messages.setProfile(this);
-	}
+ 	}
 
 	public ConformanceContext getConformanceStatements() {
 		return conformanceStatements;
@@ -224,8 +216,7 @@ public class Profile implements java.io.Serializable, Cloneable {
 		clonedProfile.setAuthor(this.author.clone());
 		clonedProfile.setConformanceStatements(this.conformanceStatements.clone());
 		clonedProfile.setDatatypes(this.datatypes.clone());
-		clonedProfile.getDatatypes().setProfile(this);		
-//		clonedProfile.setEncodings(this.encodings.clone());
+ //		clonedProfile.setEncodings(this.encodings.clone());
 		clonedProfile.setHl7Version(this.hl7Version);
 //		clonedProfile.setMessages(this.messages.clone());
 //		clonedProfile.setMetaData(this.metaData.clone());

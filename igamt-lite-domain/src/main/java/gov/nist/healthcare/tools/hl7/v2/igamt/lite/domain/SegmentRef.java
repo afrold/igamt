@@ -19,7 +19,7 @@ public class SegmentRef extends SegmentRefOrGroup {
 	}
 	
  	@JsonIgnoreProperties({"fields", "label","dynamicMappings", "name","description","predicates","conformanceStatements","segments"})
- 	@OneToOne(cascade = CascadeType.ALL)
+ 	@OneToOne
  	private Segment segment;
 
 	public Segment getSegment() {

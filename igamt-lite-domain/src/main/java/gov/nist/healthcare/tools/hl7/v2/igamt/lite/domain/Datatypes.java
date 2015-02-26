@@ -23,12 +23,9 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToMany(mappedBy = "datatypes", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "datatypes")
 	private final Set<Datatype> datatypes = new HashSet<Datatype>();
 
-	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Profile profile;
 
 	public Long getId() {
 		return id;
@@ -42,13 +39,6 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return datatypes;
 	}
 
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
 
 	public void addDatatype(Datatype d) {
 		if (d.getDatatypes() != null) {

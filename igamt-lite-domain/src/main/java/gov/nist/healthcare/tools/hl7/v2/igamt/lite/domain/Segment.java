@@ -40,11 +40,11 @@ public class Segment extends DataModel implements java.io.Serializable {
 	@Column(nullable = false)
 	private String label;
 
- 	@OneToMany(mappedBy = "segment", cascade = CascadeType.ALL)
+ 	@OneToMany(mappedBy = "segment",cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	@OrderColumn(name = "position", nullable = false)
 	private final Set<Field> fields = new LinkedHashSet<Field>();
 
- 	@OneToMany(mappedBy = "segment", cascade = CascadeType.ALL)
+ 	@OneToMany(mappedBy = "segment",cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	@OrderColumn(name = "position", nullable = false)
 	private final Set<DynamicMapping> dynamicMappings = new LinkedHashSet<DynamicMapping>();
 	
@@ -55,11 +55,11 @@ public class Segment extends DataModel implements java.io.Serializable {
  	@Column(nullable = true)
 	private String description;
 	
-  	@OneToMany(cascade = CascadeType.ALL)
+  	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
  	@JoinTable(name = "Segment_Predicate", joinColumns = @JoinColumn(name = "Segment"), inverseJoinColumns = @JoinColumn(name = "Predicate"))
 	protected Set<Constraint> predicates = new HashSet<Constraint>();
 
- 	@OneToMany(cascade = CascadeType.ALL)
+ 	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
  	@JoinTable(name = "Segment_ConformanceStatement", joinColumns = @JoinColumn(name = "Segment"), inverseJoinColumns = @JoinColumn(name = "ConformanceStatement"))
 	protected Set<Constraint> conformanceStatements = new HashSet<Constraint>();
 

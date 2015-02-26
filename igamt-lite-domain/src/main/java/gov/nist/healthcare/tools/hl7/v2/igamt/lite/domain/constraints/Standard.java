@@ -8,13 +8,14 @@ import javax.validation.constraints.NotNull;
 public class Standard implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
-
-	@NotNull
-	@Column(nullable = false)
+	
+	//TODO: WOO, please fix.
+//	@NotNull
+//	@Column(nullable = false)
 	private String standardId;
 
-	@NotNull
-	@Column(nullable = false)
+//	@NotNull
+//	@Column(nullable = false)
 	private String standardVersion;
 
 	private String standardDate;

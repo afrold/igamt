@@ -27,9 +27,6 @@ public class Author implements java.io.Serializable , Cloneable{
 	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	private User user;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
-	private Set<Profile> profiles = new HashSet<Profile>();
 
 	public Long getId() {
 		return id;
@@ -47,20 +44,11 @@ public class Author implements java.io.Serializable , Cloneable{
 		this.user = user;
 	}
 
-	public Set<Profile> getProfiles() {
-		return profiles;
-	}
-
-	public void setProfiles(Set<Profile> profiles) {
-		this.profiles = profiles;
-	}
-	
 	@Override
     public Author clone() throws CloneNotSupportedException {
 		Author clonedAuthor = (Author) super.clone();
 		clonedAuthor.setId(null);
-		clonedAuthor.setProfiles(new HashSet<Profile>(this.profiles));
-		clonedAuthor.setUser(user.clone());
+ 		clonedAuthor.setUser(user.clone());
         return clonedAuthor;
     }
 

@@ -27,10 +27,6 @@ public class UserAccount implements Serializable {
 
 	private String email;
 
-	@JsonIgnore
-	@OneToOne(optional = false, fetch = FetchType.LAZY)
-	private User user;
-
 	public String getUsername() {
 		return username;
 	}
@@ -46,14 +42,7 @@ public class UserAccount implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
+ 
 
 	public Long getId() {
 		return id;

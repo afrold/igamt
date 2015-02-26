@@ -23,15 +23,15 @@ public class ConformanceContext implements Serializable, Cloneable {
 
 	private ConstraintMetaData metaData;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@OneToOne(optional = false)
 	@JoinColumn(unique = true)
 	private Context datatypeContext;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@OneToOne(optional = false)
 	@JoinColumn(unique = true)
 	private Context segmentContext;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL)
+	@OneToOne(optional = false)
 	@JoinColumn(unique = true)
 	private Context groupContext;
 

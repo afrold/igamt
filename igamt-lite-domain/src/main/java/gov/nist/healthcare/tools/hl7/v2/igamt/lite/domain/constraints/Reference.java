@@ -12,7 +12,7 @@ public class Reference implements java.io.Serializable,Cloneable {
 	
 	private String chapter;
 	private String section;
-	private int page;
+	private Integer page;
 	private String url;
 	
 	public String getChapter() {
@@ -27,10 +27,10 @@ public class Reference implements java.io.Serializable,Cloneable {
 	public void setSection(String section) {
 		this.section = section;
 	}
-	public int getPage() {
+	public Integer getPage() {
 		return page;
 	}
-	public void setPage(int page) {
+	public void setPage(Integer page) {
 		this.page = page;
 	}
 	public String getUrl() {

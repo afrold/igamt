@@ -23,11 +23,11 @@ public class Tables implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToMany(mappedBy = "tables", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "tables")
 	private Set<Table> tables = new HashSet<Table>();
 
 	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY)
 	private TableLibrary tableLibrary;
 
 	public Long getId() {

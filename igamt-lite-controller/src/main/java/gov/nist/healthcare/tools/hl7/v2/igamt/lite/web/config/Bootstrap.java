@@ -10,6 +10,8 @@
  */
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
@@ -25,11 +27,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class Bootstrap implements InitializingBean {
 
-	private final Logger logger = LoggerFactory.getLogger(Bootstrap.class);
-	
-	@Autowired	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Autowired
 	ProfileRepository profileRepository;
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -37,14 +39,24 @@ public class Bootstrap implements InitializingBean {
 	 * org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
 	@Override
+	@Transactional()
 	public void afterPropertiesSet() throws Exception {
-		
+		String p = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/profiles/vxu/Profile.xml"));
+		String v = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/profiles/vxu/ValueSets.xml"));
+		String pc = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/profiles/vxu/PredicateConstraints.xml"));
+		String cs = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/profiles/vxu/ConformanceStatementConstraints.xml"));
 		// load VXU profile
-		Profile profile = new ProfileSerializationImpl().deserializeXMLToProfile(IOUtils.toString(this.getClass().getResourceAsStream("/profiles/vxu/Profile.xml"), "UTF-8"),
-				IOUtils.toString(this.getClass().getResourceAsStream("/profiles/vxu/ValueSets.xml"), "UTF-8"),
-				IOUtils.toString(this.getClass().getResourceAsStream("/profiles/vxu/PredicateConstraints.xml"), "UTF-8"),
-				IOUtils.toString(this.getClass().getResourceAsStream("/profiles/vxu/ConformanceStatementConstraints.xml"), "UTF-8"));
+		Profile profile = new ProfileSerializationImpl()
+				.deserializeXMLToProfile(p, v, pc, cs);
 		
+		profileRepository.saveAndFlush(profile);
+		
+		System.out.println(profile.getId());
+
 	}
 
 }

@@ -25,12 +25,8 @@ public class Segments implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
- 	@OneToMany(mappedBy = "segments", cascade = CascadeType.ALL)
+ 	@OneToMany(mappedBy = "segments")
 	private final Set<Segment> segments = new HashSet<Segment>();
-
- 	@JsonIgnore
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private Profile profile;
 
 	public Long getId() {
 		return id;
@@ -42,14 +38,6 @@ public class Segments implements java.io.Serializable {
 
 	public Set<Segment> getSegments() {
 		return segments;
-	}
-
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
 	}
 
 	public void addSegment(Segment s) {

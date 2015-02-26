@@ -7,9 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name="IGConstraint") // Constraint is a keyword
 public class Constraint implements Serializable, Cloneable {
 
 	/**
@@ -34,7 +36,7 @@ public class Constraint implements Serializable, Cloneable {
 	private String description;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "LONGTEXT")
 	private String assertion;
 
 	public Long getId() {

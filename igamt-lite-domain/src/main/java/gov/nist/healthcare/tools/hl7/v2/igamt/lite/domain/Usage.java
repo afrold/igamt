@@ -12,9 +12,8 @@ public enum Usage {
 		try{
 			return valueOf(v);
 		}catch (IllegalArgumentException e){
-			return valueOf("C");
+			return valueOf("C"); // ????
 		}
-		
 	}
 
 }
