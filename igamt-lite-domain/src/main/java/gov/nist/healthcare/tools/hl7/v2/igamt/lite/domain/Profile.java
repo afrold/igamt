@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,6 +21,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
  
 @Entity
+@Table(name="PROFILE")
 public class Profile implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -26,15 +29,19 @@ public class Profile implements java.io.Serializable, Cloneable {
 	@JsonView({View.Summary.class })
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="ID")
 	private Long id;
 
 	@JsonView({View.Summary.class})
+	@Column(name="TYPE")
  	private String type;
 
 	@JsonView({View.Summary.class})
+	@Column(name="HL7VERSION")
 	private String hl7Version;
 
 	@JsonView({View.Summary.class})
+	@Column(name="SCHEMAVERSION")
 	private String schemaVersion;
 
 	@JsonView({View.Summary.class})
@@ -42,32 +49,41 @@ public class Profile implements java.io.Serializable, Cloneable {
 
 	private Encodings encodings;
 
-	@OneToOne(optional = false)
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="SEGMENTS_ID")
 	private Segments segments;
 
-	@OneToOne(optional = false)
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="DATATYTPES_ID")
 	private Datatypes datatypes;
 
-	@OneToOne(optional = false)
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="MESSAGES_ID")
 	private Messages messages;
 
-	@OneToOne(optional = false)
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="CONFSTATEMENTS_ID")
 	private ConformanceContext conformanceStatements;
 
-	@OneToOne(optional = false)
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="PREDICATES_ID")
 	private ConformanceContext predicates;
 
-	@OneToOne(optional = false)
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="TABLELIBRARY_ID")
 	private TableLibrary tableLibrary;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="AUTHOR_ID")
 	private Author author;
 
 	@JsonView({View.Summary.class})
+	@Column(name="PRELOADED")
  	private Boolean preloaded; 
  	
  	@JsonView({View.Summary.class})
+ 	@Column(name="VERSION")
  	@Version // version from the db
   	private Integer version;
 	

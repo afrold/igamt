@@ -4,28 +4,32 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="CONTEXT")
 public class Context implements Serializable, Cloneable {
 
-	/**
-	 * 
-	 */
+ 
 	private static final long serialVersionUID = -3037628238620317355L;
 
 	@Id
+	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToMany
-	@JoinTable(name = "Context_ByNameOrByID", joinColumns = @JoinColumn(name = "Context"), inverseJoinColumns = @JoinColumn(name = "ByNameOrByID"))
+	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinTable(name = "CONTEXT_BYNAMEORBYID", joinColumns = @JoinColumn(name = "CONTEXT"), inverseJoinColumns = @JoinColumn(name = "BYNAMEORBYID"))
 	private Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
 
 	public Long getId() {

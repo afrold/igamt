@@ -35,7 +35,7 @@ public class ComponentService {
 	}
 
 	public Component save(Component c) {
-		return componentRepository.save(c);
+		return componentRepository.saveAndFlush(c);
 	}
 
 	public void delete(Long id) {

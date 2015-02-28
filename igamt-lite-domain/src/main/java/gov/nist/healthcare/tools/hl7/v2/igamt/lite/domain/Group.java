@@ -6,11 +6,14 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name="GROUPE") // GROUP is a keyword
 public class Group extends SegmentRefOrGroup {
 
 	private static final long serialVersionUID = 1L;
@@ -20,12 +23,12 @@ public class Group extends SegmentRefOrGroup {
 		type = Constant.GROUP;
 	}
 	
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = false)
 	private Set<SegmentRefOrGroup> segmentsOrGroups = new LinkedHashSet<SegmentRefOrGroup>();
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false, name="GROUP_NAME")
 	private String name;
 
 	public Set<SegmentRefOrGroup> getSegmentsOrGroups() {

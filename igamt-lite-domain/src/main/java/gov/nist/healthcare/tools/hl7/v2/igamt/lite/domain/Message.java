@@ -10,43 +10,48 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
+@Table(name="MESSAGE")
 public class Message implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
+	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false, name="TYPE")
 	private String type;
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false, name="EVENT")
 	private String event;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false, name="STRUCTID")
 	private String structID;
 
-	@Column(nullable = true)
+	@Column(nullable = true, name="MESSAGE_DESC")
 	private String description;
 
 	@JsonProperty("children")
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = false)
 	private Set<SegmentRefOrGroup> segmentRefOrGroups = new LinkedHashSet<SegmentRefOrGroup>();
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="MESSAGES_ID")
 	private Messages messages;
 
 	public Long getId() {

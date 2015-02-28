@@ -17,36 +17,40 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name="DYNAMIC_MAPPING")
 public class DynamicMapping implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
 
 	@Min(1)
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false,name="MIN")
 	private BigInteger min;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false,name="MAX")
 	private String max;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="SEGMENT_ID")
 	private Segment segment;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = true)
-	@JoinTable(name = "DymanicMapping_Mapping", joinColumns = @JoinColumn(name = "DymanicMapping"), inverseJoinColumns = @JoinColumn(name = "Mapping"))
+	@JoinTable(name = "DYNAMIC_MAPPING_MAPPING", joinColumns = @JoinColumn(name = "DYNAMIC_MAPPING"), inverseJoinColumns = @JoinColumn(name = "MAPPING"))
 	protected Set<Mapping> mapping = new LinkedHashSet<Mapping>();
 
 	public Long getId() {

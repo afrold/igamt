@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ConformanceProfile ID="3c01c5a1-52ff-4dd4-9af1-db0e8030c351">
+<ConformanceProfile ID="3c01c5a1-52ff-4dd4-9af1-db0e8030c351" Type="Constrainable" HL7Version="2.5.1" SchemaVersion="2.5"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="file:///home/malick/projects/nist/hl7-tools/v2-tools/profile/src/test/resources/Profile.xsd"
+	>
+	<MetaData Name="VXU_V01" OrgName="NIST" Version="" Status="Draft" Topics="Undefined"/>
+	
+ 	<Encodings>
+		<Encoding>ER7</Encoding>
+		<Encoding>XML</Encoding>
+	</Encodings>
     <Messages>
         <Message ID="19c96eb3-785a-4542-9555-4107307b5981" Type="VXU" Event="V04" StructID="VXU_V04" Description="Unsolicited vaccination record update">
             <Segment Ref="8dfae017-9261-46e0-98f9-d1bea58734af" Usage="R" Min="1" Max="1"/>

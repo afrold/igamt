@@ -17,13 +17,18 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
+import java.util.Iterator;
+
+import org.hibernate.mapping.Set;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypesRepository;
-
 
 @Service
 public class DatatypesService {
@@ -31,18 +36,60 @@ public class DatatypesService {
 	@Autowired
 	private DatatypesRepository datatypesRepository;
 
-	public Iterable<Datatypes> findAll() {
-		return datatypesRepository.findAll();
+	@Autowired
+	private DatatypeService datatypeService;
+
+	@Autowired
+	private ComponentService componentService;
+
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	@Transactional()
+	public Datatypes save(Datatypes ds) {
+		datatypesRepository.saveAndFlush(ds);
+		java.util.Set<Datatype> datatypes = ds.getDatatypes();
+		if (datatypes != null) {
+			Iterator<Datatype> it = datatypes.iterator();
+			while (it.hasNext()) {
+				Datatype d = it.next();
+ 				datatypeService.save(d);
+				System.out.println("Datatype."+ d.getId() + "-" + d.getName());
+			}
+			
+			it = datatypes.iterator();
+			while (it.hasNext()) {
+				Datatype d = it.next();
+				java.util.Set<Component> components = d.getComponents();
+				if (components != null && !components.isEmpty()) {
+					Iterator<Component> cIt = components.iterator();
+					while (cIt.hasNext()) {
+						Component c = cIt.next();
+						componentService.save(c);
+						System.out.println("Comp." + c.getId() + "-" +   c.getName());
+					}
+				}
+			}
+
+		}
+		return ds;
 	}
 
-	public Datatypes save(Datatypes p) {
-		return datatypesRepository.save(p);
-	}
-
+	/**
+	 * 
+	 * @param id
+	 */
 	public void delete(Long id) {
 		datatypesRepository.delete(id);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public Datatypes findOne(Long id) {
 		return datatypesRepository.findOne(id);
 	}

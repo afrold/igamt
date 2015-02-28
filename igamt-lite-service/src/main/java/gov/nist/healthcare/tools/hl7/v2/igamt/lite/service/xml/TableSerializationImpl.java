@@ -115,11 +115,8 @@ public class TableSerializationImpl implements TableSerialization{
 			
 			
 			tables.addTable(tableObj);
-		}
-		
-		tables.setTableLibrary(tableLibrary);
+		}		
 		tableLibrary.setTables(tables);
-		
 	}
 	
 

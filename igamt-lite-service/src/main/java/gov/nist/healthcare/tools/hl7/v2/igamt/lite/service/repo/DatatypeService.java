@@ -18,6 +18,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ComponentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +29,15 @@ public class DatatypeService {
 
 	@Autowired
 	private DatatypeRepository datatypeRepository;
+	
+	
 
 	public Iterable<Datatype> findAll() {
 		return datatypeRepository.findAll();
 	}
 
 	public Datatype save(Datatype p) {
-		return datatypeRepository.save(p);
+		return datatypeRepository.saveAndFlush(p);
 	}
 
 	public void delete(Long id) {

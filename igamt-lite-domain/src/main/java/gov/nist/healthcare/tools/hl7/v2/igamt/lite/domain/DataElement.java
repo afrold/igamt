@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,46 +26,52 @@ import org.hibernate.annotations.Filters;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
+@javax.persistence.Table(name="DATAELEMENT")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class DataElement extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	protected Long id;
 
 	@NotNull
-	@Column(nullable = false)
+ 	@Column(nullable = false,name="DATAELEMENT_NAME")
 	protected String name;
 
 	@NotNull
-	@Column(name = "usagee", nullable = false) // usage is a key word in mysql
+	@Column(name = "USAGEE", nullable = false) // usage is a key word in mysql
 	@Enumerated(EnumType.STRING)
 	protected Usage usage;
 
-	@Min(1)
+	@Min(0)
+	@Column(name="MIN_LENGTH")
 	protected BigInteger minLength;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false,name="MAX_LENGTH")
 	protected String maxLength;
 
+	@Column(name="CONF_LENGTH")
 	protected String confLength;
 
-	@OneToOne(optional = true)
-	@JoinColumn(name="DATAELEMENT_TABLE")
+ 	@JsonIgnoreProperties({"name", "mappingAlternateId", "mappingId", "version","codesys","oid","type","codes"})
+	@OneToOne(optional = true,fetch = FetchType.EAGER)
+	@JoinColumn(name="TABLE_ID")
  	protected Table table;
 	
-	@Column(nullable = true)
-	protected String bindingStrength;
+	@Column(nullable = true,name="BINDING_STRENGTH")
+ 	protected String bindingStrength;
 	
-	@Column(nullable = true)
+	@Column(nullable = true,name="BINDING_LOCATION")
 	protected String bindingLocation;
 	
 
  	@JsonIgnoreProperties({"components", "label", "name","description","predicates","conformanceStatements","datatypes"})
-	@OneToOne(optional = false)
+	@OneToOne(fetch = FetchType.EAGER)
+ 	@JoinColumn(name="DATATYPE_ID")
 	protected Datatype datatype;
 	
 

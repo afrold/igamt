@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,18 +14,22 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
  
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
+@Table(name="MESSAGES")
 public class Messages implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
  	@Id
+ 	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
- 	@OneToMany(mappedBy = "messages")
+ 	@OneToMany(mappedBy = "messages",fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	private Set<Message> messages = new HashSet<Message>();
  
 	public Long getId() {

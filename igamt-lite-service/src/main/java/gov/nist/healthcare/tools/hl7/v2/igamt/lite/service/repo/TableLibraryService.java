@@ -17,33 +17,54 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceContext;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConformanceContextRepository;
+import java.util.Iterator;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.mapping.Set;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.*;
+
 
 @Service
-public class ConformanceContextService {
+public class TableLibraryService {
 
 	@Autowired
-	private ConformanceContextRepository conformanceContextRepository;
+	private TableLibraryRepository tableLibraryRepository;
 
-	public Iterable<ConformanceContext> findAll() {
-		return conformanceContextRepository.findAll();
+
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	@Transactional()
+	public TableLibrary save(TableLibrary t) {
+		tableLibraryRepository.saveAndFlush(t);
+		return t;
 	}
 
-	public ConformanceContext save(ConformanceContext p) {
-		return conformanceContextRepository.saveAndFlush(p);
-	}
-
+	/**
+	 * 
+	 * @param id
+	 */
 	public void delete(Long id) {
-		conformanceContextRepository.delete(id);
+		tableLibraryRepository.delete(id);
 	}
 
-	public ConformanceContext findOne(Long id) {
-		return conformanceContextRepository.findOne(id);
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public TableLibrary findOne(Long id) {
+		return tableLibraryRepository.findOne(id);
 	}
 
 }

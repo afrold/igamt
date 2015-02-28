@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,9 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name="MAPPING")
 public class Mapping implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -24,13 +27,15 @@ public class Mapping implements Serializable {
 	protected Long id;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "Mapping_Case", joinColumns = @JoinColumn(name = "Mapping"), inverseJoinColumns = @JoinColumn(name = "Case"))
+	@JoinTable(name = "MAPPING_CASE", joinColumns = @JoinColumn(name = "MAPPING"), inverseJoinColumns = @JoinColumn(name = "CASE"))
 	protected List<Case> cases = new ArrayList<Case>();
 
 	@NotNull
+	@Column(name="POSITION")
 	protected Integer position;
 
 	@NotNull
+	@Column(name="REFERENCE")
 	protected Integer reference;
 
 	public Long getId() {

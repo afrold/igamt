@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * 
  */
 @Entity
-@javax.persistence.Table(name="IGTable")
+@javax.persistence.Table(name="IGTABLE")
 public class Table implements Serializable {
 
 	/**
@@ -35,31 +35,34 @@ public class Table implements Serializable {
 	private static final long serialVersionUID = 734059059225906039L;
 
 	@Id
+	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@Column(name="MAPPING_ALTERNATE_ID")
 	private String mappingAlternateId;
 
 	@NotNull
-	@Column(nullable = false)
+ 	@Column(nullable = false,name="MAPPING_ID")
 	private String mappingId;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false,name="NAME")
 	private String name;
 
+	@Column(name="VERSION")
 	private int version;
+	@Column(name="CODESYS")
 	private String codesys;
+	@Column(name="OID")
 	private String oid;
+	@Column(name="TYPE")
 	private String type;
 
-	@OneToMany(cascade = CascadeType.ALL)
-  	@JoinTable(name = "Table_Code", joinColumns = @JoinColumn(name = "Table"), inverseJoinColumns = @JoinColumn(name = "Code"))
+	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+  	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
 	private Set<Code> codes = new HashSet<Code>();
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Tables tables;
 
 	public Long getId() {
 		return id;
@@ -131,14 +134,6 @@ public class Table implements Serializable {
 
 	public void setCodes(Set<Code> codes) {
 		this.codes = codes;
-	}
-
-	public Tables getTables() {
-		return tables;
-	}
-
-	public void setTables(Tables tables) {
-		this.tables = tables;
 	}
 
 	@Override

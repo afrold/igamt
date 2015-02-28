@@ -157,7 +157,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 	}
 	
 	private HashMap<String, Datatype> constructDatatypesMap(Element elmDatatypes, Profile profile) {
-		HashMap<String,Datatype> datatypesMap = new HashMap<String,Datatype>();
+		this.datatypesMap = new HashMap<String,Datatype>();
 		NodeList datatypeNodeList = elmDatatypes.getElementsByTagName("Datatype");
 		
 		for(int i=0; i < datatypeNodeList.getLength(); i++){
@@ -191,7 +191,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 				componentObj.setBelongTo(datatypeObj);
 				componentObj.setBindingLocation(elmComponent.getAttribute("BindingLocation"));
 				componentObj.setBindingStrength(elmComponent.getAttribute("BindingStrength"));
-				componentObj.setDatatype(this.findDatatype(elmComponent.getAttribute("Datatype"), profile, elmDatatypes));
+ 				componentObj.setDatatype(this.findDatatype(elmComponent.getAttribute("Datatype"), profile, elmDatatypes));
 				datatypeObj.getComponents().add(componentObj);
 			}
 		}
@@ -218,13 +218,12 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 	}
 
 	private Datatype findDatatype(String key, Profile profile, Element elmDatatypes) {
+		if(datatypesMap.get(key) != null) return datatypesMap.get(key);
 		NodeList datatypes = elmDatatypes.getElementsByTagName("Datatype");
-		
 		for(int i=0; i<datatypes.getLength(); i++){
 			Element elmDatatype = (Element)datatypes.item(i);
 			if(elmDatatype.getAttribute("ID").equals(key)) return this.deserializeDatatype(elmDatatype, profile, elmDatatypes);
 		}
-		
 		return null;
 	}
 

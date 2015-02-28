@@ -29,7 +29,7 @@ public class MessagesService {
 	}
 
 	public Messages save(Messages c) {
-		return messagesRepository.save(c);
+		return messagesRepository.saveAndFlush(c);
 	}
 
 	public void delete(Long id) {

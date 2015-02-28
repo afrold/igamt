@@ -5,11 +5,15 @@ import java.math.BigInteger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
  
+
+
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Feb 13, 2015
  */
 @Entity
+@Table(name="FIELD")
 public class Field extends DataElement implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -30,23 +35,20 @@ public class Field extends DataElement implements java.io.Serializable {
 		type = Constant.FIELD;
 	}
 	
- 	@Column(nullable = true)
+ 	@Column(nullable = true,name="ITEMNO")
 	private String itemNo;
 
  	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false,name="MIN")
 	private BigInteger min;
 
  	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false,name="MAX")
 	private String max;
-//
-// 	@JsonIgnoreProperties({"components", "label", "name","description","predicates","conformanceStatements","datatypes"})
-// 	@OneToOne(optional = false,insert="false" update="false")
-//	private Datatype datatype;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="SEGMENT_ID")
 	private Segment segment;
 
 	public String getItemNo() {

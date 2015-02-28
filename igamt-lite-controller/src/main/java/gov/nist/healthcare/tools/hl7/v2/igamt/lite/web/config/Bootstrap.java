@@ -12,9 +12,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
 
 import org.apache.commons.io.IOUtils;
@@ -24,13 +24,16 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.*;
 @Service
 public class Bootstrap implements InitializingBean {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	ProfileRepository profileRepository;
+	ProfileService profileService;
+	
+	 
 
 	/*
 	 * (non-Javadoc)
@@ -52,8 +55,9 @@ public class Bootstrap implements InitializingBean {
 		// load VXU profile
 		Profile profile = new ProfileSerializationImpl()
 				.deserializeXMLToProfile(p, v, pc, cs);
+		profileService.save(profile);
 		
-		profileRepository.saveAndFlush(profile);
+//		profileRepository.saveAndFlush(profile);
 		
 		System.out.println(profile.getId());
 

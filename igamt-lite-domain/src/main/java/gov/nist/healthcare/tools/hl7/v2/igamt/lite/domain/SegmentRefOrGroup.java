@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
@@ -18,27 +19,29 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.Filters;
 
 @Entity
+@Table(name="SEGMENTREFORGROUP")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class SegmentRefOrGroup extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	protected Long id;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false,name="USAGEE")
 	@Enumerated(EnumType.STRING)
 	protected Usage usage;
 
 	@NotNull
-	@Min(1)
-	@Column(nullable = false)
+	@Min(0)
+	@Column(nullable = false,name="MIN")
 	protected BigInteger min;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false,name="MAX")
 	protected String max;
 
 	public Long getId() {

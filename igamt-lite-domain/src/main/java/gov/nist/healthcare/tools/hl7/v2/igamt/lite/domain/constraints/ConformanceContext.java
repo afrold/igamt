@@ -3,14 +3,18 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="CONFORMANCECONTEXT")
 public class ConformanceContext implements Serializable, Cloneable {
 
 	/**
@@ -18,21 +22,22 @@ public class ConformanceContext implements Serializable, Cloneable {
 	 */
 	private static final long serialVersionUID = 1051694737992020403L;
 	@Id
+	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	private ConstraintMetaData metaData;
 
-	@OneToOne(optional = false)
-	@JoinColumn(unique = true)
-	private Context datatypes;
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="DATATYPES_ID")
+ 	private Context datatypes;
 
-	@OneToOne(optional = false)
-	@JoinColumn(unique = true)
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@JoinColumn(name="SEGMENTS_ID")
 	private Context segments;
 
-	@OneToOne(optional = false)
-	@JoinColumn(unique = true)
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+ 	@JoinColumn(name="GROUPS_ID")
 	private Context groups;
 
 	public Long getId() {

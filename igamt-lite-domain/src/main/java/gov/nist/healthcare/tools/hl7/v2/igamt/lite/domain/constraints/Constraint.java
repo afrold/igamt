@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="IGConstraint") // Constraint is a keyword
+@Table(name="IGCONSTRAINT") // Constraint is a keyword
 public class Constraint implements Serializable, Cloneable {
 
 	/**
@@ -20,23 +20,25 @@ public class Constraint implements Serializable, Cloneable {
 	private static final long serialVersionUID = 5723342171557075960L;
 
 	@Id
+	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false, name="CONSTRAINT_ID")
 	private String constraintId;
 
+	@Column(name="CONSTRAINT_TAG")
 	private String constraintTag;
 
 	private Reference reference;
 
 	@NotNull
-	@Column(nullable = false)
+ 	@Column(nullable = false,name="CONSTRAINT_DEC") // ?? Should this be removed since there is already  description in reference
 	private String description;
 
 	@NotNull
-	@Column(nullable = false, columnDefinition = "LONGTEXT")
+	@Column(nullable = false, columnDefinition = "LONGTEXT",name="CONSTRAINT_ASSERTION")
 	private String assertion;
 
 	public Long getId() {

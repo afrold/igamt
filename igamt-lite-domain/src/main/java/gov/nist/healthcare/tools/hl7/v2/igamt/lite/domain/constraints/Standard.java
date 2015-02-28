@@ -9,17 +9,22 @@ public class Standard implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 	
-	//TODO: WOO, please fix.
+	//TODO: WOO,can this be null?
 //	@NotNull
 //	@Column(nullable = false)
+	@Column(name="STANDARDID")
 	private String standardId;
 
 //	@NotNull
 //	@Column(nullable = false)
+	@Column(name="STANDARD_VERSION")
 	private String standardVersion;
 
+	@Column(name="STANDARD_DATE")
 	private String standardDate;
+	@Column(name="STANDARD_URL")
 	private String standardURL;
+	@Column(name="STANDARD_DESC")
 	private String standardDescription;
 
 	public String getStandardId() {

@@ -17,33 +17,34 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceContext;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConformanceContextRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.*;
 
 @Service
-public class ConformanceContextService {
+public class SegmentsService {
 
 	@Autowired
-	private ConformanceContextRepository conformanceContextRepository;
+	private SegmentsRepository segmentsRepository;
 
-	public Iterable<ConformanceContext> findAll() {
-		return conformanceContextRepository.findAll();
+	public Iterable<Segments> findAll() {
+		return segmentsRepository.findAll();
 	}
 
-	public ConformanceContext save(ConformanceContext p) {
-		return conformanceContextRepository.saveAndFlush(p);
+	public Segments save(Segments p) {
+		return segmentsRepository.saveAndFlush(p);
 	}
 
 	public void delete(Long id) {
-		conformanceContextRepository.delete(id);
+		segmentsRepository.delete(id);
 	}
 
-	public ConformanceContext findOne(Long id) {
-		return conformanceContextRepository.findOne(id);
+	public Segments findOne(Long id) {
+		return segmentsRepository.findOne(id);
 	}
 
 }

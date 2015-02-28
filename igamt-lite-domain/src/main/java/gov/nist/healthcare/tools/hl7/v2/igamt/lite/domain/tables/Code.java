@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@javax.persistence.Table(name="CODE")
 public class Code implements Serializable {
 	/**
 	 * 
@@ -17,19 +18,22 @@ public class Code implements Serializable {
 	private static final long serialVersionUID = 410373025762745686L;
 
 	@Id
+	@Column(name="ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false, name="CODE")
 	private String code;
 
 	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false, name="LABEL")
 	private String label;
 
+	@Column(name="CODESYS")
 	private String codesys;
 
+	@Column(name="SOURCE")
 	private String source;
 
 	public Long getId() {

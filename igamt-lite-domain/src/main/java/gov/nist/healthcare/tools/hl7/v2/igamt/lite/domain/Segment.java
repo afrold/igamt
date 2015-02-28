@@ -18,11 +18,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 @Entity
+@Table(name="SEGMENT")
 public class Segment extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -32,39 +34,41 @@ public class Segment extends DataModel implements java.io.Serializable {
 		type = Constant.SEGMENT;
 	}
 
+	@Column(name="ID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
  	@NotNull
-	@Column(nullable = false)
+	@Column(nullable = false,name="LABEL")
 	private String label;
 
- 	@OneToMany(mappedBy = "segment",cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+ 	@OneToMany(mappedBy = "segment",fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = false)
 	private final Set<Field> fields = new LinkedHashSet<Field>();
 
- 	@OneToMany(mappedBy = "segment",cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+ 	@OneToMany(mappedBy = "segment",fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@OrderColumn(name = "position", nullable = false)
 	private final Set<DynamicMapping> dynamicMappings = new LinkedHashSet<DynamicMapping>();
 	
 	@NotNull
- 	@Column(nullable = false)
+ 	@Column(nullable = false,name="SEGMENT_NAME")
 	private String name;
 
- 	@Column(nullable = true)
+ 	@Column(nullable = true,name="SEGMENT_DESC")
 	private String description;
 	
-  	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
- 	@JoinTable(name = "Segment_Predicate", joinColumns = @JoinColumn(name = "Segment"), inverseJoinColumns = @JoinColumn(name = "Predicate"))
+  	@OneToMany(fetch = FetchType.EAGER)
+ 	@JoinTable(name = "SEGMENT_PREDICATE", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "PREDICATE"))
 	protected Set<Constraint> predicates = new HashSet<Constraint>();
 
- 	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE})
- 	@JoinTable(name = "Segment_ConformanceStatement", joinColumns = @JoinColumn(name = "Segment"), inverseJoinColumns = @JoinColumn(name = "ConformanceStatement"))
+  	@OneToMany(fetch = FetchType.EAGER)
+ 	@JoinTable(name = "SEGMENT_CONFSTATEMENT", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT"))
 	protected Set<Constraint> conformanceStatements = new HashSet<Constraint>();
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="SEGMENTS_ID")
 	private Segments segments;
 
 	public Long getId() {
