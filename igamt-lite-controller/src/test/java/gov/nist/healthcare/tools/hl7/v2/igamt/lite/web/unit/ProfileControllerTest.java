@@ -117,10 +117,9 @@ public class ProfileControllerTest {
  		String xmlContentsProfile;
 		try {
 			xmlContentsProfile = IOUtils.toString(ProfileController.class.getResourceAsStream("/Profile.xml"));
-			String xmlValueSet = IOUtils.toString(ProfileController.class.getResourceAsStream("/ValueSets.xml"));
-	 		String xmlPredicates = IOUtils.toString(ProfileController.class.getResourceAsStream("/PredicateConstraints.xml"));
-	 		String xmlConformanceStatements = IOUtils.toString(ProfileController.class.getResourceAsStream("/ConformanceStatementConstraints.xml"));
-			Profile p = new ProfileSerializationImpl().deserializeXMLToProfile(xmlContentsProfile, xmlValueSet, xmlPredicates, xmlConformanceStatements);
+			String xmlValueSet = IOUtils.toString(ProfileController.class.getResourceAsStream("/ValueSets_all.xml"));
+	 		String xmlConstraints = IOUtils.toString(ProfileController.class.getResourceAsStream("/Constraints.xml"));
+			Profile p = new ProfileSerializationImpl().deserializeXMLToProfile(xmlContentsProfile, xmlValueSet, xmlConstraints);
 			return p;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -10,10 +10,7 @@
  */
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
-import org.springframework.transaction.annotation.Transactional;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
 
@@ -23,8 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.*;
+import org.springframework.transaction.annotation.Transactional;
 @Service
 public class Bootstrap implements InitializingBean {
 
@@ -47,14 +43,12 @@ public class Bootstrap implements InitializingBean {
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
 				"/profiles/vxu/Profile.xml"));
 		String v = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/vxu/ValueSets.xml"));
-		String pc = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/vxu/PredicateConstraints.xml"));
-		String cs = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/vxu/ConformanceStatementConstraints.xml"));
+				"/profiles/vxu/ValueSets_all.xml"));
+		String c = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/profiles/vxu/Constraints.xml"));
 		// load VXU profile
 		Profile profile = new ProfileSerializationImpl()
-				.deserializeXMLToProfile(p, v, pc, cs);
+				.deserializeXMLToProfile(p, v, c);
 		profileService.save(profile);
 		
 //		profileRepository.saveAndFlush(profile);
