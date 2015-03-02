@@ -2,7 +2,7 @@
  * Created by haffo on 2/2/15.
  */
 
-angular.module('igl').run(function($httpBackend,CustomDataModel,PredefinedDataModel) {
+angular.module('igl').run(function($httpBackend,CustomDataModel,PredefinedDataModel,$q) {
 
 
     $httpBackend.whenGET('/api/profiles?userId=2').respond(function(method, url, data, headers) {
@@ -44,8 +44,13 @@ angular.module('igl').run(function($httpBackend,CustomDataModel,PredefinedDataMo
     });
 
     $httpBackend.whenGET('/api/profiles/3').respond(function(method, url, data, headers) {
-        var profile =  CustomDataModel.findOneFullProfile(3);
-        return [200, profile, {}];
+        var delay = $q.defer();
+        CustomDataModel.findOneFullProfile(3).then(function(response){
+            delay.resolve([200, response, {}]);
+        },function(error){
+            delay.reject(error);
+        });
+        return delay;
     });
 
 
@@ -58,6 +63,8 @@ angular.module('igl').run(function($httpBackend,CustomDataModel,PredefinedDataMo
 
 
     $httpBackend.whenGET(/views\//).passThrough();
+
+    $httpBackend.whenGET('../../resources/profile.json').passThrough();
 
 
 });

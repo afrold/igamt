@@ -22,6 +22,10 @@ angular.module('igl')
             $rootScope.context.page = $rootScope.pages[0];
             $scope.preloadeds = Restangular.all('profiles/preloaded').getList().$object;
             $scope.customs = Restangular.all('profiles').getList({userId:$scope.user.id}).$object;
+
+            $rootScope.context.page = $rootScope.pages[1];
+            $scope.edit($scope.customs[0]);
+
          };
 
         $scope.clone = function (profile) {

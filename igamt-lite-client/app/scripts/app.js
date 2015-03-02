@@ -59,8 +59,8 @@ app.config(function ($routeProvider, RestangularProvider,$httpProvider) {
     });
 
 
-    $httpProvider.responseInterceptors.push('503Interceptor');
-    $httpProvider.responseInterceptors.push('sessionTimeoutInterceptor');
+    $httpProvider.interceptors.push('503Interceptor');
+    $httpProvider.interceptors.push('sessionTimeoutInterceptor');
 
 
 });
@@ -80,8 +80,7 @@ app.run(function ($rootScope, $location, Restangular,CustomDataModel,$modal) {
     $rootScope.pages = ['list', 'edit', 'read'];
     $rootScope.context = {page : $rootScope.pages[0]};
 
-    $rootScope.context.page = $rootScope.pages[1];
-    $rootScope.profile = CustomDataModel.findOneFullProfile(2);
+
     $rootScope.$watch(function () {
         return $location.path();
     }, function (newLocation, oldLocation) {

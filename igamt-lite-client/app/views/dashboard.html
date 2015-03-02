@@ -1,11 +1,7 @@
-<div class="container" ng-if="context.page === null || context.page === 'list'">
-    <div ng-include="'views/listProfiles.html'"></div>
+<div class="container">
+<div ng-if="context.page === null || context.page === 'list'" ng-include="'views/listProfiles.html'"></div>
+<div ng-include="'views/edit/editProfile.html'" ng-if="context.page === 'edit'"></div>
 </div>
-
-<div class="container" ng-if="context.page === 'edit'">
-    <div ng-include="'views/edit/editProfile.html'"></div>
-</div>
-
 
 
 
