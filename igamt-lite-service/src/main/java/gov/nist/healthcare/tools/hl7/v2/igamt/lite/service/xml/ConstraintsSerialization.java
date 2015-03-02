@@ -1,14 +1,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceContext;
-import nu.xom.Document;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 
 public interface ConstraintsSerialization {
-	ConformanceContext deserializeXMLToConformanceContext(String xmlContents);
+	Constraints deserializeXMLToConformanceStatements(String xmlConstraints);
+	Constraints deserializeXMLToPredicates(String xmlConstraints);
+	String serializeConstraintsToXML(Constraints conformanceStatements, Constraints predicates);
+	nu.xom.Document serializeConstraintsToDoc(Constraints conformanceStatements, Constraints predicates);
 	
-	ConformanceContext deserializeXMLToConformanceContext(Document xmlDoc);
-	
-	String serializeConformanceContextToXML(ConformanceContext conformanceContext);
-	
-	Document serializeConformanceContextToDoc(ConformanceContext conformanceContext);
 }

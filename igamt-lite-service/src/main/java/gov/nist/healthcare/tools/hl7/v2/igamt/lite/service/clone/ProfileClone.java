@@ -11,13 +11,12 @@ public class ProfileClone {
 	public Profile clone(Profile original){
 		ProfileSerializationImpl profileSerializationImpl = new ProfileSerializationImpl();
 		TableSerializationImpl tableSerializationImpl = new TableSerializationImpl();
-//		ConstraintsSerializationImpl constraintsSerializationImpl = new ConstraintsSerializationImpl();
+		ConstraintsSerializationImpl constraintsSerializationImpl = new ConstraintsSerializationImpl();
 		Document profileDoc = profileSerializationImpl.serializeProfileToDoc(original);
-//		Document predicatesDoc = constraintsSerializationImpl.serializeConformanceContextToDoc(original.getPredicates());
-//		Document conformanceStatementsDoc = constraintsSerializationImpl.serializeConformanceContextToDoc(original.getConformanceStatements());
+		Document constraintsDoc = constraintsSerializationImpl.serializeConstraintsToDoc(original.getConformanceStatements(), original.getPredicates());
 		Document tablesDoc = tableSerializationImpl.serializeTableLibraryToDoc(original.getTableLibrary());
 		//FIXME need to consider Author and User
-		return profileSerializationImpl.deserializeXMLToProfile(profileDoc, tablesDoc, null, null);
+		return profileSerializationImpl.deserializeXMLToProfile(profileDoc, tablesDoc, constraintsDoc);
 		
 	}
 }
