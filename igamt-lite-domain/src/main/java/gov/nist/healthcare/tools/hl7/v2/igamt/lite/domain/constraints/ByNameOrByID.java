@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="BYNAME_OR_BYID")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class ByNameOrByID implements java.io.Serializable, Cloneable {
+public abstract class ByNameOrByID implements java.io.Serializable {
 
 	/**
 	 * 
@@ -58,16 +58,5 @@ public abstract class ByNameOrByID implements java.io.Serializable, Cloneable {
 		}
 		constraints.add(e);
 	}
-	
-	@Override
-    public ByNameOrByID clone() throws CloneNotSupportedException {
-		ByNameOrByID clonedByNameOrByID = (ByNameOrByID) super.clone();
-		if(constraints != null)
-		for(Constraint c: constraints){
-			clonedByNameOrByID.addConstraint(c.clone());
-		}
-		clonedByNameOrByID.setId(null);
-        return clonedByNameOrByID;
-    }
 
 }

@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -12,7 +14,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="IGCONSTRAINT") // Constraint is a keyword
-public class Constraint implements Serializable, Cloneable {
+public class Constraint implements Serializable {
 
 	/**
 	 * 
@@ -28,8 +30,14 @@ public class Constraint implements Serializable, Cloneable {
 	@Column(nullable = false, name="CONSTRAINT_ID")
 	private String constraintId;
 
-	@Column(name="CONSTRAINT_TAG")
-	private String constraintTag;
+	@Column(name="CONSTRAINT_TRUEUSAGE")
+	private Usage trueUsage;
+
+	@Column(name="CONSTRAINT_FALSEUSAGE")
+	private Usage falseUsage;
+	
+	@Column(name="CONSTRAINT_TARGET")
+	private String constraintTarget;
 
 	private Reference reference;
 
@@ -57,12 +65,12 @@ public class Constraint implements Serializable, Cloneable {
 		this.constraintId = constraintId;
 	}
 
-	public String getConstraintTag() {
-		return constraintTag;
+	public String getConstraintTarget() {
+		return constraintTarget;
 	}
 
-	public void setConstraintTag(String constraintTag) {
-		this.constraintTag = constraintTag;
+	public void setConstraintTarget(String constraintTarget) {
+		this.constraintTarget = constraintTarget;
 	}
 
 	public Reference getReference() {
@@ -88,21 +96,29 @@ public class Constraint implements Serializable, Cloneable {
 	public void setAssertion(String assertion) {
 		this.assertion = assertion;
 	}
+	
+	public Usage getTrueUsage() {
+		return trueUsage;
+	}
+
+	public void setTrueUsage(Usage trueUsage) {
+		this.trueUsage = trueUsage;
+	}
+
+	public Usage getFalseUsage() {
+		return falseUsage;
+	}
+
+	public void setFalseUsage(Usage falseUsage) {
+		this.falseUsage = falseUsage;
+	}
 
 	@Override
 	public String toString() {
 		return "Constraint [id=" + id + ", constraintId=" + constraintId
-				+ ", constraintTag=" + constraintTag + ", reference="
+				+ ", constraintTarget=" + constraintTarget + ", reference="
 				+ reference + ", description=" + description + ", assertion="
 				+ assertion + "]";
 	}
-	
-	@Override
-    public Constraint clone() throws CloneNotSupportedException {
-		Constraint clonedConstraint = (Constraint) super.clone();
-		clonedConstraint.setId(null);
-		clonedConstraint.setReference(reference.clone());
-        return clonedConstraint;
-    }
 
 }

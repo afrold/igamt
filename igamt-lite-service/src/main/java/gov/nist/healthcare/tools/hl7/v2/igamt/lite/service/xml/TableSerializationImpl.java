@@ -7,8 +7,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Tables;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -68,7 +66,7 @@ public class TableSerializationImpl implements TableSerialization{
 			elmTableDefinition.addAttribute(new Attribute("AlternateId", (t.getMappingAlternateId()==null)?"":t.getMappingAlternateId()));
 			elmTableDefinition.addAttribute(new Attribute("Id", (t.getMappingId()==null)?"":t.getMappingId()));
 			elmTableDefinition.addAttribute(new Attribute("Name", (t.getName()==null)?"":t.getName()));
-			elmTableDefinition.addAttribute(new Attribute("Version", (t.getVersion()==0)?"":"" + t.getVersion()));
+			elmTableDefinition.addAttribute(new Attribute("Version", (t.getVersion()==null)?"":"" + t.getVersion()));
 			elmTableDefinition.addAttribute(new Attribute("Codesys", (t.getCodesys()==null)?"":t.getCodesys()));
 			elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid()==null)?"":t.getOid()));
 			elmTableDefinition.addAttribute(new Attribute("Type", (t.getType()==null)?"":t.getType()));
@@ -110,7 +108,7 @@ public class TableSerializationImpl implements TableSerialization{
 			tableObj.setOid(elmTable.getAttribute("Oid"));
 			tableObj.setType(elmTable.getAttribute("Type"));
 			if(elmTable.getAttribute("Version") != null && !elmTable.getAttribute("Version").equals(""))
-			tableObj.setVersion(Integer.parseInt(elmTable.getAttribute("Version")));
+			tableObj.setVersion(elmTable.getAttribute("Version"));
 			this.deserializeXMLToCode(elmTable, tableObj);
 			
 			

@@ -1,6 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceContext;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 
 import javax.persistence.CascadeType;
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonView;
  
 @Entity
 @Table(name="PROFILE")
-public class Profile implements java.io.Serializable, Cloneable {
+public class Profile implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -63,11 +63,11 @@ public class Profile implements java.io.Serializable, Cloneable {
 
 	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name="CONFSTATEMENTS_ID")
-	private ConformanceContext conformanceStatements;
+	private Constraints conformanceStatements;
 
 	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name="PREDICATES_ID")
-	private ConformanceContext predicates;
+	private Constraints predicates;
 
 	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
 	@JoinColumn(name="TABLELIBRARY_ID")
@@ -159,20 +159,20 @@ public class Profile implements java.io.Serializable, Cloneable {
 		this.messages = messages;
  	}
 
-	public ConformanceContext getConformanceStatements() {
+	public Constraints getConformanceStatements() {
 		return conformanceStatements;
 	}
 
 	public void setConformanceStatements(
-			ConformanceContext conformanceStatements) {
+			Constraints conformanceStatements) {
 		this.conformanceStatements = conformanceStatements;
 	}
 
-	public ConformanceContext getPredicates() {
+	public Constraints getPredicates() {
 		return predicates;
 	}
 
-	public void setPredicates(ConformanceContext predicates) {
+	public void setPredicates(Constraints predicates) {
 		this.predicates = predicates;
 	}
 
@@ -224,25 +224,6 @@ public class Profile implements java.io.Serializable, Cloneable {
 				+ conformanceStatements + ", predicates=" + predicates
 				+ ", tableLibrary=" + tableLibrary + ", author=" + author + "]";
 	}
-	
-	@Override
-    public Profile clone() throws CloneNotSupportedException {
-		Profile clonedProfile = (Profile) super.clone();
-		clonedProfile.setId(null);
-		clonedProfile.setAuthor(this.author.clone());
-		clonedProfile.setConformanceStatements(this.conformanceStatements.clone());
-		clonedProfile.setDatatypes(this.datatypes.clone());
- //		clonedProfile.setEncodings(this.encodings.clone());
-		clonedProfile.setHl7Version(this.hl7Version);
-//		clonedProfile.setMessages(this.messages.clone());
-//		clonedProfile.setMetaData(this.metaData.clone());
-		clonedProfile.setPredicates(this.predicates.clone());
-		clonedProfile.setSchemaVersion(schemaVersion);
-//		clonedProfile.setSegments(segments.clone());
-//		clonedProfile.setTableLibrary(tableLibrary.clone());
-		clonedProfile.setType(type);
-        return clonedProfile;
-    }
 
 
 }

@@ -68,8 +68,8 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		
 		//Read Profile Libs
 		profile.setTableLibrary(new TableSerializationImpl().deserializeXMLToTableLibrary(xmlValueSet));
-		profile.setConformanceStatements(new ConstraintsSerializationImpl().deserializeXMLToConformanceContext(xmlConformanceStatements));
-		profile.setPredicates(new ConstraintsSerializationImpl().deserializeXMLToConformanceContext(xmlPredicates));
+//		profile.setConformanceStatements(new ConstraintsSerializationImpl().deserializeXMLToConformanceContext(xmlConformanceStatements));
+//		profile.setPredicates(new ConstraintsSerializationImpl().deserializeXMLToConformanceContext(xmlPredicates));
 		
 		this.datatypesMap = this.constructDatatypesMap((Element)elmConformanceProfile.getElementsByTagName("Datatypes").item(0), profile);
 		Datatypes datatypes = new Datatypes();
@@ -172,10 +172,10 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		Datatype datatypeObj = new Datatype();
 		datatypeObj.setDescription(elmDatatype.getAttribute("Description"));
 		//[Woo] I assumed the default name could be base name.
-		datatypeObj.setLabel(elmDatatype.getAttribute("Name"));
+		datatypeObj.setLabel(elmDatatype.getAttribute("ID"));
 		datatypeObj.setName(elmDatatype.getAttribute("Name"));
-		datatypeObj.setPredicates(this.findConstraints(profile.getPredicates().getDatatypes(), elmDatatype.getAttribute("ID")));
-		datatypeObj.setConformanceStatements(this.findConstraints(profile.getConformanceStatements().getDatatypes(), elmDatatype.getAttribute("ID")));
+//		datatypeObj.setPredicates(this.findConstraints(profile.getPredicates().getDatatypes(), elmDatatype.getAttribute("ID")));
+//		datatypeObj.setConformanceStatements(this.findConstraints(profile.getConformanceStatements().getDatatypes(), elmDatatype.getAttribute("ID")));
 		
 		NodeList nodes = elmDatatype.getChildNodes();
 		for(int i=0; i < nodes.getLength(); i++){
@@ -224,6 +224,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 			Element elmDatatype = (Element)datatypes.item(i);
 			if(elmDatatype.getAttribute("ID").equals(key)) return this.deserializeDatatype(elmDatatype, profile, elmDatatypes);
 		}
+		System.out.println("NULL DT found");
 		return null;
 	}
 
@@ -280,7 +281,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 
 	private nu.xom.Element serializeSegmentRef(SegmentRef segmentRef) {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
-		elmSegment.addAttribute(new Attribute("Ref", segmentRef.getSegment().getId()+ ""));
+		elmSegment.addAttribute(new Attribute("Ref", segmentRef.getSegment().getLabel()+ ""));
 		elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage().value()));
 		elmSegment.addAttribute(new Attribute("Min", segmentRef.getMin() + ""));
 		elmSegment.addAttribute(new Attribute("Max", segmentRef.getMax()));
@@ -289,14 +290,14 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 
 	private nu.xom.Element serializeSegment(Segment s) {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
-		elmSegment.addAttribute(new Attribute("ID", s.getId()+""));
+		elmSegment.addAttribute(new Attribute("ID", s.getLabel()+""));
 		elmSegment.addAttribute(new Attribute("Name", s.getName()));
 		elmSegment.addAttribute(new Attribute("Description", s.getDescription()));		
 		for(Field f:s.getFields()){
 			nu.xom.Element elmField = new nu.xom.Element("Field");
 			elmField.addAttribute(new Attribute("Name", f.getName()));
 			elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
-			elmField.addAttribute(new Attribute("Datatype", f.getDatatype().getId()+ ""));
+			elmField.addAttribute(new Attribute("Datatype", f.getDatatype().getLabel()+ ""));
 			elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
 			elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
 			elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
@@ -311,7 +312,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 
 	private nu.xom.Element serializeDatatype(Datatype d) {
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
-		elmDatatype.addAttribute(new Attribute("ID", d.getId() + ""));
+		elmDatatype.addAttribute(new Attribute("ID", d.getLabel() + ""));
 		elmDatatype.addAttribute(new Attribute("Name", d.getName()));
 		elmDatatype.addAttribute(new Attribute("Description", d.getDescription()));	
 		
@@ -319,11 +320,11 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 			nu.xom.Element elmComponent = new nu.xom.Element("Component");
 			elmComponent.addAttribute(new Attribute("Name", c.getName()));
 			elmComponent.addAttribute(new Attribute("Usage", c.getUsage().toString()));
-			elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype().getId() + ""));
+			elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype().getLabel() + ""));
 			elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
 			if(c.getMaxLength() != null && !c.getMaxLength().equals("")) elmComponent.addAttribute(new Attribute("MaxLength", c.getMaxLength()));
 			if(c.getConfLength() != null && !c.getConfLength().equals("")) elmComponent.addAttribute(new Attribute("ConfLength", c.getConfLength()));
-			if(c.getTable() != null && !c.getTable().equals("")) elmComponent.addAttribute(new Attribute("Table", c.getTable().getId() +""));
+			if(c.getTable() != null && !c.getTable().equals("")) elmComponent.addAttribute(new Attribute("Table", c.getTable().getMappingId() +""));
 			elmDatatype.appendChild(elmComponent);
 		}
 		return elmDatatype;
@@ -408,10 +409,10 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		Segment segmentObj = new Segment();
 		segmentObj.setDescription(segmentElm.getAttribute("Description"));
 		//[Woo] I assumed the default name could be base name.
-		segmentObj.setLabel(segmentElm.getAttribute("Name"));
+		segmentObj.setLabel(segmentElm.getAttribute("ID"));
 		segmentObj.setName(segmentElm.getAttribute("Name"));
-		segmentObj.setPredicates(this.findConstraints(profile.getPredicates().getSegments(), segmentElm.getAttribute("ID")));
-		segmentObj.setConformanceStatements(this.findConstraints(profile.getConformanceStatements().getSegments(), segmentElm.getAttribute("ID")));
+//		segmentObj.setPredicates(this.findConstraints(profile.getPredicates().getSegments(), segmentElm.getAttribute("ID")));
+//		segmentObj.setConformanceStatements(this.findConstraints(profile.getConformanceStatements().getSegments(), segmentElm.getAttribute("ID")));
 		
 		NodeList fields = segmentElm.getElementsByTagName("Field");
 		for(int i=0; i<fields.getLength(); i++){
@@ -515,13 +516,17 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		ConstraintsSerializationImpl test3 = new ConstraintsSerializationImpl();
 		ConstraintsSerializationImpl test4 = new ConstraintsSerializationImpl();
 		
+//		Profile profile = test1.deserializeXMLToProfile(new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//Profile.xml"))),
+//				new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//ValueSets_all.xml"))),
+//				new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//PredicateConstraints.xml"))),
+//				new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//ConformanceStatementConstraints.xml"))));
 		Profile profile = test1.deserializeXMLToProfile(new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//Profile.xml"))),
-				new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//ValueSets.xml"))),
-				new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//PredicateConstraints.xml"))),
-				new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//ConformanceStatementConstraints.xml"))));
+				new String(Files.readAllBytes(Paths.get("src//main//resources//vxu//ValueSets_all.xml"))),
+				null,
+				null);
 		System.out.println(test1.serializeProfileToXML(profile));
 		System.out.println(test2.serializeTableLibraryToXML(profile.getTableLibrary()));
-		System.out.println(test3.serializeConformanceContextToXML(profile.getConformanceStatements()));
-		System.out.println(test4.serializeConformanceContextToXML(profile.getPredicates()));
+//		System.out.println(test3.serializeConformanceContextToXML(profile.getConformanceStatements()));
+//		System.out.println(test4.serializeConformanceContextToXML(profile.getPredicates()));
 	}
 }
