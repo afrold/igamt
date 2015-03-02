@@ -31,11 +31,4 @@ public class ByName extends ByNameOrByID {
 		return "ByName [id=" + id + ", byName=" + byName + ", constraints="
 				+ constraints + "]";
 	}
-
-	@Override
-    public ByName clone() throws CloneNotSupportedException {
-		ByName clonedByName = (ByName) super.clone();
-		clonedByName.setId(null);
-        return clonedByName;
-    }
 }

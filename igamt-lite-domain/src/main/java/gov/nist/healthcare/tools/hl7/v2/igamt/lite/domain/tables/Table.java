@@ -13,11 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 
@@ -51,7 +48,7 @@ public class Table implements Serializable {
 	private String name;
 
 	@Column(name="VERSION")
-	private int version;
+	private String version;
 	@Column(name="CODESYS")
 	private String codesys;
 	@Column(name="OID")
@@ -96,11 +93,11 @@ public class Table implements Serializable {
 		this.name = name;
 	}
 
-	public int getVersion() {
+	public String getVersion() {
 		return version;
 	}
 
-	public void setVersion(int version) {
+	public void setVersion(String version) {
 		this.version = version;
 	}
 

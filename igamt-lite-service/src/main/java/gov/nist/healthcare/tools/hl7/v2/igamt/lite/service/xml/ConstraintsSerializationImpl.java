@@ -102,21 +102,21 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 		e.appendChild(metaData_Elm);
 
 		nu.xom.Element dataType_Elm = new nu.xom.Element("Datatype");
-		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getDatatypes().getByNameOrByIDs()){
+		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getConformanceStatements().getDatatypes().getByNameOrByIDs()){
 			nu.xom.Element dataTypeConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
 			if(dataTypeConstaint != null) dataType_Elm.appendChild(dataTypeConstaint);
 		}
 		e.appendChild(dataType_Elm);
 		
 		nu.xom.Element segment_Elm = new nu.xom.Element("Segment");
-		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getSegments().getByNameOrByIDs()){
+		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getConformanceStatements().getSegments().getByNameOrByIDs()){
 			nu.xom.Element segmentConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
 			if(segmentConstaint != null) segment_Elm.appendChild(segmentConstaint);
 		}
 		e.appendChild(segment_Elm);
 		
 		nu.xom.Element group_Elm = new nu.xom.Element("Group");
-		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getGroups().getByNameOrByIDs()){
+		for(ByNameOrByID byNameOrByIDObj: conformanceContext.getConformanceStatements().getGroups().getByNameOrByIDs()){
 			nu.xom.Element groupConstaint = this.serializeByNameOrByID(byNameOrByIDObj);
 			if(groupConstaint != null) group_Elm.appendChild(groupConstaint);
 		}
@@ -156,7 +156,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 	private nu.xom.Element serializeConstaint(Constraint c) {
 		nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
 		elmConstraint.addAttribute(new Attribute("ID", c.getConstraintId()));
-		if(c.getConstraintTag() != null && !c.getConstraintTag().equals("")) elmConstraint.addAttribute(new Attribute("Tag", c.getConstraintTag()));
+		if(c.getConstraintTarget() != null && !c.getConstraintTarget().equals("")) elmConstraint.addAttribute(new Attribute("Target", c.getConstraintTarget()));
 		if(c.getReference() != null){
 			Reference referenceObj = c.getReference();
 			nu.xom.Element elmReference = new nu.xom.Element("Reference");
@@ -295,9 +295,9 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 		this.deserializeXMLToContext((Element)elmConformanceContext.getElementsByTagName("Segment").item(0), segmentContextObj);
 		this.deserializeXMLToContext((Element)elmConformanceContext.getElementsByTagName("Group").item(0), groupContextObj);
 		
-		conformanceContext.setDatatypes(datatypeContextObj);
-		conformanceContext.setSegments(segmentContextObj);
-		conformanceContext.setGroups(groupContextObj);
+//		conformanceContext.setDatatypes(datatypeContextObj);
+//		conformanceContext.setSegments(segmentContextObj);
+//		conformanceContext.setGroups(groupContextObj);
 		
 	}
 
@@ -330,7 +330,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization{
 			Element elmConstraint = (Element)nodes.item(i);
 			
 			constraintObj.setConstraintId(elmConstraint.getAttribute("ID"));
-			constraintObj.setConstraintTag(elmConstraint.getAttribute("Tag"));			
+			constraintObj.setConstraintTarget(elmConstraint.getAttribute("Target"));			
 			NodeList descriptionNodes = elmConstraint.getElementsByTagName("Description");
 			if(descriptionNodes != null && descriptionNodes.getLength() == 1) {
 				constraintObj.setDescription(descriptionNodes.item(0).getTextContent());	

@@ -56,8 +56,8 @@ public class ProfileService {
 	@Transactional()
 	public Profile save(Profile p) {
 		tableLibraryService.save(p.getTableLibrary());
-		conformanceContextService.save(p.getConformanceStatements());
-		conformanceContextService.save(p.getPredicates());
+//		conformanceContextService.save(p.getConformanceStatements());
+//		conformanceContextService.save(p.getPredicates());
 		datatypesService.save(p.getDatatypes());
 //		segmentsService.save(p.getSegments());
 //		messagesService.save(p.getMessages());
