@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -8,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -24,8 +26,8 @@ public class Group extends SegmentRefOrGroup {
 	}
 	
 	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@OrderColumn(name = "position", nullable = false)
-	private Set<SegmentRefOrGroup> segmentsOrGroups = new LinkedHashSet<SegmentRefOrGroup>();
+	@OrderBy(value="position")
+	private Set<SegmentRefOrGroup> segmentsOrGroups = new HashSet<SegmentRefOrGroup>();
 
 	@NotNull
 	@Column(nullable = false, name="GROUP_NAME")
@@ -45,6 +47,11 @@ public class Group extends SegmentRefOrGroup {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public void addChild(SegmentRefOrGroup e) { 
+		e.setPosition(segmentsOrGroups.size()+1);
+		segmentsOrGroups.add(e);
 	}
 
 	@Override

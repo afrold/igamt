@@ -15,6 +15,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
@@ -33,6 +34,7 @@ public abstract class ByNameOrByID implements java.io.Serializable {
 	protected Long id;
 
 	@OneToMany( fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@OrderBy(value="position")
 	@JoinTable(name = "BYNAME_OR_BYID_IGCONSTRAINT", joinColumns = @JoinColumn(name = "BYNAME_OR_BYID"), inverseJoinColumns = @JoinColumn(name = "IGCONSTRAINT"))
 	protected Set<Constraint> constraints = new HashSet<Constraint>();
 
@@ -56,6 +58,7 @@ public abstract class ByNameOrByID implements java.io.Serializable {
 		if(e.getId() != null){
 			throw new IllegalArgumentException("Constraint " + e.toString() + " is already persisted");
 		}
+		e.setPosition(constraints.size() +1);
 		constraints.add(e);
 	}
 

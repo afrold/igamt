@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
@@ -41,7 +43,12 @@ public class DynamicMapping implements Serializable {
 
 	@NotNull
 	@Column(nullable = false,name="MAX")
-	private String max;
+	private String max; 
+	
+	@NotNull
+	@Column(nullable = false,name="POSITION")
+	private Integer position;
+
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -49,9 +56,9 @@ public class DynamicMapping implements Serializable {
 	private Segment segment;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@OrderColumn(name = "position", nullable = true)
 	@JoinTable(name = "DYNAMIC_MAPPING_MAPPING", joinColumns = @JoinColumn(name = "DYNAMIC_MAPPING"), inverseJoinColumns = @JoinColumn(name = "MAPPING"))
-	protected Set<Mapping> mapping = new LinkedHashSet<Mapping>();
+	@OrderBy(value="position")
+	protected Set<Mapping> mappings = new HashSet<Mapping>();
 
 	public Long getId() {
 		return id;
@@ -85,12 +92,30 @@ public class DynamicMapping implements Serializable {
 		this.segment = segment;
 	}
 
-	public Set<Mapping> getMapping() {
-		return mapping;
+
+	public Set<Mapping> getMappings() {
+		return mappings;
 	}
 
-	public void setMapping(Set<Mapping> mapping) {
-		this.mapping = mapping;
+	public void setMappings(Set<Mapping> mappings) {
+		this.mappings = mappings;
 	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	} 
+	
+	public void addMapping(Mapping m) {
+		m.setPosition(mappings.size() +1);
+		mappings.add(m);
+ 	}
+	
+	
+	
+	
 
 }

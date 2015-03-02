@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,6 +29,7 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	private Long id;
 
 	@OneToMany(mappedBy = "datatypes",fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@OrderBy(value="position")
 	private final Set<Datatype> datatypes = new HashSet<Datatype>();
 
 
@@ -49,6 +51,7 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 			throw new IllegalArgumentException(
 					"This datatype already belogs to a different datatypes");
 		}
+		d.setPosition(datatypes.size() +1);
 		datatypes.add(d);
 		d.setDatatypes(this);
 	}

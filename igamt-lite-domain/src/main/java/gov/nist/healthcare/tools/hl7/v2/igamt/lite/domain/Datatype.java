@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -42,8 +43,8 @@ public class Datatype implements java.io.Serializable {
 
 	@JsonProperty("children")
 	@OneToMany(mappedBy = "belongTo",fetch = FetchType.EAGER, cascade={CascadeType.REMOVE})
-	@OrderColumn(name = "position", nullable = true)
-	private Set<Component> components = new LinkedHashSet<Component>();
+	@OrderBy(value="position")
+	private Set<Component> components = new HashSet<Component>();
 
 	@NotNull
 	@Column(nullable = false,name="DATATYPE_NAME")
@@ -53,18 +54,25 @@ public class Datatype implements java.io.Serializable {
 	private String description;
 	
 	@OneToMany(fetch = FetchType.LAZY)
+	@OrderBy(value="position")
 	@javax.persistence.JoinTable(name = "DATATYPE_PREDICATE", joinColumns = @JoinColumn(name = "DATATYPE"), inverseJoinColumns = @JoinColumn(name = "PREDICATE"))
 	protected Set<Constraint> predicates = new HashSet<Constraint>();
 
 	@OneToMany(fetch = FetchType.LAZY)
+	@OrderBy(value="position")
 	@javax.persistence.JoinTable(name = "DATATYPE_CONFSTATEMENT", joinColumns = @JoinColumn(name = "DATATYPE"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT"))
 	protected Set<Constraint> conformanceStatements = new HashSet<Constraint>();
 
  	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
  	@JoinColumn(name="DATATYPES_ID")
-	private Datatypes datatypes;
+	private Datatypes datatypes; 
+ 	
 
+	@NotNull
+	@Column(nullable = false,name="POSITION")
+	private Integer position;
+	
 	public Long getId() {
 		return id;
 	}
@@ -82,19 +90,11 @@ public class Datatype implements java.io.Serializable {
 	}
 
 	public Set<Component> getComponents() {
-		return components;
+		if(components.isEmpty()) 
+		    return null;
+ 		return components;
 	}
 	
-	
-	
-	
-	
-	
-
-	public void setComponents(Set<Component> components) {
-		this.components = components;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -130,16 +130,32 @@ public class Datatype implements java.io.Serializable {
 	public Set<Constraint> getConformanceStatements() {
 		return conformanceStatements;
 	}
-
-	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
-		this.conformanceStatements = conformanceStatements;
+	
+	public Integer getPosition() {
+		return position;
 	}
 
-	public void addComponent(Component c) {
-		if (c.getDatatype() != null)
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+	public void addPredicate(Constraint p) {
+		p.setPosition(predicates.size() +1);
+		predicates.add(p);
+ 	}
+	
+	public void addConformanceStatement(Constraint cs) {
+		cs.setPosition(conformanceStatements.size() +1);
+		conformanceStatements.add(cs);
+ 	}
+	
+
+	public void addComponent(Component c) { 
+		if (c.getBelongTo() != null)
 			throw new IllegalArgumentException(
 					"This component already belong to another datatype");
-		components.add(c);
+		c.setPosition(components.size()+1);
+  		components.add(c);
 		c.setDatatype(this);
 	}
 

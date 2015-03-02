@@ -72,8 +72,12 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
  	@JsonIgnoreProperties({"components", "label", "name","description","predicates","conformanceStatements","datatypes"})
 	@OneToOne(fetch = FetchType.EAGER)
  	@JoinColumn(name="DATATYPE_ID")
-	protected Datatype datatype;
-	
+	protected Datatype datatype; 
+ 	
+ 	@NotNull
+ 	@Column(nullable = false,name="POSITION")
+	protected Integer position;
+ 
 
 	public Datatype getDatatype() {
 		return datatype;
@@ -154,6 +158,17 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+	
+	
+	
 	
 	
 

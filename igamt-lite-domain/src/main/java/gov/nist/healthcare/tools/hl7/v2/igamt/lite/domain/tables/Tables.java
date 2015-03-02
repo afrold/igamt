@@ -1,6 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables;
 
  
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,6 +32,7 @@ public class Tables implements java.io.Serializable {
 	private Long id;
 
 	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@OrderBy(value="position")
   	@javax.persistence.JoinTable(name = "TABLES_IGTABLE", joinColumns = @JoinColumn(name = "TABLES"), inverseJoinColumns = @JoinColumn(name = "IGTABLE"))
 	private Set<Table> tables = new HashSet<Table>();
 
@@ -43,13 +47,9 @@ public class Tables implements java.io.Serializable {
 	public Set<Table> getTables() {
 		return tables;
 	}
-
-	public void setTables(Set<Table> tables) {
-		this.tables = tables;
-	}
-
  
 	public void addTable(Table t) {
+		t.setPosition(tables.size() +1);
 		tables.add(t);
  	}
 
@@ -58,4 +58,5 @@ public class Tables implements java.io.Serializable {
 		return "Tables [id=" + id + ", tables=" + tables + "]";
 	}
 
+ 
 }

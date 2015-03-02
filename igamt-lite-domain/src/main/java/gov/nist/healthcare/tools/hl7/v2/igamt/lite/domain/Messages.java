@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
  
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,6 +31,7 @@ public class Messages implements java.io.Serializable {
 	private Long id;
 
  	@OneToMany(mappedBy = "messages",fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@OrderBy(value="position")
 	private Set<Message> messages = new HashSet<Message>();
  
 	public Long getId() {
@@ -43,17 +45,13 @@ public class Messages implements java.io.Serializable {
 	public Set<Message> getMessages() {
 		return messages;
 	}
-
-	public void setMessages(Set<Message> messages) {
-		this.messages = messages;
-	}
-
-
+ 
 	public void addMessage(Message m) {
 		if (m.getMessages() != null) {
 			throw new IllegalArgumentException(
-					"This message already below to a different messages");
+					"This message already belong to a different messages");
 		}
+		m.setPosition(messages.size() +1);
 		messages.add(m);
 		m.setMessages(this);
 	}

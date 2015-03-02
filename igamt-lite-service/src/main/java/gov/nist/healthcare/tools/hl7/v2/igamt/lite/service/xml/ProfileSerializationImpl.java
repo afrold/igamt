@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javassist.bytecode.Descriptor.Iterator;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -188,11 +190,11 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 				componentObj.setName(elmComponent.getAttribute("Name"));
 				componentObj.setTable(this.findTable(elmComponent.getAttribute("Table"), profile.getTableLibrary()));
 				componentObj.setUsage(Usage.fromValue(elmComponent.getAttribute("Usage")));
-				componentObj.setBelongTo(datatypeObj);
+//				componentObj.setBelongTo(datatypeObj);
 				componentObj.setBindingLocation(elmComponent.getAttribute("BindingLocation"));
 				componentObj.setBindingStrength(elmComponent.getAttribute("BindingStrength"));
  				componentObj.setDatatype(this.findDatatype(elmComponent.getAttribute("Datatype"), profile, elmDatatypes));
-				datatypeObj.getComponents().add(componentObj);
+				datatypeObj.addComponent(componentObj);
 			}
 		}
 		return datatypeObj;
@@ -362,22 +364,18 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		NodeList nodes = elmConformanceProfile.getElementsByTagName("Message");
 		if(nodes != null && nodes.getLength() != 0){
 			Messages messagesObj = new Messages();
-			Set<Message> messages = new HashSet<Message>();
-			for(int i=0; i<nodes.getLength(); i++){
-				Message messageObj = new Message();
+ 			for(int i=0; i<nodes.getLength(); i++){
+				Message messageObj1 = new Message();
 				Element elmMessage = (Element)nodes.item(i);
-				messageObj.setDescription(elmMessage.getAttribute("Description"));
-				messageObj.setEvent(elmMessage.getAttribute("Event"));
-				messageObj.setMessages(messagesObj);
-				messageObj.setStructID(elmMessage.getAttribute("StructID"));
-				messageObj.setType(elmMessage.getAttribute("Type"));
+				messageObj1.setDescription(elmMessage.getAttribute("Description"));
+				messageObj1.setEvent(elmMessage.getAttribute("Event"));
+				messageObj1.setStructID(elmMessage.getAttribute("StructID"));
+				messageObj1.setType(elmMessage.getAttribute("Type"));
 				
-				this.deserializeSegmentRefOrGroups(elmConformanceProfile, messageObj, elmMessage, profile.getSegments(), profile.getDatatypes());
-				
-				messages.add(messageObj);
+				this.deserializeSegmentRefOrGroups(elmConformanceProfile, messageObj1, elmMessage, profile.getSegments(), profile.getDatatypes());				
+ 				messagesObj.addMessage(messageObj1);
 			}
-			messagesObj.setMessages(messages);
-			profile.setMessages(messagesObj);
+ 			profile.setMessages(messagesObj);
 		}
 	}
 	
@@ -393,7 +391,12 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 			}
 		}
 		
-		messageObj.setSegmentRefOrGroups(segmentRefOrGroups);
+		java.util.Iterator<SegmentRefOrGroup> it = segmentRefOrGroups.iterator();
+		while(it.hasNext()){
+			messageObj.addChild(it.next());
+		}
+		
+		
 	}
 	
 	private void deserializeSegmentRef(Element elmConformanceProfile, Set<SegmentRefOrGroup> segmentRefOrGroups, Element segmentElm, Segments segments, Datatypes datatypes){

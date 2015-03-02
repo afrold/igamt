@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -46,13 +48,18 @@ public class Message implements java.io.Serializable {
 
 	@JsonProperty("children")
 	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@OrderColumn(name = "position", nullable = false)
-	private Set<SegmentRefOrGroup> segmentRefOrGroups = new LinkedHashSet<SegmentRefOrGroup>();
+	@OrderBy(value="position")
+	private Set<SegmentRefOrGroup> segmentRefOrGroups = new HashSet<SegmentRefOrGroup>();
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="MESSAGES_ID")
-	private Messages messages;
+	private Messages messages; 
+	
+	@NotNull
+	@Column(nullable = false,name="POSITION")
+	protected Integer position;
+	
 
 	public Long getId() {
 		return id;
@@ -105,10 +112,21 @@ public class Message implements java.io.Serializable {
 	public Set<SegmentRefOrGroup> getSegmentRefOrGroups() {
 		return segmentRefOrGroups;
 	}
-
-	public void setSegmentRefOrGroups(Set<SegmentRefOrGroup> segmentRefOrGroups) {
-		this.segmentRefOrGroups = segmentRefOrGroups;
+	
+	public Integer getPosition() {
+		return position;
 	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	} 
+	
+	
+	public void addChild(SegmentRefOrGroup e) { 
+		e.setPosition(segmentRefOrGroups.size()+1);
+		segmentRefOrGroups.add(e);
+	}
+
 
 	@Override
 	public String toString() {

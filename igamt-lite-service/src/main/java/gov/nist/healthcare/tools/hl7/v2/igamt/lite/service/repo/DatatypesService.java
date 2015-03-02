@@ -52,11 +52,12 @@ public class DatatypesService {
 		datatypesRepository.saveAndFlush(ds);
 		java.util.Set<Datatype> datatypes = ds.getDatatypes();
 		if (datatypes != null) {
-			Iterator<Datatype> it = datatypes.iterator();
+			System.out.println(datatypes.size());
+			Iterator<Datatype> it = datatypes.iterator(); 
 			while (it.hasNext()) {
 				Datatype d = it.next();
  				datatypeService.save(d);
-				System.out.println("Datatype."+ d.getId() + "-" + d.getName());
+				//System.out.println("Datatype."+ d.getId() + "-" + d.getName());
 			}
 			
 			it = datatypes.iterator();

@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -44,12 +45,12 @@ public class Segment extends DataModel implements java.io.Serializable {
 	private String label;
 
  	@OneToMany(mappedBy = "segment",fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@OrderColumn(name = "position", nullable = false)
-	private final Set<Field> fields = new LinkedHashSet<Field>();
+ 	@OrderBy(value="position")
+	private final Set<Field> fields = new HashSet<Field>();
 
  	@OneToMany(mappedBy = "segment",fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@OrderColumn(name = "position", nullable = false)
-	private final Set<DynamicMapping> dynamicMappings = new LinkedHashSet<DynamicMapping>();
+ 	@OrderBy(value="position")
+	private final Set<DynamicMapping> dynamicMappings = new HashSet<DynamicMapping>();
 	
 	@NotNull
  	@Column(nullable = false,name="SEGMENT_NAME")
@@ -59,17 +60,25 @@ public class Segment extends DataModel implements java.io.Serializable {
 	private String description;
 	
   	@OneToMany(fetch = FetchType.EAGER)
+  	@OrderBy(value="position")
  	@JoinTable(name = "SEGMENT_PREDICATE", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "PREDICATE"))
 	protected Set<Constraint> predicates = new HashSet<Constraint>();
 
   	@OneToMany(fetch = FetchType.EAGER)
+  	@OrderBy(value="position")
  	@JoinTable(name = "SEGMENT_CONFSTATEMENT", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT"))
 	protected Set<Constraint> conformanceStatements = new HashSet<Constraint>();
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="SEGMENTS_ID")
-	private Segments segments;
+	private Segments segments; 
+
+
+	@NotNull
+	@Column(nullable = false,name="POSITION")
+	private Integer position;
+	
 
 	public Long getId() {
 		return id;
@@ -114,13 +123,34 @@ public class Segment extends DataModel implements java.io.Serializable {
 	public void setSegments(Segments segments) {
 		this.segments = segments;
 	}
+	
+	
+	public Integer getPosition() {
+		return position;
+	}
 
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+	public void addPredicate(Constraint p) {
+		p.setPosition(predicates.size() +1);
+		predicates.add(p);
+ 	}
+	
+	public void addConformanceStatement(Constraint cs) {
+		cs.setPosition(conformanceStatements.size() +1);
+		conformanceStatements.add(cs);
+ 	}
+	
+	
 	public void addField(Field field) {
 		if (field.getSegment() != null) {
 			throw new IllegalArgumentException("The field " + field.getName()
 					+ " already belongs to segment "
 					+ field.getSegment().getLabel());
 		}
+		field.setPosition(fields.size() +1);
 		fields.add(field);
 		field.setSegment(this);
 	}
@@ -131,7 +161,8 @@ public class Segment extends DataModel implements java.io.Serializable {
 					+ " already belongs to a different segment "
 					+ d.getSegment().getLabel());
 		}
-		dynamicMappings.add(d);
+		d.setPosition(dynamicMappings.size() +1);
+ 		dynamicMappings.add(d);
 		d.setSegment(this);
 	}
 

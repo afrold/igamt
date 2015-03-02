@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -42,6 +43,12 @@ public class Table implements Serializable {
 	@NotNull
  	@Column(nullable = false,name="MAPPING_ID")
 	private String mappingId;
+	
+	
+	@NotNull
+ 	@Column(nullable = false,name="POSITION")
+	private Integer position;
+	
 
 	@NotNull
 	@Column(nullable = false,name="NAME")
@@ -57,9 +64,9 @@ public class Table implements Serializable {
 	private String type;
 
 	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@OrderBy(value="position")
   	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
 	private Set<Code> codes = new HashSet<Code>();
-
 
 	public Long getId() {
 		return id;
@@ -129,8 +136,18 @@ public class Table implements Serializable {
 		return codes;
 	}
 
-	public void setCodes(Set<Code> codes) {
-		this.codes = codes;
+	
+	public void addCode(Code c) {
+		c.setPosition(codes.size() +1);
+		codes.add(c);
+ 	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
 	}
 
 	@Override

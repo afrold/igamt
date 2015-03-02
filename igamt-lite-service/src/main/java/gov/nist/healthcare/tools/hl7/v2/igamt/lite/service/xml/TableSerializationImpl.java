@@ -131,7 +131,7 @@ public class TableSerializationImpl implements TableSerialization{
 			codeObj.setLabel(elmCode.getAttribute("Label"));
 			codeObj.setSource(elmCode.getAttribute("Source"));
 			
-			tableObj.getCodes().add(codeObj);
+			tableObj.addCode(codeObj);
 		}
 		
 	}

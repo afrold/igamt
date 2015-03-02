@@ -42,7 +42,14 @@ public abstract class SegmentRefOrGroup extends DataModel implements java.io.Ser
 
 	@NotNull
 	@Column(nullable = false,name="MAX")
-	protected String max;
+	protected String max; 
+	
+	
+	@NotNull
+	@Column(nullable = false,name="POSITION")
+	protected Integer position;
+
+	
 
 	public Long getId() {
 		return id;
@@ -75,5 +82,16 @@ public abstract class SegmentRefOrGroup extends DataModel implements java.io.Ser
 	public void setMax(String max) {
 		this.max = max;
 	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	} 
+	
+	
+	
 
 }
