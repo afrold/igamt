@@ -46,10 +46,9 @@ public abstract class SegmentRefOrGroup extends DataModel implements java.io.Ser
 	
 	
 	@NotNull
-	@Column(nullable = false,name="POSITION")
-	protected Integer position;
+	@Column(nullable = false,name="SEGMENTREFORGROUP_POSITION")
+	protected Integer position = 0;
 
-	
 
 	public Long getId() {
 		return id;

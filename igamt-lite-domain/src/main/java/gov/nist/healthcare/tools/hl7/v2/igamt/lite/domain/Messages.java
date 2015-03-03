@@ -30,7 +30,7 @@ public class Messages implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
- 	@OneToMany(mappedBy = "messages",fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+ 	@OneToMany(mappedBy = "messages",fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
 	@OrderBy(value="position")
 	private Set<Message> messages = new HashSet<Message>();
  

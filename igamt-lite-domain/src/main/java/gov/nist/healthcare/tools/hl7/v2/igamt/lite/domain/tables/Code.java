@@ -35,12 +35,6 @@ public class Code implements Serializable {
 
 	@Column(name="SOURCE")
 	private String source; 
-	
-	
-	
-	@NotNull
- 	@Column(nullable = false,name="POSITION")
-	private Integer position;
 
 	public Long getId() {
 		return id;
@@ -81,16 +75,6 @@ public class Code implements Serializable {
 	public void setSource(String source) {
 		this.source = source;
 	} 
-	
-
-
-	public Integer getPosition() {
-		return position;
-	}
-
-	public void setPosition(Integer position) {
-		this.position = position;
-	}
 
 	@Override
 	public String toString() {

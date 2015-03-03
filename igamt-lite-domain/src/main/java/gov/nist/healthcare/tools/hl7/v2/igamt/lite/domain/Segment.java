@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -44,13 +45,15 @@ public class Segment extends DataModel implements java.io.Serializable {
 	@Column(nullable = false,name="LABEL")
 	private String label;
 
- 	@OneToMany(mappedBy = "segment",fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+ 	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@javax.persistence.JoinTable(name = "SEGMENT_FIELD", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "FIELD"))
  	@OrderBy(value="position")
-	private final Set<Field> fields = new HashSet<Field>();
+	private Set<Field> fields = new HashSet<Field>();
 
- 	@OneToMany(mappedBy = "segment",fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+ 	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@javax.persistence.JoinTable(name = "SEGMENT_DYNAMICMAPPING", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "DYNAMICMAPPING"))
  	@OrderBy(value="position")
-	private final Set<DynamicMapping> dynamicMappings = new HashSet<DynamicMapping>();
+	private Set<DynamicMapping> dynamicMappings = new HashSet<DynamicMapping>();
 	
 	@NotNull
  	@Column(nullable = false,name="SEGMENT_NAME")
@@ -60,12 +63,12 @@ public class Segment extends DataModel implements java.io.Serializable {
 	private String description;
 	
   	@OneToMany(fetch = FetchType.EAGER)
-  	@OrderBy(value="position")
+//  	@OrderBy(value="position")
  	@JoinTable(name = "SEGMENT_PREDICATE", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "PREDICATE"))
 	protected Set<Constraint> predicates = new HashSet<Constraint>();
 
   	@OneToMany(fetch = FetchType.EAGER)
-  	@OrderBy(value="position")
+//  	@OrderBy(value="position")
  	@JoinTable(name = "SEGMENT_CONFSTATEMENT", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT"))
 	protected Set<Constraint> conformanceStatements = new HashSet<Constraint>();
 
@@ -74,10 +77,10 @@ public class Segment extends DataModel implements java.io.Serializable {
 	@JoinColumn(name="SEGMENTS_ID")
 	private Segments segments; 
 
-
-	@NotNull
-	@Column(nullable = false,name="POSITION")
-	private Integer position;
+//
+//	@NotNull
+//	@Column(nullable = false,name="POSITION")
+//	private Integer position = 0;
 	
 
 	public Long getId() {
@@ -115,6 +118,18 @@ public class Segment extends DataModel implements java.io.Serializable {
 	public Set<Field> getFields() {
 		return fields;
 	}
+	
+	public void setFields(Set<Field> fields) {
+ 		if (fields != null) {
+			this.fields.clear();
+			Iterator<Field> it = fields.iterator();
+			while (it.hasNext()) {
+				addField(it.next());
+			}
+		}else{
+			this.fields = null;
+		}
+	}
 
 	public Segments getSegments() {
 		return segments;
@@ -125,66 +140,85 @@ public class Segment extends DataModel implements java.io.Serializable {
 	}
 	
 	
-	public Integer getPosition() {
-		return position;
-	}
-
-	public void setPosition(Integer position) {
-		this.position = position;
-	}
+//	public Integer getPosition() {
+//		return position;
+//	}
+//
+//	public void setPosition(Integer position) {
+//		this.position = position;
+//	}
 
 	public void addPredicate(Constraint p) {
-		p.setPosition(predicates.size() +1);
+//		p.setPosition(predicates.size() +1);
 		predicates.add(p);
  	}
 	
 	public void addConformanceStatement(Constraint cs) {
-		cs.setPosition(conformanceStatements.size() +1);
+//		cs.setPosition(conformanceStatements.size() +1);
 		conformanceStatements.add(cs);
  	}
 	
-	
 	public void addField(Field field) {
-		if (field.getSegment() != null) {
-			throw new IllegalArgumentException("The field " + field.getName()
-					+ " already belongs to segment "
-					+ field.getSegment().getLabel());
-		}
 		field.setPosition(fields.size() +1);
 		fields.add(field);
-		field.setSegment(this);
-	}
+ 	}
 
 	public void addDynamicMapping(DynamicMapping d) {
-		if (d.getSegment() != null) {
-			throw new IllegalArgumentException("The DynamicMapping "
-					+ " already belongs to a different segment "
-					+ d.getSegment().getLabel());
-		}
 		d.setPosition(dynamicMappings.size() +1);
  		dynamicMappings.add(d);
-		d.setSegment(this);
-	}
+ 	}
 
 	public Set<DynamicMapping> getDynamicMappings() {
 		return dynamicMappings;
 	}
+	
+	public void setDynamicMappings(Set<DynamicMapping> dynamicMappings) {
+ 		if (dynamicMappings != null) {
+			this.dynamicMappings.clear();
+			Iterator<DynamicMapping> it = dynamicMappings.iterator();
+			while (it.hasNext()) {
+				addDynamicMapping(it.next());
+			}
+		}else{
+			this.dynamicMappings = null;
+		}
+	}
+
+	
 
 	public Set<Constraint> getPredicates() {
 		return predicates;
 	}
-
+	
 	public void setPredicates(Set<Constraint> predicates) {
-		this.predicates = predicates;
-	}
+		if (predicates != null) {
+			this.predicates.clear();
+			Iterator<Constraint> it = predicates.iterator();
+			while (it.hasNext()) {
+				addPredicate(it.next());
+			}
+		}
+	} 
+	
 
 	public Set<Constraint> getConformanceStatements() {
 		return conformanceStatements;
 	}
 
+
+	
 	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
-		this.conformanceStatements = conformanceStatements;
+		if (conformanceStatements != null) {
+			this.conformanceStatements.clear();
+			Iterator<Constraint> it = conformanceStatements.iterator();
+			while (it.hasNext()) {
+				addConformanceStatement(it.next());
+			}
+		}
 	}
+	
+	
+	
 
 	@Override
 	public String toString() {

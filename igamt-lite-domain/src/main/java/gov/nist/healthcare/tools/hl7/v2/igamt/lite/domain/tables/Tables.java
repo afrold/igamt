@@ -31,8 +31,7 @@ public class Tables implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@OrderBy(value="position")
+	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
   	@javax.persistence.JoinTable(name = "TABLES_IGTABLE", joinColumns = @JoinColumn(name = "TABLES"), inverseJoinColumns = @JoinColumn(name = "IGTABLE"))
 	private Set<Table> tables = new HashSet<Table>();
 
@@ -49,8 +48,7 @@ public class Tables implements java.io.Serializable {
 	}
  
 	public void addTable(Table t) {
-		t.setPosition(tables.size() +1);
-		tables.add(t);
+ 		tables.add(t);
  	}
 
 	@Override

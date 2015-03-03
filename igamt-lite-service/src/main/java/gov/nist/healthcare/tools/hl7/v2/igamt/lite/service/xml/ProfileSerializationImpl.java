@@ -71,10 +71,12 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		profile.setConformanceStatements(new ConstraintsSerializationImpl().deserializeXMLToConformanceStatements(xmlConstraints));
 		profile.setPredicates(new ConstraintsSerializationImpl().deserializeXMLToPredicates(xmlConstraints));
 		
-		this.datatypesMap = this.constructDatatypesMap((Element)elmConformanceProfile.getElementsByTagName("Datatypes").item(0), profile);
+		this.constructDatatypesMap((Element)elmConformanceProfile.getElementsByTagName("Datatypes").item(0), profile);
 		Datatypes datatypes = new Datatypes();
 		for(String key:datatypesMap.keySet()){
 			datatypes.addDatatype(datatypesMap.get(key));
+			Datatype dt = datatypesMap.get(key);
+//			System.out.println(dt.getPosition());
 		}
 		profile.setDatatypes(datatypes);
 		
@@ -155,7 +157,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		return doc;
 	}
 	
-	private HashMap<String, Datatype> constructDatatypesMap(Element elmDatatypes, Profile profile) {
+	private void constructDatatypesMap(Element elmDatatypes, Profile profile) {
 		this.datatypesMap = new HashMap<String,Datatype>();
 		NodeList datatypeNodeList = elmDatatypes.getElementsByTagName("Datatype");
 		
@@ -163,8 +165,6 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 			Element elmDatatype = (Element)datatypeNodeList.item(i);
 			datatypesMap.put(elmDatatype.getAttribute("ID"), this.deserializeDatatype(elmDatatype, profile, elmDatatypes));
 		}
-		
-		return datatypesMap;
 	}
 
 	private Datatype deserializeDatatype(Element elmDatatype, Profile profile, Element elmDatatypes) {
@@ -219,9 +219,14 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		NodeList datatypes = elmDatatypes.getElementsByTagName("Datatype");
 		for(int i=0; i<datatypes.getLength(); i++){
 			Element elmDatatype = (Element)datatypes.item(i);
-			if(elmDatatype.getAttribute("ID").equals(key)) return this.deserializeDatatype(elmDatatype, profile, elmDatatypes);
+			if(elmDatatype.getAttribute("ID").equals(key)) {
+				Datatype dt = this.deserializeDatatype(elmDatatype, profile, elmDatatypes);
+				datatypesMap.put(key, dt);
+				return dt;
+			}
+			
 		}
-		return null;
+		throw new IllegalArgumentException("Datatype "+ key+ " not found");
 	}
 
 	private HashMap<String, Segment> constructSegmentsMap(Element elmSegments, Profile profile) {
@@ -386,12 +391,8 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 			}
 		}
 		
-		java.util.Iterator<SegmentRefOrGroup> it = segmentRefOrGroups.iterator();
-		while(it.hasNext()){
-			messageObj.addChild(it.next());
-		}
-		
-		
+		messageObj.setSegmentRefOrGroups(segmentRefOrGroups);
+				
 	}
 	
 	private void deserializeSegmentRef(Element elmConformanceProfile, Set<SegmentRefOrGroup> segmentRefOrGroups, Element segmentElm, Segments segments, Datatypes datatypes){

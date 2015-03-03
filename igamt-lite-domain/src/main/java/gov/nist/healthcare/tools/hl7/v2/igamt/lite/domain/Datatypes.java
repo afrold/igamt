@@ -1,6 +1,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -28,9 +31,8 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToMany(mappedBy = "datatypes",fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@OrderBy(value="position")
-	private final Set<Datatype> datatypes = new HashSet<Datatype>();
+	@OneToMany(mappedBy = "datatypes",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private  Set<Datatype> datatypes = new HashSet<Datatype>();
 
 
 	public Long getId() {
@@ -46,12 +48,24 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	}
 
 
+	public void setDatatypes(Set<Datatype> datatypes) {		
+		if (datatypes != null) {
+			this.datatypes.clear();
+			Iterator<Datatype> it = datatypes.iterator();
+			while (it.hasNext()) {
+				addDatatype(it.next());
+			}
+		}else{
+			this.datatypes = null;
+		}
+	}
+
 	public void addDatatype(Datatype d) {
 		if (d.getDatatypes() != null) {
 			throw new IllegalArgumentException(
 					"This datatype already belogs to a different datatypes");
 		}
-		d.setPosition(datatypes.size() +1);
+//		d.setPosition(datatypes.size() +1);
 		datatypes.add(d);
 		d.setDatatypes(this);
 	}

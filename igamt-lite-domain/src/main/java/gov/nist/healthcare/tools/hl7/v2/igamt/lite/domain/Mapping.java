@@ -31,8 +31,8 @@ public class Mapping implements Serializable {
 	protected List<Case> cases = new ArrayList<Case>();
 
 	@NotNull
-	@Column(name="POSITION")
-	protected Integer position;
+	@Column(name="MAPPING_POSITION")
+	protected Integer position = 0;
 
 	@NotNull
 	@Column(name="REFERENCE")

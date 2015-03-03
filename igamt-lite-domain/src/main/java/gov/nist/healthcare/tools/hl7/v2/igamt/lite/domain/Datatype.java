@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -23,52 +24,48 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name="DATATYPE")
+@Table(name = "DATATYPE")
 public class Datatype implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@NotNull
-	@Column(nullable = false,name="LABEL")
+	@Column(nullable = false, name = "LABEL")
 	private String label;
 
 	@JsonProperty("children")
-	@OneToMany(mappedBy = "belongTo",fetch = FetchType.EAGER, cascade={CascadeType.REMOVE})
-	@OrderBy(value="position")
+	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, orphanRemoval = true)
+	@javax.persistence.JoinTable(name = "DATATYPE_COMPONENT", joinColumns = @JoinColumn(name = "DATATYPE"), inverseJoinColumns = @JoinColumn(name = "COMPONENT"))
+	@OrderBy(value = "position")
 	private Set<Component> components = new HashSet<Component>();
 
 	@NotNull
-	@Column(nullable = false,name="DATATYPE_NAME")
+	@Column(nullable = false, name = "DATATYPE_NAME")
 	private String name;
 
-	@Column(nullable = true,name="DATATYPE_DESC")
+	@Column(nullable = true, name = "DATATYPE_DESC")
 	private String description;
-	
-	@OneToMany(fetch = FetchType.LAZY)
-	@OrderBy(value="position")
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
+	@OrderBy(value = "position")
 	@javax.persistence.JoinTable(name = "DATATYPE_PREDICATE", joinColumns = @JoinColumn(name = "DATATYPE"), inverseJoinColumns = @JoinColumn(name = "PREDICATE"))
 	protected Set<Constraint> predicates = new HashSet<Constraint>();
 
-	@OneToMany(fetch = FetchType.LAZY)
-	@OrderBy(value="position")
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
+	@OrderBy(value = "position")
 	@javax.persistence.JoinTable(name = "DATATYPE_CONFSTATEMENT", joinColumns = @JoinColumn(name = "DATATYPE"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT"))
 	protected Set<Constraint> conformanceStatements = new HashSet<Constraint>();
 
- 	@JsonIgnore
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
- 	@JoinColumn(name="DATATYPES_ID")
-	private Datatypes datatypes; 
- 	
+	@JoinColumn(name = "DATATYPES_ID")
+	private Datatypes datatypes;
 
-	@NotNull
-	@Column(nullable = false,name="POSITION")
-	private Integer position;
-	
 	public Long getId() {
 		return id;
 	}
@@ -86,9 +83,19 @@ public class Datatype implements java.io.Serializable {
 	}
 
 	public Set<Component> getComponents() {
-		if(components.isEmpty()) 
-		    return null;
- 		return components;
+		return components;
+	}
+
+	public void setComponents(Set<Component> components) {
+ 		if (components != null) {
+			this.components.clear();
+			Iterator<Component> it = components.iterator();
+			while (it.hasNext()) {
+				addComponent(it.next());
+			}
+		}else{
+			this.components = null;
+		}
 	}
 	
 	public String getName() {
@@ -120,44 +127,47 @@ public class Datatype implements java.io.Serializable {
 	}
 
 	public void setPredicates(Set<Constraint> predicates) {
-		this.predicates = predicates;
+		if (predicates != null) {
+			this.predicates.clear();
+			Iterator<Constraint> it = predicates.iterator();
+			while (it.hasNext()) {
+				addPredicate(it.next());
+			}
+		}
+	} 
+	
+	
+	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
+		if (conformanceStatements != null) {
+			this.conformanceStatements.clear();
+			Iterator<Constraint> it = conformanceStatements.iterator();
+			while (it.hasNext()) {
+				addConformanceStatement(it.next());
+			}
+		}else{
+			this.conformanceStatements = null;
+		}
 	}
 
 	public Set<Constraint> getConformanceStatements() {
 		return conformanceStatements;
 	}
-	
-	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
-		this.conformanceStatements = conformanceStatements;
-	}
-
-	public Integer getPosition() {
-		return position;
-	}
-
-	public void setPosition(Integer position) {
-		this.position = position;
-	}
+ 
 
 	public void addPredicate(Constraint p) {
-		p.setPosition(predicates.size() +1);
-		predicates.add(p);
- 	}
-	
+ 		predicates.add(p);
+	}
+
 	public void addConformanceStatement(Constraint cs) {
-		cs.setPosition(conformanceStatements.size() +1);
-		conformanceStatements.add(cs);
- 	}
+ 		conformanceStatements.add(cs);
+	}
+
+	public void addComponent(Component c) {
+		c.setPosition(components.size() + 1);
+		components.add(c);
+	}
 	
 
-	public void addComponent(Component c) { 
-		if (c.getBelongTo() != null)
-			throw new IllegalArgumentException(
-					"This component already belong to another datatype");
-		c.setPosition(components.size()+1);
-  		components.add(c);
-		c.setDatatype(this);
-	}
 
 	@Override
 	public String toString() {

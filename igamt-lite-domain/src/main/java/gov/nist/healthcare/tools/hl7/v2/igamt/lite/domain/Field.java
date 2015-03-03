@@ -46,11 +46,6 @@ public class Field extends DataElement implements java.io.Serializable {
 	@Column(nullable = false,name="MAX")
 	private String max;
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="SEGMENT_ID")
-	private Segment segment;
-
 	public String getItemNo() {
 		return itemNo;
 	}
@@ -73,14 +68,6 @@ public class Field extends DataElement implements java.io.Serializable {
 
 	public void setMax(String max) {
 		this.max = max;
-	}
-
-	public Segment getSegment() {
-		return segment;
-	}
-
-	public void setSegment(Segment segment) {
-		this.segment = segment;
 	}
 
 	public Long getId() {

@@ -46,14 +46,8 @@ public class DynamicMapping implements Serializable {
 	private String max; 
 	
 	@NotNull
-	@Column(nullable = false,name="POSITION")
-	private Integer position;
-
-
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="SEGMENT_ID")
-	private Segment segment;
+	@Column(nullable = false,name="DYNAMIC_MAPPING_POSITION")
+	private Integer position =0;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "DYNAMIC_MAPPING_MAPPING", joinColumns = @JoinColumn(name = "DYNAMIC_MAPPING"), inverseJoinColumns = @JoinColumn(name = "MAPPING"))
@@ -83,15 +77,6 @@ public class DynamicMapping implements Serializable {
 	public void setMax(String max) {
 		this.max = max;
 	}
-
-	public Segment getSegment() {
-		return segment;
-	}
-
-	public void setSegment(Segment segment) {
-		this.segment = segment;
-	}
-
 
 	public Set<Mapping> getMappings() {
 		return mappings;

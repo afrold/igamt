@@ -49,7 +49,7 @@ public class DatatypesService {
 	 */
 	@Transactional()
 	public Datatypes save(Datatypes ds) {
-		datatypesRepository.saveAndFlush(ds);
+		datatypesRepository.save(ds);
 		java.util.Set<Datatype> datatypes = ds.getDatatypes();
 		if (datatypes != null) {
 			System.out.println(datatypes.size());
@@ -57,10 +57,10 @@ public class DatatypesService {
 			while (it.hasNext()) {
 				Datatype d = it.next();
  				datatypeService.save(d);
-				//System.out.println("Datatype."+ d.getId() + "-" + d.getName());
+				System.out.println("Datatype."+ d.getId() + "-" + d.getName());
 			}
-			
-			it = datatypes.iterator();
+//			
+//			it = datatypes.iterator();
 			while (it.hasNext()) {
 				Datatype d = it.next();
 				java.util.Set<Component> components = d.getComponents();

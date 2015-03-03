@@ -30,9 +30,8 @@ public class Segments implements java.io.Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
- 	@OneToMany(mappedBy = "segments",fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@OrderBy(value="position")
-	private final Set<Segment> segments = new HashSet<Segment>();
+ 	@OneToMany(mappedBy = "segments",fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
+ 	private final Set<Segment> segments = new HashSet<Segment>();
 
 	public Long getId() {
 		return id;
@@ -51,7 +50,6 @@ public class Segments implements java.io.Serializable {
 			throw new IllegalArgumentException(
 					"This segment already belong to a different segment library");
 		}
-		s.setPosition(segments.size() +1);
 		segments.add(s);
 		s.setSegments(this);
 	}

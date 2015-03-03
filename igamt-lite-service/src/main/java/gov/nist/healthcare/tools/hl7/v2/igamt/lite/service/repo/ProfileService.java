@@ -41,9 +41,7 @@ public class ProfileService {
 	
 	@Autowired
 	private DatatypesService datatypesService;
-	
-	@Autowired
-	private ConformanceContextService conformanceContextService;
+
 	
 	@Autowired
 	private TableLibraryService tableLibraryService;
@@ -56,13 +54,13 @@ public class ProfileService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Profile save(Profile p) {
-		tableLibraryService.save(p.getTableLibrary());
-//		conformanceContextService.save(p.getConformanceStatements());
-//		conformanceContextService.save(p.getPredicates());
-		datatypesService.save(p.getDatatypes());
-//		segmentsService.save(p.getSegments());
-//		messagesService.save(p.getMessages());
-// 		profileRepository.saveAndFlush(p);
+//		tableLibraryService.save(p.getTableLibrary());
+////		conformanceContextService.save(p.getConformanceStatements());
+////		conformanceContextService.save(p.getPredicates());
+//		datatypesService.save(p.getDatatypes());
+////		segmentsService.save(p.getSegments());
+////		messagesService.save(p.getMessages());
+ 		profileRepository.saveAndFlush(p);
 		return p;
 	}
 

@@ -38,7 +38,7 @@ public class ComponentService {
 
 	@Transactional(propagation = Propagation.REQUIRED)
 	public Component save(Component c) {
-		return componentRepository.saveAndFlush(c);
+		return componentRepository.save(c);
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED)

@@ -38,11 +38,7 @@ public class Constraint implements Serializable {
 	
 	@Column(name="CONSTRAINT_TARGET")
 	private String constraintTarget;
-	
- 	@NotNull
- 	@Column(nullable = false,name="POSITION")
-	protected Integer position;
-
+ 
 	private Reference reference;
 
 	@NotNull
@@ -117,17 +113,6 @@ public class Constraint implements Serializable {
 		this.falseUsage = falseUsage;
 	}
 	
-	
-	
-	
-
-	public Integer getPosition() {
-		return position;
-	}
-
-	public void setPosition(Integer position) {
-		this.position = position;
-	}
 
 	@Override
 	public String toString() {

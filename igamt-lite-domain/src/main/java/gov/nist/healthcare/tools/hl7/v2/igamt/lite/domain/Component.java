@@ -27,21 +27,6 @@ public class Component extends DataElement {
 		this.type = Constant.COMPONENT;
 	}
 
-	
-//	@JsonIgnore
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumn(name="DATATYPE_BELONGTO_ID")
-//	private Datatype belongTo;
-//
-//	public Datatype getBelongTo() {
-//		return belongTo;
-//	}
-//
-//	public void setBelongTo(Datatype belongTo) {
-//		this.belongTo = belongTo;
-//	}
-
-
 	@Override
 	public String toString() {
 		return "Component [id=" + id + ", datatype=" + datatype + ", name="

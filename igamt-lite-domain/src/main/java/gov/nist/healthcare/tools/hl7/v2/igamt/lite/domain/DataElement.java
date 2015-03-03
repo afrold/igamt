@@ -48,7 +48,7 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
 
 	@Min(0)
 	@Column(name="MIN_LENGTH")
-	protected BigInteger minLength;
+	protected Integer minLength;
 
 	@NotNull
 	@Column(nullable = false,name="MAX_LENGTH")
@@ -70,13 +70,13 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
 	
 
  	@JsonIgnoreProperties({"components", "label", "name","description","predicates","conformanceStatements","datatypes"})
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
  	@JoinColumn(name="DATATYPE_ID")
 	protected Datatype datatype; 
  	
  	@NotNull
- 	@Column(nullable = false,name="POSITION")
-	protected Integer position;
+ 	@Column(nullable = false,name="DATAELEMENT_POSITION")
+	protected Integer position = 0;
  
 
 	public Datatype getDatatype() {
@@ -103,11 +103,11 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
 		this.usage = usage;
 	}
 
-	public BigInteger getMinLength() {
+	public Integer getMinLength() {
 		return minLength;
 	}
 
-	public void setMinLength(BigInteger minLength) {
+	public void setMinLength(Integer minLength) {
 		this.minLength = minLength;
 	}
 

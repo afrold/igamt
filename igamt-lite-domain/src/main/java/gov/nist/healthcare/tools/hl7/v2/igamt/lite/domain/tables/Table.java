@@ -44,11 +44,6 @@ public class Table implements Serializable {
  	@Column(nullable = false,name="MAPPING_ID")
 	private String mappingId;
 	
-	
-	@NotNull
- 	@Column(nullable = false,name="POSITION")
-	private Integer position;
-	
 
 	@NotNull
 	@Column(nullable = false,name="NAME")
@@ -63,9 +58,8 @@ public class Table implements Serializable {
 	@Column(name="TYPE")
 	private String type;
 
-	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@OrderBy(value="position")
-  	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
+	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
+   	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
 	private Set<Code> codes = new HashSet<Code>();
 
 	public Long getId() {
@@ -136,19 +130,9 @@ public class Table implements Serializable {
 		return codes;
 	}
 
-	
 	public void addCode(Code c) {
-		c.setPosition(codes.size() +1);
-		codes.add(c);
+ 		codes.add(c);
  	}
-
-	public Integer getPosition() {
-		return position;
-	}
-
-	public void setPosition(Integer position) {
-		this.position = position;
-	}
 
 	@Override
 	public String toString() {

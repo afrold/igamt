@@ -53,12 +53,19 @@
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
 		</dependency>
-		<dependency>
+<!-- 		<dependency>
 			<groupId>javax.persistence</groupId>
 			<artifactId>persistence-api</artifactId>
 			<version>1.0.2</version>
 			<scope>provided</scope>
-		</dependency>
+		</dependency> -->
+		
+<dependency>
+	<groupId>org.hibernate.javax.persistence</groupId>
+	<artifactId>hibernate-jpa-2.1-api</artifactId>
+	<version>1.0.0.Final</version>
+</dependency>
+
 	
 	
 <!-- 					<dependency>
@@ -75,12 +82,12 @@
 
 	
  -->
-		 <!-- <dependency>
+<!-- 	 <dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
-		</dependency>
-
+		</dependency> -->
+<!--  
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>

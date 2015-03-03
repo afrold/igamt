@@ -26,15 +26,15 @@ public class Constraints implements Serializable{
 	private Long id;
 	
 	
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="DATATYPES_ID")
  	private Context datatypes;
 
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="SEGMENTS_ID")
 	private Context segments;
 
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
  	@JoinColumn(name="GROUPS_ID")
 	private Context groups;
 

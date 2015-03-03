@@ -1,6 +1,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -25,7 +28,7 @@ public class Group extends SegmentRefOrGroup {
 		type = Constant.GROUP;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
 	@OrderBy(value="position")
 	private Set<SegmentRefOrGroup> segmentsOrGroups = new HashSet<SegmentRefOrGroup>();
 
@@ -37,8 +40,16 @@ public class Group extends SegmentRefOrGroup {
 		return segmentsOrGroups;
 	}
 
-	public void setSegmentsOrGroups(Set<SegmentRefOrGroup> segmentsOrGroups) {
-		this.segmentsOrGroups = segmentsOrGroups;
+	public void setSegmentsOrGroups(Set<SegmentRefOrGroup> segmentsOrGroups) {		
+		if (segmentsOrGroups != null) {
+			this.segmentsOrGroups.clear();
+			Iterator<SegmentRefOrGroup> it = segmentsOrGroups.iterator();
+			while (it.hasNext()) {
+				addSegmentsOrGroup(it.next());
+			}
+		}else{
+			this.segmentsOrGroups = null;
+		}
 	}
 
 	public String getName() {
@@ -49,7 +60,7 @@ public class Group extends SegmentRefOrGroup {
 		this.name = name;
 	}
 	
-	public void addChild(SegmentRefOrGroup e) { 
+	public void addSegmentsOrGroup(SegmentRefOrGroup e) { 
 		e.setPosition(segmentsOrGroups.size()+1);
 		segmentsOrGroups.add(e);
 	}
