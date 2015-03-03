@@ -22,7 +22,6 @@ import java.util.Iterator;
 import org.hibernate.mapping.Set;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -48,18 +47,18 @@ public class DatatypesService {
 	 * @param p
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional()
 	public Datatypes save(Datatypes ds) {
 		datatypesRepository.saveAndFlush(ds);
 		java.util.Set<Datatype> datatypes = ds.getDatatypes();
 		if (datatypes != null) {
 			System.out.println(datatypes.size());
 			Iterator<Datatype> it = datatypes.iterator(); 
-//			while (it.hasNext()) {
-//				Datatype d = it.next();
-// 				datatypeService.save(d);
-//				//System.out.println("Datatype."+ d.getId() + "-" + d.getName());
-//			}
+			while (it.hasNext()) {
+				Datatype d = it.next();
+ 				datatypeService.save(d);
+				//System.out.println("Datatype."+ d.getId() + "-" + d.getName());
+			}
 			
 			it = datatypes.iterator();
 			while (it.hasNext()) {
@@ -69,7 +68,7 @@ public class DatatypesService {
 					Iterator<Component> cIt = components.iterator();
 					while (cIt.hasNext()) {
 						Component c = cIt.next();
- 						componentService.save(c);
+						componentService.save(c);
 						System.out.println("Comp." + c.getId() + "-" +   c.getName());
 					}
 				}
@@ -83,7 +82,6 @@ public class DatatypesService {
 	 * 
 	 * @param id
 	 */
-	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Long id) {
 		datatypesRepository.delete(id);
 	}

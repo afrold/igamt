@@ -3,7 +3,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,11 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -42,8 +38,7 @@ public class Datatype implements java.io.Serializable {
 	private String label;
 
 	@JsonProperty("children")
-	@OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.REMOVE})
-	@javax.persistence.JoinTable(name = "DATATYPE_COMPONENT", joinColumns = @JoinColumn(name = "DATATYPE"), inverseJoinColumns = @JoinColumn(name = "COMPONENT"))
+	@OneToMany(mappedBy = "belongTo",fetch = FetchType.EAGER, cascade={CascadeType.REMOVE})
 	@OrderBy(value="position")
 	private Set<Component> components = new HashSet<Component>();
 
@@ -132,6 +127,10 @@ public class Datatype implements java.io.Serializable {
 		return conformanceStatements;
 	}
 	
+	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
+		this.conformanceStatements = conformanceStatements;
+	}
+
 	public Integer getPosition() {
 		return position;
 	}
@@ -152,12 +151,12 @@ public class Datatype implements java.io.Serializable {
 	
 
 	public void addComponent(Component c) { 
-//		if (c.getBelongTo() != null)
-//			throw new IllegalArgumentException(
-//					"This component already belong to another datatype");
+		if (c.getBelongTo() != null)
+			throw new IllegalArgumentException(
+					"This component already belong to another datatype");
 		c.setPosition(components.size()+1);
   		components.add(c);
-//		c.setBelongTo(this);
+		c.setDatatype(this);
 	}
 
 	@Override
