@@ -22,6 +22,7 @@ import java.util.Iterator;
 import org.hibernate.mapping.Set;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -44,7 +45,7 @@ public class TableLibraryService {
 	 * @param p
 	 * @return
 	 */
-	@Transactional()
+	@Transactional(propagation = Propagation.REQUIRED)
 	public TableLibrary save(TableLibrary t) {
 		tableLibraryRepository.saveAndFlush(t);
 		return t;
@@ -54,6 +55,7 @@ public class TableLibraryService {
 	 * 
 	 * @param id
 	 */
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Long id) {
 		tableLibraryRepository.delete(id);
 	}

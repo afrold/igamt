@@ -23,6 +23,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ComponentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ComponentService {
@@ -34,10 +36,12 @@ public class ComponentService {
 		return componentRepository.findAll();
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Component save(Component c) {
 		return componentRepository.saveAndFlush(c);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Long id) {
 		componentRepository.delete(id);
 	}

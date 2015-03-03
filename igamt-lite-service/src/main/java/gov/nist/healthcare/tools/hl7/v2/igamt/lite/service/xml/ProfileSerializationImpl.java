@@ -186,7 +186,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 				Component componentObj = new Component();
 				componentObj.setConfLength(elmComponent.getAttribute("ConfLength"));
 				componentObj.setMaxLength(elmComponent.getAttribute("MaxLength"));
-				componentObj.setMinLength(new BigInteger(elmComponent.getAttribute("MinLength")));
+				componentObj.setMinLength(new Integer(elmComponent.getAttribute("MinLength")));
 				componentObj.setName(elmComponent.getAttribute("Name"));
 				componentObj.setTable(this.findTable(elmComponent.getAttribute("Table"), profile.getTableLibrary()));
 				componentObj.setUsage(Usage.fromValue(elmComponent.getAttribute("Usage")));
@@ -402,7 +402,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 	private void deserializeSegmentRef(Element elmConformanceProfile, Set<SegmentRefOrGroup> segmentRefOrGroups, Element segmentElm, Segments segments, Datatypes datatypes){
 		SegmentRef segmentRefObj = new SegmentRef();
 		segmentRefObj.setMax(segmentElm.getAttribute("Max"));
-		segmentRefObj.setMin(new BigInteger(segmentElm.getAttribute("Min")));
+		segmentRefObj.setMin(new Integer(segmentElm.getAttribute("Min")));
 		segmentRefObj.setUsage(Usage.fromValue(segmentElm.getAttribute("Usage")));
 		segmentRefObj.setSegment(this.segmentsMap.get(segmentElm.getAttribute("Ref")));
 		segmentRefOrGroups.add(segmentRefObj);
@@ -433,7 +433,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 		fieldObj.setMax(fieldElm.getAttribute("Max"));
 		fieldObj.setMaxLength(fieldElm.getAttribute("MaxLength"));
 		fieldObj.setMin(new BigInteger(fieldElm.getAttribute("Min")));
-		fieldObj.setMinLength(new BigInteger(fieldElm.getAttribute("MinLength")));
+		fieldObj.setMinLength(new Integer(fieldElm.getAttribute("MinLength")));
 		fieldObj.setName(fieldElm.getAttribute("Name"));
 		fieldObj.setUsage(Usage.fromValue(fieldElm.getAttribute("Usage")));
 //		fieldObj.setSegment(segment);
@@ -448,7 +448,7 @@ public class ProfileSerializationImpl implements ProfileSerialization{
 	private void deserializeGroup(Element elmConformanceProfile, Set<SegmentRefOrGroup> segmentRefOrGroups, Element groupElm, Segments segments, Datatypes datatypes){
 		Group groupObj = new Group();
 		groupObj.setMax(groupElm.getAttribute("Max"));
-		groupObj.setMin(new BigInteger(groupElm.getAttribute("Min")));
+		groupObj.setMin(new Integer(groupElm.getAttribute("Min")));
 		groupObj.setName(groupElm.getAttribute("Name"));
 		groupObj.setUsage(Usage.fromValue(groupElm.getAttribute("Usage")));
 		

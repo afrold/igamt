@@ -23,6 +23,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DatatypeService {
@@ -36,10 +38,12 @@ public class DatatypeService {
 		return datatypeRepository.findAll();
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Datatype save(Datatype p) {
 		return datatypeRepository.saveAndFlush(p);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Long id) {
 		datatypeRepository.delete(id);
 	}

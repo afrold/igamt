@@ -10,6 +10,7 @@
  */
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -42,7 +43,7 @@ public class Bootstrap implements InitializingBean {
 	 * org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
 	@Override
-	@Transactional()
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void afterPropertiesSet() throws Exception {
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
 				"/profiles/vxu/Profile.xml"));

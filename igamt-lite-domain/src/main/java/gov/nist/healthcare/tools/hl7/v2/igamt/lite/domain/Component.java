@@ -28,18 +28,18 @@ public class Component extends DataElement {
 	}
 
 	
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="DATATYPE_BELONGTO_ID")
-	private Datatype belongTo;
-
-	public Datatype getBelongTo() {
-		return belongTo;
-	}
-
-	public void setBelongTo(Datatype belongTo) {
-		this.belongTo = belongTo;
-	}
+//	@JsonIgnore
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name="DATATYPE_BELONGTO_ID")
+//	private Datatype belongTo;
+//
+//	public Datatype getBelongTo() {
+//		return belongTo;
+//	}
+//
+//	public void setBelongTo(Datatype belongTo) {
+//		this.belongTo = belongTo;
+//	}
 
 
 	@Override

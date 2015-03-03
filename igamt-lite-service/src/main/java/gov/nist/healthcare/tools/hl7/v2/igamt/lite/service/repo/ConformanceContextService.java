@@ -23,6 +23,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConformanceContextReposi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ConformanceContextService {
@@ -34,10 +36,12 @@ public class ConformanceContextService {
 		return conformanceContextRepository.findAll();
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public ConformanceContext save(ConformanceContext p) {
 		return conformanceContextRepository.saveAndFlush(p);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Long id) {
 		conformanceContextRepository.delete(id);
 	}

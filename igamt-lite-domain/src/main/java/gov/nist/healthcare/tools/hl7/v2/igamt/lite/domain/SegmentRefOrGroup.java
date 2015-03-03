@@ -38,7 +38,7 @@ public abstract class SegmentRefOrGroup extends DataModel implements java.io.Ser
 	@NotNull
 	@Min(0)
 	@Column(nullable = false,name="MIN")
-	protected BigInteger min;
+	protected Integer min;
 
 	@NotNull
 	@Column(nullable = false,name="MAX")
@@ -67,11 +67,11 @@ public abstract class SegmentRefOrGroup extends DataModel implements java.io.Ser
 		this.usage = usage;
 	}
 
-	public BigInteger getMin() {
+	public Integer getMin() {
 		return min;
 	}
 
-	public void setMin(BigInteger min) {
+	public void setMin(Integer min) {
 		this.min = min;
 	}
 

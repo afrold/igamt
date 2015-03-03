@@ -17,6 +17,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MessageService {
@@ -27,10 +29,12 @@ public class MessageService {
 		return messageRepository.findAll();
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Message save(Message c) {
 		return messageRepository.save(c);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Long id) {
 		messageRepository.delete(id);
 	}

@@ -24,6 +24,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -53,7 +54,7 @@ public class ProfileService {
 		return profileRepository.findAll();
 	}
 
-	@Transactional()
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Profile save(Profile p) {
 		tableLibraryService.save(p.getTableLibrary());
 //		conformanceContextService.save(p.getConformanceStatements());
@@ -65,6 +66,7 @@ public class ProfileService {
 		return p;
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Long id) {
 		profileRepository.delete(id);
 	}

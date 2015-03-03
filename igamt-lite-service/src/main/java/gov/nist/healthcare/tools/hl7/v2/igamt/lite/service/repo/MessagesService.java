@@ -14,6 +14,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessagesRepository;
@@ -28,10 +30,12 @@ public class MessagesService {
 		return messagesRepository.findAll();
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Messages save(Messages c) {
 		return messagesRepository.saveAndFlush(c);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Long id) {
 		messagesRepository.delete(id);
 	}

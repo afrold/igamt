@@ -19,6 +19,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
@@ -34,10 +36,12 @@ public class ConstraintService {
 		return constraintRepository.findAll();
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Constraint save(Constraint p) {
 		return constraintRepository.save(p);
 	}
-
+	
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Long id) {
 		constraintRepository.delete(id);
 	}

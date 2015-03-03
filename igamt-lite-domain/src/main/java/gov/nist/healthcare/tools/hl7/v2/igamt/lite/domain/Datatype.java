@@ -42,7 +42,8 @@ public class Datatype implements java.io.Serializable {
 	private String label;
 
 	@JsonProperty("children")
-	@OneToMany(mappedBy = "belongTo",fetch = FetchType.EAGER, cascade={CascadeType.REMOVE})
+	@OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.REMOVE})
+	@javax.persistence.JoinTable(name = "DATATYPE_COMPONENT", joinColumns = @JoinColumn(name = "DATATYPE"), inverseJoinColumns = @JoinColumn(name = "COMPONENT"))
 	@OrderBy(value="position")
 	private Set<Component> components = new HashSet<Component>();
 
@@ -151,12 +152,12 @@ public class Datatype implements java.io.Serializable {
 	
 
 	public void addComponent(Component c) { 
-		if (c.getBelongTo() != null)
-			throw new IllegalArgumentException(
-					"This component already belong to another datatype");
+//		if (c.getBelongTo() != null)
+//			throw new IllegalArgumentException(
+//					"This component already belong to another datatype");
 		c.setPosition(components.size()+1);
   		components.add(c);
-		c.setDatatype(this);
+//		c.setBelongTo(this);
 	}
 
 	@Override

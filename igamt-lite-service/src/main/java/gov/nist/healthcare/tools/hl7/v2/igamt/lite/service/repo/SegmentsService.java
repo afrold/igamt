@@ -19,6 +19,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
@@ -35,10 +37,12 @@ public class SegmentsService {
 		return segmentsRepository.findAll();
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public Segments save(Segments p) {
 		return segmentsRepository.saveAndFlush(p);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void delete(Long id) {
 		segmentsRepository.delete(id);
 	}
