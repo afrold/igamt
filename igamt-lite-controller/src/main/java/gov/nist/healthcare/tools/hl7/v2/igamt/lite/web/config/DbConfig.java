@@ -79,7 +79,7 @@ public class DbConfig {
 		jpaVendorAdapter.setDatabase(Database.MYSQL);
 		jpaVendorAdapter.setDatabasePlatform(env
 				.getProperty("jpa.databasePlatform"));
-
+ 
 		return jpaVendorAdapter;
 	}
 
@@ -106,7 +106,7 @@ public class DbConfig {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(entityManagerFactory);
 		transactionManager.setJpaDialect(new HibernateJpaDialect());
-		return transactionManager;
+ 		return transactionManager;
 	}
 
 	@Bean

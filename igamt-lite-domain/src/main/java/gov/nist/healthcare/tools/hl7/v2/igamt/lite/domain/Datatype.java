@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -39,8 +40,8 @@ public class Datatype implements java.io.Serializable {
 	private String label;
 
 	@JsonProperty("children")
-	@OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}, orphanRemoval = true)
-	@javax.persistence.JoinTable(name = "DATATYPE_COMPONENT", joinColumns = @JoinColumn(name = "DATATYPE"), inverseJoinColumns = @JoinColumn(name = "COMPONENT"))
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
+	@javax.persistence.JoinTable(name = "DATATYPE_COMPONENT", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "COMPONENT_ID", unique = false))
 	@OrderBy(value = "position")
 	private Set<Component> components = new HashSet<Component>();
 
@@ -51,15 +52,13 @@ public class Datatype implements java.io.Serializable {
 	@Column(nullable = true, name = "DATATYPE_DESC")
 	private String description;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@OrderBy(value = "position")
-	@javax.persistence.JoinTable(name = "DATATYPE_PREDICATE", joinColumns = @JoinColumn(name = "DATATYPE"), inverseJoinColumns = @JoinColumn(name = "PREDICATE"))
-	protected Set<Constraint> predicates = new HashSet<Constraint>();
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@javax.persistence.JoinTable(name = "DATATYPE_PREDICATE", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "PREDICATE_ID"))
+	protected Set<Predicate> predicates = new HashSet<Predicate>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@OrderBy(value = "position")
-	@javax.persistence.JoinTable(name = "DATATYPE_CONFSTATEMENT", joinColumns = @JoinColumn(name = "DATATYPE"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT"))
-	protected Set<Constraint> conformanceStatements = new HashSet<Constraint>();
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@javax.persistence.JoinTable(name = "DATATYPE_CONFSTATEMENT", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT_ID"))
+	protected Set<ConformanceStatement> conformanceStatements = new HashSet<ConformanceStatement>();
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -87,17 +86,17 @@ public class Datatype implements java.io.Serializable {
 	}
 
 	public void setComponents(Set<Component> components) {
- 		if (components != null) {
+		if (components != null) {
 			this.components.clear();
 			Iterator<Component> it = components.iterator();
 			while (it.hasNext()) {
 				addComponent(it.next());
 			}
-		}else{
+		} else {
 			this.components = null;
 		}
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -122,52 +121,52 @@ public class Datatype implements java.io.Serializable {
 		this.datatypes = datatypes;
 	}
 
-	public Set<Constraint> getPredicates() {
+	public Set<Predicate> getPredicates() {
 		return predicates;
 	}
 
-	public void setPredicates(Set<Constraint> predicates) {
+	public void setPredicates(Set<Predicate> predicates) {
 		if (predicates != null) {
 			this.predicates.clear();
-			Iterator<Constraint> it = predicates.iterator();
+			Iterator<Predicate> it = predicates.iterator();
 			while (it.hasNext()) {
 				addPredicate(it.next());
 			}
+		} else {
+			this.predicates = null;
 		}
-	} 
-	
-	
-	public void setConformanceStatements(Set<Constraint> conformanceStatements) {
+	}
+
+	public void setConformanceStatements(
+			Set<ConformanceStatement> conformanceStatements) {
 		if (conformanceStatements != null) {
 			this.conformanceStatements.clear();
-			Iterator<Constraint> it = conformanceStatements.iterator();
+			Iterator<ConformanceStatement> it = conformanceStatements
+					.iterator();
 			while (it.hasNext()) {
 				addConformanceStatement(it.next());
 			}
-		}else{
+		} else {
 			this.conformanceStatements = null;
 		}
 	}
 
-	public Set<Constraint> getConformanceStatements() {
+	public Set<ConformanceStatement> getConformanceStatements() {
 		return conformanceStatements;
 	}
- 
 
-	public void addPredicate(Constraint p) {
- 		predicates.add(p);
+	public void addPredicate(Predicate p) {
+		predicates.add(p);
 	}
 
-	public void addConformanceStatement(Constraint cs) {
- 		conformanceStatements.add(cs);
+	public void addConformanceStatement(ConformanceStatement cs) {
+		conformanceStatements.add(cs);
 	}
 
 	public void addComponent(Component c) {
 		c.setPosition(components.size() + 1);
 		components.add(c);
 	}
-	
-
 
 	@Override
 	public String toString() {

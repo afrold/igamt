@@ -38,8 +38,7 @@ public class Bootstrap implements InitializingBean {
 	 * org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
 	@Override
-	@Transactional()
-	public void afterPropertiesSet() throws Exception {
+ 	public void afterPropertiesSet() throws Exception {
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
 				"/profiles/vxu/Profile.xml"));
 		String v = IOUtils.toString(this.getClass().getResourceAsStream(

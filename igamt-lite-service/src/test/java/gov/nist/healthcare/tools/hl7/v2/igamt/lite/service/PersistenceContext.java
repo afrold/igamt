@@ -25,6 +25,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -40,17 +41,16 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
 @Configuration
-@EnableJpaRepositories(basePackages = "gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo")
-@PropertySource("classpath:db-config.properties")
-//@EnableTransactionManagement(proxyTargetClass = true)
-@EnableTransactionManagement
+@PropertySource("classpath:db-test-config.properties")
+@EnableJpaRepositories("gov.nist.healthcare.tools")
+@EnableTransactionManagement(proxyTargetClass = true)
+@ComponentScan("gov.nist.healthcare.tools.hl7.v2.igamt.lite")
 public class PersistenceContext {
 
 	@Autowired
 	private Environment env;
-	
+
 	@Bean
 	public BasicDataSource dataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -71,10 +71,9 @@ public class PersistenceContext {
 		LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
 		lef.setDataSource(dataSource);
 		lef.setJpaVendorAdapter(jpaVendorAdapter);
-		lef.setPackagesToScan(new String[] {"gov.nist.healthcare.hl7.v2.igamt.lite.domain"});
+		lef.setPackagesToScan("gov.nist.healthcare.tools");
 		lef.setJpaProperties(jpaProperties());
 		lef.setPersistenceUnitName(env.getProperty("jpa.persistenceUnitName"));
-		//lef.setPersistenceUnitManager(persistenceUnitManager);
 		lef.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
 		return lef;
 	}
@@ -86,7 +85,7 @@ public class PersistenceContext {
 				.getProperty("jpa.showSql")));
 		jpaVendorAdapter.setGenerateDdl(Boolean.getBoolean(env
 				.getProperty("jpa.generateDdl")));
-		jpaVendorAdapter.setDatabase(Database.H2);
+		jpaVendorAdapter.setDatabase(Database.MYSQL);
 		jpaVendorAdapter.setDatabasePlatform(env
 				.getProperty("jpa.databasePlatform"));
 		return jpaVendorAdapter;
@@ -106,6 +105,9 @@ public class PersistenceContext {
 				env.getProperty("hibernate.dialect"));
 		properties.put("hibernate.globally_quoted_identifiers",
 				env.getProperty("hibernate.globally_quoted_identifiers"));
+
+		properties.put("hibernate.connection.autocommit", true);
+
 		return properties;
 	}
 

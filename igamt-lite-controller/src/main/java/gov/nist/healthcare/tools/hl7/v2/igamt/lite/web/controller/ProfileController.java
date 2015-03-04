@@ -62,7 +62,7 @@ public class ProfileController {
 	@JsonView(View.Summary.class)
 	@RequestMapping(value = "/preloaded", method = RequestMethod.GET)
 	public Iterable<Profile> profiles() {
-		logger.info("Fetching all testPlans...");
+		logger.info("Fetching all preloaed profiles...");
 		return profileService.findAllPreloaded();
 	}
 	

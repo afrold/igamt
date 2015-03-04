@@ -15,9 +15,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
 
 import java.io.IOException;
@@ -238,12 +240,17 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				&& !c.getConstraintTarget().equals(""))
 			elmConstraint.addAttribute(new Attribute("Target", c
 					.getConstraintTarget()));
-		if (c.getTrueUsage() != null)
-			elmConstraint.addAttribute(new Attribute("TrueUsage", c
-					.getTrueUsage().value()));
-		if (c.getFalseUsage() != null)
-			elmConstraint.addAttribute(new Attribute("FalseUsage", c
-					.getFalseUsage().value()));
+
+		if (c instanceof Predicate) {
+			Predicate pred = (Predicate) c;
+			if (pred.getTrueUsage() != null)
+				elmConstraint.addAttribute(new Attribute("TrueUsage", pred
+						.getTrueUsage().value()));
+			if (pred.getFalseUsage() != null)
+				elmConstraint.addAttribute(new Attribute("FalseUsage", pred
+						.getFalseUsage().value()));
+		}
+
 		if (c.getReference() != null) {
 			Reference referenceObj = c.getReference();
 			nu.xom.Element elmReference = new nu.xom.Element("Reference");
@@ -317,7 +324,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				.getElementsByTagName("Constraint");
 
 		for (int i = 0; i < constraintNodes.getLength(); i++) {
-			Constraint constraintObj = new Constraint();
+			ConformanceStatement constraintObj = new ConformanceStatement();
 			Element elmConstraint = (Element) constraintNodes.item(i);
 
 			constraintObj.setConstraintId(elmConstraint.getAttribute("ID"));
@@ -340,7 +347,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 				.getElementsByTagName("Predicate");
 
 		for (int i = 0; i < predicateNodes.getLength(); i++) {
-			Constraint predicateObj = new Constraint();
+			Predicate predicateObj = new Predicate();
 			Element elmPredicate = (Element) predicateNodes.item(i);
 
 			predicateObj.setConstraintId(elmPredicate.getAttribute("ID"));

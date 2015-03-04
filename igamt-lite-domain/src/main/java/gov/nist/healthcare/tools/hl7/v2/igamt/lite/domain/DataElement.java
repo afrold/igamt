@@ -2,8 +2,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
 
-import java.math.BigInteger;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,64 +18,63 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.Filters;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@javax.persistence.Table(name="DATAELEMENT")
+@javax.persistence.Table(name = "DATAELEMENT")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class DataElement extends DataModel implements java.io.Serializable {
+public abstract class DataElement extends DataModel implements
+		java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	protected Long id;
 
 	@NotNull
- 	@Column(nullable = false,name="DATAELEMENT_NAME")
+	@Column(nullable = false, name = "DATAELEMENT_NAME")
 	protected String name;
 
 	@NotNull
-	@Column(name = "USAGEE", nullable = false) // usage is a key word in mysql
+	@Column(name = "USAGEE", nullable = false)
+	// usage is a key word in mysql
 	@Enumerated(EnumType.STRING)
 	protected Usage usage;
 
 	@Min(0)
-	@Column(name="MIN_LENGTH")
+	@Column(name = "MIN_LENGTH")
 	protected Integer minLength;
 
 	@NotNull
-	@Column(nullable = false,name="MAX_LENGTH")
+	@Column(nullable = false, name = "MAX_LENGTH")
 	protected String maxLength;
 
-	@Column(name="CONF_LENGTH")
+	@Column(name = "CONF_LENGTH")
 	protected String confLength;
 
- 	@JsonIgnoreProperties({"name", "mappingAlternateId", "mappingId", "version","codesys","oid","type","codes"})
-	@OneToOne(optional = true,fetch = FetchType.EAGER)
-	@JoinColumn(name="TABLE_ID")
- 	protected Table table;
-	
-	@Column(nullable = true,name="BINDING_STRENGTH")
- 	protected String bindingStrength;
-	
-	@Column(nullable = true,name="BINDING_LOCATION")
-	protected String bindingLocation;
-	
+	@JsonIgnoreProperties({ "name", "mappingAlternateId", "mappingId",
+			"version", "codesys", "oid", "type", "codes" })
+	@OneToOne(optional = true, fetch = FetchType.EAGER)
+	@JoinColumn(name = "TABLE_ID")
+	protected Table table;
 
- 	@JsonIgnoreProperties({"components", "label", "name","description","predicates","conformanceStatements","datatypes"})
-	@OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
- 	@JoinColumn(name="DATATYPE_ID")
-	protected Datatype datatype; 
- 	
- 	@NotNull
- 	@Column(nullable = false,name="DATAELEMENT_POSITION")
+	@Column(nullable = true, name = "BINDING_STRENGTH")
+	protected String bindingStrength;
+
+	@Column(nullable = true, name = "BINDING_LOCATION")
+	protected String bindingLocation;
+
+	@JsonIgnoreProperties({ "components", "label", "name", "description",
+			"predicates", "conformanceStatements", "datatypes" })
+	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST })
+	@JoinColumn(name = "DATATYPE_ID")
+	protected Datatype datatype;
+
+	@NotNull
+	@Column(nullable = false, name = "DATAELEMENT_POSITION")
 	protected Integer position = 0;
- 
 
 	public Datatype getDatatype() {
 		return datatype;
@@ -166,10 +163,5 @@ public abstract class DataElement extends DataModel implements java.io.Serializa
 	public void setPosition(Integer position) {
 		this.position = position;
 	}
-	
-	
-	
-	
-	
 
 }

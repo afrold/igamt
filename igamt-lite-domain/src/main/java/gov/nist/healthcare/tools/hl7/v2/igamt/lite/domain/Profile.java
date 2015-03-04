@@ -19,74 +19,78 @@ import javax.persistence.Version;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 
- 
 @Entity
-@Table(name="PROFILE")
+@Table(name = "PROFILE")
 public class Profile implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonView({View.Summary.class })
+	@JsonView({ View.Summary.class })
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="ID")
+	@Column(name = "ID")
 	private Long id;
 
-	@JsonView({View.Summary.class})
-	@Column(name="TYPE")
- 	private String type;
+	@JsonView({ View.Summary.class })
+	@Column(name = "TYPE")
+	private String type;
 
-	@JsonView({View.Summary.class})
-	@Column(name="HL7VERSION")
+	@JsonView({ View.Summary.class })
+	@Column(name = "HL7VERSION")
 	private String hl7Version;
 
-	@JsonView({View.Summary.class})
-	@Column(name="SCHEMAVERSION")
+	@JsonView({ View.Summary.class })
+	@Column(name = "SCHEMAVERSION")
 	private String schemaVersion;
 
-	@JsonView({View.Summary.class})
+	@JsonView({ View.Summary.class })
 	private ProfileMetaData metaData;
 
 	private Encodings encodings;
 
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="SEGMENTS_ID")
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "SEGMENTS_ID")
 	private Segments segments;
 
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="DATATYTPES_ID")
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "DATATYTPES_ID")
 	private Datatypes datatypes;
 
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="MESSAGES_ID")
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "MESSAGES_ID")
 	private Messages messages;
 
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="CONFSTATEMENTS_ID")
-	private Constraints conformanceStatements;
+	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL)
+	// @JoinColumn(name = "CONFSTATEMENTS_ID")
+	@JsonIgnore
+	private transient Constraints conformanceStatements;
 
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="PREDICATES_ID")
-	private Constraints predicates;
+	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL)
+	// @JoinColumn(name = "PREDICATES_ID")
+	@JsonIgnore
+	private transient Constraints predicates;
 
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="TABLELIBRARY_ID")
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "TABLELIBRARY_ID")
 	private TableLibrary tableLibrary;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="AUTHOR_ID")
+	@JoinColumn(name = "AUTHOR_ID")
 	private Author author;
 
-	@JsonView({View.Summary.class})
-	@Column(name="PRELOADED")
- 	private Boolean preloaded; 
- 	
- 	@JsonView({View.Summary.class})
- 	@Column(name="VERSION")
- 	@Version // version from the db
-  	private Integer version;
-	
+	@JsonView({ View.Summary.class })
+	@Column(name = "PRELOADED")
+	private Boolean preloaded;
+
+	@JsonView({ View.Summary.class })
+	@Column(name = "VERSION")
+	@Version
+	// version from the db
+	private Integer version;
+
 	public Long getId() {
 		return id;
 	}
@@ -141,7 +145,7 @@ public class Profile implements java.io.Serializable {
 
 	public void setSegments(Segments segments) {
 		this.segments = segments;
- 	}
+	}
 
 	public Datatypes getDatatypes() {
 		return datatypes;
@@ -149,7 +153,7 @@ public class Profile implements java.io.Serializable {
 
 	public void setDatatypes(Datatypes datatypes) {
 		this.datatypes = datatypes;
- 	}
+	}
 
 	public Messages getMessages() {
 		return messages;
@@ -157,14 +161,13 @@ public class Profile implements java.io.Serializable {
 
 	public void setMessages(Messages messages) {
 		this.messages = messages;
- 	}
+	}
 
 	public Constraints getConformanceStatements() {
 		return conformanceStatements;
 	}
 
-	public void setConformanceStatements(
-			Constraints conformanceStatements) {
+	public void setConformanceStatements(Constraints conformanceStatements) {
 		this.conformanceStatements = conformanceStatements;
 	}
 
@@ -191,7 +194,6 @@ public class Profile implements java.io.Serializable {
 	public void setAuthor(Author author) {
 		this.author = author;
 	}
-	
 
 	public Integer getVersion() {
 		return version;
@@ -199,6 +201,7 @@ public class Profile implements java.io.Serializable {
 
 	/**
 	 * Do not set the version. Hibernate set the version automatically
+	 * 
 	 * @param version
 	 * @return
 	 */
@@ -224,6 +227,5 @@ public class Profile implements java.io.Serializable {
 				+ conformanceStatements + ", predicates=" + predicates
 				+ ", tableLibrary=" + tableLibrary + ", author=" + author + "]";
 	}
-
 
 }
