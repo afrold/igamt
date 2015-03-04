@@ -1,0 +1,148 @@
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableService;
+
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+
+
+@Controller
+@RequestMapping("/tables")
+public class TableController {
+	static final Logger logger = LoggerFactory.getLogger(TableController.class);
+	
+	@Autowired
+	private TableLibraryRepository tableLibraryRepository;
+	
+	@Autowired
+	private TableLibraryService tableLibraryService;
+	
+	@Autowired
+	private TableService tableService;
+	
+	//CRUD C for Table, User cannot create tableLib	
+	@RequestMapping(value = "/table/create/{tableLibraryId}", method=RequestMethod.POST)
+	public TableLibrary createTable(@RequestBody Long tableLibraryId) {
+		Table t = new Table();
+		TableLibrary tl = tableLibraryService.findOne(tableLibraryId);
+		tl.getTables().addTable(t);
+		return tableLibraryService.save(tl);
+	}
+	
+	//CRUD C for Code
+	@RequestMapping(value = "/table/create/{tableId}", method=RequestMethod.POST)
+	public Table addCode(@RequestBody Long tableId) {
+		Code code = new Code();
+		Table table = tableService.findOne(tableId);
+		table.getCodes().add(code);		
+		return tableService.save(table);
+	}
+	
+	//CRUD R for TableLib
+	@RequestMapping(value = "/tableLibrary/{tableLibraryId}", method = RequestMethod.GET)
+	@ResponseBody
+	public TableLibrary tableLibrary(final Long tableLibraryId) {
+		return tableLibraryService.findOne(tableLibraryId);
+	}
+	
+	//CRUD R for Table
+	@RequestMapping(value = "/table/{tableId}", method = RequestMethod.GET)
+	@ResponseBody
+	public Table table(final Long tableId) {
+		return tableService.findOne(tableId);
+	}
+	
+	//Update for TableLib
+	@RequestMapping(value="/tableLibrary/update", method=RequestMethod.PUT)
+	public TableLibrary update(@RequestBody @Valid TableLibrary tableLibrary) {
+		return tableLibraryService.save(tableLibrary);
+	}
+	
+	
+	//Update for Table
+	@RequestMapping(value="/table/update", method=RequestMethod.PUT)
+	public Table update(@RequestBody @Valid Table table) {
+		return tableService.save(table);
+	}
+	
+	//Update for Code
+	@RequestMapping(value="/table/updatecode/{tableId}", method=RequestMethod.PUT)
+	public Code update(final Long tableId, @RequestBody @Valid Code code) {
+		Table table = tableService.findOne(tableId);
+		for(Code c:table.getCodes()){
+			if(code.getId() == c.getId()) {
+				table.getCodes().remove(c);
+				table.getCodes().add(code);
+				return code;
+			}
+		}
+		return null;
+	}
+	
+	//CRUD D for Table, User cannot delete tableLib
+	//FIXME If the table is binding to a tablelib, it should not be deleted
+	@RequestMapping(value = "/table/delete/{tableId}", method=RequestMethod.DELETE)
+    public ResponseEntity<Boolean> delete(final Long tableId){
+    	tableService.delete(tableId);
+    	return new ResponseEntity<Boolean>(Boolean.TRUE, HttpStatus.OK);
+ 
+    }
+	
+	//Delete Code for Table
+	@RequestMapping(value="/table/delete/{tableId}/{codeId}", method=RequestMethod.DELETE)
+	public ResponseEntity<Boolean> delete(final Long tableId, final Long codeId) {
+		Table table = tableService.findOne(tableId);
+		for(Code c:table.getCodes()){
+			if(codeId == c.getId()) {
+				table.getCodes().remove(c);
+				return new ResponseEntity<Boolean>(Boolean.TRUE, HttpStatus.OK);
+			}
+		}
+		return new ResponseEntity<Boolean>(Boolean.FALSE, HttpStatus.OK);
+	}
+	
+	//GET,SET
+	public TableLibraryRepository getTableLibraryRepository() {
+		return tableLibraryRepository;
+	}
+
+	public void setTableLibraryRepository(TableLibraryRepository tableLibraryRepository) {
+		this.tableLibraryRepository = tableLibraryRepository;
+	}
+
+	public TableLibraryService getTableLibraryService() {
+		return tableLibraryService;
+	}
+
+	public void setTableLibraryService(TableLibraryService tableLibraryService) {
+		this.tableLibraryService = tableLibraryService;
+	}
+
+	public TableService getTableService() {
+		return tableService;
+	}
+
+	public void setTableService(TableService tableService) {
+		this.tableService = tableService;
+	}
+	
+	
+	
+	
+}
