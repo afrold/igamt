@@ -15,15 +15,33 @@
  * 
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableService;
 
-public interface TableService {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-	public Table save(Table c);
+@Service
+public class TableServiceImpl implements TableService {
+	@Autowired
+	private TableRepository tableRepository;
 
-	public void delete(Long id);
+	@Override
+	public Table save(Table c) {
+		return tableRepository.save(c);
+	}
 
-	public Table findOne(Long id);
+	@Override
+	public void delete(Long id) {
+		tableRepository.delete(id);
+	}
+
+	@Override
+	public Table findOne(Long id) {
+		return tableRepository.findOne(id);
+	}
+
 }
