@@ -9,31 +9,42 @@
  * modified versions bear some notice that they have been modified.
  */
 
-/**
- * 
- * @author Olivier MARIE-ROSE
- * 
- */
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessagesRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.MessagesService;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConstraintRepository;
+@Service
+public class MessagesServiceImpl implements MessagesService {
+	@Autowired
+	private MessagesRepository messagesRepository;
 
- public interface ConstraintService {
- 
-	public Iterable<Constraint> findAll();
+	@Override
+	public Iterable<Messages> findAll() {
+		return messagesRepository.findAll();
+	}
 
- 	public Constraint save(Constraint p);
-	
- 	public void delete(Long id);
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Messages save(Messages c) {
+		return messagesRepository.saveAndFlush(c);
+	}
 
-	public Constraint findOne(Long id);
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(Long id) {
+		messagesRepository.delete(id);
+	}
+
+	@Override
+	public Messages findOne(Long id) {
+		return messagesRepository.findOne(id);
+	}
 
 }

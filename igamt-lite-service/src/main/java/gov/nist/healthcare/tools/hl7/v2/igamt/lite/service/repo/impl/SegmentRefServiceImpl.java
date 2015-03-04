@@ -15,25 +15,38 @@
  * 
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRefRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentRefService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConstraintRepository;
+@Service
+public class SegmentRefServiceImpl implements SegmentRefService {
+	@Autowired
+	private SegmentRefRepository segmentRefRepository;
 
- public interface ConstraintService {
- 
-	public Iterable<Constraint> findAll();
+	@Override
+	public Iterable<SegmentRef> findAll() {
+		return segmentRefRepository.findAll();
+	}
 
- 	public Constraint save(Constraint p);
-	
- 	public void delete(Long id);
+	@Override
+	public SegmentRef save(SegmentRef c) {
+		return segmentRefRepository.save(c);
+	}
 
-	public Constraint findOne(Long id);
+	@Override
+	public void delete(Long id) {
+		segmentRefRepository.delete(id);
+	}
+
+	@Override
+	public SegmentRef findOne(Long id) {
+		return segmentRefRepository.findOne(id);
+	}
 
 }

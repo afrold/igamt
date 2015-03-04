@@ -20,13 +20,17 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 import java.util.List;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
 	
 	@Query("select profile from Profile profile where profile.preloaded = true")
 	List<Profile> findAllPreloaded();
 	
+	@Query("select profile from Profile profile where profile.author.user.id = :userId ")
+	List<Profile> findAllByUserId(@Param("userId")Long userId);
 	
 }

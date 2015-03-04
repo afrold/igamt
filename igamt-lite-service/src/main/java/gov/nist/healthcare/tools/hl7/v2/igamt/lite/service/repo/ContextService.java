@@ -17,37 +17,16 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ContextRepository;
 
-@Service
-public class ContextService {
+public interface ContextService {
 
-	@Autowired
-	private ContextRepository contextRepository;
+	public Iterable<Context> findAll();
 
-	public Iterable<Context> findAll() {
-		return contextRepository.findAll();
-	}
+	public Context save(Context p);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public Context save(Context p) {
-		return contextRepository.save(p);
-	}
+	public void delete(Long id);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(Long id) {
-		contextRepository.delete(id);
-	}
-
-	public Context findOne(Long id) {
-		return contextRepository.findOne(id);
-	}
+	public Context findOne(Long id);
 
 }

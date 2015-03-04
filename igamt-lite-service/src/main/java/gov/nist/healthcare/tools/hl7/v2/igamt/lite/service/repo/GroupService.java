@@ -11,37 +11,16 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.GroupRepository;
 
+public interface GroupService {
 
-@Service
-public class GroupService {
-	@Autowired
-	private GroupRepository groupRepository;
+	public Iterable<Group> findAll();
 
-	public Iterable<Group> findAll() {
-		return groupRepository.findAll();
-	}
+	public Group save(Group c);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public Group save(Group c) {
-		return groupRepository.save(c);
-	}
+	public void delete(String id);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(String id) {
-		groupRepository.delete(id);
-	}
-
-	public Group findOne(String id) {
-		return groupRepository.findOne(id);
-	}
+	public Group findOne(String id);
 
 }

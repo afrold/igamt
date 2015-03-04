@@ -12,35 +12,15 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.FieldRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+public interface FieldService {
 
-@Service
-public class FieldService {
-	@Autowired
-	private FieldRepository fieldRepository;
+	public Iterable<Field> findAll();
 
-	public Iterable<Field> findAll() {
-		return fieldRepository.findAll();
-	}
+	public Field save(Field c);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public Field save(Field c) {
-		return fieldRepository.save(c);
-	}
+	public void delete(Long id);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(Long id) {
-		fieldRepository.delete(id);
-	}
-
-	public Field findOne(Long id) {
-		return fieldRepository.findOne(id);
-	}
+	public Field findOne(Long id);
 
 }

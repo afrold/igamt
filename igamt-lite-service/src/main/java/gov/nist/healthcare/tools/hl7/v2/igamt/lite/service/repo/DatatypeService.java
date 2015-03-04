@@ -18,38 +18,15 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ComponentRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+public interface DatatypeService {
 
-@Service
-public class DatatypeService {
+	public Iterable<Datatype> findAll();
 
-	@Autowired
-	private DatatypeRepository datatypeRepository;
-	
-	
+	public Datatype save(Datatype p);
 
-	public Iterable<Datatype> findAll() {
-		return datatypeRepository.findAll();
-	}
+	public void delete(Long id);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public Datatype save(Datatype p) {
-		return datatypeRepository.saveAndFlush(p);
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(Long id) {
-		datatypeRepository.delete(id);
-	}
-
-	public Datatype findOne(Long id) {
-		return datatypeRepository.findOne(id);
-	}
+	public Datatype findOne(Long id);
 
 }

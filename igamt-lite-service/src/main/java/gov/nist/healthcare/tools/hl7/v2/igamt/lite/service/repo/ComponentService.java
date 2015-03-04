@@ -18,36 +18,18 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ComponentRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ComponentService {
+public interface ComponentService {
 
-	@Autowired
-	private ComponentRepository componentRepository;
+	public Iterable<Component> findAll();
 
-	public Iterable<Component> findAll() {
-		return componentRepository.findAll();
-	}
+	public Component save(Component c);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public Component save(Component c) {
-		return componentRepository.save(c);
-	}
+	public void delete(Long id);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(Long id) {
-		componentRepository.delete(id);
-	}
-
-	public Component findOne(Long id) {
-		return componentRepository.findOne(id);
-	}
+	public Component findOne(Long id);
 
 }

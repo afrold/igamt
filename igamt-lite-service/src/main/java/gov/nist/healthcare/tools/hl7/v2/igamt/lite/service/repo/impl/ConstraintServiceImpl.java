@@ -15,25 +15,43 @@
  * 
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConstraintRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ConstraintService;
 
- public interface ConstraintService {
- 
-	public Iterable<Constraint> findAll();
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
- 	public Constraint save(Constraint p);
-	
- 	public void delete(Long id);
+@Service
+public class ConstraintServiceImpl implements ConstraintService {
 
-	public Constraint findOne(Long id);
+	@Autowired
+	private ConstraintRepository constraintRepository;
+
+	@Override
+	public Iterable<Constraint> findAll() {
+		return constraintRepository.findAll();
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Constraint save(Constraint p) {
+		return constraintRepository.save(p);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(Long id) {
+		constraintRepository.delete(id);
+	}
+
+	@Override
+	public Constraint findOne(Long id) {
+		return constraintRepository.findOne(id);
+	}
 
 }

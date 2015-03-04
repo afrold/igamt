@@ -9,31 +9,40 @@
  * modified versions bear some notice that they have been modified.
  */
 
-/**
- * 
- * @author Olivier MARIE-ROSE
- * 
- */
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConstraintRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.GroupRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.GroupService;
 
- public interface ConstraintService {
- 
-	public Iterable<Constraint> findAll();
 
- 	public Constraint save(Constraint p);
-	
- 	public void delete(Long id);
+@Service
+public class GroupServiceImpl implements GroupService {
+	@Autowired
+	private GroupRepository groupRepository;
 
-	public Constraint findOne(Long id);
+	public Iterable<Group> findAll() {
+		return groupRepository.findAll();
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Group save(Group c) {
+		return groupRepository.save(c);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(String id) {
+		groupRepository.delete(id);
+	}
+
+	public Group findOne(String id) {
+		return groupRepository.findOne(id);
+	}
 
 }

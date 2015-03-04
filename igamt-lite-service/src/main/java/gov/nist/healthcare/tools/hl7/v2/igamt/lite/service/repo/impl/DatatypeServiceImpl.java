@@ -15,25 +15,43 @@
  * 
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
-import org.springframework.stereotype.Repository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.DatatypeService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConstraintRepository;
+@Service
+public class DatatypeServiceImpl implements DatatypeService {
 
- public interface ConstraintService {
- 
-	public Iterable<Constraint> findAll();
+	@Autowired
+	private DatatypeRepository datatypeRepository;
 
- 	public Constraint save(Constraint p);
-	
- 	public void delete(Long id);
+	@Override
+	public Iterable<Datatype> findAll() {
+		return datatypeRepository.findAll();
+	}
 
-	public Constraint findOne(Long id);
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Datatype save(Datatype p) {
+		return datatypeRepository.saveAndFlush(p);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(Long id) {
+		datatypeRepository.delete(id);
+	}
+
+	@Override
+	public Datatype findOne(Long id) {
+		return datatypeRepository.findOne(id);
+	}
 
 }

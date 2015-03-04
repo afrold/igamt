@@ -24,26 +24,15 @@ import org.springframework.stereotype.Service;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ByIDRepository;
 
+public interface ByIDService {
+	 
 
-@Service
-public class ByIDService {
-	@Autowired
-	private ByIDRepository byIDRepository;
+	public Iterable<ByID> findAll();
 
-	public Iterable<ByID> findAll() {
-		return byIDRepository.findAll();
-	}
+	public ByID save(ByID c);
 
-	public ByID save(ByID c) {
-		return byIDRepository.save(c);
-	}
+	public void delete(Long id);
 
-	public void delete(Long id) {
-		byIDRepository.delete(id);
-	}
-
-	public ByID findOne(Long id) {
-		return byIDRepository.findOne(id);
-	}
+	public ByID findOne(Long id);
 
 }

@@ -15,25 +15,43 @@
  * 
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
-import org.springframework.stereotype.Repository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentsRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentsService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConstraintRepository;
+@Service
+public class SegmentsServiceImpl implements SegmentsService {
 
- public interface ConstraintService {
- 
-	public Iterable<Constraint> findAll();
+	@Autowired
+	private SegmentsRepository segmentsRepository;
 
- 	public Constraint save(Constraint p);
-	
- 	public void delete(Long id);
+	@Override
+	public Iterable<Segments> findAll() {
+		return segmentsRepository.findAll();
+	}
 
-	public Constraint findOne(Long id);
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Segments save(Segments p) {
+		return segmentsRepository.saveAndFlush(p);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(Long id) {
+		segmentsRepository.delete(id);
+	}
+
+	@Override
+	public Segments findOne(Long id) {
+		return segmentsRepository.findOne(id);
+	}
 
 }

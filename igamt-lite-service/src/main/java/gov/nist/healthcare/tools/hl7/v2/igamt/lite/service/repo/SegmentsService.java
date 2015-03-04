@@ -17,38 +17,15 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.*;
 
-@Service
-public class SegmentsService {
+public interface SegmentsService {
 
-	@Autowired
-	private SegmentsRepository segmentsRepository;
+	public Iterable<Segments> findAll();
 
-	public Iterable<Segments> findAll() {
-		return segmentsRepository.findAll();
-	}
+	public Segments save(Segments p);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public Segments save(Segments p) {
-		return segmentsRepository.saveAndFlush(p);
-	}
+	public void delete(Long id);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(Long id) {
-		segmentsRepository.delete(id);
-	}
-
-	public Segments findOne(Long id) {
-		return segmentsRepository.findOne(id);
-	}
-
+	public Segments findOne(Long id);
 }

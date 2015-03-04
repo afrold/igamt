@@ -25,25 +25,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ByNameRepository;
 
 
-@Service
-public class ByNameService {
-	@Autowired
-	private ByNameRepository byNameRepository;
+public interface ByNameService {
+	 
+	public Iterable<ByName> findAll();
 
-	public Iterable<ByName> findAll() {
-		return byNameRepository.findAll();
-	}
+	public ByName save(ByName c);
 
-	public ByName save(ByName c) {
-		return byNameRepository.save(c);
-	}
+	public void delete(Long id);
 
-	public void delete(Long id) {
-		byNameRepository.delete(id);
-	}
-
-	public ByName findOne(Long id) {
-		return byNameRepository.findOne(id);
-	}
+	public ByName findOne(Long id);
 
 }

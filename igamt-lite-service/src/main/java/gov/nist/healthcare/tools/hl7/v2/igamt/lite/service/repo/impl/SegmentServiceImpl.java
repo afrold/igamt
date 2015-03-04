@@ -15,18 +15,38 @@
  * 
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentService;
 
-public interface SegmentService {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-	public Iterable<Segment> findAll();
+@Service
+public class SegmentServiceImpl implements SegmentService {
+	@Autowired
+	private SegmentRepository segmentRepository;
 
-	public Segment save(Segment c);
+	@Override
+	public Iterable<Segment> findAll() {
+		return segmentRepository.findAll();
+	}
 
-	public void delete(Long id);
+	@Override
+	public Segment save(Segment c) {
+		return segmentRepository.save(c);
+	}
 
-	public Segment findOne(Long id);
+	@Override
+	public void delete(Long id) {
+		segmentRepository.delete(id);
+	}
+
+	@Override
+	public Segment findOne(Long id) {
+		return segmentRepository.findOne(id);
+	}
 
 }

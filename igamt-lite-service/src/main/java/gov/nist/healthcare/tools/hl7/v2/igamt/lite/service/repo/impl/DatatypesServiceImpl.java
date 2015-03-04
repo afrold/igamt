@@ -15,29 +15,56 @@
  * 
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypesRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.DatatypesService;
 
-public interface DatatypesService {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class DatatypesServiceImpl implements DatatypesService {
+
+	@Autowired
+	private DatatypesRepository datatypesRepository;
+
+	@Autowired
+	private DatatypeServiceImpl datatypeService;
+
+	@Autowired
+	private ComponentServiceImpl componentService;
 
 	/**
 	 * 
 	 * @param p
 	 * @return
 	 */
-	public Datatypes save(Datatypes ds);
+	@Override
+	@Transactional()
+	public Datatypes save(Datatypes ds) {
+		return datatypesRepository.save(ds);
+	}
 
 	/**
 	 * 
 	 * @param id
 	 */
-	public void delete(Long id);
+	@Override
+	public void delete(Long id) {
+		datatypesRepository.delete(id);
+	}
 
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 */
-	public Datatypes findOne(Long id);
+	@Override
+	public Datatypes findOne(Long id) {
+		return datatypesRepository.findOne(id);
+	}
+
 }

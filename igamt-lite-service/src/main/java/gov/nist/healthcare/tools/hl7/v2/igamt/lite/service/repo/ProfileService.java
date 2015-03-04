@@ -18,63 +18,17 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypesRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+public interface ProfileService {
 
-@Service
-public class ProfileService {
+	public Profile save(Profile p);
 
-	@Autowired
-	private ProfileRepository profileRepository; 
-	
-	@Autowired
-	private SegmentsService segmentsService;
-	
-	@Autowired
-	private MessagesService messagesService;
-	
-	@Autowired
-	private DatatypesService datatypesService;
+	public void delete(Long id);
 
-	
-	@Autowired
-	private TableLibraryService tableLibraryService;
-	
-	
+	public Profile findOne(Long id);
 
-	public Iterable<Profile> findAll() {
-		return profileRepository.findAll();
-	}
+	public Iterable<Profile> findAllPreloaded();
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public Profile save(Profile p) {
-//		tableLibraryService.save(p.getTableLibrary());
-////		conformanceContextService.save(p.getConformanceStatements());
-////		conformanceContextService.save(p.getPredicates());
-//		datatypesService.save(p.getDatatypes());
-////		segmentsService.save(p.getSegments());
-////		messagesService.save(p.getMessages());
- 		profileRepository.saveAndFlush(p);
-		return p;
-	}
+	public Iterable<Profile> findAllByUser(Long userId);
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(Long id) {
-		profileRepository.delete(id);
-	}
-
-	public Profile findOne(Long id) {
-		return profileRepository.findOne(id);
-	}
-	
-	public Iterable<Profile> findAllPreloaded(){
-		return profileRepository.findAllPreloaded();
-	}
-	
 }

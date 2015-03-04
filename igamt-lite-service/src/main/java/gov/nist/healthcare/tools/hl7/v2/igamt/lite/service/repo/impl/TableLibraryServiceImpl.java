@@ -15,25 +15,53 @@
  * 
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
-import org.springframework.stereotype.Repository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableLibraryService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConstraintRepository;
+@Service
+public class TableLibraryServiceImpl implements TableLibraryService {
 
- public interface ConstraintService {
- 
-	public Iterable<Constraint> findAll();
+	@Autowired
+	private TableLibraryRepository tableLibraryRepository;
 
- 	public Constraint save(Constraint p);
-	
- 	public void delete(Long id);
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public TableLibrary save(TableLibrary t) {
+		tableLibraryRepository.saveAndFlush(t);
+		return t;
+	}
 
-	public Constraint findOne(Long id);
+	/**
+	 * 
+	 * @param id
+	 */
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(Long id) {
+		tableLibraryRepository.delete(id);
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public TableLibrary findOne(Long id) {
+		return tableLibraryRepository.findOne(id);
+	}
 
 }

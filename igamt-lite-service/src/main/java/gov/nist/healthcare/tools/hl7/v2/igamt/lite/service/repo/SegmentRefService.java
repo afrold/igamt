@@ -17,33 +17,16 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRefRepository;
 
+public interface SegmentRefService {
 
-@Service
-public class SegmentRefService {
-	@Autowired
-	private SegmentRefRepository segmentRefRepository;
+	public Iterable<SegmentRef> findAll();
 
-	public Iterable<SegmentRef> findAll() {
-		return segmentRefRepository.findAll();
-	}
+	public SegmentRef save(SegmentRef c);
 
-	public SegmentRef save(SegmentRef c) {
-		return segmentRefRepository.save(c);
-	}
+	public void delete(Long id);
 
-	public void delete(Long id) {
-		segmentRefRepository.delete(id);
-	}
-
-	public SegmentRef findOne(Long id) {
-		return segmentRefRepository.findOne(id);
-	}
+	public SegmentRef findOne(Long id);
 
 }
