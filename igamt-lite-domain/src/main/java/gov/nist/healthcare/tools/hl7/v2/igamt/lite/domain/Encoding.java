@@ -6,11 +6,10 @@ import javax.persistence.Embeddable;
 public class Encoding implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
- 
+
 	public Encoding() {
 		super();
- 	}
+	}
 
 	private String value;
 

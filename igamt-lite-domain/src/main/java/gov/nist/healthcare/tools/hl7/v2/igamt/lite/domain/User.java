@@ -15,26 +15,26 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="USER")
-public class User implements Serializable, Cloneable{
+@Table(name = "USER")
+public class User implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@NotNull
-	@Column(nullable = false,name="FIRSTNAME")
+	@Column(nullable = false, name = "FIRSTNAME")
 	private String firstname;
 
 	@NotNull
-	@Column(nullable = false,name="LASTNAME")
+	@Column(nullable = false, name = "LASTNAME")
 	private String lastname;
 
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinColumn(name="USERACCOUNT_ID")
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "USERACCOUNT_ID")
 	private UserAccount userAccount;
 
 	public Long getId() {
@@ -74,11 +74,12 @@ public class User implements Serializable, Cloneable{
 		return "Author [id=" + id + ", firstName=" + firstname + ", lastName="
 				+ lastname + "]";
 	}
-	
+
 	@Override
-    public User clone() throws CloneNotSupportedException {
+	public User clone() throws CloneNotSupportedException {
 		User clonedUser = (User) super.clone();
 		clonedUser.setId(null);
-        return clonedUser;
-    }
+		return clonedUser;
+	}
+
 }

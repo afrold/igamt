@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@javax.persistence.Table(name="CODE")
+@javax.persistence.Table(name = "CODE")
 public class Code implements Serializable {
 	/**
 	 * 
@@ -18,23 +18,23 @@ public class Code implements Serializable {
 	private static final long serialVersionUID = 410373025762745686L;
 
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@NotNull
-	@Column(nullable = false, name="CODE")
+	@Column(nullable = false, name = "CODE")
 	private String code;
 
 	@NotNull
-	@Column(nullable = false, name="LABEL")
+	@Column(nullable = false, name = "LABEL")
 	private String label;
 
-	@Column(name="CODESYS")
+	@Column(name = "CODESYS")
 	private String codesys;
 
-	@Column(name="SOURCE")
-	private String source; 
+	@Column(name = "SOURCE")
+	private String source;
 
 	public Long getId() {
 		return id;
@@ -51,7 +51,7 @@ public class Code implements Serializable {
 	public void setCode(String code) {
 		this.code = code;
 	}
- 
+
 	public String getLabel() {
 		return label;
 	}
@@ -74,12 +74,12 @@ public class Code implements Serializable {
 
 	public void setSource(String source) {
 		this.source = source;
-	} 
+	}
 
 	@Override
 	public String toString() {
-		return "Code [code=" + code + ", label=" + label
-				+ ", codesys=" + codesys + ", source=" + source + "]";
+		return "Code [code=" + code + ", label=" + label + ", codesys="
+				+ codesys + ", source=" + source + "]";
 	}
 
 }

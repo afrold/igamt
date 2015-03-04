@@ -11,27 +11,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
- 
- 
 @Entity
-@Table(name="SEGMENTS")
+@Table(name = "SEGMENTS")
 public class Segments implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
- 	@Id
- 	@Column(name="ID")
+	@Id
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
- 	@OneToMany(mappedBy = "segments",fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
- 	private final Set<Segment> segments = new HashSet<Segment>();
+	@OneToMany(mappedBy = "segments", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private final Set<Segment> segments = new HashSet<Segment>();
 
 	public Long getId() {
 		return id;

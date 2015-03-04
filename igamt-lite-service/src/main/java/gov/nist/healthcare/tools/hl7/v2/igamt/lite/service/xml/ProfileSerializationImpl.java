@@ -29,8 +29,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 
@@ -93,6 +94,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		for (String key : datatypesMap.keySet()) {
 			datatypes.addDatatype(datatypesMap.get(key));
 			Datatype dt = datatypesMap.get(key);
+			if (dt.getConformanceStatements().size() > 0) {
+				System.out.println("--------------> " + dt.getName());
+			}
 			// System.out.println(dt.getPosition());
 		}
 		profile.setDatatypes(datatypes);
@@ -208,11 +212,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		// [Woo] I assumed the default name could be base name.
 		datatypeObj.setLabel(elmDatatype.getAttribute("ID"));
 		datatypeObj.setName(elmDatatype.getAttribute("Name"));
-		datatypeObj.setPredicates(this.findConstraints(profile.getPredicates()
+		datatypeObj.setPredicates(this.findPredicates(profile.getPredicates()
 				.getDatatypes(), elmDatatype.getAttribute("ID")));
-		datatypeObj.setConformanceStatements(this.findConstraints(profile
-				.getConformanceStatements().getDatatypes(), elmDatatype
-				.getAttribute("ID")));
+		datatypeObj.setConformanceStatements(this.findConformanceStatement(
+				profile.getConformanceStatements().getDatatypes(),
+				elmDatatype.getAttribute("ID")));
 
 		NodeList nodes = elmDatatype.getChildNodes();
 		for (int i = 0; i < nodes.getLength(); i++) {
@@ -244,15 +248,32 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return datatypeObj;
 	}
 
-	private Set<Constraint> findConstraints(Context context, String key) {
+	private Set<ConformanceStatement> findConformanceStatement(Context context,
+			String key) {
 		Set<ByNameOrByID> byNameOrByIDs = context.getByNameOrByIDs();
-		Set<Constraint> result = new HashSet<Constraint>();
+		Set<ConformanceStatement> result = new HashSet<ConformanceStatement>();
 		for (ByNameOrByID byNameOrByID : byNameOrByIDs) {
 			if (byNameOrByID instanceof ByID) {
 				ByID byID = (ByID) byNameOrByID;
-
 				if (byID.getByID().equals(key)) {
-					for (Constraint c : byID.getConstraints()) {
+					for (ConformanceStatement c : byID
+							.getConformanceStatements()) {
+						result.add(c);
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	private Set<Predicate> findPredicates(Context context, String key) {
+		Set<ByNameOrByID> byNameOrByIDs = context.getByNameOrByIDs();
+		Set<Predicate> result = new HashSet<Predicate>();
+		for (ByNameOrByID byNameOrByID : byNameOrByIDs) {
+			if (byNameOrByID instanceof ByID) {
+				ByID byID = (ByID) byNameOrByID;
+				if (byID.getByID().equals(key)) {
+					for (Predicate c : byID.getPredicates()) {
 						result.add(c);
 					}
 				}
@@ -504,11 +525,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		// [Woo] I assumed the default name could be base name.
 		segmentObj.setLabel(segmentElm.getAttribute("ID"));
 		segmentObj.setName(segmentElm.getAttribute("Name"));
-		segmentObj.setPredicates(this.findConstraints(profile.getPredicates()
+		segmentObj.setPredicates(this.findPredicates(profile.getPredicates()
 				.getSegments(), segmentElm.getAttribute("ID")));
-		segmentObj.setConformanceStatements(this.findConstraints(profile
-				.getConformanceStatements().getSegments(), segmentElm
-				.getAttribute("ID")));
+		segmentObj.setConformanceStatements(this.findConformanceStatement(
+				profile.getConformanceStatements().getSegments(),
+				segmentElm.getAttribute("ID")));
 
 		NodeList fields = segmentElm.getElementsByTagName("Field");
 		for (int i = 0; i < fields.getLength(); i++) {

@@ -17,7 +17,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="MAPPING")
+@Table(name = "MAPPING")
 public class Mapping implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,11 +31,11 @@ public class Mapping implements Serializable {
 	protected List<Case> cases = new ArrayList<Case>();
 
 	@NotNull
-	@Column(name="MAPPING_POSITION")
+	@Column(name = "MAPPING_POSITION")
 	protected Integer position = 0;
 
 	@NotNull
-	@Column(name="REFERENCE")
+	@Column(name = "REFERENCE")
 	protected Integer reference;
 
 	public Long getId() {

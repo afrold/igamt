@@ -23,7 +23,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -33,13 +32,13 @@ public class ProfileServiceImpl implements ProfileService {
 	private ProfileRepository profileRepository;
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional
 	public Profile save(Profile p) {
 		return profileRepository.save(p);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional
 	public void delete(Long id) {
 		profileRepository.delete(id);
 	}

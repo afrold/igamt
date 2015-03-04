@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="BYID")
+@Table(name = "BYID")
 public class ByID extends ByNameOrByID {
 
 	/**
@@ -15,7 +15,7 @@ public class ByID extends ByNameOrByID {
 	private static final long serialVersionUID = 1167310291230293964L;
 
 	@NotNull
-	@Column(nullable = false, name="BYID")
+	@Column(nullable = false, name = "BYID")
 	protected String byID;
 
 	public String getByID() {
@@ -28,8 +28,7 @@ public class ByID extends ByNameOrByID {
 
 	@Override
 	public String toString() {
-		return "ByID [id=" + id + ", byID=" + byID + ", constraints="
-				+ constraints + "]";
+		return "ByID [id=" + id + ", byID=" + byID + "]";
 	}
 
 }

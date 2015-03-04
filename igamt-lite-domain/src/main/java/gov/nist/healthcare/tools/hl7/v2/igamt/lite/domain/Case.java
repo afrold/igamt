@@ -20,18 +20,18 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="CASE")
+@Table(name = "CASE")
 public class Case implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="ID")
+	@Column(name = "ID")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
 
- 	@NotNull
-	@Column(nullable = false,name="VALUE")
+	@NotNull
+	@Column(nullable = false, name = "VALUE")
 	protected String value;
 
 	@OneToOne

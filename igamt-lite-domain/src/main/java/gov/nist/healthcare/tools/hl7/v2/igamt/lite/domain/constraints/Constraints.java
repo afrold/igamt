@@ -14,28 +14,27 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="CONSTRAINTS")
-public class Constraints implements Serializable{
+@Table(name = "CONSTRAINTS")
+public class Constraints implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name="DATATYPES_ID")
- 	private Context datatypes;
 
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name="SEGMENTS_ID")
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "DATATYPES_ID")
+	private Context datatypes;
+
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "SEGMENTS_ID")
 	private Context segments;
 
-	@OneToOne(optional = false,fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
- 	@JoinColumn(name="GROUPS_ID")
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "GROUPS_ID")
 	private Context groups;
 
 	public Long getId() {
@@ -70,5 +69,4 @@ public class Constraints implements Serializable{
 		this.groups = groups;
 	}
 
-	
 }

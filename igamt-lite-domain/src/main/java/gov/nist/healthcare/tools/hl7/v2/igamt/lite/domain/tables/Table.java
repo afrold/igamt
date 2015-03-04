@@ -14,17 +14,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.validation.constraints.NotNull;
 
 /**
  * 
- * @author Harold Affo (harold.affo@nist.gov)
- * Feb 26, 2015
+ * @author Harold Affo (harold.affo@nist.gov) Feb 26, 2015
  * 
  */
 @Entity
-@javax.persistence.Table(name="IGTABLE")
+@javax.persistence.Table(name = "IGTABLE")
 public class Table implements Serializable {
 
 	/**
@@ -33,34 +31,33 @@ public class Table implements Serializable {
 	private static final long serialVersionUID = 734059059225906039L;
 
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name="MAPPING_ALTERNATE_ID")
+	@Column(name = "MAPPING_ALTERNATE_ID")
 	private String mappingAlternateId;
 
 	@NotNull
- 	@Column(nullable = false,name="MAPPING_ID")
+	@Column(nullable = false, name = "MAPPING_ID")
 	private String mappingId;
-	
 
 	@NotNull
-	@Column(nullable = false,name="NAME")
+	@Column(nullable = false, name = "NAME")
 	private String name;
 
-	@Column(name="VERSION")
+	@Column(name = "VERSION")
 	private String version;
-	@Column(name="CODESYS")
+	@Column(name = "CODESYS")
 	private String codesys;
-	@Column(name="OID")
+	@Column(name = "OID")
 	private String oid;
-	@Column(name="TYPE")
+	@Column(name = "TYPE")
 	private String type;
 
-	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
-   	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
-	private Set<Code> codes = new HashSet<Code>();
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
+	private final Set<Code> codes = new HashSet<Code>();
 
 	public Long getId() {
 		return id;
@@ -131,8 +128,8 @@ public class Table implements Serializable {
 	}
 
 	public void addCode(Code c) {
- 		codes.add(c);
- 	}
+		codes.add(c);
+	}
 
 	@Override
 	public String toString() {

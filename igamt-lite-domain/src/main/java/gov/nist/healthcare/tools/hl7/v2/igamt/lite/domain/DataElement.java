@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -56,7 +57,8 @@ public abstract class DataElement extends DataModel implements
 
 	@JsonIgnoreProperties({ "name", "mappingAlternateId", "mappingId",
 			"version", "codesys", "oid", "type", "codes" })
-	@OneToOne(optional = true, fetch = FetchType.EAGER)
+	@OneToOne(optional = true, fetch = FetchType.EAGER, cascade = {
+			CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "TABLE_ID")
 	protected Table table;
 
@@ -68,7 +70,7 @@ public abstract class DataElement extends DataModel implements
 
 	@JsonIgnoreProperties({ "components", "label", "name", "description",
 			"predicates", "conformanceStatements", "datatypes" })
-	@OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST })
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "DATATYPE_ID")
 	protected Datatype datatype;
 

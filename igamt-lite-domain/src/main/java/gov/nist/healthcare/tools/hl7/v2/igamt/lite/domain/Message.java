@@ -2,7 +2,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -24,43 +22,42 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@Table(name="MESSAGE")
+@Table(name = "MESSAGE")
 public class Message implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
 	@NotNull
-	@Column(nullable = false, name="TYPE")
+	@Column(nullable = false, name = "TYPE")
 	private String type;
 	@NotNull
-	@Column(nullable = false, name="EVENT")
+	@Column(nullable = false, name = "EVENT")
 	private String event;
 
 	@NotNull
-	@Column(nullable = false, name="STRUCTID")
+	@Column(nullable = false, name = "STRUCTID")
 	private String structID;
 
-	@Column(nullable = true, name="MESSAGE_DESC")
+	@Column(nullable = true, name = "MESSAGE_DESC")
 	private String description;
 
 	@JsonProperty("children")
-	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
-	@OrderBy(value="position")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy(value = "position")
 	private Set<SegmentRefOrGroup> segmentRefOrGroups = new HashSet<SegmentRefOrGroup>();
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="MESSAGES_ID")
-	private Messages messages; 
-	
+	@JoinColumn(name = "MESSAGES_ID")
+	private Messages messages;
+
 	@NotNull
-	@Column(nullable = false,name="MESSAGE_POSITION")
+	@Column(nullable = false, name = "MESSAGE_POSITION")
 	protected Integer position = 0;
-	
 
 	public Long getId() {
 		return id;
@@ -113,7 +110,7 @@ public class Message implements java.io.Serializable {
 	public Set<SegmentRefOrGroup> getSegmentRefOrGroups() {
 		return segmentRefOrGroups;
 	}
-	
+
 	public void setSegmentRefOrGroups(Set<SegmentRefOrGroup> segmentRefOrGroups) {
 		if (segmentRefOrGroups != null) {
 			this.segmentRefOrGroups.clear();
@@ -121,7 +118,7 @@ public class Message implements java.io.Serializable {
 			while (it.hasNext()) {
 				addSegmentRefOrGroup(it.next());
 			}
-		}else{
+		} else {
 			this.segmentRefOrGroups = null;
 		}
 	}
@@ -132,14 +129,12 @@ public class Message implements java.io.Serializable {
 
 	public void setPosition(Integer position) {
 		this.position = position;
-	} 
-	
-	
-	public void addSegmentRefOrGroup(SegmentRefOrGroup e) { 
-		e.setPosition(segmentRefOrGroups.size()+1);
-		segmentRefOrGroups.add(e);
 	}
 
+	public void addSegmentRefOrGroup(SegmentRefOrGroup e) {
+		e.setPosition(segmentRefOrGroups.size() + 1);
+		segmentRefOrGroups.add(e);
+	}
 
 	@Override
 	public String toString() {

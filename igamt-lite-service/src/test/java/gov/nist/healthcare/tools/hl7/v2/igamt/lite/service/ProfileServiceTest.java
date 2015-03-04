@@ -11,7 +11,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import static org.junit.Assert.assertNotNull;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.DatatypesService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
 
@@ -47,6 +51,9 @@ public class ProfileServiceTest extends
 	@Autowired
 	ProfileService service;
 
+	@Autowired
+	DatatypesService datatypesService;
+
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
@@ -76,6 +83,42 @@ public class ProfileServiceTest extends
 		// load VXU profile
 		Profile profile = new ProfileSerializationImpl()
 				.deserializeXMLToProfile(p, v, c);
+
+		java.util.Set<Datatype> ds = profile.getDatatypes().getDatatypes();
+
+		java.util.Iterator<Datatype> it = ds.iterator();
+		while (it.hasNext()) {
+			Datatype one = it.next();
+			java.util.Iterator<Datatype> it2 = ds.iterator();
+			while (it2.hasNext()) {
+				Datatype two = it2.next();
+				java.util.Iterator<ConformanceStatement> itConfStatment2 = two
+						.getConformanceStatements().iterator();
+				java.util.Iterator<Predicate> itPred2 = two.getPredicates()
+						.iterator();
+
+				while (itConfStatment2.hasNext()) {
+					ConformanceStatement cf = itConfStatment2.next();
+					if (one.getConformanceStatements().contains(cf)
+							&& one != two) {
+						throw new IllegalArgumentException(cf.getId() + " - "
+								+ cf.getDescription() + " is share by"
+								+ one.getName() + " and  " + two.getName());
+					}
+				}
+
+				while (itPred2.hasNext()) {
+					Predicate pred = itPred2.next();
+					if (one.getPredicates().contains(pred) && one != two) {
+						throw new IllegalArgumentException(pred.getId() + " - "
+								+ pred.getDescription() + " is share by"
+								+ one.getName() + " and  " + two.getName());
+					}
+				}
+
+			}
+		}
+
 		assertNotNull("Profile is null.", profile);
 		service.save(profile);
 		assertNotNull("Profile not saved", profile.getId());

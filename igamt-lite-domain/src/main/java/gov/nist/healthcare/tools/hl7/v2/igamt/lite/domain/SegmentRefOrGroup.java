@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.math.BigInteger;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,40 +13,36 @@ import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.Filters;
-
 @Entity
-@Table(name="SEGMENTREFORGROUP")
+@Table(name = "SEGMENTREFORGROUP")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class SegmentRefOrGroup extends DataModel implements java.io.Serializable {
+public abstract class SegmentRefOrGroup extends DataModel implements
+		java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.TABLE)
 	protected Long id;
 
 	@NotNull
-	@Column(nullable = false,name="USAGEE")
+	@Column(nullable = false, name = "USAGEE")
 	@Enumerated(EnumType.STRING)
 	protected Usage usage;
 
 	@NotNull
 	@Min(0)
-	@Column(nullable = false,name="MIN")
+	@Column(nullable = false, name = "MIN")
 	protected Integer min;
 
 	@NotNull
-	@Column(nullable = false,name="MAX")
-	protected String max; 
-	
-	
-	@NotNull
-	@Column(nullable = false,name="SEGMENTREFORGROUP_POSITION")
-	protected Integer position = 0;
+	@Column(nullable = false, name = "MAX")
+	protected String max;
 
+	@NotNull
+	@Column(nullable = false, name = "SEGMENTREFORGROUP_POSITION")
+	protected Integer position = 0;
 
 	public Long getId() {
 		return id;
@@ -88,9 +82,6 @@ public abstract class SegmentRefOrGroup extends DataModel implements java.io.Ser
 
 	public void setPosition(Integer position) {
 		this.position = position;
-	} 
-	
-	
-	
+	}
 
 }

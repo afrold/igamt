@@ -10,7 +10,7 @@ public class ConstraintMetaData implements java.io.Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 
 	@NotNull
-	@Column(nullable = false, name="DESCRIPTION")
+	@Column(nullable = false, name = "DESCRIPTION")
 	private String description;
 
 	private Standard standard;
@@ -36,12 +36,13 @@ public class ConstraintMetaData implements java.io.Serializable, Cloneable {
 		return "MetaData [description=" + description + ", standard="
 				+ standard + "]";
 	}
-	
+
 	@Override
-    public ConstraintMetaData clone() throws CloneNotSupportedException {
-		ConstraintMetaData clonedConstraintMetaData = (ConstraintMetaData) super.clone();
+	public ConstraintMetaData clone() throws CloneNotSupportedException {
+		ConstraintMetaData clonedConstraintMetaData = (ConstraintMetaData) super
+				.clone();
 		clonedConstraintMetaData.setStandard(standard.clone());
-        return clonedConstraintMetaData;
-    }
+		return clonedConstraintMetaData;
+	}
 
 }

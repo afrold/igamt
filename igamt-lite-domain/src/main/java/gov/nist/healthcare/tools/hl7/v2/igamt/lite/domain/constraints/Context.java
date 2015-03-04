@@ -17,18 +17,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="CONTEXT")
+@Table(name = "CONTEXT")
 public class Context implements Serializable, Cloneable {
 
- 
 	private static final long serialVersionUID = -3037628238620317355L;
 
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToMany(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "CONTEXT_BYNAMEORBYID", joinColumns = @JoinColumn(name = "CONTEXT"), inverseJoinColumns = @JoinColumn(name = "BYNAMEORBYID"))
 	private Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
 
@@ -54,10 +53,12 @@ public class Context implements Serializable, Cloneable {
 	}
 
 	@Override
-    public Context clone() throws CloneNotSupportedException {
+	public Context clone() throws CloneNotSupportedException {
 		Context clonedContext = (Context) super.clone();
-		clonedContext.setByNameOrByIDs(new HashSet<ByNameOrByID>(byNameOrByIDs));
+		clonedContext
+				.setByNameOrByIDs(new HashSet<ByNameOrByID>(byNameOrByIDs));
 		clonedContext.setId(null);
-        return clonedContext;
-    }
+		return clonedContext;
+	}
+
 }

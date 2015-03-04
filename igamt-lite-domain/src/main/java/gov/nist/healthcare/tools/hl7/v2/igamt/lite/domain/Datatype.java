@@ -21,10 +21,17 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
+@DynamicInsert
+@DynamicUpdate
+@SelectBeforeUpdate
 @Table(name = "DATATYPE")
 public class Datatype implements java.io.Serializable {
 
@@ -52,12 +59,12 @@ public class Datatype implements java.io.Serializable {
 	@Column(nullable = true, name = "DATATYPE_DESC")
 	private String description;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
 	@javax.persistence.JoinTable(name = "DATATYPE_PREDICATE", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "PREDICATE_ID"))
 	protected Set<Predicate> predicates = new HashSet<Predicate>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@javax.persistence.JoinTable(name = "DATATYPE_CONFSTATEMENT", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT_ID"))
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+	@javax.persistence.JoinTable(name = "DATATYPE_CONFSTATEMENT", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT_ID", unique = false))
 	protected Set<ConformanceStatement> conformanceStatements = new HashSet<ConformanceStatement>();
 
 	@JsonIgnore

@@ -53,7 +53,7 @@
                     </Condition>
                 </Predicate>
             </ByID>
-            <!-- <ByID ID="d9f39f92-06ff-4e00-b60b-22099d69aa3e">
+            <ByID ID="d9f39f92-06ff-4e00-b60b-22099d69aa3e">
                 <Predicate ID="[XON_IZ]6[1]" Target="6[1]" TrueUsage="R" FalseUsage="O">
                     <Description>If XON.10 (Organization Identifier) is valued.</Description>
                     <Condition>
@@ -73,7 +73,7 @@
                     </Condition>
                 </Predicate>
             </ByID>
-            <ByID ID="0d06740e-0252-48f2-99ff-f0ef295d6dda">
+            <!--  <ByID ID="0d06740e-0252-48f2-99ff-f0ef295d6dda">
                 <Predicate ID="[XON_IZ]6[1]" Target="6[1]" TrueUsage="R" FalseUsage="O">
                     <Description>If XON.10 (Organization Identifier) is valued.</Description>
                     <Condition>
@@ -93,7 +93,7 @@
                     </Condition>
                 </Predicate>
             </ByID>
-            <ByID ID="bf6a9e4f-2ed3-4713-9a6d-f5c37ceb372a">
+           <ByID ID="bf6a9e4f-2ed3-4713-9a6d-f5c37ceb372a">
                 <Predicate ID="[CX_IZ]3[1]" Target="3[1]" TrueUsage="O" FalseUsage="X">
                     <Description>If CX.2 (Check Digit) is valued.</Description>
                     <Condition>
@@ -1149,7 +1149,7 @@
     </Predicates> 
     <Constraints>
         <Datatype>
-            <ByID ID="5d62ecfe-7a05-4d34-b034-361171a92f2f">
+<!--             <ByID ID="5d62ecfe-7a05-4d34-b034-361171a92f2f">
                 <Constraint ID="IZ-5" Target="2[1]">
                     <Description>The value of HD.2 (Universal ID) SHALL be formatted with ISO-compliant OID.</Description>
                     <Assertion>
@@ -1205,7 +1205,7 @@
                         <PlainText Path="7[1]" Text="M" IgnoreCase="true"/>
                     </Assertion>
                 </Constraint>
-            </ByID>
+            </ByID> -->
            <ByID ID="b91a5480-6f87-4cb0-84d1-532ad6976748">
                 <Constraint ID="IZ-5" Target="2[1]">
                     <Description>The value of HD.2 (Universal ID) SHALL be formatted with ISO-compliant OID.</Description>
@@ -1220,7 +1220,7 @@
                     </Assertion>
                 </Constraint>
             </ByID>
-        <!--        <ByID ID="4de1799a-5779-4087-87f2-499432fcf1a1">
+         <!--       <ByID ID="4de1799a-5779-4087-87f2-499432fcf1a1">
                 <Constraint ID="IZ-5" Target="2[1]">
                     <Description>The value of HD.2 (Universal ID) SHALL be formatted with ISO-compliant OID.</Description>
                     <Assertion>

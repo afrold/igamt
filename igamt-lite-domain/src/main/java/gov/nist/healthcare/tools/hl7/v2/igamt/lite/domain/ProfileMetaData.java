@@ -2,49 +2,32 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import com.fasterxml.jackson.annotation.JsonView;
- 
-@Embeddable
 
+@Embeddable
 public class ProfileMetaData implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonView({View.Summary.class})
+	@JsonView({ View.Summary.class })
 	@NotNull
- 	@Column(nullable = false,name="PROFILE_NAME")
+	@Column(nullable = false, name = "PROFILE_NAME")
 	private String name;
 
-	@JsonView({View.Summary.class})
+	@JsonView({ View.Summary.class })
 	@NotNull
-	@Column(nullable = false,name="ORGNAME")
+	@Column(nullable = false, name = "ORGNAME")
 	private String orgName;
 
-	@JsonView({View.Summary.class})
-	@Column(name="STATUS")
+	@JsonView({ View.Summary.class })
+	@Column(name = "STATUS")
 	private String status;
-	
-	@JsonView({View.Summary.class})
-	@Column(name="TOPICS")
+
+	@JsonView({ View.Summary.class })
+	@Column(name = "TOPICS")
 	private String topics;
-
-	@Override
-	public boolean equals(Object that) {
-		return EqualsBuilder.reflectionEquals(this, that, "name", "orgName",
-				"version", "status", "topics");
-	}
-
-	@Override
-	public int hashCode() {
-		return HashCodeBuilder.reflectionHashCode(this, "name", "orgName",
-				"version", "status", "topics");
-	}
 
 	public String getName() {
 		return name;
@@ -61,7 +44,6 @@ public class ProfileMetaData implements java.io.Serializable {
 	public void setOrgName(String orgName) {
 		this.orgName = orgName;
 	}
-
 
 	public String getStatus() {
 		return status;

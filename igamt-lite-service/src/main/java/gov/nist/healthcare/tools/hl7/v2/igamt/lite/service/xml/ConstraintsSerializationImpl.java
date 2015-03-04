@@ -209,7 +209,13 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			elmByName
 					.addAttribute(new Attribute("Name", byNameObj.getByName()));
 
-			for (Constraint c : byNameObj.getConstraints()) {
+			for (Constraint c : byNameObj.getPredicates()) {
+				nu.xom.Element elmConstaint = this.serializeConstaint(c);
+				if (elmConstaint != null)
+					elmByName.appendChild(elmConstaint);
+			}
+
+			for (Constraint c : byNameObj.getConformanceStatements()) {
 				nu.xom.Element elmConstaint = this.serializeConstaint(c);
 				if (elmConstaint != null)
 					elmByName.appendChild(elmConstaint);
@@ -221,7 +227,13 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			nu.xom.Element elmByID = new nu.xom.Element("ByID");
 			elmByID.addAttribute(new Attribute("ID", byIDObj.getByID()));
 
-			for (Constraint c : byIDObj.getConstraints()) {
+			for (Constraint c : byIDObj.getConformanceStatements()) {
+				nu.xom.Element elmConstaint = this.serializeConstaint(c);
+				if (elmConstaint != null)
+					elmByID.appendChild(elmConstaint);
+			}
+
+			for (Constraint c : byIDObj.getPredicates()) {
 				nu.xom.Element elmConstaint = this.serializeConstaint(c);
 				if (elmConstaint != null)
 					elmByID.appendChild(elmConstaint);
@@ -340,7 +352,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			constraintObj.setAssertion(this
 					.convertElementToString(elmConstraint.getElementsByTagName(
 							"Assertion").item(0)));
-			byNameOrByIDObj.getConstraints().add(constraintObj);
+			byNameOrByIDObj.getConformanceStatements().add(constraintObj);
 		}
 
 		NodeList predicateNodes = elmByNameOrByID
@@ -366,7 +378,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			this.deserializeXMLToReference(elmPredicate, predicateObj);
 			predicateObj.setAssertion(this.convertElementToString(elmPredicate
 					.getElementsByTagName("Condition").item(0)));
-			byNameOrByIDObj.getConstraints().add(predicateObj);
+			byNameOrByIDObj.getPredicates().add(predicateObj);
 		}
 	}
 

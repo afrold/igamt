@@ -11,29 +11,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
- 
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name="MESSAGES")
+@Table(name = "MESSAGES")
 public class Messages implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
- 	@Id
- 	@Column(name="ID")
+	@Id
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
- 	@OneToMany(mappedBy = "messages",fetch = FetchType.EAGER,cascade=CascadeType.ALL, orphanRemoval = true)
-	@OrderBy(value="position")
-	private Set<Message> messages = new HashSet<Message>();
- 
+	@OneToMany(mappedBy = "messages", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OrderBy(value = "position")
+	private final Set<Message> messages = new HashSet<Message>();
+
 	public Long getId() {
 		return id;
 	}
@@ -45,13 +40,13 @@ public class Messages implements java.io.Serializable {
 	public Set<Message> getMessages() {
 		return messages;
 	}
- 
+
 	public void addMessage(Message m) {
 		if (m.getMessages() != null) {
 			throw new IllegalArgumentException(
 					"This message already belong to a different messages");
 		}
-		m.setPosition(messages.size() +1);
+		m.setPosition(messages.size() + 1);
 		messages.add(m);
 		m.setMessages(this);
 	}

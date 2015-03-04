@@ -3,55 +3,49 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name="DYNAMIC_MAPPING")
+@Table(name = "DYNAMIC_MAPPING")
 public class DynamicMapping implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="ID")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	protected Long id;
 
 	@Min(1)
 	@NotNull
-	@Column(nullable = false,name="MIN")
+	@Column(nullable = false, name = "MIN")
 	private BigInteger min;
 
 	@NotNull
-	@Column(nullable = false,name="MAX")
-	private String max; 
-	
+	@Column(nullable = false, name = "MAX")
+	private String max;
+
 	@NotNull
-	@Column(nullable = false,name="DYNAMIC_MAPPING_POSITION")
-	private Integer position =0;
+	@Column(nullable = false, name = "DYNAMIC_MAPPING_POSITION")
+	private Integer position = 0;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "DYNAMIC_MAPPING_MAPPING", joinColumns = @JoinColumn(name = "DYNAMIC_MAPPING"), inverseJoinColumns = @JoinColumn(name = "MAPPING"))
-	@OrderBy(value="position")
+	@OrderBy(value = "position")
 	protected Set<Mapping> mappings = new HashSet<Mapping>();
 
 	public Long getId() {
@@ -92,15 +86,11 @@ public class DynamicMapping implements Serializable {
 
 	public void setPosition(Integer position) {
 		this.position = position;
-	} 
-	
+	}
+
 	public void addMapping(Mapping m) {
-		m.setPosition(mappings.size() +1);
+		m.setPosition(mappings.size() + 1);
 		mappings.add(m);
- 	}
-	
-	
-	
-	
+	}
 
 }

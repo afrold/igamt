@@ -60,15 +60,13 @@ public class Profile implements java.io.Serializable {
 	@JoinColumn(name = "MESSAGES_ID")
 	private Messages messages;
 
-	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
-	// CascadeType.ALL)
-	// @JoinColumn(name = "CONFSTATEMENTS_ID")
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "CONFSTATEMENTS_ID")
 	@JsonIgnore
 	private transient Constraints conformanceStatements;
 
-	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
-	// CascadeType.ALL)
-	// @JoinColumn(name = "PREDICATES_ID")
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "PREDICATES_ID")
 	@JsonIgnore
 	private transient Constraints predicates;
 
