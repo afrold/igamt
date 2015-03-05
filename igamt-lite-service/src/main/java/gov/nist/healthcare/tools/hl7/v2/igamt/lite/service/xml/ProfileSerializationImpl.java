@@ -14,8 +14,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Encoding;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Encodings;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
@@ -93,11 +91,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		Datatypes datatypes = new Datatypes();
 		for (String key : datatypesMap.keySet()) {
 			datatypes.addDatatype(datatypesMap.get(key));
-			Datatype dt = datatypesMap.get(key);
-			if (dt.getConformanceStatements().size() > 0) {
-				System.out.println("--------------> " + dt.getName());
-			}
-			// System.out.println(dt.getPosition());
 		}
 		profile.setDatatypes(datatypes);
 
@@ -159,31 +152,30 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			e.appendChild(elmMetaData);
 		}
 
-		if (profile.getEncodings() != null
-				&& profile.getEncodings().getEncodings().size() > 0) {
+		if (profile.getEncodings() != null && profile.getEncodings().size() > 0) {
 			nu.xom.Element elmEncodings = new nu.xom.Element("Encodings");
-			for (Encoding encoding : profile.getEncodings().getEncodings()) {
+			for (String encoding : profile.getEncodings()) {
 				nu.xom.Element elmEncoding = new nu.xom.Element("Encoding");
-				elmEncoding.appendChild(encoding.getValue());
+				elmEncoding.appendChild(encoding);
 				elmEncodings.appendChild(elmEncoding);
 			}
 			e.appendChild(elmEncodings);
 		}
 
 		nu.xom.Element ms = new nu.xom.Element("Messages");
-		for (Message m : profile.getMessages().getMessages()) {
+		for (Message m : profile.getMessages().getChildren()) {
 			ms.appendChild(this.serializeMessage(m));
 		}
 		e.appendChild(ms);
 
 		nu.xom.Element ss = new nu.xom.Element("Segments");
-		for (Segment s : profile.getSegments().getSegments()) {
+		for (Segment s : profile.getSegments().getChildren()) {
 			ss.appendChild(this.serializeSegment(s));
 		}
 		e.appendChild(ss);
 
 		nu.xom.Element ds = new nu.xom.Element("Datatypes");
-		for (Datatype d : profile.getDatatypes().getDatatypes()) {
+		for (Datatype d : profile.getDatatypes().getChildren()) {
 			ds.appendChild(this.serializeDatatype(d));
 		}
 		e.appendChild(ds);
@@ -358,7 +350,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	private nu.xom.Element serializeSegmentRef(SegmentRef segmentRef) {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
-		elmSegment.addAttribute(new Attribute("Ref", segmentRef.getSegment()
+		elmSegment.addAttribute(new Attribute("Ref", segmentRef.getRef()
 				.getId() + ""));
 		elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage()
 				.value()));
@@ -450,14 +442,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			Element elmConformanceProfile) {
 		NodeList nodes = elmConformanceProfile.getElementsByTagName("Encoding");
 		if (nodes != null && nodes.getLength() != 0) {
-			Encodings encodings = new Encodings();
-			Set<Encoding> encodingSet = new HashSet<Encoding>();
+			Set<String> encodingSet = new HashSet<String>();
 			for (int i = 0; i < nodes.getLength(); i++) {
-				encodingSet.add(new Encoding(nodes.item(i).getTextContent()));
+				encodingSet.add(nodes.item(i).getTextContent());
 			}
-
-			encodings.setEncodings(encodingSet);
-			profile.setEncodings(encodings);
+			profile.setEncodings(encodingSet);
 		}
 	}
 
@@ -514,7 +503,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		segmentRefObj.setMin(new Integer(segmentElm.getAttribute("Min")));
 		segmentRefObj
 				.setUsage(Usage.fromValue(segmentElm.getAttribute("Usage")));
-		segmentRefObj.setSegment(this.segmentsMap.get(segmentElm
+		segmentRefObj.setRef(this.segmentsMap.get(segmentElm
 				.getAttribute("Ref")));
 		segmentRefOrGroups.add(segmentRefObj);
 	}
@@ -611,7 +600,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	private Table findTable(String mappingId, TableLibrary tableLibrary) {
-		for (Table t : tableLibrary.getTables().getTables()) {
+		for (Table t : tableLibrary.getTables().getChildren()) {
 			if (t.getMappingId().equals(mappingId))
 				return t;
 		}

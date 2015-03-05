@@ -8,17 +8,21 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.DbConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.WebAppConfig;
 
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -31,11 +35,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 
-@Configuration
+@WebAppConfiguration
 @EnableWebMvc
-@ComponentScan("gov.nist.healthcare.tools.hl7.v2.igamt.lite")
-@Import(DbConfig.class)
-public class WebAppConfig extends WebMvcConfigurerAdapter {
+@ComponentScan(basePackages = { "gov.nist.healthcare.tools.hl7.v2.igamt.lite" }, excludeFilters = {
+		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = { DbConfig.class }),
+		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = { WebAppConfig.class }) })
+@Import({ TestDbConfig.class })
+public class TestWebAppConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void configureDefaultServletHandling(

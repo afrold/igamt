@@ -7,6 +7,10 @@ public class ProfileNotFoundException extends Exception {
 		super(error);
 	}
 
+	public ProfileNotFoundException(Long id) {
+		super("Unknown Profile with id " + id);
+	}
+
 	public ProfileNotFoundException(Exception error) {
 		super(error);
 	}

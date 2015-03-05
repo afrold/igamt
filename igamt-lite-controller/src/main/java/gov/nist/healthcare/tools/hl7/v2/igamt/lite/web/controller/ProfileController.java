@@ -1,29 +1,26 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import java.util.List;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.View;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.ProfileNotFoundException;
 
- import org.slf4j.Logger;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("/profiles")
-public class ProfileController {
+public class ProfileController extends CommonController {
 
 	Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
@@ -42,20 +39,11 @@ public class ProfileController {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public String profileNotFound(ProfileNotFoundException ex) {
 		logger.debug(ex.getMessage());
-		return "Cannot find the profile." + ex.getMessage();
-	}
-	
-	@ExceptionHandler(Exception.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public String exception(Exception ex) {
-		logger.debug(ex.getMessage());
-		ex.printStackTrace();
 		return "ERROR:" + ex.getMessage();
 	}
-	
 
 	/**
-	 * Return the list of pre-loaded profiles in a Summary View mode
+	 * Return the list of pre-loaded profiles
 	 * 
 	 * @return
 	 */
@@ -65,18 +53,22 @@ public class ProfileController {
 		logger.info("Fetching all preloaed profiles...");
 		return profileService.findAllPreloaded();
 	}
-	
+
 	/**
-	 * Return the list of pre-loaded profiles in a Summary View mode
+	 * Return a profile by its id
 	 * 
 	 * @return
+	 * @throws ProfileNotFoundException
 	 */
- 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public Profile profile(@PathVariable("id") Long id) {
-		logger.info("Fetching all testPlans...");
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public Profile profile(@PathVariable("id") Long id)
+			throws ProfileNotFoundException {
+		logger.info("GET pofile with id=" + id);
 		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
 		return p;
 	}
-	
 
 }

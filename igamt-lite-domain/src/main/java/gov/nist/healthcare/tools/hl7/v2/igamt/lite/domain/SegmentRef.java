@@ -23,20 +23,20 @@ public class SegmentRef extends SegmentRefOrGroup {
 			"description", "predicates", "conformanceStatements", "segments" })
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "REF")
-	private Segment segment;
+	private Segment ref;
 
-	public Segment getSegment() {
-		return segment;
+	public Segment getRef() {
+		return ref;
 	}
 
-	public void setSegment(Segment segment) {
-		this.segment = segment;
+	public void setRef(Segment ref) {
+		this.ref = ref;
 	}
 
 	@Override
 	public String toString() {
-		return "SegmentRef [id=" + id + ", segment=" + segment + ", usage="
-				+ usage + ", min=" + min + ", max=" + max + "]";
+		return "SegmentRef [id=" + id + ", segment=" + ref + ", usage=" + usage
+				+ ", min=" + min + ", max=" + max + "]";
 	}
 
 }

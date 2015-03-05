@@ -15,27 +15,35 @@
  * 
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test;
 
-import java.util.List;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test.integration.ProfileControllerIntegrationTest;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import javax.annotation.PostConstruct;
 
-public interface ProfileRepository extends JpaRepository<Profile, Long> {
-	
-	@Query("select profile from Profile profile")
-	List<Profile> findAllPreloaded();
-	
-	@Query("select profile from Profile profile where profile.author.user.id = :userId ")
-	List<Profile> findAllByUserId(@Param("userId")Long userId);
-	
-	
-	@Query("select profile from Profile profile where profile.author.id = :authorId ")
-	List<Profile> findAllByAuthorId(@Param("authorId")Long authorId);
-	
-	
+import org.apache.log4j.PropertyConfigurator;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class TestConfig {
+
+	Properties properties = new Properties();
+
+	@PostConstruct
+	public void init() {
+		try {
+			InputStream log4j = ProfileControllerIntegrationTest.class
+					.getResourceAsStream("/igl-test-log4j.properties");
+			properties.load(log4j);
+			PropertyConfigurator.configure(properties);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

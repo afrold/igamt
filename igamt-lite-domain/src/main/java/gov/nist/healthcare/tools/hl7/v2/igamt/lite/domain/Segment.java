@@ -44,12 +44,12 @@ public class Segment extends DataModel implements java.io.Serializable {
 	@Column(nullable = false, name = "LABEL")
 	private String label;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@javax.persistence.JoinTable(name = "SEGMENT_FIELD", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "FIELD"))
 	@OrderBy(value = "position")
 	private Set<Field> fields = new HashSet<Field>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@javax.persistence.JoinTable(name = "SEGMENT_DYNAMICMAPPING", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "DYNAMICMAPPING"))
 	@OrderBy(value = "position")
 	private Set<DynamicMapping> dynamicMappings = new HashSet<DynamicMapping>();
@@ -61,11 +61,11 @@ public class Segment extends DataModel implements java.io.Serializable {
 	@Column(nullable = true, name = "SEGMENT_DESC")
 	private String description;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
 	@JoinTable(name = "SEGMENT_PREDICATE", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "PREDICATE"))
 	protected Set<Predicate> predicates = new HashSet<Predicate>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
 	@JoinTable(name = "SEGMENT_CONFSTATEMENT", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT"))
 	protected Set<ConformanceStatement> conformanceStatements = new HashSet<ConformanceStatement>();
 
@@ -201,8 +201,8 @@ public class Segment extends DataModel implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "Segment [id=" + id + "label=" + label + ", fields=" + fields
-				+ ", name=" + name + ", description=" + description + "]";
+		return "Segment [id=" + id + "label=" + label + ", name=" + name
+				+ ", description=" + description + "]";
 	}
 
 }

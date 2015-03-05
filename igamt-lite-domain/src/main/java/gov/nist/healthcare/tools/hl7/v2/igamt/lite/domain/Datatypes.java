@@ -26,7 +26,7 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	private Long id;
 
 	@OneToMany(mappedBy = "datatypes", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Datatype> datatypes = new HashSet<Datatype>();
+	private Set<Datatype> children = new HashSet<Datatype>();
 
 	public Long getId() {
 		return id;
@@ -36,19 +36,19 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		this.id = id;
 	}
 
-	public Set<Datatype> getDatatypes() {
-		return datatypes;
+	public Set<Datatype> getChildren() {
+		return children;
 	}
 
-	public void setDatatypes(Set<Datatype> datatypes) {
+	public void setChildren(Set<Datatype> datatypes) {
 		if (datatypes != null) {
-			this.datatypes.clear();
+			this.children.clear();
 			Iterator<Datatype> it = datatypes.iterator();
 			while (it.hasNext()) {
 				addDatatype(it.next());
 			}
 		} else {
-			this.datatypes = null;
+			this.children = null;
 		}
 	}
 
@@ -58,7 +58,7 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 					"This datatype already belogs to a different datatypes");
 		}
 		// d.setPosition(datatypes.size() +1);
-		datatypes.add(d);
+		children.add(d);
 		d.setDatatypes(this);
 	}
 

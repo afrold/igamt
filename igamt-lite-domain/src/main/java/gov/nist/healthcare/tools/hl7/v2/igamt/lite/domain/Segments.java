@@ -25,7 +25,7 @@ public class Segments implements java.io.Serializable {
 	private Long id;
 
 	@OneToMany(mappedBy = "segments", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private final Set<Segment> segments = new HashSet<Segment>();
+	private final Set<Segment> children = new HashSet<Segment>();
 
 	public Long getId() {
 		return id;
@@ -35,8 +35,8 @@ public class Segments implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Set<Segment> getSegments() {
-		return segments;
+	public Set<Segment> getChildren() {
+		return children;
 	}
 
 	public void addSegment(Segment s) {
@@ -44,13 +44,12 @@ public class Segments implements java.io.Serializable {
 			throw new IllegalArgumentException(
 					"This segment already belong to a different segment library");
 		}
-		segments.add(s);
+		children.add(s);
 		s.setSegments(this);
 	}
 
 	@Override
 	public String toString() {
-		return "Segments [id=" + id + ", segments=" + segments + "]";
+		return "Segments [id=" + id + "]";
 	}
-
 }

@@ -140,7 +140,7 @@ public class Message implements java.io.Serializable {
 	public String toString() {
 		return "Message [id=" + id + ", type=" + type + ", event=" + event
 				+ ", structID=" + structID + ", description=" + description
-				+ ", segmentRefOrGroups=" + segmentRefOrGroups + "]";
+				+ "]";
 	}
 
 }

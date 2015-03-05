@@ -83,7 +83,7 @@ public class TableSerializationImpl implements TableSerialization {
 		elmTableLibrary.addAttribute(new Attribute("Description", tableLibrary
 				.getDescription()));
 
-		for (Table t : tableLibrary.getTables().getTables()) {
+		for (Table t : tableLibrary.getTables().getChildren()) {
 			nu.xom.Element elmTableDefinition = new nu.xom.Element(
 					"TableDefinition");
 			elmTableDefinition.addAttribute(new Attribute("AlternateId", (t

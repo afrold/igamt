@@ -49,7 +49,7 @@ public class Context implements Serializable, Cloneable {
 
 	@Override
 	public String toString() {
-		return "Context [id=" + id + ", byNameOrByIDs=" + byNameOrByIDs + "]";
+		return "Context [id=" + id + "]";
 	}
 
 	@Override

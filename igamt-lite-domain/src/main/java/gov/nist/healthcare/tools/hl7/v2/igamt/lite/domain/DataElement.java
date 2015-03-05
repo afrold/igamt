@@ -15,10 +15,10 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -57,7 +57,7 @@ public abstract class DataElement extends DataModel implements
 
 	@JsonIgnoreProperties({ "name", "mappingAlternateId", "mappingId",
 			"version", "codesys", "oid", "type", "codes" })
-	@OneToOne(optional = true, fetch = FetchType.EAGER, cascade = {
+	@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
 			CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "TABLE_ID")
 	protected Table table;
@@ -68,22 +68,24 @@ public abstract class DataElement extends DataModel implements
 	@Column(nullable = true, name = "BINDING_LOCATION")
 	protected String bindingLocation;
 
-	@JsonIgnoreProperties({ "components", "label", "name", "description",
-			"predicates", "conformanceStatements", "datatypes" })
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "DATATYPE_ID")
-	protected Datatype datatype;
+	@Column(nullable = true, name = "DATATYPE_LABEL")
+	protected String datatypeLabel;
+
+	@JsonIgnore
+	protected transient Datatype datatype;
 
 	@NotNull
 	@Column(nullable = false, name = "DATAELEMENT_POSITION")
 	protected Integer position = 0;
 
+	// Caution, not persisted. Use at your own risk
 	public Datatype getDatatype() {
 		return datatype;
 	}
 
 	public void setDatatype(Datatype datatype) {
 		this.datatype = datatype;
+		this.setDatatypeLabel(datatype.getLabel());
 	}
 
 	public String getName() {
@@ -164,6 +166,15 @@ public abstract class DataElement extends DataModel implements
 
 	public void setPosition(Integer position) {
 		this.position = position;
+	}
+
+	public String getDatatypeLabel() {
+		return datatypeLabel;
+	}
+
+	// DO NO SET
+	public void setDatatypeLabel(String datatypeLabel) {
+		this.datatypeLabel = datatypeLabel;
 	}
 
 }

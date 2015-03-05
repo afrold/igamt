@@ -3,8 +3,13 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -46,7 +51,9 @@ public class Profile implements java.io.Serializable {
 	@JsonView({ View.Summary.class })
 	private ProfileMetaData metaData;
 
-	private Encodings encodings;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "ENCODINGS")
+	private Set<String> encodings = new HashSet<String>();
 
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "SEGMENTS_ID")
@@ -60,13 +67,15 @@ public class Profile implements java.io.Serializable {
 	@JoinColumn(name = "MESSAGES_ID")
 	private Messages messages;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "CONFSTATEMENTS_ID")
+	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL)
+	// @JoinColumn(name = "CONFSTATEMENTS_ID")
 	@JsonIgnore
 	private transient Constraints conformanceStatements;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "PREDICATES_ID")
+	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL)
+	// @JoinColumn(name = "PREDICATES_ID")
 	@JsonIgnore
 	private transient Constraints predicates;
 
@@ -129,11 +138,11 @@ public class Profile implements java.io.Serializable {
 		this.metaData = metaData;
 	}
 
-	public Encodings getEncodings() {
+	public Set<String> getEncodings() {
 		return encodings;
 	}
 
-	public void setEncodings(Encodings encodings) {
+	public void setEncodings(Set<String> encodings) {
 		this.encodings = encodings;
 	}
 
@@ -220,10 +229,7 @@ public class Profile implements java.io.Serializable {
 		return "Profile [id=" + id + ", type=" + type + ", hl7Version="
 				+ hl7Version + ", schemaVersion=" + schemaVersion
 				+ ", metaData=" + metaData + ", encodings=" + encodings
-				+ ", segments=" + segments + ", datatypes=" + datatypes
-				+ ", messages=" + messages + ", conformanceStatements="
-				+ conformanceStatements + ", predicates=" + predicates
-				+ ", tableLibrary=" + tableLibrary + ", author=" + author + "]";
+				+ ", messages=" + messages + ", author=" + author + "]";
 	}
 
 }

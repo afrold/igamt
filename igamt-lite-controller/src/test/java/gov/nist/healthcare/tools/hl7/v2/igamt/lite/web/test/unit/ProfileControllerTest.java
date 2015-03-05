@@ -1,22 +1,17 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.unit;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test.unit;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.HL7Version;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.View;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.ProfileController;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.HL7Version;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.ProfileController;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,19 +25,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
-import org.mockito.InjectMocks;
-
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 
 public class ProfileControllerTest {
 
@@ -54,17 +37,13 @@ public class ProfileControllerTest {
 
 	MockMvc mockMvc;
 
-	@Autowired
-	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
- 		controller.setProfileService(mockProfileService);
+		controller.setProfileService(mockProfileService);
 		mockMvc = standaloneSetup(controller).build();
 	}
 
@@ -75,15 +54,14 @@ public class ProfileControllerTest {
 		mockMvc.perform(get("/profiles/preloaded")).andExpect(status().isOk())
 				.andDo(print());
 	}
-	
+
 	@Test
-	public void testGetOneFullCustom() throws Exception {
+	public void testGetProfile() throws Exception {
 		Profile custom = findOneFull();
 		when(mockProfileService.findOne(new Long(3))).thenReturn(custom);
 		mockMvc.perform(get("/profiles/3")).andExpect(status().isOk())
 				.andDo(print());
 	}
-	
 
 	private List<Profile> findAllPreloaded() {
 		List<Profile> profiles = new ArrayList<Profile>();
@@ -112,22 +90,25 @@ public class ProfileControllerTest {
 		profiles.add(p);
 		return profiles;
 	}
-	
+
 	private Profile findOneFull() {
- 		String xmlContentsProfile;
+		String xmlContentsProfile;
 		try {
-			xmlContentsProfile = IOUtils.toString(ProfileController.class.getResourceAsStream("/Profile.xml"));
-			String xmlValueSet = IOUtils.toString(ProfileController.class.getResourceAsStream("/ValueSets_all.xml"));
-	 		String xmlConstraints = IOUtils.toString(ProfileController.class.getResourceAsStream("/Constraints.xml"));
-			Profile p = new ProfileSerializationImpl().deserializeXMLToProfile(xmlContentsProfile, xmlValueSet, xmlConstraints);
+			xmlContentsProfile = IOUtils.toString(ProfileController.class
+					.getResourceAsStream("/Profile.xml"));
+			String xmlValueSet = IOUtils.toString(ProfileController.class
+					.getResourceAsStream("/ValueSets_all.xml"));
+			String xmlConstraints = IOUtils.toString(ProfileController.class
+					.getResourceAsStream("/Constraints.xml"));
+			Profile p = new ProfileSerializationImpl().deserializeXMLToProfile(
+					xmlContentsProfile, xmlValueSet, xmlConstraints);
 			return p;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
- 	
+
 		return null;
 	}
-	
 
 }

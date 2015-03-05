@@ -64,7 +64,7 @@ angular.module('igl').run(function($httpBackend,CustomDataModel,PredefinedDataMo
 
     $httpBackend.whenGET(/views\//).passThrough();
 
-    $httpBackend.whenGET('../../resources/profile.json').passThrough();
+    $httpBackend.whenGET(/json\//).passThrough();
 
 
 });

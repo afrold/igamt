@@ -27,7 +27,7 @@ public class Messages implements java.io.Serializable {
 
 	@OneToMany(mappedBy = "messages", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@OrderBy(value = "position")
-	private final Set<Message> messages = new HashSet<Message>();
+	private final Set<Message> children = new HashSet<Message>();
 
 	public Long getId() {
 		return id;
@@ -37,8 +37,8 @@ public class Messages implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Set<Message> getMessages() {
-		return messages;
+	public Set<Message> getChildren() {
+		return children;
 	}
 
 	public void addMessage(Message m) {
@@ -46,14 +46,14 @@ public class Messages implements java.io.Serializable {
 			throw new IllegalArgumentException(
 					"This message already belong to a different messages");
 		}
-		m.setPosition(messages.size() + 1);
-		messages.add(m);
+		m.setPosition(children.size() + 1);
+		children.add(m);
 		m.setMessages(this);
 	}
 
 	@Override
 	public String toString() {
-		return "Messages [id=" + id + ", messages=" + messages + "]";
+		return "Messages [id=" + id + "]";
 	}
 
 }

@@ -26,7 +26,7 @@ public class Tables implements java.io.Serializable {
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@javax.persistence.JoinTable(name = "TABLES_IGTABLE", joinColumns = @JoinColumn(name = "TABLES"), inverseJoinColumns = @JoinColumn(name = "IGTABLE"))
-	private final Set<Table> tables = new HashSet<Table>();
+	private final Set<Table> children = new HashSet<Table>();
 
 	public Long getId() {
 		return id;
@@ -36,17 +36,17 @@ public class Tables implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public Set<Table> getTables() {
-		return tables;
+	public Set<Table> getChildren() {
+		return children;
 	}
 
 	public void addTable(Table t) {
-		tables.add(t);
+		children.add(t);
 	}
 
 	@Override
 	public String toString() {
-		return "Tables [id=" + id + ", tables=" + tables + "]";
+		return "Tables [id=" + id + ", children=" + children + "]";
 	}
 
 }

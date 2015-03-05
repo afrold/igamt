@@ -8,7 +8,7 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertNotNull;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -31,7 +31,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -72,7 +71,6 @@ public class ProfileServiceTest extends
 	}
 
 	@Test
-	@Rollback(false)
 	public void testSave() throws Exception {
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
 				"/vxuTest/Profile.xml"));
@@ -80,12 +78,18 @@ public class ProfileServiceTest extends
 				"/vxuTest/ValueSets_all.xml"));
 		String c = IOUtils.toString(this.getClass().getResourceAsStream(
 				"/vxuTest/Constraints.xml"));
-		// load VXU profile
 		Profile profile = new ProfileSerializationImpl()
 				.deserializeXMLToProfile(p, v, c);
+		assertNotNull("Profile is null.", profile);
+		checkUniquenessOfReference(profile);
+		service.save(profile);
+		assertNotNull("Profile not saved", profile.getId());
+		System.out.println(profile.getId());
 
-		java.util.Set<Datatype> ds = profile.getDatatypes().getDatatypes();
+	}
 
+	private void checkUniquenessOfReference(Profile profile) {
+		java.util.Set<Datatype> ds = profile.getDatatypes().getChildren();
 		java.util.Iterator<Datatype> it = ds.iterator();
 		while (it.hasNext()) {
 			Datatype one = it.next();
@@ -96,33 +100,25 @@ public class ProfileServiceTest extends
 						.getConformanceStatements().iterator();
 				java.util.Iterator<Predicate> itPred2 = two.getPredicates()
 						.iterator();
-
 				while (itConfStatment2.hasNext()) {
 					ConformanceStatement cf = itConfStatment2.next();
 					if (one.getConformanceStatements().contains(cf)
 							&& one != two) {
 						throw new IllegalArgumentException(cf.getId() + " - "
-								+ cf.getDescription() + " is share by"
+								+ cf.getDescription() + " is shared by"
 								+ one.getName() + " and  " + two.getName());
 					}
 				}
-
 				while (itPred2.hasNext()) {
 					Predicate pred = itPred2.next();
 					if (one.getPredicates().contains(pred) && one != two) {
 						throw new IllegalArgumentException(pred.getId() + " - "
-								+ pred.getDescription() + " is share by"
+								+ pred.getDescription() + " is shared by"
 								+ one.getName() + " and  " + two.getName());
 					}
 				}
 
 			}
 		}
-
-		assertNotNull("Profile is null.", profile);
-		service.save(profile);
-		assertNotNull("Profile not saved", profile.getId());
-		System.out.println(profile.getId());
-
 	}
 }

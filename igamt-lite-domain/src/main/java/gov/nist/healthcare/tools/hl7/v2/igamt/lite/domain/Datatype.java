@@ -59,11 +59,11 @@ public class Datatype implements java.io.Serializable {
 	@Column(nullable = true, name = "DATATYPE_DESC")
 	private String description;
 
-	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
 	@javax.persistence.JoinTable(name = "DATATYPE_PREDICATE", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "PREDICATE_ID"))
 	protected Set<Predicate> predicates = new HashSet<Predicate>();
 
-	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
 	@javax.persistence.JoinTable(name = "DATATYPE_CONFSTATEMENT", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT_ID", unique = false))
 	protected Set<ConformanceStatement> conformanceStatements = new HashSet<ConformanceStatement>();
 
@@ -177,9 +177,8 @@ public class Datatype implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "Datatype [id=" + id + ", label=" + label + ", components="
-				+ components + ", name=" + name + ", description="
-				+ description + "]";
+		return "Datatype [id=" + id + ", label=" + label + ", name=" + name
+				+ ", description=" + description + "]";
 	}
 
 }

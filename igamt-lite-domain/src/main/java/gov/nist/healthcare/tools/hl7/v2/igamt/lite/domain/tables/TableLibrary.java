@@ -44,7 +44,7 @@ public class TableLibrary implements Serializable {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@JoinColumn(unique = true, name = "TABLES_ID")
+	@JoinColumn(name = "TABLES_ID")
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Tables tables;
 

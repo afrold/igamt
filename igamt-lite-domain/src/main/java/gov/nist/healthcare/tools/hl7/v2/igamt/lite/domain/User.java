@@ -33,7 +33,8 @@ public class User implements Serializable, Cloneable {
 	@Column(nullable = false, name = "LASTNAME")
 	private String lastname;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = {
+			CascadeType.PERSIST, CascadeType.REMOVE })
 	@JoinColumn(name = "USERACCOUNT_ID")
 	private UserAccount userAccount;
 
