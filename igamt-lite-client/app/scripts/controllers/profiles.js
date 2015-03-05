@@ -4,9 +4,9 @@
 
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular) {
-        $scope.customs = [];
-        $scope.preloadeds = [];
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular,$http) {
+        $scope.customSummaries = [];
+        $scope.preloadedSummarries = [];
         $scope.tmpPreloadeds = [];
         $scope.tmpCustoms = [];
         $scope.error = null;
@@ -20,11 +20,25 @@ angular.module('igl')
          */
         $scope.init = function () {
             $rootScope.context.page = $rootScope.pages[0];
-            $scope.preloadeds = Restangular.all('profiles/preloaded').getList().$object;
-            $scope.customs = Restangular.all('profiles').getList({userId:$scope.user.id}).$object;
+            $http.get('/api/profiles/preloaded').then(function(preloadedSummaries){
+                for(var i=0; i < preloadedSummaries.length; i++){
+                    var s =   preloadedSummaries[i];
+                    var summary = {};
+                    summary["id"] = s[0];
+                    summary["metaData"] = s[1];
+                    $scope.preloadedSummarries.push(summary);
+                }
+            });
 
-            $rootScope.context.page = $rootScope.pages[1];
-            $scope.edit($scope.customs[0]);
+            $http.get('/api/profiles?userId='+$scope.user.id).then(function(customs){
+                 for(var i=0; i < customs.length; i++){
+                     var s =   customs[i];
+                     var summary = {};
+                     summary["id"] = s[0];
+                     summary["metaData"] = s[1];
+                     $scope.customs.push(summary);
+                 }
+             });
 
          };
 

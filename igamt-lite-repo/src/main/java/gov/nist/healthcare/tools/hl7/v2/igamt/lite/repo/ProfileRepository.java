@@ -19,23 +19,31 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.data.repository.query.Param;
 
-public interface ProfileRepository extends JpaRepository<Profile, Long> {
+ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 	
-	@Query("select profile from Profile profile")
-	List<Profile> findAllPreloaded();
+		
+	@Query("select p.id, p.metaData from Profile p where p.preloaded = true")
 	
-	@Query("select profile from Profile profile where profile.author.user.id = :userId ")
-	List<Profile> findAllByUserId(@Param("userId")Long userId);
+	List<ProfileSummary> findAllPreloadedSummaries();
 	
+	@Query("select profile.id,profile.metaData from Profile profile where profile.author.user.id = :userId ")
+	List<ProfileSummary> findAllSummariesByUserId(@Param("userId")Long userId);
 	
-	@Query("select profile from Profile profile where profile.author.id = :authorId ")
-	List<Profile> findAllByAuthorId(@Param("authorId")Long authorId);
+	@Query("select profile.id, profile.metaData from Profile profile where profile.author.id = :authorId ")
+	List<ProfileSummary> findAllByAuthorId(@Param("authorId")Long authorId);
 	
 	
 }

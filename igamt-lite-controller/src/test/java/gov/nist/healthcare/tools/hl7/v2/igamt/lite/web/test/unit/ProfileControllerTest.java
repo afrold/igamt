@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.HL7Version;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
@@ -49,8 +50,9 @@ public class ProfileControllerTest {
 
 	@Test
 	public void testGetAllPreloaded() throws Exception {
-		List<Profile> preloaded = findAllPreloaded();
-		when(mockProfileService.findAllPreloaded()).thenReturn(preloaded);
+		List<ProfileSummary> preloaded = findAllPreloaded();
+		when(mockProfileService.findAllPreloadedSummaries()).thenReturn(
+				preloaded);
 		mockMvc.perform(get("/profiles/preloaded")).andExpect(status().isOk())
 				.andDo(print());
 	}
@@ -63,13 +65,14 @@ public class ProfileControllerTest {
 				.andDo(print());
 	}
 
-	private List<Profile> findAllPreloaded() {
-		List<Profile> profiles = new ArrayList<Profile>();
-		Profile p = new Profile();
+	private List<ProfileSummary> findAllPreloaded() {
+		List<ProfileSummary> profiles = new ArrayList<ProfileSummary>();
+		ProfileSummary p = new ProfileSummary();
+		ProfileMetaData metaData = new ProfileMetaData();
+		p.setMetaData(metaData);
 		p.setId(new Long(1));
-		p.setHl7Version(HL7Version.V2_0.value());
-		p.setSchemaVersion(SchemaVersion.V1_0.value());
-		p.setPreloaded(true);
+		metaData.setHl7Version(HL7Version.V2_0.value());
+		metaData.setSchemaVersion(SchemaVersion.V1_0.value());
 		ProfileMetaData m = new ProfileMetaData();
 		m.setName("P1");
 		m.setOrgName("NIST");
@@ -77,11 +80,12 @@ public class ProfileControllerTest {
 		p.setMetaData(m);
 		profiles.add(p);
 
-		p = new Profile();
+		p = new ProfileSummary();
+		metaData = new ProfileMetaData();
+		p.setMetaData(metaData);
 		p.setId(new Long(2));
-		p.setPreloaded(true);
-		p.setHl7Version(HL7Version.V2_0.value());
-		p.setSchemaVersion(SchemaVersion.V1_0.value());
+		metaData.setHl7Version(HL7Version.V2_0.value());
+		metaData.setSchemaVersion(SchemaVersion.V1_0.value());
 		m = new ProfileMetaData();
 		m.setName("P2");
 		m.setOrgName("NIST");

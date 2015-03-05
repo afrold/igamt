@@ -2,32 +2,44 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Embeddable
 public class ProfileMetaData implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonView({ View.Summary.class })
 	@NotNull
-	@Column(nullable = false, name = "PROFILE_NAME")
+	@Column(nullable = false, name = "NAME")
 	private String name;
 
-	@JsonView({ View.Summary.class })
 	@NotNull
 	@Column(nullable = false, name = "ORGNAME")
 	private String orgName;
 
-	@JsonView({ View.Summary.class })
 	@Column(name = "STATUS")
 	private String status;
 
-	@JsonView({ View.Summary.class })
 	@Column(name = "TOPICS")
 	private String topics;
+
+	@Column(name = "TYPE")
+	private String type;
+
+	@Column(name = "HL7VERSION")
+	private String hl7Version;
+
+	@Column(name = "SCHEMAVERSION")
+	private String schemaVersion;
+
+	@JsonIgnore
+	@OneToOne
+	@JoinColumn(name = "PROFILE_ID")
+	private Profile profile;
 
 	public String getName() {
 		return name;
@@ -59,6 +71,38 @@ public class ProfileMetaData implements java.io.Serializable {
 
 	public void setTopics(String topics) {
 		this.topics = topics;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
+
+	public String getSchemaVersion() {
+		return schemaVersion;
+	}
+
+	public void setSchemaVersion(String schemaVersion) {
+		this.schemaVersion = schemaVersion;
+	}
+
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 
 }

@@ -8,28 +8,31 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 /**
- * 
- * @author Olivier MARIE-ROSE
- * 
+ * @author Harold Affo (harold.affo@nist.gov) Mar 5, 2015
  */
+public class ProfileSummary {
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+	private Long id;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
+	private ProfileMetaData metaData;
 
-public interface ProfileService {
+	public Long getId() {
+		return id;
+	}
 
-	public Profile save(Profile p);
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-	public void delete(Long id);
+	public ProfileMetaData getMetaData() {
+		return metaData;
+	}
 
-	public Profile findOne(Long id);
-
-	public Iterable<ProfileSummary> findAllPreloadedSummaries();
-
-	public Iterable<ProfileSummary> findAllSummariesByUser(Long userId);
+	public void setMetaData(ProfileMetaData metaData) {
+		this.metaData = metaData;
+	}
 
 }

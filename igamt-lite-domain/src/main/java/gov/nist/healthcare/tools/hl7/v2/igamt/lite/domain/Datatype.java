@@ -5,6 +5,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,7 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -49,8 +49,8 @@ public class Datatype implements java.io.Serializable {
 	@JsonProperty("children")
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
 	@javax.persistence.JoinTable(name = "DATATYPE_COMPONENT", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "COMPONENT_ID", unique = false))
-	@OrderBy(value = "position")
-	private Set<Component> components = new HashSet<Component>();
+	// @org.hibernate.annotations.OrderBy(clause = "position asc")
+	protected Set<Component> components = new LinkedHashSet<Component>();
 
 	@NotNull
 	@Column(nullable = false, name = "DATATYPE_NAME")

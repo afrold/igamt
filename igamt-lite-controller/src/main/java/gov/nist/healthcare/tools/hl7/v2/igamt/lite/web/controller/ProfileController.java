@@ -1,7 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.View;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.ProfileNotFoundException;
 
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("/profiles")
@@ -47,11 +45,10 @@ public class ProfileController extends CommonController {
 	 * 
 	 * @return
 	 */
-	@JsonView(View.Summary.class)
 	@RequestMapping(value = "/preloaded", method = RequestMethod.GET)
-	public Iterable<Profile> profiles() {
+	public Iterable<ProfileSummary> profileSummaries() {
 		logger.info("Fetching all preloaed profiles...");
-		return profileService.findAllPreloaded();
+		return profileService.findAllPreloadedSummaries();
 	}
 
 	/**

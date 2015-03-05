@@ -2,41 +2,71 @@
  * Created by haffo on 2/2/15.
  */
 
-angular.module('igl').run(function($httpBackend,CustomDataModel,PredefinedDataModel,$q) {
+angular.module('igl').run(function($httpBackend,$q,$http) {
 
 
     $httpBackend.whenGET('/api/profiles?userId=2').respond(function(method, url, data, headers) {
-         var profiles = CustomDataModel.findAllProfiles();
-        return [200, profiles, {}];
+//         var profiles = CustomDataModel.findAllProfiles();
+//        return [200, profiles, {}];
+        var delay = $q.defer();
+        $http.get('../../resources/userProfiles.json').then(
+            function (object) {
+                delay.resolve(angular.fromJson(object.data));
+            },
+            function (response) {
+                delay.reject(response.data);
+            }
+        );
+        return delay.promise;
+
+
     });
 
     // clone and set id to 3
     $httpBackend.whenPOST('/api/profiles').respond(function(method, url, d, headers) {
-        var data = angular.fromJson(d);
-        var pId = data.targetId;
-        var preloaded = data.preloaded;
-        var profile = null;
-        if(!preloaded){
-           profile = CustomDataModel.findOneProfile(pId);
-        }else{
-           profile = PredefinedDataModel.findOneProfile(pId);
-        }
-        var res = angular.copy(profile);
-        res.id = 3;
-        res.preloaded = false;
-        res.metaData.name= " Cloned "+ profile.metaData.name;
-        return [200, res, {}];
+        var delay = $q.defer();
+        $http.get('../../resources/profile.json').then(
+            function (object) {
+                var profile =  angular.fromJson(object.data);
+                profile.id = 3;
+                profile.preloaded = false;
+                profile.metaData.name= " Cloned "+ profile.metaData.name;
+                delay.resolve(profile);
+            },
+            function (response) {
+                delay.reject(response.data);
+            }
+        );
+        return delay.promise;
     });
 
     $httpBackend.whenGET('/api/profiles/preloaded').respond(function(method, url, data, headers) {
-        var profiles =  PredefinedDataModel.findAllProfiles();
-        return [200, profiles, {}];
+        var delay = $q.defer();
+        $http.get('../../resources/preloadedProfiles.json').then(
+            function (object) {
+                delay.resolve(angular.fromJson(object.data));
+            },
+            function (response) {
+                delay.reject(response.data);
+            }
+        );
+        return delay.promise;
     });
 
 
     $httpBackend.whenGET('/api/profiles/2').respond(function(method, url, data, headers) {
-        var profile =  CustomDataModel.findOneProfile(2);
-        return [200, profile, {}];
+        var delay = $q.defer();
+        $http.get('../../resources/profile.json').then(
+            function (object) {
+                var profile = angular.fromJson(object.data);
+                profile.id = 2;
+                delay.resolve(profile);
+            },
+            function (response) {
+                delay.reject(response.data);
+            }
+        );
+        return delay.promise;
     });
 
     $httpBackend.whenDELETE('/api/profiles/2').respond(function(method, url, data, headers) {
@@ -45,12 +75,17 @@ angular.module('igl').run(function($httpBackend,CustomDataModel,PredefinedDataMo
 
     $httpBackend.whenGET('/api/profiles/3').respond(function(method, url, data, headers) {
         var delay = $q.defer();
-        CustomDataModel.findOneFullProfile(3).then(function(response){
-            delay.resolve([200, response, {}]);
-        },function(error){
-            delay.reject(error);
-        });
-        return delay;
+        $http.get('../../resources/profile.json').then(
+            function (object) {
+                var profile = angular.fromJson(object.data);
+                profile.id = 3;
+                delay.resolve(profile);
+            },
+            function (response) {
+                delay.reject(response.data);
+            }
+        );
+        return delay.promise;
     });
 
 
@@ -64,7 +99,7 @@ angular.module('igl').run(function($httpBackend,CustomDataModel,PredefinedDataMo
 
     $httpBackend.whenGET(/views\//).passThrough();
 
-    $httpBackend.whenGET(/json\//).passThrough();
+    $httpBackend.whenGET(/resources\//).passThrough();
 
 
 });

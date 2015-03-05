@@ -30,25 +30,11 @@ public class Profile implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonView({ View.Summary.class })
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ID")
 	private Long id;
 
-	@JsonView({ View.Summary.class })
-	@Column(name = "TYPE")
-	private String type;
-
-	@JsonView({ View.Summary.class })
-	@Column(name = "HL7VERSION")
-	private String hl7Version;
-
-	@JsonView({ View.Summary.class })
-	@Column(name = "SCHEMAVERSION")
-	private String schemaVersion;
-
-	@JsonView({ View.Summary.class })
 	private ProfileMetaData metaData;
 
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -104,30 +90,6 @@ public class Profile implements java.io.Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getHl7Version() {
-		return hl7Version;
-	}
-
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
-	}
-
-	public String getSchemaVersion() {
-		return schemaVersion;
-	}
-
-	public void setSchemaVersion(String schemaVersion) {
-		this.schemaVersion = schemaVersion;
 	}
 
 	public ProfileMetaData getMetaData() {
@@ -226,10 +188,9 @@ public class Profile implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "Profile [id=" + id + ", type=" + type + ", hl7Version="
-				+ hl7Version + ", schemaVersion=" + schemaVersion
-				+ ", metaData=" + metaData + ", encodings=" + encodings
-				+ ", messages=" + messages + ", author=" + author + "]";
+		return "Profile [id=" + id + ", metaData=" + metaData + ", encodings="
+				+ encodings + ", messages=" + messages + ", author=" + author
+				+ "]";
 	}
 
 }

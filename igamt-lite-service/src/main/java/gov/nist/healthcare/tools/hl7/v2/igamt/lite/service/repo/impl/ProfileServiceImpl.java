@@ -18,6 +18,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 
@@ -49,13 +50,13 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public Iterable<Profile> findAllPreloaded() {
-		return profileRepository.findAllPreloaded();
+	public Iterable<ProfileSummary> findAllPreloadedSummaries() {
+		return profileRepository.findAllPreloadedSummaries();
 	}
 
 	@Override
-	public Iterable<Profile> findAllByUser(Long userId) {
-		return profileRepository.findAllByUserId(userId);
+	public Iterable<ProfileSummary> findAllSummariesByUser(Long userId) {
+		return profileRepository.findAllSummariesByUserId(userId);
 	}
 
 }

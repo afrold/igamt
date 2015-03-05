@@ -65,14 +65,17 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			String xmlValueSet, String xmlConstraints) {
 		Document profileDoc = this.stringToDom(xmlContentsProfile);
 		Profile profile = new Profile();
+		profile.setMetaData(new ProfileMetaData());
 		Element elmConformanceProfile = (Element) profileDoc
 				.getElementsByTagName("ConformanceProfile").item(0);
 
 		// Read Profile Meta
-		profile.setType(elmConformanceProfile.getAttribute("Type"));
-		profile.setHl7Version(elmConformanceProfile.getAttribute("HL7Version"));
-		profile.setSchemaVersion(elmConformanceProfile
-				.getAttribute("SchemaVersion"));
+		profile.getMetaData().setType(
+				elmConformanceProfile.getAttribute("Type"));
+		profile.getMetaData().setHl7Version(
+				elmConformanceProfile.getAttribute("HL7Version"));
+		profile.getMetaData().setSchemaVersion(
+				elmConformanceProfile.getAttribute("SchemaVersion"));
 		profile.setSegments(new Segments());
 		profile.setDatatypes(new Datatypes());
 		this.deserializeMetaData(profile, elmConformanceProfile);
@@ -125,14 +128,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	public nu.xom.Document serializeProfileToDoc(Profile profile) {
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
 		e.addAttribute(new Attribute("ID", profile.getId() + ""));
-		if (profile.getType() != null && !profile.getType().equals(""))
-			e.addAttribute(new Attribute("Type", profile.getType()));
-		if (profile.getHl7Version() != null
-				&& !profile.getHl7Version().equals(""))
-			e.addAttribute(new Attribute("HL7Version", profile.getHl7Version()));
-		if (profile.getSchemaVersion() != null
-				&& !profile.getSchemaVersion().equals(""))
-			e.addAttribute(new Attribute("SchemaVersion", profile
+		ProfileMetaData metaData = profile.getMetaData();
+		if (metaData.getType() != null && !metaData.getType().equals(""))
+			e.addAttribute(new Attribute("Type", metaData.getType()));
+		if (metaData.getHl7Version() != null
+				&& !metaData.getHl7Version().equals(""))
+			e.addAttribute(new Attribute("HL7Version", metaData.getHl7Version()));
+		if (metaData.getSchemaVersion() != null
+				&& !metaData.getSchemaVersion().equals(""))
+			e.addAttribute(new Attribute("SchemaVersion", metaData
 					.getSchemaVersion()));
 
 		if (profile.getMetaData() != null) {

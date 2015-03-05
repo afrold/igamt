@@ -1,7 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,7 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -47,8 +46,8 @@ public class Message implements java.io.Serializable {
 
 	@JsonProperty("children")
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderBy(value = "position")
-	private Set<SegmentRefOrGroup> segmentRefOrGroups = new HashSet<SegmentRefOrGroup>();
+	// @org.hibernate.annotations.OrderBy(clause = "position asc")
+	private Set<SegmentRefOrGroup> segmentRefOrGroups = new LinkedHashSet<SegmentRefOrGroup>();
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
