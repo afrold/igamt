@@ -14,7 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-@javax.persistence.Table(name = "TABLELIBRARY")
+@javax.persistence.Table(name = "TABLES")
 public class Tables implements Serializable {
 
 	/**
@@ -27,16 +27,16 @@ public class Tables implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "TABLELIBRARY_IDENTIFIER")
+	@Column(name = "IDENTIFIER")
 	private String tableLibraryIdentifier;
 
 	@Column(name = "STATUS")
 	private String status;
 
-	@Column(name = "TABLELIBRARY_VERSION")
+	@Column(name = "TABLESVERSION")
 	private String tableLibraryVersion;
 
-	@Column(name = "ORG_NAME")
+	@Column(name = "ORGNAME")
 	private String organizationName;
 
 	@Column(name = "NAME")
