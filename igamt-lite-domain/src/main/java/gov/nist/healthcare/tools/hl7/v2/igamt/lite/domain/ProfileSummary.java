@@ -10,6 +10,8 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.Set;
+
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 5, 2015
  */
@@ -18,6 +20,8 @@ public class ProfileSummary {
 	private Long id;
 
 	private ProfileMetaData metaData;
+
+	private Set<String> encodings;
 
 	public Long getId() {
 		return id;
@@ -33,6 +37,14 @@ public class ProfileSummary {
 
 	public void setMetaData(ProfileMetaData metaData) {
 		this.metaData = metaData;
+	}
+
+	public Set<String> getEncodings() {
+		return encodings;
+	}
+
+	public void setEncodings(Set<String> encodings) {
+		this.encodings = encodings;
 	}
 
 }

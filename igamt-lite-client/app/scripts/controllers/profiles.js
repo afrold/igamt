@@ -4,14 +4,14 @@
 
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular,$http) {
-        $scope.customSummaries = [];
-        $scope.preloadedSummarries = [];
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http) {
+        $scope.custom = [];
+        $scope.preloaded = [];
         $scope.tmpPreloadeds = [];
         $scope.tmpCustoms = [];
         $scope.error = null;
         $scope.user = {id: 2};
-         // step: 0; list of profile
+        // step: 0; list of profile
         // step 1: edit profile
 
 
@@ -20,57 +20,102 @@ angular.module('igl')
          */
         $scope.init = function () {
             $rootScope.context.page = $rootScope.pages[0];
-            $http.get('/api/profiles/preloaded').then(function(preloadedSummaries){
-                for(var i=0; i < preloadedSummaries.length; i++){
-                    var s =   preloadedSummaries[i];
-                    var summary = {};
-                    summary["id"] = s[0];
-                    summary["metaData"] = s[1];
-                    $scope.preloadedSummarries.push(summary);
-                }
+            $http.get('/api/profiles/preloaded').then(function (response) {
+                $scope.preloaded = response.data;
             });
 
-            $http.get('/api/profiles?userId='+$scope.user.id).then(function(customs){
-                 for(var i=0; i < customs.length; i++){
-                     var s =   customs[i];
-                     var summary = {};
-                     summary["id"] = s[0];
-                     summary["metaData"] = s[1];
-                     $scope.customs.push(summary);
-                 }
-             });
+            $http.get('/api/profiles?userId=' + $scope.user.id).then(function (response) {
+                $scope.custom = response.data;
+            });
 
-         };
+        };
 
         $scope.clone = function (profile) {
-            Restangular.all('profiles').post({targetId: profile.id, preloaded: profile.preloaded}).then(function(res) {
-                $scope.customs.push(res);
-            },function(error){
+            Restangular.all('profiles').post({targetId: profile.id}).then(function (res) {
+                $scope.custom.push(res);
+            }, function (error) {
                 $scope.error = error;
             });
         };
+
+
+        $scope.reconcileElementReferences = function (element) {
+            if (element.type === "message" && element.children) {
+                angular.forEach(element.children, function (segmentRefOrGroup) {
+                    $scope.reconcileElementReferences(segmentRefOrGroup);
+                });
+            } else if (element.type === "group" && element.children) {
+                angular.forEach(element.children, function (segmentRefOrGroup) {
+                    $scope.reconcileElementReferences(segmentRefOrGroup);
+                });
+            } else if (element.type === "segment") {
+                element.ref = $rootScope.segmentsMap[element.ref.id];
+            }
+        };
+
+
+        $scope.reconcileDatatypeReferences = function (datatype) {
+            if (datatype.children && datatype.children.length > 0) {
+                angular.forEach(datatype.children, function (component) {
+                    if (component["datatypeLabel"] != undefined) {
+                        component["datatype"] = $rootScope.datatypesMap[component.datatypeLabel];
+                    }
+                });
+            }
+        };
+
 
         $scope.edit = function (profile) {
-            Restangular.one('profiles',profile.id).get().then(function(profile) {
+
+
+            Restangular.one('profiles', profile.id).get().then(function (profile) {
+                $rootScope.clearMaps();
                 $rootScope.context.page = $rootScope.pages[1];
                 $rootScope.profile = profile;
-                //$rootScope.backUp = Restangular.copy($rootScope.profile);
-            },function(error){
+                $rootScope.backUp = Restangular.copy($rootScope.profile);
+
+                angular.forEach($rootScope.profile.messages.children, function (child) {
+                    this[child.id] = child;
+                }, $rootScope.messagesMap);
+
+                angular.forEach($rootScope.profile.datatypes.children, function (child) {
+                    this[child.label] = child;
+                }, $rootScope.datatypesMap);
+
+                angular.forEach($rootScope.profile.segments.children, function (child) {
+                    this[child.id] = child;
+                }, $rootScope.segmentsMap);
+
+                angular.forEach($rootScope.profile.segments.children, function (child) {
+                    this[child.id] = child;
+                }, $rootScope.segmentsMap);
+
+
+
+                angular.forEach($rootScope.datatypesMap, function (datatype, label) {
+                    $scope.reconcileDatatypeReferences(datatype);
+                });
+
+                angular.forEach($rootScope.messagesMap, function (message, id) {
+                    $scope.reconcileElementReferences(message);
+                });
+
+            }, function (error) {
                 $scope.error = error;
             });
         };
-
 
         $scope.delete = function (profile) {
             profile.remove().then(function () {
-                var index = $scope.customs.indexOf(profile);
-                if (index > -1) $scope.customs.splice(index, 1);
-            }, function(error){
+                var index = $scope.custom.indexOf(profile);
+                if (index > -1) $scope.custom.splice(index, 1);
+            }, function (error) {
                 $scope.error = error;
             });
         };
 
-    });
+    })
+;
 
 
 angular.module('igl')
@@ -85,19 +130,19 @@ angular.module('igl')
         $scope.init = function () {
         };
 
-        $scope.cancel = function(){
+        $scope.cancel = function () {
             $rootScope.context.page = $rootScope.pages[0];
             $scope.changes = [];
-            $rootScope.profile =null;
+            $rootScope.profile = null;
         };
 
         $scope.delete = function () {
             $rootScope.profile.remove().then(function () {
                 $rootScope.context.page = $rootScope.pages[0];
-                var index = $scope.customs.indexOf( $rootScope.profile);
-                if (index > -1) $scope.customs.splice(index, 1);
+                var index = $scope.custom.indexOf($rootScope.profile);
+                if (index > -1) $scope.custom.splice(index, 1);
                 $rootScope.backUp = null;
-            }, function(error){
+            }, function (error) {
                 $scope.error = error;
             });
         };

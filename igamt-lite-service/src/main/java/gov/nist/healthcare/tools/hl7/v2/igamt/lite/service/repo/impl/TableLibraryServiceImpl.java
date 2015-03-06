@@ -17,7 +17,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableLibraryService;
 
@@ -39,7 +39,7 @@ public class TableLibraryServiceImpl implements TableLibraryService {
 	 */
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public TableLibrary save(TableLibrary t) {
+	public Tables save(Tables t) {
 		tableLibraryRepository.saveAndFlush(t);
 		return t;
 	}
@@ -60,7 +60,7 @@ public class TableLibraryServiceImpl implements TableLibraryService {
 	 * @return
 	 */
 	@Override
-	public TableLibrary findOne(Long id) {
+	public Tables findOne(Long id) {
 		return tableLibraryRepository.findOne(id);
 	}
 

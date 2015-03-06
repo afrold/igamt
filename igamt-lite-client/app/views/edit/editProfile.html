@@ -24,28 +24,28 @@
             <tab-heading>
                 <span class="badge">1</span>
                 <i class="glyphicon glyphicon-envelope"></i>
-                Profile Information
+                Profile MetaData
             </tab-heading>
 
             <br/>
 
-            <form name="profileInfoForm" novalidate>
+            <form name="profileMetaDataForm" novalidate>
                 <div class="row">
 
                     <div class="col-sm-6">
                         <div class="form-group"
-                             ng-class="{'has-error' : profileInfoForm.name.$invalid && !profileInfoForm.name.$pristine }">
+                             ng-class="{'has-error' : profileMetaDataForm.name.$invalid && !profileMetaDataForm.name.$pristine }">
                             <label>Name</label>
-                            <input type="text" name="name" class="form-control" ng-model="profile.metaData.name">
+                            <input type="text" name="name" class="form-control" ng-model="profile.metaData.name" required>
                         </div>
 
                         <div class="form-group">
                             <label>Organization Name</label>
-                            <input type="text" name="orgName" class="form-control" ng-model="profile.metaData.orgName">
+                            <input type="text" name="orgName" class="form-control" ng-model="profile.metaData.orgName" required>
                         </div>
 
                         <div class="form-group"
-                             ng-class="{'has-error' : profileInfoForm.status.$invalid && !profileInfoForm.status.$pristine }">
+                             ng-class="{'has-error' : profileMetaDataForm.status.$invalid && !profileMetaDataForm.status.$pristine }">
                             <label>Status</label>
                             <select class="form-control"
                                     name="status"
@@ -64,27 +64,27 @@
 
                         <div class="form-group">
                             <label>Type</label>
-                            <input type="text" disabled name="type" class="form-control" ng-model="profile.type">
+                            <input type="text"  name="type" class="form-control" ng-model="profile.metaData.type" required>
                         </div>
 
                         <div class="form-group"
-                             ng-class="{'has-error' : profileInfoForm.hl7Version.$invalid && !profileInfoForm.hl7Version.$pristine }">
+                             ng-class="{'has-error' : profileMetaDataForm.hl7Version.$invalid && !profileMetaDataForm.hl7Version.$pristine }">
                             <label>HL7Version</label>
                             <select class="form-control"
                                     name="hl7Version"
                                     required
-                                    ng-model="profile.hl7Version"
+                                    ng-model="profile.metaData.hl7Version"
                                     ng-options="hl7Version for hl7Version in hl7Versions">
                             </select>
                         </div>
 
                         <div class="form-group"
-                             ng-class="{'has-error' : profileInfoForm.schemaVersion.$invalid && !profileInfoForm.schemaVersion.$pristine }">
+                             ng-class="{'has-error' : profileMetaDataForm.schemaVersion.$invalid && !profileMetaDataForm.schemaVersion.$pristine }">
                             <label>Schema version</label>
                             <select class="form-control"
                                     required
                                     name="schemaVersion"
-                                    ng-model="profile.schemaVersion"
+                                    ng-model="profile.metaData.schemaVersion"
                                     ng-options="schemaVersion for schemaVersion in schemaVersions">
                             </select>
                         </div>
@@ -92,7 +92,6 @@
                         <div class="form-group">
                             <label>Encodings</label>
                             <input type="text" disabled name="encoding" class="form-control">
-
                         </div>
                     </div>
 
@@ -103,7 +102,7 @@
                     <div class="col-sm-6">
                         <!--<button type="button" ng-click="reset()" class="btn btn-danger">Reset</button>-->
 
-                        <!--<button title="Next" ng-disabled="profileInfoForm.$invalid" type="submit" class="btn btn-primary btn-xs pull-right">-->
+                        <!--<button title="Next" ng-disabled="profileMetaDataForm.$invalid" type="submit" class="btn btn-primary btn-xs pull-right">-->
                         <!--<span><i class="fa fa-angle-double-right fa-sm"></i>&nbsp; Next</span>-->
                         <!--</button>-->
 

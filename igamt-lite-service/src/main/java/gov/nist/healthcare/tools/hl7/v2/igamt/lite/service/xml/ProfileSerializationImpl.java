@@ -31,7 +31,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Tables;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -603,8 +603,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return null;
 	}
 
-	private Table findTable(String mappingId, TableLibrary tableLibrary) {
-		for (Table t : tableLibrary.getTables().getChildren()) {
+	private Table findTable(String mappingId, Tables tableLibrary) {
+		for (Table t : tableLibrary.getChildren()) {
 			if (t.getMappingId().equals(mappingId))
 				return t;
 		}

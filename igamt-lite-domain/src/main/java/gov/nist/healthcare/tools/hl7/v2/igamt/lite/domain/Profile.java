@@ -1,7 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Tables;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -67,7 +67,7 @@ public class Profile implements java.io.Serializable {
 
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "TABLELIBRARY_ID")
-	private TableLibrary tableLibrary;
+	private Tables tableLibrary;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -148,11 +148,11 @@ public class Profile implements java.io.Serializable {
 		this.predicates = predicates;
 	}
 
-	public TableLibrary getTableLibrary() {
+	public Tables getTableLibrary() {
 		return tableLibrary;
 	}
 
-	public void setTableLibrary(TableLibrary tableLibrary) {
+	public void setTableLibrary(Tables tableLibrary) {
 		this.tableLibrary = tableLibrary;
 	}
 

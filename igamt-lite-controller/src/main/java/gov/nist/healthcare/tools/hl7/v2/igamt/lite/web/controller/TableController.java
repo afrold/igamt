@@ -2,7 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableService;
@@ -36,10 +36,10 @@ public class TableController extends CommonController {
 
 	// CRUD C for Table, User cannot create tableLib
 	@RequestMapping(value = "/table/create/{tableLibraryId}", method = RequestMethod.POST)
-	public TableLibrary createTable(@RequestBody Long tableLibraryId) {
+	public Tables createTable(@RequestBody Long tableLibraryId) {
 		Table t = new Table();
-		TableLibrary tl = tableLibraryService.findOne(tableLibraryId);
-		tl.getTables().addTable(t);
+		Tables tl = tableLibraryService.findOne(tableLibraryId);
+		tl.addTable(t);
 		return tableLibraryService.save(tl);
 	}
 
@@ -55,7 +55,7 @@ public class TableController extends CommonController {
 	// CRUD R for TableLib
 	@RequestMapping(value = "/tableLibrary/{tableLibraryId}", method = RequestMethod.GET)
 	@ResponseBody
-	public TableLibrary tableLibrary(final Long tableLibraryId) {
+	public Tables tableLibrary(final Long tableLibraryId) {
 		return tableLibraryService.findOne(tableLibraryId);
 	}
 
@@ -68,7 +68,7 @@ public class TableController extends CommonController {
 
 	// Update for TableLib
 	@RequestMapping(value = "/tableLibrary/update", method = RequestMethod.PUT)
-	public TableLibrary update(@RequestBody @Valid TableLibrary tableLibrary) {
+	public Tables update(@RequestBody @Valid Tables tableLibrary) {
 		return tableLibraryService.save(tableLibrary);
 	}
 

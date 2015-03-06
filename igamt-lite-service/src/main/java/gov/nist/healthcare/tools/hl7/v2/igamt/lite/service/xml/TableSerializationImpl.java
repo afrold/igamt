@@ -13,7 +13,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Tables;
 
 import java.io.IOException;
@@ -34,9 +33,9 @@ import org.xml.sax.SAXException;
 public class TableSerializationImpl implements TableSerialization {
 
 	@Override
-	public TableLibrary deserializeXMLToTableLibrary(String xmlContents) {
+	public Tables deserializeXMLToTableLibrary(String xmlContents) {
 		Document tableLibraryDoc = this.stringToDom(xmlContents);
-		TableLibrary tableLibrary = new TableLibrary();
+		Tables tableLibrary = new Tables();
 
 		Element elmTableLibrary = (Element) tableLibraryDoc
 				.getElementsByTagName("TableLibrary").item(0);
@@ -57,17 +56,17 @@ public class TableSerializationImpl implements TableSerialization {
 	}
 
 	@Override
-	public TableLibrary deserializeXMLToTableLibrary(nu.xom.Document xmlDoc) {
+	public Tables deserializeXMLToTableLibrary(nu.xom.Document xmlDoc) {
 		return deserializeXMLToTableLibrary(xmlDoc.toString());
 	}
 
 	@Override
-	public String serializeTableLibraryToXML(TableLibrary tableLibrary) {
+	public String serializeTableLibraryToXML(Tables tableLibrary) {
 		return this.serializeTableLibraryToDoc(tableLibrary).toXML();
 	}
 
 	@Override
-	public nu.xom.Document serializeTableLibraryToDoc(TableLibrary tableLibrary) {
+	public nu.xom.Document serializeTableLibraryToDoc(Tables tableLibrary) {
 		nu.xom.Element elmTableLibrary = new nu.xom.Element("TableLibrary");
 		elmTableLibrary.setNamespaceURI("http://www.nist.gov/healthcare/data");
 		elmTableLibrary.addAttribute(new Attribute("TableLibraryIdentifier",
@@ -83,7 +82,7 @@ public class TableSerializationImpl implements TableSerialization {
 		elmTableLibrary.addAttribute(new Attribute("Description", tableLibrary
 				.getDescription()));
 
-		for (Table t : tableLibrary.getTables().getChildren()) {
+		for (Table t : tableLibrary.getChildren()) {
 			nu.xom.Element elmTableDefinition = new nu.xom.Element(
 					"TableDefinition");
 			elmTableDefinition.addAttribute(new Attribute("AlternateId", (t
@@ -128,8 +127,7 @@ public class TableSerializationImpl implements TableSerialization {
 	}
 
 	private void deserializeXMLToTable(Element elmTableLibrary,
-			TableLibrary tableLibrary) {
-		Tables tables = new Tables();
+			Tables tableLibrary) {
 
 		NodeList nodes = elmTableLibrary
 				.getElementsByTagName("TableDefinition");
@@ -149,10 +147,8 @@ public class TableSerializationImpl implements TableSerialization {
 					&& !elmTable.getAttribute("Version").equals(""))
 				tableObj.setVersion(elmTable.getAttribute("Version"));
 			this.deserializeXMLToCode(elmTable, tableObj);
-
-			tables.addTable(tableObj);
+			tableLibrary.addTable(tableObj);
 		}
-		tableLibrary.setTables(tables);
 	}
 
 	private void deserializeXMLToCode(Element elmTable, Table tableObj) {

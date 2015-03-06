@@ -17,7 +17,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Tables;
 
 public interface TableLibraryService {
 
@@ -26,7 +26,7 @@ public interface TableLibraryService {
 	 * @param p
 	 * @return
 	 */
-	public TableLibrary save(TableLibrary t);
+	public Tables save(Tables t);
 
 	/**
 	 * 
@@ -39,5 +39,5 @@ public interface TableLibraryService {
 	 * @param id
 	 * @return
 	 */
-	public TableLibrary findOne(Long id);
+	public Tables findOne(Long id);
 }

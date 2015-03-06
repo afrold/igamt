@@ -1,15 +1,21 @@
-[
+
 
     [
-
-        1,
-
         {
-            "name": "VXU_V04",
-            "orgName": "NIST",
-            "status": "",
-            "topics": ""
+            "id": 1,
+            "metaData": {
+                "name": "VXU_V04",
+                "orgName": "NIST",
+                "status": "",
+                "topics": "",
+                "type": "Constrainable",
+                "hl7Version": "2.5.1",
+                "schemaVersion": "2.5"
+            },
+            "encodings": [
+                "ER7",
+                "XML"
+            ]
         }
     ]
 
-]

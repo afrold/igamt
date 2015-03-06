@@ -68,18 +68,19 @@ app.config(function ($routeProvider, RestangularProvider,$httpProvider) {
 app.run(function ($rootScope, $location, Restangular,CustomDataModel,$modal) {
 
     $rootScope.profile = {};
-    $rootScope.message = {};
-    $rootScope.datatype = {};
-    $rootScope.valuesSet = {};
-    $rootScope.predicate = {};
-    $rootScope.confStatement = {};
+
     $rootScope.statuses = ['Draft', 'Active', 'Superceded', 'Withdrawn'];
     $rootScope.hl7Versions = ['2.0', '2.1', '2.2', '2.3','2.3.1', '2.4','2.5','2.5.1','2.6','2.7','2.8'];
     $rootScope.schemaVersions = ['1.0', '1.5', '2.0', '2.5'];
     $rootScope.segmentsMap = {};
     $rootScope.pages = ['list', 'edit', 'read'];
     $rootScope.context = {page : $rootScope.pages[0]};
+    $rootScope.message = {};
 
+    $rootScope.messagesMap = {}; // Map for Message;key:id, value:object
+    $rootScope.segmentsMap = {};  // Map for Segment;key:id, value:object
+    $rootScope.datatypesMap = {}; // Map for Datatype; key:label, value:object
+    $rootScope.valuesSetsMap = {};// Map for valueSets; key:id, value:object
 
     $rootScope.$watch(function () {
         return $location.path();
@@ -118,6 +119,12 @@ app.run(function ($rootScope, $location, Restangular,CustomDataModel,$modal) {
             $rootScope.error = error;
         }, function () {
         });
+    };
+
+    $rootScope.clearMaps = function(){
+       delete $rootScope.messagesMap;
+        delete $rootScope.segmentsMap;
+        delete $rootScope.datatypesMap;
     };
 
 
