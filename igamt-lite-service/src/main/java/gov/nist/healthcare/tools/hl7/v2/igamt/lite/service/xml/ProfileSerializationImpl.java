@@ -82,7 +82,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		this.deserializeEncodings(profile, elmConformanceProfile);
 
 		// Read Profile Libs
-		profile.setTables(new TableSerializationImpl()
+		profile.setTableLibrary(new TableSerializationImpl()
 				.deserializeXMLToTableLibrary(xmlValueSet));
 		profile.setConformanceStatements(new ConstraintsSerializationImpl()
 				.deserializeXMLToConformanceStatements(xmlConstraints));
@@ -228,10 +228,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				componentObj.setMinLength(new Integer(elmComponent
 						.getAttribute("MinLength")));
 				componentObj.setName(elmComponent.getAttribute("Name"));
-				componentObj
-						.setTable(this.findTable(
-								elmComponent.getAttribute("Table"),
-								profile.getTables()));
+				componentObj.setTable(this.findTable(elmComponent
+						.getAttribute("Table"), profile.getTableLibrary()
+						.getTables()));
 				componentObj.setUsage(Usage.fromValue(elmComponent
 						.getAttribute("Usage")));
 				componentObj.setBindingLocation(elmComponent
@@ -549,7 +548,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		fieldObj.setName(fieldElm.getAttribute("Name"));
 		fieldObj.setUsage(Usage.fromValue(fieldElm.getAttribute("Usage")));
 		fieldObj.setTable(this.findTable(fieldElm.getAttribute("Table"),
-				profile.getTables()));
+				profile.getTableLibrary().getTables()));
 		fieldObj.setBindingStrength(fieldElm.getAttribute("BindingStrength"));
 		fieldObj.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
 		fieldObj.setDatatype(this.datatypesMap.get(fieldElm
@@ -643,8 +642,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				new String(Files.readAllBytes(Paths
 						.get("src//main//resources//vxu//Constraints.xml"))));
 		System.out.println(test1.serializeProfileToXML(profile));
-		System.out
-				.println(test2.serializeTableLibraryToXML(profile.getTables()));
+		System.out.println(test2.serializeTableLibraryToXML(profile
+				.getTableLibrary()));
 		System.out.println(test3.serializeConstraintsToXML(
 				profile.getConformanceStatements(), profile.getPredicates()));
 	}

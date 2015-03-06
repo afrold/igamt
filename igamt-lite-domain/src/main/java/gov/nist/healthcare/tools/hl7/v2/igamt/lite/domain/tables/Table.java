@@ -13,11 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 
@@ -61,11 +58,6 @@ public class Table implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
 	private final Set<Code> codes = new HashSet<Code>();
-
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TABLES_ID")
-	private Tables tables;
 
 	public Long getId() {
 		return id;
@@ -137,14 +129,6 @@ public class Table implements Serializable {
 
 	public void addCode(Code c) {
 		codes.add(c);
-	}
-
-	public Tables getTables() {
-		return tables;
-	}
-
-	public void setTables(Tables tables) {
-		this.tables = tables;
 	}
 
 	@Override
