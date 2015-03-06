@@ -82,7 +82,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		this.deserializeEncodings(profile, elmConformanceProfile);
 
 		// Read Profile Libs
-		profile.setTableLibrary(new TableSerializationImpl()
+		profile.setTables(new TableSerializationImpl()
 				.deserializeXMLToTableLibrary(xmlValueSet));
 		profile.setConformanceStatements(new ConstraintsSerializationImpl()
 				.deserializeXMLToConformanceStatements(xmlConstraints));
@@ -154,16 +154,18 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 						.getTopics()));
 
 			e.appendChild(elmMetaData);
-		}
 
-		if (profile.getEncodings() != null && profile.getEncodings().size() > 0) {
-			nu.xom.Element elmEncodings = new nu.xom.Element("Encodings");
-			for (String encoding : profile.getEncodings()) {
-				nu.xom.Element elmEncoding = new nu.xom.Element("Encoding");
-				elmEncoding.appendChild(encoding);
-				elmEncodings.appendChild(elmEncoding);
+			if (profile.getMetaData().getEncodings() != null
+					&& profile.getMetaData().getEncodings().size() > 0) {
+				nu.xom.Element elmEncodings = new nu.xom.Element("Encodings");
+				for (String encoding : profile.getMetaData().getEncodings()) {
+					nu.xom.Element elmEncoding = new nu.xom.Element("Encoding");
+					elmEncoding.appendChild(encoding);
+					elmEncodings.appendChild(elmEncoding);
+				}
+				e.appendChild(elmEncodings);
 			}
-			e.appendChild(elmEncodings);
+
 		}
 
 		nu.xom.Element ms = new nu.xom.Element("Messages");
@@ -226,9 +228,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				componentObj.setMinLength(new Integer(elmComponent
 						.getAttribute("MinLength")));
 				componentObj.setName(elmComponent.getAttribute("Name"));
-				componentObj.setTable(this.findTable(
-						elmComponent.getAttribute("Table"),
-						profile.getTableLibrary()));
+				componentObj
+						.setTable(this.findTable(
+								elmComponent.getAttribute("Table"),
+								profile.getTables()));
 				componentObj.setUsage(Usage.fromValue(elmComponent
 						.getAttribute("Usage")));
 				componentObj.setBindingLocation(elmComponent
@@ -450,7 +453,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			for (int i = 0; i < nodes.getLength(); i++) {
 				encodingSet.add(nodes.item(i).getTextContent());
 			}
-			profile.setEncodings(encodingSet);
+			profile.getMetaData().setEncodings(encodingSet);
 		}
 	}
 
@@ -546,7 +549,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		fieldObj.setName(fieldElm.getAttribute("Name"));
 		fieldObj.setUsage(Usage.fromValue(fieldElm.getAttribute("Usage")));
 		fieldObj.setTable(this.findTable(fieldElm.getAttribute("Table"),
-				profile.getTableLibrary()));
+				profile.getTables()));
 		fieldObj.setBindingStrength(fieldElm.getAttribute("BindingStrength"));
 		fieldObj.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
 		fieldObj.setDatatype(this.datatypesMap.get(fieldElm
@@ -640,8 +643,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				new String(Files.readAllBytes(Paths
 						.get("src//main//resources//vxu//Constraints.xml"))));
 		System.out.println(test1.serializeProfileToXML(profile));
-		System.out.println(test2.serializeTableLibraryToXML(profile
-				.getTableLibrary()));
+		System.out
+				.println(test2.serializeTableLibraryToXML(profile.getTables()));
 		System.out.println(test3.serializeConstraintsToXML(
 				profile.getConformanceStatements(), profile.getPredicates()));
 	}

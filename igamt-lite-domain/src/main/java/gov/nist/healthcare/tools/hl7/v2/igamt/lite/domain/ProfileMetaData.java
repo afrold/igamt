@@ -1,12 +1,14 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
+import javax.validation.constraints.NotNull;
 
 @Embeddable
 public class ProfileMetaData implements java.io.Serializable {
@@ -36,10 +38,9 @@ public class ProfileMetaData implements java.io.Serializable {
 	@Column(name = "SCHEMAVERSION")
 	private String schemaVersion;
 
-	@JsonIgnore
-	@OneToOne
-	@JoinColumn(name = "PROFILE_ID")
-	private Profile profile;
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "ENCODINGS")
+	private Set<String> encodings = new HashSet<String>();
 
 	public String getName() {
 		return name;
@@ -97,12 +98,12 @@ public class ProfileMetaData implements java.io.Serializable {
 		this.schemaVersion = schemaVersion;
 	}
 
-	public Profile getProfile() {
-		return profile;
+	public Set<String> getEncodings() {
+		return encodings;
 	}
 
-	public void setProfile(Profile profile) {
-		this.profile = profile;
+	public void setEncodings(Set<String> encodings) {
+		this.encodings = encodings;
 	}
 
 }

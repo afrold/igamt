@@ -3,13 +3,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Tables;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -37,10 +32,6 @@ public class Profile implements java.io.Serializable {
 
 	private ProfileMetaData metaData;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "ENCODINGS")
-	private Set<String> encodings = new HashSet<String>();
-
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "SEGMENTS_ID")
 	private Segments segments;
@@ -66,8 +57,8 @@ public class Profile implements java.io.Serializable {
 	private transient Constraints predicates;
 
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "TABLELIBRARY_ID")
-	private Tables tableLibrary;
+	@JoinColumn(name = "TABLES_ID")
+	private Tables tables;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -93,19 +84,12 @@ public class Profile implements java.io.Serializable {
 	}
 
 	public ProfileMetaData getMetaData() {
-		return metaData;
+		return metaData = metaData == null ? metaData = new ProfileMetaData()
+				: metaData;
 	}
 
 	public void setMetaData(ProfileMetaData metaData) {
 		this.metaData = metaData;
-	}
-
-	public Set<String> getEncodings() {
-		return encodings;
-	}
-
-	public void setEncodings(Set<String> encodings) {
-		this.encodings = encodings;
 	}
 
 	public Segments getSegments() {
@@ -148,12 +132,12 @@ public class Profile implements java.io.Serializable {
 		this.predicates = predicates;
 	}
 
-	public Tables getTableLibrary() {
-		return tableLibrary;
+	public Tables getTables() {
+		return tables;
 	}
 
-	public void setTableLibrary(Tables tableLibrary) {
-		this.tableLibrary = tableLibrary;
+	public void setTables(Tables tables) {
+		this.tables = tables;
 	}
 
 	public Author getAuthor() {
@@ -188,9 +172,8 @@ public class Profile implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "Profile [id=" + id + ", metaData=" + metaData + ", encodings="
-				+ encodings + ", messages=" + messages + ", author=" + author
-				+ "]";
+		return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
+				+ messages + ", author=" + author + "]";
 	}
 
 }
