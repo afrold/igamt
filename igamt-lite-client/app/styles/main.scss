@@ -326,5 +326,45 @@ div.ngRow.selected {
   border-left:4px solid black;
 }
 
+.igl-tab {
+  margin-top:20px;
+}
+
+.tbl-header{
+  background-color: #d9edf7;
+  color: #3a87ad;
+  font-weight: normal;
+  border-color: #bce8f1;
+}
+
+.st-selected{
+  border-left:4px solid black;
+}
 
 
+.nav-tabs > li > a {
+  border-color: #bce8f1;
+  background-color: #d9edf7;
+  color: #3a87ad;
+}
+
+.nav-tabs > li.active > a,.nav-tabs > li > a:hover,.nav-tabs > li.active > a:hover {
+  background-color: #428bca;
+  border-color: #bce8f1;
+  border: 0px;
+  color: white;
+  cursor: pointer;
+}
+
+select.form-control {
+  background-color: #d9edf7;
+  color: #3a87ad;
+  cursor: pointer;
+}
+
+
+select.form-control:checked{
+  background-color: #428bca;
+  color: #d9edf7;
+  cursor: pointer;
+}

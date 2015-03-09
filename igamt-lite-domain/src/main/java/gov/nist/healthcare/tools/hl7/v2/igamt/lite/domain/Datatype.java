@@ -33,9 +33,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @DynamicUpdate
 @SelectBeforeUpdate
 @Table(name = "DATATYPE")
-public class Datatype implements java.io.Serializable {
+public class Datatype extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public Datatype() {
+		super();
+		this.type = Constant.DATATYPE;
+	}
 
 	@Id
 	@Column(name = "ID")

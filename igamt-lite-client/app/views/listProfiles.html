@@ -3,7 +3,7 @@
         <div class="page-header">
         <h3>Predefined Profiles </h3>
         </div>
-        <div>
+        <div class="table-responsive">
             <!-- Default panel contents -->
             <!--<div class="panel-heading"><i class="fa fa-list"></i>&nbsp;-->
                 <!--Predefined Profiles-->
@@ -12,7 +12,7 @@
                 <table st-table="preloaded"
                        class="profile-list table table-striped table-bordered">
                     <thead>
-                    <tr>
+                    <tr class="tbl-header">
                         <th>Name</th>
                         <th>Organization Name</th>
                         <th>HL7 Version</th>
@@ -33,9 +33,9 @@
                         <td ng-bind-html="row.metaData.topic"></td>
                         <td ng-bind-html="row.metaData.status"></td>
                         <td>
-                            <button title="Create Copy" type="button" class="btn btn-xs btn-primary"
+                            <button title="Create Copy" type="button" class="btn btn-xs btn-warning"
                                     ng-click="clone(row)">
-                                <span><i class="fa fa-plus-square fa-sm"></i>&nbsp; Clone</span>
+                                <span><i class="fa fa-plus-circle fa-sm"></i>&nbsp; Clone</span>
                             </button>
                         </td>
                     </tr>
@@ -54,7 +54,7 @@
         <div class="page-header">
         <h3>Custom Profiles </h3>
        </div>
-        <div>
+        <div class="table-responsive">
             <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
             <!--<div class="panel-heading"><i class="fa fa-list"></i>&nbsp;-->
                 <!--User Profiles-->
@@ -63,7 +63,7 @@
                 <table st-table="custom"
                        class="profile-list table table-striped table-bordered">
                     <thead>
-                    <tr>
+                    <tr class="tbl-header">
                         <th>Name</th>
                         <th>Organization Name</th>
                         <th>HL7 Version</th>
@@ -85,17 +85,18 @@
                         <td ng-bind-html="row.metaData.topic"></td>
                         <td ng-bind-html="row.metaData.status"></td>
                         <td>
-                            <button title="Create Copy" type="button" class="btn btn-xs btn-primary"
-                                    ng-click="clone(row)">
-                                <span><i class="fa fa-plus-square fa-sm"></i>&nbsp; Clone</span>
-                            </button>
+
                             <button title="Edit" type="button" class="btn btn-xs btn-primary"
                                     ng-click="edit(row)">
-                                <span><i class="fa fa-pencil-square fa-sm"></i>&nbsp; Edit</span>
+                                <span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>
+                            </button>
+                            <button title="Create Copy" type="button" class="btn btn-xs btn-warning"
+                                    ng-click="clone(row)">
+                                <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
                             </button>
                             <button title="Delete" type="button" class="btn btn-xs btn-danger"
                                     ng-click="delete(row)">
-                                <span><i class="fa fa-trash-o fa-sm">&nbsp; </i>Delete</span>
+                                <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
                             </button>
                         </td>
                     </tr>

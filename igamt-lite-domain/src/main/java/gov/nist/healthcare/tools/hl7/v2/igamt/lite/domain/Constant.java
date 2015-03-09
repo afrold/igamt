@@ -11,18 +11,18 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 /**
- * @author Harold Affo (harold.affo@nist.gov)
- * Feb 13, 2015
+ * @author Harold Affo (harold.affo@nist.gov) Feb 13, 2015
  */
 public class Constant {
-	
-	private Constant(){}
-	
-	public  final static String SEGMENT = "segment";
-	public  final static String FIELD = "field";
-	public  final static String COMPONENT = "component";
-	public  final static String GROUP = "group";
-	public  final static String MESSAGE = "message";
-	
-	
+
+	private Constant() {
+	}
+
+	public final static String SEGMENT = "segment";
+	public final static String FIELD = "field";
+	public final static String COMPONENT = "component";
+	public final static String GROUP = "group";
+	public final static String MESSAGE = "message";
+	public final static String DATATYPE = "datatype";
+
 }

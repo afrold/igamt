@@ -60,7 +60,7 @@ public abstract class DataElement extends DataModel implements
 	@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
 			CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "TABLE_ID")
-	protected transient Table table;
+	protected Table table;
 
 	@Column(nullable = true, name = "BINDING_STRENGTH")
 	protected String bindingStrength;

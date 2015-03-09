@@ -39,37 +39,11 @@ angular.module('igl')
         };
 
 
-        $scope.reconcileElementReferences = function (element) {
-            if (element.type === "message" && element.children) {
-                angular.forEach(element.children, function (segmentRefOrGroup) {
-                    $scope.reconcileElementReferences(segmentRefOrGroup);
-                });
-            } else if (element.type === "group" && element.children) {
-                angular.forEach(element.children, function (segmentRefOrGroup) {
-                    $scope.reconcileElementReferences(segmentRefOrGroup);
-                });
-            } else if (element.type === "segment") {
-                element.ref = $rootScope.segmentsMap[element.ref.id];
-            }
-        };
-
-
-        $scope.reconcileDatatypeReferences = function (datatype) {
-            if (datatype.children && datatype.children.length > 0) {
-                angular.forEach(datatype.children, function (component) {
-                    if (component["datatypeLabel"] != undefined) {
-                        component["datatype"] = $rootScope.datatypesMap[component.datatypeLabel];
-                    }
-                });
-            }
-        };
-
-
         $scope.edit = function (profile) {
 
 
             Restangular.one('profiles', profile.id).get().then(function (profile) {
-                $rootScope.clearMaps();
+                $rootScope.initMaps();
                 $rootScope.context.page = $rootScope.pages[1];
                 $rootScope.profile = profile;
                 $rootScope.backUp = Restangular.copy($rootScope.profile);
@@ -82,23 +56,20 @@ angular.module('igl')
                     this[child.label] = child;
                 }, $rootScope.datatypesMap);
 
-                angular.forEach($rootScope.profile.segments.children, function (child) {
-                    this[child.id] = child;
-                }, $rootScope.segmentsMap);
 
                 angular.forEach($rootScope.profile.segments.children, function (child) {
                     this[child.id] = child;
                 }, $rootScope.segmentsMap);
 
+                angular.forEach($rootScope.profile.tableLibrary.tables.children, function (child) {
+                    this[child.id] = child;
+                }, $rootScope.tablesMap);
 
 
-                angular.forEach($rootScope.datatypesMap, function (datatype, label) {
-                    $scope.reconcileDatatypeReferences(datatype);
-                });
+//                if($rootScope.profile.messages.children.length === 1){
+//                    $rootScope.message = $rootScope.profile.messages.children[0];
+//                }
 
-                angular.forEach($rootScope.messagesMap, function (message, id) {
-                    $scope.reconcileElementReferences(message);
-                });
 
             }, function (error) {
                 $scope.error = error;

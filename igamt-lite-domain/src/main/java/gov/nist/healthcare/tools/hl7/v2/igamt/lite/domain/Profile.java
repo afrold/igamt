@@ -3,13 +3,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -36,10 +31,6 @@ public class Profile implements java.io.Serializable {
 	private Long id;
 
 	private ProfileMetaData metaData;
-
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "ENCODINGS")
-	private Set<String> encodings = new HashSet<String>();
 
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "SEGMENTS_ID")
@@ -98,14 +89,6 @@ public class Profile implements java.io.Serializable {
 
 	public void setMetaData(ProfileMetaData metaData) {
 		this.metaData = metaData;
-	}
-
-	public Set<String> getEncodings() {
-		return encodings;
-	}
-
-	public void setEncodings(Set<String> encodings) {
-		this.encodings = encodings;
 	}
 
 	public Segments getSegments() {
@@ -188,9 +171,7 @@ public class Profile implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "Profile [id=" + id + ", metaData=" + metaData + ", encodings="
-				+ encodings + ", messages=" + messages + ", author=" + author
-				+ "]";
+		return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
+				+ messages + ", author=" + author + "]";
 	}
-
 }
