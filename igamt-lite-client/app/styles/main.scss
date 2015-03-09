@@ -368,3 +368,42 @@ select.form-control:checked{
   color: #d9edf7;
   cursor: pointer;
 }
+
+
+input.form-control {
+  background-color: #d9edf7;
+  color: #3a87ad;
+  cursor: pointer;
+}
+
+.point{
+  cursor:pointer;
+}
+
+
+.igl-input {
+  background-color: #d9edf7;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  font-size: 14px;
+  height: 34px;
+  line-height: 1.42857;
+  padding: 6px 12px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font: inherit;
+  margin: 0;
+  opacity: 1;
+  background-color: #d9edf7;
+  color: #3a87ad;
+  cursor: pointer;
+}
+
+.has-error{
+  background-color: red;
+}

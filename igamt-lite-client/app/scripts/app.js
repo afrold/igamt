@@ -82,6 +82,7 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
     $rootScope.segments = [];// list of segments of the selected messages
     $rootScope.datatypes = [];// list of datatypes of the selected messages
     $rootScope.tables = [];// list of tables of the selected messages
+    $rootScope.usages = ['R', 'RE', 'O', 'C', "CE","X", "B", "W"];
 
     $rootScope.initMaps = function () {
         $rootScope.messagesMap = {};
@@ -136,6 +137,55 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
         return label != undefined && label != null && (label.indexOf('_') !== -1 || label.indexOf('-') !== -1);
     };
 
+
+    $rootScope.processElement = function (element, parent) {
+        if (element.type === "group" && element.children) {
+            angular.forEach(element.children, function (segmentRefOrGroup) {
+                $rootScope.processElement(segmentRefOrGroup,element);
+            });
+        } else if (element.type === "segment") {
+            element.ref = $rootScope.segmentsMap[element.ref.id];
+            element.ref.path =  element.ref.name;
+            if ($rootScope.segments.indexOf(element.ref) === -1) {
+                $rootScope.segments.push(element.ref);
+                angular.forEach(element.ref.fields, function (field) {
+                    $rootScope.processElement(field,element.ref);
+                });
+            }
+        } else if (element.type === "field" || element.type === "component") {
+            element["datatype"] = $rootScope.datatypesMap[element["datatypeLabel"]];
+            element["path"] = parent.path+"."+element.position;
+            if (angular.isDefined(element.table)) {
+                element["table"] = $rootScope.tablesMap[element.table.id];
+                if ($rootScope.tables.indexOf(element.table) === -1) {
+                    $rootScope.tables.push(element.table);
+                }
+            }
+            $rootScope.processElement(element.datatype,element);
+        } else if (element.type === "datatype") {
+            if ($rootScope.datatypes.indexOf(element) === -1) {
+                $rootScope.datatypes.push(element);
+                angular.forEach(element.children, function (component) {
+                    $rootScope.processElement(component,parent);
+                });
+            }
+        }
+    };
+
+    $rootScope.validateNumber = function(event) {
+        var key = window.event ? event.keyCode : event.which;
+        if (event.keyCode == 8 || event.keyCode == 46
+            || event.keyCode == 37 || event.keyCode == 39) {
+            return true;
+        }
+        else if ( key < 48 || key > 57 ) {
+            return false;
+        }
+        else return true;
+    };
+
+
+
 });
 
 
@@ -172,6 +222,13 @@ app.controller('ErrorDetailsCtrl', function ($scope, $modalInstance, error) {
         $modalInstance.dismiss('cancel');
     };
 });
+
+
+//app.filter('flavors', function() {
+//    return function(input, name) {
+//
+//    };
+//});
 
 
 //

@@ -40,17 +40,11 @@ angular.module('igl')
 
 
         $scope.edit = function (profile) {
-
-
             Restangular.one('profiles', profile.id).get().then(function (profile) {
                 $rootScope.initMaps();
                 $rootScope.context.page = $rootScope.pages[1];
                 $rootScope.profile = profile;
                 $rootScope.backUp = Restangular.copy($rootScope.profile);
-
-                angular.forEach($rootScope.profile.messages.children, function (child) {
-                    this[child.id] = child;
-                }, $rootScope.messagesMap);
 
                 angular.forEach($rootScope.profile.datatypes.children, function (child) {
                     this[child.label] = child;
@@ -66,10 +60,19 @@ angular.module('igl')
                 }, $rootScope.tablesMap);
 
 
-//                if($rootScope.profile.messages.children.length === 1){
-//                    $rootScope.message = $rootScope.profile.messages.children[0];
-//                }
+                angular.forEach($rootScope.profile.messages.children, function (child) {
+                    this[child.id] = child;
+                    angular.forEach(child.children, function (segmentRefOrGroup) {
+                        $rootScope.processElement(segmentRefOrGroup);
+                    });
+                }, $rootScope.messagesMap);
 
+                if($rootScope.profile.messages.children.length === 1){
+                     $rootScope.message = $rootScope.profile.messages.children[0];
+                     angular.forEach($rootScope.message.children, function (segmentRefOrGroup) {
+                        $rootScope.processElement(segmentRefOrGroup);
+                     });
+                }
 
             }, function (error) {
                 $scope.error = error;

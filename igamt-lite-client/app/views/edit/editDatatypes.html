@@ -1,170 +1,223 @@
 <div ng-controller="DatatypeListCtrl" ng-init="init()">
 
 
-    <div ng-show="loading" style="text-align:center">
-        <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
+<div ng-show="loading" style="text-align:center">
+    <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
+</div>
+
+<div ng-show="!loading">
+    <div class="row">
+        <div class="page-header">
+            <h3>Datatypes List</h3>
+        </div>
+        <div>
+            <table st-table="tmpDatatypes" st-safe-src="datatypes"
+                   class="table table-striped table-bordered">
+                <thead>
+                <tr class="tbl-header">
+                    <th></th>
+                    <th>Label</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <!--<th></th>-->
+                </tr>
+                <tr>
+                    <th colspan="4">
+                        <input st-search placeholder="Search Datatype" class="input-sm form-control" type="search"/>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr st-select-row="row" st-select-mode="single" ng-repeat="row in tmpDatatypes">
+                    <td cs-select="row"><input ng-click="select(row)"
+                                               ng-checked="datatype != null && row.id == datatype.id"
+                                               type="radio"></td>
+                    <td ng-bind="row.label"></td>
+                    <td ng-bind-html="row.name"></td>
+                    <td ng-bind-html="row.description"></td>
+                    <!--<td>-->
+                    <!--<button title="Clone" ng-disabled="datatype != null" type="button" class="btn btn-xs btn-default"-->
+                    <!--ng-click="clone(row)">-->
+                    <!--<span><i class="fa fa-files-o fa-fw"></i>&nbsp; Clone</span>-->
+                    <!--</button>-->
+                    <!--<button ng-disabled="datatype != null" ng-show="isFlavor(row.label)" title="Edit" type="button"-->
+                    <!--class="btn btn-xs btn-primary"-->
+                    <!--ng-click="edit(row)">-->
+                    <!--<span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>-->
+                    <!--</button>-->
+                    <!--<button ng-disabled="datatype != null" title="Delete" type="button" class="btn btn-xs btn-danger"-->
+                    <!--ng-click="delete(row)">-->
+                    <!--<span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>-->
+                    <!--</button>-->
+                    <!--</td>-->
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="4" class="text-center">
+                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
 
-    <div ng-show="!loading">
-        <div class="row">
-            <div class="page-header">
-                <h3>Datatypes List</h3>
-            </div>
-            <div>
-                <table st-table="tmpDatatypes" st-safe-src="datatypes"
-                       class="table table-striped table-bordered">
-                    <thead>
-                    <tr class="tbl-header">
-                        <th></th>
-                        <th>Label</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <!--<th></th>-->
-                    </tr>
-                    <tr>
-                        <th colspan="4">
-                            <input st-search placeholder="Search Datatype" class="input-sm form-control" type="search"/>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr st-select-row="row" st-select-mode="single" ng-repeat="row in tmpDatatypes">
-                        <td cs-select="row"><input  ng-click="select(row)" ng-checked="datatype != null && row.id == datatype.id"
-                                                   type="radio"></td>
-                        <td ng-bind="row.label"></td>
-                        <td ng-bind-html="row.name"></td>
-                        <td ng-bind-html="row.description"></td>
-                        <!--<td>-->
-                            <!--<button title="Clone" ng-disabled="datatype != null" type="button" class="btn btn-xs btn-default"-->
-                                    <!--ng-click="clone(row)">-->
-                                <!--<span><i class="fa fa-files-o fa-fw"></i>&nbsp; Clone</span>-->
-                            <!--</button>-->
-                            <!--<button ng-disabled="datatype != null" ng-show="isFlavor(row.label)" title="Edit" type="button"-->
-                                    <!--class="btn btn-xs btn-primary"-->
-                                    <!--ng-click="edit(row)">-->
-                                <!--<span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>-->
-                            <!--</button>-->
-                            <!--<button ng-disabled="datatype != null" title="Delete" type="button" class="btn btn-xs btn-danger"-->
-                                    <!--ng-click="delete(row)">-->
-                                <!--<span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>-->
-                            <!--</button>-->
-                        <!--</td>-->
-                    </tr>
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <td colspan="4" class="text-center">
-                            <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
-                        </td>
-                    </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
+    <div ng-show="loadingSelection" style="text-align:center">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+    <div ng-show="!loadingSelection">
+        <div ng-show="datatype !== null">
+            <div class="row">
+                <div>
+                    <span>Selected Datatype : {{datatype.label}}</span>
+                        <span class="pull-right">
 
-        <div ng-show="loadingSelection" style="text-align:center">
-            <i class="fa fa-spinner fa-spin"></i>
-        </div>
-        <div ng-show="!loadingSelection">
-            <div ng-show="datatype !== null">
-                <div class="row">
-                    <div class="">
-                        <div>
-                            <h3>Selected Datatype : {{datatype.label}}</h3>
-                        <!--</div>-->
-                        <!--<div class="pull-right">-->
+                        <button title="Clone" type="button" class="btn btn-xs btn-info"
+                                ng-click="clone()">
+                            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
+                        </button>
 
-                            <!--<button ng-show="isFlavor(row.label)" title="Edit" type="button"-->
-                                    <!--class="btn btn-xs btn-primary"-->
-                                    <!--ng-click="edit()">-->
-                                <!--<span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>-->
-                            <!--</button>-->
+                        <button title="Reset" type="button" class="btn btn-xs btn-warning"
+                                ng-click="reset()" ng-disabled="true">
+                            <span><i class="fa fa-times fa-fw">&nbsp; </i>Reset</span>
+                        </button>
 
-                            <button title="Clone" type="button" class="btn btn-xs btn-default"
-                                    ng-click="clone()">
-                                <span><i class="fa fa-files-o fa-fw"></i>&nbsp; Clone</span>
-                            </button>
+                        <button title="Delete" type="button"
+                                class="btn btn-xs btn-danger"
+                                ng-click="delete()">
+                            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+                        </button>
+                        </span>
+                    <hr/>
+                    <!--<button title="Save" type="button" class="btn btn-xs btn-success"-->
+                    <!--ng-click="save()">-->
+                    <!--<span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Save</span>-->
+                    <!--</button>-->
+                </div>
 
-                            <button title="Delete" ng-show="datatype.id != null" type="button" class="btn btn-xs btn-danger"
-                                    ng-click="delete()">
-                                <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-                            </button>
-
-                            <button title="Reset" type="button" class="btn btn-xs btn-warning"
-                                    ng-click="reset()">
-                                <span><i class="fa fa-times fa-fw">&nbsp; </i>Reset</span>
-                            </button>
-
-                            <!--<button title="Save" type="button" class="btn btn-xs btn-success"-->
-                                    <!--ng-click="save()">-->
-                                <!--<span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Save</span>-->
-                            <!--</button>-->
-                        </div>
-                    </div>
-
-                    <form style="margin-top: 20px" class="form-horizontal" name="editDatatypeForm">
-                        <!--<div>-->
-                            <!--<label for="datatypeLabel">Name:</label>-->
-                            <!--<input type="text" ng-model="datatype.label" ng-disabled="isFlavor(datatype.label)"-->
-                                   <!--ng-focus="isFlavor(datatype.label)" class="form-control" id="datatypeLabel">-->
-                        <!--</div>-->
-                        <div style="margin-top: 20px">
-                            <div class="table-responsive">
-                                <table tt-table tt-params="params" class="table table-striped table-bordered">
-                                    <thead>
-                                    <tr class="tbl-header">
-                                        <th>Name</th>
-                                        <th>Usage</th>
-                                        <th>Cardinality</th>
-                                        <th>Datatype</th>
-                                        <th>Length</th>
-                                        <th>ValueSet</th>
-                                        <th>Predicate</th>
-                                        <th>Conformance Statement</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                                <script type="text/ng-template" id="DatatypeEditTree.html">
-                                    <tr tt-node is-branch="hasChildren(node)">
-                                        <td style="width:40%">
-                                            <img ng-show="node.type != null"
-                                                 style="width:15px; height:15px"
+                <form style="margin-top: 20px" class="form-horizontal" name="editDatatypeForm">
+                    <!--<div>-->
+                    <!--<label for="datatypeLabel">Name:</label>-->
+                    <!--<input type="text" ng-model="datatype.label" ng-disabled="isFlavor(datatype.label)"-->
+                    <!--ng-focus="isFlavor(datatype.label)" class="form-control" id="datatypeLabel">-->
+                    <!--</div>-->
+                    <div style="margin-top: 20px">
+                        <div class="table-responsive">
+                            <table tt-table tt-params="params" class="table table-striped table-bordered">
+                                <thead>
+                                <tr class="tbl-header row">
+                                    <th class="col-md-5">Name</th>
+                                    <th class="col-md-1">Usage</th>
+                                    <th class="col-md-1">Length</th>
+                                    <th class="col-md-1">ConfLength</th>
+                                    <th class="col-md-1">Datatype</th>
+                                    <th class="col-md-1">ValueSet</th>
+                                    <th class="col-md-1">Predicate</th>
+                                    <th class="col-md-1">Conformance Statement</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <script type="text/ng-template" id="DatatypeEditTree.html">
+                                <tr tt-node is-branch="hasChildren(node)" class="row">
+                                    <td class="col-md-5">
+                                        <span ng-show="node.type === 'datatype'" ng-controller="DatatypeRowCtrl">
+                                            <span ng-form name="{{formName}}">
+                                            <input style="width:60%" type="text"
+                                                   name="label"
+                                                   ng-class="{ 'has-error' : {{formName}}.label.$invalid}"
+                                                   class="igl-input"
+                                                   ng-model="node.label" required>
+                                            </span>
+                                            <span ng-bind="node.description"></span>
+                                         </span>
+                                        <span ng-show="node.type !== 'datatype'">
+                                            <img style="width:15px; height:15px"
                                                  ng-src="images/{{node.type}}.png">
                                             <span ng-show="node.type !== 'datatype'">{{node.position}}:{{node.name}}</span>
-                                            <span ng-show="node.type === 'datatype'">{{node.label}}:{{node.description}}</span>
-                                        </td>
-                                        <td style="width:75px">
-                                            <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0"
-                                                  ng-bind="node.usage"></span>
+                                        </span>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <div ng-show="node.type !== 'datatype'">
+                                            <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
+                                                <select class="form-control input-sm"
+                                                        name="usage"
+                                                        required
+                                                        ng-model="node.usage"
+                                                        ng-options="usage for usage in usages">
+                                                </select>
+                                            </span>
                                             <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}, {{node.predicates[0].falseUsage}})</span>
-                                        </td>
-                                        <td>
-                                            <span ng-show="node.min != undefined && node.max != undefined">[{{node.min}}, {{node.max}}]</span>
-                                        </td>
-                                        <td>
-                                            <span ng-bind="node.datatype.label"></span>
-                                        </td>
-                                        <td>
-                                            <span ng-show="node.minLength != undefined && node.maxLength != undefined">[{{node.minLength}}, {{node.maxLength}}]</span>
-                                        </td>
-                                        <td>
+                                        </div>
+                                        <div ng-show="node.type === 'datatype'">-</div>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <div ng-show="node.type !== 'datatype'" ng-controller="DatatypeRowCtrl">
+                                            <span ng-form name="{{formName}}">
+                                                <input style="width:45%" class="igl-input"
+                                                       name="minLength"
+                                                       ng-pattern="/^\d+$/"
+                                                       ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
+                                                       ng-model="node.minLength" required ng-minlength="1">
+                                                <input style="width:45%" class="igl-input" type="text"
+                                                       name="maxLength"
+                                                       ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
+                                                       ng-pattern="/^\d+$|^\*?$/"
+                                                       ng-model="node.maxLength" required>
+                                            </span>
+                                        </div>
+                                        <div ng-show="node.type === 'datatype'">-</div>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <div ng-show="node.type !== 'datatype'" ng-controller="DatatypeRowCtrl">
+                                            <span  ng-form name="{{formName}}">
+                                            <input style="width:50%" class="igl-input" type="text"
+                                                   name="confLength"
+                                                   ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
+                                                   ng-pattern="/^\d+$/"
+                                                   ng-model="node.confLength">
+                                            </span>
+                                        </div>
+                                        <div ng-show="node.type === 'datatype'">-</div>
+                                    </td>
+
+                                    <td class="col-md-1">
+                                        <div ng-show="node.type !== 'datatype'">
+                                            <select class="form-control input-sm"
+                                                    name="datatype"
+                                                    required
+                                                    ng-model="node.datatype"
+                                                    ng-options="dt as dt.label for dt in datatypes | filter:{name: '{{node.datatype.name}}'}">
+                                            </select>
+                                            <!--<a class="point"-->
+                                               <!--ng-click="goToDatatype(node.datatype)"-->
+                                               <!--ng-bind="node.datatype.label"></a>-->
+                                        </div>
+                                        <div ng-show="node.type === 'datatype'">-</div>
+                                    </td>
+
+                                    <td class="col-md-1">
+                                        <div ng-show="node.type !== 'datatype'">
                                             <span ng-show="node.table != undefined"><a class="point"
                                                                                        ng-click="goToTable(node.table)"
                                                                                        ng-bind="node.table.mappingId"></a></span>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </script>
-                            </div>
+                                        </div>
+                                        <div ng-show="node.type === 'datatype'">-</div>
+                                    </td>
+                                    <td class="col-md-1"></td>
+                                    <td class="col-md-1"></td>
+                                </tr>
+                            </script>
+
                         </div>
+                    </div>
 
-                    </form>
+                </form>
 
 
-                </div>
             </div>
         </div>
     </div>
+</div>
 </div>
