@@ -83,8 +83,33 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
     $rootScope.datatypes = [];// list of datatypes of the selected messages
     $rootScope.tables = [];// list of tables of the selected messages
     $rootScope.usages = ['R', 'RE', 'O', 'C', "CE","X", "B", "W"];
+    $rootScope.segment = null;
+    $rootScope.profileTabs = new Array();
+    $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
+    $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
+    $rootScope.notifyDtTreeUpdate = '0'; // TODO: FIXME
+    $rootScope.notifySegTreeUpdate = '0'; // TODO: FIXME
+    $rootScope.changes = {
+        //"segment":{}, ex.{1:[{usage:1},{min:1}],2:[]}
+        //"group":{},ex.{1:[{usage:1},{min:1}],2:[]}
+        //"field":{},ex.{1:[{usage:1},{min:1}],2:[]}
+        //"component":{},ex.{1:[{usage:1},{min:1}],2:[]}
+        //"datatype":{}ex.{1:[{usage:1},{min:1}],2:[]}
+    }; // key:type, value:array of object
+
+    $rootScope.selectProfileTab = function (value) {
+        $rootScope.profileTabs[0] = false;
+        $rootScope.profileTabs[1] = false;
+        $rootScope.profileTabs[2] = false;
+        $rootScope.profileTabs[3] = false;
+        $rootScope.profileTabs[4] = false;
+        $rootScope.profileTabs[5] = false;
+        $rootScope.profileTabs[value] = true;
+    };
 
     $rootScope.initMaps = function () {
+        $rootScope.segment = null;
+        $rootScope.datatype = null;
         $rootScope.messagesMap = {};
         $rootScope.segmentsMap = {};
         $rootScope.datatypesMap = {};
@@ -112,6 +137,30 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
         }
     };
 
+    $rootScope.clearChanges = function (path) {
+        $rootScope.changes = {};
+    };
+
+    $rootScope.recordChange = function(object,changeType) {
+        var type = object.type;
+
+        if($rootScope.changes[type] === undefined){
+            $rootScope.changes[type] = {};
+        }
+
+        if($rootScope.changes[type][object.id] === undefined){
+            $rootScope.changes[type][object.id] = {};
+        }
+
+        if(changeType === "datatype"){
+            $rootScope.changes[type][object.id][changeType] = object[changeType].id;
+        }else{
+            $rootScope.changes[type][object.id][changeType] = object[changeType];
+        }
+
+        console.log("Change is " + $rootScope.changes[type][object.id][changeType]);
+    };
+
     Restangular.setBaseUrl('/api/');
 //    Restangular.setResponseExtractor(function(response, operation) {
 //        return response.data;
@@ -133,10 +182,16 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
         });
     };
 
-    $rootScope.isFlavor = function(label){ //FIXME. weak check
+
+    $rootScope.apply = function(label){ //FIXME. weak check
         return label != undefined && label != null && (label.indexOf('_') !== -1 || label.indexOf('-') !== -1);
     };
 
+
+
+    $rootScope.isFlavor = function(label){ //FIXME. weak check
+        return label != undefined && label != null && (label.indexOf('_') !== -1 || label.indexOf('-') !== -1);
+    };
 
     $rootScope.processElement = function (element, parent) {
         if (element.type === "group" && element.children) {
@@ -154,6 +209,7 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
             }
         } else if (element.type === "field" || element.type === "component") {
             element["datatype"] = $rootScope.datatypesMap[element["datatypeLabel"]];
+
             element["path"] = parent.path+"."+element.position;
             if (angular.isDefined(element.table)) {
                 element["table"] = $rootScope.tablesMap[element.table.id];
@@ -229,6 +285,14 @@ app.controller('ErrorDetailsCtrl', function ($scope, $modalInstance, error) {
 //
 //    };
 //});
+
+app.filter('flavors',function(){
+    return function(inputArray,name){
+        return inputArray.filter(function(item){
+            return item.name === name || angular.equals(item.name,name);
+        });
+    };
+});
 
 
 //

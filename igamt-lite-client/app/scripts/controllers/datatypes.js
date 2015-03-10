@@ -11,39 +11,39 @@ angular.module('igl')
         $scope.saved = false;
         $scope.message = false;
         $scope.params = null;
-        $scope.treeRoot = null;
-
         $scope.tmpDatatypes =[].concat($rootScope.datatypes);
         $scope.datatypeCopy = null;
         $scope.init = function () {
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.datatype ? parent.datatype.children: parent.children : $scope.treeRoot != null ? $scope.treeRoot:[];
+                    return parent ? parent.datatype ? parent.datatype.children: parent.children : $rootScope.datatype != null ? [$rootScope.datatype]:[];
                 },
                 getTemplate: function (node) {
                     return 'DatatypeEditTree.html';
                 }
+                ,
+                options: {
+                    initialState: 'expanded'
+                }
             });
+
+
+            $scope.$watch(function () {
+                return $rootScope.notifyDtTreeUpdate;
+            }, function (changeId) {
+                if(changeId != 0) {
+                    $scope.params.refresh();
+                }
+            });
+
+
             $scope.loading = false;
         };
-//
-
-//        $scope.orderByPosition = function(obj){
-//            if(obj.children){
-//                $filter('orderBy')(obj.children, 'position');
-//                angular.forEach(obj.children, function (component) {
-//                    $scope.orderByPosition(component);
-//                });
-//            }else if(obj.datatype){
-//                $scope.orderByPosition(obj.datatype);
-//            }
-//        };
 
         $scope.select = function (datatype) {
             $rootScope.datatype = datatype;
             $rootScope.datatype["type"] = "datatype";
-            $scope.treeRoot = [$rootScope.datatype];
             $scope.datatypeCopy = {};
             $scope.datatypeCopy = angular.copy(datatype,$scope.datatypeCopy);
             if ($scope.params)
@@ -52,22 +52,20 @@ angular.module('igl')
         };
 
         $scope.clone = function () {
-             $scope.loadingSelection = true;
-            //TODO: call server
-            $scope.datatypeCopy = datatype;
-            angular.copy(datatype);
-            $scope.treeRoot = {children:[$rootScope.datatype ]};
-            if ($scope.params)
-                $scope.params.refresh();
-            $scope.loadingSelection = false;
+//            $scope.loadingSelection = true;
+//            //TODO: call server
+//            $scope.datatypeCopy = datatype;
+//            angular.copy(datatype);
+//            if ($scope.params)
+//                $scope.params.refresh();
+//            $scope.loadingSelection = false;
         };
 
         $scope.reset = function () {
             $scope.loadingSelection = true;
             $scope.message = "Datatype " + $scope.datatypeCopy.label + " reset successfully";
             angular.extend($rootScope.datatype, $scope.datatypeCopy);
-            $scope.treeRoot = null;
-            $scope.loadingSelection = false;
+             $scope.loadingSelection = false;
         };
 
         $scope.delete = function () {
@@ -78,8 +76,7 @@ angular.module('igl')
             $scope.message = "Datatype " + $rootScope.datatype.label + " deleted successfully";
             $rootScope.datatype = null;
             $scope.datatypeCopy = null;
-            $scope.treeRoot = null;
-        };
+         };
 
         $scope.hasChildren = function(node){
             return node && node != null && node.datatype && node.datatype.children != null && node.datatype.children.length >0;
@@ -94,12 +91,15 @@ angular.module('igl')
         };
 
 
-        $scope.flavors = function(name){
+        $scope.onDatatypeChange = function(node){
+            $scope.refreshTree();
+            node.datatypeLabel = null;
+            $rootScope.recordChange(node,'datatype');
+         };
 
-
-
-
-
+        $scope.refreshTree = function(){
+            if ($scope.params)
+                $scope.params.refresh();
         };
 
         $scope.goToTable = function(table){

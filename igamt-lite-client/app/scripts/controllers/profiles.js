@@ -27,7 +27,6 @@ angular.module('igl')
             $http.get('/api/profiles?userId=' + $scope.user.id).then(function (response) {
                 $scope.custom = response.data;
             });
-
         };
 
         $scope.clone = function (profile) {
@@ -87,15 +86,12 @@ angular.module('igl')
                 $scope.error = error;
             });
         };
-
-    })
-;
+    });
 
 
 angular.module('igl')
     .controller('EditProfileCtrl', function ($scope, $rootScope, Restangular) {
 
-        $scope.changes = [];
         $scope.error = null;
 
         /**
@@ -104,9 +100,10 @@ angular.module('igl')
         $scope.init = function () {
         };
 
-        $scope.cancel = function () {
+        $scope.reset = function () {
             $rootScope.context.page = $rootScope.pages[0];
-            $scope.changes = [];
+            //TODO: FIX ME
+            $rootScope.changes = {};
             $rootScope.profile = null;
         };
 
@@ -121,7 +118,8 @@ angular.module('igl')
             });
         };
 
-        $scope.applyChanges = function () {
+        $scope.save = function () {
+
 
         };
     });

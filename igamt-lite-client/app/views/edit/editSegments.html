@@ -1,0 +1,256 @@
+<div ng-controller="SegmentListCtrl" ng-init="init()">
+
+
+<div ng-show="loading" style="text-align:center">
+    <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
+</div>
+
+<div ng-show="!loading">
+<div class="row">
+    <div class="page-header">
+        <h3>Segments List</h3>
+    </div>
+    <div>
+        <table st-table="tmpSegments" st-safe-src="segments"
+               class="table table-striped table-bordered">
+            <thead>
+            <tr class="tbl-header">
+                <th></th>
+                <th st-sort="label">Label</th>
+                <th st-sort="name">Name</th>
+                <th st-sort="description">Description</th>
+                <!--<th></th>-->
+            </tr>
+            <tr>
+                <th colspan="4">
+                    <input st-search placeholder="Search Segment" class="input-sm form-control" type="search"/>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr st-select-row="row" st-select-mode="single" ng-repeat="row in tmpSegments">
+                <td cs-select="row"><input ng-click="select(row)"
+                                           ng-checked="segment != null && row.id == segment.id"
+                                           type="radio"></td>
+                <td ng-bind="row.label"></td>
+                <td ng-bind-html="row.name"></td>
+                <td ng-bind-html="row.description"></td>
+
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4" class="text-center">
+                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div ng-show="loadingSelection" style="text-align:center">
+    <i class="fa fa-spinner fa-spin"></i>
+</div>
+<div ng-show="!loadingSelection">
+    <div ng-show="segment !== null">
+        <div class="row">
+            <div>
+                <span>Selected Segment : {{segment.label}}</span>
+                        <span class="pull-right">
+
+                        <!--<button title="Clone" type="button" class="btn btn-xs btn-info"-->
+                                <!--ng-click="clone()">-->
+                            <!--<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>-->
+                        <!--</button>-->
+
+                        <!--<button title="Reset" type="button" class="btn btn-xs btn-warning"-->
+                                <!--ng-click="reset()" ng-disabled="true">-->
+                            <!--<span><i class="fa fa-times fa-fw">&nbsp; </i>Reset</span>-->
+                        <!--</button>-->
+
+                        <!--<button title="Delete" type="button"-->
+                                <!--class="btn btn-xs btn-danger"-->
+                                <!--ng-click="delete()">-->
+                            <!--<span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>-->
+                        <!--</button>-->
+                        </span>
+                <hr/>
+                <!--<button title="Save" type="button" class="btn btn-xs btn-success"-->
+                <!--ng-click="save()">-->
+                <!--<span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Save</span>-->
+                <!--</button>-->
+
+                <pre>
+                        {{changes | json}}
+                </pre>
+
+            </div>
+
+            <form style="margin-top: 20px" class="form-horizontal" name="editSegmentForm">
+                <!--<div>-->
+                <!--<label for="segmentLabel">Name:</label>-->
+                <!--<input type="text" ng-model="segment.label" ng-disabled="isFlavor(segment.label)"-->
+                <!--ng-focus="isFlavor(segment.label)" class="form-control" id="segmentLabel">-->
+                <!--</div>-->
+                <div style="margin-top: 20px">
+                    <div class="table-responsive">
+                        <table tt-table tt-params="params" class="table table-striped table-bordered">
+                            <thead>
+                            <tr class="tbl-header row">
+                                <th class="col-md-4">Name</th>
+                                <th class="col-md-1">Usage</th>
+                                <th class="col-md-1">Cardinality</th>
+                                <th class="col-md-1">Length</th>
+                                <th class="col-md-1">ConfLength</th>
+                                <th class="col-md-1">Datatype</th>
+                                <th class="col-md-1">ValueSet</th>
+                                <th class="col-md-1">Predicate</th>
+                                <th class="col-md-1">Conformance Statement</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <script type="text/ng-template" id="SegmentEditTree.html">
+                            <tr tt-node is-branch="hasChildren(node)" class="row">
+                                <td class="col-md-4">
+                                        <span ng-show="node.type === 'segment'" ng-controller="SegmentRowCtrl">
+                                            <span ng-form name="{{formName}}">
+                                            <input style="width:60%" type="text"
+                                                   name="label"
+                                                   ng-change="recordChange(node,'label')"
+                                                   ng-class="{ 'has-error' : {{formName}}.label.$invalid}"
+                                                   class="igl-input"
+                                                   ng-model="node.label" required>
+                                            </span>
+                                            <span ng-bind="node.description"></span>
+                                         </span>
+                                        <span ng-show="node.type !== 'segment'">
+                                            <img style="width:15px; height:15px"
+                                                 ng-src="images/{{node.type}}.png">
+                                            <span ng-show="node.type !== 'segment'">{{node.position}}:{{node.name}}</span>
+                                        </span>
+                                </td>
+                                <td class="col-md-1">
+                                    <div ng-show="node.type !== 'segment'">
+                                            <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
+                                                <select class="form-control input-sm"
+                                                        name="usage"
+                                                        ng-change="recordChange(node,'usage')"
+                                                        required
+                                                        ng-model="node.usage"
+                                                        ng-options="usage for usage in usages">
+                                                </select>
+                                            </span>
+                                        <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}, {{node.predicates[0].falseUsage}})</span>
+
+                                    </div>
+                                    <div ng-show="node.type === 'segment'">-</div>
+                                    <!--<div ng-show="node.type === 'component' || node.type === 'subcomponent'">-->
+                                         <!--<span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0" ng-bind="node.usage">-->
+                                         <!--</span>-->
+                                        <!--<span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}, {{node.predicates[0].falseUsage}})</span>-->
+                                    <!--</div>-->
+                                </td>
+                                <td class="col-md-1">
+                                    <div ng-show="node.type === 'field'" ng-controller="SegmentRowCtrl">
+                                            <span ng-form name="{{formName}}">
+                                                <input style="width:45%" class="igl-input"
+                                                       name="min"
+                                                       ng-change="recordChange(node,'min')"
+                                                       ng-pattern="/^\d+$/"
+                                                       ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
+                                                       ng-model="node.min" required ng-minlength="1">
+                                                <input style="width:45%" class="igl-input" type="text"
+                                                       name="max"
+                                                       ng-change="recordChange(node,'max')"
+                                                       ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
+                                                       ng-pattern="/^\d+$|^\*?$/"
+                                                       ng-model="node.max" required>
+                                            </span>
+                                    </div>
+                                    <div ng-show="node.type !== 'field'">-</div>
+                                    <!--<div ng-show="node.type === 'component' || node.type === 'subcomponent'">-->
+                                           <!--[{{node.min}},{{node.max}}]-->
+                                    <!--</div>-->
+                                </td>
+                                <td class="col-md-1">
+                                    <div ng-show="node.type !== 'segment'" ng-controller="SegmentRowCtrl">
+                                            <span ng-form name="{{formName}}">
+                                                <input style="width:45%" class="igl-input"
+                                                       name="minLength"
+                                                       ng-change="recordChange(node,'minLength')"
+                                                       ng-pattern="/^\d+$/"
+                                                       ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
+                                                       ng-model="node.minLength" required ng-minlength="1">
+                                                <input style="width:45%" class="igl-input" type="text"
+                                                       name="maxLength"
+                                                       ng-change="recordChange(node,'maxLength')"
+                                                       ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
+                                                       ng-pattern="/^\d+$|^\*?$/"
+                                                       ng-model="node.maxLength" required>
+                                            </span>
+                                    </div>
+                                    <div ng-show="node.type === 'segment'">-</div>
+                                    <!--<div ng-show="node.type === 'component' || node.type === 'subcomponent'">-->
+                                        <!--[{{node.minLength}},{{node.maxLength}}]-->
+                                    <!--</div>-->
+                                </td>
+                                <td class="col-md-1">
+                                    <div ng-show="node.type !== 'segment'" ng-controller="SegmentRowCtrl">
+                                            <span ng-form name="{{formName}}">
+                                            <input style="width:50%" class="igl-input" type="text"
+                                                   name="confLength"
+                                                   ng-change="recordChange(node,'confLength')"
+                                                   ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
+                                                   ng-pattern="/^\d+$/"
+                                                   ng-model="node.confLength">
+                                            </span>
+                                    </div>
+                                    <div ng-show="node.type === 'segment'">-</div>
+                                    <!--<div ng-show="node.type === 'component' || node.type === 'subcomponent'" ng-bind="node.confLength">-->
+                                    <!--</div>-->
+                                </td>
+
+                                <td class="col-md-1">
+                                    <div ng-show="node.type !== 'segment'">
+                                        <select class="form-control input-sm"
+                                                name="segment"
+                                                ng-change="onDatatypeChange(node)"
+                                                required
+                                                ng-model="node.datatype"
+                                                ng-options="dt as dt.label for dt in datatypes | flavors:node.datatype.name">
+                                        </select>
+                                        <!--<a class="point"-->
+                                        <!--ng-click="goToSegment(node.segment)"-->
+                                        <!--ng-bind="node.segment.label"></a>-->
+                                    </div>
+                                    <div ng-show="node.type === 'segment'">-</div>
+                                    <!--<div ng-show="node.type === 'component' || node.type === 'subcomponent'" ng-bind="node.datatype.label">-->
+                                    <!--</div>-->
+                                </td>
+
+                                <td class="col-md-1">
+                                    <div ng-show="node.type !== 'segment'">
+                                            <span ng-show="node.table != undefined">
+                                                <a class="point" ng-click="goToTable(node.table)" ng-bind="node.table.mappingId"></a>
+                                            </span>
+                                    </div>
+                                    <div ng-show="node.type === 'segment'">-</div>
+                                </td>
+                                <td class="col-md-1"></td>
+                                <td class="col-md-1"></td>
+                            </tr>
+                        </script>
+
+                    </div>
+                </div>
+
+            </form>
+
+
+        </div>
+    </div>
+</div>
+</div>
+</div>

@@ -9,18 +9,28 @@ angular.module('igl')
     .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams) {
         $scope.loading = false;
         $scope.loadingSelection = false;
-
         $scope.init = function () {
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.children : $rootScope.message != null ? $rootScope.message.children: [];
+                    return parent ? parent.children: $scope.message != null ? [$rootScope.message]:[];
                 },
                 getTemplate: function (node) {
                     return 'MessageEditTree.html';
+                },
+                options: {
+                    initialState: 'expanded'
                 }
             });
 
+
+            $scope.$watch(function () {
+                return $rootScope.notifyMsgTreeUpdate;
+            }, function (messageId) {
+                if(messageId != 0) {
+                    $scope.params.refresh();
+                }
+            });
 
             $scope.loading = false;
         };
@@ -36,14 +46,26 @@ angular.module('igl')
                     $rootScope.processElement(segmentRefOrGroup);
                 });
             }
-            if ($scope.params)
-                $scope.params.refresh();
+            $scope.params.refresh();
             $scope.loadingSelection = false;
         };
+
+
         $scope.goToSegment = function (segmentId) {
+            $rootScope.segment = $rootScope.segmentsMap[segmentId];
+            $rootScope.notifySegTreeUpdate = new Date().getTime();
+            $rootScope.selectProfileTab(2);
         };
+
+        $scope.hasChildren = function(node){
+            return node && node != null && node.type !==  'segment' && node.children && node.children.length >0;
+        };
+
 
     });
 
 
-
+angular.module('igl')
+    .controller('MessageRowCtrl', function ($scope,$filter) {
+        $scope.formName = "form_"+ new Date().getTime();
+    });

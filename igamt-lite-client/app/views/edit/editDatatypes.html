@@ -16,15 +16,24 @@
                 <thead>
                 <tr class="tbl-header">
                     <th></th>
-                    <th>Label</th>
-                    <th>Name</th>
-                    <th>Description</th>
+                    <th st-sort="label">Label</th>
+                    <th st-sort="name">Name</th>
+                    <th st-sort="description">Description</th>
                     <!--<th></th>-->
                 </tr>
                 <tr>
-                    <th colspan="4">
-                        <input st-search placeholder="Search Datatype" class="input-sm form-control" type="search"/>
+                    <!--<th colspan="4">-->
+                        <!--<input st-search placeholder="Search Datatype" class="input-sm form-control" type="search"/>-->
+                    <th></th>
+                    <th colspan="1">
+                        <input st-search="label" placeholder="Search" class="input-sm form-control" type="search"/>
                     </th>
+                    <th colspan="1">
+                        <input st-search="name" placeholder="Search" class="input-sm form-control" type="search"/>
+                    </th>
+                    <th></th>
+                    <!---->
+                    <!--</th>-->
                 </tr>
                 </thead>
                 <tbody>
@@ -78,10 +87,10 @@
                             <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
                         </button>
 
-                        <button title="Reset" type="button" class="btn btn-xs btn-warning"
-                                ng-click="reset()" ng-disabled="true">
-                            <span><i class="fa fa-times fa-fw">&nbsp; </i>Reset</span>
-                        </button>
+                        <!--<button title="Reset" type="button" class="btn btn-xs btn-warning"-->
+                                <!--ng-click="reset()" ng-disabled="true">-->
+                            <!--<span><i class="fa fa-times fa-fw">&nbsp; </i>Reset</span>-->
+                        <!--</button>-->
 
                         <button title="Delete" type="button"
                                 class="btn btn-xs btn-danger"
@@ -94,6 +103,11 @@
                     <!--ng-click="save()">-->
                     <!--<span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Save</span>-->
                     <!--</button>-->
+
+                    <pre>
+                        {{changes | json}}
+                </pre>
+
                 </div>
 
                 <form style="margin-top: 20px" class="form-horizontal" name="editDatatypeForm">
@@ -128,6 +142,7 @@
                                                    name="label"
                                                    ng-class="{ 'has-error' : {{formName}}.label.$invalid}"
                                                    class="igl-input"
+                                                   ng-change="recordChange(node,'label')"
                                                    ng-model="node.label" required>
                                             </span>
                                             <span ng-bind="node.description"></span>
@@ -143,6 +158,7 @@
                                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 <select class="form-control input-sm"
                                                         name="usage"
+                                                        ng-change="recordChange(node,'usage')"
                                                         required
                                                         ng-model="node.usage"
                                                         ng-options="usage for usage in usages">
@@ -157,11 +173,13 @@
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="minLength"
+                                                       ng-change="recordChange(node,'minLength')"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
                                                        ng-model="node.minLength" required ng-minlength="1">
                                                 <input style="width:45%" class="igl-input" type="text"
                                                        name="maxLength"
+                                                       ng-change="recordChange(node,'maxLength')"
                                                        ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.maxLength" required>
@@ -174,6 +192,7 @@
                                             <span  ng-form name="{{formName}}">
                                             <input style="width:50%" class="igl-input" type="text"
                                                    name="confLength"
+                                                   ng-change="recordChange(node,'confLength')"
                                                    ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                                    ng-pattern="/^\d+$/"
                                                    ng-model="node.confLength">
@@ -186,9 +205,10 @@
                                         <div ng-show="node.type !== 'datatype'">
                                             <select class="form-control input-sm"
                                                     name="datatype"
+                                                    ng-change="onDatatypeChange(node)"
                                                     required
                                                     ng-model="node.datatype"
-                                                    ng-options="dt as dt.label for dt in datatypes | filter:{name: '{{node.datatype.name}}'}">
+                                                    ng-options="dt as dt.label for dt in datatypes | flavors:node.datatype.name">
                                             </select>
                                             <!--<a class="point"-->
                                                <!--ng-click="goToDatatype(node.datatype)"-->

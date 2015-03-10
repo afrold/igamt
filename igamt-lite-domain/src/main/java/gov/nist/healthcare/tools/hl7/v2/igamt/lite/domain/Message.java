@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Message implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)

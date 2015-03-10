@@ -4,17 +4,17 @@
         <h1>Edit Profile: {{profile.metaData.name}}</h1>
         </div>
         <div class="pull-right">
-            <button title="Cancel Edit" type="button" class="btn btn-primary btn-xs"
-                    ng-click="applyChanges()">
-                <span><i class="fa fa-check-square"></i>&nbsp; Apply</span>
-            </button>
-            <button title="Delete" type="button" class="btn btn-danger btn-xs"
+            <!--<button title="Cancel Edit" type="button" class="btn btn-warning btn-sm"-->
+                    <!--ng-click="reset()">-->
+                <!--<span><i class="fa fa-times"></i>&nbsp; Reset</span>-->
+            <!--</button>-->
+            <button title="Delete" type="button" class="btn btn-danger btn-sm"
                     ng-click="delete()">
                 <span> <i class="fa fa-trash"></i>&nbsp; Delete</span>
             </button>
-            <button title="Cancel Edit" type="button" class="btn btn-warning btn-xs"
-                    ng-click="cancel()">
-                <span><i class="fa fa-times"></i>&nbsp; Cancel</span>
+            <button title="Apply Changes" ng-disabled="changes.length === 0" type="button" class="btn btn-success btn-sm"
+                    ng-click="save()">
+                <span><i class="fa fa-check-square"></i>&nbsp; Apply</span>
             </button>
         </div>
 
@@ -23,7 +23,7 @@
 
     <div>
         <tabset>
-            <tab>
+            <tab select="selectProfileTab(0)" active="profileTabs[0]">
                 <tab-heading>
                     <!--<span class="badge">1</span>-->
                     <i class="fa fa-cog fa-fw"></i>
@@ -32,7 +32,7 @@
                 <div ng-include="'views/edit/editMetaData.html'"></div>
             </tab>
 
-            <tab>
+            <tab select="selectProfileTab(1)" active="profileTabs[1]">
                 <tab-heading>
                     <!--<span class="badge">M</span>-->
                     <i class="fa fa-book fa-fw"></i>
@@ -41,7 +41,7 @@
                 <div ng-include="'views/edit/editMessages.html'"></div>
             </tab>
 
-            <tab>
+            <tab select="selectProfileTab(2)" active="profileTabs[2]">
                 <tab-heading>
                     <!--<span class="badge">S</span>-->
                     <i class="fa fa-book fa-fw"></i>
@@ -50,7 +50,7 @@
                 <div ng-include="'views/edit/editSegments.html'"></div>
             </tab>
 
-            <tab>
+            <tab select="selectProfileTab(3)" active="profileTabs[3]">
                 <tab-heading>
                     <!--<span class="badge">D</span>-->
                     <i class="fa fa-book fa-fw"></i>
@@ -59,7 +59,7 @@
                 <div ng-include="'views/edit/editDatatypes.html'"></div>
             </tab>
 
-            <tab>
+            <tab select="selectProfileTab(4)" active="profileTabs[4]">
                 <tab-heading>
                     <!--<span class="badge">V</span>-->
                     <i class="fa fa-book fa-fw"></i>

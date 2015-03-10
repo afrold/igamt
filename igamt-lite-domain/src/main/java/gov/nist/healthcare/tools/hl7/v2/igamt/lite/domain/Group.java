@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "GROUPE")
 // GROUP is a keyword
@@ -24,6 +26,7 @@ public class Group extends SegmentRefOrGroup {
 		type = Constant.GROUP;
 	}
 
+	@JsonProperty("children")
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	// @org.hibernate.annotations.OrderBy(clause = "position asc")
 	private Set<SegmentRefOrGroup> segmentsOrGroups = new HashSet<SegmentRefOrGroup>();
