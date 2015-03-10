@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,7 +26,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @javax.persistence.Table(name = "IGTABLE")
-public class Table implements Serializable {
+public class Table extends DataModel implements Serializable {
 
 	/**
 	 * 
@@ -52,12 +55,18 @@ public class Table implements Serializable {
 	private String codesys;
 	@Column(name = "OID")
 	private String oid;
-	@Column(name = "TYPE")
-	private String type;
+	@Column(name = "TABLETYPE")
+	private String tableType;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
 	private final Set<Code> codes = new HashSet<Code>();
+	
+	
+	public Table() {
+		super();
+		this.type = Constant.TABLE;
+	}
 
 	public Long getId() {
 		return id;
@@ -115,12 +124,12 @@ public class Table implements Serializable {
 		this.oid = oid;
 	}
 
-	public String getType() {
-		return type;
+	public String getTableType() {
+		return tableType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setTableType(String tableType) {
+		this.tableType = tableType;
 	}
 
 	public Set<Code> getCodes() {
@@ -136,7 +145,7 @@ public class Table implements Serializable {
 		return "Table [id=" + id + ", mappingAlternateId=" + mappingAlternateId
 				+ ", mappingId=" + mappingId + ", name=" + name + ", version="
 				+ version + ", codesys=" + codesys + ", oid=" + oid + ", type="
-				+ type + ", codes=" + codes + "]";
+				+ tableType + ", codes=" + codes + "]";
 	}
 
 }

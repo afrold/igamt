@@ -24,5 +24,8 @@ public class Constant {
 	public final static String GROUP = "group";
 	public final static String MESSAGE = "message";
 	public final static String DATATYPE = "datatype";
+	public final static String TABLELIBRARY = "tablelibrary";
+	public final static String TABLE = "table";
+	public final static String CODE = "code";
 
 }

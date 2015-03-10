@@ -1,10 +1,157 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<div ng-controller="TableListCtrl" ng-init="init()">
 
-</body>
-</html>
+
+<div ng-show="loading" style="text-align:center">
+    <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
+</div>
+
+
+<div ng-show="!loading">
+    <div class="row">
+        <div class="page-header">
+            <h3>Tables List</h3>
+        </div>
+        <div>
+            <table st-table="tmpTables" st-safe-src="tables"
+                   class="table table-striped table-bordered">
+                <thead>
+                	<tr class="tbl-header">
+                    <th></th>
+                    <th st-sort="mappingId">ID</th>
+                    <th st-sort="name">Name</th>
+                    <th st-sort="version">Version</th>
+                    <th st-sort="codesys">CodeSys</th>
+                    <th st-sort="oid">OID</th>
+                    <th st-sort="type">Type</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th colspan="1">
+                        <input st-search="mappingId" placeholder="Search" class="input-sm form-control" type="search"/>
+                    </th>
+                    <th colspan="1">
+                        <input st-search="name" placeholder="Search" class="input-sm form-control" type="search"/>
+                    </th>
+                    <th/><th/><th/><th/>
+                </tr>
+                
+                </thead>
+                
+                <tbody>
+                <tr st-select-row="row" st-select-mode="single" ng-repeat="row in tmpTables">
+                    <td cs-select="row"><input ng-click="select(row)"
+                                               ng-checked="table != null && row.id == table.id"
+                                               type="radio"></td>
+                    <td ng-bind-html="row.mappingId"></td>
+                    <td ng-bind="row.name"></td>
+                    <td ng-bind="row.version"></td>
+                    <td ng-bind="row.codesys"></td>
+                    <td ng-bind="row.oid"></td>
+                    <td ng-bind="row.tableType"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="4" class="text-center">
+                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    
+    <div ng-show="loadingSelection" style="text-align:center">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+    
+    <div ng-show="!loadingSelection">
+        <div ng-show="table != null">
+            <div class="row">
+                <div>
+                    <span>Selected Table : {{table.mappingId}}</span>
+                        <span class="pull-right">
+
+                        <button title="Clone" type="button" class="btn btn-xs btn-info" ng-click="clone()">
+                            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
+                        </button>
+
+                        <button title="Delete" type="button" class="btn btn-xs btn-danger" ng-click="delete()">
+                            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+                        </button>
+                        </span>
+                    <hr/>
+                    <pre>
+                        {{changes | json}}
+                	</pre>
+                </div>
+
+                <form style="margin-top: 20px" class="form-horizontal" name="editTableForm">
+                    <div style="margin-top: 20px">
+                        <div class="table-responsive">
+                            <table tt-table tt-params="params" class="table table-striped table-bordered">
+                                <thead>
+                                <tr class="tbl-header row">
+                                    <th class="col-md-2">Code</th>
+                                    <th class="col-md-6">Label</th>
+                                    <th class="col-md-2">Codesys</th>
+                                    <th class="col-md-2">Source</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <script type="text/ng-template" id="TableEditTree.html">
+                                <tr tt-node is-branch="hasChildren(node)" class="row">
+                                    <td class="col-md-3">
+										<span ng-show="node.type === 'table'">
+                                            <input style="width:50%" class="igl-input" type="text"
+                                                   name="code"
+                                                   ng-change="recordChange(node,'mappingId')"
+                                                   ng-model="node.mappingId">
+
+										</span>
+										<span ng-show="node.type !== 'table'">
+                                            <input style="width:50%" class="igl-input" type="text"
+                                                   name="code"
+                                                   ng-change="recordChange(node,'code')"
+                                                   ng-model="node.code">
+										</span>
+                                    </td>
+									<td class="col-md-1">
+										<span ng-show="node.type === 'table'">-</span>
+										<span ng-show="node.type !== 'table'">
+                                            <input style="width:100%" class="igl-input" type="text"
+                                                   name="code"
+                                                   ng-change="recordChange(node,'label')"
+                                                   ng-model="node.label">
+										</span>
+                                    </td>
+									<td class="col-md-1">
+										<span ng-show="node.type === 'table'">-</span>
+										<span ng-show="node.type !== 'table'">
+                                            <input style="width:100%" class="igl-input" type="text"
+                                                   name="code"
+                                                   ng-change="recordChange(node,'codesys')"
+                                                   ng-model="node.codesys">
+										</span>
+                                    </td>
+									<td class="col-md-1">
+										<span ng-show="node.type === 'table'">-</span>
+										<span ng-show="node.type !== 'table'">
+                                            <input style="width:100%" class="igl-input" type="text"
+                                                   name="code"
+                                                   ng-change="recordChange(node,'source')"
+                                                   ng-model="node.source">
+										</span>
+                                    </td>
+                                </tr>
+                            </script>
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+ </div>
