@@ -38,7 +38,7 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
     $httpBackend.whenGET('/api/profiles/2').respond(function(method, url, data, headers) {
         var profile = null;
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profile.json', false);
+        request.open('GET', '../../resources/profile1.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         profile.id = 2;
