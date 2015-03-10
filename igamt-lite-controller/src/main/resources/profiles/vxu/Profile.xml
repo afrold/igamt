@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ConformanceProfile ID="625fdbd9-06d6-47c1-b63d-881ebd1214a4">
+<ConformanceProfile ID="be75b910-4cfd-4a50-9b04-0ebf77e3fcd4" Type="Constrainable" HL7Version="2.5.1" SchemaVersion="2.5"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="file:///home/malick/projects/nist/hl7-tools/v2-tools/profile/src/test/resources/Profile.xsd">
+	
+	<Encodings>
+		<Encoding>ER7</Encoding>
+		<Encoding>XML</Encoding>
+	</Encodings>
+	
+	<MetaData Name="VXU_V04" OrgName="NIST">
+	</MetaData>
+	
     <Messages>
-        <Message ID="cff0ef99-0cf1-4883-a800-2d9b5c47e4d1" Type="VXU" Event="V04" StructID="VXU_V04" Description="Unsolicited vaccination record update">
+        <Message ID="743f306b-16bb-405b-a0b5-4a577bcbf17f" Type="VXU" Event="V04" StructID="VXU_V04" Description="Unsolicited vaccination record update">
             <Segment Ref="MSH_IZ 1_5_Z22" Usage="R" Min="1" Max="1"/>
             <Segment Ref="SFT_219" Usage="O" Min="0" Max="*"/>
             <Segment Ref="PID_IZ 1_5" Usage="R" Min="1" Max="1"/>
@@ -673,7 +684,7 @@
             <Component Name="ID Number" Usage="X" Datatype="NM" MinLength="1" MaxLength="4"/>
             <Component Name="Check Digit" Usage="O" Datatype="NM" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="O" Datatype="ID" MinLength="1" MaxLength="3" Table="0061"/>
-            <Component Name="Assigning Authority" Usage="C" Datatype="5d62ecfe-7a05-4d34-b034-361171a92f2f" MinLength="1" MaxLength="227" Table="0363"/>
+            <Component Name="Assigning Authority" Usage="C" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="0363"/>
             <Component Name="Identifier Type Code" Usage="C" Datatype="ID" MinLength="2" MaxLength="5" Table="HL70203_IZ"/>
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
@@ -733,7 +744,7 @@
             <Component Name="ID Number" Usage="R" Datatype="ST" MinLength="1" MaxLength="15"/>
             <Component Name="Check Digit" Usage="O" Datatype="ST" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="C" Datatype="ID" MinLength="1" MaxLength="3" Table="HL70061_IZ"/>
-            <Component Name="Assigning Authority" Usage="R" Datatype="5d62ecfe-7a05-4d34-b034-361171a92f2f" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
+            <Component Name="Assigning Authority" Usage="R" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
             <Component Name="Identifier Type Code" Usage="R" Datatype="ID" MinLength="2" MaxLength="5" Table="HL70203_IZ"/>
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Effective Date" Usage="O" Datatype="DT" MinLength="1" MaxLength="8"/>
@@ -751,7 +762,7 @@
             <Component Name="Name Type Code" Usage="RE" Datatype="ID" MinLength="1" MaxLength="1"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -782,7 +793,7 @@
             <Component Name="Name Type Code" Usage="R" Datatype="ID" MinLength="1" MaxLength="1"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -802,7 +813,7 @@
             <Component Name="Name Type Code" Usage="RE" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -828,7 +839,7 @@
             <Component Name="County/Parish Code" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0289"/>
             <Component Name="Census Tract" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0288"/>
             <Component Name="Address Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
-            <Component Name="Address Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Address Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
         </Datatype>
@@ -907,7 +918,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -936,7 +947,7 @@
             <Component Name="Name Type Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -952,7 +963,7 @@
             <Component Name="Name Type Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -970,7 +981,7 @@
             <Component Name="County/Parish Code" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0289"/>
             <Component Name="Census Tract" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0288"/>
             <Component Name="Address Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
-            <Component Name="Address Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Address Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
         </Datatype>
@@ -978,7 +989,7 @@
             <Component Name="ID Number" Usage="R" Datatype="ST" MinLength="1" MaxLength="15"/>
             <Component Name="Check Digit" Usage="O" Datatype="ST" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="C" Datatype="ID" MinLength="1" MaxLength="3" Table="HL70061_IZ"/>
-            <Component Name="Assigning Authority" Usage="R" Datatype="b91a5480-6f87-4cb0-84d1-532ad6976748" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
+            <Component Name="Assigning Authority" Usage="R" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
             <Component Name="Identifier Type Code" Usage="R" Datatype="ID" MinLength="2" MaxLength="5" Table="HL70203_IZ"/>
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Effective Date" Usage="O" Datatype="DT" MinLength="1" MaxLength="8"/>
@@ -1039,7 +1050,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="X" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1064,7 +1075,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="X" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1089,7 +1100,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="X" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1114,7 +1125,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="X" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1159,7 +1170,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1184,7 +1195,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1202,7 +1213,7 @@
             <Component Name="Name Type Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1218,7 +1229,7 @@
             <Component Name="Name Type Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1236,7 +1247,7 @@
             <Component Name="County/Parish Code" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0289"/>
             <Component Name="Census Tract" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0288"/>
             <Component Name="Address Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
-            <Component Name="Address Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Address Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
         </Datatype>
@@ -1250,7 +1261,7 @@
             <Component Name="Name Type Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1268,7 +1279,7 @@
             <Component Name="County/Parish Code" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0289"/>
             <Component Name="Census Tract" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0288"/>
             <Component Name="Address Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
-            <Component Name="Address Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Address Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
         </Datatype>
@@ -1294,7 +1305,7 @@
             <Component Name="Name Type Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1310,7 +1321,7 @@
             <Component Name="Name Type Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1336,7 +1347,7 @@
             <Component Name="County/Parish Code" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0289"/>
             <Component Name="Census Tract" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0288"/>
             <Component Name="Address Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
-            <Component Name="Address Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Address Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
         </Datatype>
@@ -1350,7 +1361,7 @@
             <Component Name="Name Type Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1371,7 +1382,7 @@
             <Component Name="Name Type Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1389,7 +1400,7 @@
             <Component Name="County/Parish Code" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0289"/>
             <Component Name="Census Tract" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0288"/>
             <Component Name="Address Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
-            <Component Name="Address Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Address Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
         </Datatype>
@@ -1414,7 +1425,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1434,7 +1445,7 @@
             <Component Name="County/Parish Code" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0289"/>
             <Component Name="Census Tract" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0288"/>
             <Component Name="Address Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
-            <Component Name="Address Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Address Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
         </Datatype>
@@ -1442,7 +1453,7 @@
             <Component Name="ID Number" Usage="R" Datatype="ST" MinLength="1" MaxLength="15"/>
             <Component Name="Check Digit" Usage="O" Datatype="ST" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="C" Datatype="ID" MinLength="1" MaxLength="3" Table="HL70061_IZ"/>
-            <Component Name="Assigning Authority" Usage="R" Datatype="4de1799a-5779-4087-87f2-499432fcf1a1" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
+            <Component Name="Assigning Authority" Usage="R" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
             <Component Name="Identifier Type Code" Usage="R" Datatype="ID" MinLength="2" MaxLength="5" Table="HL70203_IZ"/>
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Effective Date" Usage="O" Datatype="DT" MinLength="1" MaxLength="8"/>
@@ -1464,7 +1475,7 @@
             <Component Name="Prefix (e.g., DR)" Usage="O" Datatype="ST" MinLength="1" MaxLength="20"/>
             <Component Name="Degree (e.g., MD)" Usage="X" Datatype="IS" MinLength="1" MaxLength="5" Table="0360"/>
             <Component Name="Source Table" Usage="O" Datatype="IS" MinLength="1" MaxLength="4" Table="0297"/>
-            <Component Name="Assigning Authority" Usage="C" Datatype="b5357c78-8877-4b7b-b85d-cfc9fdd5c899" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
+            <Component Name="Assigning Authority" Usage="C" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
             <Component Name="Name Type Code" Usage="RE" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Identifier Check Digit" Usage="O" Datatype="ST" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="C" Datatype="ID" MinLength="1" MaxLength="3" Table="0061"/>
@@ -1472,7 +1483,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="X" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1495,7 +1506,7 @@
             <Component Name="Name Type Code" Usage="RE" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1511,7 +1522,7 @@
             <Component Name="Name Type Code" Usage="RE" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1535,7 +1546,7 @@
             <Component Name="Name Type Code" Usage="RE" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1545,7 +1556,7 @@
             <Component Name="ID Number" Usage="R" Datatype="ST" MinLength="1" MaxLength="15"/>
             <Component Name="Check Digit" Usage="O" Datatype="ST" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="C" Datatype="ID" MinLength="1" MaxLength="3" Table="HL70061_IZ"/>
-            <Component Name="Assigning Authority" Usage="R" Datatype="4cb22882-ce13-4252-afb3-17ff5015dc6b" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
+            <Component Name="Assigning Authority" Usage="R" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
             <Component Name="Identifier Type Code" Usage="R" Datatype="ID" MinLength="2" MaxLength="5" Table="HL70203_IZ"/>
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Effective Date" Usage="O" Datatype="DT" MinLength="1" MaxLength="8"/>
@@ -1562,7 +1573,7 @@
             <Component Name="ID Number" Usage="R" Datatype="ST" MinLength="1" MaxLength="15"/>
             <Component Name="Check Digit" Usage="O" Datatype="ST" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="C" Datatype="ID" MinLength="1" MaxLength="3" Table="HL70061_IZ"/>
-            <Component Name="Assigning Authority" Usage="R" Datatype="d556501c-4ee7-4641-8495-e7f7072783e8" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
+            <Component Name="Assigning Authority" Usage="R" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
             <Component Name="Identifier Type Code" Usage="R" Datatype="ID" MinLength="2" MaxLength="5" Table="HL70203_IZ"/>
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Effective Date" Usage="O" Datatype="DT" MinLength="1" MaxLength="8"/>
@@ -1639,7 +1650,7 @@
             <Component Name="Name Type Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1679,7 +1690,7 @@
             <Component Name="Name Type Code" Usage="RE" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1709,7 +1720,7 @@
             <Component Name="Name Type Code" Usage="RE" Datatype="ID" MinLength="1" MaxLength="1" Table="0200"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1747,7 +1758,7 @@
             <Component Name="ID Number" Usage="R" Datatype="ST" MinLength="1" MaxLength="15"/>
             <Component Name="Check Digit" Usage="O" Datatype="ST" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="C" Datatype="ID" MinLength="1" MaxLength="3" Table="HL70061_IZ"/>
-            <Component Name="Assigning Authority" Usage="R" Datatype="ecef1773-528c-43aa-ad74-622f47e727ea" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
+            <Component Name="Assigning Authority" Usage="R" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
             <Component Name="Identifier Type Code" Usage="R" Datatype="ID" MinLength="2" MaxLength="5" Table="HL70203_IZ"/>
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Effective Date" Usage="O" Datatype="DT" MinLength="1" MaxLength="8"/>
@@ -1810,7 +1821,7 @@
             <Component Name="ID Number" Usage="X" Datatype="NM" MinLength="1" MaxLength="4"/>
             <Component Name="Check Digit" Usage="O" Datatype="NM" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="O" Datatype="ID" MinLength="1" MaxLength="3" Table="0061"/>
-            <Component Name="Assigning Authority" Usage="C" Datatype="5fe497a5-ac86-4897-b025-7913fbd94d16" MinLength="1" MaxLength="227" Table="0363"/>
+            <Component Name="Assigning Authority" Usage="C" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="0363"/>
             <Component Name="Identifier Type Code" Usage="C" Datatype="ID" MinLength="2" MaxLength="5" Table="HL70203_IZ"/>
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
@@ -1827,7 +1838,7 @@
             <Component Name="ID Number" Usage="X" Datatype="NM" MinLength="1" MaxLength="4"/>
             <Component Name="Check Digit" Usage="O" Datatype="NM" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="O" Datatype="ID" MinLength="1" MaxLength="3" Table="0061"/>
-            <Component Name="Assigning Authority" Usage="C" Datatype="d02fd7ec-1642-426e-8dbf-b5f5808ad30b" MinLength="1" MaxLength="227" Table="0363"/>
+            <Component Name="Assigning Authority" Usage="C" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="0363"/>
             <Component Name="Identifier Type Code" Usage="C" Datatype="ID" MinLength="2" MaxLength="5" Table="HL70203_IZ"/>
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
@@ -1871,7 +1882,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1896,7 +1907,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1925,7 +1936,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1955,7 +1966,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -1976,7 +1987,7 @@
             <Component Name="Universal ID Type" Usage="C" Datatype="ID" MinLength="1" MaxLength="6" Table="HL70301_IZ"/>
         </Datatype>
         <Datatype ID="TQ_IZ" Name="TQ" Description="Timing Quantity">
-            <Component Name="Quantity" Usage="O" Datatype="2e531939-010c-44e6-87fa-62003018b337" MinLength="1" MaxLength="267"/>
+            <Component Name="Quantity" Usage="O" Datatype="CQ_IZ" MinLength="1" MaxLength="267"/>
             <Component Name="Interval" Usage="O" Datatype="RI" MinLength="1" MaxLength="206"/>
             <Component Name="Duration" Usage="O" Datatype="ST" MinLength="1" MaxLength="6"/>
             <Component Name="Start Date/Time" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -2023,7 +2034,7 @@
             <Component Name="Prefix (e.g., DR)" Usage="O" Datatype="ST" MinLength="1" MaxLength="20"/>
             <Component Name="Degree (e.g., MD)" Usage="X" Datatype="IS" MinLength="1" MaxLength="5" Table="0360"/>
             <Component Name="Source Table" Usage="O" Datatype="IS" MinLength="1" MaxLength="4" Table="0297"/>
-            <Component Name="Assigning Authority" Usage="C" Datatype="5d62ecfe-7a05-4d34-b034-361171a92f2f" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
+            <Component Name="Assigning Authority" Usage="C" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="HL70363_IZ"/>
             <Component Name="Name Type Code" Usage="RE" Datatype="ID" MinLength="1" MaxLength="1"/>
             <Component Name="Identifier Check Digit" Usage="O" Datatype="ST" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="C" Datatype="ID" MinLength="1" MaxLength="3" Table="0061"/>
@@ -2031,7 +2042,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="X" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -2056,7 +2067,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -2081,7 +2092,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -2101,7 +2112,7 @@
             <Component Name="County/Parish Code" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0289"/>
             <Component Name="Census Tract" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0288"/>
             <Component Name="Address Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
-            <Component Name="Address Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Address Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
         </Datatype>
@@ -2117,7 +2128,7 @@
             <Component Name="County/Parish Code" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0289"/>
             <Component Name="Census Tract" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0288"/>
             <Component Name="Address Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
-            <Component Name="Address Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Address Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
         </Datatype>
@@ -2134,7 +2145,7 @@
         </Datatype>
         <Datatype ID="CQ_IZ_CE" Name="CQ" Description="Composite Quantity with Units">
             <Component Name="Quantity" Usage="O" Datatype="NM" MinLength="1" MaxLength="16"/>
-            <Component Name="Units" Usage="O" Datatype="f555d197-9bec-47d2-92f7-6672da1ad25c" MinLength="1" MaxLength="483" Table="HL70126_IZ"/>
+            <Component Name="Units" Usage="O" Datatype="CE_For_CQ_IZ" MinLength="1" MaxLength="483" Table="HL70126_IZ"/>
         </Datatype>
         <Datatype ID="CE_For_CQ_IZ" Name="CE" Description="Coded Element">
             <Component Name="Identifier" Usage="O" Datatype="ST" MinLength="1" MaxLength="20"/>
@@ -2171,7 +2182,7 @@
             <Component Name="Point of Care" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0302"/>
             <Component Name="Room" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0303"/>
             <Component Name="Bed" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0304"/>
-            <Component Name="Facility" Usage="R" Datatype="5d62ecfe-7a05-4d34-b034-361171a92f2f" MinLength="1" MaxLength="227"/>
+            <Component Name="Facility" Usage="R" Datatype="HD_IZ" MinLength="1" MaxLength="227"/>
             <Component Name="Location Status" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0306"/>
             <Component Name="Patient Location Type" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0305"/>
             <Component Name="Building" Usage="O" Datatype="IS" MinLength="1" MaxLength="20" Table="0307"/>
@@ -2218,7 +2229,7 @@
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
             <Component Name="Name Context" Usage="O" Datatype="CE" MinLength="1" MaxLength="483" Table="0448"/>
-            <Component Name="Name Validity Range" Usage="X" Datatype="b485dbf7-ee52-4a3a-bd5e-aa7d99195aa5" MinLength="1" MaxLength="53"/>
+            <Component Name="Name Validity Range" Usage="X" Datatype="DR_IZ" MinLength="1" MaxLength="53"/>
             <Component Name="Name Assembly Order" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0444"/>
             <Component Name="Effective Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
             <Component Name="Expiration Date" Usage="O" Datatype="TS" MinLength="1" MaxLength="26"/>
@@ -2232,7 +2243,7 @@
             <Component Name="ID Number" Usage="X" Datatype="NM" MinLength="1" MaxLength="4"/>
             <Component Name="Check Digit" Usage="O" Datatype="NM" MinLength="1" MaxLength="1"/>
             <Component Name="Check Digit Scheme" Usage="O" Datatype="ID" MinLength="1" MaxLength="3" Table="0061"/>
-            <Component Name="Assigning Authority" Usage="C" Datatype="133e201c-89da-42e3-bcf5-2da215b5cf43" MinLength="1" MaxLength="227" Table="0363"/>
+            <Component Name="Assigning Authority" Usage="C" Datatype="HD_IZ" MinLength="1" MaxLength="227" Table="0363"/>
             <Component Name="Identifier Type Code" Usage="C" Datatype="ID" MinLength="2" MaxLength="5" Table="HL70203_IZ"/>
             <Component Name="Assigning Facility" Usage="O" Datatype="HD" MinLength="1" MaxLength="227"/>
             <Component Name="Name Representation Code" Usage="O" Datatype="ID" MinLength="1" MaxLength="1" Table="0465"/>
