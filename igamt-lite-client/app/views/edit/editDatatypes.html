@@ -22,16 +22,17 @@
                     <!--<th></th>-->
                 </tr>
                 <tr>
-                    <!--<th colspan="4">-->
-                        <!--<input st-search placeholder="Search Datatype" class="input-sm form-control" type="search"/>-->
-                    <th></th>
-                    <th colspan="1">
-                        <input st-search="label" placeholder="Search" class="input-sm form-control" type="search"/>
+                    <th colspan="4">
+                        <input st-search placeholder="Search" class="input-sm form-control" type="search"/>
                     </th>
-                    <th colspan="1">
-                        <input st-search="name" placeholder="Search" class="input-sm form-control" type="search"/>
-                    </th>
-                    <th></th>
+                    <!--<th></th>-->
+                    <!--<th colspan="1">-->
+                        <!--<input st-search="label" placeholder="Search" class="input-sm form-control" type="search"/>-->
+                    <!--</th>-->
+                    <!--<th colspan="1">-->
+                        <!--<input st-search="name" placeholder="Search" class="input-sm form-control" type="search"/>-->
+                    <!--</th>-->
+                    <!--<th></th>-->
                     <!---->
                     <!--</th>-->
                 </tr>
@@ -104,9 +105,7 @@
                     <!--<span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Save</span>-->
                     <!--</button>-->
 
-                    <pre>
-                        {{changes | json}}
-                </pre>
+
 
                 </div>
 
@@ -121,7 +120,7 @@
                             <table tt-table tt-params="params" class="table table-striped table-bordered">
                                 <thead>
                                 <tr class="tbl-header row">
-                                    <th class="col-md-5">Name</th>
+                                    <th class="col-md-4">Name</th>
                                     <th class="col-md-1">Usage</th>
                                     <th class="col-md-1">Length</th>
                                     <th class="col-md-1">ConfLength</th>
@@ -129,13 +128,14 @@
                                     <th class="col-md-1">ValueSet</th>
                                     <th class="col-md-1">Predicate</th>
                                     <th class="col-md-1">Conformance Statement</th>
+                                    <th class="col-md-1">Comment</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
                             <script type="text/ng-template" id="DatatypeEditTree.html">
                                 <tr tt-node is-branch="hasChildren(node)" class="row">
-                                    <td class="col-md-5">
+                                    <td class="col-md-4">
                                         <span ng-show="node.type === 'datatype'" ng-controller="DatatypeRowCtrl">
                                             <span ng-form name="{{formName}}">
                                             <input style="width:60%" type="text"
@@ -227,6 +227,15 @@
                                     </td>
                                     <td class="col-md-1"></td>
                                     <td class="col-md-1"></td>
+                                    <td class="col-md-1">
+                                        <div ng-show="node.type !== 'datatype'">
+                                        <input style="width:100%" class="igl-input" type="text"
+                                               name="comment"
+                                               ng-change="recordChange(node,'comment')"
+                                               ng-model="node.comment">
+                                        </div>
+                                        <div ng-show="node.type === 'datatype'">-</div>
+                                    </td>
                                 </tr>
                             </script>
 
@@ -241,3 +250,7 @@
     </div>
 </div>
 </div>
+
+<pre>
+                        {{changes | json}}
+                </pre>

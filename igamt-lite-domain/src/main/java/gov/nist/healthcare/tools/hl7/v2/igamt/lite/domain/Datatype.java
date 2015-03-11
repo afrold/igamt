@@ -77,6 +77,12 @@ public class Datatype extends DataModel implements java.io.Serializable {
 	@JoinColumn(name = "DATATYPES_ID")
 	private Datatypes datatypes;
 
+	@Column(name = "COMMENT", columnDefinition = "TEXT")
+	protected String comment;
+
+	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
+	protected String usageNote;
+
 	public Long getId() {
 		return id;
 	}
@@ -178,6 +184,22 @@ public class Datatype extends DataModel implements java.io.Serializable {
 	public void addComponent(Component c) {
 		c.setPosition(components.size() + 1);
 		components.add(c);
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getUsageNote() {
+		return usageNote;
+	}
+
+	public void setUsageNote(String usageNote) {
+		this.usageNote = usageNote;
 	}
 
 	@Override

@@ -24,5 +24,5 @@ public class Constant {
 	public final static String GROUP = "group";
 	public final static String MESSAGE = "message";
 	public final static String DATATYPE = "datatype";
-
+	public final static String PROFILE = "profile";
 }

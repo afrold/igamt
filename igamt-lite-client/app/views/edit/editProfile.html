@@ -1,4 +1,4 @@
-<div class="container" ng-controller="EditProfileCtrl">
+<div ng-controller="EditProfileCtrl">
     <div>
         <div class="">
         <h1>Edit Profile: {{profile.metaData.name}}</h1>
@@ -27,16 +27,16 @@
                 <tab-heading>
                     <!--<span class="badge">1</span>-->
                     <i class="fa fa-cog fa-fw"></i>
-                    MetaData
+                    Implementation Guide
                 </tab-heading>
-                <div ng-include="'views/edit/editMetaData.html'"></div>
+                <div ng-include="'views/edit/editIG.html'"></div>
             </tab>
 
             <tab select="selectProfileTab(1)" active="profileTabs[1]">
                 <tab-heading>
                     <!--<span class="badge">M</span>-->
                     <i class="fa fa-book fa-fw"></i>
-                    Messages
+                    Conformance Profiles
                 </tab-heading>
                 <div ng-include="'views/edit/editMessages.html'"></div>
             </tab>

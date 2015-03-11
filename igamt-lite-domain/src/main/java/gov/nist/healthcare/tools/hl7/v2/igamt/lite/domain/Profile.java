@@ -21,9 +21,14 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name = "PROFILE")
-public class Profile implements java.io.Serializable {
+public class Profile extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public Profile() {
+		super();
+		this.type = Constant.PROFILE;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,6 +48,12 @@ public class Profile implements java.io.Serializable {
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "MESSAGES_ID")
 	private Messages messages;
+
+	@Column(name = "COMMENT", columnDefinition = "TEXT")
+	protected String comment;
+
+	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
+	protected String usageNote;
 
 	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
 	// CascadeType.ALL)
@@ -167,6 +178,22 @@ public class Profile implements java.io.Serializable {
 
 	public void setPreloaded(Boolean preloaded) {
 		this.preloaded = preloaded;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getUsageNote() {
+		return usageNote;
+	}
+
+	public void setUsageNote(String usageNote) {
+		this.usageNote = usageNote;
 	}
 
 	@Override

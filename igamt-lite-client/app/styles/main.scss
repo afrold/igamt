@@ -306,7 +306,7 @@ div.ngRow.selected {
 
 
 .row {
-  margin-left:10px;
+//  margin-left:10px;
  }
 
 
@@ -318,7 +318,7 @@ div.ngRow.selected {
 
 .igl-centered {
   margin: auto;
-  width:95%;
+  width:100%;
 }
 
 
@@ -406,4 +406,33 @@ input.form-control {
 
 .has-error{
   background-color: red;
+}
+
+.bs-docs-section {
+  margin-bottom: 60px;
+}
+
+.ig-doc {
+  color: #333;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  line-height: 1.42857;
+}
+
+.back-to-top, .bs-docs-theme-toggle {
+  display: block;
+}
+.back-to-top, .bs-docs-theme-toggle {
+  color: #999;
+  display: none;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 10px;
+  margin-top: 10px;
+  padding: 4px 10px;
+}
+
+.ig-tbl-header{
+  background-color: #ffec9d;
+  color:black;
 }

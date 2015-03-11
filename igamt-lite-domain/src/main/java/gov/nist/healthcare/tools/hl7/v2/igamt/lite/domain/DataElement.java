@@ -78,6 +78,9 @@ public abstract class DataElement extends DataModel implements
 	@Column(nullable = false, name = "DATAELEMENT_POSITION")
 	protected Integer position = 0;
 
+	@Column(name = "COMMENT")
+	protected String comment;
+
 	// Caution, not persisted. Use at your own risk
 	public Datatype getDatatype() {
 		return datatype;
@@ -175,6 +178,14 @@ public abstract class DataElement extends DataModel implements
 	// DO NO SET
 	public void setDatatypeLabel(String datatypeLabel) {
 		this.datatypeLabel = datatypeLabel;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 }

@@ -65,7 +65,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 
 });
 
-app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
+app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal,$filter) {
     $rootScope.readonly = false;
     $rootScope.profile = {}; // current profile
     $rootScope.message = null; // current message
@@ -89,6 +89,9 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifyDtTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifySegTreeUpdate = '0'; // TODO: FIXME
+    $rootScope.messagesData = [];
+
+
     $rootScope.changes = {
         //"segment":{}, ex.{1:[{usage:1},{min:1}],2:[]}
         //"group":{},ex.{1:[{usage:1},{min:1}],2:[]}
@@ -117,6 +120,7 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
         $rootScope.segments.length = 0;
         $rootScope.tables.length = 0;
         $rootScope.datatypes.length = 0;
+        $rootScope.messagesData = [];
     };
 
     $rootScope.$watch(function () {
@@ -161,6 +165,19 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
         console.log("Change is " + $rootScope.changes[type][object.id][changeType]);
     };
 
+
+    $rootScope.recordChange2 = function(type,id,attr,value) {
+        if($rootScope.changes[type] === undefined){
+            $rootScope.changes[type] = {};
+        }
+        if($rootScope.changes[type][id] === undefined){
+            $rootScope.changes[type][id] = {};
+        }
+        $rootScope.changes[type][id][attr] = value;
+    };
+
+
+
     Restangular.setBaseUrl('/api/');
 //    Restangular.setResponseExtractor(function(response, operation) {
 //        return response.data;
@@ -195,6 +212,7 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
 
     $rootScope.processElement = function (element, parent) {
         if (element.type === "group" && element.children) {
+            element.children = $filter('orderBy')(element.children, 'position');
             angular.forEach(element.children, function (segmentRefOrGroup) {
                 $rootScope.processElement(segmentRefOrGroup,element);
             });
@@ -203,13 +221,13 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
             element.ref.path =  element.ref.name;
             if ($rootScope.segments.indexOf(element.ref) === -1) {
                 $rootScope.segments.push(element.ref);
+                element.ref.fields = $filter('orderBy')(element.ref.fields, 'position');
                 angular.forEach(element.ref.fields, function (field) {
                     $rootScope.processElement(field,element.ref);
                 });
             }
         } else if (element.type === "field" || element.type === "component") {
             element["datatype"] = $rootScope.datatypesMap[element["datatypeLabel"]];
-
             element["path"] = parent.path+"."+element.position;
             if (angular.isDefined(element.table)) {
                 element["table"] = $rootScope.tablesMap[element.table.id];
@@ -221,6 +239,7 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal) {
         } else if (element.type === "datatype") {
             if ($rootScope.datatypes.indexOf(element) === -1) {
                 $rootScope.datatypes.push(element);
+                element.children = $filter('orderBy')(element.children, 'position');
                 angular.forEach(element.children, function (component) {
                     $rootScope.processElement(component,parent);
                 });

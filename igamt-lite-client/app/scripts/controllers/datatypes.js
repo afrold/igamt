@@ -28,7 +28,6 @@ angular.module('igl')
                 }
             });
 
-
             $scope.$watch(function () {
                 return $rootScope.notifyDtTreeUpdate;
             }, function (changeId) {
@@ -36,7 +35,6 @@ angular.module('igl')
                     $scope.params.refresh();
                 }
             });
-
 
             $scope.loading = false;
         };
