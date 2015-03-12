@@ -88,6 +88,7 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal,$f
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifyDtTreeUpdate = '0'; // TODO: FIXME
+    $rootScope.notifyTableTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifySegTreeUpdate = '0'; // TODO: FIXME
     $rootScope.messagesData = [];
 

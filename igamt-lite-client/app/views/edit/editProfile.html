@@ -1,7 +1,7 @@
 <div ng-controller="EditProfileCtrl">
     <div>
-        <div class="">
-        <h1>Edit Profile: {{profile.metaData.name}}</h1>
+        <div class="page-header">
+            <h1>Implementation Guide: {{profile.metaData.identifier}}</h1>
         </div>
         <div class="pull-right">
             <!--<button title="Cancel Edit" type="button" class="btn btn-warning btn-sm"-->
@@ -26,8 +26,8 @@
             <tab select="selectProfileTab(0)" active="profileTabs[0]">
                 <tab-heading>
                     <!--<span class="badge">1</span>-->
-                    <i class="fa fa-cog fa-fw"></i>
-                    Implementation Guide
+                    <i class="fa fa-file-text-o fa-fw"></i>
+                    Document
                 </tab-heading>
                 <div ng-include="'views/edit/editIG.html'"></div>
             </tab>

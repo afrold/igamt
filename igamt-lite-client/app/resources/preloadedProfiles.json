@@ -4,13 +4,15 @@
         {
             "id": 1,
             "metaData": {
-                "name": "VXU_V04",
+                "name": "Implementation Guide for Immunization Messaging",
                 "orgName": "NIST",
-                "status": "",
-                "topics": "",
+                "status": "Draft",
+                "topics": "None",
                 "type": "Constrainable",
                 "hl7Version": "2.5.1",
-                "schemaVersion": "2.5"
+                "schemaVersion": "2.5",
+                "identifier":"IG1",
+                "type": "Constrainable"
             },
             "encodings": [
                 "ER7",

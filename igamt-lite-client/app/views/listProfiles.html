@@ -13,11 +13,10 @@
                        class="profile-list table table-striped table-bordered">
                     <thead>
                     <tr class="tbl-header">
+                        <th>Idenfifier</th>
                         <th>Name</th>
                         <th>Organization Name</th>
-                        <th>HL7 Version</th>
-                        <th>Schema Version</th>
-                        <th>Type</th>
+                        <!--<th>Type</th>-->
                         <th>Topic</th>
                         <th>Status</th>
                         <th></th>
@@ -25,12 +24,13 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="row in preloaded">
+                        <td ng-bind="row.metaData.identifier"></td>
                         <td ng-bind="row.metaData.name"></td>
                         <td ng-bind="row.metaData.orgName"></td>
-                        <td ng-bind-html="row.metaData.hl7Version"></td>
-                        <td ng-bind-html="row.metaData.schemaVersion"></td>
-                        <td ng-bind-html="row.metaData.type"></td>
-                        <td ng-bind-html="row.metaData.topic"></td>
+                        <!--<td ng-bind-html="row.metaData.hl7Version"></td>-->
+                        <!--<td ng-bind-html="row.metaData.schemaVersion"></td>-->
+                        <!--<td ng-bind-html="row.metaData.type"></td>-->
+                        <td ng-bind-html="row.metaData.topics"></td>
                         <td ng-bind-html="row.metaData.status"></td>
                         <td>
                             <button title="Create Copy" type="button" class="btn btn-xs btn-info"
@@ -55,7 +55,7 @@
         <h3>Custom Implementation Guides </h3>
        </div>
         <div class="">
-            <!--&lt;!&ndash; Default panel contents &ndash;&gt;-->
+            <!--<!-- Default panel contents -->
             <!--<div class="panel-heading"><i class="fa fa-list"></i>&nbsp;-->
                 <!--User Profiles-->
             <!--</div>-->
@@ -64,11 +64,12 @@
                        class="profile-list table table-striped table-bordered">
                     <thead>
                     <tr class="tbl-header">
+                        <th>Idenfifier</th>
                         <th>Name</th>
                         <th>Organization Name</th>
-                        <th>HL7 Version</th>
-                        <th>Schema Version</th>
-                        <th>Type</th>
+                        <!--<th>HL7 Version</th>-->
+                        <!--<th>Schema Version</th>-->
+                        <!--<th>Type</th>-->
                         <th>Topic</th>
                         <th>Status</th>
                         <th></th>
@@ -77,12 +78,13 @@
                     <tbody>
 
                     <tr ng-repeat="row in custom">
+                        <td ng-bind="row.metaData.identifier"></td>
                         <td ng-bind="row.metaData.name"></td>
                         <td ng-bind="row.metaData.orgName"></td>
-                        <td ng-bind-html="row.metaData.hl7Version"></td>
-                        <td ng-bind-html="row.metaData.schemaVersion"></td>
-                        <td ng-bind-html="row.metaData.type"></td>
-                        <td ng-bind-html="row.metaData.topic"></td>
+                        <!--<td ng-bind-html="row.metaData.hl7Version"></td>-->
+                        <!--<td ng-bind-html="row.metaData.schemaVersion"></td>-->
+                        <!--<td ng-bind-html="row.metaData.type"></td>-->
+                        <td ng-bind-html="row.metaData.topics"></td>
                         <td ng-bind-html="row.metaData.status"></td>
                         <td>
 

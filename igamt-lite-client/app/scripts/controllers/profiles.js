@@ -5,6 +5,7 @@
 
 angular.module('igl')
     .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http,$filter) {
+        $scope.loading = false;
         $scope.custom = [];
         $scope.preloaded = [];
         $scope.tmpPreloadeds = [];
@@ -40,6 +41,7 @@ angular.module('igl')
 
         $scope.edit = function (profile) {
             Restangular.one('profiles', profile.id).get().then(function (profile) {
+                $scope.loading = true;
                 $rootScope.initMaps();
                 $rootScope.context.page = $rootScope.pages[1];
                 $rootScope.profile = profile;
@@ -88,8 +90,11 @@ angular.module('igl')
 
                 });
 
+                $scope.loading = false;
+
             }, function (error) {
                 $scope.error = error;
+                $scope.loading = false;
             });
         };
 

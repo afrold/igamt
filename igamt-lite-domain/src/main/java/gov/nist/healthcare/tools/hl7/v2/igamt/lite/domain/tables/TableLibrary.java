@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
+
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
@@ -14,7 +17,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 @javax.persistence.Table(name = "TABLELIBRARY")
-public class TableLibrary implements Serializable {
+public class TableLibrary extends DataModel implements Serializable {
 
 	/**
 	 * 
@@ -48,6 +51,11 @@ public class TableLibrary implements Serializable {
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Tables tables;
 
+	public TableLibrary() {
+		super();
+		this.type = Constant.TABLELIBRARY;
+	}
+	
 	public Long getId() {
 		return id;
 	}
