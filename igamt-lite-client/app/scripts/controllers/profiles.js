@@ -36,6 +36,7 @@ angular.module('igl')
             }, function (error) {
                 $scope.error = error;
             });
+
         };
 
 

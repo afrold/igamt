@@ -50,13 +50,11 @@ angular.module('igl')
         };
 
         $scope.clone = function () {
-//            $scope.loadingSelection = true;
-//            //TODO: call server
-//            $scope.datatypeCopy = datatype;
-//            angular.copy(datatype);
-//            if ($scope.params)
-//                $scope.params.refresh();
-//            $scope.loadingSelection = false;
+            Restangular.all('datatypes').post({targetId: $rootScope.datatype.id}).then(function (clone) {
+                $rootScope.datatypes.push(clone);
+            }, function (error) {
+                $scope.error = error;
+            });
         };
 
         $scope.reset = function () {
