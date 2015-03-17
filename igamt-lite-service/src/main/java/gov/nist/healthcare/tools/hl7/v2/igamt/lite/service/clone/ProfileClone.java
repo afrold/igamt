@@ -24,8 +24,4 @@ public class ProfileClone {
 				tablesDoc, constraintsDoc);
 
 	}
-	
-	public Datatype clone(Datatype original) throws CloneNotSupportedException{
-		return original.clone();
-	}
 }
