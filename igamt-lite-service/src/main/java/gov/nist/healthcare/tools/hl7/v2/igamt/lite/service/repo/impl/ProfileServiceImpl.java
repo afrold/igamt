@@ -33,7 +33,6 @@ public class ProfileServiceImpl implements ProfileService {
 	@Autowired
 	private ProfileRepository profileRepository;
 
-	@Autowired
 	private ProfileClone profileClone;
 
 	@Override
