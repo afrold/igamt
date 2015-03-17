@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @javax.persistence.Table(name = "DATAELEMENT")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class DataElement extends DataModel implements
-		java.io.Serializable {
+		java.io.Serializable, Cloneable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -186,6 +186,15 @@ public abstract class DataElement extends DataModel implements
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+	
+	@Override
+	protected DataElement clone() throws CloneNotSupportedException {
+		DataElement de = (DataElement)super.clone();
+		de.setId(null);
+		de.setTable(this.table);
+		de.setDatatype(this.datatype.clone());
+		return de;
 	}
 
 }

@@ -21,5 +21,10 @@ public class ConformanceStatement extends Constraint implements Serializable {
 				+ reference + ", description=" + description + ", assertion="
 				+ assertion + "]";
 	}
+	
+	@Override
+	public ConformanceStatement clone() throws CloneNotSupportedException {
+		return (ConformanceStatement)super.clone();
+	}
 
 }

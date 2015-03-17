@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.clone;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ConstraintsSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
@@ -22,5 +23,9 @@ public class ProfileClone {
 		return profileSerializationImpl.deserializeXMLToProfile(profileDoc,
 				tablesDoc, constraintsDoc);
 
+	}
+	
+	public Datatype clone(Datatype original) throws CloneNotSupportedException{
+		return original.clone();
 	}
 }
