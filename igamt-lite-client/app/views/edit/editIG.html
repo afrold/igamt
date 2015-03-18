@@ -7,21 +7,31 @@
     <div class="row" style="margin-left: 0px">
         <div class="col-md-3" role="complementary">
         	<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
-                <ul class="nav bs-docs-sidenav">
+                <ol class="nav bs-docs-sidenav">
                     <li>
                         <a href="#/profiles#info">Implementation Guide Information</a>
                     </li>
                     <li class="active">
                         <a href="#/profiles#messages">Conformance Profiles</a>
-                        <ul class="nav">
+                        <ol class="nav">
                             <li ng-repeat="msg in messagesData">
                                 <a href="#/profiles#message_{{msg.message.id}}">{{msg.message.identifier}} Message Definition</a>
                                 <a href="#/profiles#message_{{msg.message.id}}_segments">{{msg.message.identifier}} Segments Definition</a>
+                                <ol class="nav">
+                                	<li ng-repeat="segment in msg.segments">
+                                		<a href="#/profiles#message_{{msg.message.id}}_segment_{{segment.id}}">{{segment.name}} - {{segment.description}}</a>
+                                	</li>
+                                </ol>
                                 <a href="#/profiles#message_{{msg.message.id}}_datatypes">{{msg.message.identifier}} Datatypes Definition</a>
+                                <ol class="nav">
+                                	<li ng-repeat="datatype in msg.datatypes">
+                                		<a href="#/profiles#message_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</a>
+                                	</li>
+                                </ol>
                             </li>
-                        </ul>
+                        </ol>
                     </li>
-                </ul>
+                </ol>
             </nav>
         </div>
 
@@ -183,14 +193,13 @@
                     </div>
 
                     <h2 id="message_{{msg.message.id}}_segments" class="page-header">Segments</h2>
-                    <h2 id="message_{{msg.message.id}}_segments_def">{{msg.message.identifier}} Segments
-                        Definition</h2>
+                    <h2 id="message_{{msg.message.id}}_segments_def">{{msg.message.identifier}} Segments Definition</h2>
                     <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
                               <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
 
 
                     <div ng-repeat="segment in msg.segments">
-                        <h3>{{segment.name}} - {{segment.description}}</h3>
+                        <h3 id="message_{{msg.message.id}}_segment_{{segment.id}}">{{segment.name}} - {{segment.description}}</h3>
                         <table class="table table-bordered">
                             <thead>
                             <tr class="ig-tbl-header row">
@@ -249,8 +258,8 @@
                     <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
                               <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
 
-                    <div ng-repeat="datatype in msg.datatypes">
-                        <h3 id="#message_{{msg.message.id}}_datatypes_def_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</h3>
+                    <div ng-repeat="datatype in msg.datatypes">     
+                        <h3 id="/profiles#message_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</h3>
                         <table class="table table-bordered">
                             <thead>
                             <tr class="ig-tbl-header row">
