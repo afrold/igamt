@@ -19,6 +19,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.clone.DatatypeClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.DatatypeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class DatatypeServiceImpl implements DatatypeService {
 
 	@Autowired
 	private DatatypeRepository datatypeRepository;
+	
+	private DatatypeClone datatypeClone;
 
 	@Override
 	public Iterable<Datatype> findAll() {
@@ -54,4 +57,8 @@ public class DatatypeServiceImpl implements DatatypeService {
 		return datatypeRepository.findOne(id);
 	}
 
+	@Override
+	public Datatype clone(Datatype d) throws CloneNotSupportedException {
+		return datatypeClone.clone(d);
+	}
 }

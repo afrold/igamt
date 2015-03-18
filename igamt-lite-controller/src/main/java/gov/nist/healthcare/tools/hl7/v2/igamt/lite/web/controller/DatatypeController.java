@@ -12,7 +12,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.ProfileNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +37,13 @@ public class DatatypeController extends CommonController {
 
 	@RequestMapping(value = "/{targetId}", method = RequestMethod.POST)
 	public Datatype clone(@PathVariable("targetId") Long targetId)
-			throws ProfileNotFoundException {
+			throws DatatypeNotFoundException, CloneNotSupportedException {
 		logger.info("Clone datatype with id=" + targetId);
-		Datatype p = datatypeService.findOne(targetId);
-		if (p == null) {
-			throw new ProfileNotFoundException(targetId);
+		Datatype d = datatypeService.findOne(targetId);
+		if (d == null) {
+			throw new DatatypeNotFoundException(targetId);
 		}
-		Datatype clone = null; // FIXME: clone datatype
+		Datatype clone = datatypeService.clone(d); // FIXME: clone datatype
 		datatypeService.save(clone);
 		return clone;
 	}
