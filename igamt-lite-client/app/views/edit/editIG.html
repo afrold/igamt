@@ -9,17 +9,17 @@
         	<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
                 <ul class="nav bs-docs-sidenav">
                     <li>
-                        <a href="#/profiles#info" target="_self">Implementation Guide Information</a>
+                        <a href="#/profiles#info">Implementation Guide Information</a>
                     </li>
                     <li class="active">
-                        <a href="#/profiles#messages" target="_self">Conformance Profiles</a>
+                        <a href="#/profiles#messages">Conformance Profiles</a>
                         <ul class="nav">
-                            <li ng-repeat="message in profile.messages.children">
-                                <a href="#/profiles#message_{{message.id}}" target="_self">{{message.identifier}}</a>
-                                <a href="#/profiles#message_{{message.id}}_segments_def" target="_self">{{message.identifier}} Segment Definition</a>
+                            <li ng-repeat="msg in messagesData">
+                                <a href="#/profiles#message_{{msg.message.id}}">{{msg.message.identifier}} Message Definition</a>
+                                <a href="#/profiles#message_{{msg.message.id}}_segments">{{msg.message.identifier}} Segments Definition</a>
+                                <a href="#/profiles#message_{{msg.message.id}}_datatypes">{{msg.message.identifier}} Datatypes Definition</a>
                             </li>
                         </ul>
-                        <a href="#/profiles#woo" target="_self">Test Woo</a>
                     </li>
                 </ul>
             </nav>
@@ -119,7 +119,7 @@
                           <!--ng-change="recordChange2('profile',profile.id,'comment', profile.comment)"> </textarea>-->
                 <div ng-repeat="msg in messagesData">
                     <div>
-                        <h2 id="#message_{{msg.message.id}}" class="page-header">{{msg.message.identifier}} Message
+                        <h2 id="message_{{msg.message.id}}" class="page-header">{{msg.message.identifier}} Message
                             Definition</h2>
 
                         <textarea style="width:100%" class="form-control" ng-model="msg.message.comment"
@@ -182,10 +182,8 @@
                         </table>
                     </div>
 
-
-					<h1 id="woo" class="page-header">Test WOo</h1>
-                    <h2 id="#message_{{msg.message.id}}_segments" class="page-header">Segments</h2>
-                    <h2 id="#message_{{msg.message.id}}_segments_def">{{msg.message.identifier}} Segments
+                    <h2 id="message_{{msg.message.id}}_segments" class="page-header">Segments</h2>
+                    <h2 id="message_{{msg.message.id}}_segments_def">{{msg.message.identifier}} Segments
                         Definition</h2>
                     <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
                               <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
@@ -244,9 +242,9 @@
 
 
 
-                    <h2 id="#message_{{msg.message.id}}_datatypes" class="page-header">Datatypes</h2>
+                    <h2 id="message_{{msg.message.id}}_datatypes" class="page-header">Datatypes</h2>
 
-                    <h3 id="#message_{{msg.message.id}}_datatypes_def">{{msg.message.identifier}} Datatypes
+                    <h3 id="message_{{msg.message.id}}_datatypes_def">{{msg.message.identifier}} Datatypes
                         Definition</h3>
                     <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
                               <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->

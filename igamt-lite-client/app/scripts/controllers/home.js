@@ -7,7 +7,6 @@
  * # MainCtrl
  * Controller of the clientApp
  */
-
 angular.module('igl')
   .controller('MainCtrl', function ($scope) {
   });
