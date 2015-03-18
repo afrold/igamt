@@ -47,4 +47,9 @@ public class Predicate extends Constraint implements Serializable {
 				+ assertion + "]";
 	}
 
+	@Override
+	public Predicate clone() throws CloneNotSupportedException {
+		return (Predicate)super.clone();
+	}
+
 }

@@ -20,6 +20,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.clone.ProfileClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Autowired
 	private ProfileRepository profileRepository;
+
+	private ProfileClone profileClone;
 
 	@Override
 	@Transactional
@@ -57,6 +60,19 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public Iterable<ProfileSummary> findAllSummariesByUser(Long userId) {
 		return profileRepository.findAllSummariesByUserId(userId);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService
+	 * #clone(gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile)
+	 */
+	@Override
+	public Profile clone(Profile p) {
+		// TODO Auto-generated method stub
+		return profileClone.clone(p);
 	}
 
 }

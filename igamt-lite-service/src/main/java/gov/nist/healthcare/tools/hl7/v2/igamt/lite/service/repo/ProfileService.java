@@ -32,4 +32,6 @@ public interface ProfileService {
 
 	public Iterable<ProfileSummary> findAllSummariesByUser(Long userId);
 
+	public Profile clone(Profile p);
+
 }

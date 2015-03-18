@@ -19,8 +19,9 @@ public class SegmentRef extends SegmentRefOrGroup {
 		type = Constant.SEGMENT;
 	}
 
-	@JsonIgnoreProperties({ "fields", "label", "dynamicMappings", "name",
-			"description", "predicates", "conformanceStatements", "segments" })
+	@JsonIgnoreProperties({ "type", "fields", "label", "dynamicMappings",
+			"name", "description", "predicates", "conformanceStatements",
+			"segments" })
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "REF")
 	private Segment ref;

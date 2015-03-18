@@ -22,6 +22,9 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.css" />
+    <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css" />
+
     <!-- endbuild -->
 </head>
 <body ng-app="igl">
@@ -68,7 +71,7 @@
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-touch/angular-touch.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script src="bower_components/angular-smart-table/dist/smart-table.min.js"></script>
+<script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
 <script src="bower_components/lodash/dist/lodash.compat.js"></script>
 <script src="bower_components/restangular/dist/restangular.js"></script>
 <script src="bower_components/angular-mocks/angular-mocks.js"></script>
@@ -79,7 +82,7 @@
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
-
+<script src="lib/utils.js"></script>
 <script src="lib/profileBackEndStub.js"></script>
 <script src="lib/angular-treetable/js/jquery.treetable.js"></script>
 <script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
@@ -88,6 +91,9 @@
 <script src="scripts/controllers/about.js"></script>
 <script src="scripts/controllers/profiles.js"></script>
 <script src="scripts/controllers/messages.js"></script>
+<script src="scripts/controllers/datatypes.js"></script>
+<script src="scripts/controllers/segments.js"></script>
+<script src="scripts/controllers/tables.js"></script>
 <script src="scripts/directives/csSelect.js"></script>
 <script src="scripts/services/profiles.js"></script>
 <!-- endbuild -->

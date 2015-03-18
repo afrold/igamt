@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @javax.persistence.Table(name = "DATAELEMENT")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class DataElement extends DataModel implements
-		java.io.Serializable {
+		java.io.Serializable, Cloneable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -60,7 +60,7 @@ public abstract class DataElement extends DataModel implements
 	@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
 			CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "TABLE_ID")
-	protected transient Table table;
+	protected Table table;
 
 	@Column(nullable = true, name = "BINDING_STRENGTH")
 	protected String bindingStrength;
@@ -77,6 +77,9 @@ public abstract class DataElement extends DataModel implements
 	@NotNull
 	@Column(nullable = false, name = "DATAELEMENT_POSITION")
 	protected Integer position = 0;
+
+	@Column(name = "COMMENT")
+	protected String comment;
 
 	// Caution, not persisted. Use at your own risk
 	public Datatype getDatatype() {
@@ -175,6 +178,23 @@ public abstract class DataElement extends DataModel implements
 	// DO NO SET
 	public void setDatatypeLabel(String datatypeLabel) {
 		this.datatypeLabel = datatypeLabel;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
+	@Override
+	protected DataElement clone() throws CloneNotSupportedException {
+		DataElement de = (DataElement)super.clone();
+		de.setId(null);
+		de.setTable(this.table);
+		de.setDatatype(this.datatype.clone());
+		return de;
 	}
 
 }

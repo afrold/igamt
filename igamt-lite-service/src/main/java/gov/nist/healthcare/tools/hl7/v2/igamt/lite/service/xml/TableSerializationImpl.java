@@ -100,7 +100,7 @@ public class TableSerializationImpl implements TableSerialization {
 			elmTableDefinition.addAttribute(new Attribute("Oid",
 					(t.getOid() == null) ? "" : t.getOid()));
 			elmTableDefinition.addAttribute(new Attribute("Type",
-					(t.getType() == null) ? "" : t.getType()));
+					(t.getTableType() == null) ? "" : t.getTableType()));
 
 			elmTableLibrary.appendChild(elmTableDefinition);
 
@@ -110,7 +110,7 @@ public class TableSerializationImpl implements TableSerialization {
 							"TableElement");
 					elmTableElement.addAttribute(new Attribute("Code", (c
 							.getCode() == null) ? "" : c.getCode()));
-					elmTableElement.addAttribute(new Attribute("Label", (c
+					elmTableElement.addAttribute(new Attribute("DisplayName", (c
 							.getLabel() == null) ? "" : c.getLabel()));
 					elmTableElement.addAttribute(new Attribute("Codesys", (c
 							.getCodesys() == null) ? "" : c.getCodesys()));
@@ -143,7 +143,7 @@ public class TableSerializationImpl implements TableSerialization {
 			tableObj.setMappingId(elmTable.getAttribute("Id"));
 			tableObj.setName(elmTable.getAttribute("Name"));
 			tableObj.setOid(elmTable.getAttribute("Oid"));
-			tableObj.setType(elmTable.getAttribute("Type"));
+			tableObj.setTableType(elmTable.getAttribute("Type"));
 			if (elmTable.getAttribute("Version") != null
 					&& !elmTable.getAttribute("Version").equals(""))
 				tableObj.setVersion(elmTable.getAttribute("Version"));
@@ -164,7 +164,7 @@ public class TableSerializationImpl implements TableSerialization {
 
 			codeObj.setCode(elmCode.getAttribute("Code"));
 			codeObj.setCodesys(elmCode.getAttribute("Codesys"));
-			codeObj.setLabel(elmCode.getAttribute("Label"));
+			codeObj.setLabel(elmCode.getAttribute("DisplayName"));
 			codeObj.setSource(elmCode.getAttribute("Source"));
 
 			tableObj.addCode(codeObj);

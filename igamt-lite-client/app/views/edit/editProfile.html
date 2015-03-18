@@ -1,182 +1,92 @@
-<div class="container" ng-controller="EditProfileCtrl">
-    <div class="page-header">
-        Edit Profile: {{profile.metaData.name}}
-    </div>
-    <div class="pull-right">
-        <button title="Cancel Edit" type="button" class="btn btn-primary btn-xs"
-                ng-click="applyChanges()">
-            <span><i class="fa fa-check-square fa-sm"></i>&nbsp; Apply</span>
-        </button>
-        <button title="Delete" type="button" class="btn btn-danger btn-xs"
-                ng-click="delete()">
-            <span> <i class="fa fa-trash fa-sm"></i>&nbsp; Delete</span>
-        </button>
-        <button title="Cancel Edit" type="button" class="btn btn-warning btn-xs"
-                ng-click="cancel()">
-            <span><i class="fa fa-times fa-sm"></i>&nbsp; Cancel</span>
-        </button>
+<div ng-controller="EditProfileCtrl">
+    <div>
+        <div class="page-header">
+            <h1>Implementation Guide: {{profile.metaData.identifier}}</h1>
+        </div>
+        <div class="pull-right">
+            <!--<button title="Cancel Edit" type="button" class="btn btn-warning btn-sm"-->
+                    <!--ng-click="reset()">-->
+                <!--<span><i class="fa fa-times"></i>&nbsp; Reset</span>-->
+            <!--</button>-->
+            <button title="Delete" type="button" class="btn btn-danger btn-sm"
+                    ng-click="delete()">
+                <span> <i class="fa fa-trash"></i>&nbsp; Delete</span>
+            </button>
+            <button title="Apply Changes" ng-disabled="changes.length === 0" type="button" class="btn btn-success btn-sm"
+                    ng-click="save()">
+                <span><i class="fa fa-check-square"></i>&nbsp; Apply</span>
+            </button>
+        </div>
+
+        <br/>
+     </div>
+
+    <div>
+        <tabset>
+            <tab select="selectProfileTab(0)" active="profileTabs[0]">
+                <tab-heading>
+                    <!--<span class="badge">1</span>-->
+                    <i class="fa fa-file-text-o fa-fw"></i>
+                    Document
+                </tab-heading>
+                <div ng-include="'views/edit/editIG.html'"></div>
+            </tab>
+
+            <tab select="selectProfileTab(1)" active="profileTabs[1]">
+                <tab-heading>
+                    <!--<span class="badge">M</span>-->
+                    <i class="fa fa-book fa-fw"></i>
+                    Conformance Profiles
+                </tab-heading>
+                <div ng-include="'views/edit/editMessages.html'"></div>
+            </tab>
+
+            <tab select="selectProfileTab(2)" active="profileTabs[2]">
+                <tab-heading>
+                    <!--<span class="badge">S</span>-->
+                    <i class="fa fa-book fa-fw"></i>
+                    Segments
+                </tab-heading>
+                <div ng-include="'views/edit/editSegments.html'"></div>
+            </tab>
+
+            <tab select="selectProfileTab(3)" active="profileTabs[3]">
+                <tab-heading>
+                    <!--<span class="badge">D</span>-->
+                    <i class="fa fa-book fa-fw"></i>
+                    Datatypes
+                </tab-heading>
+                <div ng-include="'views/edit/editDatatypes.html'"></div>
+            </tab>
+
+            <tab select="selectProfileTab(4)" active="profileTabs[4]">
+                <tab-heading>
+                    <!--<span class="badge">V</span>-->
+                    <i class="fa fa-book fa-fw"></i>
+                    ValueSets
+                </tab-heading>
+                <div ng-include="'views/edit/editValueSets.html'"></div>
+            </tab>
+
+            <!--<tab>-->
+                <!--<tab-heading>-->
+                    <!--&lt;!&ndash;<span class="badge">C</span>&ndash;&gt;-->
+                    <!--<i class="fa fa-book"></i>-->
+                    <!--Conformance Statement-->
+                <!--</tab-heading>-->
+            <!--</tab>-->
+
+            <!--<tab>-->
+                <!--<tab-heading>-->
+                    <!--&lt;!&ndash;<span class="badge">P</span>&ndash;&gt;-->
+                    <!--<i class="fa fa-book"></i>-->
+                    <!--Predicates-->
+                <!--</tab-heading>-->
+            <!--</tab>-->
+
+
+        </tabset>
 
     </div>
-
-
-    <tabset>
-        <tab>
-            <tab-heading>
-                <span class="badge">1</span>
-                <i class="glyphicon glyphicon-envelope"></i>
-                Profile MetaData
-            </tab-heading>
-
-            <br/>
-
-            <form name="profileMetaDataForm" novalidate>
-                <div class="row">
-
-                    <div class="col-sm-6">
-                        <div class="form-group"
-                             ng-class="{'has-error' : profileMetaDataForm.name.$invalid && !profileMetaDataForm.name.$pristine }">
-                            <label>Name</label>
-                            <input type="text" name="name" class="form-control" ng-model="profile.metaData.name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Organization Name</label>
-                            <input type="text" name="orgName" class="form-control" ng-model="profile.metaData.orgName" required>
-                        </div>
-
-                        <div class="form-group"
-                             ng-class="{'has-error' : profileMetaDataForm.status.$invalid && !profileMetaDataForm.status.$pristine }">
-                            <label>Status</label>
-                            <select class="form-control"
-                                    name="status"
-                                    ng-model="profile.metaData.status"
-                                    ng-options="status for status in statuses">
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Topics</label>
-                            <input type="text" name="topics" class="form-control" ng-model="profile.metaData.topics">
-                        </div>
-
-                    </div>
-                    <div class="col-sm-6">
-
-                        <div class="form-group">
-                            <label>Type</label>
-                            <input type="text"  name="type" class="form-control" ng-model="profile.metaData.type" required>
-                        </div>
-
-                        <div class="form-group"
-                             ng-class="{'has-error' : profileMetaDataForm.hl7Version.$invalid && !profileMetaDataForm.hl7Version.$pristine }">
-                            <label>HL7Version</label>
-                            <select class="form-control"
-                                    name="hl7Version"
-                                    required
-                                    ng-model="profile.metaData.hl7Version"
-                                    ng-options="hl7Version for hl7Version in hl7Versions">
-                            </select>
-                        </div>
-
-                        <div class="form-group"
-                             ng-class="{'has-error' : profileMetaDataForm.schemaVersion.$invalid && !profileMetaDataForm.schemaVersion.$pristine }">
-                            <label>Schema version</label>
-                            <select class="form-control"
-                                    required
-                                    name="schemaVersion"
-                                    ng-model="profile.metaData.schemaVersion"
-                                    ng-options="schemaVersion for schemaVersion in schemaVersions">
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Encodings</label>
-                            <input type="text" disabled name="encoding" class="form-control">
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                    </div>
-                    <div class="col-sm-6">
-                        <!--<button type="button" ng-click="reset()" class="btn btn-danger">Reset</button>-->
-
-                        <!--<button title="Next" ng-disabled="profileMetaDataForm.$invalid" type="submit" class="btn btn-primary btn-xs pull-right">-->
-                        <!--<span><i class="fa fa-angle-double-right fa-sm"></i>&nbsp; Next</span>-->
-                        <!--</button>-->
-
-
-                    </div>
-                </div>
-            </form>
-        </tab>
-        <tab>
-            <tab-heading>
-                <i class="glyphicon glyphicon-transfer"></i>
-                Profile Definition
-            </tab-heading>
-
-            <div style="margin-top:20px">
-
-                <tabset>
-                    <tab>
-                        <tab-heading>
-                            <span class="badge">M</span>
-                            <i class="fa fa-list-ul"></i>
-                            Messages
-                        </tab-heading>
-                        <div ng-include="'views/edit/editMessages.html'"></div>
-                    </tab>
-
-                    <tab>
-                        <tab-heading>
-                            <span class="badge">S</span>
-                            <i class="fa fa-list-ul"></i>
-                            Segments
-                        </tab-heading>
-                    </tab>
-
-                    <tab>
-                        <tab-heading>
-                            <span class="badge">D</span>
-                            <i class="fa fa-list-ul"></i>
-                            Datatypes
-                        </tab-heading>
-                    </tab>
-
-                    <tab>
-                        <tab-heading>
-                            <span class="badge">V</span>
-                            <i class="fa fa-list-ul"></i>
-                            ValueSets
-                        </tab-heading>
-                    </tab>
-
-                    <tab>
-                        <tab-heading>
-                            <span class="badge">C</span>
-                            <i class="fa fa-list-ul"></i>
-                            Conformance Statement
-                        </tab-heading>
-                    </tab>
-
-                    <tab>
-                        <tab-heading>
-                            <span class="badge">P</span>
-                            <i class="fa fa-list-ul"></i>
-                            Predicates
-                        </tab-heading>
-                    </tab>
-
-
-                </tabset>
-
-            </div>
-        </tab>
-
-
-    </tabset>
-
 
 </div>

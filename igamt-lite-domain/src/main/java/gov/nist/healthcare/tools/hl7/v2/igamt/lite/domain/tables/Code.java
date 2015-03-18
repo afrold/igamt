@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -11,7 +14,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @javax.persistence.Table(name = "CODE")
-public class Code implements Serializable {
+public class Code extends DataModel implements Serializable {
 	/**
 	 * 
 	 */
@@ -27,7 +30,7 @@ public class Code implements Serializable {
 	private String code;
 
 	@NotNull
-	@Column(nullable = false, name = "LABEL")
+	@Column(nullable = false, name = "LABEL", columnDefinition = "TEXT")
 	private String label;
 
 	@Column(name = "CODESYS")
@@ -35,7 +38,12 @@ public class Code implements Serializable {
 
 	@Column(name = "SOURCE")
 	private String source;
-
+	
+	public Code() {
+		super();
+		this.type = Constant.CODE;
+	}
+	
 	public Long getId() {
 		return id;
 	}

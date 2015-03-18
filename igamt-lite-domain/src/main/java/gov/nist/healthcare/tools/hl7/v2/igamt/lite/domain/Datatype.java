@@ -33,9 +33,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @DynamicUpdate
 @SelectBeforeUpdate
 @Table(name = "DATATYPE")
-public class Datatype implements java.io.Serializable {
+public class Datatype extends DataModel implements java.io.Serializable, Cloneable{
 
 	private static final long serialVersionUID = 1L;
+
+	public Datatype() {
+		super();
+		this.type = Constant.DATATYPE;
+	}
 
 	@Id
 	@Column(name = "ID")
@@ -71,6 +76,12 @@ public class Datatype implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DATATYPES_ID")
 	private Datatypes datatypes;
+
+	@Column(name = "COMMENT", columnDefinition = "TEXT")
+	protected String comment;
+
+	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
+	protected String usageNote;
 
 	public Long getId() {
 		return id;
@@ -175,10 +186,52 @@ public class Datatype implements java.io.Serializable {
 		components.add(c);
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getUsageNote() {
+		return usageNote;
+	}
+
+	public void setUsageNote(String usageNote) {
+		this.usageNote = usageNote;
+	}
+
 	@Override
 	public String toString() {
 		return "Datatype [id=" + id + ", label=" + label + ", name=" + name
 				+ ", description=" + description + "]";
 	}
+	
+	@Override
+	public Datatype clone() throws CloneNotSupportedException {
+		Datatype clonedDT = (Datatype)super.clone();
+		clonedDT.setId(null);
+		
+		clonedDT.setDatatypes(null);
+		this.datatypes.addDatatype(clonedDT);
+		
+		clonedDT.setConformanceStatements(new HashSet<ConformanceStatement>());
+		for(ConformanceStatement cs:this.conformanceStatements){
+			clonedDT.addConformanceStatement(cs.clone());
+		}
+		
+		clonedDT.setPredicates(new HashSet<Predicate>());
+		for(Predicate cp:this.predicates){
+			clonedDT.addPredicate(cp.clone());
+		}
+		
+		clonedDT.setComponents(new LinkedHashSet<Component>());
+		for(Component c:this.components){
+			clonedDT.addComponent(c.clone());
+		}
+		
+		return clonedDT;
+    }
 
 }

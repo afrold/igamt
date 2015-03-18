@@ -6,57 +6,108 @@
 
 
 angular.module('igl')
-    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular) {
-        $scope.customs = [];
-        $scope.messages = [];
-        $scope.tmpMessages = [].concat($scope.messages);
+    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams) {
+        $scope.loading = false;
+        $scope.loadingSelection = false;
+        $scope.init = function () {
+            $scope.loading = true;
+            $scope.params = new ngTreetableParams({
+                getNodes: function (parent) {
+                    return parent ? parent.children : $rootScope.message != null ? [$rootScope.message] : [];
+                },
+                getTemplate: function (node) {
+                    return 'MessageEditTree.html';
+                },
+                options: {
+                    initialState: 'expanded'
+                }
+            });
 
-        $scope.init = function(){
-            $scope.messages = $rootScope.profile.messages.messages;
-            $scope.tmpMessages = [].concat($scope.messages);
+
+            $scope.$watch(function () {
+                return $rootScope.notifyMsgTreeUpdate;
+            }, function (messageId) {
+                if (messageId != 0) {
+                    $scope.params.refresh();
+                }
+            });
+
+            $scope.loading = false;
         };
 
-        $scope.select = function(row){
-            $rootScope.message = row;
+        $scope.select = function (messageId) {
+//            $rootScope.segments = [];
+//            $rootScope.datatypes = [];
+//            $rootScope.tables = [];
+            $scope.loadingSelection = true;
+            if (messageId != null) {
+                $rootScope.message = $rootScope.messagesMap[messageId];
+//                angular.forEach($rootScope.message.children, function (segmentRefOrGroup) {
+//                    $rootScope.processElement(segmentRefOrGroup);
+//                });
+            }
+            $scope.params.refresh();
+            $scope.loadingSelection = false;
         };
+
+
+        $scope.goToSegment = function (segmentId) {
+            $rootScope.segment = $rootScope.segmentsMap[segmentId];
+            $rootScope.notifySegTreeUpdate = new Date().getTime();
+            $rootScope.selectProfileTab(2);
+        };
+
+        $scope.hasChildren = function (node) {
+            return node && node != null && node.type !== 'segment' && node.children && node.children.length > 0;
+        };
+
 
     });
 
 
 angular.module('igl')
-    .controller('MessageEditCtrl', ['$scope', '$rootScope','Restangular','ngTreetableParams',function ($scope, $rootScope, Restangular,ngTreetableParams) {
+    .controller('MessageRowCtrl', function ($scope, $filter) {
+        $scope.formName = "form_" + new Date().getTime();
+    });
 
-        $scope.nodeData = [];
+
+angular.module('igl')
+    .controller('MessageViewCtrl', function ($scope, $rootScope, Restangular) {
         $scope.loading = false;
-
-        $scope.init = function () {
-
-            $scope.params = new ngTreetableParams({
-                getNodes: function (parent) {
-                    return parent ? parent.children : [];
-                },
-                getTemplate: function (node) {
-                    return 'MessageEditTree.html';
+        $scope.msg = null;
+        $scope.messageData = [];
+        $scope.setData = function (node) {
+            if(node) {
+                if (node.type === 'message') {
+                    angular.forEach(node.children, function (segmentRefOrGroup) {
+                        $scope.setData(segmentRefOrGroup);
+                    });
+                } else if (node.type === 'group') {
+                    $scope.messageData.push({ name: "-- " + node.name + " begin"});
+                    if (node.children) {
+                        angular.forEach(node.children, function (segmentRefOrGroup) {
+                            $scope.setData(segmentRefOrGroup);
+                        });
+                    }
+                    $scope.messageData.push({ name: "-- " + node.name + " end"});
+                } else if (node.type === 'segment') {
+                    $scope.messageData.push + (node);
                 }
-            });
-
-            $scope.$watch(function () {
-                return $rootScope.message.id;
-            }, function (messageId) {
-                if (messageId != null) {
-                    $scope.loading = true;
-                    $scope.nodeData = $rootScope.message.children;
-                    if( $scope.params)
-                    $scope.params.refresh();
-                    $scope.loading = false;
-                } else {
-                    $scope.nodeData = [];
-                    if( $scope.params)
-                    $scope.params.refresh();
-                    $scope.loading = false;
-                }
-            }, true);
-
-
+            }
         };
-    }]);
+
+
+        $scope.init = function (message) {
+            $scope.loading = true;
+            $scope.msg = message;
+            console.log(message.id);
+            $scope.setData($scope.msg);
+            $scope.loading = false;
+        };
+
+//        $scope.hasChildren = function (node) {
+//            return node && node != null && node.type !== 'segment' && node.children && node.children.length > 0;
+//        };
+
+    });
+
