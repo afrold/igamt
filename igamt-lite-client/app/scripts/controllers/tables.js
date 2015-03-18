@@ -35,7 +35,6 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                 }
             });
 
-
             $scope.$watch(function () {
                 return $rootScope.notifyTableTreeUpdate;
             }, function (changeId) {

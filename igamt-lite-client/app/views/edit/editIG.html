@@ -6,21 +6,23 @@
 <div ng-show="!loading">
     <div class="row" style="margin-left: 0px">
         <div class="col-md-3" role="complementary">
-            <!--<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">-->
-                <!--<ul class="nav bs-docs-sidenav">-->
-                    <!--<li>-->
-                        <!--<a href="#info" target="_self">Implementation Guide Information</a>-->
-                    <!--</li>-->
-                    <!--<li class="active">-->
-                        <!--<a href="#messages" target="_self">Conformance Profiles</a>-->
-                        <!--<ul class="nav">-->
-                            <!--<li ng-repeat="message in profile.messages.children">-->
-                                <!--<a href="#message_{{message.id}}" target="_self">{{message.identifier}}</a>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</nav>-->
+        	<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
+                <ul class="nav bs-docs-sidenav">
+                    <li>
+                        <a href="#/profiles#info" target="_self">Implementation Guide Information</a>
+                    </li>
+                    <li class="active">
+                        <a href="#/profiles#messages" target="_self">Conformance Profiles</a>
+                        <ul class="nav">
+                            <li ng-repeat="message in profile.messages.children">
+                                <a href="#/profiles#message_{{message.id}}" target="_self">{{message.identifier}}</a>
+                                <a href="#/profiles#message_{{message.id}}_segments_def" target="_self">{{message.identifier}} Segment Definition</a>
+                            </li>
+                        </ul>
+                        <a href="#/profiles#woo" target="_self">Test Woo</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
 
@@ -181,6 +183,7 @@
                     </div>
 
 
+					<h1 id="woo" class="page-header">Test WOo</h1>
                     <h2 id="#message_{{msg.message.id}}_segments" class="page-header">Segments</h2>
                     <h2 id="#message_{{msg.message.id}}_segments_def">{{msg.message.identifier}} Segments
                         Definition</h2>
