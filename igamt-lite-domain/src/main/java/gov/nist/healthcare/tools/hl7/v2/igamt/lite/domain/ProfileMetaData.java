@@ -19,6 +19,9 @@ public class ProfileMetaData implements java.io.Serializable {
 	@Column(nullable = false, name = "NAME")
 	private String name;
 
+	@Column(name = "PROFILE_IDENTIFIER")
+	private String identifier;
+
 	@NotNull
 	@Column(nullable = false, name = "ORGNAME")
 	private String orgName;
@@ -104,6 +107,14 @@ public class ProfileMetaData implements java.io.Serializable {
 
 	public void setEncodings(Set<String> encodings) {
 		this.encodings = encodings;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
 	}
 
 }

@@ -73,6 +73,12 @@ public class Segment extends DataModel implements java.io.Serializable {
 	@JoinColumn(name = "SEGMENTS_ID")
 	private Segments segments;
 
+	@Column(name = "COMMENT", columnDefinition = "TEXT")
+	protected String comment;
+
+	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
+	protected String usageNote;
+
 	//
 	// @NotNull
 	// @Column(nullable = false,name="POSITION")
@@ -196,6 +202,22 @@ public class Segment extends DataModel implements java.io.Serializable {
 				addConformanceStatement(it.next());
 			}
 		}
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getUsageNote() {
+		return usageNote;
+	}
+
+	public void setUsageNote(String usageNote) {
+		this.usageNote = usageNote;
 	}
 
 	@Override

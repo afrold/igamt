@@ -68,4 +68,17 @@ public class ProfileController extends CommonController {
 		return p;
 	}
 
+	@RequestMapping(value = "/{targetId}", method = RequestMethod.POST)
+	public Profile clone(@PathVariable("targetId") Long targetId)
+			throws ProfileNotFoundException {
+		logger.info("Clone pofile with id=" + targetId);
+		Profile p = profileService.findOne(targetId);
+		if (p == null) {
+			throw new ProfileNotFoundException(targetId);
+		}
+		Profile profile = profileService.clone(p);
+		profileService.save(profile);
+		return profile;
+	}
+
 }

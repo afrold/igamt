@@ -316,7 +316,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private nu.xom.Element serializeMessage(Message m) {
 		nu.xom.Element elmMessage = new nu.xom.Element("Message");
 		elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
-		elmMessage.addAttribute(new Attribute("Type", m.getType()));
+		elmMessage.addAttribute(new Attribute("Type", m.getMessageType()));
 		elmMessage.addAttribute(new Attribute("Event", m.getEvent()));
 		elmMessage.addAttribute(new Attribute("StructID", m.getStructID()));
 		if (m.getDescription() != null && !m.getDescription().equals(""))
@@ -468,7 +468,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 						.getAttribute("Description"));
 				messageObj1.setEvent(elmMessage.getAttribute("Event"));
 				messageObj1.setStructID(elmMessage.getAttribute("StructID"));
-				messageObj1.setType(elmMessage.getAttribute("Type"));
+				messageObj1.setMessageType(elmMessage.getAttribute("Type"));
 
 				this.deserializeSegmentRefOrGroups(elmConformanceProfile,
 						messageObj1, elmMessage, profile.getSegments(),

@@ -33,9 +33,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @DynamicUpdate
 @SelectBeforeUpdate
 @Table(name = "DATATYPE")
-public class Datatype implements java.io.Serializable {
+public class Datatype extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public Datatype() {
+		super();
+		this.type = Constant.DATATYPE;
+	}
 
 	@Id
 	@Column(name = "ID")
@@ -71,6 +76,12 @@ public class Datatype implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DATATYPES_ID")
 	private Datatypes datatypes;
+
+	@Column(name = "COMMENT", columnDefinition = "TEXT")
+	protected String comment;
+
+	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
+	protected String usageNote;
 
 	public Long getId() {
 		return id;
@@ -173,6 +184,22 @@ public class Datatype implements java.io.Serializable {
 	public void addComponent(Component c) {
 		c.setPosition(components.size() + 1);
 		components.add(c);
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getUsageNote() {
+		return usageNote;
+	}
+
+	public void setUsageNote(String usageNote) {
+		this.usageNote = usageNote;
 	}
 
 	@Override

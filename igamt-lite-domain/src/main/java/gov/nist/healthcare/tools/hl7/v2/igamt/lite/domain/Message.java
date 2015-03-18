@@ -22,17 +22,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "MESSAGE")
-public class Message implements java.io.Serializable {
+public class Message extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	public Message() {
+		super();
+		this.type = Constant.MESSAGE;
+	}
+
 	@Id
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@Column(name = "MESSAGE_IDENTIFIER")
+	private String identifier;
+
 	@NotNull
 	@Column(nullable = false, name = "TYPE")
-	private String type;
+	private String messageType;
 	@NotNull
 	@Column(nullable = false, name = "EVENT")
 	private String event;
@@ -58,6 +67,12 @@ public class Message implements java.io.Serializable {
 	@Column(nullable = false, name = "MESSAGE_POSITION")
 	protected Integer position = 0;
 
+	@Column(name = "COMMENT", columnDefinition = "TEXT")
+	protected String comment;
+
+	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
+	protected String usageNote;
+
 	public Long getId() {
 		return id;
 	}
@@ -66,12 +81,12 @@ public class Message implements java.io.Serializable {
 		this.id = id;
 	}
 
-	public String getType() {
-		return type;
+	public String getMessageType() {
+		return messageType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setMessageType(String messageType) {
+		this.messageType = messageType;
 	}
 
 	public String getEvent() {
@@ -135,11 +150,35 @@ public class Message implements java.io.Serializable {
 		segmentRefOrGroups.add(e);
 	}
 
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getUsageNote() {
+		return usageNote;
+	}
+
+	public void setUsageNote(String usageNote) {
+		this.usageNote = usageNote;
+	}
+
 	@Override
 	public String toString() {
-		return "Message [id=" + id + ", type=" + type + ", event=" + event
-				+ ", structID=" + structID + ", description=" + description
-				+ "]";
+		return "Message [id=" + id + ", type=" + messageType + ", event="
+				+ event + ", structID=" + structID + ", description="
+				+ description + "]";
 	}
 
 }

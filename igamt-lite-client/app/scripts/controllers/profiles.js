@@ -4,7 +4,8 @@
 
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http) {
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http,$filter) {
+        $scope.loading = false;
         $scope.custom = [];
         $scope.preloaded = [];
         $scope.tmpPreloadeds = [];
@@ -27,7 +28,6 @@ angular.module('igl')
             $http.get('/api/profiles?userId=' + $scope.user.id).then(function (response) {
                 $scope.custom = response.data;
             });
-
         };
 
         $scope.clone = function (profile) {
@@ -36,74 +36,149 @@ angular.module('igl')
             }, function (error) {
                 $scope.error = error;
             });
-        };
 
-
-        $scope.reconcileElementReferences = function (element) {
-            if (element.type === "message" && element.children) {
-                angular.forEach(element.children, function (segmentRefOrGroup) {
-                    $scope.reconcileElementReferences(segmentRefOrGroup);
-                });
-            } else if (element.type === "group" && element.children) {
-                angular.forEach(element.children, function (segmentRefOrGroup) {
-                    $scope.reconcileElementReferences(segmentRefOrGroup);
-                });
-            } else if (element.type === "segment") {
-                element.ref = $rootScope.segmentsMap[element.ref.id];
-            }
-        };
-
-
-        $scope.reconcileDatatypeReferences = function (datatype) {
-            if (datatype.children && datatype.children.length > 0) {
-                angular.forEach(datatype.children, function (component) {
-                    if (component["datatypeLabel"] != undefined) {
-                        component["datatype"] = $rootScope.datatypesMap[component.datatypeLabel];
-                    }
-                });
-            }
         };
 
 
         $scope.edit = function (profile) {
-
-
             Restangular.one('profiles', profile.id).get().then(function (profile) {
-                $rootScope.clearMaps();
+                $scope.loading = true;
+                $rootScope.initMaps();
                 $rootScope.context.page = $rootScope.pages[1];
                 $rootScope.profile = profile;
                 $rootScope.backUp = Restangular.copy($rootScope.profile);
-
-                angular.forEach($rootScope.profile.messages.children, function (child) {
-                    this[child.id] = child;
-                }, $rootScope.messagesMap);
 
                 angular.forEach($rootScope.profile.datatypes.children, function (child) {
                     this[child.label] = child;
                 }, $rootScope.datatypesMap);
 
-                angular.forEach($rootScope.profile.segments.children, function (child) {
-                    this[child.id] = child;
-                }, $rootScope.segmentsMap);
 
                 angular.forEach($rootScope.profile.segments.children, function (child) {
                     this[child.id] = child;
                 }, $rootScope.segmentsMap);
 
+                angular.forEach($rootScope.profile.tableLibrary.tables.children, function (child) {
+                    this[child.id] = child;
+                }, $rootScope.tablesMap);
 
 
-                angular.forEach($rootScope.datatypesMap, function (datatype, label) {
-                    $scope.reconcileDatatypeReferences(datatype);
+                angular.forEach($rootScope.profile.messages.children, function (child) {
+                    this[child.id] = child;
+                    angular.forEach(child.children, function (segmentRefOrGroup) {
+                        $rootScope.processElement(segmentRefOrGroup);
+                    });
+                }, $rootScope.messagesMap);
+
+                if($rootScope.profile.messages.children.length === 1){
+                    $rootScope.message = $rootScope.profile.messages.children[0];
+                    $rootScope.message.children = $filter('orderBy')($rootScope.message.children, 'position');
+                    angular.forEach($rootScope.message.children, function (segmentRefOrGroup) {
+                        $rootScope.processElement(segmentRefOrGroup);
+                    });
+                }
+
+                angular.forEach($rootScope.profile.messages.children, function (message) {
+                    var segRefOrGroups = [];
+                    var segments = [];
+                    var datatypes = [];
+                    $scope.collectData(message, segRefOrGroups, segments,datatypes);
+//                    $scope.loadSegments(message, segments);
+//                    angular.forEach(segments, function (segment) {
+//                        $scope.loadDatatypes(segment,datatypes);
+//                    });
+                    $rootScope.messagesData.push({message: message, segRefOrGroups: segRefOrGroups, segments:segments, datatypes:datatypes});
+
+
                 });
 
-                angular.forEach($rootScope.messagesMap, function (message, id) {
-                    $scope.reconcileElementReferences(message);
-                });
+                $scope.loading = false;
 
             }, function (error) {
                 $scope.error = error;
+                $scope.loading = false;
             });
         };
+
+
+        $scope.collectData = function (node, segRefOrGroups, segments, datatypes) {
+            if(node) {
+                if (node.type === 'message') {
+                    angular.forEach(node.children, function (segmentRefOrGroup) {
+                        $scope.collectData(segmentRefOrGroup,segRefOrGroups,segments, datatypes);
+                    });
+                } else if (node.type === 'group') {
+                    segRefOrGroups.push(node);
+                    if (node.children) {
+                        angular.forEach(node.children, function (segmentRefOrGroup) {
+                            $scope.collectData(segmentRefOrGroup,segRefOrGroups,segments, datatypes);
+                        });
+                    }
+                    segRefOrGroups.push({ name: node.name, "type": "end-group"});
+                } else if (node.type === 'segment') {
+                    segRefOrGroups.push(node);
+                    if(segments.indexOf(node) === -1) {
+                        segments.push(node.ref);
+                    }
+                    angular.forEach(node.ref.fields, function (field) {
+                         $scope.collectData(field,segRefOrGroups,segments, datatypes);
+                    });
+                }else if(node.type === 'component' || node.type === 'subcomponent' || node.type === 'field'){
+                    $scope.collectData(node.datatype,segRefOrGroups,segments,datatypes);
+                }else if(node.type === 'datatype'){
+                    if(datatypes.indexOf(node) === -1) {
+                        datatypes.push(node);
+                    }
+                    if(node.children) {
+                        angular.forEach(node.children, function (component) {
+                            $scope.collectData(component,segRefOrGroups,segments,datatypes);
+                        });
+                    }
+                }
+            }
+        };
+
+
+//        $scope.loadSegments = function (node, segments) {
+//            if(node) {
+//                if (node.type === 'message') {
+//                    angular.forEach(node.children, function (segmentRefOrGroup) {
+//                        $scope.loadSegments(segmentRefOrGroup,segments);
+//                    });
+//                } else if (node.type === 'group') {
+//                    if (node.children) {
+//                        angular.forEach(node.children, function (segmentRefOrGroup) {
+//                            $scope.loadSegments(segmentRefOrGroup,segments);
+//                        });
+//                    }
+//                } else if (node.type === 'segment') {
+//                    segments.push(node.ref);
+//                }
+//            }
+//        };
+//
+//        $scope.loadDatatypes = function (node, datatypes) {
+//            if(node) {
+//                if (node.type === 'segment') {
+//                    angular.forEach(node.fields, function (field) {
+//                        $scope.loadDatatypes(field,datatypes);
+//                    });
+//                }else if(node.type === 'datatype'){
+//                    if(datatypes.indexOf(node) === -1) {
+//                        datatypes.push(node);
+//                    }
+//                    if(node.children) {
+//                        angular.forEach(node.children, function (component) {
+//                            $scope.loadDatatypes(component, datatypes);
+//                        });
+//                    }
+//                }else if(node.type === 'component' || node.type === 'subcomponent' || node.type === 'field'){
+//                    $scope.loadDatatypes(node.datatype,datatypes);
+//                }
+//            }
+//        };
+
+
+
 
         $scope.delete = function (profile) {
             profile.remove().then(function () {
@@ -113,15 +188,12 @@ angular.module('igl')
                 $scope.error = error;
             });
         };
-
-    })
-;
+    });
 
 
 angular.module('igl')
     .controller('EditProfileCtrl', function ($scope, $rootScope, Restangular) {
 
-        $scope.changes = [];
         $scope.error = null;
 
         /**
@@ -130,9 +202,10 @@ angular.module('igl')
         $scope.init = function () {
         };
 
-        $scope.cancel = function () {
+        $scope.reset = function () {
             $rootScope.context.page = $rootScope.pages[0];
-            $scope.changes = [];
+            //TODO: FIX ME
+            $rootScope.changes = {};
             $rootScope.profile = null;
         };
 
@@ -147,7 +220,8 @@ angular.module('igl')
             });
         };
 
-        $scope.applyChanges = function () {
+        $scope.save = function () {
+
 
         };
     });

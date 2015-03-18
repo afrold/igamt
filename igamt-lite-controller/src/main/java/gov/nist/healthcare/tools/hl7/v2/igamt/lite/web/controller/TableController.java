@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +35,21 @@ public class TableController extends CommonController {
 	@Autowired
 	private TableService tableService;
 
+	// CRUD R for TableLib
+	@RequestMapping(value = "/tableLibrary/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Tables tableLibrary(@PathVariable("id") Long id) {
+		return tableLibraryService.findOne(id);
+	}
+
+	// CRUD R for Table
+	@RequestMapping(value = "/table/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Table table(@PathVariable("id") Long id) {
+		return tableService.findOne(id);
+	}
+	/*	
+		
 	// CRUD C for Table, User cannot create tableLib
 	@RequestMapping(value = "/table/create/{tableLibraryId}", method = RequestMethod.POST)
 	public Tables createTable(@RequestBody Long tableLibraryId) {
@@ -50,20 +66,6 @@ public class TableController extends CommonController {
 		Table table = tableService.findOne(tableId);
 		table.getCodes().add(code);
 		return tableService.save(table);
-	}
-
-	// CRUD R for TableLib
-	@RequestMapping(value = "/tableLibrary/{tableLibraryId}", method = RequestMethod.GET)
-	@ResponseBody
-	public Tables tableLibrary(final Long tableLibraryId) {
-		return tableLibraryService.findOne(tableLibraryId);
-	}
-
-	// CRUD R for Table
-	@RequestMapping(value = "/table/{tableId}", method = RequestMethod.GET)
-	@ResponseBody
-	public Table table(final Long tableId) {
-		return tableService.findOne(tableId);
 	}
 
 	// Update for TableLib
@@ -113,7 +115,7 @@ public class TableController extends CommonController {
 		}
 		return new ResponseEntity<Boolean>(Boolean.FALSE, HttpStatus.OK);
 	}
-
+*/
 	// GET,SET
 	public TableLibraryRepository getTableLibraryRepository() {
 		return tableLibraryRepository;
