@@ -29,6 +29,9 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                 },
                 getTemplate: function (node) {
                     return 'TableEditTree.html';
+                },
+                options: {
+                    initialState: 'expanded'
                 }
             });
 
@@ -74,9 +77,5 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $scope.refreshTree = function(){
             if ($scope.params)
                 $scope.params.refresh();
-        };
-
-        $scope.goToTable = function(table){
-
         };
     });
