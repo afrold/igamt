@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -71,7 +72,7 @@ public class ProfileController extends CommonController {
 	@RequestMapping(value = "/{targetId}", method = RequestMethod.POST)
 	public Profile clone(@PathVariable("targetId") Long targetId)
 			throws ProfileNotFoundException {
-		logger.info("Clone pofile with id=" + targetId);
+		logger.info("Clone profile with id=" + targetId);
 		Profile p = profileService.findOne(targetId);
 		if (p == null) {
 			throw new ProfileNotFoundException(targetId);
@@ -79,6 +80,13 @@ public class ProfileController extends CommonController {
 		Profile profile = profileService.clone(p);
 		profileService.save(profile);
 		return profile;
+	}
+
+	@RequestMapping(value = "/apply", method = RequestMethod.POST)
+	public String[] save(@RequestBody String jsonChanges) {
+		logger.info("Applying changes = " + jsonChanges);
+		String[] failures = profileService.apply(jsonChanges);
+		return failures;
 	}
 
 }

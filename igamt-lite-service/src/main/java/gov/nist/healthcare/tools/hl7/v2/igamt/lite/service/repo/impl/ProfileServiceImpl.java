@@ -62,17 +62,16 @@ public class ProfileServiceImpl implements ProfileService {
 		return profileRepository.findAllSummariesByUserId(userId);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService
-	 * #clone(gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile)
-	 */
 	@Override
 	public Profile clone(Profile p) {
-		// TODO Auto-generated method stub
 		return profileClone.clone(p);
 	}
 
+	/*
+	 * { "component": { "59": { "usage": "C" }, "303": { "maxLength": "27" } } }
+	 */
+	@Override
+	public String[] apply(String changes) {
+		return new String[1];
+	}
 }

@@ -34,4 +34,6 @@ public interface ProfileService {
 
 	public Profile clone(Profile p);
 
+	public String[] apply(String changes);
+
 }

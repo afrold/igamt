@@ -6,21 +6,21 @@
 <div ng-show="!loading">
     <div class="row" style="margin-left: 0px">
         <div class="col-md-3" role="complementary">
-            <!--<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">-->
-                <!--<ul class="nav bs-docs-sidenav">-->
-                    <!--<li>-->
-                        <!--<a href="#info" target="_self">Implementation Guide Information</a>-->
-                    <!--</li>-->
-                    <!--<li class="active">-->
-                        <!--<a href="#messages" target="_self">Conformance Profiles</a>-->
-                        <!--<ul class="nav">-->
-                            <!--<li ng-repeat="message in profile.messages.children">-->
-                                <!--<a href="#message_{{message.id}}" target="_self">{{message.identifier}}</a>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</nav>-->
+            <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
+                <ul class="nav bs-docs-sidenav">
+                    <li>
+                        <a href="#info" target="_self">Implementation Guide Information</a>
+                    </li>
+                    <li class="active">
+                        <a href="#messages" target="_self">Conformance Profiles</a>
+                        <ul class="nav">
+                            <li ng-repeat="message in profile.messages.children">
+                                <a href="#message_{{message.id}}" target="_self">{{message.identifier}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
 
