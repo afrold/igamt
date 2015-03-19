@@ -1,3 +1,21 @@
+<script>
+
+$(function () {
+    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    $('.tree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        }
+        e.stopPropagation();
+    });
+});
+</script>
+
 <div class="container bs-docs-container ig-doc">
 
 <div ng-show="loading" style="text-align:center">
@@ -6,21 +24,96 @@
 <div ng-show="!loading">
     <div class="row" style="margin-left: 0px">
         <div class="col-md-3" role="complementary">
-            <!--<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">-->
-                <!--<ul class="nav bs-docs-sidenav">-->
-                    <!--<li>-->
-                        <!--<a href="#info" target="_self">Implementation Guide Information</a>-->
-                    <!--</li>-->
-                    <!--<li class="active">-->
-                        <!--<a href="#messages" target="_self">Conformance Profiles</a>-->
-                        <!--<ul class="nav">-->
-                            <!--<li ng-repeat="message in profile.messages.children">-->
-                                <!--<a href="#message_{{message.id}}" target="_self">{{message.identifier}}</a>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</nav>-->
+        	
+        	<div class="tree well">
+    <ul>
+        <li>
+            <span><i class="icon-folder-open"></i> Parent</span> <a href="">Goes somewhere</a>
+            <ul>
+                <li>
+                	<span><i class="icon-minus-sign"></i> Child</span> <a href="">Goes somewhere</a>
+                    <ul>
+                        <li>
+	                        <span><i class="icon-leaf"></i> Grand Child</span> <a href="">Goes somewhere</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                	<span><i class="icon-minus-sign"></i> Child</span> <a href="">Goes somewhere</a>
+                    <ul>
+                        <li>
+	                        <span><i class="icon-leaf"></i> Grand Child</span> <a href="">Goes somewhere</a>
+                        </li>
+                        <li>
+                        	<span><i class="icon-minus-sign"></i> Grand Child</span> <a href="">Goes somewhere</a>
+                            <ul>
+                                <li>
+	                                <span><i class="icon-minus-sign"></i> Great Grand Child</span> <a href="">Goes somewhere</a>
+		                            <ul>
+		                                <li>
+			                                <span><i class="icon-leaf"></i> Great great Grand Child</span> <a href="">Goes somewhere</a>
+		                                </li>
+		                                <li>
+			                                <span><i class="icon-leaf"></i> Great great Grand Child</span> <a href="">Goes somewhere</a>
+		                                </li>
+		                             </ul>
+                                </li>
+                                <li>
+	                                <span><i class="icon-leaf"></i> Great Grand Child</span> <a href="">Goes somewhere</a>
+                                </li>
+                                <li>
+	                                <span><i class="icon-leaf"></i> Great Grand Child</span> <a href="">Goes somewhere</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+	                        <span><i class="icon-leaf"></i> Grand Child</span> <a href="">Goes somewhere</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <span><i class="icon-folder-open"></i> Parent2</span> <a href="">Goes somewhere</a>
+            <ul>
+                <li>
+                	<span><i class="icon-leaf"></i> Child</span> <a href="">Goes somewhere</a>
+		        </li>
+		    </ul>
+        </li>
+    </ul>
+</div>
+
+
+        	
+        	
+        	<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
+                <ol class="nav bs-docs-sidenav">
+                    <li>
+                        <a href="#/profiles#info">Implementation Guide Information</a>
+                    </li>
+                    <li class="active">
+                        <a href="#/profiles#messages">Conformance Profiles</a>
+                        <ol class="nav">
+                            <li ng-repeat="msg in messagesData">
+                                <a href="#/profiles#message_{{msg.message.id}}">{{msg.message.identifier}} Message Definition</a>
+                                <a href="#/profiles#message_{{msg.message.id}}_segments">{{msg.message.identifier}} Segments Definition</a>
+                                <ol class="nav">
+                                	<li ng-repeat="segment in msg.segments">
+                                		<a href="#/profiles#message_{{msg.message.id}}_segment_{{segment.id}}">{{segment.name}} - {{segment.description}}</a>
+                                	</li>
+                                </ol>
+                                <a href="#/profiles#message_{{msg.message.id}}_datatypes">{{msg.message.identifier}} Datatypes Definition</a>
+                                <ol class="nav">
+                                	<li ng-repeat="datatype in msg.datatypes">
+                                		<a href="#/profiles#message_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</a>
+                                	</li>
+                                </ol>
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+            </nav>
         </div>
 
 
@@ -117,7 +210,7 @@
                           <!--ng-change="recordChange2('profile',profile.id,'comment', profile.comment)"> </textarea>-->
                 <div ng-repeat="msg in messagesData">
                     <div>
-                        <h2 id="#message_{{msg.message.id}}" class="page-header">{{msg.message.identifier}} Message
+                        <h2 id="message_{{msg.message.id}}" class="page-header">{{msg.message.identifier}} Message
                             Definition</h2>
 
                         <textarea style="width:100%" class="form-control" ng-model="msg.message.comment"
@@ -180,16 +273,14 @@
                         </table>
                     </div>
 
-
-                    <h2 id="#message_{{msg.message.id}}_segments" class="page-header">Segments</h2>
-                    <h2 id="#message_{{msg.message.id}}_segments_def">{{msg.message.identifier}} Segments
-                        Definition</h2>
+                    <h2 id="message_{{msg.message.id}}_segments" class="page-header">Segments</h2>
+                    <h2 id="message_{{msg.message.id}}_segments_def">{{msg.message.identifier}} Segments Definition</h2>
                     <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
                               <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
 
 
                     <div ng-repeat="segment in msg.segments">
-                        <h3>{{segment.name}} - {{segment.description}}</h3>
+                        <h3 id="message_{{msg.message.id}}_segment_{{segment.id}}">{{segment.name}} - {{segment.description}}</h3>
                         <table class="table table-bordered">
                             <thead>
                             <tr class="ig-tbl-header row">
@@ -241,15 +332,15 @@
 
 
 
-                    <h2 id="#message_{{msg.message.id}}_datatypes" class="page-header">Datatypes</h2>
+                    <h2 id="message_{{msg.message.id}}_datatypes" class="page-header">Datatypes</h2>
 
-                    <h3 id="#message_{{msg.message.id}}_datatypes_def">{{msg.message.identifier}} Datatypes
+                    <h3 id="message_{{msg.message.id}}_datatypes_def">{{msg.message.identifier}} Datatypes
                         Definition</h3>
                     <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
                               <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
 
-                    <div ng-repeat="datatype in msg.datatypes">
-                        <h3 id="#message_{{msg.message.id}}_datatypes_def_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</h3>
+                    <div ng-repeat="datatype in msg.datatypes">     
+                        <h3 id="/profiles#message_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</h3>
                         <table class="table table-bordered">
                             <thead>
                             <tr class="ig-tbl-header row">

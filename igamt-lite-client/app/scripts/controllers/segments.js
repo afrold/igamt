@@ -80,9 +80,11 @@ angular.module('igl')
             if ($scope.params)
                 $scope.params.refresh();
         };
-
+        
         $scope.goToTable = function(table){
-
+        	$rootScope.table = table;
+            $rootScope.notifyTableTreeUpdate = new Date().getTime();
+            $rootScope.selectProfileTab(4);
         };
 
     });

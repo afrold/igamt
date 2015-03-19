@@ -190,7 +190,6 @@ angular.module('igl')
         };
     });
 
-
 angular.module('igl')
     .controller('EditProfileCtrl', function ($scope, $rootScope, Restangular) {
 
@@ -221,7 +220,6 @@ angular.module('igl')
         };
 
         $scope.save = function () {
-
 
         };
     });
