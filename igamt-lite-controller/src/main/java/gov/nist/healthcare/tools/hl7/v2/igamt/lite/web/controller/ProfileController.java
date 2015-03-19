@@ -2,8 +2,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.ProfileNotFoundException;
 
 import java.util.List;
 
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-
 
 @RestController
 @RequestMapping("/profiles")
@@ -52,7 +50,7 @@ public class ProfileController extends CommonController {
 	 */
 	@RequestMapping(value = "/preloaded", method = RequestMethod.GET)
 	public List<ProfileSummary> profileSummaries() {
- 		logger.info("Fetching all preloaed profiles...");
+		logger.info("Fetching all preloaed profiles...");
 		List<ProfileSummary> result = profileService
 				.findAllPreloadedSummaries();
 		return result;
@@ -96,8 +94,11 @@ public class ProfileController extends CommonController {
 	@RequestMapping(value = "/apply", method = RequestMethod.POST)
 	public String[] save(@RequestBody String jsonChanges) {
 		logger.info("Applying changes = " + jsonChanges);
-		String[] failures = profileService.apply(jsonChanges);
-		return failures;
+		try {
+			return profileService.apply(jsonChanges);
+		} catch (ProfileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
