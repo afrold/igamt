@@ -23,68 +23,32 @@ $(function () {
 </div>
 <div ng-show="!loading">
     <div class="row" style="margin-left: 0px">
-        <div class="col-md-3" role="complementary">
-        	
+        <div class="col-md-3" role="complementary">      
         	<div class="tree well">
-    <ul>
-        <li>
-            <span><i class="icon-folder-open"></i> Parent</span> <a href="">Goes somewhere</a>
-            <ul>
-                <li>
-                	<span><i class="icon-minus-sign"></i> Child</span> <a href="">Goes somewhere</a>
-                    <ul>
-                        <li>
-	                        <span><i class="icon-leaf"></i> Grand Child</span> <a href="">Goes somewhere</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                	<span><i class="icon-minus-sign"></i> Child</span> <a href="">Goes somewhere</a>
-                    <ul>
-                        <li>
-	                        <span><i class="icon-leaf"></i> Grand Child</span> <a href="">Goes somewhere</a>
-                        </li>
-                        <li>
-                        	<span><i class="icon-minus-sign"></i> Grand Child</span> <a href="">Goes somewhere</a>
-                            <ul>
-                                <li>
-	                                <span><i class="icon-minus-sign"></i> Great Grand Child</span> <a href="">Goes somewhere</a>
-		                            <ul>
-		                                <li>
-			                                <span><i class="icon-leaf"></i> Great great Grand Child</span> <a href="">Goes somewhere</a>
-		                                </li>
-		                                <li>
-			                                <span><i class="icon-leaf"></i> Great great Grand Child</span> <a href="">Goes somewhere</a>
-		                                </li>
-		                             </ul>
-                                </li>
-                                <li>
-	                                <span><i class="icon-leaf"></i> Great Grand Child</span> <a href="">Goes somewhere</a>
-                                </li>
-                                <li>
-	                                <span><i class="icon-leaf"></i> Great Grand Child</span> <a href="">Goes somewhere</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-	                        <span><i class="icon-leaf"></i> Grand Child</span> <a href="">Goes somewhere</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <span><i class="icon-folder-open"></i> Parent2</span> <a href="">Goes somewhere</a>
-            <ul>
-                <li>
-                	<span><i class="icon-leaf"></i> Child</span> <a href="">Goes somewhere</a>
-		        </li>
-		    </ul>
-        </li>
-    </ul>
-</div>
+    			<ul>
+        			<li>
+            			<span><i class="icon-leaf glyphicon-minus"></i></span><a href="#/profiles#info">Implementation Guide Information</a>
+        			</li>
+    			</ul>
+    			<ul>
+                	<li>
+                		<span><i class="icon-folder-open glyphicon-plus"></i></span><a href="#/profiles#messages">Conformance Profiles</a>
+                		<ul ng-repeat="msg in messagesData">
+                			<li>
+                				<span><i class="icon-leaf glyphicon-minus"></i></span><a href="#/profiles#message_{{msg.message.id}}">{{msg.message.identifier}} Message Definition</a>
+                			</li>
+                			<li>
+                				<span><i class="icon-leaf glyphicon-minus"></i></span><a href="#/profiles#message_{{msg.message.id}}_segments">{{msg.message.identifier}} Segments Definition</a>
+                			</li>
+                			<li>
+                				<span><i class="icon-leaf glyphicon-minus"></i></span><a href="#/profiles#message_{{msg.message.id}}_datatypes">{{msg.message.identifier}} Datatypes Definition</a>
+                			</li>
+            			</ul>
+                	</li>
+            	</ul>
+			</div>
 
-
+<!-- 
         	
         	
         	<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
@@ -113,7 +77,7 @@ $(function () {
                         </ol>
                     </li>
                 </ol>
-            </nav>
+            </nav> -->
         </div>
 
 
