@@ -21,5 +21,10 @@ public class Component extends DataElement {
 				+ ", maxLength=" + maxLength + ", confLength=" + confLength
 				+ ", table=" + table + "]";
 	}
+	
+	@Override
+	public Component clone() throws CloneNotSupportedException {
+		return (Component)super.clone();
+	}
 
 }

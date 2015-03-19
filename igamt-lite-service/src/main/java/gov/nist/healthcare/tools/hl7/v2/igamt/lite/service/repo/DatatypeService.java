@@ -29,4 +29,6 @@ public interface DatatypeService {
 
 	public Datatype findOne(Long id);
 
+	public Datatype clone(Datatype d) throws CloneNotSupportedException;
+
 }

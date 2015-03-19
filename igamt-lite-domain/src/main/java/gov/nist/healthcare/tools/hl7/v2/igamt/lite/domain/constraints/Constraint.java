@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "IGCONSTRAINT")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Constraint implements Serializable {
+public abstract class Constraint implements Serializable, Cloneable{
 
 	private static final long serialVersionUID = 5723342171557075960L;
 
@@ -96,6 +96,14 @@ public abstract class Constraint implements Serializable {
 				+ ", constraintTarget=" + constraintTarget + ", reference="
 				+ reference + ", description=" + description + ", assertion="
 				+ assertion + "]";
+	}
+	
+	@Override
+	protected Constraint clone() throws CloneNotSupportedException {
+		Constraint c = (Constraint)super.clone();
+		c.setId(null);
+		c.setReference(this.reference.clone());
+		return c;
 	}
 
 }

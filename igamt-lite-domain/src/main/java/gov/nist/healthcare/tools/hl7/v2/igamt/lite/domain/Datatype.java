@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @DynamicUpdate
 @SelectBeforeUpdate
 @Table(name = "DATATYPE")
-public class Datatype extends DataModel implements java.io.Serializable {
+public class Datatype extends DataModel implements java.io.Serializable, Cloneable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -207,5 +207,31 @@ public class Datatype extends DataModel implements java.io.Serializable {
 		return "Datatype [id=" + id + ", label=" + label + ", name=" + name
 				+ ", description=" + description + "]";
 	}
+	
+	@Override
+	public Datatype clone() throws CloneNotSupportedException {
+		Datatype clonedDT = (Datatype)super.clone();
+		clonedDT.setId(null);
+		
+		clonedDT.setDatatypes(null);
+		this.datatypes.addDatatype(clonedDT);
+		
+		clonedDT.setConformanceStatements(new HashSet<ConformanceStatement>());
+		for(ConformanceStatement cs:this.conformanceStatements){
+			clonedDT.addConformanceStatement(cs.clone());
+		}
+		
+		clonedDT.setPredicates(new HashSet<Predicate>());
+		for(Predicate cp:this.predicates){
+			clonedDT.addPredicate(cp.clone());
+		}
+		
+		clonedDT.setComponents(new LinkedHashSet<Component>());
+		for(Component c:this.components){
+			clonedDT.addComponent(c.clone());
+		}
+		
+		return clonedDT;
+    }
 
 }
