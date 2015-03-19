@@ -161,8 +161,8 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					metadata.setPropertyValue(newValue.getKey(),
-							newValue.getValue());
+					metadata.setPropertyValue(newValue.getKey(), newValue
+							.getValue().asText());
 				}
 				this.save(p);
 			}
@@ -180,8 +180,8 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					message.setPropertyValue(newValue.getKey(),
-							newValue.getValue());
+					message.setPropertyValue(newValue.getKey(), newValue
+							.getValue().asText());
 				}
 				messageService.save(m);
 			}
@@ -205,8 +205,8 @@ public class ProfileServiceImpl implements ProfileService {
 						((SegmentRefOrGroup) segmentRef).setUsage(Usage
 								.fromValue(newValue.getValue().asText()));
 					} else {
-						segmentRef.setPropertyValue(newValue.getKey(),
-								newValue.getValue());
+						segmentRef.setPropertyValue(newValue.getKey(), newValue
+								.getValue().asText());
 					}
 				}
 				segmentRefService.save(s);
@@ -230,8 +230,8 @@ public class ProfileServiceImpl implements ProfileService {
 						((SegmentRefOrGroup) group).setUsage(Usage
 								.fromValue(newValue.getValue().asText()));
 					} else {
-						group.setPropertyValue(newValue.getKey(),
-								newValue.getValue());
+						group.setPropertyValue(newValue.getKey(), newValue
+								.getValue().asText());
 					}
 				}
 				groupService.save(g);
@@ -255,8 +255,8 @@ public class ProfileServiceImpl implements ProfileService {
 						((Component) component).setUsage(Usage
 								.fromValue(newValue.getValue().asText()));
 					} else {
-						component.setPropertyValue(newValue.getKey(),
-								newValue.getValue());
+						component.setPropertyValue(newValue.getKey(), newValue
+								.getValue().asText());
 					}
 				}
 				componentService.save(c);
@@ -280,8 +280,8 @@ public class ProfileServiceImpl implements ProfileService {
 						((Field) field).setUsage(Usage.fromValue(newValue
 								.getValue().asText()));
 					} else {
-						field.setPropertyValue(newValue.getKey(),
-								newValue.getValue());
+						field.setPropertyValue(newValue.getKey(), newValue
+								.getValue().asText());
 					}
 				}
 				fieldService.save(f1);
@@ -300,8 +300,8 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					code.setPropertyValue(newValue.getKey(),
-							newValue.getValue());
+					code.setPropertyValue(newValue.getKey(), newValue
+							.getValue().asText());
 				}
 				codeService.save(c1);
 			}
