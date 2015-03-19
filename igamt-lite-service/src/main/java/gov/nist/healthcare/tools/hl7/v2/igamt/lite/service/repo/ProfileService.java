@@ -20,6 +20,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 
+import java.util.List;
+
 public interface ProfileService {
 
 	public Profile save(Profile p);
@@ -28,12 +30,14 @@ public interface ProfileService {
 
 	public Profile findOne(Long id);
 
-	public Iterable<ProfileSummary> findAllPreloadedSummaries();
+	public List<ProfileSummary> findAllPreloadedSummaries();
 
 	public Iterable<ProfileSummary> findAllSummariesByUser(Long userId);
 
 	public Profile clone(Profile p);
 
 	public String[] apply(String changes);
+
+	public void detach(Profile profile);
 
 }

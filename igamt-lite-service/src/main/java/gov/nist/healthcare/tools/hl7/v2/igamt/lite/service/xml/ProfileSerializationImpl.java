@@ -116,7 +116,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	public Profile deserializeXMLToProfile(nu.xom.Document docProfile,
 			nu.xom.Document docValueSet, nu.xom.Document docConstraints) {
 		return this.deserializeXMLToProfile(docProfile.toXML(),
-				docValueSet.toXML(), docConstraints.toXML());
+				docValueSet.toXML(),
+				docConstraints != null ? docConstraints.toXML() : null);
 	}
 
 	@Override
@@ -210,11 +211,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		// [Woo] I assumed the default name could be base name.
 		datatypeObj.setLabel(elmDatatype.getAttribute("ID"));
 		datatypeObj.setName(elmDatatype.getAttribute("Name"));
-		datatypeObj.setPredicates(this.findPredicates(profile.getPredicates()
-				.getDatatypes(), elmDatatype.getAttribute("ID")));
-		datatypeObj.setConformanceStatements(this.findConformanceStatement(
-				profile.getConformanceStatements().getDatatypes(),
-				elmDatatype.getAttribute("ID")));
+		if (profile.getPredicates() != null)
+			datatypeObj.setPredicates(this.findPredicates(profile
+					.getPredicates().getDatatypes(), elmDatatype
+					.getAttribute("ID")));
+		if (profile.getConformanceStatements() != null)
+			datatypeObj.setConformanceStatements(this.findConformanceStatement(
+					profile.getConformanceStatements().getDatatypes(),
+					elmDatatype.getAttribute("ID")));
 
 		NodeList nodes = elmDatatype.getChildNodes();
 		for (int i = 0; i < nodes.getLength(); i++) {
@@ -376,8 +380,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			elmField.addAttribute(new Attribute("Name", f.getName()));
 			elmField.addAttribute(new Attribute("Usage", f.getUsage()
 					.toString()));
-			elmField.addAttribute(new Attribute("Datatype", f.getDatatype()
-					.getId() + ""));
+			elmField.addAttribute(new Attribute("Datatype", f
+					.getDatatypeLabel() + ""));
 			elmField.addAttribute(new Attribute("MinLength", ""
 					+ f.getMinLength()));
 			elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
@@ -412,7 +416,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				elmComponent.addAttribute(new Attribute("Usage", c.getUsage()
 						.toString()));
 				elmComponent.addAttribute(new Attribute("Datatype", c
-						.getDatatype().getId() + ""));
+						.getDatatypeLabel() + ""));
 				elmComponent.addAttribute(new Attribute("MinLength", ""
 						+ c.getMinLength()));
 				if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
@@ -520,11 +524,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		// [Woo] I assumed the default name could be base name.
 		segmentObj.setLabel(segmentElm.getAttribute("ID"));
 		segmentObj.setName(segmentElm.getAttribute("Name"));
-		segmentObj.setPredicates(this.findPredicates(profile.getPredicates()
-				.getSegments(), segmentElm.getAttribute("ID")));
-		segmentObj.setConformanceStatements(this.findConformanceStatement(
-				profile.getConformanceStatements().getSegments(),
-				segmentElm.getAttribute("ID")));
+		if (profile.getPredicates() != null)
+			segmentObj.setPredicates(this.findPredicates(profile
+					.getPredicates().getSegments(), segmentElm
+					.getAttribute("ID")));
+		if (profile.getConformanceStatements() != null)
+			segmentObj.setConformanceStatements(this.findConformanceStatement(
+					profile.getConformanceStatements().getSegments(),
+					segmentElm.getAttribute("ID")));
 
 		NodeList fields = segmentElm.getElementsByTagName("Field");
 		for (int i = 0; i < fields.getLength(); i++) {
