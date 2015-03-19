@@ -70,10 +70,8 @@ public class ProfileController extends CommonController {
 	@Autowired
 	private FieldService fieldService;
 
-	/*@
-	 Autowired
+	@Autowired
 	private CodeService codeService;
-	 */
 
 	public ProfileService getProfileService() {
 		return profileService;
