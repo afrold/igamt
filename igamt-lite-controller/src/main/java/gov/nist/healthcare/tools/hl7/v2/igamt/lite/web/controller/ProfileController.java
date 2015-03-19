@@ -47,7 +47,7 @@ public class ProfileController extends CommonController {
 	 */
 	@RequestMapping(value = "/preloaded", method = RequestMethod.GET)
 	public Iterable<ProfileSummary> profileSummaries() {
-		logger.info("Fetching all preloaed profiles...");
+		logger.info("Fetching all preloaded profiles...");
 		return profileService.findAllPreloadedSummaries();
 	}
 
