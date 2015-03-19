@@ -120,19 +120,19 @@
                         <script type="text/ng-template" id="MessageEditTree.html">
                             <tr tt-node is-branch="hasChildren(node)" class="row">
                                 <td class="col-md-5">
-                                        <span ng-show="node.type !== 'segment' && node.type !== 'group'">
+                                        <span ng-show="node.type !== 'segmentRef' && node.type !== 'group'">
                                             <span>{{node.event}}^{{node.structID}}:{{node.description}}</span>
                                          </span>
-                                        <span ng-show="node.type === 'segment' || node.type === 'group'">
+                                        <span ng-show="node.type === 'segmentRef' || node.type === 'group'">
                                             <img
                                                     style="width:15px; height:15px"
                                                     ng-src="images/{{node.type}}.png">
-                                            <span ng-if="node.type === 'segment'">{{node.position}}.{{node.ref.name}}:{{node.ref.description}}</span>
+                                            <span ng-if="node.type === 'segmentRef'">{{node.position}}.{{node.ref.name}}:{{node.ref.description}}</span>
                                             <span ng-if="node.type === 'group'">{{node.position}}.{{node.name}}</span>
                                         </span>
                                 </td>
                                 <td class="col-md-1">
-                                    <div ng-show="node.type === 'segment' || node.type === 'group'">
+                                    <div ng-show="node.type === 'segmentRef' || node.type === 'group'">
                                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 <select class="form-control input-sm"
                                                         name="usage"
@@ -145,10 +145,10 @@
                                         <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}, {{node.predicates[0].falseUsage}})</span>
 
                                     </div>
-                                    <div ng-show="node.type !== 'segment' && node.type !== 'group'">-</div>
+                                    <div ng-show="node.type !== 'segmentRef' && node.type !== 'group'">-</div>
                                 </td>
                                 <td class="col-md-1">
-                                    <div ng-show="node.type === 'segment' || node.type === 'group'"
+                                    <div ng-show="node.type === 'segmentRef' || node.type === 'group'"
                                          ng-controller="MessageRowCtrl">
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
@@ -165,16 +165,16 @@
                                                        ng-model="node.max" required>
                                             </span>
                                     </div>
-                                    <div ng-show="node.type !== 'segment' && node.type !== 'group'">-</div>
+                                    <div ng-show="node.type !== 'segmentRef' && node.type !== 'group'">-</div>
                                 </td>
                                 <td class="col-md-1">
-                                        <span ng-show="node.type === 'segment'">
+                                        <span ng-show="node.type === 'segmentRef'">
                                             <a class="point"
                                                ng-click="goToSegment(node.ref.id)"
                                                ng-bind="node.ref.label"></a>
                                         </span>
 
-                                    <div ng-show="node.type !== 'segment'">-</div>
+                                    <div ng-show="node.type !== 'segmentRef'">-</div>
                                 </td>
                                 <td class="col-md-2"></td>
                                 <td class="col-md-2"></td>
