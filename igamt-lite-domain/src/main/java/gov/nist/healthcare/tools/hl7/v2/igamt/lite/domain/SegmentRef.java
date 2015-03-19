@@ -16,7 +16,7 @@ public class SegmentRef extends SegmentRefOrGroup {
 
 	public SegmentRef() {
 		super();
-		type = Constant.SEGMENT;
+		type = Constant.SEGMENTREF;
 	}
 
 	@JsonIgnoreProperties({ "type", "fields", "label", "dynamicMappings",
