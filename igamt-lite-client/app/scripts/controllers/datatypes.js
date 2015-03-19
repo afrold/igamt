@@ -99,7 +99,9 @@ angular.module('igl')
         };
 
         $scope.goToTable = function(table){
-
+        	$rootScope.table = table;
+            $rootScope.notifyTableTreeUpdate = new Date().getTime();
+            $rootScope.selectProfileTab(4);
         };
 
     });
