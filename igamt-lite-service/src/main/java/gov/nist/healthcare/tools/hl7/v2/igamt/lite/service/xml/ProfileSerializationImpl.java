@@ -28,6 +28,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
@@ -59,6 +60,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	private HashMap<String, Datatype> datatypesMap;
 	private HashMap<String, Segment> segmentsMap;
+	private Constraints conformanceStatement;
+	private Constraints predicates;
 
 	@Override
 	public Profile deserializeXMLToProfile(String xmlContentsProfile,
@@ -82,12 +85,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		this.deserializeEncodings(profile, elmConformanceProfile);
 
 		// Read Profile Libs
-		profile.setTableLibrary(new TableSerializationImpl()
-				.deserializeXMLToTableLibrary(xmlValueSet));
-		profile.setConformanceStatements(new ConstraintsSerializationImpl()
-				.deserializeXMLToConformanceStatements(xmlConstraints));
-		profile.setPredicates(new ConstraintsSerializationImpl()
-				.deserializeXMLToPredicates(xmlConstraints));
+		profile.setTableLibrary(new TableSerializationImpl().deserializeXMLToTableLibrary(xmlValueSet));
+		this.conformanceStatement = new ConstraintsSerializationImpl().deserializeXMLToConformanceStatements(xmlConstraints);
+		this.predicates = new ConstraintsSerializationImpl().deserializeXMLToPredicates(xmlConstraints);
 
 		this.constructDatatypesMap((Element) elmConformanceProfile
 				.getElementsByTagName("Datatypes").item(0), profile);
@@ -116,8 +116,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	public Profile deserializeXMLToProfile(nu.xom.Document docProfile,
 			nu.xom.Document docValueSet, nu.xom.Document docConstraints) {
 		return this.deserializeXMLToProfile(docProfile.toXML(),
-				docValueSet.toXML(),
-				docConstraints != null ? docConstraints.toXML() : null);
+				docValueSet.toXML(), docConstraints.toXML());
 	}
 
 	@Override
@@ -211,14 +210,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		// [Woo] I assumed the default name could be base name.
 		datatypeObj.setLabel(elmDatatype.getAttribute("ID"));
 		datatypeObj.setName(elmDatatype.getAttribute("Name"));
-		if (profile.getPredicates() != null)
-			datatypeObj.setPredicates(this.findPredicates(profile
-					.getPredicates().getDatatypes(), elmDatatype
-					.getAttribute("ID")));
-		if (profile.getConformanceStatements() != null)
-			datatypeObj.setConformanceStatements(this.findConformanceStatement(
-					profile.getConformanceStatements().getDatatypes(),
-					elmDatatype.getAttribute("ID")));
+		datatypeObj.setPredicates(this.findPredicates(this.predicates.getDatatypes(), elmDatatype.getAttribute("ID")));
+		datatypeObj.setConformanceStatements(this.findConformanceStatement(
+				this.conformanceStatement.getDatatypes(),
+				elmDatatype.getAttribute("ID")));
 
 		NodeList nodes = elmDatatype.getChildNodes();
 		for (int i = 0; i < nodes.getLength(); i++) {
@@ -380,8 +375,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			elmField.addAttribute(new Attribute("Name", f.getName()));
 			elmField.addAttribute(new Attribute("Usage", f.getUsage()
 					.toString()));
-			elmField.addAttribute(new Attribute("Datatype", f
-					.getDatatypeLabel() + ""));
+			elmField.addAttribute(new Attribute("Datatype", f.getDatatype()
+					.getId() + ""));
 			elmField.addAttribute(new Attribute("MinLength", ""
 					+ f.getMinLength()));
 			elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
@@ -416,7 +411,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				elmComponent.addAttribute(new Attribute("Usage", c.getUsage()
 						.toString()));
 				elmComponent.addAttribute(new Attribute("Datatype", c
-						.getDatatypeLabel() + ""));
+						.getDatatype().getId() + ""));
 				elmComponent.addAttribute(new Attribute("MinLength", ""
 						+ c.getMinLength()));
 				if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
@@ -524,14 +519,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		// [Woo] I assumed the default name could be base name.
 		segmentObj.setLabel(segmentElm.getAttribute("ID"));
 		segmentObj.setName(segmentElm.getAttribute("Name"));
-		if (profile.getPredicates() != null)
-			segmentObj.setPredicates(this.findPredicates(profile
-					.getPredicates().getSegments(), segmentElm
-					.getAttribute("ID")));
-		if (profile.getConformanceStatements() != null)
-			segmentObj.setConformanceStatements(this.findConformanceStatement(
-					profile.getConformanceStatements().getSegments(),
-					segmentElm.getAttribute("ID")));
+		segmentObj.setPredicates(this.findPredicates(this.predicates
+				.getSegments(), segmentElm.getAttribute("ID")));
+		segmentObj.setConformanceStatements(this.findConformanceStatement(
+				this.conformanceStatement.getSegments(),
+				segmentElm.getAttribute("ID")));
 
 		NodeList fields = segmentElm.getElementsByTagName("Field");
 		for (int i = 0; i < fields.getLength(); i++) {
@@ -649,9 +641,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				new String(Files.readAllBytes(Paths
 						.get("src//main//resources//vxu//Constraints.xml"))));
 		System.out.println(test1.serializeProfileToXML(profile));
-		System.out.println(test2.serializeTableLibraryToXML(profile
-				.getTableLibrary()));
-		System.out.println(test3.serializeConstraintsToXML(
-				profile.getConformanceStatements(), profile.getPredicates()));
+		System.out.println(test2.serializeTableLibraryToXML(profile.getTableLibrary()));
+		System.out.println(test3.serializeConstraintsToXML(profile.getConformanceStatements(), profile.getPredicates()));
 	}
 }
