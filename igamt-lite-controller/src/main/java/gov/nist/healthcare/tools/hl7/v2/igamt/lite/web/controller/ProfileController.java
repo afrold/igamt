@@ -13,7 +13,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ComponentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.CodeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.FieldService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.GroupService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.MessageService;
@@ -167,6 +169,7 @@ public class ProfileController extends CommonController {
 					newValue = newValues.next();
 					metadata.setPropertyValue(newValue.getKey(), newValue.getValue());
 				}
+				profileService.save(p);
 			}
 
 			//message
@@ -183,6 +186,7 @@ public class ProfileController extends CommonController {
 					newValue = newValues.next();
 					message.setPropertyValue(newValue.getKey(), newValue.getValue());
 				}
+				messageService.save(m);
 			}
 
 			//segmentRef
@@ -205,6 +209,7 @@ public class ProfileController extends CommonController {
 						segmentRef.setPropertyValue(newValue.getKey(), newValue.getValue());
 					}
 				}
+				segmentRefService.save(s);
 			}
 
 			//group
@@ -226,6 +231,7 @@ public class ProfileController extends CommonController {
 						group.setPropertyValue(newValue.getKey(), newValue.getValue());
 					}
 				}
+				groupService.save(g);
 			}
 
 			//component
@@ -247,6 +253,7 @@ public class ProfileController extends CommonController {
 						component.setPropertyValue(newValue.getKey(), newValue.getValue());
 					}
 				}
+				componentService.save(c);
 			}
 
 			//field
@@ -268,25 +275,26 @@ public class ProfileController extends CommonController {
 						field.setPropertyValue(newValue.getKey(), newValue.getValue());
 					}
 				}
+				fieldService.save(f1);
 			}
 
-			/*
-		//code
-		nodes = rootNode.get("code").getFields();
-		while (nodes.hasNext()){
-			node = nodes.next();
-			id = Long.valueOf(node.getKey());
-			individualChanges = node.getValue();
+			//code
+			nodes = rootNode.get("code").getFields();
+			while (nodes.hasNext()){
+				node = nodes.next();
+				id = Long.valueOf(node.getKey());
+				individualChanges = node.getValue();
 
-			Code c1 = codeService.findOne(id);
-			BeanWrapper code = new BeanWrapperImpl(c1);
-			Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
-			while (newValues.hasNext()){
-				newValue = newValues.next();
-				code.setPropertyValue(newValue.getKey(), newValue.getValue());
+				Code c1 = codeService.findOne(id);
+				BeanWrapper code = new BeanWrapperImpl(c1);
+				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
+				while (newValues.hasNext()){
+					newValue = newValues.next();
+					code.setPropertyValue(newValue.getKey(), newValue.getValue());
+				}
+				codeService.save(c1);
 			}
-		}
-			 */
+
 		}
 		catch (JsonParseException e)
 		{
