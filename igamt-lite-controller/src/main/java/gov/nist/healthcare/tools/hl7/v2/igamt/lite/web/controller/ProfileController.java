@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+
+
 @RestController
 @RequestMapping("/profiles")
 public class ProfileController extends CommonController {
@@ -49,12 +51,11 @@ public class ProfileController extends CommonController {
 	 * @return
 	 */
 	@RequestMapping(value = "/preloaded", method = RequestMethod.GET)
-	public Iterable<ProfileSummary> profileSummaries() {
-		logger.info("Fetching all preloaed profiles...");
+	public List<ProfileSummary> profileSummaries() {
+ 		logger.info("Fetching all preloaed profiles...");
 		List<ProfileSummary> result = profileService
 				.findAllPreloadedSummaries();
 		return result;
-
 	}
 
 	/**
