@@ -2,8 +2,10 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.ProfileNotFoundException;
+
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-
 
 @RestController
 @RequestMapping("/profiles")
@@ -49,9 +49,11 @@ public class ProfileController extends CommonController {
 	 * @return
 	 */
 	@RequestMapping(value = "/preloaded", method = RequestMethod.GET)
-	public Iterable<ProfileSummary> profileSummaries() {
-		logger.info("Fetching all preloaded profiles...");
-		return profileService.findAllPreloadedSummaries();
+	public List<ProfileSummary> profileSummaries() {
+		logger.info("Fetching all preloaed profiles...");
+		List<ProfileSummary> result = profileService
+				.findAllPreloadedSummaries();
+		return result;
 	}
 
 	/**
@@ -71,8 +73,8 @@ public class ProfileController extends CommonController {
 		return p;
 	}
 
-	@RequestMapping(value = "/{targetId}", method = RequestMethod.POST)
-	public Profile clone(@PathVariable("targetId") Long targetId)
+	@RequestMapping(value = "/clone/{targetId}", method = RequestMethod.POST)
+	public ProfileSummary clone(@PathVariable("targetId") Long targetId)
 			throws ProfileNotFoundException {
 		logger.info("Clone profile with id=" + targetId);
 		Profile p = profileService.findOne(targetId);
@@ -81,14 +83,22 @@ public class ProfileController extends CommonController {
 		}
 		Profile profile = profileService.clone(p);
 		profileService.save(profile);
-		return profile;
+
+		ProfileSummary summary = new ProfileSummary();
+		summary.setId(profile.getId());
+		summary.setMetaData(profile.getMetaData());
+
+		return summary;
 	}
 
 	@RequestMapping(value = "/apply", method = RequestMethod.POST)
 	public String[] save(@RequestBody String jsonChanges) {
 		logger.info("Applying changes = " + jsonChanges);
-		String[] failures = profileService.apply(jsonChanges);
-		return failures;
+		try {
+			return profileService.apply(jsonChanges);
+		} catch (ProfileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

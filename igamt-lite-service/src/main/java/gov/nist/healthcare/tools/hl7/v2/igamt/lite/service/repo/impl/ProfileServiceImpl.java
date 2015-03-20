@@ -19,15 +19,14 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.clone.ProfileClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.CodeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ComponentService;
@@ -38,7 +37,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentRefService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.codehaus.jackson.JsonFactory;
@@ -50,7 +51,6 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
@@ -96,8 +96,20 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public Iterable<ProfileSummary> findAllPreloadedSummaries() {
-		return profileRepository.findAllPreloadedSummaries();
+	public List<ProfileSummary> findAllPreloadedSummaries() {
+		List result = profileRepository.findAllPreloadedSummaries();
+		List<ProfileSummary> summaries = new ArrayList<ProfileSummary>();
+		for (int i = 0; i < result.size(); i++) {
+			Object res = result.get(i);
+			ProfileSummary sum = new ProfileSummary();
+			Object[] row = (Object[]) res;
+			sum.setId(Long.valueOf(row[0].toString()));
+			sum.setMetaData((ProfileMetaData) row[1]);
+			summaries.add(sum);
+		}
+
+		return summaries;
+
 	}
 
 	@Override
@@ -107,15 +119,15 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public Profile clone(Profile p) {
-		return profileClone.clone(p);
+		return new ProfileClone().clone(p);
 	}
 
 	/*
 	 * { "component": { "59": { "usage": "C" }, "303": { "maxLength": "27" } } }
 	 */
 	@Override
-	public String[] apply(String jsonChanges) {
-		String[] errorList = new String[]{};
+	public String[] apply(String jsonChanges) throws ProfileNotFoundException {
+		String[] errorList = new String[] {};
 
 		try {
 			Long id;
@@ -124,16 +136,15 @@ public class ProfileServiceImpl implements ProfileService {
 			JsonNode individualChanges;
 			Entry<String, JsonNode> newValue;
 
-
 			JsonFactory f = new JsonFactory();
 			JsonParser jp = f.createJsonParser(jsonChanges);
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode rootNode = mapper.readTree(jp);
 
-			//profile
+			// profile
 			nodes = rootNode.get("profile").getFields();
 
-			while (nodes.hasNext()){
+			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
@@ -143,35 +154,37 @@ public class ProfileServiceImpl implements ProfileService {
 				//}
 				BeanWrapper metadata = new BeanWrapperImpl(p.getMetaData());
 
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
-				while (newValues.hasNext()){
+				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+						.getFields();
+				while (newValues.hasNext()) {
 					newValue = newValues.next();
 					metadata.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				this.save(p);
 			}
 
-			//message
+			// message
 			nodes = rootNode.get("message").getFields();
-			while (nodes.hasNext()){
+			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
 
 				Message m = messageService.findOne(id);
 				BeanWrapper message = new BeanWrapperImpl(m);
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
-				while (newValues.hasNext()){
+				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+						.getFields();
+				while (newValues.hasNext()) {
 					newValue = newValues.next();
 					message.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				messageService.save(m);
 			}
 
-			//segmentRef
+			// segmentRef
 			nodes = rootNode.get("segmentRef").getFields();
 
-			while (nodes.hasNext()){
+			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
@@ -179,8 +192,9 @@ public class ProfileServiceImpl implements ProfileService {
 				SegmentRef s = segmentRefService.findOne(id);
 				BeanWrapper segmentRef = new BeanWrapperImpl(s);
 
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
-				while (newValues.hasNext()){
+				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+						.getFields();
+				while (newValues.hasNext()) {
 					newValue = newValues.next();
 					segmentRef.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
@@ -189,18 +203,19 @@ public class ProfileServiceImpl implements ProfileService {
 			
 			/*
 
-			//group
+			// group
 			nodes = rootNode.get("group").getFields();
-			while (nodes.hasNext()){
+			while (nodes.hasNext()) {
 				node = nodes.next();
-				//Group has a String id; node.getKey() is used directly
+				// Group has a String id; node.getKey() is used directly
 				individualChanges = node.getValue();
 
-				Group g = groupService.findOne(node.getKey()); 
+				Group g = groupService.findOne(node.getKey());
 				BeanWrapper group = new BeanWrapperImpl(g);
 
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
-				while (newValues.hasNext()){
+				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+						.getFields();
+				while (newValues.hasNext()) {
 					newValue = newValues.next();
 					group.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
@@ -209,73 +224,69 @@ public class ProfileServiceImpl implements ProfileService {
 			
 			*/
 
-			//component
+			// component
 			nodes = rootNode.get("component").getFields();
-			while (nodes.hasNext()){
+			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
 
-				Component c = componentService.findOne(id); 
+				Component c = componentService.findOne(id);
 				BeanWrapper component = new BeanWrapperImpl(c);
 
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
-				while (newValues.hasNext()){
+				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+						.getFields();
+				while (newValues.hasNext()) {
 					newValue = newValues.next();
 					component.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				componentService.save(c);
 			}
 
-			//field
+			// field
 			nodes = rootNode.get("field").getFields();
-			while (nodes.hasNext()){
+			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
 
-				Field f1 = fieldService.findOne(id); 
+				Field f1 = fieldService.findOne(id);
 				BeanWrapper field = new BeanWrapperImpl(f1);
 
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
-				while (newValues.hasNext()){
+				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+						.getFields();
+				while (newValues.hasNext()) {
 					newValue = newValues.next();
 					field.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				fieldService.save(f1);
 			}
 
-			//code
+			// code
 			nodes = rootNode.get("code").getFields();
-			while (nodes.hasNext()){
+			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
 
 				Code c1 = codeService.findOne(id);
 				BeanWrapper code = new BeanWrapperImpl(c1);
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
-				while (newValues.hasNext()){
+				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+						.getFields();
+				while (newValues.hasNext()) {
 					newValue = newValues.next();
 					code.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				codeService.save(c1);
 			}
 
+		} catch (IOException e) {
+			
 		}
-		catch (IOException e)
-		{
-
-		}
-		//catch (ProfileNotFoundException e) {
-		//	// TODO Auto-generated catch block
-		//	e.printStackTrace();
-		//}
-
 
 		//profileService.save(profile);
 		//return new String[1];
 		return errorList;
-		
-	}
+		}
+
 }

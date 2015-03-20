@@ -20,8 +20,9 @@ var app = angular
         'ui.bootstrap',
         'smart-table',
         'ngTreetable',
-        'restangular',
-        'ngMockE2E'
+        'restangular'
+//        ,
+//        'ngMockE2E'
     ]);
 
 app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
@@ -129,6 +130,11 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal,$f
     }, function (newLocation, oldLocation) {
         $rootScope.setActive(newLocation);
     });
+
+    $rootScope.api = function (value) {
+        return "http://localhost:8081/igl-api"+ value;
+    };
+
 
     $rootScope.isActive = function (path) {
         return path === $rootScope.activePath;

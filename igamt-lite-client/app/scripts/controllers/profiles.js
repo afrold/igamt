@@ -21,27 +21,43 @@ angular.module('igl')
          */
         $scope.init = function () {
             $rootScope.context.page = $rootScope.pages[0];
-            $http.get('/api/profiles/preloaded').then(function (response) {
+            $http.get($rootScope.api('/api/profiles/preloaded')).then(function (response) {
                 $scope.preloaded = response.data;
             });
 
-            $http.get('/api/profiles?userId=' + $scope.user.id).then(function (response) {
+            $http.get($rootScope.api('/api/profiles?userId=' + $scope.user.id)).then(function (response) {
                 $scope.custom = response.data;
             });
         };
 
         $scope.clone = function (profile) {
-            Restangular.all('profiles').post({targetId: profile.id}).then(function (res) {
+
+            $http.post($rootScope.api('/api/profiles/clone/'+ profile.id)).then(function (response) {
                 $scope.custom.push(res);
             }, function (error) {
                 $scope.error = error;
             });
 
+//            Restangular.all('profiles').post({targetId: profile.id}).then(function (res) {
+//                $scope.custom.push(res);
+//            }, function (error) {
+//                $scope.error = error;
+//            });
+
         };
 
 
         $scope.edit = function (profile) {
-            Restangular.one('profiles', profile.id).get().then(function (profile) {
+
+//
+//            $http.get('/api/profile/'+ profile.id).then(function (response) {
+//                $scope.custom.push(res);
+//            }, function (error) {
+//                $scope.error = error;
+//            });
+
+
+            $http.get($rootScope.api('/api/profile/'+ profile.id)).then(function (profile) {
                 $scope.loading = true;
                 $rootScope.initMaps();
                 $rootScope.context.page = $rootScope.pages[1];

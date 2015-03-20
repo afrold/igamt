@@ -36,8 +36,7 @@ import org.springframework.data.repository.query.Param;
 	
 		
 	@Query("select p.id, p.metaData from Profile p where p.preloaded = true")
-	
-	List<ProfileSummary> findAllPreloadedSummaries();
+	List findAllPreloadedSummaries();
 	
 	@Query("select profile.id,profile.metaData from Profile profile where profile.author.user.id = :userId ")
 	List<ProfileSummary> findAllSummariesByUserId(@Param("userId")Long userId);

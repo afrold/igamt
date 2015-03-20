@@ -54,52 +54,60 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 	@Override
 	public Constraints deserializeXMLToConformanceStatements(
 			String xmlConstraints) {
-		Document conformanceContextDoc = this.stringToDom(xmlConstraints);
-		Element elmConstraints = (Element) conformanceContextDoc
-				.getElementsByTagName("Constraints").item(0);
-		Constraints constraints = new Constraints();
+		if (xmlConstraints != null) {
+			Document conformanceContextDoc = this.stringToDom(xmlConstraints);
+			Element elmConstraints = (Element) conformanceContextDoc
+					.getElementsByTagName("Constraints").item(0);
+			Constraints constraints = new Constraints();
 
-		Context datatypeContextObj = new Context();
-		Context segmentContextObj = new Context();
-		Context groupContextObj = new Context();
+			Context datatypeContextObj = new Context();
+			Context segmentContextObj = new Context();
+			Context groupContextObj = new Context();
 
-		this.deserializeXMLToContext((Element) elmConstraints
-				.getElementsByTagName("Datatype").item(0), datatypeContextObj);
-		this.deserializeXMLToContext((Element) elmConstraints
-				.getElementsByTagName("Segment").item(0), segmentContextObj);
-		this.deserializeXMLToContext((Element) elmConstraints
-				.getElementsByTagName("Group").item(0), groupContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints
+					.getElementsByTagName("Datatype").item(0),
+					datatypeContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints
+					.getElementsByTagName("Segment").item(0), segmentContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints
+					.getElementsByTagName("Group").item(0), groupContextObj);
 
-		constraints.setDatatypes(datatypeContextObj);
-		constraints.setSegments(segmentContextObj);
-		constraints.setGroups(groupContextObj);
+			constraints.setDatatypes(datatypeContextObj);
+			constraints.setSegments(segmentContextObj);
+			constraints.setGroups(groupContextObj);
 
-		return constraints;
+			return constraints;
+		}
+		return null;
 	}
 
 	@Override
 	public Constraints deserializeXMLToPredicates(String xmlConstraints) {
-		Document conformanceContextDoc = this.stringToDom(xmlConstraints);
-		Element elmConstraints = (Element) conformanceContextDoc
-				.getElementsByTagName("Predicates").item(0);
-		Constraints constraints = new Constraints();
+		if (xmlConstraints != null) {
+			Document conformanceContextDoc = this.stringToDom(xmlConstraints);
+			Element elmConstraints = (Element) conformanceContextDoc
+					.getElementsByTagName("Predicates").item(0);
+			Constraints constraints = new Constraints();
 
-		Context datatypeContextObj = new Context();
-		Context segmentContextObj = new Context();
-		Context groupContextObj = new Context();
+			Context datatypeContextObj = new Context();
+			Context segmentContextObj = new Context();
+			Context groupContextObj = new Context();
 
-		this.deserializeXMLToContext((Element) elmConstraints
-				.getElementsByTagName("Datatype").item(0), datatypeContextObj);
-		this.deserializeXMLToContext((Element) elmConstraints
-				.getElementsByTagName("Segment").item(0), segmentContextObj);
-		this.deserializeXMLToContext((Element) elmConstraints
-				.getElementsByTagName("Group").item(0), groupContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints
+					.getElementsByTagName("Datatype").item(0),
+					datatypeContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints
+					.getElementsByTagName("Segment").item(0), segmentContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints
+					.getElementsByTagName("Group").item(0), groupContextObj);
 
-		constraints.setDatatypes(datatypeContextObj);
-		constraints.setSegments(segmentContextObj);
-		constraints.setGroups(groupContextObj);
+			constraints.setDatatypes(datatypeContextObj);
+			constraints.setSegments(segmentContextObj);
+			constraints.setGroups(groupContextObj);
 
-		return constraints;
+			return constraints;
+		}
+		return null;
 	}
 
 	@Override
