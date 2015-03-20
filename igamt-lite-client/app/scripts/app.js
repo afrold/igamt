@@ -21,8 +21,7 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular'
-//        ,
-//        'ngMockE2E'
+//        , 'ngMockE2E'
     ]);
 
 app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
