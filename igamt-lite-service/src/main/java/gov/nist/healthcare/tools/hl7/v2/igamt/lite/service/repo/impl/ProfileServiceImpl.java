@@ -143,7 +143,7 @@ public class ProfileServiceImpl implements ProfileService {
 			JsonNode rootNode = mapper.readTree(jp);
 
 			// profile
-			nodes = rootNode.get("profile").getFields();
+			nodes = rootNode.path("profile").getFields();
 
 			while (nodes.hasNext()) {
 				node = nodes.next();
@@ -165,7 +165,7 @@ public class ProfileServiceImpl implements ProfileService {
 			}
 
 			// message
-			nodes = rootNode.get("message").getFields();
+			nodes = rootNode.path("message").getFields();
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
@@ -183,7 +183,7 @@ public class ProfileServiceImpl implements ProfileService {
 			}
 
 			// segmentRef
-			nodes = rootNode.get("segmentRef").getFields();
+			nodes = rootNode.path("segmentRef").getFields();
 
 			while (nodes.hasNext()) {
 				node = nodes.next();
@@ -203,7 +203,7 @@ public class ProfileServiceImpl implements ProfileService {
 			}
 
 			// group
-			nodes = rootNode.get("group").getFields();
+			nodes = rootNode.path("group").getFields();
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				// Group has a String id; node.getKey() is used directly
@@ -222,7 +222,7 @@ public class ProfileServiceImpl implements ProfileService {
 			}
 
 			// component
-			nodes = rootNode.get("component").getFields();
+			nodes = rootNode.path("component").getFields();
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
@@ -241,7 +241,7 @@ public class ProfileServiceImpl implements ProfileService {
 			}
 
 			// field
-			nodes = rootNode.get("field").getFields();
+			nodes = rootNode.path("field").getFields();
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
@@ -260,7 +260,7 @@ public class ProfileServiceImpl implements ProfileService {
 			}
 
 			// code
-			nodes = rootNode.get("code").getFields();
+			nodes = rootNode.path("code").getFields();
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
