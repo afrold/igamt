@@ -19,8 +19,8 @@ public interface GroupService {
 
 	public Group save(Group c);
 
-	public void delete(String id);
+	public void delete(Long id);
 
-	public Group findOne(String id);
+	public Group findOne(Long id);
 
 }

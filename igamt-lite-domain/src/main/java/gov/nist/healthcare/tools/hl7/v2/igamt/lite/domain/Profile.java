@@ -80,6 +80,8 @@ public class Profile extends DataModel implements java.io.Serializable {
 	// version from the db
 	private Integer version;
 
+	private String changes;
+
 	public Long getId() {
 		return id;
 	}
@@ -174,74 +176,82 @@ public class Profile extends DataModel implements java.io.Serializable {
 		this.usageNote = usageNote;
 	}
 
+	public String getChanges() {
+		return changes;
+	}
+
+	public void setChanges(String changes) {
+		this.changes = changes;
+	}
+
 	@Override
 	public String toString() {
 		return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
 				+ messages + ", author=" + author + "]";
 	}
-	
-	public Constraints getConformanceStatements(){
+
+	public Constraints getConformanceStatements() {
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
 		Context gContext = new Context();
-		
+
 		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for(Segment s: this.getSegments().getChildren()){
+		for (Segment s : this.getSegments().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID("" + s.getId());
-			if(s.getConformanceStatements().size() > 0){
+			if (s.getConformanceStatements().size() > 0) {
 				byID.setConformanceStatements(s.getConformanceStatements());
 				byNameOrByIDs.add(byID);
 			}
 		}
 		sContext.setByNameOrByIDs(byNameOrByIDs);
-		
+
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for(Datatype d: this.getDatatypes().getChildren()){
+		for (Datatype d : this.getDatatypes().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID("" + d.getId());
-			if(d.getConformanceStatements().size() > 0){
+			if (d.getConformanceStatements().size() > 0) {
 				byID.setConformanceStatements(d.getConformanceStatements());
 				byNameOrByIDs.add(byID);
 			}
 		}
 		dtContext.setByNameOrByIDs(byNameOrByIDs);
-		
+
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
 		constraints.setGroups(gContext);
 		return constraints;
 	}
-	
-	public Constraints getPredicates(){
+
+	public Constraints getPredicates() {
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
 		Context gContext = new Context();
-		
+
 		Set<ByNameOrByID> byNameOrByIDsSEG = new HashSet<ByNameOrByID>();
-		for(Segment s: this.getSegments().getChildren()){
+		for (Segment s : this.getSegments().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID("" + s.getId());
-			if(s.getPredicates().size() > 0){
+			if (s.getPredicates().size() > 0) {
 				byID.setPredicates(s.getPredicates());
 				byNameOrByIDsSEG.add(byID);
 			}
 		}
 		sContext.setByNameOrByIDs(byNameOrByIDsSEG);
-		
+
 		Set<ByNameOrByID> byNameOrByIDsDT = new HashSet<ByNameOrByID>();
-		for(Datatype d: this.getDatatypes().getChildren()){
+		for (Datatype d : this.getDatatypes().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID("" + d.getId());
-			if(d.getPredicates().size() > 0){
+			if (d.getPredicates().size() > 0) {
 				byID.setPredicates(d.getPredicates());
 				byNameOrByIDsDT.add(byID);
 			}
 		}
 		dtContext.setByNameOrByIDs(byNameOrByIDsDT);
-		
+
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
 		constraints.setGroups(gContext);

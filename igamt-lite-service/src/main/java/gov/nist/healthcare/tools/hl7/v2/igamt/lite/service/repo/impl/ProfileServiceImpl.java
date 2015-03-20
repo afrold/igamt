@@ -150,16 +150,17 @@ public class ProfileServiceImpl implements ProfileService {
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
 				Profile p = profileRepository.findOne(id);
-				//if (p == null) {
-				//	throw new ProfileNotFoundException(id);
-				//}
+				// if (p == null) {
+				// throw new ProfileNotFoundException(id);
+				// }
 				BeanWrapper metadata = new BeanWrapperImpl(p.getMetaData());
 
 				Iterator<Entry<String, JsonNode>> newValues = individualChanges
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					metadata.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
+					metadata.setPropertyValue(newValue.getKey(), newValue
+							.getValue().getTextValue());
 				}
 				profileRepository.save(p);
 			}
@@ -177,7 +178,8 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					message.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
+					message.setPropertyValue(newValue.getKey(), newValue
+							.getValue().getTextValue());
 				}
 				messageService.save(m);
 			}
@@ -197,7 +199,8 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					segmentRef.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
+					segmentRef.setPropertyValue(newValue.getKey(), newValue
+							.getValue().getTextValue());
 				}
 				segmentRefService.save(s);
 			}
@@ -208,15 +211,16 @@ public class ProfileServiceImpl implements ProfileService {
 				node = nodes.next();
 				// Group has a String id; node.getKey() is used directly
 				individualChanges = node.getValue();
-
-				Group g = groupService.findOne(node.getKey());
+				id = Long.valueOf(node.getKey());
+				Group g = groupService.findOne(id);
 				BeanWrapper group = new BeanWrapperImpl(g);
 
 				Iterator<Entry<String, JsonNode>> newValues = individualChanges
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					group.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
+					group.setPropertyValue(newValue.getKey(), newValue
+							.getValue().getTextValue());
 				}
 				groupService.save(g);
 			}
@@ -235,7 +239,8 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					component.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
+					component.setPropertyValue(newValue.getKey(), newValue
+							.getValue().getTextValue());
 				}
 				componentService.save(c);
 			}
@@ -254,7 +259,8 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					field.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
+					field.setPropertyValue(newValue.getKey(), newValue
+							.getValue().getTextValue());
 				}
 				fieldService.save(f1);
 			}
@@ -272,7 +278,8 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					code.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
+					code.setPropertyValue(newValue.getKey(), newValue
+							.getValue().getTextValue());
 				}
 				codeService.save(c1);
 			}
@@ -281,8 +288,8 @@ public class ProfileServiceImpl implements ProfileService {
 
 		}
 
-		//profileService.save(profile);
-		//return new String[1];
+		// profileService.save(profile);
+		// return new String[1];
 		return errorList;
 	}
 
