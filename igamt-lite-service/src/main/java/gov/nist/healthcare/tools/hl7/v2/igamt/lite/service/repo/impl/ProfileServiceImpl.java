@@ -19,6 +19,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
@@ -148,7 +149,7 @@ public class ProfileServiceImpl implements ProfileService {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
-				Profile p = this.findOne(id);
+				Profile p = profileRepository.findOne(id);
 				//if (p == null) {
 				//	throw new ProfileNotFoundException(id);
 				//}
@@ -160,7 +161,7 @@ public class ProfileServiceImpl implements ProfileService {
 					newValue = newValues.next();
 					metadata.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
-				this.save(p);
+				profileRepository.save(p);
 			}
 
 			// message
@@ -200,8 +201,6 @@ public class ProfileServiceImpl implements ProfileService {
 				}
 				segmentRefService.save(s);
 			}
-			
-			/*
 
 			// group
 			nodes = rootNode.get("group").getFields();
@@ -221,8 +220,6 @@ public class ProfileServiceImpl implements ProfileService {
 				}
 				groupService.save(g);
 			}
-			
-			*/
 
 			// component
 			nodes = rootNode.get("component").getFields();
@@ -281,12 +278,12 @@ public class ProfileServiceImpl implements ProfileService {
 			}
 
 		} catch (IOException e) {
-			
+
 		}
 
 		//profileService.save(profile);
 		//return new String[1];
 		return errorList;
-		}
+	}
 
 }

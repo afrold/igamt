@@ -12,6 +12,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
@@ -49,7 +50,7 @@ public class ProfileService2Test extends
 		AbstractTransactionalJUnit4SpringContextTests {
 
 	@Autowired
-	ProfileService service;
+	ProfileService profileService;
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
@@ -78,20 +79,22 @@ public class ProfileService2Test extends
 				"/vxuTest/Constraints.xml"));
 		Profile profile = new ProfileSerializationImpl()
 				.deserializeXMLToProfile(p, v, c);
-		Profile p1 = service.save(profile);
+		Profile p1 = profileService.save(profile);
 
-		String p1Id = String.valueOf(p1.getId());
+		//String p1Id = String.valueOf(p1.getId());
 
+		p1.setId(1047L);
 		String jsonString = 
 				"{"
 						+	"\"profile\": "
-						+		"{\"" + p1Id + "\": "
+						+		"{\"1047\": "
 						+			"{ \"identifier\": \"IG1_234\", \"type\": \"Constrainable-d\", \"name\": \"Implementation Guide for Immunization Messaging_\",\"orgName\": \"NIST_\",\"status\": \"Active\"}"
 						+	"}"
 						+"}";
 		
-		service.apply(jsonString);
-		assertEquals("IG1_234", p1.getMetaData().getIdentifier());
+		profileService.apply(jsonString);
+		
+		assertEquals("NIST", p1.getMetaData().getOrgName());
 
 
 	}
