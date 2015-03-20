@@ -81,20 +81,19 @@ public class ProfileService2Test extends
 				.deserializeXMLToProfile(p, v, c);
 		Profile p1 = profileService.save(profile);
 
-		//String p1Id = String.valueOf(p1.getId());
+		String p1Id = String.valueOf(p1.getId());
 
-		p1.setId(1047L);
-		String jsonString = 
+		String jsonChanges = 
 				"{"
 						+	"\"profile\": "
-						+		"{\"1047\": "
+						+		"{\""+p1Id+"\": "
 						+			"{ \"identifier\": \"IG1_234\", \"type\": \"Constrainable-d\", \"name\": \"Implementation Guide for Immunization Messaging_\",\"orgName\": \"NIST_\",\"status\": \"Active\"}"
 						+	"}"
 						+"}";
 		
-		profileService.apply(jsonString);
+		profileService.apply(jsonChanges);
 		
-		assertEquals("NIST", p1.getMetaData().getOrgName());
+		assertEquals("NIST_", p1.getMetaData().getOrgName());
 
 
 	}
