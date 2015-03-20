@@ -1,7 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,18 +60,6 @@ public class Profile extends DataModel implements java.io.Serializable {
 
 	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
 	protected String usageNote;
-
-	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
-	// CascadeType.ALL)
-	// @JoinColumn(name = "CONFSTATEMENTS_ID")
-	@JsonIgnore
-	private transient Constraints conformanceStatements;
-
-	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
-	// CascadeType.ALL)
-	// @JoinColumn(name = "PREDICATES_ID")
-	@JsonIgnore
-	private transient Constraints predicates;
 
 	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "TABLELIBRARY_ID")
@@ -126,22 +120,6 @@ public class Profile extends DataModel implements java.io.Serializable {
 		this.messages = messages;
 	}
 
-	public Constraints getConformanceStatements() {
-		return conformanceStatements;
-	}
-
-	public void setConformanceStatements(Constraints conformanceStatements) {
-		this.conformanceStatements = conformanceStatements;
-	}
-
-	public Constraints getPredicates() {
-		return predicates;
-	}
-
-	public void setPredicates(Constraints predicates) {
-		this.predicates = predicates;
-	}
-
 	public TableLibrary getTableLibrary() {
 		return tableLibrary;
 	}
@@ -200,5 +178,73 @@ public class Profile extends DataModel implements java.io.Serializable {
 	public String toString() {
 		return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
 				+ messages + ", author=" + author + "]";
+	}
+	
+	public Constraints getConformanceStatements(){
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+		Context sContext = new Context();
+		Context gContext = new Context();
+		
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for(Segment s: this.getSegments().getChildren()){
+			ByID byID = new ByID();
+			byID.setByID("" + s.getId());
+			if(s.getConformanceStatements().size() > 0){
+				byID.setConformanceStatements(s.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		sContext.setByNameOrByIDs(byNameOrByIDs);
+		
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for(Datatype d: this.getDatatypes().getChildren()){
+			ByID byID = new ByID();
+			byID.setByID("" + d.getId());
+			if(d.getConformanceStatements().size() > 0){
+				byID.setConformanceStatements(d.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+		
+		constraints.setDatatypes(dtContext);
+		constraints.setSegments(sContext);
+		constraints.setGroups(gContext);
+		return constraints;
+	}
+	
+	public Constraints getPredicates(){
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+		Context sContext = new Context();
+		Context gContext = new Context();
+		
+		Set<ByNameOrByID> byNameOrByIDsSEG = new HashSet<ByNameOrByID>();
+		for(Segment s: this.getSegments().getChildren()){
+			ByID byID = new ByID();
+			byID.setByID("" + s.getId());
+			if(s.getPredicates().size() > 0){
+				byID.setPredicates(s.getPredicates());
+				byNameOrByIDsSEG.add(byID);
+			}
+		}
+		sContext.setByNameOrByIDs(byNameOrByIDsSEG);
+		
+		Set<ByNameOrByID> byNameOrByIDsDT = new HashSet<ByNameOrByID>();
+		for(Datatype d: this.getDatatypes().getChildren()){
+			ByID byID = new ByID();
+			byID.setByID("" + d.getId());
+			if(d.getPredicates().size() > 0){
+				byID.setPredicates(d.getPredicates());
+				byNameOrByIDsDT.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDsDT);
+		
+		constraints.setDatatypes(dtContext);
+		constraints.setSegments(sContext);
+		constraints.setGroups(gContext);
+		return constraints;
 	}
 }

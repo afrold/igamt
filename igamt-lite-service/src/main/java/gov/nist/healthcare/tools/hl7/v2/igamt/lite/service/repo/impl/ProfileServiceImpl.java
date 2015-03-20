@@ -25,8 +25,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
@@ -145,30 +143,29 @@ public class ProfileServiceImpl implements ProfileService {
 			JsonNode rootNode = mapper.readTree(jp);
 
 			// profile
-			nodes = rootNode.get("profile").getFields();
+			nodes = rootNode.path("profile").getFields();
 
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
-				Profile p = this.findOne(id);
-				if (p == null) {
-					throw new ProfileNotFoundException(id);
-				}
+				Profile p = profileRepository.findOne(id);
+				//if (p == null) {
+				//	throw new ProfileNotFoundException(id);
+				//}
 				BeanWrapper metadata = new BeanWrapperImpl(p.getMetaData());
 
 				Iterator<Entry<String, JsonNode>> newValues = individualChanges
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					metadata.setPropertyValue(newValue.getKey(), newValue
-							.getValue().asText());
+					metadata.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
-				this.save(p);
+				profileRepository.save(p);
 			}
 
 			// message
-			nodes = rootNode.get("message").getFields();
+			nodes = rootNode.path("message").getFields();
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
@@ -180,14 +177,13 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					message.setPropertyValue(newValue.getKey(), newValue
-							.getValue().asText());
+					message.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				messageService.save(m);
 			}
 
 			// segmentRef
-			nodes = rootNode.get("segmentRef").getFields();
+			nodes = rootNode.path("segmentRef").getFields();
 
 			while (nodes.hasNext()) {
 				node = nodes.next();
@@ -201,19 +197,13 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					if (newValue.getKey() == "usage") {
-						((SegmentRefOrGroup) segmentRef).setUsage(Usage
-								.fromValue(newValue.getValue().asText()));
-					} else {
-						segmentRef.setPropertyValue(newValue.getKey(), newValue
-								.getValue().asText());
-					}
+					segmentRef.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				segmentRefService.save(s);
 			}
 
 			// group
-			nodes = rootNode.get("group").getFields();
+			nodes = rootNode.path("group").getFields();
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				// Group has a String id; node.getKey() is used directly
@@ -226,19 +216,13 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					if (newValue.getKey() == "usage") {
-						((SegmentRefOrGroup) group).setUsage(Usage
-								.fromValue(newValue.getValue().asText()));
-					} else {
-						group.setPropertyValue(newValue.getKey(), newValue
-								.getValue().asText());
-					}
+					group.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				groupService.save(g);
 			}
 
 			// component
-			nodes = rootNode.get("component").getFields();
+			nodes = rootNode.path("component").getFields();
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
@@ -251,19 +235,13 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					if (newValue.getKey() == "usage") {
-						((Component) component).setUsage(Usage
-								.fromValue(newValue.getValue().asText()));
-					} else {
-						component.setPropertyValue(newValue.getKey(), newValue
-								.getValue().asText());
-					}
+					component.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				componentService.save(c);
 			}
 
 			// field
-			nodes = rootNode.get("field").getFields();
+			nodes = rootNode.path("field").getFields();
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
@@ -276,19 +254,13 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					if (newValue.getKey() == "usage") {
-						((Field) field).setUsage(Usage.fromValue(newValue
-								.getValue().asText()));
-					} else {
-						field.setPropertyValue(newValue.getKey(), newValue
-								.getValue().asText());
-					}
+					field.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				fieldService.save(f1);
 			}
 
 			// code
-			nodes = rootNode.get("code").getFields();
+			nodes = rootNode.path("code").getFields();
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
@@ -300,8 +272,7 @@ public class ProfileServiceImpl implements ProfileService {
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					code.setPropertyValue(newValue.getKey(), newValue
-							.getValue().asText());
+					code.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				codeService.save(c1);
 			}
@@ -310,7 +281,8 @@ public class ProfileServiceImpl implements ProfileService {
 
 		}
 
-		// profileService.save(profile);
+		//profileService.save(profile);
+		//return new String[1];
 		return errorList;
 	}
 
