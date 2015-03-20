@@ -36,7 +36,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.GroupService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentRefService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.ProfileNotFoundException;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -44,7 +43,6 @@ import java.util.Map.Entry;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.BeanWrapper;
@@ -140,15 +138,15 @@ public class ProfileServiceImpl implements ProfileService {
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
 				Profile p = this.findOne(id);
-				if (p == null) {
-					throw new ProfileNotFoundException(id);
-				}
+				//if (p == null) {
+				//	throw new ProfileNotFoundException(id);
+				//}
 				BeanWrapper metadata = new BeanWrapperImpl(p.getMetaData());
 
 				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
 				while (newValues.hasNext()){
 					newValue = newValues.next();
-					metadata.setPropertyValue(newValue.getKey(), newValue.getValue());
+					metadata.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				this.save(p);
 			}
@@ -165,7 +163,7 @@ public class ProfileServiceImpl implements ProfileService {
 				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
 				while (newValues.hasNext()){
 					newValue = newValues.next();
-					message.setPropertyValue(newValue.getKey(), newValue.getValue());
+					message.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				messageService.save(m);
 			}
@@ -184,14 +182,12 @@ public class ProfileServiceImpl implements ProfileService {
 				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
 				while (newValues.hasNext()){
 					newValue = newValues.next();
-					if (newValue.getKey() == "usage"){
-						((SegmentRefOrGroup) segmentRef).setUsage(Usage.fromValue(newValue.getValue().asText()));
-					} else {
-						segmentRef.setPropertyValue(newValue.getKey(), newValue.getValue());
-					}
+					segmentRef.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				segmentRefService.save(s);
 			}
+			
+			/*
 
 			//group
 			nodes = rootNode.get("group").getFields();
@@ -206,14 +202,12 @@ public class ProfileServiceImpl implements ProfileService {
 				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
 				while (newValues.hasNext()){
 					newValue = newValues.next();
-					if (newValue.getKey() == "usage"){
-						((SegmentRefOrGroup) group).setUsage(Usage.fromValue(newValue.getValue().asText()));
-					} else {
-						group.setPropertyValue(newValue.getKey(), newValue.getValue());
-					}
+					group.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				groupService.save(g);
 			}
+			
+			*/
 
 			//component
 			nodes = rootNode.get("component").getFields();
@@ -228,11 +222,7 @@ public class ProfileServiceImpl implements ProfileService {
 				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
 				while (newValues.hasNext()){
 					newValue = newValues.next();
-					if (newValue.getKey() == "usage"){
-						((Component) component).setUsage(Usage.fromValue(newValue.getValue().asText()));
-					} else {
-						component.setPropertyValue(newValue.getKey(), newValue.getValue());
-					}
+					component.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				componentService.save(c);
 			}
@@ -250,11 +240,7 @@ public class ProfileServiceImpl implements ProfileService {
 				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
 				while (newValues.hasNext()){
 					newValue = newValues.next();
-					if (newValue.getKey() == "usage"){
-						((Field) field).setUsage(Usage.fromValue(newValue.getValue().asText()));
-					} else {
-						field.setPropertyValue(newValue.getKey(), newValue.getValue());
-					}
+					field.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				fieldService.save(f1);
 			}
@@ -271,20 +257,25 @@ public class ProfileServiceImpl implements ProfileService {
 				Iterator<Entry<String, JsonNode>> newValues = individualChanges.getFields();
 				while (newValues.hasNext()){
 					newValue = newValues.next();
-					code.setPropertyValue(newValue.getKey(), newValue.getValue());
+					code.setPropertyValue(newValue.getKey(), newValue.getValue().getTextValue());
 				}
 				codeService.save(c1);
 			}
 
 		}
-		catch (JsonParseException | IOException e)
+		catch (IOException e)
 		{
 
 		}
+		//catch (ProfileNotFoundException e) {
+		//	// TODO Auto-generated catch block
+		//	e.printStackTrace();
+		//}
 
 
 		//profileService.save(profile);
+		//return new String[1];
 		return errorList;
-		return new String[1];
+		
 	}
 }
