@@ -65,7 +65,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 
 });
 
-app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal,$filter) {
+app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.readonly = false;
     $rootScope.profile = {}; // current profile
     $rootScope.message = null; // current message
