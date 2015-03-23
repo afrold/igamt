@@ -23,10 +23,11 @@ import javax.persistence.Table;
 import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "PROFILE")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Profile extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -70,11 +71,9 @@ public class Profile extends DataModel implements java.io.Serializable {
 	@JoinColumn(name = "AUTHOR_ID")
 	private Author author;
 
-	@JsonView({ View.Summary.class })
 	@Column(name = "PRELOADED")
 	private Boolean preloaded;
 
-	@JsonView({ View.Summary.class })
 	@Column(name = "VERSION")
 	@Version
 	// version from the db

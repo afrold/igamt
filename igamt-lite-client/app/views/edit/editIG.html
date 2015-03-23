@@ -5,39 +5,44 @@
 </div>
 <div ng-show="!loading">
     <div class="row" style="margin-left: 0px">
-        <div class="col-md-3" role="complementary">       	
+        <div class="col-md-3" role="complementary">
         	<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
-                <ol class="nav bs-docs-sidenav">
+               <ul class="nav bs-docs-nav-container bs-docs-nav">
                     <li>
                         <a href="#/profiles#info">Implementation Guide Information</a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="#/profiles#messages">Conformance Profiles</a>
-                        <ol class="nav">
-                            <li ng-repeat="msg in messagesData">
-                                <a href="#/profiles#message_{{msg.message.id}}">{{msg.message.identifier}} Message Definition</a>
-                                <a href="#/profiles#message_{{msg.message.id}}_segments">{{msg.message.identifier}} Segments Definition</a>
-                                <ol class="nav">
-                                	<li ng-repeat="segment in msg.segments">
-                                		<a href="#/profiles#message_{{msg.message.id}}_segment_{{segment.id}}">{{segment.name}} - {{segment.description}}</a>
-                                	</li>
-                                </ol>
-                                <a href="#/profiles#message_{{msg.message.id}}_datatypes">{{msg.message.identifier}} Datatypes Definition</a>
-                                <ol class="nav">
-                                	<li ng-repeat="datatype in msg.datatypes">
-                                		<a href="#/profiles#message_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</a>
-                                	</li>
-                                </ol>
+                       <ul class="nav">
+                            <li class="igl-tbl-item" ng-repeat="msg in messagesData">
+                                <a href="#/profiles#confProfile_{{msg.message.id}}">{{msg.message.identifier}} Conformance Profile</a>
+                                <ul class="nav">
+                                    <li class="igl-tbl-item">
+                                        <a href="#/profiles#message_{{msg.message.id}}">{{msg.message.identifier}} Message Definition</a>
+                                        <a href="#/profiles#message_{{msg.message.id}}_segments">{{msg.message.identifier}} Segments Definition</a>
+                                        <ul class="nav">
+                                            <li class="igl-tbl-item" ng-repeat="segment in msg.segments">
+                                                <a href="#/profiles#message_{{msg.message.id}}_segment_{{segment.id}}">{{segment.name}} - {{segment.description}}</a>
+                                            </li>
+                                        </ul>
+                                        <a href="#/profiles#message_{{msg.message.id}}_datatypes">{{msg.message.identifier}} Datatypes Definition</a>
+                                        <ul class="nav">
+                                            <li ng-repeat="datatype in msg.datatypes" class="igl-tbl-item">
+                                                <a href="#/profiles#message_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
                             </li>
-                        </ol>
+                       </ul>
                     </li>
-                </ol>
+               </ul>
             </nav>
         </div>
 
 
         <div class="col-md-9" role="main">
-             <div style="height:800px;overflow:scroll">
+             <div style="height:100%;overflow:scroll">
              <div class="bs-docs-section">
                 <h1 id="info" class="page-header">Implementation Guide Information</h1>
 
@@ -128,8 +133,10 @@
                 <!--<h2 class="page-header">Descriptions</h2>-->
                 <!--<textarea style="width:100%" class="form-control" ng-model="profile.comment"-->
                           <!--ng-change="recordChange2('profile',profile.id,'comment', profile.comment)"> </textarea>-->
+
                 <div ng-repeat="msg in messagesData">
                     <div>
+                        <h1 id="confProfile_{{msg.message.id}}" class="page-header">Conformance Profile:{{msg.message.identifier}} </h1>
                         <h2 id="message_{{msg.message.id}}" class="page-header">{{msg.message.identifier}} Message
                             Definition</h2>
 
@@ -259,7 +266,7 @@
                     <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
                               <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
 
-                    <div ng-repeat="datatype in msg.datatypes">     
+                    <div ng-repeat="datatype in msg.datatypes">
                         <h3 id="/profiles#message_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</h3>
                         <table class="table table-bordered">
                             <thead>

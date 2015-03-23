@@ -8,7 +8,6 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.HL7Version;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
@@ -50,9 +49,8 @@ public class ProfileControllerTest {
 
 	@Test
 	public void testGetAllPreloaded() throws Exception {
-		List<ProfileSummary> preloaded = findAllPreloaded();
-		when(mockProfileService.findAllPreloadedSummaries()).thenReturn(
-				preloaded);
+		List<Profile> preloaded = findAllPreloaded();
+		when(mockProfileService.findAllPreloaded()).thenReturn(preloaded);
 		mockMvc.perform(get("/profiles/preloaded")).andExpect(status().isOk())
 				.andDo(print());
 	}
@@ -65,9 +63,9 @@ public class ProfileControllerTest {
 				.andDo(print());
 	}
 
-	private List<ProfileSummary> findAllPreloaded() {
-		List<ProfileSummary> profiles = new ArrayList<ProfileSummary>();
-		ProfileSummary p = new ProfileSummary();
+	private List<Profile> findAllPreloaded() {
+		List<Profile> profiles = new ArrayList<Profile>();
+		Profile p = new Profile();
 		ProfileMetaData metaData = new ProfileMetaData();
 		p.setMetaData(metaData);
 		p.setId(new Long(1));
@@ -80,7 +78,7 @@ public class ProfileControllerTest {
 		p.setMetaData(m);
 		profiles.add(p);
 
-		p = new ProfileSummary();
+		p = new Profile();
 		metaData = new ProfileMetaData();
 		p.setMetaData(metaData);
 		p.setId(new Long(2));

@@ -12,6 +12,10 @@ angular.module('igl')
         $scope.tmpCustoms = [];
         $scope.error = null;
         $scope.user = {id: 2};
+        $scope.preloadedLoading = false;
+        $scope.customLoading = false;
+        $scope.preLoadedError = null;
+        $scope.customError = null;
         // step: 0; list of profile
         // step 1: edit profile
 
@@ -21,43 +25,41 @@ angular.module('igl')
          */
         $scope.init = function () {
             $rootScope.context.page = $rootScope.pages[0];
-            $http.get($rootScope.api('/api/profiles/preloaded')).then(function (response) {
-                $scope.preloaded = response.data;
-            });
+            $scope.preloadedLoading = true;
+            $scope.preloadedError = null;
+            $scope.customError = null;
+            $scope.customLoading = true;
 
-            $http.get($rootScope.api('/api/profiles?userId=' + $scope.user.id)).then(function (response) {
-                $scope.custom = response.data;
+            $http.get($rootScope.api('/api/profiles/preloaded')).then(function (response) {
+                $scope.preloaded = angular.fromJson(response.data);
+                $scope.preloadedLoading = false;
+            }, function (error) {
+                $scope.preLoadedError = error;
+                $scope.preloadedLoading = false;
+            });
+            $http.get($rootScope.api('/api/profiles/custom')).then(function (response) {
+                $scope.custom = angular.fromJson(response.data);
+                $scope.customLoading = false;
+            }, function (error) {
+                $scope.customError = error;
+                $scope.customLoading = false;
             });
         };
 
-        $scope.clone = function (profile) {
-
-            $http.post($rootScope.api('/api/profiles/clone/'+ profile.id)).then(function (response) {
-                $scope.custom.push(res);
+        $scope.clone = function (row) {
+            waitingDialog.show('Cloning profile...', {dialogSize: 'sm', progressType: 'info'});
+            $http.post($rootScope.api('/api/profiles/clone/'+ row.id)).then(function (response) {
+                $scope.custom.push(angular.fromJson(response.data));
+                waitingDialog.hide();
             }, function (error) {
                 $scope.error = error;
+                waitingDialog.hide();
             });
-
-//            Restangular.all('profiles').post({targetId: profile.id}).then(function (res) {
-//                $scope.custom.push(res);
-//            }, function (error) {
-//                $scope.error = error;
-//            });
-
         };
 
-
         $scope.edit = function (profile) {
-
-//
-//            $http.get('/api/profile/'+ profile.id).then(function (response) {
-//                $scope.custom.push(res);
-//            }, function (error) {
-//                $scope.error = error;
-//            });
-
-
-            $http.get($rootScope.api('/api/profile/'+ profile.id)).then(function (profile) {
+            waitingDialog.show('Loading profile...', {dialogSize: 'sm', progressType: 'info'});
+//             $http.get($rootScope.api('/api/profiles/'+ row.id)).then(function (profile) {
                 $scope.loading = true;
                 $rootScope.initMaps();
                 $rootScope.context.page = $rootScope.pages[1];
@@ -109,10 +111,14 @@ angular.module('igl')
 
                 $scope.loading = false;
 
-            }, function (error) {
-                $scope.error = error;
-                $scope.loading = false;
-            });
+                waitingDialog.hide();
+
+//            }
+//            , function (error) {
+//                $scope.error = error.data;
+//                $scope.loading = false;
+//                 waitingDialog.hide();
+//            });
         };
 
 

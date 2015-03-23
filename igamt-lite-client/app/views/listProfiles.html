@@ -1,118 +1,160 @@
 <div ng-controller="ProfileListCtrl" ng-init="init()">
     <div class="row">
-        <div class="page-header">
-        <h3>Predefined Implementation Guides </h3>
+
+        <div ng-show="error != null">
+            <div class="alert alert-danger" role="alert" ng-bind="error"></div>
+            <br/>
         </div>
-        <div class="">
-            <!-- Default panel contents -->
-            <!--<div class="panel-heading"><i class="fa fa-list"></i>&nbsp;-->
-                <!--Predefined Profiles-->
-            <!--</div>-->
-            <!--<div class="panel-body">-->
-                <table st-table="preloaded"
-                       class="profile-list table table-striped table-bordered">
-                    <thead>
-                    <tr class="tbl-header">
-                        <th>Idenfifier</th>
-                        <th>Name</th>
-                        <th>Organization Name</th>
-                        <!--<th>Type</th>-->
-                        <th>Topic</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="row in preloaded">
-                        <td ng-bind="row.metaData.identifier"></td>
-                        <td ng-bind="row.metaData.name"></td>
-                        <td ng-bind="row.metaData.orgName"></td>
-                        <!--<td ng-bind-html="row.metaData.hl7Version"></td>-->
-                        <!--<td ng-bind-html="row.metaData.schemaVersion"></td>-->
-                        <!--<td ng-bind-html="row.metaData.type"></td>-->
-                        <td ng-bind-html="row.metaData.topics"></td>
-                        <td ng-bind-html="row.metaData.status"></td>
-                        <td>
-                            <button title="Create Copy" type="button" class="btn btn-xs btn-info"
-                                    ng-click="clone(row)">
-                                <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                    <!--<tfoot>-->
-                    <!--<tr>-->
-                        <!--<td colspan="4" class="text-center">-->
-                            <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
-                        <!--</td>-->
-                    <!--</tr>-->
 
-                    <!--</tfoot>-->
-                </table>
-            <!--</div>-->
+        <div class="preloaded">
+            <div class="page-header">
+                <h3>Predefined Implementation Guides </h3>
+            </div>
+            <div ng-show="preloadedError !== null">
+                <div class="alert alert-danger" role="alert" ng-bind="preloadedError"></div>
+            </div>
+            <div ng-show="preloadedError === null">
+                <div class="" ng-hide="preloadedLoading">
+                    <!-- Default panel contents -->
+                    <!--<div class="panel-heading"><i class="fa fa-list"></i>&nbsp;-->
+                    <!--Predefined Profiles-->
+                    <!--</div>-->
+                    <!--<div class="panel-body">-->
+                    <table st-table="preloaded"
+                           class="profile-list table table-striped table-bordered">
+                        <thead>
+                        <tr class="tbl-header">
+                            <th>Idenfifier</th>
+                            <th>Name</th>
+                            <th>Organization Name</th>
+                            <!--<th>Type</th>-->
+                            <th>Topic</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="row in preloaded">
+                            <td ng-bind="row.metaData.identifier"></td>
+                            <td ng-bind="row.metaData.name"></td>
+                            <td ng-bind="row.metaData.orgName"></td>
+                            <!--<td ng-bind-html="row.metaData.hl7Version"></td>-->
+                            <!--<td ng-bind-html="row.metaData.schemaVersion"></td>-->
+                            <!--<td ng-bind-html="row.metaData.type"></td>-->
+                            <td ng-bind-html="row.metaData.topics"></td>
+                            <td ng-bind-html="row.metaData.status"></td>
+                            <td>
+                                <button title="Create Copy" type="button" class="btn btn-xs btn-info"
+                                        ng-click="clone(row)">
+                                    <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <!--<tfoot>-->
+                        <!--<tr>-->
+                        <!--<td colspan="4" class="text-center">-->
+                        <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
+                        <!--</td>-->
+                        <!--</tr>-->
+
+                        <!--</tfoot>-->
+                    </table>
+                    <!--</div>-->
+                </div>
+                <div ng-show="preloadedLoading" style="text-align:center">
+                    <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
+                    <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
+
+                </div>
+
+
+            </div>
+
         </div>
-        <div class="page-header">
-        <h3>Custom Implementation Guides </h3>
-       </div>
-        <div class="">
-            <!--<!-- Default panel contents -->
-            <!--<div class="panel-heading"><i class="fa fa-list"></i>&nbsp;-->
-                <!--User Profiles-->
-            <!--</div>-->
-            <!--<div class="panel-body">-->
-                <table st-table="custom"
-                       class="profile-list table table-striped table-bordered">
-                    <thead>
-                    <tr class="tbl-header">
-                        <th>Idenfifier</th>
-                        <th>Name</th>
-                        <th>Organization Name</th>
-                        <!--<th>HL7 Version</th>-->
-                        <!--<th>Schema Version</th>-->
-                        <!--<th>Type</th>-->
-                        <th>Topic</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
 
-                    <tr ng-repeat="row in custom">
-                        <td ng-bind="row.metaData.identifier"></td>
-                        <td ng-bind="row.metaData.name"></td>
-                        <td ng-bind="row.metaData.orgName"></td>
-                        <!--<td ng-bind-html="row.metaData.hl7Version"></td>-->
-                        <!--<td ng-bind-html="row.metaData.schemaVersion"></td>-->
-                        <!--<td ng-bind-html="row.metaData.type"></td>-->
-                        <td ng-bind-html="row.metaData.topics"></td>
-                        <td ng-bind-html="row.metaData.status"></td>
-                        <td>
+        <div class="custom">
+            <div class="page-header">
+                <h3>Custom Implementation Guides </h3>
+            </div>
+            <div ng-show="customError !== null">
+                <div class="alert alert-danger" role="alert" ng-bind="customError"></div>
+                <br/>
+            </div>
+            <div ng-show="customError === null">
+                <div class="" ng-hide="customLoading">
+                    <!--<!-- Default panel contents -->
+                    <!--<div class="panel-heading"><i class="fa fa-list"></i>&nbsp;-->
+                    <!--User Profiles-->
+                    <!--</div>-->
+                    <!--<div class="panel-body">-->
+                    <table st-table="custom"
+                           class="profile-list table table-striped table-bordered">
+                        <thead>
+                        <tr class="tbl-header">
+                            <th>Identifier</th>
+                            <th>Name</th>
+                            <th>Organization Name</th>
+                            <!--<th>HL7 Version</th>-->
+                            <!--<th>Schema Version</th>-->
+                            <!--<th>Type</th>-->
+                            <th>Topic</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-                            <button title="Edit" type="button" class="btn btn-xs btn-primary"
-                                    ng-click="edit(row)">
-                                <span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>
-                            </button>
-                            <button title="Create Copy" type="button" class="btn btn-xs btn-info"
-                                    ng-click="clone(row)">
-                                <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
-                            </button>
-                            <button title="Delete" type="button" class="btn btn-xs btn-danger"
-                                    ng-click="delete(row)">
-                                <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                    <!--<tfoot>-->
-                    <!--<tr>-->
+                        <tr ng-repeat="row in custom">
+                            <td ng-bind="row.metaData.identifier"></td>
+                            <td ng-bind="row.metaData.name"></td>
+                            <td ng-bind="row.metaData.orgName"></td>
+                            <!--<td ng-bind-html="row.metaData.hl7Version"></td>-->
+                            <!--<td ng-bind-html="row.metaData.schemaVersion"></td>-->
+                            <!--<td ng-bind-html="row.metaData.type"></td>-->
+                            <td ng-bind-html="row.metaData.topics"></td>
+                            <td ng-bind-html="row.metaData.status"></td>
+                            <td>
+
+                                <button title="Edit" type="button" class="btn btn-xs btn-primary"
+                                        ng-click="edit(row)">
+                                    <span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>
+                                </button>
+                                <button title="Create Copy" type="button" class="btn btn-xs btn-info"
+                                        ng-click="clone(row)">
+                                    <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
+                                </button>
+                                <button title="Delete" type="button" class="btn btn-xs btn-danger"
+                                        ng-click="delete(row)">
+                                    <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <!--<tfoot>-->
+                        <!--<tr>-->
                         <!--<td colspan="4" class="text-center">-->
-                            <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
+                        <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
                         <!--</td>-->
-                    <!--</tr>-->
-                    <!--</tfoot>-->
+                        <!--</tr>-->
+                        <!--</tfoot>-->
 
-                </table>
-            <!--</div>-->
+                    </table>
+
+
+                    <!--</div>-->
+                </div>
+
+                <div ng-show="customLoading" style="text-align:center">
+                    <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
+                    <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
+
+                </div>
+
+
+            </div>
+
+
         </div>
     </div>
 </div>

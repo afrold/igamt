@@ -437,3 +437,68 @@ input.form-control {
   color:black;
 }
 
+
+//.bs-docs-sidebar {
+//  padding-right: 20px;
+//}
+
+//.bs-docs-sidenav {
+//  width: 258px;
+//}
+.bs-docs-nav-container {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+  margin: 30px 0 0;
+  padding: 0;
+}
+
+.bs-docs-nav {
+
+}
+
+
+ul > li.igl-tbl-item {
+  padding-left:20px;
+}
+
+ul > li.igl-tbl-item > a {
+  display: block;
+  padding: 2px 2px;
+  position: relative;
+}
+
+//ul.bs-docs-nav > li.active {
+//   background-color: #d3d3d3;
+//}
+
+
+.nav.bs-docs-nav > .active > a, .nav.bs-docs-nav > .active > a,  .nav.bs-docs-nav > .active > a:hover {
+  background-color: #d3d3d3;
+}
+
+.nav.bs-docs-nav > .active > a {
+  background-color: #d3d3d3;
+}
+
+.nav.bs-docs-nav > a {
+//  background-color: #d3d3d3;
+}
+
+
+.nav.bs-docs-nav > li > a:hover {
+  background-color: #d3d3d3;
+  border-color: #d3d3d3;
+  border-bottom: 0px solid #d3d3d3;
+}
+
+
+
+
+.bs-docs-section{
+
+}
+
+.igl-nav{
+
+}

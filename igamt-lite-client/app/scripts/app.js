@@ -20,8 +20,8 @@ var app = angular
         'ui.bootstrap',
         'smart-table',
         'ngTreetable',
-        'restangular'
-//        , 'ngMockE2E'
+        'restangular',
+        'ngMockE2E'
     ]);
 
 app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
@@ -51,12 +51,12 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
             redirectTo: '/'
         });
 
-    RestangularProvider.setBaseUrl('/api/');
-
-    RestangularProvider.addElementTransformer('profiles', false, function (profile) {
-        profile.addRestangularMethod('clone', 'post', 'clone');
-        return profile;
-    });
+//    RestangularProvider.setBaseUrl('/api/');
+//
+//    RestangularProvider.addElementTransformer('profiles', false, function (profile) {
+//        profile.addRestangularMethod('clone', 'post', 'clone');
+//        return profile;
+//    });
 
 
     $httpProvider.interceptors.push('503Interceptor');
@@ -65,7 +65,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 
 });
 
-app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal,$filter) {
+app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.readonly = false;
     $rootScope.profile = {}; // current profile
     $rootScope.message = null; // current message
@@ -131,7 +131,8 @@ app.run(function ($rootScope, $location, Restangular, CustomDataModel, $modal,$f
     });
 
     $rootScope.api = function (value) {
-        return "http://localhost:8081/igl-api"+ value;
+//        return "http://localhost:8081/igl-api"+ value;
+        return  value;
     };
 
 
