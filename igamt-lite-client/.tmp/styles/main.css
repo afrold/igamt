@@ -8961,3 +8961,41 @@ input.form-control {
   background-color: #ffec9d;
   color: black;
 }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/haffo\/Documents\/DEV\/CHECKOUT\/igamt-lite\/igamt-lite-client\/app\/styles\/main\.scss}line{font-family:\00003448}}
+.bs-docs-nav-container {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.067);
+  margin: 30px 0 0;
+  padding: 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/haffo\/Documents\/DEV\/CHECKOUT\/igamt-lite\/igamt-lite-client\/app\/styles\/main\.scss}line{font-family:\00003461}}
+ul > li.igl-tbl-item {
+  padding-left: 20px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/haffo\/Documents\/DEV\/CHECKOUT\/igamt-lite\/igamt-lite-client\/app\/styles\/main\.scss}line{font-family:\00003465}}
+ul > li.igl-tbl-item > a {
+  display: block;
+  padding: 2px 2px;
+  position: relative;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/haffo\/Documents\/DEV\/CHECKOUT\/igamt-lite\/igamt-lite-client\/app\/styles\/main\.scss}line{font-family:\00003476}}
+.nav.bs-docs-nav > .active > a, .nav.bs-docs-nav > .active > a, .nav.bs-docs-nav > .active > a:hover {
+  background-color: #d3d3d3;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/haffo\/Documents\/DEV\/CHECKOUT\/igamt-lite\/igamt-lite-client\/app\/styles\/main\.scss}line{font-family:\00003480}}
+.nav.bs-docs-nav > .active > a {
+  background-color: #d3d3d3;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/haffo\/Documents\/DEV\/CHECKOUT\/igamt-lite\/igamt-lite-client\/app\/styles\/main\.scss}line{font-family:\00003489}}
+.nav.bs-docs-nav > li > a:hover {
+  background-color: #d3d3d3;
+  border-color: #d3d3d3;
+  border-bottom: 0px solid #d3d3d3;
+}
