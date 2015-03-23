@@ -18,12 +18,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
@@ -89,8 +89,6 @@ public class ProfileServiceImpl implements ProfileService {
 	@Autowired
 	private CodeService codeService;
 
-	private ProfileClone profileClone;
-
 	@Override
 	@Transactional
 	public Profile save(Profile p) {
@@ -105,29 +103,52 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public Profile findOne(Long id) {
-		return profileRepository.findOne(id);
+		Profile profile = profileRepository.findOne(id);
+		setDatatypeReferences(profile);
+		return profile;
 	}
 
-	@Override
-	public List<ProfileSummary> findAllPreloadedSummaries() {
-		List result = profileRepository.findAllPreloadedSummaries();
-		List<ProfileSummary> summaries = new ArrayList<ProfileSummary>();
-		for (int i = 0; i < result.size(); i++) {
-			Object res = result.get(i);
-			ProfileSummary sum = new ProfileSummary();
-			Object[] row = (Object[]) res;
-			sum.setId(Long.valueOf(row[0].toString()));
-			sum.setMetaData((ProfileMetaData) row[1]);
-			summaries.add(sum);
+	public Profile setDatatypeReferences(Profile profile) {
+		for (Segment s : profile.getSegments().getChildren()) {
+			setDatatypeReferences(s, profile.getDatatypes());
 		}
+		for (Datatype d : profile.getDatatypes().getChildren()) {
+			setDatatypeReferences(d, profile.getDatatypes());
+		}
+		return profile;
+	}
 
-		return summaries;
+	private void setDatatypeReferences(Segment segment, Datatypes datatypes) {
+		for (Field f : segment.getFields()) {
+			f.setDatatype(datatypes.find(f.getDatatypeLabel()));
+		}
+	}
+
+	private void setDatatypeReferences(Datatype datatype, Datatypes datatypes) {
+		if (datatype != null && datatype.getComponents() != null) {
+			for (Component c : datatype.getComponents()) {
+				c.setDatatype(datatypes.find(c.getDatatypeLabel()));
+			}
+		}
+	}
+
+	@Override
+	public List<Profile> findAllPreloaded() {
+		List<Profile> profiles = profileRepository.findAllPreloaded();
+		for (Profile profile : profiles) {
+			setDatatypeReferences(profile);
+		}
+		return profiles;
 
 	}
 
 	@Override
-	public Iterable<ProfileSummary> findAllSummariesByUser(Long userId) {
-		return profileRepository.findAllSummariesByUserId(userId);
+	public List<Profile> findAllCustom() {
+		List<Profile> profiles = profileRepository.findAllCustom();
+		for (Profile profile : profiles) {
+			setDatatypeReferences(profile);
+		}
+		return profiles;
 	}
 
 	@Override
@@ -223,6 +244,7 @@ public class ProfileServiceImpl implements ProfileService {
 				individualChanges = node.getValue();
 
 				Segment s = segmentService.findOne(id);
+
 				if (s == null) {
 					errorList.add("segment ID not found: " + node.getKey());
 				} else {
@@ -254,6 +276,7 @@ public class ProfileServiceImpl implements ProfileService {
 				individualChanges = node.getValue();
 
 				SegmentRef sr = segmentRefService.findOne(id);
+
 				if (sr == null) {
 					errorList.add("SegmentRef ID not found: " + node.getKey());
 				} else {
@@ -344,15 +367,13 @@ public class ProfileServiceImpl implements ProfileService {
 				Field f1 = fieldService.findOne(id);
 				BeanWrapper field = new BeanWrapperImpl(f1);
 
-				newValues = individualChanges
-						.getFields();
+				newValues = individualChanges.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
 					try {
 						field.setPropertyValue(newValue.getKey(), newValue
 								.getValue().getTextValue());
-					}
-					catch (NotWritablePropertyException e) {
+					} catch (NotWritablePropertyException e) {
 						errorList.add(new String("profile property not set: " 
 								+ newValue.getKey() + newValue.getValue().getTextValue()));
 					}
@@ -369,15 +390,13 @@ public class ProfileServiceImpl implements ProfileService {
 
 				Table t = tableService.findOne(id);
 				BeanWrapper code = new BeanWrapperImpl(t);
-				newValues = individualChanges
-						.getFields();
+				newValues = individualChanges.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
 					try {
 						code.setPropertyValue(newValue.getKey(), newValue
 								.getValue().getTextValue());
-					}
-					catch (NotWritablePropertyException e) {
+					} catch (NotWritablePropertyException e) {
 						errorList.add(new String("table property not set: " 
 								+ newValue.getKey() + newValue.getValue().getTextValue()));
 					}
@@ -413,9 +432,6 @@ public class ProfileServiceImpl implements ProfileService {
 					codeService.save(c1);
 				}
 			}
-
-
-
 		} catch (IOException e) {
 
 		}
