@@ -56,6 +56,7 @@ import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.NotWritablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -138,6 +139,7 @@ public class ProfileServiceImpl implements ProfileService {
 	 * { "component": { "59": { "usage": "C" }, "303": { "maxLength": "27" } } }
 	 */
 	@Override
+	@Transactional(propagation=Propagation.REQUIRED)
 	public List<String> apply(String jsonChanges) throws ProfileNotFoundException {
 		List<String> errorList = new ArrayList<String>();
 
@@ -163,21 +165,21 @@ public class ProfileServiceImpl implements ProfileService {
 				Profile p = profileRepository.findOne(id);
 				if (p == null) {
 					errorList.add("profile ID not found: " + node.getKey());
-					//throw new ProfileNotFoundException(id);
-				}
-				BeanWrapper metadata = new BeanWrapperImpl(p.getMetaData());
+				} else {
+					BeanWrapper metadata = new BeanWrapperImpl(p.getMetaData());
 
-				newValues = individualChanges
-						.getFields();
-				while (newValues.hasNext()) {
-					newValue = newValues.next();
-					try{
-						metadata.setPropertyValue(newValue.getKey(), newValue
-								.getValue().getTextValue());
-					}
-					catch (NotWritablePropertyException e) {
-						errorList.add(new String("profile property not set: " 
-								+ newValue.getKey() + newValue.getValue().getTextValue()));
+					newValues = individualChanges
+							.getFields();
+					while (newValues.hasNext()) {
+						newValue = newValues.next();
+						try{
+							metadata.setPropertyValue(newValue.getKey(), newValue
+									.getValue().getTextValue());
+						}
+						catch (NotWritablePropertyException e) {
+							errorList.add(new String("profile property not set: " 
+									+ newValue.getKey() + newValue.getValue().getTextValue()));
+						}
 					}
 					profileRepository.save(p);
 				}
@@ -191,20 +193,25 @@ public class ProfileServiceImpl implements ProfileService {
 				individualChanges = node.getValue();
 
 				Message m = messageService.findOne(id);
-				BeanWrapper message = new BeanWrapperImpl(m);
-				newValues = individualChanges
-						.getFields();
-				while (newValues.hasNext()) {
-					newValue = newValues.next();
-					try {
-						message.setPropertyValue(newValue.getKey(), newValue
-								.getValue().getTextValue());
+				if (m == null) {
+					errorList.add("message ID not found: " + node.getKey());
+				} else {
+					BeanWrapper message = new BeanWrapperImpl(m);
+					newValues = individualChanges
+							.getFields();
+					while (newValues.hasNext()) {
+						newValue = newValues.next();
+						try {
+							message.setPropertyValue(newValue.getKey(), newValue
+									.getValue().getTextValue());
+						}
+						catch (NotWritablePropertyException e) {
+							errorList.add(new String("message property not set: " 
+									+ newValue.getKey() + newValue.getValue().getTextValue()));
+						}
 					}
-					catch (NotWritablePropertyException e) {
-						errorList.add(new String("message property not set: " 
-								+ newValue.getKey() + newValue.getValue().getTextValue()));
-					}				}
-				messageService.save(m);
+					messageService.save(m);
+				}
 			}
 
 			// segment
@@ -216,21 +223,26 @@ public class ProfileServiceImpl implements ProfileService {
 				individualChanges = node.getValue();
 
 				Segment s = segmentService.findOne(id);
-				BeanWrapper segment = new BeanWrapperImpl(s);
+				if (s == null) {
+					errorList.add("segment ID not found: " + node.getKey());
+				} else {
+					BeanWrapper segment = new BeanWrapperImpl(s);
 
-				newValues = individualChanges
-						.getFields();
-				while (newValues.hasNext()) {
-					newValue = newValues.next();
-					try {
-						segment.setPropertyValue(newValue.getKey(), newValue
-								.getValue().getTextValue());
+					newValues = individualChanges
+							.getFields();
+					while (newValues.hasNext()) {
+						newValue = newValues.next();
+						try {
+							segment.setPropertyValue(newValue.getKey(), newValue
+									.getValue().getTextValue());
+						}
+						catch (NotWritablePropertyException e) {
+							errorList.add(new String("Segment property not set: " 
+									+ newValue.getKey() + newValue.getValue().getTextValue()));
+						}
 					}
-					catch (NotWritablePropertyException e) {
-						errorList.add(new String("segment property not set: " 
-								+ newValue.getKey() + newValue.getValue().getTextValue()));
-					}}
-				segmentService.save(s);
+					segmentService.save(s);
+				}
 			}
 
 			// segmentRef
@@ -242,22 +254,28 @@ public class ProfileServiceImpl implements ProfileService {
 				individualChanges = node.getValue();
 
 				SegmentRef sr = segmentRefService.findOne(id);
-				BeanWrapper segmentRef = new BeanWrapperImpl(sr);
+				if (sr == null) {
+					errorList.add("SegmentRef ID not found: " + node.getKey());
+				} else {
+					BeanWrapper segmentRef = new BeanWrapperImpl(sr);
 
-				newValues = individualChanges
-						.getFields();
-				while (newValues.hasNext()) {
-					newValue = newValues.next();
-					try {
-						segmentRef.setPropertyValue(newValue.getKey(), newValue
-								.getValue().getTextValue());
+					newValues = individualChanges
+							.getFields();
+					while (newValues.hasNext()) {
+						newValue = newValues.next();
+						try {
+							segmentRef.setPropertyValue(newValue.getKey(), newValue
+									.getValue().getTextValue());
+						}
+						catch (NotWritablePropertyException e) {
+							errorList.add(new String("SegmentRef property not set: " 
+									+ newValue.getKey() + newValue.getValue().getTextValue()));
+						}
 					}
-					catch (NotWritablePropertyException e) {
-						errorList.add(new String("profile property not set: " 
-								+ newValue.getKey() + newValue.getValue().getTextValue()));
-					}}
-				segmentRefService.save(sr);
+					segmentRefService.save(sr);
+				}
 			}
+
 
 			// group
 			nodes = rootNode.path("group").getFields();
@@ -267,21 +285,25 @@ public class ProfileServiceImpl implements ProfileService {
 				individualChanges = node.getValue();
 				id = Long.valueOf(node.getKey());
 				Group g = groupService.findOne(id);
-				BeanWrapper group = new BeanWrapperImpl(g);
-
-				newValues = individualChanges
-						.getFields();
-				while (newValues.hasNext()) {
-					newValue = newValues.next();
-					try {
-						group.setPropertyValue(newValue.getKey(), newValue
-								.getValue().getTextValue());
+				if (g == null) {
+					errorList.add("Group ID not found: " + node.getKey());
+				} else {
+					BeanWrapper group = new BeanWrapperImpl(g);
+					newValues = individualChanges
+							.getFields();
+					while (newValues.hasNext()) {
+						newValue = newValues.next();
+						try {
+							group.setPropertyValue(newValue.getKey(), newValue
+									.getValue().getTextValue());
+						}
+						catch (NotWritablePropertyException e) {
+							errorList.add(new String("group property not set: " 
+									+ newValue.getKey() + newValue.getValue().getTextValue()));
+						}
 					}
-					catch (NotWritablePropertyException e) {
-						errorList.add(new String("group property not set: " 
-								+ newValue.getKey() + newValue.getValue().getTextValue()));
-					}}
-				groupService.save(g);
+					groupService.save(g);
+				}
 			}
 
 			// component
@@ -292,21 +314,24 @@ public class ProfileServiceImpl implements ProfileService {
 				individualChanges = node.getValue();
 
 				Component c = componentService.findOne(id);
-				BeanWrapper component = new BeanWrapperImpl(c);
-
-				newValues = individualChanges
-						.getFields();
-				while (newValues.hasNext()) {
-					newValue = newValues.next();
-					try {
-						component.setPropertyValue(newValue.getKey(), newValue
-								.getValue().getTextValue());
+				if (c == null) {
+					errorList.add("Component ID not found: " + node.getKey());
+				} else {
+					BeanWrapper component = new BeanWrapperImpl(c);
+					newValues = individualChanges.getFields();
+					while (newValues.hasNext()) {
+						newValue = newValues.next();
+						try {
+							component.setPropertyValue(newValue.getKey(), newValue
+									.getValue().getTextValue());
+						}
+						catch (NotWritablePropertyException e) {
+							errorList.add(new String("Component property not set: " 
+									+ newValue.getKey() + newValue.getValue().getTextValue()));
+						}
 					}
-					catch (NotWritablePropertyException e) {
-						errorList.add(new String("profile property not set: " 
-								+ newValue.getKey() + newValue.getValue().getTextValue()));
-					}}
-				componentService.save(c);
+					componentService.save(c);
+				}
 			}
 
 			// field
@@ -330,7 +355,8 @@ public class ProfileServiceImpl implements ProfileService {
 					catch (NotWritablePropertyException e) {
 						errorList.add(new String("profile property not set: " 
 								+ newValue.getKey() + newValue.getValue().getTextValue()));
-					}}
+					}
+				}
 				fieldService.save(f1);
 			}
 
@@ -354,7 +380,8 @@ public class ProfileServiceImpl implements ProfileService {
 					catch (NotWritablePropertyException e) {
 						errorList.add(new String("table property not set: " 
 								+ newValue.getKey() + newValue.getValue().getTextValue()));
-					}}
+					}
+				}
 				tableService.save(t);
 			}
 
@@ -366,22 +393,27 @@ public class ProfileServiceImpl implements ProfileService {
 				individualChanges = node.getValue();
 
 				Code c1 = codeService.findOne(id);
-				BeanWrapper code = new BeanWrapperImpl(c1);
-				newValues = individualChanges
-						.getFields();
-				while (newValues.hasNext()) {
-					newValue = newValues.next();
-					try {
-						code.setPropertyValue(newValue.getKey(), newValue
-								.getValue().getTextValue());
+				if (c1 == null) {
+					errorList.add("Code ID not found: " + node.getKey());
+				} else {
+					BeanWrapper code = new BeanWrapperImpl(c1);
+					newValues = individualChanges
+							.getFields();
+					while (newValues.hasNext()) {
+						newValue = newValues.next();
+						try {
+							code.setPropertyValue(newValue.getKey(), newValue
+									.getValue().getTextValue());
+						}
+						catch (NotWritablePropertyException e) {
+							errorList.add(new String("code property not set: " 
+									+ newValue.getKey() + newValue.getValue().getTextValue()));
+						}
 					}
-					catch (NotWritablePropertyException e) {
-						errorList.add(new String("profile property not set: " 
-								+ newValue.getKey() + newValue.getValue().getTextValue()));
-					}
+					codeService.save(c1);
 				}
-				codeService.save(c1);
 			}
+
 
 
 		} catch (IOException e) {
