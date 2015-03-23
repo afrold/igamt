@@ -105,5 +105,44 @@ public class ProfileService2Test extends
 		assertEquals("Z22_", msg.getIdentifier());
 	}
 
+	
+	@Test
+	public void testApplyWithErrors() throws Exception {
+		String p = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/vxuTest/Profile.xml"));
+		String v = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/vxuTest/ValueSets_all.xml"));
+		String c = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/vxuTest/Constraints.xml"));
+		Profile profile = new ProfileSerializationImpl()
+				.deserializeXMLToProfile(p, v, c);
+		Profile p1 = profileService.save(profile);
+
+		String p1Id = String.valueOf(p1.getId());
+		
+		Message msg = p1.getMessages().getChildren().iterator().next();
+		String p1MsgId = String.valueOf(msg.getId());
+		
+
+		String jsonChanges = 
+				"{"
+						+	"\"profile\": "
+						+		"{\""+p1Id+"\": "
+						+			"{ \"identifier\": \"IG1_234\", \"type\": \"Constrainable-d\", \"name\": \"Implementation Guide for Immunization Messaging_\",\"orgName\": \"NIST_\",\"status\": \"Active\"}"
+						+		",\""+String.valueOf(p1.getId() + 1)+"\": "
+						+			"{ \"identifier\": \"IG1_345\"}"
+						+		"},"
+						+	"\"message\": "
+						+		"{\""+p1MsgId+"\": "
+						+			"{\"identifier\": \"Z22_\", \"description\": \"Unsolicited vaccination record updates\",\"comment\": \"c1\"}"
+						+	"}"
+						+"}";
+
+		List<String> rst = profileService.apply(jsonChanges);
+		
+		assertEquals(1, rst.size());
+
+		
+	}
 
 }

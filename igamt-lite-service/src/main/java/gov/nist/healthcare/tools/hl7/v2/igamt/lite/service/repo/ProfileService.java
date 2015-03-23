@@ -18,6 +18,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 
 import java.util.List;
@@ -30,9 +31,9 @@ public interface ProfileService {
 
 	public Profile findOne(Long id);
 
-	public List<Profile> findAllPreloaded();
+	public List<ProfileSummary> findAllPreloadedSummaries();
 
-	public List<Profile> findAllCustom();
+	public Iterable<ProfileSummary> findAllSummariesByUser(Long userId);
 
 	public Profile clone(Profile p);
 

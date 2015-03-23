@@ -14,11 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 @Entity
 @Table(name = "DATATYPES")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Datatypes implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -63,17 +60,6 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		// d.setPosition(datatypes.size() +1);
 		children.add(d);
 		d.setDatatypes(this);
-	}
-
-	public Datatype find(String label) {
-		Iterator<Datatype> it = this.children.iterator();
-		while (it.hasNext()) {
-			Datatype tmp = it.next();
-			if (tmp.getLabel().equals(label)) {
-				return tmp;
-			}
-		}
-		return null;
 	}
 
 	@Override

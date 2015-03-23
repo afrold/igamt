@@ -20,8 +20,8 @@ var app = angular
         'ui.bootstrap',
         'smart-table',
         'ngTreetable',
-        'restangular',
-        'ngMockE2E'
+        'restangular'
+//        , 'ngMockE2E'
     ]);
 
 app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
@@ -51,12 +51,12 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
             redirectTo: '/'
         });
 
-//    RestangularProvider.setBaseUrl('/api/');
-//
-//    RestangularProvider.addElementTransformer('profiles', false, function (profile) {
-//        profile.addRestangularMethod('clone', 'post', 'clone');
-//        return profile;
-//    });
+    RestangularProvider.setBaseUrl('/api/');
+
+    RestangularProvider.addElementTransformer('profiles', false, function (profile) {
+        profile.addRestangularMethod('clone', 'post', 'clone');
+        return profile;
+    });
 
 
     $httpProvider.interceptors.push('503Interceptor');
@@ -131,8 +131,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     });
 
     $rootScope.api = function (value) {
-//        return "http://localhost:8081/igl-api"+ value;
-        return  value;
+        return "http://localhost:8081/igl-api"+ value;
     };
 
 

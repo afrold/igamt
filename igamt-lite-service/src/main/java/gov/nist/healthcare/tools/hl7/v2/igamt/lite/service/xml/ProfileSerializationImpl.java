@@ -85,12 +85,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		this.deserializeEncodings(profile, elmConformanceProfile);
 
 		// Read Profile Libs
-		profile.setTableLibrary(new TableSerializationImpl()
-				.deserializeXMLToTableLibrary(xmlValueSet));
-		this.conformanceStatement = new ConstraintsSerializationImpl()
-				.deserializeXMLToConformanceStatements(xmlConstraints);
-		this.predicates = new ConstraintsSerializationImpl()
-				.deserializeXMLToPredicates(xmlConstraints);
+		profile.setTableLibrary(new TableSerializationImpl().deserializeXMLToTableLibrary(xmlValueSet));
+		this.conformanceStatement = new ConstraintsSerializationImpl().deserializeXMLToConformanceStatements(xmlConstraints);
+		this.predicates = new ConstraintsSerializationImpl().deserializeXMLToPredicates(xmlConstraints);
 
 		this.constructDatatypesMap((Element) elmConformanceProfile
 				.getElementsByTagName("Datatypes").item(0), profile);
@@ -213,10 +210,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		// [Woo] I assumed the default name could be base name.
 		datatypeObj.setLabel(elmDatatype.getAttribute("ID"));
 		datatypeObj.setName(elmDatatype.getAttribute("Name"));
-		datatypeObj
-				.setPredicates(this.findPredicates(
-						this.predicates.getDatatypes(),
-						elmDatatype.getAttribute("ID")));
+		datatypeObj.setPredicates(this.findPredicates(this.predicates.getDatatypes(), elmDatatype.getAttribute("ID")));
 		datatypeObj.setConformanceStatements(this.findConformanceStatement(
 				this.conformanceStatement.getDatatypes(),
 				elmDatatype.getAttribute("ID")));
@@ -525,8 +519,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		// [Woo] I assumed the default name could be base name.
 		segmentObj.setLabel(segmentElm.getAttribute("ID"));
 		segmentObj.setName(segmentElm.getAttribute("Name"));
-		segmentObj.setPredicates(this.findPredicates(
-				this.predicates.getSegments(), segmentElm.getAttribute("ID")));
+		segmentObj.setPredicates(this.findPredicates(this.predicates
+				.getSegments(), segmentElm.getAttribute("ID")));
 		segmentObj.setConformanceStatements(this.findConformanceStatement(
 				this.conformanceStatement.getSegments(),
 				segmentElm.getAttribute("ID")));
@@ -647,9 +641,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				new String(Files.readAllBytes(Paths
 						.get("src//main//resources//vxu//Constraints.xml"))));
 		System.out.println(test1.serializeProfileToXML(profile));
-		System.out.println(test2.serializeTableLibraryToXML(profile
-				.getTableLibrary()));
-		System.out.println(test3.serializeConstraintsToXML(
-				profile.getConformanceStatements(), profile.getPredicates()));
+		System.out.println(test2.serializeTableLibraryToXML(profile.getTableLibrary()));
+		System.out.println(test3.serializeConstraintsToXML(profile.getConformanceStatements(), profile.getPredicates()));
 	}
 }
