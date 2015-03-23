@@ -124,8 +124,7 @@
                                             <span>{{node.event}}^{{node.structID}}:{{node.description}}</span>
                                          </span>
                                         <span ng-show="node.type === 'segmentRef' || node.type === 'group'">
-                                            <img
-                                                    style="width:15px; height:15px"
+                                            <img style="width:15px; height:15px"
                                                     ng-src="images/{{node.type}}.png">
                                             <span ng-if="node.type === 'segmentRef'">{{node.position}}.{{node.ref.name}}:{{node.ref.description}}</span>
                                             <span ng-if="node.type === 'group'">{{node.position}}.{{node.name}}</span>
