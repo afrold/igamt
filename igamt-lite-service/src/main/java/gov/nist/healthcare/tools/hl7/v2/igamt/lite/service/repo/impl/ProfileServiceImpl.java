@@ -24,8 +24,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.clone.ProfileClone;
@@ -36,6 +38,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.GroupService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentRefService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,6 +53,7 @@ import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.NotWritablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,6 +68,9 @@ public class ProfileServiceImpl implements ProfileService {
 	private MessageService messageService;
 
 	@Autowired
+	private SegmentService segmentService;
+
+	@Autowired
 	private SegmentRefService segmentRefService;
 
 	@Autowired
@@ -73,6 +81,9 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Autowired
 	private FieldService fieldService;
+
+	@Autowired
+	private TableService tableService;
 
 	@Autowired
 	private CodeService codeService;
@@ -127,8 +138,8 @@ public class ProfileServiceImpl implements ProfileService {
 	 * { "component": { "59": { "usage": "C" }, "303": { "maxLength": "27" } } }
 	 */
 	@Override
-	public String[] apply(String jsonChanges) throws ProfileNotFoundException {
-		String[] errorList = new String[] {};
+	public List<String> apply(String jsonChanges) throws ProfileNotFoundException {
+		List<String> errorList = new ArrayList<String>();
 
 		try {
 			Long id;
@@ -136,6 +147,7 @@ public class ProfileServiceImpl implements ProfileService {
 			Entry<String, JsonNode> node;
 			JsonNode individualChanges;
 			Entry<String, JsonNode> newValue;
+			Iterator<Entry<String, JsonNode>> newValues;
 
 			JsonFactory f = new JsonFactory();
 			JsonParser jp = f.createJsonParser(jsonChanges);
@@ -144,25 +156,31 @@ public class ProfileServiceImpl implements ProfileService {
 
 			// profile
 			nodes = rootNode.path("profile").getFields();
-
 			while (nodes.hasNext()) {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
 				Profile p = profileRepository.findOne(id);
-				// if (p == null) {
-				// throw new ProfileNotFoundException(id);
-				// }
+				if (p == null) {
+					errorList.add("profile ID not found: " + node.getKey());
+					//throw new ProfileNotFoundException(id);
+				}
 				BeanWrapper metadata = new BeanWrapperImpl(p.getMetaData());
 
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+				newValues = individualChanges
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					metadata.setPropertyValue(newValue.getKey(), newValue
-							.getValue().getTextValue());
+					try{
+						metadata.setPropertyValue(newValue.getKey(), newValue
+								.getValue().getTextValue());
+					}
+					catch (NotWritablePropertyException e) {
+						errorList.add(new String("profile property not set: " 
+								+ newValue.getKey() + newValue.getValue().getTextValue()));
+					}
+					profileRepository.save(p);
 				}
-				profileRepository.save(p);
 			}
 
 			// message
@@ -174,14 +192,45 @@ public class ProfileServiceImpl implements ProfileService {
 
 				Message m = messageService.findOne(id);
 				BeanWrapper message = new BeanWrapperImpl(m);
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+				newValues = individualChanges
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					message.setPropertyValue(newValue.getKey(), newValue
-							.getValue().getTextValue());
-				}
+					try {
+						message.setPropertyValue(newValue.getKey(), newValue
+								.getValue().getTextValue());
+					}
+					catch (NotWritablePropertyException e) {
+						errorList.add(new String("message property not set: " 
+								+ newValue.getKey() + newValue.getValue().getTextValue()));
+					}				}
 				messageService.save(m);
+			}
+
+			// segment
+			nodes = rootNode.path("segment").getFields();
+
+			while (nodes.hasNext()) {
+				node = nodes.next();
+				id = Long.valueOf(node.getKey());
+				individualChanges = node.getValue();
+
+				Segment s = segmentService.findOne(id);
+				BeanWrapper segment = new BeanWrapperImpl(s);
+
+				newValues = individualChanges
+						.getFields();
+				while (newValues.hasNext()) {
+					newValue = newValues.next();
+					try {
+						segment.setPropertyValue(newValue.getKey(), newValue
+								.getValue().getTextValue());
+					}
+					catch (NotWritablePropertyException e) {
+						errorList.add(new String("segment property not set: " 
+								+ newValue.getKey() + newValue.getValue().getTextValue()));
+					}}
+				segmentService.save(s);
 			}
 
 			// segmentRef
@@ -192,17 +241,22 @@ public class ProfileServiceImpl implements ProfileService {
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
 
-				SegmentRef s = segmentRefService.findOne(id);
-				BeanWrapper segmentRef = new BeanWrapperImpl(s);
+				SegmentRef sr = segmentRefService.findOne(id);
+				BeanWrapper segmentRef = new BeanWrapperImpl(sr);
 
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+				newValues = individualChanges
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					segmentRef.setPropertyValue(newValue.getKey(), newValue
-							.getValue().getTextValue());
-				}
-				segmentRefService.save(s);
+					try {
+						segmentRef.setPropertyValue(newValue.getKey(), newValue
+								.getValue().getTextValue());
+					}
+					catch (NotWritablePropertyException e) {
+						errorList.add(new String("profile property not set: " 
+								+ newValue.getKey() + newValue.getValue().getTextValue()));
+					}}
+				segmentRefService.save(sr);
 			}
 
 			// group
@@ -215,13 +269,18 @@ public class ProfileServiceImpl implements ProfileService {
 				Group g = groupService.findOne(id);
 				BeanWrapper group = new BeanWrapperImpl(g);
 
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+				newValues = individualChanges
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					group.setPropertyValue(newValue.getKey(), newValue
-							.getValue().getTextValue());
-				}
+					try {
+						group.setPropertyValue(newValue.getKey(), newValue
+								.getValue().getTextValue());
+					}
+					catch (NotWritablePropertyException e) {
+						errorList.add(new String("group property not set: " 
+								+ newValue.getKey() + newValue.getValue().getTextValue()));
+					}}
 				groupService.save(g);
 			}
 
@@ -235,13 +294,18 @@ public class ProfileServiceImpl implements ProfileService {
 				Component c = componentService.findOne(id);
 				BeanWrapper component = new BeanWrapperImpl(c);
 
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+				newValues = individualChanges
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					component.setPropertyValue(newValue.getKey(), newValue
-							.getValue().getTextValue());
-				}
+					try {
+						component.setPropertyValue(newValue.getKey(), newValue
+								.getValue().getTextValue());
+					}
+					catch (NotWritablePropertyException e) {
+						errorList.add(new String("profile property not set: " 
+								+ newValue.getKey() + newValue.getValue().getTextValue()));
+					}}
 				componentService.save(c);
 			}
 
@@ -255,14 +319,43 @@ public class ProfileServiceImpl implements ProfileService {
 				Field f1 = fieldService.findOne(id);
 				BeanWrapper field = new BeanWrapperImpl(f1);
 
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+				newValues = individualChanges
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					field.setPropertyValue(newValue.getKey(), newValue
-							.getValue().getTextValue());
-				}
+					try {
+						field.setPropertyValue(newValue.getKey(), newValue
+								.getValue().getTextValue());
+					}
+					catch (NotWritablePropertyException e) {
+						errorList.add(new String("profile property not set: " 
+								+ newValue.getKey() + newValue.getValue().getTextValue()));
+					}}
 				fieldService.save(f1);
+			}
+
+			// table
+			nodes = rootNode.path("table").getFields();
+			while (nodes.hasNext()) {
+				node = nodes.next();
+				id = Long.valueOf(node.getKey());
+				individualChanges = node.getValue();
+
+				Table t = tableService.findOne(id);
+				BeanWrapper code = new BeanWrapperImpl(t);
+				newValues = individualChanges
+						.getFields();
+				while (newValues.hasNext()) {
+					newValue = newValues.next();
+					try {
+						code.setPropertyValue(newValue.getKey(), newValue
+								.getValue().getTextValue());
+					}
+					catch (NotWritablePropertyException e) {
+						errorList.add(new String("table property not set: " 
+								+ newValue.getKey() + newValue.getValue().getTextValue()));
+					}}
+				tableService.save(t);
 			}
 
 			// code
@@ -274,22 +367,26 @@ public class ProfileServiceImpl implements ProfileService {
 
 				Code c1 = codeService.findOne(id);
 				BeanWrapper code = new BeanWrapperImpl(c1);
-				Iterator<Entry<String, JsonNode>> newValues = individualChanges
+				newValues = individualChanges
 						.getFields();
 				while (newValues.hasNext()) {
 					newValue = newValues.next();
-					code.setPropertyValue(newValue.getKey(), newValue
-							.getValue().getTextValue());
+					try {
+						code.setPropertyValue(newValue.getKey(), newValue
+								.getValue().getTextValue());
+					}
+					catch (NotWritablePropertyException e) {
+						errorList.add(new String("profile property not set: " 
+								+ newValue.getKey() + newValue.getValue().getTextValue()));
+					}
 				}
 				codeService.save(c1);
 			}
 
+
 		} catch (IOException e) {
 
 		}
-
-		// profileService.save(profile);
-		// return new String[1];
 		return errorList;
 	}
 

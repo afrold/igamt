@@ -92,7 +92,7 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/apply", method = RequestMethod.POST)
-	public String[] save(@RequestBody String jsonChanges) {
+	public List<String> save(@RequestBody String jsonChanges) {
 		logger.info("Applying changes = " + jsonChanges);
 		try {
 			return profileService.apply(jsonChanges);

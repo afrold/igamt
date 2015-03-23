@@ -14,7 +14,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.DatatypesService;
@@ -23,6 +25,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializat
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
@@ -39,9 +42,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * @author Harold Affo (harold.affo@nist.gov) Mar 4, 2015
- */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = PersistenceContext.class)
 @TransactionConfiguration
@@ -82,20 +82,28 @@ public class ProfileService2Test extends
 		Profile p1 = profileService.save(profile);
 
 		String p1Id = String.valueOf(p1.getId());
-
+		
+		Message msg = p1.getMessages().getChildren().iterator().next();
+		String p1MsgId = String.valueOf(msg.getId());
+		
 		String jsonChanges = 
 				"{"
 						+	"\"profile\": "
 						+		"{\""+p1Id+"\": "
 						+			"{ \"identifier\": \"IG1_234\", \"type\": \"Constrainable-d\", \"name\": \"Implementation Guide for Immunization Messaging_\",\"orgName\": \"NIST_\",\"status\": \"Active\"}"
+						+		"},"
+						+	"\"message\": "
+						+		"{\""+p1MsgId+"\": "
+						+			"{\"identifier\": \"Z22_\", \"description\": \"Unsolicited vaccination record updates\",\"comment\": \"c1\"}"
 						+	"}"
 						+"}";
+
 		
-		profileService.apply(jsonChanges);
+		List<String> rst = profileService.apply(jsonChanges);
 		
 		assertEquals("NIST_", p1.getMetaData().getOrgName());
-
-
+		assertEquals("Z22_", msg.getIdentifier());
 	}
+
 
 }

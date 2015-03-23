@@ -37,6 +37,6 @@ public interface ProfileService {
 
 	public Profile clone(Profile p);
 
-	public String[] apply(String changes) throws ProfileNotFoundException;
+	public List<String> apply(String changes) throws ProfileNotFoundException;
 
 }
