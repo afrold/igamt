@@ -4,7 +4,7 @@
 
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http,$filter) {
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter) {
         $scope.loading = false;
         $scope.custom = [];
         $scope.preloaded = [];
@@ -30,14 +30,14 @@ angular.module('igl')
             $scope.customError = null;
             $scope.customLoading = true;
 
-            $http.get($rootScope.api('/api/profiles/preloaded')).then(function (response) {
+            $http.get($rootScope.api('/api/profiles/preloaded'), {timeout: 60000}).then(function (response) {
                 $scope.preloaded = angular.fromJson(response.data);
                 $scope.preloadedLoading = false;
             }, function (error) {
                 $scope.preLoadedError = error;
                 $scope.preloadedLoading = false;
             });
-            $http.get($rootScope.api('/api/profiles/custom')).then(function (response) {
+            $http.get($rootScope.api('/api/profiles/custom'), {timeout: 60000}).then(function (response) {
                 $scope.custom = angular.fromJson(response.data);
                 $scope.customLoading = false;
             }, function (error) {
@@ -46,9 +46,9 @@ angular.module('igl')
             });
         };
 
-        $scope.clone = function (row) {
+        $scope.clone = function (id) {
             waitingDialog.show('Cloning profile...', {dialogSize: 'sm', progressType: 'info'});
-            $http.post($rootScope.api('/api/profiles/clone/'+ row.id)).then(function (response) {
+            $http.post($rootScope.api('/api/profiles/' + id + '/clone')).then(function (response) {
                 $scope.custom.push(angular.fromJson(response.data));
                 waitingDialog.hide();
             }, function (error) {
@@ -57,14 +57,30 @@ angular.module('igl')
             });
         };
 
-        $scope.edit = function (profile) {
+        $scope.findOne = function (id) {
+            for (var i = 0; i < $scope.custom.length; i++) {
+                if ($scope.custom[i].id === id) {
+                    return  $scope.custom[i];
+                }
+            }
+            return null;
+        };
+
+
+        $scope.goToSection = function(id){
+            $scope.section = id;
+        };
+
+        $scope.edit = function (id) {
             waitingDialog.show('Loading profile...', {dialogSize: 'sm', progressType: 'info'});
 //             $http.get($rootScope.api('/api/profiles/'+ row.id)).then(function (profile) {
-                $scope.loading = true;
+            $scope.loading = true;
+            var profile = $scope.findOne(id);
+            if (profile != null) {
                 $rootScope.initMaps();
                 $rootScope.context.page = $rootScope.pages[1];
                 $rootScope.profile = profile;
-                $rootScope.backUp = Restangular.copy($rootScope.profile);
+//                $rootScope.backUp = Restangular.copy($rootScope.profile);
 
                 angular.forEach($rootScope.profile.datatypes.children, function (child) {
                     this[child.label] = child;
@@ -87,7 +103,7 @@ angular.module('igl')
                     });
                 }, $rootScope.messagesMap);
 
-                if($rootScope.profile.messages.children.length === 1){
+                if ($rootScope.profile.messages.children.length === 1) {
                     $rootScope.message = $rootScope.profile.messages.children[0];
                     $rootScope.message.children = $filter('orderBy')($rootScope.message.children, 'position');
                     angular.forEach($rootScope.message.children, function (segmentRefOrGroup) {
@@ -99,19 +115,22 @@ angular.module('igl')
                     var segRefOrGroups = [];
                     var segments = [];
                     var datatypes = [];
-                    $scope.collectData(message, segRefOrGroups, segments,datatypes);
+                    $scope.collectData(message, segRefOrGroups, segments, datatypes);
 //                    $scope.loadSegments(message, segments);
 //                    angular.forEach(segments, function (segment) {
 //                        $scope.loadDatatypes(segment,datatypes);
 //                    });
-                    $rootScope.messagesData.push({message: message, segRefOrGroups: segRefOrGroups, segments:segments, datatypes:datatypes});
+                    $rootScope.messagesData.push({message: message, segRefOrGroups: segRefOrGroups, segments: segments, datatypes: datatypes});
 
 
                 });
 
                 $scope.loading = false;
 
-                waitingDialog.hide();
+            }
+
+            waitingDialog.hide();
+
 
 //            }
 //            , function (error) {
@@ -123,36 +142,36 @@ angular.module('igl')
 
 
         $scope.collectData = function (node, segRefOrGroups, segments, datatypes) {
-            if(node) {
+            if (node) {
                 if (node.type === 'message') {
                     angular.forEach(node.children, function (segmentRefOrGroup) {
-                        $scope.collectData(segmentRefOrGroup,segRefOrGroups,segments, datatypes);
+                        $scope.collectData(segmentRefOrGroup, segRefOrGroups, segments, datatypes);
                     });
                 } else if (node.type === 'group') {
                     segRefOrGroups.push(node);
                     if (node.children) {
                         angular.forEach(node.children, function (segmentRefOrGroup) {
-                            $scope.collectData(segmentRefOrGroup,segRefOrGroups,segments, datatypes);
+                            $scope.collectData(segmentRefOrGroup, segRefOrGroups, segments, datatypes);
                         });
                     }
                     segRefOrGroups.push({ name: node.name, "type": "end-group"});
                 } else if (node.type === 'segment') {
                     segRefOrGroups.push(node);
-                    if(segments.indexOf(node) === -1) {
+                    if (segments.indexOf(node) === -1) {
                         segments.push(node.ref);
                     }
                     angular.forEach(node.ref.fields, function (field) {
-                         $scope.collectData(field,segRefOrGroups,segments, datatypes);
+                        $scope.collectData(field, segRefOrGroups, segments, datatypes);
                     });
-                }else if(node.type === 'component' || node.type === 'subcomponent' || node.type === 'field'){
-                    $scope.collectData(node.datatype,segRefOrGroups,segments,datatypes);
-                }else if(node.type === 'datatype'){
-                    if(datatypes.indexOf(node) === -1) {
+                } else if (node.type === 'component' || node.type === 'subcomponent' || node.type === 'field') {
+                    $scope.collectData(node.datatype, segRefOrGroups, segments, datatypes);
+                } else if (node.type === 'datatype') {
+                    if (datatypes.indexOf(node) === -1) {
                         datatypes.push(node);
                     }
-                    if(node.children) {
+                    if (node.children) {
                         angular.forEach(node.children, function (component) {
-                            $scope.collectData(component,segRefOrGroups,segments,datatypes);
+                            $scope.collectData(component, segRefOrGroups, segments, datatypes);
                         });
                     }
                 }
@@ -200,15 +219,16 @@ angular.module('igl')
 //        };
 
 
-
-
-        $scope.delete = function (profile) {
-            profile.remove().then(function () {
-                var index = $scope.custom.indexOf(profile);
-                if (index > -1) $scope.custom.splice(index, 1);
-            }, function (error) {
-                $scope.error = error;
-            });
+        $scope.delete = function (id) {
+            var profile = $scope.findOne(id);
+            if (profile != null) {
+                $http.post($rootScope.api('/api/profiles/' + id + '/delete'), {timeout: 60000}).then(function (response) {
+                    var index = $scope.custom.indexOf(profile);
+                    if (index > -1) $scope.custom.splice(index, 1);
+                }, function (error) {
+                    $scope.error = error;
+                });
+            }
         };
     });
 
@@ -216,6 +236,7 @@ angular.module('igl')
     .controller('EditProfileCtrl', function ($scope, $rootScope, Restangular) {
 
         $scope.error = null;
+        $scope.message = null;
 
         /**
          * init the controller
@@ -225,14 +246,12 @@ angular.module('igl')
 
         $scope.reset = function () {
             $rootScope.context.page = $rootScope.pages[0];
-            //TODO: FIX ME
             $rootScope.changes = {};
             $rootScope.profile = null;
         };
 
         $scope.delete = function () {
-            $rootScope.profile.remove().then(function () {
-                $rootScope.context.page = $rootScope.pages[0];
+            $http.post($rootScope.api('/api/profiles/'+ $rootScope.profile.id + '/delete'), {timeout: 60000}).then(function (response) {
                 var index = $scope.custom.indexOf($rootScope.profile);
                 if (index > -1) $scope.custom.splice(index, 1);
                 $rootScope.backUp = null;
@@ -242,7 +261,12 @@ angular.module('igl')
         };
 
         $scope.save = function () {
-
+            var data = $rootScope.changes;
+            $http.post($rootScope.api('/api/profiles/save'), data ,{timeout: 60000}).then(function (response) {
+                $scope.message = "Profile Successfully Saved !";
+            }, function (error) {
+                $scope.error = error;
+            });
         };
     });
 

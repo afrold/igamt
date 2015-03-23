@@ -15,7 +15,7 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
     });
 
     // clone and set id to 3
-    $httpBackend.whenPOST('/api/profiles/clone/1').respond(function(method, url, d, headers) {
+    $httpBackend.whenPOST('/api/profiles/1/clone').respond(function(method, url, d, headers) {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/profile1.json', false);
         request.send(null);
@@ -26,6 +26,20 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
         return [request.status, profile, {}];
 
      });
+
+
+    // clone and set id to 3
+    $httpBackend.whenPOST('/api/profiles/3/clone').respond(function(method, url, d, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/profile1.json', false);
+        request.send(null);
+        var profile =  angular.fromJson(request.response);
+        profile.id = 4;
+        profile.preloaded = false;
+        profile.metaData.name= " Cloned "+ profile.metaData.name;
+        return [request.status, profile, {}];
+
+    });
 
     $httpBackend.whenGET('/api/profiles/preloaded').respond(function(method, url, data, headers) {
          var request = new XMLHttpRequest();
@@ -50,6 +64,22 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
          return [200,{}, {}];
     });
 
+    $httpBackend.whenPOST('/api/profiles/1/delete').respond(function(method, url, d, headers) {
+        return [200,{}, {}];
+    });
+
+    $httpBackend.whenPOST('/api/profiles/2/delete').respond(function(method, url, d, headers) {
+        return [200,{}, {}];
+    });
+
+    $httpBackend.whenPOST('/api/profiles/3/delete').respond(function(method, url, d, headers) {
+        return [200,{}, {}];
+    });
+    $httpBackend.whenPOST('/api/profiles/4/delete').respond(function(method, url, d, headers) {
+        return [200,{}, {}];
+    });
+
+
     $httpBackend.whenGET('/api/profiles/3').respond(function(method, url, data, headers) {
         var profile = null;
         var request = new XMLHttpRequest();
@@ -64,9 +94,6 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
     $httpBackend.whenDELETE('/api/profiles/3').respond(function(method, url, data, headers) {
         return [200,{}, {}];
     });
-
-
-
 
 
     $httpBackend.whenGET(/views\//).passThrough();

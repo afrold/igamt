@@ -21,19 +21,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SelectBeforeUpdate;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-@DynamicInsert
-@DynamicUpdate
-@SelectBeforeUpdate
 @Table(name = "DATATYPE")
-public class Datatype extends DataModel implements java.io.Serializable, Cloneable{
+public class Datatype extends DataModel implements java.io.Serializable,
+		Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -72,7 +65,7 @@ public class Datatype extends DataModel implements java.io.Serializable, Cloneab
 	@javax.persistence.JoinTable(name = "DATATYPE_CONFSTATEMENT", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT_ID", unique = false))
 	protected Set<ConformanceStatement> conformanceStatements = new HashSet<ConformanceStatement>();
 
-	@JsonIgnore
+	@com.fasterxml.jackson.annotation.JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "DATATYPES_ID")
 	private Datatypes datatypes;
@@ -207,31 +200,31 @@ public class Datatype extends DataModel implements java.io.Serializable, Cloneab
 		return "Datatype [id=" + id + ", label=" + label + ", name=" + name
 				+ ", description=" + description + "]";
 	}
-	
+
 	@Override
 	public Datatype clone() throws CloneNotSupportedException {
-		Datatype clonedDT = (Datatype)super.clone();
+		Datatype clonedDT = (Datatype) super.clone();
 		clonedDT.setId(null);
-		
+
 		clonedDT.setDatatypes(null);
 		this.datatypes.addDatatype(clonedDT);
-		
+
 		clonedDT.setConformanceStatements(new HashSet<ConformanceStatement>());
-		for(ConformanceStatement cs:this.conformanceStatements){
+		for (ConformanceStatement cs : this.conformanceStatements) {
 			clonedDT.addConformanceStatement(cs.clone());
 		}
-		
+
 		clonedDT.setPredicates(new HashSet<Predicate>());
-		for(Predicate cp:this.predicates){
+		for (Predicate cp : this.predicates) {
 			clonedDT.addPredicate(cp.clone());
 		}
-		
+
 		clonedDT.setComponents(new LinkedHashSet<Component>());
-		for(Component c:this.components){
+		for (Component c : this.components) {
 			clonedDT.addComponent(c.clone());
 		}
-		
+
 		return clonedDT;
-    }
+	}
 
 }

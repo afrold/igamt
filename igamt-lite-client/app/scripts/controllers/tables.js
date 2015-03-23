@@ -63,7 +63,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         };
 
         $scope.hasChildren = function(node){
-            if(node.type=="table") return true;
+            if(node && node.type=="table") return true;
             else return false;
         };
 

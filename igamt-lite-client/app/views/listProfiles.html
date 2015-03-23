@@ -45,7 +45,7 @@
                             <td ng-bind-html="row.metaData.status"></td>
                             <td>
                                 <button title="Create Copy" type="button" class="btn btn-xs btn-info"
-                                        ng-click="clone(row)">
+                                        ng-click="clone(row.id)">
                                     <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
                                 </button>
                             </td>
@@ -117,15 +117,15 @@
                             <td>
 
                                 <button title="Edit" type="button" class="btn btn-xs btn-primary"
-                                        ng-click="edit(row)">
+                                        ng-click="edit(row.id)">
                                     <span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>
                                 </button>
                                 <button title="Create Copy" type="button" class="btn btn-xs btn-info"
-                                        ng-click="clone(row)">
+                                        ng-click="clone(row.id)">
                                     <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
                                 </button>
                                 <button title="Delete" type="button" class="btn btn-xs btn-danger"
-                                        ng-click="delete(row)">
+                                        ng-click="delete(row.id)">
                                     <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
                                 </button>
                             </td>
