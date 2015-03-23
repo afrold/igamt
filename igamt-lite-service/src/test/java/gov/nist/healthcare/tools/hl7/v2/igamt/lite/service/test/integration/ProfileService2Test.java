@@ -124,23 +124,23 @@ public class ProfileService2Test extends
 		String p1MsgId = String.valueOf(msg.getId());
 		
 
-		String jsonChanges = 
-				"{"
-						+	"\"profile\": "
-						+		"{\""+p1Id+"\": "
-						+			"{ \"identifier\": \"IG1_234\", \"type\": \"Constrainable-d\", \"name\": \"Implementation Guide for Immunization Messaging_\",\"orgName\": \"NIST_\",\"status\": \"Active\"}"
-						+		",\""+String.valueOf(p1.getId() + 1)+"\": "
-						+			"{ \"identifier\": \"IG1_345\"}"
-						+		"},"
-						+	"\"message\": "
-						+		"{\""+p1MsgId+"\": "
-						+			"{\"identifier\": \"Z22_\", \"description\": \"Unsolicited vaccination record updates\",\"comment\": \"c1\"}"
-						+	"}"
-						+"}";
+		StringBuilder jsonChanges = new StringBuilder(); 
+		jsonChanges.append("{");
+		jsonChanges.append("\"profile\": ");
+		jsonChanges.append("{\""+p1Id+"\": ");
+		jsonChanges.append("{ \"identifiers\": \"IG1_234\", \"type\": \"Constrainable-d\", \"name\": \"Implementation Guide for Immunization Messaging_\",\"orgName\": \"NIST_\",\"status\": \"Active\"}");
+		jsonChanges.append(",\""+String.valueOf(p1.getId() + 1)+"\": ");
+		jsonChanges.append("{ \"identifier\": \"IG1_345\"}");
+		jsonChanges.append("},");
+		jsonChanges.append("\"message\": ");
+		jsonChanges.append("{\""+p1MsgId+"\": ");
+		jsonChanges.append("{\"identifier\": \"Z22_\", \"description\": \"Unsolicited vaccination record updates\",\"comment\": \"c1\"}");
+		jsonChanges.append("}");
+		jsonChanges.append("}");
 
-		List<String> rst = profileService.apply(jsonChanges);
-		
-		assertEquals(1, rst.size());
+		List<String> rst = profileService.apply(jsonChanges.toString());
+		//There should be an error if the id doesn't exist or if the attributes name doesn't exist.
+		assertEquals(2, rst.size());
 
 		
 	}
