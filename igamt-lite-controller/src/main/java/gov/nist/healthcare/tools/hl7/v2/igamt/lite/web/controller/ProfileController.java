@@ -79,7 +79,7 @@ public class ProfileController extends CommonController {
 		return p;
 	}
 
-	@RequestMapping(value = "/clone/{targetId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/{targetId}/clone", method = RequestMethod.POST)
 	public Profile clone(@PathVariable("targetId") Long targetId)
 			throws ProfileNotFoundException {
 		logger.info("Clone profile with id=" + targetId);
@@ -93,7 +93,14 @@ public class ProfileController extends CommonController {
 		return profile;
 	}
 
-	@RequestMapping(value = "/apply", method = RequestMethod.POST)
+	@RequestMapping(value = "/{targetId}/delete", method = RequestMethod.POST)
+	public void delete(@PathVariable("targetId") Long targetId)
+			throws ProfileNotFoundException {
+		logger.info("Delete profile with id=" + targetId);
+		profileService.delete(targetId);
+	}
+
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public List<String> save(@RequestBody String jsonChanges) {
 		logger.info("Applying changes = " + jsonChanges);
 		try {

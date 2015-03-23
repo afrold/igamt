@@ -55,9 +55,14 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		mapper.registerModule(new Hibernate4Module());
 		Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
 		builder.serializationInclusion(JsonInclude.Include.NON_NULL);
+		builder.featuresToDisable(SerializationFeature.INDENT_OUTPUT,
+				SerializationFeature.FAIL_ON_EMPTY_BEANS);
 		builder.configure(mapper);
-		converters
-				.add(new MappingJackson2HttpMessageConverter(builder.build()));
+
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(
+				builder.build());
+		converter.setPrettyPrint(false);
+		converters.add(converter);
 		super.configureMessageConverters(converters);
 	}
 
