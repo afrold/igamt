@@ -35,14 +35,14 @@ import org.springframework.data.repository.query.Param;
  public interface ProfileRepository extends JpaRepository<Profile, Long> {
 	
 		
-	@Query("select p.id, p.metaData from Profile p where p.preloaded = true")
-	List findAllPreloadedSummaries();
+	@Query("select profile from Profile profile where profile.preloaded = true")
+	List<Profile> findAllPreloaded();
 	
-	@Query("select profile.id,profile.metaData from Profile profile where profile.author.user.id = :userId ")
-	List<ProfileSummary> findAllSummariesByUserId(@Param("userId")Long userId);
+	@Query("select profile from Profile profile where  profile.preloaded = false")
+	List<Profile> findAllCustom();
 	
-	@Query("select profile.id, profile.metaData from Profile profile where profile.author.id = :authorId ")
-	List<ProfileSummary> findAllByAuthorId(@Param("authorId")Long authorId);
+	@Query("select profile from Profile profile where profile.author.id = :authorId ")
+	List<Profile> findAllByAuthorId(@Param("authorId")Long authorId);
 	
 	
 }

@@ -18,12 +18,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
@@ -38,7 +39,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentRefService;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
@@ -77,8 +77,6 @@ public class ProfileServiceImpl implements ProfileService {
 	@Autowired
 	private CodeService codeService;
 
-	private ProfileClone profileClone;
-
 	@Override
 	@Transactional
 	public Profile save(Profile p) {
@@ -93,29 +91,52 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public Profile findOne(Long id) {
-		return profileRepository.findOne(id);
+		Profile profile = profileRepository.findOne(id);
+		setDatatypeReferences(profile);
+		return profile;
 	}
 
-	@Override
-	public List<ProfileSummary> findAllPreloadedSummaries() {
-		List result = profileRepository.findAllPreloadedSummaries();
-		List<ProfileSummary> summaries = new ArrayList<ProfileSummary>();
-		for (int i = 0; i < result.size(); i++) {
-			Object res = result.get(i);
-			ProfileSummary sum = new ProfileSummary();
-			Object[] row = (Object[]) res;
-			sum.setId(Long.valueOf(row[0].toString()));
-			sum.setMetaData((ProfileMetaData) row[1]);
-			summaries.add(sum);
+	public Profile setDatatypeReferences(Profile profile) {
+		for (Segment s : profile.getSegments().getChildren()) {
+			setDatatypeReferences(s, profile.getDatatypes());
 		}
+		for (Datatype d : profile.getDatatypes().getChildren()) {
+			setDatatypeReferences(d, profile.getDatatypes());
+		}
+		return profile;
+	}
 
-		return summaries;
+	private void setDatatypeReferences(Segment segment, Datatypes datatypes) {
+		for (Field f : segment.getFields()) {
+			f.setDatatype(datatypes.find(f.getDatatypeLabel()));
+		}
+	}
+
+	private void setDatatypeReferences(Datatype datatype, Datatypes datatypes) {
+		if (datatype != null && datatype.getComponents() != null) {
+			for (Component c : datatype.getComponents()) {
+				c.setDatatype(datatypes.find(c.getDatatypeLabel()));
+			}
+		}
+	}
+
+	@Override
+	public List<Profile> findAllPreloaded() {
+		List<Profile> profiles = profileRepository.findAllPreloaded();
+		for (Profile profile : profiles) {
+			setDatatypeReferences(profile);
+		}
+		return profiles;
 
 	}
 
 	@Override
-	public Iterable<ProfileSummary> findAllSummariesByUser(Long userId) {
-		return profileRepository.findAllSummariesByUserId(userId);
+	public List<Profile> findAllCustom() {
+		List<Profile> profiles = profileRepository.findAllCustom();
+		for (Profile profile : profiles) {
+			setDatatypeReferences(profile);
+		}
+		return profiles;
 	}
 
 	@Override

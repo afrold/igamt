@@ -1,7 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 
@@ -49,10 +48,17 @@ public class ProfileController extends CommonController {
 	 * @return
 	 */
 	@RequestMapping(value = "/preloaded", method = RequestMethod.GET)
-	public List<ProfileSummary> profileSummaries() {
-		logger.info("Fetching all preloaed profiles...");
-		List<ProfileSummary> result = profileService
-				.findAllPreloadedSummaries();
+	public List<Profile> preloaded() {
+		logger.info("Fetching all preloaded profiles...");
+		List<Profile> result = profileService.findAllPreloaded();
+		return result;
+	}
+
+	// TODO: temporary call before integration of registration
+	@RequestMapping(value = "/custom", method = RequestMethod.GET)
+	public List<Profile> customs() {
+		logger.info("Fetching all custom profiles...");
+		List<Profile> result = profileService.findAllCustom();
 		return result;
 	}
 
@@ -74,7 +80,7 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/clone/{targetId}", method = RequestMethod.POST)
-	public ProfileSummary clone(@PathVariable("targetId") Long targetId)
+	public Profile clone(@PathVariable("targetId") Long targetId)
 			throws ProfileNotFoundException {
 		logger.info("Clone profile with id=" + targetId);
 		Profile p = profileService.findOne(targetId);
@@ -84,11 +90,7 @@ public class ProfileController extends CommonController {
 		Profile profile = profileService.clone(p);
 		profileService.save(profile);
 
-		ProfileSummary summary = new ProfileSummary();
-		summary.setId(profile.getId());
-		summary.setMetaData(profile.getMetaData());
-
-		return summary;
+		return profile;
 	}
 
 	@RequestMapping(value = "/apply", method = RequestMethod.POST)
