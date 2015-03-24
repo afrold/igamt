@@ -22,10 +22,10 @@ angular.module('igl')
                 getTemplate: function (node) {
                     return 'SegmentEditTree.html';
                 }
-                ,
-                options: {
-                    initialState: 'expanded'
-                }
+//                ,
+//                options: {
+//                    initialState: 'expanded'
+//                }
             });
 
 

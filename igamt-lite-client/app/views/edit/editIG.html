@@ -209,7 +209,11 @@
                     <div ng-repeat="segment in msg.segments">
                         <div>
                         <h3 id="">{{segment.name}} - {{segment.description}}</h3>
-                        <table class="table table-bordered">
+                        <!--<textarea style="width:100%" class="form-control" ng-model="segment.comment"-->
+                            <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)">-->
+                        <!--</textarea>-->
+
+                            <table class="table table-bordered">
                             <thead>
                             <tr class="ig-tbl-header row">
                                 <th class="col-md-1">SEQ</th>
