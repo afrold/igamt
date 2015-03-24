@@ -56,6 +56,17 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                 $scope.params.refresh();
             $scope.loadingSelection = false;
         };
+        
+        $scope.addCode = function (id) {
+            waitingDialog.show('Adding new Code...', {dialogSize: 'sm', progressType: 'info'});
+            $http.post($rootScope.api('/api/tables/table/' + id + '/addCode')).then(function (response) {
+            	$scope.table = angular.fromJson(response.data);
+                waitingDialog.hide();
+            }, function (error) {
+                $scope.error = error;
+                waitingDialog.hide();
+            });
+        };
 
         $scope.reset = function () {
             $scope.loadingSelection = true;

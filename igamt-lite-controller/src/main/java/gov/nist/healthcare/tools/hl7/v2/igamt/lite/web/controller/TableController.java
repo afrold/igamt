@@ -1,9 +1,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableLibraryRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableService;
 
@@ -48,30 +50,14 @@ public class TableController extends CommonController {
 	public Table table(@PathVariable("id") Long id) {
 		return tableService.findOne(id);
 	}
-	/*	
-		
-	// CRUD C for Table, User cannot create tableLib
-	@RequestMapping(value = "/table/create/{tableLibraryId}", method = RequestMethod.POST)
-	public Tables createTable(@RequestBody Long tableLibraryId) {
-		Table t = new Table();
-		Tables tl = tableLibraryService.findOne(tableLibraryId);
-		tl.addTable(t);
-		return tableLibraryService.save(tl);
-	}
 
 	// CRUD C for Code
-	@RequestMapping(value = "/table/create/{tableId}", method = RequestMethod.POST)
-	public Table addCode(@RequestBody Long tableId) {
+	@RequestMapping(value = "/table/{targetId}/addCode", method = RequestMethod.POST)
+	public Table addCode(@PathVariable("targetId") Long targetId) {
 		Code code = new Code();
-		Table table = tableService.findOne(tableId);
+		Table table = tableService.findOne(targetId);
 		table.getCodes().add(code);
 		return tableService.save(table);
-	}
-
-	// Update for TableLib
-	@RequestMapping(value = "/tableLibrary/update", method = RequestMethod.PUT)
-	public Tables update(@RequestBody @Valid Tables tableLibrary) {
-		return tableLibraryService.save(tableLibrary);
 	}
 
 	// Update for Table
@@ -81,7 +67,7 @@ public class TableController extends CommonController {
 	}
 
 	// Update for Code
-	@RequestMapping(value = "/table/updatecode/{tableId}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/table/{tableId}/update", method = RequestMethod.PUT)
 	public Code update(final Long tableId, @RequestBody @Valid Code code) {
 		Table table = tableService.findOne(tableId);
 		for (Code c : table.getCodes()) {
@@ -94,28 +80,55 @@ public class TableController extends CommonController {
 		return null;
 	}
 
-	// CRUD D for Table, User cannot delete tableLib
-	// FIXME If the table is binding to a tablelib, it should not be deleted
-	@RequestMapping(value = "/table/delete/{tableId}", method = RequestMethod.DELETE)
-	public ResponseEntity<Boolean> delete(final Long tableId) {
-		tableService.delete(tableId);
-		return new ResponseEntity<Boolean>(Boolean.TRUE, HttpStatus.OK);
-
-	}
-
-	// Delete Code for Table
-	@RequestMapping(value = "/table/delete/{tableId}/{codeId}", method = RequestMethod.DELETE)
-	public ResponseEntity<Boolean> delete(final Long tableId, final Long codeId) {
-		Table table = tableService.findOne(tableId);
-		for (Code c : table.getCodes()) {
-			if (codeId == c.getId()) {
-				table.getCodes().remove(c);
-				return new ResponseEntity<Boolean>(Boolean.TRUE, HttpStatus.OK);
-			}
-		}
-		return new ResponseEntity<Boolean>(Boolean.FALSE, HttpStatus.OK);
-	}
-*/
+	/*
+	 * 
+	 * // CRUD C for Table, User cannot create tableLib
+	 * 
+	 * @RequestMapping(value = "/table/create/{tableLibraryId}", method =
+	 * RequestMethod.POST) public Tables createTable(@RequestBody Long
+	 * tableLibraryId) { Table t = new Table(); Tables tl =
+	 * tableLibraryService.findOne(tableLibraryId); tl.addTable(t); return
+	 * tableLibraryService.save(tl); }
+	 * 
+	 * 
+	 * 
+	 * // Update for TableLib
+	 * 
+	 * @RequestMapping(value = "/tableLibrary/update", method =
+	 * RequestMethod.PUT) public Tables update(@RequestBody @Valid Tables
+	 * tableLibrary) { return tableLibraryService.save(tableLibrary); }
+	 * 
+	 * 
+	 * 
+	 * // Update for Code
+	 * 
+	 * @RequestMapping(value = "/table/updatecode/{tableId}", method =
+	 * RequestMethod.PUT) public Code update(final Long tableId, @RequestBody
+	 * @Valid Code code) { Table table = tableService.findOne(tableId); for
+	 * (Code c : table.getCodes()) { if (code.getId() == c.getId()) {
+	 * table.getCodes().remove(c); table.getCodes().add(code); return code; } }
+	 * return null; }
+	 * 
+	 * // CRUD D for Table, User cannot delete tableLib // FIXME If the table is
+	 * binding to a tablelib, it should not be deleted
+	 * 
+	 * @RequestMapping(value = "/table/delete/{tableId}", method =
+	 * RequestMethod.DELETE) public ResponseEntity<Boolean> delete(final Long
+	 * tableId) { tableService.delete(tableId); return new
+	 * ResponseEntity<Boolean>(Boolean.TRUE, HttpStatus.OK);
+	 * 
+	 * }
+	 * 
+	 * // Delete Code for Table
+	 * 
+	 * @RequestMapping(value = "/table/delete/{tableId}/{codeId}", method =
+	 * RequestMethod.DELETE) public ResponseEntity<Boolean> delete(final Long
+	 * tableId, final Long codeId) { Table table =
+	 * tableService.findOne(tableId); for (Code c : table.getCodes()) { if
+	 * (codeId == c.getId()) { table.getCodes().remove(c); return new
+	 * ResponseEntity<Boolean>(Boolean.TRUE, HttpStatus.OK); } } return new
+	 * ResponseEntity<Boolean>(Boolean.FALSE, HttpStatus.OK); }
+	 */
 	// GET,SET
 	public TableLibraryRepository getTableLibraryRepository() {
 		return tableLibraryRepository;
