@@ -88,13 +88,13 @@ public class ProfileService2Test extends
 		
 		String jsonChanges = 
 				"{"
-						+	"\"profile\": "
-						+		"{\""+p1Id+"\": "
-						+			"{ \"identifier\": \"IG1_234\", \"type\": \"Constrainable-d\", \"name\": \"Implementation Guide for Immunization Messaging_\",\"orgName\": \"NIST_\",\"status\": \"Active\"}"
+						+	"\"profile\":"
+						+		"{\""+p1Id+"\":"
+						+			"{\"identifier\":\"IG1_234\",\"type\":\"Constrainable-d\",\"name\":\"Implementation Guide for Immunization Messaging_\",\"orgName\":\"NIST_\",\"status\":\"Active\"}"
 						+		"},"
-						+	"\"message\": "
-						+		"{\""+p1MsgId+"\": "
-						+			"{\"identifier\": \"Z22_\", \"description\": \"Unsolicited vaccination record updates\",\"comment\": \"c1\"}"
+						+	"\"message\":"
+						+		"{\""+p1MsgId+"\":"
+						+			"{\"identifier\":\"Z22_\",\"description\":\"Unsolicited vaccination record updates\",\"comment\":\"c1\"}"
 						+	"}"
 						+"}";
 
@@ -103,6 +103,8 @@ public class ProfileService2Test extends
 		
 		assertEquals("NIST_", p1.getMetaData().getOrgName());
 		assertEquals("Z22_", msg.getIdentifier());
+		String strChanges = new StringBuilder(jsonChanges).insert(1, "\"0\":0,").toString();
+		assertEquals(strChanges, p1.getChanges());
 	}
 
 	
@@ -126,21 +128,30 @@ public class ProfileService2Test extends
 
 		StringBuilder jsonChanges = new StringBuilder(); 
 		jsonChanges.append("{");
-		jsonChanges.append("\"profile\": ");
-		jsonChanges.append("{\""+p1Id+"\": ");
-		jsonChanges.append("{ \"identifiers\": \"IG1_234\", \"type\": \"Constrainable-d\", \"name\": \"Implementation Guide for Immunization Messaging_\",\"orgName\": \"NIST_\",\"status\": \"Active\"}");
+		jsonChanges.append("\"profile\":");
+		jsonChanges.append("{\""+p1Id+"\":");
+		jsonChanges.append("{\"identifiers\":\"IG1_234\",\"type\":\"New type\",\"name\":\"Implementation Guide for Immunization Messaging_\",\"orgName\":\"NIST_\",\"status\":\"Active\"}");
 		jsonChanges.append(",\""+String.valueOf(p1.getId() + 1)+"\": ");
-		jsonChanges.append("{ \"identifier\": \"IG1_345\"}");
+		jsonChanges.append("{\"identifier\": \"IG1_345\"}");
 		jsonChanges.append("},");
-		jsonChanges.append("\"message\": ");
-		jsonChanges.append("{\""+p1MsgId+"\": ");
-		jsonChanges.append("{\"identifier\": \"Z22_\", \"description\": \"Unsolicited vaccination record updates\",\"comment\": \"c1\"}");
+		jsonChanges.append("\"message\":");
+		jsonChanges.append("{\""+p1MsgId+"\":");
+		jsonChanges.append("{\"identifier\":\"Z22_\",\"description\":\"Unsolicited vaccination record updates\",\"comment\":\"c1\"}");
 		jsonChanges.append("}");
 		jsonChanges.append("}");
 
 		List<String> rst = profileService.apply(jsonChanges.toString());
 		//There should be an error if the id doesn't exist or if the attributes name doesn't exist.
+		//In this test, "identifiers" is not a valid attribute and only one profile with a known 
+		//id is loaded.
 		assertEquals(2, rst.size());
+		
+		//Test to check what changes were done
+		assertEquals("New type", p1.getMetaData().getType());
+		
+		p1.setChanges(new String());;
+		
+		assertEquals("", p1.getChanges());
 
 		
 	}

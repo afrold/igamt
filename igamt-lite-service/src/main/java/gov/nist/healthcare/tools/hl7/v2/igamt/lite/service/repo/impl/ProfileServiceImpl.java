@@ -51,6 +51,7 @@ import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.NotWritablePropertyException;
@@ -187,8 +188,24 @@ public class ProfileServiceImpl implements ProfileService {
 				if (p == null) {
 					errorList.add("profile ID not found: " + node.getKey());
 				} else {
+					
+					//FIXME
+					//Now: all changes are saved; 
+					//Todo: "unsave" changes that could not be saved
+					//FIXME 2
+					//changes is initialized with a dummy value {"0":0}
+					
+					if (p.getChanges() == null){
+						p.setChanges(new String("{\"0\":0}"));
+					}
+					JsonNode currentNode = mapper.readTree(f.createJsonParser(p.getChanges()));
+					JsonNode newNode = mapper.readTree(f.createJsonParser(jsonChanges));
+					JsonNode updated = merge(currentNode, newNode);
+					p.setChanges(updated.toString());
+					
+					
+					
 					BeanWrapper metadata = new BeanWrapperImpl(p.getMetaData());
-
 					newValues = individualChanges
 							.getFields();
 					while (newValues.hasNext()) {
@@ -437,5 +454,26 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 		return errorList;
 	}
+	
+	public JsonNode merge(JsonNode mainNode, JsonNode updateNode) {
+	    Iterator<String> fieldNames = updateNode.getFieldNames();
+	    while (fieldNames.hasNext()) {
+	        String fieldName = fieldNames.next();
+	        JsonNode jsonNode = mainNode.get(fieldName);
+	        // if field exists and is an embedded object
+	        if (jsonNode != null && jsonNode.isObject()) {
+	            merge(jsonNode, updateNode.get(fieldName));
+	        }
+	        else {
+	            if (mainNode instanceof ObjectNode) {
+	                // Overwrite field
+	                JsonNode value = updateNode.get(fieldName);
+	                ((ObjectNode) mainNode).put(fieldName, value);
+	            }
+	        }
+	    }
+	    return mainNode;
+	}
+
 
 }

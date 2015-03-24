@@ -16,15 +16,17 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                 	if(parent){
-                		if(parent.codes){
-                			return parent.codes;
-                		}else{
-                			return [];
-                		}
-                	}else{
-                		return [$rootScope.table];
-                	}
+//                 	if(parent){
+//                		if(parent.codes){
+//                			return parent.codes;
+//                		}else{
+//                			return [];
+//                		}
+//                	}else{
+//                		return [$rootScope.table];
+//                	}
+                 	
+                 	return parent && parent.codes ? parent.codes : $rootScope.table != null ? [$rootScope.table]:[];
                  	
                 },
                 getTemplate: function (node) {
