@@ -39,6 +39,10 @@ public class Code extends DataModel implements Serializable {
 	@Column(name = "SOURCE")
 	private String source;
 	
+	@Column(name = "CODEUSAGE")
+	private String codeUsage;
+	
+	
 	public Code() {
 		super();
 		this.type = Constant.CODE;
@@ -82,6 +86,14 @@ public class Code extends DataModel implements Serializable {
 
 	public void setSource(String source) {
 		this.source = source;
+	}
+	
+	public String getCodeUsage() {
+		return codeUsage;
+	}
+
+	public void setCodeUsage(String codeUsage) {
+		this.codeUsage = codeUsage;
 	}
 
 	@Override

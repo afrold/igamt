@@ -57,6 +57,11 @@ public class Table extends DataModel implements Serializable {
 	private String oid;
 	@Column(name = "TABLETYPE")
 	private String tableType;
+	@Column(name = "STABILITY")
+	private String stability;
+	@Column(name = "EXTENSIBILITY")
+	private String extensibility;
+	
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
@@ -138,6 +143,22 @@ public class Table extends DataModel implements Serializable {
 
 	public void addCode(Code c) {
 		codes.add(c);
+	}
+
+	public String getStability() {
+		return stability;
+	}
+
+	public void setStability(String stability) {
+		this.stability = stability;
+	}
+
+	public String getExtensibility() {
+		return extensibility;
+	}
+
+	public void setExtensibility(String extensibility) {
+		this.extensibility = extensibility;
 	}
 
 	@Override

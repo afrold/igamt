@@ -23,6 +23,8 @@
                     <th st-sort="codesys">CodeSys</th>
                     <th st-sort="oid">OID</th>
                     <th st-sort="type">Type</th>
+                    <th st-sort="type">Stability</th>
+                    <th st-sort="type">Extensibility</th>
                 </tr>
                 <tr>
                     <th></th>
@@ -48,6 +50,8 @@
                     <td ng-bind="row.codesys"></td>
                     <td ng-bind="row.oid"></td>
                     <td ng-bind="row.tableType"></td>
+                    <td ng-bind="row.stability"></td>
+                    <td ng-bind="row.extensibility"></td>
                 </tr>
                 </tbody>
                 <tfoot>
@@ -93,16 +97,17 @@
                                 <thead>
                                 <tr class="tbl-header row">
                                     <th class="col-md-2">Code</th>
-                                    <th class="col-md-6">Label</th>
+                                    <th class="col-md-4">Label</th>
                                     <th class="col-md-2">Codesys</th>
                                     <th class="col-md-2">Source</th>
+                                    <th class="col-md-2">Usage</th>
                                 </tr>
                                 </thead>
                                 <tbody></tbody>
                             </table>
                             <script type="text/ng-template" id="TableEditTree.html">
                                 <tr tt-node is-branch="hasChildren(node)" class="row">
-                                    <td class="col-md-3">
+                                    <td class="col-md-2">
 										<span ng-show="node.type === 'table'">
                                             <input style="width:50%" class="igl-input" type="text"
                                                    name="code"
@@ -117,7 +122,7 @@
                                                    ng-model="node.code">
 										</span>
                                     </td>
-									<td class="col-md-1">
+									<td class="col-md-4">
 										<span ng-show="node.type === 'table'">-</span>
 										<span ng-show="node.type !== 'table'">
                                             <input style="width:100%" class="igl-input" type="text"
@@ -126,7 +131,7 @@
                                                    ng-model="node.label">
 										</span>
                                     </td>
-									<td class="col-md-1">
+									<td class="col-md-2">
 										<span ng-show="node.type === 'table'">-</span>
 										<span ng-show="node.type !== 'table'">
                                             <input style="width:100%" class="igl-input" type="text"
@@ -135,13 +140,22 @@
                                                    ng-model="node.codesys">
 										</span>
                                     </td>
-									<td class="col-md-1">
+									<td class="col-md-2">
 										<span ng-show="node.type === 'table'">-</span>
 										<span ng-show="node.type !== 'table'">
                                             <input style="width:100%" class="igl-input" type="text"
                                                    name="code"
                                                    ng-change="recordChange(node,'source')"
                                                    ng-model="node.source">
+										</span>
+                                    </td>
+									<td class="col-md-2">
+										<span ng-show="node.type === 'table'">-</span>
+										<span ng-show="node.type !== 'table'">
+                                            <input style="width:100%" class="igl-input" type="text"
+                                                   name="code"
+                                                   ng-change="recordChange(node,'codeUsage')"
+                                                   ng-model="node.codeUsage">
 										</span>
                                     </td>
                                 </tr>
