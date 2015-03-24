@@ -10,7 +10,7 @@
     <div class="page-header">
         <h3>Segments List</h3>
     </div>
-    <div>
+    <div class="igl-table">
         <table st-table="tmpSegments" st-safe-src="segments"
                class="table table-striped table-bordered">
             <thead>
@@ -21,11 +21,11 @@
                 <th st-sort="description">Description</th>
                 <!--<th></th>-->
             </tr>
-            <tr>
-                <th colspan="4">
-                    <input st-search placeholder="Search Segment" class="input-sm form-control" type="search"/>
-                </th>
-            </tr>
+            <!--<tr>-->
+                <!--<th colspan="4">-->
+                    <!--<input st-search placeholder="Search Segment" class="input-sm form-control" type="search"/>-->
+                <!--</th>-->
+            <!--</tr>-->
             </thead>
             <tbody>
             <tr st-select-row="row" st-select-mode="single" ng-repeat="row in tmpSegments">
@@ -38,13 +38,13 @@
 
             </tr>
             </tbody>
-            <tfoot>
-            <tr>
-                <td colspan="4" class="text-center">
-                    <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
-                </td>
-            </tr>
-            </tfoot>
+            <!--<tfoot>-->
+            <!--<tr>-->
+                <!--<td colspan="4" class="text-center">-->
+                    <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--</tfoot>-->
         </table>
     </div>
 </div>
@@ -52,38 +52,49 @@
 <div ng-show="loadingSelection" style="text-align:center">
     <i class="fa fa-spinner fa-spin"></i>
 </div>
-<div ng-show="!loadingSelection">
+<div ng-show="!loadingSelection" style="padding-top:40px">
     <div ng-show="segment !== null">
         <div class="row">
-            <div>
-                <span>Selected Segment : {{segment.label}}</span>
+
+        <div>
+            <span class="igl-title">Edit Segment: {{segment.label}}</span>
                         <span class="pull-right">
-
-                        <!--<button title="Clone" type="button" class="btn btn-xs btn-info"-->
-                                <!--ng-click="clone()">-->
-                            <!--<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>-->
-                        <!--</button>-->
-
-                        <!--<button title="Reset" type="button" class="btn btn-xs btn-warning"-->
-                                <!--ng-click="reset()" ng-disabled="true">-->
-                            <!--<span><i class="fa fa-times fa-fw">&nbsp; </i>Reset</span>-->
-                        <!--</button>-->
-
-                        <!--<button title="Delete" type="button"-->
-                                <!--class="btn btn-xs btn-danger"-->
-                                <!--ng-click="delete()">-->
-                            <!--<span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>-->
-                        <!--</button>-->
+                        <button title="Close" type="button" class="btn btn-xs btn-primary"
+                                ng-click="close()">
+                            <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
+                        </button>
                         </span>
-                <hr/>
-                <!--<button title="Save" type="button" class="btn btn-xs btn-success"-->
-                <!--ng-click="save()">-->
-                <!--<span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Save</span>-->
-                <!--</button>-->
+            </span>
+        </div>
+            <!--<div>-->
+                <!--<span>Selected Segment : {{segment.label}}</span>-->
+                        <!--<span class="pull-right">-->
+
+                        <!--&lt;!&ndash;<button title="Clone" type="button" class="btn btn-xs btn-info"&ndash;&gt;-->
+                                <!--&lt;!&ndash;ng-click="clone()">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</button>&ndash;&gt;-->
+
+                        <!--&lt;!&ndash;<button title="Reset" type="button" class="btn btn-xs btn-warning"&ndash;&gt;-->
+                                <!--&lt;!&ndash;ng-click="reset()" ng-disabled="true">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span><i class="fa fa-times fa-fw">&nbsp; </i>Reset</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</button>&ndash;&gt;-->
+
+                        <!--&lt;!&ndash;<button title="Delete" type="button"&ndash;&gt;-->
+                                <!--&lt;!&ndash;class="btn btn-xs btn-danger"&ndash;&gt;-->
+                                <!--&lt;!&ndash;ng-click="delete()">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                        <!--</span>-->
+                <!--<hr/>-->
+                <!--&lt;!&ndash;<button title="Save" type="button" class="btn btn-xs btn-success"&ndash;&gt;-->
+                <!--&lt;!&ndash;ng-click="save()">&ndash;&gt;-->
+                <!--&lt;!&ndash;<span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Save</span>&ndash;&gt;-->
+                <!--&lt;!&ndash;</button>&ndash;&gt;-->
 
 
 
-            </div>
+            <!--</div>-->
 
             <form style="margin-top: 20px" class="form-horizontal" name="editSegmentForm">
                 <!--<div>-->

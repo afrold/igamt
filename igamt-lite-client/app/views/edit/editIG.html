@@ -43,7 +43,7 @@
 
         <div class="col-md-9" role="main">
              <div style="height:100%;overflow:scroll">
-             <div class="bs-docs-section"  ng-show="section == 'ig'">
+             <div class="bs-docs-section">
                 <h1 id="info" class="page-header">Implementation Guide Information</h1>
 
                 <form name="igMetaDataForm" novalidate>
@@ -135,7 +135,7 @@
                           <!--ng-change="recordChange2('profile',profile.id,'comment', profile.comment)"> </textarea>-->
 
                 <div ng-repeat="msg in messagesData">
-                    <div ng-show="section == 'confProfile_{{msg.message.id}}'">
+                    <div>
                         <h1 id="confProfile_{{msg.message.id}}" class="page-header">Conformance Profile:{{msg.message.identifier}} </h1>
                         <h2 class="page-header">{{msg.message.identifier}} Message
                             Definition</h2>
@@ -159,10 +159,10 @@
                             <tbody>
                             <tr ng-repeat="segRefOrGroup in msg.segRefOrGroups" class="row">
                                 <td class="col-md-2">
-                                    <span ng-show="segRefOrGroup.type === 'segment'" ng-bind="segRefOrGroup.ref.name"></span>
+                                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segRefOrGroup.ref.name"></span>
                                 </td>
                                 <td class="col-md-2">
-                                    <span ng-show="segRefOrGroup.type === 'segment'" ng-bind="segRefOrGroup.ref.description"></span>
+                                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segRefOrGroup.ref.description"></span>
                     <span ng-show="segRefOrGroup.type === 'group'">
                         -- {{segRefOrGroup.name | uppercase }} begin
                     </span>
@@ -207,7 +207,7 @@
                     <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
                               <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
                     <div ng-repeat="segment in msg.segments">
-                        <div ng-show="section == 'segment_{{segment.id}}'">
+                        <div>
                         <h3 id="">{{segment.name}} - {{segment.description}}</h3>
                         <table class="table table-bordered">
                             <thead>
@@ -271,7 +271,7 @@
                               <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
 
                     <div ng-repeat="datatype in msg.datatypes">
-                        <div ng-show="section == 'datatype_{{datatype.id}}'">
+                        <div>
                         <h3 id="profiles#datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</h3>
                         <table class="table table-bordered">
                             <thead>

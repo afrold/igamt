@@ -69,7 +69,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.readonly = false;
     $rootScope.profile = {}; // current profile
     $rootScope.message = null; // current message
-    $rootScope.datatype = null; // current datatype
+    $rootScope.datatype = {}; // current datatype
     $rootScope.statuses = ['Draft', 'Active', 'Superceded', 'Withdrawn'];
     $rootScope.hl7Versions = ['2.0', '2.1', '2.2', '2.3', '2.3.1', '2.4', '2.5', '2.5.1', '2.6', '2.7', '2.8'];
     $rootScope.schemaVersions = ['1.0', '1.5', '2.0', '2.5'];
@@ -91,6 +91,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.notifyTableTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifySegTreeUpdate = '0'; // TODO: FIXME
     $rootScope.messagesData = [];
+    $rootScope.messages = [];// list of messages
 
 
     $rootScope.changes = {
@@ -114,6 +115,8 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.initMaps = function () {
         $rootScope.segment = null;
         $rootScope.datatype = null;
+        $rootScope.message = null;
+        $rootScope.table = null;
         $rootScope.messagesMap = {};
         $rootScope.segmentsMap = {};
         $rootScope.datatypesMap = {};
@@ -121,6 +124,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
         $rootScope.segments.length = 0;
         $rootScope.tables.length = 0;
         $rootScope.datatypes.length = 0;
+        $rootScope.messages.length = 0
         $rootScope.messagesData = [];
     };
 
@@ -223,14 +227,16 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
             angular.forEach(element.children, function (segmentRefOrGroup) {
                 $rootScope.processElement(segmentRefOrGroup,element);
             });
-        } else if (element.type === "segment") {
+        } else if (element.type === "segmentRef") {
             element.ref = $rootScope.segmentsMap[element.ref.id];
-            element.ref.path =  element.ref.name;
-            if ($rootScope.segments.indexOf(element.ref) === -1) {
-                $rootScope.segments.push(element.ref);
-                element.ref.fields = $filter('orderBy')(element.ref.fields, 'position');
-                angular.forEach(element.ref.fields, function (field) {
-                    $rootScope.processElement(field,element.ref);
+            element.ref["path"] =  element.ref.name;
+            $rootScope.processElement(element.ref,element);
+        }  else if (element.type === "segment") {
+            if ($rootScope.segments.indexOf(element) === -1) {
+                $rootScope.segments.push(element);
+                element.fields = $filter('orderBy')(element.fields, 'position');
+                angular.forEach(element.fields, function (field) {
+                    $rootScope.processElement(field,element);
                 });
             }
         } else if (element.type === "field" || element.type === "component") {

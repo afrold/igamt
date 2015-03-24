@@ -10,8 +10,8 @@
         <div class="page-header">
             <h3>Datatypes List</h3>
         </div>
-        <div>
-            <table st-table="tmpDatatypes" st-safe-src="datatypes"
+        <div class="igl-table">
+            <table st-table="datatypes" st-safe-src="datatypes"
                    class="table table-striped table-bordered">
                 <thead>
                 <tr class="tbl-header">
@@ -21,21 +21,11 @@
                     <th st-sort="description">Description</th>
                     <!--<th></th>-->
                 </tr>
-                <tr>
-                    <th colspan="4">
-                        <input st-search placeholder="Search" class="input-sm form-control" type="search"/>
-                    </th>
-                    <!--<th></th>-->
-                    <!--<th colspan="1">-->
-                        <!--<input st-search="label" placeholder="Search" class="input-sm form-control" type="search"/>-->
+                <!--<tr>-->
+                    <!--<th colspan="4">-->
+                        <!--<input st-search placeholder="Search" class="input-sm form-control" type="search"/>-->
                     <!--</th>-->
-                    <!--<th colspan="1">-->
-                        <!--<input st-search="name" placeholder="Search" class="input-sm form-control" type="search"/>-->
-                    <!--</th>-->
-                    <!--<th></th>-->
-                    <!---->
-                    <!--</th>-->
-                </tr>
+                <!--</tr>-->
                 </thead>
                 <tbody>
                 <tr st-select-row="row" st-select-mode="single" ng-repeat="row in tmpDatatypes">
@@ -62,13 +52,13 @@
                     <!--</td>-->
                 </tr>
                 </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="4" class="text-center">
-                        <div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>
-                    </td>
-                </tr>
-                </tfoot>
+                <!--<tfoot>-->
+                <!--<tr>-->
+                    <!--<td colspan="4" class="text-center">-->
+                        <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+                <!--</tfoot>-->
             </table>
         </div>
     </div>
@@ -76,16 +66,21 @@
     <div ng-show="loadingSelection" style="text-align:center">
         <i class="fa fa-spinner fa-spin"></i>
     </div>
-    <div ng-show="!loadingSelection">
+    <div ng-show="!loadingSelection" style="padding-top:40px">
         <div ng-show="datatype !== null">
             <div class="row">
                 <div>
-                    <span>Selected Datatype : {{datatype.label}}</span>
+                    <span class="igl-title">Edit Datatype : {{datatype.label}}</span>
                         <span class="pull-right">
 
                         <button title="Clone" type="button" class="btn btn-xs btn-info"
                                 ng-click="clone()">
                             <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
+                        </button>
+
+                        <button title="Close" type="button" class="btn btn-xs btn-primary"
+                                ng-click="close()">
+                            <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
                         </button>
 
                         <!--<button title="Reset" type="button" class="btn btn-xs btn-warning"-->

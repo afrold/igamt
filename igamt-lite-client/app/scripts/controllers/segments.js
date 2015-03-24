@@ -22,10 +22,10 @@ angular.module('igl')
                 getTemplate: function (node) {
                     return 'SegmentEditTree.html';
                 }
-//                ,
-//                options: {
-//                    initialState: 'expanded'
-//                }
+                ,
+                options: {
+                    initialState: 'expanded'
+                }
             });
 
 
@@ -41,22 +41,30 @@ angular.module('igl')
         };
 //
         $scope.select = function (segment) {
+            waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
             $rootScope.segment = segment;
             $rootScope.segment["type"] = "segment";
-             $scope.segmentCopy = {};
-            $scope.segmentCopy = angular.copy(segment,$scope.segmentCopy);
+//             $scope.segmentCopy = {};
+//            $scope.segmentCopy = angular.copy(segment,$scope.segmentCopy);
+            if ($scope.params)
+                $scope.params.refresh();
+            $scope.loadingSelection = false;
+            waitingDialog.hide();
+        };
+
+        $scope.reset = function () {
+//            $scope.loadingSelection = true;
+//            $scope.message = "Segment " + $scope.segmentCopy.label + " reset successfully";
+//            angular.extend($rootScope.segment, $scope.segmentCopy);
+//             $scope.loadingSelection = false;
+        };
+
+        $scope.close = function(){
+            $rootScope.segment = null;
             if ($scope.params)
                 $scope.params.refresh();
             $scope.loadingSelection = false;
         };
-
-        $scope.reset = function () {
-            $scope.loadingSelection = true;
-            $scope.message = "Segment " + $scope.segmentCopy.label + " reset successfully";
-            angular.extend($rootScope.segment, $scope.segmentCopy);
-             $scope.loadingSelection = false;
-        };
-
 
         $scope.hasChildren = function(node){
             return node && node != null && ((node.fields && node.fields.length >0 ) || (node.datatype && node.datatype.children && node.datatype.children.length > 0));

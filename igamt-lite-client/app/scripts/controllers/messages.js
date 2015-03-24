@@ -9,11 +9,12 @@ angular.module('igl')
     .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams) {
         $scope.loading = false;
         $scope.loadingSelection = false;
+        $scope.tmpMessages =[].concat($rootScope.messages);
         $scope.init = function () {
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.children : $rootScope.message != null ? [$rootScope.message] : [];
+                    return parent && parent!= null ? parent.children : $rootScope.message != null ? [$rootScope.message] : [];
                 },
                 getTemplate: function (node) {
                     return 'MessageEditTree.html';
@@ -36,20 +37,20 @@ angular.module('igl')
         };
 
         $scope.select = function (messageId) {
-//            $rootScope.segments = [];
-//            $rootScope.datatypes = [];
-//            $rootScope.tables = [];
+            waitingDialog.show('Loading Message...', {dialogSize: 'sm', progressType: 'danger'});
             $scope.loadingSelection = true;
-            if (messageId != null) {
-                $rootScope.message = $rootScope.messagesMap[messageId];
-//                angular.forEach($rootScope.message.children, function (segmentRefOrGroup) {
-//                    $rootScope.processElement(segmentRefOrGroup);
-//                });
-            }
+            $rootScope.message = $rootScope.messagesMap[messageId];
             $scope.params.refresh();
             $scope.loadingSelection = false;
+            waitingDialog.hide();
         };
 
+        $scope.close = function(){
+            $rootScope.message = null;
+            if ($scope.params)
+                $scope.params.refresh();
+            $scope.loadingSelection = false;
+        };
 
         $scope.goToSegment = function (segmentId) {
             $rootScope.segment = $rootScope.segmentsMap[segmentId];
@@ -60,7 +61,6 @@ angular.module('igl')
         $scope.hasChildren = function (node) {
             return node && node != null && node.type !== 'segment' && node.children && node.children.length > 0;
         };
-
 
     });
 

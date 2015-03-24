@@ -40,38 +40,56 @@ angular.module('igl')
         };
 
         $scope.select = function (datatype) {
+            waitingDialog.show('Loading datatype ' + datatype.label + "...", {dialogSize: 'sm', progressType: 'info'});
             $rootScope.datatype = datatype;
             $rootScope.datatype["type"] = "datatype";
-            $scope.datatypeCopy = {};
-            $scope.datatypeCopy = angular.copy(datatype,$scope.datatypeCopy);
             if ($scope.params)
+                $scope.params.refresh();
+            $scope.loadingSelection = false;
+            waitingDialog.hide();
+        };
+
+        $scope.clone = function () {
+            waitingDialog.show('Cloning datatype ' + $rootScope.datatype.label + "...", {dialogSize: 'sm', progressType: 'info'});
+            $http.post($rootScope.api('/api/datatypes/'+ $rootScope.datatype.id + '/clone'), {timeout: 60000}).then(function (clone) {
+                $rootScope.datatypes.push(clone);
+                $rootScope.datatype = clone;
+                waitingDialog.hide();
+            }, function (error) {
+                $scope.error = error;
+                waitingDialog.hide();
+            });
+        };
+
+        $scope.close = function(){
+            $rootScope.datatype = null;
+             if ($scope.params)
                 $scope.params.refresh();
             $scope.loadingSelection = false;
         };
 
-        $scope.clone = function () {
-            Restangular.all('datatypes').post({targetId: $rootScope.datatype.id}).then(function (clone) {
-                $rootScope.datatypes.push(clone);
-            }, function (error) {
-                $scope.error = error;
-            });
-        };
-
-        $scope.reset = function () {
-            $scope.loadingSelection = true;
-            $scope.message = "Datatype " + $scope.datatypeCopy.label + " reset successfully";
-            angular.extend($rootScope.datatype, $scope.datatypeCopy);
-             $scope.loadingSelection = false;
-        };
+//        $scope.reset = function () {
+//            $scope.loadingSelection = true;
+//            $scope.message = "Datatype " + $scope.datatypeCopy.label + " reset successfully";
+//            angular.extend($rootScope.datatype, $scope.datatypeCopy);
+//             $scope.loadingSelection = false;
+//        };
 
         $scope.delete = function () {
             //TODO: Check that there is no reference
-            $scope.loadingSelection = true;
-            var index = $rootScope.datatypes.indexOf($rootScope.datatype);
-            if (index > -1) $rootScope.datatypes.splice(index, 1);
-            $scope.message = "Datatype " + $rootScope.datatype.label + " deleted successfully";
-            $rootScope.datatype = null;
-            $scope.datatypeCopy = null;
+            waitingDialog.show('Deleting datatype ' + $rootScope.datatype.label + "...", {dialogSize: 'sm', progressType: 'danger'});
+            $http.post($rootScope.api('/api/datatypes/'+ $rootScope.datatype.id + '/delete'), {timeout: 60000}).then(function (response) {
+                $scope.loadingSelection = true;
+                var index = $rootScope.datatypes.indexOf($rootScope.datatype);
+                if (index > -1) $rootScope.datatypes.splice(index, 1);
+                $scope.message = "Datatype " + $rootScope.datatype.label + " deleted successfully";
+                $rootScope.datatype = null;
+                $scope.datatypeCopy = null;
+                waitingDialog.hide();
+            }, function (error) {
+                $scope.error = error;
+                waitingDialog.hide();
+            });
          };
 
         $scope.hasChildren = function(node){

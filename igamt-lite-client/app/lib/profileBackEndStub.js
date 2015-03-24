@@ -78,8 +78,6 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
     $httpBackend.whenPOST('/api/profiles/4/delete').respond(function(method, url, d, headers) {
         return [200,{}, {}];
     });
-
-
     $httpBackend.whenGET('/api/profiles/3').respond(function(method, url, data, headers) {
         var profile = null;
         var request = new XMLHttpRequest();
@@ -88,8 +86,22 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
         var profile = angular.fromJson(request.response);
         profile.id = 3;
         return [request.status, profile, {}];
-      });
+    });
 
+
+    $httpBackend.whenPOST('/api/datatypes/4/delete').respond(function(method, url, d, headers) {
+        return [200,{}, {}];
+    });
+
+    $httpBackend.whenPOST('/api/datatypes/4/clone').respond(function(method, url, d, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/datatype.json', false);
+        request.send(null);
+        var datatype =  angular.fromJson(request.response);
+        datatype.id = 4;
+        datatype.label = datatype.label + "_Cloned";
+        return [request.status, datatype, {}];
+    });
 
     $httpBackend.whenDELETE('/api/profiles/3').respond(function(method, url, data, headers) {
         return [200,{}, {}];
