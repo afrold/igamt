@@ -128,7 +128,7 @@ public class ProfileService2Test extends
 		jsonChanges.append("{");
 		jsonChanges.append("\"profile\": ");
 		jsonChanges.append("{\""+p1Id+"\": ");
-		jsonChanges.append("{ \"identifiers\": \"IG1_234\", \"type\": \"Constrainable-d\", \"name\": \"Implementation Guide for Immunization Messaging_\",\"orgName\": \"NIST_\",\"status\": \"Active\"}");
+		jsonChanges.append("{ \"identifiers\": \"IG1_234\", \"type\": \"New type\", \"name\": \"Implementation Guide for Immunization Messaging_\",\"orgName\": \"NIST_\",\"status\": \"Active\"}");
 		jsonChanges.append(",\""+String.valueOf(p1.getId() + 1)+"\": ");
 		jsonChanges.append("{ \"identifier\": \"IG1_345\"}");
 		jsonChanges.append("},");
@@ -140,7 +140,12 @@ public class ProfileService2Test extends
 
 		List<String> rst = profileService.apply(jsonChanges.toString());
 		//There should be an error if the id doesn't exist or if the attributes name doesn't exist.
+		//In this test, "identifiers" is not a valid attribute and only one profile with a known 
+		//id is loaded.
 		assertEquals(2, rst.size());
+		
+		//Test to check what changes were done
+		assertEquals("New type", p1.getMetaData().getType());
 
 		
 	}
