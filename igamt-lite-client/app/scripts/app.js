@@ -92,15 +92,11 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.notifySegTreeUpdate = '0'; // TODO: FIXME
     $rootScope.messagesData = [];
     $rootScope.messages = [];// list of messages
+    $rootScope.customIgs=[];
+    $rootScope.preloadedIgs = [];
+    $rootScope.changes = {};
+    $rootScope.generalInfo = {type: null, 'message': null};
 
-
-    $rootScope.changes = {
-        //"segment":{}, ex.{1:[{usage:1},{min:1}],2:[]}
-        //"group":{},ex.{1:[{usage:1},{min:1}],2:[]}
-        //"field":{},ex.{1:[{usage:1},{min:1}],2:[]}
-        //"component":{},ex.{1:[{usage:1},{min:1}],2:[]}
-        //"datatype":{}ex.{1:[{usage:1},{min:1}],2:[]}
-    }; // key:type, value:array of object
 
     $rootScope.selectProfileTab = function (value) {
         $rootScope.profileTabs[0] = false;

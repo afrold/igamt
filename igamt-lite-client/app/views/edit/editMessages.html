@@ -9,49 +9,56 @@
         <div class="page-header">
             <h3>Conformance Profile List</h3>
         </div>
-        <!--<div class="row">-->
-            <!--<div class="col-md-12">-->
-                <!--<div class="">-->
-                <!--<table st-table="tmpMessages" st-safe-src="messages"-->
-                       <!--class="table table-striped table-bordered">-->
-                    <!--<thead>-->
-                    <!--<tr class="tbl-header">-->
-                        <!--<th></th>-->
-                        <!--<th st-sort="identifier">Identifier</th>-->
-                        <!--<th st-sort="messageType">Type</th>-->
-                        <!--<th st-sort="event">Event</th>-->
-                        <!--<th st-sort="structID">Struct ID</th>-->
-                        <!--<th>Description</th>-->
-                        <!--<th>Comment</th>-->
-                    <!--</tr>-->
-                    <!--<tr>-->
-                        <!--<th colspan="7">-->
-                            <!--<input st-search class="input-sm form-control" type="search"/>-->
-                        <!--</th>-->
-                    <!--</tr>-->
-                    <!--</thead>-->
-                    <!--<tbody>-->
-                    <!--<tr st-select-row="row" st-select-mode="single" ng-repeat="row in tmpMessages">-->
-                        <!--<td cs-select="row"><input ng-click="select(row.id)"-->
-                                                   <!--ng-checked="message != null && row.id == message.id"-->
-                                                   <!--type="radio"></td>-->
-                        <!--<td ng-bind="row.identifier"></td>-->
-                        <!--<td ng-bind="row.messageType"></td>-->
-                        <!--<td ng-bind-html="row.event"></td>-->
-                        <!--<td ng-bind-html="row.structID"></td>-->
-                        <!--<td ng-bind-html="row.description"></td>-->
-                        <!--<td ng-bind="row.comment"></td>-->
-                    <!--</tr>-->
-                    <!--</tbody>-->
-                <!--</table>-->
-                    <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                <table st-table="tmpMessages" st-safe-src="messages"
+                       class="table table-striped table-bordered">
+                    <thead>
+                    <tr class="tbl-header">
+                        <th></th>
+                        <th st-sort="identifier">Identifier</th>
+                        <th st-sort="messageType">Type</th>
+                        <th st-sort="event">Event</th>
+                        <th st-sort="structID">Struct ID</th>
+                        <th>Description</th>
+                        <th>Comment</th>
+                    </tr>
+                    <tr>
+                        <th colspan="7">
+                            <input st-search class="input-sm form-control" type="search"/>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr st-select-row="row" st-select-mode="single" ng-repeat="row in tmpMessages">
+                        <td cs-select="row"><input ng-click="select(row.id)"
+                                                   ng-checked="message != null && row.id == message.id"
+                                                   type="radio"></td>
+                        <td ng-bind="row.identifier"></td>
+                        <td ng-bind="row.messageType"></td>
+                        <td ng-bind-html="row.event"></td>
+                        <td ng-bind-html="row.structID"></td>
+                        <td ng-bind-html="row.description"></td>
+                        <td ng-bind="row.comment"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                    </div>
+            </div>
+        </div>
 
         <div ng-show="loadingSelection" style="text-align:center">
             <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
         </div>
-        <div ng-show="!loadingSelection" style="padding-top:40px">
+
+        <div ng-show="info !== null" style="text-align:center">
+            <div class="alert alert-info" role="alert" ng-bind="info"></div>
+        </div>
+
+        <div ng-show="message !== null && !loadingSelection" style="padding-top:40px">
+
+
             <div>
                 <span class="igl-title">Edit Conformance Profile Information: {{message.identifier}}</span>
                         <span class="pull-right">

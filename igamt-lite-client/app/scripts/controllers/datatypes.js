@@ -4,7 +4,7 @@
 
 
 angular.module('igl')
-    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams,$filter) {
+    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams,$filter, $http) {
         $scope.loading = false;
         $scope.loadingSelection = false;
         $scope.readonly = false;
@@ -51,7 +51,7 @@ angular.module('igl')
 
         $scope.clone = function () {
             waitingDialog.show('Cloning datatype ' + $rootScope.datatype.label + "...", {dialogSize: 'sm', progressType: 'info'});
-            $http.post($rootScope.api('/api/datatypes/'+ $rootScope.datatype.id + '/clone'), {timeout: 60000}).then(function (clone) {
+            $http.post($rootScope.api('/api/datatypes/'+ 1 + '/clone'), {timeout: 60000}).then(function (clone) {
                 $rootScope.datatypes.push(clone);
                 $rootScope.datatype = clone;
                 waitingDialog.hide();

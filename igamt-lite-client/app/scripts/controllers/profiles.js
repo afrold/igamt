@@ -6,8 +6,6 @@
 angular.module('igl')
     .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter) {
         $scope.loading = false;
-        $scope.custom = [];
-        $scope.preloaded = [];
         $scope.tmpPreloadeds = [];
         $scope.tmpCustoms = [];
         $scope.error = null;
@@ -31,14 +29,14 @@ angular.module('igl')
             $scope.customLoading = true;
 
             $http.get($rootScope.api('/api/profiles/preloaded'), {timeout: 60000}).then(function (response) {
-                $scope.preloaded = angular.fromJson(response.data);
+                $rootScope.preloadedIgs = angular.fromJson(response.data);
                 $scope.preloadedLoading = false;
             }, function (error) {
                 $scope.preLoadedError = error;
                 $scope.preloadedLoading = false;
             });
             $http.get($rootScope.api('/api/profiles/custom'), {timeout: 60000}).then(function (response) {
-                $scope.custom = angular.fromJson(response.data);
+                $rootScope.customIgs = angular.fromJson(response.data);
                 $scope.customLoading = false;
             }, function (error) {
                 $scope.customError = error;
@@ -49,7 +47,7 @@ angular.module('igl')
         $scope.clone = function (id) {
             waitingDialog.show('Cloning profile...', {dialogSize: 'sm', progressType: 'info'});
             $http.post($rootScope.api('/api/profiles/' + id + '/clone')).then(function (response) {
-                $scope.custom.push(angular.fromJson(response.data));
+                $rootScope.customIgs.push(angular.fromJson(response.data));
                 waitingDialog.hide();
             }, function (error) {
                 $scope.error = error;
@@ -58,9 +56,9 @@ angular.module('igl')
         };
 
         $scope.findOne = function (id) {
-            for (var i = 0; i < $scope.custom.length; i++) {
-                if ($scope.custom[i].id === id) {
-                    return  $scope.custom[i];
+            for (var i = 0; i < $rootScope.customIgs.length; i++) {
+                if ($rootScope.customIgs[i].id === id) {
+                    return  $rootScope.customIgs[i];
                 }
             }
             return null;
@@ -132,14 +130,6 @@ angular.module('igl')
             }
 
             waitingDialog.hide();
-
-
-//            }
-//            , function (error) {
-//                $scope.error = error.data;
-//                $scope.loading = false;
-//                 waitingDialog.hide();
-//            });
         };
 
 
@@ -224,23 +214,27 @@ angular.module('igl')
 
 
         $scope.delete = function (id) {
+            waitingDialog.show('Deleting profile...', {dialogSize: 'sm', progressType: 'danger'});
             var profile = $scope.findOne(id);
             if (profile != null) {
                 $http.post($rootScope.api('/api/profiles/' + id + '/delete'), {timeout: 60000}).then(function (response) {
-                    var index = $scope.custom.indexOf(profile);
-                    if (index > -1) $scope.custom.splice(index, 1);
+                    var index = $rootScope.customIgs.indexOf(profile);
+                    if (index > -1) $rootScope.customIgs.splice(index, 1);
+                    waitingDialog.hide();
+
                 }, function (error) {
                     $scope.error = error;
+                    waitingDialog.hide();
+
                 });
             }
         };
     });
 
 angular.module('igl')
-    .controller('EditProfileCtrl', function ($scope, $rootScope, Restangular) {
+    .controller('EditProfileCtrl', function ($scope, $rootScope, Restangular,$http) {
 
         $scope.error = null;
-        $scope.message = null;
 
         /**
          * init the controller
@@ -257,10 +251,14 @@ angular.module('igl')
         $scope.delete = function () {
             waitingDialog.show('Deleting profile...', {dialogSize: 'sm', progressType: 'danger'});
             $http.post($rootScope.api('/api/profiles/'+ $rootScope.profile.id + '/delete'), {timeout: 60000}).then(function (response) {
-                var index = $scope.custom.indexOf($rootScope.profile);
-                if (index > -1) $scope.custom.splice(index, 1);
+                var index = $rootScope.customIgs.indexOf($rootScope.profile);
+                if (index > -1) $rootScope.customIgs.splice(index, 1);
                 $rootScope.backUp = null;
                 waitingDialog.hide();
+                $rootScope.context.page = $rootScope.pages[0];
+                $rootScope.profile = null;
+                $rootScope.generalInfo.message = "Implementation Guide deleted successfully !";
+                $rootScope.generalInfo.type = 'success';
             }, function (error) {
                 $scope.error = error;
                 waitingDialog.hide();
@@ -269,14 +267,23 @@ angular.module('igl')
 
         $scope.save = function () {
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
-            var data = $rootScope.changes;
+            var data = angular.toJson($rootScope.changes);
             $http.post($rootScope.api('/api/profiles/save'), data ,{timeout: 60000}).then(function (response) {
-                $scope.message = "Profile Successfully Saved !";
+                $rootScope.generalInfo.message = "Implementation Guide saved successfully !";
+                $rootScope.generalInfo.type = 'success';
                 waitingDialog.hide();
+                $rootScope.changes = {};
             }, function (error) {
                 $scope.error = error;
                 waitingDialog.hide();
             });
         };
+
+        $scope.close = function () {
+            $rootScope.changes = {}; // FIXME
+            $rootScope.profile = null;
+            $rootScope.context.page = $rootScope.pages[0];
+        };
+
     });
 

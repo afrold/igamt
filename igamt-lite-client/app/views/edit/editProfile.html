@@ -12,14 +12,25 @@
                     ng-click="delete()">
                 <span> <i class="fa fa-trash"></i>&nbsp; Delete</span>
             </button>
-            <button title="Apply Changes" ng-disabled="changes.length === 0" type="button" class="btn btn-success btn-sm"
+            <button title="Apply Changes" ng-disabled="changes.length == 0" type="button" class="btn btn-success btn-sm"
                     ng-click="save()">
                 <span><i class="fa fa-check-square"></i>&nbsp; Apply</span>
             </button>
+            <button title="Close" type="button" class="btn btn-warning btn-sm"
+                    ng-click="close()">
+                <span><i class="fa fa-check-square"></i>&nbsp; Close</span>
+            </button>
         </div>
+      </div>
+    <br/>
+    <div ng-show="error !== null">
+        <div class="alert alert-danger" role="alert" ng-bind="error"></div>
         <br/>
-     </div>
-
+    </div>
+    <div ng-show="generalInfo.message !== null">
+        <div class="alert alert-{{generalInfo.type}}" role="alert" ng-bind="generalInfo.message"></div>
+        <br/>
+    </div>
     <div>
         <tabset>
             <tab select="selectProfileTab(0)" active="profileTabs[0]">
@@ -64,7 +75,7 @@
                     <i class="fa fa-book fa-fw"></i>
                     ValueSets
                 </tab-heading>
-                <!--<div ng-include="'views/edit/editValueSets.html'"></div>-->
+                <div ng-include="'views/edit/editValueSets.html'"></div>
             </tab>
 
 

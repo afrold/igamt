@@ -31,10 +31,11 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                 },
                 getTemplate: function (node) {
                     return 'TableEditTree.html';
-                },
-                options: {
-                    initialState: 'expanded'
                 }
+//                ,
+//                options: {
+//                    initialState: 'expanded'
+//                }
             });
 
             $scope.$watch(function () {

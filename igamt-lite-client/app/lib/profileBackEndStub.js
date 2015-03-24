@@ -57,8 +57,14 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
         var profile = angular.fromJson(request.response);
         profile.id = 2;
         return [request.status, profile, {}];
-
      });
+
+    $httpBackend.whenPOST('/api/profiles/save').respond(function(method, url, d, headers) {
+        console.log("Changes received:" + d.changes);
+        return [200,{}, {}];
+    });
+
+
 
     $httpBackend.whenDELETE('/api/profiles/2').respond(function(method, url, data, headers) {
          return [200,{}, {}];

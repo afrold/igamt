@@ -15,20 +15,20 @@
                         <a href="#/profiles#messages">Conformance Profiles</a>
                        <ul class="nav">
                             <li class="igl-tbl-item" ng-repeat="msg in messagesData">
-                                <a ng-click="goToSection('confProfile_{{msg.message.id}}')">{{msg.message.identifier}} Conformance Profile</a>
+                                <a href="#/profiles#confProfile_{{msg.message.id}}">{{msg.message.identifier}} Conformance Profile</a>
                                 <ul class="nav">
                                     <li class="igl-tbl-item">
                                         <span>{{msg.message.identifier}} Message Definition</span>
                                         <span>{{msg.message.identifier}} Segments Definition</span>
                                         <ul class="nav">
                                             <li class="igl-tbl-item" ng-repeat="segment in msg.segments">
-                                                <a ng-click="goToSection('segment_{{segment.id}}')">{{segment.name}} - {{segment.description}}</a>
+                                                <a href="#/profiles#confProfile_{{msg.message.id}}_segment_{{segment.id}}">{{segment.name}} - {{segment.description}}</a>
                                             </li>
                                         </ul>
                                         <a>{{msg.message.identifier}} Datatypes Definition</a>
                                         <ul class="nav">
                                             <li ng-repeat="datatype in msg.datatypes" class="igl-tbl-item">
-                                                <a ng-click="goToSection('datatype_{{datatype.id}}')">{{datatype.label}} - {{datatype.description}}</a>
+                                                <a href="#/profiles#confProfile_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</a>
                                             </li>
                                         </ul>
                                     </li>
