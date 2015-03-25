@@ -4,8 +4,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 
+import java.io.InputStream;
 import java.util.List;
 
+import org.apache.commons.io.input.NullInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +114,7 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{targetId}/export", method = RequestMethod.GET)
-	public Byte[] export(@PathVariable("targetId") Long targetId, @RequestParam String exportType){
+	public InputStream export(@PathVariable("targetId") Long targetId, @RequestParam String exportType){
 		StringBuilder log = new StringBuilder();
 		log.append("Export profile with id=");
 		log.append(targetId);
@@ -124,7 +126,7 @@ public class ProfileController extends CommonController {
 		} else if (exportType == "xml"){
 			return profileService.exportAsXml(targetId);
 		} else {
-			return new Byte[]{};
+			return new NullInputStream(1L);
 		}
 	}
 
