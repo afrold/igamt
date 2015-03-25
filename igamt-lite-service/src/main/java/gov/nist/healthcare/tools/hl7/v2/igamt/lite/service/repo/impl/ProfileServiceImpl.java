@@ -47,6 +47,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
@@ -473,6 +474,14 @@ public class ProfileServiceImpl implements ProfileService {
 	        }
 	    }
 	    return mainNode;
+	}
+	
+	public Byte[] exportAsPdf(Long targetId){
+		return new Byte[]{};
+	}
+
+	public Byte[] exportAsXml(Long targetId){
+		return new Byte[]{};
 	}
 
 

@@ -38,4 +38,8 @@ public interface ProfileService {
 
 	public List<String> apply(String changes) throws ProfileNotFoundException;
 
+	public Byte[] exportAsPdf(Long targetId);
+	
+	public Byte[] exportAsXml(Long targetId);
+
 }
