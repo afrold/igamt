@@ -15,20 +15,20 @@
                         <a href="#/profiles#messages">Conformance Profiles</a>
                        <ul class="nav">
                             <li class="igl-tbl-item" ng-repeat="msg in messagesData">
-                                <a href="#/profiles#confProfile_{{msg.message.id}}">{{msg.message.identifier}} Conformance Profile</a>
+                                <a href="#/profiles#cp_{{msg.message.id}}">{{msg.message.identifier}} Conformance Profile</a>
                                 <ul class="nav">
                                     <li class="igl-tbl-item">
-                                        <span>{{msg.message.identifier}} Message Definition</span>
-                                        <span>{{msg.message.identifier}} Segments Definition</span>
+                                        <a href="#/profiles#cp_{{msg.message.id}}_message_def">{{msg.message.identifier}} Message Definition</a>
+                                        <a href="#/profiles#cp_{{msg.message.id}}_segments_def">{{msg.message.identifier}} Segments Definition</a>
                                         <ul class="nav">
                                             <li class="igl-tbl-item" ng-repeat="segment in msg.segments">
-                                                <a href="#/profiles#confProfile_{{msg.message.id}}_segment_{{segment.id}}">{{segment.name}} - {{segment.description}}</a>
+                                                <a href="#/profiles#cp_{{msg.message.id}}_segment_{{segment.id}}">{{segment.name}} - {{segment.description}}</a>
                                             </li>
                                         </ul>
-                                        <a>{{msg.message.identifier}} Datatypes Definition</a>
+                                        <a href="#/profiles#cp_{{msg.message.id}}_datatypes_def">{{msg.message.identifier}} Datatypes Definition</a>
                                         <ul class="nav">
                                             <li ng-repeat="datatype in msg.datatypes" class="igl-tbl-item">
-                                                <a href="#/profiles#confProfile_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</a>
+                                                <a href="#/profiles#cp_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -136,8 +136,8 @@
 
                 <div ng-repeat="msg in messagesData">
                     <div>
-                        <h1 id="confProfile_{{msg.message.id}}" class="page-header">Conformance Profile:{{msg.message.identifier}} </h1>
-                        <h2 class="page-header">{{msg.message.identifier}} Message
+                        <h1 id="cp_{{msg.message.id}}" class="page-header">Conformance Profile:{{msg.message.identifier}} </h1>
+                        <h2 id="cp_{{msg.message.id}}_message_def" class="page-header">{{msg.message.identifier}} Message
                             Definition</h2>
 
                         <textarea style="width:100%" class="form-control" ng-model="msg.message.comment"
@@ -202,13 +202,13 @@
 
 
 
-                    <h2 id="message_{{msg.message.id}}_segments" class="page-header">Segments</h2>
-                    <h2 id="message_{{msg.message.id}}_segments_def">{{msg.message.identifier}} Segments Definition</h2>
+                    <h2 id="cp_{{msg.message.id}}_segments" class="page-header">Segments</h2>
+                    <h2 id="cp_{{msg.message.id}}_segments_def">{{msg.message.identifier}} Segments Definition</h2>
                     <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
                               <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
                     <div ng-repeat="segment in msg.segments">
                         <div>
-                        <h3 id="">{{segment.name}} - {{segment.description}}</h3>
+                        <h3 id="cp_{{msg.message.id}}_segment_{{segment.id}}">{{segment.name}} - {{segment.description}}</h3>
                         <!--<textarea style="width:100%" class="form-control" ng-model="segment.comment"-->
                             <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)">-->
                         <!--</textarea>-->
@@ -267,16 +267,15 @@
 
 
 
-                    <h2 id="message_{{msg.message.id}}_datatypes" class="page-header">Datatypes</h2>
-
-                    <h3 id="message_{{msg.message.id}}_datatypes_def">{{msg.message.identifier}} Datatypes
+                    <h2 id="cp_{{msg.message.id}}_datatypes" class="page-header">Datatypes</h2>
+                    <h3 id="cp_{{msg.message.id}}_datatypes_def">{{msg.message.identifier}} Datatypes
                         Definition</h3>
                     <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
                               <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
 
                     <div ng-repeat="datatype in msg.datatypes">
                         <div>
-                        <h3 id="profiles#datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</h3>
+                        <h3 id="cp_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</h3>
                         <table class="table table-bordered">
                             <thead>
                             <tr class="ig-tbl-header row">

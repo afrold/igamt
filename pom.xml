@@ -13,6 +13,7 @@
 		<module>igamt-lite-repo</module>
 		<module>igamt-lite-service</module>
 		<module>igamt-lite-controller</module>
+		<module>igamt-lite-client</module>
 	</modules>
 
 	<properties>

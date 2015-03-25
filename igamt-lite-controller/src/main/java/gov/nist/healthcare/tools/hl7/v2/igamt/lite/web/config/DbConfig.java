@@ -79,7 +79,7 @@ public class DbConfig {
 		jpaVendorAdapter.setDatabase(Database.MYSQL);
 		jpaVendorAdapter.setDatabasePlatform(env
 				.getProperty("jpa.databasePlatform"));
- 
+
 		return jpaVendorAdapter;
 	}
 
@@ -97,6 +97,9 @@ public class DbConfig {
 		// env.getProperty("hibernate.dialect"));
 		properties.put("hibernate.globally_quoted_identifiers",
 				env.getProperty("hibernate.globally_quoted_identifiers"));
+		properties.put("hibernate.enable_lazy_load_no_trans",
+				env.getProperty("hibernate.enable_lazy_load_no_trans"));
+
 		return properties;
 	}
 
@@ -106,7 +109,7 @@ public class DbConfig {
 		JpaTransactionManager transactionManager = new JpaTransactionManager();
 		transactionManager.setEntityManagerFactory(entityManagerFactory);
 		transactionManager.setJpaDialect(new HibernateJpaDialect());
- 		return transactionManager;
+		return transactionManager;
 	}
 
 	@Bean

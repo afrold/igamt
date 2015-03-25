@@ -28,7 +28,7 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToMany(mappedBy = "datatypes", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "datatypes", fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
 	private Set<Datatype> children = new HashSet<Datatype>();
 
 	public Long getId() {

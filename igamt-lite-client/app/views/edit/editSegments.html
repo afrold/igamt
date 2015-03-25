@@ -16,9 +16,9 @@
             <thead>
             <tr class="tbl-header">
                 <th></th>
-                <th st-sort="name">Name</th>
-                <th st-sort="description">Description</th>
-                <th st-sort="label">Label</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Label</th>
                 <!--<th></th>-->
             </tr>
             <!--<tr>-->
@@ -32,9 +32,9 @@
                 <td cs-select="row"><input ng-click="select(row)"
                                            ng-checked="segment != null && row.id == segment.id"
                                            type="radio"></td>
-                <td ng-bind="row.label"></td>
                 <td ng-bind-html="row.name"></td>
                 <td ng-bind-html="row.description"></td>
+                <td ng-bind="row.label"></td>
 
             </tr>
             </tbody>
@@ -57,7 +57,7 @@
         <div class="row">
 
         <div>
-            <span class="igl-title">Edit Segment: {{segment.label}}</span>
+            <span class="igl-title">Edit Segment: {{segment.name}} - {{segment.label}}</span>
                         <span class="pull-right">
                         <button title="Close" type="button" class="btn btn-xs btn-primary"
                                 ng-click="close()">

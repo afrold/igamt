@@ -20,8 +20,9 @@ var app = angular
         'ui.bootstrap',
         'smart-table',
         'ngTreetable',
-        'restangular',
-        'ngMockE2E'
+        'restangular'
+//        ,
+//        'ngMockE2E'
     ]);
 
 app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
@@ -117,11 +118,12 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
         $rootScope.segmentsMap = {};
         $rootScope.datatypesMap = {};
         $rootScope.tablesMap = {};
-        $rootScope.segments.length = 0;
-        $rootScope.tables.length = 0;
-        $rootScope.datatypes.length = 0;
-        $rootScope.messages.length = 0
+        $rootScope.segments = [];
+        $rootScope.tables = [];
+        $rootScope.datatypes = [];
+        $rootScope.messages = [];
         $rootScope.messagesData = [];
+
     };
 
     $rootScope.$watch(function () {
@@ -131,8 +133,8 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     });
 
     $rootScope.api = function (value) {
-//        return "http://localhost:8081/igl-api"+ value;
-        return  value;
+        return "http://129.6.228.189:8080/igl-api"+ value;
+//        return  value;
     };
 
 
@@ -150,6 +152,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
 
     $rootScope.clearChanges = function (path) {
         $rootScope.changes = {};
+    };
+
+    $rootScope.hasChanges = function(path){
+        return Object.getOwnPropertyNames($rootScope.changes).length !== 0;
     };
 
     $rootScope.recordChange = function(object,changeType) {

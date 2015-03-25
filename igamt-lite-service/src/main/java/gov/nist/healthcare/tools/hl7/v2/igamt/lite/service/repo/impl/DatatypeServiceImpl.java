@@ -32,7 +32,8 @@ public class DatatypeServiceImpl implements DatatypeService {
 
 	@Autowired
 	private DatatypeRepository datatypeRepository;
-	
+
+	@Autowired
 	private DatatypeClone datatypeClone;
 
 	@Override

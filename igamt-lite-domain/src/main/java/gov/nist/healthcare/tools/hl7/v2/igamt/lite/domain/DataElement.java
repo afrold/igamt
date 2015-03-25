@@ -89,7 +89,7 @@ public abstract class DataElement extends DataModel implements
 
 	public void setDatatype(Datatype datatype) {
 		this.datatype = datatype;
-		this.setDatatypeLabel(datatype.getLabel());
+		this.setDatatypeLabel(datatype != null ? datatype.getLabel() : null);
 	}
 
 	public String getName() {
@@ -194,7 +194,9 @@ public abstract class DataElement extends DataModel implements
 		DataElement de = (DataElement) super.clone();
 		de.setId(null);
 		de.setTable(this.table);
-		de.setDatatype(this.datatype.clone());
+		// de.setDatatype(this.datatype.clone());
+		de.setDatatype(this.datatype); // Changed by Harold
+
 		return de;
 	}
 

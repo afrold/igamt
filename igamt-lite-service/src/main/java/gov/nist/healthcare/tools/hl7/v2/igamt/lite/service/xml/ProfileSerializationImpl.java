@@ -42,6 +42,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -325,18 +326,24 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		elmMessage.addAttribute(new Attribute("Event", m.getEvent()));
 		elmMessage.addAttribute(new Attribute("StructID", m.getStructID()));
 		if (m.getDescription() != null && !m.getDescription().equals(""))
-			elmMessage.addAttribute(new Attribute("Description", m
-					.getDescription()));
+			elmMessage.addAttribute(new Attribute("Description", m.getDescription()));
 
+		Map<Integer,SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
+		
 		for (SegmentRefOrGroup segmentRefOrGroup : m.getSegmentRefOrGroups()) {
+			segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
+		}
+		
+		for(int i=1; i<segmentRefOrGroups.size() + 1; i++){
+			SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
 			if (segmentRefOrGroup instanceof SegmentRef) {
-				elmMessage
-						.appendChild(serializeSegmentRef((SegmentRef) segmentRefOrGroup));
+				elmMessage.appendChild(serializeSegmentRef((SegmentRef) segmentRefOrGroup));
 			} else if (segmentRefOrGroup instanceof Group) {
-				elmMessage
-						.appendChild(serializeGroup((Group) segmentRefOrGroup));
+				elmMessage.appendChild(serializeGroup((Group) segmentRefOrGroup));
 			}
 		}
+		
+		
 
 		return elmMessage;
 	}
@@ -374,28 +381,29 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 		elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
 		elmSegment.addAttribute(new Attribute("Name", s.getName()));
-		elmSegment
-				.addAttribute(new Attribute("Description", s.getDescription()));
+		elmSegment.addAttribute(new Attribute("Description", s.getDescription()));
+		
+		Map<Integer,Field> fields = new HashMap<Integer, Field>();
+		
 		for (Field f : s.getFields()) {
+			fields.put(f.getPosition(), f);
+		}
+		
+		for(int i=1; i<fields.size() + 1; i++){
+			Field f = fields.get(i);
 			nu.xom.Element elmField = new nu.xom.Element("Field");
 			elmField.addAttribute(new Attribute("Name", f.getName()));
-			elmField.addAttribute(new Attribute("Usage", f.getUsage()
-					.toString()));
-			elmField.addAttribute(new Attribute("Datatype", f.getDatatype()
-					.getId() + ""));
-			elmField.addAttribute(new Attribute("MinLength", ""
-					+ f.getMinLength()));
+			elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
+			elmField.addAttribute(new Attribute("Datatype", f.getDatatype().getId() + ""));
+			elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
 			elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
 			elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
 			if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-				elmField.addAttribute(new Attribute("MaxLength", f
-						.getMaxLength()));
+				elmField.addAttribute(new Attribute("MaxLength", f.getMaxLength()));
 			if (f.getConfLength() != null && !f.getConfLength().equals(""))
-				elmField.addAttribute(new Attribute("ConfLength", f
-						.getConfLength()));
+				elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
 			if (f.getTable() != null && !f.getTable().equals(""))
-				elmField.addAttribute(new Attribute("Table", f.getTable()
-						.getMappingId()));
+				elmField.addAttribute(new Attribute("Table", f.getTable().getMappingId()));
 			if (f.getItemNo() != null && !f.getItemNo().equals(""))
 				elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
 			elmSegment.appendChild(elmField);
@@ -407,11 +415,20 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
 		elmDatatype.addAttribute(new Attribute("ID", d.getId() + ""));
 		elmDatatype.addAttribute(new Attribute("Name", d.getName()));
-		elmDatatype.addAttribute(new Attribute("Description", d
-				.getDescription()));
+		elmDatatype.addAttribute(new Attribute("Description", d.getDescription()));
 
 		if (d.getComponents() != null) {
+			
+			
+			
+			Map<Integer,Component> components = new HashMap<Integer, Component>();
+			
 			for (Component c : d.getComponents()) {
+				components.put(c.getPosition(), c);
+			}
+			
+			for(int i=1; i<components.size() + 1; i++){
+				Component c = components.get(i);
 				nu.xom.Element elmComponent = new nu.xom.Element("Component");
 				elmComponent.addAttribute(new Attribute("Name", c.getName()));
 				elmComponent.addAttribute(new Attribute("Usage", c.getUsage()
