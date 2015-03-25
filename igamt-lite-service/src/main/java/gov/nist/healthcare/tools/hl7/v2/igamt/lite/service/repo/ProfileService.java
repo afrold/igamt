@@ -20,6 +20,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 
+import java.io.InputStream;
 import java.util.List;
 
 public interface ProfileService {
@@ -37,5 +38,9 @@ public interface ProfileService {
 	public Profile clone(Profile p);
 
 	public List<String> apply(String changes) throws ProfileNotFoundException;
+
+	public InputStream exportAsPdf(Long targetId);
+	
+	public InputStream exportAsXml(Long targetId);
 
 }

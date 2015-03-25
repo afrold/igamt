@@ -40,13 +40,17 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentRefService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.input.NullInputStream;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
@@ -473,6 +477,19 @@ public class ProfileServiceImpl implements ProfileService {
 	        }
 	    }
 	    return mainNode;
+	}
+	
+	public InputStream  exportAsPdf(Long targetId){
+		return new NullInputStream(1L);
+	}
+
+	public InputStream exportAsXml(Long targetId){
+		Profile p =clone(profileRepository.findOne(targetId));
+		if (p != null){
+			return IOUtils.toInputStream(new ProfileSerializationImpl().serializeProfileToXML(p));
+		} else {
+			return new NullInputStream(1L);
+		}
 	}
 
 

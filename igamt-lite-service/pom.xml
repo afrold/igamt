@@ -11,11 +11,6 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<properties>
-		<core.version>1.0.49-SNAPSHOT</core.version>
-	</properties>
-
-
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -26,17 +21,7 @@
 					<configuration>
 						<source>1.7</source>
 						<target>1.7</target>
-						<compilerId>groovy-eclipse-compiler</compilerId>
-
 					</configuration>
-
-					<dependencies>
-						<dependency>
-							<groupId>org.codehaus.groovy</groupId>
-							<artifactId>groovy-eclipse-compiler</artifactId>
-							<version>2.7.0-01</version>
-						</dependency>
-					</dependencies>
 				</plugin>
 
 				<plugin>
@@ -53,15 +38,7 @@
 						<downloadJavadocs>true</downloadJavadocs>
 					</configuration>
 				</plugin>
-
-				<plugin>
-					<groupId>org.codehaus.groovy</groupId>
-					<artifactId>groovy-eclipse-compiler</artifactId>
-					<version>2.7.0-01</version>
-					<extensions>true</extensions>
-				</plugin>
 			</plugins>
-
 		</pluginManagement>
 	</build>
 
@@ -144,7 +121,16 @@
 			<artifactId>pdfbox</artifactId>
 			<version>1.8.8</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.4.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf.tool</groupId>
+			<artifactId>xmlworker</artifactId>
+			<version>5.4.1</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>

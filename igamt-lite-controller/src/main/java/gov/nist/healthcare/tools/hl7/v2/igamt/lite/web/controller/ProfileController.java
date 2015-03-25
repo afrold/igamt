@@ -4,8 +4,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 
+import java.io.InputStream;
 import java.util.List;
 
+import org.apache.commons.io.input.NullInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -109,5 +112,23 @@ public class ProfileController extends CommonController {
 			throw new RuntimeException(e);
 		}
 	}
+
+	@RequestMapping(value = "/{targetId}/export", method = RequestMethod.GET)
+	public InputStream export(@PathVariable("targetId") Long targetId, @RequestParam String exportType){
+		StringBuilder log = new StringBuilder();
+		log.append("Export profile with id=");
+		log.append(targetId);
+		log.append(" as ");
+		log.append(exportType);
+		logger.info(log.toString());
+		if (exportType == "pdf"){
+			return profileService.exportAsPdf(targetId);
+		} else if (exportType == "xml"){
+			return profileService.exportAsXml(targetId);
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
 
 }
