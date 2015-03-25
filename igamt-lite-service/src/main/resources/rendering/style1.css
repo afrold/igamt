@@ -1,0 +1,43 @@
+h2 {
+  color:#ccc;
+}
+table {
+    text-align:center;
+    border:1px solid gray;
+    border-collapse: collapse;
+    padding:4px;
+}
+
+td tr{
+    padding: 5px;
+    text-align: left;
+    border-collapse: collapse;
+
+.description{
+    color:gray;
+}
+
+th {
+    text-align:left;
+	background-color:#0033CC;
+    color:#fff;
+    width: 100px;
+}
+
+R{
+    background-color:#c4ecff;
+    color:#000;
+    width: 100px;
+}
+
+.RE{
+    background-color:#44C7FD;
+    color:#000;
+    width: 100px;
+}
+
+.O{
+    background-color:#fff;
+    color:#000;
+    width: 100px;
+}

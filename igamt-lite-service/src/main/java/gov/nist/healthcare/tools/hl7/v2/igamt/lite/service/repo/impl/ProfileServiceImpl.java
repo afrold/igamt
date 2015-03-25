@@ -42,13 +42,28 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.codehaus.jackson.JsonFactory;
@@ -63,6 +78,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
@@ -188,17 +208,17 @@ public class ProfileServiceImpl implements ProfileService {
 				node = nodes.next();
 				id = Long.valueOf(node.getKey());
 				individualChanges = node.getValue();
-				Profile p = profileRepository.findOne(id);
+				Profile p = findOne(id);
 				if (p == null) {
 					errorList.add("profile ID not found: " + node.getKey());
 				} else {
-					
+
 					//FIXME
 					//Now: all changes are saved; 
 					//Todo: "unsave" changes that could not be saved
 					//FIXME 2
 					//changes is initialized with a dummy value {"0":0}
-					
+
 					if (p.getChanges() == null){
 						p.setChanges(new String("{\"0\":0}"));
 					}
@@ -206,9 +226,9 @@ public class ProfileServiceImpl implements ProfileService {
 					JsonNode newNode = mapper.readTree(f.createJsonParser(jsonChanges));
 					JsonNode updated = merge(currentNode, newNode);
 					p.setChanges(updated.toString());
-					
-					
-					
+
+
+
 					BeanWrapper metadata = new BeanWrapperImpl(p.getMetaData());
 					newValues = individualChanges
 							.getFields();
@@ -458,29 +478,68 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 		return errorList;
 	}
-	
+
 	public JsonNode merge(JsonNode mainNode, JsonNode updateNode) {
-	    Iterator<String> fieldNames = updateNode.getFieldNames();
-	    while (fieldNames.hasNext()) {
-	        String fieldName = fieldNames.next();
-	        JsonNode jsonNode = mainNode.get(fieldName);
-	        // if field exists and is an embedded object
-	        if (jsonNode != null && jsonNode.isObject()) {
-	            merge(jsonNode, updateNode.get(fieldName));
-	        }
-	        else {
-	            if (mainNode instanceof ObjectNode) {
-	                // Overwrite field
-	                JsonNode value = updateNode.get(fieldName);
-	                ((ObjectNode) mainNode).put(fieldName, value);
-	            }
-	        }
-	    }
-	    return mainNode;
+		Iterator<String> fieldNames = updateNode.getFieldNames();
+		while (fieldNames.hasNext()) {
+			String fieldName = fieldNames.next();
+			JsonNode jsonNode = mainNode.get(fieldName);
+			// if field exists and is an embedded object
+			if (jsonNode != null && jsonNode.isObject()) {
+				merge(jsonNode, updateNode.get(fieldName));
+			}
+			else {
+				if (mainNode instanceof ObjectNode) {
+					// Overwrite field
+					JsonNode value = updateNode.get(fieldName);
+					((ObjectNode) mainNode).put(fieldName, value);
+				}
+			}
+		}
+		return mainNode;
 	}
-	
+
 	public InputStream  exportAsPdf(Long targetId){
-		return new NullInputStream(1L);
+		
+		try {
+			//Look for the profile
+			Profile p = findOne(targetId);
+
+			//Generate xml file containing profile
+			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
+			String stringProfile = new ProfileSerializationImpl().serializeProfileToXML(p);
+			FileUtils.writeStringToFile(tmpXmlFile, stringProfile, Charset.forName("UTF-8"));
+			
+			//Apply XSL transformation on xml file to generate html
+			Source text = new StreamSource(tmpXmlFile);
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Source xslt = new StreamSource( this.getClass().getResourceAsStream("/rendering/profile.xsl"));
+			Transformer transformer;
+			transformer = factory.newTransformer(xslt);
+			File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
+			transformer.transform(text, new StreamResult(tmpHtmlFile));
+			System.out.println( "HTML Created!" );
+
+			//Convert html document to pdf
+			Document document = new Document();
+			File tmpPdfFile = File.createTempFile("ProfileTemp", ".pdf");
+			PdfWriter writer = PdfWriter.getInstance(document, FileUtils.openOutputStream(tmpPdfFile));
+			document.open();
+			XMLWorkerHelper.getInstance().parseXHtml(writer, document, 
+					FileUtils.openInputStream(tmpHtmlFile));
+			document.close();
+			System.out.println( "PDF Created!" );
+			
+			//FileUtils.copyFileToDirectory(tmpXmlFile, new File("/Users/marieros/Documents/testXslt/"));
+			//FileUtils.copyFileToDirectory(tmpHtmlFile, new File("/Users/marieros/Documents/testXslt/"));
+			//FileUtils.copyFileToDirectory(tmpPdfFile, new File("/Users/marieros/Documents/testXslt/"));
+			
+			return FileUtils.openInputStream(tmpPdfFile);
+		} catch (TransformerException | DocumentException | IOException e) {
+			e.printStackTrace();
+			return new NullInputStream(1L);
+		}
+
 	}
 
 	public InputStream exportAsXml(Long targetId){
