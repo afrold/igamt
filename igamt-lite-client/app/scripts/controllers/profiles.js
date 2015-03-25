@@ -23,25 +23,29 @@ angular.module('igl')
          */
         $scope.init = function () {
             $rootScope.context.page = $rootScope.pages[0];
-            $scope.preloadedLoading = true;
             $scope.preloadedError = null;
             $scope.customError = null;
-            $scope.customLoading = true;
 
-            $http.get($rootScope.api('/api/profiles/preloaded'), {timeout: 60000}).then(function (response) {
-                $rootScope.preloadedIgs = angular.fromJson(response.data);
-                $scope.preloadedLoading = false;
-            }, function (error) {
-                $scope.preLoadedError = error;
-                $scope.preloadedLoading = false;
-            });
-            $http.get($rootScope.api('/api/profiles/custom'), {timeout: 60000}).then(function (response) {
-                $rootScope.customIgs = angular.fromJson(response.data);
-                $scope.customLoading = false;
-            }, function (error) {
-                $scope.customError = error;
-                $scope.customLoading = false;
-            });
+            if($scope.customIgs.length === 0) {
+                $scope.customLoading = true;
+                $http.get($rootScope.api('/api/profiles/preloaded'), {timeout: 60000}).then(function (response) {
+                    $rootScope.preloadedIgs = angular.fromJson(response.data);
+                    $scope.preloadedLoading = false;
+                }, function (error) {
+                    $scope.preLoadedError = error;
+                    $scope.preloadedLoading = false;
+                });
+            }
+            if($scope.preloadedIgs.length === 0) {
+                $scope.preloadedLoading = true;
+                $http.get($rootScope.api('/api/profiles/custom'), {timeout: 60000}).then(function (response) {
+                    $rootScope.customIgs = angular.fromJson(response.data);
+                    $scope.customLoading = false;
+                }, function (error) {
+                    $scope.customError = error;
+                    $scope.customLoading = false;
+                });
+            }
         };
 
         $scope.clone = function (id) {
@@ -73,6 +77,7 @@ angular.module('igl')
             waitingDialog.show('Loading profile...', {dialogSize: 'sm', progressType: 'info'});
 //             $http.get($rootScope.api('/api/profiles/'+ row.id)).then(function (profile) {
             $scope.loading = true;
+            $rootScope.generalInfo = {type: null, 'message': null};
             var profile = $scope.findOne(id);
             if (profile != null) {
                 $rootScope.initMaps();
@@ -229,6 +234,20 @@ angular.module('igl')
                 });
             }
         };
+
+        $scope.exportAs = function (id,format) {
+            waitingDialog.show('Exporting profile...', {dialogSize: 'sm', progressType: 'success'});
+             $http.post($rootScope.api('/api/profiles/'+ id+ '/export/'+ format), {} ,{timeout: 60000}).then(function (response) {
+                waitingDialog.hide();
+                $rootScope.changes = {};
+            }, function (error) {
+                $scope.error = error;
+                waitingDialog.hide();
+            });
+        };
+
+
+
     });
 
 angular.module('igl')
@@ -278,6 +297,20 @@ angular.module('igl')
                 waitingDialog.hide();
             });
         };
+
+
+        $scope.exportAs = function (format) {
+            waitingDialog.show('Exporting profile...', {dialogSize: 'sm', progressType: 'success'});
+            var data = angular.toJson($rootScope.changes);
+            $http.post($rootScope.api('/api/profiles/'+ $rootScope.profile.id+ '/export/'+ format), data ,{timeout: 60000}).then(function (response) {
+                waitingDialog.hide();
+                $rootScope.changes = {};
+            }, function (error) {
+                $scope.error = error;
+                waitingDialog.hide();
+            });
+        };
+
 
         $scope.close = function () {
             $rootScope.changes = {}; // FIXME

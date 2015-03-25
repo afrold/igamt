@@ -48,6 +48,18 @@
                                         ng-click="clone(row.id)">
                                     <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
                                 </button>
+                                <div class="btn-group">
+                                    <button ng-disabled="true" type="button" class="btn btn-primary btn-xs">                                        <span><i class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
+                                        Export</button>
+                                    <button ng-disabled="true" type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" ng-click="exportAs(row.id, 'XML')">As XML</a></li>
+                                        <li><a href="#" ng-click="exportAs(row.id,'PDF')">As PDF</a></li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
                         </tbody>
@@ -123,13 +135,22 @@
                                         ng-click="clone(row.id)">
                                     <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
                                 </button>
-
-
-                                <button title="Diff" type="button" class="btn btn-xs btn-info"
+                                <div class="btn-group">
+                                    <button ng-disabled="true" type="button" class="btn btn-primary btn-xs">                                        <span><i class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
+                                        Export</button>
+                                    <button ng-disabled="true" type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="#" ng-click="exportAs(row.id, 'XML')">As XML</a></li>
+                                        <li><a href="#" ng-click="exportAs(row.id,'PDF')">As PDF</a></li>
+                                    </ul>
+                                </div>
+                                <button ng-disabled="true" title="Diff" type="button" class="btn btn-xs btn-warning"
                                         ng-click="diff(row.id)">
-                                    <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Diff</span>
+                                    <span><i class="fa fa-file-text-o fa-fw"></i>&nbsp; Diff</span>
                                 </button>
-
                                 <button title="Delete" type="button" class="btn btn-xs btn-danger"
                                         ng-click="delete(row.id)">
                                     <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>

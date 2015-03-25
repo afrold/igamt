@@ -16,9 +16,10 @@
                 <thead>
                 <tr class="tbl-header">
                     <th></th>
-                    <th st-sort="label">Label</th>
                     <th st-sort="name">Name</th>
                     <th st-sort="description">Description</th>
+                    <th st-sort="label">Label</th>
+
                     <!--<th></th>-->
                 </tr>
                 <!--<tr>-->
@@ -32,9 +33,10 @@
                     <td cs-select="row"><input ng-click="select(row)"
                                                ng-checked="datatype != null && row.id == datatype.id"
                                                type="radio"></td>
-                    <td ng-bind="row.label"></td>
                     <td ng-bind-html="row.name"></td>
                     <td ng-bind-html="row.description"></td>
+                    <td ng-bind="row.label"></td>
+
                     <!--<td>-->
                     <!--<button title="Clone" ng-disabled="datatype != null" type="button" class="btn btn-xs btn-default"-->
                     <!--ng-click="clone(row)">-->
@@ -75,15 +77,15 @@
         <div ng-show="datatype !== null">
             <div class="row">
                 <div>
-                    <span class="igl-title">Edit Datatype : {{datatype.label}}</span>
+                    <span class="igl-title">Edit Datatype : {{datatype.name}} - {{datatype.label}}</span>
                         <span class="pull-right">
 
-                        <button title="Clone" type="button" class="btn btn-xs btn-info"
+                        <button ng-disabled="true" title="Clone" type="button" class="btn btn-xs btn-info"
                                 ng-click="clone()">
                             <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
                         </button>
 
-                        <button title="Close" type="button" class="btn btn-xs btn-primary"
+                        <button title="Close" type="button" class="btn btn-xs btn-warning"
                                 ng-click="close()">
                             <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
                         </button>
@@ -95,6 +97,7 @@
 
                         <button title="Delete" type="button"
                                 class="btn btn-xs btn-danger"
+                                ng-disabled="true"
                                 ng-click="delete()">
                             <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
                         </button>
