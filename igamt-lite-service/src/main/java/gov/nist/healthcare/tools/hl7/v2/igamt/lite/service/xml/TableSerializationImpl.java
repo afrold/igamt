@@ -84,44 +84,27 @@ public class TableSerializationImpl implements TableSerialization {
 				.getDescription()));
 
 		for (Table t : tableLibrary.getTables().getChildren()) {
-			nu.xom.Element elmTableDefinition = new nu.xom.Element(
-					"TableDefinition");
-			elmTableDefinition.addAttribute(new Attribute("AlternateId", (t
-					.getMappingAlternateId() == null) ? "" : t
-					.getMappingAlternateId()));
-			elmTableDefinition.addAttribute(new Attribute("Id", (t
-					.getMappingId() == null) ? "" : t.getMappingId()));
-			elmTableDefinition.addAttribute(new Attribute("Name",
-					(t.getName() == null) ? "" : t.getName()));
-			elmTableDefinition.addAttribute(new Attribute("Version", (t
-					.getVersion() == null) ? "" : "" + t.getVersion()));
-			elmTableDefinition.addAttribute(new Attribute("Codesys", (t
-					.getCodesys() == null) ? "" : t.getCodesys()));
-			elmTableDefinition.addAttribute(new Attribute("Oid",
-					(t.getOid() == null) ? "" : t.getOid()));
-			elmTableDefinition.addAttribute(new Attribute("Type", (t
-					.getTableType() == null) ? "" : t.getTableType()));
-			elmTableDefinition.addAttribute(new Attribute("Extensibility", (t
-					.getExtensibility() == null) ? "" : t.getExtensibility()));
-			elmTableDefinition.addAttribute(new Attribute("Stability", (t
-					.getStability() == null) ? "" : t.getStability()));
+			nu.xom.Element elmTableDefinition = new nu.xom.Element("TableDefinition");
+			elmTableDefinition.addAttribute(new Attribute("AlternateId", (t.getMappingAlternateId() == null) ? "" : t.getMappingAlternateId()));
+			elmTableDefinition.addAttribute(new Attribute("Id", (t.getMappingId() == null) ? "" : t.getMappingId()));
+			elmTableDefinition.addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
+			elmTableDefinition.addAttribute(new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
+			elmTableDefinition.addAttribute(new Attribute("Codesys", (t.getCodesys() == null) ? "" : t.getCodesys()));
+			elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
+			elmTableDefinition.addAttribute(new Attribute("Type", (t.getTableType() == null) ? "" : t.getTableType()));
+			elmTableDefinition.addAttribute(new Attribute("Extensibility", (t.getExtensibility() == null) ? "" : t.getExtensibility()));
+			elmTableDefinition.addAttribute(new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability()));
 
 			elmTableLibrary.appendChild(elmTableDefinition);
 
 			if (t.getCodes() != null) {
 				for (Code c : t.getCodes()) {
-					nu.xom.Element elmTableElement = new nu.xom.Element(
-							"TableElement");
-					elmTableElement.addAttribute(new Attribute("Code", (c
-							.getCode() == null) ? "" : c.getCode()));
-					elmTableElement.addAttribute(new Attribute("DisplayName",
-							(c.getLabel() == null) ? "" : c.getLabel()));
-					elmTableElement.addAttribute(new Attribute("Codesys", (c
-							.getCodesys() == null) ? "" : c.getCodesys()));
-					elmTableElement.addAttribute(new Attribute("Source", (c
-							.getSource() == null) ? "" : c.getSource()));
-					elmTableElement.addAttribute(new Attribute("Usage", (c
-							.getCodeUsage() == null) ? "" : c.getCodeUsage()));
+					nu.xom.Element elmTableElement = new nu.xom.Element("TableElement");
+					elmTableElement.addAttribute(new Attribute("Code", (c.getCode() == null) ? "" : c.getCode()));
+					elmTableElement.addAttribute(new Attribute("DisplayName", (c.getLabel() == null) ? "" : c.getLabel()));
+					elmTableElement.addAttribute(new Attribute("Codesys", (c.getCodesys() == null) ? "" : c.getCodesys()));
+					elmTableElement.addAttribute(new Attribute("Source", (c.getSource() == null) ? "" : c.getSource()));
+					elmTableElement.addAttribute(new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
 					elmTableDefinition.appendChild(elmTableElement);
 				}
 			}
@@ -153,22 +136,19 @@ public class TableSerializationImpl implements TableSerialization {
 			if (elmTable.getAttribute("Version") != null
 					&& !elmTable.getAttribute("Version").equals(""))
 				tableObj.setVersion(elmTable.getAttribute("Version"));
-
-			if (elmTable.getAttribute("Extensibility") != null
-					&& !elmTable.getAttribute("Extensibility").equals("")) {
-				tableObj.setExtensibility(elmTable
-						.getAttribute("Extensibility"));
-			} else {
+			
+			if (elmTable.getAttribute("Extensibility") != null && !elmTable.getAttribute("Extensibility").equals("")){
+				tableObj.setExtensibility(elmTable.getAttribute("Extensibility"));
+			}else {
 				tableObj.setStability("Open");
 			}
-
-			if (elmTable.getAttribute("Stability") != null
-					&& !elmTable.getAttribute("Stability").equals("")) {
+			
+			if (elmTable.getAttribute("Stability") != null && !elmTable.getAttribute("Stability").equals("")){
 				tableObj.setStability(elmTable.getAttribute("Stability"));
-			} else {
+			}else {
 				tableObj.setStability("Static");
 			}
-
+			
 			this.deserializeXMLToCode(elmTable, tableObj);
 			tables.addTable(tableObj);
 		}
@@ -188,10 +168,9 @@ public class TableSerializationImpl implements TableSerialization {
 			codeObj.setCodesys(elmCode.getAttribute("Codesys"));
 			codeObj.setLabel(elmCode.getAttribute("DisplayName"));
 			codeObj.setSource(elmCode.getAttribute("Source"));
-			if (elmCode.getAttribute("Usage") != null
-					&& !elmTable.getAttribute("Usage").equals("")) {
+			if (elmCode.getAttribute("Usage") != null && !elmTable.getAttribute("Usage").equals("")){
 				codeObj.setCodeUsage(elmTable.getAttribute("Usage"));
-			} else {
+			}else {
 				codeObj.setCodeUsage("R");
 			}
 

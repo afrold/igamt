@@ -81,6 +81,7 @@ angular.module('igl')
             var profile = $scope.findOne(id);
             if (profile != null) {
                 $rootScope.initMaps();
+
                 $rootScope.context.page = $rootScope.pages[1];
                 $rootScope.profile = profile;
                 $rootScope.messages = $rootScope.profile.messages.children;
@@ -108,6 +109,10 @@ angular.module('igl')
                 }, $rootScope.messagesMap);
 
                 if ($rootScope.profile.messages.children.length === 1) {
+                    $rootScope.segments = [];
+                    $rootScope.tables = [];
+                    $rootScope.datatypes = [];
+
                     $rootScope.message =$rootScope.messages[0];
                     $rootScope.message.children = $filter('orderBy')($rootScope.message.children, 'position');
                     angular.forEach($rootScope.message.children, function (segmentRefOrGroup) {
@@ -237,13 +242,23 @@ angular.module('igl')
 
         $scope.exportAs = function (id,format) {
             waitingDialog.show('Exporting profile...', {dialogSize: 'sm', progressType: 'success'});
-             $http.post($rootScope.api('/api/profiles/'+ id+ '/export/'+ format), {} ,{timeout: 60000}).then(function (response) {
-                waitingDialog.hide();
-                $rootScope.changes = {};
-            }, function (error) {
-                $scope.error = error;
-                waitingDialog.hide();
-            });
+            var form = document.createElement("form");
+            form.action = $rootScope.api('/api/profiles/'+ id+ '/export/'+ format);
+            form.method = "POST";
+            form.target = "_target";
+            form.style.display = 'none';
+            form.params =
+            document.body.appendChild(form);
+            form.submit();
+            $rootScope.changes = {};
+            waitingDialog.hide();
+//             $http.post($rootScope.api('/api/profiles/'+ id+ '/export'), {params:{'exportType':format},timeout: 60000}).then(function (response) {
+//                waitingDialog.hide();
+//                $rootScope.changes = {};
+//            }, function (error) {
+//                $scope.error = error;
+//                waitingDialog.hide();
+//            });
         };
 
 
@@ -286,7 +301,8 @@ angular.module('igl')
 
         $scope.save = function () {
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
-            var data = angular.toJson($rootScope.changes);
+            var changes = angular.toJson($rootScope.changes);
+            var data = {"value": changes};
             $http.post($rootScope.api('/api/profiles/save'), data ,{timeout: 60000}).then(function (response) {
                 $rootScope.generalInfo.message = "Implementation Guide saved successfully !";
                 $rootScope.generalInfo.type = 'success';
@@ -301,14 +317,28 @@ angular.module('igl')
 
         $scope.exportAs = function (format) {
             waitingDialog.show('Exporting profile...', {dialogSize: 'sm', progressType: 'success'});
-            var data = angular.toJson($rootScope.changes);
-            $http.post($rootScope.api('/api/profiles/'+ $rootScope.profile.id+ '/export/'+ format), data ,{timeout: 60000}).then(function (response) {
-                waitingDialog.hide();
-                $rootScope.changes = {};
-            }, function (error) {
-                $scope.error = error;
-                waitingDialog.hide();
-            });
+//            var data = angular.toJson($rootScope.changes);
+
+            var form = document.createElement("form");
+            form.action = $rootScope.api('/api/profiles/'+ $rootScope.profile.id+ '/export/'+ format);
+            form.method = "POST";
+            form.target = "_target";
+            form.style.display = 'none';
+            form.params =
+                document.body.appendChild(form);
+            form.submit();
+             waitingDialog.hide();
+
+
+
+
+//            $http.post($rootScope.api('/api/profiles/'+ $rootScope.profile.id+ '/export'), data, {params: {'exportType': format}, timeout: 60000}).then(function (response) {
+//                waitingDialog.hide();
+//                $rootScope.changes = {};
+//            }, function (error) {
+//                $scope.error = error;
+//                waitingDialog.hide();
+//            });
         };
 
 

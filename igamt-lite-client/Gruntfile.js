@@ -218,7 +218,7 @@ module.exports = function (grunt) {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
-          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+//          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
       }
@@ -280,12 +280,12 @@ module.exports = function (grunt) {
 
     imagemin: {
       dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg,gif}',
-          dest: '<%= yeoman.dist %>/images'
-        }]
+//        files: [{
+//          expand: true,
+//          cwd: '<%= yeoman.app %>/images',
+//          src: '{,*/}*.{png,jpg,jpeg,gif}',
+//          dest: '<%= yeoman.dist %>/images'
+//        }]
       }
     },
 
@@ -359,7 +359,8 @@ module.exports = function (grunt) {
               'images/**/*',
               'styles/fonts/{,*/}*.*',
               'styles/font-awesome*.css',
-              'styles/custom.css'
+              'styles/custom.css',
+              'images/**/*'
           ]
         }, {
           expand: true,
@@ -371,6 +372,11 @@ module.exports = function (grunt) {
           cwd: '.',
           src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
           dest: '<%= yeoman.dist %>'
+        }, {
+            expand: true,
+            cwd: '.',
+            src: 'lib/font-awesome/fonts/*',
+            dest: '<%= yeoman.dist %>'
         }]
       },
       styles: {

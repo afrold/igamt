@@ -14,15 +14,15 @@
                 <span><i class="fa fa-check-square"></i>&nbsp; Apply</span>
             </button>
             <div class="btn-group">
-                <button ng-disabled="true" type="button" class="btn btn-primary btn-sm">                                        <span><i class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
+                <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm">                                        <span><i class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
                     Export</button>
-                <button ng-disabled="true" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#" ng-click="exportAs('XML')">As XML</a></li>
-                    <li><a href="#" ng-click="exportAs('PDF')">As PDF</a></li>
+                    <li><a ng-click="exportAs('XML')">As XML</a></li>
+                    <!--<li><a href="#" ng-click="exportAs('PDF')">As PDF</a></li>-->
                 </ul>
             </div>
             <button title="Close" type="button" class="btn btn-warning btn-sm"
@@ -42,6 +42,7 @@
         <br/>
     </div>
     <div ng-show="generalInfo.message !== null">
+        <br/>
         <div class="alert alert-{{generalInfo.type}}" role="alert" ng-bind="generalInfo.message"></div>
         <br/>
     </div>

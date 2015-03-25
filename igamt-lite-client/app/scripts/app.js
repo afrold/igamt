@@ -118,11 +118,12 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
         $rootScope.segmentsMap = {};
         $rootScope.datatypesMap = {};
         $rootScope.tablesMap = {};
-        $rootScope.segments.length = 0;
-        $rootScope.tables.length = 0;
-        $rootScope.datatypes.length = 0;
-        $rootScope.messages.length = 0;
+        $rootScope.segments = [];
+        $rootScope.tables = [];
+        $rootScope.datatypes = [];
+        $rootScope.messages = [];
         $rootScope.messagesData = [];
+
     };
 
     $rootScope.$watch(function () {
@@ -151,6 +152,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
 
     $rootScope.clearChanges = function (path) {
         $rootScope.changes = {};
+    };
+
+    $rootScope.hasChanges = function(path){
+        return Object.getOwnPropertyNames($rootScope.changes).length !== 0;
     };
 
     $rootScope.recordChange = function(object,changeType) {
