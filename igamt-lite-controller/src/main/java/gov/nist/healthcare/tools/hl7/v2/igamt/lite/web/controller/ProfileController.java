@@ -131,7 +131,7 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 
 		// if ("pdf".equalsIgnoreCase(format)) {
-		// content = profileService.exportAsPdf(targetId);
+		// content = profileService.exportA sPdf(targetId);
 		// response.setContentType("application/pdf");
 		// response.setHeader("Content-disposition",
 		// "attachment;filename=IG.pdf");

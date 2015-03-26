@@ -329,7 +329,7 @@ public class ProfileServiceImpl implements ProfileService {
 			nodes = rootNode.path("group").getFields();
 			while (nodes.hasNext()) {
 				node = nodes.next();
-				// Group has a String id; node.getKey() is used directly
+				// Group has a Long id; node.getKey() is used directly
 				individualChanges = node.getValue();
 				id = Long.valueOf(node.getKey());
 				Group g = groupService.findOne(id);

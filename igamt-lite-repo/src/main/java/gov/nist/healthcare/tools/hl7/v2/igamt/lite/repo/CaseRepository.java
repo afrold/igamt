@@ -18,8 +18,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CaseRepository extends JpaRepository<Case, Long> {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface CaseRepository extends MongoRepository<Case, Long> {
 
 }

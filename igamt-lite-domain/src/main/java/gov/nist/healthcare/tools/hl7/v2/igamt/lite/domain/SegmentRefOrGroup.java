@@ -1,34 +1,18 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "SEGMENTREFORGROUP")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Document(collection = "segmentRefOrGroups")
 public abstract class SegmentRefOrGroup extends DataModel implements
 		java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.TABLE)
 	protected Long id;
 
-	@NotNull
-	@Column(nullable = false, name = "USAGEE")
-	@Enumerated(EnumType.STRING)
+	// @NotNull
 	protected Usage usage;
 
 	@NotNull

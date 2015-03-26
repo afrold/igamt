@@ -3,29 +3,16 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "SEGMENT")
+@Document(collection = "segments")
 public class Segment extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -35,54 +22,30 @@ public class Segment extends DataModel implements java.io.Serializable {
 		type = Constant.SEGMENT;
 	}
 
-	@Column(name = "ID")
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotNull
-	@Column(nullable = false, name = "LABEL")
+	private Long segmentsId;
+
+	// @NotNull
 	private String label;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@javax.persistence.JoinTable(name = "SEGMENT_FIELD", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "FIELD"))
-	// @org.hibernate.annotations.OrderBy(clause = "position asc")
-	private Set<Field> fields = new LinkedHashSet<Field>();
+	private List<Field> fields = new ArrayList<Field>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@javax.persistence.JoinTable(name = "SEGMENT_DYNAMICMAPPING", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "DYNAMICMAPPING"))
 	private Set<DynamicMapping> dynamicMappings = new HashSet<DynamicMapping>();
 
-	@NotNull
-	@Column(nullable = false, name = "SEGMENT_NAME")
+	// @NotNull
 	private String name;
 
-	@Column(nullable = true, name = "SEGMENT_DESC")
 	private String description;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@JoinTable(name = "SEGMENT_PREDICATE", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "PREDICATE"))
 	protected Set<Predicate> predicates = new HashSet<Predicate>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@JoinTable(name = "SEGMENT_CONFSTATEMENT", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT"))
 	protected Set<ConformanceStatement> conformanceStatements = new HashSet<ConformanceStatement>();
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SEGMENTS_ID")
-	private Segments segments;
-
-	@Column(name = "COMMENT", columnDefinition = "TEXT")
 	protected String comment;
 
-	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
 	protected String usageNote;
-
-	//
-	// @NotNull
-	// @Column(nullable = false,name="POSITION")
-	// private Integer position = 0;
 
 	public Long getId() {
 		return id;
@@ -116,11 +79,11 @@ public class Segment extends DataModel implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public Set<Field> getFields() {
+	public List<Field> getFields() {
 		return fields;
 	}
 
-	public void setFields(Set<Field> fields) {
+	public void setFields(List<Field> fields) {
 		if (fields != null) {
 			this.fields.clear();
 			Iterator<Field> it = fields.iterator();
@@ -130,14 +93,6 @@ public class Segment extends DataModel implements java.io.Serializable {
 		} else {
 			this.fields = null;
 		}
-	}
-
-	public Segments getSegments() {
-		return segments;
-	}
-
-	public void setSegments(Segments segments) {
-		this.segments = segments;
 	}
 
 	public void addPredicate(Predicate p) {
@@ -218,6 +173,14 @@ public class Segment extends DataModel implements java.io.Serializable {
 
 	public void setUsageNote(String usageNote) {
 		this.usageNote = usageNote;
+	}
+
+	public Long getSegmentsId() {
+		return segmentsId;
+	}
+
+	public void setSegmentsId(Long segmentsId) {
+		this.segmentsId = segmentsId;
 	}
 
 	@Override

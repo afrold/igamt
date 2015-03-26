@@ -18,17 +18,17 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+
 import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface MessageRepository extends JpaRepository<Message, Long> {
+public interface MessageRepository extends MongoRepository<Message, Long> {
 
-	@Override
 	public List<Message> findAll();
 
-	@Override
 	public void delete(Long id);
 
-	@Override
 	public Message findOne(Long id);
 }

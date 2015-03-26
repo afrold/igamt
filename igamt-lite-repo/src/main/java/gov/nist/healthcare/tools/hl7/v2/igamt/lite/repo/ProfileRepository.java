@@ -19,9 +19,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+ 
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
@@ -29,10 +27,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.data.repository.query.Param;
 
- public interface ProfileRepository extends JpaRepository<Profile, Long> {
+ public interface ProfileRepository extends MongoRepository<Profile, Long> {
 	
 		
 	@Query("select profile from Profile profile where profile.preloaded = true")

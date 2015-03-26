@@ -5,21 +5,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@Entity
-@javax.persistence.Table(name = "TABLELIBRARY")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@Document(collection = "tableLibraries")
 public class TableLibrary extends DataModel implements Serializable {
 
 	/**
@@ -28,30 +17,20 @@ public class TableLibrary extends DataModel implements Serializable {
 	private static final long serialVersionUID = -2904036105687742572L;
 
 	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "TABLELIBRARY_IDENTIFIER")
 	private String tableLibraryIdentifier;
 
-	@Column(name = "STATUS")
 	private String status;
 
-	@Column(name = "TABLELIBRARY_VERSION")
 	private String tableLibraryVersion;
 
-	@Column(name = "ORG_NAME")
 	private String organizationName;
 
-	@Column(name = "NAME")
 	private String name;
 
-	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@JoinColumn(name = "TABLES_ID")
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Tables tables;
 
 	public TableLibrary() {

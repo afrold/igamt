@@ -23,7 +23,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ConformanceStatementRepository extends JpaRepository<ConformanceStatement, Long> {
+public interface ConformanceStatementRepository extends MongoRepository<ConformanceStatement, Long> {
 	
 }

@@ -37,7 +37,7 @@ public class Message extends DataModel implements java.io.Serializable {
 	private Long id;
 
 	@Column(name = "MESSAGE_IDENTIFIER")
-	private String identifier;
+	private Long identifier;
 
 	@NotNull
 	@Column(nullable = false, name = "TYPE")
@@ -154,7 +154,7 @@ public class Message extends DataModel implements java.io.Serializable {
 		return identifier;
 	}
 
-	public void setIdentifier(String identifier) {
+	public void setIdentifier(Long identifier) {
 		this.identifier = identifier;
 	}
 

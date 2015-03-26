@@ -20,7 +20,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface CodeRepository extends JpaRepository<Code, Long> {
+public interface CodeRepository extends MongoRepository<Code, Long> {
 
 }

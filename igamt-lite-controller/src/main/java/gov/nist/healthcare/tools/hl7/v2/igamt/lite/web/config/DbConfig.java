@@ -11,28 +11,22 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
-import java.util.Properties;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
+import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
-import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.Database;
-import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 
 /**
  * @author Harold Affo (NIST)
@@ -40,81 +34,98 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 
 @Configuration
-@EnableJpaRepositories("gov.nist.healthcare.tools")
-@PropertySource(value = "classpath:igl-jpa.properties")
+@EnableMongoRepositories(basePackages = "gov.nist.healthcare.tools")
+@PropertySource(value = "classpath:igl-mongo.properties")
 @EnableTransactionManagement(proxyTargetClass = true)
 public class DbConfig {
 
 	@Autowired
 	private Environment env;
 
-	@Bean
-	public DataSource dataSource() {
-		final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
-		dsLookup.setResourceRef(true);
-		DataSource dataSource = dsLookup.getDataSource("jdbc/igl_jndi");
-		return dataSource;
-	}
+	// @Bean
+	// public DataSource dataSource() {
+	// final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
+	// dsLookup.setResourceRef(true);
+	// DataSource dataSource = dsLookup.getDataSource("jdbc/igl_jndi");
+	// return dataSource;
+	// }
+	//
+	// @Bean
+	// public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+	// DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
+	// LocalContainerEntityManagerFactoryBean lef = new
+	// LocalContainerEntityManagerFactoryBean();
+	// lef.setDataSource(dataSource);
+	// lef.setJpaVendorAdapter(jpaVendorAdapter);
+	// lef.setPackagesToScan("gov.nist.healthcare.tools");
+	// lef.setJpaProperties(jpaProperties());
+	// lef.setPersistenceUnitName(env.getProperty("jpa.persistenceUnitName"));
+	// lef.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
+	// return lef;
+	// }
+	//
+	// @Bean
+	// public JpaVendorAdapter jpaVendorAdapter() {
+	// HibernateJpaVendorAdapter jpaVendorAdapter = new
+	// HibernateJpaVendorAdapter();
+	// jpaVendorAdapter.setShowSql(Boolean.getBoolean(env
+	// .getProperty("jpa.showSql")));
+	// jpaVendorAdapter.setGenerateDdl(Boolean.getBoolean(env
+	// .getProperty("jpa.generateDdl")));
+	// jpaVendorAdapter.setDatabase(Database.MYSQL);
+	// jpaVendorAdapter.setDatabasePlatform(env
+	// .getProperty("jpa.databasePlatform"));
+	//
+	// return jpaVendorAdapter;
+	// }
+
+	// private Properties jpaProperties() {
+	// Properties properties = new Properties();
+	// // properties.put("hibernate.cache.use_second_level_cache",
+	// // env.getProperty("hibernate.cache.use_second_level_cache"));
+	// // properties.put("hibernate.cache.region.factory_class",
+	// // env.getProperty("hibernate.cache.region.factory_class"));
+	// // properties.put("hibernate.cache.use_query_cache",
+	// // env.getProperty("hibernate.cache.use_query_cache"));
+	// properties.put("hibernate.hbm2ddl.auto",
+	// env.getProperty("hibernate.hbm2ddl.auto"));
+	// // properties.put("hibernate.dialect",
+	// // env.getProperty("hibernate.dialect"));
+	// properties.put("hibernate.globally_quoted_identifiers",
+	// env.getProperty("hibernate.globally_quoted_identifiers"));
+	// properties.put("hibernate.enable_lazy_load_no_trans",
+	// env.getProperty("hibernate.enable_lazy_load_no_trans"));
+	//
+	// return properties;
+	// }
+
+	// @Bean
+	// public PlatformTransactionManager transactionManager(
+	// EntityManagerFactory entityManagerFactory) {
+	// JpaTransactionManager transactionManager = new JpaTransactionManager();
+	// transactionManager.setEntityManagerFactory(entityManagerFactory);
+	// transactionManager.setJpaDialect(new HibernateJpaDialect());
+	// return transactionManager;
+	// }
+	//
+	// @Bean
+	// PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+	// return new PersistenceExceptionTranslationPostProcessor();
+	// }
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-			DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
-		LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
-		lef.setDataSource(dataSource);
-		lef.setJpaVendorAdapter(jpaVendorAdapter);
-		lef.setPackagesToScan("gov.nist.healthcare.tools");
-		lef.setJpaProperties(jpaProperties());
-		lef.setPersistenceUnitName(env.getProperty("jpa.persistenceUnitName"));
-		lef.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
-		return lef;
+	public Mongo mongo() throws Exception {
+		MongoCredential credential = MongoCredential.createMongoCRCredential(
+				env.getProperty("mongo.username"),
+				env.getProperty("mongo.dbname"),
+				env.getProperty("mongo.password").toCharArray());
+		return new MongoClient(new ServerAddress("localhost",
+				Integer.valueOf(env.getProperty("mongo.port"))),
+				Arrays.asList(credential));
 	}
 
 	@Bean
-	public JpaVendorAdapter jpaVendorAdapter() {
-		HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-		jpaVendorAdapter.setShowSql(Boolean.getBoolean(env
-				.getProperty("jpa.showSql")));
-		jpaVendorAdapter.setGenerateDdl(Boolean.getBoolean(env
-				.getProperty("jpa.generateDdl")));
-		jpaVendorAdapter.setDatabase(Database.MYSQL);
-		jpaVendorAdapter.setDatabasePlatform(env
-				.getProperty("jpa.databasePlatform"));
-
-		return jpaVendorAdapter;
+	public MongoOperations mongoTemplate(Mongo mongo) {
+		return new MongoTemplate(mongo, env.getProperty("mongo.dbname"));
 	}
-
-	private Properties jpaProperties() {
-		Properties properties = new Properties();
-		// properties.put("hibernate.cache.use_second_level_cache",
-		// env.getProperty("hibernate.cache.use_second_level_cache"));
-		// properties.put("hibernate.cache.region.factory_class",
-		// env.getProperty("hibernate.cache.region.factory_class"));
-		// properties.put("hibernate.cache.use_query_cache",
-		// env.getProperty("hibernate.cache.use_query_cache"));
-		properties.put("hibernate.hbm2ddl.auto",
-				env.getProperty("hibernate.hbm2ddl.auto"));
-		// properties.put("hibernate.dialect",
-		// env.getProperty("hibernate.dialect"));
-		properties.put("hibernate.globally_quoted_identifiers",
-				env.getProperty("hibernate.globally_quoted_identifiers"));
-		properties.put("hibernate.enable_lazy_load_no_trans",
-				env.getProperty("hibernate.enable_lazy_load_no_trans"));
-
-		return properties;
-	}
-
-	@Bean
-	public PlatformTransactionManager transactionManager(
-			EntityManagerFactory entityManagerFactory) {
-		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactory);
-		transactionManager.setJpaDialect(new HibernateJpaDialect());
-		return transactionManager;
-	}
-
-	@Bean
-	PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-		return new PersistenceExceptionTranslationPostProcessor();
-	}
-
 }

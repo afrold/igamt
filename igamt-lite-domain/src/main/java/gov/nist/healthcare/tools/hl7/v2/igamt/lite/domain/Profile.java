@@ -9,25 +9,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Version;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@Entity
-@Table(name = "PROFILE")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@Document(collection = "profiles")
 public class Profile extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -38,45 +24,25 @@ public class Profile extends DataModel implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID")
 	private Long id;
 
 	private ProfileMetaData metaData;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "SEGMENTS_ID")
 	private Segments segments;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "DATATYTPES_ID")
 	private Datatypes datatypes;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "MESSAGES_ID")
 	private Messages messages;
 
-	@Column(name = "COMMENT", columnDefinition = "TEXT")
 	protected String comment;
 
-	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
 	protected String usageNote;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "TABLELIBRARY_ID")
 	private TableLibrary tableLibrary;
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "AUTHOR_ID")
-	private Author author;
-
-	@Column(name = "PRELOADED")
 	private Boolean preloaded;
 
-	@Column(name = "VERSION")
 	@Version
-	// version from the db
 	private Integer version;
 
 	private String changes;
@@ -129,14 +95,6 @@ public class Profile extends DataModel implements java.io.Serializable {
 		this.tableLibrary = tableLibrary;
 	}
 
-	public Author getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(Author author) {
-		this.author = author;
-	}
-
 	public Integer getVersion() {
 		return version;
 	}
@@ -186,7 +144,7 @@ public class Profile extends DataModel implements java.io.Serializable {
 	@Override
 	public String toString() {
 		return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
-				+ messages + ", author=" + author + "]";
+				+ messages;
 	}
 
 	public Constraints getConformanceStatements() {
