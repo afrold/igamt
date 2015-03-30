@@ -56,8 +56,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -71,6 +74,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
@@ -724,7 +731,6 @@ public class ProfileServiceImpl implements ProfileService {
 		cells.add(s.getUsage().value());
 		cells.add("");
 		cells.add(s.getRef().getComment());
-
 	}
 
 	@Override
@@ -738,4 +744,123 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 	}
 
+	public InputStream exportAsXlsx(Long targetId){
+		List<String> header;
+		PdfPTable table;
+		List <String> cells;
+
+		try {
+			//Look for the profile
+			Profile p = findOne(targetId);
+			//File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
+			File tmpxslxFile = new File("/Users/marieros/Documents/testXslt/profile.xlsx");
+
+			//Blank workbook
+			XSSFWorkbook workbook = new XSSFWorkbook();
+
+			for (Message m : p.getMessages().getChildren()){
+				//Create a blank sheet
+				XSSFSheet sheet;
+				sheet = workbook.createSheet(m.getStructID() + " Segment Usage");
+				
+				int headerSize = 8;
+
+				//This data needs to be written (Object[])
+				Map<String, Object[]> data = new TreeMap<String, Object[]>();
+				
+				List<List<String>> rows = new ArrayList<List<String>>();
+
+				rows.add(Arrays.asList("SEGMENT", "CDC Usage", "Local Usage", 
+						"Local Usage Constraint", "CDC Cardinality", "Local Cardinality", 
+						"Local Cardinality Constraint", "Local Comments"));
+				
+				
+				for (SegmentRefOrGroup srog : m.getSegmentRefOrGroups()) {
+					if (srog instanceof SegmentRef) {
+						this.addSegmentXlsx(rows, (SegmentRef) srog, 0);
+					} else if (srog instanceof Group) {
+						this.addGroupXlsx(rows, (Group) srog, 0);	
+					} 
+				}
+				for (List<String> row: rows){
+					
+					Object[] tmp = new Object[headerSize];
+					for (String elt : row){
+						tmp[row.indexOf(elt)] = elt;
+					}
+					//TODO Remove print
+					System.out.println(String.valueOf(rows.indexOf(row)) + " " + row.toString());
+					//data.put(String.valueOf(rows.indexOf(row)), tmp);
+					data.put(String.format("%03d", rows.indexOf(row)), tmp);
+					}
+
+				//Iterate over data and write to sheet
+				Set<String> keyset = data.keySet();
+				System.out.println(keyset);
+				keyset = new TreeSet<String>(keyset);
+				System.out.println(keyset);
+				
+				int rownum = 0;
+				for (String key : keyset)
+				{
+					Row row = sheet.createRow(rownum++);
+					Object [] objArr = data.get(key);
+					int cellnum = 0;
+					for (Object obj : objArr)
+					{
+						Cell cell = row.createCell(cellnum++);
+						if(obj instanceof String)
+							cell.setCellValue((String)obj);
+						else if(obj instanceof Integer)
+							cell.setCellValue((Integer)obj);
+					}
+				}
+				FileOutputStream out = new FileOutputStream(tmpxslxFile);
+				workbook.write(out);
+				workbook.close();
+				out.close();
+				System.out.println(StringUtils.repeat(" ! ", 23));
+
+				
+			}
+			return new NullInputStream(1L);
+
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new NullInputStream(1L);
+		}
+	}
+
+	private void addSegmentXlsx(List<List<String>> rows, SegmentRef s, Integer depth){
+		String indent = StringUtils.repeat(" ", 4 * depth);
+
+		List <String> row = Arrays.asList(indent + s.getRef().getName(), "", s.getUsage().value(), 
+				"", "", "[" + String.valueOf(s.getMin()) + ".." + String.valueOf(s.getMax()) + "]", 
+				"", (String)(s.getRef().getComment() == null ? "" : s.getRef().getComment()));
+		rows.add(row);
+	}
+	
+	private void addGroupXlsx(List<List<String>> rows, Group g, Integer depth){
+		String indent = StringUtils.repeat(" ", 4 * depth);
+		
+		List <String> row = Arrays.asList(
+				indent + "BEGIN " + g.getName() + " GROUP", "", g.getUsage().value(), "",
+			"", "[" + String.valueOf(g.getMin()) + ".." + String.valueOf(g.getMax()) + "]",
+			"", "");
+		rows.add(row);
+		for (SegmentRefOrGroup srog : g.getSegmentsOrGroups()) {
+			if (srog instanceof SegmentRef) {
+				this.addSegmentXlsx(rows, (SegmentRef) srog, depth + 1);
+			} else if (srog instanceof Group) {
+				this.addGroupXlsx(rows, (Group) srog, depth + 1);						
+			}
+		}
+		row = Arrays.asList(
+				indent + "END " + g.getName() + " GROUP", "", "", "", "", "", "", "" );
+		rows.add(row);
+	}
+	
+	
+	
+	
 }
