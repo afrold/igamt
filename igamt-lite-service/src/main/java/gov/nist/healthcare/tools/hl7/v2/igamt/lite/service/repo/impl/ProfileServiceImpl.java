@@ -23,9 +23,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
@@ -51,9 +53,11 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -66,6 +70,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
@@ -79,8 +84,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.html.WebColors;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
@@ -241,7 +257,7 @@ public class ProfileServiceImpl implements ProfileService {
 									"profile property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					profileRepository.save(p);
@@ -271,7 +287,7 @@ public class ProfileServiceImpl implements ProfileService {
 									"message property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					messageService.save(m);
@@ -304,7 +320,7 @@ public class ProfileServiceImpl implements ProfileService {
 									"Segment property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					segmentService.save(s);
@@ -337,7 +353,7 @@ public class ProfileServiceImpl implements ProfileService {
 									"SegmentRef property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					segmentRefService.save(sr);
@@ -395,7 +411,7 @@ public class ProfileServiceImpl implements ProfileService {
 									"Component property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					componentService.save(c);
@@ -503,17 +519,18 @@ public class ProfileServiceImpl implements ProfileService {
 		return mainNode;
 	}
 
-	public InputStream  exportAsPdf(Long targetId){
-		
+	public InputStream exportAsPdf(Long targetId){
+
 		try {
 			//Look for the profile
 			Profile p = findOne(targetId);
 
+			/*
 			//Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
 			String stringProfile = new ProfileSerializationImpl().serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile, Charset.forName("UTF-8"));
-			
+
 			//Apply XSL transformation on xml file to generate html
 			Source text = new StreamSource(tmpXmlFile);
 			TransformerFactory factory = TransformerFactory.newInstance();
@@ -533,16 +550,181 @@ public class ProfileServiceImpl implements ProfileService {
 					FileUtils.openInputStream(tmpHtmlFile));
 			document.close();
 			System.out.println( "PDF Created!" );
-			
-			//FileUtils.copyFileToDirectory(tmpXmlFile, new File("/Users/marieros/Documents/testXslt/"));
-			//FileUtils.copyFileToDirectory(tmpHtmlFile, new File("/Users/marieros/Documents/testXslt/"));
-			//FileUtils.copyFileToDirectory(tmpPdfFile, new File("/Users/marieros/Documents/testXslt/"));
-			
+			 */
+
+			//Create fonts and colors to be used in generated pdf
+			BaseColor headerColor = WebColors.getRGBColor("#0033CC");
+			Font titleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE | Font.BOLD, BaseColor.RED);
+			Font headerFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL, BaseColor.WHITE);
+			Font cellFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL, BaseColor.BLACK);
+
+			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+			Document document1 = new Document();
+			PdfWriter writer1 = PdfWriter.getInstance(document1, FileUtils.openOutputStream(tmpPdfFile));
+			document1.open();
+
+			document1.add(new Paragraph("Message definition", titleFont));
+			document1.add( Chunk.NEWLINE );
+
+			List<String> header;
+			PdfPTable table;
+			List <String> cells;
+
+			for (Message m : p.getMessages().getChildren()){
+				document1.add(new Paragraph("Message definition: "));
+				document1.add(new Paragraph(m.getStructID() + " - " + m.getDescription()));
+				document1.add( Chunk.NEWLINE );
+
+				header = Arrays.asList("Segment" ,"Name",  "Card.", "Local Card." , "Usage", 
+						"Local Usage" , "Comment");
+				table = this.createHeader(header, headerFont, headerColor);
+				float[] columnWidths = {3f, 4f, 1.5f, 1.5f, 2f, 2f, 8f};
+				table.setWidths(columnWidths);
+
+				cells = new ArrayList<String>();
+				for (SegmentRefOrGroup srog : m.getSegmentRefOrGroups()) {
+					if (srog instanceof SegmentRef) {
+						this.addSegment(cells, (SegmentRef) srog, 0);
+					} else if (srog instanceof Group) {
+						this.addGroup(cells, (Group) srog, 0);	
+					} 
+				}
+				this.addCells(table, cells, cellFont);
+				document1.add(table);
+
+
+				/*
+				document1.add(new Paragraph("Segments"));
+				document1.add( Chunk.NEWLINE );
+
+				header = Arrays.asList("SEQ" , "Field" , "Usage", "Cardi" , 
+						"Length" , "ValueSet", "Conf Statement" , "Predicate" , "Comment");
+				table = this.createHeader(header, headerFont, headerColor);
+				for (Segment s : p.getSegments().getChildren()) {
+					document1.add(new Paragraph(s.getName() + " - " + s.getDescription()));
+
+					cells = new ArrayList<String>();
+					for (Field f : s.getFields()) {
+						cells.add(f.getItemNo());
+						cells.add(f.getName());
+						cells.add(f.getUsage().value());
+						cells.add("[" + String.valueOf(f.getMin()) + ".." +String.valueOf(f.getMax()) + "]");
+						cells.add("[" + String.valueOf(f.getMinLength()) + "," +String.valueOf(f.getMaxLength()) + "]");
+						if (f.getTable() != null){
+							cells.add(f.getTable().getMappingId());
+						} else {
+							cells.add("");
+						}
+						cells.add("");
+						cells.add("");
+						cells.add(f.getComment());
+					}
+					this.addCells(table, cells, cellFont);
+					document1.add(table);
+				}
+
+				document1.add(new Paragraph("Datatypes"));
+				document1.add( Chunk.NEWLINE );
+
+
+				for (Datatype d : p.getDatatypes().getChildren()) {
+					document1.add(new Paragraph(d.getName() + " - " + d.getDescription()));
+					document1.add(new Paragraph(d.getComment()));
+
+					header = Arrays.asList("Name", "Usage", "Length" , "Conf length", "Datatype" , 
+							"ValueSet", "Conf Statement" , "Predicate" , "Comment");
+					table = this.createHeader(header, headerFont, headerColor);
+
+					cells = new ArrayList<String>();
+					for (Component c: d.getComponents()){
+						//FIXME
+						//Add recursive calls on Components
+						cells.add(c.getName());
+						cells.add(c.getUsage().value());
+
+						cells.add("[" + String.valueOf(c.getMinLength()) + ".." +String.valueOf(c.getMaxLength()) + "]");
+						cells.add(c.getConfLength());
+						cells.add(c.getDatatypeLabel());
+
+
+						if (c.getTable() != null){
+							cells.add(c.getTable().getMappingId());
+						} else {
+							cells.add("");
+						}
+						cells.add("");
+						cells.add("");
+						cells.add(c.getComment());
+					}
+					this.addCells(table, cells, cellFont);
+					document1.add(table);
+				}
+				 */
+
+			}
+
+			document1.close();
 			return FileUtils.openInputStream(tmpPdfFile);
-		} catch (TransformerException | DocumentException | IOException e) {
+		} catch (DocumentException | IOException e) {
 			e.printStackTrace();
 			return new NullInputStream(1L);
 		}
+	}
+
+	private void addCells(PdfPTable table, List<String> cells, Font cellFont){
+		for (String cell: cells){
+			table.addCell(new Phrase(cell, cellFont));
+		}
+	}
+
+	private PdfPTable createHeader(List<String> headers, Font headerFont, BaseColor headerColor){
+		PdfPTable table = new PdfPTable(headers.size());
+		PdfPCell c1;
+		for (String cellName : headers){
+			c1 = new PdfPCell(new Phrase(cellName, headerFont));
+			c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			c1.setBackgroundColor(headerColor);
+			table.addCell(c1);
+		}
+		return table;
+	}
+
+	private void addGroup(List<String> cells, Group g, Integer depth){
+		String indent = StringUtils.repeat(" ", 2 * depth);
+		cells.add(indent + "[");
+		cells.add("[" + String.valueOf(g.getMin()) + ".." + String.valueOf(g.getMax()) + "]");
+		cells.add("");
+		cells.add(g.getUsage().value());
+		cells.add("");
+		cells.add("BEGIN " + g.getName() + " GROUP");
+
+		for (SegmentRefOrGroup srog : g.getSegmentsOrGroups()) {
+			if (srog instanceof SegmentRef) {
+				this.addSegment(cells, (SegmentRef) srog, depth + 1);
+			} else if (srog instanceof Group) {
+				this.addGroup(cells, (Group) srog, depth + 1);						
+			}
+		}
+		cells.add(indent + "]");
+		cells.add("");
+		cells.add("");
+		cells.add("");
+		cells.add("");
+		cells.add("END " + g.getName() + " GROUP");
+	}
+
+	private void addSegment(List<String> cells, SegmentRef s, Integer depth){
+		String indent = StringUtils.repeat(" ", 2 * depth);
+		cells.add(indent + s.getRef().getName());
+		cells.add("[" + String.valueOf(s.getMin()) + ".." + String.valueOf(s.getMax()) + "]");
+		cells.add("");
+		cells.add(s.getUsage().value());
+		cells.add("");
+		cells.add(s.getRef().getComment());
+
 	}
 
 	@Override
@@ -550,7 +732,7 @@ public class ProfileServiceImpl implements ProfileService {
 		Profile p = clone(findOne(targetId));
 		if (p != null) {
 			return IOUtils.toInputStream(new ProfileSerializationImpl()
-					.serializeProfileToXML(p));
+			.serializeProfileToXML(p));
 		} else {
 			return new NullInputStream(1L);
 		}
