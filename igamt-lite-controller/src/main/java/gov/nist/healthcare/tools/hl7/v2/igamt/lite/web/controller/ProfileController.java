@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Changes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
 
@@ -49,12 +50,19 @@ public class ProfileController extends CommonController {
 		return "ERROR:" + ex.getMessage();
 	}
 
+	@ExceptionHandler(ProfileException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public String profileNotFound(ProfileException ex) {
+		logger.debug(ex.getMessage());
+		return "ERROR:" + ex.getMessage();
+	}
+
 	/**
 	 * Return the list of pre-loaded profiles
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/preloaded", method = RequestMethod.GET)
+	@RequestMapping(value = "/preloaded", method = RequestMethod.GET, produces = "application/json")
 	public List<Profile> preloaded() {
 		logger.info("Fetching all preloaded profiles...");
 		List<Profile> result = profileService.findAllPreloaded();
@@ -76,7 +84,7 @@ public class ProfileController extends CommonController {
 	 * @throws ProfileNotFoundException
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public Profile profile(@PathVariable("id") Long id)
+	public Profile profile(@PathVariable("id") String id)
 			throws ProfileNotFoundException {
 		logger.info("GET pofile with id=" + id);
 		Profile p = profileService.findOne(id);
@@ -87,8 +95,8 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{targetId}/clone", method = RequestMethod.POST)
-	public Profile clone(@PathVariable("targetId") Long targetId)
-			throws ProfileNotFoundException {
+	public Profile clone(@PathVariable("targetId") String targetId)
+			throws ProfileNotFoundException, ProfileException {
 		logger.info("Clone profile with id=" + targetId);
 		Profile p = profileService.findOne(targetId);
 		if (p == null) {
@@ -102,7 +110,7 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{targetId}/delete", method = RequestMethod.POST)
-	public void delete(@PathVariable("targetId") Long targetId)
+	public void delete(@PathVariable("targetId") String targetId)
 			throws ProfileNotFoundException {
 		logger.info("Delete profile with id=" + targetId);
 		profileService.delete(targetId);
@@ -111,15 +119,11 @@ public class ProfileController extends CommonController {
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public List<String> save(@RequestBody Changes jsonChanges) {
 		logger.info("Applying changes = " + jsonChanges);
-		try {
-			return profileService.apply(jsonChanges.getValue());
-		} catch (ProfileNotFoundException e) {
-			throw new RuntimeException(e);
-		}
+		return profileService.apply(jsonChanges.getValue());
 	}
 
 	@RequestMapping(value = "/{targetId}/export/XML", method = RequestMethod.POST, produces = "text/xml")
-	public void export(@PathVariable("targetId") Long targetId,
+	public void export(@PathVariable("targetId") String targetId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		// logger.info(log.toString());

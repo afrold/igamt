@@ -13,6 +13,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
 import java.util.Arrays;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +45,7 @@ public class DbConfig {
 	@Autowired
 	private Environment env;
 
+	//
 	// @Bean
 	// public DataSource dataSource() {
 	// final JndiDataSourceLookup dsLookup = new JndiDataSourceLookup();
@@ -49,6 +53,14 @@ public class DbConfig {
 	// DataSource dataSource = dsLookup.getDataSource("jdbc/igl_jndi");
 	// return dataSource;
 	// }
+
+	@Bean
+	public MongoTemplate mongoTemplate() throws Exception {
+		Context initCtx = new InitialContext();
+		Context envCtx = (Context) initCtx.lookup("java:comp/env");
+		return (MongoTemplate) envCtx.lookup("jdbc/igl_mongo");
+	}
+
 	//
 	// @Bean
 	// public LocalContainerEntityManagerFactoryBean entityManagerFactory(

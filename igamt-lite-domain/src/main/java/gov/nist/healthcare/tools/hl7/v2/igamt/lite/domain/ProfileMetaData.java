@@ -7,12 +7,12 @@ public class ProfileMetaData implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	// @NotNull
+	// //@NotNull
 	private String name;
 
 	private String identifier;
 
-	// @NotNull
+	// //@NotNull
 	private String orgName;
 
 	private String status;

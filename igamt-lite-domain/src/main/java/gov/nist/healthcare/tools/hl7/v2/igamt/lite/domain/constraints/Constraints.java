@@ -2,46 +2,38 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "CONSTRAINTS")
+//@Entity
+//@Table(name = "CONSTRAINTS")
 public class Constraints implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	// @Id
+	// @Column(name = "ID")
+	// @GeneratedValue(strategy = GenerationType.AUTO)
+	private String id;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "DATATYPES_ID")
+	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL, orphanRemoval = true)
+	// @JoinColumn(name = "DATATYPES_ID")
 	private Context datatypes;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "SEGMENTS_ID")
+	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL, orphanRemoval = true)
+	// @JoinColumn(name = "SEGMENTS_ID")
 	private Context segments;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "GROUPS_ID")
+	// @OneToOne(optional = false, fetch = FetchType.EAGER, cascade =
+	// CascadeType.ALL, orphanRemoval = true)
+	// @JoinColumn(name = "GROUPS_ID")
 	private Context groups;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

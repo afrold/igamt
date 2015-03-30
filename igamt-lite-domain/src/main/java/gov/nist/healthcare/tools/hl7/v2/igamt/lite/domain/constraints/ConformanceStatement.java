@@ -2,11 +2,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "CONF_STATEMENT")
+//@Entity
+//@Table(name = "CONF_STATEMENT")
 public class ConformanceStatement extends Constraint implements Serializable {
 
 	/**
@@ -21,10 +18,10 @@ public class ConformanceStatement extends Constraint implements Serializable {
 				+ reference + ", description=" + description + ", assertion="
 				+ assertion + "]";
 	}
-	
+
 	@Override
 	public ConformanceStatement clone() throws CloneNotSupportedException {
-		return (ConformanceStatement)super.clone();
+		return (ConformanceStatement) super.clone();
 	}
 
 }

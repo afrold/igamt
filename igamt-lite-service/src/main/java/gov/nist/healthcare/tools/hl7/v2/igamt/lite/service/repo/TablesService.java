@@ -9,18 +9,35 @@
  * modified versions bear some notice that they have been modified.
  */
 
+/**
+ * 
+ * @author Olivier MARIE-ROSE
+ * 
+ */
+
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 
-public interface GroupService {
+public interface TablesService {
 
-	public Iterable<Group> findAll();
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public Tables save(Tables t);
 
-	public Group save(Group c);
+	/**
+	 * 
+	 * @param id
+	 */
+	public void delete(String id);
 
-	public void delete(Long id);
-
-	public Group findOne(Long id);
-
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Tables findOne(String id);
 }

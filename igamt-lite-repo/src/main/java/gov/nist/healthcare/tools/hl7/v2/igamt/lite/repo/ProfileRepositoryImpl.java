@@ -17,11 +17,31 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import java.util.List;
 
-public interface FieldRepository extends MongoRepository<Field, Long> {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
+public class ProfileRepositoryImpl implements ProfileOperations   {
+	
+	 @Autowired
+	 private MongoOperations mongo;
+	 
+	 
+	/* (non-Javadoc)
+	 * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileOperations#findByPreloaded(java.lang.Boolean)
+	 */
+	@Override
+	public List<Profile> findByPreloaded(Boolean preloaded) {
+ 	    Criteria where = Criteria.where("preloaded").is(preloaded);
+	    Query query = Query.query(where);
+	    return mongo.find(query, Profile.class);
+ 	}
+	
+	
+	
 }

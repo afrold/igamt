@@ -25,8 +25,8 @@ public interface ContextService {
 
 	public Context save(Context p);
 
-	public void delete(Long id);
+	public void delete(String id);
 
-	public Context findOne(Long id);
+	public Context findOne(String id);
 
 }

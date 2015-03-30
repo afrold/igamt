@@ -31,8 +31,8 @@ public interface ByIDService {
 
 	public ByID save(ByID c);
 
-	public void delete(Long id);
+	public void delete(String id);
 
-	public ByID findOne(Long id);
+	public ByID findOne(String id);
 
 }

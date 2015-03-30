@@ -17,7 +17,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableService;
 
@@ -35,12 +35,12 @@ public class TableServiceImpl implements TableService {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(String id) {
 		tableRepository.delete(id);
 	}
 
 	@Override
-	public Table findOne(Long id) {
+	public Table findOne(String id) {
 		return tableRepository.findOne(id);
 	}
 

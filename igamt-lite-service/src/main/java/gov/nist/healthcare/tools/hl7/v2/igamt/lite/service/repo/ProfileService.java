@@ -18,18 +18,18 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 
 import java.io.InputStream;
 import java.util.List;
 
 public interface ProfileService {
 
-	public Profile save(Profile p);
+	public Profile save(Profile p) throws ProfileException;
 
-	public void delete(Long id);
+	public void delete(String id);
 
-	public Profile findOne(Long id);
+	public Profile findOne(String id);
 
 	public List<Profile> findAllPreloaded();
 
@@ -37,10 +37,10 @@ public interface ProfileService {
 
 	public Profile clone(Profile p);
 
-	public List<String> apply(String changes) throws ProfileNotFoundException;
+	public List<String> apply(String changes);
 
-	public InputStream exportAsPdf(Long targetId);
-	
-	public InputStream exportAsXml(Long targetId);
+	public InputStream exportAsPdf(String targetId);
+
+	public InputStream exportAsXml(String targetId);
 
 }

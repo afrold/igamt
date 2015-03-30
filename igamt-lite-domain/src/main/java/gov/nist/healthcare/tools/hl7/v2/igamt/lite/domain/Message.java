@@ -1,27 +1,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-@Entity
-@Table(name = "MESSAGE")
+@Document(collection = "message")
 public class Message extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -32,52 +18,39 @@ public class Message extends DataModel implements java.io.Serializable {
 	}
 
 	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private String id;
 
-	@Column(name = "MESSAGE_IDENTIFIER")
-	private Long identifier;
+	private String identifier;
 
-	@NotNull
-	@Column(nullable = false, name = "TYPE")
+	// @NotNull
 	private String messageType;
-	@NotNull
-	@Column(nullable = false, name = "EVENT")
+
+	// @NotNull
 	private String event;
 
-	@NotNull
-	@Column(nullable = false, name = "STRUCTID")
+	// @NotNull
 	private String structID;
 
-	@Column(nullable = true, name = "MESSAGE_DESC")
+	// @Column(nullable = true, name = "MESSAGE_DESC")
 	private String description;
 
-	@JsonProperty("children")
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	// @org.hibernate.annotations.OrderBy(clause = "position asc")
-	private Set<SegmentRefOrGroup> segmentRefOrGroups = new LinkedHashSet<SegmentRefOrGroup>();
+	private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "MESSAGES_ID")
+	@DBRef
 	private Messages messages;
 
-	@NotNull
-	@Column(nullable = false, name = "MESSAGE_POSITION")
+	// @NotNull
 	protected Integer position = 0;
 
-	@Column(name = "COMMENT", columnDefinition = "TEXT")
 	protected String comment;
 
-	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
 	protected String usageNote;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -121,20 +94,8 @@ public class Message extends DataModel implements java.io.Serializable {
 		this.messages = messages;
 	}
 
-	public Set<SegmentRefOrGroup> getSegmentRefOrGroups() {
-		return segmentRefOrGroups;
-	}
-
-	public void setSegmentRefOrGroups(Set<SegmentRefOrGroup> segmentRefOrGroups) {
-		if (segmentRefOrGroups != null) {
-			this.segmentRefOrGroups.clear();
-			Iterator<SegmentRefOrGroup> it = segmentRefOrGroups.iterator();
-			while (it.hasNext()) {
-				addSegmentRefOrGroup(it.next());
-			}
-		} else {
-			this.segmentRefOrGroups = null;
-		}
+	public List<SegmentRefOrGroup> getChildren() {
+		return children;
 	}
 
 	public Integer getPosition() {
@@ -146,15 +107,23 @@ public class Message extends DataModel implements java.io.Serializable {
 	}
 
 	public void addSegmentRefOrGroup(SegmentRefOrGroup e) {
-		e.setPosition(segmentRefOrGroups.size() + 1);
-		segmentRefOrGroups.add(e);
+		e.setPosition(children.size() + 1);
+		e.setPath("[" + id + "]" + "." + e.getPosition());
+		this.children.add(e);
+	}
+
+	public void setChildren(List<SegmentRefOrGroup> children) {
+		this.children = new ArrayList<SegmentRefOrGroup>();
+		for (SegmentRefOrGroup child : children) {
+			addSegmentRefOrGroup(child);
+		}
 	}
 
 	public String getIdentifier() {
 		return identifier;
 	}
 
-	public void setIdentifier(Long identifier) {
+	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
 	}
 

@@ -4,16 +4,17 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Version;
 
-@Document(collection = "profiles")
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Document(collection = "profile")
 public class Profile extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -24,34 +25,40 @@ public class Profile extends DataModel implements java.io.Serializable {
 	}
 
 	@Id
-	private Long id;
+	private String id;
 
 	private ProfileMetaData metaData;
 
+	@DBRef
 	private Segments segments;
 
+	@DBRef
 	private Datatypes datatypes;
 
+	@DBRef
 	private Messages messages;
+
+	@DBRef
+	private Tables tables;
+
+	@DBRef
+	private Author author;
 
 	protected String comment;
 
 	protected String usageNote;
 
-	private TableLibrary tableLibrary;
-
 	private Boolean preloaded;
 
-	@Version
 	private Integer version;
 
 	private String changes;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -71,6 +78,7 @@ public class Profile extends DataModel implements java.io.Serializable {
 		this.segments = segments;
 	}
 
+	//
 	public Datatypes getDatatypes() {
 		return datatypes;
 	}
@@ -85,14 +93,6 @@ public class Profile extends DataModel implements java.io.Serializable {
 
 	public void setMessages(Messages messages) {
 		this.messages = messages;
-	}
-
-	public TableLibrary getTableLibrary() {
-		return tableLibrary;
-	}
-
-	public void setTableLibrary(TableLibrary tableLibrary) {
-		this.tableLibrary = tableLibrary;
 	}
 
 	public Integer getVersion() {
@@ -141,12 +141,22 @@ public class Profile extends DataModel implements java.io.Serializable {
 		this.changes = changes;
 	}
 
-	@Override
-	public String toString() {
-		return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
-				+ messages;
+	public Tables getTables() {
+		return tables;
 	}
 
+	public void setTables(Tables tables) {
+		this.tables = tables;
+	}
+
+	@Override
+	public String toString() {
+		// return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
+		// + messages;
+		return "Profile [id=" + id + ", metaData=" + metaData;
+	}
+
+	@JsonIgnore
 	public Constraints getConformanceStatements() {
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
@@ -181,6 +191,7 @@ public class Profile extends DataModel implements java.io.Serializable {
 		return constraints;
 	}
 
+	@JsonIgnore
 	public Constraints getPredicates() {
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();

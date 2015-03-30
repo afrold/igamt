@@ -9,33 +9,23 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@Table(name = "CASE")
+////@Entity
+////@Table(name = "CASE")
 public class Case implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "ID")
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;
+	// //@Column(name = "ID")
+	// @Id
+	// //@GeneratedValue(strategy = GenerationType.AUTO)
+	protected String id;
 
-	@NotNull
-	@Column(nullable = false, name = "VALUE")
+	// //@NotNull
+	// //@Column(nullable = false, name = "VALUE")
 	protected String value;
 
-	@OneToOne
-	@JoinColumn(nullable = false)
+	// //@OneToOne
+	// //@JoinColumn(nullable = false)
 	protected Datatype datatype;
 
 	public String getValue() {
@@ -50,11 +40,11 @@ public class Case implements Serializable {
 		return (this.value != null);
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

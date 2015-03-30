@@ -34,9 +34,6 @@ public class DatatypesServiceImpl implements DatatypesService {
 	@Autowired
 	private DatatypeServiceImpl datatypeService;
 
-	@Autowired
-	private ComponentServiceImpl componentService;
-
 	/**
 	 * 
 	 * @param p
@@ -45,7 +42,9 @@ public class DatatypesServiceImpl implements DatatypesService {
 	@Override
 	@Transactional()
 	public Datatypes save(Datatypes ds) {
-		return datatypesRepository.save(ds);
+		if (ds != null)
+			datatypesRepository.save(ds);
+		return ds;
 	}
 
 	/**
@@ -53,7 +52,7 @@ public class DatatypesServiceImpl implements DatatypesService {
 	 * @param id
 	 */
 	@Override
-	public void delete(Long id) {
+	public void delete(String id) {
 		datatypesRepository.delete(id);
 	}
 
@@ -63,7 +62,7 @@ public class DatatypesServiceImpl implements DatatypesService {
 	 * @return
 	 */
 	@Override
-	public Datatypes findOne(Long id) {
+	public Datatypes findOne(String id) {
 		return datatypesRepository.findOne(id);
 	}
 

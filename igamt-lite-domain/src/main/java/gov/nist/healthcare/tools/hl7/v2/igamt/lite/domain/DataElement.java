@@ -1,85 +1,73 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Entity
-@javax.persistence.Table(name = "DATAELEMENT")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@JsonIgnoreProperties({ "datatype" })
+////@Entity
+//@javax.persistence.Table(name = "DATAELEMENT")
+////@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+////@JsonIgnoreProperties({ "datatype" })
 public abstract class DataElement extends DataModel implements
 		java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.TABLE)
-	protected Long id;
+	// @Id
+	// //@Column(name = "ID")
+	// //@GeneratedValue(strategy = GenerationType.TABLE)
+	protected String id;
 
-	@NotNull
-	@Column(nullable = false, name = "DATAELEMENT_NAME")
+	// //@NotNull
+	// //@Column(nullable = false, name = "DATAELEMENT_NAME")
 	protected String name;
 
-	@NotNull
-	@Column(name = "USAGEE", nullable = false)
-	// usage is a key word in mysql
-	@Enumerated(EnumType.STRING)
+	// //@NotNull
+	// //@Column(name = "USAGEE", nullable = false)
+	// // usage is a key word in mysql
+	// @Enumerated(EnumType.STRING)
 	protected Usage usage;
-
-	@Min(0)
-	@Column(name = "MIN_LENGTH")
+	//
+	// @Min(0)
+	// //@Column(name = "MIN_LENGTH")
 	protected Integer minLength;
 
-	@NotNull
-	@Column(nullable = false, name = "MAX_LENGTH")
+	// //@NotNull
+	// //@Column(nullable = false, name = "MAX_LENGTH")
 	protected String maxLength;
 
-	@Column(name = "CONF_LENGTH")
+	// //@Column(name = "CONF_LENGTH")
 	protected String confLength;
 
 	@JsonIgnoreProperties({ "name", "mappingAlternateId", "mappingId",
 			"version", "codesys", "oid", "type", "codes" })
-	@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
-			CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumn(name = "TABLE_ID")
+	// //@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
+	// CascadeType.PERSIST, CascadeType.MERGE })
+	// //@JoinColumn(name = "TABLE_ID")
 	protected Table table;
 
-	@Column(nullable = true, name = "BINDING_STRENGTH")
+	// //@Column(nullable = true, name = "BINDING_STRENGTH")
 	protected String bindingStrength;
 
-	@Column(nullable = true, name = "BINDING_LOCATION")
+	// //@Column(nullable = true, name = "BINDING_LOCATION")
 	protected String bindingLocation;
 
-	@Column(nullable = true, name = "DATATYPE_LABEL")
-	protected String datatypeLabel;
+	// //@Column(nullable = true, name = "DATATYPE_LABEL")
+	// protected String datatypeLabel;
 
-	@JsonIgnore
-	protected transient Datatype datatype;
+	// //@JsonIgnore
 
-	@NotNull
-	@Column(nullable = false, name = "DATAELEMENT_POSITION")
+	@DBRef
+	@JsonIgnoreProperties({ "label", "components", "name", "description",
+			"predicates", "conformanceStatements", "datatypes", "comments",
+			"usageNote" })
+	protected Datatype datatype;
+
+	// //@NotNull
+	// //@Column(nullable = false, name = "DATAELEMENT_POSITION")
 	protected Integer position = 0;
 
-	@Column(name = "COMMENT")
+	// //@Column(name = "COMMENT")
 	protected String comment;
 
 	// Caution, not persisted. Use at your own risk
@@ -89,7 +77,7 @@ public abstract class DataElement extends DataModel implements
 
 	public void setDatatype(Datatype datatype) {
 		this.datatype = datatype;
-		this.setDatatypeLabel(datatype != null ? datatype.getLabel() : null);
+		// this.setDatatypeLabel(datatype != null ? datatype.getLabel() : null);
 	}
 
 	public String getName() {
@@ -156,11 +144,11 @@ public abstract class DataElement extends DataModel implements
 		this.bindingLocation = bindingLocation;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -172,14 +160,14 @@ public abstract class DataElement extends DataModel implements
 		this.position = position;
 	}
 
-	public String getDatatypeLabel() {
-		return datatypeLabel;
-	}
-
-	// DO NO SET
-	public void setDatatypeLabel(String datatypeLabel) {
-		this.datatypeLabel = datatypeLabel;
-	}
+	// public String getDatatypeLabel() {
+	// return datatypeLabel;
+	// }
+	//
+	// // DO NO SET
+	// public void setDatatypeLabel(String datatypeLabel) {
+	// this.datatypeLabel = datatypeLabel;
+	// }
 
 	public String getComment() {
 		return comment;

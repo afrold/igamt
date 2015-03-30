@@ -31,19 +31,21 @@ public class MessagesServiceImpl implements MessagesService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public Messages save(Messages c) {
-		return messagesRepository.saveAndFlush(c);
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public Messages save(Messages m) {
+		if (m != null)
+			messagesRepository.save(m);
+		return m;
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(Long id) {
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void delete(String id) {
 		messagesRepository.delete(id);
 	}
 
 	@Override
-	public Messages findOne(Long id) {
+	public Messages findOne(String id) {
 		return messagesRepository.findOne(id);
 	}
 

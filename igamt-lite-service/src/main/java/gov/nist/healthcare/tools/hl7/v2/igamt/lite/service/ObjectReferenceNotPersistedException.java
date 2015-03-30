@@ -8,36 +8,20 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 /**
- * 
- * @author Olivier MARIE-ROSE
- * 
+ * @author Harold Affo (harold.affo@nist.gov) Mar 27, 2015
  */
+public class ObjectReferenceNotPersistedException extends Exception {
+	private static final long serialVersionUID = 1L;
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+	public ObjectReferenceNotPersistedException(String error) {
+		super(error);
+	}
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+	public ObjectReferenceNotPersistedException(Exception error) {
+		super(error);
+	}
 
-public interface DatatypesService {
-
-	/**
-	 * 
-	 * @param p
-	 * @return
-	 */
-	public Datatypes save(Datatypes ds);
-
-	/**
-	 * 
-	 * @param id
-	 */
-	public void delete(String id);
-
-	/**
-	 * 
-	 * @param id
-	 * @return
-	 */
-	public Datatypes findOne(String id);
 }

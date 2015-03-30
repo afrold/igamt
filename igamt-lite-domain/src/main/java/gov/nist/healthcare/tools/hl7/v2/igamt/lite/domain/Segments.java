@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "segments")
@@ -12,15 +13,16 @@ public class Segments implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Long id;
+	private String id;
 
+	@Transient
 	private final Set<Segment> children = new HashSet<Segment>();
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -28,6 +30,10 @@ public class Segments implements java.io.Serializable {
 		return children;
 	}
 
+	/**
+	 * 
+	 * @param s
+	 */
 	public void addSegment(Segment s) {
 		if (s.getSegments() != null) {
 			throw new IllegalArgumentException(

@@ -38,19 +38,21 @@ public class SegmentsServiceImpl implements SegmentsService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public Segments save(Segments p) {
-		return segmentsRepository.saveAndFlush(p);
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public Segments save(Segments s) {
+		if (s != null)
+			segmentsRepository.save(s);
+		return s;
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(Long id) {
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void delete(String id) {
 		segmentsRepository.delete(id);
 	}
 
 	@Override
-	public Segments findOne(Long id) {
+	public Segments findOne(String id) {
 		return segmentsRepository.findOne(id);
 	}
 

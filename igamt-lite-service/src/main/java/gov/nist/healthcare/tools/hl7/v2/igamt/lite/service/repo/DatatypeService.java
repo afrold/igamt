@@ -25,9 +25,9 @@ public interface DatatypeService {
 
 	public Datatype save(Datatype p);
 
-	public void delete(Long id);
+	public void delete(String id);
 
-	public Datatype findOne(Long id);
+	public Datatype findOne(String id);
 
 	public Datatype clone(Datatype d) throws CloneNotSupportedException;
 

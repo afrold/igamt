@@ -17,12 +17,33 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 
-public interface SegmentRefRepository extends MongoRepository<SegmentRef, Long> {
+public class MessageRepositoryImpl implements MessageOperations   {
+	
+	 @Autowired
+	 private MongoOperations mongo;
+
+	/* (non-Javadoc)
+	 * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageOperations#finfByProfileId(java.lang.String)
+	 */
+	@Override
+	public List<Message> findByMessagesId(String messagesId) {
+		   Criteria where = Criteria.where("messages.id").is(messagesId);
+		    Query query = Query.query(where);
+		    return mongo.find(query, Message.class);
+	}
+	 
+	 
+ 
+	
+	
 	
 }

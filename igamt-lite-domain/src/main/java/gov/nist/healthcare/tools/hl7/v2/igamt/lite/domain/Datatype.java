@@ -3,28 +3,17 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-@Entity
-@Table(name = "DATATYPE")
+@Document(collection = "datatype")
 public class Datatype extends DataModel implements java.io.Serializable,
 		Cloneable {
 
@@ -36,51 +25,34 @@ public class Datatype extends DataModel implements java.io.Serializable,
 	}
 
 	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private String id;
 
-	@NotNull
-	@Column(nullable = false, name = "LABEL")
+	// //@NotNull
 	private String label;
 
-	@JsonProperty("children")
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@javax.persistence.JoinTable(name = "DATATYPE_COMPONENT", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "COMPONENT_ID", unique = false))
-	// @org.hibernate.annotations.OrderBy(clause = "position asc")
-	protected Set<Component> components = new LinkedHashSet<Component>();
+	protected List<Component> components = new ArrayList<Component>();
 
-	@NotNull
-	@Column(nullable = false, name = "DATATYPE_NAME")
+	// //@NotNull
 	private String name;
 
-	@Column(nullable = true, name = "DATATYPE_DESC")
 	private String description;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@javax.persistence.JoinTable(name = "DATATYPE_PREDICATE", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "PREDICATE_ID"))
-	protected Set<Predicate> predicates = new HashSet<Predicate>();
+	protected List<Predicate> predicates = new ArrayList<Predicate>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@javax.persistence.JoinTable(name = "DATATYPE_CONFSTATEMENT", joinColumns = @JoinColumn(name = "DATATYPE_ID"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT_ID", unique = false))
-	protected Set<ConformanceStatement> conformanceStatements = new HashSet<ConformanceStatement>();
+	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
 
-	@com.fasterxml.jackson.annotation.JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "DATATYPES_ID")
+	@DBRef
 	private Datatypes datatypes;
 
-	@Column(name = "COMMENT", columnDefinition = "TEXT")
 	protected String comment;
 
-	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
 	protected String usageNote;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -92,11 +64,11 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		this.label = label;
 	}
 
-	public Set<Component> getComponents() {
+	public List<Component> getComponents() {
 		return components;
 	}
 
-	public void setComponents(Set<Component> components) {
+	public void setComponents(List<Component> components) {
 		if (components != null) {
 			this.components.clear();
 			Iterator<Component> it = components.iterator();
@@ -132,7 +104,7 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		this.datatypes = datatypes;
 	}
 
-	public Set<Predicate> getPredicates() {
+	public List<Predicate> getPredicates() {
 		return predicates;
 	}
 
@@ -162,7 +134,7 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		}
 	}
 
-	public Set<ConformanceStatement> getConformanceStatements() {
+	public List<ConformanceStatement> getConformanceStatements() {
 		return conformanceStatements;
 	}
 
@@ -219,7 +191,7 @@ public class Datatype extends DataModel implements java.io.Serializable,
 			clonedDT.addPredicate(cp.clone());
 		}
 
-		clonedDT.setComponents(new LinkedHashSet<Component>());
+		clonedDT.setComponents(new ArrayList<Component>());
 		for (Component c : this.components) {
 			clonedDT.addComponent(c.clone());
 		}

@@ -1,10 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "datatypes")
@@ -13,15 +13,16 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Long id;
+	private String id;
 
-	private Set<Datatype> children = new HashSet<Datatype>();
+	@Transient
+	private final Set<Datatype> children = new HashSet<Datatype>();
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -29,38 +30,25 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return children;
 	}
 
-	public void setChildren(Set<Datatype> datatypes) {
-		if (datatypes != null) {
-			this.children.clear();
-			Iterator<Datatype> it = datatypes.iterator();
-			while (it.hasNext()) {
-				addDatatype(it.next());
-			}
-		} else {
-			this.children = null;
-		}
-	}
-
 	public void addDatatype(Datatype d) {
 		if (d.getDatatypes() != null) {
-			throw new IllegalArgumentException(
-					"This datatype already belogs to a different datatypes");
+			throw new IllegalArgumentException("This datatype " + d.getLabel()
+					+ " already belongs to library " + d.getDatatypes().getId());
 		}
-		// d.setPosition(datatypes.size() +1);
 		children.add(d);
 		d.setDatatypes(this);
 	}
 
-	public Datatype find(String label) {
-		Iterator<Datatype> it = this.children.iterator();
-		while (it.hasNext()) {
-			Datatype tmp = it.next();
-			if (tmp.getLabel().equals(label)) {
-				return tmp;
-			}
-		}
-		return null;
-	}
+	// public Datatype find(String label) {
+	// Iterator<Datatype> it = this.children.iterator();
+	// while (it.hasNext()) {
+	// Datatype tmp = it.next();
+	// if (tmp.getLabel().equals(label)) {
+	// return tmp;
+	// }
+	// }
+	// return null;
+	// }
 
 	@Override
 	public Datatypes clone() throws CloneNotSupportedException {

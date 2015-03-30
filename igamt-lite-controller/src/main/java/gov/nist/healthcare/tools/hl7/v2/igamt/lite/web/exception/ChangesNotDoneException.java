@@ -7,10 +7,6 @@ public class ChangesNotDoneException extends Exception {
 		super(error);
 	}
 
-	public ChangesNotDoneException(Long id) {
-		super("Unknown Profile with id " + id);
-	}
-
 	public ChangesNotDoneException(Exception error) {
 		super(error);
 	}

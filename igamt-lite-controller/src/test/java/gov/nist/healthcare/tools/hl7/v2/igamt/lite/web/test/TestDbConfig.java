@@ -17,102 +17,113 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test;
 
-import java.util.Properties;
+import java.util.Arrays;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.Database;
-import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
 
 @Configuration
-@EnableTransactionManagement(proxyTargetClass = true)
+// @EnableTransactionManagement(proxyTargetClass = true)
 @PropertySource(value = { "classpath:db-test-config.properties",
 		"classpath:igl-test-log4j.properties" })
-@EnableJpaRepositories("gov.nist.healthcare.tools")
+@EnableMongoRepositories(basePackages = "gov.nist.healthcare.tools")
 public class TestDbConfig {
 
 	@Autowired
 	private Environment env;
 
+	// @Bean
+	// public BasicDataSource dataSource() {
+	// BasicDataSource dataSource = new BasicDataSource();
+	// dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
+	// dataSource.setUrl(env.getProperty("jdbc.url"));
+	// dataSource.setUsername(env.getProperty("jdbc.username"));
+	// dataSource.setPassword(env.getProperty("jdbc.password"));
+	// dataSource.setTestOnBorrow(Boolean.getBoolean(env
+	// .getProperty("jdbc.testOnBorrow")));
+	// dataSource.setTestWhileIdle(Boolean.getBoolean(env
+	// .getProperty("jdbc.testWhileIdle")));
+	// return dataSource;
+	// }
+	//
+	// @Bean
+	// public LocalContainerEntityManagerFactoryBean entityManagerFactory(
+	// DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
+	// LocalContainerEntityManagerFactoryBean lef = new
+	// LocalContainerEntityManagerFactoryBean();
+	// lef.setDataSource(dataSource);
+	// lef.setJpaVendorAdapter(jpaVendorAdapter);
+	// lef.setPackagesToScan("gov.nist.healthcare.tools");
+	// lef.setJpaProperties(jpaProperties());
+	// lef.setPersistenceUnitName(env.getProperty("jpa.persistenceUnitName"));
+	// lef.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
+	// return lef;
+	// }
+	//
+	// @Bean
+	// public JpaVendorAdapter jpaVendorAdapter() {
+	// HibernateJpaVendorAdapter jpaVendorAdapter = new
+	// HibernateJpaVendorAdapter();
+	// jpaVendorAdapter.setShowSql(Boolean.getBoolean(env
+	// .getProperty("jpa.showSql")));
+	// jpaVendorAdapter.setGenerateDdl(Boolean.getBoolean(env
+	// .getProperty("jpa.generateDdl")));
+	// jpaVendorAdapter.setDatabase(Database.MYSQL);
+	// jpaVendorAdapter.setDatabasePlatform(env
+	// .getProperty("jpa.databasePlatform"));
+	// return jpaVendorAdapter;
+	// }
+	//
+	// private Properties jpaProperties() {
+	// Properties properties = new Properties();
+	// properties.put("hibernate.hbm2ddl.auto",
+	// env.getProperty("hibernate.hbm2ddl.auto"));
+	// properties.put("hibernate.dialect",
+	// env.getProperty("hibernate.dialect"));
+	// properties.put("hibernate.globally_quoted_identifiers",
+	// env.getProperty("hibernate.globally_quoted_identifiers"));
+	// return properties;
+	// }
+	//
+	// @Bean
+	// public PlatformTransactionManager transactionManager(
+	// EntityManagerFactory entityManagerFactory) {
+	// JpaTransactionManager transactionManager = new JpaTransactionManager();
+	// transactionManager.setEntityManagerFactory(entityManagerFactory);
+	// transactionManager.setJpaDialect(new HibernateJpaDialect());
+	// return transactionManager;
+	// }
+	//
+	// @Bean
+	// PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
+	// return new PersistenceExceptionTranslationPostProcessor();
+	// }
+
 	@Bean
-	public BasicDataSource dataSource() {
-		BasicDataSource dataSource = new BasicDataSource();
-		dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-		dataSource.setUrl(env.getProperty("jdbc.url"));
-		dataSource.setUsername(env.getProperty("jdbc.username"));
-		dataSource.setPassword(env.getProperty("jdbc.password"));
-		dataSource.setTestOnBorrow(Boolean.getBoolean(env
-				.getProperty("jdbc.testOnBorrow")));
-		dataSource.setTestWhileIdle(Boolean.getBoolean(env
-				.getProperty("jdbc.testWhileIdle")));
-		return dataSource;
+	public Mongo mongo() throws Exception {
+		MongoCredential credential = MongoCredential.createMongoCRCredential(
+				env.getProperty("mongo.username"),
+				env.getProperty("mongo.dbname"),
+				env.getProperty("mongo.password").toCharArray());
+		return new MongoClient(new ServerAddress("localhost",
+				Integer.valueOf(env.getProperty("mongo.port"))),
+				Arrays.asList(credential));
 	}
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-			DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
-		LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
-		lef.setDataSource(dataSource);
-		lef.setJpaVendorAdapter(jpaVendorAdapter);
-		lef.setPackagesToScan("gov.nist.healthcare.tools");
-		lef.setJpaProperties(jpaProperties());
-		lef.setPersistenceUnitName(env.getProperty("jpa.persistenceUnitName"));
-		lef.setLoadTimeWeaver(new InstrumentationLoadTimeWeaver());
-		return lef;
-	}
-
-	@Bean
-	public JpaVendorAdapter jpaVendorAdapter() {
-		HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
-		jpaVendorAdapter.setShowSql(Boolean.getBoolean(env
-				.getProperty("jpa.showSql")));
-		jpaVendorAdapter.setGenerateDdl(Boolean.getBoolean(env
-				.getProperty("jpa.generateDdl")));
-		jpaVendorAdapter.setDatabase(Database.MYSQL);
-		jpaVendorAdapter.setDatabasePlatform(env
-				.getProperty("jpa.databasePlatform"));
-		return jpaVendorAdapter;
-	}
-
-	private Properties jpaProperties() {
-		Properties properties = new Properties();
-		properties.put("hibernate.hbm2ddl.auto",
-				env.getProperty("hibernate.hbm2ddl.auto"));
-		properties.put("hibernate.dialect",
-				env.getProperty("hibernate.dialect"));
-		properties.put("hibernate.globally_quoted_identifiers",
-				env.getProperty("hibernate.globally_quoted_identifiers"));
-		return properties;
-	}
-
-	@Bean
-	public PlatformTransactionManager transactionManager(
-			EntityManagerFactory entityManagerFactory) {
-		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactory);
-		transactionManager.setJpaDialect(new HibernateJpaDialect());
-		return transactionManager;
-	}
-
-	@Bean
-	PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
-		return new PersistenceExceptionTranslationPostProcessor();
+	public MongoOperations mongoTemplate(Mongo mongo) {
+		return new MongoTemplate(mongo, env.getProperty("mongo.dbname"));
 	}
 
 }

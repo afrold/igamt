@@ -1,31 +1,19 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 
  * @author Harold Affo (harold.affo@nist.gov) Feb 26, 2015
  * 
  */
-@Entity
-@javax.persistence.Table(name = "IGTABLE")
+@Document(collection = "table")
 public class Table extends DataModel implements Serializable {
 
 	/**
@@ -34,50 +22,38 @@ public class Table extends DataModel implements Serializable {
 	private static final long serialVersionUID = 734059059225906039L;
 
 	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private String id;
 
-	@Column(name = "MAPPING_ALTERNATE_ID")
 	private String mappingAlternateId;
 
-	@NotNull
-	@Column(nullable = false, name = "MAPPING_ID")
+	// @NotNull
 	private String mappingId;
 
-	@NotNull
-	@Column(nullable = false, name = "NAME")
+	// @NotNull
 	private String name;
 
-	@Column(name = "VERSION")
 	private String version;
-	@Column(name = "CODESYS")
 	private String codesys;
-	@Column(name = "OID")
 	private String oid;
-	@Column(name = "TABLETYPE")
 	private String tableType;
-	@Column(name = "STABILITY")
 	private String stability;
-	@Column(name = "EXTENSIBILITY")
 	private String extensibility;
-	
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
-	private final Set<Code> codes = new HashSet<Code>();
-	
-	
+	private final List<Code> codes = new ArrayList<Code>();
+
+	@DBRef
+	private Tables tables;
+
 	public Table() {
 		super();
 		this.type = Constant.TABLE;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -137,7 +113,7 @@ public class Table extends DataModel implements Serializable {
 		this.tableType = tableType;
 	}
 
-	public Set<Code> getCodes() {
+	public List<Code> getCodes() {
 		return codes;
 	}
 
@@ -159,6 +135,14 @@ public class Table extends DataModel implements Serializable {
 
 	public void setExtensibility(String extensibility) {
 		this.extensibility = extensibility;
+	}
+
+	public Tables getTables() {
+		return tables;
+	}
+
+	public void setTables(Tables tables) {
+		this.tables = tables;
 	}
 
 	@Override

@@ -40,12 +40,12 @@ public class ByNameServiceImpl implements ByNameService {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(String id) {
 		byNameRepository.delete(id);
 	}
 
 	@Override
-	public ByName findOne(Long id) {
+	public ByName findOne(String id) {
 		return byNameRepository.findOne(id);
 	}
 

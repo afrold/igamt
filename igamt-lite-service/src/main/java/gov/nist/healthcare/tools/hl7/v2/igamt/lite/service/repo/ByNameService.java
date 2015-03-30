@@ -25,8 +25,8 @@ public interface ByNameService {
 
 	public ByName save(ByName c);
 
-	public void delete(Long id);
+	public void delete(String id);
 
-	public ByName findOne(Long id);
+	public ByName findOne(String id);
 
 }

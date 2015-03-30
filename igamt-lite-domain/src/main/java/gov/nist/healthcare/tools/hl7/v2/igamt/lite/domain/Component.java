@@ -1,10 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "COMPONENT")
 public class Component extends DataElement {
 
 	private static final long serialVersionUID = 1L;
@@ -21,10 +17,10 @@ public class Component extends DataElement {
 				+ ", maxLength=" + maxLength + ", confLength=" + confLength
 				+ ", table=" + table + "]";
 	}
-	
+
 	@Override
 	public Component clone() throws CloneNotSupportedException {
-		return (Component)super.clone();
+		return (Component) super.clone();
 	}
 
 }

@@ -7,10 +7,6 @@ public class DatatypeNotFoundException extends Exception {
 		super(error);
 	}
 
-	public DatatypeNotFoundException(Long id) {
-		super("Unknown Profile with id " + id);
-	}
-
 	public DatatypeNotFoundException(Exception error) {
 		super(error);
 	}

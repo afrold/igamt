@@ -24,6 +24,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
@@ -31,17 +33,16 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Tables;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -86,7 +87,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		this.deserializeEncodings(profile, elmConformanceProfile);
 
 		// Read Profile Libs
-		profile.setTableLibrary(new TableSerializationImpl()
+		profile.setTables(new TableSerializationImpl()
 				.deserializeXMLToTableLibrary(xmlValueSet));
 		this.conformanceStatement = new ConstraintsSerializationImpl()
 				.deserializeXMLToConformanceStatements(xmlConstraints);
@@ -234,9 +235,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				componentObj.setMinLength(new Integer(elmComponent
 						.getAttribute("MinLength")));
 				componentObj.setName(elmComponent.getAttribute("Name"));
-				componentObj.setTable(this.findTable(elmComponent
-						.getAttribute("Table"), profile.getTableLibrary()
-						.getTables()));
+				componentObj
+						.setTable(this.findTable(
+								elmComponent.getAttribute("Table"),
+								profile.getTables()));
 				componentObj.setUsage(Usage.fromValue(elmComponent
 						.getAttribute("Usage")));
 				componentObj.setBindingLocation(elmComponent
@@ -326,24 +328,26 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		elmMessage.addAttribute(new Attribute("Event", m.getEvent()));
 		elmMessage.addAttribute(new Attribute("StructID", m.getStructID()));
 		if (m.getDescription() != null && !m.getDescription().equals(""))
-			elmMessage.addAttribute(new Attribute("Description", m.getDescription()));
+			elmMessage.addAttribute(new Attribute("Description", m
+					.getDescription()));
 
-		Map<Integer,SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
-		
-		for (SegmentRefOrGroup segmentRefOrGroup : m.getSegmentRefOrGroups()) {
-			segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
+		Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
+
+		for (SegmentRefOrGroup segmentRefOrGroup : m.getChildren()) {
+			segmentRefOrGroups.put(segmentRefOrGroup.getPosition(),
+					segmentRefOrGroup);
 		}
-		
-		for(int i=1; i<segmentRefOrGroups.size() + 1; i++){
+
+		for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
 			SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
 			if (segmentRefOrGroup instanceof SegmentRef) {
-				elmMessage.appendChild(serializeSegmentRef((SegmentRef) segmentRefOrGroup));
+				elmMessage
+						.appendChild(serializeSegmentRef((SegmentRef) segmentRefOrGroup));
 			} else if (segmentRefOrGroup instanceof Group) {
-				elmMessage.appendChild(serializeGroup((Group) segmentRefOrGroup));
+				elmMessage
+						.appendChild(serializeGroup((Group) segmentRefOrGroup));
 			}
 		}
-		
-		
 
 		return elmMessage;
 	}
@@ -355,7 +359,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		elmGroup.addAttribute(new Attribute("Min", group.getMin() + ""));
 		elmGroup.addAttribute(new Attribute("Max", group.getMax()));
 
-		for (SegmentRefOrGroup segmentRefOrGroup : group.getSegmentsOrGroups()) {
+		for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
 			if (segmentRefOrGroup instanceof SegmentRef) {
 				elmGroup.appendChild(serializeSegmentRef((SegmentRef) segmentRefOrGroup));
 			} else if (segmentRefOrGroup instanceof Group) {
@@ -381,29 +385,36 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 		elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
 		elmSegment.addAttribute(new Attribute("Name", s.getName()));
-		elmSegment.addAttribute(new Attribute("Description", s.getDescription()));
-		
-		Map<Integer,Field> fields = new HashMap<Integer, Field>();
-		
+		elmSegment
+				.addAttribute(new Attribute("Description", s.getDescription()));
+
+		Map<Integer, Field> fields = new HashMap<Integer, Field>();
+
 		for (Field f : s.getFields()) {
 			fields.put(f.getPosition(), f);
 		}
-		
-		for(int i=1; i<fields.size() + 1; i++){
+
+		for (int i = 1; i < fields.size() + 1; i++) {
 			Field f = fields.get(i);
 			nu.xom.Element elmField = new nu.xom.Element("Field");
 			elmField.addAttribute(new Attribute("Name", f.getName()));
-			elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
-			elmField.addAttribute(new Attribute("Datatype", f.getDatatype().getId() + ""));
-			elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
+			elmField.addAttribute(new Attribute("Usage", f.getUsage()
+					.toString()));
+			elmField.addAttribute(new Attribute("Datatype", f.getDatatype()
+					.getId() + ""));
+			elmField.addAttribute(new Attribute("MinLength", ""
+					+ f.getMinLength()));
 			elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
 			elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
 			if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-				elmField.addAttribute(new Attribute("MaxLength", f.getMaxLength()));
+				elmField.addAttribute(new Attribute("MaxLength", f
+						.getMaxLength()));
 			if (f.getConfLength() != null && !f.getConfLength().equals(""))
-				elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
+				elmField.addAttribute(new Attribute("ConfLength", f
+						.getConfLength()));
 			if (f.getTable() != null && !f.getTable().equals(""))
-				elmField.addAttribute(new Attribute("Table", f.getTable().getMappingId()));
+				elmField.addAttribute(new Attribute("Table", f.getTable()
+						.getMappingId()));
 			if (f.getItemNo() != null && !f.getItemNo().equals(""))
 				elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
 			elmSegment.appendChild(elmField);
@@ -415,19 +426,18 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
 		elmDatatype.addAttribute(new Attribute("ID", d.getId() + ""));
 		elmDatatype.addAttribute(new Attribute("Name", d.getName()));
-		elmDatatype.addAttribute(new Attribute("Description", d.getDescription()));
+		elmDatatype.addAttribute(new Attribute("Description", d
+				.getDescription()));
 
 		if (d.getComponents() != null) {
-			
-			
-			
-			Map<Integer,Component> components = new HashMap<Integer, Component>();
-			
+
+			Map<Integer, Component> components = new HashMap<Integer, Component>();
+
 			for (Component c : d.getComponents()) {
 				components.put(c.getPosition(), c);
 			}
-			
-			for(int i=1; i<components.size() + 1; i++){
+
+			for (int i = 1; i < components.size() + 1; i++) {
 				Component c = components.get(i);
 				nu.xom.Element elmComponent = new nu.xom.Element("Component");
 				elmComponent.addAttribute(new Attribute("Name", c.getName()));
@@ -504,7 +514,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private void deserializeSegmentRefOrGroups(Element elmConformanceProfile,
 			Message messageObj, Element elmMessage, Segments segments,
 			Datatypes datatypes) {
-		Set<SegmentRefOrGroup> segmentRefOrGroups = new LinkedHashSet<SegmentRefOrGroup>();
+		List<SegmentRefOrGroup> segmentRefOrGroups = new ArrayList<SegmentRefOrGroup>();
 		NodeList nodes = elmMessage.getChildNodes();
 
 		for (int i = 0; i < nodes.getLength(); i++) {
@@ -519,12 +529,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			}
 		}
 
-		messageObj.setSegmentRefOrGroups(segmentRefOrGroups);
+		messageObj.setChildren(segmentRefOrGroups);
 
 	}
 
 	private void deserializeSegmentRef(Element elmConformanceProfile,
-			Set<SegmentRefOrGroup> segmentRefOrGroups, Element segmentElm,
+			List<SegmentRefOrGroup> segmentRefOrGroups, Element segmentElm,
 			Segments segments, Datatypes datatypes) {
 		SegmentRef segmentRefObj = new SegmentRef();
 		segmentRefObj.setMax(segmentElm.getAttribute("Max"));
@@ -570,7 +580,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		fieldObj.setName(fieldElm.getAttribute("Name"));
 		fieldObj.setUsage(Usage.fromValue(fieldElm.getAttribute("Usage")));
 		fieldObj.setTable(this.findTable(fieldElm.getAttribute("Table"),
-				profile.getTableLibrary().getTables()));
+				profile.getTables()));
 		fieldObj.setBindingStrength(fieldElm.getAttribute("BindingStrength"));
 		fieldObj.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
 		fieldObj.setDatatype(this.datatypesMap.get(fieldElm
@@ -580,7 +590,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	private void deserializeGroup(Element elmConformanceProfile,
-			Set<SegmentRefOrGroup> segmentRefOrGroups, Element groupElm,
+			List<SegmentRefOrGroup> segmentRefOrGroups, Element groupElm,
 			Segments segments, Datatypes datatypes) {
 		Group groupObj = new Group();
 		groupObj.setMax(groupElm.getAttribute("Max"));
@@ -588,7 +598,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		groupObj.setName(groupElm.getAttribute("Name"));
 		groupObj.setUsage(Usage.fromValue(groupElm.getAttribute("Usage")));
 
-		Set<SegmentRefOrGroup> childSegmentRefOrGroups = new LinkedHashSet<SegmentRefOrGroup>();
+		List<SegmentRefOrGroup> childSegmentRefOrGroups = new ArrayList<SegmentRefOrGroup>();
 
 		NodeList nodes = groupElm.getChildNodes();
 		for (int i = 0; i < nodes.getLength(); i++) {
@@ -603,7 +613,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			}
 		}
 
-		groupObj.setSegmentsOrGroups(childSegmentRefOrGroups);
+		groupObj.setChildren(childSegmentRefOrGroups);
 
 		segmentRefOrGroups.add(groupObj);
 	}
@@ -664,8 +674,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				new String(Files.readAllBytes(Paths
 						.get("src//main//resources//vxu//Constraints.xml"))));
 		System.out.println(test1.serializeProfileToXML(profile));
-		System.out.println(test2.serializeTableLibraryToXML(profile
-				.getTableLibrary()));
+		System.out
+				.println(test2.serializeTableLibraryToXML(profile.getTables()));
 		System.out.println(test3.serializeConstraintsToXML(
 				profile.getConformanceStatements(), profile.getPredicates()));
 	}

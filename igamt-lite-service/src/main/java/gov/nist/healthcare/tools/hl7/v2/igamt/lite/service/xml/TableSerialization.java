@@ -11,15 +11,15 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import nu.xom.Document;
 
 public interface TableSerialization {
-	TableLibrary deserializeXMLToTableLibrary(String xmlContents);
+	Tables deserializeXMLToTableLibrary(String xmlContents);
 
-	TableLibrary deserializeXMLToTableLibrary(Document xmlDoc);
+	Tables deserializeXMLToTableLibrary(Document xmlDoc);
 
-	String serializeTableLibraryToXML(TableLibrary tableLibrary);
+	String serializeTableLibraryToXML(Tables tableLibrary);
 
-	Document serializeTableLibraryToDoc(TableLibrary tableLibrary);
+	Document serializeTableLibraryToDoc(Tables tableLibrary);
 }

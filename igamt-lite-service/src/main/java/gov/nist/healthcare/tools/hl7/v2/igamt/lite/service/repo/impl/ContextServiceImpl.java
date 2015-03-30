@@ -45,12 +45,12 @@ public class ContextServiceImpl implements ContextService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(Long id) {
+	public void delete(String id) {
 		contextRepository.delete(id);
 	}
 
 	@Override
-	public Context findOne(Long id) {
+	public Context findOne(String id) {
 		return contextRepository.findOne(id);
 	}
 

@@ -2,17 +2,12 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.math.BigInteger;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
 /**
  * 
  * @author Harold Affo (harold.affo@nist.gov) Feb 13, 2015
  */
-@Entity
-@Table(name = "FIELD")
+// @Entity
+// @Table(name = "FIELD")
 public class Field extends DataElement implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -22,15 +17,12 @@ public class Field extends DataElement implements java.io.Serializable {
 		type = Constant.FIELD;
 	}
 
-	@Column(nullable = true, name = "ITEMNO")
 	private String itemNo;
 
-	@NotNull
-	@Column(nullable = false, name = "MIN")
+	// @NotNull
 	private BigInteger min;
 
-	@NotNull
-	@Column(nullable = false, name = "MAX")
+	// @NotNull
 	private String max;
 
 	public String getItemNo() {
@@ -58,12 +50,12 @@ public class Field extends DataElement implements java.io.Serializable {
 	}
 
 	@Override
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
 	@Override
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

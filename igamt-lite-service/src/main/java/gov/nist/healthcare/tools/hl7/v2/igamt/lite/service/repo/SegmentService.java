@@ -25,8 +25,8 @@ public interface SegmentService {
 
 	public Segment save(Segment c);
 
-	public void delete(Long id);
+	public void delete(String id);
 
-	public Segment findOne(Long id);
+	public Segment findOne(String id);
 
 }

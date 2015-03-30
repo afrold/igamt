@@ -13,14 +13,18 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 
+import java.util.List;
+
 public interface MessageService {
 
 	public Iterable<Message> findAll();
 
 	public Message save(Message c);
 
-	public void delete(Long id);
+	public void delete(String id);
 
-	public Message findOne(Long id);
+	public Message findOne(String id);
+
+	public List<Message> findByMessagesId(String messagesId);
 
 }

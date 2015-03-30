@@ -20,7 +20,7 @@ public class ProfileClone {
 				.serializeConstraintsToDoc(original.getConformanceStatements(),
 						original.getPredicates());
 		Document tablesDoc = tableSerializationImpl
-				.serializeTableLibraryToDoc(original.getTableLibrary());
+				.serializeTableLibraryToDoc(original.getTables());
 		// FIXME need to consider Author and User
 		return profileSerializationImpl.deserializeXMLToProfile(profileDoc,
 				tablesDoc, constraintsDoc);

@@ -45,12 +45,12 @@ public class ConstraintServiceImpl implements ConstraintService {
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(Long id) {
+	public void delete(String id) {
 		constraintRepository.delete(id);
 	}
 
 	@Override
-	public Constraint findOne(Long id) {
+	public Constraint findOne(String id) {
 		return constraintRepository.findOne(id);
 	}
 

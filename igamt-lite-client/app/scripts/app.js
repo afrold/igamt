@@ -133,7 +133,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     });
 
     $rootScope.api = function (value) {
-        return "http://129.6.228.189:8080/igl-api"+ value;
+        return "http://hit-dev.nist.gov:8099/igl-api"+ value;
 //        return  value;
     };
 

@@ -32,8 +32,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ConstraintRepository;
 
  	public Constraint save(Constraint p);
 	
- 	public void delete(Long id);
+ 	public void delete(String id);
 
-	public Constraint findOne(Long id);
+	public Constraint findOne(String id);
 
 }

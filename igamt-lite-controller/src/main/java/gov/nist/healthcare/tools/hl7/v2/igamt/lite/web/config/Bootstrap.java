@@ -11,11 +11,8 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -38,21 +35,21 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		String p = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/vxu/Profile.xml"));
-		String v = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/vxu/ValueSets_all.xml"));
-		String c = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/vxu/Constraints.xml"));
-		// load VXU profile
-		Profile profile = new ProfileSerializationImpl()
-				.deserializeXMLToProfile(p, v, c);
-		profile.setPreloaded(true);
-		profileService.save(profile);
-
-		// profileRepository.saveAndFlush(profile);
-
-		System.out.println(profile.getId());
+		// String p = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/profiles/vxu/Profile.xml"));
+		// String v = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/profiles/vxu/ValueSets_all.xml"));
+		// String c = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/profiles/vxu/Constraints.xml"));
+		// // load VXU profile
+		// Profile profile = new ProfileSerializationImpl()
+		// .deserializeXMLToProfile(p, v, c);
+		// profile.setPreloaded(true);
+		// profileService.save(profile);
+		//
+		// // profileRepository.saveAndFlush(profile);
+		//
+		// System.out.println(profile.getId());
 
 	}
 

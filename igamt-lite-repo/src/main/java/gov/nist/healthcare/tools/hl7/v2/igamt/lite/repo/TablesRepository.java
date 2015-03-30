@@ -15,18 +15,13 @@
  * 
  */
 
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 
-public interface CodeService {
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-	public Iterable<Code> findAll();
+public interface TablesRepository extends MongoRepository<Tables, String> {
 
-	public Code save(Code c);
-
-	public void delete(Long id);
-
-	public Code findOne(Long id);
-	
-}
+}  
+ 

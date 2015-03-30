@@ -36,7 +36,7 @@ public class DatatypeController extends CommonController {
 	private DatatypeService datatypeService;
 
 	@RequestMapping(value = "/{targetId}/clone", method = RequestMethod.POST)
-	public Datatype clone(@PathVariable("targetId") Long targetId)
+	public Datatype clone(@PathVariable("targetId") String targetId)
 			throws DatatypeNotFoundException, CloneNotSupportedException {
 		logger.info("Clone datatype with id=" + targetId);
 		Datatype d = datatypeService.findOne(targetId);

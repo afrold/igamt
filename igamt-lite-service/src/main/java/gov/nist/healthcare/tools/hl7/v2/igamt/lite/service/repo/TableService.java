@@ -17,13 +17,13 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
 public interface TableService {
 
 	public Table save(Table c);
 
-	public void delete(Long id);
+	public void delete(String id);
 
-	public Table findOne(Long id);
+	public Table findOne(String id);
 }

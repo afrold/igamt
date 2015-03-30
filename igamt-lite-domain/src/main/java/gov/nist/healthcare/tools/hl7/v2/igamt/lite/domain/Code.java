@@ -1,58 +1,39 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@javax.persistence.Table(name = "CODE")
+//@Entity
+//@javax.persistence.Table(name = "CODE")
 public class Code extends DataModel implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 410373025762745686L;
 
-	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private String id;
 
-	@NotNull
-	@Column(nullable = false, name = "CODE")
+	// @NotNull
 	private String code;
 
-	@NotNull
-	@Column(nullable = false, name = "LABEL", columnDefinition = "TEXT")
+	// @NotNull
 	private String label;
 
-	@Column(name = "CODESYS")
 	private String codesys;
 
-	@Column(name = "SOURCE")
 	private String source;
-	
-	@Column(name = "CODEUSAGE")
+
 	private String codeUsage;
-	
-	
+
 	public Code() {
 		super();
 		this.type = Constant.CODE;
 	}
-	
-	public Long getId() {
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -87,7 +68,7 @@ public class Code extends DataModel implements Serializable {
 	public void setSource(String source) {
 		this.source = source;
 	}
-	
+
 	public String getCodeUsage() {
 		return codeUsage;
 	}

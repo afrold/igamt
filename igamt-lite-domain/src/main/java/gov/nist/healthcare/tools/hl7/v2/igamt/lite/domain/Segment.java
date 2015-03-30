@@ -4,15 +4,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "segments")
+@Document(collection = "segment")
 public class Segment extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -23,35 +23,36 @@ public class Segment extends DataModel implements java.io.Serializable {
 	}
 
 	@Id
-	private Long id;
+	private String id;
 
-	private Long segmentsId;
+	@DBRef
+	private Segments segments;
 
-	// @NotNull
+	// //@NotNull
 	private String label;
 
-	private List<Field> fields = new ArrayList<Field>();
+	private final List<Field> fields = new ArrayList<Field>();
 
-	private Set<DynamicMapping> dynamicMappings = new HashSet<DynamicMapping>();
+	private List<DynamicMapping> dynamicMappings = new ArrayList<DynamicMapping>();
 
-	// @NotNull
+	// //@NotNull
 	private String name;
 
 	private String description;
 
-	protected Set<Predicate> predicates = new HashSet<Predicate>();
+	protected List<Predicate> predicates = new ArrayList<Predicate>();
 
-	protected Set<ConformanceStatement> conformanceStatements = new HashSet<ConformanceStatement>();
+	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
 
 	protected String comment;
 
 	protected String usageNote;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -83,18 +84,6 @@ public class Segment extends DataModel implements java.io.Serializable {
 		return fields;
 	}
 
-	public void setFields(List<Field> fields) {
-		if (fields != null) {
-			this.fields.clear();
-			Iterator<Field> it = fields.iterator();
-			while (it.hasNext()) {
-				addField(it.next());
-			}
-		} else {
-			this.fields = null;
-		}
-	}
-
 	public void addPredicate(Predicate p) {
 		predicates.add(p);
 	}
@@ -113,11 +102,11 @@ public class Segment extends DataModel implements java.io.Serializable {
 		dynamicMappings.add(d);
 	}
 
-	public Set<DynamicMapping> getDynamicMappings() {
+	public List<DynamicMapping> getDynamicMappings() {
 		return dynamicMappings;
 	}
 
-	public void setDynamicMappings(Set<DynamicMapping> dynamicMappings) {
+	public void setDynamicMappings(List<DynamicMapping> dynamicMappings) {
 		if (dynamicMappings != null) {
 			this.dynamicMappings.clear();
 			Iterator<DynamicMapping> it = dynamicMappings.iterator();
@@ -129,7 +118,7 @@ public class Segment extends DataModel implements java.io.Serializable {
 		}
 	}
 
-	public Set<Predicate> getPredicates() {
+	public List<Predicate> getPredicates() {
 		return predicates;
 	}
 
@@ -143,7 +132,7 @@ public class Segment extends DataModel implements java.io.Serializable {
 		}
 	}
 
-	public Set<ConformanceStatement> getConformanceStatements() {
+	public List<ConformanceStatement> getConformanceStatements() {
 		return conformanceStatements;
 	}
 
@@ -175,12 +164,12 @@ public class Segment extends DataModel implements java.io.Serializable {
 		this.usageNote = usageNote;
 	}
 
-	public Long getSegmentsId() {
-		return segmentsId;
+	public Segments getSegments() {
+		return segments;
 	}
 
-	public void setSegmentsId(Long segmentsId) {
-		this.segmentsId = segmentsId;
+	public void setSegments(Segments segments) {
+		this.segments = segments;
 	}
 
 	@Override

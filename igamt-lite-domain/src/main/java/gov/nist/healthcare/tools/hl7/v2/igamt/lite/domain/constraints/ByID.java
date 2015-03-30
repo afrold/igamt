@@ -1,12 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@Table(name = "BYID")
+//@Entity
+//@Table(name = "BYID")
 public class ByID extends ByNameOrByID {
 
 	/**
@@ -14,8 +9,8 @@ public class ByID extends ByNameOrByID {
 	 */
 	private static final long serialVersionUID = 1167310291230293964L;
 
-	@NotNull
-	@Column(nullable = false, name = "BYID")
+	// @NotNull
+	// @Column(nullable = false, name = "BYID")
 	protected String byID;
 
 	public String getByID() {

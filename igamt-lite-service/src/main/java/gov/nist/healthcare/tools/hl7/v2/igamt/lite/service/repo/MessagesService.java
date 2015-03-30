@@ -19,8 +19,8 @@ public interface MessagesService {
 
 	public Messages save(Messages c);
 
-	public void delete(Long id);
+	public void delete(String id);
 
-	public Messages findOne(Long id);
+	public Messages findOne(String id);
 
 }

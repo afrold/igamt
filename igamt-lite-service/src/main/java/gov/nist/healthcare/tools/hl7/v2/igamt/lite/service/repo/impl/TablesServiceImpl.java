@@ -17,36 +17,52 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRefRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.SegmentRefService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TablesRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TablesService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class SegmentRefServiceImpl implements SegmentRefService {
+public class TablesServiceImpl implements TablesService {
+
 	@Autowired
-	private SegmentRefRepository segmentRefRepository;
+	private TablesRepository tablesRepository;
 
+	/**
+	 * 
+	 * @param p
+	 * @return
+	 */
 	@Override
-	public Iterable<SegmentRef> findAll() {
-		return segmentRefRepository.findAll();
+	@Transactional(propagation = Propagation.REQUIRED)
+	public Tables save(Tables t) {
+		if (t != null)
+			tablesRepository.save(t);
+		return t;
 	}
 
+	/**
+	 * 
+	 * @param id
+	 */
 	@Override
-	public SegmentRef save(SegmentRef c) {
-		return segmentRefRepository.save(c);
+	@Transactional(propagation = Propagation.REQUIRED)
+	public void delete(String id) {
+		tablesRepository.delete(id);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@Override
-	public void delete(Long id) {
-		segmentRefRepository.delete(id);
-	}
-
-	@Override
-	public SegmentRef findOne(Long id) {
-		return segmentRefRepository.findOne(id);
+	public Tables findOne(String id) {
+		return tablesRepository.findOne(id);
 	}
 
 }

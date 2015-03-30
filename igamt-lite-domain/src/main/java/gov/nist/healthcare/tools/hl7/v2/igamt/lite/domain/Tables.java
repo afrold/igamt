@@ -1,15 +1,15 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DataModel;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "tableLibraries")
-public class TableLibrary extends DataModel implements Serializable {
+@Document(collection = "tables")
+public class Tables extends DataModel implements Serializable {
 
 	/**
 	 * 
@@ -17,7 +17,7 @@ public class TableLibrary extends DataModel implements Serializable {
 	private static final long serialVersionUID = -2904036105687742572L;
 
 	@Id
-	private Long id;
+	private String id;
 
 	private String tableLibraryIdentifier;
 
@@ -31,18 +31,19 @@ public class TableLibrary extends DataModel implements Serializable {
 
 	private String description;
 
-	private Tables tables;
+	@Transient
+	private final Set<Table> children = new HashSet<Table>();
 
-	public TableLibrary() {
+	public Tables() {
 		super();
 		this.type = Constant.TABLELIBRARY;
 	}
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -94,12 +95,17 @@ public class TableLibrary extends DataModel implements Serializable {
 		this.description = description;
 	}
 
-	public Tables getTables() {
-		return tables;
+	public Set<Table> getChildren() {
+		return children;
 	}
 
-	public void setTables(Tables tables) {
-		this.tables = tables;
+	public void addTable(Table t) {
+		if (t.getTables() != null) {
+			throw new IllegalArgumentException("This table " + t.getMappingId()
+					+ " already belongs to library " + t.getTables().getName());
+		}
+		children.add(t);
+		t.setTables(this);
 	}
 
 	@Override
@@ -108,7 +114,6 @@ public class TableLibrary extends DataModel implements Serializable {
 				+ tableLibraryIdentifier + ", status=" + status
 				+ ", tableLibraryVersion=" + tableLibraryVersion
 				+ ", organizationName=" + organizationName + ", name=" + name
-				+ ", description=" + description + ", tables=" + tables + "]";
+				+ ", description=" + description + "]";
 	}
-
 }

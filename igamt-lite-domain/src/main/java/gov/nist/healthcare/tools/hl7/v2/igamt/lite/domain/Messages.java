@@ -1,9 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "messages")
@@ -12,15 +13,16 @@ public class Messages implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Long id;
+	private String id;
 
-	private final Set<Message> children = new LinkedHashSet<Message>();
+	@Transient
+	private Set<Message> children = new HashSet<Message>();
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -28,10 +30,15 @@ public class Messages implements java.io.Serializable {
 		return children;
 	}
 
+	public void setChildren(Set<Message> children) {
+		this.children = children;
+	}
+
 	public void addMessage(Message m) {
 		if (m.getMessages() != null) {
-			throw new IllegalArgumentException(
-					"This message already belong to a different messages");
+			throw new IllegalArgumentException("This message "
+					+ m.getIdentifier() + " already belongs to library"
+					+ m.getMessages().getId());
 		}
 		m.setPosition(children.size() + 1);
 		children.add(m);

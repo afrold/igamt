@@ -17,31 +17,12 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import java.util.List;
-
- 
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileSummary;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.RepositoryDefinition;
-import org.springframework.data.repository.query.Param;
 
- public interface ProfileRepository extends MongoRepository<Profile, Long> {
+ public interface ProfileRepository  extends MongoRepository<Profile, String>, ProfileOperations   {
 	
-		
-	@Query("select profile from Profile profile where profile.preloaded = true")
-	List<Profile> findAllPreloaded();
-	
-	@Query("select profile from Profile profile where  profile.preloaded = false")
-	List<Profile> findAllCustom();
-	
-	@Query("select profile from Profile profile where profile.author.id = :authorId ")
-	List<Profile> findAllByAuthorId(@Param("authorId")Long authorId);
 	
 	
 }

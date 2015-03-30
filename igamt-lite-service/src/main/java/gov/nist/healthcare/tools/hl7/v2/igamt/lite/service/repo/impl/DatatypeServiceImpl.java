@@ -42,19 +42,19 @@ public class DatatypeServiceImpl implements DatatypeService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Datatype save(Datatype p) {
-		return datatypeRepository.saveAndFlush(p);
+		return datatypeRepository.save(p);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void delete(Long id) {
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void delete(String id) {
 		datatypeRepository.delete(id);
 	}
 
 	@Override
-	public Datatype findOne(Long id) {
+	public Datatype findOne(String id) {
 		return datatypeRepository.findOne(id);
 	}
 

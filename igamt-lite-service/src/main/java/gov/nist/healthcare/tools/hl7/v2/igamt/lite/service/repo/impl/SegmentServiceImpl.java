@@ -35,17 +35,19 @@ public class SegmentServiceImpl implements SegmentService {
 	}
 
 	@Override
-	public Segment save(Segment c) {
-		return segmentRepository.save(c);
+	public Segment save(Segment s) {
+		if (s != null)
+			segmentRepository.save(s);
+		return s;
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(String id) {
 		segmentRepository.delete(id);
 	}
 
 	@Override
-	public Segment findOne(Long id) {
+	public Segment findOne(String id) {
 		return segmentRepository.findOne(id);
 	}
 
