@@ -43,6 +43,6 @@ public interface ProfileService {
 	
 	public InputStream exportAsXml(Long targetId);
 
-	public InputStream exportAsXslx(Long targetId);
+	public InputStream exportAsXlsx(Long targetId);
 
 }
