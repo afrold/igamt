@@ -9,7 +9,7 @@ public abstract class Constraint implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 5723342171557075960L;
 
-	// @Id
+	// @Id 
 	// @Column(name = "ID")
 	// @GeneratedValue(strategy = GenerationType.TABLE)
 	protected String id;

@@ -21,7 +21,7 @@ public class Table extends DataModel implements Serializable {
 	 */
 	private static final long serialVersionUID = 734059059225906039L;
 
-	@Id
+	@Id 
 	private String id;
 
 	private String mappingAlternateId;

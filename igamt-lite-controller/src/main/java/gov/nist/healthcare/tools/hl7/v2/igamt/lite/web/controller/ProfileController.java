@@ -4,7 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Changes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 
 import java.io.IOException;
 import java.io.InputStream;

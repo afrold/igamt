@@ -4,10 +4,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -25,7 +23,7 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id
+	@Id 
 	private String id;
 
 	// //@NotNull
@@ -109,32 +107,6 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		return predicates;
 	}
 
-	public void setPredicates(Set<Predicate> predicates) {
-		if (predicates != null) {
-			this.predicates.clear();
-			Iterator<Predicate> it = predicates.iterator();
-			while (it.hasNext()) {
-				addPredicate(it.next());
-			}
-		} else {
-			this.predicates = null;
-		}
-	}
-
-	public void setConformanceStatements(
-			Set<ConformanceStatement> conformanceStatements) {
-		if (conformanceStatements != null) {
-			this.conformanceStatements.clear();
-			Iterator<ConformanceStatement> it = conformanceStatements
-					.iterator();
-			while (it.hasNext()) {
-				addConformanceStatement(it.next());
-			}
-		} else {
-			this.conformanceStatements = null;
-		}
-	}
-
 	public List<ConformanceStatement> getConformanceStatements() {
 		return conformanceStatements;
 	}
@@ -168,6 +140,15 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		this.usageNote = usageNote;
 	}
 
+	public void setPredicates(List<Predicate> predicates) {
+		this.predicates = predicates;
+	}
+
+	public void setConformanceStatements(
+			List<ConformanceStatement> conformanceStatements) {
+		this.conformanceStatements = conformanceStatements;
+	}
+
 	@Override
 	public String toString() {
 		return "Datatype [id=" + id + ", label=" + label + ", name=" + name
@@ -182,12 +163,12 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		// clonedDT.setDatatypes(null);
 		// this.datatypes.addDatatype(clonedDT);
 
-		clonedDT.setConformanceStatements(new HashSet<ConformanceStatement>());
+		clonedDT.setConformanceStatements(new ArrayList<ConformanceStatement>());
 		for (ConformanceStatement cs : this.conformanceStatements) {
 			clonedDT.addConformanceStatement(cs.clone());
 		}
 
-		clonedDT.setPredicates(new HashSet<Predicate>());
+		clonedDT.setPredicates(new ArrayList<Predicate>());
 		for (Predicate cp : this.predicates) {
 			clonedDT.addPredicate(cp.clone());
 		}

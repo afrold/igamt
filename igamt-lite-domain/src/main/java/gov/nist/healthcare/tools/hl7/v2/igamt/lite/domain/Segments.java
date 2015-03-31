@@ -12,7 +12,7 @@ public class Segments implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	@Id 
 	private String id;
 
 	private Set<Segment> children = new HashSet<Segment>();

@@ -4,8 +4,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TablesRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.TablesService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TablesService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

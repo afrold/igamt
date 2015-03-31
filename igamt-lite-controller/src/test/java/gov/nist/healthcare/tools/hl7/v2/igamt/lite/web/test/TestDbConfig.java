@@ -17,15 +17,22 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.env.Environment;
-import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
+import org.springframework.data.mongodb.core.convert.CustomConversions;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.mongodb.Mongo;
@@ -38,7 +45,7 @@ import com.mongodb.ServerAddress;
 @PropertySource(value = { "classpath:db-test-config.properties",
 		"classpath:igl-test-log4j.properties" })
 @EnableMongoRepositories(basePackages = "gov.nist.healthcare.tools")
-public class TestDbConfig {
+public class TestDbConfig extends AbstractMongoConfiguration {
 
 	@Autowired
 	private Environment env;
@@ -110,6 +117,7 @@ public class TestDbConfig {
 	// return new PersistenceExceptionTranslationPostProcessor();
 	// }
 
+	@Override
 	@Bean
 	public Mongo mongo() throws Exception {
 		MongoCredential credential = MongoCredential.createMongoCRCredential(
@@ -121,9 +129,37 @@ public class TestDbConfig {
 				Arrays.asList(credential));
 	}
 
+	// @Override
+	// @Bean
+	// public MongoTemplate mongoTemplate() throws Exception {
+	// return new MongoTemplate(mongo(), env.getProperty("mongo.dbname"));
+	// }
+
+	@Override
 	@Bean
-	public MongoOperations mongoTemplate(Mongo mongo) {
-		return new MongoTemplate(mongo, env.getProperty("mongo.dbname"));
+	public CustomConversions customConversions() {
+		List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
+		// converterList.add(new ProfileWriteConverter());
+		converterList.add(new FieldWriteConverter());
+		converterList.add(new ComponentWriteConverter());
+		converterList.add(new SegmentRefWriteConverter());
+		return new CustomConversions(converterList);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.data.mongodb.config.AbstractMongoConfiguration#
+	 * getDatabaseName()
+	 */
+	@Override
+	protected String getDatabaseName() {
+		return env.getProperty("mongo.dbname");
+	}
+
+	@Override
+	public String getMappingBasePackage() {
+		return "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain";
 	}
 
 }

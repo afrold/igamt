@@ -11,7 +11,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

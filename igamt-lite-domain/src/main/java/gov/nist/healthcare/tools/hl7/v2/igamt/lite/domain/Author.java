@@ -8,7 +8,7 @@ public class Author implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	@Id 
 	private String id;
 
 	public String getId() {

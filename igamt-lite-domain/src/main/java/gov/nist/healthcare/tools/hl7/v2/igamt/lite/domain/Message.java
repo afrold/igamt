@@ -18,7 +18,7 @@ public class Message extends DataModel implements java.io.Serializable {
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id
+	@Id 
 	private String id;
 
 	private String identifier;
@@ -110,7 +110,6 @@ public class Message extends DataModel implements java.io.Serializable {
 
 	public void addSegmentRefOrGroup(SegmentRefOrGroup e) {
 		e.setPosition(children.size() + 1);
-		e.setPath("[" + id + "]" + "." + e.getPosition());
 		this.children.add(e);
 	}
 

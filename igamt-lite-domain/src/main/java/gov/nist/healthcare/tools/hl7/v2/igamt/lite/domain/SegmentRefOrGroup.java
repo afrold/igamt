@@ -7,7 +7,7 @@ public abstract class SegmentRefOrGroup extends DataModel implements
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	@Id 
 	protected String id;
 
 	// //@NotNull
@@ -24,7 +24,7 @@ public abstract class SegmentRefOrGroup extends DataModel implements
 	// @Column(nullable = false, name = "SEGMENTREFORGROUP_POSITION")
 	protected Integer position = 0;
 
-	protected String path;
+	protected String comment;
 
 	public Usage getUsage() {
 		return usage;
@@ -58,20 +58,20 @@ public abstract class SegmentRefOrGroup extends DataModel implements
 		this.position = position;
 	}
 
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
-	}
-
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 }

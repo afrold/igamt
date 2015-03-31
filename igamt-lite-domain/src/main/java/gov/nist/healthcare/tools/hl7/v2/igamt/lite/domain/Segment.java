@@ -6,7 +6,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -23,7 +22,7 @@ public class Segment extends DataModel implements java.io.Serializable {
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id
+	@Id 
 	private String id;
 	//
 	// @DBRef
@@ -32,7 +31,7 @@ public class Segment extends DataModel implements java.io.Serializable {
 	// //@NotNull
 	private String label;
 
-	private final List<Field> fields = new ArrayList<Field>();
+	private List<Field> fields = new ArrayList<Field>();
 
 	private List<DynamicMapping> dynamicMappings = new ArrayList<DynamicMapping>();
 
@@ -47,7 +46,9 @@ public class Segment extends DataModel implements java.io.Serializable {
 
 	protected String comment;
 
-	protected String usageNote;
+	private String text1;
+
+	private String text2;
 
 	public String getId() {
 		return id;
@@ -123,31 +124,31 @@ public class Segment extends DataModel implements java.io.Serializable {
 		return predicates;
 	}
 
-	public void setPredicates(Set<Predicate> predicates) {
-		if (predicates != null) {
-			this.predicates.clear();
-			Iterator<Predicate> it = predicates.iterator();
-			while (it.hasNext()) {
-				addPredicate(it.next());
-			}
-		}
-	}
+	// public void setPredicates(Set<Predicate> predicates) {
+	// if (predicates != null) {
+	// this.predicates.clear();
+	// Iterator<Predicate> it = predicates.iterator();
+	// while (it.hasNext()) {
+	// addPredicate(it.next());
+	// }
+	// }
+	// }
 
 	public List<ConformanceStatement> getConformanceStatements() {
 		return conformanceStatements;
 	}
 
-	public void setConformanceStatements(
-			Set<ConformanceStatement> conformanceStatements) {
-		if (conformanceStatements != null) {
-			this.conformanceStatements.clear();
-			Iterator<ConformanceStatement> it = conformanceStatements
-					.iterator();
-			while (it.hasNext()) {
-				addConformanceStatement(it.next());
-			}
-		}
-	}
+	// public void setConformanceStatements(
+	// Set<ConformanceStatement> conformanceStatements) {
+	// if (conformanceStatements != null) {
+	// this.conformanceStatements.clear();
+	// Iterator<ConformanceStatement> it = conformanceStatements
+	// .iterator();
+	// while (it.hasNext()) {
+	// addConformanceStatement(it.next());
+	// }
+	// }
+	// }
 
 	public String getComment() {
 		return comment;
@@ -157,26 +158,39 @@ public class Segment extends DataModel implements java.io.Serializable {
 		this.comment = comment;
 	}
 
-	public String getUsageNote() {
-		return usageNote;
+	public void setFields(List<Field> fields) {
+		this.fields = fields;
 	}
 
-	public void setUsageNote(String usageNote) {
-		this.usageNote = usageNote;
+	public void setPredicates(List<Predicate> predicates) {
+		this.predicates = predicates;
 	}
 
-	// public Segments getSegments() {
-	// return segments;
-	// }
-	//
-	// public void setSegments(Segments segments) {
-	// this.segments = segments;
-	// }
+	public void setConformanceStatements(
+			List<ConformanceStatement> conformanceStatements) {
+		this.conformanceStatements = conformanceStatements;
+	}
 
 	@Override
 	public String toString() {
 		return "Segment [id=" + id + "label=" + label + ", name=" + name
 				+ ", description=" + description + "]";
+	}
+
+	public String getText1() {
+		return text1;
+	}
+
+	public void setText1(String text1) {
+		this.text1 = text1;
+	}
+
+	public String getText2() {
+		return text2;
+	}
+
+	public void setText2(String text2) {
+		this.text2 = text2;
 	}
 
 }

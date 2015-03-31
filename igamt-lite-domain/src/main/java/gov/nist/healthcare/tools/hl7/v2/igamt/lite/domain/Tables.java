@@ -16,7 +16,7 @@ public class Tables extends DataModel implements Serializable {
 	 */
 	private static final long serialVersionUID = -2904036105687742572L;
 
-	@Id
+	@Id 
 	private String id;
 
 	private String tableLibraryIdentifier;

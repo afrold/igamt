@@ -1,7 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,7 @@ public class DynamicMapping implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	// @Id
+	// @Id 
 	// //@Column(name = "ID")
 	// //@GeneratedValue(strategy = GenerationType.AUTO)
 	protected String id;
@@ -19,7 +18,7 @@ public class DynamicMapping implements Serializable {
 	// @Min(1)
 	// //@NotNull
 	// //@Column(nullable = false, name = "MIN")
-	private BigInteger min;
+	private Integer min;
 
 	// //@NotNull
 	// //@Column(nullable = false, name = "MAX")
@@ -44,11 +43,11 @@ public class DynamicMapping implements Serializable {
 		this.id = id;
 	}
 
-	public BigInteger getMin() {
+	public Integer getMin() {
 		return min;
 	}
 
-	public void setMin(BigInteger min) {
+	public void setMin(Integer min) {
 		this.min = min;
 	}
 

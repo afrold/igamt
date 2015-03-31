@@ -34,8 +34,15 @@ public class Group extends SegmentRefOrGroup {
 
 	public void addSegmentsOrGroup(SegmentRefOrGroup e) {
 		e.setPosition(this.children.size() + 1);
-		e.setPath(this.path + "." + e.getPosition());
 		this.children.add(e);
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 	public void setChildren(List<SegmentRefOrGroup> children) {

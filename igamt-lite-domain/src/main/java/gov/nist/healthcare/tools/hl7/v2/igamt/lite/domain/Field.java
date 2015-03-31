@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.math.BigInteger;
-
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
@@ -15,7 +13,7 @@ public class Field extends DataElement implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
+	@Id 
 	protected String id;
 
 	public Field() {
@@ -27,10 +25,12 @@ public class Field extends DataElement implements java.io.Serializable {
 	private String itemNo;
 
 	// @NotNull
-	private BigInteger min;
+	private Integer min;
 
 	// @NotNull
 	private String max;
+
+	private String text;
 
 	public String getItemNo() {
 		return itemNo;
@@ -40,11 +40,11 @@ public class Field extends DataElement implements java.io.Serializable {
 		this.itemNo = itemNo;
 	}
 
-	public BigInteger getMin() {
+	public Integer getMin() {
 		return min;
 	}
 
-	public void setMin(BigInteger min) {
+	public void setMin(Integer min) {
 		this.min = min;
 	}
 
@@ -62,6 +62,14 @@ public class Field extends DataElement implements java.io.Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	@Override

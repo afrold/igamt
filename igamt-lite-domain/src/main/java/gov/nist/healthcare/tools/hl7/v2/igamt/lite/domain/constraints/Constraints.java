@@ -9,7 +9,7 @@ public class Constraints implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// @Id
+	// @Id 
 	// @Column(name = "ID")
 	// @GeneratedValue(strategy = GenerationType.AUTO)
 	private String id;

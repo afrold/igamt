@@ -7,8 +7,8 @@ public class Component extends DataElement {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	private final String id;
+	@Id 
+	private String id;
 
 	public Component() {
 		super();
@@ -31,6 +31,10 @@ public class Component extends DataElement {
 
 	public String getId() {
 		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

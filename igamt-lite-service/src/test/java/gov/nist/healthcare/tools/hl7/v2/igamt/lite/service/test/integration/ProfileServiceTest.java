@@ -12,9 +12,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertNotNull;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.DatatypesService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypesService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,6 +64,23 @@ public class ProfileServiceTest {
 	}
 
 	@Test
+	public void testGetById() throws Exception {
+		String p = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/vxuTest/Profile.xml"));
+		String v = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/vxuTest/ValueSets_all.xml"));
+		String c = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/vxuTest/Constraints.xml"));
+		Profile profile = new ProfileSerializationImpl()
+				.deserializeXMLToProfile(p, v, c);
+		assertNotNull("Profile is null.", profile);
+		service.save(profile);
+		assertNotNull("Profile not saved", profile.getId());
+		profile = service.findOne(profile.getId());
+		assertNotNull("Profile not saved", profile.getId());
+	}
+
+	// @Test
 	public void testSave() throws Exception {
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
 				"/vxuTest/Profile.xml"));
@@ -77,7 +94,6 @@ public class ProfileServiceTest {
 		// checkUniquenessOfReference(profile);
 		service.save(profile);
 		assertNotNull("Profile not saved", profile.getId());
-		profile.getDatatypes().setChildren(null);
 		service.save(profile);
 		System.out.println(profile.getId());
 
@@ -97,12 +113,11 @@ public class ProfileServiceTest {
 		// checkUniquenessOfReference(profile);
 		service.save(profile);
 		assertNotNull("Profile not saved", profile.getId());
-
 		service.delete(profile.getId());
-
 	}
+
 	// private void checkUniquenessOfReference(Profile profile) {
-	// List<Datatype> ds = profile.getDatatypes().getChildren();
+	// Set<Datatype> ds = profile.getDatatypes().getChildren();
 	// java.util.Iterator<Datatype> it = ds.iterator();
 	// while (it.hasNext()) {
 	// Datatype one = it.next();

@@ -1,8 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import org.springframework.data.annotation.Transient;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 ////@Entity
 //@javax.persistence.Table(name = "DATAELEMENT")
@@ -13,7 +11,7 @@ public abstract class DataElement extends DataModel implements
 
 	private static final long serialVersionUID = 1L;
 
-	// @Id
+	// @Id 
 	// //@Column(name = "ID")
 	// //@GeneratedValue(strategy = GenerationType.TABLE)
 	// protected String id;
@@ -39,14 +37,15 @@ public abstract class DataElement extends DataModel implements
 	// //@Column(name = "CONF_LENGTH")
 	protected String confLength;
 
-	@JsonIgnore
+	@JsonIgnoreProperties({ "mappingAlternateId", "mappingId", "name",
+			"version", "codesys", "oid", "tableType", "stability",
+			"extensibility", "type", "codes" })
 	// //@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
 	// CascadeType.PERSIST, CascadeType.MERGE })
 	// //@JoinColumn(name = "TABLE_ID")
-	@Transient
 	protected Table table;
 
-	protected String tableId;
+	// protected String tableId;
 
 	// //@Column(nullable = true, name = "BINDING_STRENGTH")
 	protected String bindingStrength;
@@ -59,11 +58,12 @@ public abstract class DataElement extends DataModel implements
 
 	// //@JsonIgnore
 
-	@JsonIgnore
-	@Transient
+	@JsonIgnoreProperties({ "label", "components", "name", "description",
+			"predicates", "conformanceStatements", "comment", "usageNote",
+			"type" })
 	protected Datatype datatype;
 
-	protected String datatypeId;
+	// protected String datatypeId;
 
 	// //@NotNull
 	// //@Column(nullable = false, name = "DATAELEMENT_POSITION")
@@ -79,7 +79,7 @@ public abstract class DataElement extends DataModel implements
 
 	public void setDatatype(Datatype datatype) {
 		this.datatype = datatype;
-		this.datatypeId = datatype != null ? datatype.getId() : null;
+		// this.datatypeId = datatype != null ? datatype.getId() : null;
 		// this.setDatatypeLabel(datatype != null ? datatype.getLabel() : null);
 	}
 
@@ -129,7 +129,7 @@ public abstract class DataElement extends DataModel implements
 
 	public void setTable(Table table) {
 		this.table = table;
-		this.tableId = table != null ? table.getId() : null;
+		// this.tableId = table != null ? table.getId() : null;
 	}
 
 	public String getBindingStrength() {
@@ -181,13 +181,13 @@ public abstract class DataElement extends DataModel implements
 		this.comment = comment;
 	}
 
-	public String getTableId() {
-		return tableId;
-	}
-
-	public void setTableId(String tableId) {
-		this.tableId = tableId;
-	}
+	// public String getTableId() {
+	// return tableId;
+	// }
+	//
+	// public void setTableId(String tableId) {
+	// this.tableId = tableId;
+	// }
 
 	@Override
 	protected DataElement clone() throws CloneNotSupportedException {

@@ -1,9 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class SegmentRef extends SegmentRefOrGroup {
 
@@ -15,11 +14,10 @@ public class SegmentRef extends SegmentRefOrGroup {
 		this.id = ObjectId.get().toString();
 	}
 
-	@JsonIgnore
-	@Transient
+	@JsonIgnoreProperties({ "label", "fields", "dynamicMappings", "name",
+			"description", "predicates", "conformanceStatements", "comment",
+			"usageNote", "type" })
 	private Segment ref;
-
-	private String refId;
 
 	public Segment getRef() {
 		return ref;
@@ -27,16 +25,16 @@ public class SegmentRef extends SegmentRefOrGroup {
 
 	public void setRef(Segment ref) {
 		this.ref = ref;
-		this.refId = ref != null ? ref.getId() : null;
+		// this.refId = ref != null ? ref.getId() : null;
 	}
 
-	public String getRefId() {
-		return refId;
-	}
-
-	public void setRefId(String refId) {
-		this.refId = refId;
-	}
+	// public String getRefId() {
+	// return refId;
+	// }
+	//
+	// public void setRefId(String refId) {
+	// this.refId = refId;
+	// }
 
 	@Override
 	public String toString() {

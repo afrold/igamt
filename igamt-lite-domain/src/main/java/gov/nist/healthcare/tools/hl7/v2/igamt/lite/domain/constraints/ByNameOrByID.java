@@ -15,7 +15,7 @@ public abstract class ByNameOrByID implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = -5212340093784881862L;
 
-	@Id
+	@Id 
 	// @Column(name = "ID")
 	// @GeneratedValue(strategy = GenerationType.TABLE)
 	protected String id;
