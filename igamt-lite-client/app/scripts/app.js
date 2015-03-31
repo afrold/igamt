@@ -83,6 +83,9 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.datatypes = [];// list of datatypes of the selected messages
     $rootScope.tables = [];// list of tables of the selected messages
     $rootScope.usages = ['R', 'RE', 'O', 'C', "CE","X", "B", "W"];
+    $rootScope.codeusages = ['R', 'P', 'E'];
+    $rootScope.tableStabilities = ['Static', 'Dynamic'];
+    $rootScope.tableExtensibilities = ['Open', 'Close'];
     $rootScope.segment = null;
     $rootScope.profileTabs = new Array();
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
@@ -131,7 +134,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     });
 
     $rootScope.api = function (value) {
-//        return "http://localhost:8081/igl-api"+ value;
+ //       return "http://localhost:8080/igl-api"+ value;
         return  value;
     };
 

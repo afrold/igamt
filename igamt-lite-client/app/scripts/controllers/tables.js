@@ -16,26 +16,8 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-//                 	if(parent){
-//                		if(parent.codes){
-//                			return parent.codes;
-//                		}else{
-//                			return [];
-//                		}
-//                	}else{
-//                		return [$rootScope.table];
-//                	}
-                 	
-                 	return parent && parent.codes ? parent.codes : $rootScope.table != null ? [$rootScope.table]:[];
-                 	
-                },
-                getTemplate: function (node) {
-                    return 'TableEditTree.html';
+                 	return parent && parent.codes ? parent.codes : $rootScope.table != null ? [$rootScope.table]:[];             	
                 }
-//                ,
-//                options: {
-//                    initialState: 'expanded'
-//                }
             });
 
             $scope.$watch(function () {
@@ -50,25 +32,39 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         };
 
         $scope.select = function (table) {
+        	$scope.loadingSelection = true;
             $rootScope.table = table;
-            $scope.tableCopy = {};
-            $scope.tableCopy = angular.copy(table,$scope.tableCopy);
+//            $scope.tableCopy = {};
+//            $scope.tableCopy = angular.copy(table);
             if ($scope.params)
                 $scope.params.refresh();
             $scope.loadingSelection = false;
         };
         
-        $scope.addCode = function (id) {
-            waitingDialog.show('Adding new Code...', {dialogSize: 'sm', progressType: 'info'});
-            $http.post($rootScope.api('/api/tables/table/' + id + '/addCode')).then(function (response) {
-            	$scope.table = angular.fromJson(response.data);
-                waitingDialog.hide();
-            }, function (error) {
-                $scope.error = error;
-                waitingDialog.hide();
-            });
+        
+        /*
+    "type": "code",
+    "id": 1502,
+    "code": "U", 
+    "label": "Unknown",
+    "codesys": "0214",
+    "source": "Local",
+    "codeUsage": "R"
+         */
+        $scope.addCode = function () {
+        	$scope.loadingSelection = true;
+        	$rootScope.table.codes.push({id:-1, type: 'code', code:'', label:'', codesys:'', source:'', codeUsage:'R'});
+        	if ($scope.params) $scope.params.refresh();
+        	$scope.loadingSelection = false;
         };
-
+        
+        $scope.deleteCode = function (code) {
+        	$scope.loadingSelection = true;
+        	$rootScope.table.codes.splice($rootScope.table.codes.indexOf(code),1);
+        	if ($scope.params) $scope.params.refresh();
+        	$scope.loadingSelection = false;
+        };
+       
         $scope.reset = function () {
             $scope.loadingSelection = true;
             $scope.message = "Table " + $scope.tableCopy.name + " reset successfully";

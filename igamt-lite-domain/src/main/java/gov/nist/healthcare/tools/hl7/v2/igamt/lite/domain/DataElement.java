@@ -56,8 +56,8 @@ public abstract class DataElement extends DataModel implements
 	@Column(name = "CONF_LENGTH")
 	protected String confLength;
 
-	@JsonIgnoreProperties({ "name", "mappingAlternateId", "mappingId",
-			"version", "codesys", "oid", "type", "codes" })
+	//TODO need to add ignore properties
+	@JsonIgnoreProperties({ "name", "mappingAlternateId", "mappingId", "version", "codesys", "oid", "type", "codes" })
 	@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
 			CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinColumn(name = "TABLE_ID")
