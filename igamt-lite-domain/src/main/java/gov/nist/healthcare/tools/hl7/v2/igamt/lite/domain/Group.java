@@ -3,6 +3,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 public class Group extends SegmentRefOrGroup {
 
 	private static final long serialVersionUID = 1L;
@@ -10,6 +12,7 @@ public class Group extends SegmentRefOrGroup {
 	public Group() {
 		super();
 		type = Constant.GROUP;
+		this.id = ObjectId.get().toString();
 	}
 
 	private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();

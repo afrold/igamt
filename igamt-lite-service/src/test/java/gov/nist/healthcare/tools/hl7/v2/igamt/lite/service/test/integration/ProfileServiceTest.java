@@ -77,10 +77,30 @@ public class ProfileServiceTest {
 		// checkUniquenessOfReference(profile);
 		service.save(profile);
 		assertNotNull("Profile not saved", profile.getId());
+		profile.getDatatypes().setChildren(null);
+		service.save(profile);
 		System.out.println(profile.getId());
 
 	}
 
+	// @Test
+	public void testDelete() throws Exception {
+		String p = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/vxuTest/Profile.xml"));
+		String v = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/vxuTest/ValueSets_all.xml"));
+		String c = IOUtils.toString(this.getClass().getResourceAsStream(
+				"/vxuTest/Constraints.xml"));
+		Profile profile = new ProfileSerializationImpl()
+				.deserializeXMLToProfile(p, v, c);
+		assertNotNull("Profile is null.", profile);
+		// checkUniquenessOfReference(profile);
+		service.save(profile);
+		assertNotNull("Profile not saved", profile.getId());
+
+		service.delete(profile.getId());
+
+	}
 	// private void checkUniquenessOfReference(Profile profile) {
 	// List<Datatype> ds = profile.getDatatypes().getChildren();
 	// java.util.Iterator<Datatype> it = ds.iterator();

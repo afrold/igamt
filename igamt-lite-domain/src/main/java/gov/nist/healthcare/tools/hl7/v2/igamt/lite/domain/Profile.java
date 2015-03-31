@@ -29,16 +29,12 @@ public class Profile extends DataModel implements java.io.Serializable {
 
 	private ProfileMetaData metaData;
 
-	@DBRef
 	private Segments segments;
 
-	@DBRef
 	private Datatypes datatypes;
 
-	@DBRef
 	private Messages messages;
 
-	@DBRef
 	private Tables tables;
 
 	@DBRef

@@ -2,6 +2,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.math.BigInteger;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+
 /**
  * 
  * @author Harold Affo (harold.affo@nist.gov) Feb 13, 2015
@@ -12,9 +15,13 @@ public class Field extends DataElement implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	protected String id;
+
 	public Field() {
 		super();
 		type = Constant.FIELD;
+		this.id = ObjectId.get().toString();
 	}
 
 	private String itemNo;
@@ -49,12 +56,10 @@ public class Field extends DataElement implements java.io.Serializable {
 		this.max = max;
 	}
 
-	@Override
 	public String getId() {
 		return id;
 	}
 
-	@Override
 	public void setId(String id) {
 		this.id = id;
 	}

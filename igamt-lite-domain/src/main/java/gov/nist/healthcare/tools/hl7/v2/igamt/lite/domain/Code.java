@@ -2,6 +2,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
 
+import org.bson.types.ObjectId;
+
 //@Entity
 //@javax.persistence.Table(name = "CODE")
 public class Code extends DataModel implements Serializable {
@@ -27,6 +29,7 @@ public class Code extends DataModel implements Serializable {
 	public Code() {
 		super();
 		this.type = Constant.CODE;
+		this.id = ObjectId.get().toString();
 	}
 
 	public String getId() {

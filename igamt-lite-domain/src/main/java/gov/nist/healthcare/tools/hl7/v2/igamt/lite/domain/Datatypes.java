@@ -3,8 +3,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "datatypes")
@@ -15,8 +15,15 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	@Id
 	private String id;
 
-	@Transient
-	private final Set<Datatype> children = new HashSet<Datatype>();
+	/**
+	 * 
+	 */
+	public Datatypes() {
+		super();
+		this.id = ObjectId.get().toString();
+	}
+
+	private Set<Datatype> children = new HashSet<Datatype>();
 
 	public String getId() {
 		return id;
@@ -30,13 +37,17 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return children;
 	}
 
+	public void setChildren(Set<Datatype> children) {
+		this.children = children;
+	}
+
 	public void addDatatype(Datatype d) {
-		if (d.getDatatypes() != null) {
-			throw new IllegalArgumentException("This datatype " + d.getLabel()
-					+ " already belongs to library " + d.getDatatypes().getId());
-		}
+		// if (d.getDatatypes() != null) {
+		// throw new IllegalArgumentException("This datatype " + d.getLabel()
+		// + " already belongs to library " + d.getDatatypes().getId());
+		// }
 		children.add(d);
-		d.setDatatypes(this);
+		// d.setDatatypes(this);
 	}
 
 	// public Datatype find(String label) {

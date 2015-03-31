@@ -21,12 +21,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.clone.ProfileClone;
@@ -93,47 +88,47 @@ public class ProfileServiceImpl implements ProfileService {
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Profile save(Profile p) throws ProfileException {
 		try {
-			Tables tables = p.getTables();
-			if (tables != null) {
-				tableLibraryService.save(tables);
-				for (Table t : tables.getChildren()) {
-					tableService.save(t);
-				}
-
-			}
-			Datatypes datatypes = p.getDatatypes();
-			if (datatypes != null) {
-				datatypesService.save(datatypes);
-				Set<Datatype> primitiveDatatypes = findPrimitiveDatatypes(datatypes);
-				for (Datatype d : primitiveDatatypes) {
-					datatypeService.save(d);
-				}
-				for (Datatype datatype : datatypes.getChildren()) {
-					if (datatype.getId() == null) {
-						datatypeService.save(datatype);
-					}
-				}
-			}
-
-			Segments segments = p.getSegments();
-			if (segments != null) {
-				segmentsService.save(segments);
-				for (Segment s : segments.getChildren()) {
-					segmentService.save(s);
-				}
-			}
-
-			Messages messages = p.getMessages();
-			if (messages != null) {
-				messagesService.save(messages);
-				for (Message m : messages.getChildren()) {
-
-					// List<SegmentRefOrGroup> children = m.getChildren();
-
-					messageService.save(m);
-				}
-
-			}
+			// Tables tables = p.getTables();
+			// if (tables != null) {
+			// for (Table t : tables.getChildren()) {
+			// tableService.save(t);
+			// }
+			// // tableLibraryService.save(tables);
+			// }
+			// Datatypes datatypes = p.getDatatypes();
+			// if (datatypes != null) {
+			// // datatypesService.save(datatypes);
+			// Set<Datatype> primitiveDatatypes =
+			// findPrimitiveDatatypes(datatypes);
+			// for (Datatype d : primitiveDatatypes) {
+			// datatypeService.save(d);
+			// }
+			// for (Datatype datatype : datatypes.getChildren()) {
+			// if (datatype.getId() == null) {
+			// datatypeService.save(datatype);
+			// }
+			// }
+			// }
+			//
+			// Segments segments = p.getSegments();
+			// if (segments != null) {
+			// // segmentsService.save(segments);
+			// for (Segment s : segments.getChildren()) {
+			// segmentService.save(s);
+			// }
+			// }
+			//
+			// Messages messages = p.getMessages();
+			// if (messages != null) {
+			// // messagesService.save(messages);
+			// for (Message m : messages.getChildren()) {
+			//
+			// // List<SegmentRefOrGroup> children = m.getChildren();
+			//
+			// messageService.save(m);
+			// }
+			//
+			// }
 			return profileRepository.save(p);
 		} catch (MongoException e) {
 			throw new ProfileException(e);

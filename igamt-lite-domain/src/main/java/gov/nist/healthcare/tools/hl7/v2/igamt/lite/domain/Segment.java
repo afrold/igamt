@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "segment")
@@ -20,13 +20,14 @@ public class Segment extends DataModel implements java.io.Serializable {
 	public Segment() {
 		super();
 		type = Constant.SEGMENT;
+		this.id = ObjectId.get().toString();
 	}
 
 	@Id
 	private String id;
-
-	@DBRef
-	private Segments segments;
+	//
+	// @DBRef
+	// private Segments segments;
 
 	// //@NotNull
 	private String label;
@@ -164,13 +165,13 @@ public class Segment extends DataModel implements java.io.Serializable {
 		this.usageNote = usageNote;
 	}
 
-	public Segments getSegments() {
-		return segments;
-	}
-
-	public void setSegments(Segments segments) {
-		this.segments = segments;
-	}
+	// public Segments getSegments() {
+	// return segments;
+	// }
+	//
+	// public void setSegments(Segments segments) {
+	// this.segments = segments;
+	// }
 
 	@Override
 	public String toString() {

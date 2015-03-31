@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "tables")
@@ -31,12 +31,12 @@ public class Tables extends DataModel implements Serializable {
 
 	private String description;
 
-	@Transient
-	private final Set<Table> children = new HashSet<Table>();
+	private Set<Table> children = new HashSet<Table>();
 
 	public Tables() {
 		super();
 		this.type = Constant.TABLELIBRARY;
+		this.id = ObjectId.get().toString();
 	}
 
 	public String getId() {
@@ -99,18 +99,22 @@ public class Tables extends DataModel implements Serializable {
 		return children;
 	}
 
+	public void setChildren(Set<Table> children) {
+		this.children = children;
+	}
+
 	public void addTable(Table t) {
-		if (t.getTables() != null) {
-			throw new IllegalArgumentException("This table " + t.getMappingId()
-					+ " already belongs to library " + t.getTables().getName());
-		}
+		// if (t.getTables() != null) {
+		// throw new IllegalArgumentException("This table " + t.getMappingId()
+		// + " already belongs to library " + t.getTables().getName());
+		// }
 		children.add(t);
-		t.setTables(this);
+		// t.setTables(this);
 	}
 
 	@Override
 	public String toString() {
-		return "TableLibrary [id=" + id + ", tableLibraryIdentifier="
+		return "Tables [id=" + id + ", tableLibraryIdentifier="
 				+ tableLibraryIdentifier + ", status=" + status
 				+ ", tableLibraryVersion=" + tableLibraryVersion
 				+ ", organizationName=" + organizationName + ", name=" + name

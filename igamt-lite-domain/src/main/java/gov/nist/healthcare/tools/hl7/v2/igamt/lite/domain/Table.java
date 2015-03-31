@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -39,14 +39,15 @@ public class Table extends DataModel implements Serializable {
 	private String stability;
 	private String extensibility;
 
-	private final List<Code> codes = new ArrayList<Code>();
+	private List<Code> codes = new ArrayList<Code>();
 
-	@DBRef
-	private Tables tables;
+	// @DBRef
+	// private Tables tables;
 
 	public Table() {
 		super();
 		this.type = Constant.TABLE;
+		this.id = ObjectId.get().toString();
 	}
 
 	public String getId() {
@@ -117,6 +118,10 @@ public class Table extends DataModel implements Serializable {
 		return codes;
 	}
 
+	public void setCodes(List<Code> codes) {
+		this.codes = codes;
+	}
+
 	public void addCode(Code c) {
 		codes.add(c);
 	}
@@ -137,13 +142,13 @@ public class Table extends DataModel implements Serializable {
 		this.extensibility = extensibility;
 	}
 
-	public Tables getTables() {
-		return tables;
-	}
-
-	public void setTables(Tables tables) {
-		this.tables = tables;
-	}
+	// public Tables getTables() {
+	// return tables;
+	// }
+	//
+	// public void setTables(Tables tables) {
+	// this.tables = tables;
+	// }
 
 	@Override
 	public String toString() {

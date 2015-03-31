@@ -3,8 +3,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "messages")
@@ -15,7 +15,14 @@ public class Messages implements java.io.Serializable {
 	@Id
 	private String id;
 
-	@Transient
+	/**
+	 * 
+	 */
+	public Messages() {
+		super();
+		this.id = ObjectId.get().toString();
+	}
+
 	private Set<Message> children = new HashSet<Message>();
 
 	public String getId() {
@@ -35,14 +42,14 @@ public class Messages implements java.io.Serializable {
 	}
 
 	public void addMessage(Message m) {
-		if (m.getMessages() != null) {
-			throw new IllegalArgumentException("This message "
-					+ m.getIdentifier() + " already belongs to library"
-					+ m.getMessages().getId());
-		}
+		// if (m.getMessages() != null) {
+		// throw new IllegalArgumentException("This message "
+		// + m.getIdentifier() + " already belongs to library"
+		// + m.getMessages().getId());
+		// }
 		m.setPosition(children.size() + 1);
 		children.add(m);
-		m.setMessages(this);
+		// m.setMessages(this);
 	}
 
 	@Override

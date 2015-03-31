@@ -1,8 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.annotation.Transient;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 ////@Entity
 //@javax.persistence.Table(name = "DATAELEMENT")
@@ -16,7 +16,7 @@ public abstract class DataElement extends DataModel implements
 	// @Id
 	// //@Column(name = "ID")
 	// //@GeneratedValue(strategy = GenerationType.TABLE)
-	protected String id;
+	// protected String id;
 
 	// //@NotNull
 	// //@Column(nullable = false, name = "DATAELEMENT_NAME")
@@ -39,12 +39,14 @@ public abstract class DataElement extends DataModel implements
 	// //@Column(name = "CONF_LENGTH")
 	protected String confLength;
 
-	@JsonIgnoreProperties({ "name", "mappingAlternateId", "mappingId",
-			"version", "codesys", "oid", "type", "codes" })
+	@JsonIgnore
 	// //@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
 	// CascadeType.PERSIST, CascadeType.MERGE })
 	// //@JoinColumn(name = "TABLE_ID")
+	@Transient
 	protected Table table;
+
+	protected String tableId;
 
 	// //@Column(nullable = true, name = "BINDING_STRENGTH")
 	protected String bindingStrength;
@@ -57,11 +59,11 @@ public abstract class DataElement extends DataModel implements
 
 	// //@JsonIgnore
 
-	@DBRef
-	@JsonIgnoreProperties({ "label", "components", "name", "description",
-			"predicates", "conformanceStatements", "datatypes", "comments",
-			"usageNote" })
+	@JsonIgnore
+	@Transient
 	protected Datatype datatype;
+
+	protected String datatypeId;
 
 	// //@NotNull
 	// //@Column(nullable = false, name = "DATAELEMENT_POSITION")
@@ -77,6 +79,7 @@ public abstract class DataElement extends DataModel implements
 
 	public void setDatatype(Datatype datatype) {
 		this.datatype = datatype;
+		this.datatypeId = datatype != null ? datatype.getId() : null;
 		// this.setDatatypeLabel(datatype != null ? datatype.getLabel() : null);
 	}
 
@@ -126,6 +129,7 @@ public abstract class DataElement extends DataModel implements
 
 	public void setTable(Table table) {
 		this.table = table;
+		this.tableId = table != null ? table.getId() : null;
 	}
 
 	public String getBindingStrength() {
@@ -144,13 +148,13 @@ public abstract class DataElement extends DataModel implements
 		this.bindingLocation = bindingLocation;
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+	// public String getId() {
+	// return id;
+	// }
+	//
+	// public void setId(String id) {
+	// this.id = id;
+	// }
 
 	public Integer getPosition() {
 		return position;
@@ -177,10 +181,17 @@ public abstract class DataElement extends DataModel implements
 		this.comment = comment;
 	}
 
+	public String getTableId() {
+		return tableId;
+	}
+
+	public void setTableId(String tableId) {
+		this.tableId = tableId;
+	}
+
 	@Override
 	protected DataElement clone() throws CloneNotSupportedException {
 		DataElement de = (DataElement) super.clone();
-		de.setId(null);
 		de.setTable(this.table);
 		// de.setDatatype(this.datatype.clone());
 		de.setDatatype(this.datatype); // Changed by Harold

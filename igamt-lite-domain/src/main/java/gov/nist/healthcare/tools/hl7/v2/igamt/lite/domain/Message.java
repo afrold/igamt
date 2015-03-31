@@ -3,8 +3,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "message")
@@ -15,6 +15,7 @@ public class Message extends DataModel implements java.io.Serializable {
 	public Message() {
 		super();
 		this.type = Constant.MESSAGE;
+		this.id = ObjectId.get().toString();
 	}
 
 	@Id
@@ -36,8 +37,8 @@ public class Message extends DataModel implements java.io.Serializable {
 
 	private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
-	@DBRef
-	private Messages messages;
+	// @DBRef
+	// private Messages messages;
 
 	// @NotNull
 	protected Integer position = 0;
@@ -86,13 +87,14 @@ public class Message extends DataModel implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public Messages getMessages() {
-		return messages;
-	}
-
-	public void setMessages(Messages messages) {
-		this.messages = messages;
-	}
+	//
+	// public Messages getMessages() {
+	// return messages;
+	// }
+	//
+	// public void setMessages(Messages messages) {
+	// this.messages = messages;
+	// }
 
 	public List<SegmentRefOrGroup> getChildren() {
 		return children;

@@ -9,8 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "datatype")
@@ -22,6 +22,7 @@ public class Datatype extends DataModel implements java.io.Serializable,
 	public Datatype() {
 		super();
 		this.type = Constant.DATATYPE;
+		this.id = ObjectId.get().toString();
 	}
 
 	@Id
@@ -41,8 +42,8 @@ public class Datatype extends DataModel implements java.io.Serializable,
 
 	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
 
-	@DBRef
-	private Datatypes datatypes;
+	// @DBRef
+	// private Datatypes datatypes;
 
 	protected String comment;
 
@@ -96,13 +97,13 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		this.description = description;
 	}
 
-	public Datatypes getDatatypes() {
-		return datatypes;
-	}
-
-	public void setDatatypes(Datatypes datatypes) {
-		this.datatypes = datatypes;
-	}
+	// public Datatypes getDatatypes() {
+	// return datatypes;
+	// }
+	//
+	// public void setDatatypes(Datatypes datatypes) {
+	// this.datatypes = datatypes;
+	// }
 
 	public List<Predicate> getPredicates() {
 		return predicates;
@@ -177,9 +178,9 @@ public class Datatype extends DataModel implements java.io.Serializable,
 	public Datatype clone() throws CloneNotSupportedException {
 		Datatype clonedDT = (Datatype) super.clone();
 		clonedDT.setId(null);
-
-		clonedDT.setDatatypes(null);
-		this.datatypes.addDatatype(clonedDT);
+		//
+		// clonedDT.setDatatypes(null);
+		// this.datatypes.addDatatype(clonedDT);
 
 		clonedDT.setConformanceStatements(new HashSet<ConformanceStatement>());
 		for (ConformanceStatement cs : this.conformanceStatements) {
