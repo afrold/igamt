@@ -10,9 +10,14 @@
 		<div class="row">
 			<div class="page-header">
 				<h3>Tables List</h3>
+				<span class="pull-right">
+					<button title="Add new Table" type="button" class="btn btn-xs btn-info" ng-click="addTable()">
+						<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Add Table</span>
+					</button>
+				</span>
 			</div>
 			<div class="igl-table">
-				<table st-table="tmpTables" st-safe-src="tables"
+				<table st-table="tables" st-safe-src="tables"
 					class="table table-striped table-bordered">
 					<thead>
 						<tr class="tbl-header">
@@ -26,19 +31,6 @@
 							<th st-sort="type">Stability</th>
 							<th st-sort="type">Extensibility</th>
 						</tr>
-						<tr>
-							<th></th>
-							<th colspan="1"><input st-search="mappingId"
-								placeholder="Search" class="input-sm form-control" type="search" />
-							</th>
-							<th colspan="1"><input st-search="name" placeholder="Search"
-								class="input-sm form-control" type="search" /></th>
-							<th />
-							<th />
-							<th />
-							<th />
-						</tr>
-
 					</thead>
 
 					<tbody>
@@ -57,14 +49,6 @@
 							<td ng-bind="row.extensibility"></td>
 						</tr>
 					</tbody>
-					<tfoot>
-						<tr>
-							<td colspan="4" class="text-center">
-								<div st-pagination="" st-items-by-page="itemsByPage"
-									st-displayed-pages="7"></div>
-							</td>
-						</tr>
-					</tfoot>
 				</table>
 			</div>
 		</div>
@@ -82,15 +66,9 @@
 							<h3>Metadata of {{table.mappingId}}</h3>
 
 							<span class="pull-right">
-								<button title="Clone" type="button" class="btn btn-xs btn-info"
-									ng-click="clone()">
-									<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp;Clone</span>
-								</button>
-
-								<button title="Delete" type="button"
-									class="btn btn-xs btn-danger" ng-click="delete()">
-									<span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-								</button>
+								<button title="Close" type="button" class="btn btn-xs btn-primary" ng-click="close()">
+                            		<span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
+                        		</button>
 							</span>
 							<hr />
 							<div class="col-md-6">
@@ -114,7 +92,7 @@
 	                            <label>CodeSys</label>
 		                        <input type="text" name="codesys" ng-change="recordChange(table,'codesys')" class="form-control" ng-model="table.codesys">
 	                            <label>Type</label>
-	                            <input type="text" name="type" ng-change="recordChange(table,'type')" class="form-control" ng-model="table.type" required>
+	                            <input type="text" name="type" ng-change="recordChange(table,'tableType')" class="form-control" ng-model="table.tableType" required>
 	                            <label>Extensibility</label>
 	                            <select class="form-control"
                                     name="Extensibility"
@@ -149,25 +127,30 @@
 									</thead>
 									<tbody>
 										<tr ng-repeat="c in table.codes | orderBy:'code'">
-											<td class="col-md-2"><input type="text"
-												style="width: 100%" name="Code" class="igl-input"
-												ng-model="c.code" ng-change="recordChange(c,'code')"></td>
-											<td class="col-md-3"><input type="text"
-												style="width: 100%" name="Label" class="igl-input"
-												ng-model="c.label" ng-change="recordChange(c,'label')"></td>
-											<td class="col-md-2"><input type="text"
-												style="width: 100%" name="Codesys" class="igl-input"
-												ng-model="c.codesys" ng-change="recordChange(c,'codesys')"></td>
-											<td class="col-md-2"><input type="text"
-												style="width: 100%" name="Source" class="igl-input"
-												ng-model="c.source" ng-change="recordChange(c,'source')"></td>
-											<td class="col-md-2"><input type="text"
-												style="width: 100%" name="Usage" class="igl-input"
-												ng-model="c.codeUsage"
-												ng-change="recordChange(c,'codeUsage')"></td>
+											<td class="col-md-2">
+												<input type="text" style="width: 100%" name="Code" class="igl-input" ng-model="c.code" ng-change="recordChange(c,'code')">
+											</td>
+											<td class="col-md-3">
+												<input type="text" style="width: 100%" name="Label" class="igl-input" ng-model="c.label" ng-change="recordChange(c,'label')"></td>
+											<td class="col-md-2">
+												<input type="text" style="width: 100%" name="Codesys" class="igl-input" ng-model="c.codesys" ng-change="recordChange(c,'codesys')">
+											</td>
+											<td class="col-md-2">
+												<select class="form-control" name="Source"
+                                    					ng-change="recordChange(c,'source')"
+                                    					ng-model="c.source"
+                                    					ng-options="codeSource for codeSource in codeSources">
+                               					</select>
+                               				</td>
+											<td class="col-md-2">
+												<select class="form-control" name="Usage"
+                                    					ng-change="recordChange(c,'codeUsage')"
+                                    					ng-model="c.codeUsage"
+                                    					ng-options="codeUsage for codeUsage in codeUsages">
+                               					</select>
+                            				</td>
 											<td class="col-md-1">
-												<button title="Delete" type="button"
-													class="btn btn-xs btn-danger" ng-click="deleteCode(c)">
+												<button title="Delete" type="button" class="btn btn-xs btn-danger" ng-click="deleteCode(c)">
 													<span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
 												</button>
 											</td>

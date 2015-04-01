@@ -83,9 +83,13 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.datatypes = [];// list of datatypes of the selected messages
     $rootScope.tables = [];// list of tables of the selected messages
     $rootScope.usages = ['R', 'RE', 'O', 'C', "CE","X", "B", "W"];
-    $rootScope.codeusages = ['R', 'P', 'E'];
+    $rootScope.codeUsages = ['R', 'P', 'E'];
+    $rootScope.codeSources = ['HL7', 'Local', 'Redefined', 'SDO'];
     $rootScope.tableStabilities = ['Static', 'Dynamic'];
     $rootScope.tableExtensibilities = ['Open', 'Close'];
+    $rootScope.newCodeFakeId = 0;
+    $rootScope.newTableFakeId = 0;
+    $rootScope.newTable = {};
     $rootScope.segment = null;
     $rootScope.profileTabs = new Array();
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
