@@ -1,41 +1,22 @@
 /**
- * Created by haffo on 2/13/15.
+ * Created by Jungyub on 4/01/15.
  */
 
 
 angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams,$filter) {
         $scope.loading = false;
         $scope.loadingSelection = false;
+        $scope.tmpTables =[].concat($rootScope.tables);
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
         $scope.params = null;
-        $scope.tmpTables =[].concat($rootScope.tables);
-        $scope.tableCopy = null;
         $scope.init = function () {
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-//                 	if(parent){
-//                		if(parent.codes){
-//                			return parent.codes;
-//                		}else{
-//                			return [];
-//                		}
-//                	}else{
-//                		return [$rootScope.table];
-//                	}
-                 	
-                 	return parent && parent.codes ? parent.codes : $rootScope.table != null ? [$rootScope.table]:[];
-                 	
-                },
-                getTemplate: function (node) {
-                    return 'TableEditTree.html';
+                 	return parent && parent.codes ? parent.codes : $rootScope.table != null ? [$rootScope.table]:[];             	
                 }
-//                ,
-//                options: {
-//                    initialState: 'expanded'
-//                }
             });
 
             $scope.$watch(function () {
@@ -50,45 +31,67 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         };
 
         $scope.select = function (table) {
+        	$scope.loadingSelection = true;
             $rootScope.table = table;
-            $scope.tableCopy = {};
-            $scope.tableCopy = angular.copy(table,$scope.tableCopy);
             if ($scope.params)
                 $scope.params.refresh();
             $scope.loadingSelection = false;
         };
         
-        $scope.addCode = function (id) {
-            waitingDialog.show('Adding new Code...', {dialogSize: 'sm', progressType: 'info'});
-            $http.post($rootScope.api('/api/tables/table/' + id + '/addCode')).then(function (response) {
-            	$scope.table = angular.fromJson(response.data);
-                waitingDialog.hide();
-            }, function (error) {
-                $scope.error = error;
-                waitingDialog.hide();
-            });
-        };
+        /*
+         * 	@Column(name = "VERSION")
+	private String version;
+	@Column(name = "CODESYS")
+	private String codesys;
+	@Column(name = "OID")
+	private String oid;
+	@Column(name = "TABLETYPE")
+	private String tableType;
+	@Column(name = "STABILITY")
+	private String stability;
+	@Column(name = "EXTENSIBILITY")
+	private String extensibility;
+	
 
-        $scope.reset = function () {
-            $scope.loadingSelection = true;
-            $scope.message = "Table " + $scope.tableCopy.name + " reset successfully";
-            angular.extend($rootScope.table, $scope.tableCopy);
-            $scope.loadingSelection = false;
-        };
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
+	private final Set<Code> codes = new HashSet<Code>();
+         */
 
-        $scope.hasChildren = function(node){
-            if(node && node.type=="table") return true;
-            else return false;
+        $scope.addTable = function () {
+//        	$scope.loadingSelection = true;
+        	$rootScope.newTableFakeId = $rootScope.newTableFakeId - 1;
+        	$rootScope.newTable = {id:$rootScope.newTableFakeId, type: '', mappingAlternateId: '', mappingId:'', name:'', version:'', codesys:'', oid:'', tableType:'', stability:'', extensibility:'', codes:[]};
+        	
+        	$rootScope.recordChange($rootScope.newTable,'table');
+        	
+        	$scope.tmpTables.push($rootScope.newTable);
+//        	$rootScope.recordChange($rootScope.table,'codes');
+//        	if ($scope.params) $scope.params.refresh();
+//        	$scope.loadingSelection = false;
+        }
+        
+        $scope.addCode = function () {
+        	$scope.loadingSelection = true;
+        	$rootScope.newCodeFakeId = $rootScope.newCodeFakeId - 1;
+        	$rootScope.table.codes.push({id:$rootScope.newCodeFakeId, type: 'code', code:'', label:'', codesys:'', source:'', codeUsage:''});
+        	$rootScope.recordChange($rootScope.table,'codes');
+        	if ($scope.params) $scope.params.refresh();
+        	$scope.loadingSelection = false;
         };
-
-        $scope.onTableChange = function(node){
-            $scope.refreshTree();
-            node.tableLabel = null;
-            $rootScope.recordChange(node,'table');
+        
+        $scope.deleteCode = function (code) {
+        	$scope.loadingSelection = true;
+        	$rootScope.table.codes.splice($rootScope.table.codes.indexOf(code),1);
+        	$rootScope.recordChange($rootScope.table,'codes');
+        	if ($scope.params) $scope.params.refresh();
+        	$scope.loadingSelection = false;
         };
-
-        $scope.refreshTree = function(){
-            if ($scope.params)
+        
+        $scope.close = function(){
+            $rootScope.table = null;
+             if ($scope.params)
                 $scope.params.refresh();
+            $scope.loadingSelection = false;
         };
     });

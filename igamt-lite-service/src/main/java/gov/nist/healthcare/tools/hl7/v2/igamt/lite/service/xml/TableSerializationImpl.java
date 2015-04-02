@@ -92,8 +92,8 @@ public class TableSerializationImpl implements TableSerialization {
 			elmTableDefinition.addAttribute(new Attribute("Codesys", (t.getCodesys() == null) ? "" : t.getCodesys()));
 			elmTableDefinition.addAttribute(new Attribute("Oid", (t.getOid() == null) ? "" : t.getOid()));
 			elmTableDefinition.addAttribute(new Attribute("Type", (t.getTableType() == null) ? "" : t.getTableType()));
-			elmTableDefinition.addAttribute(new Attribute("Extensibility", (t.getTableType() == null) ? "" : t.getExtensibility()));
-			elmTableDefinition.addAttribute(new Attribute("Stability", (t.getTableType() == null) ? "" : t.getStability()));
+			elmTableDefinition.addAttribute(new Attribute("Extensibility", (t.getExtensibility() == null) ? "" : t.getExtensibility()));
+			elmTableDefinition.addAttribute(new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability()));
 
 			elmTableLibrary.appendChild(elmTableDefinition);
 
@@ -140,7 +140,7 @@ public class TableSerializationImpl implements TableSerialization {
 			if (elmTable.getAttribute("Extensibility") != null && !elmTable.getAttribute("Extensibility").equals("")){
 				tableObj.setExtensibility(elmTable.getAttribute("Extensibility"));
 			}else {
-				tableObj.setStability("Open");
+				tableObj.setExtensibility("Open");
 			}
 			
 			if (elmTable.getAttribute("Stability") != null && !elmTable.getAttribute("Stability").equals("")){
