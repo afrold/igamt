@@ -22,6 +22,7 @@ public class Constant {
 	public final static String SEGMENTREF = "segmentRef";
 	public final static String FIELD = "field";
 	public final static String COMPONENT = "component";
+	public final static String SUBCOMPONENT = "subcomponent";
 	public final static String GROUP = "group";
 	public final static String MESSAGE = "message";
 	public final static String DATATYPE = "datatype";

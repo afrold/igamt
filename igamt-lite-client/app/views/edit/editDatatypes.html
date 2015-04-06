@@ -263,7 +263,7 @@
                                         </span>
                         </td>
                         <td class="col-md-1">
-                            <div ng-show="node.type === 'component'">
+                            <div ng-show="node.type === 'component' && !node.sub">
                                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 <select class="form-control input-sm"
                                                         name="usage"
@@ -275,7 +275,7 @@
                                             </span>
                                 <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
                             </div>
-                            <div ng-show="node.type === 'subcomponent'">
+                            <div ng-show="node.type === 'component' && node.sub">
                                 <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 {{node.usage}}
                                             </span>
@@ -284,7 +284,7 @@
                             <div ng-show="node.type === 'datatype'">-</div>
                         </td>
                         <td class="col-md-1">
-                            <div ng-show="node.type === 'component'" ng-controller="DatatypeRowCtrl">
+                            <div ng-show="node.type === 'component' && !node.sub" ng-controller="DatatypeRowCtrl">
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="minLength"
@@ -300,13 +300,13 @@
                                                        ng-model="node.maxLength" required>
                                             </span>
                             </div>
-                            <div ng-show="node.type === 'subcomponent'">
+                            <div ng-show="node.type === 'component' && node.sub">
                                 -
                             </div>
                             <div ng-show="node.type === 'datatype'">-</div>
                         </td>
                         <td class="col-md-1">
-                            <div ng-show="node.type === 'component'" ng-controller="DatatypeRowCtrl">
+                            <div ng-show="node.type === 'component' && !node.sub" ng-controller="DatatypeRowCtrl">
                                             <span ng-form name="{{formName}}">
                                             <input style="width:50%" class="igl-input" type="text"
                                                    name="confLength"
@@ -317,12 +317,12 @@
                                             </span>
                             </div>
                             <div ng-show="node.type === 'datatype'">-</div>
-                            <div ng-show="node.type === 'subcomponent'">{{node.confLength}}
+                            <div ng-show="node.type === 'component' && node.sub">{{node.confLength}}
                             </div>
                         </td>
 
                         <td class="col-md-1">
-                            <div ng-show="node.type === 'component'">
+                            <div ng-show="node.type === 'component' && !node.sub">
                                 <select class="form-control input-sm"
                                         name="datatype"
                                         ng-change="onDatatypeChange(node)"
@@ -335,7 +335,7 @@
                                 <!--ng-bind="node.datatype.label"></a>-->
                             </div>
                             <div ng-show="node.type === 'datatype'">-</div>
-                            <div ng-show="node.type === 'subcomponent'">{{node.datatype.label}}
+                            <div ng-show="node.type === 'component' && node.sub">{{node.datatype.label}}
                             </div>
                         </td>
 
@@ -414,7 +414,7 @@
                                        ng-model="node.comment">
                             </div>
                             <div ng-show="node.type === 'datatype'">-</div>
-                            <div ng-show="node.type === 'subcomponent'">{{node.comment}}
+                            <div ng-show="node.type === 'component' && node.sub">{{node.comment}}
                             </div>
                         </td>
                     </tr>

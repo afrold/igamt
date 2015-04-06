@@ -4,7 +4,7 @@
 
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter) {
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter,Section) {
         $scope.loading = false;
         $scope.tmpPreloadeds = [];
         $scope.tmpCustoms = [];
@@ -68,11 +68,6 @@ angular.module('igl')
             return null;
         };
 
-
-        $scope.goToSection = function(id){
-            $scope.section = id;
-        };
-
         $scope.edit = function (id) {
             waitingDialog.show('Loading profile...', {dialogSize: 'sm', progressType: 'info'});
 //             $http.get($rootScope.api('/api/profiles/'+ row.id)).then(function (profile) {
@@ -120,6 +115,18 @@ angular.module('igl')
                     });
                     $rootScope.notifyMsgTreeUpdate = new Date().getTime();
                 }
+
+
+//                var sections = [];
+//
+//                var metaDataSect  = new Section();
+//                metaDataSect.data = $rootScope.profile['metaData'];
+//                metaDataSect.type="metadata";
+//
+//                var confProfilesSect  = new Section();
+//                confProfilesSect.data = $rootScope.profile.messages;
+//                confProfilesSect.type="ConfProfileList";
+//                confProfilesSect.sections = [];
 
                 angular.forEach($rootScope.profile.messages.children, function (message) {
                     var segRefOrGroups = [];
@@ -347,6 +354,13 @@ angular.module('igl')
             $rootScope.profile = null;
             $rootScope.context.page = $rootScope.pages[0];
         };
+
+
+        $scope.gotoSection = function (obj, type) {
+            $rootScope.section['data'] = obj;
+            $rootScope.section['type'] = type;
+        };
+
 
     });
 

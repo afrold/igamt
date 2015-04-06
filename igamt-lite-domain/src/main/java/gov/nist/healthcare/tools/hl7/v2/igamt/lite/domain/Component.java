@@ -16,6 +16,8 @@ public class Component extends DataElement {
 		this.id = ObjectId.get().toString();
 	}
 
+	private boolean sub = false;
+
 	@Override
 	public String toString() {
 		return "Component [id=" + id + ", datatype=" + datatype + ", name="
@@ -35,6 +37,14 @@ public class Component extends DataElement {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public boolean isSub() {
+		return sub;
+	}
+
+	public void setSub(boolean sub) {
+		this.sub = sub;
 	}
 
 }

@@ -4,199 +4,203 @@
     <i class="fa fa-spinner fa-spin"></i>
 </div>
 <div ng-show="!loading">
-    <div class="row" style="margin-top: 10px">
-        <div class="pull-right">
-            <!--<button title="Cancel Edit" type="button" class="btn btn-warning btn-sm"-->
-            <!--ng-click="reset()">-->
-            <!--<span><i class="fa fa-times"></i>&nbsp; Reset</span>-->
-            <!--</button>-->
+<div class="row" style="margin-top: 10px">
+    <div class="pull-right">
+        <!--<button title="Cancel Edit" type="button" class="btn btn-warning btn-sm"-->
+        <!--ng-click="reset()">-->
+        <!--<span><i class="fa fa-times"></i>&nbsp; Reset</span>-->
+        <!--</button>-->
 
-            <button title="Apply Changes" ng-disabled="changes.length == 0" type="button" class="btn btn-success btn-sm"
-                    ng-click="save()">
-                <span><i class="fa fa-check-square"></i>&nbsp; Apply</span>
+        <button title="Apply Changes" ng-disabled="changes.length == 0" type="button" class="btn btn-success btn-sm"
+                ng-click="save()">
+            <span><i class="fa fa-check-square"></i>&nbsp; Apply</span>
+        </button>
+        <div class="btn-group">
+            <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm"><span><i
+                    class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
+                Export
             </button>
-            <div class="btn-group">
-                <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm">                                        <span><i class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
-                    Export</button>
-                <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a ng-click="exportAs('XML')">As XML</a></li>
-                    <!--<li><a href="#" ng-click="exportAs('PDF')">As PDF</a></li>-->
-                </ul>
-            </div>
-            <button title="Close" type="button" class="btn btn-warning btn-sm"
-                    ng-click="close()">
-                <span><i class="fa fa-times"></i>&nbsp; Close</span>
+            <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                    data-toggle="dropdown" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
             </button>
-            <button title="Delete" type="button" class="btn btn-danger btn-sm"
-                    ng-click="delete()">
-                <span> <i class="fa fa-trash"></i>&nbsp; Delete</span>
-            </button>
-
+            <ul class="dropdown-menu" role="menu">
+                <li><a ng-click="exportAs('XML')">As XML</a></li>
+                <!--<li><a href="#" ng-click="exportAs('PDF')">As PDF</a></li>-->
+            </ul>
         </div>
+        <button title="Close" type="button" class="btn btn-warning btn-sm"
+                ng-click="close()">
+            <span><i class="fa fa-times"></i>&nbsp; Close</span>
+        </button>
+        <button title="Delete" type="button" class="btn btn-danger btn-sm"
+                ng-click="delete()">
+            <span> <i class="fa fa-trash"></i>&nbsp; Delete</span>
+        </button>
+
     </div>
-    <div class="row" style="margin-left: 0px">
-        <div class="col-md-3" role="complementary">
-        	<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
-               <ul class="nav bs-docs-nav-container bs-docs-nav">
-                    <li>
-                        <a href="#/profiles#info">Implementation Guide Information</a>
-                    </li>
-                    <li>
-                        <a href="#/profiles#messages">Conformance Profiles</a>
-                       <ul class="nav">
-                            <li class="igl-tbl-item" ng-repeat="msg in messagesData">
-                                <a href="#/profiles#confProfile_{{msg.message.id}}">{{msg.message.identifier}} Conformance Profile</a>
+</div>
+<div class="row" style="margin-left: 0px">
+<div class="col-md-3" role="complementary">
+    <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
+        <ul class="nav bs-docs-nav-container bs-docs-nav">
+            <li>
+                <a ng-click="gotoSection(profile.metaData, 'metaData')">Implementation Guide MetaData</a>
+            </li>
+            <li>
+                <span>Conformance Profiles</span>
+                <ul class="nav">
+                    <li class="igl-tbl-item" ng-repeat="msg in messagesData">
+                        <a ng-click="gotoSection(msg.message)">{{msg.message.identifier}}</a>
+                        <ul class="nav">
+                            <li class="igl-tbl-item">
+                                <!--<span>{{msg.message.identifier}} Message Definition</span>-->
+                                <span>{{msg.message.identifier}} Segments Definition</span>
                                 <ul class="nav">
-                                    <li class="igl-tbl-item">
-                                        <span>{{msg.message.identifier}} Message Definition</span>
-                                        <span>{{msg.message.identifier}} Segments Definition</span>
-                                        <ul class="nav">
-                                            <li class="igl-tbl-item" ng-repeat="segment in msg.segments">
-                                                <a href="#/profiles#confProfile_{{msg.message.id}}_segment_{{segment.id}}">{{segment.name}} - {{segment.description}}</a>
-                                            </li>
-                                        </ul>
-                                        <a>{{msg.message.identifier}} Datatypes Definition</a>
-                                        <ul class="nav">
-                                            <li ng-repeat="datatype in msg.datatypes" class="igl-tbl-item">
-                                                <a href="#/profiles#confProfile_{{msg.message.id}}_datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</a>
-                                            </li>
-                                        </ul>
+                                    <li class="igl-tbl-item" ng-repeat="segment in msg.segments">
+                                        <a ng-click="gotoSection(segment, 'segment')">{{segment.name}} -
+                                            {{segment.description}}</a>
+                                    </li>
+                                </ul>
+                                <span>{{msg.message.identifier}} Datatypes Definition</span>
+                                <ul class="nav">
+                                    <li ng-repeat="datatype in msg.datatypes" class="igl-tbl-item">
+                                        <a ng-click="gotoSection(datatype, 'datatype')">{{datatype.label}} -
+                                            {{datatype.description}}</a>
                                     </li>
                                 </ul>
                             </li>
-                       </ul>
+                        </ul>
                     </li>
-               </ul>
-            </nav>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+<div class="col-md-9" role="main">
+<div>
+<div class="bs-docs-section" ng-show="section.type === 'metaData'">
+    <h1 id="info" class="page-header">Implementation Guide MetaData</h1>
+
+    <form name="igMetaDataForm" novalidate>
+        <div class="col-sm-6">
+
+            <div class="form-group"
+                 ng-class="{'has-error' : igMetaDataForm.identifier.$invalid && !igMetaDataForm.identifier.$pristine }">
+                <label>Idenfifier</label>
+                <input type="text"
+                       ng-change="recordChange2('profile',profile.id,'identifier', section.data.identifier)"
+                       name="profileIndentifier" class="form-control"
+                       ng-model="section.data.identifier"
+                       required>
+            </div>
+
+            <div class="form-group"
+                 ng-class="{'has-error' : igMetaDataForm.name.$invalid && !igMetaDataForm.name.$pristine }">
+                <label>Title</label>
+                <input type="text"
+                       ng-change="recordChange2('profile',profile.id,'name', section.data.name)"
+                       name="name" class="form-control" ng-model="section.data.name"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label>Organization Name</label>
+                <input type="text" name="orgName"
+                       ng-change="recordChange2('profile',profile.id,'orgName', section.data.orgName)"
+                       class="form-control" ng-model="section.data.orgName"
+                       required>
+            </div>
+            <div class="form-group"
+                 ng-class="{'has-error' : igMetaDataForm.status.$invalid && !igMetaDataForm.status.$pristine }">
+                <label>Status</label>
+                <select class="form-control"
+                        name="status"
+                        ng-change="recordChange2('profile',profile.id,'status', section.data.status)"
+                        ng-model="section.data.status"
+                        ng-options="status for status in statuses">
+                </select>
+            </div>
+
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Type</label>
+                <input type="text"
+                       ng-change="recordChange2('profile',profile.id,'type', section.data.type)"
+                       name="type" class="form-control" ng-model="section.data.type"
+                       required>
+            </div>
+
+            <div class="form-group"
+                 ng-class="{'has-error' : igMetaDataForm.hl7Version.$invalid && !igMetaDataForm.hl7Version.$pristine }">
+                <label>HL7Version</label>
+                <select class="form-control" disabled
+                        name="hl7Version"
+                        required
+                        ng-model="section.data.hl7Version"
+                        ng-options="hl7Version for hl7Version in hl7Versions">
+                </select>
+            </div>
+
+            <div class="form-group"
+                 ng-class="{'has-error' : igMetaDataForm.schemaVersion.$invalid && !igMetaDataForm.schemaVersion.$pristine }">
+                <label>Schema version</label>
+                <select class="form-control" disabled
+                        required
+                        name="schemaVersion"
+                        ng-model="section.data.schemaVersion"
+                        ng-options="schemaVersion for schemaVersion in schemaVersions">
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Topics</label>
+                <input type="text" name="topics"
+                       ng-change="recordChange2('profile',profile.id,'topics', section.data.topics)"
+                       class="form-control" ng-model="section.data.topics">
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+<div class="bs-docs-section" ng-show="section.type === 'message'">
+    <div>
+        <h1 class="page-header">{{section.data.identifier}} Message
+            Definition</h1>
+        <h3>Message {{section.data.structID}}</h3>
+
+        <div>
+            <h4>Text1</h4>
+        <textarea disabled  style="width:100%; margin-bottom: 20px" class="form-control" ng-bind="section.data.comment"
+                ></textarea>
         </div>
 
 
-        <div class="col-md-9" role="main">
-             <div style="height:100%;overflow:scroll">
-             <div class="bs-docs-section">
-                <h1 id="info" class="page-header">Implementation Guide Information</h1>
 
-                <form name="igMetaDataForm" novalidate>
-                    <div class="col-sm-6">
-
-                        <div class="form-group"
-                             ng-class="{'has-error' : igMetaDataForm.identifier.$invalid && !igMetaDataForm.identifier.$pristine }">
-                            <label>Idenfifier</label>
-                            <input type="text"
-                                   ng-change="recordChange2('profile',profile.id,'identifier', profile.metaData.identifier)"
-                                   name="profileIndentifier" class="form-control"
-                                   ng-model="profile.metaData.identifier"
-                                   required>
-                        </div>
-
-                        <div class="form-group"
-                             ng-class="{'has-error' : igMetaDataForm.name.$invalid && !igMetaDataForm.name.$pristine }">
-                            <label>Title</label>
-                            <input type="text"
-                                   ng-change="recordChange2('profile',profile.id,'name', profile.metaData.name)"
-                                   name="name" class="form-control" ng-model="profile.metaData.name"
-                                   required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Organization Name</label>
-                            <input type="text" name="orgName"
-                                   ng-change="recordChange2('profile',profile.id,'orgName', profile.metaData.orgName)"
-                                   class="form-control" ng-model="profile.metaData.orgName"
-                                   required>
-                        </div>
-                        <div class="form-group"
-                             ng-class="{'has-error' : igMetaDataForm.status.$invalid && !igMetaDataForm.status.$pristine }">
-                            <label>Status</label>
-                            <select class="form-control"
-                                    name="status"
-                                    ng-change="recordChange2('profile',profile.id,'status', profile.metaData.status)"
-                                    ng-model="profile.metaData.status"
-                                    ng-options="status for status in statuses">
-                            </select>
-                        </div>
-
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label>Type</label>
-                            <input type="text"
-                                   ng-change="recordChange2('profile',profile.id,'type', profile.metaData.type)"
-                                   name="type" class="form-control" ng-model="profile.metaData.type"
-                                   required>
-                        </div>
-
-                        <div class="form-group"
-                             ng-class="{'has-error' : igMetaDataForm.hl7Version.$invalid && !igMetaDataForm.hl7Version.$pristine }">
-                            <label>HL7Version</label>
-                            <select class="form-control" disabled
-                                    name="hl7Version"
-                                    required
-                                    ng-model="profile.metaData.hl7Version"
-                                    ng-options="hl7Version for hl7Version in hl7Versions">
-                            </select>
-                        </div>
-
-                        <div class="form-group"
-                             ng-class="{'has-error' : igMetaDataForm.schemaVersion.$invalid && !igMetaDataForm.schemaVersion.$pristine }">
-                            <label>Schema version</label>
-                            <select class="form-control" disabled
-                                    required
-                                    name="schemaVersion"
-                                    ng-model="profile.metaData.schemaVersion"
-                                    ng-options="schemaVersion for schemaVersion in schemaVersions">
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Topics</label>
-                            <input type="text" name="topics"
-                                   ng-change="recordChange2('profile',profile.id,'topics', profile.metaData.topics)"
-                                   class="form-control" ng-model="profile.metaData.topics">
-                        </div>
-                    </div>
-                </form>
-
-            </div>
-
-            <div class="bs-docs-section">
-                <h1 id="messages" class="page-header">Conformance Profiles</h1>
-                <!--<h2 class="page-header">Descriptions</h2>-->
-                <!--<textarea style="width:100%" class="form-control" ng-model="profile.comment"-->
-                          <!--ng-change="recordChange2('profile',profile.id,'comment', profile.comment)"> </textarea>-->
-
-                <div ng-repeat="msg in messagesData">
-                    <div>
-                        <h1 id="confProfile_{{msg.message.id}}" class="page-header">Conformance Profile:{{msg.message.identifier}} </h1>
-                        <h2 class="page-header">{{msg.message.identifier}} Message
-                            Definition</h2>
-
-                        <textarea style="width:100%" class="form-control" ng-model="msg.message.comment"
-                                  ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>
-                        <!--<h3>Message Type</h3>-->
-                        <h3>{{msg.message.structID}}</h3>
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr class="ig-tbl-header row">
-                                <th class="col-md-2">Segment</th>
-                                <th class="col-md-2">Name</th>
-                                <th class="col-md-1">Usage</th>
-                                <th class="col-md-1">Cardi</th>
-                                <th class="col-md-2">Conf. Statement</th>
-                                <th class="col-md-2">Predicate</th>
-                                <th class="col-md-2">Comment</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="segRefOrGroup in msg.segRefOrGroups" class="row">
-                                <td class="col-md-2">
-                                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segRefOrGroup.ref.name"></span>
-                                </td>
-                                <td class="col-md-2">
-                                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segRefOrGroup.ref.description"></span>
+        <table class="table table-bordered">
+            <thead>
+            <tr class="ig-tbl-header row">
+                <th class="col-md-2">Segment</th>
+                <th class="col-md-2">Name</th>
+                <th class="col-md-1">Usage</th>
+                <th class="col-md-1">Cardi</th>
+                <th class="col-md-2">Conf. Statement</th>
+                <th class="col-md-2">Predicate</th>
+                <th class="col-md-2">Comment</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="segRefOrGroup in section.data.segRefOrGroups" class="row">
+                <td class="col-md-2">
+                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segRefOrGroup.ref.name"></span>
+                </td>
+                <td class="col-md-2">
+                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segRefOrGroup.ref.description"></span>
                     <span ng-show="segRefOrGroup.type === 'group'">
                         -- {{segRefOrGroup.name | uppercase }} begin
                     </span>
@@ -205,180 +209,314 @@
                         -- {{segRefOrGroup.name | uppercase }} end
                     </span>
 
-                                </td>
-                                <td class="col-md-1">
-                                    <span ng-show="segRefOrGroup.predicates != null && segRefOrGroup.predicates.length > 0">C({{segRefOrGroup.predicates[0].trueUsage}}, {{segRefOrGroup.predicates[0].falseUsage}})</span>
+                </td>
+                <td class="col-md-1">
+                    <span ng-show="segRefOrGroup.predicates != null && segRefOrGroup.predicates.length > 0">C({{segRefOrGroup.predicates[0].trueUsage}}, {{segRefOrGroup.predicates[0].falseUsage}})</span>
                             <span ng-show="!segRefOrGroup.predicates || segRefOrGroup.predicates == null || segRefOrGroup.predicates.length == 0"
                                   ng-bind="segRefOrGroup.usage"></span>
-                                </td>
-                                <td class="col-md-1">
+                </td>
+                <td class="col-md-1">
                         <span ng-show="segRefOrGroup.type !== 'end-group'">
                         <span>[{{segRefOrGroup.min}}..{{segRefOrGroup.max}}]</span>
                         </span>
-                                </td>
-                                <td class="col-md-2">
+                </td>
+                <td class="col-md-2">
 
-                                </td>
-                                <td class="col-md-2">
+                </td>
+                <td class="col-md-2">
 
-                                </td>
-                                <td class="col-md-2">
+                </td>
+                <td class="col-md-2">
                          <span ng-show="segRefOrGroup.type !== 'end-group'">
                         <span ng-bind="segRefOrGroup.comment"></span>
                         </span>
-                                </td>
-                            </tr>
+                </td>
+            </tr>
 
 
-                            </tbody>
-                        </table>
-                    </div>
+            </tbody>
+        </table>
+
+
+        <div ng-show="section.data.conformanceStatements && section.data.conformanceStatements.length > 0">
+            <h4>Conformance Statement</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr class="ig-tbl-header row">
+                    <th>ID</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="conStatement in section.data.conformanceStatements" class="row">
+                    <td>{{conStatement.constraintId}}</td>
+                    <td>{{conStatement.description}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div ng-show="section.data.predicates && section.data.predicates.length > 0">
+            <h4>Conditional Predicates</h4>
+            <table class="table table-bordered">
+                <thead>
+                <tr class="ig-tbl-header row">
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="predicate in section.data.predicates" class="row">
+                    <td>{{predicate.description}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>
+
+
+<div class="bs-docs-section" ng-show="section.type === 'segment'">
+    <h1 class="page-header">Segment Definition</h1>
+    <h3 class="page-header">{{section.data.name}} - {{section.data.description}}</h3>
+    <div>
+        <h4>Text1</h4>
+        <textarea disabled style="width:100%; margin-bottom: 20px"  class="form-control"  ng-model="section.data.text1">
+        </textarea>
+    </div>
 
 
 
-                    <h2 id="message_{{msg.message.id}}_segments" class="page-header">Segments</h2>
-                    <h2 id="message_{{msg.message.id}}_segments_def">{{msg.message.identifier}} Segments Definition</h2>
-                    <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
-                              <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
-                    <div ng-repeat="segment in msg.segments">
-                        <div>
-                        <h3 id="">{{segment.name}} - {{segment.description}}</h3>
-                        <!--<textarea style="width:100%" class="form-control" ng-model="segment.comment"-->
-                            <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)">-->
-                        <!--</textarea>-->
 
-                            <table class="table table-bordered">
-                            <thead>
-                            <tr class="ig-tbl-header row">
-                                <th class="col-md-1">SEQ</th>
-                                <th class="col-md-1">Field</th>
-                                <th class="col-md-1">Usage</th>
-                                <th class="col-md-1">Cardi</th>
-                                <th class="col-md-1">Length</th>
-                                <th class="col-md-1">ValueSet</th>
-                                <th class="col-md-2">Conf Statement</th>
-                                <th class="col-md-2">Predicate</th>
-                                <th class="col-md-2">Comments</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="field in segment.fields" class="row">
-                                <td class="col-md-1">
-                                    <span  ng-bind="field.position"></span>
-                                </td>
-                                <td class="col-md-2">
-                                    <span  ng-bind="field.name"></span>
-                                </td>
-                                <td class="col-md-1">
-                                    <span ng-show="field.predicates != null && field.predicates.length > 0">C({{field.predicates[0].trueUsage}}, {{field.predicates[0].falseUsage}})</span>
+    <div>
+        <table class="table table-bordered">
+            <thead>
+            <tr class="ig-tbl-header row">
+                <th class="col-md-1">SEQ</th>
+                <th class="col-md-1">Field</th>
+                <th class="col-md-1">Usage</th>
+                <th class="col-md-1">Cardi</th>
+                <th class="col-md-1">Length</th>
+                <th class="col-md-1">Datatype</th>
+                <th class="col-md-1">ValueSet</th>
+                <th class="col-md-2">Conf Statement</th>
+                <th class="col-md-2">Predicate</th>
+                <th class="col-md-2">Comments</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="field in section.data.fields" class="row">
+                <td class="col-md-1">
+                    <span ng-bind="field.position"></span>
+                </td>
+                <td class="col-md-2">
+                    <span ng-bind="field.name"></span>
+                </td>
+                <td class="col-md-1">
+                    <span ng-show="field.predicates != null && field.predicates.length > 0">C({{field.predicates[0].trueUsage}}/{{field.predicates[0].falseUsage}})</span>
                             <span ng-show="!field.predicates || field.predicates == null || field.predicates.length == 0"
                                   ng-bind="field.usage"></span>
-                                </td>
+                </td>
 
-                                <td class="col-md-1">
-                                    <span>[{{field.min}}..{{field.max}}]</span>
-                                 </td>
-                                <td class="col-md-1">
-                                    <span>[{{field.minLength}},{{field.maxLength}}]</span>
-                                </td>
-                                <td class="col-md-1">
-                                    <span>{{field.table.mappingId}}</span>
-                                </td>
-                                <td class="col-md-2">
-                                </td>
-                                <td class="col-md-2">
-                                </td>
-                                <td class="col-md-2">
-                                        <span ng-bind="field.comment"></span>
-                                 </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        </div>
-                    </div>
+                <td class="col-md-1">
+                    <span>[{{field.min}}..{{field.max}}]</span>
+                </td>
+                <td class="col-md-1">
+                    <span>[{{field.minLength}},{{field.maxLength}}]</span>
+                </td>
+                <td class="col-md-1">
+                    <span>{{field.datatype.label}}</span>
+                </td>
+                <td class="col-md-1">
+                    <span>{{field.table.mappingId}}</span>
+                </td>
+                <td class="col-md-2">
+                     <span ng-show="trim" class="constraint_trim">
+                                              <span ng-repeat="predicate in field.datatype.predicates">
+                                                 {{predicate.description}}
+                                              </span>
+                                            </span>
+                                         <span ng-show="!trim" class="constraint_verbose">
+                                              <p ng-repeat="predicate in field.datatype.predicates">
+                                                  {{predicate.description}}
+                                              </p>
+                                            </span>
+                </td>
+                <td class="col-md-2">
+                     <span ng-show="trim" class="constraint_trim">
+                                               <span ng-repeat="conStatement in field.datatype.conformanceStatements">
+                                                    {{conStatement.constraintId}} : {{conStatement.description}}
+                                             </span>
+                                            </span>
+                                         <span ng-show="!trim" class="constraint_verbose">
+                                              <p ng-repeat="conStatement in field.datatype.conformanceStatements">
+                                                  {{conStatement.constraintId}} : {{conStatement.description}}
+                                              </p>
+                                            </span>
+                </td>
+                <td class="col-md-2">
+                    <span ng-bind="field.comment"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-                    </div>
-
-
-
-                    <h2 id="message_{{msg.message.id}}_datatypes" class="page-header">Datatypes</h2>
-
-                    <h3 id="message_{{msg.message.id}}_datatypes_def">{{msg.message.identifier}} Datatypes
-                        Definition</h3>
-                    <!--<textarea style="width:100%" class="form-control" ng-model="msg.message.comment"-->
-                              <!--ng-change="recordChange2('message',msg.message.id,'comment', msg.message.comment)"> </textarea>-->
-
-                    <div ng-repeat="datatype in msg.datatypes">
-                        <div>
-                        <h3 id="profiles#datatype_{{datatype.id}}">{{datatype.label}} - {{datatype.description}}</h3>
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr class="ig-tbl-header row">
-                                <th class="col-md-1">SEQ</th>
-                                <th class="col-md-1">Component</th>
-                                <th class="col-md-1">Usage</th>
-                                <th class="col-md-1">Cardi</th>
-                                <th class="col-md-1">Length</th>
-                                <th class="col-md-1">ValueSet</th>
-                                <th class="col-md-2">Conf Statement</th>
-                                <th class="col-md-2">Predicate</th>
-                                <th class="col-md-2">Comments</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="component in datatype.children" class="row">
-                                <td class="col-md-1">
-                                    <span  ng-bind="component.position"></span>
-                                </td>
-                                <td class="col-md-2">
-                                    <span  ng-bind="component.name"></span>
-                                </td>
-                                <td class="col-md-1">
-                                    <span ng-show="component.predicates != null && component.predicates.length > 0">C({{component.predicates[0].trueUsage}}, {{component.predicates[0].falseUsage}})</span>
-                            <span ng-show="!component.predicates || component.predicates == null || component.predicates.length == 0"
-                                  ng-bind="component.usage"></span>
-                                </td>
-
-                                <td class="col-md-1">
-                                    <span>[{{component.min}}..{{component.max}}]</span>
-                                </td>
-                                <td class="col-md-1">
-                                    <span>[{{component.minLength}},{{component.maxLength}}]</span>
-                                </td>
-                                <td class="col-md-1">
-                                    <span>{{component.table.mappingId}}</span>
-                                </td>
-                                <td class="col-md-2">
-                                </td>
-                                <td class="col-md-2">
-                                </td>
-                                <td class="col-md-2">
-                                    <span ng-bind="component.comment"></span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                            </div>
-                    </div>
+    <div>
+        <h4>Text2</h4>
+        <textarea disabled style="width:100%" class="form-control" ng-model="section.data.text2">
+        </textarea>
+    </div>
 
 
-
-
-
-
-                </div>
+    <div ng-show="section.data.conformanceStatements && section.data.conformanceStatements.length > 0">
+        <h4>Conformance Statement</h4>
+        <table class="table table-bordered">
+            <thead>
+            <tr class="ig-tbl-header">
+                <th>ID</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="conStatement in section.data.conformanceStatements">
+                <td>{{conStatement.constraintId}}</td>
+                <td>{{conStatement.description}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-show="section.data.predicates && section.data.predicates.length > 0">
+        <h4>Conditional Predicates</h4>
+        <table class="table table-bordered">
+            <thead>
+            <tr class="ig-tbl-header">
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="predicate in section.data.predicates">
+                <td>{{predicate.description}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
 
 
 </div>
 
-            </div>
-        </div>
 
-
-        <a class="back-to-top" href="#top"> Back to top </a>
-
+<div class="bs-docs-section" ng-show="section.type === 'datatype'">
+    <h1 class="page-header">Datatype Definition</h1>
+    <h3 class="page-header">{{section.data.label}} - {{section.data.description}}</h3>
+    <div>
+        <h4>Text</h4>
+        <textarea disabled style="width:100%; margin-bottom: 20px"  class="form-control" ng-model="section.data.text1">
+        </textarea>
     </div>
+    <div>
+        <table class="table table-bordered">
+            <thead>
+            <tr class="ig-tbl-header row">
+                <th class="col-md-1">SEQ</th>
+                <th class="col-md-1">Component</th>
+                <th class="col-md-1">Usage</th>
+                <th class="col-md-1">Datatype</th>
+                <th class="col-md-1">Length</th>
+                <th class="col-md-1">ValueSet</th>
+                <th class="col-md-2">Conf Statement</th>
+                <th class="col-md-2">Predicate</th>
+                <th class="col-md-2">Comments</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="component in section.data.components" class="row">
+                <td class="col-md-1">
+                    <span ng-bind="component.position"></span>
+                </td>
+                <td class="col-md-2">
+                    <span ng-bind="component.name"></span>
+                </td>
+                <td class="col-md-1">
+                    <span ng-show="component.predicates != null && component.predicates.length > 0">C({{component.predicates[0].trueUsage}}, {{component.predicates[0].falseUsage}})</span>
+                            <span ng-show="!component.predicates || component.predicates == null || component.predicates.length == 0"
+                                  ng-bind="component.usage"></span>
+                </td>
+
+                <td class="col-md-1">
+                    <span ng-bind="component.datatype.label"></span>
+                </td>
+                <td class="col-md-1">
+                    <span>[{{component.minLenghth}},{{component.maxLength}}]</span>
+                </td>
+                <td class="col-md-1">
+                    <span>{{component.table.mappingId}}</span>
+                </td>
+                <td class="col-md-2">
+                </td>
+                <td class="col-md-2">
+                </td>
+                <td class="col-md-2">
+                    <span ng-bind="component.comment"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div ng-show="section.data.conformanceStatements && section.data.conformanceStatements.length > 0">
+        <h4>Conformance Statement</h4>
+        <table class="table table-bordered">
+            <thead>
+            <tr class="ig-tbl-header">
+                <th>ID</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="conStatement in section.data.conformanceStatements">
+                <td>{{conStatement.constraintId}}</td>
+                <td>{{conStatement.description}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div ng-show="section.data.predicates && section.data.predicates.length > 0">
+        <h4>Conditional Predicates</h4>
+        <table class="table table-bordered">
+            <thead>
+            <tr class="ig-tbl-header">
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="predicate in section.data.predicates">
+                <td>{{predicate.description}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+</div>
+</div>
+
+
+<a class="back-to-top" href="#top"> Back to top </a>
+
+</div>
 </div>
 </div>
 

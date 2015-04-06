@@ -179,7 +179,7 @@
 
                             </div>
                             <div ng-show="node.type === 'segment'">-</div>
-                            <div ng-show="node.type === 'component' || node.type === 'subcomponent'">
+                            <div ng-show="node.type === 'component' ">
                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0" ng-bind="node.usage">
                             </span>
                             <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
@@ -203,7 +203,7 @@
                                             </span>
                             </div>
                             <div ng-show="node.type === 'segment'">-</div>
-                            <div ng-show="node.type === 'component' || node.type === 'subcomponent'">
+                            <div ng-show="node.type === 'component' ">
                             -
                             </div>
                         </td>
@@ -225,7 +225,7 @@
                                             </span>
                             </div>
                             <div ng-show="node.type === 'segment'">-</div>
-                            <div ng-show="node.type === 'component' || node.type === 'subcomponent'">
+                            <div ng-show="node.type === 'component' ">
                             [{{node.minLength}},{{node.maxLength}}]
                             </div>
                         </td>
@@ -241,7 +241,7 @@
                                             </span>
                             </div>
                             <div ng-show="node.type === 'segment'">-</div>
-                            <div ng-show="node.type === 'component' || node.type === 'subcomponent'" ng-bind="node.confLength">
+                            <div ng-show="node.type === 'component' " ng-bind="node.confLength">
                             </div>
                         </td>
 
@@ -259,7 +259,7 @@
                                 <!--ng-bind="node.segment.label"></a>-->
                             </div>
                             <div ng-show="node.type === 'segment'">-</div>
-                            <div ng-show="node.type === 'component' || node.type === 'subcomponent'" ng-bind="node.datatype.label">
+                            <div ng-show="node.type === 'component' " ng-bind="node.datatype.label">
                             </div>
                         </td>
 
@@ -271,7 +271,7 @@
                                             </span>
                             </div>
 
-                            <div ng-show="node.type === 'component' || node.type === 'subcomponent'">
+                            <div ng-show="node.type === 'component'">
                                 <span ng-show="node.table != undefined">
                                                 <a class="point" ng-click="goToTable(node.table)"
                                                    ng-bind="node.table.mappingId"></a>
@@ -342,7 +342,7 @@
                                        ng-change="recordChange(node,'comment')"
                                        ng-model="node.comment">
                             </div>
-                            <div ng-show="node.type === 'component' || node.type === 'subcomponent'" ng-bind="node.comment"></div>
+                            <div ng-show="node.type === 'component' " ng-bind="node.comment"></div>
                             <div ng-show="node.type === 'segment'">-</div>
                         </td>
                     </tr>

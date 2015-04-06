@@ -98,6 +98,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.changes = {};
     $rootScope.generalInfo = {type: null, 'message': null};
     $rootScope.references =[]; // collection of element referencing a datatype to delete
+    $rootScope.section = {};
 
 
     $rootScope.selectProfileTab = function (value) {
