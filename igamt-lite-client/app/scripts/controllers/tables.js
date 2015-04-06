@@ -37,38 +37,13 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                 $scope.params.refresh();
             $scope.loadingSelection = false;
         };
-        
-        /*
-         * 	@Column(name = "VERSION")
-	private String version;
-	@Column(name = "CODESYS")
-	private String codesys;
-	@Column(name = "OID")
-	private String oid;
-	@Column(name = "TABLETYPE")
-	private String tableType;
-	@Column(name = "STABILITY")
-	private String stability;
-	@Column(name = "EXTENSIBILITY")
-	private String extensibility;
-	
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinTable(name = "TABLE_CODE", joinColumns = @JoinColumn(name = "IGTABLE"), inverseJoinColumns = @JoinColumn(name = "CODE"))
-	private final Set<Code> codes = new HashSet<Code>();
-         */
 
         $scope.addTable = function () {
-//        	$scope.loadingSelection = true;
         	$rootScope.newTableFakeId = $rootScope.newTableFakeId - 1;
-        	$rootScope.newTable = {id:$rootScope.newTableFakeId, type: '', mappingAlternateId: '', mappingId:'', name:'', version:'', codesys:'', oid:'', tableType:'', stability:'', extensibility:'', codes:[]};
-        	
+        	$rootScope.newTable = {id:$rootScope.newTableFakeId, type: 'table', mappingAlternateId: '', mappingId:'', name:'', version:'', codesys:'', oid:'', tableType:'', stability:'', extensibility:'', codes:[]};
         	$rootScope.recordChange($rootScope.newTable,'table');
-        	
         	$scope.tmpTables.push($rootScope.newTable);
-//        	$rootScope.recordChange($rootScope.table,'codes');
-//        	if ($scope.params) $scope.params.refresh();
-//        	$scope.loadingSelection = false;
+//        	$rootScope.tables =[].concat($scope.tmpTables);
         }
         
         $scope.addCode = function () {

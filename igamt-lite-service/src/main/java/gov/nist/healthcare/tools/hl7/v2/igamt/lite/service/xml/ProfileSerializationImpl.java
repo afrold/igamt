@@ -201,8 +201,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		for (int i = 0; i < datatypeNodeList.getLength(); i++) {
 			Element elmDatatype = (Element) datatypeNodeList.item(i);
-			datatypesMap.put(elmDatatype.getAttribute("ID"), this
-					.deserializeDatatype(elmDatatype, profile, elmDatatypes));
+			if(!this.datatypesMap.containsKey(elmDatatype.getAttribute("ID")))
+				datatypesMap.put(elmDatatype.getAttribute("ID"), this.deserializeDatatype(elmDatatype, profile, elmDatatypes));
 		}
 	}
 
@@ -226,25 +226,30 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			if (nodes.item(i).getNodeName().equals("Component")) {
 				Element elmComponent = (Element) nodes.item(i);
 				Component componentObj = new Component();
-				componentObj.setConfLength(elmComponent
-						.getAttribute("ConfLength"));
-				componentObj.setMaxLength(elmComponent
-						.getAttribute("MaxLength"));
-				componentObj.setMinLength(new Integer(elmComponent
-						.getAttribute("MinLength")));
+				componentObj.setConfLength(elmComponent.getAttribute("ConfLength"));
+				componentObj.setMaxLength(elmComponent.getAttribute("MaxLength"));
+				componentObj.setMinLength(new Integer(elmComponent.getAttribute("MinLength")));
 				componentObj.setName(elmComponent.getAttribute("Name"));
-				componentObj.setTable(this.findTable(elmComponent
-						.getAttribute("Table"), profile.getTableLibrary()
-						.getTables()));
-				componentObj.setUsage(Usage.fromValue(elmComponent
-						.getAttribute("Usage")));
-				componentObj.setBindingLocation(elmComponent
-						.getAttribute("BindingLocation"));
-				componentObj.setBindingStrength(elmComponent
-						.getAttribute("BindingStrength"));
-				componentObj.setDatatype(this.findDatatype(
-						elmComponent.getAttribute("Datatype"), profile,
-						elmDatatypes));
+				
+				if(elmComponent.getAttribute("Table") != null){
+					String tableScript = elmComponent.getAttribute("Table");
+					String[] tableTags = tableScript.split("#");
+					
+					if(tableTags.length == 1){
+						componentObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
+					}else if(tableTags.length == 1){
+						componentObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
+						componentObj.setBindingStrength(tableTags[1]);
+					}else if(tableTags.length == 2){
+						componentObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
+						componentObj.setBindingStrength(tableTags[1]);
+						componentObj.setBindingLocation(tableTags[2]);
+					}
+				}
+				componentObj.setUsage(Usage.fromValue(elmComponent.getAttribute("Usage")));
+				componentObj.setBindingLocation(elmComponent.getAttribute("BindingLocation"));
+				componentObj.setBindingStrength(elmComponent.getAttribute("BindingStrength"));
+				componentObj.setDatatype(this.findDatatype(elmComponent.getAttribute("Datatype"), profile, elmDatatypes));
 				datatypeObj.addComponent(componentObj);
 			}
 		}
@@ -301,6 +306,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			}
 
 		}
+		throw new IllegalArgumentException("Datatype " + key + " not found");
+	}
+	
+	private Datatype findDatatype(String key, Profile profile) {
+		if (datatypesMap.get(key) != null)
+			return datatypesMap.get(key);
 		throw new IllegalArgumentException("Datatype " + key + " not found");
 	}
 
@@ -379,23 +390,25 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		for (Field f : s.getFields()) {
 			nu.xom.Element elmField = new nu.xom.Element("Field");
 			elmField.addAttribute(new Attribute("Name", f.getName()));
-			elmField.addAttribute(new Attribute("Usage", f.getUsage()
-					.toString()));
-			elmField.addAttribute(new Attribute("Datatype", f.getDatatype()
-					.getId() + ""));
-			elmField.addAttribute(new Attribute("MinLength", ""
-					+ f.getMinLength()));
+			elmField.addAttribute(new Attribute("Usage", f.getUsage().toString()));
+			elmField.addAttribute(new Attribute("Datatype", f.getDatatype().getId() + ""));
+			elmField.addAttribute(new Attribute("MinLength", "" + f.getMinLength()));
 			elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
 			elmField.addAttribute(new Attribute("Max", "" + f.getMax()));
 			if (f.getMaxLength() != null && !f.getMaxLength().equals(""))
-				elmField.addAttribute(new Attribute("MaxLength", f
-						.getMaxLength()));
+				elmField.addAttribute(new Attribute("MaxLength", f.getMaxLength()));
 			if (f.getConfLength() != null && !f.getConfLength().equals(""))
-				elmField.addAttribute(new Attribute("ConfLength", f
-						.getConfLength()));
+				elmField.addAttribute(new Attribute("ConfLength", f.getConfLength()));
+			
+			String tableScript = "";
 			if (f.getTable() != null && !f.getTable().equals(""))
-				elmField.addAttribute(new Attribute("Table", f.getTable()
-						.getMappingId()));
+				tableScript = tableScript + f.getTable().getMappingId();
+			if (f.getBindingStrength() != null && !f.getBindingStrength().equals(""))
+				tableScript = tableScript + "#" + f.getBindingStrength();
+			if (f.getBindingLocation() != null && !f.getBindingLocation().equals(""))
+				tableScript = tableScript + "#" + f.getBindingLocation();
+			if(!tableScript.equals(""))
+				elmField.addAttribute(new Attribute("Table", tableScript));
 			if (f.getItemNo() != null && !f.getItemNo().equals(""))
 				elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
 			elmSegment.appendChild(elmField);
@@ -414,21 +427,26 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			for (Component c : d.getComponents()) {
 				nu.xom.Element elmComponent = new nu.xom.Element("Component");
 				elmComponent.addAttribute(new Attribute("Name", c.getName()));
-				elmComponent.addAttribute(new Attribute("Usage", c.getUsage()
-						.toString()));
-				elmComponent.addAttribute(new Attribute("Datatype", c
-						.getDatatype().getId() + ""));
-				elmComponent.addAttribute(new Attribute("MinLength", ""
-						+ c.getMinLength()));
+				elmComponent.addAttribute(new Attribute("Usage", c.getUsage().toString()));
+				elmComponent.addAttribute(new Attribute("Datatype", c.getDatatype().getId() + ""));
+				elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
 				if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
-					elmComponent.addAttribute(new Attribute("MaxLength", c
-							.getMaxLength()));
+					elmComponent.addAttribute(new Attribute("MaxLength", c.getMaxLength()));
 				if (c.getConfLength() != null && !c.getConfLength().equals(""))
-					elmComponent.addAttribute(new Attribute("ConfLength", c
-							.getConfLength()));
+					elmComponent.addAttribute(new Attribute("ConfLength", c.getConfLength()));
+				
+				String tableScript = "";
 				if (c.getTable() != null && !c.getTable().equals(""))
-					elmComponent.addAttribute(new Attribute("Table", c
-							.getTable().getMappingId() + ""));
+					tableScript = tableScript + c.getTable().getMappingId();
+				if (c.getBindingStrength() != null && !c.getBindingStrength().equals(""))
+					tableScript = tableScript + "#" + c.getBindingStrength();
+				if (c.getBindingLocation() != null && !c.getBindingLocation().equals(""))
+					tableScript = tableScript + "#" + c.getBindingLocation();
+				if(!tableScript.equals(""))
+					elmComponent.addAttribute(new Attribute("Table", tableScript));
+				
+				if (c.getTable() != null && !c.getTable().equals(""))
+					elmComponent.addAttribute(new Attribute("Table", c.getTable().getMappingId() + ""));
 				elmDatatype.appendChild(elmComponent);
 			}
 		}
@@ -552,13 +570,23 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		fieldObj.setMinLength(new Integer(fieldElm.getAttribute("MinLength")));
 		fieldObj.setName(fieldElm.getAttribute("Name"));
 		fieldObj.setUsage(Usage.fromValue(fieldElm.getAttribute("Usage")));
-		fieldObj.setTable(this.findTable(fieldElm.getAttribute("Table"),
-				profile.getTableLibrary().getTables()));
-		fieldObj.setBindingStrength(fieldElm.getAttribute("BindingStrength"));
-		fieldObj.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
-		fieldObj.setDatatype(this.datatypesMap.get(fieldElm
-				.getAttribute("Datatype")));
-
+		
+		if(fieldElm.getAttribute("Table") != null){
+			String tableScript = fieldElm.getAttribute("Table");
+			String[] tableTags = tableScript.split("#");
+			
+			if(tableTags.length == 1){
+				fieldObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
+			}else if(tableTags.length == 1){
+				fieldObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
+				fieldObj.setBindingStrength(tableTags[1]);
+			}else if(tableTags.length == 2){
+				fieldObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
+				fieldObj.setBindingStrength(tableTags[1]);
+				fieldObj.setBindingLocation(tableTags[2]);
+			}
+		}
+		fieldObj.setDatatype(this.findDatatype(fieldElm.getAttribute("Datatype"), profile));
 		return fieldObj;
 	}
 
