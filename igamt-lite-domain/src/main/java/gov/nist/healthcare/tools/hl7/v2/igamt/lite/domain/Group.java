@@ -37,19 +37,52 @@ public class Group extends SegmentRefOrGroup {
 		this.children.add(e);
 	}
 
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
 	public void setChildren(List<SegmentRefOrGroup> children) {
 		this.children = new ArrayList<SegmentRefOrGroup>();
 		for (SegmentRefOrGroup child : children) {
 			addSegmentsOrGroup(child);
 		}
+	}
+
+	public SegmentRefOrGroup findOneSegmentRefOrGroup(String id) {
+		if (this.getId().equals(id)) {
+			return this;
+		}
+		if (this.getChildren() != null) {
+			for (SegmentRefOrGroup m : this.getChildren()) {
+				if (m instanceof SegmentRef) {
+					if (m.getId().equals(id)) {
+						return m;
+					}
+				} else if (m instanceof Group) {
+					Group gr = (Group) m;
+					SegmentRefOrGroup tmp = gr.findOneSegmentRefOrGroup(id);
+					if (tmp != null) {
+						return tmp;
+					}
+
+				}
+			}
+		}
+		return null;
+	}
+
+	public Boolean deleteSegmentRefOrGroup(String id) {
+		if (this.getChildren() != null) {
+			for (int i = 0; i < this.getChildren().size(); i++) {
+				SegmentRefOrGroup m = this.getChildren().get(i);
+				if (m.getId().equals(id)) {
+					return this.getChildren().remove(m);
+				} else if (m instanceof Group) {
+					Group gr = (Group) m;
+					Boolean result = gr.deleteSegmentRefOrGroup(id);
+					if (result) {
+						return result;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override

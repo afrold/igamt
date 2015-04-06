@@ -17,16 +17,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 
 public interface SegmentService {
-
-	public Iterable<Segment> findAll();
-
-	public Segment save(Segment c);
-
-	public void delete(String id);
-
-	public Segment findOne(String id);
 
 }

@@ -21,14 +21,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 public interface DatatypeService {
 
-	public Iterable<Datatype> findAll();
-
-	public Datatype save(Datatype p);
-
-	public void delete(String id);
-
-	public Datatype findOne(String id);
-
 	public Datatype clone(Datatype d) throws CloneNotSupportedException;
 
 }

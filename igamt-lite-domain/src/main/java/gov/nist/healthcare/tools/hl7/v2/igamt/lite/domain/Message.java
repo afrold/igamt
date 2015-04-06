@@ -18,7 +18,7 @@ public class Message extends DataModel implements java.io.Serializable {
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id 
+	@Id
 	private String id;
 
 	private String identifier;
@@ -142,6 +142,43 @@ public class Message extends DataModel implements java.io.Serializable {
 
 	public void setUsageNote(String usageNote) {
 		this.usageNote = usageNote;
+	}
+
+	public Boolean deleteSegmentRefOrGroup(String id) {
+		if (this.getChildren() != null) {
+			for (int i = 0; i < this.getChildren().size(); i++) {
+				SegmentRefOrGroup m = this.getChildren().get(i);
+				if (m.getId().equals(id)) {
+					return this.getChildren().remove(m);
+				} else if (m instanceof Group) {
+					Group gr = (Group) m;
+					Boolean result = gr.deleteSegmentRefOrGroup(id);
+					if (result) {
+						return result;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public SegmentRefOrGroup findOneSegmentRefOrGroup(String id) {
+		if (this.getChildren() != null) {
+			for (SegmentRefOrGroup m : this.getChildren()) {
+				if (m instanceof SegmentRef) {
+					if (m.getId().equals(id)) {
+						return m;
+					}
+				} else if (m instanceof Group) {
+					Group gr = (Group) m;
+					SegmentRefOrGroup tmp = gr.findOneSegmentRefOrGroup(id);
+					if (tmp != null) {
+						return tmp;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

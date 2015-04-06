@@ -96,7 +96,6 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return metaData;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Segments segments(DBObject source, Profile profile) {
 		Segments segments = new Segments();
 		segments.setId(((ObjectId) source.get("_id")).toString());
@@ -112,13 +111,12 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return segments;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Segment segment(DBObject source, Datatypes datatypes, Tables tables) {
 		Segment seg = new Segment();
 		seg.setId(((ObjectId) source.get("_id")).toString());
-		seg.setType(((String) source.get("type")).toString());
+		seg.setType(((String) source.get("type")));
 		seg.setLabel((String) source.get("label"));
-		seg.setName(((String) source.get("name")).toString());
+		seg.setName(((String) source.get("name")));
 		seg.setDescription((String) source.get("description"));
 		seg.setComment((String) source.get("comment"));
 		seg.setText1((String) source.get("text1"));
@@ -171,44 +169,30 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return seg;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Datatypes datatypes(DBObject source, Profile profile) {
 		Datatypes datatypes = new Datatypes();
 		datatypes.setId(((ObjectId) source.get("_id")).toString());
 		BasicDBList datatypesDBObjects = (BasicDBList) source.get("children");
 		datatypes.setChildren(new HashSet<Datatype>());
-		// BasicDBList primitives = new HashBasicDBList();
 		if (datatypesDBObjects != null) {
 			for (Object childObj : datatypesDBObjects) {
 				DBObject child = (DBObject) childObj;
-				BasicDBList children = (BasicDBList) child.get("components");
-				if (children == null || children.isEmpty()) {
-					datatypes.addDatatype(datatype(child, datatypes,
-							profile.getTables(), datatypesDBObjects));
-				}
-			}
-			for (Object childObj : datatypesDBObjects) {
-				DBObject child = (DBObject) childObj;
-				BasicDBList children = (BasicDBList) child.get("components");
-				if (children != null && !children.isEmpty()) {
-					datatypes.addDatatype(datatype(child, datatypes,
-							profile.getTables(), datatypesDBObjects));
-				}
+				datatypes.addDatatype(datatype(child, datatypes,
+						profile.getTables(), datatypesDBObjects));
 			}
 		}
 
 		return datatypes;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Datatype datatype(DBObject source, Datatypes datatypes,
 			Tables tables, BasicDBList datatypesDBObjects)
 			throws ProfileConversionException {
 		Datatype segRef = new Datatype();
 		segRef.setId(((ObjectId) source.get("_id")).toString());
-		segRef.setType(((String) source.get("type")).toString());
+		segRef.setType(((String) source.get("type")));
 		segRef.setLabel((String) source.get("label"));
-		segRef.setName(((String) source.get("name")).toString());
+		segRef.setName(((String) source.get("name")));
 		segRef.setDescription((String) source.get("description"));
 		segRef.setComment((String) source.get("comment"));
 		segRef.setUsageNote((String) source.get("usageNote"));
@@ -218,13 +202,9 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			List<Component> components = new ArrayList<Component>();
 			for (Object compObj : componentObjects) {
 				DBObject compObject = (DBObject) compObj;
-				try {
-					Component c = component(compObject, datatypes, tables,
-							datatypesDBObjects);
-					components.add(c);
-				} catch (ProfileConversionException e) {
-					throw e;
-				}
+				Component c = component(compObject, datatypes, tables,
+						datatypesDBObjects);
+				components.add(c);
 			}
 			segRef.setComponents(components);
 		}
@@ -258,8 +238,8 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private Reference reference(DBObject source) {
 		if (source != null) {
 			Reference reference = new Reference();
-			reference.setChapter(((String) source.get("chapter")).toString());
-			reference.setSection(((String) source.get("section")).toString());
+			reference.setChapter(((String) source.get("chapter")));
+			reference.setSection(((String) source.get("section")));
 			reference.setPage((Integer) source.get("page"));
 			reference.setUrl((String) source.get("url"));
 			return reference;
@@ -270,9 +250,8 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private ConformanceStatement conformanceStatement(DBObject source) {
 		ConformanceStatement cs = new ConformanceStatement();
 		cs.setId(((ObjectId) source.get("_id")).toString());
-		cs.setConstraintId(((String) source.get("constraintId")).toString());
-		cs.setConstraintTarget(((String) source.get("constraintTarget"))
-				.toString());
+		cs.setConstraintId(((String) source.get("constraintId")));
+		cs.setConstraintTarget(((String) source.get("constraintTarget")));
 		cs.setDescription((String) source.get("description"));
 		cs.setAssertion(((String) source.get("assertion")));
 		cs.setReference(reference(((DBObject) source.get("reference"))));
@@ -282,16 +261,16 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private Predicate predicate(DBObject source) {
 		Predicate p = new Predicate();
 		p.setId(((ObjectId) source.get("_id")).toString());
-		p.setConstraintId(((String) source.get("constraintId")).toString());
-		p.setConstraintTarget(((String) source.get("constraintTarget"))
-				.toString());
+		p.setConstraintId(((String) source.get("constraintId")));
+		p.setConstraintTarget(((String) source.get("constraintTarget")));
 		p.setDescription((String) source.get("description"));
 		p.setAssertion(((String) source.get("assertion")));
 		p.setReference(reference(((DBObject) source.get("reference"))));
+		p.setFalseUsage(Usage.valueOf(((String) source.get("falseUsage"))));
+		p.setTrueUsage(Usage.valueOf(((String) source.get("trueUsage"))));
 		return p;
 	}
 
-	@SuppressWarnings("unchecked")
 	private DynamicMapping dynamicMapping(DBObject source, Datatypes datatypes) {
 		DynamicMapping p = new DynamicMapping();
 		p.setId(((ObjectId) source.get("_id")).toString());
@@ -311,7 +290,6 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return p;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Mapping mapping(DBObject source, Datatypes datatypes) {
 		Mapping p = new Mapping();
 		p.setId(((ObjectId) source.get("_id")).toString());
@@ -338,7 +316,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		Datatype d = findDatatypeById(((String) source.get("datatype")),
 				datatypes);
 		if (d == null) {
-			throw new IllegalArgumentException("Datatype "
+			throw new ProfileConversionException("Datatype "
 					+ ((String) source.get("datatype")) + " not found");
 		}
 		p.setDatatype(d);
@@ -348,15 +326,15 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private Field field(DBObject source, Datatypes datatypes, Tables tables) {
 		Field f = new Field();
 		f.setId(((String) source.get("_id")));
-		f.setType(((String) source.get("type")).toString());
-		f.setName(((String) source.get("name")).toString());
+		f.setType(((String) source.get("type")));
+		f.setName(((String) source.get("name")));
 		f.setComment((String) source.get("comment"));
 		f.setMinLength(((Integer) source.get("minLength")));
 		f.setMaxLength((String) source.get("maxLength"));
 		f.setConfLength((String) source.get("confLength"));
 		f.setPosition((Integer) source.get("position"));
-		f.setTable(findTableById(((String) source.get("table")).toString(),
-				tables));
+		f.setTable(source.get("table") != null ? findTableById(
+				((String) source.get("table")), tables) : null);
 		f.setUsage(Usage.valueOf((String) source.get("usage")));
 		f.setBindingLocation((String) source.get("bindingLocation"));
 		f.setBindingStrength((String) source.get("bindingStrength"));
@@ -364,10 +342,10 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		f.setMin((Integer) source.get("min"));
 		f.setMax((String) source.get("max"));
 		f.setText((String) source.get("text"));
-		Datatype d = findDatatypeById(
-				((String) source.get("datatype")).toString(), datatypes);
+		Datatype d = findDatatypeById(((String) source.get("datatype")),
+				datatypes);
 		if (d == null) {
-			throw new IllegalArgumentException("Datatype "
+			throw new ProfileConversionException("Datatype "
 					+ (String) source.get("datatype") + " not found");
 		}
 		f.setDatatype(d);
@@ -386,28 +364,23 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		c.setMaxLength((String) source.get("maxLength"));
 		c.setConfLength((String) source.get("confLength"));
 		c.setPosition((Integer) source.get("position"));
-		c.setTable(findTableById(((String) source.get("table")), tables));
+		c.setTable(source.get("table") != null ? findTableById(
+				((String) source.get("table")), tables) : null);
 		c.setUsage(Usage.valueOf((String) source.get("usage")));
 		c.setBindingLocation((String) source.get("bindingLocation"));
 		c.setBindingStrength((String) source.get("bindingStrength"));
-		String datatypeId = ((String) source.get("datatype")).toString();
+		String datatypeId = ((String) source.get("datatype"));
 		Datatype d = findDatatypeById(datatypeId, datatypes);
 
 		if (d == null) {
-			try {
-				DBObject dObject = findDatatypeById(datatypeId,
-						datatypesDBObjects);
-				d = datatype(dObject, datatypes, tables, datatypesDBObjects);
-				datatypes.addDatatype(d);
-			} catch (ProfileConversionException e) {
-				throw e;
-			}
+			DBObject dObject = findDatatypeById(datatypeId, datatypesDBObjects);
+			d = datatype(dObject, datatypes, tables, datatypesDBObjects);
+			datatypes.addDatatype(d);
 		}
 		c.setDatatype(d);
 		return c;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Tables tables(DBObject source) {
 		Tables tables = new Tables();
 		tables.setId(((ObjectId) source.get("_id")).toString());
@@ -468,7 +441,6 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private Messages messages(DBObject source, Profile profile) {
 		Messages messages = new Messages();
 		messages.setId(((ObjectId) source.get("_id")).toString());
-		@SuppressWarnings("unchecked")
 		BasicDBList messagesDBObjects = (BasicDBList) source.get("children");
 		messages.setChildren(new HashSet<Message>());
 		for (Object childObj : messagesDBObjects) {
@@ -484,7 +456,6 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			message.setStructID((String) child.get("structID"));
 			message.setType((String) child.get("type"));
 			message.setUsageNote((String) child.get("usageNote"));
-			@SuppressWarnings("unchecked")
 			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child
 					.get("children");
 			for (Object segmentRefOrGroupObject : segmentRefOrGroupDBObjects) {
@@ -500,6 +471,8 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 					message.addSegmentRefOrGroup(group);
 				}
 			}
+			messages.getChildren().add(message);
+
 		}
 		return messages;
 	}
@@ -507,28 +480,26 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private SegmentRef segmentRef(DBObject source, Segments segments) {
 		SegmentRef segRef = new SegmentRef();
 		segRef.setId(((String) source.get("_id")));
-		segRef.setType(((String) source.get("type")).toString());
+		segRef.setType(((String) source.get("type")));
 		segRef.setUsage(Usage.valueOf(((String) source.get("usage"))));
-		segRef.setComment(((String) source.get("comment")).toString());
+		segRef.setComment(((String) source.get("comment")));
 		segRef.setPosition((Integer) source.get("position"));
 		segRef.setMin((Integer) source.get("min"));
 		segRef.setMax((String) source.get("max"));
-		segRef.setRef(findSegmentById(
-				((ObjectId) source.get("ref")).toString(), segments));
+		segRef.setRef(findSegmentById(((String) source.get("ref")), segments));
 		return segRef;
 	}
 
-	@SuppressWarnings("unchecked")
 	private Group group(DBObject source, Segments segments) {
 		Group group = new Group();
 		group.setId(((ObjectId) source.get("_id")).toString());
-		group.setType(((String) source.get("type")).toString());
+		group.setType(((String) source.get("type")));
 		group.setUsage(Usage.valueOf(((String) source.get("usage"))));
-		group.setComment(((String) source.get("comment")).toString());
+		group.setComment(((String) source.get("comment")));
 		group.setPosition((Integer) source.get("position"));
 		group.setMin((Integer) source.get("min"));
 		group.setMax((String) source.get("max"));
-		group.setName(((String) source.get("name")).toString());
+		group.setName(((String) source.get("name")));
 		BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) source
 				.get("children");
 

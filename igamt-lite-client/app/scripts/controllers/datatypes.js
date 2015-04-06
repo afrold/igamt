@@ -4,7 +4,7 @@
 
 
 angular.module('igl')
-    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams,$filter, $http) {
+    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams,$filter, $http,$modal) {
         $scope.loading = false;
         $scope.loadingSelection = false;
         $scope.readonly = false;
@@ -17,7 +17,7 @@ angular.module('igl')
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.datatype ? parent.datatype.children: parent.children : $rootScope.datatype != null ? [$rootScope.datatype]:[];
+                    return parent ? parent.datatype ? parent.datatype.components: parent.components : $rootScope.datatype != null ? [$rootScope.datatype]:[];
                 },
                 getTemplate: function (node) {
                     return 'DatatypeEditTree.html';
@@ -40,25 +40,55 @@ angular.module('igl')
         };
 
         $scope.select = function (datatype) {
-            waitingDialog.show('Loading datatype ' + datatype.label + "...", {dialogSize: 'sm', progressType: 'info'});
             $rootScope.datatype = datatype;
             $rootScope.datatype["type"] = "datatype";
             if ($scope.params)
                 $scope.params.refresh();
+//            $rootScope.go('/profiles#datatypeDef');
             $scope.loadingSelection = false;
-            waitingDialog.hide();
-        };
+         };
 
-        $scope.clone = function () {
-            waitingDialog.show('Cloning datatype ' + $rootScope.datatype.label + "...", {dialogSize: 'sm', progressType: 'info'});
-            $http.post($rootScope.api('/api/datatypes/'+ 1 + '/clone'), {timeout: 60000}).then(function (clone) {
-                $rootScope.datatypes.push(clone);
-                $rootScope.datatype = clone;
-                waitingDialog.hide();
-            }, function (error) {
-                $scope.error = error;
-                waitingDialog.hide();
-            });
+        $scope.flavor = function (datatype) {
+            var flavor = angular.copy(datatype);
+            var id = (Math.floor(Math.random()*10000000) + 1);
+            flavor.id = - 1 * id;
+            flavor.label = datatype.label + "_"+id;
+            if(flavor.components != undefined && flavor.components != null && flavor.components.length != 0){
+                for(var i=0; i < flavor.components.length; i++){
+                    flavor.components[i].id = -1* (Math.floor(Math.random()*10000000) + 1);
+                    flavor.components[i].datatype = datatype.components[i].datatype;
+                }
+            }
+            $rootScope.datatypes.splice(0, 0, flavor);
+            $rootScope.datatype = flavor;
+            var tmp = angular.copy(flavor);
+            delete tmp.type;
+            if(tmp.components != undefined && tmp.components != null && tmp.components.length != 0){
+                angular.forEach(tmp.components, function (component) {
+                    component.datatype = {id:component.datatype.id};
+                    if(component.table != undefined) {
+                        component.table = {id: component.table.id};
+                    }
+                });
+            }
+
+            var predicates = tmp['predicates'];
+            if( predicates!= undefined && predicates != null && predicates.length != 0){
+                angular.forEach(predicates, function (predicate) {
+                    predicate.id = -1 * (Math.floor(Math.random()*10000000) + 1);
+                });
+            }
+
+            var conformanceStatements = tmp['conformanceStatements'];
+            if(conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0){
+                angular.forEach(conformanceStatements, function (conformanceStatement) {
+                    conformanceStatement.id = -1 * (Math.floor(Math.random()*10000000) + 1);
+                });
+            }
+            $rootScope.recordChange2('datatype',tmp.id,null,tmp);
+
+            $scope.select(flavor);
+
         };
 
         $scope.close = function(){
@@ -68,32 +98,53 @@ angular.module('igl')
             $scope.loadingSelection = false;
         };
 
-//        $scope.reset = function () {
-//            $scope.loadingSelection = true;
-//            $scope.message = "Datatype " + $scope.datatypeCopy.label + " reset successfully";
-//            angular.extend($rootScope.datatype, $scope.datatypeCopy);
-//             $scope.loadingSelection = false;
-//        };
-
-        $scope.delete = function () {
-            //TODO: Check that there is no reference
-            waitingDialog.show('Deleting datatype ' + $rootScope.datatype.label + "...", {dialogSize: 'sm', progressType: 'danger'});
-            $http.post($rootScope.api('/api/datatypes/'+ $rootScope.datatype.id + '/delete'), {timeout: 60000}).then(function (response) {
-                $scope.loadingSelection = true;
-                var index = $rootScope.datatypes.indexOf($rootScope.datatype);
-                if (index > -1) $rootScope.datatypes.splice(index, 1);
-                $scope.message = "Datatype " + $rootScope.datatype.label + " deleted successfully";
-                $rootScope.datatype = null;
-                $scope.datatypeCopy = null;
-                waitingDialog.hide();
-            }, function (error) {
-                $scope.error = error;
-                waitingDialog.hide();
+        $scope.delete = function (datatype) {
+            $rootScope.references = [];
+            angular.forEach($rootScope.segments, function (segment) {
+                $rootScope.findDatatypeRefs(datatype,segment);
             });
-         };
+            if( $rootScope.references != null &&  $rootScope.references.length > 0){
+                $scope.abortDelete(datatype);
+            }else {
+                $scope.confirmDelete(datatype);
+            }
+        };
+
+        $scope.abortDelete = function (datatype) {
+            var modalInstance = $modal.open({
+                templateUrl: 'DatatypeReferencesCtrl.html',
+                controller: 'DatatypeReferencesCtrl',
+                resolve: {
+                    dtToDelete: function () {
+                        return datatype;
+                    }
+                }
+            });
+            modalInstance.result.then(function (datatype) {
+                $scope.dtToDelete = datatype;
+            }, function () {
+            });
+        };
+
+        $scope.confirmDelete = function (datatype) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
+                controller: 'ConfirmDatatypeDeleteCtrl',
+                resolve: {
+                    dtToDelete: function () {
+                        return datatype;
+                    }
+                }
+            });
+            modalInstance.result.then(function (datatype) {
+                $scope.dtToDelete = datatype;
+            }, function () {
+             });
+        };
+
 
         $scope.hasChildren = function(node){
-            return node && node != null && node.datatype && node.datatype.children != null && node.datatype.children.length >0;
+            return node && node != null && node.datatype && node.datatype.components != null && node.datatype.components.length >0;
         };
 
 
@@ -101,7 +152,7 @@ angular.module('igl')
            if(label && !label.startsWith(name)){
                return false;
            }
-            return true;
+           return true;
         };
 
 
@@ -131,3 +182,72 @@ angular.module('igl')
     .controller('DatatypeRowCtrl', function ($scope,$filter) {
          $scope.formName = "form_"+ new Date().getTime();
     });
+
+
+
+angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete,$rootScope) {
+    $scope.dtToDelete = dtToDelete;
+    $scope.loading = false;
+    $scope.delete = function () {
+        $scope.loading = true;
+
+        // remove any change made to components
+        if($scope.dtToDelete.components != undefined && $scope.dtToDelete.components != null && $scope.dtToDelete.components.length > 0){
+            angular.forEach($scope.dtToDelete.components, function (component) {
+                if($rootScope.changes['component'][component.id] && $rootScope.changes['component'][component.id]){
+                    delete $rootScope.changes['component'][component.id];
+                }
+            });
+        }
+
+        if( Object.getOwnPropertyNames($rootScope.changes['component']).length === 0){
+            delete $rootScope.changes['component'];
+        }
+
+        // remove any change made to datatype
+        if($rootScope.changes['datatype'] != undefined  && $rootScope.changes['datatype'][$scope.dtToDelete.id] != undefined){
+            if($scope.dtToDelete.id < 0){
+                delete $rootScope.changes['datatype'][$scope.dtToDelete.id];
+                if( Object.getOwnPropertyNames($rootScope.changes['datatype']).length === 0){
+                    delete $rootScope.changes['datatype'];
+                }
+            }else{
+                $rootScope.changes['datatype'][$scope.dtToDelete.id] = null;
+            }
+        }
+
+        var index = $rootScope.datatypes.indexOf($scope.dtToDelete);
+        if (index > -1) $rootScope.datatypes.splice(index, 1);
+
+        $rootScope.generalInfo.type = 'info';
+        $rootScope.generalInfo.message = "Datatype " + $scope.dtToDelete.label + " deleted successfully";
+
+        if($rootScope.datatype === $scope.dtToDelete){
+            $rootScope.datatype = null;
+        }
+
+        $rootScope.references = [];
+        $modalInstance.close($scope.dtToDelete);
+
+
+
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
+angular.module('igl').controller('DatatypeReferencesCtrl', function ($scope, $modalInstance, dtToDelete) {
+
+    $scope.dtToDelete = dtToDelete;
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.dtToDelete);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});

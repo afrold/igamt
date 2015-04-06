@@ -1,15 +1,32 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import static org.junit.Assert.assertEquals;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 public class SerializationTest {
+
+	private Datatype getDatatype(String key, Datatypes datatypes) {
+		for (Datatype dt : datatypes.getChildren()) {
+			if (dt.getLabel().equals(key)) {
+				return dt;
+			}
+		}
+		return null;
+	}
+
 	@Test
 	public void testSerialization() throws IOException {
 		// ProfileSerializationImpl ProfileSerializationImpl = new
@@ -27,7 +44,11 @@ public class SerializationTest {
 				"/vxuTest/Constraints.xml"));
 		Profile profile = new ProfileSerializationImpl()
 				.deserializeXMLToProfile(p, v, c);
-		assertEquals(153, profile.getDatatypes().getChildren().size());
+
+		Set<Datatype> datatypeSet = new HashSet<Datatype>();
+		collectDatatype(profile, datatypeSet);
+		assertEquals(profile.getDatatypes().getChildren().size(),
+				datatypeSet.size());
 
 		// assertEquals(4, profile.getPredicates().getSegments()
 		// .getByNameOrByIDs().size());
@@ -37,4 +58,25 @@ public class SerializationTest {
 		// .getByNameOrByIDs().size());
 		// assertEquals(1, profile.getMessages().getMessages().size());
 	}
+
+	private void collectDatatype(Profile p, Set<Datatype> set) {
+		for (Segment s : p.getSegments().getChildren()) {
+			for (Field f : s.getFields()) {
+				Datatype d = f.getDatatype();
+				collectDatatype(d, set);
+			}
+		}
+	}
+
+	private void collectDatatype(Datatype d, Set<Datatype> set) {
+		if (!set.contains(d)) {
+			set.add(d);
+		}
+		if (d.getComponents() != null) {
+			for (Component c : d.getComponents()) {
+				collectDatatype(c.getDatatype(), set);
+			}
+		}
+	}
+
 }

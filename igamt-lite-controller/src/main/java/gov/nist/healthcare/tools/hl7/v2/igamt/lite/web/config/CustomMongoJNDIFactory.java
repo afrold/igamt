@@ -10,7 +10,6 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -21,11 +20,7 @@ import javax.naming.RefAddr;
 import javax.naming.Reference;
 import javax.naming.spi.ObjectFactory;
 
-import org.springframework.data.mongodb.core.MongoTemplate;
-
-import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 30, 2015
@@ -38,7 +33,6 @@ public class CustomMongoJNDIFactory implements ObjectFactory {
 
 		validateProperty(obj, "Invalid JNDI object reference");
 
-		MongoTemplate mongoTemplate = null;
 		String db = null;
 		String host = null;
 		String username = null;
@@ -77,10 +71,9 @@ public class CustomMongoJNDIFactory implements ObjectFactory {
 
 		MongoCredential credential = MongoCredential.createMongoCRCredential(
 				username, db, password.toCharArray());
-		MongoClient mongo = new MongoClient(new ServerAddress(host,
-				Integer.valueOf(port)), Arrays.asList(credential));
-		mongoTemplate = new MongoTemplate(mongo, db);
-		return mongoTemplate;
+		// MongoClient mongo = new MongoClient(new ServerAddress(host,
+		// Integer.valueOf(port)), Arrays.asList(credential));
+		return credential;
 	}
 
 	/**

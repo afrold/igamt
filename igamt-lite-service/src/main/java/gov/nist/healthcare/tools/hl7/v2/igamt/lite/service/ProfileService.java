@@ -36,10 +36,10 @@ public interface ProfileService {
 
 	public Profile clone(Profile p);
 
-	public List<String> apply(String changes);
+	public List<String> apply(String changes, Profile profile);
 
-	public InputStream exportAsPdf(String targetId);
+	public InputStream exportAsPdf(String profileId);
 
-	public InputStream exportAsXml(String targetId);
+	public InputStream exportAsXml(String profileId);
 
 }

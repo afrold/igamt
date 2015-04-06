@@ -16,7 +16,7 @@ public class SegmentRef extends SegmentRefOrGroup {
 
 	@JsonIgnoreProperties({ "label", "fields", "dynamicMappings", "name",
 			"description", "predicates", "conformanceStatements", "comment",
-			"usageNote", "type" })
+			"usageNote", "type", "text1", "text2" })
 	private Segment ref;
 
 	public Segment getRef() {

@@ -2,7 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test.integration;
 
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+//import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -62,12 +62,11 @@ public class ProfileControllerIntegrationTest {
 		Profile profile = profile();
 		assertNotNull("Profile is null.", profile);
 		profileService.save(profile);
-		mockMvc.perform(get("/profiles/preloaded")).andExpect(status().isOk())
-				.andDo(print());
+		mockMvc.perform(get("/profiles/preloaded")).andExpect(status().isOk());
 
 	}
 
-	// @Test
+	@Test
 	public void testGetProfile() throws Exception {
 		Profile profile = profile();
 		assertNotNull("Profile is null.", profile);

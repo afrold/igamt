@@ -202,8 +202,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		for (int i = 0; i < datatypeNodeList.getLength(); i++) {
 			Element elmDatatype = (Element) datatypeNodeList.item(i);
-			datatypesMap.put(elmDatatype.getAttribute("ID"), this
-					.deserializeDatatype(elmDatatype, profile, elmDatatypes));
+			if (!datatypesMap.keySet().contains(elmDatatype.getAttribute("ID")))
+				datatypesMap.put(elmDatatype.getAttribute("ID"),
+						this.deserializeDatatype(elmDatatype, profile,
+								elmDatatypes));
 		}
 	}
 
@@ -303,6 +305,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			}
 
 		}
+		throw new IllegalArgumentException("Datatype " + key + " not found");
+	}
+
+	private Datatype findDatatype(String key, Profile profile) {
+		if (datatypesMap.get(key) != null)
+			return datatypesMap.get(key);
 		throw new IllegalArgumentException("Datatype " + key + " not found");
 	}
 
@@ -582,8 +590,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				profile.getTables()));
 		fieldObj.setBindingStrength(fieldElm.getAttribute("BindingStrength"));
 		fieldObj.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
-		fieldObj.setDatatype(this.datatypesMap.get(fieldElm
-				.getAttribute("Datatype")));
+		fieldObj.setDatatype(this.findDatatype(
+				fieldElm.getAttribute("Datatype"), profile));
 
 		return fieldObj;
 	}

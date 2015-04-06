@@ -18,48 +18,21 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class DatatypeServiceImpl implements DatatypeService {
-
-	@Autowired
-	private DatatypeRepository datatypeRepository;
+public class DatatypeServiceImpl implements DatatypeService, Cloneable {
 
 	@Autowired
 	private DatatypeClone datatypeClone;
 
 	@Override
-	public Iterable<Datatype> findAll() {
-		return datatypeRepository.findAll();
-	}
-
-	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public Datatype save(Datatype p) {
-		return datatypeRepository.save(p);
-	}
-
-	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void delete(String id) {
-		datatypeRepository.delete(id);
-	}
-
-	@Override
-	public Datatype findOne(String id) {
-		return datatypeRepository.findOne(id);
-	}
-
-	@Override
 	public Datatype clone(Datatype d) throws CloneNotSupportedException {
 		return datatypeClone.clone(d);
 	}
+
 }

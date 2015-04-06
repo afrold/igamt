@@ -1,20 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TablesRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TablesService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,57 +10,50 @@ import org.springframework.web.bind.annotation.RestController;
 public class TableController extends CommonController {
 	static final Logger logger = LoggerFactory.getLogger(TableController.class);
 
-	@Autowired
-	private TablesRepository tableLibraryRepository;
-
-	@Autowired
-	private TablesService tablesService;
-
-	@Autowired
-	private TableService tableService;
-
-	// CRUD R for TableLib
-	@RequestMapping(value = "/tableLibrary/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public Tables tableLibrary(@PathVariable("id") String id) {
-		return tablesService.findOne(id);
-	}
-
-	// CRUD R for Table
-	@RequestMapping(value = "/table/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public Table table(@PathVariable("id") String id) {
-		return tableService.findOne(id);
-	}
-
-	// CRUD C for Code
-	@RequestMapping(value = "/table/{targetId}/addCode", method = RequestMethod.POST)
-	public Table addCode(@PathVariable("targetId") String targetId) {
-		Code code = new Code();
-		Table table = tableService.findOne(targetId);
-		table.getCodes().add(code);
-		return tableService.save(table);
-	}
-
-	// Update for Table
-	@RequestMapping(value = "/table/update", method = RequestMethod.PUT)
-	public Table update(@RequestBody Table table) {
-		return tableService.save(table);
-	}
-
-	// Update for Code
-	@RequestMapping(value = "/table/{tableId}/update", method = RequestMethod.PUT)
-	public Code update(final String tableId, @RequestBody Code code) {
-		Table table = tableService.findOne(tableId);
-		for (Code c : table.getCodes()) {
-			if (code.getId() == c.getId()) {
-				table.getCodes().remove(c);
-				table.getCodes().add(code);
-				return code;
-			}
-		}
-		return null;
-	}
+	// // CRUD R for TableLib
+	// @RequestMapping(value = "/tableLibrary/{id}", method = RequestMethod.GET)
+	// @ResponseBody
+	// public Tables tableLibrary(@PathVariable("id") String id) {
+	// return tablesService.findOne(id);
+	// }
+	//
+	// // CRUD R for Table
+	// @RequestMapping(value = "/table/{id}", method = RequestMethod.GET)
+	// @ResponseBody
+	// public Table table(@PathVariable("id") String id) {
+	// return tableService.findOne(id);
+	// }
+	//
+	// // CRUD C for Code
+	// @RequestMapping(value = "/table/{targetId}/addCode", method =
+	// RequestMethod.POST)
+	// public Table addCode(@PathVariable("targetId") String targetId) {
+	// Code code = new Code();
+	// Table table = tableService.findOne(targetId);
+	// table.getCodes().add(code);
+	// return tableService.save(table);
+	// }
+	//
+	// // Update for Table
+	// @RequestMapping(value = "/table/update", method = RequestMethod.PUT)
+	// public Table update(@RequestBody Table table) {
+	// return tableService.save(table);
+	// }
+	//
+	// // Update for Code
+	// @RequestMapping(value = "/table/{tableId}/update", method =
+	// RequestMethod.PUT)
+	// public Code update(final String tableId, @RequestBody Code code) {
+	// Table table = tableService.findOne(tableId);
+	// for (Code c : table.getCodes()) {
+	// if (code.getId() == c.getId()) {
+	// table.getCodes().remove(c);
+	// table.getCodes().add(code);
+	// return code;
+	// }
+	// }
+	// return null;
+	// }
 
 	/*
 	 * 
@@ -125,29 +106,21 @@ public class TableController extends CommonController {
 	 * ResponseEntity<Boolean>(Boolean.FALSE, HttpStatus.OK); }
 	 */
 	// GET,SET
-	public TablesRepository getTableLibraryRepository() {
-		return tableLibraryRepository;
-	}
-
-	public void setTableLibraryRepository(
-			TablesRepository tableLibraryRepository) {
-		this.tableLibraryRepository = tableLibraryRepository;
-	}
-
-	public TablesService getTablesService() {
-		return tablesService;
-	}
-
-	public void setTablesService(TablesService tablesService) {
-		this.tablesService = tablesService;
-	}
-
-	public TableService getTableService() {
-		return tableService;
-	}
-
-	public void setTableService(TableService tableService) {
-		this.tableService = tableService;
-	}
+	// public TablesRepository getTableLibraryRepository() {
+	// return tableLibraryRepository;
+	// }
+	//
+	// public void setTableLibraryRepository(
+	// TablesRepository tableLibraryRepository) {
+	// this.tableLibraryRepository = tableLibraryRepository;
+	// }
+	//
+	// public TableService getTableService() {
+	// return tableService;
+	// }
+	//
+	// public void setTableService(TableService tableService) {
+	// this.tableService = tableService;
+	// }
 
 }

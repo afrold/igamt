@@ -22,7 +22,7 @@ public class Segment extends DataModel implements java.io.Serializable {
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id 
+	@Id
 	private String id;
 	//
 	// @DBRef
@@ -97,6 +97,17 @@ public class Segment extends DataModel implements java.io.Serializable {
 	public void addField(Field field) {
 		field.setPosition(fields.size() + 1);
 		fields.add(field);
+	}
+
+	public Field findOneField(String id) {
+		if (this.fields != null)
+			for (Field m : this.fields) {
+				if (id.equals(m.getId())) {
+					return m;
+				}
+			}
+
+		return null;
 	}
 
 	public void addDynamicMapping(DynamicMapping d) {

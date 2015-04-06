@@ -17,7 +17,7 @@ angular.module('igl')
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.fields ? parent.fields: parent.datatype ? parent.datatype.children:parent.children : $rootScope.segment != null ? [$rootScope.segment]:[];
+                    return parent ? parent.fields ? parent.fields: parent.datatype ? parent.datatype.components:parent.children : $rootScope.segment != null ? [$rootScope.segment]:[];
                 },
                 getTemplate: function (node) {
                     return 'SegmentEditTree.html';
@@ -36,12 +36,12 @@ angular.module('igl')
                     $scope.params.refresh();
                 }
             });
-
+            $scope.select($rootScope.segments[0]);
             $scope.loading = false;
         };
 //
         $scope.select = function (segment) {
-            waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
+//            waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
             $rootScope.segment = segment;
             $rootScope.segment["type"] = "segment";
 //             $scope.segmentCopy = {};
@@ -49,7 +49,7 @@ angular.module('igl')
             if ($scope.params)
                 $scope.params.refresh();
             $scope.loadingSelection = false;
-            waitingDialog.hide();
+//            waitingDialog.hide();
         };
 
         $scope.reset = function () {
@@ -67,7 +67,7 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function(node){
-            return node && node != null && ((node.fields && node.fields.length >0 ) || (node.datatype && node.datatype.children && node.datatype.children.length > 0));
+            return node && node != null && ((node.fields && node.fields.length >0 ) || (node.datatype && node.datatype.components && node.datatype.components.length > 0));
         };
 
         $scope.validateLabel = function (label, name) {
@@ -95,6 +95,10 @@ angular.module('igl')
             $rootScope.selectProfileTab(4);
         };
 
+
+        $scope.show = function(segment){
+            return true;
+        }
     });
 
 

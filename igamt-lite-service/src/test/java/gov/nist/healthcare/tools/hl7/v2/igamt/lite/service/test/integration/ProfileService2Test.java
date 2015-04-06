@@ -93,7 +93,7 @@ public class ProfileService2Test extends
 				+ "{\"identifier\":\"Z22_\",\"description\":\"Unsolicited vaccination record updates\",\"comment\":\"c1\"}"
 				+ "}" + "}";
 
-		List<String> rst = profileService.apply(jsonChanges);
+		List<String> rst = profileService.apply(jsonChanges, p1);
 
 		assertEquals("NIST_", p1.getMetaData().getOrgName());
 		assertEquals("Z22_", msg.getIdentifier());
@@ -135,7 +135,7 @@ public class ProfileService2Test extends
 		jsonChanges.append("}");
 		jsonChanges.append("}");
 
-		List<String> rst = profileService.apply(jsonChanges.toString());
+		List<String> rst = profileService.apply(jsonChanges.toString(), p1);
 		// There should be an error if the id doesn't exist or if the attributes
 		// name doesn't exist.
 		// In this test, "identifiers" is not a valid attribute and only one

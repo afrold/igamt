@@ -88,7 +88,7 @@ angular.module('igl')
 //                $rootScope.backUp = Restangular.copy($rootScope.profile);
 
                 angular.forEach($rootScope.profile.datatypes.children, function (child) {
-                    this[child.label] = child;
+                    this[child.id] = child;
                 }, $rootScope.datatypesMap);
 
 
@@ -96,7 +96,7 @@ angular.module('igl')
                     this[child.id] = child;
                 }, $rootScope.segmentsMap);
 
-                angular.forEach($rootScope.profile.tableLibrary.tables.children, function (child) {
+                angular.forEach($rootScope.profile.tables.children, function (child) {
                     this[child.id] = child;
                 }, $rootScope.tablesMap);
 
@@ -303,7 +303,7 @@ angular.module('igl')
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
             var data = {"value": changes};
-            $http.post($rootScope.api('/api/profiles/save'), data ,{timeout: 60000}).then(function (response) {
+            $http.post($rootScope.api('/api/profiles/'+  $rootScope.profile.id + '/save'), data ,{timeout: 60000}).then(function (response) {
                 $rootScope.generalInfo.message = "Implementation Guide saved successfully !";
                 $rootScope.generalInfo.type = 'success';
                 waitingDialog.hide();

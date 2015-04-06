@@ -12,7 +12,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertNotNull;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypesService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 
@@ -42,9 +41,6 @@ public class ProfileServiceTest {
 
 	@Autowired
 	ProfileService service;
-
-	@Autowired
-	DatatypesService datatypesService;
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();

@@ -2,6 +2,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 import java.io.Serializable;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+
 //@Entity
 //@Table(name = "IGCONSTRAINT")
 //@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -9,9 +12,15 @@ public abstract class Constraint implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 5723342171557075960L;
 
-	// @Id 
+	public Constraint() {
+		super();
+		this.id = ObjectId.get().toString();
+	}
+
+	// @Id
 	// @Column(name = "ID")
 	// @GeneratedValue(strategy = GenerationType.TABLE)
+	@Id
 	protected String id;
 
 	// @NotNull

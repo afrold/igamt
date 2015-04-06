@@ -12,7 +12,7 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id 
+	@Id
 	private String id;
 
 	/**
@@ -42,12 +42,7 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	}
 
 	public void addDatatype(Datatype d) {
-		// if (d.getDatatypes() != null) {
-		// throw new IllegalArgumentException("This datatype " + d.getLabel()
-		// + " already belongs to library " + d.getDatatypes().getId());
-		// }
 		children.add(d);
-		// d.setDatatypes(this);
 	}
 
 	// public Datatype find(String label) {
@@ -60,6 +55,42 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	// }
 	// return null;
 	// }
+
+	public Datatype save(Datatype d) {
+		if (!this.children.contains(d)) {
+			children.add(d);
+		}
+		return d;
+	}
+
+	public void delete(String id) {
+		Datatype d = findOne(id);
+		if (d != null)
+			this.children.remove(d);
+	}
+
+	public Datatype findOne(String id) {
+		if (this.children != null)
+			for (Datatype m : this.children) {
+				if (m.getId().equals(id)) {
+					return m;
+				}
+			}
+
+		return null;
+	}
+
+	public Component findOneComponent(String id) {
+		if (this.children != null)
+			for (Datatype m : this.children) {
+				Component c = m.findOneComponent(id);
+				if (c != null) {
+					return c;
+				}
+			}
+
+		return null;
+	}
 
 	@Override
 	public Datatypes clone() throws CloneNotSupportedException {

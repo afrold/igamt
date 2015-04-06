@@ -12,7 +12,7 @@ public class Messages implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id 
+	@Id
 	private String id;
 
 	/**
@@ -42,14 +42,37 @@ public class Messages implements java.io.Serializable {
 	}
 
 	public void addMessage(Message m) {
-		// if (m.getMessages() != null) {
-		// throw new IllegalArgumentException("This message "
-		// + m.getIdentifier() + " already belongs to library"
-		// + m.getMessages().getId());
-		// }
 		m.setPosition(children.size() + 1);
 		children.add(m);
-		// m.setMessages(this);
+	}
+
+	public void delete(String id) {
+		Message m = findOne(id);
+		if (m != null)
+			this.getChildren().remove(m);
+	}
+
+	public Message findOne(String id) {
+		if (this.getChildren() != null)
+			for (Message m : this.getChildren()) {
+				if (m.getId().equals(id)) {
+					return m;
+				}
+			}
+
+		return null;
+	}
+
+	public SegmentRefOrGroup findOneSegmentRefOrGroup(String id) {
+		if (this.getChildren() != null) {
+			for (Message message : this.getChildren()) {
+				SegmentRefOrGroup m = message.findOneSegmentRefOrGroup(id);
+				if (m != null) {
+					return m;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

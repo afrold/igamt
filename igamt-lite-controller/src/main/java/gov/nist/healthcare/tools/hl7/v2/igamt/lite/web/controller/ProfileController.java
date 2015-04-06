@@ -116,10 +116,16 @@ public class ProfileController extends CommonController {
 		profileService.delete(targetId);
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public List<String> save(@RequestBody Changes jsonChanges) {
+	@RequestMapping(value = "/{profileId}/save", method = RequestMethod.POST)
+	public List<String> save(@RequestBody Changes jsonChanges,
+			@PathVariable("profileId") String profileId)
+			throws ProfileNotFoundException {
 		logger.info("Applying changes = " + jsonChanges);
-		return profileService.apply(jsonChanges.getValue());
+		Profile p = profileService.findOne(profileId);
+		if (p == null) {
+			throw new ProfileNotFoundException(profileId);
+		}
+		return profileService.apply(jsonChanges.getValue(), p);
 	}
 
 	@RequestMapping(value = "/{targetId}/export/XML", method = RequestMethod.POST, produces = "text/xml")

@@ -4,14 +4,22 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 
 import java.io.Serializable;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 //@Entity
 //@Table(name = "PREDICATE")
+
+@Document(collection = "predicate")
 public class Predicate extends Constraint implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5723342171557075960L;
+
+	public Predicate() {
+		super();
+	}
 
 	// @Column(name = "TRUEUSAGE")
 	private Usage trueUsage;

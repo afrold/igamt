@@ -23,7 +23,7 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id 
+	@Id
 	private String id;
 
 	// //@NotNull
@@ -122,6 +122,22 @@ public class Datatype extends DataModel implements java.io.Serializable,
 	public void addComponent(Component c) {
 		c.setPosition(components.size() + 1);
 		components.add(c);
+	}
+
+	public Component findOneComponent(String id) {
+		if (this.components != null) {
+			for (Component c : this.components) {
+				if (c.getId().equals(id)) {
+					return c;
+				} else {
+					Component r = c.getDatatype().findOneComponent(id);
+					if (r != null) {
+						return r;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 	public String getComment() {

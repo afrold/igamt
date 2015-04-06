@@ -16,7 +16,7 @@ public class Tables extends DataModel implements Serializable {
 	 */
 	private static final long serialVersionUID = -2904036105687742572L;
 
-	@Id 
+	@Id
 	private String id;
 
 	private String tableLibraryIdentifier;
@@ -104,12 +104,30 @@ public class Tables extends DataModel implements Serializable {
 	}
 
 	public void addTable(Table t) {
-		// if (t.getTables() != null) {
-		// throw new IllegalArgumentException("This table " + t.getMappingId()
-		// + " already belongs to library " + t.getTables().getName());
-		// }
 		children.add(t);
-		// t.setTables(this);
+	}
+
+	public Table findOne(String id) {
+		if (this.children != null)
+			for (Table m : this.children) {
+				if (m.getId().equals(id)) {
+					return m;
+				}
+			}
+
+		return null;
+	}
+
+	public Code findOneCode(String id) {
+		if (this.children != null) {
+			for (Table m : this.children) {
+				Code c = m.findOneCode(id);
+				if (c != null) {
+					return c;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

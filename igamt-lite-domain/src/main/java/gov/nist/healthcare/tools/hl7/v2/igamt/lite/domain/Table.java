@@ -21,7 +21,7 @@ public class Table extends DataModel implements Serializable {
 	 */
 	private static final long serialVersionUID = 734059059225906039L;
 
-	@Id 
+	@Id
 	private String id;
 
 	private String mappingAlternateId;
@@ -140,6 +140,17 @@ public class Table extends DataModel implements Serializable {
 
 	public void setExtensibility(String extensibility) {
 		this.extensibility = extensibility;
+	}
+
+	public Code findOneCode(String id) {
+		if (this.codes != null)
+			for (Code m : this.codes) {
+				if (id.equals(m.getId())) {
+					return m;
+				}
+			}
+
+		return null;
 	}
 
 	// public Tables getTables() {

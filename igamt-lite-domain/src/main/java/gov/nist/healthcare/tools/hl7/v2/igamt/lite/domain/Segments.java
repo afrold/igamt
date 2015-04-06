@@ -12,7 +12,7 @@ public class Segments implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id 
+	@Id
 	private String id;
 
 	private Set<Segment> children = new HashSet<Segment>();
@@ -46,12 +46,43 @@ public class Segments implements java.io.Serializable {
 	 * @param s
 	 */
 	public void addSegment(Segment s) {
-		// if (s.getSegments() != null) {
-		// throw new IllegalArgumentException(
-		// "This segment already belong to a different segment library");
-		// }
 		children.add(s);
-		// s.setSegments(this);
+	}
+
+	public Segment save(Segment s) {
+		if (!this.children.contains(s)) {
+			children.add(s);
+		}
+		return s;
+	}
+
+	public void delete(String id) {
+		Segment d = findOne(id);
+		if (d != null)
+			this.children.remove(d);
+	}
+
+	public Segment findOne(String id) {
+		if (this.children != null)
+			for (Segment m : this.children) {
+				if (m.getId().equals(id)) {
+					return m;
+				}
+			}
+
+		return null;
+	}
+
+	public Field findOneField(String id) {
+		if (this.children != null) {
+			for (Segment m : this.children) {
+				Field c = m.findOneField(id);
+				if (c != null) {
+					return c;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override
