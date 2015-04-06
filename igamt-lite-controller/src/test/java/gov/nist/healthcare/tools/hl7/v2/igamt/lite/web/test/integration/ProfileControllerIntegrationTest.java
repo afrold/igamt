@@ -2,12 +2,12 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test.integration;
 
 import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+//import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.ProfileController;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test.TestWebAppConfig;
 
@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,8 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { TestWebAppConfig.class })
-@TransactionConfiguration
-@Transactional(readOnly = false)
+// @TransactionConfiguration
+// @Transactional(readOnly = false)
 public class ProfileControllerIntegrationTest {
 
 	@InjectMocks
@@ -63,21 +62,17 @@ public class ProfileControllerIntegrationTest {
 		Profile profile = profile();
 		assertNotNull("Profile is null.", profile);
 		profileService.save(profile);
-		profile = profile();
-		assertNotNull("Profile is null.", profile);
-		profileService.save(profile);
-		mockMvc.perform(get("/profiles/preloaded")).andExpect(status().isOk())
-				.andDo(print());
+		mockMvc.perform(get("/profiles/preloaded")).andExpect(status().isOk());
 
 	}
 
-	// @Test
+	@Test
 	public void testGetProfile() throws Exception {
 		Profile profile = profile();
 		assertNotNull("Profile is null.", profile);
 		profileService.save(profile);
 		assertNotNull("Profile is not saved.", profile.getId());
-		Long pId = profile.getId();
+		String pId = profile.getId();
 		mockMvc.perform(get("/profiles/" + pId)).andExpect(status().isOk());
 	}
 
@@ -95,6 +90,8 @@ public class ProfileControllerIntegrationTest {
 							.getResourceAsStream("/vxu/Constraints.xml"));
 			Profile p = new ProfileSerializationImpl().deserializeXMLToProfile(
 					xmlContentsProfile, xmlValueSet, xmlConstraints);
+
+			p.setPreloaded(true);
 			return p;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

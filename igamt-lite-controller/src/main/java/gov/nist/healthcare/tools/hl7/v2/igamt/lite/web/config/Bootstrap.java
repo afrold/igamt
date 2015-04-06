@@ -12,8 +12,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -47,6 +47,7 @@ public class Bootstrap implements InitializingBean {
 		// load VXU profile
 		Profile profile = new ProfileSerializationImpl()
 				.deserializeXMLToProfile(p, v, c);
+		profile.getMetaData().setIdentifier("IG_VXU_V04");
 		profile.setPreloaded(true);
 		profileService.save(profile);
 

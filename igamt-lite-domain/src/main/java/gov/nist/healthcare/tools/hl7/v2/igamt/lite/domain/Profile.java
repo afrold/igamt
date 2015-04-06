@@ -4,30 +4,17 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.TableLibrary;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Entity
-@Table(name = "PROFILE")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@Document(collection = "profile")
 public class Profile extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -37,55 +24,37 @@ public class Profile extends DataModel implements java.io.Serializable {
 		this.type = Constant.PROFILE;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "ID")
-	private Long id;
+	@Id 
+	private String id;
 
 	private ProfileMetaData metaData;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "SEGMENTS_ID")
 	private Segments segments;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "DATATYTPES_ID")
 	private Datatypes datatypes;
 
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "MESSAGES_ID")
 	private Messages messages;
 
-	@Column(name = "COMMENT", columnDefinition = "TEXT")
-	protected String comment;
+	private Tables tables;
 
-	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
-	protected String usageNote;
-
-	@OneToOne(optional = false, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "TABLELIBRARY_ID")
-	private TableLibrary tableLibrary;
-
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "AUTHOR_ID")
+	@DBRef
 	private Author author;
 
-	@Column(name = "PRELOADED")
+	protected String comment;
+
+	protected String usageNote;
+
 	private Boolean preloaded;
 
-	@Column(name = "VERSION")
-	@Version
-	// version from the db
 	private Integer version;
 
 	private String changes;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -105,6 +74,7 @@ public class Profile extends DataModel implements java.io.Serializable {
 		this.segments = segments;
 	}
 
+	//
 	public Datatypes getDatatypes() {
 		return datatypes;
 	}
@@ -119,22 +89,6 @@ public class Profile extends DataModel implements java.io.Serializable {
 
 	public void setMessages(Messages messages) {
 		this.messages = messages;
-	}
-
-	public TableLibrary getTableLibrary() {
-		return tableLibrary;
-	}
-
-	public void setTableLibrary(TableLibrary tableLibrary) {
-		this.tableLibrary = tableLibrary;
-	}
-
-	public Author getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(Author author) {
-		this.author = author;
 	}
 
 	public Integer getVersion() {
@@ -183,12 +137,22 @@ public class Profile extends DataModel implements java.io.Serializable {
 		this.changes = changes;
 	}
 
-	@Override
-	public String toString() {
-		return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
-				+ messages + ", author=" + author + "]";
+	public Tables getTables() {
+		return tables;
 	}
 
+	public void setTables(Tables tables) {
+		this.tables = tables;
+	}
+
+	@Override
+	public String toString() {
+		// return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
+		// + messages;
+		return "Profile [id=" + id + ", metaData=" + metaData;
+	}
+
+	@JsonIgnore
 	public Constraints getConformanceStatements() {
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
@@ -223,6 +187,7 @@ public class Profile extends DataModel implements java.io.Serializable {
 		return constraints;
 	}
 
+	@JsonIgnore
 	public Constraints getPredicates() {
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();

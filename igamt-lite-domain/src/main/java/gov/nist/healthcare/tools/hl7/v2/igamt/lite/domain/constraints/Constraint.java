@@ -2,51 +2,51 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
-@Entity
-@Table(name = "IGCONSTRAINT")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Constraint implements Serializable, Cloneable{
+//@Entity
+//@Table(name = "IGCONSTRAINT")
+//@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Constraint implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 5723342171557075960L;
 
-	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.TABLE)
-	protected Long id;
+	public Constraint() {
+		super();
+		this.id = ObjectId.get().toString();
+	}
 
-	@NotNull
-	@Column(nullable = false, name = "CONSTRAINT_ID")
+	// @Id
+	// @Column(name = "ID")
+	// @GeneratedValue(strategy = GenerationType.TABLE)
+	@Id
+	protected String id;
+
+	// @NotNull
+	// @Column(nullable = false, name = "CONSTRAINT_ID")
 	protected String constraintId;
 
-	@Column(name = "CONSTRAINT_TARGET")
+	// @Column(name = "CONSTRAINT_TARGET")
 	protected String constraintTarget;
 
 	protected Reference reference;
 
-	@NotNull
-	@Column(nullable = false, name = "CONSTRAINT_DEC")
+	// @NotNull
+	// @Column(nullable = false, name = "CONSTRAINT_DEC")
 	// ?? Should this be removed since there is already description in reference
 	protected String description;
 
-	@NotNull
-	@Column(nullable = false, columnDefinition = "LONGTEXT", name = "CONSTRAINT_ASSERTION")
+	// @NotNull
+	// @Column(nullable = false, columnDefinition = "LONGTEXT", name =
+	// "CONSTRAINT_ASSERTION")
 	protected String assertion;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -97,10 +97,10 @@ public abstract class Constraint implements Serializable, Cloneable{
 				+ reference + ", description=" + description + ", assertion="
 				+ assertion + "]";
 	}
-	
+
 	@Override
 	protected Constraint clone() throws CloneNotSupportedException {
-		Constraint c = (Constraint)super.clone();
+		Constraint c = (Constraint) super.clone();
 		c.setId(null);
 		c.setReference(this.reference.clone());
 		return c;

@@ -1,9 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-
-@Embeddable
+//@Embeddable
 public class Reference implements java.io.Serializable, Cloneable {
 
 	/**
@@ -11,13 +8,13 @@ public class Reference implements java.io.Serializable, Cloneable {
 	 */
 	private static final long serialVersionUID = -7922971557486999716L;
 
-	@Column(name = "CHAPTER")
+	// @Column(name = "CHAPTER")
 	private String chapter;
-	@Column(name = "SECTION")
+	// @Column(name = "SECTION")
 	private String section;
-	@Column(name = "PAGE")
+	// @Column(name = "PAGE")
 	private Integer page;
-	@Column(name = "URL")
+	// @Column(name = "URL")
 	private String url;
 
 	public String getChapter() {

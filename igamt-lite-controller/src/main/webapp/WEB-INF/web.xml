@@ -12,11 +12,18 @@
 	<error-page>
 		<location>/error.html</location>
 	</error-page>
-	<resource-ref>
+<!-- 	<resource-ref>
 		<description>DB Connection</description>
 		<res-ref-name>jdbc/igl_jndi</res-ref-name>
 		<res-type>javax.sql.DataSource</res-type>
 		<res-auth>Container</res-auth>
-	</resource-ref>
+	</resource-ref>  -->
+	
+	 <resource-env-ref>
+    <description>Mongo JNDI configuration</description>
+    <resource-env-ref-name>comp/env/jdbc/igl_mongo</resource-env-ref-name>
+    <resource-env-ref-type>org.springframework.data.mongodb.core.MongoTemplate</resource-env-ref-type>
+</resource-env-ref>
+
 </web-app>
 	

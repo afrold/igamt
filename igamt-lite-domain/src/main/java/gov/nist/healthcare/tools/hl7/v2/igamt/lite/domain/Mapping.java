@@ -4,45 +4,36 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import org.springframework.data.annotation.Id;
 
-@Entity
-@Table(name = "MAPPING")
+//@Entity
+//@Table(name = "MAPPING")
 public class Mapping implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;
+	@Id 
+	// @GeneratedValue(strategy = GenerationType.AUTO)
+	protected String id;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "MAPPING_CASE", joinColumns = @JoinColumn(name = "MAPPING"), inverseJoinColumns = @JoinColumn(name = "CASE"))
+	// @OneToMany(cascade = CascadeType.ALL)
+	// @JoinTable(name = "MAPPING_CASE", joinColumns = //@JoinColumn(name =
+	// "MAPPING"), inverseJoinColumns = //@JoinColumn(name = "CASE"))
 	protected List<Case> cases = new ArrayList<Case>();
 
-	@NotNull
-	@Column(name = "MAPPING_POSITION")
+	// @NotNull
+	// @Column(name = "MAPPING_POSITION")
 	protected Integer position = 0;
 
-	@NotNull
-	@Column(name = "REFERENCE")
+	// @NotNull
+	// @Column(name = "REFERENCE")
 	protected Integer reference;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

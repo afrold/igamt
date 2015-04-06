@@ -20,7 +20,8 @@ var app = angular
         'ui.bootstrap',
         'smart-table',
         'ngTreetable',
-        'restangular',
+        'restangular'
+        ,
         'ngMockE2E'
     ]);
 
@@ -77,19 +78,12 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.context = {page: $rootScope.pages[0]};
     $rootScope.messagesMap = {}; // Map for Message;key:id, value:object
     $rootScope.segmentsMap = {};  // Map for Segment;key:id, value:object
-    $rootScope.datatypesMap = {}; // Map for Datatype; key:label, value:object
+    $rootScope.datatypesMap = {}; // Map for Datatype; key:id, value:object
     $rootScope.tablesMap = {};// Map for tables; key:id, value:object
     $rootScope.segments = [];// list of segments of the selected messages
     $rootScope.datatypes = [];// list of datatypes of the selected messages
     $rootScope.tables = [];// list of tables of the selected messages
     $rootScope.usages = ['R', 'RE', 'O', 'C', "CE","X", "B", "W"];
-    $rootScope.codeUsages = ['R', 'P', 'E'];
-    $rootScope.codeSources = ['HL7', 'Local', 'Redefined', 'SDO'];
-    $rootScope.tableStabilities = ['Static', 'Dynamic'];
-    $rootScope.tableExtensibilities = ['Open', 'Close'];
-    $rootScope.newCodeFakeId = 0;
-    $rootScope.newTableFakeId = 0;
-    $rootScope.newTable = {};
     $rootScope.segment = null;
     $rootScope.profileTabs = new Array();
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
@@ -103,6 +97,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.preloadedIgs = [];
     $rootScope.changes = {};
     $rootScope.generalInfo = {type: null, 'message': null};
+    $rootScope.references =[]; // collection of element referencing a datatype to delete
 
 
     $rootScope.selectProfileTab = function (value) {
@@ -124,11 +119,12 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
         $rootScope.segmentsMap = {};
         $rootScope.datatypesMap = {};
         $rootScope.tablesMap = {};
-        $rootScope.segments.length = 0;
-        $rootScope.tables.length = 0;
-        $rootScope.datatypes.length = 0;
-        $rootScope.messages.length = 0
+        $rootScope.segments = [];
+        $rootScope.tables = [];
+        $rootScope.datatypes = [];
+        $rootScope.messages = [];
         $rootScope.messagesData = [];
+
     };
 
     $rootScope.$watch(function () {
@@ -138,7 +134,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     });
 
     $rootScope.api = function (value) {
- //       return "http://localhost:8080/igl-api"+ value;
+//        return "http://localhost:8080/igl-api"+ value;
         return  value;
     };
 
@@ -157,6 +153,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
 
     $rootScope.clearChanges = function (path) {
         $rootScope.changes = {};
+    };
+
+    $rootScope.hasChanges = function(){
+        return Object.getOwnPropertyNames($rootScope.changes).length !== 0;
     };
 
     $rootScope.recordChange = function(object,changeType) {
@@ -187,7 +187,11 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
         if($rootScope.changes[type][id] === undefined){
             $rootScope.changes[type][id] = {};
         }
-        $rootScope.changes[type][id][attr] = value;
+        if(attr != null) {
+            $rootScope.changes[type][id][attr] = value;
+        }else {
+            $rootScope.changes[type][id] = value;
+        }
     };
 
 
@@ -243,9 +247,9 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
                 });
             }
         } else if (element.type === "field" || element.type === "component") {
-            element["datatype"] = $rootScope.datatypesMap[element["datatypeLabel"]];
+            element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
             element["path"] = parent.path+"."+element.position;
-            if (angular.isDefined(element.table)) {
+            if (angular.isDefined(element.table) && element.table != null) {
                 element["table"] = $rootScope.tablesMap[element.table.id];
                 if ($rootScope.tables.indexOf(element.table) === -1) {
                     $rootScope.tables.push(element.table);
@@ -255,13 +259,35 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
         } else if (element.type === "datatype") {
             if ($rootScope.datatypes.indexOf(element) === -1) {
                 $rootScope.datatypes.push(element);
-                element.children = $filter('orderBy')(element.children, 'position');
-                angular.forEach(element.children, function (component) {
+                element.components = $filter('orderBy')(element.components, 'position');
+                angular.forEach(element.components, function (component) {
                     $rootScope.processElement(component,parent);
                 });
             }
         }
     };
+
+    $rootScope.findDatatypeRefs = function (datatype, obj) {
+        if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
+            if(obj.datatype === datatype && $rootScope.references.indexOf(obj) === -1) {
+                $rootScope.references.push(obj);
+             }
+            $rootScope.findDatatypeRefs(datatype,obj.datatype);
+        }else if(angular.equals(obj.type,'segment')){
+            angular.forEach( $rootScope.segments, function (segment) {
+                angular.forEach(segment.fields, function (field) {
+                    $rootScope.findDatatypeRefs(datatype,field);
+                });
+            });
+        } else if(angular.equals(obj.type,'datatype')){
+            if(obj.components != undefined && obj.components != null && obj.components.length > 0){
+                angular.forEach(obj.components, function (component) {
+                    $rootScope.findDatatypeRefs(datatype,component);
+                });
+            }
+        }
+    };
+
 
     $rootScope.validateNumber = function(event) {
         var key = window.event ? event.keyCode : event.which;
@@ -275,6 +301,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
         else return true;
     };
 
+
+    $rootScope.go = function ( path ) {
+        $location.path( path );
+    };
 
 
 });

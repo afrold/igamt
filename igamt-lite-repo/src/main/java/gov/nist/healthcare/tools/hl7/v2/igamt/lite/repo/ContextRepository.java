@@ -18,8 +18,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ContextRepository extends JpaRepository<Context, Long> {
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface ContextRepository extends MongoRepository<Context, String> {
 	
-}
+} 

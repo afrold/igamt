@@ -1,22 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import org.bson.types.ObjectId;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-@Entity
-@Table(name = "GROUPE")
-// GROUP is a keyword
 public class Group extends SegmentRefOrGroup {
 
 	private static final long serialVersionUID = 1L;
@@ -24,31 +12,16 @@ public class Group extends SegmentRefOrGroup {
 	public Group() {
 		super();
 		type = Constant.GROUP;
+		this.id = ObjectId.get().toString();
 	}
 
-	@JsonProperty("children")
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	// @org.hibernate.annotations.OrderBy(clause = "position asc")
-	private Set<SegmentRefOrGroup> segmentsOrGroups = new HashSet<SegmentRefOrGroup>();
+	private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
-	@NotNull
-	@Column(nullable = false, name = "GROUP_NAME")
+	// @NotNull
 	private String name;
 
-	public Set<SegmentRefOrGroup> getSegmentsOrGroups() {
-		return segmentsOrGroups;
-	}
-
-	public void setSegmentsOrGroups(Set<SegmentRefOrGroup> segmentsOrGroups) {
-		if (segmentsOrGroups != null) {
-			this.segmentsOrGroups.clear();
-			Iterator<SegmentRefOrGroup> it = segmentsOrGroups.iterator();
-			while (it.hasNext()) {
-				addSegmentsOrGroup(it.next());
-			}
-		} else {
-			this.segmentsOrGroups = null;
-		}
+	public List<SegmentRefOrGroup> getChildren() {
+		return children;
 	}
 
 	public String getName() {
@@ -60,14 +33,62 @@ public class Group extends SegmentRefOrGroup {
 	}
 
 	public void addSegmentsOrGroup(SegmentRefOrGroup e) {
-		e.setPosition(segmentsOrGroups.size() + 1);
-		segmentsOrGroups.add(e);
+		e.setPosition(this.children.size() + 1);
+		this.children.add(e);
+	}
+
+	public void setChildren(List<SegmentRefOrGroup> children) {
+		this.children = new ArrayList<SegmentRefOrGroup>();
+		for (SegmentRefOrGroup child : children) {
+			addSegmentsOrGroup(child);
+		}
+	}
+
+	public SegmentRefOrGroup findOneSegmentRefOrGroup(String id) {
+		if (this.getId().equals(id)) {
+			return this;
+		}
+		if (this.getChildren() != null) {
+			for (SegmentRefOrGroup m : this.getChildren()) {
+				if (m instanceof SegmentRef) {
+					if (m.getId().equals(id)) {
+						return m;
+					}
+				} else if (m instanceof Group) {
+					Group gr = (Group) m;
+					SegmentRefOrGroup tmp = gr.findOneSegmentRefOrGroup(id);
+					if (tmp != null) {
+						return tmp;
+					}
+
+				}
+			}
+		}
+		return null;
+	}
+
+	public Boolean deleteSegmentRefOrGroup(String id) {
+		if (this.getChildren() != null) {
+			for (int i = 0; i < this.getChildren().size(); i++) {
+				SegmentRefOrGroup m = this.getChildren().get(i);
+				if (m.getId().equals(id)) {
+					return this.getChildren().remove(m);
+				} else if (m instanceof Group) {
+					Group gr = (Group) m;
+					Boolean result = gr.deleteSegmentRefOrGroup(id);
+					if (result) {
+						return result;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public String toString() {
-		return "Group [id=" + id + ", name=" + name + ", usage=" + usage
-				+ ", min=" + min + ", max=" + max + "]";
+		return "Group [name=" + name + ", usage=" + usage + ", min=" + min
+				+ ", max=" + max + "]";
 	}
 
 }

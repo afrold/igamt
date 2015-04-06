@@ -1,16 +1,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
-
-@Embeddable
+//@Embeddable
 public class ConstraintMetaData implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotNull
-	@Column(nullable = false, name = "DESCRIPTION")
+	// @NotNull
+	// @Column(nullable = false, name = "DESCRIPTION")
 	private String description;
 
 	private Standard standard;

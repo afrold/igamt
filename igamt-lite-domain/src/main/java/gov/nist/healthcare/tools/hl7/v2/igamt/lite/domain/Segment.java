@@ -3,29 +3,15 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "SEGMENT")
+@Document(collection = "segment")
 public class Segment extends DataModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -33,62 +19,42 @@ public class Segment extends DataModel implements java.io.Serializable {
 	public Segment() {
 		super();
 		type = Constant.SEGMENT;
+		this.id = ObjectId.get().toString();
 	}
 
-	@Column(name = "ID")
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private String id;
+	//
+	// @DBRef
+	// private Segments segments;
 
-	@NotNull
-	@Column(nullable = false, name = "LABEL")
+	// //@NotNull
 	private String label;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@javax.persistence.JoinTable(name = "SEGMENT_FIELD", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "FIELD"))
-	// @org.hibernate.annotations.OrderBy(clause = "position asc")
-	private Set<Field> fields = new LinkedHashSet<Field>();
+	private List<Field> fields = new ArrayList<Field>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@javax.persistence.JoinTable(name = "SEGMENT_DYNAMICMAPPING", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "DYNAMICMAPPING"))
-	private Set<DynamicMapping> dynamicMappings = new HashSet<DynamicMapping>();
+	private List<DynamicMapping> dynamicMappings = new ArrayList<DynamicMapping>();
 
-	@NotNull
-	@Column(nullable = false, name = "SEGMENT_NAME")
+	// //@NotNull
 	private String name;
 
-	@Column(nullable = true, name = "SEGMENT_DESC")
 	private String description;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@JoinTable(name = "SEGMENT_PREDICATE", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "PREDICATE"))
-	protected Set<Predicate> predicates = new HashSet<Predicate>();
+	protected List<Predicate> predicates = new ArrayList<Predicate>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@JoinTable(name = "SEGMENT_CONFSTATEMENT", joinColumns = @JoinColumn(name = "SEGMENT"), inverseJoinColumns = @JoinColumn(name = "CONFSTATEMENT"))
-	protected Set<ConformanceStatement> conformanceStatements = new HashSet<ConformanceStatement>();
+	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
 
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SEGMENTS_ID")
-	private Segments segments;
-
-	@Column(name = "COMMENT", columnDefinition = "TEXT")
 	protected String comment;
 
-	@Column(name = "USAGE_NOTE", columnDefinition = "TEXT")
-	protected String usageNote;
+	private String text1;
 
-	//
-	// @NotNull
-	// @Column(nullable = false,name="POSITION")
-	// private Integer position = 0;
+	private String text2;
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -116,28 +82,8 @@ public class Segment extends DataModel implements java.io.Serializable {
 		this.description = description;
 	}
 
-	public Set<Field> getFields() {
+	public List<Field> getFields() {
 		return fields;
-	}
-
-	public void setFields(Set<Field> fields) {
-		if (fields != null) {
-			this.fields.clear();
-			Iterator<Field> it = fields.iterator();
-			while (it.hasNext()) {
-				addField(it.next());
-			}
-		} else {
-			this.fields = null;
-		}
-	}
-
-	public Segments getSegments() {
-		return segments;
-	}
-
-	public void setSegments(Segments segments) {
-		this.segments = segments;
 	}
 
 	public void addPredicate(Predicate p) {
@@ -153,16 +99,27 @@ public class Segment extends DataModel implements java.io.Serializable {
 		fields.add(field);
 	}
 
+	public Field findOneField(String id) {
+		if (this.fields != null)
+			for (Field m : this.fields) {
+				if (id.equals(m.getId())) {
+					return m;
+				}
+			}
+
+		return null;
+	}
+
 	public void addDynamicMapping(DynamicMapping d) {
 		d.setPosition(dynamicMappings.size() + 1);
 		dynamicMappings.add(d);
 	}
 
-	public Set<DynamicMapping> getDynamicMappings() {
+	public List<DynamicMapping> getDynamicMappings() {
 		return dynamicMappings;
 	}
 
-	public void setDynamicMappings(Set<DynamicMapping> dynamicMappings) {
+	public void setDynamicMappings(List<DynamicMapping> dynamicMappings) {
 		if (dynamicMappings != null) {
 			this.dynamicMappings.clear();
 			Iterator<DynamicMapping> it = dynamicMappings.iterator();
@@ -174,35 +131,35 @@ public class Segment extends DataModel implements java.io.Serializable {
 		}
 	}
 
-	public Set<Predicate> getPredicates() {
+	public List<Predicate> getPredicates() {
 		return predicates;
 	}
 
-	public void setPredicates(Set<Predicate> predicates) {
-		if (predicates != null) {
-			this.predicates.clear();
-			Iterator<Predicate> it = predicates.iterator();
-			while (it.hasNext()) {
-				addPredicate(it.next());
-			}
-		}
-	}
+	// public void setPredicates(Set<Predicate> predicates) {
+	// if (predicates != null) {
+	// this.predicates.clear();
+	// Iterator<Predicate> it = predicates.iterator();
+	// while (it.hasNext()) {
+	// addPredicate(it.next());
+	// }
+	// }
+	// }
 
-	public Set<ConformanceStatement> getConformanceStatements() {
+	public List<ConformanceStatement> getConformanceStatements() {
 		return conformanceStatements;
 	}
 
-	public void setConformanceStatements(
-			Set<ConformanceStatement> conformanceStatements) {
-		if (conformanceStatements != null) {
-			this.conformanceStatements.clear();
-			Iterator<ConformanceStatement> it = conformanceStatements
-					.iterator();
-			while (it.hasNext()) {
-				addConformanceStatement(it.next());
-			}
-		}
-	}
+	// public void setConformanceStatements(
+	// Set<ConformanceStatement> conformanceStatements) {
+	// if (conformanceStatements != null) {
+	// this.conformanceStatements.clear();
+	// Iterator<ConformanceStatement> it = conformanceStatements
+	// .iterator();
+	// while (it.hasNext()) {
+	// addConformanceStatement(it.next());
+	// }
+	// }
+	// }
 
 	public String getComment() {
 		return comment;
@@ -212,18 +169,39 @@ public class Segment extends DataModel implements java.io.Serializable {
 		this.comment = comment;
 	}
 
-	public String getUsageNote() {
-		return usageNote;
+	public void setFields(List<Field> fields) {
+		this.fields = fields;
 	}
 
-	public void setUsageNote(String usageNote) {
-		this.usageNote = usageNote;
+	public void setPredicates(List<Predicate> predicates) {
+		this.predicates = predicates;
+	}
+
+	public void setConformanceStatements(
+			List<ConformanceStatement> conformanceStatements) {
+		this.conformanceStatements = conformanceStatements;
 	}
 
 	@Override
 	public String toString() {
 		return "Segment [id=" + id + "label=" + label + ", name=" + name
 				+ ", description=" + description + "]";
+	}
+
+	public String getText1() {
+		return text1;
+	}
+
+	public void setText1(String text1) {
+		this.text1 = text1;
+	}
+
+	public String getText2() {
+		return text2;
+	}
+
+	public void setText2(String text2) {
+		this.text2 = text2;
 	}
 
 }

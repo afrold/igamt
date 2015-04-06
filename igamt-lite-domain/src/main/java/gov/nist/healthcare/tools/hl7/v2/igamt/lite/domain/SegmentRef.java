@@ -1,15 +1,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Entity
-@Table(name = "SEGMENTREF")
 public class SegmentRef extends SegmentRefOrGroup {
 
 	private static final long serialVersionUID = 1L;
@@ -17,13 +11,12 @@ public class SegmentRef extends SegmentRefOrGroup {
 	public SegmentRef() {
 		super();
 		type = Constant.SEGMENTREF;
+		this.id = ObjectId.get().toString();
 	}
 
-	@JsonIgnoreProperties({ "type", "fields", "label", "dynamicMappings",
-			"name", "description", "predicates", "conformanceStatements",
-			"segments" })
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "REF")
+	@JsonIgnoreProperties({ "label", "fields", "dynamicMappings", "name",
+			"description", "predicates", "conformanceStatements", "comment",
+			"usageNote", "type", "text1", "text2" })
 	private Segment ref;
 
 	public Segment getRef() {
@@ -32,12 +25,21 @@ public class SegmentRef extends SegmentRefOrGroup {
 
 	public void setRef(Segment ref) {
 		this.ref = ref;
+		// this.refId = ref != null ? ref.getId() : null;
 	}
+
+	// public String getRefId() {
+	// return refId;
+	// }
+	//
+	// public void setRefId(String refId) {
+	// this.refId = refId;
+	// }
 
 	@Override
 	public String toString() {
-		return "SegmentRef [id=" + id + ", segment=" + ref + ", usage=" + usage
-				+ ", min=" + min + ", max=" + max + "]";
+		return "SegmentRef [segment=" + ref + ", usage=" + usage + ", min="
+				+ min + ", max=" + max + "]";
 	}
 
 }

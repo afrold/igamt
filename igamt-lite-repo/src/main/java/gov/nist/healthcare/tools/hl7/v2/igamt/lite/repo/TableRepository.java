@@ -17,9 +17,11 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
-import org.springframework.data.jpa.repository.JpaRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
-public interface TableRepository extends JpaRepository<Table, Long> {
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-}
+public interface TableRepository extends MongoRepository<Table, String> {
+
+} 
+ 

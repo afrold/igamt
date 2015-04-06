@@ -10,16 +10,9 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeNotFoundException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -32,20 +25,21 @@ public class DatatypeController extends CommonController {
 
 	Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
-	@Autowired
-	private DatatypeService datatypeService;
-
-	@RequestMapping(value = "/{targetId}/clone", method = RequestMethod.POST)
-	public Datatype clone(@PathVariable("targetId") Long targetId)
-			throws DatatypeNotFoundException, CloneNotSupportedException {
-		logger.info("Clone datatype with id=" + targetId);
-		Datatype d = datatypeService.findOne(targetId);
-		if (d == null) {
-			throw new DatatypeNotFoundException(targetId);
-		}
-		Datatype clone = datatypeService.clone(d); // FIXME: clone datatype
-		datatypeService.save(clone);
-		return clone;
-	}
+	// @Autowired
+	// private DatatypeService datatypeService;
+	//
+	// @RequestMapping(value = "/{targetId}/clone", method = RequestMethod.POST)
+	// public Datatype clone(@PathVariable("targetId") String targetId,
+	// @PathVariable("profileId") String profileId)
+	// throws DatatypeNotFoundException, CloneNotSupportedException {
+	// logger.info("Clone datatype with id=" + targetId);
+	// Datatype d = datatypeService.findOne(targetId);
+	// if (d == null) {
+	// throw new DatatypeNotFoundException(targetId);
+	// }
+	// Datatype clone = datatypeService.clone(d); // FIXME: clone datatype
+	// datatypeService.save(clone);
+	// return clone;
+	// }
 
 }

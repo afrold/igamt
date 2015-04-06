@@ -1,41 +1,35 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@Entity
-@Table(name = "DATATYPES")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@Document(collection = "datatypes")
 public class Datatypes implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private String id;
 
-	@OneToMany(mappedBy = "datatypes", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	/**
+	 * 
+	 */
+	public Datatypes() {
+		super();
+		this.id = ObjectId.get().toString();
+	}
+
 	private Set<Datatype> children = new HashSet<Datatype>();
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -43,36 +37,58 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return children;
 	}
 
-	public void setChildren(Set<Datatype> datatypes) {
-		if (datatypes != null) {
-			this.children.clear();
-			Iterator<Datatype> it = datatypes.iterator();
-			while (it.hasNext()) {
-				addDatatype(it.next());
-			}
-		} else {
-			this.children = null;
-		}
+	public void setChildren(Set<Datatype> children) {
+		this.children = children;
 	}
 
 	public void addDatatype(Datatype d) {
-		if (d.getDatatypes() != null) {
-			throw new IllegalArgumentException(
-					"This datatype already belogs to a different datatypes");
-		}
-		// d.setPosition(datatypes.size() +1);
 		children.add(d);
-		d.setDatatypes(this);
 	}
 
-	public Datatype find(String label) {
-		Iterator<Datatype> it = this.children.iterator();
-		while (it.hasNext()) {
-			Datatype tmp = it.next();
-			if (tmp.getLabel().equals(label)) {
-				return tmp;
-			}
+	// public Datatype find(String label) {
+	// Iterator<Datatype> it = this.children.iterator();
+	// while (it.hasNext()) {
+	// Datatype tmp = it.next();
+	// if (tmp.getLabel().equals(label)) {
+	// return tmp;
+	// }
+	// }
+	// return null;
+	// }
+
+	public Datatype save(Datatype d) {
+		if (!this.children.contains(d)) {
+			children.add(d);
 		}
+		return d;
+	}
+
+	public void delete(String id) {
+		Datatype d = findOne(id);
+		if (d != null)
+			this.children.remove(d);
+	}
+
+	public Datatype findOne(String id) {
+		if (this.children != null)
+			for (Datatype m : this.children) {
+				if (m.getId().equals(id)) {
+					return m;
+				}
+			}
+
+		return null;
+	}
+
+	public Component findOneComponent(String id) {
+		if (this.children != null)
+			for (Datatype m : this.children) {
+				Component c = m.findOneComponent(id);
+				if (c != null) {
+					return c;
+				}
+			}
+
 		return null;
 	}
 

@@ -59,7 +59,7 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function (node) {
-            return node && node != null && node.type !== 'segment' && node.children && node.children.length > 0;
+            return node && node != null && node.type !== 'segmentRef' && node.children && node.children.length > 0;
         };
 
     });

@@ -9,8 +9,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.HL7Version;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.xml.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.ProfileController;
 
 import java.io.IOException;
@@ -58,7 +58,7 @@ public class ProfileControllerTest {
 	@Test
 	public void testGetProfile() throws Exception {
 		Profile custom = findOneFull();
-		when(mockProfileService.findOne(new Long(3))).thenReturn(custom);
+		when(mockProfileService.findOne("3")).thenReturn(custom);
 		mockMvc.perform(get("/profiles/3")).andExpect(status().isOk())
 				.andDo(print());
 	}
@@ -68,7 +68,7 @@ public class ProfileControllerTest {
 		Profile p = new Profile();
 		ProfileMetaData metaData = new ProfileMetaData();
 		p.setMetaData(metaData);
-		p.setId(new Long(1));
+		p.setId("1");
 		metaData.setHl7Version(HL7Version.V2_0.value());
 		metaData.setSchemaVersion(SchemaVersion.V1_0.value());
 		ProfileMetaData m = new ProfileMetaData();
@@ -81,7 +81,7 @@ public class ProfileControllerTest {
 		p = new Profile();
 		metaData = new ProfileMetaData();
 		p.setMetaData(metaData);
-		p.setId(new Long(2));
+		p.setId("2");
 		metaData.setHl7Version(HL7Version.V2_0.value());
 		metaData.setSchemaVersion(SchemaVersion.V1_0.value());
 		m = new ProfileMetaData();

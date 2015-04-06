@@ -3,46 +3,28 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
-import javax.persistence.FetchType;
-import javax.validation.constraints.NotNull;
-
-@Embeddable
 public class ProfileMetaData implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotNull
-	@Column(nullable = false, name = "NAME")
+	// //@NotNull
 	private String name;
 
-	@Column(name = "PROFILE_IDENTIFIER")
 	private String identifier;
 
-	@NotNull
-	@Column(nullable = false, name = "ORGNAME")
+	// //@NotNull
 	private String orgName;
 
-	@Column(name = "STATUS")
 	private String status;
 
-	@Column(name = "TOPICS")
 	private String topics;
 
-	@Column(name = "TYPE")
 	private String type;
 
-	@Column(name = "HL7VERSION")
 	private String hl7Version;
 
-	@Column(name = "SCHEMAVERSION")
 	private String schemaVersion;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "ENCODINGS")
 	private Set<String> encodings = new HashSet<String>();
 
 	public String getName() {

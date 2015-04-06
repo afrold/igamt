@@ -19,8 +19,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface SegmentsRepository extends JpaRepository<Segments, Long> {
+public interface SegmentsRepository extends MongoRepository<Segments, String> {
 
-}
+} 

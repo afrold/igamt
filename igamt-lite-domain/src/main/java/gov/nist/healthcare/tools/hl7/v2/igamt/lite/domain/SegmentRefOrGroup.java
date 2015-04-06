@@ -1,56 +1,30 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import org.springframework.data.annotation.Id;
 
-@Entity
-@Table(name = "SEGMENTREFORGROUP")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class SegmentRefOrGroup extends DataModel implements
-		java.io.Serializable, Comparable<SegmentRefOrGroup> {
+		java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.TABLE)
-	protected Long id;
+	@Id 
+	protected String id;
 
-	@NotNull
-	@Column(nullable = false, name = "USAGEE")
-	@Enumerated(EnumType.STRING)
+	// //@NotNull
 	protected Usage usage;
 
-	@NotNull
-	@Min(0)
-	@Column(nullable = false, name = "MIN")
+	// @NotNull
+	// @Min(0)
 	protected Integer min;
 
-	@NotNull
-	@Column(nullable = false, name = "MAX")
+	// @NotNull
 	protected String max;
 
-	@NotNull
-	@Column(nullable = false, name = "SEGMENTREFORGROUP_POSITION")
+	// @NotNull
+	// @Column(nullable = false, name = "SEGMENTREFORGROUP_POSITION")
 	protected Integer position = 0;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	protected String comment;
 
 	public Usage getUsage() {
 		return usage;
@@ -83,8 +57,21 @@ public abstract class SegmentRefOrGroup extends DataModel implements
 	public void setPosition(Integer position) {
 		this.position = position;
 	}
-	
-	public int compareTo(SegmentRefOrGroup o) {
-		return (int) (this.getPosition() - o.getPosition());
+
+	public String getId() {
+		return id;
 	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
 }

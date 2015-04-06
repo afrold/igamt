@@ -3,40 +3,33 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@Entity
-@Table(name = "MESSAGES")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@Document(collection = "messages")
 public class Messages implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private String id;
 
-	@OneToMany(mappedBy = "messages", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@OrderBy(value = "position")
-	private final Set<Message> children = new HashSet<Message>();
+	/**
+	 * 
+	 */
+	public Messages() {
+		super();
+		this.id = ObjectId.get().toString();
+	}
 
-	public Long getId() {
+	private Set<Message> children = new HashSet<Message>();
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -44,14 +37,42 @@ public class Messages implements java.io.Serializable {
 		return children;
 	}
 
+	public void setChildren(Set<Message> children) {
+		this.children = children;
+	}
+
 	public void addMessage(Message m) {
-		if (m.getMessages() != null) {
-			throw new IllegalArgumentException(
-					"This message already belong to a different messages");
-		}
 		m.setPosition(children.size() + 1);
 		children.add(m);
-		m.setMessages(this);
+	}
+
+	public void delete(String id) {
+		Message m = findOne(id);
+		if (m != null)
+			this.getChildren().remove(m);
+	}
+
+	public Message findOne(String id) {
+		if (this.getChildren() != null)
+			for (Message m : this.getChildren()) {
+				if (m.getId().equals(id)) {
+					return m;
+				}
+			}
+
+		return null;
+	}
+
+	public SegmentRefOrGroup findOneSegmentRefOrGroup(String id) {
+		if (this.getChildren() != null) {
+			for (Message message : this.getChildren()) {
+				SegmentRefOrGroup m = message.findOneSegmentRefOrGroup(id);
+				if (m != null) {
+					return m;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

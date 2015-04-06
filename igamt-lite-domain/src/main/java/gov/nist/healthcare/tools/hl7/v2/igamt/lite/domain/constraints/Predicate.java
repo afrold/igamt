@@ -4,12 +4,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
-@Table(name = "PREDICATE")
+//@Entity
+//@Table(name = "PREDICATE")
+
+@Document(collection = "predicate")
 public class Predicate extends Constraint implements Serializable {
 
 	/**
@@ -17,10 +17,14 @@ public class Predicate extends Constraint implements Serializable {
 	 */
 	private static final long serialVersionUID = 5723342171557075960L;
 
-	@Column(name = "TRUEUSAGE")
+	public Predicate() {
+		super();
+	}
+
+	// @Column(name = "TRUEUSAGE")
 	private Usage trueUsage;
 
-	@Column(name = "FALSEUSAGE")
+	// @Column(name = "FALSEUSAGE")
 	private Usage falseUsage;
 
 	public Usage getTrueUsage() {
@@ -49,7 +53,7 @@ public class Predicate extends Constraint implements Serializable {
 
 	@Override
 	public Predicate clone() throws CloneNotSupportedException {
-		return (Predicate)super.clone();
+		return (Predicate) super.clone();
 	}
 
 }

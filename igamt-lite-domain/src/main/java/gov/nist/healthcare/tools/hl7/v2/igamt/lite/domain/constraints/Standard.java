@@ -1,29 +1,27 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 
-@Embeddable
+//@Embeddable
 public class Standard implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
 	// TODO: WOO,can this be null?
-	// @NotNull
-	// @Column(nullable = false)
-	@Column(name = "STANDARDID")
+	// //@NotNull
+	// //@Column(nullable = false)
+	// @Column(name = "STANDARDID")
 	private String standardId;
 
-	// @NotNull
-	// @Column(nullable = false)
-	@Column(name = "STANDARD_VERSION")
+	// //@NotNull
+	// //@Column(nullable = false)
+	// @Column(name = "STANDARD_VERSION")
 	private String standardVersion;
 
-	@Column(name = "STANDARD_DATE")
+	// @Column(name = "STANDARD_DATE")
 	private String standardDate;
-	@Column(name = "STANDARD_URL")
+	// @Column(name = "STANDARD_URL")
 	private String standardURL;
-	@Column(name = "STANDARD_DESC")
+	// @Column(name = "STANDARD_DESC")
 	private String standardDescription;
 
 	public String getStandardId() {

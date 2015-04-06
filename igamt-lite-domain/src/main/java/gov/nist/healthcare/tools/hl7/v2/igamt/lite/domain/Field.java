@@ -1,37 +1,36 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.math.BigInteger;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 /**
  * 
  * @author Harold Affo (harold.affo@nist.gov) Feb 13, 2015
  */
-@Entity
-@Table(name = "FIELD")
+// @Entity
+// @Table(name = "FIELD")
 public class Field extends DataElement implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	protected String id;
+
 	public Field() {
 		super();
 		type = Constant.FIELD;
+		this.id = ObjectId.get().toString();
 	}
 
-	@Column(nullable = true, name = "ITEMNO")
 	private String itemNo;
 
-	@NotNull
-	@Column(nullable = false, name = "MIN")
-	private BigInteger min;
+	// @NotNull
+	private Integer min;
 
-	@NotNull
-	@Column(nullable = false, name = "MAX")
+	// @NotNull
 	private String max;
+
+	private String text;
 
 	public String getItemNo() {
 		return itemNo;
@@ -41,11 +40,11 @@ public class Field extends DataElement implements java.io.Serializable {
 		this.itemNo = itemNo;
 	}
 
-	public BigInteger getMin() {
+	public Integer getMin() {
 		return min;
 	}
 
-	public void setMin(BigInteger min) {
+	public void setMin(Integer min) {
 		this.min = min;
 	}
 
@@ -57,14 +56,20 @@ public class Field extends DataElement implements java.io.Serializable {
 		this.max = max;
 	}
 
-	@Override
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	@Override
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 	@Override

@@ -10,14 +10,12 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import javax.persistence.Transient;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Feb 13, 2015
  */
 public abstract class DataModel {
 
-	@Transient
 	protected String type;
 
 	public String getType() {

@@ -23,25 +23,29 @@ angular.module('igl')
          */
         $scope.init = function () {
             $rootScope.context.page = $rootScope.pages[0];
-            $scope.preloadedLoading = true;
             $scope.preloadedError = null;
             $scope.customError = null;
-            $scope.customLoading = true;
 
-            $http.get($rootScope.api('/api/profiles/preloaded'), {timeout: 60000}).then(function (response) {
-                $rootScope.preloadedIgs = angular.fromJson(response.data);
-                $scope.preloadedLoading = false;
-            }, function (error) {
-                $scope.preLoadedError = error;
-                $scope.preloadedLoading = false;
-            });
-            $http.get($rootScope.api('/api/profiles/custom'), {timeout: 60000}).then(function (response) {
-                $rootScope.customIgs = angular.fromJson(response.data);
-                $scope.customLoading = false;
-            }, function (error) {
-                $scope.customError = error;
-                $scope.customLoading = false;
-            });
+            if($scope.customIgs.length === 0) {
+                $scope.customLoading = true;
+                $http.get($rootScope.api('/api/profiles/preloaded'), {timeout: 60000}).then(function (response) {
+                    $rootScope.preloadedIgs = angular.fromJson(response.data);
+                    $scope.preloadedLoading = false;
+                }, function (error) {
+                    $scope.preLoadedError = error;
+                    $scope.preloadedLoading = false;
+                });
+            }
+            if($scope.preloadedIgs.length === 0) {
+                $scope.preloadedLoading = true;
+                $http.get($rootScope.api('/api/profiles/custom'), {timeout: 60000}).then(function (response) {
+                    $rootScope.customIgs = angular.fromJson(response.data);
+                    $scope.customLoading = false;
+                }, function (error) {
+                    $scope.customError = error;
+                    $scope.customLoading = false;
+                });
+            }
         };
 
         $scope.clone = function (id) {
@@ -73,16 +77,18 @@ angular.module('igl')
             waitingDialog.show('Loading profile...', {dialogSize: 'sm', progressType: 'info'});
 //             $http.get($rootScope.api('/api/profiles/'+ row.id)).then(function (profile) {
             $scope.loading = true;
+            $rootScope.generalInfo = {type: null, 'message': null};
             var profile = $scope.findOne(id);
             if (profile != null) {
                 $rootScope.initMaps();
+
                 $rootScope.context.page = $rootScope.pages[1];
                 $rootScope.profile = profile;
                 $rootScope.messages = $rootScope.profile.messages.children;
 //                $rootScope.backUp = Restangular.copy($rootScope.profile);
 
                 angular.forEach($rootScope.profile.datatypes.children, function (child) {
-                    this[child.label] = child;
+                    this[child.id] = child;
                 }, $rootScope.datatypesMap);
 
 
@@ -90,7 +96,7 @@ angular.module('igl')
                     this[child.id] = child;
                 }, $rootScope.segmentsMap);
 
-                angular.forEach($rootScope.profile.tableLibrary.tables.children, function (child) {
+                angular.forEach($rootScope.profile.tables.children, function (child) {
                     this[child.id] = child;
                 }, $rootScope.tablesMap);
 
@@ -103,6 +109,10 @@ angular.module('igl')
                 }, $rootScope.messagesMap);
 
                 if ($rootScope.profile.messages.children.length === 1) {
+                    $rootScope.segments = [];
+                    $rootScope.tables = [];
+                    $rootScope.datatypes = [];
+
                     $rootScope.message =$rootScope.messages[0];
                     $rootScope.message.children = $filter('orderBy')($rootScope.message.children, 'position');
                     angular.forEach($rootScope.message.children, function (segmentRefOrGroup) {
@@ -229,6 +239,30 @@ angular.module('igl')
                 });
             }
         };
+
+        $scope.exportAs = function (id,format) {
+            waitingDialog.show('Exporting profile...', {dialogSize: 'sm', progressType: 'success'});
+            var form = document.createElement("form");
+            form.action = $rootScope.api('/api/profiles/'+ id+ '/export/'+ format);
+            form.method = "POST";
+            form.target = "_target";
+            form.style.display = 'none';
+            form.params =
+            document.body.appendChild(form);
+            form.submit();
+            $rootScope.changes = {};
+            waitingDialog.hide();
+//             $http.post($rootScope.api('/api/profiles/'+ id+ '/export'), {params:{'exportType':format},timeout: 60000}).then(function (response) {
+//                waitingDialog.hide();
+//                $rootScope.changes = {};
+//            }, function (error) {
+//                $scope.error = error;
+//                waitingDialog.hide();
+//            });
+        };
+
+
+
     });
 
 angular.module('igl')
@@ -267,8 +301,9 @@ angular.module('igl')
 
         $scope.save = function () {
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
-            var data = angular.toJson($rootScope.changes);
-            $http.post($rootScope.api('/api/profiles/save'), data ,{timeout: 60000}).then(function (response) {
+            var changes = angular.toJson($rootScope.changes);
+            var data = {"value": changes};
+            $http.post($rootScope.api('/api/profiles/'+  $rootScope.profile.id + '/save'), data ,{timeout: 60000}).then(function (response) {
                 $rootScope.generalInfo.message = "Implementation Guide saved successfully !";
                 $rootScope.generalInfo.type = 'success';
                 waitingDialog.hide();
@@ -278,6 +313,34 @@ angular.module('igl')
                 waitingDialog.hide();
             });
         };
+
+
+        $scope.exportAs = function (format) {
+            waitingDialog.show('Exporting profile...', {dialogSize: 'sm', progressType: 'success'});
+//            var data = angular.toJson($rootScope.changes);
+
+            var form = document.createElement("form");
+            form.action = $rootScope.api('/api/profiles/'+ $rootScope.profile.id+ '/export/'+ format);
+            form.method = "POST";
+            form.target = "_target";
+            form.style.display = 'none';
+            form.params =
+                document.body.appendChild(form);
+            form.submit();
+             waitingDialog.hide();
+
+
+
+
+//            $http.post($rootScope.api('/api/profiles/'+ $rootScope.profile.id+ '/export'), data, {params: {'exportType': format}, timeout: 60000}).then(function (response) {
+//                waitingDialog.hide();
+//                $rootScope.changes = {};
+//            }, function (error) {
+//                $scope.error = error;
+//                waitingDialog.hide();
+//            });
+        };
+
 
         $scope.close = function () {
             $rootScope.changes = {}; // FIXME

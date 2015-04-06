@@ -3,38 +3,33 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-@Entity
-@Table(name = "SEGMENTS")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@Document(collection = "segments")
 public class Segments implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private String id;
 
-	@OneToMany(mappedBy = "segments", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	private final Set<Segment> children = new HashSet<Segment>();
+	private Set<Segment> children = new HashSet<Segment>();
 
-	public Long getId() {
+	/**
+	 * 
+	 */
+	public Segments() {
+		super();
+		this.id = ObjectId.get().toString();
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -42,13 +37,52 @@ public class Segments implements java.io.Serializable {
 		return children;
 	}
 
+	public void setChildren(Set<Segment> children) {
+		this.children = children;
+	}
+
+	/**
+	 * 
+	 * @param s
+	 */
 	public void addSegment(Segment s) {
-		if (s.getSegments() != null) {
-			throw new IllegalArgumentException(
-					"This segment already belong to a different segment library");
-		}
 		children.add(s);
-		s.setSegments(this);
+	}
+
+	public Segment save(Segment s) {
+		if (!this.children.contains(s)) {
+			children.add(s);
+		}
+		return s;
+	}
+
+	public void delete(String id) {
+		Segment d = findOne(id);
+		if (d != null)
+			this.children.remove(d);
+	}
+
+	public Segment findOne(String id) {
+		if (this.children != null)
+			for (Segment m : this.children) {
+				if (m.getId().equals(id)) {
+					return m;
+				}
+			}
+
+		return null;
+	}
+
+	public Field findOneField(String id) {
+		if (this.children != null) {
+			for (Segment m : this.children) {
+				Field c = m.findOneField(id);
+				if (c != null) {
+					return c;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

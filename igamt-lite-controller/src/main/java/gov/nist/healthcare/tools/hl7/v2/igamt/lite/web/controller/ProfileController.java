@@ -1,9 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Changes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.repo.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.ChangeCommand;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -49,12 +50,19 @@ public class ProfileController extends CommonController {
 		return "ERROR:" + ex.getMessage();
 	}
 
+	@ExceptionHandler(ProfileException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public String profileNotFound(ProfileException ex) {
+		logger.debug(ex.getMessage());
+		return "ERROR:" + ex.getMessage();
+	}
+
 	/**
 	 * Return the list of pre-loaded profiles
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value = "/preloaded", method = RequestMethod.GET)
+	@RequestMapping(value = "/preloaded", method = RequestMethod.GET, produces = "application/json")
 	public List<Profile> preloaded() {
 		logger.info("Fetching all preloaded profiles...");
 		List<Profile> result = profileService.findAllPreloaded();
@@ -76,7 +84,7 @@ public class ProfileController extends CommonController {
 	 * @throws ProfileNotFoundException
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public Profile profile(@PathVariable("id") Long id)
+	public Profile profile(@PathVariable("id") String id)
 			throws ProfileNotFoundException {
 		logger.info("GET pofile with id=" + id);
 		Profile p = profileService.findOne(id);
@@ -87,8 +95,8 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{targetId}/clone", method = RequestMethod.POST)
-	public Profile clone(@PathVariable("targetId") Long targetId)
-			throws ProfileNotFoundException {
+	public Profile clone(@PathVariable("targetId") String targetId)
+			throws ProfileNotFoundException, ProfileException {
 		logger.info("Clone profile with id=" + targetId);
 		Profile p = profileService.findOne(targetId);
 		if (p == null) {
@@ -102,60 +110,45 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{targetId}/delete", method = RequestMethod.POST)
-	public void delete(@PathVariable("targetId") Long targetId)
+	public void delete(@PathVariable("targetId") String targetId)
 			throws ProfileNotFoundException {
 		logger.info("Delete profile with id=" + targetId);
 		profileService.delete(targetId);
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public List<String> save(@RequestBody Changes jsonChanges) {
+	@RequestMapping(value = "/{profileId}/save", method = RequestMethod.POST)
+	public List<String> save(@RequestBody ChangeCommand jsonChanges,
+			@PathVariable("profileId") String profileId)
+			throws ProfileNotFoundException {
 		logger.info("Applying changes = " + jsonChanges);
-		try {
-			return profileService.apply(jsonChanges.getValue());
-		} catch (ProfileNotFoundException e) {
-			throw new RuntimeException(e);
+		Profile p = profileService.findOne(profileId);
+		if (p == null) {
+			throw new ProfileNotFoundException(profileId);
 		}
+		return profileService.apply(jsonChanges.getValue(), p);
 	}
 
-	@RequestMapping(value = "/{targetId}/export/xml", method = RequestMethod.POST, produces = "text/xml")
-	public void exportXml(@PathVariable("targetId") Long targetId,
+	@RequestMapping(value = "/{targetId}/export/XML", method = RequestMethod.POST, produces = "text/xml")
+	public void export(@PathVariable("targetId") String targetId,
 			HttpServletRequest request, HttpServletResponse response)
-					throws IOException {
-		logger.info("Exporting as xml file profile with id=" + targetId);
+			throws IOException {
+		// logger.info(log.toString());
 		InputStream content = null;
 		content = profileService.exportAsXml(targetId);
 		response.setContentType("text/xml");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.xml");
 		FileCopyUtils.copy(content, response.getOutputStream());
+
+		// if ("pdf".equalsIgnoreCase(format)) {
+		// content = profileService.exportA sPdf(targetId);
+		// response.setContentType("application/pdf");
+		// response.setHeader("Content-disposition",
+		// "attachment;filename=IG.pdf");
+		// FileCopyUtils.copy(content, response.getOutputStream());
+		// } else if ("xml".equalsIgnoreCase(format)) {
+		//
+		// }
 	}
-	
-	@RequestMapping(value = "/{targetId}/export/pdf", method = RequestMethod.POST, produces = "application/pdf")
-	public void exportPdf(@PathVariable("targetId") Long targetId,
-			HttpServletRequest request, HttpServletResponse response)
-					throws IOException {
-		logger.info("Exporting as pdf file profile with id=" + targetId);
-		InputStream content = null;
-		content = profileService.exportAsPdf(targetId);
-		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition",
-				"attachment;filename=Profile.pdf");
-		FileCopyUtils.copy(content, response.getOutputStream());
-	}
-	
-	@RequestMapping(value = "/{targetId}/export/xslx", method = RequestMethod.POST, 
-			produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-	public void exportXlsx(@PathVariable("targetId") Long targetId,
-			HttpServletRequest request, HttpServletResponse response)
-					throws IOException {
-		logger.info("Exporting as spreadsheet profile with id=" + targetId);
-		InputStream content = null;
-		content = profileService.exportAsXlsx(targetId);
-		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-disposition",
-				"attachment;filename=Profile.xlsx");
-		FileCopyUtils.copy(content, response.getOutputStream());
-	}
-	
+
 }

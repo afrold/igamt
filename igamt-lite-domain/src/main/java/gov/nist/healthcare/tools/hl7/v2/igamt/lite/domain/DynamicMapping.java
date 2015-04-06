@@ -1,66 +1,53 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-@Entity
-@Table(name = "DYNAMIC_MAPPING")
+////@Entity
+////@Table(name = "DYNAMIC_MAPPING")
 public class DynamicMapping implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;
+	// @Id 
+	// //@Column(name = "ID")
+	// //@GeneratedValue(strategy = GenerationType.AUTO)
+	protected String id;
 
-	@Min(1)
-	@NotNull
-	@Column(nullable = false, name = "MIN")
-	private BigInteger min;
+	// @Min(1)
+	// //@NotNull
+	// //@Column(nullable = false, name = "MIN")
+	private Integer min;
 
-	@NotNull
-	@Column(nullable = false, name = "MAX")
+	// //@NotNull
+	// //@Column(nullable = false, name = "MAX")
 	private String max;
 
-	@NotNull
-	@Column(nullable = false, name = "DYNAMIC_MAPPING_POSITION")
+	// //@NotNull
+	// //@Column(nullable = false, name = "DYNAMIC_MAPPING_POSITION")
 	private Integer position = 0;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "DYNAMIC_MAPPING_MAPPING", joinColumns = @JoinColumn(name = "DYNAMIC_MAPPING"), inverseJoinColumns = @JoinColumn(name = "MAPPING"))
-	@OrderBy(value = "position")
-	protected Set<Mapping> mappings = new HashSet<Mapping>();
+	// //@OneToMany(cascade = CascadeType.ALL)
+	// //@JoinTable(name = "DYNAMIC_MAPPING_MAPPING", joinColumns =
+	// //@JoinColumn(name = "DYNAMIC_MAPPING"), inverseJoinColumns =
+	// //@JoinColumn(name = "MAPPING"))
+	// @OrderBy(value = "position")
+	protected List<Mapping> mappings = new ArrayList<Mapping>();
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
-	public BigInteger getMin() {
+	public Integer getMin() {
 		return min;
 	}
 
-	public void setMin(BigInteger min) {
+	public void setMin(Integer min) {
 		this.min = min;
 	}
 
@@ -72,11 +59,11 @@ public class DynamicMapping implements Serializable {
 		this.max = max;
 	}
 
-	public Set<Mapping> getMappings() {
+	public List<Mapping> getMappings() {
 		return mappings;
 	}
 
-	public void setMappings(Set<Mapping> mappings) {
+	public void setMappings(List<Mapping> mappings) {
 		this.mappings = mappings;
 	}
 

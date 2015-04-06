@@ -4,6 +4,40 @@
     <i class="fa fa-spinner fa-spin"></i>
 </div>
 <div ng-show="!loading">
+    <div class="row" style="margin-top: 10px">
+        <div class="pull-right">
+            <!--<button title="Cancel Edit" type="button" class="btn btn-warning btn-sm"-->
+            <!--ng-click="reset()">-->
+            <!--<span><i class="fa fa-times"></i>&nbsp; Reset</span>-->
+            <!--</button>-->
+
+            <button title="Apply Changes" ng-disabled="changes.length == 0" type="button" class="btn btn-success btn-sm"
+                    ng-click="save()">
+                <span><i class="fa fa-check-square"></i>&nbsp; Apply</span>
+            </button>
+            <div class="btn-group">
+                <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm">                                        <span><i class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
+                    Export</button>
+                <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a ng-click="exportAs('XML')">As XML</a></li>
+                    <!--<li><a href="#" ng-click="exportAs('PDF')">As PDF</a></li>-->
+                </ul>
+            </div>
+            <button title="Close" type="button" class="btn btn-warning btn-sm"
+                    ng-click="close()">
+                <span><i class="fa fa-times"></i>&nbsp; Close</span>
+            </button>
+            <button title="Delete" type="button" class="btn btn-danger btn-sm"
+                    ng-click="delete()">
+                <span> <i class="fa fa-trash"></i>&nbsp; Delete</span>
+            </button>
+
+        </div>
+    </div>
     <div class="row" style="margin-left: 0px">
         <div class="col-md-3" role="complementary">
         	<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
