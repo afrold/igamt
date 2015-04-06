@@ -28,6 +28,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConstraintType;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.tables.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
@@ -54,6 +58,9 @@ import java.io.PrintWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +90,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
+import org.hibernate.mapping.Collection;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.NotWritablePropertyException;
@@ -92,18 +100,21 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.html.WebColors;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
@@ -526,212 +537,6 @@ public class ProfileServiceImpl implements ProfileService {
 		return mainNode;
 	}
 
-	public InputStream exportAsPdf(Long targetId){
-
-		try {
-			//Look for the profile
-			Profile p = findOne(targetId);
-
-			/*
-			//Generate xml file containing profile
-			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
-			String stringProfile = new ProfileSerializationImpl().serializeProfileToXML(p);
-			FileUtils.writeStringToFile(tmpXmlFile, stringProfile, Charset.forName("UTF-8"));
-
-			//Apply XSL transformation on xml file to generate html
-			Source text = new StreamSource(tmpXmlFile);
-			TransformerFactory factory = TransformerFactory.newInstance();
-			Source xslt = new StreamSource( this.getClass().getResourceAsStream("/rendering/profile.xsl"));
-			Transformer transformer;
-			transformer = factory.newTransformer(xslt);
-			File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
-			transformer.transform(text, new StreamResult(tmpHtmlFile));
-			System.out.println( "HTML Created!" );
-
-			//Convert html document to pdf
-			Document document = new Document();
-			File tmpPdfFile = File.createTempFile("ProfileTemp", ".pdf");
-			PdfWriter writer = PdfWriter.getInstance(document, FileUtils.openOutputStream(tmpPdfFile));
-			document.open();
-			XMLWorkerHelper.getInstance().parseXHtml(writer, document, 
-					FileUtils.openInputStream(tmpHtmlFile));
-			document.close();
-			System.out.println( "PDF Created!" );
-			 */
-
-			//Create fonts and colors to be used in generated pdf
-			BaseColor headerColor = WebColors.getRGBColor("#0033CC");
-			Font titleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE | Font.BOLD, BaseColor.RED);
-			Font headerFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL, BaseColor.WHITE);
-			Font cellFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL, BaseColor.BLACK);
-
-			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
-			Document document1 = new Document();
-			PdfWriter writer1 = PdfWriter.getInstance(document1, FileUtils.openOutputStream(tmpPdfFile));
-			document1.open();
-
-			document1.add(new Paragraph("Message definition", titleFont));
-			document1.add( Chunk.NEWLINE );
-
-			List<String> header;
-			PdfPTable table;
-			List <String> cells;
-
-			for (Message m : p.getMessages().getChildren()){
-				document1.add(new Paragraph("Message definition: "));
-				document1.add(new Paragraph(m.getStructID() + " - " + m.getDescription()));
-				document1.add( Chunk.NEWLINE );
-
-				header = Arrays.asList("Segment" ,"Name",  "Card.", "Local Card." , "Usage", 
-						"Local Usage" , "Comment");
-				table = this.createHeader(header, headerFont, headerColor);
-				float[] columnWidths = {3f, 4f, 1.5f, 1.5f, 2f, 2f, 8f};
-				table.setWidths(columnWidths);
-
-				cells = new ArrayList<String>();
-				for (SegmentRefOrGroup srog : m.getSegmentRefOrGroups()) {
-					if (srog instanceof SegmentRef) {
-						this.addSegment(cells, (SegmentRef) srog, 0);
-					} else if (srog instanceof Group) {
-						this.addGroup(cells, (Group) srog, 0);	
-					} 
-				}
-				this.addCells(table, cells, cellFont);
-				document1.add(table);
-
-
-				/*
-				document1.add(new Paragraph("Segments"));
-				document1.add( Chunk.NEWLINE );
-
-				header = Arrays.asList("SEQ" , "Field" , "Usage", "Cardi" , 
-						"Length" , "ValueSet", "Conf Statement" , "Predicate" , "Comment");
-				table = this.createHeader(header, headerFont, headerColor);
-				for (Segment s : p.getSegments().getChildren()) {
-					document1.add(new Paragraph(s.getName() + " - " + s.getDescription()));
-
-					cells = new ArrayList<String>();
-					for (Field f : s.getFields()) {
-						cells.add(f.getItemNo());
-						cells.add(f.getName());
-						cells.add(f.getUsage().value());
-						cells.add("[" + String.valueOf(f.getMin()) + ".." +String.valueOf(f.getMax()) + "]");
-						cells.add("[" + String.valueOf(f.getMinLength()) + "," +String.valueOf(f.getMaxLength()) + "]");
-						if (f.getTable() != null){
-							cells.add(f.getTable().getMappingId());
-						} else {
-							cells.add("");
-						}
-						cells.add("");
-						cells.add("");
-						cells.add(f.getComment());
-					}
-					this.addCells(table, cells, cellFont);
-					document1.add(table);
-				}
-
-				document1.add(new Paragraph("Datatypes"));
-				document1.add( Chunk.NEWLINE );
-
-
-				for (Datatype d : p.getDatatypes().getChildren()) {
-					document1.add(new Paragraph(d.getName() + " - " + d.getDescription()));
-					document1.add(new Paragraph(d.getComment()));
-
-					header = Arrays.asList("Name", "Usage", "Length" , "Conf length", "Datatype" , 
-							"ValueSet", "Conf Statement" , "Predicate" , "Comment");
-					table = this.createHeader(header, headerFont, headerColor);
-
-					cells = new ArrayList<String>();
-					for (Component c: d.getComponents()){
-						//FIXME
-						//Add recursive calls on Components
-						cells.add(c.getName());
-						cells.add(c.getUsage().value());
-
-						cells.add("[" + String.valueOf(c.getMinLength()) + ".." +String.valueOf(c.getMaxLength()) + "]");
-						cells.add(c.getConfLength());
-						cells.add(c.getDatatypeLabel());
-
-
-						if (c.getTable() != null){
-							cells.add(c.getTable().getMappingId());
-						} else {
-							cells.add("");
-						}
-						cells.add("");
-						cells.add("");
-						cells.add(c.getComment());
-					}
-					this.addCells(table, cells, cellFont);
-					document1.add(table);
-				}
-				 */
-
-			}
-
-			document1.close();
-			return FileUtils.openInputStream(tmpPdfFile);
-		} catch (DocumentException | IOException e) {
-			e.printStackTrace();
-			return new NullInputStream(1L);
-		}
-	}
-
-	private void addCells(PdfPTable table, List<String> cells, Font cellFont){
-		for (String cell: cells){
-			table.addCell(new Phrase(cell, cellFont));
-		}
-	}
-
-	private PdfPTable createHeader(List<String> headers, Font headerFont, BaseColor headerColor){
-		PdfPTable table = new PdfPTable(headers.size());
-		PdfPCell c1;
-		for (String cellName : headers){
-			c1 = new PdfPCell(new Phrase(cellName, headerFont));
-			c1.setHorizontalAlignment(Element.ALIGN_LEFT);
-			c1.setBackgroundColor(headerColor);
-			table.addCell(c1);
-		}
-		return table;
-	}
-
-	private void addGroup(List<String> cells, Group g, Integer depth){
-		String indent = StringUtils.repeat(" ", 2 * depth);
-		cells.add(indent + "[");
-		cells.add("[" + String.valueOf(g.getMin()) + ".." + String.valueOf(g.getMax()) + "]");
-		cells.add("");
-		cells.add(g.getUsage().value());
-		cells.add("");
-		cells.add("BEGIN " + g.getName() + " GROUP");
-
-		for (SegmentRefOrGroup srog : g.getSegmentsOrGroups()) {
-			if (srog instanceof SegmentRef) {
-				this.addSegment(cells, (SegmentRef) srog, depth + 1);
-			} else if (srog instanceof Group) {
-				this.addGroup(cells, (Group) srog, depth + 1);						
-			}
-		}
-		cells.add(indent + "]");
-		cells.add("");
-		cells.add("");
-		cells.add("");
-		cells.add("");
-		cells.add("END " + g.getName() + " GROUP");
-	}
-
-	private void addSegment(List<String> cells, SegmentRef s, Integer depth){
-		String indent = StringUtils.repeat(" ", 2 * depth);
-		cells.add(indent + s.getRef().getName());
-		cells.add("[" + String.valueOf(s.getMin()) + ".." + String.valueOf(s.getMax()) + "]");
-		cells.add("");
-		cells.add(s.getUsage().value());
-		cells.add("");
-		cells.add(s.getRef().getComment());
-	}
 
 	@Override
 	public InputStream exportAsXml(Long targetId) {
@@ -762,19 +567,19 @@ public class ProfileServiceImpl implements ProfileService {
 				//Create a blank sheet
 				XSSFSheet sheet;
 				sheet = workbook.createSheet(m.getStructID() + " Segment Usage");
-				
+
 				int headerSize = 8;
 
 				//This data needs to be written (Object[])
 				Map<String, Object[]> data = new TreeMap<String, Object[]>();
-				
+
 				List<List<String>> rows = new ArrayList<List<String>>();
 
 				rows.add(Arrays.asList("SEGMENT", "CDC Usage", "Local Usage", 
 						"Local Usage Constraint", "CDC Cardinality", "Local Cardinality", 
 						"Local Cardinality Constraint", "Local Comments"));
-				
-				
+
+
 				for (SegmentRefOrGroup srog : m.getSegmentRefOrGroups()) {
 					if (srog instanceof SegmentRef) {
 						this.addSegmentXlsx(rows, (SegmentRef) srog, 0);
@@ -783,23 +588,21 @@ public class ProfileServiceImpl implements ProfileService {
 					} 
 				}
 				for (List<String> row: rows){
-					
+
 					Object[] tmp = new Object[headerSize];
 					for (String elt : row){
 						tmp[row.indexOf(elt)] = elt;
 					}
 					//TODO Remove print
-					System.out.println(String.valueOf(rows.indexOf(row)) + " " + row.toString());
+					//System.out.println(String.valueOf(rows.indexOf(row)) + " " + row.toString());
 					//data.put(String.valueOf(rows.indexOf(row)), tmp);
-					data.put(String.format("%03d", rows.indexOf(row)), tmp);
-					}
+					data.put(String.format("%06d", rows.indexOf(row)), tmp);
+				}
 
 				//Iterate over data and write to sheet
 				Set<String> keyset = data.keySet();
-				System.out.println(keyset);
 				keyset = new TreeSet<String>(keyset);
-				System.out.println(keyset);
-				
+
 				int rownum = 0;
 				for (String key : keyset)
 				{
@@ -819,17 +622,290 @@ public class ProfileServiceImpl implements ProfileService {
 				workbook.write(out);
 				workbook.close();
 				out.close();
-				System.out.println(StringUtils.repeat(" ! ", 23));
-
-				
 			}
 			return new NullInputStream(1L);
-
 		}catch (Exception e) {
 			e.printStackTrace();
 			return new NullInputStream(1L);
 		}
 	}
+
+
+	public InputStream exportAsPdfFromXSL(Long targetId){
+		try {
+			//Look for the profile
+			Profile p = findOne(targetId);
+
+			//Generate xml file containing profile
+			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
+			String stringProfile = new ProfileSerializationImpl().serializeProfileToXML(p);
+			FileUtils.writeStringToFile(tmpXmlFile, stringProfile, Charset.forName("UTF-8"));
+
+			//Apply XSL transformation on xml file to generate html
+			Source text = new StreamSource(tmpXmlFile);
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Source xslt = new StreamSource( this.getClass().getResourceAsStream("/rendering/profile.xsl"));
+			Transformer transformer;
+			transformer = factory.newTransformer(xslt);
+			File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
+			transformer.transform(text, new StreamResult(tmpHtmlFile));
+
+			//Convert html document to pdf
+			Document document = new Document();
+			File tmpPdfFile = File.createTempFile("ProfileTemp", ".pdf");
+			PdfWriter writer = PdfWriter.getInstance(document, FileUtils.openOutputStream(tmpPdfFile));
+			document.open();
+			XMLWorkerHelper.getInstance().parseXHtml(writer, document, 
+					FileUtils.openInputStream(tmpHtmlFile));
+			document.close();
+			return FileUtils.openInputStream(tmpPdfFile);
+		}
+		catch(IOException | TransformerException | DocumentException e){
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream exportAsPdf(Long targetId){
+
+		try {
+			//Look for the profile
+			Profile p = findOne(targetId);
+
+			//Create fonts and colors to be used in generated pdf
+			BaseColor headerColor = WebColors.getRGBColor("#0033CC");
+			BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
+			Font titleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE | Font.BOLD, BaseColor.RED);
+			Font headerFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL, BaseColor.WHITE);
+			Font cellFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL, BaseColor.BLACK);
+
+			List<String> header;
+			PdfPTable table;
+			float columnWidths[];
+			List<List<String>> rows;				
+
+			//File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+			File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
+
+			Document document1 = new Document();
+			PdfWriter writer1 = PdfWriter.getInstance(document1, FileUtils.openOutputStream(tmpPdfFile));
+
+			document1.setPageSize(PageSize.A4);
+			document1.setMargins(15f, 15f, 36f, 36f);
+			//72pt = 1 inch
+
+			document1.open();
+
+			document1.add(new Paragraph("Messages definition", titleFont));
+			document1.add( Chunk.NEWLINE );
+
+			for (Message m : p.getMessages().getChildren()){
+				document1.add(new Paragraph("Message definition: "));
+				document1.add(new Paragraph(m.getStructID() + " - " + m.getDescription()));
+				document1.add( Chunk.NEWLINE );
+
+				header = Arrays.asList("Segment" ,"STD\nUsage", "Local\nUsage", "STD\nCard.", "Local\nCard." , "Comment");
+				columnWidths = new float[] {4f, 3f, 3f, 2f, 2f, 8f};
+				table = this.createHeader(header, columnWidths, headerFont, headerColor);
+
+				rows = new ArrayList<List<String>>();
+				
+				List<SegmentRefOrGroup> segRefOrGroups = new ArrayList<>(m.getSegmentRefOrGroups());
+				Collections.sort(segRefOrGroups);
+
+				for (SegmentRefOrGroup srog : segRefOrGroups) {
+					if (srog instanceof SegmentRef) {
+						this.addSegmentPdf(rows, (SegmentRef) srog, 0);
+					} else if (srog instanceof Group) {
+						this.addGroupPdf1(rows, (Group) srog, 0);
+					} 
+				}
+				this.addCells(table, rows, cellFont, cpColor);
+				document1.add(table);
+
+			}
+
+			for (Message m : p.getMessages().getChildren()){
+				document1.newPage();
+
+				document1.add(new Paragraph("Segments definition", titleFont));
+				document1.add( Chunk.NEWLINE );
+
+				header = Arrays.asList("Seq" , "Element Name" ,"DT" , "STD\nUsage", "Local\nUsage", "Std\nCard.", "Local\nCard." , 
+						"Len" , "Value\nSet", "Comment");
+				columnWidths = new float[] {2f, 3f, 2f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 2f, 6f};
+
+				for (SegmentRefOrGroup srog : m.getSegmentRefOrGroups()) {
+					table = this.createHeader(header, columnWidths, headerFont, headerColor);
+					rows = new ArrayList<List<String>>();
+					if (srog instanceof SegmentRef) {
+						Segment s = ((SegmentRef) srog).getRef();
+						document1.add(new Paragraph(s.getDescription() + " (" + s.getName() + ")"));
+						document1.add( Chunk.NEWLINE );
+						this.addFieldPdf2(rows, s);
+						this.addCells(table, rows, cellFont, cpColor);
+						document1.add(table);
+						document1.newPage();
+
+					} else if (srog instanceof Group) {
+						this.addGroupPdf2(document1, header, columnWidths, (Group) srog, headerFont, headerColor, cellFont, cpColor);
+					} 
+				}
+			}
+
+
+			document1.add(new Paragraph("Datatypes", titleFont));
+			document1.add( Chunk.NEWLINE );
+
+			header = Arrays.asList("Seq" , "Element Name" ,"Conf length" , "DT", "Usage", 
+					"Len" , "Table", "Comment");
+			columnWidths = new float[] {2f, 3f, 2f, 1.5f, 1.5f, 2f, 2f, 6f};
+
+
+			for (Datatype d : p.getDatatypes().getChildren()) {
+				document1.add(new Paragraph(d.getName() + " - " + d.getDescription()));
+				document1.add(new Paragraph(d.getComment()));
+
+				table = this.createHeader(header, columnWidths, headerFont, headerColor);
+				rows = new ArrayList<List<String>>();
+				this.addComponentPdf2(rows, d);
+				this.addCells(table, rows, cellFont, cpColor);
+				document1.add(Chunk.NEWLINE);
+				document1.add(table);
+				document1.add(Chunk.NEXTPAGE);
+			}
+
+			document1.close();
+			return FileUtils.openInputStream(tmpPdfFile);
+		} catch (DocumentException | IOException e) {
+			e.printStackTrace();
+			return new NullInputStream(1L);
+		}
+	}
+
+
+	private PdfPTable createHeader(List<String> headers, float[] columnWidths, Font headerFont, BaseColor headerColor){
+		PdfPTable table = new PdfPTable(headers.size());
+		PdfPCell c1;
+		for (String cellName : headers){
+			c1 = new PdfPCell(new Phrase(cellName, headerFont));
+			c1.setHorizontalAlignment(Element.ALIGN_LEFT);
+			c1.setBackgroundColor(headerColor);
+			table.addCell(c1);
+		}
+		try {
+			if (columnWidths.length != 0){
+				table.setWidths(columnWidths);
+			}
+		} catch (DocumentException e) {
+
+			e.printStackTrace();
+		}
+		return table;
+	}
+
+
+	private void addCells(PdfPTable table, List<List<String>> rows, Font cellFont, BaseColor cpColor){
+		for (List<String> cells: rows){
+			if (cells.size() != 3){
+				for (String cell: cells){
+					table.addCell(new Phrase(cell, cellFont));
+				}
+			} else {
+				PdfPCell cell;
+				cell = new PdfPCell(new Phrase(cells.get(0), cellFont));
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(cells.get(1), cellFont));
+				cell.setColspan(2);
+				cell.setBackgroundColor(cpColor);
+				table.addCell(cell);
+				cell = new PdfPCell(new Phrase(cells.get(2), cellFont));
+				cell.setColspan(7);
+				table.addCell(cell);
+			}
+		}
+	}
+
+	private void addGroupPdf1(List<List<String>> rows, Group g, Integer depth){
+		String indent = StringUtils.repeat(" ", 2 * depth);
+
+		List <String> row = Arrays.asList(
+				indent + "[", g.getUsage().value(), "", 
+				"[" + String.valueOf(g.getMin()) + ".." + String.valueOf(g.getMax()) + "]",
+				"", "BEGIN " + g.getName() + " GROUP");
+		rows.add(row);
+
+		List<SegmentRefOrGroup> segsOrGroups = new ArrayList<>(g.getSegmentsOrGroups());
+		Collections.sort(segsOrGroups);
+		for (SegmentRefOrGroup srog : segsOrGroups) {
+			if (srog instanceof SegmentRef) {
+				this.addSegmentPdf(rows, (SegmentRef) srog, depth + 1);
+			} else if (srog instanceof Group) {
+				this.addGroupPdf1(rows, (Group) srog, depth + 1);	
+			}
+		}
+
+		row = Arrays.asList(indent + "]", "", "", "", "", "END " + g.getName() + " GROUP");
+		rows.add(row);		
+	}
+
+
+	private void addGroupPdf2(Document document, List<String> header, float[] columnWidths, Group g, Font headerFont, 
+			BaseColor headerColor, Font cellFont, BaseColor cpColor) throws DocumentException{
+		PdfPTable table;
+		List<List<String>> rows;
+
+		List<SegmentRefOrGroup> segsOrGroups = new ArrayList<>(g.getSegmentsOrGroups());
+		Collections.sort(segsOrGroups);
+		for (SegmentRefOrGroup srog : segsOrGroups) {
+			if (srog instanceof SegmentRef) {
+				table = this.createHeader(header, columnWidths, headerFont, headerColor);
+				rows = new ArrayList<List<String>>();
+				this.addFieldPdf2(rows, ((SegmentRef) srog).getRef());
+				this.addCells(table, rows, cellFont, cpColor);
+				document.add(table);
+				document.newPage();
+			} else if (srog instanceof Group) {
+				this.addGroupPdf2(document, header, columnWidths, (Group) srog, headerFont, 
+						headerColor, cellFont, cpColor);	
+			}
+		}
+	}
+
+
+	private void addGroupXlsx(List<List<String>> rows, Group g, Integer depth){
+		String indent = StringUtils.repeat(" ", 4 * depth);
+
+		List <String> row = Arrays.asList(
+				indent + "BEGIN " + g.getName() + " GROUP", "", g.getUsage().value(), "",
+				"", "[" + String.valueOf(g.getMin()) + ".." + String.valueOf(g.getMax()) + "]",
+				"", "");
+		rows.add(row);
+		List<SegmentRefOrGroup> segsOrGroups = new ArrayList<>(g.getSegmentsOrGroups());
+		Collections.sort(segsOrGroups);
+		for (SegmentRefOrGroup srog : segsOrGroups) {
+			if (srog instanceof SegmentRef) {
+				this.addSegmentXlsx(rows, (SegmentRef) srog, depth + 1);
+			} else if (srog instanceof Group) {
+				this.addGroupXlsx(rows, (Group) srog, depth + 1);						
+			}
+		}
+		row = Arrays.asList(
+				indent + "END " + g.getName() + " GROUP", "", "", "", "", "");
+		rows.add(row);
+	}
+
+	private void addSegmentPdf(List<List<String>> rows, SegmentRef s, Integer depth){
+		String indent = StringUtils.repeat(" ", 4 * depth);
+
+		List <String> row = Arrays.asList(indent + s.getRef().getName(), s.getUsage().value(), 
+				"", "[" + String.valueOf(s.getMin()) + ".." + String.valueOf(s.getMax()) + "]", 
+				"", (String)(s.getRef().getComment() == null ? "" : s.getRef().getComment()));
+		rows.add(row);
+	}
+
 
 	private void addSegmentXlsx(List<List<String>> rows, SegmentRef s, Integer depth){
 		String indent = StringUtils.repeat(" ", 4 * depth);
@@ -839,28 +915,89 @@ public class ProfileServiceImpl implements ProfileService {
 				"", (String)(s.getRef().getComment() == null ? "" : s.getRef().getComment()));
 		rows.add(row);
 	}
-	
-	private void addGroupXlsx(List<List<String>> rows, Group g, Integer depth){
-		String indent = StringUtils.repeat(" ", 4 * depth);
-		
-		List <String> row = Arrays.asList(
-				indent + "BEGIN " + g.getName() + " GROUP", "", g.getUsage().value(), "",
-			"", "[" + String.valueOf(g.getMin()) + ".." + String.valueOf(g.getMax()) + "]",
-			"", "");
-		rows.add(row);
-		for (SegmentRefOrGroup srog : g.getSegmentsOrGroups()) {
-			if (srog instanceof SegmentRef) {
-				this.addSegmentXlsx(rows, (SegmentRef) srog, depth + 1);
-			} else if (srog instanceof Group) {
-				this.addGroupXlsx(rows, (Group) srog, depth + 1);						
+
+
+	private List<Constraint> findConstraints(Integer target, Set<Predicate> predicates, Set<ConformanceStatement> conformanceStatements){
+		List<Constraint> constraints = new ArrayList<>();
+		for (Predicate pre: predicates){
+			if (target == Integer.parseInt(pre.getConstraintTarget().substring(0, pre.getConstraintTarget().indexOf('[')))){
+				constraints.add(pre);
 			}
 		}
-		row = Arrays.asList(
-				indent + "END " + g.getName() + " GROUP", "", "", "", "", "", "", "" );
-		rows.add(row);
+		for (ConformanceStatement conformanceStatement: conformanceStatements){
+			if (target == Integer.parseInt(
+					conformanceStatement.getConstraintTarget().substring(
+							0, conformanceStatement.getConstraintTarget().indexOf('[')))){
+				constraints.add(conformanceStatement);
+			}
+		}
+		return constraints;
 	}
-	
-	
-	
-	
+
+	private void addComponentPdf2(List<List<String>> rows, Datatype d){
+		List <String> row;
+		//System.out.println(StringUtils.repeat("%",25));
+
+		Set<Predicate> predicates = d.getPredicates();
+		Set<ConformanceStatement> conformanceStatements = d.getConformanceStatements();
+		
+		List<Component> componentsList = new ArrayList<>(d.getComponents());
+		Collections.sort(componentsList);
+		for (Component c : componentsList){
+			row = Arrays.asList(c.getPosition().toString(), c.getName(), c.getConfLength(), 
+					c.getDatatypeLabel(), c.getUsage().value(),
+					"[" + String.valueOf(c.getMinLength()) + "," +String.valueOf(c.getMaxLength()) + "]",
+					(String)((c.getTable() == null) ? "" : c.getTable().getMappingId()), c.getComment() );
+			rows.add(row);
+
+			List<Constraint> constraints = this.findConstraints(componentsList.indexOf(c) + 1, predicates, conformanceStatements);
+			if (!constraints.isEmpty()){
+
+				for (Constraint constraint : constraints){
+					String constraintType = new String();
+					if (constraint instanceof Predicate)	{
+						constraintType = "Condition Predicate";
+					} else if (constraint instanceof ConformanceStatement)	{
+						constraintType =  "Conformance Statement";
+					}
+					row = Arrays.asList(constraint.getConstraintId(), constraintType, constraint.getDescription());
+					rows.add(row);
+				}
+			}
+		}
+	}
+
+	private void addFieldPdf2(List<List<String>> rows, Segment s){
+		//System.out.println(StringUtils.repeat("%",25));
+		//System.out.println("Segment id: " + s.getId().toString());
+		List <String> row;
+		Set<Predicate> predicates = s.getPredicates();
+		Set<ConformanceStatement> conformanceStatements = s.getConformanceStatements();
+		
+		List<Field> fieldsList = new ArrayList<>(s.getFields());
+		Collections.sort(fieldsList);
+		for (Field f : fieldsList){
+			row = Arrays.asList(f.getItemNo().replaceFirst("^0+(?!$)", ""), f.getName(), 
+					f.getDatatypeLabel(), f.getUsage().value(), "", "[" + String.valueOf(f.getMin()) + ".." +String.valueOf(f.getMax()) + "]",
+					"", "[" + String.valueOf(f.getMinLength()) + "," +String.valueOf(f.getMaxLength()) + "]",
+					(String)((f.getTable() == null) ? "" : f.getTable().getMappingId()), f.getComment() );
+			rows.add(row);
+
+			List<Constraint> constraints = this.findConstraints(fieldsList.indexOf(f) + 1, predicates, conformanceStatements);
+			if (!constraints.isEmpty()){
+
+				for (Constraint constraint : constraints){
+					String constraintType = new String();
+					if (constraint instanceof Predicate)	{
+						constraintType = "Condition Predicate";
+					} else if (constraint instanceof ConformanceStatement)	{
+						constraintType =  "Conformance Statement";
+					}
+					row = Arrays.asList(constraint.getConstraintId(), constraintType, constraint.getDescription());
+					rows.add(row);
+				}
+			}
+		}
+	}
+
 }

@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "SEGMENTREFORGROUP")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class SegmentRefOrGroup extends DataModel implements
-		java.io.Serializable {
+		java.io.Serializable, Comparable<SegmentRefOrGroup> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -83,5 +83,8 @@ public abstract class SegmentRefOrGroup extends DataModel implements
 	public void setPosition(Integer position) {
 		this.position = position;
 	}
-
+	
+	public int compareTo(SegmentRefOrGroup o) {
+		return (int) (this.getPosition() - o.getPosition());
+	}
 }

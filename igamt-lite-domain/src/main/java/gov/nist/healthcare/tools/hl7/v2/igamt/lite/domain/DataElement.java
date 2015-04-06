@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @JsonIgnoreProperties({ "datatype" })
 public abstract class DataElement extends DataModel implements
-		java.io.Serializable, Cloneable {
+		java.io.Serializable, Cloneable, Comparable<DataElement> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -198,4 +198,7 @@ public abstract class DataElement extends DataModel implements
 		return de;
 	}
 
-}
+	@Override
+	public int compareTo(DataElement o) {
+		return this.getPosition() - o.getPosition();
+	}}
