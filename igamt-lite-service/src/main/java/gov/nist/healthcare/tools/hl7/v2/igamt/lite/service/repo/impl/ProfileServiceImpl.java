@@ -550,15 +550,10 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	public InputStream exportAsXlsx(Long targetId){
-		List<String> header;
-		PdfPTable table;
-		List <String> cells;
-
 		try {
 			//Look for the profile
 			Profile p = findOne(targetId);
-			//File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
-			File tmpxslxFile = new File("/Users/marieros/Documents/testXslt/profile.xlsx");
+			File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
 
 			//Blank workbook
 			XSSFWorkbook workbook = new XSSFWorkbook();
@@ -593,9 +588,6 @@ public class ProfileServiceImpl implements ProfileService {
 					for (String elt : row){
 						tmp[row.indexOf(elt)] = elt;
 					}
-					//TODO Remove print
-					//System.out.println(String.valueOf(rows.indexOf(row)) + " " + row.toString());
-					//data.put(String.valueOf(rows.indexOf(row)), tmp);
 					data.put(String.format("%06d", rows.indexOf(row)), tmp);
 				}
 
@@ -686,8 +678,7 @@ public class ProfileServiceImpl implements ProfileService {
 			float columnWidths[];
 			List<List<String>> rows;				
 
-			//File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
-			File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
+			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
 
 			Document document1 = new Document();
 			PdfWriter writer1 = PdfWriter.getInstance(document1, FileUtils.openOutputStream(tmpPdfFile));
@@ -711,7 +702,7 @@ public class ProfileServiceImpl implements ProfileService {
 				table = this.createHeader(header, columnWidths, headerFont, headerColor);
 
 				rows = new ArrayList<List<String>>();
-				
+
 				List<SegmentRefOrGroup> segRefOrGroups = new ArrayList<>(m.getSegmentRefOrGroups());
 				Collections.sort(segRefOrGroups);
 
@@ -940,7 +931,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 		Set<Predicate> predicates = d.getPredicates();
 		Set<ConformanceStatement> conformanceStatements = d.getConformanceStatements();
-		
+
 		List<Component> componentsList = new ArrayList<>(d.getComponents());
 		Collections.sort(componentsList);
 		for (Component c : componentsList){
@@ -973,7 +964,7 @@ public class ProfileServiceImpl implements ProfileService {
 		List <String> row;
 		Set<Predicate> predicates = s.getPredicates();
 		Set<ConformanceStatement> conformanceStatements = s.getConformanceStatements();
-		
+
 		List<Field> fieldsList = new ArrayList<>(s.getFields());
 		Collections.sort(fieldsList);
 		for (Field f : fieldsList){
