@@ -81,4 +81,10 @@ public class Field extends DataElement implements java.io.Serializable {
 				+ "]";
 	}
 
+	@Override
+	public int compareTo(DataElement o) {
+		return this.getPosition() - o.getPosition(); 
+
+	}
+
 }
