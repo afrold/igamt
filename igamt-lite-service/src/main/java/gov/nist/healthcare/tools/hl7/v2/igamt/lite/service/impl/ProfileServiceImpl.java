@@ -551,8 +551,8 @@ public class ProfileServiceImpl implements ProfileService {
 		try {
 			// Look for the profile
 			Profile p = findOne(targetId);
-			//File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
-			File tmpxslxFile = new File("/Users/marieros/Documents/testXslt/profile.xlsx");
+			File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
+			//File tmpxslxFile = new File("/Users/marieros/Documents/testXslt/profile.xlsx");
 
 			// Blank workbook
 			XSSFWorkbook workbook = new XSSFWorkbook();
@@ -588,27 +588,27 @@ public class ProfileServiceImpl implements ProfileService {
 				this.writeToSheet(rows, header, sheet);
 			}
 
-			//765875589896896989893453456
-			//243543634634623636246462362
-			for (Message m : p.getMessages().getChildren()) {
-				rows = new ArrayList<List<String>>();
-				header = Arrays.asList("Segment", "STD\nUsage", "Local\nUsage",
-						"STD\nCard.", "Local\nCard.", "Comment");
-
-				//data = new TreeMap<String, Object[]>();
-
-				for (SegmentRefOrGroup srog : m.getChildren()) {
-					
-					if (srog instanceof SegmentRef) {
-						this.addSegmentXlsx2(((SegmentRef) srog).getRef(), header, workbook);
-					} else if (srog instanceof Group) {
-						this.addGroupXlsx2(header, (Group) srog, workbook);
-					}
-				}
-
-				//this.writeToSheet(rows, header, sheet);
-			}
-			//23525235235223523535
+//			//765875589896896989893453456
+//			//243543634634623636246462362
+//			for (Message m : p.getMessages().getChildren()) {
+//				rows = new ArrayList<List<String>>();
+//				header = Arrays.asList("Segment", "STD\nUsage", "Local\nUsage",
+//						"STD\nCard.", "Local\nCard.", "Comment");
+//
+//				//data = new TreeMap<String, Object[]>();
+//
+//				for (SegmentRefOrGroup srog : m.getChildren()) {
+//					
+//					if (srog instanceof SegmentRef) {
+//						this.addSegmentXlsx2(((SegmentRef) srog).getRef(), header, workbook);
+//					} else if (srog instanceof Group) {
+//						this.addGroupXlsx2(header, (Group) srog, workbook);
+//					}
+//				}
+//
+//				//this.writeToSheet(rows, header, sheet);
+//			}
+//			//23525235235223523535
 
 			FileOutputStream out = new FileOutputStream(tmpxslxFile);
 			workbook.write(out);
@@ -713,8 +713,8 @@ public class ProfileServiceImpl implements ProfileService {
 			float columnWidths[];
 			List<List<String>> rows;
 
-			//File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
-			File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
+			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+			//File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
 
 			Document document1 = new Document();
 			PdfWriter writer1 = PdfWriter.getInstance(document1,
