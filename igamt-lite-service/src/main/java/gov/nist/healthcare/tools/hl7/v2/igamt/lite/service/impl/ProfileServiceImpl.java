@@ -551,8 +551,8 @@ public class ProfileServiceImpl implements ProfileService {
 		try {
 			// Look for the profile
 			Profile p = findOne(targetId);
-			File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
-			//File tmpxslxFile = new File("/Users/marieros/Documents/testXslt/profile.xlsx");
+			//File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
+			File tmpxslxFile = new File("/Users/marieros/Documents/testXslt/profile.xlsx");
 
 			// Blank workbook
 			XSSFWorkbook workbook = new XSSFWorkbook();
@@ -572,9 +572,7 @@ public class ProfileServiceImpl implements ProfileService {
 				rows = new ArrayList<List<String>>();
 
 				header = Arrays.asList("SEGMENT", "CDC Usage", "Local Usage",
-						"Local Usage Constraint", "CDC Cardinality",
-						"Local Cardinality", "Local Cardinality Constraint",
-						"Local Comments");
+						"CDC Cardinality", "Local Cardinality", "Comments");
 				rows.add(header);
 
 				for (SegmentRefOrGroup srog : m.getChildren()) {
@@ -967,9 +965,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 		List<String> row = Arrays.asList(
 				indent + "BEGIN " + g.getName() + " GROUP",
-				"",
 				g.getUsage().value(),
-				"",
 				"",
 				"[" + String.valueOf(g.getMin()) + ".."
 						+ String.valueOf(g.getMax()) + "]", "", "");
@@ -983,7 +979,7 @@ public class ProfileServiceImpl implements ProfileService {
 				this.addGroupXlsx(rows, (Group) srog, depth + 1);
 			}
 		}
-		row = Arrays.asList(indent + "END " + g.getName() + " GROUP", "", "",
+		row = Arrays.asList(indent + "END " + g.getName() + " GROUP", 
 				"", "", "");
 		rows.add(row);
 	}
@@ -1046,8 +1042,8 @@ public class ProfileServiceImpl implements ProfileService {
 			Integer depth) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
 
-		List<String> row = Arrays.asList(indent + s.getRef().getName(), "", s
-				.getUsage().value(), "", "", "[" + String.valueOf(s.getMin())
+		List<String> row = Arrays.asList(indent + s.getRef().getName(), s
+				.getUsage().value(), "", "[" + String.valueOf(s.getMin())
 				+ ".." + String.valueOf(s.getMax()) + "]", "", s.getRef()
 				.getComment() == null ? "" : s.getRef().getComment());
 		rows.add(row);
