@@ -10,7 +10,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.DbConfig;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.MongoConfig;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.WebAppConfig;
 
 import org.springframework.context.annotation.Bean;
@@ -27,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @WebAppConfiguration
 @EnableWebMvc
 @ComponentScan(basePackages = { "gov.nist.healthcare.tools.hl7.v2.igamt.lite" }, excludeFilters = {
-		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = { DbConfig.class }),
+		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = { MongoConfig.class }),
 		@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = { WebAppConfig.class }) })
 @Import({ TestDbConfig.class })
 public class TestWebAppConfig extends WebMvcConfigurerAdapter {

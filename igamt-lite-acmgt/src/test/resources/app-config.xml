@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.1.xsd
+        http://www.springframework.org/schema/jdbc 
+        http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd">
+
+	<context:property-placeholder
+		location="classpath:serverConfigurationTest.properties, classpath:serverAuthTest.properties" />
+
+	<context:component-scan base-package="gov.nist.healthcare.nht.acmgt" />
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		p:dataSource-ref="${jpa.dataSource}">
+
+		<property name="persistenceUnitName" value="${jpa.persistenceUnitName}" />
+		<property name="jpaVendorAdapter">
+			<bean class="${jpa.vendorAdapter}" p:databasePlatform="${jpa.databasePlatform}"
+				p:showSql="${jpa.showSql}" p:generateDdl="${jpa.generateDdl}" />
+		</property>
+		<property name="persistenceUnitPostProcessors">
+			<list>
+				<bean
+					class="gov.nist.healthcare.nht.acmgt.web.CustomPersistenceUnitPostProcessor">
+					<property name="persistenceProperties">
+						<props>
+							<prop key="eclipselink.logging.file">${eclipselink.logging.file}</prop>
+							<prop key="com.acme.persistence.sql-logging">${com.acme.persistence.sql-logging}</prop>
+							<prop key="eclipselink.logging.level">${eclipselink.logging.level}</prop>
+						</props>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<!-- <property name="loadTimeWeaver"> <bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/> 
+			</property> -->
+
+		<property name="jpaPropertyMap">
+			<map>
+				<entry key="eclipselink.weaving" value="false" />
+			</map>
+		</property>
+
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<bean id="acmgtDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.acmgt.url}"
+		p:username="${jdbc.acmgt.username}" p:password="${jdbc.acmgt.password}"
+		p:testWhileIdle="${jdbc.acmgt.testWhileIdle}" p:testOnBorrow="${jdbc.acmgt.testOnBorrow}"
+		p:validationQuery="${jdbc.acmgt.validationQuery}" destroy-method="close" />
+
+	<!-- Mail -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}" />
+		<property name="port" value="${mail.port}" />
+		<property name="protocol" value="${mail.protocol}" />
+		<property name="username" value="${mail.username}" />
+		<property name="password" value="${mail.password}" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtps.auth">true</prop>
+				<!-- <prop key="mail.smtp.starttls.enable">false</prop> -->
+				<!-- <prop key="mail.smtp.quitwait">false</prop> -->
+				<!-- <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop> -->
+				<!-- <prop key="mail.smtp.socketFactory.fallback">false</prop> -->
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- this is a template message that we can pre-load with default state -->
+	<bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
+		<property name="from" value="${mail.from}" />
+		<property name="to" value="${mail.to}" />
+		<property name="subject" value="ehr randomizer notification" />
+	</bean>
+
+	<!-- Configuration file import -->
+	<import resource="repository-config.xml" />
+	<import resource="security-config.xml" />
+
+</beans>

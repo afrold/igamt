@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <!--Body content-->
+            <h3><div msg key="forgotten.title"></div></h3>
+            <p><div msg key="forgotten.message"></div></p>
+            <form name="forgottenPasswpordForm" class="form-horizontal" novalidate>
+                <div class="control-group">
+                    <label class="control-label" for="inputUsername"><div msg key='forgotten.input'></div></label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge immediate-help focus" name="inputUsername" id="inputUsername" ng-minlength="4" ng-model='username' required>
+                        <div class="input-help">
+                            <h4><div msg key='forgotten.inputUsernameError'></div></h4>
+                        </div>
+                        <span class="valid" ng-show="forgottenPasswpordForm.inputUsername.$valid"><img alt="check OK" src="images/check.png"/></span><br>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <button class="btn" ng-click='requestResetPassword()' ng-disabled='!forgottenPasswpordForm.$valid'><div msg key="forgotten.submitButton"></div></button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

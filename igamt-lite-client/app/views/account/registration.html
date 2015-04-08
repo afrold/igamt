@@ -1,0 +1,189 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10">
+            <!--Body content-->
+            <h3 class="page-header">
+                <div msg key="registration.titleMessage"></div>
+            </h3>
+            <form name="addAccountForm" class="form-horizontal" novalidate>
+                <div class="form-group control-group">
+                    <label class="control-label col-sm-2" for="inputCompany">
+                        <div msg key='registration.company'></div>
+                    </label>
+
+                    <div class="controls col-sm-7">
+                        <input type="text" class="input-xlarge immediate-help account-input focus" name="inputCompany"
+                               id="inputCompany" ng-model='account.company' ng-minlength="2" required>
+                         <div class="input-help">
+                            <h4>
+                                <div msg key='registration.company.error'></div>
+                            </h4>
+                        </div>
+                        <span class="valid" ng-show="addAccountForm.inputCompany.$valid"><img alt="check OK"
+                                                                                              src="images/check.png"/></span><br/>
+                    </div>
+                 </div>
+                <div class="form-group control-group">
+                    <label class="control-label col-sm-2" for="inputFirstName">
+                        <div msg key='registration.firstname'></div>
+                    </label>
+
+                    <div class="controls col-sm-7">
+                        <input type="text" class="input-xlarge  immediate-help account-input" name="inputFirstName"
+                               id="inputFirstName" ng-model='account.firstname' ng-minlength="2" required>
+                  
+                        <div class="input-help">
+                            <h4>
+                                <div msg key='registration.firstname.error'></div>
+                            </h4>
+                        </div>
+                        <span class="valid" ng-show="addAccountForm.inputFirstName.$valid"><img alt="check OK"
+                                                                                                src="images/check.png"/></span><br>
+                    </div>
+                </div>
+                <div class="form-group control-group">
+                    <label class="control-label col-sm-2" for="inputLastName">
+                        <div msg key='registration.lastname'></div>
+                    </label>
+
+                    <div class="controls col-sm-7">
+                        <input type="text" class="input-xlarge immediate-help account-input" name="inputLastName"
+                               id="inputLastName" ng-model='account.lastname' ng-minlength="2" required>
+                  
+                        <div class="input-help">
+                            <h4>
+                                <div msg key='registration.lastname.error'></div>
+                            </h4>
+                        </div>
+                        <span class="valid" ng-show="addAccountForm.inputLastName.$valid"><img alt="check OK"
+                                                                                               src="images/check.png"/></span><br>
+                    </div>
+                </div>
+                <div class="form-group control-group">
+                    <label class="control-label col-sm-2" for="inputUsername">
+                        <div msg key='registration.username'></div>
+                    </label>
+
+                    <div class="controls col-sm-7">
+                        <input type="text" class="input-xlarge immediate-help account-input" name="inputUsername"
+                               id="inputUsername" ng-model='account.username' ng-minlength="4" ng-maxlength="20"
+                               ng-pattern="/^[A-z][A-z0-9]*$/" ehrr-check-username required>
+                  
+                        <div class="input-help">
+                            <h4>
+                                <div msg key='registration.username.error'></div>
+                            </h4>
+                            <ul>
+                                <li ng-class="usernameUnique">
+                                    <div msg key='registration.username.error.usernameExist'></div>
+                                </li>
+                                <li ng-class="usernameValidLength">
+                                    <div msg key='registration.username.error.length'></div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--<span class="valid" ng-show="addAccountForm.inputUsername.$valid"><img alt="check OK" src="images/check.png"/></span><br>-->
+                        <span class="valid" ng-show="addAccountForm.inputUsername.$valid"><img alt="check OK"
+                                                                                               src="images/check.png"/></span><br>
+                    </div>
+                </div>
+                <div class="form-group control-group">
+                    <label class="control-label col-sm-2" for="inputPassword">
+                        <div msg key='registration.password'></div>
+                    </label>
+
+                    <div class="controls col-sm-7">
+                        <input type="password" class="input-xlarge immediate-help account-input account-input" name="inputPassword"
+                               id="inputPassword" ng-model='account.password' ng-minlength="8" ng-maxlength="20"
+                               ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" ehrr-password-validate required>
+
+                  
+                        <div class="input-help">
+                            <h4>
+                                <div msg key='registration.password.error'></div>
+                            </h4>
+                            <ul>
+                                <li ng-class="pwdHasUpperCaseLetter">
+                                    <div msg key='registration.password.error.upperCaseletter'></div>
+                                </li>
+                                <li ng-class="pwdHasLowerCaseLetter">
+                                    <div msg key='registration.password.error.lowerCaseletter'></div>
+                                </li>
+                                <li ng-class="pwdHasNumber">
+                                    <div msg key='registration.password.error.number'></div>
+                                </li>
+                                <li ng-class="pwdValidLength">
+                                    <div msg key='registration.password.error.length'></div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <span class="valid" ng-show="addAccountForm.inputPassword.$valid"><img alt="check OK"
+                                                                                               src="images/check.png"/></span><br>
+                    </div>
+                </div>
+                <div class="form-group control-group">
+                    <label class="control-label col-sm-2" for="inputPasswordConfirm">
+                        <div msg key='registration.passwordConfirm'></div>
+                    </label>
+
+                    <div class="controls col-sm-7">
+                        <input type="password" class="input-xlarge immediate-help account-input account-input"
+                               name="inputPasswordConfirm" id="inputPasswordConfirm" ng-model='account.passwordConfirm'
+                               ehrr-check-password="inputPassword" required>
+                  
+                        <div class="input-help">
+                            <h4>
+                                <div msg key='registration.passwordConfirm.error'></div>
+                            </h4>
+                        </div>
+                        <span class="valid" ng-show="addAccountForm.inputPasswordConfirm.$valid"><img alt="check OK"
+                                                                                                      src="images/check.png"/></span><br>
+                    </div>
+                </div>
+                <div class="form-group control-group">
+                    <label class="control-label col-sm-2" for="inputEmail">
+                        <div msg key='registration.email'></div>
+                    </label>
+
+                    <div class="controls col-sm-7">
+                        <input type="email" class="input-xlarge immediate-help account-input account-input" name="inputEmail"
+                               id="inputEmail" ng-model='account.email' ehrr-check-email required>
+                  
+                        <div class="input-help">
+                            <h4>
+                                <div msg key='registration.email.error'></div>
+                            </h4>
+                            <ul>
+                                <li ng-class="emailUnique">
+                                    <div msg key='registration.email.error.notUnique'></div>
+                                </li>
+                                <li ng-class="emailValid">
+                                    <div msg key='registration.email.error.valid'></div>
+                                </li>
+                            </ul>
+                        </div>
+                        <span class="valid" ng-show="addAccountForm.inputEmail.$valid"><img alt="check OK"
+                                                                                            src="images/check.png"/></span><br>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button class="btn" id="createAccountButton" ng-click='registerAccount()'
+                                ng-disabled='!addAccountForm.$valid || registered'>
+                            <div msg key="registration.createButton"></div>
+                        </button>
+                    </div>
+                </div>
+
+                <!---->
+                <!--<div class="form-group control-group">-->
+                    <!--<div class="controls col-sm-7">-->
+                      <!---->
+                    <!--</div>-->
+                <!--</div>-->
+            </form>
+        </div>
+    </div>
+</div>

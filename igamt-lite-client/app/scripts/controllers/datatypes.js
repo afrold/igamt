@@ -166,12 +166,45 @@ angular.module('igl')
             if ($scope.params)
                 $scope.params.refresh();
         };
-
-        $scope.goToTable = function(table){
+		
+		$scope.goToTable = function(table){
         	$rootScope.table = table;
             $rootScope.notifyTableTreeUpdate = new Date().getTime();
             $rootScope.selectProfileTab(4);
         };
+        
+        $scope.deleteTable = function (node) {
+        	node.table = null;
+        	$rootScope.recordChange(node,'table');
+        }
+        
+        $scope.showTableMapModal = false;
+        
+        $scope.displayedTableCollection = [].concat($scope.tables);
+        $scope.displayedCodeCollection = [];
+        
+        
+        $scope.selectedNode = null;
+		$scope.mapTable = function(node) {
+			$scope.selectedNode = node;
+			$scope.selectedTable = node.table;
+			if($scope.selectedTable != undefined)
+				$scope.displayedCodeCollection = [].concat($scope.selectedTable.codes);
+			$scope.showTableMapModal = !$scope.showTableMapModal;
+		};
+		
+		$scope.selectedTable = null;
+		$scope.selectTable = function(table){
+			$scope.selectedTable = table;
+			$scope.displayedCodeCollection = [].concat($scope.selectedTable.codes);
+	        
+		}
+		
+		$scope.mappingTable = function(){
+			$scope.selectedNode.table = $scope.selectedTable;
+			$rootScope.recordChange($scope.selectedNode,'table');
+			$scope.showTableMapModal = false;
+		}
 
     });
 
@@ -200,7 +233,7 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
             });
         }
 
-        if( Object.getOwnPropertyNames($rootScope.changes['component']).length === 0){
+        if( $rootScope.changes['component'] && Object.getOwnPropertyNames($rootScope.changes['component']).length === 0){
             delete $rootScope.changes['component'];
         }
 

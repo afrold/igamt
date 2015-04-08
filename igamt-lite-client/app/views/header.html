@@ -5,14 +5,55 @@
             <div id="apptitle">IGAMT-LITE<span style='color:white; font-size:12px'> Beta</span></div>
             <div id="appsubtitle">Implementation Guide Authoring Tool - Lite</div>
         </a>
+
+        <div id="userInfo" ng-show="isAuthenticated()">
+            <div>
+                <span>Logged as:</span>
+                <span class="userInfoValue" ng-bind="getUsername()"></span>
+            </div>
+            <div>
+                <span>Role: </span>
+                <span class="userInfoValue" ng-bind="getRoleAsString()"></span>
+            </div>
+        </div>
+
     </div>
     <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-            <li ng-class="{'active':isActive('/home')}"><a href="#/home"><i class="glyphicon glyphicon-home"></i>Home</a></li>
-            <li ng-class="{'active':isActive('/profiles')}"><a href="#/profiles"><i class="glyphicon glyphicon-play-circle"></i>Implementation Guides</a></li>
-            <li ng-class="{'active':isActive('/doc')}"><a href="#/doc"><i class="glyphicon glyphicon-book"></i>Documentation</a></li>
-            <li ng-class="{'active':isActive('/about')}"><a href="#/about">About</a></li>
-            <li ng-class="{'active':isActive('/contact')}"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>
+            <!--<li ng-class="{'active':isActive('/home')}"><a href="#/home"><i class="glyphicon glyphicon-home"></i>Home</a></li>-->
+            <li ng-class="activeWhen(path()=='/home')">
+                <a href="#/home"><i class="glyphicon glyphicon-home"></i><span msg key="navbar.home"></span></a>
+            </li>
+            <li ng-class="activeWhen(path()=='/profiles')"><a href="#/profiles"><i class="glyphicon glyphicon-play-circle"></i>Implementation Guides</a></li>
+            <li ng-class="activeWhen(path()=='/doc')"><a href="#/doc"><i class="glyphicon glyphicon-book"></i>Documentation</a></li>
+            <li ng-class="activeWhen(path()=='/about')"><a href="#/about">About</a></li>
+            <li ng-class="activeWhen(path()=='/contact')"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>
+            <li ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()">
+                <a href="#/registration"><div msg key="navbar.registration"></div></a>
+            </li>
+            <li ng-class="activeWhen(path()=='/account')" ng-show="isAuthenticated()">
+                <a href="#/account"><div msg key="navbar.account"></div></a>
+            </li>
+            <li ng-class="activeWhen(path()=='/forgotten')" ng-show="!isAuthenticated()">
+                <a href="#/forgotten"><div msg key="navbar.forgotten"></div></a>
+            </li>
+            <li ng-class="activeWhen(path()=='/registerUser')" ng-show="isAdmin()">
+                <a href="#/registerUser"><div msg key="navbar.registerUser"></div></a>
+            </li>
         </ul>
+
+
+        </ul>
+
+        <p class="navbar-text pull-right" style="margin-right: 5em" ng-show="isAuthenticated()">
+            <a href="" ng-click="logout()"><span msg class="msg" key="navbar.logout"></span></a>
+        </p>
+        <p class="navbar-text pull-right" style="margin-right: 5em" ng-show="!isAuthenticated()">
+            <a href="" ng-click="loginReq()"><span msg class="msg" key="navbar.login"></span></a>
+        </p>
+
+        <p class="navbar-text pull-right" ng-class="activeWhen(path()=='/issue')" style="margin-right: 3em">
+            <a href="#/issue"><span msg class="msg" key="navbar.issue"></span></a>
+        </p>
     </div>
 </div>

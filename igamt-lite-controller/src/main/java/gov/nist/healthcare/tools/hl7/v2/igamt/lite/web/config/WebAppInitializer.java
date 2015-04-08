@@ -29,7 +29,8 @@ public class WebAppInitializer implements WebApplicationInitializer
 
 		final AnnotationConfigWebApplicationContext root = new AnnotationConfigWebApplicationContext();
 		root.setServletContext(servletContext);
-		root.scan("gov.nist.healthcare.tools.hl7.v2.igamt.lite");
+		root.scan("gov.nist.healthcare.tools.hl7.v2.igamt.lite",
+				"gov.nist.healthcare.nht.acmgt");
 		// web app servlet
 		servletContext.addListener(new ContextLoaderListener(root));
 		Dynamic servlet = servletContext.addServlet("igl-api",

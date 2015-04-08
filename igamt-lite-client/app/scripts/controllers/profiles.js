@@ -276,11 +276,17 @@ angular.module('igl')
     .controller('EditProfileCtrl', function ($scope, $rootScope, Restangular,$http) {
 
         $scope.error = null;
+        $scope.loading = false;
 
         /**
          * init the controller
          */
         $scope.init = function () {
+            $scope.loading = true;
+            if($rootScope.profile != null && $rootScope.profile != undefined)
+            $scope.gotoSection($rootScope.profile.metatData, 'metaData');
+            $scope.loading = false;
+
         };
 
         $scope.reset = function () {

@@ -220,36 +220,36 @@
 
 
 <div class="row">
-    <div class="page-header">
-        <h3>Datatype Content</h3>
-    </div>
-    <form style="margin-top: 20px" class="form-horizontal" name="editDatatypeForm">
-        <!--<div>-->
-        <!--<label for="datatypeLabel">Name:</label>-->
-        <!--<input type="text" ng-model="datatype.label" ng-disabled="isFlavor(datatype.label)"-->
-        <!--ng-focus="isFlavor(datatype.label)" class="form-control" id="datatypeLabel">-->
-        <!--</div>-->
-        <div style="margin-top: 20px">
-            <div class="table-responsive">
-                <table tt-table tt-params="params" class="table table-striped table-bordered">
-                    <thead>
-                    <tr class="tbl-header row">
-                        <th class="col-md-4">Name</th>
-                        <th class="col-md-1">Usage</th>
-                        <th class="col-md-1">Length</th>
-                        <th class="col-md-1">ConfLength</th>
-                        <th class="col-md-1">Datatype</th>
-                        <th class="col-md-1">ValueSet</th>
-                        <th class="col-md-1">Predicate</th>
-                        <th class="col-md-1">Conformance Statement</th>
-                        <th class="col-md-1">Comment</th>
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-                <script type="text/ng-template" id="DatatypeEditTree.html">
-                    <tr tt-node is-branch="hasChildren(node)" class="row">
-                        <td class="col-md-4">
+<div class="page-header">
+    <h3>Datatype Content</h3>
+</div>
+<form style="margin-top: 20px" class="form-horizontal" name="editDatatypeForm">
+<!--<div>-->
+<!--<label for="datatypeLabel">Name:</label>-->
+<!--<input type="text" ng-model="datatype.label" ng-disabled="isFlavor(datatype.label)"-->
+<!--ng-focus="isFlavor(datatype.label)" class="form-control" id="datatypeLabel">-->
+<!--</div>-->
+<div style="margin-top: 20px">
+<div class="table-responsive">
+<table tt-table tt-params="params" class="table table-striped table-bordered">
+    <thead>
+    <tr class="tbl-header row">
+        <th class="col-md-4">Name</th>
+        <th class="col-md-1">Usage</th>
+        <th class="col-md-1">Length</th>
+        <th class="col-md-1">ConfLength</th>
+        <th class="col-md-1">Datatype</th>
+        <th class="col-md-1">ValueSet</th>
+        <th class="col-md-1">Predicate</th>
+        <th class="col-md-1">Conformance Statement</th>
+        <th class="col-md-1">Comment</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<script type="text/ng-template" id="DatatypeEditTree.html">
+    <tr tt-node is-branch="hasChildren(node)" class="row">
+        <td class="col-md-4">
                                         <span ng-show="node.type === 'datatype'">
                                              <span style="width:60%" type="text"
                                                    name="name"
@@ -261,9 +261,9 @@
                                                  ng-src="images/{{node.type}}.png">
                                             <span ng-show="node.type !== 'datatype'">{{node.position}}:{{node.name}}</span>
                                         </span>
-                        </td>
-                        <td class="col-md-1">
-                            <div ng-show="node.type === 'component' && !node.sub">
+        </td>
+        <td class="col-md-1">
+            <div ng-show="node.type === 'component' && !node.sub">
                                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 <select class="form-control input-sm"
                                                         name="usage"
@@ -273,18 +273,18 @@
                                                         ng-options="usage for usage in usages">
                                                 </select>
                                             </span>
-                                <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
-                            </div>
-                            <div ng-show="node.type === 'component' && node.sub">
+                <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
+            </div>
+            <div ng-show="node.type === 'component' && node.sub">
                                 <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 {{node.usage}}
                                             </span>
-                                <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
-                            </div>
-                            <div ng-show="node.type === 'datatype'">-</div>
-                        </td>
-                        <td class="col-md-1">
-                            <div ng-show="node.type === 'component' && !node.sub" ng-controller="DatatypeRowCtrl">
+                <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
+            </div>
+            <div ng-show="node.type === 'datatype'">-</div>
+        </td>
+        <td class="col-md-1">
+            <div ng-show="node.type === 'component' && !node.sub" ng-controller="DatatypeRowCtrl">
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="minLength"
@@ -299,14 +299,14 @@
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.maxLength" required>
                                             </span>
-                            </div>
-                            <div ng-show="node.type === 'component' && node.sub">
-                                -
-                            </div>
-                            <div ng-show="node.type === 'datatype'">-</div>
-                        </td>
-                        <td class="col-md-1">
-                            <div ng-show="node.type === 'component' && !node.sub" ng-controller="DatatypeRowCtrl">
+            </div>
+            <div ng-show="node.type === 'component' && node.sub">
+                -
+            </div>
+            <div ng-show="node.type === 'datatype'">-</div>
+        </td>
+        <td class="col-md-1">
+            <div ng-show="node.type === 'component' && !node.sub" ng-controller="DatatypeRowCtrl">
                                             <span ng-form name="{{formName}}">
                                             <input style="width:50%" class="igl-input" type="text"
                                                    name="confLength"
@@ -315,41 +315,56 @@
                                                    ng-pattern="/^\d+$/"
                                                    ng-model="node.confLength">
                                             </span>
-                            </div>
-                            <div ng-show="node.type === 'datatype'">-</div>
-                            <div ng-show="node.type === 'component' && node.sub">{{node.confLength}}
-                            </div>
-                        </td>
+            </div>
+            <div ng-show="node.type === 'datatype'">-</div>
+        </td>
 
-                        <td class="col-md-1">
-                            <div ng-show="node.type === 'component' && !node.sub">
-                                <select class="form-control input-sm"
-                                        name="datatype"
-                                        ng-change="onDatatypeChange(node)"
-                                        required
-                                        ng-model="node.datatype"
-                                        ng-options="dt as dt.label for dt in datatypes | flavors:node.datatype.name">
-                                </select>
-                                <!--<a class="point"-->
-                                <!--ng-click="goToDatatype(node.datatype)"-->
-                                <!--ng-bind="node.datatype.label"></a>-->
-                            </div>
-                            <div ng-show="node.type === 'datatype'">-</div>
-                            <div ng-show="node.type === 'component' && node.sub">{{node.datatype.label}}
-                            </div>
-                        </td>
+        <td class="col-md-1">
+            <div ng-show="node.type !== 'datatype'">
+                <select class="form-control input-sm"
+                        name="datatype"
+                        ng-change="onDatatypeChange(node)"
+                        required
+                        ng-model="node.datatype"
+                        ng-options="dt as dt.label for dt in datatypes | flavors:node.datatype.name">
+                </select>
+                <!--<a class="point"-->
+                <!--ng-click="goToDatatype(node.datatype)"-->
+                <!--ng-bind="node.datatype.label"></a>-->
+            </div>
+            <div ng-show="node.type === 'datatype'">-</div>
+        </td>
 
-                        <td class="col-md-1">
-                            <div ng-show="node.type !== 'datatype'">
-                                            <span ng-show="node.table != undefined"><a class="point"
-                                                                                       ng-click="goToTable(node.table)"
-                                                                                       ng-bind="node.table.mappingId"></a></span>
-                            </div>
-                            <div ng-show="node.type === 'datatype'">-</div>
-                        </td>
-                        <td class="col-md-1">
+        <td class="col-md-1">
+            <div ng-show="node.type !== 'datatype'">
+											<span ng-show="node.table != undefined">
+												<div class="btn-group" dropdown>
+                                                    <button type="button" ng-click="goToTable(node.table)"
+                                                            class="btn btn-info btn-xs">{{node.table.mappingId}}
+                                                    </button>
+                                                    <button type="button" class="btn btn-info btn-xs dropdown-toggle"
+                                                            dropdown-toggle>
+                                                        <span class="caret"></span>
+                                                        <span class="sr-only">Split button!</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <li><a ng-click="mapTable(node)">Change Table</a></li>
+                                                        <li><a ng-click="deleteTable(node)">Release Table</a></li>
+                                                        <li class="divider"></li>
+                                                        <li><a ng-click="goToTable(node.table)">Details</a></li>
+                                                    </ul>
+                                                </div>
+                                            </span>
+											<span ng-show="node.table == undefined"> 
+												<button ng-click="mapTable(node)" class="btn btn-xs btn-info">
+                                                    <span><i class="fa fa-plus fa-fw"></i></span>
+                                                </button>
+                                            </span>
+            </div>
+            <div ng-show="node.type === 'datatype'">-</div>
+        </td>
 
-                            <div ng-show="node.type === 'datatype'">
+        <div ng-show="node.type === 'datatype'">
                              <span ng-show="trim" class="constraint_trim">
                                               <span ng-repeat="predicate in node.predicates">
                                                  {{predicate.description}}
@@ -360,9 +375,9 @@
                                                   {{predicate.description}}
                                               </p>
                                             </span>
-                            </div>
+        </div>
 
-                            <div ng-show="node.type !== 'datatype'">
+        <div ng-show="node.type !== 'datatype'">
 
                                 <span ng-show="trim" class="constraint_trim">
                                               <span ng-repeat="predicate in node.datatype.predicates">
@@ -374,13 +389,12 @@
                                                   {{predicate.description}}
                                               </p>
                                             </span>
-                            </div>
+        </div>
 
 
-
-                        </td>
-                        <td class="col-md-1">
-                            <div ng-show="node.type === 'datatype'">
+        </td>
+        <td class="col-md-1">
+            <div ng-show="node.type === 'datatype'">
                              <span ng-show="trim" class="constraint_trim">
                                                <span ng-repeat="conStatement in node.conformanceStatements">
                                                     {{conStatement.constraintId}} : {{conStatement.description}}
@@ -391,8 +405,8 @@
                                                   {{conStatement.constraintId}} : {{conStatement.description}}
                                               </p>
                                             </span>
-                            </div>
-                            <div ng-show="node.type !== 'datatype'">
+            </div>
+            <div ng-show="node.type !== 'datatype'">
                                 <span ng-show="trim" class="constraint_trim">
                                                <span ng-repeat="conStatement in node.datatype.conformanceStatements">
                                                     {{conStatement.constraintId}} : {{conStatement.description}}
@@ -403,31 +417,126 @@
                                                   {{conStatement.constraintId}} : {{conStatement.description}}
                                               </p>
                                             </span>
-                            </div>
-
-                        </td>
-                        <td class="col-md-1">
-                            <div ng-show="node.type !== 'datatype'">
-                                <input style="width:100%" class="igl-input" type="text"
-                                       name="comment"
-                                       ng-change="recordChange(node,'comment')"
-                                       ng-model="node.comment">
-                            </div>
-                            <div ng-show="node.type === 'datatype'">-</div>
-                            <div ng-show="node.type === 'component' && node.sub">{{node.comment}}
-                            </div>
-                        </td>
-                    </tr>
-                </script>
-
             </div>
-        </div>
 
-    </form>
+        </td>
+        <td class="col-md-1">
+            <div ng-show="node.type !== 'datatype'">
+                <input style="width:100%" class="igl-input" type="text"
+                       name="comment"
+                       ng-change="recordChange(node,'comment')"
+                       ng-model="node.comment">
+            </div>
+            <div ng-show="node.type === 'datatype'">-</div>
+            <div ng-show="node.type === 'component' && node.sub">{{node.comment}}
+            </div>
+        </td>
+    </tr>
+</script>
 
 </div>
 </div>
+</form>
 </div>
+</div>
+</div>
+
+<modal title="Select Table" visible="showTableMapModal">
+    <div class="row">
+        <form role="form">
+            <div class="col-sm-6">
+                <h5>List of Tables</h5>
+
+                <div class="igl-table">
+                    <table st-table="displayedTableCollection" st-safe-src="tables"
+                           class="table table-striped table-bordered">
+                        <thead>
+                        <tr class="tbl-header">
+                            <th st-sort="mappingId">ID</th>
+                            <th st-sort="Name">Name</th>
+                        </tr>
+                        <tr>
+                            <th colspan="2">
+                                <input st-search="" class="form-control" placeholder="search table..." type="text"/>
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr ng-repeat="row in displayedTableCollection">
+                            <td>
+                                <a ng-click="selectTable(row)">{{row.mappingId}}</a>
+                            </td>
+                            <td ng-bind-html="row.name"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-6">
+	 			<span ng-show="selectedTable != undefined">
+	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table</button>
+	 				<hr/>
+	 				<div class="row">
+                        <div class="col-sm-4">
+                            <p>ID:</p>
+
+                            <p>Name:</p>
+
+                            <p>Type:</p>
+
+                            <p>Stability:</p>
+
+                            <p>Extensibility:</p>
+
+                            <p>List of Codes:</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p>{{selectedTable.mappingId}}</p>
+
+                            <p>{{selectedTable.name}}</p>
+
+                            <p>{{selectedTable.tableType}}</p>
+
+                            <p>{{selectedTable.stability}}</p>
+
+                            <p>{{selectedTable.extensibility}}</p>
+                        </div>
+                    </div>
+					<div class="igl-table">
+                        <table st-table="displayedCodeCollection" st-safe-src="selectedTable.codes"
+                               class="table table-striped table-bordered">
+                            <thead>
+                            <tr class="tbl-header">
+                                <th st-sort="Code">Code</th>
+                                <th st-sort="Label">Label</th>
+                                <th>Codesys</th>
+                                <th>Usage</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">
+                                    <input st-search="" class="form-control" placeholder="search code..." type="text"/>
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr ng-repeat="row in displayedCodeCollection">
+                                <td ng-bind-html="row.code"></td>
+                                <td ng-bind-html="row.label"></td>
+                                <td ng-bind-html="row.codesys"></td>
+                                <td ng-bind-html="row.codeUsage"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+					
+	 			</span>
+            </div>
+        </form>
+    </div>
+</modal>
+
 </div>
 </div>
 <pre>
