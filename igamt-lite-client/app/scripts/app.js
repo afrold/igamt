@@ -21,8 +21,8 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular'
-//        ,
-//        'ngMockE2E'
+        ,
+        'ngMockE2E'
      ]);
 
 var
@@ -151,8 +151,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
             'request': function (config) {
 //                return "http://localhost:8080/igl-api"+ value;
                 if(config.url.startsWith("/api")){
-                    config.url = "http://localhost:8080/igl-api"+  config.url;
-                }
+//                    config.url = "http://localhost:8080/igl-api"+  config.url;
+                 }
                 return config || $q.when(config);
 
             }
