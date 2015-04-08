@@ -588,27 +588,25 @@ public class ProfileServiceImpl implements ProfileService {
 				this.writeToSheet(rows, header, sheet);
 			}
 
-//			//765875589896896989893453456
-//			//243543634634623636246462362
-//			for (Message m : p.getMessages().getChildren()) {
-//				rows = new ArrayList<List<String>>();
-//				header = Arrays.asList("Segment", "STD\nUsage", "Local\nUsage",
-//						"STD\nCard.", "Local\nCard.", "Comment");
-//
-//				//data = new TreeMap<String, Object[]>();
-//
-//				for (SegmentRefOrGroup srog : m.getChildren()) {
-//					
-//					if (srog instanceof SegmentRef) {
-//						this.addSegmentXlsx2(((SegmentRef) srog).getRef(), header, workbook);
-//					} else if (srog instanceof Group) {
-//						this.addGroupXlsx2(header, (Group) srog, workbook);
-//					}
-//				}
-//
-//				//this.writeToSheet(rows, header, sheet);
-//			}
-//			//23525235235223523535
+			//765875589896896989893453456
+			//243543634634623636246462362
+			for (Message m : p.getMessages().getChildren()) {
+				rows = new ArrayList<List<String>>();
+				header = Arrays.asList("Segment", "Name", "DT", "STD\nUsage", "Local\nUsage",
+						"STD\nCard.", "Local\nCard.", "Len", "Value set", "Comment");
+
+				for (SegmentRefOrGroup srog : m.getChildren()) {
+					
+					if (srog instanceof SegmentRef) {
+						this.addSegmentXlsx2(((SegmentRef) srog).getRef(), header, workbook);
+					} else if (srog instanceof Group) {
+						this.addGroupXlsx2(header, (Group) srog, workbook);
+					}
+				}
+
+				//this.writeToSheet(rows, header, sheet);
+			}
+			//23525235235223523535
 
 			FileOutputStream out = new FileOutputStream(tmpxslxFile);
 			workbook.write(out);
@@ -940,6 +938,7 @@ public class ProfileServiceImpl implements ProfileService {
 	private void addSegmentXlsx2(Segment s, List<String> header, XSSFWorkbook workbook){
 		List<List<String>> rows = new ArrayList<List<String>>();
 		XSSFSheet sheet = workbook.createSheet(s.getName());
+		rows.add(header);
 		this.addFieldPdf2(rows, s);
 		this.writeToSheet(rows, header, sheet);
 	}
