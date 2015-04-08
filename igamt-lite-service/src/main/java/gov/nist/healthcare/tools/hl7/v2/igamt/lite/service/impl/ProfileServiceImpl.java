@@ -66,6 +66,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -82,7 +83,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Table.Cell;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -269,7 +269,7 @@ public class ProfileServiceImpl implements ProfileService {
 									"profile property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 				}
@@ -298,7 +298,7 @@ public class ProfileServiceImpl implements ProfileService {
 									"message property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					// messageService.save(m);
@@ -331,7 +331,7 @@ public class ProfileServiceImpl implements ProfileService {
 									"Segment property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					// segmentService.save(s);
@@ -365,7 +365,7 @@ public class ProfileServiceImpl implements ProfileService {
 									"SegmentRef property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					// segmentRefService.save(sr);
@@ -423,7 +423,7 @@ public class ProfileServiceImpl implements ProfileService {
 									"Component property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					// componentService.save(c);
@@ -540,7 +540,7 @@ public class ProfileServiceImpl implements ProfileService {
 		Profile p = findOne(targetId);
 		if (p != null) {
 			return IOUtils.toInputStream(new ProfileSerializationImpl()
-					.serializeProfileToXML(p));
+			.serializeProfileToXML(p));
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -551,28 +551,32 @@ public class ProfileServiceImpl implements ProfileService {
 		try {
 			// Look for the profile
 			Profile p = findOne(targetId);
-			File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
+			//File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
+			File tmpxslxFile = new File("/Users/marieros/Documents/testXslt/profile.xlsx");
 
 			// Blank workbook
 			XSSFWorkbook workbook = new XSSFWorkbook();
+			XSSFSheet sheet;
+			List<List<String>> rows;
+			Map<String, Object[]> data;
+			List<String> header;
 
 			for (Message m : p.getMessages().getChildren()) {
 				// Create a blank sheet
-				XSSFSheet sheet;
+
 				sheet = workbook
 						.createSheet(m.getStructID() + " Segment Usage");
 
-				int headerSize = 8;
-
 				// This data needs to be written (Object[])
-				Map<String, Object[]> data = new TreeMap<String, Object[]>();
+				data = new TreeMap<String, Object[]>();
 
-				List<List<String>> rows = new ArrayList<List<String>>();
+				rows = new ArrayList<List<String>>();
 
-				rows.add(Arrays.asList("SEGMENT", "CDC Usage", "Local Usage",
+				header = Arrays.asList("SEGMENT", "CDC Usage", "Local Usage",
 						"Local Usage Constraint", "CDC Cardinality",
 						"Local Cardinality", "Local Cardinality Constraint",
-						"Local Comments"));
+						"Local Comments");
+				rows.add(header);
 
 				for (SegmentRefOrGroup srog : m.getChildren()) {
 					if (srog instanceof SegmentRef) {
@@ -581,42 +585,82 @@ public class ProfileServiceImpl implements ProfileService {
 						this.addGroupXlsx(rows, (Group) srog, 0);
 					}
 				}
-				for (List<String> row : rows) {
 
-					Object[] tmp = new Object[headerSize];
+				for (List<String> row : rows) {
+					Object[] tmp = new Object[header.size()];
 					for (String elt : row) {
 						tmp[row.indexOf(elt)] = elt;
 					}
 					data.put(String.format("%06d", rows.indexOf(row)), tmp);
 				}
+				this.writeToSheet(data, sheet);
+			}
 
-				// Iterate over data and write to sheet
-				Set<String> keyset = data.keySet();
-				keyset = new TreeSet<String>(keyset);
+			//765875589896896989893453456
+			//243543634634623636246462362
+			for (Message m : p.getMessages().getChildren()) {
+				rows = new ArrayList<List<String>>();
+				header = Arrays.asList("Segment", "STD\nUsage", "Local\nUsage",
+						"STD\nCard.", "Local\nCard.", "Comment");
 
-				int rownum = 0;
-				for (String key : keyset) {
-					Row row = sheet.createRow(rownum++);
-					Object[] objArr = data.get(key);
-					int cellnum = 0;
-					for (Object obj : objArr) {
-						Cell cell = (Cell) row.createCell(cellnum++);
-						if (obj instanceof String)
-							((org.apache.poi.ss.usermodel.Cell) cell).setCellValue((String) obj);
-						else if (obj instanceof Integer)
-							((org.apache.poi.ss.usermodel.Cell) cell).setCellValue((Integer) obj);
+				rows.add(header);
+
+				sheet = workbook
+						.createSheet(m.getDescription());
+
+				data = new TreeMap<String, Object[]>();
+
+
+				for (SegmentRefOrGroup srog : m.getChildren()) {
+					if (srog instanceof SegmentRef) {
+						this.addFieldPdf2(rows, ((SegmentRef) srog).getRef());
+					} else if (srog instanceof Group) {
+						this.addGroupPdf1(rows, (Group) srog, 0);
 					}
 				}
-				FileOutputStream out = new FileOutputStream(tmpxslxFile);
-				workbook.write(out);
-				workbook.close();
-				out.close();
+
+				for (List<String> row : rows) {
+					Object[] tmp = new Object[header.size()];
+					for (String elt : row) {
+						tmp[row.indexOf(elt)] = elt;
+					}
+					data.put(String.format("%06d", rows.indexOf(row)), tmp);
+				}
+				this.writeToSheet(data, sheet);
 			}
+			//23525235235223523535
+
+			FileOutputStream out = new FileOutputStream(tmpxslxFile);
+			workbook.write(out);
+			workbook.close();
+			out.close();
+
 			return new NullInputStream(1L);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new NullInputStream(1L);
 		}
+	}
+
+	private void writeToSheet(Map<String, Object[]> data, XSSFSheet sheet){
+		// Iterate over data and write to sheet
+		Set<String> keyset = data.keySet();
+		keyset = new TreeSet<String>(keyset);
+
+		int rownum = 0;
+		for (String key : keyset) {
+			Row row = sheet.createRow(rownum++);
+			Object[] objArr = data.get(key);
+			int cellnum = 0;
+			for (Object obj : objArr) {
+				Cell cell = (Cell) row.createCell(cellnum++);
+				if (obj instanceof String)
+					cell.setCellValue((String) obj);
+				else if (obj instanceof Integer)
+					cell.setCellValue((Integer) obj);
+			}
+		}
+
 	}
 
 	public InputStream exportAsPdfFromXSL(String targetId) {
@@ -627,7 +671,7 @@ public class ProfileServiceImpl implements ProfileService {
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
 			String stringProfile = new ProfileSerializationImpl()
-					.serializeProfileToXML(p);
+			.serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
 					Charset.forName("UTF-8"));
 
@@ -668,7 +712,7 @@ public class ProfileServiceImpl implements ProfileService {
 			BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
 			Font titleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE
-							| Font.BOLD, BaseColor.RED);
+					| Font.BOLD, BaseColor.RED);
 			Font headerFont = FontFactory.getFont(
 					"/rendering/Arial Narrow.ttf", BaseFont.IDENTITY_H,
 					BaseFont.EMBEDDED, 11, Font.NORMAL, BaseColor.WHITE);
@@ -689,14 +733,14 @@ public class ProfileServiceImpl implements ProfileService {
 					FileUtils.openOutputStream(tmpPdfFile));
 
 			document1.setPageSize(PageSize.A4);
-			document1.setMargins(15f, 15f, 36f, 36f);
-			// 72pt = 1 inch
-
+			document1.setMargins(36f, 36f, 36f, 36f); // 72pt = 1 inch
 			document1.open();
 
+			/*
+			 * Adding messages definition
+			 */
 			document1.add(new Paragraph("Messages definition", titleFont));
 			document1.add(Chunk.NEWLINE);
-
 			for (Message m : p.getMessages().getChildren()) {
 				document1.add(new Paragraph("Message definition: "));
 				document1.add(new Paragraph(m.getStructID() + " - "
@@ -715,16 +759,25 @@ public class ProfileServiceImpl implements ProfileService {
 
 				for (SegmentRefOrGroup srog : segRefOrGroups) {
 					if (srog instanceof SegmentRef) {
-						this.addSegmentPdf(rows, (SegmentRef) srog, 0);
+						this.addSegmentPdf1(rows, (SegmentRef) srog, 0);
 					} else if (srog instanceof Group) {
 						this.addGroupPdf1(rows, (Group) srog, 0);
 					}
 				}
 				this.addCells(table, rows, cellFont, cpColor);
 				document1.add(table);
-
 			}
 
+//			document1.newPage();
+//			List<Datatype> ds = new ArrayList<Datatype>(p.getDatatypes().getChildren()); 
+//			for (Datatype d : ds) {
+//				document1.add(new Paragraph(d.getName() + " - "
+//						+ d.getLabel() + " - " + d.getDescription()));
+//			}
+//
+			/*
+			 * Adding segments details
+			 */
 			for (Message m : p.getMessages().getChildren()) {
 				document1.newPage();
 
@@ -742,14 +795,9 @@ public class ProfileServiceImpl implements ProfileService {
 							headerColor);
 					rows = new ArrayList<List<String>>();
 					if (srog instanceof SegmentRef) {
-						Segment s = ((SegmentRef) srog).getRef();
-						document1.add(new Paragraph(s.getDescription() + " ("
-								+ s.getName() + ")"));
-						document1.add(Chunk.NEWLINE);
-						this.addFieldPdf2(rows, s);
-						this.addCells(table, rows, cellFont, cpColor);
-						document1.add(table);
-						document1.newPage();
+						this.addSegmentPdf2(document1, header,
+								columnWidths, (SegmentRef) srog, headerFont,
+								headerColor, cellFont, cpColor);
 
 					} else if (srog instanceof Group) {
 						this.addGroupPdf2(document1, header, columnWidths,
@@ -759,6 +807,9 @@ public class ProfileServiceImpl implements ProfileService {
 				}
 			}
 
+			/*
+			 * Adding datatypes
+			 */
 			document1.add(new Paragraph("Datatypes", titleFont));
 			document1.add(Chunk.NEWLINE);
 
@@ -767,18 +818,20 @@ public class ProfileServiceImpl implements ProfileService {
 			columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 2f, 2f, 6f };
 
 			for (Datatype d : p.getDatatypes().getChildren()) {
-				document1.add(new Paragraph(d.getName() + " - "
-						+ d.getDescription()));
-				document1.add(new Paragraph(d.getComment()));
+				if (d.getLabel().contains("_")){
+					document1.add(new Paragraph(d.getLabel() + " - "
+							+ d.getDescription() + " Datatype"));
+					document1.add(new Paragraph(d.getComment()));
 
-				table = this.createHeader(header, columnWidths, headerFont,
-						headerColor);
-				rows = new ArrayList<List<String>>();
-				this.addComponentPdf2(rows, d);
-				this.addCells(table, rows, cellFont, cpColor);
-				document1.add(Chunk.NEWLINE);
-				document1.add(table);
-				document1.add(Chunk.NEXTPAGE);
+					table = this.createHeader(header, columnWidths, headerFont,
+							headerColor);
+					rows = new ArrayList<List<String>>();
+					this.addComponentPdf2(rows, d);
+					this.addCells(table, rows, cellFont, cpColor);
+					document1.add(Chunk.NEWLINE);
+					document1.add(table);
+					document1.add(Chunk.NEXTPAGE);
+				}
 			}
 
 			document1.close();
@@ -793,6 +846,10 @@ public class ProfileServiceImpl implements ProfileService {
 			Font headerFont, BaseColor headerColor) {
 		PdfPTable table = new PdfPTable(headers.size());
 		PdfPCell c1;
+
+		table.setTotalWidth(PageSize.A4.getWidth() - 72);
+		table.setLockedWidth(true);
+
 		for (String cellName : headers) {
 			c1 = new PdfPCell(new Phrase(cellName, headerFont));
 			c1.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -841,14 +898,14 @@ public class ProfileServiceImpl implements ProfileService {
 				"",
 				"[" + String.valueOf(g.getMin()) + ".."
 						+ String.valueOf(g.getMax()) + "]", "",
-				"BEGIN " + g.getName() + " GROUP");
+						"BEGIN " + g.getName() + " GROUP");
 		rows.add(row);
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
 		Collections.sort(segsOrGroups);
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
-				this.addSegmentPdf(rows, (SegmentRef) srog, depth + 1);
+				this.addSegmentPdf1(rows, (SegmentRef) srog, depth + 1);
 			} else if (srog instanceof Group) {
 				this.addGroupPdf1(rows, (Group) srog, depth + 1);
 			}
@@ -862,21 +919,15 @@ public class ProfileServiceImpl implements ProfileService {
 	private void addGroupPdf2(Document document, List<String> header,
 			float[] columnWidths, Group g, Font headerFont,
 			BaseColor headerColor, Font cellFont, BaseColor cpColor)
-			throws DocumentException {
-		PdfPTable table;
-		List<List<String>> rows;
+					throws DocumentException {
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
 		Collections.sort(segsOrGroups);
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
-				table = this.createHeader(header, columnWidths, headerFont,
-						headerColor);
-				rows = new ArrayList<List<String>>();
-				this.addFieldPdf2(rows, ((SegmentRef) srog).getRef());
-				this.addCells(table, rows, cellFont, cpColor);
-				document.add(table);
-				document.newPage();
+				this.addSegmentPdf2(document, header,
+						columnWidths, (SegmentRef) srog, headerFont,
+						headerColor, cellFont, cpColor);
 			} else if (srog instanceof Group) {
 				this.addGroupPdf2(document, header, columnWidths, (Group) srog,
 						headerFont, headerColor, cellFont, cpColor);
@@ -910,7 +961,7 @@ public class ProfileServiceImpl implements ProfileService {
 		rows.add(row);
 	}
 
-	private void addSegmentPdf(List<List<String>> rows, SegmentRef s,
+	private void addSegmentPdf1(List<List<String>> rows, SegmentRef s,
 			Integer depth) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
 
@@ -919,6 +970,49 @@ public class ProfileServiceImpl implements ProfileService {
 				+ ".." + String.valueOf(s.getMax()) + "]", "", s.getRef()
 				.getComment() == null ? "" : s.getRef().getComment());
 		rows.add(row);
+	}
+
+	private void addSegmentPdf2(Document document, List<String> header,
+			float[] columnWidths, SegmentRef segRef, Font headerFont,
+			BaseColor headerColor, Font cellFont, BaseColor cpColor) throws DocumentException{
+
+		PdfPTable table = this.createHeader(header, columnWidths, headerFont,
+				headerColor);
+		ArrayList<List<String>> rows = new ArrayList<List<String>>();
+
+		Segment s = segRef.getRef();
+		document.add(new Paragraph(s.getName() + ": " +
+				s.getDescription() + " Segment"));
+		document.add(Chunk.NEWLINE);
+		document.add(new Paragraph(s.getText1()));
+		this.addFieldPdf2(rows, s);
+		this.addCells(table, rows, cellFont, cpColor);
+		document.add(table);
+		document.add(Chunk.NEWLINE);
+		document.add(new Paragraph(s.getText2()));
+		document.add(Chunk.NEWLINE);
+
+		List<Field> fieldsList = s.getFields();
+		Collections.sort(fieldsList);
+		for (Field f : fieldsList) {
+			if (f.getText() != null && f.getText().length() != 0){
+				Font fontbold = FontFactory.getFont("Times-Roman", 12, Font.BOLD);
+				document.add(new Paragraph(s.getName() + "-" +
+						f.getItemNo().replaceFirst("^0+(?!$)", "") + " " + f.getName() +
+						" (" + f.getDatatype().getLabel() + ")", fontbold));				
+				document.add(new Paragraph(f.getText()));
+			}
+		}
+//		//TODO REMOVE FOLLOWING AFTER DEMO!!
+//		for (Field f : fieldsList) {
+//			Font fontbold = FontFactory.getFont("Times-Roman", 12, Font.BOLD);
+//			document.add(new Paragraph(s.getName() + "-" +
+//					f.getItemNo().replaceFirst("^0+(?!$)", "") + " " + f.getName() +
+//					" (" + f.getDatatype().getLabel() + ")", fontbold));
+//			document.add(new Paragraph("wfnwenfwnvw"));
+//		}
+		document.newPage();
+
 	}
 
 	private void addSegmentXlsx(List<List<String>> rows, SegmentRef s,
@@ -964,30 +1058,36 @@ public class ProfileServiceImpl implements ProfileService {
 
 		List<Component> componentsList = new ArrayList<>(d.getComponents());
 		Collections.sort(componentsList);
-		for (Component c : componentsList) {
-			row = Arrays.asList(c.getPosition().toString(), c.getName(), c
-					.getConfLength(), c.getDatatype().getLabel(), c.getUsage()
-					.value(), "[" + String.valueOf(c.getMinLength()) + ","
-					+ String.valueOf(c.getMaxLength()) + "]",
-					(c.getTable() == null) ? "" : c.getTable().getMappingId(),
-					c.getComment());
+		if (componentsList.size() == 0){
+			row = Arrays.asList("1", d.getName(), "", "", "", "", "",
+					d.getComment());
 			rows.add(row);
+		} else {
+			for (Component c : componentsList) {
+				row = Arrays.asList(c.getPosition().toString(), c.getName(), c
+						.getConfLength(), c.getDatatype().getLabel(), c.getUsage()
+						.value(), "[" + String.valueOf(c.getMinLength()) + ","
+								+ String.valueOf(c.getMaxLength()) + "]",
+								(c.getTable() == null) ? "" : c.getTable().getMappingId(),
+										c.getComment());
+				rows.add(row);
 
-			List<Constraint> constraints = this.findConstraints(
-					componentsList.indexOf(c) + 1, predicates,
-					conformanceStatements);
-			if (!constraints.isEmpty()) {
+				List<Constraint> constraints = this.findConstraints(
+						componentsList.indexOf(c) + 1, predicates,
+						conformanceStatements);
+				if (!constraints.isEmpty()) {
 
-				for (Constraint constraint : constraints) {
-					String constraintType = new String();
-					if (constraint instanceof Predicate) {
-						constraintType = "Condition Predicate";
-					} else if (constraint instanceof ConformanceStatement) {
-						constraintType = "Conformance Statement";
+					for (Constraint constraint : constraints) {
+						String constraintType = new String();
+						if (constraint instanceof Predicate) {
+							constraintType = "Condition Predicate";
+						} else if (constraint instanceof ConformanceStatement) {
+							constraintType = "Conformance Statement";
+						}
+						row = Arrays.asList(constraint.getConstraintId(),
+								constraintType, constraint.getDescription());
+						rows.add(row);
 					}
-					row = Arrays.asList(constraint.getConstraintId(),
-							constraintType, constraint.getDescription());
-					rows.add(row);
 				}
 			}
 		}
@@ -1006,17 +1106,18 @@ public class ProfileServiceImpl implements ProfileService {
 		for (Field f : fieldsList) {
 			row = Arrays.asList(
 					f.getItemNo().replaceFirst("^0+(?!$)", ""),
+					//f.getItemNo() + " x " + String.valueOf(f.getPosition()),
 					f.getName(),
 					f.getDatatype().getLabel(),
 					f.getUsage().value(),
 					"",
 					"[" + String.valueOf(f.getMin()) + ".."
 							+ String.valueOf(f.getMax()) + "]",
-					"",
-					"[" + String.valueOf(f.getMinLength()) + ","
-							+ String.valueOf(f.getMaxLength()) + "]",
-					(String) ((f.getTable() == null) ? "" : f.getTable()
-							.getMappingId()), f.getComment());
+							"",
+							"[" + String.valueOf(f.getMinLength()) + ","
+									+ String.valueOf(f.getMaxLength()) + "]",
+									(String) ((f.getTable() == null) ? "" : f.getTable()
+											.getMappingId()), f.getComment());
 			rows.add(row);
 
 			List<Constraint> constraints = this.findConstraints(
