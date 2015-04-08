@@ -1,0 +1,34 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span10">
+        <!--Body content-->
+        <h3><div msg key="registerUser.titleMessageAdmin" ng-show="isAdmin()"></div></h3>
+        <h3><div msg key="registerUser.titleMessageSupervisor" ng-show="isSupervisor()"></div></h3>
+        <form name="createAccountForm" class="form-horizontal" novalidate>
+            <div class="control-group">
+                <label class="control-label" for="selectAccountType"><div msg key='registerUser.accountType'></div></label>
+                <div class="controls">
+                    <select class="select-xlarge" ng-model="newUser.accountType" id="selectAccountType" name="selectAccountType" ng-options="accountType for accountType in accountTypes" required>
+                    </select>
+                    <span class="valid" ng-show="newMatchform.selectCEHRT.$valid"><img alt="check OK" src="images/check.png"/></span><br/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="inputEmail"><div msg key='registerUser.email'></div></label>
+                <div class="controls">
+                    <input type="email" class="input-xlarge immediate-help" name="inputEmail" id="inputEmail" ng-model='newUser.email' required>
+                    <div class="input-help">
+                        <h4><div msg key='registerUser.email.error'></div></h4>
+                    </div>
+                    <span class="valid" ng-show="createAccountForm.inputEmail.$valid"><img alt="check OK" src="images/check.png"/></span><br>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                     <button class="btn" ng-click='registerUser()' ng-disabled='!createAccountForm.$valid'><div msg key="registerUser.createButton"></div></button>
+                </div>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>

@@ -113,6 +113,10 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
         return [200,{}, {}];
     });
 
+    $httpBackend.whenGET('/api/accounts/cuser').respond(function(method, url, data, headers) {
+        return [200,{}, {}];
+    });
+
 
     $httpBackend.whenGET(/views\//).passThrough();
 

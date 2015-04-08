@@ -2,12 +2,12 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	version="3.0">
-	<session-config>
+	<!-- <session-config>
 		<session-timeout>30</session-timeout>
-	</session-config>
+	</session-config> -->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>igl</param-value>
+		<param-value>igl-api</param-value>
 	</context-param>
 	<error-page>
 		<location>/error.html</location>
@@ -24,6 +24,60 @@
     <resource-env-ref-name>comp/env/jdbc/igl_mongo</resource-env-ref-name>
     <resource-env-ref-type>org.springframework.data.mongodb.core.MongoTemplate</resource-env-ref-type>
 </resource-env-ref>
+
+
+<!-- context parameters -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/app-config.xml</param-value>
+    </context-param>
+
+	<!-- filters -->
+	<filter>
+    	<filter-name>HTTPSecurityFilter</filter-name>
+    	<filter-class>gov.nist.healthcare.nht.acmg.servlet.filter.HTTPSecurityFilter</filter-class>
+    </filter>
+    <filter-mapping>
+    	<filter-name>HTTPSecurityFilter</filter-name>
+    	<url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+	<!-- listeners -->
+<!--     <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener> -->
+
+	<!-- servlets -->
+<!--     <servlet>
+        <servlet-name>acmgt-api</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>acmgt-api</servlet-name>
+        <url-pattern>/acmgt-api/*</url-pattern>
+    </servlet-mapping>
+     -->
+    <!--  session  -->
+    <session-config>
+        <session-timeout>
+            15
+        </session-timeout>
+<!--        <cookie-config>
+            <secure>true</secure>
+        </cookie-config>-->
+    </session-config>
+    
+
 
 </web-app>
 	

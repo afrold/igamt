@@ -200,7 +200,7 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
             });
         }
 
-        if( Object.getOwnPropertyNames($rootScope.changes['component']).length === 0){
+        if( $rootScope.changes['component'] && Object.getOwnPropertyNames($rootScope.changes['component']).length === 0){
             delete $rootScope.changes['component'];
         }
 

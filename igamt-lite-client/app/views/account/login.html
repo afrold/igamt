@@ -1,0 +1,33 @@
+<form name="loginForm" id="loginForm" novalidate class="form-horizontal modal">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal"></a>
+        <h3><div msg key="login.title"></div></h3>
+    </div>
+    <div class="modal-body">
+        <label><div msg key="login.banner"></div></label>
+        
+        <div ng-class="'alert alert-'+loginMessage().type" ng-show="loginMessage().show" id="ehrloginalert">
+            <button type="button" class="close" ng-click="loginMessage().show=false">×</button>
+            <div msg key-expr="loginMessage().text"></div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="username"><div msg key="login.username"></div></label>
+
+            <div class="controls">
+                <input type="text" class="input focus" id="username" ng-model="user.username" ng-minlength="4" required></input>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="password"><div msg key="login.password"></div></label>
+
+            <div class="controls">
+                <input type="password" autocomplete="off" class="input" id="password" ng-model="user.password" ng-minlength="4" required></input>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="login()" class="btn" type="submit" ng-disabled='(!loginForm.$valid || loginForm.$pristine)'><div msg key="login.button.login"></div></button> 
+        <button class="btn" ng-click="cancel()"><div msg key="login.button.cancel"></div></button>
+    </div>
+</form>

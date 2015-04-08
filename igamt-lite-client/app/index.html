@@ -1,5 +1,7 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js"
+      lang="en" class="ng-app:igl"  id="ng-app"
+        >
 <head>
     <meta charset="utf-8">
     <title></title>
@@ -27,7 +29,7 @@
 
     <!-- endbuild -->
 </head>
-<body ng-app="igl">
+<body ng-controller="MainCtrl" ng-app="igl"  id="ehrbody">
 <div ng-include="'views/header.html'"></div>
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
@@ -38,6 +40,10 @@
 
 <!-- Add your site or application content here -->
 <div class="container">
+    <div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">
+        <button type="button" class="close" ng-click="msg().show=false">×</button>
+        <div msg key-expr="msg().text"></div>
+    </div>
     <div ng-view=""></div>
 </div>
 
@@ -78,7 +84,6 @@
 <!-- endbuild -->
 
 
-
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
 <script src="lib/angular-mocks/angular-mocks.js"></script>
@@ -86,7 +91,9 @@
 <script src="lib/profileBackEndStub.js"></script>
 <script src="lib/angular-treetable/js/jquery.treetable.js"></script>
 <script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
-<script src="scripts/controllers/home.js"></script>
+<script src="scripts/extra/jquery.i18n.properties-1.0.9.js"></script>
+
+<script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/about.js"></script>
 <script src="scripts/controllers/profiles.js"></script>
 <script src="scripts/controllers/messages.js"></script>
@@ -96,6 +103,32 @@
 <script src="scripts/directives/csSelect.js"></script>
 <script src="scripts/directives/clickGo.js"></script>
 <script src="scripts/services/profiles.js"></script>
+
+<script src="scripts/services/i18n.js"></script>
+<script src="scripts/directives/msg.js"></script>
+<script src="scripts/services/base64.js"></script>
+<script src="scripts/services/userInfoService.js"></script>
+<script src="scripts/filters/yesno.js"></script>
+<script src="scripts/filters/bytes.js"></script>
+<script src="scripts/directives/focus.js"></script>
+<script src="scripts/directives/ehrPasswordValidate.js"></script>
+<script src="scripts/directives/ehrCheckPassword.js"></script>
+<script src="scripts/directives/ehrCheckPoaDate.js"></script>
+<script src="scripts/directives/ehrCheckTimerange.js"></script>
+<script src="scripts/directives/ehrrCheckUsername.js"></script>
+<script src="scripts/directives/ehrrCheckEmail.js"></script>
+<script src="scripts/directives/validTrustDocument.js"></script>
+<script src="scripts/directives/ehrbold.js"></script>
+<script src="scripts/controllers/forgotten.js"></script>
+<script src="scripts/controllers/issue.js"></script>
+<script src="scripts/controllers/registration.js"></script>
+<script src="scripts/controllers/account.js"></script>
+ <script src="scripts/controllers/registerUser.js"></script>
+<script src="scripts/controllers/registerResetPassword.js"></script>
+ <script src="scripts/controllers/manageAccounts.js"></script>
+<script src="scripts/controllers/manageCEHRTs.js"></script>
+<script src="scripts/services/AccountLoader.js"></script>
+
 <!-- endbuild -->
 
 
