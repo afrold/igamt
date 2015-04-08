@@ -87,8 +87,12 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.codeSources = ['HL7', 'Local', 'Redefined', 'SDO'];
     $rootScope.tableStabilities = ['Static', 'Dynamic'];
     $rootScope.tableExtensibilities = ['Open', 'Close'];
+    $rootScope.constraintVerbs = ['SHALL be', 'SHALL NOT be', 'is', 'is not'];
+    $rootScope.contraintTypes = ['presented', 'a literal value', 'one of list values', 'a code of Value Set', 'formatted value', 'identical to the another node'];
     $rootScope.newCodeFakeId = 0;
     $rootScope.newTableFakeId = 0;
+    $rootScope.newPredicateFakeId = 0;
+    $rootScope.newConformanceStatementFakeId = 0;
     $rootScope.newTable = {};
     $rootScope.segment = null;
     $rootScope.profileTabs = new Array();
@@ -103,7 +107,6 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter) {
     $rootScope.preloadedIgs = [];
     $rootScope.changes = {};
     $rootScope.generalInfo = {type: null, 'message': null};
-
 
     $rootScope.selectProfileTab = function (value) {
         $rootScope.profileTabs[0] = false;

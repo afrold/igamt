@@ -512,3 +512,9 @@ ul > li.igl-tbl-item > a {
   height: 500px !important;
   overflow: scroll;
 }
+
+.modal-wide .modal-dialog {
+  width: 90%;
+  height: 90%;
+  overflow-y: auto;
+}

@@ -234,13 +234,13 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				if(elmComponent.getAttribute("Table") != null){
 					String tableScript = elmComponent.getAttribute("Table");
 					String[] tableTags = tableScript.split("#");
-					
+					System.out.println(tableScript);
 					if(tableTags.length == 1){
 						componentObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
-					}else if(tableTags.length == 1){
+					}else if(tableTags.length == 2){
 						componentObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
 						componentObj.setBindingStrength(tableTags[1]);
-					}else if(tableTags.length == 2){
+					}else if(tableTags.length == 3){
 						componentObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
 						componentObj.setBindingStrength(tableTags[1]);
 						componentObj.setBindingLocation(tableTags[2]);
@@ -434,7 +434,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					elmComponent.addAttribute(new Attribute("MaxLength", c.getMaxLength()));
 				if (c.getConfLength() != null && !c.getConfLength().equals(""))
 					elmComponent.addAttribute(new Attribute("ConfLength", c.getConfLength()));
-				
+				 
 				String tableScript = "";
 				if (c.getTable() != null && !c.getTable().equals(""))
 					tableScript = tableScript + c.getTable().getMappingId();
@@ -577,10 +577,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			
 			if(tableTags.length == 1){
 				fieldObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
-			}else if(tableTags.length == 1){
+			}else if(tableTags.length == 2){
 				fieldObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
 				fieldObj.setBindingStrength(tableTags[1]);
-			}else if(tableTags.length == 2){
+			}else if(tableTags.length == 3){
 				fieldObj.setTable(this.findTable(tableTags[0], profile.getTableLibrary().getTables()));
 				fieldObj.setBindingStrength(tableTags[1]);
 				fieldObj.setBindingLocation(tableTags[2]);
