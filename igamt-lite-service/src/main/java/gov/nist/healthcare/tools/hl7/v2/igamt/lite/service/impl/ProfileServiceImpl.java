@@ -563,7 +563,6 @@ public class ProfileServiceImpl implements ProfileService {
 
 			for (Message m : p.getMessages().getChildren()) {
 				// Create a blank sheet
-
 				sheet = workbook
 						.createSheet(m.getStructID() + " Segment Usage");
 
@@ -588,8 +587,6 @@ public class ProfileServiceImpl implements ProfileService {
 				this.writeToSheet(rows, header, sheet);
 			}
 
-			//765875589896896989893453456
-			//243543634634623636246462362
 			for (Message m : p.getMessages().getChildren()) {
 				rows = new ArrayList<List<String>>();
 				header = Arrays.asList("Segment", "Name", "DT", "STD\nUsage", "Local\nUsage",
@@ -603,10 +600,7 @@ public class ProfileServiceImpl implements ProfileService {
 						this.addGroupXlsx2(header, (Group) srog, workbook);
 					}
 				}
-
-				//this.writeToSheet(rows, header, sheet);
 			}
-			//23525235235223523535
 
 			FileOutputStream out = new FileOutputStream(tmpxslxFile);
 			workbook.write(out);
@@ -711,8 +705,8 @@ public class ProfileServiceImpl implements ProfileService {
 			float columnWidths[];
 			List<List<String>> rows;
 
-			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
-			//File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
+			//File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+			File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
 
 			Document document1 = new Document();
 			PdfWriter writer1 = PdfWriter.getInstance(document1,
@@ -819,6 +813,31 @@ public class ProfileServiceImpl implements ProfileService {
 					document1.add(Chunk.NEXTPAGE);
 				}
 			}
+
+			/*
+			 * Adding value sets
+			 */
+			document1.add(new Paragraph("Value Sets", titleFont));
+			document1.add(Chunk.NEWLINE);
+
+			header = Arrays.asList("Code", "Code sys", "Usage", "Label");
+
+			columnWidths = new float[] {2f, 2f, 2f, 6f };
+
+			for (Table t: p.getTables().getChildren()) {
+				System.out.println(t.toString());
+					document1.add(new Paragraph(t.getMappingId() + " - "
+							+ t.getName() + " Table"));
+
+					table = this.createHeader(header, columnWidths, headerFont,
+							headerColor);
+					rows = new ArrayList<List<String>>();
+					this.addCodesPdf2(rows, t);
+					this.addCells(table, rows, cellFont, cpColor);
+					document1.add(Chunk.NEWLINE);
+					document1.add(table);
+					document1.add(Chunk.NEXTPAGE);
+				}
 
 			document1.close();
 			return FileUtils.openInputStream(tmpPdfFile);
@@ -1149,5 +1168,17 @@ public class ProfileServiceImpl implements ProfileService {
 			}
 		}
 	}
+	
 
+	private void addCodesPdf2(List<List<String>> rows, Table t) {
+		List <String> row;
+		List <Code> codes = t.getCodes();
+		
+		for (Code c: codes){
+			row = Arrays.asList(
+					c.getCode(), c.getCodesys(), c.getCodeUsage(), c.getLabel());
+			rows.add(row);
+		}
+
+	}
 }
