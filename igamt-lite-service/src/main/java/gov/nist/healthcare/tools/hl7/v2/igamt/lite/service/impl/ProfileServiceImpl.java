@@ -55,6 +55,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -63,6 +65,10 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
 import org.springframework.beans.BeanWrapper;
@@ -79,7 +85,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Table.Cell;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
@@ -565,7 +574,7 @@ public class ProfileServiceImpl implements ProfileService {
 						"Local Cardinality", "Local Cardinality Constraint",
 						"Local Comments"));
 
-				for (SegmentRefOrGroup srog : m.getSegmentRefOrGroups()) {
+				for (SegmentRefOrGroup srog : m.getChildren()) {
 					if (srog instanceof SegmentRef) {
 						this.addSegmentXlsx(rows, (SegmentRef) srog, 0);
 					} else if (srog instanceof Group) {
@@ -591,11 +600,11 @@ public class ProfileServiceImpl implements ProfileService {
 					Object[] objArr = data.get(key);
 					int cellnum = 0;
 					for (Object obj : objArr) {
-						Cell cell = row.createCell(cellnum++);
+						Cell cell = (Cell) row.createCell(cellnum++);
 						if (obj instanceof String)
-							cell.setCellValue((String) obj);
+							((org.apache.poi.ss.usermodel.Cell) cell).setCellValue((String) obj);
 						else if (obj instanceof Integer)
-							cell.setCellValue((Integer) obj);
+							((org.apache.poi.ss.usermodel.Cell) cell).setCellValue((Integer) obj);
 					}
 				}
 				FileOutputStream out = new FileOutputStream(tmpxslxFile);
@@ -672,7 +681,8 @@ public class ProfileServiceImpl implements ProfileService {
 			float columnWidths[];
 			List<List<String>> rows;
 
-			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+			//File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+			File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
 
 			Document document1 = new Document();
 			PdfWriter writer1 = PdfWriter.getInstance(document1,
@@ -701,9 +711,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 				rows = new ArrayList<List<String>>();
 
-				List<SegmentRefOrGroup> segRefOrGroups = new ArrayList<>(
-						m.getSegmentRefOrGroups());
-				Collections.sort(segRefOrGroups);
+				List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
 
 				for (SegmentRefOrGroup srog : segRefOrGroups) {
 					if (srog instanceof SegmentRef) {
@@ -729,7 +737,7 @@ public class ProfileServiceImpl implements ProfileService {
 				columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 1.5f,
 						1.5f, 1.5f, 2f, 6f };
 
-				for (SegmentRefOrGroup srog : m.getSegmentRefOrGroups()) {
+				for (SegmentRefOrGroup srog : m.getChildren()) {
 					table = this.createHeader(header, columnWidths, headerFont,
 							headerColor);
 					rows = new ArrayList<List<String>>();
@@ -836,8 +844,7 @@ public class ProfileServiceImpl implements ProfileService {
 				"BEGIN " + g.getName() + " GROUP");
 		rows.add(row);
 
-		List<SegmentRefOrGroup> segsOrGroups = new ArrayList<>(
-				g.getSegmentsOrGroups());
+		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
 		Collections.sort(segsOrGroups);
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
@@ -859,8 +866,7 @@ public class ProfileServiceImpl implements ProfileService {
 		PdfPTable table;
 		List<List<String>> rows;
 
-		List<SegmentRefOrGroup> segsOrGroups = new ArrayList<>(
-				g.getSegmentsOrGroups());
+		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
 		Collections.sort(segsOrGroups);
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
@@ -890,8 +896,7 @@ public class ProfileServiceImpl implements ProfileService {
 				"[" + String.valueOf(g.getMin()) + ".."
 						+ String.valueOf(g.getMax()) + "]", "", "");
 		rows.add(row);
-		List<SegmentRefOrGroup> segsOrGroups = new ArrayList<>(
-				g.getSegmentsOrGroups());
+		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
 		Collections.sort(segsOrGroups);
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
@@ -928,8 +933,8 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	private List<Constraint> findConstraints(Integer target,
-			Set<Predicate> predicates,
-			Set<ConformanceStatement> conformanceStatements) {
+			List<Predicate> predicates,
+			List<ConformanceStatement> conformanceStatements) {
 		List<Constraint> constraints = new ArrayList<>();
 		for (Predicate pre : predicates) {
 			if (target == Integer.parseInt(pre.getConstraintTarget().substring(
@@ -992,17 +997,17 @@ public class ProfileServiceImpl implements ProfileService {
 		// System.out.println(StringUtils.repeat("%",25));
 		// System.out.println("Segment id: " + s.getId().toString());
 		List<String> row;
-		Set<Predicate> predicates = s.getPredicates();
-		Set<ConformanceStatement> conformanceStatements = s
+		List<Predicate> predicates = s.getPredicates();
+		List<ConformanceStatement> conformanceStatements = s
 				.getConformanceStatements();
 
-		List<Field> fieldsList = new ArrayList<>(s.getFields());
+		List<Field> fieldsList = s.getFields();
 		Collections.sort(fieldsList);
 		for (Field f : fieldsList) {
 			row = Arrays.asList(
 					f.getItemNo().replaceFirst("^0+(?!$)", ""),
 					f.getName(),
-					f.getDatatypeLabel(),
+					f.getDatatype().getLabel(),
 					f.getUsage().value(),
 					"",
 					"[" + String.valueOf(f.getMin()) + ".."

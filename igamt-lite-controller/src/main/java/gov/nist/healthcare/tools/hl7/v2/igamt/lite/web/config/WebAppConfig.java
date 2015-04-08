@@ -22,8 +22,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("gov.nist.healthcare.tools.hl7.v2.igamt.lite")
-@Import(DbConfig.class)
+@ComponentScan({ "gov.nist.healthcare.tools.hl7.v2.igamt.lite",
+		"gov.nist.healthcare.nht.acmgt" })
+@Import({ MongoConfig.class, JpaConfig.class })
 public class WebAppConfig extends WebMvcConfigurerAdapter {
 
 	@Override

@@ -15,8 +15,8 @@ import gov.nist.healthcare.nht.acmgt.dto.CurrentUser;
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.dto.domain.AccountPasswordReset;
-import gov.nist.healthcare.nht.acmgt.general.EhrUtil;
 import gov.nist.healthcare.nht.acmgt.general.RandomPasswordGenerator;
+import gov.nist.healthcare.nht.acmgt.general.UserUtil;
 import gov.nist.healthcare.nht.acmgt.repo.AccountPasswordResetRepository;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
@@ -35,7 +35,6 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,9 +42,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriUtils;
 
-@Controller
+@RestController
 public class UserController {
 
 	static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -85,7 +85,6 @@ public class UserController {
 	 * */
 	@PreAuthorize("hasRole('supervisor') or hasRole('admin')")
 	@RequestMapping(value = "/accounts/register", method = RequestMethod.POST)
-	@ResponseBody
 	public ResponseMessage registerUserWhenAuthenticated(
 			@RequestBody Account account, HttpServletRequest request)
 			throws Exception {
@@ -112,7 +111,7 @@ public class UserController {
 					"accountTypeMissing", null);
 		}
 		boolean validAccountType = false;
-		for (String acct : EhrUtil.ACCOUNT_TYPE_LIST) {
+		for (String acct : UserUtil.ACCOUNT_TYPE_LIST) {
 			if (acct.equals(account.getAccountType())) {
 				validAccountType = true;
 			}
@@ -179,7 +178,7 @@ public class UserController {
 
 		// Generate url and email
 		String url = SERVER_SCHEME + "://" + SERVER_HOSTNAME + port
-				+ "/ehr-randomizer-app" + "/#/registerResetPassword?userId="
+				+ "/IGAMT-app" + "/#/registerResetPassword?userId="
 				+ account.getUsername() + "&username=" + account.getUsername()
 				+ "&token="
 				+ UriUtils.encodeQueryParam(arp.getCurrentToken(), "UTF-8");
@@ -233,7 +232,7 @@ public class UserController {
 		}
 
 		String url = SERVER_SCHEME + "://" + SERVER_HOSTNAME + port
-				+ "/ehr-randomizer-app" + "/#/registerResetPassword?userId="
+				+ "/igl-client" + "/#/registerResetPassword?userId="
 				+ acc.getUsername() + "&" + "username=" + acc.getUsername()
 				+ "&" + "token="
 				+ UriUtils.encodeQueryParam(arp.getCurrentToken(), "UTF-8");
@@ -369,7 +368,7 @@ public class UserController {
 
 		// Generate url and email
 		String url = SERVER_SCHEME + "://" + SERVER_HOSTNAME + port
-				+ "/ehr-randomizer-app" + "/#/resetPassword?userId="
+				+ "/igl-client" + "/#/resetPassword?userId="
 				+ user.getUsername() + "&username=" + acc.getUsername()
 				+ "&token="
 				+ UriUtils.encodeQueryParam(arp.getCurrentToken(), "UTF-8");
@@ -677,22 +676,14 @@ public class UserController {
 	private void sendAccountRegistrationNotification(Account acc) {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
-		msg.setSubject("Welcome! You are successfully registered on NIST EHR Randomizer");
+		msg.setSubject("Welcome! You are successfully registered on NIST IGAMT");
 		msg.setTo(acc.getEmail());
-		msg.setText("Dear "
-				+ acc.getUsername()
-				+ " \n\n"
-				+ "You've successfully registered on the NIST EHR Randomizer."
-				+ " \n"
-				+ "Your username is: "
-				+ acc.getUsername()
-				+ " \n\n"
-				+ "You can now complete the next steps of the process which is to match with a Test EHR,"
-				+ " to meet Meaningful Use Stage 2 requirements for health information exchange. \n\n"
+		msg.setText("Dear " + acc.getUsername() + " \n\n"
+				+ "You've successfully registered on the NIST IGAMT." + " \n"
+				+ "Your username is: " + acc.getUsername() + " \n\n"
 				+ "Please refer to the user guide for the detailed steps. "
-				+ "\n\n" + "Sincerely, " + "\n\n"
-				+ "The NIST EHR-Randomizer Team" + "\n\n"
-				+ "P.S: If you need help, contact us at randomizer@hhs.gov");
+				+ "\n\n" + "Sincerely, " + "\n\n" + "The NIST IGAMT Team"
+				+ "\n\n" + "P.S: If you need help, contact us at ''");
 
 		try {
 			this.mailSender.send(msg);
@@ -706,20 +697,19 @@ public class UserController {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
 		msg.setTo(acc.getEmail());
-		msg.setSubject("NIST EHR Randomizer Vendor Registration Notification ");
+		msg.setSubject("NIST IGAMT Vendor Registration Notification ");
 		msg.setText("Dear "
 				+ acc.getUsername()
 				+ " \n\n"
 				+ "**** If you have not requested a new account, please disregard this email **** \n\n\n"
 				+ "Your account request has been processed and you can proceed "
-				+ "to login and register your Test EHR.\n"
+				+ "to login .\n"
 				+ "You need to change your password in order to login.\n"
 				+ "Copy and paste the following url to your browser to initiate the password change:\n"
 				+ url + " \n\n"
 				+ "Please refer to the user guide for the detailed steps. "
-				+ "\n\n" + "Sincerely, " + "\n\n"
-				+ "The NIST EHR-Randomizer Team" + "\n\n"
-				+ "P.S: If you need help, contact us at randomizer@hhs.gov");
+				+ "\n\n" + "Sincerely, " + "\n\n" + "The NIST IGAMT Team"
+				+ "\n\n" + "P.S: If you need help, contact us at ''");
 
 		try {
 			this.mailSender.send(msg);
@@ -733,16 +723,15 @@ public class UserController {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
 		msg.setTo(acc.getEmail());
-		msg.setSubject("NIST EHR Randomizer Password Reset Request Notification");
+		msg.setSubject("NIST IGAMT Password Reset Request Notification");
 		msg.setText("Dear "
 				+ acc.getUsername()
 				+ " \n\n"
 				+ "**** If you have not requested a password reset, please disregard this email **** \n\n\n"
 				+ "You password reset request has been processed.\n"
 				+ "Copy and paste the following url to your browser to initiate the password change:\n"
-				+ url + " \n\n" + "Sincerely, " + "\n\n"
-				+ "The NIST EHR-Randomizer Team" + "\n\n"
-				+ "P.S: If you need help, contact us at randomizer@hhs.gov");
+				+ url + " \n\n" + "Sincerely, " + "\n\n" + "The IGAMT Team"
+				+ "\n\n" + "P.S: If you need help, contact us at ''");
 
 		try {
 			this.mailSender.send(msg);
@@ -755,10 +744,10 @@ public class UserController {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
 		msg.setTo(acc.getEmail());
-		msg.setSubject("NIST EHR Randomizer Password Change Notification");
+		msg.setSubject("NIST IGAMT Password Change Notification");
 		msg.setText("Dear " + acc.getUsername() + " \n\n"
 				+ "Your password has been successfully changed." + " \n\n"
-				+ "Sincerely,\n\n" + "The NIST EHR-Randomizer Team");
+				+ "Sincerely,\n\n" + "The NIST IGAMT Team");
 
 		try {
 			this.mailSender.send(msg);
@@ -771,11 +760,11 @@ public class UserController {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
 		msg.setTo(acc.getEmail());
-		msg.setSubject("NIST EHR Randomizer Password Rest Notification");
+		msg.setSubject("NIST IGAMT Password Rest Notification");
 		msg.setText("Dear " + acc.getUsername() + " \n\n"
 				+ "Your password has been successfully reset." + " \n"
 				+ "Your username is: " + acc.getUsername() + " \n\n"
-				+ "Sincerely,\n\n" + "The NIST EHR-Randomizer Team");
+				+ "Sincerely,\n\n" + "The NIST IGAMT Team");
 
 		try {
 			this.mailSender.send(msg);
@@ -788,12 +777,12 @@ public class UserController {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
 		msg.setTo(acc.getEmail());
-		msg.setSubject("NIST EHR Randomizer Registration and Password Notification");
+		msg.setSubject("NIST IGAMT Registration and Password Notification");
 		msg.setText("Dear " + acc.getUsername() + " \n\n"
 				+ "Your password has been successfully set." + " \n"
 				+ "Your username is: " + acc.getUsername() + " \n"
-				+ "Your registration with the NIST EHR Randomizer is complete."
-				+ " \n\n" + "Sincerely,\n\n" + "The NIST EHR-Randomizer Team");
+				+ "Your registration with the NIST IGAMT is complete."
+				+ " \n\n" + "Sincerely,\n\n" + "The NIST IGAMT Team");
 
 		try {
 			this.mailSender.send(msg);
@@ -806,10 +795,10 @@ public class UserController {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
 		msg.setTo(acc.getEmail());
-		msg.setSubject("NIST EHR Randomizer Username Notification");
+		msg.setSubject("NIST IGAMT Username Notification");
 		msg.setText("Dear " + acc.getUsername() + " \n\n"
 				+ "Your username is: " + acc.getUsername() + " \n\n"
-				+ "Sincerely,\n\n" + "The NISt EHR-Randomizer Team");
+				+ "Sincerely,\n\n" + "The NIST IGAMT Team");
 
 		try {
 			this.mailSender.send(msg);
@@ -836,12 +825,12 @@ public class UserController {
 
 		int MAX_RETRY = 10;
 		int retry = 0;
-		while (userService.userExists(result.append(EhrUtil.generateRandom())
+		while (userService.userExists(result.append(UserUtil.generateRandom())
 				.toString())) {
 			if (retry == MAX_RETRY) {
 				throw new Exception("Can't generate username");
 			}
-			result.append(EhrUtil.generateRandom()).toString();
+			result.append(UserUtil.generateRandom()).toString();
 			retry++;
 		}
 

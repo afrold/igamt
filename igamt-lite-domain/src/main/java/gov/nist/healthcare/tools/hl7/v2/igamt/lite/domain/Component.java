@@ -47,4 +47,9 @@ public class Component extends DataElement {
 		this.sub = sub;
 	}
 
+	@Override
+	public int compareTo(DataElement o) {
+		return this.getPosition() - o.getPosition();
+	}
+
 }

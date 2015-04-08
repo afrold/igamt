@@ -21,8 +21,8 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular'
-        ,
-        'ngMockE2E'
+//        ,
+//        'ngMockE2E'
      ]);
 
 var
@@ -143,6 +143,23 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 //        profile.addRestangularMethod('clone', 'post', 'clone');
 //        return profile;
 //    });
+
+
+
+    $httpProvider.interceptors.push(function ($q) {
+        return {
+            'request': function (config) {
+//                return "http://localhost:8080/igl-api"+ value;
+                if(config.url.startsWith("/api")){
+                    config.url = "http://localhost:8080/igl-api"+  config.url;
+                }
+                return config || $q.when(config);
+
+            }
+
+        }
+    });
+
 
 
 //    $httpProvider.interceptors.push('503Interceptor');
@@ -345,8 +362,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     });
 
     $rootScope.api = function (value) {
-//        return "http://localhost:8080/igl-api"+ value;
-        return  value;
+         return  value;
     };
 
 
@@ -566,11 +582,11 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.$on('event:loginRequest', function (event, username, password) {
         httpHeaders.common['Accept'] = 'application/json';
         httpHeaders.common['Authorization'] = 'Basic ' + base64.encode(username + ':' + password);
-        $http.get('/api/accounts/login').success(function() {
+        $http.get( $rootScope.api('/api/accounts/login')).success(function() {
             //If we are here in this callback, login was successfull
             //Let's get user info now
             httpHeaders.common['Authorization'] = null;
-            $http.get('/api/accounts/cuser').success(function (data) {
+            $http.get( $rootScope.api('/api/accounts/cuser')).success(function (data) {
                 userInfoService.setCurrentUser(data);
                 $rootScope.$broadcast('event:loginConfirmed');
             });

@@ -1,6 +1,5 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // bower:scss
-@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
 .browsehappy {
@@ -1151,10 +1150,10 @@ h4.addPOAFormDateSectionTitle {
 .matchactive {
   font-weight: bold;
 }
-
-.modal {
-  position:absolute; //fix to allow scrolling for modal on small windows
-}
+//
+//.modal {
+//  position:absolute; //fix to allow scrolling for modal on small windows
+//}
 /*
 .modal-header {
   background-color: #ffec9d;
@@ -1342,3 +1341,14 @@ input.account-input {
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
   width: 270px;
 }
+
+.login-input {
+  background-color: white;
+  color: #555555;
+ }
+
+
+
+//.modal {
+//  display: block;
+//}

@@ -37,19 +37,18 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author fdevaulx
  * 
  */
-@Controller
+@RestController
 public class AccountController {
 
 	static final Logger logger = LoggerFactory
@@ -73,7 +72,6 @@ public class AccountController {
 
 	@PreAuthorize("hasRole('supervisor') or hasRole('admin')")
 	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
-	@ResponseBody
 	public List<Account> getAccounts() {
 
 		List<Account> accs = new LinkedList<Account>();
@@ -90,7 +88,6 @@ public class AccountController {
 
 	@PreAuthorize("hasRole('supervisor') or hasRole('admin')")
 	@RequestMapping(value = "/providers/page", method = RequestMethod.GET)
-	@ResponseBody
 	public Page<ShortAccount> getProvidersPage(
 			@RequestParam(required = false, defaultValue = "0") int value,
 			@RequestParam(required = false, defaultValue = DEFAULT_PAGE_SIZE) int size,
@@ -131,7 +128,6 @@ public class AccountController {
 
 	@PreAuthorize("hasRole('supervisor') or hasRole('admin')")
 	@RequestMapping(value = "/authorizedVendors/page", method = RequestMethod.GET)
-	@ResponseBody
 	public Page<ShortAccount> getAuthorizedVendorsPage(
 			@RequestParam(required = false, defaultValue = "0") int value,
 			@RequestParam(required = false, defaultValue = DEFAULT_PAGE_SIZE) int size,
@@ -172,7 +168,6 @@ public class AccountController {
 
 	@PreAuthorize("hasRole('supervisor') or hasRole('admin')")
 	@RequestMapping(value = "/shortaccounts/page", method = RequestMethod.GET)
-	@ResponseBody
 	public Page<ShortAccount> getShortAccountsPage(
 			@RequestParam(required = false, defaultValue = "0") int value,
 			@RequestParam(required = false, defaultValue = DEFAULT_PAGE_SIZE) int size,
@@ -218,7 +213,6 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/shortaccounts", method = RequestMethod.GET)
-	@ResponseBody
 	public List<ShortAccount> getShortAccounts(
 			@RequestParam(required = false) List<String> filter) {
 
@@ -268,7 +262,6 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/accounts/{id}", method = RequestMethod.GET)
-	@ResponseBody
 	public Account getAccountById(@PathVariable Long id) {
 
 		Account acc = accountRepository.findOne(id);
@@ -282,7 +275,6 @@ public class AccountController {
 
 	@PreAuthorize("hasPermission(#id, 'accessAccountBasedResource')")
 	@RequestMapping(value = "/accounts/{id}", method = RequestMethod.POST)
-	@ResponseBody
 	public ResponseMessage updateAccountById(@PathVariable Long id,
 			@Valid @RequestBody Account account) {
 
@@ -318,7 +310,6 @@ public class AccountController {
 	/* Other */
 
 	@RequestMapping(value = "/sooa/emails/{email:.*}", method = RequestMethod.GET)
-	@ResponseBody
 	public ResponseMessage accountEmailExist(@PathVariable String email,
 			@RequestParam(required = false) String email1) {
 
@@ -332,7 +323,6 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/sooa/usernames/{username}", method = RequestMethod.GET)
-	@ResponseBody
 	public ResponseMessage accountUsernameExist(@PathVariable String username) {
 
 		if (accountRepository.findByTheAccountsUsername(username) != null) {

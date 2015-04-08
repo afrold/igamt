@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="C" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-4r [%t] %d %-5p %c - %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="F" class="ch.qos.logback.core.FileAppender">
+    	<file>./logs/log-test.log</file>
+        <encoder>
+            <pattern>%-4r [%t] %d %-5p %c - %m%n</pattern>
+        </encoder>
+    </appender>
+    <root level="DEBUG">
+        <appender-ref ref="C"/>
+        <appender-ref ref="F"/>
+    </root>
+</configuration>

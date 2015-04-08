@@ -113,18 +113,19 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal) {
 
             $rootScope.loginDialogShown = true;
 
-            var modalInstance = $modal.open({
+            var dlg = $modal.open({
                 backdrop: true,
                 keyboard: true,
                 backdropClick: false,
                 controller: 'LoginCtrl',
+                size:'lg',
                 templateUrl: 'views/account/login.html',
                 resolve: {
                     user: function() {return {username:$scope.username, password:$scope.password};}
                 }
             });
 
-            modalInstance.result.then(function (result) {
+            dlg.result.then(function (result) {
                 $rootScope.loginDialogShown = false;
                 if(result) {
                     $scope.username = result.username;

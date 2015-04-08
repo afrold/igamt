@@ -3,7 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import org.springframework.data.annotation.Id;
 
 public abstract class SegmentRefOrGroup extends DataModel implements
-		java.io.Serializable {
+		java.io.Serializable, Comparable<SegmentRefOrGroup>  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -73,5 +73,10 @@ public abstract class SegmentRefOrGroup extends DataModel implements
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
+	public int compareTo(SegmentRefOrGroup o) {
+		return (int) (this.getPosition() - o.getPosition());
+	}
+
 
 }

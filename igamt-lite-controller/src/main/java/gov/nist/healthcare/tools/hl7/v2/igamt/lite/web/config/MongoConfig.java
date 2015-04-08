@@ -46,7 +46,7 @@ import com.mongodb.ServerAddress;
 @Configuration
 @EnableMongoRepositories(basePackages = "gov.nist.healthcare.tools")
 @PropertySource(value = "classpath:igl-mongo.properties")
-public class DbConfig extends AbstractMongoConfiguration {
+public class MongoConfig extends AbstractMongoConfiguration {
 
 	@Autowired
 	private Environment env;
