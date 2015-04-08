@@ -128,27 +128,43 @@ public class ProfileController extends CommonController {
 		return profileService.apply(jsonChanges.getValue(), p);
 	}
 
-	@RequestMapping(value = "/{targetId}/export/XML", method = RequestMethod.POST, produces = "text/xml")
-	public void export(@PathVariable("targetId") String targetId,
+	@RequestMapping(value = "/{targetId}/export/xml", method = RequestMethod.POST, produces = "text/xml")
+	public void exportXml(@PathVariable("targetId") String targetId,
 			HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		// logger.info(log.toString());
+					throws IOException {
+		logger.info("Exporting as xml file profile with id=" + targetId);
 		InputStream content = null;
 		content = profileService.exportAsXml(targetId);
 		response.setContentType("text/xml");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.xml");
 		FileCopyUtils.copy(content, response.getOutputStream());
-
-		// if ("pdf".equalsIgnoreCase(format)) {
-		// content = profileService.exportA sPdf(targetId);
-		// response.setContentType("application/pdf");
-		// response.setHeader("Content-disposition",
-		// "attachment;filename=IG.pdf");
-		// FileCopyUtils.copy(content, response.getOutputStream());
-		// } else if ("xml".equalsIgnoreCase(format)) {
-		//
-		// }
 	}
-
+	
+	@RequestMapping(value = "/{targetId}/export/pdf", method = RequestMethod.POST, produces = "application/pdf")
+	public void exportPdf(@PathVariable("targetId") String targetId,
+			HttpServletRequest request, HttpServletResponse response)
+					throws IOException {
+		logger.info("Exporting as pdf file profile with id=" + targetId);
+		InputStream content = null;
+		content = profileService.exportAsPdf(targetId);
+		response.setContentType("application/pdf");
+		response.setHeader("Content-disposition",
+				"attachment;filename=Profile.pdf");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+	
+	@RequestMapping(value = "/{targetId}/export/xslx", method = RequestMethod.POST, 
+			produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	public void exportXlsx(@PathVariable("targetId") String targetId,
+			HttpServletRequest request, HttpServletResponse response)
+					throws IOException {
+		logger.info("Exporting as spreadsheet profile with id=" + targetId);
+		InputStream content = null;
+		content = profileService.exportAsXlsx(targetId);
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		response.setHeader("Content-disposition",
+				"attachment;filename=Profile.xlsx");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
 }

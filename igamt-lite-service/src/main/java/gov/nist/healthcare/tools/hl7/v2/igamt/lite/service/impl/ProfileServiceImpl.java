@@ -585,15 +585,7 @@ public class ProfileServiceImpl implements ProfileService {
 						this.addGroupXlsx(rows, (Group) srog, 0);
 					}
 				}
-
-				for (List<String> row : rows) {
-					Object[] tmp = new Object[header.size()];
-					for (String elt : row) {
-						tmp[row.indexOf(elt)] = elt;
-					}
-					data.put(String.format("%06d", rows.indexOf(row)), tmp);
-				}
-				this.writeToSheet(data, sheet);
+				this.writeToSheet(rows, header, sheet);
 			}
 
 			//765875589896896989893453456
@@ -603,30 +595,18 @@ public class ProfileServiceImpl implements ProfileService {
 				header = Arrays.asList("Segment", "STD\nUsage", "Local\nUsage",
 						"STD\nCard.", "Local\nCard.", "Comment");
 
-				rows.add(header);
-
-				sheet = workbook
-						.createSheet(m.getDescription());
-
-				data = new TreeMap<String, Object[]>();
-
+				//data = new TreeMap<String, Object[]>();
 
 				for (SegmentRefOrGroup srog : m.getChildren()) {
+					
 					if (srog instanceof SegmentRef) {
-						this.addFieldPdf2(rows, ((SegmentRef) srog).getRef());
+						this.addSegmentXlsx2(((SegmentRef) srog).getRef(), header, workbook);
 					} else if (srog instanceof Group) {
-						this.addGroupPdf1(rows, (Group) srog, 0);
+						this.addGroupXlsx2(header, (Group) srog, workbook);
 					}
 				}
 
-				for (List<String> row : rows) {
-					Object[] tmp = new Object[header.size()];
-					for (String elt : row) {
-						tmp[row.indexOf(elt)] = elt;
-					}
-					data.put(String.format("%06d", rows.indexOf(row)), tmp);
-				}
-				this.writeToSheet(data, sheet);
+				//this.writeToSheet(rows, header, sheet);
 			}
 			//23525235235223523535
 
@@ -642,7 +622,16 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 	}
 
-	private void writeToSheet(Map<String, Object[]> data, XSSFSheet sheet){
+	private void writeToSheet(List<List<String>> rows, List<String> header, XSSFSheet sheet){
+		Map<String, Object[]> data = new TreeMap<String, Object[]>();
+		for (List<String> row : rows) {
+			Object[] tmp = new Object[header.size()];
+			for (String elt : row) {
+				tmp[row.indexOf(elt)] = elt;
+			}
+			data.put(String.format("%06d", rows.indexOf(row)), tmp);
+		}
+
 		// Iterate over data and write to sheet
 		Set<String> keyset = data.keySet();
 		keyset = new TreeSet<String>(keyset);
@@ -660,7 +649,6 @@ public class ProfileServiceImpl implements ProfileService {
 					cell.setCellValue((Integer) obj);
 			}
 		}
-
 	}
 
 	public InputStream exportAsPdfFromXSL(String targetId) {
@@ -768,13 +756,13 @@ public class ProfileServiceImpl implements ProfileService {
 				document1.add(table);
 			}
 
-//			document1.newPage();
-//			List<Datatype> ds = new ArrayList<Datatype>(p.getDatatypes().getChildren()); 
-//			for (Datatype d : ds) {
-//				document1.add(new Paragraph(d.getName() + " - "
-//						+ d.getLabel() + " - " + d.getDescription()));
-//			}
-//
+			//			document1.newPage();
+			//			List<Datatype> ds = new ArrayList<Datatype>(p.getDatatypes().getChildren()); 
+			//			for (Datatype d : ds) {
+			//				document1.add(new Paragraph(d.getName() + " - "
+			//						+ d.getLabel() + " - " + d.getDescription()));
+			//			}
+			//
 			/*
 			 * Adding segments details
 			 */
@@ -935,6 +923,28 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 	}
 
+	private void addGroupXlsx2(List<String> header, Group g, XSSFWorkbook workbook)
+			throws DocumentException {
+
+		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
+		Collections.sort(segsOrGroups);
+		for (SegmentRefOrGroup srog : segsOrGroups) {
+			if (srog instanceof SegmentRef) {
+				this.addSegmentXlsx2(((SegmentRef) srog).getRef(), header, workbook);
+			} else if (srog instanceof Group) {
+				this.addGroupXlsx2(header, (Group) srog, workbook);
+			}
+		}
+	}
+
+	private void addSegmentXlsx2(Segment s, List<String> header, XSSFWorkbook workbook){
+		List<List<String>> rows = new ArrayList<List<String>>();
+		XSSFSheet sheet = workbook.createSheet(s.getName());
+		this.addFieldPdf2(rows, s);
+		this.writeToSheet(rows, header, sheet);
+	}
+	
+	
 	private void addGroupXlsx(List<List<String>> rows, Group g, Integer depth) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
 
@@ -1003,14 +1013,14 @@ public class ProfileServiceImpl implements ProfileService {
 				document.add(new Paragraph(f.getText()));
 			}
 		}
-//		//TODO REMOVE FOLLOWING AFTER DEMO!!
-//		for (Field f : fieldsList) {
-//			Font fontbold = FontFactory.getFont("Times-Roman", 12, Font.BOLD);
-//			document.add(new Paragraph(s.getName() + "-" +
-//					f.getItemNo().replaceFirst("^0+(?!$)", "") + " " + f.getName() +
-//					" (" + f.getDatatype().getLabel() + ")", fontbold));
-//			document.add(new Paragraph("wfnwenfwnvw"));
-//		}
+		//		//TODO REMOVE FOLLOWING AFTER DEMO!!
+		//		for (Field f : fieldsList) {
+		//			Font fontbold = FontFactory.getFont("Times-Roman", 12, Font.BOLD);
+		//			document.add(new Paragraph(s.getName() + "-" +
+		//					f.getItemNo().replaceFirst("^0+(?!$)", "") + " " + f.getName() +
+		//					" (" + f.getDatatype().getLabel() + ")", fontbold));
+		//			document.add(new Paragraph("wfnwenfwnvw"));
+		//		}
 		document.newPage();
 
 	}
@@ -1105,8 +1115,9 @@ public class ProfileServiceImpl implements ProfileService {
 		Collections.sort(fieldsList);
 		for (Field f : fieldsList) {
 			row = Arrays.asList(
-					f.getItemNo().replaceFirst("^0+(?!$)", ""),
+					//f.getItemNo().replaceFirst("^0+(?!$)", ""),
 					//f.getItemNo() + " x " + String.valueOf(f.getPosition()),
+					String.valueOf(f.getPosition()),
 					f.getName(),
 					f.getDatatype().getLabel(),
 					f.getUsage().value(),
