@@ -705,8 +705,8 @@ public class ProfileServiceImpl implements ProfileService {
 			float columnWidths[];
 			List<List<String>> rows;
 
-			//File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
-			File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
+			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+			//File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
 
 			Document document1 = new Document();
 			PdfWriter writer1 = PdfWriter.getInstance(document1,
