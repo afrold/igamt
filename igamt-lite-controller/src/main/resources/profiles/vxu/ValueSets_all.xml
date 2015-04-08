@@ -549,7 +549,7 @@
 		<TableElement Code="I9C" Codesys="HL70396" DisplayName="ICD-9CM" Source="Local"/>
 		<TableElement Code="ISOnnnn" Codesys="HL70396" DisplayName="ISO Defined Codes where nnnn is the ISO table number" Source="Local"/>
 		<TableElement Code="LB" Codesys="HL70396" DisplayName="Local billing code" Source="Local"/>
-		<TableElement Code="LN" Codesys="HL70396" DisplayName="Logical Observation Identifier Names and Codes (LOINC)" Source="Local"/>
+		<TableElement Code="LN" Codesys="HL70396" DisplayName="Logical Observation Identifier Names and Codes (LOINC占쏙옙" Source="Local"/>
 		<TableElement Code="MCD" Codesys="HL70396" DisplayName="Medicaid" Source="Local"/>
 		<TableElement Code="MCR" Codesys="HL70396" DisplayName="Medicare" Source="Local"/>
 		<TableElement Code="MEDR" Codesys="HL70396" DisplayName="Medical Dictionary for Drug Regulatory Affairs (MEDDRA)" Source="Local"/>
@@ -557,7 +557,7 @@
 		<TableElement Code="NDC" Codesys="HL70396" DisplayName="National drug codes" Source="Local"/>
 		<TableElement Code="NCIT" Codesys="HL70396" DisplayName="NCI Thesaurus" Source="Local"/>
 		<TableElement Code="NPI" Codesys="HL70396" DisplayName="National Provider Identifier" Source="Local"/>
-		<TableElement Code="SNM" Codesys="HL70396" DisplayName="Systemized Nomenclature of Medicine (SNOMED)" Source="Local"/>
+		<TableElement Code="SNM" Codesys="HL70396" DisplayName="Systemized Nomenclature of Medicine (SNOMED占쏙옙" Source="Local"/>
 		<TableElement Code="SCT" Codesys="HL70396" DisplayName="SNOMED Clinical Terminology" Source="Local"/>
 		<TableElement Code="SCT2" Codesys="HL70396" DisplayName="SNOMED Clinical Terms alphanumeric codes" Source="Local"/>
 		<TableElement Code="SNM3" Codesys="HL70396" DisplayName="SNOMED International" Source="Local"/>

@@ -236,10 +236,32 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				componentObj.setMinLength(new Integer(elmComponent
 						.getAttribute("MinLength")));
 				componentObj.setName(elmComponent.getAttribute("Name"));
-				componentObj
-						.setTable(this.findTable(
-								elmComponent.getAttribute("Table"),
+
+				componentObj.setUsage(Usage.fromValue(elmComponent
+						.getAttribute("Usage")));
+
+				componentObj.setDatatype(this.findDatatype(
+						elmComponent.getAttribute("Datatype"), profile,
+						elmDatatypes));
+
+				if (elmComponent.getAttribute("Table") != null) {
+					String tableScript = elmComponent.getAttribute("Table");
+					String[] tableTags = tableScript.split("#");
+					System.out.println(tableScript);
+					if (tableTags.length == 1) {
+						componentObj.setTable(this.findTable(tableTags[0],
 								profile.getTables()));
+					} else if (tableTags.length == 2) {
+						componentObj.setTable(this.findTable(tableTags[0],
+								profile.getTables()));
+						componentObj.setBindingStrength(tableTags[1]);
+					} else if (tableTags.length == 3) {
+						componentObj.setTable(this.findTable(tableTags[0],
+								profile.getTables()));
+						componentObj.setBindingStrength(tableTags[1]);
+						componentObj.setBindingLocation(tableTags[2]);
+					}
+				}
 				componentObj.setUsage(Usage.fromValue(elmComponent
 						.getAttribute("Usage")));
 				componentObj.setBindingLocation(elmComponent
@@ -458,8 +480,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					elmComponent.addAttribute(new Attribute("MaxLength", c
 							.getMaxLength()));
 				if (c.getConfLength() != null && !c.getConfLength().equals(""))
+
 					elmComponent.addAttribute(new Attribute("ConfLength", c
 							.getConfLength()));
+
+				String tableScript = "";
 				if (c.getTable() != null && !c.getTable().equals(""))
 					elmComponent.addAttribute(new Attribute("Table", c
 							.getTable().getMappingId() + ""));
@@ -586,13 +611,26 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		fieldObj.setMinLength(new Integer(fieldElm.getAttribute("MinLength")));
 		fieldObj.setName(fieldElm.getAttribute("Name"));
 		fieldObj.setUsage(Usage.fromValue(fieldElm.getAttribute("Usage")));
-		fieldObj.setTable(this.findTable(fieldElm.getAttribute("Table"),
-				profile.getTables()));
-		fieldObj.setBindingStrength(fieldElm.getAttribute("BindingStrength"));
-		fieldObj.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
+		if (fieldElm.getAttribute("Table") != null) {
+			String tableScript = fieldElm.getAttribute("Table");
+			String[] tableTags = tableScript.split("#");
+
+			if (tableTags.length == 1) {
+				fieldObj.setTable(this.findTable(tableTags[0],
+						profile.getTables()));
+			} else if (tableTags.length == 2) {
+				fieldObj.setTable(this.findTable(tableTags[0],
+						profile.getTables()));
+				fieldObj.setBindingStrength(tableTags[1]);
+			} else if (tableTags.length == 3) {
+				fieldObj.setTable(this.findTable(tableTags[0],
+						profile.getTables()));
+				fieldObj.setBindingStrength(tableTags[1]);
+				fieldObj.setBindingLocation(tableTags[2]);
+			}
+		}
 		fieldObj.setDatatype(this.findDatatype(
 				fieldElm.getAttribute("Datatype"), profile));
-
 		return fieldObj;
 	}
 

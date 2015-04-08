@@ -512,6 +512,7 @@ ul > li.igl-tbl-item > a {
   overflow: scroll;
 }
 
+<<<<<<< HEAD
 
 #userInfo {
   text-shadow: none;
@@ -1352,3 +1353,8 @@ input.account-input {
 //.modal {
 //  display: block;
 //}
+ .modal-wide .modal-dialog {
+  width: 90%;
+  height: 90%;
+  overflow-y: auto;
+}

@@ -311,6 +311,17 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.datatypes = [];// list of datatypes of the selected messages
     $rootScope.tables = [];// list of tables of the selected messages
     $rootScope.usages = ['R', 'RE', 'O', 'C', "CE","X", "B", "W"];
+    $rootScope.codeUsages = ['R', 'P', 'E'];
+    $rootScope.codeSources = ['HL7', 'Local', 'Redefined', 'SDO'];
+    $rootScope.tableStabilities = ['Static', 'Dynamic'];
+    $rootScope.tableExtensibilities = ['Open', 'Close'];
+    $rootScope.constraintVerbs = ['SHALL be', 'SHALL NOT be', 'is', 'is not'];
+    $rootScope.contraintTypes = ['presented', 'a literal value', 'one of list values', 'a code of Value Set', 'formatted value', 'identical to the another node'];
+    $rootScope.newCodeFakeId = 0;
+    $rootScope.newTableFakeId = 0;
+    $rootScope.newPredicateFakeId = 0;
+    $rootScope.newConformanceStatementFakeId = 0;
+    $rootScope.newTable = {};
     $rootScope.segment = null;
     $rootScope.profileTabs = new Array();
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
@@ -326,7 +337,6 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.generalInfo = {type: null, 'message': null};
     $rootScope.references =[]; // collection of element referencing a datatype to delete
     $rootScope.section = {};
-
 
     $rootScope.selectProfileTab = function (value) {
         $rootScope.profileTabs[0] = false;
