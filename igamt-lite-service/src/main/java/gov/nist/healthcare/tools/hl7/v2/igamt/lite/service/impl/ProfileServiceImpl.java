@@ -705,8 +705,8 @@ public class ProfileServiceImpl implements ProfileService {
 			float columnWidths[];
 			List<List<String>> rows;
 
-			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
-			//File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
+			//File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+			File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
 
 			Document document1 = new Document();
 			PdfWriter writer1 = PdfWriter.getInstance(document1,
@@ -820,14 +820,13 @@ public class ProfileServiceImpl implements ProfileService {
 			document1.add(new Paragraph("Value Sets", titleFont));
 			document1.add(Chunk.NEWLINE);
 
-			header = Arrays.asList("Code", "Code sys", "Usage", "Label");
+			header = Arrays.asList("Value", "Description");
 
-			columnWidths = new float[] {2f, 2f, 2f, 6f };
+			columnWidths = new float[] {2f, 6f };
 
 			for (Table t: p.getTables().getChildren()) {
 				System.out.println(t.toString());
-					document1.add(new Paragraph(t.getMappingId() + " - "
-							+ t.getName() + " Table"));
+					document1.add(new Paragraph("Table " + t.getMappingId()));
 
 					table = this.createHeader(header, columnWidths, headerFont,
 							headerColor);
@@ -1134,7 +1133,6 @@ public class ProfileServiceImpl implements ProfileService {
 		for (Field f : fieldsList) {
 			row = Arrays.asList(
 					//f.getItemNo().replaceFirst("^0+(?!$)", ""),
-					//f.getItemNo() + " x " + String.valueOf(f.getPosition()),
 					String.valueOf(f.getPosition()),
 					f.getName(),
 					f.getDatatype().getLabel(),
@@ -1175,8 +1173,7 @@ public class ProfileServiceImpl implements ProfileService {
 		List <Code> codes = t.getCodes();
 		
 		for (Code c: codes){
-			row = Arrays.asList(
-					c.getCode(), c.getCodesys(), c.getCodeUsage(), c.getLabel());
+			row = Arrays.asList(c.getCode(), c.getLabel());
 			rows.add(row);
 		}
 
