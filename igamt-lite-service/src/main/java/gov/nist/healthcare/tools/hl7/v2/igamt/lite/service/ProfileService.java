@@ -38,10 +38,10 @@ public interface ProfileService {
 
 	public List<String> apply(String changes, Profile profile);
 
-	public InputStream exportAsPdf(String profileId);
+	public InputStream exportAsPdf(Profile p);
 
-	public InputStream exportAsXml(String profileId);
+	public InputStream exportAsXml(Profile p);
 
-	public InputStream exportAsXlsx(String targetId);
+	public InputStream exportAsXlsx(Profile p);
 
 }

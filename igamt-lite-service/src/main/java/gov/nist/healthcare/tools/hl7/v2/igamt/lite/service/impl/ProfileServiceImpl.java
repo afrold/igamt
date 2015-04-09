@@ -38,6 +38,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -67,7 +68,9 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.codehaus.jackson.JsonNode;
@@ -115,6 +118,9 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Autowired
 	private DatatypeService datatypeService;
+
+	@Autowired
+	private TableService tableService;
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -536,8 +542,7 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public InputStream exportAsXml(String targetId) {
-		Profile p = findOne(targetId);
+	public InputStream exportAsXml(Profile p) {
 		if (p != null) {
 			return IOUtils.toInputStream(new ProfileSerializationImpl()
 			.serializeProfileToXML(p));
@@ -547,27 +552,27 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public InputStream exportAsXlsx(String targetId) {
+	public InputStream exportAsXlsx(Profile p) {
 		try {
-			// Look for the profile
-			Profile p = findOne(targetId);
-			//File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
-			File tmpxslxFile = new File("/Users/marieros/Documents/testXslt/profile.xlsx");
+			File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
+			//File tmpxslxFile = new File("/Users/marieros/Documents/testXslt/profile.xlsx");
 
 			// Blank workbook
 			XSSFWorkbook workbook = new XSSFWorkbook();
 			XSSFSheet sheet;
+			XSSFCellStyle headerStyle;
 			List<List<String>> rows;
-			Map<String, Object[]> data;
 			List<String> header;
+			
+			headerStyle = workbook.createCellStyle();
+			headerStyle.setFillPattern(XSSFCellStyle.FINE_DOTS );
+            headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+			//headerStyle.setFillBackgroundColor(IndexedColors.LIGHT_BLUE.getIndex());
 
 			for (Message m : p.getMessages().getChildren()) {
 				// Create a blank sheet
 				sheet = workbook
 						.createSheet(m.getStructID() + " Segment Usage");
-
-				// This data needs to be written (Object[])
-				data = new TreeMap<String, Object[]>();
 
 				rows = new ArrayList<List<String>>();
 
@@ -582,7 +587,7 @@ public class ProfileServiceImpl implements ProfileService {
 						this.addGroupXlsx(rows, (Group) srog, 0);
 					}
 				}
-				this.writeToSheet(rows, header, sheet);
+				this.writeToSheet(rows, header, sheet, headerStyle);
 			}
 
 			for (Message m : p.getMessages().getChildren()) {
@@ -591,11 +596,11 @@ public class ProfileServiceImpl implements ProfileService {
 						"STD\nCard.", "Local\nCard.", "Len", "Value set", "Comment");
 
 				for (SegmentRefOrGroup srog : m.getChildren()) {
-					
+
 					if (srog instanceof SegmentRef) {
-						this.addSegmentXlsx2(((SegmentRef) srog).getRef(), header, workbook);
+						this.addSegmentXlsx2(((SegmentRef) srog).getRef(), header, workbook, headerStyle);
 					} else if (srog instanceof Group) {
-						this.addGroupXlsx2(header, (Group) srog, workbook);
+						this.addGroupXlsx2(header, (Group) srog, workbook, headerStyle);
 					}
 				}
 			}
@@ -612,7 +617,8 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 	}
 
-	private void writeToSheet(List<List<String>> rows, List<String> header, XSSFSheet sheet){
+	private void writeToSheet(List<List<String>> rows, List<String> header, XSSFSheet sheet, XSSFCellStyle headerStyle){
+		//This data needs to be written (Object[])
 		Map<String, Object[]> data = new TreeMap<String, Object[]>();
 		for (List<String> row : rows) {
 			Object[] tmp = new Object[header.size()];
@@ -625,7 +631,7 @@ public class ProfileServiceImpl implements ProfileService {
 		// Iterate over data and write to sheet
 		Set<String> keyset = data.keySet();
 		keyset = new TreeSet<String>(keyset);
-
+		
 		int rownum = 0;
 		for (String key : keyset) {
 			Row row = sheet.createRow(rownum++);
@@ -637,15 +643,17 @@ public class ProfileServiceImpl implements ProfileService {
 					cell.setCellValue((String) obj);
 				else if (obj instanceof Integer)
 					cell.setCellValue((Integer) obj);
+				if (rownum == 1)
+					cell.setCellStyle(headerStyle);
 			}
 		}
+		sheet.autoSizeColumn(0);
+		sheet.autoSizeColumn(1);
+		sheet.autoSizeColumn(8);
 	}
 
-	public InputStream exportAsPdfFromXSL(String targetId) {
+	public InputStream exportAsPdfFromXSL(Profile p) {
 		try {
-			// Look for the profile
-			Profile p = findOne(targetId);
-
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
 			String stringProfile = new ProfileSerializationImpl()
@@ -679,12 +687,9 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public InputStream exportAsPdf(String targetId) {
+	public InputStream exportAsPdf(Profile p) {
 
 		try {
-			// Look for the profile
-			Profile p = findOne(targetId);
-
 			// Create fonts and colors to be used in generated pdf
 			BaseColor headerColor = WebColors.getRGBColor("#0033CC");
 			BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
@@ -746,13 +751,6 @@ public class ProfileServiceImpl implements ProfileService {
 				document1.add(table);
 			}
 
-			//			document1.newPage();
-			//			List<Datatype> ds = new ArrayList<Datatype>(p.getDatatypes().getChildren()); 
-			//			for (Datatype d : ds) {
-			//				document1.add(new Paragraph(d.getName() + " - "
-			//						+ d.getLabel() + " - " + d.getDescription()));
-			//			}
-			//
 			/*
 			 * Adding segments details
 			 */
@@ -808,7 +806,7 @@ public class ProfileServiceImpl implements ProfileService {
 					this.addCells(table, rows, cellFont, cpColor);
 					document1.add(Chunk.NEWLINE);
 					document1.add(table);
-					document1.add(Chunk.NEXTPAGE);
+					document1.add(Chunk.NEWLINE);
 				}
 			}
 
@@ -822,19 +820,22 @@ public class ProfileServiceImpl implements ProfileService {
 
 			columnWidths = new float[] {2f, 6f };
 
-			for (Table t: p.getTables().getChildren()) {
-				System.out.println(t.toString());
-					document1.add(new Paragraph("Table " + t.getMappingId()));
+			List<Table> tables = new ArrayList<Table>(p.getTables().getChildren());
+			Collections.sort(tables);
 
-					table = this.createHeader(header, columnWidths, headerFont,
-							headerColor);
-					rows = new ArrayList<List<String>>();
-					this.addCodesPdf2(rows, t);
-					this.addCells(table, rows, cellFont, cpColor);
-					document1.add(Chunk.NEWLINE);
-					document1.add(table);
-					document1.add(Chunk.NEXTPAGE);
-				}
+			for (Table t: tables) {
+				document1.add(new Paragraph("Table " + t.getMappingId()
+						+ " : "+ t.getName()));
+
+				table = this.createHeader(header, columnWidths, headerFont,
+						headerColor);
+				rows = new ArrayList<List<String>>();
+				this.addCodesPdf2(rows, t);
+				this.addCells(table, rows, cellFont, cpColor);
+				document1.add(Chunk.NEWLINE);
+				document1.add(table);
+				document1.add(Chunk.NEWLINE);
+			}
 
 			document1.close();
 			return FileUtils.openInputStream(tmpPdfFile);
@@ -937,29 +938,29 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 	}
 
-	private void addGroupXlsx2(List<String> header, Group g, XSSFWorkbook workbook)
+	private void addGroupXlsx2(List<String> header, Group g, XSSFWorkbook workbook, XSSFCellStyle headerStyle)
 			throws DocumentException {
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
 		Collections.sort(segsOrGroups);
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
-				this.addSegmentXlsx2(((SegmentRef) srog).getRef(), header, workbook);
+				this.addSegmentXlsx2(((SegmentRef) srog).getRef(), header, workbook, headerStyle);
 			} else if (srog instanceof Group) {
-				this.addGroupXlsx2(header, (Group) srog, workbook);
+				this.addGroupXlsx2(header, (Group) srog, workbook, headerStyle);
 			}
 		}
 	}
 
-	private void addSegmentXlsx2(Segment s, List<String> header, XSSFWorkbook workbook){
+	private void addSegmentXlsx2(Segment s, List<String> header, XSSFWorkbook workbook, XSSFCellStyle headerStyle){
 		List<List<String>> rows = new ArrayList<List<String>>();
 		XSSFSheet sheet = workbook.createSheet(s.getName());
 		rows.add(header);
-		this.addFieldPdf2(rows, s);
-		this.writeToSheet(rows, header, sheet);
+		this.addFieldPdf2(rows, s, Boolean.FALSE);
+		this.writeToSheet(rows, header, sheet, headerStyle);
 	}
-	
-	
+
+
 	private void addGroupXlsx(List<List<String>> rows, Group g, Integer depth) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
 
@@ -1008,7 +1009,7 @@ public class ProfileServiceImpl implements ProfileService {
 				s.getDescription() + " Segment"));
 		document.add(Chunk.NEWLINE);
 		document.add(new Paragraph(s.getText1()));
-		this.addFieldPdf2(rows, s);
+		this.addFieldPdf2(rows, s, Boolean.TRUE);
 		this.addCells(table, rows, cellFont, cpColor);
 		document.add(table);
 		document.add(Chunk.NEWLINE);
@@ -1116,9 +1117,7 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 	}
 
-	private void addFieldPdf2(List<List<String>> rows, Segment s) {
-		// System.out.println(StringUtils.repeat("%",25));
-		// System.out.println("Segment id: " + s.getId().toString());
+	private void addFieldPdf2(List<List<String>> rows, Segment s, Boolean inlineConstraints) {
 		List<String> row;
 		List<Predicate> predicates = s.getPredicates();
 		List<ConformanceStatement> conformanceStatements = s
@@ -1137,37 +1136,48 @@ public class ProfileServiceImpl implements ProfileService {
 					"[" + String.valueOf(f.getMin()) + ".."
 							+ String.valueOf(f.getMax()) + "]",
 							"",
-							"[" + String.valueOf(f.getMinLength()) + ","
+							"[" + String.valueOf(f.getMinLength()) + ".."
 									+ String.valueOf(f.getMaxLength()) + "]",
 									(String) ((f.getTable() == null) ? "" : f.getTable()
 											.getMappingId()), f.getComment());
 			rows.add(row);
 
-			List<Constraint> constraints = this.findConstraints(
-					fieldsList.indexOf(f) + 1, predicates,
-					conformanceStatements);
-			if (!constraints.isEmpty()) {
-
-				for (Constraint constraint : constraints) {
-					String constraintType = new String();
-					if (constraint instanceof Predicate) {
-						constraintType = "Condition Predicate";
-					} else if (constraint instanceof ConformanceStatement) {
-						constraintType = "Conformance Statement";
-					}
-					row = Arrays.asList(constraint.getConstraintId(),
-							constraintType, constraint.getDescription());
-					rows.add(row);
-				}
+			if (inlineConstraints){
+				List<Constraint> constraints = this.findConstraints(
+						fieldsList.indexOf(f) + 1, predicates, conformanceStatements);
+				this.addConstraints(rows, constraints);
 			}
 		}
+		if (!inlineConstraints){
+			for (Field f : fieldsList) {
+				List<Constraint> constraints = this.findConstraints(
+						fieldsList.indexOf(f) + 1, predicates, conformanceStatements);
+				this.addConstraints(rows, constraints);
+			}	
+		}
 	}
-	
+
+	private void addConstraints(List<List<String>> rows, List<Constraint> constraints ) {
+		if (!constraints.isEmpty()) {
+			List<String> row;
+			for (Constraint constraint : constraints) {
+				String constraintType = new String();
+				if (constraint instanceof Predicate) {
+					constraintType = "Condition Predicate";
+				} else if (constraint instanceof ConformanceStatement) {
+					constraintType = "Conformance Statement";
+				}
+				row = Arrays.asList("", 
+						constraintType, constraint.getDescription());
+				rows.add(row);
+			}
+		}			
+	}
 
 	private void addCodesPdf2(List<List<String>> rows, Table t) {
 		List <String> row;
 		List <Code> codes = t.getCodes();
-		
+
 		for (Code c: codes){
 			row = Arrays.asList(c.getCode(), c.getLabel());
 			rows.add(row);
