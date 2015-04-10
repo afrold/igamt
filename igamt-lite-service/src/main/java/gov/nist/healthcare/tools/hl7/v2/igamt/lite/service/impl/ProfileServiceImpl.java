@@ -556,6 +556,7 @@ public class ProfileServiceImpl implements ProfileService {
 		try {
 			File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
 			//File tmpxslxFile = new File("/Users/marieros/Documents/testXslt/profile.xlsx");
+			//TODO change xlsx export destination
 
 			// Blank workbook
 			XSSFWorkbook workbook = new XSSFWorkbook();
@@ -710,6 +711,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
 			//File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
+			//TODO change pdf export destination
 
 			Document document1 = new Document();
 			PdfWriter writer1 = PdfWriter.getInstance(document1,
@@ -1108,8 +1110,7 @@ public class ProfileServiceImpl implements ProfileService {
 						} else if (constraint instanceof ConformanceStatement) {
 							constraintType = "Conformance Statement";
 						}
-						row = Arrays.asList(constraint.getConstraintId(),
-								constraintType, constraint.getDescription());
+						row = Arrays.asList("", constraintType, constraint.getDescription());
 						rows.add(row);
 					}
 				}
