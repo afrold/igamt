@@ -2,7 +2,7 @@
  * Created by Jungyub on 4/01/15.
  */
 
-angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Restangular, ngTreetableParams, $filter) {
+angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal) {
 					$scope.loading = false;
 					$scope.loadingSelection = false;
 					$scope.tmpTables = [].concat($rootScope.tables);
@@ -77,7 +77,7 @@ angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Re
 							};
 						
 						
-						$rootScope.table.codes.push(newCode);
+						$rootScope.table.codes.unshift(newCode);
 						if(!$scope.isNewTable($rootScope.table.id)){
 							$rootScope.listToBeAddedCodes.push({tableId: $rootScope.table.id , code: newCode});
 							$rootScope.recordChange2('code',"add",null,$rootScope.listToBeAddedCodes);
@@ -95,7 +95,6 @@ angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Re
 						$rootScope.tables.splice($rootScope.tables.indexOf(table), 1);
 						$scope.close();
 					};
-					
 					
 					$scope.deleteCode = function(code) {
 						if(!$scope.isNewCodeThenDelete(code.id)){
@@ -145,9 +144,6 @@ angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Re
 					
 					$scope.close = function() {
 						$rootScope.table = null;
-						if ($scope.params)
-							$scope.params.refresh();
-						$scope.loadingSelection = false;
 					};
 					
 					$scope.cloneTable = function(table) {						
@@ -209,6 +205,59 @@ angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Re
 							$rootScope.recordChangeForEdit(table,type);
 						}
 					}
+					
+					$scope.setAllCodeUsage = function (table, usage){
+						for(var i=0, len = table.codes.length; i < len; i ++){
+							if(table.codes[i].codeUsage !== usage) {
+								table.codes[i].codeUsage = usage;
+								$rootScope.recordChangeForEdit(table.codes[i], 'codeUsage');
+							}
+						}
+					}
+					
+					$scope.delete = function (table) {
+			            $rootScope.references = [];
+			            angular.forEach($rootScope.segments, function (segment) {
+			                $rootScope.findTableRefs(table,segment);
+			            });
+			            if( $rootScope.references != null &&  $rootScope.references.length > 0){
+			                $scope.abortDelete(table);
+			            }else {
+			                $scope.confirmDelete(table);
+			            }
+			        };
+			        
+			        $scope.abortDelete = function (table) {
+			            var modalInstance = $modal.open({
+			                templateUrl: 'ValueSetReferencesCtrl.html',
+			                controller: 'ValueSetReferencesCtrl',
+			                resolve: {
+			                	tableToDelete: function () {
+			                        return table;
+			                    }
+			                }
+			            });
+			            modalInstance.result.then(function (table) {
+			                $scope.tableToDelete = table;
+			            }, function () {
+			            });
+			        };
+			        
+			        $scope.confirmDelete = function (table) {
+			            var modalInstance = $modal.open({
+			                templateUrl: 'ConfirmValueSetDeleteCtrl.html',
+			                controller: 'ConfirmValueSetDeleteCtrl',
+			                resolve: {
+			                    tableToDelete: function () {
+			                        return table;
+			                    }
+			                }
+			            });
+			            modalInstance.result.then(function (table) {
+			                $scope.tableToDelete = table;
+			            }, function () {
+			             });
+			        };
 				});
 
 angular.module('igl').controller('TableModalCtrl', function($scope) {
@@ -217,3 +266,54 @@ angular.module('igl').controller('TableModalCtrl', function($scope) {
 						$scope.showModal = !$scope.showModal;
 					};
 				});
+
+angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, $modalInstance, tableToDelete,$rootScope) {
+    $scope.tableToDelete = tableToDelete;
+    $scope.loading = false;
+    $scope.delete = function () {
+        $scope.loading = true;
+
+        if(!$scope.isNewTableThenDelete(tableToDelete.id)){
+			$rootScope.listToBeDeletedTables.push({id: tableToDelete.id});
+			$rootScope.recordChange2('table',"delete",null,$rootScope.listToBeDeletedTables);
+		}
+		$rootScope.tables.splice($rootScope.tables.indexOf(tableToDelete), 1);
+
+        $rootScope.generalInfo.type = 'info';
+        $rootScope.generalInfo.message = "Table " + $scope.tableToDelete.mappingId + " deleted successfully";
+
+        if($rootScope.table === $scope.tableToDelete){
+        	$rootScope.table = null;
+        }
+
+        $rootScope.references = [];
+        $modalInstance.close($scope.tableToDelete);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+    
+    $scope.isNewTableThenDelete = function(id){
+		for(var i=0, len = $rootScope.listToBeAddedTables.length; i < len; i ++){
+			if($rootScope.listToBeAddedTables[i].table.id === id){
+				$rootScope.listToBeAddedTables.splice(i, 1);
+				return true;
+			}
+		}
+		return false;
+	}
+});
+
+angular.module('igl').controller('ValueSetReferencesCtrl', function ($scope, $modalInstance, tableToDelete) {
+
+    $scope.tableToDelete = tableToDelete;
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.tableToDelete);
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});

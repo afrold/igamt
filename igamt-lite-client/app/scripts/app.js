@@ -574,6 +574,36 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         }
     };
 
+    $rootScope.findTableRefs = function (table, obj) {
+        if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
+            if(obj.table === table && $rootScope.references.indexOf(obj) === -1) {
+                $rootScope.references.push(obj);
+             }
+            $rootScope.findTableRefs(table,obj.datatype);
+        }else if(angular.equals(obj.type,'segment')){
+            angular.forEach( $rootScope.segments, function (segment) {
+                angular.forEach(segment.fields, function (field) {
+                    $rootScope.findTableRefs(table,field);
+                });
+            });
+        } else if(angular.equals(obj.type,'datatype')){
+            if(obj.components != undefined && obj.components != null && obj.components.length > 0){
+                angular.forEach(obj.components, function (component) {
+                    $rootScope.findTableRefs(table,component);
+                });
+            }
+        }
+    };
+    
+    $rootScope.isAvailableDTForTable = function (dt) {
+    	if(dt != undefined){
+        	if(dt.name === 'IS' ||  dt.name === 'ID' ||dt.name === 'CWE' ||dt.name === 'CNE' ||dt.name === 'CE') return true;
+        	
+        	if(dt.components != undefined && dt.components.length > 0) return true;
+        	
+    	}
+    	return false;
+    };
 
     $rootScope.validateNumber = function(event) {
         var key = window.event ? event.keyCode : event.which;

@@ -264,25 +264,22 @@
 </td>
 <td class="col-md-1">
     <div ng-show="node.type === 'field'">
-											<span ng-show="node.table != undefined">
-												<div class="btn-group" dropdown>
-                                                    <button type="button" ng-click="goToTable(node.table)"
-                                                            class="btn btn-info btn-xs">{{node.table.mappingId}}
-                                                    </button>
-                                                    <button type="button" class="btn btn-info btn-xs dropdown-toggle"
-                                                            dropdown-toggle>
-                                                        <span class="caret"></span>
-                                                        <span class="sr-only">Split button!</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                        <li><a ng-click="mapTable(node)">Change Table</a></li>
-                                                        <li><a ng-click="deleteTable(node)">Release Table</a></li>
-                                                        <li class="divider"></li>
-                                                        <li><a ng-click="goToTable(node.table)">Details</a></li>
-                                                    </ul>
-                                                </div>
-                                            </span>
-											<span ng-show="node.table == undefined"> 
+		<span ng-show="node.table != undefined">
+			<div class="btn-group" dropdown>
+                	<button type="button" ng-click="goToTable(node.table)" class="btn btn-info btn-xs">{{node.table.mappingId}}</button>
+                	<button type="button" class="btn btn-info btn-xs dropdown-toggle" dropdown-toggle>
+                    	<span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                    	<li><a ng-click="mapTable(node)">Change Table</a></li>
+                    	<li><a ng-click="deleteTable(node)">Release Table</a></li>
+                    	<li class="divider"></li>
+                    	<li><a ng-click="goToTable(node.table)">Details</a></li>
+                    </ul>
+            </div>
+        </span>
+											<span ng-show="node.table == undefined && isAvailableDTForTable(node.datatype)"> 
 												<button ng-click="mapTable(node)" class="btn btn-xs btn-info">
                                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                                 </button>

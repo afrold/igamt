@@ -336,7 +336,8 @@
         </td>
 
         <td class="col-md-1">
-            <div ng-show="node.type !== 'datatype'">
+            <div ng-show="node.type !== 'datatype'>
+				<div ng-show="node.type === 'component' && !node.sub">
 											<span ng-show="node.table != undefined">
 												<div class="btn-group" dropdown>
                                                     <button type="button" ng-click="goToTable(node.table)"
@@ -355,11 +356,21 @@
                                                     </ul>
                                                 </div>
                                             </span>
-											<span ng-show="node.table == undefined"> 
+											<span ng-show="node.table == undefined && isAvailableDTForTable(node.datatype)"> 
 												<button ng-click="mapTable(node)" class="btn btn-xs btn-info">
                                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                                 </button>
                                             </span>
+				</div>
+				<div ng-show="node.type === 'component' && node.sub">
+											<span ng-show="node.table != undefined">
+												<div class="btn-group" dropdown>
+                                                    <button type="button" ng-click="goToTable(node.table)"
+                                                            class="btn btn-info btn-xs">{{node.table.mappingId}}
+                                                    </button>
+                                                </div>
+                                            </span>
+				</div>
             </div>
             <div ng-show="node.type === 'datatype'">-</div>
         </td>
