@@ -316,9 +316,21 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.tableStabilities = ['Static', 'Dynamic'];
     $rootScope.tableExtensibilities = ['Open', 'Close'];
     $rootScope.constraintVerbs = ['SHALL be', 'SHALL NOT be', 'is', 'is not'];
-    $rootScope.contraintTypes = ['presented', 'a literal value', 'one of list values', 'a code of Value Set', 'formatted value', 'identical to the another node'];
+    $rootScope.contraintTypes = ['valued', 'a literal value', 'one of list values', 'a code of Value Set', 'formatted value', 'identical to the another node'];
     $rootScope.newCodeFakeId = 0;
     $rootScope.newTableFakeId = 0;
+    $rootScope.postfixCloneTable = 'CA';
+    $rootScope.listToBeAddedConformanceStatements = [];
+    $rootScope.listToBeDeletedConformanceStatements = [];
+    $rootScope.listToBeAddedPredicates = [];
+    $rootScope.listToBeDeletedPredicates = [];
+    $rootScope.listToBeAddedTables = [];
+    $rootScope.listToBeDeletedTables = [];
+    $rootScope.listToBeAddedCodes = [];
+    $rootScope.listToBeDeletedCodes = [];
+    
+    
+    
     $rootScope.newPredicateFakeId = 0;
     $rootScope.newConformanceStatementFakeId = 0;
     $rootScope.newTable = {};
@@ -431,6 +443,43 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         }
     };
 
+    $rootScope.recordChangeForEdit = function(object,changeType) {
+        var type = object.type;
+
+        if($rootScope.changes[type] === undefined){
+            $rootScope.changes[type] = {};
+        }
+
+        if($rootScope.changes[type]['edit'] === undefined){
+            $rootScope.changes[type]['edit'] = {};
+        }
+        
+        if($rootScope.changes[type]['edit'][object.id] === undefined){
+            $rootScope.changes[type]['edit'][object.id] = {};
+        }
+
+
+        $rootScope.changes[type]['edit'][object.id][changeType] = object[changeType];
+        
+
+        console.log("Change is " + $rootScope.changes[type]['edit'][object.id][changeType]);
+    };
+    
+    $rootScope.recordChangeForEdit2 = function(type,command,id,valueType,value) {
+    	if($rootScope.changes[type] === undefined){
+            $rootScope.changes[type] = {};
+        }
+        if($rootScope.changes[type][command] === undefined){
+            $rootScope.changes[type][command] = {};
+        }
+        if($rootScope.changes[type][command][id] === undefined){
+            $rootScope.changes[type][command][id] = {};
+        }
+        if($rootScope.changes[type][command][id][valueType] === undefined){
+            $rootScope.changes[type][command][id][valueType] = {};
+        }
+        $rootScope.changes[type][command][id][valueType] = value;
+    };
 
 
     Restangular.setBaseUrl('/api/');

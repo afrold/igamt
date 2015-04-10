@@ -227,7 +227,7 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
         // remove any change made to components
         if($scope.dtToDelete.components != undefined && $scope.dtToDelete.components != null && $scope.dtToDelete.components.length > 0){
             angular.forEach($scope.dtToDelete.components, function (component) {
-                if($rootScope.changes['component'][component.id] && $rootScope.changes['component'][component.id]){
+                if($rootScope.changes['component'] && $rootScope.changes['component'][component.id] && $rootScope.changes['component'][component.id]){
                     delete $rootScope.changes['component'][component.id];
                 }
             });

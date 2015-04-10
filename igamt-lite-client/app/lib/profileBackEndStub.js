@@ -17,7 +17,7 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
     // clone and set id to 3
     $httpBackend.whenPOST('/api/profiles/552014603004d0a9f09caf16/clone').respond(function(method, url, d, headers) {
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profile2.json', false);
+        request.open('GET', '../../resources/profile1.json', false);
         request.send(null);
         var profile =  angular.fromJson(request.response);
         profile.id = "552014603004d0a9f09caf11";
@@ -31,7 +31,7 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
     // clone and set id to 3
     $httpBackend.whenPOST('/api/profiles/552014603004d0a9f09caf11/clone').respond(function(method, url, d, headers) {
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profile2.json', false);
+        request.open('GET', '../../resources/profile1.json', false);
         request.send(null);
         var profile =  angular.fromJson(request.response);
         profile.id = "552014603004d0a9f09caf17";
@@ -52,7 +52,7 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
     $httpBackend.whenGET('/api/profiles/2').respond(function(method, url, data, headers) {
         var profile = null;
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profile2.json', false);
+        request.open('GET', '../../resources/profile1.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         profile.id = 2;
@@ -87,7 +87,7 @@ angular.module('igl').run(function($httpBackend,$q,$http) {
     $httpBackend.whenGET('/api/profiles/3').respond(function(method, url, data, headers) {
         var profile = null;
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profile2.json', false);
+        request.open('GET', '../../resources/profile1.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         profile.id = 3;

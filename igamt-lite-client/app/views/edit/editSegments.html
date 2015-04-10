@@ -303,14 +303,16 @@
 </td>
 <td class="col-md-1">
     <div ng-show="node.type === 'field'">
-        <button ng-click="managePredicate(node.position)" class="btn btn-xs btn-info">
-            <span><i class="fa fa-edit fa-fw"></i></span>
-        </button>
+		<div ng-show="countPredicate(node.position) == 0">
+			<button type="button" ng-click="managePredicate(node.position)" class="btn btn-info btn-xs">
+				<span><i class="fa fa-plus fa-fw"></i></span>
+            </button>
+		</div>
         <table>
             <tr ng-repeat="p in segment.predicates">
                 <td>
                     <div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
-                        <li>{{p.description}}</li>
+                        <a ng-click="managePredicate(node.position)">{{p.description}}</a>
                     </div>
                 </td>
             <tr>
@@ -321,7 +323,7 @@
             <tr ng-repeat="p in findDTByComponentId(node.id).predicates">
                 <td>
                     <div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
-                        <li>{{p.description}}</li>
+                        {{p.description}}
                     </div>
                 </td>
             <tr>
@@ -331,14 +333,16 @@
 </td>
 <td class="col-md-1">
     <div ng-show="node.type === 'field'">
-        <button ng-click="manageConformanceStatement(node.position)" class="btn btn-xs btn-info">
-            <span><i class="fa fa-edit fa-fw"></i></span>
-        </button>
+		<div ng-show="countConformanceStatements(node.position) == 0">
+			<button type="button" ng-click="manageConformanceStatement(node.position)" class="btn btn-info btn-xs">
+				<span><i class="fa fa-plus fa-fw"></i></span>
+            </button>
+		</div>
         <table>
             <tr ng-repeat="c in segment.conformanceStatements">
                 <td>
                     <div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
-                        <li>{{c.description}}</li>
+                        <a ng-click="manageConformanceStatement(node.position)">{{c.constraintId}}: {{c.description}} </a>
                     </div>
                 </td>
             <tr>
@@ -349,7 +353,7 @@
             <tr ng-repeat="c in findDTByComponentId(node.id).conformanceStatements">
                 <td>
                     <div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
-                        <li>{{c.description}}</li>
+                        {{c.constraintId}}: {{c.description}}
                     </div>
                 </td>
             <tr>
@@ -418,7 +422,7 @@
                 ng-model="newConstraint.field_1"
                 ng-options="field as field.position for field in segment.fields">
         </select>
-        .<select name="component"
+        -<select name="component"
                  ng-change="updateComponent_1()"
                  ng-model="newConstraint.component_1"
                  ng-options="component as component.position for component in selectedDTofField_1.children">
@@ -441,14 +445,14 @@
                 ng-options="contraintType for contraintType in contraintTypes">
         </select>
 
-        , then TrueUsage of {{segment.name}}.{{selectedPosition}} is
+        , then TrueUsage of {{segment.name}}.{{selectedPosition}} should be 
         <select name="trueUsage"
                 ng-change=""
                 ng-model="newConstraint.trueUsage"
                 ng-options="usage for usage in usages">
         </select>
 
-        , else FalseUsage of {{segment.name}}.{{selectedPosition}} is
+        , else FalseUsage of {{segment.name}}.{{selectedPosition}} should be 
         <select name="falseUsage"
                 ng-change=""
                 ng-model="newConstraint.falseUsage"
@@ -502,7 +506,7 @@
                 ng-model="newConstraint.field_1"
                 ng-options="field as field.position for field in segment.fields">
         </select>
-        .<select name="component"
+        -<select name="component"
                  ng-change="updateComponent_1()"
                  ng-model="newConstraint.component_1"
                  ng-options="component as component.position for component in selectedDTofField_1.children">
