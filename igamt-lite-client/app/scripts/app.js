@@ -316,7 +316,8 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.tableStabilities = ['Static', 'Dynamic'];
     $rootScope.tableExtensibilities = ['Open', 'Close'];
     $rootScope.constraintVerbs = ['SHALL be', 'SHALL NOT be', 'is', 'is not'];
-    $rootScope.contraintTypes = ['valued', 'a literal value', 'one of list values', 'a code of Value Set', 'formatted value', 'identical to the another node'];
+    $rootScope.contraintTypes = ['valued', 'a literal value', 'one of list values', 'formatted value', 'identical to the another node'];
+    $rootScope.predefinedFormats = ['ISO-compliant OID', 'Alphanumeric', 'YYYY', 'YYYYMM', 'YYYYMMDD', 'YYYYMMDDhh', 'YYYYMMDDhhmm', 'YYYYMMDDhhmmss', 'YYYYMMDDhhmmss.sss', 'YYYY+-ZZZZ', 'YYYYMM+-ZZZZ', 'YYYYMMDD+-ZZZZ', 'YYYYMMDDhh+-ZZZZ', 'YYYYMMDDhhmm+-ZZZZ', 'YYYYMMDDhhmmss+-ZZZZ', 'YYYYMMDDhhmmss.sss+-ZZZZ'];
     $rootScope.newCodeFakeId = 0;
     $rootScope.newTableFakeId = 0;
     $rootScope.postfixCloneTable = 'CA';

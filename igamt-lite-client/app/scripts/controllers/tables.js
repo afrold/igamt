@@ -281,7 +281,7 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
 
         $rootScope.generalInfo.type = 'info';
         $rootScope.generalInfo.message = "Table " + $scope.tableToDelete.mappingId + " deleted successfully";
-
+ 
         if($rootScope.table === $scope.tableToDelete){
         	$rootScope.table = null;
         }

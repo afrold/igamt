@@ -97,7 +97,7 @@ angular.module('igl')
         $scope.deleteTable = function (node) {
         	node.table = null;
         	$rootScope.recordChangeForEdit2('field','edit',node.id,'table',null);
-        }
+        };
         
         $scope.showTableMapModal = false;
         
@@ -119,13 +119,13 @@ angular.module('igl')
 			$scope.selectedTable = table;
 			$scope.displayedCodeCollection = [].concat($scope.selectedTable.codes);
 	        
-		}
+		};
 		
 		$scope.mappingTable = function(){
 			$scope.selectedNode.table = $scope.selectedTable;
 			$rootScope.recordChangeForEdit2('field','edit',$scope.selectedNode.id,'table',$scope.selectedNode.table.id);
 			$scope.showTableMapModal = false;
-		}
+		};
 		
 		$scope.findDTByComponentId = function(componentId){
 			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
@@ -135,22 +135,11 @@ angular.module('igl')
 				}
 			}
 			return null;
-		}
-		
-		$scope.findDTByLabel = function(label){
-			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
-				if($rootScope.datatypes[i].label == label)
-					return $rootScope.datatypes[i];
-			}
-			return null;
-		}
+		};
 		
 		$scope.showPredicateManagerModal = false;
 		$scope.showConformanceStatementManagerModal = false;
 		$scope.selectedPosition = null;
-		$scope.selectedDTofField_1 = null;
-		$scope.selectedDTofComponent_1 = null;
-		$scope.selectedDTofSubComponent_1 = null;
 		$scope.newConstraint = null;
 		
 		$scope.managePredicate = function(position){
@@ -161,16 +150,17 @@ angular.module('igl')
 				field_1 : null,
 				component_1 : null,
 				subComponent_1 : null,
+				field_2 : null,
+				component_2 : null,
+				subComponent_2 : null,
 				verb : null,
 				contraintType : null,
+				value : null,
 				trueUsage : null,
 				falseUsage : null
 			});
 			$scope.newConstraint.segment = $rootScope.segment.name;
-			$scope.selectedDTofField_1 = null;
-			$scope.selectedDTofComponent_1 = null;
-			$scope.selectedDTofSubComponent_1 = null;
-		}
+		};
 		
 		$scope.manageConformanceStatement = function(position){
 			$scope.selectedPosition = position;
@@ -180,17 +170,16 @@ angular.module('igl')
 				field_1 : null,
 				component_1 : null,
 				subComponent_1 : null,
+				field_2 : null,
+				component_2 : null,
+				subComponent_2 : null,
 				verb : null,
 				constraintId : null,
 				contraintType : null,
-				trueUsage : null,
-				falseUsage : null
+				value: null
 			});
 			$scope.newConstraint.segment = $rootScope.segment.name;
-			$scope.selectedDTofField_1 = null;
-			$scope.selectedDTofComponent_1 = null;
-			$scope.selectedDTofSubComponent_1 = null;
-		}
+		};
 		
 		$scope.deletePredicate = function(predicate){
 			$rootScope.segment.predicates.splice($rootScope.segment.predicates.indexOf(predicate),1);
@@ -198,7 +187,7 @@ angular.module('igl')
 				$rootScope.listToBeDeletedPredicates.push({id: predicate.id});
 				$rootScope.recordChange2('predicates',"delete",null,$rootScope.listToBeDeletedPredicates);
 			}
-		}
+		};
 		
 		$scope.deleteConformanceStatement = function(conformanceStatement){
 			$rootScope.segment.conformanceStatements.splice($rootScope.segment.conformanceStatements.indexOf(conformanceStatement),1);
@@ -207,7 +196,7 @@ angular.module('igl')
 				$rootScope.listToBeDeletedConformanceStatements.push({id: conformanceStatement.id});
 				$rootScope.recordChange2('conformanceStatements',"delete",null,$rootScope.listToBeDeletedConformanceStatements);
 			}
-		}
+		};
 		
 		
 		$scope.isNewCS = function(id){
@@ -218,7 +207,7 @@ angular.module('igl')
 				}
 			}
 			return false;
-		}
+		};
 		
 		$scope.isNewCP = function(id){
 			for(var i=0, len = $rootScope.listToBeAddedPredicates.length; i < len; i ++){
@@ -228,19 +217,26 @@ angular.module('igl')
 				}
 			}
 			return false;
-		}
+		};
 		
 		$scope.updateField_1 = function(){
-			$scope.selectedDTofField_1 = $scope.findDTByLabel($scope.newConstraint.field_1.datatypeLabel);
-		}
+			$scope.newConstraint.component_1 = null;
+			$scope.newConstraint.subComponent_1 = null;
+		};
 		
 		$scope.updateComponent_1 = function(){
-			$scope.selectedDTofComponent_1 = $scope.findDTByLabel($scope.newConstraint.component_1.datatypeLabel);
-		}
+			$scope.newConstraint.subComponent_1 = null;
+		};
 		
-		$scope.updateSubComponent_1 = function(){
-			$scope.selectedDTofSubComponent_1 = $scope.findDTByLabel($scope.newConstraint.subComponent_1.datatypeLabel);
-		}
+		$scope.updateField_2 = function(){
+			$scope.newConstraint.component_2 = null;
+			$scope.newConstraint.subComponent_2 = null;
+		};
+		
+		$scope.updateComponent_2 = function(){
+			$scope.newConstraint.subComponent_2 = null;
+		};
+		
 		
 		$scope.deletePredicateByTarget = function(){
 			for(var i=0, len1 = $rootScope.segment.predicates.length; i < len1; i ++){
@@ -255,70 +251,168 @@ angular.module('igl')
 				
 			}
 			return false;
-		}
+		};
 		
 		$scope.updatePredicate = function() {
 			$rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
-			$scope.deletePredicateByTarget()
+			$scope.deletePredicateByTarget();
 			
-			if($scope.newConstraint.contraintType === 'valued'){
-				var position_1 = '';
+			var position_1 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+			var position_2 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);			
 			
-				if($scope.newConstraint.field_1 != null && $scope.newConstraint.component_1 == null && $scope.newConstraint.subComponent_1 == null){
-					position_1 = $scope.newConstraint.segment + '-' + $scope.newConstraint.field_1.position;
-				}else if($scope.newConstraint.field_1 != null && $scope.newConstraint.component_1 != null && $scope.newConstraint.subComponent_1 == null){
-					position_1 = $scope.newConstraint.segment + '-' + $scope.newConstraint.field_1.position + '.' + $scope.newConstraint.component_1.position;
-				}else if($scope.newConstraint.field_1 != null && $scope.newConstraint.component_1 != null && $scope.newConstraint.subComponent_1 != null){
-					position_1 = $scope.newConstraint.segment + '-' + $scope.newConstraint.field_1.position + '.' + $scope.newConstraint.component_1.position + '.' + $scope.newConstraint.subComponent_1.position;
+			if(position_1 != null){
+				if($scope.newConstraint.contraintType === 'valued'){
+					var cp = {
+							id : $rootScope.newConformanceStatementFakeId,
+							constraintId : $scope.newConstraint.segment + '-' + $scope.selectedPosition,
+							constraintTarget : $scope.selectedPosition + '[1]',
+							description : 'If ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
+							trueUsage : $scope.newConstraint.trueUsage,
+							falseUsage : $scope.newConstraint.falseUsage,
+							assertion : null
+						};
+					$rootScope.segment.predicates.push(cp);
+					$rootScope.listToBeAddedPredicates.push({segmentId: $rootScope.segment.id , constraint: cp});
+					$rootScope.recordChange2('predicates',"add",null,$rootScope.listToBeAddedPredicates);
+				}else if($scope.newConstraint.contraintType === 'a literal value'){
+					var cp = {
+							id : $rootScope.newConformanceStatementFakeId,
+							constraintId : $scope.newConstraint.segment + '-' + $scope.selectedPosition,
+							constraintTarget : $scope.selectedPosition + '[1]',
+							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
+							trueUsage : $scope.newConstraint.trueUsage,
+							falseUsage : $scope.newConstraint.falseUsage,
+							assertion : null
+						};
+					$rootScope.segment.predicates.push(cp);
+					$rootScope.listToBeAddedPredicates.push({segmentId: $rootScope.segment.id , constraint: cp});
+					$rootScope.recordChange2('predicates',"add",null,$rootScope.listToBeAddedPredicates);
+				}else if($scope.newConstraint.contraintType === 'one of list values'){
+					var cp = {
+							id : $rootScope.newConformanceStatementFakeId,
+							constraintId : $scope.newConstraint.segment + '-' + $scope.selectedPosition,
+							constraintTarget : $scope.selectedPosition + '[1]',
+							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
+							trueUsage : $scope.newConstraint.trueUsage,
+							falseUsage : $scope.newConstraint.falseUsage,
+							assertion : null
+						};
+					$rootScope.segment.predicates.push(cp);
+					$rootScope.listToBeAddedPredicates.push({segmentId: $rootScope.segment.id , constraint: cp});
+					$rootScope.recordChange2('predicates',"add",null,$rootScope.listToBeAddedPredicates);
+				}else if($scope.newConstraint.contraintType === 'formatted value'){
+					var cp = {
+							id : $rootScope.newConformanceStatementFakeId,
+							constraintId : $scope.newConstraint.segment + '-' + $scope.selectedPosition,
+							constraintTarget : $scope.selectedPosition + '[1]',
+							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
+							trueUsage : $scope.newConstraint.trueUsage,
+							falseUsage : $scope.newConstraint.falseUsage,
+							assertion : null
+						};
+					$rootScope.segment.predicates.push(cp);
+					$rootScope.listToBeAddedPredicates.push({segmentId: $rootScope.segment.id , constraint: cp});
+					$rootScope.recordChange2('predicates',"add",null,$rootScope.listToBeAddedPredicates);
+				}else if($scope.newConstraint.contraintType === 'identical to the another node'){
+					var cp = {
+							id : $rootScope.newConformanceStatementFakeId,
+							constraintId : $scope.newConstraint.segment + '-' + $scope.selectedPosition,
+							constraintTarget : $scope.selectedPosition + '[1]',
+							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
+							trueUsage : $scope.newConstraint.trueUsage,
+							falseUsage : $scope.newConstraint.falseUsage,
+							assertion : null
+						};
+					$rootScope.segment.predicates.push(cp);
+					$rootScope.listToBeAddedPredicates.push({segmentId: $rootScope.segment.id , constraint: cp});
+					$rootScope.recordChange2('predicates',"add",null,$rootScope.listToBeAddedPredicates);
 				}
-				
-				var cp = {
-						id : $rootScope.newPredicateFakeId,
-						constraintId : $rootScope.segment.name+ '.' + $scope.selectedPosition,
-						constraintTarget : $scope.selectedPosition + '[1]',
-						description : 'If ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
-						assertion : null,
-						trueUsage : $scope.newConstraint.trueUsage,
-						falseUsage : $scope.newConstraint.falseUsage
-					}
-				$rootScope.segment.predicates.push(cp);
-				$rootScope.listToBeAddedPredicates.push({segmentId: $rootScope.segment.id , constraint: cp});
 			}
-			
-			$rootScope.recordChange2('predicates',"add",null,$rootScope.listToBeAddedPredicates);
 		};
 
 
         $scope.show = function(segment){
             return true;
         };
+        
+        $scope.genPosition = function(segment, field, component, subComponent){
+        	var position = null;
+        	if(field != null && component == null && subComponent == null){
+				position = segment + '-' + field.position;
+			}else if(field != null && component != null && subComponent == null){
+				position = segment + '-' + field.position + '.' + component.position;
+			}else if(field != null && component != null && subComponent != null){
+				position = segment + '-' + field.position + '.' + component.position + '.' + subComponent.position;
+			}
+        	
+        	return position;
+        }
 		
 		$scope.addConformanceStatement = function() {
 			$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
- 			if($scope.newConstraint.contraintType === 'valued'){
-				var position_1 = '';
 			
-				if($scope.newConstraint.field_1 != null && $scope.newConstraint.component_1 == null && $scope.newConstraint.subComponent_1 == null){
-					position_1 = $scope.newConstraint.segment + '.' + $scope.newConstraint.field_1.position;
-				}else if($scope.newConstraint.field_1 != null && $scope.newConstraint.component_1 != null && $scope.newConstraint.subComponent_1 == null){
-					position_1 = $scope.newConstraint.segment + '.' + $scope.newConstraint.field_1.position + '.' + $scope.newConstraint.component_1.position;
-				}else if($scope.newConstraint.field_1 != null && $scope.newConstraint.component_1 != null && $scope.newConstraint.subComponent_1 != null){
-					position_1 = $scope.newConstraint.segment + '.' + $scope.newConstraint.field_1.position + '.' + $scope.newConstraint.component_1.position + '.' + $scope.newConstraint.subComponent_1.position;
+			var position_1 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+			var position_2 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);			
+			
+			if(position_1 != null){
+				if($scope.newConstraint.contraintType === 'valued'){
+					var cs = {
+							id : $rootScope.newConformanceStatementFakeId,
+							constraintId : $scope.newConstraint.constraintId,
+							constraintTarget : $scope.selectedPosition + '[1]',
+							description : position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
+							assertion : null
+						};
+					$rootScope.segment.conformanceStatements.push(cs);
+					$rootScope.listToBeAddedConformanceStatements.push({segmentId: $rootScope.segment.id , constraint: cs});
+					$rootScope.recordChange2('conformanceStatements',"add",null,$rootScope.listToBeAddedConformanceStatements);
+				}else if($scope.newConstraint.contraintType === 'a literal value'){
+					var cs = {
+							id : $rootScope.newConformanceStatementFakeId,
+							constraintId : $scope.newConstraint.constraintId,
+							constraintTarget : $scope.selectedPosition + '[1]',
+							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
+							assertion : null
+						};
+					$rootScope.segment.conformanceStatements.push(cs);
+					$rootScope.listToBeAddedConformanceStatements.push({segmentId: $rootScope.segment.id , constraint: cs});
+					$rootScope.recordChange2('conformanceStatements',"add",null,$rootScope.listToBeAddedConformanceStatements);
+				}else if($scope.newConstraint.contraintType === 'one of list values'){
+					var cs = {
+							id : $rootScope.newConformanceStatementFakeId,
+							constraintId : $scope.newConstraint.constraintId,
+							constraintTarget : $scope.selectedPosition + '[1]',
+							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
+							assertion : null
+						};
+					$rootScope.segment.conformanceStatements.push(cs);
+					$rootScope.listToBeAddedConformanceStatements.push({segmentId: $rootScope.segment.id , constraint: cs});
+					$rootScope.recordChange2('conformanceStatements',"add",null,$rootScope.listToBeAddedConformanceStatements);
+				}else if($scope.newConstraint.contraintType === 'formatted value'){
+					var cs = {
+							id : $rootScope.newConformanceStatementFakeId,
+							constraintId : $scope.newConstraint.constraintId,
+							constraintTarget : $scope.selectedPosition + '[1]',
+							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
+							assertion : null
+						};
+					$rootScope.segment.conformanceStatements.push(cs);
+					$rootScope.listToBeAddedConformanceStatements.push({segmentId: $rootScope.segment.id , constraint: cs});
+					$rootScope.recordChange2('conformanceStatements',"add",null,$rootScope.listToBeAddedConformanceStatements);
+				}else if($scope.newConstraint.contraintType === 'identical to the another node'){
+					var cs = {
+							id : $rootScope.newConformanceStatementFakeId,
+							constraintId : $scope.newConstraint.constraintId,
+							constraintTarget : $scope.selectedPosition + '[1]',
+							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
+							assertion : null
+						};
+					$rootScope.segment.conformanceStatements.push(cs);
+					$rootScope.listToBeAddedConformanceStatements.push({segmentId: $rootScope.segment.id , constraint: cs});
+					$rootScope.recordChange2('conformanceStatements',"add",null,$rootScope.listToBeAddedConformanceStatements);
 				}
-				
-				var cs = {
-						id : $rootScope.newConformanceStatementFakeId,
-						constraintId : $scope.newConstraint.constraintId,
-						constraintTarget : $scope.selectedPosition + '[1]',
-						description : position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
-						assertion : null
-					};
-				$rootScope.segment.conformanceStatements.push(cs);
-				$rootScope.listToBeAddedConformanceStatements.push({segmentId: $rootScope.segment.id , constraint: cs});
 			}
- 			
- 			$rootScope.recordChange2('conformanceStatements',"add",null,$rootScope.listToBeAddedConformanceStatements);
-		}
+		};
 		
 		$scope.countConformanceStatements = function(position){
 			var count = 0;
@@ -328,7 +422,7 @@ angular.module('igl')
 			}
 			
 			return count;
-		}
+		};
 		
 		$scope.countPredicate = function(position){
 			for(var i=0, len1 = $rootScope.segment.predicates.length; i < len1; i ++){
@@ -337,7 +431,7 @@ angular.module('igl')
 			}
 			
 			return 0;
-		}
+		};
      });
 
 angular.module('igl')
