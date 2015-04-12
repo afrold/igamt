@@ -323,7 +323,7 @@ $(document).ready(function(){
                         <a ng-click="managePredicate(node.position)">{{p.description}}</a>
                     </div>
                 </td>
-            <tr>
+            </tr>
         </table>
     </div>
     <div ng-show="node.type === 'component' || node.type === 'subcomponent'">
@@ -334,7 +334,7 @@ $(document).ready(function(){
                         {{p.description}}
                     </div>
                 </td>
-            <tr>
+            </tr>
         </table>
     </div>
     <div ng-show="node.type === 'segment'">-</div>
@@ -353,7 +353,7 @@ $(document).ready(function(){
                         <a ng-click="manageConformanceStatement(node.position)">{{c.constraintId}}: {{c.description}} </a>
                     </div>
                 </td>
-            <tr>
+            </tr>
         </table>
     </div>
     <div ng-show="node.type === 'component' || node.type === 'subcomponent'">
@@ -364,7 +364,7 @@ $(document).ready(function(){
                         {{c.constraintId}}: {{c.description}}
                     </div>
                 </td>
-            <tr>
+            </tr>
         </table>
     </div>
     <div ng-show="node.type === 'segment'">-</div>
@@ -447,12 +447,10 @@ $(document).ready(function(){
         				<select name="field" class="igl-input"
                 			ng-change="updateField_1()"
                 			ng-model="newConstraint.field_1"
-                			placeholder="Field" 
                 			ng-options="field as field.position for field in segment.fields">
         				</select>
         				<span ng-show="newConstraint.field_1.datatype.components.length > 0">.
         					<select name="component" class="igl-input"
-                 				placeholder="Component"
                  				ng-change="updateComponent_1()"
                  				ng-model="newConstraint.component_1"
                  				ng-options="component as component.position for component in newConstraint.field_1.datatype.components">
@@ -460,7 +458,6 @@ $(document).ready(function(){
     					</span>
     					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
         					<select name="subComponent" class="igl-input"
-                 				placeholder="SubComponent"
                  				ng-model="newConstraint.subComponent_1"
                  				ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
     						</select>
@@ -498,12 +495,10 @@ $(document).ready(function(){
         					<select name="field_2" class="igl-input"
                 				ng-change="updateField_2()"
                 				ng-model="newConstraint.field_2"
-                				placeholder="Field" 
                 				ng-options="field as field.position for field in segment.fields">
         					</select>
         					<span ng-show="newConstraint.field_2.datatype.components.length > 0">.
         						<select name="component" class="igl-input"
-                 					placeholder="Component"
                  					ng-change="updateComponent_2()"
                  					ng-model="newConstraint.component_2"
                  					ng-options="component as component.position for component in newConstraint.field_2.datatype.components">
@@ -511,7 +506,6 @@ $(document).ready(function(){
     						</span>
     						<span ng-show="newConstraint.component_2.datatype.components.length > 0">.
         						<select name="subComponent" class="igl-input"
-                 					placeholder="SubComponent"
                  					ng-model="newConstraint.subComponent_2"
                  					ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
     							</select>

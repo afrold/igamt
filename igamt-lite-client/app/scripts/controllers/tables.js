@@ -42,7 +42,7 @@ angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Re
 
 					$scope.addTable = function() {
 						$rootScope.newTableFakeId = $rootScope.newTableFakeId - 1;
-						$rootScope.newTable = angular.fromJson({
+						var newTable = angular.fromJson({
 							id : $rootScope.newTableFakeId,
 							type : 'table',
 							mappingAlternateId : '',
@@ -56,10 +56,10 @@ angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Re
 							extensibility : '',
 							codes : []
 						});
-						$rootScope.tables.push($rootScope.newTable);
-						$rootScope.table = $rootScope.newTable;
+						$rootScope.tables.push(newTable);
+						$rootScope.table = newTable;
 						
-						$rootScope.listToBeAddedTables.push({table: $rootScope.table});
+						$rootScope.listToBeAddedTables.push({table: newTable});
 						$rootScope.recordChange2('table',"add",null,$rootScope.listToBeAddedTables);
 						
 					}
@@ -148,7 +148,7 @@ angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Re
 					
 					$scope.cloneTable = function(table) {						
 						$rootScope.newTableFakeId = $rootScope.newTableFakeId - 1;
-						$rootScope.newTable = angular.fromJson({
+						var newTable = angular.fromJson({
 							id : $rootScope.newTableFakeId,
 							type : '',
 							mappingAlternateId : '',
@@ -185,10 +185,10 @@ angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Re
 							});
 						}
 						
-						$rootScope.tables.push($rootScope.newTable);
-						$rootScope.table = $rootScope.newTable;
+						$rootScope.tables.push(newTable);
+						$rootScope.table = newTable;
 						
-						$rootScope.listToBeAddedTables.push({table: $rootScope.table});
+						$rootScope.listToBeAddedTables.push({table: newTable});
 						$rootScope.recordChange2('table',"add",null,$rootScope.listToBeAddedTables);
 					}
 					
@@ -210,7 +210,9 @@ angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Re
 						for(var i=0, len = table.codes.length; i < len; i ++){
 							if(table.codes[i].codeUsage !== usage) {
 								table.codes[i].codeUsage = usage;
-								$rootScope.recordChangeForEdit(table.codes[i], 'codeUsage');
+								if(!$scope.isNewTable(table.id) && !$scope.isNewCode(table.codes[i].id)){
+									$rootScope.recordChangeForEdit(table.codes[i], 'codeUsage');
+								}
 							}
 						}
 					}

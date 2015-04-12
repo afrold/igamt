@@ -318,9 +318,11 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.constraintVerbs = ['SHALL be', 'SHALL NOT be', 'is', 'is not'];
     $rootScope.contraintTypes = ['valued', 'a literal value', 'one of list values', 'formatted value', 'identical to the another node'];
     $rootScope.predefinedFormats = ['ISO-compliant OID', 'Alphanumeric', 'YYYY', 'YYYYMM', 'YYYYMMDD', 'YYYYMMDDhh', 'YYYYMMDDhhmm', 'YYYYMMDDhhmmss', 'YYYYMMDDhhmmss.sss', 'YYYY+-ZZZZ', 'YYYYMM+-ZZZZ', 'YYYYMMDD+-ZZZZ', 'YYYYMMDDhh+-ZZZZ', 'YYYYMMDDhhmm+-ZZZZ', 'YYYYMMDDhhmmss+-ZZZZ', 'YYYYMMDDhhmmss.sss+-ZZZZ'];
+    $rootScope.postfixCloneTable = 'CA';
     $rootScope.newCodeFakeId = 0;
     $rootScope.newTableFakeId = 0;
-    $rootScope.postfixCloneTable = 'CA';
+    $rootScope.newPredicateFakeId = 0;
+    $rootScope.newConformanceStatementFakeId = 0;
     $rootScope.listToBeAddedConformanceStatements = [];
     $rootScope.listToBeDeletedConformanceStatements = [];
     $rootScope.listToBeAddedPredicates = [];
@@ -329,12 +331,6 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.listToBeDeletedTables = [];
     $rootScope.listToBeAddedCodes = [];
     $rootScope.listToBeDeletedCodes = [];
-    
-    
-    
-    $rootScope.newPredicateFakeId = 0;
-    $rootScope.newConformanceStatementFakeId = 0;
-    $rootScope.newTable = {};
     $rootScope.segment = null;
     $rootScope.profileTabs = new Array();
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
