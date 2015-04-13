@@ -396,7 +396,7 @@ $(document).ready(function(){
 
 <modal title="Edit Predicate" visible="showPredicateManagerModal">
     <form role="form">
-        <h5>Predicate of {{segment.name}}.{{selectedPosition}}</h5>
+        <h5>Predicate of {{segment.name}}-{{selectedPosition}}</h5>
 
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
@@ -422,7 +422,7 @@ $(document).ready(function(){
                 </tbody>
             </table>
         </div>
-        <h5>Define New Predicate of {{segment.name}}.{{selectedPosition}}</h5>
+        <h5>Define New Predicate of {{segment.name}}-{{selectedPosition}}</h5>
         
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
@@ -540,7 +540,7 @@ $(document).ready(function(){
 
 <modal title="Edit ConformanceStatement" visible="showConformanceStatementManagerModal">
     <form role="form">
-        <h5>ConformanceStatements of {{segment.name}}.{{selectedPosition}}</h5>
+        <h5>ConformanceStatements of {{segment.name}}-{{selectedPosition}}</h5>
 
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
@@ -565,7 +565,7 @@ $(document).ready(function(){
             </table>
         </div>
 
-        <h5>Define New Conformance Statement of {{segment.name}}.{{selectedPosition}}</h5>
+        <h5>Define New Conformance Statement of {{segment.name}}-{{selectedPosition}}</h5>
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead>
@@ -708,7 +708,7 @@ $(document).ready(function(){
             </div>
             <div class="col-sm-6">
 	 			<span ng-show="selectedTable != undefined">
-	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table</button>
+	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table for {{segment.name}}-{{selectedPosition}}</button>
 	 				<hr/>
 	 				<div class="row">
                         <div class="col-sm-4">

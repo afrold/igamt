@@ -2,7 +2,7 @@
  * Created by Jungyub on 4/01/15.
  */
 
-angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal) {
+angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Restangular, $filter, $http, $modal) {
 					$scope.loading = false;
 					$scope.loadingSelection = false;
 					$scope.tmpTables = [].concat($rootScope.tables);
@@ -11,25 +11,6 @@ angular.module('igl').controller('TableListCtrl',function($scope, $rootScope, Re
 					$scope.message = false;
 					$scope.params = null;
 					$scope.init = function() {
-						$scope.loading = true;
-						$scope.params = new ngTreetableParams(
-								{
-									getNodes : function(parent) {
-										return parent && parent.codes ? parent.codes
-												: $rootScope.table != null ? [ $rootScope.table ]
-														: [];
-									}
-								});
-
-						$scope.$watch(function() {
-							return $rootScope.notifyTableTreeUpdate;
-						}, function(changeId) {
-							if (changeId != 0) {
-								$scope.params.refresh();
-
-							}
-						});
-						$scope.loading = false;
 					};
 
 					$scope.select = function(table) {

@@ -338,7 +338,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.notifyDtTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifyTableTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifySegTreeUpdate = '0'; // TODO: FIXME
-    $rootScope.messagesData = [];
+    $rootScope.messagesData = []; 
     $rootScope.messages = [];// list of messages
     $rootScope.customIgs=[];
     $rootScope.preloadedIgs = [];
@@ -372,6 +372,18 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         $rootScope.messages = [];
         $rootScope.messagesData = [];
 
+        $rootScope.newCodeFakeId = 0;
+        $rootScope.newTableFakeId = 0;
+        $rootScope.newPredicateFakeId = 0;
+        $rootScope.newConformanceStatementFakeId = 0;
+        $rootScope.listToBeAddedConformanceStatements = [];
+        $rootScope.listToBeDeletedConformanceStatements = [];
+        $rootScope.listToBeAddedPredicates = [];
+        $rootScope.listToBeDeletedPredicates = [];
+        $rootScope.listToBeAddedTables = [];
+        $rootScope.listToBeDeletedTables = [];
+        $rootScope.listToBeAddedCodes = [];
+        $rootScope.listToBeDeletedCodes = [];
     };
 
     $rootScope.$watch(function () {
