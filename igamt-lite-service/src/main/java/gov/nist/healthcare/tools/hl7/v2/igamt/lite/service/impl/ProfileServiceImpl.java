@@ -554,9 +554,7 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public InputStream exportAsXlsx(Profile p) {
 		try {
-			File tmpxslxFile = File.createTempFile("ProfileTmp", ".xslx");
-			//File tmpxslxFile = new File("/Users/marieros/Documents/testXslt/profile.xlsx");
-			//TODO change xlsx export destination
+			File tmpXlsxFile = File.createTempFile("ProfileTmp", ".xslx");
 
 			// Blank workbook
 			XSSFWorkbook workbook = new XSSFWorkbook();
@@ -566,9 +564,9 @@ public class ProfileServiceImpl implements ProfileService {
 			List<String> header;
 			
 			headerStyle = workbook.createCellStyle();
-			headerStyle.setFillPattern(XSSFCellStyle.FINE_DOTS );
+			headerStyle.setFillPattern(XSSFCellStyle.BORDER_THICK);
             headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
-			//headerStyle.setFillBackgroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+			headerStyle.setFillBackgroundColor(IndexedColors.LIGHT_BLUE.getIndex());
 
 			for (Message m : p.getMessages().getChildren()) {
 				// Create a blank sheet
@@ -606,12 +604,13 @@ public class ProfileServiceImpl implements ProfileService {
 				}
 			}
 
-			FileOutputStream out = new FileOutputStream(tmpxslxFile);
+			FileOutputStream out = new FileOutputStream(tmpXlsxFile);
 			workbook.write(out);
 			workbook.close();
 			out.close();
 
-			return new NullInputStream(1L);
+			return FileUtils.openInputStream(tmpXlsxFile);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new NullInputStream(1L);
@@ -710,8 +709,6 @@ public class ProfileServiceImpl implements ProfileService {
 			List<List<String>> rows;
 
 			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
-			//File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
-			//TODO change pdf export destination
 
 			Document document1 = new Document();
 			PdfWriter writer1 = PdfWriter.getInstance(document1,
