@@ -105,5 +105,4 @@ public abstract class Constraint implements Serializable, Cloneable {
 		c.setReference(this.reference.clone());
 		return c;
 	}
-
 }

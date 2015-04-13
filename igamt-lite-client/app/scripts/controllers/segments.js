@@ -360,7 +360,7 @@ angular.module('igl')
 							id : $rootScope.newConformanceStatementFakeId,
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
-							description : position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
+							description : position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + '.',
 							assertion : null
 						};
 					$rootScope.segment.conformanceStatements.push(cs);
