@@ -1,4 +1,15 @@
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
+
+
 <div ng-controller="SegmentListCtrl" ng-init="init()" class="container">
+
+
+
+
 
 <div ng-show="loading" style="text-align: center">
     <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
@@ -264,25 +275,22 @@
 </td>
 <td class="col-md-1">
     <div ng-show="node.type === 'field'">
-											<span ng-show="node.table != undefined">
-												<div class="btn-group" dropdown>
-                                                    <button type="button" ng-click="goToTable(node.table)"
-                                                            class="btn btn-info btn-xs">{{node.table.mappingId}}
-                                                    </button>
-                                                    <button type="button" class="btn btn-info btn-xs dropdown-toggle"
-                                                            dropdown-toggle>
-                                                        <span class="caret"></span>
-                                                        <span class="sr-only">Split button!</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                        <li><a ng-click="mapTable(node)">Change Table</a></li>
-                                                        <li><a ng-click="deleteTable(node)">Release Table</a></li>
-                                                        <li class="divider"></li>
-                                                        <li><a ng-click="goToTable(node.table)">Details</a></li>
-                                                    </ul>
-                                                </div>
-                                            </span>
-											<span ng-show="node.table == undefined"> 
+		<span ng-show="node.table != undefined">
+			<div class="btn-group" dropdown>
+                	<button type="button" ng-click="goToTable(node.table)" class="btn btn-info btn-xs">{{node.table.mappingId}}</button>
+                	<button type="button" class="btn btn-info btn-xs dropdown-toggle" dropdown-toggle>
+                    	<span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                    	<li><a ng-click="mapTable(node)">Change Table</a></li>
+                    	<li><a ng-click="deleteTable(node)">Release Table</a></li>
+                    	<li class="divider"></li>
+                    	<li><a ng-click="goToTable(node.table)">Details</a></li>
+                    </ul>
+            </div>
+        </span>
+											<span ng-show="node.table == undefined && isAvailableDTForTable(node.datatype)"> 
 												<button ng-click="mapTable(node)" class="btn btn-xs btn-info">
                                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                                 </button>
@@ -303,17 +311,19 @@
 </td>
 <td class="col-md-1">
     <div ng-show="node.type === 'field'">
-        <button ng-click="managePredicate(node.position)" class="btn btn-xs btn-info">
-            <span><i class="fa fa-edit fa-fw"></i></span>
-        </button>
+		<div ng-show="countPredicate(node.position) == 0">
+			<button type="button" ng-click="managePredicate(node.position)" class="btn btn-info btn-xs">
+				<span><i class="fa fa-plus fa-fw"></i></span>
+            </button>
+		</div>
         <table>
             <tr ng-repeat="p in segment.predicates">
                 <td>
                     <div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
-                        <li>{{p.description}}</li>
+                        <a ng-click="managePredicate(node.position)">{{p.description}}</a>
                     </div>
                 </td>
-            <tr>
+            </tr>
         </table>
     </div>
     <div ng-show="node.type === 'component' || node.type === 'subcomponent'">
@@ -321,27 +331,29 @@
             <tr ng-repeat="p in findDTByComponentId(node.id).predicates">
                 <td>
                     <div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
-                        <li>{{p.description}}</li>
+                        {{p.description}}
                     </div>
                 </td>
-            <tr>
+            </tr>
         </table>
     </div>
     <div ng-show="node.type === 'segment'">-</div>
 </td>
 <td class="col-md-1">
     <div ng-show="node.type === 'field'">
-        <button ng-click="manageConformanceStatement(node.position)" class="btn btn-xs btn-info">
-            <span><i class="fa fa-edit fa-fw"></i></span>
-        </button>
+		<div ng-show="countConformanceStatements(node.position) == 0">
+			<button type="button" ng-click="manageConformanceStatement(node.position)" class="btn btn-info btn-xs">
+				<span><i class="fa fa-plus fa-fw"></i></span>
+            </button>
+		</div>
         <table>
             <tr ng-repeat="c in segment.conformanceStatements">
                 <td>
                     <div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
-                        <li>{{c.description}}</li>
+                        <a ng-click="manageConformanceStatement(node.position)">{{c.constraintId}}: {{c.description}} </a>
                     </div>
                 </td>
-            <tr>
+            </tr>
         </table>
     </div>
     <div ng-show="node.type === 'component' || node.type === 'subcomponent'">
@@ -349,10 +361,10 @@
             <tr ng-repeat="c in findDTByComponentId(node.id).conformanceStatements">
                 <td>
                     <div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
-                        <li>{{c.description}}</li>
+                        {{c.constraintId}}: {{c.description}}
                     </div>
                 </td>
-            <tr>
+            </tr>
         </table>
     </div>
     <div ng-show="node.type === 'segment'">-</div>
@@ -384,23 +396,23 @@
 
 <modal title="Edit Predicate" visible="showPredicateManagerModal">
     <form role="form">
-        <h5>Predicate of {{segment.name}}.{{selectedPosition}}</h5>
+        <h5>Predicate of {{segment.name}}-{{selectedPosition}}</h5>
 
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
                 <thead>
                 <tr class="tbl-header">
-                    <th class="col-md-3">Desciption</th>
-                    <th class="col-md-2">True Usage</th>
-                    <th class="col-md-2">False Usage</th>
-                    <th class="col-md-1">Action</th>
+                    <th class="col-md-9">Desciption</th>
+                    <th class="col-md-1">True Usage</th>
+                    <th class="col-md-1">False Usage</th>
+                    <th class="col-md-1"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="p in segment.predicates | filter:{constraintTarget:selectedPosition + '[1]'}">
-                    <td class="col-md-3">{{p.description}}</td>
-                    <td class="col-md-2">{{p.trueUsage}}</td>
-                    <td class="col-md-2">{{p.falseUsage}}</td>
+                <tr ng-repeat="p in segment.predicates | filter:{constraintTarget:selectedPosition + '[1]'}:true">
+                    <td class="col-md-9">{{p.description}}</td>
+                    <td class="col-md-1">{{p.trueUsage}}</td>
+                    <td class="col-md-1">{{p.falseUsage}}</td>
                     <td class="col-md-1">
                         <button type="button" ng-click="deletePredicate(p)" class="btn btn-xs btn-warning">
                             <span><i class="fa fa-minus-circle fa-fw"></i></span>
@@ -410,62 +422,125 @@
                 </tbody>
             </table>
         </div>
-
-        <h5>Define New Predicate of {{segment.name}}.{{selectedPosition}}</h5>
-        If {{newConstraint.segment}}.
-        <select name="field"
-                ng-change="updateField_1()"
-                ng-model="newConstraint.field_1"
-                ng-options="field as field.position for field in segment.fields">
-        </select>
-        .<select name="component"
-                 ng-change="updateComponent_1()"
-                 ng-model="newConstraint.component_1"
-                 ng-options="component as component.position for component in selectedDTofField_1.children">
-    </select>
-        .<select name="subComponent"
-                 ng-change="updateSubComponent_1()"
-                 ng-model="newConstraint.subComponent_1"
-                 ng-options="subComponent as subComponent.position for subComponent in selectedDTofComponent_1.children">
-    </select>
-        &nbsp;&nbsp;&nbsp;
-        <select name="verb"
-                ng-change=""
-                ng-model="newConstraint.verb"
-                ng-options="constraintVerb for constraintVerb in constraintVerbs">
-        </select>
-
-        <select name="contraintType"
-                ng-change=""
-                ng-model="newConstraint.contraintType"
-                ng-options="contraintType for contraintType in contraintTypes">
-        </select>
-
-        , then TrueUsage of {{segment.name}}.{{selectedPosition}} is
-        <select name="trueUsage"
-                ng-change=""
-                ng-model="newConstraint.trueUsage"
-                ng-options="usage for usage in usages">
-        </select>
-
-        , else FalseUsage of {{segment.name}}.{{selectedPosition}} is
-        <select name="falseUsage"
-                ng-change=""
-                ng-model="newConstraint.falseUsage"
-                ng-options="usage for usage in usages">
-        </select>
-            
-            <span class="pull-right">
-				<button title="Update Predicate" type="button" class="btn btn-xs btn-info" ng-click="updatePredicate()">
-                    <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Update Predicate</span>
-                </button>
-			</span>
+        <h5>Define New Predicate of {{segment.name}}-{{selectedPosition}}</h5>
+        
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr class="tbl-header">
+                    <th class="col-md-10" colspan="4">Desciption</th>
+                    <th class="col-md-1" colspan="1" rowspan="2">True Usage</th>
+                    <th class="col-md-1" colspan="1" rowspan="2">False Usage</th>
+                    <th class="col-md-1" colspan="1" rowspan="2"></th>
+                </tr>
+                <tr class="tbl-header">
+                    <th class="col-md-3" colspan="1">Node</th>
+                    <th class="col-md-2" colspan="1">Verb</th>
+                    <th class="col-md-2" colspan="1">Constraint</th>
+                    <th class="col-md-3" colspan="1">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="col-md-3" colspan="1">
+                    	<span>{{newConstraint.segment}}-</span>
+        				<select name="field" class="igl-input"
+                			ng-change="updateField_1()"
+                			ng-model="newConstraint.field_1"
+                			ng-options="field as field.position for field in segment.fields">
+        				</select>
+        				<span ng-show="newConstraint.field_1.datatype.components.length > 0">.
+        					<select name="component" class="igl-input"
+                 				ng-change="updateComponent_1()"
+                 				ng-model="newConstraint.component_1"
+                 				ng-options="component as component.position for component in newConstraint.field_1.datatype.components">
+    						</select>
+    					</span>
+    					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<select name="subComponent" class="igl-input"
+                 				ng-model="newConstraint.subComponent_1"
+                 				ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
+    						</select>
+    					</span>
+    				</td>
+    				<td class="col-md-2" colspan="1">
+        				<select name="verb" class="igl-input"
+                				ng-change=""
+                				ng-model="newConstraint.verb"
+                				ng-options="constraintVerb for constraintVerb in constraintVerbs">
+        				</select>
+					</td>
+					<td class="col-md-2" colspan="1">
+        				<select name="contraintType" class="igl-input"
+                			ng-change=""
+                			ng-model="newConstraint.contraintType"
+                			ng-options="contraintType for contraintType in contraintTypes">
+        				</select>
+                    </td>
+                	<td class="col-md-3" colspan="1">
+                		<span ng-show="newConstraint.contraintType == 'a literal value'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'one of list values'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'formatted value'">
+                			<select name="format" class="igl-input"
+                				ng-model="newConstraint.value"
+                				ng-options="predefinedFormat for predefinedFormat in predefinedFormats">
+        					</select>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'identical to the another node'">
+                			<span>{{newConstraint.segment}}-</span>
+        					<select name="field_2" class="igl-input"
+                				ng-change="updateField_2()"
+                				ng-model="newConstraint.field_2"
+                				ng-options="field as field.position for field in segment.fields">
+        					</select>
+        					<span ng-show="newConstraint.field_2.datatype.components.length > 0">.
+        						<select name="component" class="igl-input"
+                 					ng-change="updateComponent_2()"
+                 					ng-model="newConstraint.component_2"
+                 					ng-options="component as component.position for component in newConstraint.field_2.datatype.components">
+    							</select>
+    						</span>
+    						<span ng-show="newConstraint.component_2.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                 					ng-model="newConstraint.subComponent_2"
+                 					ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+    							</select>
+    						</span>
+                		</span>
+                	</td>
+                	<td class="col-md-1" colspan="1">
+                		<select name="trueUsage" class="igl-input"
+                			ng-model="newConstraint.trueUsage"
+                			ng-options="usage for usage in usages">
+        				</select>
+                	</td>
+                	
+                	<td class="col-md-1" colspan="1">
+                		<select name="falseUsage" class="igl-input"
+                			ng-model="newConstraint.falseUsage"
+                			ng-options="usage for usage in usages">
+        				</select>
+                	</td>
+                	
+                    <td class="col-md-1" colspan="1">
+                		<button title="Update Predicate" type="button" class="btn btn-xs btn-success" ng-click="updatePredicate()">
+                    		<span><i class="fa fa-plus-circle fa-fw"></i></span>
+                		</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </form>
 </modal>
 
 <modal title="Edit ConformanceStatement" visible="showConformanceStatementManagerModal">
     <form role="form">
-        <h5>ConformanceStatements of {{segment.name}}.{{selectedPosition}}</h5>
+        <h5>ConformanceStatements of {{segment.name}}-{{selectedPosition}}</h5>
 
         <div class="table-responsive">
             <table class="table table-striped table-bordered">
@@ -473,15 +548,15 @@
                 <tr class="tbl-header">
                     <th class="col-md-2">ID</th>
                     <th class="col-md-9">Desciption</th>
-                    <th class="col-md-1">Action</th>
+                    <th class="col-md-1"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="c in segment.conformanceStatements | filter:{constraintTarget:selectedPosition + '[1]'}">
+                <tr ng-repeat="c in segment.conformanceStatements | filter:{constraintTarget:selectedPosition + '[1]'}:true">
                     <td class="col-md-2">{{c.constraintId}}</td>
                     <td class="col-md-9">{{c.description}}</td>
                     <td class="col-md-1">
-                        <button type="button" ng-click="deleteConformanceStatement(c)" class="btn btn-xs btn-warning">
+                        <button type="button" ng-click="deleteConformanceStatement(c)" class="btn btn-xs btn-danger">
                             <span><i class="fa fa-minus-circle fa-fw"></i></span>
                         </button>
                     </td>
@@ -490,47 +565,112 @@
             </table>
         </div>
 
-        <h5>Define New Conformance Statement of {{segment.name}}.{{selectedPosition}}</h5>
-        ID:
-        <input ng-model="newConstraint.constraintId" placeholder="Type Conformance Statement ID" type="text"/>
-        <br/>
-
-
-        {{newConstraint.segment}}.
-        <select name="field"
-                ng-change="updateField_1()"
-                ng-model="newConstraint.field_1"
-                ng-options="field as field.position for field in segment.fields">
-        </select>
-        .<select name="component"
-                 ng-change="updateComponent_1()"
-                 ng-model="newConstraint.component_1"
-                 ng-options="component as component.position for component in selectedDTofField_1.children">
-    </select>
-        .<select name="subComponent"
-                 ng-change="updateSubComponent_1()"
-                 ng-model="newConstraint.subComponent_1"
-                 ng-options="subComponent as subComponent.position for subComponent in selectedDTofComponent_1.children">
-    </select>
-        &nbsp;&nbsp;&nbsp;
-        <select name="verb"
-                ng-change=""
-                ng-model="newConstraint.verb"
-                ng-options="constraintVerb for constraintVerb in constraintVerbs">
-        </select>
-
-        <select name="contraintType"
-                ng-change=""
-                ng-model="newConstraint.contraintType"
-                ng-options="contraintType for contraintType in contraintTypes">
-        </select>
-            
-            <span class="pull-right">
-				<button title="Add Conformance Statement" type="button" class="btn btn-xs btn-info"
-                        ng-click="addConformanceStatement()">
-                    <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Add Conformance Statement</span>
-                </button>
-			</span>
+        <h5>Define New Conformance Statement of {{segment.name}}-{{selectedPosition}}</h5>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr class="tbl-header">
+                    <th class="col-md-2" colspan="1" rowspan="2">ID</th>
+                    <th class="col-md-10" colspan="4">Desciption</th>
+                    <th class="col-md-1" colspan="1" rowspan="2"></th>
+                </tr>
+                <tr class="tbl-header">
+                    <th class="col-md-3" colspan="1">Node</th>
+                    <th class="col-md-2" colspan="1">Verb</th>
+                    <th class="col-md-2" colspan="1">Constraint</th>
+                    <th class="col-md-3" colspan="1">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="col-md-2" colspan="1">
+                    	<input style="width:100%" class="igl-input"  ng-model="newConstraint.constraintId" placeholder="Type ID" type="text"/>
+                    </td>
+                    <td class="col-md-3" colspan="1">
+                    	<span>{{newConstraint.segment}}-</span>
+        				<select name="field" class="igl-input"
+                			ng-change="updateField_1()"
+                			ng-model="newConstraint.field_1"
+                			placeholder="Field" 
+                			ng-options="field as field.position for field in segment.fields">
+        				</select>
+        				<span ng-show="newConstraint.field_1.datatype.components.length > 0">.
+        					<select name="component" class="igl-input"
+                 				placeholder="Component"
+                 				ng-change="updateComponent_1()"
+                 				ng-model="newConstraint.component_1"
+                 				ng-options="component as component.position for component in newConstraint.field_1.datatype.components">
+    						</select>
+    					</span>
+    					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<select name="subComponent" class="igl-input"
+                 				placeholder="SubComponent"
+                 				ng-model="newConstraint.subComponent_1"
+                 				ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
+    						</select>
+    					</span>
+    				</td>
+    				<td class="col-md-2" colspan="1">
+        				<select name="verb" class="igl-input"
+                				ng-change=""
+                				ng-model="newConstraint.verb"
+                				ng-options="constraintVerb for constraintVerb in constraintVerbs">
+        				</select>
+					</td>
+					<td class="col-md-2" colspan="1">
+        				<select name="contraintType" class="igl-input"
+                			ng-change=""
+                			ng-model="newConstraint.contraintType"
+                			ng-options="contraintType for contraintType in contraintTypes">
+        				</select>
+                    </td>
+                	<td class="col-md-3" colspan="1">
+                		<span ng-show="newConstraint.contraintType == 'a literal value'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'one of list values'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'formatted value'">
+                			<select name="format" class="igl-input"
+                				ng-model="newConstraint.value"
+                				ng-options="predefinedFormat for predefinedFormat in predefinedFormats">
+        					</select>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'identical to the another node'">
+                			<span>{{newConstraint.segment}}-</span>
+        					<select name="field_2" class="igl-input"
+                				ng-change="updateField_2()"
+                				ng-model="newConstraint.field_2"
+                				placeholder="Field" 
+                				ng-options="field as field.position for field in segment.fields">
+        					</select>
+        				<span ng-show="newConstraint.field_2.datatype.components.length > 0">.
+        					<select name="component" class="igl-input"
+                 				placeholder="Component"
+                 				ng-change="updateComponent_2()"
+                 				ng-model="newConstraint.component_2"
+                 				ng-options="component as component.position for component in newConstraint.field_2.datatype.components">
+    						</select>
+    					</span>
+    					<span ng-show="newConstraint.component_2.datatype.components.length > 0">.
+        					<select name="subComponent" class="igl-input"
+                 				placeholder="SubComponent"
+                 				ng-model="newConstraint.subComponent_2"
+                 				ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+    						</select>
+    					</span>
+                		</span>
+                	</td>
+                    <td class="col-md-1" colspan="1">
+                        <button title="Add Conformance Statement" type="button" class="btn btn-xs btn-success" ng-click="addConformanceStatement()">
+                    		<span><i class="fa fa-plus-circle fa-fw"></i></span>
+                		</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </form>
 </modal>
 
@@ -568,7 +708,7 @@
             </div>
             <div class="col-sm-6">
 	 			<span ng-show="selectedTable != undefined">
-	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table</button>
+	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table for {{segment.name}}-{{selectedPosition}}</button>
 	 				<hr/>
 	 				<div class="row">
                         <div class="col-sm-4">

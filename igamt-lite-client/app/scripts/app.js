@@ -365,12 +365,21 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.tableStabilities = ['Static', 'Dynamic'];
     $rootScope.tableExtensibilities = ['Open', 'Close'];
     $rootScope.constraintVerbs = ['SHALL be', 'SHALL NOT be', 'is', 'is not'];
-    $rootScope.contraintTypes = ['presented', 'a literal value', 'one of list values', 'a code of Value Set', 'formatted value', 'identical to the another node'];
+    $rootScope.contraintTypes = ['valued', 'a literal value', 'one of list values', 'formatted value', 'identical to the another node'];
+    $rootScope.predefinedFormats = ['ISO-compliant OID', 'Alphanumeric', 'YYYY', 'YYYYMM', 'YYYYMMDD', 'YYYYMMDDhh', 'YYYYMMDDhhmm', 'YYYYMMDDhhmmss', 'YYYYMMDDhhmmss.sss', 'YYYY+-ZZZZ', 'YYYYMM+-ZZZZ', 'YYYYMMDD+-ZZZZ', 'YYYYMMDDhh+-ZZZZ', 'YYYYMMDDhhmm+-ZZZZ', 'YYYYMMDDhhmmss+-ZZZZ', 'YYYYMMDDhhmmss.sss+-ZZZZ'];
+    $rootScope.postfixCloneTable = 'CA';
     $rootScope.newCodeFakeId = 0;
     $rootScope.newTableFakeId = 0;
     $rootScope.newPredicateFakeId = 0;
     $rootScope.newConformanceStatementFakeId = 0;
-    $rootScope.newTable = {};
+    $rootScope.listToBeAddedConformanceStatements = [];
+    $rootScope.listToBeDeletedConformanceStatements = [];
+    $rootScope.listToBeAddedPredicates = [];
+    $rootScope.listToBeDeletedPredicates = [];
+    $rootScope.listToBeAddedTables = [];
+    $rootScope.listToBeDeletedTables = [];
+    $rootScope.listToBeAddedCodes = [];
+    $rootScope.listToBeDeletedCodes = [];
     $rootScope.segment = null;
     $rootScope.profileTabs = new Array();
     $rootScope.igTabs = new Array();
@@ -379,7 +388,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.notifyDtTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifyTableTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifySegTreeUpdate = '0'; // TODO: FIXME
-    $rootScope.messagesData = [];
+    $rootScope.messagesData = []; 
     $rootScope.messages = [];// list of messages
     $rootScope.customIgs=[];
     $rootScope.preloadedIgs = [];
@@ -419,6 +428,18 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         $rootScope.messages = [];
         $rootScope.messagesData = [];
 
+        $rootScope.newCodeFakeId = 0;
+        $rootScope.newTableFakeId = 0;
+        $rootScope.newPredicateFakeId = 0;
+        $rootScope.newConformanceStatementFakeId = 0;
+        $rootScope.listToBeAddedConformanceStatements = [];
+        $rootScope.listToBeDeletedConformanceStatements = [];
+        $rootScope.listToBeAddedPredicates = [];
+        $rootScope.listToBeDeletedPredicates = [];
+        $rootScope.listToBeAddedTables = [];
+        $rootScope.listToBeDeletedTables = [];
+        $rootScope.listToBeAddedCodes = [];
+        $rootScope.listToBeDeletedCodes = [];
     };
 
     $rootScope.$watch(function () {
@@ -487,6 +508,43 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         }
     };
 
+    $rootScope.recordChangeForEdit = function(object,changeType) {
+        var type = object.type;
+
+        if($rootScope.changes[type] === undefined){
+            $rootScope.changes[type] = {};
+        }
+
+        if($rootScope.changes[type]['edit'] === undefined){
+            $rootScope.changes[type]['edit'] = {};
+        }
+        
+        if($rootScope.changes[type]['edit'][object.id] === undefined){
+            $rootScope.changes[type]['edit'][object.id] = {};
+        }
+
+
+        $rootScope.changes[type]['edit'][object.id][changeType] = object[changeType];
+        
+
+        console.log("Change is " + $rootScope.changes[type]['edit'][object.id][changeType]);
+    };
+    
+    $rootScope.recordChangeForEdit2 = function(type,command,id,valueType,value) {
+    	if($rootScope.changes[type] === undefined){
+            $rootScope.changes[type] = {};
+        }
+        if($rootScope.changes[type][command] === undefined){
+            $rootScope.changes[type][command] = {};
+        }
+        if($rootScope.changes[type][command][id] === undefined){
+            $rootScope.changes[type][command][id] = {};
+        }
+        if($rootScope.changes[type][command][id][valueType] === undefined){
+            $rootScope.changes[type][command][id][valueType] = {};
+        }
+        $rootScope.changes[type][command][id][valueType] = value;
+    };
 
 
     Restangular.setBaseUrl('api/');
@@ -581,6 +639,74 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         }
     };
 
+    $rootScope.findTableRefs = function (table, obj) {
+        if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
+            if(obj.table === table && $rootScope.references.indexOf(obj) === -1) {
+                $rootScope.references.push(obj);
+             }
+            $rootScope.findTableRefs(table,obj.datatype);
+        }else if(angular.equals(obj.type,'segment')){
+            angular.forEach( $rootScope.segments, function (segment) {
+                angular.forEach(segment.fields, function (field) {
+                    $rootScope.findTableRefs(table,field);
+                });
+            });
+        } else if(angular.equals(obj.type,'datatype')){
+            if(obj.components != undefined && obj.components != null && obj.components.length > 0){
+                angular.forEach(obj.components, function (component) {
+                    $rootScope.findTableRefs(table,component);
+                });
+            }
+        }
+    };
+    
+    $rootScope.genRegex = function (format){		
+		if(format === 'YYYY'){
+			return '(([0-9]{4})|(([0-9]{4})((0[1-9])|(1[0-2])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMM'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMMDD'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMMDDhh'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMMDDhhmm'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMMDDhhmmss'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMMDDhhmmss.sss'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYY+-ZZZZ'){
+			return '([0-9]{4}).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMM+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2])).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMMDD+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMMDDhh+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMMDDhhmm+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMMDDhhmmss+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMMDDhhmmss.sss+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]((\\+|\\-)[0-9]{4})';
+		} else if(format === 'ISO-compliant OID'){
+			return '[0-2](\\.(0|[1-9][0-9]*))*';
+		} else if(format === 'Alphanumeric'){
+			return '^[a-zA-Z0-9]*$';
+		}
+		
+		return format;
+	}
+    
+    $rootScope.isAvailableDTForTable = function (dt) {
+    	if(dt != undefined){
+        	if(dt.name === 'IS' ||  dt.name === 'ID' ||dt.name === 'CWE' ||dt.name === 'CNE' ||dt.name === 'CE') return true;
+        	
+        	if(dt.components != undefined && dt.components.length > 0) return true;
+        	
+    	}
+    	return false;
+    };
 
     $rootScope.validateNumber = function(event) {
         var key = window.event ? event.keyCode : event.which;

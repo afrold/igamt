@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * 
  */
 @Document(collection = "table")
-public class Table extends DataModel implements Serializable {
+public class Table extends DataModel implements Serializable, Comparable<Table> {
 
 	/**
 	 * 
@@ -167,6 +167,15 @@ public class Table extends DataModel implements Serializable {
 				+ ", mappingId=" + mappingId + ", name=" + name + ", version="
 				+ version + ", codesys=" + codesys + ", oid=" + oid + ", type="
 				+ tableType + ", codes=" + codes + "]";
+	}
+
+	@Override
+	public int compareTo(Table o) {
+		 int x = String.CASE_INSENSITIVE_ORDER.compare(this.mappingId, o.mappingId);
+	        if (x== 0) {
+	            x= this.mappingId.compareTo(o.mappingId);
+	        }
+	        return x;
 	}
 
 }

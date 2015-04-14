@@ -355,7 +355,7 @@
                                                     </ul>
                                                 </div>
                                             </span>
-											<span ng-show="node.table == undefined"> 
+											<span ng-show="node.table == undefined  && isAvailableDTForTable(node.datatype)"> 
 												<button ng-click="mapTable(node)" class="btn btn-xs btn-info">
                                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                                 </button>
@@ -364,63 +364,69 @@
             <div ng-show="node.type === 'datatype'">-</div>
         </td>
 
-        <div ng-show="node.type === 'datatype'">
-                             <span ng-show="trim" class="constraint_trim">
-                                              <span ng-repeat="predicate in node.predicates">
-                                                 {{predicate.description}}
-                                              </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="predicate in node.predicates">
-                                                  {{predicate.description}}
-                                              </p>
-                                            </span>
-        </div>
-
-        <div ng-show="node.type !== 'datatype'">
-
-                                <span ng-show="trim" class="constraint_trim">
-                                              <span ng-repeat="predicate in node.datatype.predicates">
-                                                 {{predicate.description}}
-                                              </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="predicate in node.datatype.predicates">
-                                                  {{predicate.description}}
-                                              </p>
-                                            </span>
-        </div>
-
-
-        </td>
         <td class="col-md-1">
-            <div ng-show="node.type === 'datatype'">
-                             <span ng-show="trim" class="constraint_trim">
-                                               <span ng-repeat="conStatement in node.conformanceStatements">
-                                                    {{conStatement.constraintId}} : {{conStatement.description}}
-                                             </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="conStatement in node.conformanceStatements">
-                                                  {{conStatement.constraintId}} : {{conStatement.description}}
-                                              </p>
-                                            </span>
-            </div>
-            <div ng-show="node.type !== 'datatype'">
-                                <span ng-show="trim" class="constraint_trim">
-                                               <span ng-repeat="conStatement in node.datatype.conformanceStatements">
-                                                    {{conStatement.constraintId}} : {{conStatement.description}}
-                                             </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="conStatement in node.datatype.conformanceStatements">
-                                                  {{conStatement.constraintId}} : {{conStatement.description}}
-                                              </p>
-                                            </span>
-            </div>
-
+			    <div ng-show="node.type === 'component' && !isSubDT(node.id)">
+					<div ng-show="countPredicate(node.position) == 0">
+						<button type="button" ng-click="managePredicate(node.position)" class="btn btn-info btn-xs">
+							<span><i class="fa fa-plus fa-fw"></i></span>
+            			</button>
+					</div>
+        			<table>
+            			<tr ng-repeat="p in datatype.predicates">
+                			<td>
+                    			<div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
+                        			<a ng-click="managePredicate(node.position)">{{p.description}}</a>
+                    			</div>
+                			</td>
+            			</tr>
+        			</table>
+    			</div>
+				<div ng-show="node.type === 'component' && isSubDT(node.id)">
+    				<table>
+            			<tr ng-repeat="p in findDTByComponentId(node.id).predicates">
+                			<td>
+                    			<div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
+                        			{{p.description}}
+                    			</div>
+                			</td>
+            			</tr>
+        			</table>
+				</div>
+    			<div ng-show="node.type === 'datatype'">-</div>
         </td>
-        <td class="col-md-1">
+        
+		<td class="col-md-1">
+        	<div ng-show="node.type === 'component' && !isSubDT(node.id)">
+				<div ng-show="countConformanceStatements(node.position) == 0">
+					<button type="button" ng-click="manageConformanceStatement(node.position)" class="btn btn-info btn-xs">
+						<span><i class="fa fa-plus fa-fw"></i></span>
+            		</button>
+				</div>
+        		<table>
+            		<tr ng-repeat="c in datatype.conformanceStatements">
+                		<td>
+                    		<div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
+                        		<a ng-click="manageConformanceStatement(node.position)">{{c.constraintId}}: {{c.description}} </a>
+                    		</div>
+                		</td>
+            		</tr>
+        		</table>
+    		</div>
+    		<div ng-show="node.type === 'component' && isSubDT(node.id)">
+        		<table>
+            		<tr ng-repeat="c in findDTByComponentId(node.id).conformanceStatements">
+                		<td>
+                    		<div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
+                        		{{c.constraintId}}: {{c.description}}
+                    		</div>
+                		</td>
+            		</tr>
+        		</table>
+    		</div>
+    		<div ng-show="node.type === 'datatype'">-</div>
+		</td>
+        
+		<td class="col-md-1">
             <div ng-show="node.type !== 'datatype'">
                 <input style="width:100%" class="igl-input" type="text"
                        name="comment"
@@ -475,7 +481,7 @@
             </div>
             <div class="col-sm-6">
 	 			<span ng-show="selectedTable != undefined">
-	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table</button>
+	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table for {{datatype.name}}.{{selectedPosition}}</button>
 	 				<hr/>
 	 				<div class="row">
                         <div class="col-sm-4">
@@ -536,6 +542,253 @@
         </form>
     </div>
 </modal>
+
+<modal title="Edit Predicate" visible="showPredicateManagerModal">
+    <form role="form">
+        <h5>Predicate of {{datatype.name}}.{{selectedPosition}}</h5>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr class="tbl-header">
+                    <th class="col-md-9">Desciption</th>
+                    <th class="col-md-1">True Usage</th>
+                    <th class="col-md-1">False Usage</th>
+                    <th class="col-md-1"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="p in datatype.predicates | filter:{constraintTarget:selectedPosition + '[1]'}:true">
+                    <td class="col-md-9">{{p.description}}</td>
+                    <td class="col-md-1">{{p.trueUsage}}</td>
+                    <td class="col-md-1">{{p.falseUsage}}</td>
+                    <td class="col-md-1">
+                        <button type="button" ng-click="deletePredicate(p)" class="btn btn-xs btn-warning">
+                            <span><i class="fa fa-minus-circle fa-fw"></i></span>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <h5>Define New Predicate of {{datatype.name}}.{{selectedPosition}}</h5>
+        
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr class="tbl-header">
+                    <th class="col-md-10" colspan="4">Desciption</th>
+                    <th class="col-md-1" colspan="1" rowspan="2">True Usage</th>
+                    <th class="col-md-1" colspan="1" rowspan="2">False Usage</th>
+                    <th class="col-md-1" colspan="1" rowspan="2"></th>
+                </tr>
+                <tr class="tbl-header">
+                    <th class="col-md-3" colspan="1">Node</th>
+                    <th class="col-md-2" colspan="1">Verb</th>
+                    <th class="col-md-2" colspan="1">Constraint</th>
+                    <th class="col-md-3" colspan="1">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="col-md-3" colspan="1">
+                    	<span>{{newConstraint.datatype}}-</span>
+        				<select name="component" class="igl-input"
+                			ng-change="updateComponent_1()"
+                			ng-model="newConstraint.component_1"
+                			ng-options="component as component.position for component in datatype.components">
+        				</select>
+        				<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<select name="subComponent" class="igl-input"
+                 				ng-model="newConstraint.subComponent_1"
+                 				ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
+    						</select>
+    					</span>
+    				</td>
+    				<td class="col-md-2" colspan="1">
+        				<select name="verb" class="igl-input"
+                				ng-change=""
+                				ng-model="newConstraint.verb"
+                				ng-options="constraintVerb for constraintVerb in constraintVerbs">
+        				</select>
+					</td>
+					<td class="col-md-2" colspan="1">
+        				<select name="contraintType" class="igl-input"
+                			ng-change=""
+                			ng-model="newConstraint.contraintType"
+                			ng-options="contraintType for contraintType in contraintTypes">
+        				</select>
+                    </td>
+                	<td class="col-md-3" colspan="1">
+                		<span ng-show="newConstraint.contraintType == 'a literal value'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'one of list values'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'formatted value'">
+                			<select name="format" class="igl-input"
+                				ng-model="newConstraint.value"
+                				ng-options="predefinedFormat for predefinedFormat in predefinedFormats">
+        					</select>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'identical to the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+        					<select name="component" class="igl-input"
+                				ng-change="updateComponent_2()"
+                				ng-model="newConstraint.component_2"
+                				ng-options="component as component.position for component in datatype.components">
+        					</select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                 					ng-model="newConstraint.subComponent_2"
+                 					ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+    							</select>
+    						</span>
+                		</span>
+                	</td>
+                	<td class="col-md-1" colspan="1">
+                		<select name="trueUsage" class="igl-input"
+                			ng-model="newConstraint.trueUsage"
+                			ng-options="usage for usage in usages">
+        				</select>
+                	</td>
+                	
+                	<td class="col-md-1" colspan="1">
+                		<select name="falseUsage" class="igl-input"
+                			ng-model="newConstraint.falseUsage"
+                			ng-options="usage for usage in usages">
+        				</select>
+                	</td>
+                	
+                    <td class="col-md-1" colspan="1">
+                		<button title="Update Predicate" type="button" class="btn btn-xs btn-success" ng-click="updatePredicate()">
+                    		<span><i class="fa fa-plus-circle fa-fw"></i></span>
+                		</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</modal>
+
+<modal title="Edit ConformanceStatement" visible="showConformanceStatementManagerModal">
+    <form role="form">
+        <h5>ConformanceStatements of {{datatype.name}}.{{selectedPosition}}</h5>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr class="tbl-header">
+                    <th class="col-md-2">ID</th>
+                    <th class="col-md-9">Desciption</th>
+                    <th class="col-md-1"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:selectedPosition + '[1]'}:true">
+                    <td class="col-md-2">{{c.constraintId}}</td>
+                    <td class="col-md-9">{{c.description}}</td>
+                    <td class="col-md-1">
+                        <button type="button" ng-click="deleteConformanceStatement(c)" class="btn btn-xs btn-danger">
+                            <span><i class="fa fa-minus-circle fa-fw"></i></span>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h5>Define New Conformance Statement of {{segment.name}}.{{selectedPosition}}</h5>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                <tr class="tbl-header">
+                    <th class="col-md-2" colspan="1" rowspan="2">ID</th>
+                    <th class="col-md-10" colspan="4">Desciption</th>
+                    <th class="col-md-1" colspan="1" rowspan="2"></th>
+                </tr>
+                <tr class="tbl-header">
+                    <th class="col-md-3" colspan="1">Node</th>
+                    <th class="col-md-2" colspan="1">Verb</th>
+                    <th class="col-md-2" colspan="1">Constraint</th>
+                    <th class="col-md-3" colspan="1">Value</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="col-md-2" colspan="1">
+                    	<input style="width:100%" class="igl-input"  ng-model="newConstraint.constraintId" placeholder="Type ID" type="text"/>
+                    </td>
+                    <td class="col-md-3" colspan="1">
+                    	<span>{{newConstraint.datatype}}.</span>
+        				<select name="component" class="igl-input"
+                			ng-change="updateComponent_1()"
+                			ng-model="newConstraint.component_1"
+                			ng-options="component as component.position for component in datatype.components">
+        				</select>
+        				<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<select name="subComponent" class="igl-input"
+                 				ng-model="newConstraint.subComponent_1"
+                 				ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
+    						</select>
+    					</span>
+    				</td>
+    				<td class="col-md-2" colspan="1">
+        				<select name="verb" class="igl-input"
+                				ng-change=""
+                				ng-model="newConstraint.verb"
+                				ng-options="constraintVerb for constraintVerb in constraintVerbs">
+        				</select>
+					</td>
+					<td class="col-md-2" colspan="1">
+        				<select name="contraintType" class="igl-input"
+                			ng-change=""
+                			ng-model="newConstraint.contraintType"
+                			ng-options="contraintType for contraintType in contraintTypes">
+        				</select>
+                    </td>
+                	<td class="col-md-3" colspan="1">
+                		<span ng-show="newConstraint.contraintType == 'a literal value'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'one of list values'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'formatted value'">
+                			<select name="format" class="igl-input"
+                				ng-model="newConstraint.value"
+                				ng-options="predefinedFormat for predefinedFormat in predefinedFormats">
+        					</select>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'identical to the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                				ng-change="updateComponent_2()"
+                				ng-model="newConstraint.component_2"
+                				ng-options="component as component.position for component in datatype.components">
+        					</select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                 					ng-model="newConstraint.subComponent_2"
+                 					ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+    							</select>
+    						</span>
+                		</span>
+                	</td>
+                    <td class="col-md-1" colspan="1">
+                        <button title="Add Conformance Statement" type="button" class="btn btn-xs btn-success" ng-click="addConformanceStatement()">
+                    		<span><i class="fa fa-plus-circle fa-fw"></i></span>
+                		</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</modal>
+
 
 </div>
 </div>

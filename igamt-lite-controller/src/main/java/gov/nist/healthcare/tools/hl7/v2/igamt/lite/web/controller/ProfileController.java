@@ -105,23 +105,6 @@ public class ProfileController extends CommonController {
 		throw new UserAccountNotFoundException();
 	}
 
-	// /**
-	// * Return a profile by its id
-	// *
-	// * @return
-	// * @throws ProfileNotFoundException
-	// */
-	// @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	// public Profile profile(@PathVariable("id") String id)
-	// throws ProfileNotFoundException {
-	// logger.info("GET pofile with id=" + id);
-	// Profile p = profileService.findOne(id);
-	// if (p == null) {
-	// throw new ProfileNotFoundException(id);
-	// }
-	// return p;
-	// }
-
 	@RequestMapping(value = "/{id}/clone", method = RequestMethod.POST)
 	public Profile clone(@PathVariable("id") String id)
 			throws ProfileNotFoundException, UserAccountNotFoundException,
@@ -188,24 +171,51 @@ public class ProfileController extends CommonController {
 	@RequestMapping(value = "/{id}/export/XML", method = RequestMethod.POST, produces = "text/xml")
 	public void export(@PathVariable("id") String id,
 			HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		// logger.info(log.toString());
+			throws IOException, ProfileNotFoundException {
+		logger.info("Exporting as xml file profile with id=" + id);
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
 		InputStream content = null;
-		content = profileService.exportAsXml(id);
+		content = profileService.exportAsXml(p);
 		response.setContentType("text/xml");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.xml");
 		FileCopyUtils.copy(content, response.getOutputStream());
-
-		// if ("pdf".equalsIgnoreCase(format)) {
-		// content = profileService.exportA sPdf(targetId);
-		// response.setContentType("application/pdf");
-		// response.setHeader("Content-disposition",
-		// "attachment;filename=IG.pdf");
-		// FileCopyUtils.copy(content, response.getOutputStream());
-		// } else if ("xml".equalsIgnoreCase(format)) {
-		//
-		// }
 	}
 
+	@RequestMapping(value = "/export/pdf", method = RequestMethod.POST, produces = "application/pdf")
+	public void exportPdf(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ProfileNotFoundException {
+		logger.info("Exporting as pdf file profile with id=" + id);
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
+		InputStream content = null;
+		content = profileService.exportAsPdf(p);
+		response.setContentType("application/pdf");
+		response.setHeader("Content-disposition",
+				"attachment;filename=Profile.pdf");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+
+	@RequestMapping(value = "/export/xslx", method = RequestMethod.POST, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	public void exportXlsx(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ProfileNotFoundException {
+		logger.info("Exporting as spreadsheet profile with id=" + id);
+		InputStream content = null;
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
+		content = profileService.exportAsXlsx(p);
+		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		response.setHeader("Content-disposition",
+				"attachment;filename=Profile.xlsx");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
 }
