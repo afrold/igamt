@@ -21,7 +21,7 @@ angular.module('igl').directive('igCheckUsername', [ '$resource',
 	                        } else {
 	                            ctrl.$setValidity('username', false);
 	                        }
-	                        
+
 	                    }, function() {
 	                        //console.log("FAILURE", usernameToCheck);
 	                    });

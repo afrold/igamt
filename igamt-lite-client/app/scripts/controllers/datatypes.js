@@ -60,33 +60,30 @@ angular.module('igl')
                 }
             }
             $rootScope.datatypes.splice(0, 0, flavor);
-//            $rootScope.datatype = flavor;
-//            var tmp = angular.copy(flavor);
-////            delete tmp.type;
-//            if(tmp.components != undefined && tmp.components != null && tmp.components.length != 0){
-//                angular.forEach(tmp.components, function (component) {
-//                    component.datatype = {id:component.datatype.id};
-//                    if(component.table != undefined) {
-//                        component.table = {id: component.table.id};
-//                    }
-//                });
-//            }
-//
-//            var predicates = tmp['predicates'];
-//            if( predicates!= undefined && predicates != null && predicates.length != 0){
-//                angular.forEach(predicates, function (predicate) {
-//                    predicate.id = -1 * (Math.floor(Math.random()*10000000) + 1);
-//                });
-//            }
-//
-//            var conformanceStatements = tmp['conformanceStatements'];
-//            if(conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0){
-//                angular.forEach(conformanceStatements, function (conformanceStatement) {
-//                    conformanceStatement.id = -1 * (Math.floor(Math.random()*10000000) + 1);
-//                });
-//            }
+            $rootScope.datatype = flavor;
+            var tmp = angular.copy(flavor);
+            if(tmp.components != undefined && tmp.components != null && tmp.components.length != 0){
+                angular.forEach(tmp.components, function (component) {
+                    component.datatype = component.datatype.id;
+                    if(component.table != undefined) {
+                        component.table =component.table.id;
+                    }
+                });
+            }
+            var predicates = tmp['predicates'];
+            if( predicates!= undefined && predicates != null && predicates.length != 0){
+                angular.forEach(predicates, function (predicate) {
+                    predicate.id = -1 * (Math.floor(Math.random()*10000000) + 1);
+                });
+            }
+            var conformanceStatements = tmp['conformanceStatements'];
+            if(conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0){
+                angular.forEach(conformanceStatements, function (conformanceStatement) {
+                    conformanceStatement.id = -1 * (Math.floor(Math.random()*10000000) + 1);
+                });
+            }
 //            $rootScope.recordChange2('datatype',tmp.id,null,tmp);
-            $rootScope.recordChangeForEdit2('datatype', "add", flavor.id,'datatype', flavor);
+            $rootScope.recordChangeForEdit2('datatype', "add", flavor.id,'datatype', tmp);
 
 //            $rootScope.recordChangeForEdit2('datatype', "add", null,null, tmp);
 //            type,command,id,valueType,value
@@ -160,11 +157,9 @@ angular.module('igl')
            return true;
         };
 
-
         $scope.onDatatypeChange = function(node){
-            $scope.refreshTree();
-            node.datatypeLabel = null;
-            $rootScope.recordChange(node,'datatype');
+            $rootScope.recordChangeForEdit2('component','edit',node.id,'datatype',node.id);
+            $scope.refreshTree(); // TODO: Refresh only the node
          };
 
         $scope.refreshTree = function(){
@@ -317,14 +312,14 @@ angular.module('igl')
 		};
 		
 		$scope.findDTByComponentId = function(componentId){
-			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
-				for(var j=0, len2 = $rootScope.datatypes[i].components.length; j<len2;j++ ){
-					if($rootScope.datatypes[i].components[j].id == componentId)
-						return $rootScope.datatypes[i];
-				}
-			}
-			return null;
-		};
+//			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
+//				for(var j=0, len2 = $rootScope.datatypes[i].components.length; j<len2;j++ ){
+//					if($rootScope.datatypes[i].components[j].id == componentId)
+//						return $rootScope.datatypes[i];
+//				}
+//			}
+            return $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId].datatype: null;
+ 		};
 		
 		
 		

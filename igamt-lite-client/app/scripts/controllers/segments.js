@@ -130,15 +130,15 @@ angular.module('igl')
 		};
 
 		$scope.findDTByComponentId = function(componentId){
-			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
-                if($rootScope.datatypes[i].children != undefined){
-				for(var j=0, len2 = $rootScope.datatypes[i].components.length; j<len2;j++ ){
-					if($rootScope.datatypes[i].components[j].id == componentId)
- 						return $rootScope.datatypes[i];
-				}
-				}
-			}
-			return null;
+//			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
+//                if($rootScope.datatypes[i].children != undefined){
+//				for(var j=0, len2 = $rootScope.datatypes[i].components.length; j<len2;j++ ){
+//					if($rootScope.datatypes[i].components[j].id == componentId)
+// 						return $rootScope.datatypes[i];
+//				}
+//				}
+//			}
+            return $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId].datatype: null;
 		};
 
 

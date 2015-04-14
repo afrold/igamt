@@ -324,7 +324,7 @@
         </p>
     </div>
     <div ng-show="node.type === 'component'">
-        <p ng-repeat="p in node.parent.datatype.predicates">
+        <p ng-repeat="p in findDTByComponentId(node.id).predicates">
 
         <div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
             {{p.description}}
@@ -348,7 +348,7 @@
         </p>
     </div>
     <div ng-show="node.type === 'component'">
-        <p ng-repeat="c in node.parent.datatype.conformanceStatements">
+        <p ng-repeat="c in findDTByComponentId(node.id).conformanceStatements">
 
         <div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
             {{c.constraintId}}: {{c.description}}

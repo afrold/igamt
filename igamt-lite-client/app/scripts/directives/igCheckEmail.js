@@ -21,7 +21,7 @@ angular.module('igl').directive('igCheckEmail', [ '$resource',
                             } else {
                                 ctrl.$setValidity('email', false);
                             }
-                            
+
                         }, function() {
 //                            console.log('FAILURE to check email address');
                         });

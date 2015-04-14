@@ -396,6 +396,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.generalInfo = {type: null, 'message': null};
     $rootScope.references =[]; // collection of element referencing a datatype to delete
     $rootScope.section = {};
+    $rootScope.parentsMap = {};
 
     $rootScope.selectProfileTab = function (value) {
         $rootScope.profileTabs[0] = false;
@@ -440,6 +441,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         $rootScope.listToBeDeletedTables = [];
         $rootScope.listToBeAddedCodes = [];
         $rootScope.listToBeDeletedCodes = [];
+        $rootScope.parentsMap = [];
     };
 
     $rootScope.$watch(function () {
@@ -646,13 +648,14 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
     $rootScope.processElement = function (element, parent) {
         if (element.type === "group" && element.children) {
-            element["parent"] = parent;
+            $rootScope.parentsMap[element.id] = parent;
+//            element["parent"] = parent;
             element.children = $filter('orderBy')(element.children, 'position');
             angular.forEach(element.children, function (segmentRefOrGroup) {
                 $rootScope.processElement(segmentRefOrGroup,element);
             });
         } else if (element.type === "segmentRef") {
-            element["parent"] = parent;
+            $rootScope.parentsMap[element.id] = parent;
             element.ref = $rootScope.segmentsMap[element.ref.id];
             element.ref["path"] =  element.ref.name;
             $rootScope.processElement(element.ref,element);
@@ -665,10 +668,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
                 });
             }
         } else if (element.type === "field" || element.type === "component") {
-            element["parent"] = parent;
+            $rootScope.parentsMap[element.id] = parent;
             element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
             element["path"] = parent.path+"."+element.position;
-            element['sub'] = element.parent.type === 'component';
+            element['sub'] = parent.type === 'component';
             if (angular.isDefined(element.table) && element.table != null) {
                 element["table"] = $rootScope.tablesMap[element.table.id];
                 if ($rootScope.tables.indexOf(element.table) === -1) {

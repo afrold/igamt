@@ -385,7 +385,7 @@
              			</p>
      			</div>
 				<div ng-show="node.type === 'component' && node.sub">
-             			<p ng-repeat="p in node.parent.datatype.predicates">
+             			<p ng-repeat="p in findDTByComponentId(node.id).predicates">
                      			<div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
                         			{{p.description}}
                     			</div>
@@ -408,7 +408,7 @@
              		</p>
      		</div>
     		<div ng-show="node.type === 'component' && node.sub">
-             		<p ng-repeat="c in node.parent.datatype.conformanceStatements">
+             		<p ng-repeat="c in findDTByComponentId(node.id).conformanceStatements">
                      		<div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
                         		{{c.constraintId}}: {{c.description}}
                     		</div>
@@ -418,10 +418,10 @@
 		</td>
         
 		<td class="col-md-1">
-            <div ng-show="node.type !== 'datatype'">
+            <div ng-show="node.type === 'component' && !node.sub">
                 <input style="width:100%" class="igl-input" type="text"
                        name="comment"
-                       ng-change="recordChange(node,'comment')"
+                       ng-change="recordChangeForEdit2('component','edit',node.id,'comment', node.comment)"
                        ng-model="node.comment">
             </div>
             <div ng-show="node.type === 'datatype'">-</div>
