@@ -25,11 +25,12 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">-->
+    <!-- endbuild -->
+
     <link rel="stylesheet" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.css" />
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css" />
 
-    <!-- endbuild -->
 </head>
 <body ng-controller="MainCtrl" ng-app="igl"  id="ehrbody">
 <div ng-include="'views/header.html'"></div>
@@ -85,9 +86,8 @@
 <!-- endbuild -->
 
 <!-- build:js scripts/modules.js -->
-<!--<script src="lib/angular-mocks/angular-mocks.js"></script>-->
+<script src="lib/angular-mocks/angular-mocks.js"></script>
 <script src="lib/utils.js"></script>
-<!--<script src="lib/profileBackEndStub.js"></script>-->
 <script src="lib/angular-treetable/js/jquery.treetable.js"></script>
 <script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
 <script src="lib/jquery.i18n.properties-1.0.9.js"></script>
@@ -96,6 +96,7 @@
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
+<script src="lib/profileBackEndStub.js"></script>
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/about.js"></script>
 <script src="scripts/controllers/profiles.js"></script>

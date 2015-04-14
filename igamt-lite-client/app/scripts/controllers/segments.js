@@ -17,7 +17,7 @@ angular.module('igl')
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.fields ? parent.fields: parent.datatype ? parent.datatype.components:parent.children : $rootScope.segment != null ? [$rootScope.segment]:[];
+                    return parent ? parent.fields ? parent.fields: parent.datatype ? parent.datatype.components:parent.children : $rootScope.segment != null ? $rootScope.segment.fields:[];
                 },
                 getTemplate: function (node) {
                     return 'SegmentEditTree.html';
@@ -80,9 +80,9 @@ angular.module('igl')
         };
 
         $scope.onDatatypeChange = function(node){
+//            $rootScope.recordChange(node,'datatype');
+            $rootScope.recordChangeForEdit2('field','edit',node.id,'datatype',node.id);
             $scope.refreshTree();
-            node.datatypeLabel = null;
-            $rootScope.recordChange(node,'datatype');
         };
 
         $scope.refreshTree = function(){
@@ -128,7 +128,7 @@ angular.module('igl')
 			$rootScope.recordChangeForEdit2('field','edit',$scope.selectedNode.id,'table',$scope.selectedNode.table.id);
 			$scope.showTableMapModal = false;
 		};
-		
+
 		$scope.findDTByComponentId = function(componentId){
 			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
                 if($rootScope.datatypes[i].children != undefined){
@@ -142,14 +142,16 @@ angular.module('igl')
 		};
 
 
-		$scope.showPredicateManagerModal = false;
+
+
+        $scope.showPredicateManagerModal = false;
 		$scope.showConformanceStatementManagerModal = false;
 		$scope.selectedPosition = null;
 		$scope.newConstraint = null;
 		
 		$scope.managePredicate = function(position){
 			$scope.selectedPosition = position;
-			$scope.showPredicateManagerModal = !$scope.showPredicateManagerModal;	
+			$scope.showPredicateManagerModal =true;
 			$scope.newConstraint = angular.fromJson({
 				segment : '',
 				field_1 : null,
@@ -169,7 +171,7 @@ angular.module('igl')
 		
 		$scope.manageConformanceStatement = function(position){
 			$scope.selectedPosition = position;
-			$scope.showConformanceStatementManagerModal = !$scope.showConformanceStatementManagerModal;	
+			$scope.showConformanceStatementManagerModal =true;
 			$scope.newConstraint = angular.fromJson({
 				segment : '',
 				field_1 : null,

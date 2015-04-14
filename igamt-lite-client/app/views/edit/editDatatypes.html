@@ -103,16 +103,17 @@
                 <td ng-bind-html="row.description"></td>
 
                 <td>
-                    <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
-                            click-go="/profiles/#datatypeDef"
-                            ng-click="flavor(row)">
-                        <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
-                    </button>
+
                     <button title="Edit" type="button"
                             class="btn btn-xs btn-primary"
                             click-go="/profiles/#datatypeDef"
                             ng-click="select(row)">
                         <span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>
+                    </button>
+                    <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
+                            click-go="/profiles/#datatypeDef"
+                            ng-click="flavor(row)">
+                        <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
                     </button>
                     <button title="Delete" type="button" class="btn btn-xs btn-danger"
                             ng-click="delete(row)">
@@ -158,8 +159,7 @@
         </button>
         <button title="Delete" type="button"
                 class="btn btn-xs btn-danger"
-                ng-disabled="true"
-                click-go="/profiles/#datatypeList"
+                 click-go="/profiles/#datatypeList"
                 ng-click="delete(datatype)">
             <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
@@ -187,7 +187,7 @@
                 <label>Comment</label>
                 <textarea style="width:100%" rows="5" class="igl-input form-control"
                           name="comment"
-                          ng-change="recordChange2('datatype',datatype.id,'comment', datatype.comment)"
+                          ng-change="recordChangeForEdit2('datatype','edit',datatype.id,'comment', datatype.comment)"
                           ng-model="datatype.comment"></textarea>
 
             </div>
@@ -198,7 +198,8 @@
                  ng-class="{'has-error' : datatypeMetaDataForm.label.$invalid && !datatypeMetaDataForm.label.$pristine }">
                 <label>Label</label>
                 <input type="text"
-                       ng-change="recordChange2('datatype',datatype.id,'label', datatype.label)"
+                        ng-change="recordChangeForEdit2('datatype','edit',datatype.id,'label', datatype.label)"
+
                        name="label" class="form-control" ng-model="datatype.label"
                        required>
             </div>
@@ -207,7 +208,8 @@
                 <label>Text</label>
                 <textarea style="width:100%" rows="5" class="igl-input form-control"
                           name="text"
-                          ng-change="recordChange2('datatype',datatype.id,'text', datatype.text)"
+                           ng-change="recordChangeForEdit2('datatype','edit',datatype.id,'text', datatype.text)"
+
                           ng-model="datatype.text"></textarea>
 
             </div>
@@ -257,8 +259,10 @@
                                              <span ng-bind="node.description"></span>
                                          </span>
                                         <span ng-show="node.type !== 'datatype'">
-                                            <img style="width:15px; height:15px"
-                                                 ng-src="images/{{node.type}}.png">
+                                            <img  ng-show="node.type === 'component' && !node.sub" style="width:15px; height:15px"
+                                                 ng-src="images/component.png">
+                                            <img  ng-show="node.type === 'component' && node.sub" style="width:15px; height:15px"
+                                                  ng-src="images/subcomponent.png">
                                             <span ng-show="node.type !== 'datatype'">{{node.position}}:{{node.name}}</span>
                                         </span>
         </td>
@@ -267,7 +271,8 @@
                                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 <select class="form-control input-sm"
                                                         name="usage"
-                                                        ng-change="recordChange2('component',node.id,'usage', node.usage)"
+                                                         ng-change="recordChangeForEdit2('component','edit',node.id,'usage', node.usage)"
+
                                                         required
                                                         ng-model="node.usage"
                                                         ng-options="usage for usage in usages">
@@ -288,13 +293,14 @@
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="minLength"
-                                                       ng-change="recordChange2('component',node.id,'minLength', node.minLength)"
+                                                        ng-change="recordChangeForEdit2('component','edit',node.id,'minLength', node.minLength)"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
                                                        ng-model="node.minLength" required ng-minlength="1">
                                                 <input style="width:45%" class="igl-input" type="text"
                                                        name="maxLength"
-                                                       ng-change="recordChange2('component',node.id,'maxLength', node.maxLength)"
+                                                        ng-change="recordChangeForEdit2('component','edit',node.id,'maxLength', node.maxLength)"
+
                                                        ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.maxLength" required>
@@ -310,7 +316,8 @@
                                             <span ng-form name="{{formName}}">
                                             <input style="width:50%" class="igl-input" type="text"
                                                    name="confLength"
-                                                   ng-change="recordChange2('component',node.id,'confLength', node.confLength)"
+                                                    ng-change="recordChangeForEdit2('component','edit',node.id,'confLength', node.confLength)"
+
                                                    ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                                    ng-pattern="/^\d+$/"
                                                    ng-model="node.confLength">
@@ -365,64 +372,48 @@
         </td>
 
         <td class="col-md-1">
-			    <div ng-show="node.type === 'component' && !isSubDT(node.id)">
+			    <div ng-show="node.type === 'component' && !node.sub">
 					<div ng-show="countPredicate(node.position) == 0">
 						<button type="button" ng-click="managePredicate(node.position)" class="btn btn-info btn-xs">
 							<span><i class="fa fa-plus fa-fw"></i></span>
             			</button>
 					</div>
-        			<table>
-            			<tr ng-repeat="p in datatype.predicates">
-                			<td>
-                    			<div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
+             			<p ng-repeat="p in datatype.predicates">
+                     			<div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
                         			<a ng-click="managePredicate(node.position)">{{p.description}}</a>
                     			</div>
-                			</td>
-            			</tr>
-        			</table>
-    			</div>
-				<div ng-show="node.type === 'component' && isSubDT(node.id)">
-    				<table>
-            			<tr ng-repeat="p in findDTByComponentId(node.id).predicates">
-                			<td>
-                    			<div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
+             			</p>
+     			</div>
+				<div ng-show="node.type === 'component' && node.sub">
+             			<p ng-repeat="p in node.parent.datatype.predicates">
+                     			<div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
                         			{{p.description}}
                     			</div>
-                			</td>
-            			</tr>
-        			</table>
-				</div>
+             			</p>
+ 				</div>
     			<div ng-show="node.type === 'datatype'">-</div>
         </td>
         
 		<td class="col-md-1">
-        	<div ng-show="node.type === 'component' && !isSubDT(node.id)">
+        	<div ng-show="node.type === 'component' && !node.sub">
 				<div ng-show="countConformanceStatements(node.position) == 0">
 					<button type="button" ng-click="manageConformanceStatement(node.position)" class="btn btn-info btn-xs">
 						<span><i class="fa fa-plus fa-fw"></i></span>
             		</button>
 				</div>
-        		<table>
-            		<tr ng-repeat="c in datatype.conformanceStatements">
-                		<td>
-                    		<div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
+             		<p ng-repeat="c in datatype.conformanceStatements">
+                     		<div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
                         		<a ng-click="manageConformanceStatement(node.position)">{{c.constraintId}}: {{c.description}} </a>
                     		</div>
-                		</td>
-            		</tr>
-        		</table>
-    		</div>
-    		<div ng-show="node.type === 'component' && isSubDT(node.id)">
-        		<table>
-            		<tr ng-repeat="c in findDTByComponentId(node.id).conformanceStatements">
-                		<td>
-                    		<div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
+             		</p>
+     		</div>
+    		<div ng-show="node.type === 'component' && node.sub">
+             		<p ng-repeat="c in node.parent.datatype.conformanceStatements">
+                     		<div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
                         		{{c.constraintId}}: {{c.description}}
                     		</div>
-                		</td>
-            		</tr>
-        		</table>
-    		</div>
+             		</p>
+     		</div>
     		<div ng-show="node.type === 'datatype'">-</div>
 		</td>
         

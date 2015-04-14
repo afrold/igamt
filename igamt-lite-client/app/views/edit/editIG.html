@@ -69,6 +69,14 @@
                 </tab-heading>
                 <div ng-include="'views/edit/editValueSets.html'"></div>
             </tab>
+            <tab select="selectProfileTab(5)" active="profileTabs[5]">
+                <tab-heading>
+                    <!--<span class="badge">V</span>-->
+                    <i class="fa fa-book fa-fw"></i>
+                    ValueSets
+                </tab-heading>
+                <div ng-include="'views/edit/constraints.html'"></div>
+            </tab>
         </tabset>
         </div>
 

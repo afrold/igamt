@@ -14,7 +14,7 @@ angular.module('igl')
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent && parent!= null ? parent.children : $rootScope.message != null ? [$rootScope.message] : [];
+                    return parent && parent!= null ? parent.children : $rootScope.message != null ? $rootScope.message.children : [];
                 },
                 getTemplate: function (node) {
                     return 'MessageEditTree.html';

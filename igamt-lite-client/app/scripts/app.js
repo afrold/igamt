@@ -21,8 +21,8 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular'
-//        ,
-//        'ngMockE2E'
+        ,
+        'ngMockE2E'
      ]);
 
 var
@@ -531,19 +531,84 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     };
     
     $rootScope.recordChangeForEdit2 = function(type,command,id,valueType,value) {
-    	if($rootScope.changes[type] === undefined){
-            $rootScope.changes[type] = {};
+        var obj = $rootScope.findObjectInChanges(type, "add", id);
+        if (obj === undefined) { // not a new object
+            if ($rootScope.changes[type] === undefined) {
+                $rootScope.changes[type] = {};
+            }
+            if ($rootScope.changes[type][command] === undefined) {
+                $rootScope.changes[type][command] = [];
+            }
+            if (valueType !== type) {
+                var obj = $rootScope.findObjectInChanges(type, command, id);
+                if (obj === undefined) {
+                    obj = {id: id};
+                    $rootScope.changes[type][command].push(obj);
+                }
+                obj[valueType] = value;
+            } else {
+                $rootScope.changes[type][command].push(value);
+            }
         }
-        if($rootScope.changes[type][command] === undefined){
-            $rootScope.changes[type][command] = {};
+    };
+
+    $rootScope.recordDelete = function(type,command,id) {
+        if(id < 0){ // new object
+            $rootScope.removeObjectFromChanges(type, "add", id);
+        }else{
+            $rootScope.removeObjectFromChanges(type, "edit",id);
+            if ($rootScope.changes[type] === undefined) {
+                $rootScope.changes[type] = {};
+            }
+            if ($rootScope.changes[type][command] === undefined) {
+                $rootScope.changes[type][command] = [];
+            }
+
+            if ($rootScope.changes[type]["delete"] === undefined) {
+                $rootScope.changes[type]["delete"] = [];
+            }
+
+            $rootScope.changes[type]["delete"].push({id:id});
         }
-        if($rootScope.changes[type][command][id] === undefined){
-            $rootScope.changes[type][command][id] = {};
+
+        if($rootScope.changes[type]) {            //clean the changes object
+            if ($rootScope.changes[type]["add"] && $rootScope.changes[type]["add"].length === 0) {
+                delete  $rootScope.changes[type]["add"];
+            }
+            if ($rootScope.changes[type]["edit"] && $rootScope.changes[type]["edit"].length === 0) {
+                delete  $rootScope.changes[type]["edit"];
+            }
+
+            if (Object.getOwnPropertyNames($rootScope.changes[type]).length === 0) {
+                delete $rootScope.changes[type];
+            }
         }
-        if($rootScope.changes[type][command][id][valueType] === undefined){
-            $rootScope.changes[type][command][id][valueType] = {};
+    };
+
+
+
+    $rootScope.findObjectInChanges = function(type, command, id){
+        if($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
+            for (var i = 0; i < $rootScope.changes[type][command].length; i++) {
+                var tmp = $rootScope.changes[type][command][i];
+                if (tmp.id === id) {
+                    return tmp;
+                }
+            }
         }
-        $rootScope.changes[type][command][id][valueType] = value;
+        return undefined;
+    };
+
+    $rootScope.removeObjectFromChanges = function(type, command, id){
+        if($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
+            for (var i = 0; i < $rootScope.changes[type][command].length; i++) {
+                var tmp = $rootScope.changes[type][command][i];
+                if (tmp.id === id) {
+                     $rootScope.changes[type][command].splice(i, 1);
+                }
+            }
+        }
+        return undefined;
     };
 
 
@@ -581,11 +646,13 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
     $rootScope.processElement = function (element, parent) {
         if (element.type === "group" && element.children) {
+            element["parent"] = parent;
             element.children = $filter('orderBy')(element.children, 'position');
             angular.forEach(element.children, function (segmentRefOrGroup) {
                 $rootScope.processElement(segmentRefOrGroup,element);
             });
         } else if (element.type === "segmentRef") {
+            element["parent"] = parent;
             element.ref = $rootScope.segmentsMap[element.ref.id];
             element.ref["path"] =  element.ref.name;
             $rootScope.processElement(element.ref,element);
@@ -598,8 +665,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
                 });
             }
         } else if (element.type === "field" || element.type === "component") {
+            element["parent"] = parent;
             element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
             element["path"] = parent.path+"."+element.position;
+            element['sub'] = element.parent.type === 'component';
             if (angular.isDefined(element.table) && element.table != null) {
                 element["table"] = $rootScope.tablesMap[element.table.id];
                 if ($rootScope.tables.indexOf(element.table) === -1) {

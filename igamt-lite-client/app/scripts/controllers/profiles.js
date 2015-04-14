@@ -28,7 +28,7 @@ angular.module('igl')
 
             $scope.preloadedLoading = true;
 //            if (userInfoService.isAuthenticated()) {
-                $http.get($rootScope.api('api/profiles'), {timeout: 60000}).then(function (response) {
+                $http.get('api/profiles', {timeout: 60000}).then(function (response) {
                     $rootScope.preloadedIgs = angular.fromJson(response.data);
                     $scope.preloadedLoading = false;
                 }, function (error) {
