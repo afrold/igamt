@@ -343,7 +343,9 @@ angular.module('igl')
 			$scope.deletePredicateByTarget();
 			
 			var position_1 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);			
+			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+			var location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+			var location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 			
 			if(position_1 != null){
 				if($scope.newConstraint.contraintType === 'valued'){
@@ -354,7 +356,7 @@ angular.module('igl')
 							description : 'If ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<Presence Path=\"' + location_1 + '\"/>’
 						};
 					$rootScope.datatype.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
@@ -367,7 +369,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>’
 						};
 					$rootScope.datatype.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
@@ -380,7 +382,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>’
 						};
 					$rootScope.datatype.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
@@ -393,7 +395,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>’
 						};
 					$rootScope.datatype.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
@@ -406,7 +408,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 						};
 					$rootScope.datatype.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
@@ -425,12 +427,27 @@ angular.module('igl')
         	
         	return position;
         }
+        
+        $scope.genLocation = function(segment, field, component, subComponent){
+        	var location = null;
+        	if(field != null && component == null && subComponent == null){
+				location = field.position + '[1]';
+			}else if(field != null && component != null && subComponent == null){
+				location = field.position + '[1].' + component.position + '[1]';
+			}else if(field != null && component != null && subComponent != null){
+				location = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
+			}
+        	
+        	return location;
+        }
 		
 		$scope.addConformanceStatement = function() {
 			$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
 			
 			var position_1 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);			
+			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+			var location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+			var location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 			
 			if(position_1 != null){
 				if($scope.newConstraint.contraintType === 'valued'){
@@ -439,7 +456,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
-							assertion : null
+							assertion : '<Presence Path=\"' + location_1 + '\"/>’
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
@@ -450,7 +467,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
-							assertion : null
+							assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>’
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
@@ -461,7 +478,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
-							assertion : null
+							assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>’
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
@@ -472,7 +489,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
-							assertion : null
+							assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>’
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
@@ -483,7 +500,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
-							assertion : null
+							assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
