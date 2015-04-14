@@ -1,0 +1,45 @@
+<div class="container">
+    <div class="row" ng-show="isAuthenticated()">
+    <tabset>
+    <tab select="selectIgTab(0)" active="igTabs[0]">
+        <tab-heading>
+            <!--<span class="badge">1</span>-->
+            <i class="fa fa-file-text-o fa-fw"></i>
+            Implementation Guide List
+        </tab-heading>
+        <div ng-include="'views/edit/listIG.html'"></div>
+    </tab>
+
+    <tab select="selectIgTab(1)" active="igTabs[1]" disabled="{{profile === null}}">
+        <tab-heading>
+            <!--<span class="badge">1</span>-->
+            <i class="fa fa-file-text-o fa-fw"></i>
+            Edit Implementation Guide
+        </tab-heading>
+        <div ng-include="'views/edit/editIG.html'"></div>
+    </tab>
+
+</tabset>
+
+        </div>
+
+    <script type="text/ng-template" id="ConfirmProfileDeleteCtrl.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Delete Confirmation
+            </h3>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete the profile ? </p>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+            </button>
+            <button class="btn btn-danger" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+            </button>
+        </div>
+    </script>
+
+
+</div>
+

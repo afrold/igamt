@@ -187,7 +187,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public List<Profile> findAllPreloaded() {
-		List<Profile> profiles = profileRepository.findByPreloaded(true);
+		List<Profile> profiles = profileRepository.findPreloaded();
 		return profiles;
 	}
 
@@ -198,8 +198,8 @@ public class ProfileServiceImpl implements ProfileService {
 	// }
 
 	@Override
-	public List<Profile> findAllCustom() {
-		List<Profile> profiles = profileRepository.findByPreloaded(false);
+	public List<Profile> findByAccountId(Long accountId) {
+		List<Profile> profiles = profileRepository.findByAccountId(accountId);
 		// if (profiles != null && !profiles.isEmpty()) {
 		// for (Profile profile : profiles) {
 		// processChildren(profile);
@@ -602,9 +602,11 @@ public class ProfileServiceImpl implements ProfileService {
 					for (Object obj : objArr) {
 						Cell cell = (Cell) row.createCell(cellnum++);
 						if (obj instanceof String)
-							((org.apache.poi.ss.usermodel.Cell) cell).setCellValue((String) obj);
+							((org.apache.poi.ss.usermodel.Cell) cell)
+									.setCellValue((String) obj);
 						else if (obj instanceof Integer)
-							((org.apache.poi.ss.usermodel.Cell) cell).setCellValue((Integer) obj);
+							((org.apache.poi.ss.usermodel.Cell) cell)
+									.setCellValue((Integer) obj);
 					}
 				}
 				FileOutputStream out = new FileOutputStream(tmpxslxFile);
@@ -681,8 +683,9 @@ public class ProfileServiceImpl implements ProfileService {
 			float columnWidths[];
 			List<List<String>> rows;
 
-			//File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
-			File tmpPdfFile = new File("/Users/marieros/Documents/testXslt/profile.pdf");
+			// File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+			File tmpPdfFile = new File(
+					"/Users/marieros/Documents/testXslt/profile.pdf");
 
 			Document document1 = new Document();
 			PdfWriter writer1 = PdfWriter.getInstance(document1,
@@ -1014,9 +1017,9 @@ public class ProfileServiceImpl implements ProfileService {
 							+ String.valueOf(f.getMax()) + "]",
 					"",
 					"[" + String.valueOf(f.getMinLength()) + ","
-							+ String.valueOf(f.getMaxLength()) + "]",
-					(String) ((f.getTable() == null) ? "" : f.getTable()
-							.getMappingId()), f.getComment());
+							+ String.valueOf(f.getMaxLength()) + "]", (f
+							.getTable() == null) ? "" : f.getTable()
+							.getMappingId(), f.getComment());
 			rows.add(row);
 
 			List<Constraint> constraints = this.findConstraints(

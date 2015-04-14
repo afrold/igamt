@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,9 +21,12 @@ public class Profile extends DataModel implements java.io.Serializable {
 	public Profile() {
 		super();
 		this.type = Constant.PROFILE;
+		scope = ProfileScope.PRELOADED;
 	}
 
-	@Id 
+	private ProfileScope scope;
+
+	@Id
 	private String id;
 
 	private ProfileMetaData metaData;
@@ -37,8 +39,7 @@ public class Profile extends DataModel implements java.io.Serializable {
 
 	private Tables tables;
 
-	@DBRef
-	private Author author;
+	private Long accountId;
 
 	protected String comment;
 
@@ -105,14 +106,6 @@ public class Profile extends DataModel implements java.io.Serializable {
 		this.version = version;
 	}
 
-	public Boolean getPreloaded() {
-		return preloaded;
-	}
-
-	public void setPreloaded(Boolean preloaded) {
-		this.preloaded = preloaded;
-	}
-
 	public String getComment() {
 		return comment;
 	}
@@ -143,6 +136,22 @@ public class Profile extends DataModel implements java.io.Serializable {
 
 	public void setTables(Tables tables) {
 		this.tables = tables;
+	}
+
+	public ProfileScope getScope() {
+		return scope;
+	}
+
+	public void setScope(ProfileScope scope) {
+		this.scope = scope;
+	}
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
 	}
 
 	@Override
@@ -221,4 +230,5 @@ public class Profile extends DataModel implements java.io.Serializable {
 		constraints.setGroups(gContext);
 		return constraints;
 	}
+
 }

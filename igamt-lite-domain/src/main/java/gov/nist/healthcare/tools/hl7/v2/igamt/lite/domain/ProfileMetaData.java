@@ -12,6 +12,10 @@ public class ProfileMetaData implements java.io.Serializable {
 
 	private String identifier;
 
+	private String subTitle;
+
+	private String version;
+
 	// //@NotNull
 	private String orgName;
 
@@ -24,6 +28,8 @@ public class ProfileMetaData implements java.io.Serializable {
 	private String hl7Version;
 
 	private String schemaVersion;
+
+	private String date;
 
 	private Set<String> encodings = new HashSet<String>();
 
@@ -97,6 +103,30 @@ public class ProfileMetaData implements java.io.Serializable {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+
+	public String getSubTitle() {
+		return subTitle;
+	}
+
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 }

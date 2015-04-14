@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('igl').directive('ehrrCheckEmail', [ '$resource',
+angular.module('igl').directive('igCheckEmail', [ '$resource',
     function ($resource) {
         return {
             restrict: 'AC',
             require: 'ngModel',
             link: function (scope, element, attrs, ctrl) {
-                var Email = $resource('/api/sooa/emails/:email', {email: '@email'});
+                var Email = $resource('api/sooa/emails/:email', {email: '@email'});
 
                 var EMAIL_REGEXP = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
 

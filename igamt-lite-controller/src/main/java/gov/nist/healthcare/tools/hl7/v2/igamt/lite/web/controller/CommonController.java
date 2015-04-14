@@ -24,7 +24,7 @@ public class CommonController {
 	Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
 	@ExceptionHandler(Exception.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public String exception(Exception ex) {
 		logger.debug(ex.getMessage());
 		return "ERROR:" + ex.getMessage();

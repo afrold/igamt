@@ -10,9 +10,15 @@
  */
 package gov.nist.healthcare.nht.acmgt.dto.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -26,10 +32,14 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
  */
 @Entity
 @JsonIgnoreProperties(value = "new", ignoreUnknown = true)
-public class Account extends AbstractPersistable<Long> {
+public class Account  implements Serializable {
 
 	private static final long serialVersionUID = 20130625L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	protected Long id;
+	
 	@Transient
 	private String registrationPassword;
 
@@ -53,16 +63,21 @@ public class Account extends AbstractPersistable<Long> {
 	private String email;
 
 	@Length(max = 100)
-	private String firstname;
-
-	@Length(max = 100)
-	private String lastname;
+	@Column(unique = true)
+	private String fullName;
 
 	@Length(max = 100)
 	private String phone;
 
 	@Length(max = 100)
-	private String company;
+	private String employer;
+	
+ 	@Length(max = 100)
+	private String title;
+	
+ 	@Length(max = 100)
+	private String juridiction;
+	
 
 	private Boolean signedConfidentialityAgreement = false;
 
@@ -168,50 +183,7 @@ public class Account extends AbstractPersistable<Long> {
 		this.accountType = accountType;
 	}
 
-	/**
-	 * @return the firstname
-	 */
-	public String getFirstname() {
-		return firstname;
-	}
-
-	/**
-	 * @param firstname
-	 *            the firstname to set
-	 */
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	/**
-	 * @return the lastname
-	 */
-	public String getLastname() {
-		return lastname;
-	}
-
-	/**
-	 * @param lastname
-	 *            the lastname to set
-	 */
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
-	/**
-	 * @return the company
-	 */
-	public String getCompany() {
-		return company;
-	}
-
-	/**
-	 * @param company
-	 *            the company to set
-	 */
-	public void setCompany(String company) {
-		this.company = company;
-	}
+	 
 
 	/**
 	 * @return the signedConfidentialityAgreement
@@ -244,4 +216,46 @@ public class Account extends AbstractPersistable<Long> {
 		this.pending = pending;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getEmployer() {
+		return employer;
+	}
+
+	public void setEmployer(String employer) {
+		this.employer = employer;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getJuridiction() {
+		return juridiction;
+	}
+
+	public void setJuridiction(String juridiction) {
+		this.juridiction = juridiction;
+	}
+
+	
+	
 }

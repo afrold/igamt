@@ -10,9 +10,13 @@
  */
 package gov.nist.healthcare.nht.acmgt.dto.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -28,10 +32,14 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
  */
 @Entity
 @JsonIgnoreProperties(value = "new", ignoreUnknown = true)
-public class Issue extends AbstractPersistable<Long> {
+public class Issue implements Serializable {
 
 	private static final long serialVersionUID = 20130625L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	protected Long id;
+	
 	@NotEmpty
 	@Length(max = 255)
 	private String title;
@@ -195,4 +203,16 @@ public class Issue extends AbstractPersistable<Long> {
 		this.resolutionTimeStamp = resolutionTimeStamp;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	
+	
+	
+	
 }

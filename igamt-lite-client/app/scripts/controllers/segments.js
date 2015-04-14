@@ -41,15 +41,17 @@ angular.module('igl')
         };
 //
         $scope.select = function (segment) {
+            if(segment) {
 //            waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
-            $rootScope.segment = segment;
-            $rootScope.segment["type"] = "segment";
+                $rootScope.segment = segment;
+                $rootScope.segment["type"] = "segment";
 //             $scope.segmentCopy = {};
 //            $scope.segmentCopy = angular.copy(segment,$scope.segmentCopy);
-            if ($scope.params)
-                $scope.params.refresh();
-            $scope.loadingSelection = false;
+                if ($scope.params)
+                    $scope.params.refresh();
+                $scope.loadingSelection = false;
 //            waitingDialog.hide();
+            }
         };
 
         $scope.reset = function () {
@@ -97,7 +99,7 @@ angular.module('igl')
         $scope.deleteTable = function (node) {
         	node.table = null;
         	$rootScope.recordChange(node,'table');
-        }
+        };
         
         $scope.showTableMapModal = false;
         
@@ -119,23 +121,25 @@ angular.module('igl')
 			$scope.selectedTable = table;
 			$scope.displayedCodeCollection = [].concat($scope.selectedTable.codes);
 	        
-		}
+		};
 		
 		$scope.mappingTable = function(){
 			$scope.selectedNode.table = $scope.selectedTable;
 			$rootScope.recordChange($scope.selectedNode,'table');
 			$scope.showTableMapModal = false;
-		}
+		};
 		
 		$scope.findDTByComponentId = function(componentId){
 			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
+				if($rootScope.datatypes[i].children != undefined){
 				for(var j=0, len2 = $rootScope.datatypes[i].children.length; j<len2;j++ ){
 					if($rootScope.datatypes[i].children[j].id == componentId)
 						return $rootScope.datatypes[i];
 				}
+				}
 			}
 			return null;
-		}
+		};
 		
 		$scope.findDTByLabel = function(label){
 			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
@@ -143,7 +147,7 @@ angular.module('igl')
 					return $rootScope.datatypes[i];
 			}
 			return null;
-		}
+		};
 		
 		$scope.showPredicateManagerModal = false;
 		$scope.showConformanceStatementManagerModal = false;

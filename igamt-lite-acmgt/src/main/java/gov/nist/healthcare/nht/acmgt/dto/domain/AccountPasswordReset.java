@@ -12,10 +12,14 @@ package gov.nist.healthcare.nht.acmgt.dto.domain;
 
 import gov.nist.healthcare.nht.acmgt.general.UserUtil;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -29,11 +33,17 @@ import org.springframework.security.crypto.codec.Base64;
  */
 @Entity
 @JsonIgnoreProperties(value = "new", ignoreUnknown = true)
-public class AccountPasswordReset extends AbstractPersistable<Long> {
+public class AccountPasswordReset implements Serializable  {
 
 	private static final long serialVersionUID = 20130625L;
 	public static final Long tokenValidityTimeInMilis = 172800000L;
 
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	protected Long id;
+	
+	
 	@Column(unique = true)
 	private String username;
 
@@ -102,6 +112,14 @@ public class AccountPasswordReset extends AbstractPersistable<Long> {
 	 */
 	public void setNumberOfReset(Long numberOfReset) {
 		this.numberOfReset = numberOfReset;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public boolean isTokenExpired() {

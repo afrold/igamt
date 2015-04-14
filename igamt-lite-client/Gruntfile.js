@@ -18,7 +18,9 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: '../igamt-lite-controller/src/main/webapp'
+//      dist: 'dist'
+
   };
 
   // Define the configuration for all the tasks
@@ -219,7 +221,8 @@ module.exports = function (grunt) {
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
           '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.dist %>/styles/fonts/*'
+          '<%= yeoman.dist %>/styles/fonts/*',
+          '<%= yeoman.dist %>/fonts/*'
         ]
       }
     },
@@ -245,7 +248,7 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
+      html: ['<%= yeoman.dist %>/{,*/}*.html', '<%= yeoman.dist %>/views/**/*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
         assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images']
@@ -359,7 +362,6 @@ module.exports = function (grunt) {
               'images/**/*',
               'styles/fonts/{,*/}*.*',
               'styles/font-awesome*.css',
-              'styles/custom.css',
               'lang/*',
               'documents/*'
           ]

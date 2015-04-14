@@ -91,7 +91,6 @@ public class ProfileControllerIntegrationTest {
 			Profile p = new ProfileSerializationImpl().deserializeXMLToProfile(
 					xmlContentsProfile, xmlValueSet, xmlConstraints);
 
-			p.setPreloaded(true);
 			return p;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -100,5 +99,4 @@ public class ProfileControllerIntegrationTest {
 
 		return null;
 	}
-
 }

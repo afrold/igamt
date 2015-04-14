@@ -32,7 +32,7 @@ public interface ProfileService {
 
 	public List<Profile> findAllPreloaded();
 
-	public List<Profile> findAllCustom();
+	public List<Profile> findByAccountId(Long accountId);
 
 	public Profile clone(Profile p);
 

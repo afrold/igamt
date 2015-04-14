@@ -21,16 +21,13 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular'
-        ,
-        'ngMockE2E'
+//        ,
+//        'ngMockE2E'
      ]);
 
 var
 //the HTTP headers to be used by all requests
     httpHeaders,
-
-//the message to be shown to the user
-    msg,
 
 //the message to show on the login popup page
     loginMessage,
@@ -39,8 +36,10 @@ var
     spinner,
 
 //The list of messages we don't want to displat
-    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess'];
+    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded'];
 
+//the message to be shown to the user
+var msg = {};
 
 app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 
@@ -52,8 +51,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
         .when('/home', {
             templateUrl: 'views/home.html'
         })
-        .when('/profiles', {
-            templateUrl: 'views/dashboard.html'
+        .when('/ig', {
+            templateUrl: 'views/ig.html'
         })
         .when('/doc', {
             templateUrl: 'views/doc.html'
@@ -87,9 +86,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
                     return LoginService();
                 }]
             }
-        }).when('/registerUser', {
-            templateUrl: 'views/registerUser.html',
-            controller: 'RegisterUserCtrl'
         })
         .when('/registerResetPassword', {
             templateUrl: 'views/account/registerResetPassword.html',
@@ -109,54 +105,46 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
                 }
             }
         })
-        .when('/vendors', {
+        .when('/authors', {
             templateUrl: 'views/account/manageAccounts.html',
             controller: 'ManageAccountsCtrl',
             resolve: {
                 accountType: function() {
-                    return 'authorizedVendor';
+                    return 'author';
                 },
-                accountList:  ['MultiVendorsCEHRTsLoader', function(MultiVendorsCEHRTsLoader) {
-                    return MultiVendorsCEHRTsLoader();
+                accountList:  ['MultiAuthorsLoader', function(MultiAuthorsLoader) {
+                    return MultiAuthorsLoader();
                 }]
             }
-        })
-        .when('/providers', {
+        }) .when('/supervisors', {
             templateUrl: 'views/account/manageAccounts.html',
             controller: 'ManageAccountsCtrl',
             resolve: {
                 accountType: function() {
-                    return 'provider';
+                    return 'supervisor';
                 },
-                accountList:  ['MultiProvidersCEHRTsLoader', function(MultiProvidersCEHRTsLoader) {
-                    return MultiProvidersCEHRTsLoader();
+                accountList:  ['MultiSupervisorsLoader', function(MultiSupervisorsLoader) {
+                    return MultiSupervisorsLoader();
                 }]
             }
+        }).when('/registrationSubmitted', {
+            templateUrl: 'views/account/registrationSubmitted.html'
         })
         .otherwise({
             redirectTo: '/'
         });
 
-//    RestangularProvider.setBaseUrl('/api/');
-//
-//    RestangularProvider.addElementTransformer('profiles', false, function (profile) {
-//        profile.addRestangularMethod('clone', 'post', 'clone');
-//        return profile;
-//    });
-
-
+//    $http.defaults.headers.post['X-CSRFToken'] = $cookies['csrftoken'];
 
     $httpProvider.interceptors.push(function ($q) {
         return {
-            'request': function (config) {
+            request: function (config) {
 //                return "http://localhost:8080/igl-api"+ value;
-                if(config.url.startsWith("/api")){
-//                    config.url = "http://localhost:8080/igl-api"+  config.url;
+                if(config.url.startsWith("api")){
+//                    config.url = "http://localhost:8080/igl-api/"+  config.url;
                  }
                 return config || $q.when(config);
-
             }
-
         }
     });
 
@@ -164,10 +152,10 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 
 //    $httpProvider.interceptors.push('503Interceptor');
 //    $httpProvider.interceptors.push('sessionTimeoutInterceptor');
-    $httpProvider.interceptors.push(['$rootScope', '$q', function ($rootScope, $q) {
+    $httpProvider.interceptors.push(function ($rootScope, $q) {
         var setMessage = function (response) {
             //if the response has a text and a type property, it is a message to be shown
-            if (response.data.text && response.data.type) {
+            if (response.data && response.data.text && response.data.type) {
 
 //                    console.log("received message of some type");
 //                    console.log("response.status"+response.status);
@@ -217,70 +205,131 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
                 }
             }
         };
-        return function (promise) {
-            return promise.then(
-                //this is called after each successful server request
-                function (response) {
-                    setMessage(response);
-                    return response;
-                },
-                //this is called after each unsuccessful server request
-                function (response) {
-                    setMessage(response);
-                    return $q.reject(response);
-                }
-            );
+
+        return {
+            response: function (response) {
+                setMessage(response);
+                return response || $q.when(response);
+            },
+
+            responseError: function (response) {
+                setMessage(response);
+                return $q.reject(response);
+            }
         };
-    }]);
+
+
+//        return function (promise) {
+//            return promise.then(
+//                //this is called after each successful server request
+//                function (response) {
+//                    setMessage(response);
+//                    return response;
+//                },
+//                //this is called after each unsuccessful server request
+//                function (response) {
+//                    setMessage(response);
+//                    return $q.reject(response);
+//                }
+//            );
+//        };
+    });
 
     //configure $http to show a login dialog whenever a 401 unauthorized response arrives
-    $httpProvider.interceptors.push(['$rootScope', '$q', function ($rootScope, $q) {
-        return function (promise) {
-            return promise.then(
-                //success -> don't intercept
-                function (response) {
-                    return response;
-                },
-                //error -> if 401 save the request and broadcast an event
-                function (response) {
-                    if (response.status === 401) {
-                        //We catch everything but this one. So public users are not bothered
-                        //with a login windows when browsing home.
-                        if ( response.config.url !== 'api/accounts/cuser') {
-                            //We don't intercept this request
-                            var deferred = $q.defer(),
-                                req = {
-                                    config: response.config,
-                                    deferred: deferred
-                                };
-                            $rootScope.requests401.push(req);
-                            $rootScope.$broadcast('event:loginRequired');
-                            return deferred.promise;
-                        }
+    $httpProvider.interceptors.push(function ($rootScope, $q) {
+
+
+        return {
+            response: function (response) {
+                return response   || $q.when(response);
+            },
+            responseError: function (response) {
+                if (response.status === 401) {
+                    //We catch everything but this one. So public users are not bothered
+                    //with a login windows when browsing home.
+                    if ( response.config.url !== 'api/accounts/cuser') {
+                        //We don't intercept this request
+                        var deferred = $q.defer(),
+                            req = {
+                                config: response.config,
+                                deferred: deferred
+                            };
+                        $rootScope.requests401.push(req);
+                        $rootScope.$broadcast('event:loginRequired');
+//                        return deferred.promise;
+
+                        return  $q.when(response);
                     }
-                    return $q.reject(response);
                 }
-            );
+                return $q.reject(response);
+            }
         };
-    }]);
+
+
+
+//
+//        return function (promise) {
+//            return promise.then(
+//                //success -> don't intercept
+//                function (response) {
+//                    return response;
+//                },
+//                //error -> if 401 save the request and broadcast an event
+//                function (response) {
+//                    if (response.status === 401) {
+//                        //We catch everything but this one. So public users are not bothered
+//                        //with a login windows when browsing home.
+//                        if ( response.config.url !== 'api/accounts/cuser') {
+//                            //We don't intercept this request
+//                            var deferred = $q.defer(),
+//                                req = {
+//                                    config: response.config,
+//                                    deferred: deferred
+//                                };
+//                            $rootScope.requests401.push(req);
+//                            $rootScope.$broadcast('event:loginRequired');
+//                            return deferred.promise;
+//                        }
+//                    }
+//                    return $q.reject(response);
+//                }
+//            );
+//        };
+    });
 
     //intercepts ALL angular ajax http calls
-    $httpProvider.interceptors.push(['$q', '$window', function ($q, $window) {
-        return function (promise) {
-            return promise.then(
-                function (response) {
-                    //hide the spinner
-                    spinner = false;
-                    return response;
-                },
-                function (response) {
-                    //hide the spinner
-                    spinner = false;
-                    return $q.reject(response);
-                }
-            );
+    $httpProvider.interceptors.push(function ($q) {
+//        return function (promise) {
+//            return promise.then(
+//                function (response) {
+//                    //hide the spinner
+//                    spinner = false;
+//                    return response;
+//                },
+//                function (response) {
+//                    //hide the spinner
+//                    spinner = false;
+//                    return $q.reject(response);
+//                }
+//            );
+//        };
+
+        return {
+            response: function (response) {
+                //hide the spinner
+                spinner = false;
+                return response   || $q.when(response);
+            },
+
+            responseError: function (response) {
+                //hide the spinner
+                spinner = false;
+                return $q.reject(response);
+            }
         };
-    }]);
+
+
+    });
 
     var spinnerStarter = function (data, headersGetter) {
         spinner = true;
@@ -295,9 +344,9 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 
 app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,userInfoService,$http) {
     $rootScope.readonly = false;
-    $rootScope.profile = {}; // current profile
+    $rootScope.profile = null; // current profile
     $rootScope.message = null; // current message
-    $rootScope.datatype = {}; // current datatype
+    $rootScope.datatype = null; // current datatype
     $rootScope.statuses = ['Draft', 'Active', 'Superceded', 'Withdrawn'];
     $rootScope.hl7Versions = ['2.0', '2.1', '2.2', '2.3', '2.3.1', '2.4', '2.5', '2.5.1', '2.6', '2.7', '2.8'];
     $rootScope.schemaVersions = ['1.0', '1.5', '2.0', '2.5'];
@@ -324,6 +373,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.newTable = {};
     $rootScope.segment = null;
     $rootScope.profileTabs = new Array();
+    $rootScope.igTabs = new Array();
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifyDtTreeUpdate = '0'; // TODO: FIXME
@@ -346,6 +396,12 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         $rootScope.profileTabs[4] = false;
         $rootScope.profileTabs[5] = false;
         $rootScope.profileTabs[value] = true;
+    };
+
+    $rootScope.selectIgTab = function (value) {
+        $rootScope.igTabs[0] = false;
+        $rootScope.igTabs[1] = false;
+        $rootScope.igTabs[value] = true;
     };
 
     $rootScope.initMaps = function () {
@@ -433,7 +489,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
 
 
-    Restangular.setBaseUrl('/api/');
+    Restangular.setBaseUrl('api/');
 //    Restangular.setResponseExtractor(function(response, operation) {
 //        return response.data;
 //    });
@@ -592,11 +648,13 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.$on('event:loginRequest', function (event, username, password) {
         httpHeaders.common['Accept'] = 'application/json';
         httpHeaders.common['Authorization'] = 'Basic ' + base64.encode(username + ':' + password);
-        $http.get( $rootScope.api('/api/accounts/login')).success(function() {
+//        httpHeaders.common['withCredentials']=true;
+//        httpHeaders.common['Origin']="http://localhost:9000";
+        $http.get('api/accounts/login').success(function() {
             //If we are here in this callback, login was successfull
             //Let's get user info now
             httpHeaders.common['Authorization'] = null;
-            $http.get( $rootScope.api('/api/accounts/cuser')).success(function (data) {
+            $http.get('api/accounts/cuser').success(function (data) {
                 userInfoService.setCurrentUser(data);
                 $rootScope.$broadcast('event:loginConfirmed');
             });

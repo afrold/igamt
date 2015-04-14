@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('igl').directive('ehrrCheckUsername', [ '$resource',
+angular.module('igl').directive('igCheckUsername', [ '$resource',
 	function ($resource) {
 	    return {
 	        restrict: 'AC',
 	        require: 'ngModel',
 	        link: function (scope, element, attrs, ctrl) {
-	            var Username = $resource('/api/sooa/usernames/:username', {username: '@username'});
+	            var Username = $resource('api/sooa/usernames/:username', {username: '@username'});
 
 	            element.on('keyup', function() {
 	                if ( element.val().length >= 4 ) {

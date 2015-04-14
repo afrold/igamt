@@ -14,8 +14,7 @@ public class CSRFHandlerInterceptor implements HandlerInterceptor {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	@Autowired
-	CSRFTokenManager csrfTokenManager;
+ 	private CSRFTokenManager csrfTokenManager;
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, 
@@ -75,4 +74,16 @@ public class CSRFHandlerInterceptor implements HandlerInterceptor {
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {}
 
+	public CSRFTokenManager getCsrfTokenManager() {
+		return csrfTokenManager;
+	}
+
+	public void setCsrfTokenManager(CSRFTokenManager csrfTokenManager) {
+		this.csrfTokenManager = csrfTokenManager;
+	}
+	
+	
+	
+	
+	
 }

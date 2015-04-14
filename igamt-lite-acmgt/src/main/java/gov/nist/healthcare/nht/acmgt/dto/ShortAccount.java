@@ -30,16 +30,13 @@ public class ShortAccount implements Serializable {
 
 	private Long id;
 
-	private String firstname;
-	private String lastname;
-
+	private String fullName;
 	private String phone;
-	private String company;
-
-	// private List<CehrTechnology> cehrTechnologies;
-
+	private String employer;
+	private String juridiction;
 	private String username;
 	private String accountType;
+	private String title;
 
 	/**
 	 * @return the email
@@ -56,36 +53,7 @@ public class ShortAccount implements Serializable {
 		this.email = email;
 	}
 
-	/**
-	 * @return the firstname
-	 */
-	public String getFirstname() {
-		return firstname;
-	}
-
-	/**
-	 * @param firstname
-	 *            the firstname to set
-	 */
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-
-	/**
-	 * @return the lastname
-	 */
-	public String getLastname() {
-		return lastname;
-	}
-
-	/**
-	 * @param lastname
-	 *            the lastname to set
-	 */
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
+	 
 	/**
 	 * @return the phone
 	 */
@@ -101,21 +69,8 @@ public class ShortAccount implements Serializable {
 		this.phone = phone;
 	}
 
-	/**
-	 * @return the company
-	 */
-	public String getCompany() {
-		return company;
-	}
-
-	/**
-	 * @param company
-	 *            the company to set
-	 */
-	public void setCompany(String company) {
-		this.company = company;
-	}
-
+	 
+	 
 	/**
 	 * @return the id
 	 */
@@ -163,5 +118,41 @@ public class ShortAccount implements Serializable {
 	public void setAccountType(String accountType) {
 		this.accountType = accountType;
 	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getEmployer() {
+		return employer;
+	}
+
+	public void setEmployer(String employer) {
+		this.employer = employer;
+	}
+
+	public String getJuridiction() {
+		return juridiction;
+	}
+
+	public void setJuridiction(String juridiction) {
+		this.juridiction = juridiction;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	
+	
+	
 
 }

@@ -24,6 +24,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -62,9 +63,10 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		profile.setComment(((String) source.get("comment")));
 		profile.setType(((String) source.get("type")));
 		profile.setUsageNote(((String) source.get("usageNote")));
-		profile.setPreloaded(((Boolean) source.get("preloaded")));
+		profile.setScope(ProfileScope.valueOf(((String) source.get("scope"))));
 		profile.setVersion(((Integer) source.get("version")));
 		profile.setChanges(((String) source.get("changes")));
+		profile.setAccountId(((Long) source.get("accountId")));
 		profile.setMetaData(metaData((DBObject) source.get("metaData")));
 		profile.setTables(tables((DBObject) source.get("tables")));
 		profile.setDatatypes(datatypes((DBObject) source.get("datatypes"),
@@ -85,6 +87,10 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		metaData.setType(((String) source.get("type")));
 		metaData.setHl7Version(((String) source.get("hl7Version")));
 		metaData.setSchemaVersion(((String) source.get("schemaVersion")));
+		metaData.setSubTitle(((String) source.get("subTitle")));
+		metaData.setVersion(((String) source.get("version")));
+		metaData.setDate(((String) source.get("datew")));
+
 		Set<String> encodings = new HashSet<String>();
 		Object encodingObj = source.get("encodings");
 		BasicDBList encodingDBObjects = (BasicDBList) encodingObj;
@@ -455,7 +461,10 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			message.setPosition((Integer) child.get("position"));
 			message.setStructID((String) child.get("structID"));
 			message.setType((String) child.get("type"));
-			message.setUsageNote((String) child.get("usageNote"));
+			message.setVersion((String) child.get("version"));
+			message.setDate((String) child.get("date"));
+			message.setOid((String) child.get("oid"));
+
 			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child
 					.get("children");
 			for (Object segmentRefOrGroupObject : segmentRefOrGroupDBObjects) {

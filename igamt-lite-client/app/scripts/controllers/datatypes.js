@@ -176,7 +176,7 @@ angular.module('igl')
         $scope.deleteTable = function (node) {
         	node.table = null;
         	$rootScope.recordChange(node,'table');
-        }
+        };
         
         $scope.showTableMapModal = false;
         
@@ -198,7 +198,7 @@ angular.module('igl')
 			$scope.selectedTable = table;
 			$scope.displayedCodeCollection = [].concat($scope.selectedTable.codes);
 	        
-		}
+		};
 		
 		$scope.mappingTable = function(){
 			$scope.selectedNode.table = $scope.selectedTable;
@@ -223,7 +223,6 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
-
         // remove any change made to components
         if($scope.dtToDelete.components != undefined && $scope.dtToDelete.components != null && $scope.dtToDelete.components.length > 0){
             angular.forEach($scope.dtToDelete.components, function (component) {
@@ -232,11 +231,9 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
                 }
             });
         }
-
         if( $rootScope.changes['component'] && Object.getOwnPropertyNames($rootScope.changes['component']).length === 0){
             delete $rootScope.changes['component'];
         }
-
         // remove any change made to datatype
         if($rootScope.changes['datatype'] != undefined  && $rootScope.changes['datatype'][$scope.dtToDelete.id] != undefined){
             if($scope.dtToDelete.id < 0){
@@ -251,18 +248,15 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
 
         var index = $rootScope.datatypes.indexOf($scope.dtToDelete);
         if (index > -1) $rootScope.datatypes.splice(index, 1);
-
-        $rootScope.generalInfo.type = 'info';
-        $rootScope.generalInfo.message = "Datatype " + $scope.dtToDelete.label + " deleted successfully";
-
+        $rootScope.msg().text =  "dtDeletSuccess";
+        $rootScope.msg().type="success";
+        $rootScope.msg().show = true;
+        $rootScope.manualHandle = true;
         if($rootScope.datatype === $scope.dtToDelete){
             $rootScope.datatype = null;
         }
-
         $rootScope.references = [];
         $modalInstance.close($scope.dtToDelete);
-
-
 
     };
 

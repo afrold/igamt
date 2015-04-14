@@ -79,18 +79,88 @@
             <div class="col-sm-6">
                 <div class="form-group"
                      ng-class="{'has-error' : messageMetaDataForm.identifier.$invalid && !messageMetaDataForm.identifier.$pristine }">
-                    <label>Identifier</label>
+                    <label>Profile Identifier</label>
                     <input type="text"
                            ng-change="recordChange2('message',message.id,'identifier', message.identifier)"
                            name="identifier" class="form-control" ng-model="message.identifier"
                            required>
                 </div>
+
                 <div class="form-group">
-                    <label>Description</label>
+                    <label>Profile OID</label>
                     <input type="text"
-                           ng-change="recordChange2('message',message.id,'description', message.description)"
-                           name="structID" class="form-control" ng-model="message.description"
+                           ng-change="recordChange2('message',message.id,'oid', message.oid)"
+                           name="oid" class="form-control" ng-model="message.oid"
                            required>
+                </div>
+
+                <div class="form-group">
+                    <label>IGAMT ID</label>
+                    <input type="text" disabled
+                           ng-change="recordChange2('message',message.id,'id', message.id)"
+                           name="id" class="form-control" ng-model="message.id"
+                           required>
+                </div>
+
+
+
+
+                <!--<div class="form-group">-->
+                    <!--<label>Description</label>-->
+                    <!--<input type="text"-->
+                           <!--ng-change="recordChange2('message',message.id,'description', message.description)"-->
+                           <!--name="structID" class="form-control" ng-model="message.description"-->
+                           <!--required>-->
+                <!--</div>-->
+
+                <!--<div class="form-group">-->
+                    <!--<label>Comment</label>-->
+                    <!--<input style="width:100%" class="igl-input" type="text"-->
+                           <!--name="comment"-->
+                           <!--ng-change="recordChange2('message',message.id,'comment', message.comment)"-->
+                           <!--ng-model="message.comment">-->
+
+                <!--</div>-->
+            </div>
+            <div class="col-sm-6">
+                <!--<div class="form-group"-->
+                     <!--ng-class="{'has-error' : messageMetaDataForm.type.$invalid && !messageMetaDataForm.type.$pristine }">-->
+                    <!--<label>Type</label>-->
+                    <!--<input type="text" name="type" class="form-control" ng-model="message.messageType"-->
+                           <!--required disabled>-->
+                <!--</div>-->
+
+                <!--<div class="form-group"-->
+                     <!--ng-class="{'has-error' : messageMetaDataForm.structID.$invalid && !messageMetaDataForm.structID.$pristine }">-->
+                    <!--<label>Struct ID</label>-->
+                    <!--<input type="text" name="structID" class="form-control" ng-model="message.structID"-->
+                           <!--required disabled>-->
+                <!--</div>-->
+
+                <!--<div class="form-group"-->
+                     <!--ng-class="{'has-error' : messageMetaDataForm.event.$invalid && !messageMetaDataForm.event.$pristine }">-->
+                    <!--<label>Event</label>-->
+                    <!--<input type="text" name="event" class="form-control" ng-model="message.event"-->
+                           <!--required disabled>-->
+                <!--</div>-->
+
+
+                <div class="form-group">
+                    <label>Profile Version</label>
+                    <input style="width:100%" class="igl-input" type="text"
+                           name="version"
+                           ng-change="recordChange2('message',message.id,'date', message.version)"
+                           ng-model="message.version">
+
+                </div>
+
+                <div class="form-group">
+                    <label>Profile Date</label>
+                    <input style="width:100%" class="igl-input" type="text"
+                           name="date"
+                           ng-change="recordChange2('message',message.id,'date', message.date)"
+                           ng-model="message.date">
+
                 </div>
 
                 <div class="form-group">
@@ -101,28 +171,8 @@
                            ng-model="message.comment">
 
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group"
-                     ng-class="{'has-error' : messageMetaDataForm.type.$invalid && !messageMetaDataForm.type.$pristine }">
-                    <label>Type</label>
-                    <input type="text" name="type" class="form-control" ng-model="message.messageType"
-                           required disabled>
-                </div>
 
-                <div class="form-group"
-                     ng-class="{'has-error' : messageMetaDataForm.structID.$invalid && !messageMetaDataForm.structID.$pristine }">
-                    <label>Struct ID</label>
-                    <input type="text" name="structID" class="form-control" ng-model="message.structID"
-                           required disabled>
-                </div>
 
-                <div class="form-group"
-                     ng-class="{'has-error' : messageMetaDataForm.event.$invalid && !messageMetaDataForm.event.$pristine }">
-                    <label>Event</label>
-                    <input type="text" name="event" class="form-control" ng-model="message.event"
-                           required disabled>
-                </div>
             </div>
         </div>
     </form>

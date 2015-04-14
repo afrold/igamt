@@ -35,6 +35,12 @@ public class Message extends DataModel implements java.io.Serializable {
 	// @Column(nullable = true, name = "MESSAGE_DESC")
 	private String description;
 
+	private String version;
+
+	private String date;
+
+	private String oid;
+
 	private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
 	// @DBRef
@@ -179,6 +185,30 @@ public class Message extends DataModel implements java.io.Serializable {
 			}
 		}
 		return null;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getOid() {
+		return oid;
+	}
+
+	public void setOid(String oid) {
+		this.oid = oid;
 	}
 
 	@Override

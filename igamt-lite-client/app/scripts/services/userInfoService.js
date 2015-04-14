@@ -2,7 +2,7 @@
 
 angular.module('igl').factory('userInfo', ['$resource',
     function ($resource) {
-        return $resource('/api/accounts/cuser');
+        return $resource('api/accounts/cuser');
     }
 ]);
 
@@ -31,7 +31,7 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
         var currentUser = null;
         var supervisor = false,
         authorizedVendor = false,
-        provider = false,
+        author = false,
         admin = false,
         id = null,
         username = '';
@@ -43,7 +43,7 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
 
             id = $cookieStore.get('userID');
             username = $cookieStore.get('username');
-            provider = $cookieStore.get('provider');
+            author = $cookieStore.get('author');
             supervisor = $cookieStore.get('supervisor');
             authorizedVendor = $cookieStore.get('authorizedVendor');
             admin = $cookieStore.get('admin');
@@ -52,7 +52,7 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
         var saveToCookie = function() {
             $cookieStore.put('accountID', id);
             $cookieStore.put('username', username);
-            $cookieStore.put('provider', provider);
+            $cookieStore.put('author', author);
             $cookieStore.put('supervisor', supervisor);
             $cookieStore.put('authorizedVendor', authorizedVendor);
             $cookieStore.put('admin', admin);
@@ -61,7 +61,7 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
         var clearCookie = function() {
             $cookieStore.remove('accountID');
             $cookieStore.remove('username');
-            $cookieStore.remove('provider');
+            $cookieStore.remove('author');
             $cookieStore.remove('supervisor');
             $cookieStore.remove('authorizedVendor');
             $cookieStore.remove('admin');
@@ -96,17 +96,17 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             return admin;
         };
 
-        var isProvider = function() {
-            return provider;
+        var isAuthor = function() {
+            return author;
         };
 
-        var isAuthorizedVendor = function() {
-            return authorizedVendor;
-        };
-
-        var isCustomer = function() {
-            return (provider || authorizedVendor);
-        };
+//        var isAuthorizedVendor = function() {
+//            return authorizedVendor;
+//        };
+//
+//        var isCustomer = function() {
+//            return (author || authorizedVendor);
+//        };
 
         var isSupervisor = function() {
             return supervisor;
@@ -145,14 +145,14 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
                             admin = true;
                             //console.log("admin found");
                             break;
-                        case 'provider':
-                            provider = true;
-                            //console.log("provider found");
+                        case 'author':
+                            author = true;
+                            //console.log("author found");
                             break;
-                        case 'authorizedVendor':
-                            authorizedVendor = true;
-                            //console.log("authorizedVendor found");
-                            break;
+//                        case 'authorizedVendor':
+//                            authorizedVendor = true;
+//                            //console.log("authorizedVendor found");
+//                            break;
                         case 'supervisor':
                             supervisor = true;
                             //console.log("supervisor found");
@@ -166,7 +166,7 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             }
             else {
                 supervisor = false;
-                provider = false;
+                author = false;
                 admin = false;
                 authorizedVendor = false;
                 //clearCookie();
@@ -184,9 +184,7 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             loadFromCookie: loadFromCookie,
             getAccountID: getAccountID,
             isAdmin: isAdmin,
-            isProvider: isProvider,
-            isAuthorizedVendor: isAuthorizedVendor,
-            isCustomer: isCustomer,
+            isAuthor: isAuthor,
             isAuthenticated: isAuthenticated,
             isSupervisor: isSupervisor,
             setCurrentUser: setCurrentUser,

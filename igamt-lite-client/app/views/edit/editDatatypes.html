@@ -79,9 +79,9 @@
             <thead>
             <tr class="tbl-header">
                 <!--<th></th>-->
-                <th st-sort="name">Name</th>
+                <th st-sort="label">Flavor</th>
+                <th st-sort="name">Base</th>
                 <th st-sort="description">Description</th>
-                <th st-sort="label">Label</th>
                 <th>
                 </th>
 
@@ -98,9 +98,9 @@
                 <!--<td cs-select="row"><input ng-click="select(row)"-->
                 <!--ng-checked="datatype != null && row.id == datatype.id"-->
                 <!--type="radio"></td>-->
+                <td ng-bind="row.label"></td>
                 <td ng-bind-html="row.name"></td>
                 <td ng-bind-html="row.description"></td>
-                <td ng-bind="row.label"></td>
 
                 <td>
                     <button title="Create Flavor" type="button" class="btn btn-xs btn-info"

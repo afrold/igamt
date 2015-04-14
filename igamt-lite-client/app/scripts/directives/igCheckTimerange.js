@@ -1,7 +1,7 @@
 'use strict';
 
 //This directive is used to make sure the start hour of a timerange is < of the end hour 
-angular.module('igl').directive('ehrCheckTimerange', [
+angular.module('igl').directive('igCheckTimerange', [
     function () {
         return {
             replace: true,

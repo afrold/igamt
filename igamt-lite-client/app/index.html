@@ -14,7 +14,7 @@
 
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <meta name="description" content="IGAMTLite">
+    <meta name="description" content="IGAMT">
     <meta name="author" content="NIST">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
@@ -24,7 +24,8 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">-->
+    <link rel="stylesheet" href="styles/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.css" />
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css" />
 
@@ -62,7 +63,7 @@
 
 
 
-<!-- build:js(.) scripts/vendor.js -->
+<!-- build:js(.) scripts/plugins.js -->
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.js"></script>
 <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -83,16 +84,18 @@
 <!-- endbower -->
 <!-- endbuild -->
 
+<!-- build:js scripts/modules.js -->
+<!--<script src="lib/angular-mocks/angular-mocks.js"></script>-->
+<script src="lib/utils.js"></script>
+<!--<script src="lib/profileBackEndStub.js"></script>-->
+<script src="lib/angular-treetable/js/jquery.treetable.js"></script>
+<script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
+<script src="lib/jquery.i18n.properties-1.0.9.js"></script>
+<!-- endbuild -->
+
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
 <script src="scripts/app.js"></script>
-<script src="lib/angular-mocks/angular-mocks.js"></script>
-<script src="lib/utils.js"></script>
-<script src="lib/profileBackEndStub.js"></script>
-<script src="lib/angular-treetable/js/jquery.treetable.js"></script>
-<script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
-<script src="scripts/extra/jquery.i18n.properties-1.0.9.js"></script>
-
 <script src="scripts/controllers/main.js"></script>
 <script src="scripts/controllers/about.js"></script>
 <script src="scripts/controllers/profiles.js"></script>
@@ -104,7 +107,6 @@
 <script src="scripts/directives/clickGo.js"></script>
 <script src="scripts/directives/modal.js"></script>
 <script src="scripts/services/profiles.js"></script>
-
 <script src="scripts/services/i18n.js"></script>
 <script src="scripts/directives/msg.js"></script>
 <script src="scripts/services/base64.js"></script>
@@ -112,14 +114,17 @@
 <script src="scripts/filters/yesno.js"></script>
 <script src="scripts/filters/bytes.js"></script>
 <script src="scripts/directives/focus.js"></script>
-<script src="scripts/directives/ehrPasswordValidate.js"></script>
-<script src="scripts/directives/ehrCheckPassword.js"></script>
-<script src="scripts/directives/ehrCheckPoaDate.js"></script>
-<script src="scripts/directives/ehrCheckTimerange.js"></script>
-<script src="scripts/directives/ehrrCheckUsername.js"></script>
-<script src="scripts/directives/ehrrCheckEmail.js"></script>
+<script src="scripts/directives/igPasswordValidate.js"></script>
+<script src="scripts/directives/igCheckPassword.js"></script>
+<script src="scripts/directives/igCheckPoaDate.js"></script>
+<script src="scripts/directives/igCheckTimerange.js"></script>
+<script src="scripts/directives/igCheckUsername.js"></script>
+<script src="scripts/directives/igCheckEmail.js"></script>
+<script src="scripts/directives/igCheckEmployer.js"></script>
+<script src="scripts/directives/igCheckTitle.js"></script>
+<script src="scripts/directives/igCheckJuridiction.js"></script>
 <script src="scripts/directives/validTrustDocument.js"></script>
-<script src="scripts/directives/ehrbold.js"></script>
+<script src="scripts/directives/igbold.js"></script>
 <script src="scripts/controllers/forgotten.js"></script>
 <script src="scripts/controllers/issue.js"></script>
 <script src="scripts/controllers/registration.js"></script>
