@@ -39,7 +39,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.Main;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -48,6 +51,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -91,21 +95,31 @@ import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
+import com.itextpdf.text.ExceptionConverter;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.html.WebColors;
 import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfImportedPage;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.mongodb.MongoException;
 
 @Service
-public class ProfileServiceImpl implements ProfileService {
+public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileService {
 
 	@Autowired
 	private ProfileRepository profileRepository;
@@ -562,10 +576,10 @@ public class ProfileServiceImpl implements ProfileService {
 			XSSFCellStyle headerStyle;
 			List<List<String>> rows;
 			List<String> header;
-			
+
 			headerStyle = workbook.createCellStyle();
 			headerStyle.setFillPattern(XSSFCellStyle.BORDER_THICK);
-            headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+			headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
 			headerStyle.setFillBackgroundColor(IndexedColors.LIGHT_BLUE.getIndex());
 
 			for (Message m : p.getMessages().getChildren()) {
@@ -631,7 +645,7 @@ public class ProfileServiceImpl implements ProfileService {
 		// Iterate over data and write to sheet
 		Set<String> keyset = data.keySet();
 		keyset = new TreeSet<String>(keyset);
-		
+
 		int rownum = 0;
 		for (String key : keyset) {
 			Row row = sheet.createRow(rownum++);
@@ -686,10 +700,65 @@ public class ProfileServiceImpl implements ProfileService {
 		}
 	}
 
+	private Document                 document;
+	private PdfWriter                writer;
+	private PdfWriter writer1;
+	private Font                     chapterFont    = FontFactory.getFont(FontFactory.HELVETICA, 24, Font.NORMAL);
+
+	// table to store placeholder for all chapters and sections
+	private Map<String, PdfTemplate> tocPlaceholder;
+
+	// store the chapters and sections with their title here.
+	private Map<String, Integer>     pageByTitle;
+
+	@Override
+	public void onChapter(final PdfWriter writer, final Document document, final float paragraphPosition, final Paragraph title)
+	{
+		this.pageByTitle.put(title.getContent(), writer.getPageNumber());
+	}
+
+	@Override
+	public void onSection(final PdfWriter writer, final Document document, final float paragraphPosition, final int depth, final Paragraph title)
+	{
+		this.pageByTitle.put(title.getContent(), writer.getPageNumber());
+	}
+
+	//@Override
+	public void onEndPage(PdfWriter writer, Document document) {
+		//        PdfPTable table = new PdfPTable(2);
+		//        try {
+		//            table.setWidths(new int[]{24, 24});
+		//            table.setTotalWidth(527);
+		//            table.setLockedWidth(true);
+		//            table.getDefaultCell().setFixedHeight(20);
+		//            table.getDefaultCell().setBorder(Rectangle.BOTTOM);
+		//            table.addCell("footer");
+		//            table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
+		//            table.addCell(String.format("Page %d", writer.getPageNumber()));
+		//            table.writeSelectedRows(0, -1, 34, 50, writer.getDirectContent());
+		//        }
+		//        catch(DocumentException de) {
+		//            throw new ExceptionConverter(de);
+		//        }    	
+	}
+
 	@Override
 	public InputStream exportAsPdf(Profile p) {
 
 		try {
+			//235124512461436461436346314713713473463
+			//TODO
+			File tmpTOCFile = File.createTempFile("ProfileTOCTmp", ".pdf");
+			this.document = new Document(PageSize.A4);
+			this.writer = PdfWriter.getInstance(this.document, FileUtils.openOutputStream(tmpTOCFile));
+			//this.writer.setPageEvent(this);
+			this.document.open();
+
+			tocPlaceholder = new HashMap<>();
+			pageByTitle    = new HashMap<>();
+			//235124512461436461436346314713713473463
+
+
 			// Create fonts and colors to be used in generated pdf
 			BaseColor headerColor = WebColors.getRGBColor("#0033CC");
 			BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
@@ -708,15 +777,35 @@ public class ProfileServiceImpl implements ProfileService {
 			float columnWidths[];
 			List<List<String>> rows;
 
-			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+			//TODO 
+			//
+			//			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");			
+			//			Document document1 = new Document();
+			//			writer1 = PdfWriter.getInstance(document1,
+			//					FileUtils.openOutputStream(tmpPdfFile));
+			//			this.writer1.setPageEvent(this);
 
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			Document document1 = new Document();
-			PdfWriter writer1 = PdfWriter.getInstance(document1,
-					FileUtils.openOutputStream(tmpPdfFile));
+			writer1 = PdfWriter.getInstance(document1, baos);
+			this.writer1.setPageEvent(this);
+
 
 			document1.setPageSize(PageSize.A4);
 			document1.setMargins(36f, 36f, 36f, 36f); // 72pt = 1 inch
 			document1.open();
+
+//			/*
+//			 * Adding messages definition
+//			 */
+//			document1.add(new Paragraph("Cover Page", titleFont));
+//			document1.add(new Paragraph("Profile title", titleFont));
+//			document1.add(new Paragraph("Profile identifier", titleFont));
+//			document1.add(Chunk.NEWLINE);
+//
+//			document1.newPage();
+//
+
 
 			/*
 			 * Adding messages definition
@@ -757,7 +846,7 @@ public class ProfileServiceImpl implements ProfileService {
 				document1.newPage();
 
 				document1.add(new Paragraph("Segments definition", titleFont));
-				document1.add(Chunk.NEWLINE);
+				document1.add(Chunk.NEWLINE);				
 
 				header = Arrays.asList("Seq", "Element Name", "DT",
 						"STD\nUsage", "Local\nUsage", "Std\nCard.",
@@ -837,11 +926,101 @@ public class ProfileServiceImpl implements ProfileService {
 			}
 
 			document1.close();
+			//23451251235125124512425214231523523	
+			//TODO
+			this.document.close();
+			//23451251235125124512425214231523523	
+
+
+			// SECOND PASS, ADD THE FOOTER
+			File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+
+			// Create a reader
+			PdfReader reader = new PdfReader(baos.toByteArray());
+			// Create a stamper
+			PdfStamper stamper
+			= new PdfStamper(reader, FileUtils.openOutputStream(tmpPdfFile));
+			// Loop over the pages and add a header to each page
+			int n = reader.getNumberOfPages();
+			for (int i = 1; i <= n; i++) {
+				getFooterTable("pname: "+p.getMetaData().getName(), i, n).writeSelectedRows(
+						0, -1, 34, 50, stamper.getOverContent(i));
+			}
+			stamper.close();
+			reader.close();
+			
+//
+//			// THIRD PASS
+//			//this.insertTOC(tmpTOCFile.getPath(), tmpPdfFile.getPath());
+//			
+//			String reader_ = tmpTOCFile.getPath(); 
+//			String stationery_ = tmpPdfFile.getPath();
+//			
+//	        List<InputStream> list = new ArrayList<InputStream>();
+//	        list.add(FileUtils.openInputStream(tmpTOCFile));
+//	        list.add(FileUtils.openInputStream(tmpPdfFile));
+//
+//
+//			File tmpFinalPdfFile = File.createTempFile("ProfileTmp", ".pdf");
+//	        Document documentf = new Document();
+//	        PdfWriter writer = PdfWriter.getInstance(documentf, FileUtils.openOutputStream(tmpFinalPdfFile));
+//	        documentf.open();
+//	        PdfContentByte cb = writer.getDirectContent();
+//	        for (InputStream in : list) {
+//	            PdfReader readerf = new PdfReader(in);
+//	            for (int i = 1; i <= readerf.getNumberOfPages(); i++) {
+//	                documentf.newPage();
+//	                //import the page from source pdf
+//	                PdfImportedPage page = writer.getImportedPage(readerf, i);
+//	                //add the page to the destination pdf
+//	                cb.addTemplate(page, 0, 0);
+//	            }
+//	        }
+//	        document.close();
+	        
+	        
+			
+//			reader = new PdfReader(reader_);
+//			PdfReader stationery = new PdfReader(stationery_);
+//			stamper = new PdfStamper(stationery, FileUtils.openOutputStream(tmpPdfFile));
+//			
+//			PdfImportedPage page = stamper.getImportedPage(stationery, 1);
+//			
+//			int i = 0;
+//			// Add the content of the ColumnText object 
+//			//while(true) {
+//				// Add a new page
+//				stamper.insertPage(++i, reader.getPageSize(1));
+//				// Add the stationary to the new page
+//				stamper.getUnderContent(i).addTemplate(page, 0, 0);
+//			//}
+//			// Close the stamper
+//			stamper.close();
+//			//reader.close();
+//			stationery.close();
+//
+
+
 			return FileUtils.openInputStream(tmpPdfFile);
+			
+			
 		} catch (DocumentException | IOException e) {
 			e.printStackTrace();
 			return new NullInputStream(1L);
 		}
+	}
+
+	
+	public PdfPTable getFooterTable(String footer, int x, int y) {
+		PdfPTable table = new PdfPTable(2);
+		table.setTotalWidth(527);
+		table.setLockedWidth(true);
+		table.getDefaultCell().setFixedHeight(20);
+		table.getDefaultCell().setBorder(Rectangle.TOP);
+		table.addCell(footer);
+		table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_RIGHT);
+		table.addCell(String.format("Page %d of %d", x, y));
+		return table;
 	}
 
 	private PdfPTable createHeader(List<String> headers, float[] columnWidths,
@@ -1004,6 +1183,56 @@ public class ProfileServiceImpl implements ProfileService {
 		ArrayList<List<String>> rows = new ArrayList<List<String>>();
 
 		Segment s = segRef.getRef();
+
+
+
+
+		//23451251235125124512425214231523523	
+		//TODO
+		//Create TOC
+		final String title = s.getName();
+		Chunk chunk = new Chunk(title).setLocalGoto(title);
+		this.document.add(new Paragraph(chunk));
+
+		// Add a placeholder for the page reference
+		this.document.add(new VerticalPositionMark() {
+			@Override
+			public void draw(final PdfContentByte canvas, final float llx, final float lly, final float urx, final float ury, final float y)
+			{
+				final PdfTemplate createTemplate = canvas.createTemplate(50, 50);
+				ProfileServiceImpl.this.tocPlaceholder.put(title, createTemplate);
+
+				canvas.addTemplate(createTemplate, urx - 50, y);
+			}
+		});
+
+		//TODO
+		//Create page numbers
+		PdfTemplate template = this.tocPlaceholder.get(title);
+		template.beginText();
+		//template.setFontAndSize(this.baseFont, 12);
+		//template.setTextMatrix(50 - this.baseFont.getWidthPoint(String.valueOf(this.writer.getPageNumber()), 12), 0);
+		BaseFont baseFont;
+		try {
+			baseFont = BaseFont.createFont();
+			template.setFontAndSize(baseFont, 12);
+			//			template.setTextMatrix(50 - baseFont.getWidthPoint(String.valueOf(this.writer.getPageNumber()), 12), 0);
+			//			template.showText(String.valueOf(this.writer.getPageNumber()));
+			template.setTextMatrix(50 - baseFont.getWidthPoint(String.valueOf(this.writer1.getPageNumber()), 12), 0);
+			template.showText(String.valueOf(this.writer1.getPageNumber()));
+			template.endText();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		//23451251235125124512425214231523523		
+
+
+
+
+
 		document.add(new Paragraph(s.getName() + ": " +
 				s.getDescription() + " Segment"));
 		document.add(Chunk.NEWLINE);
