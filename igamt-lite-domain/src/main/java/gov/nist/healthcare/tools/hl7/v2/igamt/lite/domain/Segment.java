@@ -12,7 +12,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "segment")
-public class Segment extends DataModel implements java.io.Serializable {
+public class Segment extends DataModel implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -202,6 +202,35 @@ public class Segment extends DataModel implements java.io.Serializable {
 
 	public void setText2(String text2) {
 		this.text2 = text2;
+	}
+	
+	@Override
+	public Segment clone() throws CloneNotSupportedException {
+		Segment clonedSegment = new Segment();
+		clonedSegment.setComment(comment);
+		clonedSegment.setConformanceStatements(new ArrayList<ConformanceStatement>());
+		for(ConformanceStatement cs:this.conformanceStatements){
+			clonedSegment.addConformanceStatement(cs.clone());
+		}
+		clonedSegment.setDescription(description);
+		clonedSegment.setDynamicMappings(new ArrayList<DynamicMapping>());
+		for(DynamicMapping dm:this.dynamicMappings){
+			clonedSegment.addDynamicMapping(dm.clone());
+		}
+		clonedSegment.setFields(new ArrayList<Field>());
+		for(Field f:this.fields){
+			clonedSegment.addField(f.clone());
+		}
+		clonedSegment.setLabel(label);
+		clonedSegment.setName(name);
+		clonedSegment.setPredicates(new ArrayList<Predicate>());
+		for(Predicate cp:this.predicates){
+			clonedSegment.addPredicate(cp.clone());
+		}
+		clonedSegment.setText1(text1);
+		clonedSegment.setText2(text2);
+
+		return clonedSegment;
 	}
 
 }

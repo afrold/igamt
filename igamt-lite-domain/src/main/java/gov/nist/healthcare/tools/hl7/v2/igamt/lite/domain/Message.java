@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "message")
-public class Message extends DataModel implements java.io.Serializable {
+public class Message extends DataModel implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -218,4 +218,33 @@ public class Message extends DataModel implements java.io.Serializable {
 				+ description + "]";
 	}
 
+	@Override
+	public Message clone() throws CloneNotSupportedException {
+		Message clonedMessage = new Message();
+		
+		clonedMessage.setChildren(new ArrayList<SegmentRefOrGroup>());
+		for(SegmentRefOrGroup srog:this.children){
+			if(srog instanceof Group){
+				Group g = (Group)srog;
+				clonedMessage.addSegmentRefOrGroup(g.clone());
+			}else if(srog instanceof SegmentRef){
+				SegmentRef sr = (SegmentRef)srog;
+				clonedMessage.addSegmentRefOrGroup(sr.clone());
+			}
+		}
+		
+		clonedMessage.setComment(comment);
+		clonedMessage.setDescription(description);
+		clonedMessage.setEvent(event);
+		clonedMessage.setIdentifier(identifier);
+		clonedMessage.setMessageType(messageType);
+		clonedMessage.setPosition(position);
+		clonedMessage.setStructID(structID);
+		clonedMessage.setUsageNote(usageNote);
+		clonedMessage.setDate(date);
+		clonedMessage.setOid(oid);
+		clonedMessage.setVersion(version);
+		
+		return clonedMessage;
+	}
 }

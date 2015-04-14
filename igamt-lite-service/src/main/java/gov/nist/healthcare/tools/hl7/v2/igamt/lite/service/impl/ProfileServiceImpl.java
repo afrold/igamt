@@ -215,7 +215,7 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public Profile clone(Profile p) {
+	public Profile clone(Profile p) throws CloneNotSupportedException {
 		return new ProfileClone().clone(p);
 	}
 

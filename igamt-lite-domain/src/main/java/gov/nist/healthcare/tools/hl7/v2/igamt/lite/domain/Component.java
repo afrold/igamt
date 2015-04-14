@@ -3,7 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
-public class Component extends DataElement {
+public class Component extends DataElement implements Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -24,11 +24,6 @@ public class Component extends DataElement {
 				+ ", table=" + table + "]";
 	}
 
-	@Override
-	public Component clone() throws CloneNotSupportedException {
-		return (Component) super.clone();
-	}
-
 	public String getId() {
 		return id;
 	}
@@ -40,6 +35,23 @@ public class Component extends DataElement {
 	@Override
 	public int compareTo(DataElement o) {
 		return this.getPosition() - o.getPosition();
+	}
+
+	@Override
+	public Component clone() throws CloneNotSupportedException {
+		Component clonedObj = new Component();
+		clonedObj.setBindingLocation(this.bindingLocation);
+		clonedObj.setBindingStrength(this.bindingStrength);
+		clonedObj.setComment(comment);
+		clonedObj.setConfLength(confLength);
+		clonedObj.setDatatype(datatype.clone());
+		clonedObj.setMaxLength(maxLength);
+		clonedObj.setMinLength(minLength);
+		clonedObj.setName(name);
+		clonedObj.setPosition(position);
+		clonedObj.setTable(table.clone());
+		clonedObj.setUsage(usage);
+		return clonedObj;
 	}
 
 }

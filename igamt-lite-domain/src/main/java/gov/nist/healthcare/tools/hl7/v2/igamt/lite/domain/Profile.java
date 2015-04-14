@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Document(collection = "profile")
-public class Profile extends DataModel implements java.io.Serializable {
+public class Profile extends DataModel implements java.io.Serializable, Cloneable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -229,6 +229,24 @@ public class Profile extends DataModel implements java.io.Serializable {
 		constraints.setSegments(sContext);
 		constraints.setGroups(gContext);
 		return constraints;
+	}
+	
+	@Override
+	public Profile clone() throws CloneNotSupportedException {
+		Profile clonedProfile = new Profile();
+		clonedProfile.setChanges(changes);
+		clonedProfile.setComment(comment);
+		clonedProfile.setDatatypes(datatypes.clone());
+		clonedProfile.setMessages(messages.clone());
+		clonedProfile.setMetaData(metaData.clone());
+		clonedProfile.setSegments(segments.clone());
+		clonedProfile.setTables(tables.clone());
+		clonedProfile.setUsageNote(usageNote);
+		clonedProfile.setVersion(version);
+		clonedProfile.setAccountId(accountId);
+		clonedProfile.setScope(scope);
+		
+		return clonedProfile;
 	}
 
 }

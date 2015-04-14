@@ -3,7 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProfileMetaData implements java.io.Serializable {
+public class ProfileMetaData implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -127,6 +127,29 @@ public class ProfileMetaData implements java.io.Serializable {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+	
+	@Override
+	public ProfileMetaData clone() throws CloneNotSupportedException {
+		ProfileMetaData clonedProfileMetaData = new ProfileMetaData();
+		
+		clonedProfileMetaData.setEncodings(new HashSet<String>());
+		for(String s:this.encodings){
+			clonedProfileMetaData.getEncodings().add(s);
+		}
+		
+		clonedProfileMetaData.setHl7Version(hl7Version);
+		clonedProfileMetaData.setIdentifier(identifier);
+		clonedProfileMetaData.setName(name);
+		clonedProfileMetaData.setOrgName(orgName);
+		clonedProfileMetaData.setSchemaVersion(schemaVersion);
+		clonedProfileMetaData.setStatus(status);
+		clonedProfileMetaData.setTopics(topics);
+		clonedProfileMetaData.setType(type);
+		clonedProfileMetaData.setDate(date);
+		clonedProfileMetaData.setSubTitle(subTitle);
+		clonedProfileMetaData.setVersion(hl7Version);
+		return clonedProfileMetaData;
 	}
 
 }
