@@ -108,7 +108,7 @@ public class ProfileController extends CommonController {
 	@RequestMapping(value = "/{id}/clone", method = RequestMethod.POST)
 	public Profile clone(@PathVariable("id") String id)
 			throws ProfileNotFoundException, UserAccountNotFoundException,
-			ProfileException {
+			ProfileException, CloneNotSupportedException {
 		logger.info("Clone profile with id=" + id);
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u

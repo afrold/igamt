@@ -94,9 +94,12 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 
 	@Override
 	public Datatypes clone() throws CloneNotSupportedException {
-		Datatypes clonedDatatypes = (Datatypes) super.clone();
-		clonedDatatypes.setId(null);
-		// NOT for FINAL
+		Datatypes clonedDatatypes = new Datatypes();
+		clonedDatatypes.setChildren(new HashSet<Datatype>());
+		for(Datatype dt:this.children){
+			clonedDatatypes.addDatatype(dt.clone());
+		}
+		
 		return clonedDatatypes;
 	}
 

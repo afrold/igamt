@@ -173,12 +173,9 @@ public class Datatype extends DataModel implements java.io.Serializable,
 
 	@Override
 	public Datatype clone() throws CloneNotSupportedException {
-		Datatype clonedDT = (Datatype) super.clone();
-		clonedDT.setId(null);
-		//
-		// clonedDT.setDatatypes(null);
-		// this.datatypes.addDatatype(clonedDT);
-
+		Datatype clonedDT = new Datatype();
+		
+		clonedDT.setComment(comment);
 		clonedDT.setConformanceStatements(new ArrayList<ConformanceStatement>());
 		for (ConformanceStatement cs : this.conformanceStatements) {
 			clonedDT.addConformanceStatement(cs.clone());
@@ -193,7 +190,11 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		for (Component c : this.components) {
 			clonedDT.addComponent(c.clone());
 		}
-
+		clonedDT.setDescription(description);
+		clonedDT.setLabel(label);
+		clonedDT.setName(name);
+		clonedDT.setUsageNote(usageNote);
+		
 		return clonedDT;
 	}
 

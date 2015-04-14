@@ -4,7 +4,7 @@ import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class SegmentRef extends SegmentRefOrGroup {
+public class SegmentRef extends SegmentRefOrGroup implements Cloneable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -40,6 +40,20 @@ public class SegmentRef extends SegmentRefOrGroup {
 	public String toString() {
 		return "SegmentRef [segment=" + ref + ", usage=" + usage + ", min="
 				+ min + ", max=" + max + "]";
+	}
+	
+	
+	@Override
+	public SegmentRef clone() throws CloneNotSupportedException {
+		SegmentRef clonedSegmentRef = new SegmentRef();
+		clonedSegmentRef.setComment(comment);
+		clonedSegmentRef.setMax(max);
+		clonedSegmentRef.setMin(min);
+		clonedSegmentRef.setPosition(position);
+		clonedSegmentRef.setRef(ref.clone());
+		clonedSegmentRef.setUsage(usage);
+		
+		return clonedSegmentRef;
 	}
 
 }

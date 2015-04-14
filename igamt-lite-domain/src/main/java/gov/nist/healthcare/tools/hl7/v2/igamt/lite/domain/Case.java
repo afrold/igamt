@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 ////@Entity
 ////@Table(name = "CASE")
-public class Case implements Serializable {
+public class Case implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -54,6 +54,15 @@ public class Case implements Serializable {
 
 	public void setDatatype(Datatype datatype) {
 		this.datatype = datatype;
+	}
+	
+	@Override
+	public Case clone() throws CloneNotSupportedException {
+		Case clonedCase = new Case();
+		clonedCase.setId(null);
+		clonedCase.setValue(value);
+		clonedCase.setDatatype(datatype.clone());
+		return clonedCase;
 	}
 
 }

@@ -77,6 +77,4 @@ public abstract class SegmentRefOrGroup extends DataModel implements
 	public int compareTo(SegmentRefOrGroup o) {
 		return (int) (this.getPosition() - o.getPosition());
 	}
-
-
 }

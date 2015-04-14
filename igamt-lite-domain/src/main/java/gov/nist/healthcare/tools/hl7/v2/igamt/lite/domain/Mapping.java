@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 
 //@Entity
 //@Table(name = "MAPPING")
-public class Mapping implements Serializable {
+public class Mapping implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,6 +59,21 @@ public class Mapping implements Serializable {
 
 	public void setReference(Integer reference) {
 		this.reference = reference;
+	}
+	
+	@Override
+	public Mapping clone() throws CloneNotSupportedException {
+		Mapping clonedMapping = new Mapping();
+
+		clonedMapping.setCases(new ArrayList<Case>());
+		for(Case c:this.cases){
+			clonedMapping.getCases().add(c.clone());
+		}
+		
+		clonedMapping.setPosition(position);
+		clonedMapping.setReference(reference);
+		
+		return clonedMapping;
 	}
 
 }

@@ -6,7 +6,7 @@ import org.bson.types.ObjectId;
 
 //@Entity
 //@javax.persistence.Table(name = "CODE")
-public class Code extends DataModel implements Serializable {
+public class Code extends DataModel implements Serializable, Cloneable {
 	/**
 	 * 
 	 */
@@ -84,6 +84,18 @@ public class Code extends DataModel implements Serializable {
 	public String toString() {
 		return "Code [code=" + code + ", label=" + label + ", codesys="
 				+ codesys + ", source=" + source + "]";
+	}
+	
+	@Override
+	public Code clone() throws CloneNotSupportedException {
+		Code clonedCode = new Code();
+		clonedCode.setCodesys(codesys);
+		clonedCode.setCode(code);
+		clonedCode.setCodeUsage(codeUsage);
+		clonedCode.setLabel(label);
+		clonedCode.setSource(source);
+
+		return clonedCode;
 	}
 
 }
