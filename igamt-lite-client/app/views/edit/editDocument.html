@@ -213,10 +213,10 @@
             <tbody>
             <tr ng-repeat="segRefOrGroup in section.data.segRefOrGroups" class="row">
                 <td class="col-md-2">
-                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segRefOrGroup.ref.name"></span>
+                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segmentsMap[segRefOrGroup.ref.id].name"></span>
                 </td>
                 <td class="col-md-2">
-                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segRefOrGroup.ref.description"></span>
+                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segmentsMap[segRefOrGroup.ref.id].description"></span>
                     <span ng-show="segRefOrGroup.type === 'group'">
                         -- {{segRefOrGroup.name | uppercase }} begin
                     </span>
@@ -341,10 +341,10 @@
                     <span>[{{field.minLength}},{{field.maxLength}}]</span>
                 </td>
                 <td class="col-md-1">
-                    <span>{{field.datatype.label}}</span>
+                    <span>{{datatypesMap[field.datatype.id].label}}</span>
                 </td>
                 <td class="col-md-1">
-                    <span>{{field.table.mappingId}}</span>
+                    <span>{{tablesMap[field.table.id].mappingId}}</span>
                 </td>
                 <td class="col-md-2">
                      <span ng-show="trim" class="constraint_trim">
@@ -461,13 +461,13 @@
                 </td>
 
                 <td class="col-md-1">
-                    <span ng-bind="component.datatype.label"></span>
+                    <span ng-bind="datatypesMap[component.datatype.id].label"></span>
                 </td>
                 <td class="col-md-1">
                     <span>[{{component.minLenghth}},{{component.maxLength}}]</span>
                 </td>
                 <td class="col-md-1">
-                    <span>{{component.table.mappingId}}</span>
+                    <span>{{tablesMap[component.table.id].mappingId}}</span>
                 </td>
                 <td class="col-md-2">
                 </td>

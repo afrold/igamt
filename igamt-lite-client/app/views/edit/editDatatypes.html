@@ -187,7 +187,7 @@
                 <label>Comment</label>
                 <textarea style="width:100%" rows="5" class="igl-input form-control"
                           name="comment"
-                          ng-change="recordChangeForEdit2('datatype','edit',datatype.id,'comment', datatype.comment)"
+                          ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)"
                           ng-model="datatype.comment"></textarea>
 
             </div>
@@ -198,7 +198,7 @@
                  ng-class="{'has-error' : datatypeMetaDataForm.label.$invalid && !datatypeMetaDataForm.label.$pristine }">
                 <label>Label</label>
                 <input type="text"
-                        ng-change="recordChangeForEdit2('datatype','edit',datatype.id,'label', datatype.label)"
+                        ng-change="recordDatatypeChange('datatype','edit',datatype.id,'label', datatype.label)"
 
                        name="label" class="form-control" ng-model="datatype.label"
                        required>
@@ -208,7 +208,7 @@
                 <label>Text</label>
                 <textarea style="width:100%" rows="5" class="igl-input form-control"
                           name="text"
-                           ng-change="recordChangeForEdit2('datatype','edit',datatype.id,'text', datatype.text)"
+                           ng-change="recordDatatypeChange('datatype','edit',datatype.id,'text', datatype.text)"
 
                           ng-model="datatype.text"></textarea>
 
@@ -271,7 +271,7 @@
                                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 <select class="form-control input-sm"
                                                         name="usage"
-                                                         ng-change="recordChangeForEdit2('component','edit',node.id,'usage', node.usage)"
+                                                         ng-change="recordDatatypeChange('component','edit',node.id,'usage', node.usage)"
 
                                                         required
                                                         ng-model="node.usage"
@@ -293,13 +293,13 @@
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="minLength"
-                                                        ng-change="recordChangeForEdit2('component','edit',node.id,'minLength', node.minLength)"
+                                                        ng-change="recordDatatypeChange('component','edit',node.id,'minLength', node.minLength)"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
                                                        ng-model="node.minLength" required ng-minlength="1">
                                                 <input style="width:45%" class="igl-input" type="text"
                                                        name="maxLength"
-                                                        ng-change="recordChangeForEdit2('component','edit',node.id,'maxLength', node.maxLength)"
+                                                        ng-change="recordDatatypeChange('component','edit',node.id,'maxLength', node.maxLength)"
 
                                                        ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
@@ -316,7 +316,7 @@
                                             <span ng-form name="{{formName}}">
                                             <input style="width:50%" class="igl-input" type="text"
                                                    name="confLength"
-                                                    ng-change="recordChangeForEdit2('component','edit',node.id,'confLength', node.confLength)"
+                                                    ng-change="recordDatatypeChange('component','edit',node.id,'confLength', node.confLength)"
 
                                                    ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                                    ng-pattern="/^\d+$/"
@@ -330,10 +330,11 @@
             <div ng-show="node.type !== 'datatype'">
                 <select class="form-control input-sm"
                         name="datatype"
+                        ng-model="node.datatype.id"
                         ng-change="onDatatypeChange(node)"
                         required
-                        ng-model="node.datatype"
-                        ng-options="dt as dt.label for dt in datatypes | flavors:node.datatype.name">
+                        ng-selected="dt.id === node.datatype.id"
+                        ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype.id].name">
                 </select>
                 <!--<a class="point"-->
                 <!--ng-click="goToDatatype(node.datatype)"-->
@@ -346,7 +347,7 @@
             <div ng-show="node.type !== 'datatype'">
 											<span ng-show="node.table != undefined">
 												<div class="btn-group" dropdown>
-                                                    <button type="button" ng-click="goToTable(node.table)"
+                                                    <button type="button" ng-click="goToTable(tablesMap[node.table.id])"
                                                             class="btn btn-info btn-xs">{{node.table.mappingId}}
                                                     </button>
                                                     <button type="button" class="btn btn-info btn-xs dropdown-toggle"
@@ -358,11 +359,11 @@
                                                         <li><a ng-click="mapTable(node)">Change Table</a></li>
                                                         <li><a ng-click="deleteTable(node)">Release Table</a></li>
                                                         <li class="divider"></li>
-                                                        <li><a ng-click="goToTable(node.table)">Details</a></li>
+                                                        <li><a ng-click="goToTable(tablesMap[node.table.id])">Details</a></li>
                                                     </ul>
                                                 </div>
                                             </span>
-											<span ng-show="node.table == undefined  && isAvailableDTForTable(node.datatype)"> 
+											<span ng-show="node.table == undefined  && isAvailableDTForTable(datatypesMap[node.datatype.id])">
 												<button ng-click="mapTable(node)" class="btn btn-xs btn-info">
                                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                                 </button>
@@ -421,7 +422,7 @@
             <div ng-show="node.type === 'component' && !node.sub">
                 <input style="width:100%" class="igl-input" type="text"
                        name="comment"
-                       ng-change="recordChangeForEdit2('component','edit',node.id,'comment', node.comment)"
+                       ng-change="recordDatatypeChange('component','edit',node.id,'comment', node.comment)"
                        ng-model="node.comment">
             </div>
             <div ng-show="node.type === 'datatype'">-</div>

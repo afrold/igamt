@@ -17,7 +17,7 @@ angular.module('igl')
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.fields ? parent.fields: parent.datatype ? parent.datatype.components:parent.children : $rootScope.segment != null ? $rootScope.segment.fields:[];
+                    return parent ? parent.fields ? parent.fields: parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components:parent.children : $rootScope.segment != null ? $rootScope.segment.fields:[];
                 },
                 getTemplate: function (node) {
                     return 'SegmentEditTree.html';
@@ -69,7 +69,7 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function(node){
-            return node && node != null && ((node.fields && node.fields.length >0 ) || (node.datatype && node.datatype.components && node.datatype.components.length > 0));
+            return node && node != null && ((node.fields && node.fields.length >0 ) || (node.datatype && $rootScope.datatypesMap[node.datatype.id].components && $rootScope.datatypesMap[node.datatype.id].components.length > 0));
         };
 
         $scope.validateLabel = function (label, name) {
@@ -81,7 +81,8 @@ angular.module('igl')
 
         $scope.onDatatypeChange = function(node){
 //            $rootScope.recordChange(node,'datatype');
-            $rootScope.recordChangeForEdit2('field','edit',node.id,'datatype',node.id);
+//            $rootScope.recordChangeForEdit2('field','edit',node.id,'datatype',node.id);
+            $rootScope.recordChangeForEdit2('field','edit',node.id,'datatype',node.datatype);
             $scope.refreshTree();
         };
 

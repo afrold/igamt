@@ -149,14 +149,14 @@ angular.module('igl')
                     });
                 } else if (node.type === 'segmentRef') {
                     segRefOrGroups.push(node);
-                    $scope.collectData(node.ref, segRefOrGroups, segments, datatypes);
+                    $scope.collectData($rootScope.segmentsMap[node.ref.id], segRefOrGroups, segments, datatypes);
                 } else if (node.type === 'component' || node.type === 'subcomponent' || node.type === 'field') {
-                    $scope.collectData(node.datatype, segRefOrGroups, segments, datatypes);
+                    $scope.collectData($rootScope.datatypesMap[node.datatype.id], segRefOrGroups, segments, datatypes);
                 } else if (node.type === 'datatype') {
                     if (datatypes.indexOf(node) === -1) {
                         datatypes.push(node);
                     }
-                    if (node.children) {
+                    if (node.components) {
                         angular.forEach(node.children, function (component) {
                             $scope.collectData(component, segRefOrGroups, segments, datatypes);
                         });

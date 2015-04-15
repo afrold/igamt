@@ -17,15 +17,15 @@ angular.module('igl')
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.datatype ? parent.datatype.components: parent.components : $rootScope.datatype != null ? $rootScope.datatype.components:[];
+                    return parent ? parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components: parent.components : $rootScope.datatype != null ? $rootScope.datatype.components:[];
                 },
                 getTemplate: function (node) {
                     return 'DatatypeEditTree.html';
                 }
-                ,
-                options: {
-                    initialState: 'expanded'
-                }
+//                ,
+//                options: {
+//                    initialState: 'expanded'
+//                }
             });
 
             $scope.$watch(function () {
@@ -44,7 +44,6 @@ angular.module('igl')
             $rootScope.datatype["type"] = "datatype";
             if ($scope.params)
                 $scope.params.refresh();
-//            $rootScope.go('/profiles#datatypeDef');
             $scope.loadingSelection = false;
          };
 
@@ -56,34 +55,26 @@ angular.module('igl')
             if(flavor.components != undefined && flavor.components != null && flavor.components.length != 0){
                 for(var i=0; i < flavor.components.length; i++){
                     flavor.components[i].id = -1* (Math.floor(Math.random()*10000000) + 1);
-                    flavor.components[i].datatype = datatype.components[i].datatype;
+//                    flavor.components[i].datatype = datatype.components[i].datatype;
                 }
             }
-            $rootScope.datatypes.splice(0, 0, flavor);
-            $rootScope.datatype = flavor;
-            var tmp = angular.copy(flavor);
-            if(tmp.components != undefined && tmp.components != null && tmp.components.length != 0){
-                angular.forEach(tmp.components, function (component) {
-                    component.datatype = component.datatype.id;
-                    if(component.table != undefined) {
-                        component.table =component.table.id;
-                    }
-                });
-            }
-            var predicates = tmp['predicates'];
+            var predicates = flavor['predicates'];
             if( predicates!= undefined && predicates != null && predicates.length != 0){
                 angular.forEach(predicates, function (predicate) {
                     predicate.id = -1 * (Math.floor(Math.random()*10000000) + 1);
                 });
             }
-            var conformanceStatements = tmp['conformanceStatements'];
+            var conformanceStatements = flavor['conformanceStatements'];
             if(conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0){
                 angular.forEach(conformanceStatements, function (conformanceStatement) {
                     conformanceStatement.id = -1 * (Math.floor(Math.random()*10000000) + 1);
                 });
             }
+            $rootScope.datatypes.splice(0, 0, flavor);
+            $rootScope.datatype = flavor;
+
 //            $rootScope.recordChange2('datatype',tmp.id,null,tmp);
-            $rootScope.recordChangeForEdit2('datatype', "add", flavor.id,'datatype', tmp);
+            $rootScope.recordChangeForEdit2('datatype', "add", flavor.id,'datatype', flavor);
 
 //            $rootScope.recordChangeForEdit2('datatype', "add", null,null, tmp);
 //            type,command,id,valueType,value
@@ -92,6 +83,15 @@ angular.module('igl')
             $scope.select(flavor);
 
         };
+
+        $scope.recordDatatypeChange = function(type, command,id,valueType,value){
+            var datatypeFromChanges = $rootScope.findObjectInChanges("datatype", "add", $rootScope.datatype.id);
+            if(datatypeFromChanges === undefined){
+                $rootScope.recordChangeForEdit2(type, command,id,valueType,value);
+            }
+        };
+
+
 
         $scope.close = function(){
             $rootScope.datatype = null;
@@ -158,7 +158,7 @@ angular.module('igl')
         };
 
         $scope.onDatatypeChange = function(node){
-            $rootScope.recordChangeForEdit2('component','edit',node.id,'datatype',node.id);
+             $rootScope.recordChangeForEdit2('component','edit',node.id,'datatype',node.datatype);
             $scope.refreshTree(); // TODO: Refresh only the node
          };
 
@@ -546,36 +546,6 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
-        // remove any change made to components
-//        if($scope.dtToDelete.id < 0){ // new object
-//          $rootScope.removeObjectFromChanges("datatype", "add", id);
-//        }else{
-//
-//            $rootScope.changes['datatype']['delete'].push({id:$scope.dtToDelete.id});
-//        }
-
-//        if($scope.dtToDelete.components != undefined && $scope.dtToDelete.components != null && $scope.dtToDelete.components.length > 0){
-//            angular.forEach($scope.dtToDelete.components, function (component) {
-//                if($rootScope.changes['component'] && $rootScope.changes['component'][component.id] && $rootScope.changes['component'][component.id]){
-//                    delete $rootScope.changes['component'][component.id];
-//                }
-//            });
-//        }
-//        if( $rootScope.changes['component'] && Object.getOwnPropertyNames($rootScope.changes['component']).length === 0){
-//            delete $rootScope.changes['component'];
-//        }
-//        // remove any change made to datatype
-//        if($rootScope.changes['datatype'] != undefined  && $rootScope.changes['datatype'][$scope.dtToDelete.id] != undefined){
-//            if($scope.dtToDelete.id < 0){
-//                delete $rootScope.changes['datatype'][$scope.dtToDelete.id];
-//                if( Object.getOwnPropertyNames($rootScope.changes['datatype']).length === 0){
-//                    delete $rootScope.changes['datatype'];
-//                }
-//            }else{
-//                $rootScope.changes['datatype'][$scope.dtToDelete.id] = null;
-//            }
-//        }
-
         var index = $rootScope.datatypes.indexOf($scope.dtToDelete);
         if (index > -1) $rootScope.datatypes.splice(index, 1);
         if($rootScope.datatype === $scope.dtToDelete){
@@ -583,52 +553,63 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
         }
         $rootScope.references = [];
 
-        $rootScope.recordDelete("datatype", "edit",  $scope.dtToDelete.id );
-        if($scope.dtToDelete.components != undefined && $scope.dtToDelete.components != null && $scope.dtToDelete.components.length > 0){
+        if($scope.dtToDelete.id < 0){ //datatype flavor
+            var index = $rootScope.changes["datatype"]["add"].indexOf($scope.dtToDelete);
+            if (index > -1) $rootScope.changes["datatype"]["add"].splice(index, 1);
+            if ($rootScope.changes["datatype"]["add"] && $rootScope.changes["datatype"]["add"].length === 0) {
+                delete  $rootScope.changes["datatype"]["add"];
+            }
+            if ($rootScope.changes["datatype"] && Object.getOwnPropertyNames($rootScope.changes["datatype"]).length === 0) {
+                delete  $rootScope.changes["datatype"];
+            }
+        }else {
+            $rootScope.recordDelete("datatype", "edit", $scope.dtToDelete.id);
+            if ($scope.dtToDelete.components != undefined && $scope.dtToDelete.components != null && $scope.dtToDelete.components.length > 0) {
 
-            //clear components changes
-            angular.forEach($scope.dtToDelete.components, function (component) {
-                $rootScope.recordDelete("component", "edit",  component.id);
-                $rootScope.removeObjectFromChanges("component", "delete", component.id);
-            });
-            if ($rootScope.changes["component"]["delete"] && $rootScope.changes["component"]["delete"].length === 0) {
-                delete  $rootScope.changes["component"]["delete"];
+                //clear components changes
+                angular.forEach($scope.dtToDelete.components, function (component) {
+                    $rootScope.recordDelete("component", "edit", component.id);
+                    $rootScope.removeObjectFromChanges("component", "delete", component.id);
+                });
+                if ($rootScope.changes["component"]["delete"] && $rootScope.changes["component"]["delete"].length === 0) {
+                    delete  $rootScope.changes["component"]["delete"];
+                }
+
+                if ($rootScope.changes["component"] && Object.getOwnPropertyNames($rootScope.changes["component"]).length === 0) {
+                    delete  $rootScope.changes["component"];
+                }
+
             }
 
-            if ($rootScope.changes["component"]&& $rootScope.changes["component"].length === 0) {
-                delete  $rootScope.changes["component"];
+            if ($scope.dtToDelete.predicates != undefined && $scope.dtToDelete.predicates != null && $scope.dtToDelete.predicates.length > 0) {
+                //clear predicates changes
+                angular.forEach($scope.dtToDelete.predicates, function (predicate) {
+                    $rootScope.recordDelete("predicate", "edit", predicate.id);
+                    $rootScope.removeObjectFromChanges("predicate", "delete", predicate.id);
+                });
+                if ($rootScope.changes["predicate"]["delete"] && $rootScope.changes["predicate"]["delete"].length === 0) {
+                    delete  $rootScope.changes["predicate"]["delete"];
+                }
+
+                if ($rootScope.changes["predicate"] && Object.getOwnPropertyNames($rootScope.changes["predicate"]).length === 0) {
+                    delete  $rootScope.changes["predicate"];
+                }
+
             }
 
-        }
+            if ($scope.dtToDelete.conformanceStatements != undefined && $scope.dtToDelete.conformanceStatements != null && $scope.dtToDelete.conformanceStatements.length > 0) {
+                //clear conforamance statement changes
+                angular.forEach($scope.dtToDelete.conformanceStatements, function (confStatement) {
+                    $rootScope.recordDelete("conformanceStatement", "edit", confStatement.id);
+                    $rootScope.removeObjectFromChanges("conformanceStatement", "delete", confStatement.id);
+                });
+                if ($rootScope.changes["conformanceStatement"]["delete"] && $rootScope.changes["conformanceStatement"]["delete"].length === 0) {
+                    delete  $rootScope.changes["conformanceStatement"]["delete"];
+                }
 
-        if($scope.dtToDelete.predicates != undefined && $scope.dtToDelete.predicates != null && $scope.dtToDelete.predicates.length > 0) {
-            //clear predicates changes
-            angular.forEach($scope.dtToDelete.predicates, function (predicate) {
-                $rootScope.recordDelete("predicate", "edit", predicate.id);
-                $rootScope.removeObjectFromChanges("predicate", "delete", predicate.id);
-            });
-            if ($rootScope.changes["predicate"]["delete"] && $rootScope.changes["predicate"]["delete"].length === 0) {
-                delete  $rootScope.changes["predicate"]["delete"];
-            }
-
-            if ($rootScope.changes["predicate"]&& $rootScope.changes["predicate"].length === 0) {
-                delete  $rootScope.changes["predicate"];
-            }
-
-        }
-
-        if($scope.dtToDelete.conformanceStatements != undefined && $scope.dtToDelete.conformanceStatements != null && $scope.dtToDelete.conformanceStatements.length > 0) {
-            //clear conforamance statement changes
-            angular.forEach($scope.dtToDelete.conformanceStatements, function (confStatement) {
-                $rootScope.recordDelete("conformanceStatement", "edit", confStatement.id);
-                $rootScope.removeObjectFromChanges("conformanceStatement", "delete", confStatement.id);
-            });
-            if ($rootScope.changes["conformanceStatement"]["delete"] && $rootScope.changes["conformanceStatement"]["delete"].length === 0) {
-                delete  $rootScope.changes["conformanceStatement"]["delete"];
-            }
-
-            if ($rootScope.changes["conformanceStatement"]&& $rootScope.changes["conformanceStatement"].length === 0) {
-                delete  $rootScope.changes["conformanceStatement"];
+                if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["conformanceStatement"]).length === 0) {
+                    delete  $rootScope.changes["conformanceStatement"];
+                }
             }
         }
 

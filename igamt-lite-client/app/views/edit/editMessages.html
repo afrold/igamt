@@ -204,7 +204,7 @@
                                             <img ng-if="node.type === 'group'" style="width:15px; height:15px"
                                                  ng-src="images/group.png">
                                             <a class="point" ng-if="node.type === 'segmentRef'"
-                                               ng-click="goToSegment(node.ref.id)">{{node.position}}.{{node.ref.name}}:{{node.ref.description}}</a>
+                                               ng-click="goToSegment(node.ref.id)">{{node.position}}.{{segmentsMap[node.ref.id].name}}:{{segmentsMap[node.ref.id].description}}</a>
                                             <span ng-if="node.type === 'group'">{{node.position}}.{{node.name}}</span>
                                         </span>
             </td>

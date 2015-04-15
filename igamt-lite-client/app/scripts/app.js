@@ -656,9 +656,9 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
             });
         } else if (element.type === "segmentRef") {
             $rootScope.parentsMap[element.id] = parent;
-            element.ref = $rootScope.segmentsMap[element.ref.id];
-            element.ref["path"] =  element.ref.name;
-            $rootScope.processElement(element.ref,element);
+            var ref = $rootScope.segmentsMap[element.ref.id];
+            element.ref["path"] =  ref.name;
+            $rootScope.processElement(ref,element);
         }  else if (element.type === "segment") {
             if ($rootScope.segments.indexOf(element) === -1) {
                 $rootScope.segments.push(element);
@@ -669,16 +669,18 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
             }
         } else if (element.type === "field" || element.type === "component") {
             $rootScope.parentsMap[element.id] = parent;
-            element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
+//            element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
             element["path"] = parent.path+"."+element.position;
-            element['sub'] = parent.type === 'component';
+            if(element.type === "component") {
+                element['sub'] = parent.type === 'component';
+            }
             if (angular.isDefined(element.table) && element.table != null) {
-                element["table"] = $rootScope.tablesMap[element.table.id];
-                if ($rootScope.tables.indexOf(element.table) === -1) {
-                    $rootScope.tables.push(element.table);
+                var table = $rootScope.tablesMap[element.table.id];
+                if ($rootScope.tables.indexOf(table) === -1) {
+                    $rootScope.tables.push(table);
                 }
             }
-            $rootScope.processElement(element.datatype,element);
+            $rootScope.processElement($rootScope.datatypesMap[element.datatype.id],element);
         } else if (element.type === "datatype") {
             if ($rootScope.datatypes.indexOf(element) === -1) {
                 $rootScope.datatypes.push(element);
@@ -692,10 +694,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
     $rootScope.findDatatypeRefs = function (datatype, obj) {
         if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
-            if(obj.datatype === datatype && $rootScope.references.indexOf(obj) === -1) {
+            if($rootScope.datatypesMap[obj.datatype.id] === datatype && $rootScope.references.indexOf(obj) === -1) {
                 $rootScope.references.push(obj);
              }
-            $rootScope.findDatatypeRefs(datatype,obj.datatype);
+            $rootScope.findDatatypeRefs(datatype,$rootScope.datatypesMap[obj.datatype.id]);
         }else if(angular.equals(obj.type,'segment')){
             angular.forEach( $rootScope.segments, function (segment) {
                 angular.forEach(segment.fields, function (field) {
@@ -713,10 +715,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
     $rootScope.findTableRefs = function (table, obj) {
         if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
-            if(obj.table === table && $rootScope.references.indexOf(obj) === -1) {
+            if($rootScope.tablesMap[obj.table.id]=== table && $rootScope.references.indexOf(obj) === -1) {
                 $rootScope.references.push(obj);
              }
-            $rootScope.findTableRefs(table,obj.datatype);
+            $rootScope.findTableRefs(table,$rootScope.datatypesMap[obj.datatype.id]);
         }else if(angular.equals(obj.type,'segment')){
             angular.forEach( $rootScope.segments, function (segment) {
                 angular.forEach(segment.fields, function (field) {
