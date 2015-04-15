@@ -318,7 +318,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 									"message property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					// messageService.save(m);
@@ -351,7 +351,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 									"Segment property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					// segmentService.save(s);
@@ -385,7 +385,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 									"SegmentRef property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					// segmentRefService.save(sr);
@@ -443,7 +443,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 									"Component property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-													.getTextValue()));
+											.getTextValue()));
 						}
 					}
 					// componentService.save(c);
@@ -671,7 +671,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
 			String stringProfile = new ProfileSerializationImpl()
-					.serializeProfileToXML(p);
+			.serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
 					Charset.forName("UTF-8"));
 
@@ -740,57 +740,84 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 
 	@Override
 	public InputStream exportAsPdf(Profile p) {
-//		private Document document;
-//		private PdfWriter tocWriter;
-//		private PdfWriter writer1;
-//		private Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 24, Font.NORMAL);
+		//		private Document document;
+		//		private PdfWriter tocWriter;
+		//		private PdfWriter writer1;
+		//		private Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 24, Font.NORMAL);
 
 
 		Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 24, Font.NORMAL);
-		
+
 		List<String> header;
 		PdfPTable table;
 		float columnWidths[];
 		List<List<String>> rows;
 
+		ByteArrayOutputStream coverBaos;
 		ByteArrayOutputStream tocBaos;
 		ByteArrayOutputStream igTmpBaos;
 		ByteArrayOutputStream igBaos;
 		ByteArrayOutputStream igFinalBaos;
+		Document coverDocument;
 		Document igDocument;
 		Document tocDocument;
 		Document igFinalDocument;
+		PdfWriter coverWriter;
 		PdfWriter tocWriter;
 		PdfWriter igWriter;
 		PdfWriter igFinalWriter;
+
 		
+
+
+		// Create fonts and colors to be used in generated pdf
+		BaseColor headerColor = WebColors.getRGBColor("#0033CC");
+		BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
+		Font coverFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24, Font.UNDERLINE
+				| Font.BOLD, BaseColor.BLUE);
+		Font titleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE
+				| Font.BOLD, BaseColor.RED);
+		Font headerFont = FontFactory.getFont(
+				"/rendering/Arial Narrow.ttf", BaseFont.IDENTITY_H,
+				BaseFont.EMBEDDED, 11, Font.NORMAL, BaseColor.WHITE);
+		Font cellFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL,
+				BaseColor.BLACK);
+
+
 		try {
+			/*
+			 * Create cover
+			 */
+			coverBaos = new ByteArrayOutputStream();
+			coverDocument = new Document(PageSize.A4);
+			coverWriter = PdfWriter.getInstance(coverDocument, coverBaos);
+			coverDocument.open();
+			
+			coverDocument.add(new Paragraph("Cover Page", coverFont));
+			coverDocument.add(new Paragraph("Profile title", coverFont));
+			coverDocument.add(new Paragraph("Profile identifier", coverFont));
+			coverDocument.add(Chunk.NEWLINE);
+			coverDocument.close();
+
+						
+			
+			
 			tocBaos = new ByteArrayOutputStream();
 			tocDocument = new Document(PageSize.A4);
 			//File tmpTOCFile = File.createTempFile("ProfileTOCTmp", ".pdf");
 			//tocWriter = PdfWriter.getInstance(tocDocument, FileUtils.openOutputStream(tmpTOCFile));
 			tocWriter = PdfWriter.getInstance(tocDocument, tocBaos);
 			tocDocument.open();
+			tocDocument.add(new Paragraph("Table of contents"));
+			tocDocument.add(Chunk.NEWLINE);
 
 			tocPlaceholder = new HashMap<>();
 			pageByTitle    = new HashMap<>();
-			
 
-			
-			
-			
-			// Create fonts and colors to be used in generated pdf
-			BaseColor headerColor = WebColors.getRGBColor("#0033CC");
-			BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
-			Font titleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE
-							| Font.BOLD, BaseColor.RED);
-			Font headerFont = FontFactory.getFont(
-					"/rendering/Arial Narrow.ttf", BaseFont.IDENTITY_H,
-					BaseFont.EMBEDDED, 11, Font.NORMAL, BaseColor.WHITE);
-			Font cellFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL,
-					BaseColor.BLACK);
+
 
 
 			igTmpBaos = new ByteArrayOutputStream();
@@ -807,9 +834,17 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 			/*
 			 * Adding messages definition
 			 */
+			tocDocument.add(new Paragraph("Messages definition", titleFont));
+			tocDocument.add(Chunk.NEWLINE);
+
 			igDocument.add(new Paragraph("Messages definition", titleFont));
 			igDocument.add(Chunk.NEWLINE);
 			for (Message m : p.getMessages().getChildren()) {
+				
+				this.addContent(tocDocument, igWriter, m.getStructID() + " - "
+						+ m.getDescription());
+
+				
 				igDocument.add(new Paragraph("Message definition: "));
 				igDocument.add(new Paragraph(m.getStructID() + " - "
 						+ m.getDescription()));
@@ -842,9 +877,13 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 			for (Message m : p.getMessages().getChildren()) {
 				igDocument.newPage();
 
+				tocDocument.add(Chunk.NEWLINE);
+				tocDocument.add(new Paragraph("Segments definition", titleFont));
+				tocDocument.add(Chunk.NEWLINE);
+				
+				
 				igDocument.add(new Paragraph("Segments definition", titleFont));
-				igDocument.add(Chunk.NEWLINE);				
-
+				igDocument.add(Chunk.NEWLINE);
 				header = Arrays.asList("Seq", "Element Name", "DT",
 						"STD\nUsage", "Local\nUsage", "Std\nCard.",
 						"Local\nCard.", "Len", "Value\nSet", "Comment");
@@ -933,58 +972,49 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 			// SECOND PASS: ADD THE FOOTER
 			//File tmpPdfFile = File.createTempFile("ProfileTmp", ".pdf");
 			igBaos = new ByteArrayOutputStream();
-			
+
 			// Create a reader
 			PdfReader reader = new PdfReader(igTmpBaos.toByteArray());
 			// Create a stamper
 			PdfStamper stamper
 			= new PdfStamper(reader, igBaos);
 			// Loop over the pages and add a header to each page
+			PdfReader readert = new PdfReader(tocBaos.toByteArray());
+			int offset = readert.getNumberOfPages() + 1; //cover + toc
 			int n = reader.getNumberOfPages();
 			for (int i = 1; i <= n; i++) {
-				getFooterTable("pname: "+p.getMetaData().getName(), i, n).writeSelectedRows(
-						0, -1, 34, 50, stamper.getOverContent(i));
+				//getFooterTable("pname: "+p.getMetaData().getName(), i, n).writeSelectedRows(
+				getFooterTable("profile name", i, n).writeSelectedRows(
+								0, -1, 34, 50, stamper.getOverContent(i));
 			}
 			stamper.close();
 			reader.close();
-			
-			
-//			/*
-//			 * Create cover
-//			 */
-//			igDocument.add(new Paragraph("Cover Page", titleFont));
-//			igDocument.add(new Paragraph("Profile title", titleFont));
-//			igDocument.add(new Paragraph("Profile identifier", titleFont));
-//			igDocument.add(Chunk.NEWLINE);
-//
-//			igDocument.newPage();
-//
 
 
 
-			
 			// THIRD PASS
-	        List<byte[]> list = new ArrayList<byte[]>();
-	        list.add(tocBaos.toByteArray());
-	        list.add(igBaos.toByteArray());
+			List<byte[]> list = new ArrayList<byte[]>();
+			list.add(coverBaos.toByteArray());
+			list.add(tocBaos.toByteArray());
+			list.add(igBaos.toByteArray());
 
 
 			igFinalBaos = new ByteArrayOutputStream();
 			igFinalDocument = new Document();
-	        igFinalWriter = PdfWriter.getInstance(igFinalDocument, igFinalBaos);
-	        igFinalDocument.open();
-	        PdfContentByte cb = igFinalWriter.getDirectContent();
-	        for (byte[] in : list) {
-	            PdfReader readerf = new PdfReader(in);
-	            for (int i = 1; i <= readerf.getNumberOfPages(); i++) {
-	            	igFinalDocument.newPage();
-	                //import the page from source pdf
-	                PdfImportedPage page = igFinalWriter.getImportedPage(readerf, i);
-	                //add the page to the destination pdf
-	                cb.addTemplate(page, 0, 0);
-	            }
-	        }
-	        igFinalDocument.close();
+			igFinalWriter = PdfWriter.getInstance(igFinalDocument, igFinalBaos);
+			igFinalDocument.open();
+			PdfContentByte cb = igFinalWriter.getDirectContent();
+			for (byte[] in : list) {
+				PdfReader readerf = new PdfReader(in);
+				for (int i = 1; i <= readerf.getNumberOfPages(); i++) {
+					igFinalDocument.newPage();
+					//import the page from source pdf
+					PdfImportedPage page = igFinalWriter.getImportedPage(readerf, i);
+					//add the page to the destination pdf
+					cb.addTemplate(page, 0, 0);
+				}
+			}
+			igFinalDocument.close();
 			return new ByteArrayInputStream(igFinalBaos.toByteArray());
 		} catch (DocumentException | IOException e) {
 			e.printStackTrace();
@@ -992,7 +1022,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 		}
 	}
 
-	
+
 	public PdfPTable getFooterTable(String footer, int x, int y) {
 		PdfPTable table = new PdfPTable(2);
 		table.setTotalWidth(527);
@@ -1155,7 +1185,45 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 				.getComment() == null ? "" : s.getRef().getComment());
 		rows.add(row);
 	}
-	
+
+	private void addContent(Document tocDocument, PdfWriter igWriter, String title_){
+		try {
+			//Create TOC
+			final String title = title_;
+			Chunk chunk = new Chunk(title).setLocalGoto(title);
+			tocDocument.add(new Paragraph(chunk));
+			// Add a placeholder for the page reference
+			tocDocument.add(new VerticalPositionMark() {
+				@Override
+				public void draw(PdfContentByte canvas, float llx, float lly, float urx, float ury, float y)
+				{
+					final PdfTemplate createTemplate = canvas.createTemplate(50, 50);
+					ProfileServiceImpl.this.tocPlaceholder.put(title, createTemplate);
+					canvas.addTemplate(createTemplate, urx - 50, y);
+				}
+			});
+			
+			
+			//Create page numbers
+			BaseFont baseFont;
+			PdfTemplate template = this.tocPlaceholder.get(title);
+			template.beginText();
+			
+			baseFont = BaseFont.createFont();
+			template.setFontAndSize(baseFont, 12);
+			template.setTextMatrix(20 - baseFont.getWidthPoint(String.valueOf(igWriter.getPageNumber()), 12), 0);
+			template.showText(String.valueOf(igWriter.getPageNumber()));
+			template.endText();
+			
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 
 	private void addSegmentPdf2(Document igDocument, PdfWriter igWriter, Document tocDocument, List<String> header,
 			float[] columnWidths, SegmentRef segRef, Font headerFont,
@@ -1166,47 +1234,8 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 		ArrayList<List<String>> rows = new ArrayList<List<String>>();
 
 		Segment s = segRef.getRef();
-
-
-
-		//Create TOC
-		final String title = s.getName();
-		Chunk chunk = new Chunk(title).setLocalGoto(title);
-		tocDocument.add(new Paragraph(chunk));
-
-		// Add a placeholder for the page reference
-		tocDocument.add(new VerticalPositionMark() {
-			@Override
-			public void draw(final PdfContentByte canvas, final float llx, final float lly, final float urx, final float ury, final float y)
-			{
-				final PdfTemplate createTemplate = canvas.createTemplate(50, 50);
-				ProfileServiceImpl.this.tocPlaceholder.put(title, createTemplate);
-
-				canvas.addTemplate(createTemplate, urx - 50, y);
-			}
-		});
-
-		//TODO
-		//Create page numbers
-		PdfTemplate template = this.tocPlaceholder.get(title);
-		template.beginText();
-		//template.setFontAndSize(this.baseFont, 12);
-		//template.setTextMatrix(50 - this.baseFont.getWidthPoint(String.valueOf(this.writer.getPageNumber()), 12), 0);
-		BaseFont baseFont;
-		try {
-			baseFont = BaseFont.createFont();
-			template.setFontAndSize(baseFont, 12);
-			//			template.setTextMatrix(50 - baseFont.getWidthPoint(String.valueOf(this.writer.getPageNumber()), 12), 0);
-			//			template.showText(String.valueOf(this.writer.getPageNumber()));
-			template.setTextMatrix(50 - baseFont.getWidthPoint(String.valueOf(igWriter.getPageNumber()), 12), 0);
-			template.showText(String.valueOf(igWriter.getPageNumber()));
-			template.endText();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		
+		this.addContent(tocDocument, igWriter, s.getName() + " - " + s.getDescription());
 
 		igDocument.add(new Paragraph(s.getName() + ": " +
 				s.getDescription() + " Segment"));
