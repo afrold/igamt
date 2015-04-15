@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
  */
 // @Entity
 // @Table(name = "FIELD")
-public class Field extends DataElement implements java.io.Serializable {
+public class Field extends DataElement implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,6 +85,29 @@ public class Field extends DataElement implements java.io.Serializable {
 		//return this.getPosition() - o.getPosition();
 		return Integer.parseInt(this.getItemNo()) - Integer.parseInt(o.getItemNo());
 
+	}
+	
+	@Override
+	public Field clone() throws CloneNotSupportedException {
+		Field clonedField = new Field();
+		
+		clonedField.setBindingLocation(bindingLocation);
+		clonedField.setBindingStrength(bindingStrength);
+		clonedField.setComment(comment);
+		clonedField.setConfLength(confLength);
+		clonedField.setDatatype(datatype.clone());
+		clonedField.setItemNo(itemNo);
+		clonedField.setMax(max);
+		clonedField.setMaxLength(maxLength);
+		clonedField.setMin(min);
+		clonedField.setMinLength(minLength);
+		clonedField.setName(name);
+		clonedField.setPosition(position);
+		clonedField.setTable(table.clone());
+		clonedField.setText(text);
+		clonedField.setUsage(usage);
+		
+		return clonedField;
 	}
 
 }

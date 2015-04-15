@@ -29,9 +29,6 @@ var
 //the HTTP headers to be used by all requests
     httpHeaders,
 
-//the message to be shown to the user
-    msg,
-
 //the message to show on the login popup page
     loginMessage,
 
@@ -39,8 +36,10 @@ var
     spinner,
 
 //The list of messages we don't want to displat
-    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess'];
+    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded'];
 
+//the message to be shown to the user
+var msg = {};
 
 app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 
@@ -52,8 +51,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
         .when('/home', {
             templateUrl: 'views/home.html'
         })
-        .when('/profiles', {
-            templateUrl: 'views/dashboard.html'
+        .when('/ig', {
+            templateUrl: 'views/ig.html'
         })
         .when('/doc', {
             templateUrl: 'views/doc.html'
@@ -87,9 +86,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
                     return LoginService();
                 }]
             }
-        }).when('/registerUser', {
-            templateUrl: 'views/registerUser.html',
-            controller: 'RegisterUserCtrl'
         })
         .when('/registerResetPassword', {
             templateUrl: 'views/account/registerResetPassword.html',
@@ -109,54 +105,46 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
                 }
             }
         })
-        .when('/vendors', {
+        .when('/authors', {
             templateUrl: 'views/account/manageAccounts.html',
             controller: 'ManageAccountsCtrl',
             resolve: {
                 accountType: function() {
-                    return 'authorizedVendor';
+                    return 'author';
                 },
-                accountList:  ['MultiVendorsCEHRTsLoader', function(MultiVendorsCEHRTsLoader) {
-                    return MultiVendorsCEHRTsLoader();
+                accountList:  ['MultiAuthorsLoader', function(MultiAuthorsLoader) {
+                    return MultiAuthorsLoader();
                 }]
             }
-        })
-        .when('/providers', {
+        }) .when('/supervisors', {
             templateUrl: 'views/account/manageAccounts.html',
             controller: 'ManageAccountsCtrl',
             resolve: {
                 accountType: function() {
-                    return 'provider';
+                    return 'supervisor';
                 },
-                accountList:  ['MultiProvidersCEHRTsLoader', function(MultiProvidersCEHRTsLoader) {
-                    return MultiProvidersCEHRTsLoader();
+                accountList:  ['MultiSupervisorsLoader', function(MultiSupervisorsLoader) {
+                    return MultiSupervisorsLoader();
                 }]
             }
+        }).when('/registrationSubmitted', {
+            templateUrl: 'views/account/registrationSubmitted.html'
         })
         .otherwise({
             redirectTo: '/'
         });
 
-//    RestangularProvider.setBaseUrl('/api/');
-//
-//    RestangularProvider.addElementTransformer('profiles', false, function (profile) {
-//        profile.addRestangularMethod('clone', 'post', 'clone');
-//        return profile;
-//    });
-
-
+//    $http.defaults.headers.post['X-CSRFToken'] = $cookies['csrftoken'];
 
     $httpProvider.interceptors.push(function ($q) {
         return {
-            'request': function (config) {
+            request: function (config) {
 //                return "http://localhost:8080/igl-api"+ value;
-                if(config.url.startsWith("/api")){
-//                    config.url = "http://localhost:8080/igl-api"+  config.url;
+                if(config.url.startsWith("api")){
+//                    config.url = "http://localhost:8080/igl-api/"+  config.url;
                  }
                 return config || $q.when(config);
-
             }
-
         }
     });
 
@@ -164,10 +152,10 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 
 //    $httpProvider.interceptors.push('503Interceptor');
 //    $httpProvider.interceptors.push('sessionTimeoutInterceptor');
-    $httpProvider.interceptors.push(['$rootScope', '$q', function ($rootScope, $q) {
+    $httpProvider.interceptors.push(function ($rootScope, $q) {
         var setMessage = function (response) {
             //if the response has a text and a type property, it is a message to be shown
-            if (response.data.text && response.data.type) {
+            if (response.data && response.data.text && response.data.type) {
 
 //                    console.log("received message of some type");
 //                    console.log("response.status"+response.status);
@@ -217,70 +205,131 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
                 }
             }
         };
-        return function (promise) {
-            return promise.then(
-                //this is called after each successful server request
-                function (response) {
-                    setMessage(response);
-                    return response;
-                },
-                //this is called after each unsuccessful server request
-                function (response) {
-                    setMessage(response);
-                    return $q.reject(response);
-                }
-            );
+
+        return {
+            response: function (response) {
+                setMessage(response);
+                return response || $q.when(response);
+            },
+
+            responseError: function (response) {
+                setMessage(response);
+                return $q.reject(response);
+            }
         };
-    }]);
+
+
+//        return function (promise) {
+//            return promise.then(
+//                //this is called after each successful server request
+//                function (response) {
+//                    setMessage(response);
+//                    return response;
+//                },
+//                //this is called after each unsuccessful server request
+//                function (response) {
+//                    setMessage(response);
+//                    return $q.reject(response);
+//                }
+//            );
+//        };
+    });
 
     //configure $http to show a login dialog whenever a 401 unauthorized response arrives
-    $httpProvider.interceptors.push(['$rootScope', '$q', function ($rootScope, $q) {
-        return function (promise) {
-            return promise.then(
-                //success -> don't intercept
-                function (response) {
-                    return response;
-                },
-                //error -> if 401 save the request and broadcast an event
-                function (response) {
-                    if (response.status === 401) {
-                        //We catch everything but this one. So public users are not bothered
-                        //with a login windows when browsing home.
-                        if ( response.config.url !== 'api/accounts/cuser') {
-                            //We don't intercept this request
-                            var deferred = $q.defer(),
-                                req = {
-                                    config: response.config,
-                                    deferred: deferred
-                                };
-                            $rootScope.requests401.push(req);
-                            $rootScope.$broadcast('event:loginRequired');
-                            return deferred.promise;
-                        }
+    $httpProvider.interceptors.push(function ($rootScope, $q) {
+
+
+        return {
+            response: function (response) {
+                return response   || $q.when(response);
+            },
+            responseError: function (response) {
+                if (response.status === 401) {
+                    //We catch everything but this one. So public users are not bothered
+                    //with a login windows when browsing home.
+                    if ( response.config.url !== 'api/accounts/cuser') {
+                        //We don't intercept this request
+                        var deferred = $q.defer(),
+                            req = {
+                                config: response.config,
+                                deferred: deferred
+                            };
+                        $rootScope.requests401.push(req);
+                        $rootScope.$broadcast('event:loginRequired');
+//                        return deferred.promise;
+
+                        return  $q.when(response);
                     }
-                    return $q.reject(response);
                 }
-            );
+                return $q.reject(response);
+            }
         };
-    }]);
+
+
+
+//
+//        return function (promise) {
+//            return promise.then(
+//                //success -> don't intercept
+//                function (response) {
+//                    return response;
+//                },
+//                //error -> if 401 save the request and broadcast an event
+//                function (response) {
+//                    if (response.status === 401) {
+//                        //We catch everything but this one. So public users are not bothered
+//                        //with a login windows when browsing home.
+//                        if ( response.config.url !== 'api/accounts/cuser') {
+//                            //We don't intercept this request
+//                            var deferred = $q.defer(),
+//                                req = {
+//                                    config: response.config,
+//                                    deferred: deferred
+//                                };
+//                            $rootScope.requests401.push(req);
+//                            $rootScope.$broadcast('event:loginRequired');
+//                            return deferred.promise;
+//                        }
+//                    }
+//                    return $q.reject(response);
+//                }
+//            );
+//        };
+    });
 
     //intercepts ALL angular ajax http calls
-    $httpProvider.interceptors.push(['$q', '$window', function ($q, $window) {
-        return function (promise) {
-            return promise.then(
-                function (response) {
-                    //hide the spinner
-                    spinner = false;
-                    return response;
-                },
-                function (response) {
-                    //hide the spinner
-                    spinner = false;
-                    return $q.reject(response);
-                }
-            );
+    $httpProvider.interceptors.push(function ($q) {
+//        return function (promise) {
+//            return promise.then(
+//                function (response) {
+//                    //hide the spinner
+//                    spinner = false;
+//                    return response;
+//                },
+//                function (response) {
+//                    //hide the spinner
+//                    spinner = false;
+//                    return $q.reject(response);
+//                }
+//            );
+//        };
+
+        return {
+            response: function (response) {
+                //hide the spinner
+                spinner = false;
+                return response   || $q.when(response);
+            },
+
+            responseError: function (response) {
+                //hide the spinner
+                spinner = false;
+                return $q.reject(response);
+            }
         };
-    }]);
+
+
+    });
 
     var spinnerStarter = function (data, headersGetter) {
         spinner = true;
@@ -295,9 +344,9 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 
 app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,userInfoService,$http) {
     $rootScope.readonly = false;
-    $rootScope.profile = {}; // current profile
+    $rootScope.profile = null; // current profile
     $rootScope.message = null; // current message
-    $rootScope.datatype = {}; // current datatype
+    $rootScope.datatype = null; // current datatype
     $rootScope.statuses = ['Draft', 'Active', 'Superceded', 'Withdrawn'];
     $rootScope.hl7Versions = ['2.0', '2.1', '2.2', '2.3', '2.3.1', '2.4', '2.5', '2.5.1', '2.6', '2.7', '2.8'];
     $rootScope.schemaVersions = ['1.0', '1.5', '2.0', '2.5'];
@@ -333,6 +382,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.listToBeDeletedCodes = [];
     $rootScope.segment = null;
     $rootScope.profileTabs = new Array();
+    $rootScope.igTabs = new Array();
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
     $rootScope.notifyDtTreeUpdate = '0'; // TODO: FIXME
@@ -346,6 +396,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.generalInfo = {type: null, 'message': null};
     $rootScope.references =[]; // collection of element referencing a datatype to delete
     $rootScope.section = {};
+    $rootScope.parentsMap = {};
 
     $rootScope.selectProfileTab = function (value) {
         $rootScope.profileTabs[0] = false;
@@ -355,6 +406,12 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         $rootScope.profileTabs[4] = false;
         $rootScope.profileTabs[5] = false;
         $rootScope.profileTabs[value] = true;
+    };
+
+    $rootScope.selectIgTab = function (value) {
+        $rootScope.igTabs[0] = false;
+        $rootScope.igTabs[1] = false;
+        $rootScope.igTabs[value] = true;
     };
 
     $rootScope.initMaps = function () {
@@ -384,6 +441,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         $rootScope.listToBeDeletedTables = [];
         $rootScope.listToBeAddedCodes = [];
         $rootScope.listToBeDeletedCodes = [];
+        $rootScope.parentsMap = [];
     };
 
     $rootScope.$watch(function () {
@@ -475,23 +533,88 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     };
     
     $rootScope.recordChangeForEdit2 = function(type,command,id,valueType,value) {
-    	if($rootScope.changes[type] === undefined){
-            $rootScope.changes[type] = {};
+        var obj = $rootScope.findObjectInChanges(type, "add", id);
+        if (obj === undefined) { // not a new object
+            if ($rootScope.changes[type] === undefined) {
+                $rootScope.changes[type] = {};
+            }
+            if ($rootScope.changes[type][command] === undefined) {
+                $rootScope.changes[type][command] = [];
+            }
+            if (valueType !== type) {
+                var obj = $rootScope.findObjectInChanges(type, command, id);
+                if (obj === undefined) {
+                    obj = {id: id};
+                    $rootScope.changes[type][command].push(obj);
+                }
+                obj[valueType] = value;
+            } else {
+                $rootScope.changes[type][command].push(value);
+            }
         }
-        if($rootScope.changes[type][command] === undefined){
-            $rootScope.changes[type][command] = {};
+    };
+
+    $rootScope.recordDelete = function(type,command,id) {
+        if(id < 0){ // new object
+            $rootScope.removeObjectFromChanges(type, "add", id);
+        }else{
+            $rootScope.removeObjectFromChanges(type, "edit",id);
+            if ($rootScope.changes[type] === undefined) {
+                $rootScope.changes[type] = {};
+            }
+            if ($rootScope.changes[type][command] === undefined) {
+                $rootScope.changes[type][command] = [];
+            }
+
+            if ($rootScope.changes[type]["delete"] === undefined) {
+                $rootScope.changes[type]["delete"] = [];
+            }
+
+            $rootScope.changes[type]["delete"].push({id:id});
         }
-        if($rootScope.changes[type][command][id] === undefined){
-            $rootScope.changes[type][command][id] = {};
+
+        if($rootScope.changes[type]) {            //clean the changes object
+            if ($rootScope.changes[type]["add"] && $rootScope.changes[type]["add"].length === 0) {
+                delete  $rootScope.changes[type]["add"];
+            }
+            if ($rootScope.changes[type]["edit"] && $rootScope.changes[type]["edit"].length === 0) {
+                delete  $rootScope.changes[type]["edit"];
+            }
+
+            if (Object.getOwnPropertyNames($rootScope.changes[type]).length === 0) {
+                delete $rootScope.changes[type];
+            }
         }
-        if($rootScope.changes[type][command][id][valueType] === undefined){
-            $rootScope.changes[type][command][id][valueType] = {};
-        }
-        $rootScope.changes[type][command][id][valueType] = value;
     };
 
 
-    Restangular.setBaseUrl('/api/');
+
+    $rootScope.findObjectInChanges = function(type, command, id){
+        if($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
+            for (var i = 0; i < $rootScope.changes[type][command].length; i++) {
+                var tmp = $rootScope.changes[type][command][i];
+                if (tmp.id === id) {
+                    return tmp;
+                }
+            }
+        }
+        return undefined;
+    };
+
+    $rootScope.removeObjectFromChanges = function(type, command, id){
+        if($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
+            for (var i = 0; i < $rootScope.changes[type][command].length; i++) {
+                var tmp = $rootScope.changes[type][command][i];
+                if (tmp.id === id) {
+                     $rootScope.changes[type][command].splice(i, 1);
+                }
+            }
+        }
+        return undefined;
+    };
+
+
+    Restangular.setBaseUrl('api/');
 //    Restangular.setResponseExtractor(function(response, operation) {
 //        return response.data;
 //    });
@@ -525,14 +648,17 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
     $rootScope.processElement = function (element, parent) {
         if (element.type === "group" && element.children) {
+            $rootScope.parentsMap[element.id] = parent;
+//            element["parent"] = parent;
             element.children = $filter('orderBy')(element.children, 'position');
             angular.forEach(element.children, function (segmentRefOrGroup) {
                 $rootScope.processElement(segmentRefOrGroup,element);
             });
         } else if (element.type === "segmentRef") {
-            element.ref = $rootScope.segmentsMap[element.ref.id];
-            element.ref["path"] =  element.ref.name;
-            $rootScope.processElement(element.ref,element);
+            $rootScope.parentsMap[element.id] = parent;
+            var ref = $rootScope.segmentsMap[element.ref.id];
+            element.ref["path"] =  ref.name;
+            $rootScope.processElement(ref,element);
         }  else if (element.type === "segment") {
             if ($rootScope.segments.indexOf(element) === -1) {
                 $rootScope.segments.push(element);
@@ -542,15 +668,19 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
                 });
             }
         } else if (element.type === "field" || element.type === "component") {
-            element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
+            $rootScope.parentsMap[element.id] = parent;
+//            element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
             element["path"] = parent.path+"."+element.position;
+            if(element.type === "component") {
+                element['sub'] = parent.type === 'component';
+            }
             if (angular.isDefined(element.table) && element.table != null) {
-                element["table"] = $rootScope.tablesMap[element.table.id];
-                if ($rootScope.tables.indexOf(element.table) === -1) {
-                    $rootScope.tables.push(element.table);
+                var table = $rootScope.tablesMap[element.table.id];
+                if ($rootScope.tables.indexOf(table) === -1) {
+                    $rootScope.tables.push(table);
                 }
             }
-            $rootScope.processElement(element.datatype,element);
+            $rootScope.processElement($rootScope.datatypesMap[element.datatype.id],element);
         } else if (element.type === "datatype") {
             if ($rootScope.datatypes.indexOf(element) === -1) {
                 $rootScope.datatypes.push(element);
@@ -564,10 +694,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
     $rootScope.findDatatypeRefs = function (datatype, obj) {
         if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
-            if(obj.datatype === datatype && $rootScope.references.indexOf(obj) === -1) {
+            if($rootScope.datatypesMap[obj.datatype.id] === datatype && $rootScope.references.indexOf(obj) === -1) {
                 $rootScope.references.push(obj);
              }
-            $rootScope.findDatatypeRefs(datatype,obj.datatype);
+            $rootScope.findDatatypeRefs(datatype,$rootScope.datatypesMap[obj.datatype.id]);
         }else if(angular.equals(obj.type,'segment')){
             angular.forEach( $rootScope.segments, function (segment) {
                 angular.forEach(segment.fields, function (field) {
@@ -585,10 +715,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
     $rootScope.findTableRefs = function (table, obj) {
         if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
-            if(obj.table === table && $rootScope.references.indexOf(obj) === -1) {
+            if($rootScope.tablesMap[obj.table.id]=== table && $rootScope.references.indexOf(obj) === -1) {
                 $rootScope.references.push(obj);
              }
-            $rootScope.findTableRefs(table,obj.datatype);
+            $rootScope.findTableRefs(table,$rootScope.datatypesMap[obj.datatype.id]);
         }else if(angular.equals(obj.type,'segment')){
             angular.forEach( $rootScope.segments, function (segment) {
                 angular.forEach(segment.fields, function (field) {
@@ -603,6 +733,44 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
             }
         }
     };
+    
+    $rootScope.genRegex = function (format){		
+		if(format === 'YYYY'){
+			return '(([0-9]{4})|(([0-9]{4})((0[1-9])|(1[0-2])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMM'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMMDD'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMMDDhh'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMMDDhhmm'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMMDDhhmmss'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYYMMDDhhmmss.sss'){
+			return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
+		} else if(format === 'YYYY+-ZZZZ'){
+			return '([0-9]{4}).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMM+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2])).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMMDD+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMMDDhh+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMMDDhhmm+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMMDDhhmmss+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]).*((\\+|\\-)[0-9]{4})';
+		} else if(format === 'YYYYMMDDhhmmss.sss+-ZZZZ'){
+			return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]((\\+|\\-)[0-9]{4})';
+		} else if(format === 'ISO-compliant OID'){
+			return '[0-2](\\.(0|[1-9][0-9]*))*';
+		} else if(format === 'Alphanumeric'){
+			return '^[a-zA-Z0-9]*$';
+		}
+		
+		return format;
+	}
     
     $rootScope.isAvailableDTForTable = function (dt) {
     	if(dt != undefined){
@@ -680,11 +848,13 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.$on('event:loginRequest', function (event, username, password) {
         httpHeaders.common['Accept'] = 'application/json';
         httpHeaders.common['Authorization'] = 'Basic ' + base64.encode(username + ':' + password);
-        $http.get( $rootScope.api('/api/accounts/login')).success(function() {
+//        httpHeaders.common['withCredentials']=true;
+//        httpHeaders.common['Origin']="http://localhost:9000";
+        $http.get('api/accounts/login').success(function() {
             //If we are here in this callback, login was successfull
             //Let's get user info now
             httpHeaders.common['Authorization'] = null;
-            $http.get( $rootScope.api('/api/accounts/cuser')).success(function (data) {
+            $http.get('api/accounts/cuser').success(function (data) {
                 userInfoService.setCurrentUser(data);
                 $rootScope.$broadcast('event:loginConfirmed');
             });

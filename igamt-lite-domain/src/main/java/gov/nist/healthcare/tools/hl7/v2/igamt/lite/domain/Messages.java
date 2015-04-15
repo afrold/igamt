@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "messages")
-public class Messages implements java.io.Serializable {
+public class Messages implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -80,4 +80,14 @@ public class Messages implements java.io.Serializable {
 		return "Messages [id=" + id + "]";
 	}
 
+	@Override
+	public Messages clone() throws CloneNotSupportedException {
+		Messages clonedMessages = new Messages();
+		clonedMessages.setChildren(new HashSet<Message>());
+		for(Message m: this.children){
+			clonedMessages.addMessage(m.clone());
+		}
+		
+		return clonedMessages;
+	}
 }

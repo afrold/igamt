@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Component;
 
 public class CSRFTokenManager {
 
@@ -47,6 +48,6 @@ public class CSRFTokenManager {
 		return request.getParameter(CSRF_PARAM_NAME);
 	}
 
-	private CSRFTokenManager() {};
+	public CSRFTokenManager() {};
 
 }

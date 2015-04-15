@@ -17,15 +17,15 @@ angular.module('igl')
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.datatype ? parent.datatype.components: parent.components : $rootScope.datatype != null ? [$rootScope.datatype]:[];
+                    return parent ? parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components: parent.components : $rootScope.datatype != null ? $rootScope.datatype.components:[];
                 },
                 getTemplate: function (node) {
                     return 'DatatypeEditTree.html';
                 }
-                ,
-                options: {
-                    initialState: 'expanded'
-                }
+//                ,
+//                options: {
+//                    initialState: 'expanded'
+//                }
             });
 
             $scope.$watch(function () {
@@ -44,7 +44,6 @@ angular.module('igl')
             $rootScope.datatype["type"] = "datatype";
             if ($scope.params)
                 $scope.params.refresh();
-//            $rootScope.go('/profiles#datatypeDef');
             $scope.loadingSelection = false;
          };
 
@@ -56,40 +55,43 @@ angular.module('igl')
             if(flavor.components != undefined && flavor.components != null && flavor.components.length != 0){
                 for(var i=0; i < flavor.components.length; i++){
                     flavor.components[i].id = -1* (Math.floor(Math.random()*10000000) + 1);
-                    flavor.components[i].datatype = datatype.components[i].datatype;
+//                    flavor.components[i].datatype = datatype.components[i].datatype;
                 }
             }
-            $rootScope.datatypes.splice(0, 0, flavor);
-            $rootScope.datatype = flavor;
-            var tmp = angular.copy(flavor);
-            delete tmp.type;
-            if(tmp.components != undefined && tmp.components != null && tmp.components.length != 0){
-                angular.forEach(tmp.components, function (component) {
-                    component.datatype = {id:component.datatype.id};
-                    if(component.table != undefined) {
-                        component.table = {id: component.table.id};
-                    }
-                });
-            }
-
-            var predicates = tmp['predicates'];
+            var predicates = flavor['predicates'];
             if( predicates!= undefined && predicates != null && predicates.length != 0){
                 angular.forEach(predicates, function (predicate) {
                     predicate.id = -1 * (Math.floor(Math.random()*10000000) + 1);
                 });
             }
-
-            var conformanceStatements = tmp['conformanceStatements'];
+            var conformanceStatements = flavor['conformanceStatements'];
             if(conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0){
                 angular.forEach(conformanceStatements, function (conformanceStatement) {
                     conformanceStatement.id = -1 * (Math.floor(Math.random()*10000000) + 1);
                 });
             }
-            $rootScope.recordChange2('datatype',tmp.id,null,tmp);
+            $rootScope.datatypes.splice(0, 0, flavor);
+            $rootScope.datatype = flavor;
+
+//            $rootScope.recordChange2('datatype',tmp.id,null,tmp);
+            $rootScope.recordChangeForEdit2('datatype', "add", flavor.id,'datatype', flavor);
+
+//            $rootScope.recordChangeForEdit2('datatype', "add", null,null, tmp);
+//            type,command,id,valueType,value
+
 
             $scope.select(flavor);
 
         };
+
+        $scope.recordDatatypeChange = function(type, command,id,valueType,value){
+            var datatypeFromChanges = $rootScope.findObjectInChanges("datatype", "add", $rootScope.datatype.id);
+            if(datatypeFromChanges === undefined){
+                $rootScope.recordChangeForEdit2(type, command,id,valueType,value);
+            }
+        };
+
+
 
         $scope.close = function(){
             $rootScope.datatype = null;
@@ -155,11 +157,9 @@ angular.module('igl')
            return true;
         };
 
-
         $scope.onDatatypeChange = function(node){
-            $scope.refreshTree();
-            node.datatypeLabel = null;
-            $rootScope.recordChange(node,'datatype');
+             $rootScope.recordChangeForEdit2('component','edit',node.id,'datatype',node.datatype);
+            $scope.refreshTree(); // TODO: Refresh only the node
          };
 
         $scope.refreshTree = function(){
@@ -312,14 +312,14 @@ angular.module('igl')
 		};
 		
 		$scope.findDTByComponentId = function(componentId){
-			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
-				for(var j=0, len2 = $rootScope.datatypes[i].components.length; j<len2;j++ ){
-					if($rootScope.datatypes[i].components[j].id == componentId)
-						return $rootScope.datatypes[i];
-				}
-			}
-			return null;
-		};
+//			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
+//				for(var j=0, len2 = $rootScope.datatypes[i].components.length; j<len2;j++ ){
+//					if($rootScope.datatypes[i].components[j].id == componentId)
+//						return $rootScope.datatypes[i];
+//				}
+//			}
+            return $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId].datatype: null;
+ 		};
 		
 		
 		
@@ -343,7 +343,9 @@ angular.module('igl')
 			$scope.deletePredicateByTarget();
 			
 			var position_1 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);			
+			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+			var location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+			var location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 			
 			if(position_1 != null){
 				if($scope.newConstraint.contraintType === 'valued'){
@@ -354,7 +356,7 @@ angular.module('igl')
 							description : 'If ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<Presence Path=\"' + location_1 + '\"/>'
 						};
 					$rootScope.datatype.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
@@ -367,7 +369,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
 						};
 					$rootScope.datatype.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
@@ -380,7 +382,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
 						};
 					$rootScope.datatype.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
@@ -393,7 +395,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
 						};
 					$rootScope.datatype.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
@@ -406,7 +408,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 						};
 					$rootScope.datatype.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
@@ -424,13 +426,28 @@ angular.module('igl')
 			}
         	
         	return position;
-        }
+        };
+        
+        $scope.genLocation = function(segment, field, component, subComponent){
+        	var location = null;
+        	if(field != null && component == null && subComponent == null){
+				location = field.position + '[1]';
+			}else if(field != null && component != null && subComponent == null){
+				location = field.position + '[1].' + component.position + '[1]';
+			}else if(field != null && component != null && subComponent != null){
+				location = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
+			}
+        	
+        	return location;
+        };
 		
 		$scope.addConformanceStatement = function() {
 			$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
 			
 			var position_1 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);			
+			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+			var location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+			var location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 			
 			if(position_1 != null){
 				if($scope.newConstraint.contraintType === 'valued'){
@@ -439,7 +456,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
-							assertion : null
+							assertion : '<Presence Path=\"' + location_1 + '\"/>'
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
@@ -450,7 +467,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
-							assertion : null
+							assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
@@ -461,7 +478,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
-							assertion : null
+							assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
@@ -472,7 +489,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
-							assertion : null
+							assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
@@ -483,7 +500,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
-							assertion : null
+							assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
@@ -494,7 +511,8 @@ angular.module('igl')
 		
 		$scope.countConformanceStatements = function(position){
 			var count = 0;
-			for(var i=0, len1 = $rootScope.datatype.conformanceStatements.length; i < len1; i ++){
+			if($rootScope.datatype != null)
+            for(var i=0, len1 = $rootScope.datatype.conformanceStatements.length; i < len1; i ++){
 				if($rootScope.datatype.conformanceStatements[i].constraintTarget.indexOf(position + '[') === 0)
 					count = count + 1;
 			}
@@ -503,6 +521,7 @@ angular.module('igl')
 		};
 		
 		$scope.countPredicate = function(position){
+            if($rootScope.datatype != null)
 			for(var i=0, len1 = $rootScope.datatype.predicates.length; i < len1; i ++){
 				if($rootScope.datatype.predicates[i].constraintTarget.indexOf(position + '[') === 0)
 					return 1;
@@ -527,46 +546,79 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
-
-        // remove any change made to components
-        if($scope.dtToDelete.components != undefined && $scope.dtToDelete.components != null && $scope.dtToDelete.components.length > 0){
-            angular.forEach($scope.dtToDelete.components, function (component) {
-                if($rootScope.changes['component'] && $rootScope.changes['component'][component.id] && $rootScope.changes['component'][component.id]){
-                    delete $rootScope.changes['component'][component.id];
-                }
-            });
-        }
-
-        if( $rootScope.changes['component'] && Object.getOwnPropertyNames($rootScope.changes['component']).length === 0){
-            delete $rootScope.changes['component'];
-        }
-
-        // remove any change made to datatype
-        if($rootScope.changes['datatype'] != undefined  && $rootScope.changes['datatype'][$scope.dtToDelete.id] != undefined){
-            if($scope.dtToDelete.id < 0){
-                delete $rootScope.changes['datatype'][$scope.dtToDelete.id];
-                if( Object.getOwnPropertyNames($rootScope.changes['datatype']).length === 0){
-                    delete $rootScope.changes['datatype'];
-                }
-            }else{
-                $rootScope.changes['datatype'][$scope.dtToDelete.id] = null;
-            }
-        }
-
         var index = $rootScope.datatypes.indexOf($scope.dtToDelete);
         if (index > -1) $rootScope.datatypes.splice(index, 1);
-
-        $rootScope.generalInfo.type = 'info';
-        $rootScope.generalInfo.message = "Datatype " + $scope.dtToDelete.label + " deleted successfully";
-
         if($rootScope.datatype === $scope.dtToDelete){
             $rootScope.datatype = null;
         }
-
         $rootScope.references = [];
+
+        if($scope.dtToDelete.id < 0){ //datatype flavor
+            var index = $rootScope.changes["datatype"]["add"].indexOf($scope.dtToDelete);
+            if (index > -1) $rootScope.changes["datatype"]["add"].splice(index, 1);
+            if ($rootScope.changes["datatype"]["add"] && $rootScope.changes["datatype"]["add"].length === 0) {
+                delete  $rootScope.changes["datatype"]["add"];
+            }
+            if ($rootScope.changes["datatype"] && Object.getOwnPropertyNames($rootScope.changes["datatype"]).length === 0) {
+                delete  $rootScope.changes["datatype"];
+            }
+        }else {
+            $rootScope.recordDelete("datatype", "edit", $scope.dtToDelete.id);
+            if ($scope.dtToDelete.components != undefined && $scope.dtToDelete.components != null && $scope.dtToDelete.components.length > 0) {
+
+                //clear components changes
+                angular.forEach($scope.dtToDelete.components, function (component) {
+                    $rootScope.recordDelete("component", "edit", component.id);
+                    $rootScope.removeObjectFromChanges("component", "delete", component.id);
+                });
+                if ($rootScope.changes["component"]["delete"] && $rootScope.changes["component"]["delete"].length === 0) {
+                    delete  $rootScope.changes["component"]["delete"];
+                }
+
+                if ($rootScope.changes["component"] && Object.getOwnPropertyNames($rootScope.changes["component"]).length === 0) {
+                    delete  $rootScope.changes["component"];
+                }
+
+            }
+
+            if ($scope.dtToDelete.predicates != undefined && $scope.dtToDelete.predicates != null && $scope.dtToDelete.predicates.length > 0) {
+                //clear predicates changes
+                angular.forEach($scope.dtToDelete.predicates, function (predicate) {
+                    $rootScope.recordDelete("predicate", "edit", predicate.id);
+                    $rootScope.removeObjectFromChanges("predicate", "delete", predicate.id);
+                });
+                if ($rootScope.changes["predicate"]["delete"] && $rootScope.changes["predicate"]["delete"].length === 0) {
+                    delete  $rootScope.changes["predicate"]["delete"];
+                }
+
+                if ($rootScope.changes["predicate"] && Object.getOwnPropertyNames($rootScope.changes["predicate"]).length === 0) {
+                    delete  $rootScope.changes["predicate"];
+                }
+
+            }
+
+            if ($scope.dtToDelete.conformanceStatements != undefined && $scope.dtToDelete.conformanceStatements != null && $scope.dtToDelete.conformanceStatements.length > 0) {
+                //clear conforamance statement changes
+                angular.forEach($scope.dtToDelete.conformanceStatements, function (confStatement) {
+                    $rootScope.recordDelete("conformanceStatement", "edit", confStatement.id);
+                    $rootScope.removeObjectFromChanges("conformanceStatement", "delete", confStatement.id);
+                });
+                if ($rootScope.changes["conformanceStatement"]["delete"] && $rootScope.changes["conformanceStatement"]["delete"].length === 0) {
+                    delete  $rootScope.changes["conformanceStatement"]["delete"];
+                }
+
+                if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["conformanceStatement"]).length === 0) {
+                    delete  $rootScope.changes["conformanceStatement"];
+                }
+            }
+        }
+
+
+        $rootScope.msg().text =  "dtDeleteSuccess";
+        $rootScope.msg().type="success";
+        $rootScope.msg().show = true;
+        $rootScope.manualHandle = true;
         $modalInstance.close($scope.dtToDelete);
-
-
 
     };
 

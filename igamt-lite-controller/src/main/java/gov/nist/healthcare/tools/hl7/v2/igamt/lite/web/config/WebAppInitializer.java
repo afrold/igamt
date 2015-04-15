@@ -33,11 +33,12 @@ public class WebAppInitializer implements WebApplicationInitializer
 				"gov.nist.healthcare.nht.acmgt");
 		// web app servlet
 		servletContext.addListener(new ContextLoaderListener(root));
-		Dynamic servlet = servletContext.addServlet("igl-api",
+		Dynamic servlet = servletContext.addServlet("igamt",
 				new DispatcherServlet(root));
 		servlet.setLoadOnStartup(1);
 		servlet.addMapping("/api/*");
 		servlet.setAsyncSupported(true);
 
 	}
+
 }

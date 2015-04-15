@@ -5,6 +5,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.filter;
 
 import java.io.IOException;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -15,11 +16,14 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @author haffo
  * 
  */
-@WebFilter
+@Component
+@WebFilter(asyncSupported = true, dispatcherTypes = DispatcherType.ASYNC)
 public class XFSFilter implements Filter {
 
 	/*

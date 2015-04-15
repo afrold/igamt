@@ -207,7 +207,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 
 	@Override
 	public List<Profile> findAllPreloaded() {
-		List<Profile> profiles = profileRepository.findByPreloaded(true);
+		List<Profile> profiles = profileRepository.findPreloaded();
 		return profiles;
 	}
 
@@ -218,8 +218,8 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 	// }
 
 	@Override
-	public List<Profile> findAllCustom() {
-		List<Profile> profiles = profileRepository.findByPreloaded(false);
+	public List<Profile> findByAccountId(Long accountId) {
+		List<Profile> profiles = profileRepository.findByAccountId(accountId);
 		// if (profiles != null && !profiles.isEmpty()) {
 		// for (Profile profile : profiles) {
 		// processChildren(profile);
@@ -229,7 +229,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 	}
 
 	@Override
-	public Profile clone(Profile p) {
+	public Profile clone(Profile p) throws CloneNotSupportedException {
 		return new ProfileClone().clone(p);
 	}
 
@@ -318,7 +318,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 									"message property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-											.getTextValue()));
+													.getTextValue()));
 						}
 					}
 					// messageService.save(m);
@@ -351,7 +351,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 									"Segment property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-											.getTextValue()));
+													.getTextValue()));
 						}
 					}
 					// segmentService.save(s);
@@ -385,7 +385,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 									"SegmentRef property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-											.getTextValue()));
+													.getTextValue()));
 						}
 					}
 					// segmentRefService.save(sr);
@@ -443,7 +443,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 									"Component property not set: "
 											+ newValue.getKey()
 											+ newValue.getValue()
-											.getTextValue()));
+													.getTextValue()));
 						}
 					}
 					// componentService.save(c);
@@ -671,7 +671,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
 			String stringProfile = new ProfileSerializationImpl()
-			.serializeProfileToXML(p);
+					.serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
 					Charset.forName("UTF-8"));
 
@@ -764,7 +764,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 			BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
 			Font titleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 					BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE
-					| Font.BOLD, BaseColor.RED);
+							| Font.BOLD, BaseColor.RED);
 			Font headerFont = FontFactory.getFont(
 					"/rendering/Arial Narrow.ttf", BaseFont.IDENTITY_H,
 					BaseFont.EMBEDDED, 11, Font.NORMAL, BaseColor.WHITE);
@@ -882,7 +882,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 			columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 2f, 2f, 6f };
 
 			for (Datatype d : p.getDatatypes().getChildren()) {
-				if (d.getLabel().contains("_")){
+				if (d.getLabel().contains("_")) {
 					document1.add(new Paragraph(d.getLabel() + " - "
 							+ d.getDescription() + " Datatype"));
 					document1.add(new Paragraph(d.getComment()));
@@ -906,9 +906,10 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements ProfileSer
 
 			header = Arrays.asList("Value", "Description");
 
-			columnWidths = new float[] {2f, 6f };
+			columnWidths = new float[] { 2f, 6f };
 
-			List<Table> tables = new ArrayList<Table>(p.getTables().getChildren());
+			List<Table> tables = new ArrayList<Table>(p.getTables()
+					.getChildren());
 			Collections.sort(tables);
 
 			for (Table t: tables) {

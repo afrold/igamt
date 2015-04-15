@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * 
  */
 @Document(collection = "table")
-public class Table extends DataModel implements Serializable, Comparable<Table> {
+public class Table extends DataModel implements Serializable, Comparable<Table>, Cloneable{
 
 	/**
 	 * 
@@ -178,4 +178,25 @@ public class Table extends DataModel implements Serializable, Comparable<Table> 
 	        return x;
 	}
 
+	@Override
+	public Table clone() throws CloneNotSupportedException {
+		Table clonedTable = new Table();
+		clonedTable.setCodes(codes);
+		for(Code c:this.codes){
+			clonedTable.addCode(c.clone());
+		}
+		
+		
+		clonedTable.setCodesys(codesys);
+		clonedTable.setExtensibility(extensibility);
+		clonedTable.setMappingAlternateId(mappingAlternateId);
+		clonedTable.setMappingId(mappingId);
+		clonedTable.setName(name);
+		clonedTable.setOid(oid);
+		clonedTable.setStability(stability);
+		clonedTable.setTableType(tableType);
+		clonedTable.setVersion(version);
+		
+		return clonedTable;
+	}
 }

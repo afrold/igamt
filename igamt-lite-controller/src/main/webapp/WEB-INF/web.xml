@@ -7,7 +7,7 @@
 	</session-config> -->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>igl-api</param-value>
+		<param-value>igamt</param-value>
 	</context-param>
 	<error-page>
 		<location>/error.html</location>
@@ -33,15 +33,15 @@
     </context-param>
  -->
 	<!-- filters -->
-	<!-- <filter>
-    	<filter-name>HTTPSecurityFilter</filter-name>
-    	<filter-class>gov.nist.healthcare.nht.acmg.servlet.filter.HTTPSecurityFilter</filter-class>
+  <!-- <filter>
+    	<filter-name>CORSFilter</filter-name>
+    	<filter-class>gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.filter.CORSFilter</filter-class>
     </filter>
     <filter-mapping>
-    	<filter-name>HTTPSecurityFilter</filter-name>
+    	<filter-name>CORSFilter</filter-name>
     	<url-pattern>/*</url-pattern>
-    </filter-mapping> -->
-
+    </filter-mapping>  
+ -->
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -49,7 +49,21 @@
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping> 
+    
+    
+<!--     <filter>
+        <filter-name>CORSFilter</filter-name>
+        <filter-class>
+            gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.filter.CORSFilter
+        </filter-class>
+    </filter>
+     <filter-mapping>
+        <filter-name>CORSFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping> 
+     -->
+    
 
 	<!-- listeners -->
 <!--     <listener>

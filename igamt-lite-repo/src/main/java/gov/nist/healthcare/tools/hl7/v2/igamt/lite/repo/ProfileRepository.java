@@ -19,10 +19,13 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 
  public interface ProfileRepository  extends MongoRepository<Profile, String>, ProfileOperations   {
 	
-	
+	 List<Profile> findByAccountId(Long accountId);
+
 	
 }

@@ -3,7 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProfileMetaData implements java.io.Serializable {
+public class ProfileMetaData implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -11,6 +11,10 @@ public class ProfileMetaData implements java.io.Serializable {
 	private String name;
 
 	private String identifier;
+
+	private String subTitle;
+
+	private String version;
 
 	// //@NotNull
 	private String orgName;
@@ -24,6 +28,8 @@ public class ProfileMetaData implements java.io.Serializable {
 	private String hl7Version;
 
 	private String schemaVersion;
+
+	private String date;
 
 	private Set<String> encodings = new HashSet<String>();
 
@@ -97,6 +103,53 @@ public class ProfileMetaData implements java.io.Serializable {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+
+	public String getSubTitle() {
+		return subTitle;
+	}
+
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+	
+	@Override
+	public ProfileMetaData clone() throws CloneNotSupportedException {
+		ProfileMetaData clonedProfileMetaData = new ProfileMetaData();
+		
+		clonedProfileMetaData.setEncodings(new HashSet<String>());
+		for(String s:this.encodings){
+			clonedProfileMetaData.getEncodings().add(s);
+		}
+		
+		clonedProfileMetaData.setHl7Version(hl7Version);
+		clonedProfileMetaData.setIdentifier(identifier);
+		clonedProfileMetaData.setName(name);
+		clonedProfileMetaData.setOrgName(orgName);
+		clonedProfileMetaData.setSchemaVersion(schemaVersion);
+		clonedProfileMetaData.setStatus(status);
+		clonedProfileMetaData.setTopics(topics);
+		clonedProfileMetaData.setType(type);
+		clonedProfileMetaData.setDate(date);
+		clonedProfileMetaData.setSubTitle(subTitle);
+		clonedProfileMetaData.setVersion(hl7Version);
+		return clonedProfileMetaData;
 	}
 
 }

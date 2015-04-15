@@ -161,14 +161,24 @@ public class JpaConfig {
 	@Bean
 	public JavaMailSenderImpl mailSender() {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		// mailSender.setHost(env.getProperty("mail.host"));
+		// mailSender.setPort(Integer.valueOf(env.getProperty("mail.port")));
+		// mailSender.setProtocol(env.getProperty("mail.protocol"));
+		// mailSender.setUsername(env.getProperty("mail.username"));
+		// mailSender.setPassword(env.getProperty("mail.password"));
+		// Properties javaMailProperties = new Properties();
+		// javaMailProperties.setProperty("mail.smtps.auth", "false");
+		// javaMailProperties.setProperty("mail.debug", "true");
+
 		mailSender.setHost(env.getProperty("mail.host"));
 		mailSender.setPort(Integer.valueOf(env.getProperty("mail.port")));
 		mailSender.setProtocol(env.getProperty("mail.protocol"));
-		mailSender.setUsername(env.getProperty("mail.username"));
-		mailSender.setPassword(env.getProperty("mail.password"));
 		Properties javaMailProperties = new Properties();
-		javaMailProperties.setProperty("mail.smtps.auth", "true");
-		javaMailProperties.setProperty("mail.debug", "true");
+		javaMailProperties.setProperty("mail.smtp.auth",
+				env.getProperty("mail.auth"));
+		javaMailProperties.setProperty("mail.debug",
+				env.getProperty("mail.debug"));
+
 		mailSender.setJavaMailProperties(javaMailProperties);
 		return mailSender;
 	}

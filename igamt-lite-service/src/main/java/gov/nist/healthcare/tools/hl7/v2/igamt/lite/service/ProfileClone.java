@@ -10,20 +10,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProfileClone {
-	public Profile clone(Profile original) {
-		ProfileSerializationImpl profileSerializationImpl = new ProfileSerializationImpl();
-		TableSerializationImpl tableSerializationImpl = new TableSerializationImpl();
-		ConstraintsSerializationImpl constraintsSerializationImpl = new ConstraintsSerializationImpl();
-		Document profileDoc = profileSerializationImpl
-				.serializeProfileToDoc(original);
-		Document constraintsDoc = constraintsSerializationImpl
-				.serializeConstraintsToDoc(original.getConformanceStatements(),
-						original.getPredicates());
-		Document tablesDoc = tableSerializationImpl
-				.serializeTableLibraryToDoc(original.getTables());
-		// FIXME need to consider Author and User
-		return profileSerializationImpl.deserializeXMLToProfile(profileDoc,
-				tablesDoc, constraintsDoc);
+	public Profile clone(Profile original) throws CloneNotSupportedException {
+		return original.clone();
 
 	}
 }

@@ -32,9 +32,9 @@ public interface ProfileService {
 
 	public List<Profile> findAllPreloaded();
 
-	public List<Profile> findAllCustom();
+	public List<Profile> findByAccountId(Long accountId);
 
-	public Profile clone(Profile p);
+	public Profile clone(Profile p) throws CloneNotSupportedException;
 
 	public List<String> apply(String changes, Profile profile);
 

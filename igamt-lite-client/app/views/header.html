@@ -2,10 +2,9 @@
 <div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="brand" id="appheader">
         <a style="display: inline-block; text-shadow:none" href="#">
-            <div id="apptitle">IGAMT-LITE<span style='color:white; font-size:12px'> Beta</span></div>
-            <div id="appsubtitle">Implementation Guide Authoring Tool - Lite</div>
+            <div id="apptitle"><div msg key="app.title"></div><span style='color:white; font-size:12px'><span msg key="app.stage"></span></span></div>
+            <div id="appsubtitle"><div msg key="app.subtitle"></div></div>
         </a>
-
         <div id="userInfo" ng-show="isAuthenticated()">
             <div>
                 <span>Logged as:</span>
@@ -16,7 +15,6 @@
                 <span class="userInfoValue" ng-bind="getRoleAsString()"></span>
             </div>
         </div>
-
     </div>
     <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
@@ -24,10 +22,10 @@
             <li ng-class="activeWhen(path()=='/home')">
                 <a href="#/home"><i class="glyphicon glyphicon-home"></i><span msg key="navbar.home"></span></a>
             </li>
-            <li ng-class="activeWhen(path()=='/profiles')"><a href="#/profiles"><i class="glyphicon glyphicon-play-circle"></i>Implementation Guides</a></li>
-            <li ng-class="activeWhen(path()=='/doc')"><a href="#/doc"><i class="glyphicon glyphicon-book"></i>Documentation</a></li>
+            <li ng-class="activeWhen(path()=='/ig')"><a href="#/ig"><i class="glyphicon glyphicon-play-circle"></i><span msg class="msg" key="navbar.igs"></span></a></li>
+            <li ng-class="activeWhen(path()=='/doc')"><a href="#/doc"><i class="glyphicon glyphicon-book"></i><span msg class="msg" key="navbar.documentation"></span></a></li>
             <li ng-class="activeWhen(path()=='/about')"><a href="#/about">About</a></li>
-            <li ng-class="activeWhen(path()=='/contact')"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>
+            <!--<li ng-class="activeWhen(path()=='/contact')"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>-->
             <li ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()">
                 <a href="#/registration"><div msg key="navbar.registration"></div></a>
             </li>
@@ -37,12 +35,28 @@
             <li ng-class="activeWhen(path()=='/forgotten')" ng-show="!isAuthenticated()">
                 <a href="#/forgotten"><div msg key="navbar.forgotten"></div></a>
             </li>
-            <li ng-class="activeWhen(path()=='/registerUser')" ng-show="isAdmin()">
-                <a href="#/registerUser"><div msg key="navbar.registerUser"></div></a>
+
+            <li class="dropdown" ng-class="activeIfInList(path(), ['/authors'])" ng-show="isSupervisor() || isAdmin()">
+                <a id="reportsmenu" role="button" class="dropdown-toggle" ng-click="isManageOpen=!isManageOpen"><div msg class="msg"key="navbar.manage"></div><b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="reportsmenu">
+                    <li><a tabindex="-1" href="#/authors" ng-click="isManageOpen=false"><div msg key="navbar.manage.authors"></div></a></li>
+                    <li ng-show="isAdmin()"><a tabindex="-1" href="#/supervisors" ng-click="isManageOpen=false"><div msg key="navbar.manage.supervisors"></div></a></li>
+                </ul>
             </li>
+            <li ng-class="activeWhen(path()=='/admin')" ng-show="">
+                <a href="#/admin"><div msg key="navbar.admin"></div></a>
+            </li>
+            <li><div ng-show='showSpinner()'><img src="images/ajax-loader.gif" class="loading"/></div></li>
+
+
+            <!--<li ng-class="activeWhen(path()=='/registerUser')" ng-show="isAdmin()">-->
+                <!--<a href="#/registerUser"><div msg key="navbar.registerUser"></div></a>-->
+            <!--</li>-->
         </ul>
-
-
+        <ul class="nav nav-pills pull-right" ng-show="false">
+            <li ng-class="activeWhen(language()=='en')">
+                <a ng-click="setLanguage('en')"><div msg class="msg" key="navbar.lang.english"></div></a>
+            </li>
         </ul>
 
         <p class="navbar-text pull-right" style="margin-right: 5em" ng-show="isAuthenticated()">
@@ -51,9 +65,8 @@
         <p class="navbar-text pull-right" style="margin-right: 5em" ng-show="!isAuthenticated()">
             <a href="" ng-click="loginReq()"><span msg class="msg" key="navbar.login"></span></a>
         </p>
-
         <p class="navbar-text pull-right" ng-class="activeWhen(path()=='/issue')" style="margin-right: 3em">
-            <a href="#/issue"><span msg class="msg" key="navbar.issue"></span></a>
+            <a href="#/issue"><i class="glyphicon glyphicon-earphone"></i><span msg class="msg" key="navbar.issue"></span></a>
         </p>
     </div>
 </div>

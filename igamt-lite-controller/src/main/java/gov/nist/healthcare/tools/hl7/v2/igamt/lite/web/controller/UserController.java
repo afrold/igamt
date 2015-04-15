@@ -41,7 +41,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriUtils;
 
@@ -61,6 +60,12 @@ public class UserController {
 
 	@Value("${server.port}")
 	private String SERVER_PORT;
+
+	@Value("${server.email}")
+	private String SERVER_EMAIL;
+
+	@Value("${admin.email}")
+	private String ADMIN_EMAIL;
 
 	@Autowired
 	UserService userService;
@@ -177,10 +182,9 @@ public class UserController {
 		}
 
 		// Generate url and email
-		String url = SERVER_SCHEME + "://" + SERVER_HOSTNAME + port
-				+ "/IGAMT-app" + "/#/registerResetPassword?userId="
-				+ account.getUsername() + "&username=" + account.getUsername()
-				+ "&token="
+		String url = SERVER_SCHEME + "://" + SERVER_HOSTNAME + port + "/igamt"
+				+ "/#/registerResetPassword?userId=" + account.getUsername()
+				+ "&username=" + account.getUsername() + "&token="
 				+ UriUtils.encodeQueryParam(arp.getCurrentToken(), "UTF-8");
 
 		// generate and send email
@@ -193,7 +197,6 @@ public class UserController {
 
 	@PreAuthorize("hasRole('supervisor') or hasRole('admin')")
 	@RequestMapping(value = "/accounts/{accountId}/resendregistrationinvite", method = RequestMethod.POST)
-	@ResponseBody
 	public ResponseMessage resendRegistrationWhenAuthenticated(
 			@PathVariable Long accountId) throws Exception {
 
@@ -252,7 +255,6 @@ public class UserController {
 	 * \"signedConfidentialAgreement\":\"\" }
 	 * */
 	@RequestMapping(value = "/sooa/accounts/register", method = RequestMethod.POST)
-	@ResponseBody
 	public ResponseMessage registerUserWhenNotAuthenticated(
 			@RequestBody Account account) {
 
@@ -295,11 +297,12 @@ public class UserController {
 			// Make sure only desired data gets persisted
 			registeredAccount.setUsername(account.getUsername());
 			registeredAccount.setAccountType(account.getAccountType());
-			registeredAccount.setCompany(account.getCompany());
-			registeredAccount.setFirstname(account.getFirstname());
-			registeredAccount.setLastname(account.getLastname());
+			registeredAccount.setEmployer(account.getEmployer());
+			registeredAccount.setFullName(account.getFullName());
 			registeredAccount.setPhone(account.getPhone());
 			registeredAccount.setEmail(account.getEmail());
+			registeredAccount.setTitle(account.getTitle());
+			registeredAccount.setJuridiction(account.getJuridiction());
 			registeredAccount.setSignedConfidentialityAgreement(account
 					.getSignedConfidentialityAgreement());
 
@@ -311,7 +314,8 @@ public class UserController {
 		}
 
 		// generate and send email
-		this.sendAccountRegistrationNotification(account);
+		this.sendRegistrationNotificationToAdmin(account);
+		this.sendApplicationConfirmationNotification(account);
 
 		return new ResponseMessage(ResponseMessage.Type.success, "userAdded",
 				registeredAccount.getId().toString(), "true");
@@ -321,7 +325,6 @@ public class UserController {
 	 * User forgot his password and requests a password reset
 	 * */
 	@RequestMapping(value = "/sooa/accounts/passwordreset", method = RequestMethod.POST)
-	@ResponseBody
 	public ResponseMessage requestAccountPasswordReset(
 			@RequestParam(required = false) String username,
 			HttpServletRequest request) throws Exception {
@@ -387,7 +390,6 @@ public class UserController {
 	 * */
 	@PreAuthorize("hasPermission(#accountId, 'accessAccountBasedResource')")
 	@RequestMapping(value = "/accounts/{accountId}/passwordchange", method = RequestMethod.POST)
-	@ResponseBody
 	public ResponseMessage changeAccountPassword(
 			@RequestBody AccountChangeCredentials acc,
 			@PathVariable Long accountId) {
@@ -424,7 +426,6 @@ public class UserController {
 	 * registration process
 	 * */
 	@RequestMapping(value = "/sooa/accounts/{userId}/passwordreset", method = RequestMethod.POST, params = "token")
-	@ResponseBody
 	public ResponseMessage resetAccountPassword(@RequestBody Account acc,
 			@PathVariable String userId,
 			@RequestParam(required = true) String token) {
@@ -498,7 +499,6 @@ public class UserController {
 	 * 
 	 * */
 	@RequestMapping(value = "/sooa/accounts/register/{userId}/passwordreset", method = RequestMethod.POST, params = "token")
-	@ResponseBody
 	public ResponseMessage resetRegisteredAccountPassword(
 			@RequestBody AccountChangeCredentials racc,
 			@PathVariable String userId,
@@ -586,7 +586,6 @@ public class UserController {
 	 * 
 	 * */
 	@RequestMapping(value = "/sooa/accounts/forgottenusername", method = RequestMethod.GET)
-	@ResponseBody
 	public ResponseMessage retrieveForgottenUsername(@RequestParam String email) {
 
 		if (email == null || email.isEmpty()) {
@@ -613,7 +612,6 @@ public class UserController {
 	 * */
 	@PreAuthorize("hasPermission(#id, 'accessAccountBasedResource')")
 	@RequestMapping(value = "/accounts/{id}", method = RequestMethod.DELETE)
-	@ResponseBody
 	public ResponseMessage deleteAccountById(@PathVariable Long id) {
 
 		Account acc = accountRepository.findOne(id);
@@ -644,7 +642,6 @@ public class UserController {
 	 * User wants to log in
 	 * */
 	@RequestMapping(value = "/accounts/login", method = RequestMethod.GET)
-	@ResponseBody
 	public ResponseMessage doNothing() {
 		return new ResponseMessage(ResponseMessage.Type.success,
 				"loginSuccess", "succes");
@@ -654,7 +651,6 @@ public class UserController {
 	 * 
 	 * */
 	@RequestMapping(value = "/accounts/cuser", method = RequestMethod.GET)
-	@ResponseBody
 	public CurrentUser getCUser() {
 		User u = userService.getCurrentUser();
 		CurrentUser cu = null;
@@ -673,18 +669,52 @@ public class UserController {
 		return cu;
 	}
 
+	private void sendApplicationConfirmationNotification(Account acc) {
+		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+		msg.setSubject("NIST IGAMT Application Received");
+		msg.setTo(acc.getEmail());
+		msg.setText("Dear "
+				+ acc.getUsername()
+				+ " \n\n"
+				+ "Thank you for submitting an application for use of the NIST IGAMT. You will be notified via email (using the email address you provided in your application) as to whether your application is approved or not approved."
+				+ "\n\n" + "Sincerely, " + "\n\n" + "The NIST IGAMT Team"
+				+ "\n\n" + "P.S: If you need help, contact us at '"
+				+ ADMIN_EMAIL + "'");
+		try {
+			this.mailSender.send(msg);
+		} catch (MailException ex) {
+			logger.error(ex.getMessage(), ex);
+		}
+	}
+
 	private void sendAccountRegistrationNotification(Account acc) {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
 		msg.setSubject("Welcome! You are successfully registered on NIST IGAMT");
 		msg.setTo(acc.getEmail());
 		msg.setText("Dear " + acc.getUsername() + " \n\n"
-				+ "You've successfully registered on the NIST IGAMT." + " \n"
-				+ "Your username is: " + acc.getUsername() + " \n\n"
+				+ "You've successfully registered on the NIST IGAMT Site."
+				+ " \n" + "Your username is: " + acc.getUsername() + " \n\n"
 				+ "Please refer to the user guide for the detailed steps. "
 				+ "\n\n" + "Sincerely, " + "\n\n" + "The NIST IGAMT Team"
-				+ "\n\n" + "P.S: If you need help, contact us at ''");
+				+ "\n\n"
+				+ "P.S: If you need help, contact us at 'rob.snelick@nist.gov'");
 
+		try {
+			this.mailSender.send(msg);
+		} catch (MailException ex) {
+			logger.error(ex.getMessage(), ex);
+		}
+	}
+
+	private void sendRegistrationNotificationToAdmin(Account acc) {
+		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
+		msg.setSubject("New Registration Application on IGAMT");
+		msg.setTo(ADMIN_EMAIL);
+		msg.setText("Hello Admin,  \n A new application has been submitted by "
+				+ acc.getFullName() + " with username=" + acc.getUsername()
+				+ " \n\n" + " and is waiting for approval." + "\n\n"
+				+ "Sincerely, " + "\n\n" + "The NIST IGAMT Team" + "\n\n");
 		try {
 			this.mailSender.send(msg);
 		} catch (MailException ex) {
@@ -697,7 +727,7 @@ public class UserController {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
 		msg.setTo(acc.getEmail());
-		msg.setSubject("NIST IGAMT Vendor Registration Notification ");
+		msg.setSubject("NIST IGAMT Registration Notification ");
 		msg.setText("Dear "
 				+ acc.getUsername()
 				+ " \n\n"

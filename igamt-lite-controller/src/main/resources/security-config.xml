@@ -16,20 +16,34 @@
 	<context:property-placeholder
 		location="classpath:serverConfigurationWeb.properties, classpath:serverAuthWeb.properties" />
 
-
+   	<sec:http pattern="/index.html" security="none" />
+	<sec:http pattern="/404.html" security="none" />
+	<sec:http pattern="/bower_components/**" security="none" />
+	<sec:http pattern="/images/**" security="none" />
+	<sec:http pattern="/lang/**" security="none" />
+	<sec:http pattern="/scripts/**" security="none" />
+	<sec:http pattern="/styles/**" security="none" />
+	<sec:http pattern="/views/**" security="none" />
+    <sec:http pattern="/fonts/**" security="none" />
+	<sec:http pattern="/lib/**" security="none" />	 
+	
 	<sec:http create-session="ifRequired" use-expressions="true">
 		<sec:http-basic entry-point-ref="restAuthenticationEntryPoint" />
-                <sec:intercept-url pattern="/acmgt-api/sooa/accounts/**" access="isAnonymous()" />
-                <sec:intercept-url pattern="/acmgt-api/sooa/usernames/**" access="isAnonymous()" />
-                <sec:intercept-url pattern="/acmgt-api/sooa/emails/**" access="isAnonymous()" />
-                <sec:intercept-url pattern="/acmgt-api/sooa/issues/**" access="isFullyAuthenticated() and hasRole('admin')" />
-                <sec:intercept-url pattern="/acmgt-api/accounts/cuser" access="isAnonymous() or isFullyAuthenticated()" />
-		<sec:intercept-url pattern="/acmgt-api/**" access="isFullyAuthenticated()" />
+<!--    	 	    <sec:intercept-url pattern="/api/accounts/login/**" method="OPTIONS" access="isAnonymous()" />
+ -->                 <sec:intercept-url pattern="/api/sooa/accounts/**" access="isAnonymous()" />
+                <sec:intercept-url pattern="/api/sooa/usernames/**" access="isAnonymous()" />
+                <sec:intercept-url pattern="/api/sooa/emails/**" access="isAnonymous()" />
+                <sec:intercept-url pattern="/api/sooa/issues/**" access="isFullyAuthenticated() and hasRole('admin')" />
+                <sec:intercept-url pattern="/api/accounts/cuser" access="isAnonymous() or isFullyAuthenticated()" />
+		<sec:intercept-url pattern="/api/**" access="isFullyAuthenticated()" />
                 <sec:intercept-url pattern="/j_spring_security_logout" access="isFullyAuthenticated()" />
 		<sec:intercept-url pattern="/**"
 			access="isFullyAuthenticated() and hasRole('admin')" />
 		<sec:logout logout-success-url="/index.html" />
-	</sec:http>
+<!--  	<sec:custom-filter ref="corsFilter" after="CHANNEL_FILTER"/>
+ -->  		
+  <sec:csrf disabled="true"/>
+   	</sec:http>
 
 	<bean id="restAuthenticationEntryPoint"
 		class="gov.nist.healthcare.nht.acmgt.web.RestAuthenticationEntryPoint" />
@@ -75,7 +89,7 @@
 	<bean id="permissionEvaluator" class="org.springframework.aop.framework.ProxyFactoryBean">
 		<property name="targetSource">
 			<bean class="org.springframework.aop.target.LazyInitTargetSource">
-				<property name="targetBeanName" value="iglPermissionEvaluator" />
+				<property name="targetBeanName" value="customPermissionEvaluator" />
 			</bean>
 		</property>
 		<property name="proxyInterfaces"

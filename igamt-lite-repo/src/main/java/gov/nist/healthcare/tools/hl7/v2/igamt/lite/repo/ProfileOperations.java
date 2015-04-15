@@ -19,5 +19,6 @@ import java.util.List;
  * Mar 30, 2015
  */
 public interface ProfileOperations {
-	 List<Profile> findByPreloaded(Boolean preloaded);
+	 List<Profile> findPreloaded();
+	 
 }

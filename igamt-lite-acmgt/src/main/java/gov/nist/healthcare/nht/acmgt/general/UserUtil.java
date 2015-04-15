@@ -19,10 +19,10 @@ import java.util.Random;
  */
 public class UserUtil {
 
-	public static final String[] AUTHORITY_LIST = { "user", "provider",
-			"authorizedVendor", "supervisor", "admin" };
-	public static final String[] ACCOUNT_TYPE_LIST = { "provider",
-			"authorizedVendor", "supervisor", "admin" };
+	public static final String[] AUTHORITY_LIST = { "user", "author",
+			  "supervisor", "admin" };
+	public static final String[] ACCOUNT_TYPE_LIST = { "author",
+		  "supervisor", "admin" };
 
 	public static String generateRandom() {
 		int mon = Calendar.getInstance().get(Calendar.MONTH);

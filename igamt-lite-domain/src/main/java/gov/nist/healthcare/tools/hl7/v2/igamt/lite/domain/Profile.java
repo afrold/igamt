@@ -9,22 +9,24 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Document(collection = "profile")
-public class Profile extends DataModel implements java.io.Serializable {
+public class Profile extends DataModel implements java.io.Serializable, Cloneable{
 
 	private static final long serialVersionUID = 1L;
 
 	public Profile() {
 		super();
 		this.type = Constant.PROFILE;
+		scope = ProfileScope.PRELOADED;
 	}
 
-	@Id 
+	private ProfileScope scope;
+
+	@Id
 	private String id;
 
 	private ProfileMetaData metaData;
@@ -37,8 +39,7 @@ public class Profile extends DataModel implements java.io.Serializable {
 
 	private Tables tables;
 
-	@DBRef
-	private Author author;
+	private Long accountId;
 
 	protected String comment;
 
@@ -105,14 +106,6 @@ public class Profile extends DataModel implements java.io.Serializable {
 		this.version = version;
 	}
 
-	public Boolean getPreloaded() {
-		return preloaded;
-	}
-
-	public void setPreloaded(Boolean preloaded) {
-		this.preloaded = preloaded;
-	}
-
 	public String getComment() {
 		return comment;
 	}
@@ -143,6 +136,22 @@ public class Profile extends DataModel implements java.io.Serializable {
 
 	public void setTables(Tables tables) {
 		this.tables = tables;
+	}
+
+	public ProfileScope getScope() {
+		return scope;
+	}
+
+	public void setScope(ProfileScope scope) {
+		this.scope = scope;
+	}
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
 	}
 
 	@Override
@@ -221,4 +230,23 @@ public class Profile extends DataModel implements java.io.Serializable {
 		constraints.setGroups(gContext);
 		return constraints;
 	}
+	
+	@Override
+	public Profile clone() throws CloneNotSupportedException {
+		Profile clonedProfile = new Profile();
+		clonedProfile.setChanges(changes);
+		clonedProfile.setComment(comment);
+		clonedProfile.setDatatypes(datatypes.clone());
+		clonedProfile.setMessages(messages.clone());
+		clonedProfile.setMetaData(metaData.clone());
+		clonedProfile.setSegments(segments.clone());
+		clonedProfile.setTables(tables.clone());
+		clonedProfile.setUsageNote(usageNote);
+		clonedProfile.setVersion(version);
+		clonedProfile.setAccountId(accountId);
+		clonedProfile.setScope(scope);
+		
+		return clonedProfile;
+	}
+
 }

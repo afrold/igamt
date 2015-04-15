@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('igl').directive('ehrrCheckPoaDate', [
+angular.module('igl').directive('igCheckPoaDate', [
     function () {
         return {
             replace: true,

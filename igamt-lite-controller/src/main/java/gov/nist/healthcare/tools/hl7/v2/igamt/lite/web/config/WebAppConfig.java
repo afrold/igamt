@@ -63,4 +63,11 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 		return multipartResolver;
 	}
 
+	// @Override
+	// public void addInterceptors(InterceptorRegistry registry) {
+	// CSRFHandlerInterceptor csrfInterceptor = new CSRFHandlerInterceptor();
+	// csrfInterceptor.setCsrfTokenManager(new CSRFTokenManager());
+	// registry.addInterceptor(csrfInterceptor);
+	// }
+
 }

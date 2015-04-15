@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "message")
-public class Message extends DataModel implements java.io.Serializable {
+public class Message extends DataModel implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,6 +34,12 @@ public class Message extends DataModel implements java.io.Serializable {
 
 	// @Column(nullable = true, name = "MESSAGE_DESC")
 	private String description;
+
+	private String version;
+
+	private String date;
+
+	private String oid;
 
 	private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
@@ -181,6 +187,30 @@ public class Message extends DataModel implements java.io.Serializable {
 		return null;
 	}
 
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getOid() {
+		return oid;
+	}
+
+	public void setOid(String oid) {
+		this.oid = oid;
+	}
+
 	@Override
 	public String toString() {
 		return "Message [id=" + id + ", type=" + messageType + ", event="
@@ -188,4 +218,33 @@ public class Message extends DataModel implements java.io.Serializable {
 				+ description + "]";
 	}
 
+	@Override
+	public Message clone() throws CloneNotSupportedException {
+		Message clonedMessage = new Message();
+		
+		clonedMessage.setChildren(new ArrayList<SegmentRefOrGroup>());
+		for(SegmentRefOrGroup srog:this.children){
+			if(srog instanceof Group){
+				Group g = (Group)srog;
+				clonedMessage.addSegmentRefOrGroup(g.clone());
+			}else if(srog instanceof SegmentRef){
+				SegmentRef sr = (SegmentRef)srog;
+				clonedMessage.addSegmentRefOrGroup(sr.clone());
+			}
+		}
+		
+		clonedMessage.setComment(comment);
+		clonedMessage.setDescription(description);
+		clonedMessage.setEvent(event);
+		clonedMessage.setIdentifier(identifier);
+		clonedMessage.setMessageType(messageType);
+		clonedMessage.setPosition(position);
+		clonedMessage.setStructID(structID);
+		clonedMessage.setUsageNote(usageNote);
+		clonedMessage.setDate(date);
+		clonedMessage.setOid(oid);
+		clonedMessage.setVersion(version);
+		
+		return clonedMessage;
+	}
 }

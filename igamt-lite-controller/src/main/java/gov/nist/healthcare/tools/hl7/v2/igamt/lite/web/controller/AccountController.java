@@ -46,6 +46,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author fdevaulx
+ * @author Harold Affo
  * 
  */
 @RestController
@@ -87,7 +88,7 @@ public class AccountController {
 	}
 
 	@PreAuthorize("hasRole('supervisor') or hasRole('admin')")
-	@RequestMapping(value = "/providers/page", method = RequestMethod.GET)
+	@RequestMapping(value = "/authors/page", method = RequestMethod.GET)
 	public Page<ShortAccount> getProvidersPage(
 			@RequestParam(required = false, defaultValue = "0") int value,
 			@RequestParam(required = false, defaultValue = DEFAULT_PAGE_SIZE) int size,
@@ -98,10 +99,11 @@ public class AccountController {
 
 		AccountSpecsHelper accH = new AccountSpecsHelper();
 
-		Page<Account> pa = accountRepository.findAll((where(accH
-				.getSpecificationFromString("accountType", "provider"))
-				.and(accH.getSpecification(filter))), new PageRequest(value,
-				size, (new CustomSortHandler(sort)).getSort()));
+		Page<Account> pa = accountRepository
+				.findAll((where(accH.getSpecificationFromString("accountType",
+						"author")).and(accH.getSpecification(filter))),
+						new PageRequest(value, size, (new CustomSortHandler(
+								sort)).getSort()));
 
 		if (pa.getContent() != null && !pa.getContent().isEmpty()) {
 			for (Account acc : pa.getContent()) {
@@ -110,10 +112,11 @@ public class AccountController {
 					ShortAccount sacc = new ShortAccount();
 					sacc.setId(acc.getId());
 					sacc.setEmail(acc.getEmail());
-					sacc.setFirstname(acc.getFirstname());
-					sacc.setLastname(acc.getLastname());
-					sacc.setCompany(acc.getCompany());
-
+					sacc.setFullName(acc.getFullName());
+					sacc.setEmployer(acc.getEmployer());
+					sacc.setJuridiction(acc.getJuridiction());
+					sacc.setPhone(acc.getPhone());
+					sacc.setTitle(acc.getTitle());
 					saccs.add(sacc);
 				}
 			}
@@ -126,45 +129,47 @@ public class AccountController {
 		return sap;
 	}
 
-	@PreAuthorize("hasRole('supervisor') or hasRole('admin')")
-	@RequestMapping(value = "/authorizedVendors/page", method = RequestMethod.GET)
-	public Page<ShortAccount> getAuthorizedVendorsPage(
-			@RequestParam(required = false, defaultValue = "0") int value,
-			@RequestParam(required = false, defaultValue = DEFAULT_PAGE_SIZE) int size,
-			@RequestParam(required = false) List<String> sort,
-			@RequestParam(required = false) List<String> filter) {
-
-		List<ShortAccount> saccs = new LinkedList<ShortAccount>();
-
-		AccountSpecsHelper accH = new AccountSpecsHelper();
-
-		Page<Account> pa = accountRepository.findAll((where(accH
-				.getSpecificationFromString("accountType", "authorizedVendor"))
-				.and(accH.getSpecification(filter))), new PageRequest(value,
-				size, (new CustomSortHandler(sort)).getSort()));
-
-		if (pa.getContent() != null && !pa.getContent().isEmpty()) {
-			for (Account acc : pa.getContent()) {
-				if (!acc.isEntityDisabled()) {
-
-					ShortAccount sacc = new ShortAccount();
-					sacc.setId(acc.getId());
-					sacc.setEmail(acc.getEmail());
-					sacc.setFirstname(acc.getFirstname());
-					sacc.setLastname(acc.getLastname());
-					sacc.setCompany(acc.getCompany());
-
-					saccs.add(sacc);
-				}
-			}
-		}
-
-		Pageable p = new PageRequest(pa.getNumber(), pa.getSize(), pa.getSort());
-		Page<ShortAccount> sap = new PageImpl<ShortAccount>(saccs, p,
-				pa.getTotalElements());
-
-		return sap;
-	}
+	// @PreAuthorize("hasRole('supervisor') or hasRole('admin')")
+	// @RequestMapping(value = "/authorizedVendors/page", method =
+	// RequestMethod.GET)
+	// public Page<ShortAccount> getAuthorizedVendorsPage(
+	// @RequestParam(required = false, defaultValue = "0") int value,
+	// @RequestParam(required = false, defaultValue = DEFAULT_PAGE_SIZE) int
+	// size,
+	// @RequestParam(required = false) List<String> sort,
+	// @RequestParam(required = false) List<String> filter) {
+	//
+	// List<ShortAccount> saccs = new LinkedList<ShortAccount>();
+	//
+	// AccountSpecsHelper accH = new AccountSpecsHelper();
+	//
+	// Page<Account> pa = accountRepository.findAll((where(accH
+	// .getSpecificationFromString("accountType", "authorizedVendor"))
+	// .and(accH.getSpecification(filter))), new PageRequest(value,
+	// size, (new CustomSortHandler(sort)).getSort()));
+	//
+	// if (pa.getContent() != null && !pa.getContent().isEmpty()) {
+	// for (Account acc : pa.getContent()) {
+	// if (!acc.isEntityDisabled()) {
+	//
+	// ShortAccount sacc = new ShortAccount();
+	// sacc.setId(acc.getId());
+	// sacc.setEmail(acc.getEmail());
+	// sacc.setFirstname(acc.getFirstname());
+	// sacc.setLastname(acc.getLastname());
+	// sacc.setCompany(acc.getCompany());
+	//
+	// saccs.add(sacc);
+	// }
+	// }
+	// }
+	//
+	// Pageable p = new PageRequest(pa.getNumber(), pa.getSize(), pa.getSort());
+	// Page<ShortAccount> sap = new PageImpl<ShortAccount>(saccs, p,
+	// pa.getTotalElements());
+	//
+	// return sap;
+	// }
 
 	@PreAuthorize("hasRole('supervisor') or hasRole('admin')")
 	@RequestMapping(value = "/shortaccounts/page", method = RequestMethod.GET)
@@ -193,12 +198,13 @@ public class AccountController {
 					ShortAccount sacc = new ShortAccount();
 					sacc.setId(acc.getId());
 					sacc.setEmail(acc.getEmail());
-					sacc.setFirstname(acc.getFirstname());
-					sacc.setLastname(acc.getLastname());
-					sacc.setCompany(acc.getCompany());
-
+					sacc.setFullName(acc.getFullName());
+					sacc.setEmployer(acc.getEmployer());
+					sacc.setJuridiction(acc.getJuridiction());
+					sacc.setPhone(acc.getPhone());
 					sacc.setAccountType(acc.getAccountType());
 					sacc.setUsername(acc.getUsername());
+					sacc.setTitle(acc.getTitle());
 
 					saccs.add(sacc);
 				}
@@ -222,7 +228,7 @@ public class AccountController {
 		User authU = userService.getCurrentUser();
 		if (authU != null && authU.isEnabled()) {
 			if (authU.getAuthorities().contains(
-					new SimpleGrantedAuthority("provider"))) {
+					new SimpleGrantedAuthority("author"))) {
 				filter.clear();
 				filter.add("accountType::authorizedVendor");
 			} else if (authU.getAuthorities().contains(
@@ -245,13 +251,15 @@ public class AccountController {
 		if (accs != null && !accs.isEmpty()) {
 			for (Account acc : accs) {
 				if (!acc.isEntityDisabled()) {
-
 					ShortAccount sacc = new ShortAccount();
 					sacc.setId(acc.getId());
 					sacc.setEmail(acc.getEmail());
-					sacc.setFirstname(acc.getFirstname());
-					sacc.setLastname(acc.getLastname());
-					sacc.setCompany(acc.getCompany());
+					sacc.setFullName(acc.getFullName());
+					sacc.setEmployer(acc.getEmployer());
+					sacc.setJuridiction(acc.getJuridiction());
+					sacc.setPhone(acc.getPhone());
+					sacc.setTitle(acc.getTitle());
+
 					saccs.add(sacc);
 				}
 			}
@@ -295,10 +303,12 @@ public class AccountController {
 						"duplicateEmail", account.getEmail());
 			}
 
-			acc.setCompany(account.getCompany());
-			acc.setFirstname(account.getFirstname());
-			acc.setLastname(account.getLastname());
+			acc.setEmployer(account.getEmployer());
+			acc.setFullName(account.getFullName());
 			acc.setEmail(account.getEmail());
+			acc.setJuridiction(account.getJuridiction());
+			acc.setPhone(account.getPhone());
+			acc.setTitle(account.getTitle());
 
 			accountRepository.save(acc);
 

@@ -74,8 +74,8 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal) {
         return userInfoService.isAuthorizedVendor();
     };
 
-    $scope.isProvider = function() {
-        return userInfoService.isProvider();
+    $scope.isAuthor = function() {
+        return userInfoService.isAuthor();
     };
 
     $scope.isCustomer = function() {
@@ -87,8 +87,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal) {
     };
 
     $scope.getRoleAsString = function() {
-        if ( $scope.isVendor() === true ) { return 'Authorized Vendor'; }
-        if ( $scope.isProvider() === true ) { return 'Provider'; }
+        if ( $scope.isAuthor() === true ) { return 'author'; }
         if ( $scope.isSupervisor() === true ) { return 'Supervisor'; }
         if ( $scope.isAdmin() === true ) { return 'Admin'; }
         return 'undefined';

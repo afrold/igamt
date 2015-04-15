@@ -14,7 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 5, 2015
  */
-public class ProfileSummary {
+public class ProfileSummary implements Cloneable{
 
 	private String id;
 
@@ -34,6 +34,15 @@ public class ProfileSummary {
 
 	public void setMetaData(ProfileMetaData metaData) {
 		this.metaData = metaData;
+	}
+	
+	@Override
+	public ProfileSummary clone() throws CloneNotSupportedException {
+		ProfileSummary clonedProfileSummary = new ProfileSummary();
+		clonedProfileSummary.setId(id);
+		clonedProfileSummary.setMetaData(metaData.clone());
+		
+		return clonedProfileSummary;
 	}
 
 }

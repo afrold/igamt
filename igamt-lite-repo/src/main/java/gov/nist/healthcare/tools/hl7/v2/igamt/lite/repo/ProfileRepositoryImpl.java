@@ -18,6 +18,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
 
 import java.util.List;
 
@@ -36,12 +37,16 @@ public class ProfileRepositoryImpl implements ProfileOperations   {
 	 * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileOperations#findByPreloaded(java.lang.Boolean)
 	 */
 	@Override
-	public List<Profile> findByPreloaded(Boolean preloaded) {
- 	    Criteria where = Criteria.where("preloaded").is(preloaded);
+	public List<Profile> findPreloaded() {
+ 	    Criteria where = Criteria.where("scope").is(ProfileScope.PRELOADED);
 	    Query query = Query.query(where);
 	    return mongo.find(query, Profile.class);
  	}
 	
+	
+ 
+	
+ 
 	
 	
 }

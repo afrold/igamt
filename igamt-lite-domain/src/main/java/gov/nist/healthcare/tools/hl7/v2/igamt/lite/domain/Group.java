@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
-public class Group extends SegmentRefOrGroup {
+public class Group extends SegmentRefOrGroup implements Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -89,6 +89,32 @@ public class Group extends SegmentRefOrGroup {
 	public String toString() {
 		return "Group [name=" + name + ", usage=" + usage + ", min=" + min
 				+ ", max=" + max + "]";
+	}
+	
+	@Override
+	public Group clone() throws CloneNotSupportedException {
+		Group clonedGroup = new Group();
+		
+		clonedGroup.setChildren(new ArrayList<SegmentRefOrGroup>());
+		for(SegmentRefOrGroup srog:this.children){
+			if(srog instanceof Group){
+				Group g = (Group)srog;
+				clonedGroup.addSegmentsOrGroup(g.clone());
+			}else if(srog instanceof SegmentRef){
+				SegmentRef sr = (SegmentRef)srog;
+				clonedGroup.addSegmentsOrGroup(sr.clone());
+			}
+		}
+		
+		clonedGroup.setComment(name);
+		clonedGroup.setMax(max);
+		clonedGroup.setMin(min);
+		clonedGroup.setName(name);
+		clonedGroup.setPosition(position);
+		clonedGroup.setUsage(usage);
+		
+		
+		return clonedGroup;
 	}
 
 }

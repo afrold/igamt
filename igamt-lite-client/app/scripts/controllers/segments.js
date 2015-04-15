@@ -17,7 +17,7 @@ angular.module('igl')
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.fields ? parent.fields: parent.datatype ? parent.datatype.components:parent.children : $rootScope.segment != null ? [$rootScope.segment]:[];
+                    return parent ? parent.fields ? parent.fields: parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components:parent.children : $rootScope.segment != null ? $rootScope.segment.fields:[];
                 },
                 getTemplate: function (node) {
                     return 'SegmentEditTree.html';
@@ -41,15 +41,17 @@ angular.module('igl')
         };
 //
         $scope.select = function (segment) {
+            if(segment) {
 //            waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
-            $rootScope.segment = segment;
-            $rootScope.segment["type"] = "segment";
+                $rootScope.segment = segment;
+                $rootScope.segment["type"] = "segment";
 //             $scope.segmentCopy = {};
 //            $scope.segmentCopy = angular.copy(segment,$scope.segmentCopy);
-            if ($scope.params)
-                $scope.params.refresh();
-            $scope.loadingSelection = false;
+                if ($scope.params)
+                    $scope.params.refresh();
+                $scope.loadingSelection = false;
 //            waitingDialog.hide();
+            }
         };
 
         $scope.reset = function () {
@@ -67,7 +69,7 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function(node){
-            return node && node != null && ((node.fields && node.fields.length >0 ) || (node.datatype && node.datatype.components && node.datatype.components.length > 0));
+            return node && node != null && ((node.fields && node.fields.length >0 ) || (node.datatype && $rootScope.datatypesMap[node.datatype.id].components && $rootScope.datatypesMap[node.datatype.id].components.length > 0));
         };
 
         $scope.validateLabel = function (label, name) {
@@ -78,9 +80,10 @@ angular.module('igl')
         };
 
         $scope.onDatatypeChange = function(node){
+//            $rootScope.recordChange(node,'datatype');
+//            $rootScope.recordChangeForEdit2('field','edit',node.id,'datatype',node.id);
+            $rootScope.recordChangeForEdit2('field','edit',node.id,'datatype',node.datatype);
             $scope.refreshTree();
-            node.datatypeLabel = null;
-            $rootScope.recordChange(node,'datatype');
         };
 
         $scope.refreshTree = function(){
@@ -97,7 +100,7 @@ angular.module('igl')
         $scope.deleteTable = function (node) {
         	node.table = null;
         	$rootScope.recordChangeForEdit2('field','edit',node.id,'table',null);
-        };
+         };
         
         $scope.showTableMapModal = false;
         
@@ -126,25 +129,30 @@ angular.module('igl')
 			$rootScope.recordChangeForEdit2('field','edit',$scope.selectedNode.id,'table',$scope.selectedNode.table.id);
 			$scope.showTableMapModal = false;
 		};
-		
+
 		$scope.findDTByComponentId = function(componentId){
-			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
-				for(var j=0, len2 = $rootScope.datatypes[i].components.length; j<len2;j++ ){
-					if($rootScope.datatypes[i].components[j].id == componentId)
-						return $rootScope.datatypes[i];
-				}
-			}
-			return null;
+//			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
+//                if($rootScope.datatypes[i].children != undefined){
+//				for(var j=0, len2 = $rootScope.datatypes[i].components.length; j<len2;j++ ){
+//					if($rootScope.datatypes[i].components[j].id == componentId)
+// 						return $rootScope.datatypes[i];
+//				}
+//				}
+//			}
+            return $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId].datatype: null;
 		};
-		
-		$scope.showPredicateManagerModal = false;
+
+
+
+
+        $scope.showPredicateManagerModal = false;
 		$scope.showConformanceStatementManagerModal = false;
 		$scope.selectedPosition = null;
 		$scope.newConstraint = null;
 		
 		$scope.managePredicate = function(position){
 			$scope.selectedPosition = position;
-			$scope.showPredicateManagerModal = !$scope.showPredicateManagerModal;	
+			$scope.showPredicateManagerModal =true;
 			$scope.newConstraint = angular.fromJson({
 				segment : '',
 				field_1 : null,
@@ -164,7 +172,7 @@ angular.module('igl')
 		
 		$scope.manageConformanceStatement = function(position){
 			$scope.selectedPosition = position;
-			$scope.showConformanceStatementManagerModal = !$scope.showConformanceStatementManagerModal;	
+			$scope.showConformanceStatementManagerModal =true;
 			$scope.newConstraint = angular.fromJson({
 				segment : '',
 				field_1 : null,
@@ -259,6 +267,8 @@ angular.module('igl')
 			
 			var position_1 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
 			var position_2 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);			
+			var location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+			var location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);	
 			
 			if(position_1 != null){
 				if($scope.newConstraint.contraintType === 'valued'){
@@ -269,7 +279,7 @@ angular.module('igl')
 							description : 'If ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<Presence Path=\"' + location_1 + '\"/>'
 						};
 					$rootScope.segment.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({segmentId: $rootScope.segment.id , constraint: cp});
@@ -282,7 +292,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
 						};
 					$rootScope.segment.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({segmentId: $rootScope.segment.id , constraint: cp});
@@ -295,7 +305,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
 						};
 					$rootScope.segment.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({segmentId: $rootScope.segment.id , constraint: cp});
@@ -308,7 +318,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
 						};
 					$rootScope.segment.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({segmentId: $rootScope.segment.id , constraint: cp});
@@ -321,7 +331,7 @@ angular.module('igl')
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
 							trueUsage : $scope.newConstraint.trueUsage,
 							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : null
+							assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 						};
 					$rootScope.segment.predicates.push(cp);
 					$rootScope.listToBeAddedPredicates.push({segmentId: $rootScope.segment.id , constraint: cp});
@@ -346,13 +356,29 @@ angular.module('igl')
 			}
         	
         	return position;
-        }
+        };
+        
+        $scope.genLocation = function(segment, field, component, subComponent){
+        	var location = null;
+        	if(field != null && component == null && subComponent == null){
+				location = field.position + '[1]';
+			}else if(field != null && component != null && subComponent == null){
+				location = field.position + '[1].' + component.position + '[1]';
+			}else if(field != null && component != null && subComponent != null){
+				location = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
+			}
+        	
+        	return location;
+        };
 		
 		$scope.addConformanceStatement = function() {
 			$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
 			
 			var position_1 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
 			var position_2 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);			
+			var location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+			var location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);	
+			
 			
 			if(position_1 != null){
 				if($scope.newConstraint.contraintType === 'valued'){
@@ -361,7 +387,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + '.',
-							assertion : null
+							assertion : '<Presence Path=\"' + location_1 + '\"/>'
 						};
 					$rootScope.segment.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({segmentId: $rootScope.segment.id , constraint: cs});
@@ -372,7 +398,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
-							assertion : null
+							assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
 						};
 					$rootScope.segment.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({segmentId: $rootScope.segment.id , constraint: cs});
@@ -383,7 +409,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
-							assertion : null
+							assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
 						};
 					$rootScope.segment.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({segmentId: $rootScope.segment.id , constraint: cs});
@@ -394,7 +420,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
-							assertion : null
+							assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
 						};
 					$rootScope.segment.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({segmentId: $rootScope.segment.id , constraint: cs});
@@ -405,7 +431,7 @@ angular.module('igl')
 							constraintId : $scope.newConstraint.constraintId,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
-							assertion : null
+							assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 						};
 					$rootScope.segment.conformanceStatements.push(cs);
 					$rootScope.listToBeAddedConformanceStatements.push({segmentId: $rootScope.segment.id , constraint: cs});
