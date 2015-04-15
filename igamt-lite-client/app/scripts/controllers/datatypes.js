@@ -175,7 +175,7 @@ angular.module('igl')
         
         $scope.deleteTable = function (node) {
         	node.table = null;
-        	$rootScope.recordChange(node,'table');
+        	$rootScope.recordChangeForEdit2('component', 'edit', node.id, 'table' , null);
         };
         
         $scope.showTableMapModal = false;
@@ -187,7 +187,11 @@ angular.module('igl')
         $scope.selectedNode = null;
 		$scope.mapTable = function(node) {
 			$scope.selectedNode = node;
-			$scope.selectedTable = node.table;
+			$scope.selectedTable = null;
+			if(node.table != undefined){
+				$scope.selectedTable = $rootScope.tablesMap[node.table.id];	
+			}
+			
 			if($scope.selectedTable != undefined)
 				$scope.displayedCodeCollection = [].concat($scope.selectedTable.codes);
 			$scope.showTableMapModal = !$scope.showTableMapModal;
@@ -201,8 +205,8 @@ angular.module('igl')
 		};
 		
 		$scope.mappingTable = function(){
-			$scope.selectedNode.table = $scope.selectedTable;
-			$rootScope.recordChange($scope.selectedNode,'table');
+			$scope.selectedNode.table = {id:$scope.selectedTable.id};
+			$rootScope.recordChangeForEdit2('component', 'edit', $scope.selectedNode.id, 'table' , $scope.selectedTable.id);
 			$scope.showTableMapModal = false;
 		};
 		
@@ -241,37 +245,46 @@ angular.module('igl')
 		$scope.deletePredicate = function(predicate){
 			$rootScope.datatype.predicates.splice($rootScope.datatype.predicates.indexOf(predicate),1);
 			if(!$scope.isNewCP(predicate.id)){
-				$rootScope.listToBeDeletedPredicates.push({id: predicate.id});
-				$rootScope.recordChange2('predicates',"delete",null,$rootScope.listToBeDeletedPredicates);
+				$rootScope.recordChangeForEdit2('predicate', "delete", predicate.id,'id', predicate.id);
 			}
 		};
 		
 		$scope.deleteConformanceStatement = function(conformanceStatement){
 			$rootScope.datatype.conformanceStatements.splice($rootScope.datatype.conformanceStatements.indexOf(conformanceStatement),1);
-			
 			if(!$scope.isNewCS(conformanceStatement.id)){
-				$rootScope.listToBeDeletedConformanceStatements.push({id: conformanceStatement.id});
-				$rootScope.recordChange2('conformanceStatements',"delete",null,$rootScope.listToBeDeletedConformanceStatements);
+				$rootScope.recordChangeForEdit2('conformanceStatement', "delete", conformanceStatement.id,'id', conformanceStatement.id);
 			}
 		};
 		
 		
 		$scope.isNewCS = function(id){
-			for(var i=0, len = $rootScope.listToBeAddedConformanceStatements.length; i < len; i ++){
-				if($rootScope.listToBeAddedConformanceStatements[i].constraint.id === id){
-					$rootScope.listToBeAddedConformanceStatements.splice(i, 1);
-					return true;
-				}
+			if(id < 0){
+				if($rootScope.changes['conformanceStatement'] !== undefined && $rootScope.changes['conformanceStatement']['add'] !== undefined) {
+	    			for (var i = 0; i < $rootScope.changes['conformanceStatement']['add'].length; i++) {
+	        			var tmp = $rootScope.changes['conformanceStatement']['add'][i];
+	        			if (tmp.obj.id === id) {
+	                        $rootScope.changes['conformanceStatement']['add'].splice(i, 1);
+	                        return true;
+	                   }
+	        		}
+	    		}
+				return true;
 			}
 			return false;
 		};
 		
 		$scope.isNewCP = function(id){
-			for(var i=0, len = $rootScope.listToBeAddedPredicates.length; i < len; i ++){
-				if($rootScope.listToBeAddedPredicates[i].constraint.id === id){
-					$rootScope.listToBeAddedPredicates.splice(i, 1);
-					return true;
-				}
+			if(id < 0) {
+				if($rootScope.changes['predicate'] !== undefined && $rootScope.changes['predicate']['add'] !== undefined) {
+	    			for (var i = 0; i < $rootScope.changes['predicate']['add'].length; i++) {
+	        			var tmp = $rootScope.changes['predicate']['add'][i];
+	        			if (tmp.obj.id === id) {
+	                        $rootScope.changes['predicate']['add'].splice(i, 1);
+	                        return true;
+	                   }
+	        		}
+	    		}
+				return true;
 			}
 			return false;
 		};
@@ -312,12 +325,6 @@ angular.module('igl')
 		};
 		
 		$scope.findDTByComponentId = function(componentId){
-//			for(var i=0, len1 = $rootScope.datatypes.length; i < len1; i ++){
-//				for(var j=0, len2 = $rootScope.datatypes[i].components.length; j<len2;j++ ){
-//					if($rootScope.datatypes[i].components[j].id == componentId)
-//						return $rootScope.datatypes[i];
-//				}
-//			}
             return $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId].datatype: null;
  		};
 		
@@ -325,15 +332,10 @@ angular.module('igl')
 		
 		$scope.deletePredicateByTarget = function(){
 			for(var i=0, len1 = $rootScope.datatype.predicates.length; i < len1; i ++){
-					if($rootScope.datatype.predicates[i].constraintTarget.indexOf($scope.selectedPosition + '[') === 0){
-						if(!$scope.isNewCP($rootScope.datatype.predicates[i].id)){
-							$rootScope.listToBeDeletedPredicates.push({id: $rootScope.datatype.predicates[i].id});
-							$rootScope.recordChange2('predicates',"delete",null,$rootScope.listToBeDeletedPredicates);
-						}
-						$rootScope.datatype.predicates.splice(i, 1);
-						return true;
-					}
-				
+				if($rootScope.datatype.predicates[i].constraintTarget.indexOf($scope.selectedPosition + '[') === 0){
+					$scope.deletePredicate($rootScope.datatype.predicates[i]);
+					return true;
+				}
 			}
 			return false;
 		};
@@ -344,13 +346,13 @@ angular.module('igl')
 			
 			var position_1 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
 			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
-			var location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-			var location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+			var location_1 = $scope.genLocation($scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+			var location_2 = $scope.genLocation($scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 			
 			if(position_1 != null){
 				if($scope.newConstraint.contraintType === 'valued'){
 					var cp = {
-							id : $rootScope.newConformanceStatementFakeId,
+							id : $rootScope.newPredicateFakeId,
 							constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedPosition,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'If ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
@@ -359,11 +361,11 @@ angular.module('igl')
 							assertion : '<Presence Path=\"' + location_1 + '\"/>'
 						};
 					$rootScope.datatype.predicates.push(cp);
-					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
-					$rootScope.recordChange2('predicates',"add",null,$rootScope.listToBeAddedPredicates);
+					var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
+			        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 				}else if($scope.newConstraint.contraintType === 'a literal value'){
 					var cp = {
-							id : $rootScope.newConformanceStatementFakeId,
+							id : $rootScope.newPredicateFakeId,
 							constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedPosition,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
@@ -372,11 +374,11 @@ angular.module('igl')
 							assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
 						};
 					$rootScope.datatype.predicates.push(cp);
-					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
-					$rootScope.recordChange2('predicates',"add",null,$rootScope.listToBeAddedPredicates);
+					var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
+			        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 				}else if($scope.newConstraint.contraintType === 'one of list values'){
 					var cp = {
-							id : $rootScope.newConformanceStatementFakeId,
+							id : $rootScope.newPredicateFakeId,
 							constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedPosition,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
@@ -385,11 +387,11 @@ angular.module('igl')
 							assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
 						};
 					$rootScope.datatype.predicates.push(cp);
-					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
-					$rootScope.recordChange2('predicates',"add",null,$rootScope.listToBeAddedPredicates);
+					var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
+			        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 				}else if($scope.newConstraint.contraintType === 'formatted value'){
 					var cp = {
-							id : $rootScope.newConformanceStatementFakeId,
+							id : $rootScope.newPredicateFakeId,
 							constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedPosition,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
@@ -398,11 +400,11 @@ angular.module('igl')
 							assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
 						};
 					$rootScope.datatype.predicates.push(cp);
-					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
-					$rootScope.recordChange2('predicates',"add",null,$rootScope.listToBeAddedPredicates);
+					var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
+			        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 				}else if($scope.newConstraint.contraintType === 'identical to the another node'){
 					var cp = {
-							id : $rootScope.newConformanceStatementFakeId,
+							id : $rootScope.newPredicateFakeId,
 							constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedPosition,
 							constraintTarget : $scope.selectedPosition + '[1]',
 							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
@@ -411,8 +413,8 @@ angular.module('igl')
 							assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 						};
 					$rootScope.datatype.predicates.push(cp);
-					$rootScope.listToBeAddedPredicates.push({datatypeId: $rootScope.datatype.id , constraint: cp});
-					$rootScope.recordChange2('predicates',"add",null,$rootScope.listToBeAddedPredicates);
+					var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
+			        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 				}
 			}
 		};
@@ -428,14 +430,12 @@ angular.module('igl')
         	return position;
         };
         
-        $scope.genLocation = function(segment, field, component, subComponent){
+        $scope.genLocation = function(component, subComponent){
         	var location = null;
-        	if(field != null && component == null && subComponent == null){
-				location = field.position + '[1]';
-			}else if(field != null && component != null && subComponent == null){
-				location = field.position + '[1].' + component.position + '[1]';
-			}else if(field != null && component != null && subComponent != null){
-				location = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
+        	if(component != null && subComponent == null){
+        		location = component.position + '[1]';
+			}else if(component != null && subComponent != null){
+				location = component.position + '[1]' + '.' + subComponent.position + '[1]';
 			}
         	
         	return location;
@@ -446,8 +446,8 @@ angular.module('igl')
 			
 			var position_1 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
 			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
-			var location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-			var location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+			var location_1 = $scope.genLocation($scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+			var location_2 = $scope.genLocation($scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 			
 			if(position_1 != null){
 				if($scope.newConstraint.contraintType === 'valued'){
@@ -459,8 +459,8 @@ angular.module('igl')
 							assertion : '<Presence Path=\"' + location_1 + '\"/>'
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
-					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
-					$rootScope.recordChange2('conformanceStatements',"add",null,$rootScope.listToBeAddedConformanceStatements);
+					var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
+			        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 				}else if($scope.newConstraint.contraintType === 'a literal value'){
 					var cs = {
 							id : $rootScope.newConformanceStatementFakeId,
@@ -470,8 +470,8 @@ angular.module('igl')
 							assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
-					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
-					$rootScope.recordChange2('conformanceStatements',"add",null,$rootScope.listToBeAddedConformanceStatements);
+					var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
+			        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 				}else if($scope.newConstraint.contraintType === 'one of list values'){
 					var cs = {
 							id : $rootScope.newConformanceStatementFakeId,
@@ -481,8 +481,8 @@ angular.module('igl')
 							assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
-					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
-					$rootScope.recordChange2('conformanceStatements',"add",null,$rootScope.listToBeAddedConformanceStatements);
+					var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
+			        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 				}else if($scope.newConstraint.contraintType === 'formatted value'){
 					var cs = {
 							id : $rootScope.newConformanceStatementFakeId,
@@ -492,8 +492,8 @@ angular.module('igl')
 							assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
-					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
-					$rootScope.recordChange2('conformanceStatements',"add",null,$rootScope.listToBeAddedConformanceStatements);
+					var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
+			        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 				}else if($scope.newConstraint.contraintType === 'identical to the another node'){
 					var cs = {
 							id : $rootScope.newConformanceStatementFakeId,
@@ -503,8 +503,8 @@ angular.module('igl')
 							assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 						};
 					$rootScope.datatype.conformanceStatements.push(cs);
-					$rootScope.listToBeAddedConformanceStatements.push({datatypeId: $rootScope.datatype.id , constraint: cs});
-					$rootScope.recordChange2('conformanceStatements',"add",null,$rootScope.listToBeAddedConformanceStatements);
+					var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
+			        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 				}
 			}
 		};

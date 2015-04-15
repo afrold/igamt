@@ -317,19 +317,13 @@
                 <span><i class="fa fa-plus fa-fw"></i></span>
             </button>
         </div>
-        <p ng-repeat="p in segment.predicates">
-
-        <div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
+		<p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">	
             <a ng-click="managePredicate(node.position)">{{p.description}}</a>
-        </div>
         </p>
     </div>
     <div ng-show="node.type === 'component'">
-        <p ng-repeat="p in findDTByComponentId(node.id).predicates">
-
-        <div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
+        <p ng-repeat="p in datatypesMap[findDTByComponentId(node.id).id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
             {{p.description}}
-        </div>
         </p>
     </div>
     <div ng-show="node.type === 'segment'">-</div>
@@ -341,19 +335,13 @@
                 <span><i class="fa fa-plus fa-fw"></i></span>
             </button>
         </div>
-        <p ng-repeat="c in segment.conformanceStatements">
-
-        <div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
-            <a ng-click="manageConformanceStatement(node.position)">{{c.constraintId}}: {{c.description}} </a>
-        </div>
+        <p ng-repeat="c in segment.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">	
+            <a ng-click="manageConformanceStatement(node.position)">{{c.constraintId}}: {{c.description}}</a>
         </p>
     </div>
     <div ng-show="node.type === 'component'">
-        <p ng-repeat="c in findDTByComponentId(node.id).conformanceStatements">
-
-        <div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
+        <p ng-repeat="c in datatypesMap[findDTByComponentId(node.id).id].conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
             {{c.constraintId}}: {{c.description}}
-        </div>
         </p>
     </div>
     <div ng-show="node.type === 'segment'">-</div>
@@ -404,7 +392,7 @@
                     <td class="col-md-1">{{p.trueUsage}}</td>
                     <td class="col-md-1">{{p.falseUsage}}</td>
                     <td class="col-md-1">
-                        <button type="button" ng-click="deletePredicate(p)" class="btn btn-xs btn-warning">
+                        <button type="button" ng-click="deletePredicate(p)" class="btn btn-xs btn-danger">
                             <span><i class="fa fa-minus-circle fa-fw"></i></span>
                         </button>
                     </td>
@@ -439,17 +427,17 @@
                                 ng-model="newConstraint.field_1"
                                 ng-options="field as field.position for field in segment.fields">
                         </select>
-        				<span ng-show="newConstraint.field_1.datatype.components.length > 0">.
+        				<span ng-show="datatypesMap[newConstraint.field_1.datatype.id].components.length > 0">.
         					<select name="component" class="igl-input"
                                     ng-change="updateComponent_1()"
                                     ng-model="newConstraint.component_1"
-                                    ng-options="component as component.position for component in newConstraint.field_1.datatype.components">
+                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype.id].components">
                             </select>
     					</span>
-    					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+    					<span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
         					<select name="subComponent" class="igl-input"
                                     ng-model="newConstraint.subComponent_1"
-                                    ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
+                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components">
                             </select>
     					</span>
                     </td>
@@ -589,19 +577,19 @@
                                 placeholder="Field"
                                 ng-options="field as field.position for field in segment.fields">
                         </select>
-        				<span ng-show="newConstraint.field_1.datatype.components.length > 0">.
+        				<span ng-show="datatypesMap[newConstraint.field_1.datatype.id].components.length > 0">.
         					<select name="component" class="igl-input"
                                     placeholder="Component"
                                     ng-change="updateComponent_1()"
                                     ng-model="newConstraint.component_1"
-                                    ng-options="component as component.position for component in newConstraint.field_1.datatype.components">
+                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype.id].components">
                             </select>
     					</span>
-    					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+    					<span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
         					<select name="subComponent" class="igl-input"
                                     placeholder="SubComponent"
                                     ng-model="newConstraint.subComponent_1"
-                                    ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
+                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components">
                             </select>
     					</span>
                     </td>
@@ -707,7 +695,7 @@
             <div class="col-sm-6">
 	 			<span ng-show="selectedTable != undefined">
 	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table for
-                        {{segment.name}}-{{selectedPosition}}
+                        {{segment.name}}-{{selectedNode.position}}
                     </button>
 	 				<hr/>
 	 				<div class="row">

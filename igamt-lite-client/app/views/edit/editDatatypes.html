@@ -348,7 +348,7 @@
 											<span ng-show="node.table != undefined">
 												<div class="btn-group" dropdown>
                                                     <button type="button" ng-click="goToTable(tablesMap[node.table.id])"
-                                                            class="btn btn-info btn-xs">{{node.table.mappingId}}
+                                                            class="btn btn-info btn-xs">{{tablesMap[node.table.id].mappingId}}
                                                     </button>
                                                     <button type="button" class="btn btn-info btn-xs dropdown-toggle"
                                                             dropdown-toggle>
@@ -379,18 +379,15 @@
 							<span><i class="fa fa-plus fa-fw"></i></span>
             			</button>
 					</div>
-             			<p ng-repeat="p in datatype.predicates">
-                     			<div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
-                        			<a ng-click="managePredicate(node.position)">{{p.description}}</a>
-                    			</div>
-             			</p>
+
+					<p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                        <a ng-click="managePredicate(node.position)">{{p.description}}</a>
+             		</p>
      			</div>
 				<div ng-show="node.type === 'component' && node.sub">
-             			<p ng-repeat="p in findDTByComponentId(node.id).predicates">
-                     			<div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
-                        			{{p.description}}
-                    			</div>
-             			</p>
+					<p ng-repeat="p in datatypesMap[findDTByComponentId(node.id).id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+            			{{p.description}}
+        			</p>
  				</div>
     			<div ng-show="node.type === 'datatype'">-</div>
         </td>
@@ -402,18 +399,14 @@
 						<span><i class="fa fa-plus fa-fw"></i></span>
             		</button>
 				</div>
-             		<p ng-repeat="c in datatype.conformanceStatements">
-                     		<div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
-                        		<a ng-click="manageConformanceStatement(node.position)">{{c.constraintId}}: {{c.description}} </a>
-                    		</div>
-             		</p>
+				<p ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
+                	<a ng-click="manageConformanceStatement(node.position)">{{c.constraintId}}: {{c.description}} </a>
+             	</p>
      		</div>
     		<div ng-show="node.type === 'component' && node.sub">
-             		<p ng-repeat="c in findDTByComponentId(node.id).conformanceStatements">
-                     		<div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
-                        		{{c.constraintId}}: {{c.description}}
-                    		</div>
-             		</p>
+             	<p ng-repeat="c in datatypesMap[findDTByComponentId(node.id).id].conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
+            		{{c.constraintId}}: {{c.description}} 
+        		</p>
      		</div>
     		<div ng-show="node.type === 'datatype'">-</div>
 		</td>
@@ -473,7 +466,7 @@
             </div>
             <div class="col-sm-6">
 	 			<span ng-show="selectedTable != undefined">
-	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table for {{datatype.name}}.{{selectedPosition}}</button>
+	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table for {{datatype.name}}.{{selectedNode.position}}</button>
 	 				<hr/>
 	 				<div class="row">
                         <div class="col-sm-4">
@@ -584,7 +577,7 @@
                 <tbody>
                 <tr>
                     <td class="col-md-3" colspan="1">
-                    	<span>{{newConstraint.datatype}}-</span>
+                    	<span>{{newConstraint.datatype}}.</span>
         				<select name="component" class="igl-input"
                 			ng-change="updateComponent_1()"
                 			ng-model="newConstraint.component_1"
