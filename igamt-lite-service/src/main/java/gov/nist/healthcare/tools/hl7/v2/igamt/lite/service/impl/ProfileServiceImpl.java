@@ -22,8 +22,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.HL7Version;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -110,7 +112,7 @@ import com.mongodb.MongoException;
 
 @Service
 public class ProfileServiceImpl extends PdfPageEventHelper implements
-		ProfileService {
+ProfileService {
 
 	@Autowired
 	private ProfileRepository profileRepository;
@@ -228,7 +230,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 	public InputStream exportAsXml(Profile p) {
 		if (p != null) {
 			return IOUtils.toInputStream(new ProfileSerializationImpl()
-					.serializeProfileToXML(p));
+			.serializeProfileToXML(p));
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -346,7 +348,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
 			String stringProfile = new ProfileSerializationImpl()
-					.serializeProfileToXML(p);
+			.serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
 					Charset.forName("UTF-8"));
 
@@ -411,7 +413,9 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		Document igDocument;
 		Document tocDocument;
 		Document igFinalDocument;
+		@SuppressWarnings("unused")
 		PdfWriter coverWriter;
+		@SuppressWarnings("unused")
 		PdfWriter tocWriter;
 		PdfWriter igWriter;
 		PdfWriter igFinalWriter;
@@ -423,15 +427,16 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 
 		BaseColor headerColor = WebColors.getRGBColor("#0033CC");
 		BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
-		Font coverFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+		Font coverH1Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24, Font.UNDERLINE
-						| Font.BOLD, BaseColor.BLUE);
-		Font tocFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE
-						| Font.BOLD, BaseColor.BLUE);
+				| Font.BOLD, BaseColor.BLUE);
+		Font coverH2Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL, BaseColor.BLUE);
+		Font tocTitleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.BOLD, BaseColor.BLACK);
 		Font titleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE
-						| Font.BOLD, BaseColor.RED);
+				| Font.BOLD | Font.ITALIC, BaseColor.BLACK);
 		Font headerFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL,
 				BaseColor.WHITE);
@@ -448,12 +453,35 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 			coverWriter = PdfWriter.getInstance(coverDocument, coverBaos);
 			coverDocument.open();
 
-			coverDocument.add(new Paragraph("Cover Page", coverFont));
-			coverDocument.add(new Paragraph("Profile title", coverFont));
-			coverDocument.add(new Paragraph("Profile identifier", coverFont));
-			coverDocument.add(new Paragraph("Version", coverFont));
-			coverDocument.add(new Paragraph("Org name", coverFont));
-			coverDocument.add(Chunk.NEWLINE);
+
+			Paragraph paragraph = new Paragraph(p.getMetaData().getName(), coverH1Font);
+			paragraph.setSpacingBefore(250);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
+
+			coverDocument.add(paragraph);
+			paragraph = new Paragraph(p.getMetaData().getSubTitle(), coverH2Font);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
+			coverDocument.add(paragraph);
+			paragraph = new Paragraph("HL7 v" + p.getMetaData().getHl7Version(), coverH2Font);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
+			paragraph.setSpacingAfter(250);
+			coverDocument.add(paragraph);
+			
+			paragraph = new Paragraph();
+
+			//coverDocument.add(new Paragraph(p.getMetaData().getSchemaVersion(), coverFont));
+			paragraph.add(new Chunk(p.getMetaData().getOrgName(), coverH2Font));
+			paragraph.add(Chunk.NEWLINE);
+			paragraph.add(new Phrase("Document Version " + 
+					p.getMetaData().getVersion(), coverH2Font));
+			paragraph.add(Chunk.NEWLINE);
+			paragraph.add(new Phrase("Status : " + p.getMetaData().getStatus(), coverH2Font));
+			paragraph.add(Chunk.NEWLINE);
+			paragraph.add(new Chunk(p.getMetaData().getDate(), coverH2Font));
+			paragraph.setAlignment(Element.ALIGN_CENTER);
+			coverDocument.add(paragraph);
+
+
 			coverDocument.close();
 
 			tocTmpBaos = new ByteArrayOutputStream();
@@ -463,7 +491,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 			// FileUtils.openOutputStream(tmpTOCFile));
 			tocWriter = PdfWriter.getInstance(tocDocument, tocTmpBaos);
 			tocDocument.open();
-			tocDocument.add(new Paragraph("Table of contents"));
+			tocDocument.add(new Paragraph("Table of contents", tocTitleFont));
 			tocDocument.add(Chunk.NEWLINE);
 
 			tocPlaceholder = new HashMap<>();
@@ -525,7 +553,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 
 				tocDocument.add(Chunk.NEWLINE);
 				tocDocument
-						.add(new Paragraph("Segments definition", titleFont));
+				.add(new Paragraph("Segments definition", titleFont));
 				tocDocument.add(Chunk.NEWLINE);
 
 				igDocument.add(new Paragraph("Segments definition", titleFont));
@@ -630,8 +658,8 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 			/*
 			 * Second pass: Add footers
 			 */
-			igBaos = this.addPdfPageNumber(igTmpBaos, "ig", "profile name");
-			tocBaos = this.addPdfPageNumber(tocTmpBaos, "toc", "profile name");
+			igBaos = this.addPdfPageNumber(igTmpBaos, "ig", p.getMetaData().getName());
+			tocBaos = this.addPdfPageNumber(tocTmpBaos, "toc", p.getMetaData().getName());
 
 			/*
 			 * Third pass: Merge
@@ -778,7 +806,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 				"",
 				"[" + String.valueOf(g.getMin()) + ".."
 						+ String.valueOf(g.getMax()) + "]", "",
-				"BEGIN " + g.getName() + " GROUP");
+						"BEGIN " + g.getName() + " GROUP");
 		rows.add(row);
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
@@ -818,7 +846,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 
 	private void addGroupXlsx2(List<String> header, Group g,
 			XSSFWorkbook workbook, XSSFCellStyle headerStyle)
-			throws DocumentException {
+					throws DocumentException {
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
 		Collections.sort(segsOrGroups);
@@ -958,14 +986,6 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 				igDocument.add(new Paragraph(f.getText()));
 			}
 		}
-		// //TODO REMOVE FOLLOWING AFTER DEMO!!
-		// for (Field f : fieldsList) {
-		// Font fontbold = FontFactory.getFont("Times-Roman", 12, Font.BOLD);
-		// igDocument.add(new Paragraph(s.getName() + "-" +
-		// f.getItemNo().replaceFirst("^0+(?!$)", "") + " " + f.getName() +
-		// " (" + f.getDatatype().getLabel() + ")", fontbold));
-		// igDocument.add(new Paragraph("wfnwenfwnvw"));
-		// }
 		igDocument.newPage();
 
 	}
@@ -1027,8 +1047,8 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 						c.getUsage().value(),
 						"[" + String.valueOf(c.getMinLength()) + ","
 								+ String.valueOf(c.getMaxLength()) + "]", (c
-								.getTable() == null) ? "" : c.getTable()
-								.getMappingId(), c.getComment());
+										.getTable() == null) ? "" : c.getTable()
+												.getMappingId(), c.getComment());
 				rows.add(row);
 
 				List<Constraint> constraints = this.findConstraints(
@@ -1071,11 +1091,11 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 					"",
 					"[" + String.valueOf(f.getMin()) + ".."
 							+ String.valueOf(f.getMax()) + "]",
-					"",
-					"[" + String.valueOf(f.getMinLength()) + ".."
-							+ String.valueOf(f.getMaxLength()) + "]", (f
-							.getTable() == null) ? "" : f.getTable()
-							.getMappingId(), f.getComment());
+							"",
+							"[" + String.valueOf(f.getMinLength()) + ".."
+									+ String.valueOf(f.getMaxLength()) + "]", (f
+											.getTable() == null) ? "" : f.getTable()
+													.getMappingId(), f.getComment());
 			rows.add(row);
 
 			if (inlineConstraints) {
@@ -1168,7 +1188,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 	public Profile apply(String changes, Profile profile)
 			throws ProfileSaveException {
 		List<ProfilePropertySaveError> errors = new ProfileChangeService()
-				.apply(changes, profile);
+		.apply(changes, profile);
 		if (errors != null && !errors.isEmpty()) {
 			throw new ProfileSaveException(errors);
 		}
