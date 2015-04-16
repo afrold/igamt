@@ -36,9 +36,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfileChangeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfilePropertySaveError;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -48,10 +51,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -73,19 +74,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ObjectNode;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.NotWritablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -217,328 +210,6 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public Profile clone(Profile p) throws CloneNotSupportedException {
 		return new ProfileClone().clone(p);
-	}
-
-	/*
-	 * { "component": { "59": { "usage": "C" }, "303": { "maxLength": "27" } } }
-	 */
-	@Override
-	public List<String> apply(String jsonChanges, Profile p) {
-		List<String> errorList = new ArrayList<String>();
-		try {
-			String id;
-			Iterator<Entry<String, JsonNode>> nodes;
-			Entry<String, JsonNode> node;
-			JsonNode individualChanges;
-			Entry<String, JsonNode> newValue;
-			Iterator<Entry<String, JsonNode>> newValues;
-
-			JsonFactory f = new JsonFactory();
-			JsonParser jp = f.createJsonParser(jsonChanges);
-			ObjectMapper mapper = new ObjectMapper();
-			JsonNode rootNode = mapper.readTree(jp);
-
-			// profile
-			nodes = rootNode.path("profile").getFields();
-			while (nodes.hasNext()) {
-				node = nodes.next();
-				id = String.valueOf(node.getKey());
-				individualChanges = node.getValue();
-				if (p == null) {
-					errorList.add("profile ID not found: " + node.getKey());
-				} else {
-					// FIXME
-					// Now: all changes are saved;
-					// Todo: "unsave" changes that could not be saved
-					// FIXME 2
-					// changes is initialized with a dummy value {"0":0}
-
-					if (p.getChanges() == null) {
-						p.setChanges(new String("{\"0\":0}"));
-					}
-					JsonNode currentNode = mapper.readTree(f.createJsonParser(p
-							.getChanges()));
-					JsonNode newNode = mapper.readTree(f
-							.createJsonParser(jsonChanges));
-					JsonNode updated = merge(currentNode, newNode);
-					p.setChanges(updated.toString());
-
-					BeanWrapper metadata = new BeanWrapperImpl(p.getMetaData());
-					newValues = individualChanges.getFields();
-					while (newValues.hasNext()) {
-						newValue = newValues.next();
-						try {
-							metadata.setPropertyValue(newValue.getKey(),
-									newValue.getValue().getTextValue());
-						} catch (NotWritablePropertyException e) {
-							errorList.add(new String(
-									"profile property not set: "
-											+ newValue.getKey()
-											+ newValue.getValue()
-													.getTextValue()));
-						}
-					}
-				}
-			}
-
-			// message
-			nodes = rootNode.path("message").getFields();
-			while (nodes.hasNext()) {
-				node = nodes.next();
-				id = String.valueOf(node.getKey());
-				individualChanges = node.getValue();
-
-				Message m = p.getMessages().findOne(id);
-				if (m == null) {
-					errorList.add("message ID not found: " + node.getKey());
-				} else {
-					BeanWrapper message = new BeanWrapperImpl(m);
-					newValues = individualChanges.getFields();
-					while (newValues.hasNext()) {
-						newValue = newValues.next();
-						try {
-							message.setPropertyValue(newValue.getKey(),
-									newValue.getValue().getTextValue());
-						} catch (NotWritablePropertyException e) {
-							errorList.add(new String(
-									"message property not set: "
-											+ newValue.getKey()
-											+ newValue.getValue()
-													.getTextValue()));
-						}
-					}
-					// messageService.save(m);
-				}
-			}
-
-			// segment
-			nodes = rootNode.path("segment").getFields();
-
-			while (nodes.hasNext()) {
-				node = nodes.next();
-				id = String.valueOf(node.getKey());
-				individualChanges = node.getValue();
-
-				Segment s = p.getSegments().findOne(id);
-
-				if (s == null) {
-					errorList.add("segment ID not found: " + node.getKey());
-				} else {
-					BeanWrapper segment = new BeanWrapperImpl(s);
-
-					newValues = individualChanges.getFields();
-					while (newValues.hasNext()) {
-						newValue = newValues.next();
-						try {
-							segment.setPropertyValue(newValue.getKey(),
-									newValue.getValue().getTextValue());
-						} catch (NotWritablePropertyException e) {
-							errorList.add(new String(
-									"Segment property not set: "
-											+ newValue.getKey()
-											+ newValue.getValue()
-													.getTextValue()));
-						}
-					}
-					// segmentService.save(s);
-				}
-			}
-
-			// segmentRef
-			nodes = rootNode.path("segmentRef").getFields();
-
-			while (nodes.hasNext()) {
-				node = nodes.next();
-				id = String.valueOf(node.getKey());
-				individualChanges = node.getValue();
-
-				SegmentRef sr = (SegmentRef) p.getMessages()
-						.findOneSegmentRefOrGroup(id);
-
-				if (sr == null) {
-					errorList.add("SegmentRef ID not found: " + node.getKey());
-				} else {
-					BeanWrapper segmentRef = new BeanWrapperImpl(sr);
-
-					newValues = individualChanges.getFields();
-					while (newValues.hasNext()) {
-						newValue = newValues.next();
-						try {
-							segmentRef.setPropertyValue(newValue.getKey(),
-									newValue.getValue().getTextValue());
-						} catch (NotWritablePropertyException e) {
-							errorList.add(new String(
-									"SegmentRef property not set: "
-											+ newValue.getKey()
-											+ newValue.getValue()
-													.getTextValue()));
-						}
-					}
-					// segmentRefService.save(sr);
-				}
-			}
-
-			// group
-			nodes = rootNode.path("group").getFields();
-			while (nodes.hasNext()) {
-				node = nodes.next();
-				// Group has a String id; node.getKey() is used directly
-				individualChanges = node.getValue();
-				id = String.valueOf(node.getKey());
-				Group g = (Group) p.getMessages().findOneSegmentRefOrGroup(id);
-				if (g == null) {
-					errorList.add("Group ID not found: " + node.getKey());
-				} else {
-					BeanWrapper group = new BeanWrapperImpl(g);
-					newValues = individualChanges.getFields();
-					while (newValues.hasNext()) {
-						newValue = newValues.next();
-						try {
-							group.setPropertyValue(newValue.getKey(), newValue
-									.getValue().getTextValue());
-						} catch (NotWritablePropertyException e) {
-							errorList.add(new String("group property not set: "
-									+ newValue.getKey()
-									+ newValue.getValue().getTextValue()));
-						}
-					}
-					// groupService.save(g);
-				}
-			}
-
-			// component
-			nodes = rootNode.path("component").getFields();
-			while (nodes.hasNext()) {
-				node = nodes.next();
-				id = String.valueOf(node.getKey());
-				individualChanges = node.getValue();
-
-				Component c = p.getDatatypes().findOneComponent(id);
-				if (c == null) {
-					errorList.add("Component ID not found: " + node.getKey());
-				} else {
-					BeanWrapper component = new BeanWrapperImpl(c);
-					newValues = individualChanges.getFields();
-					while (newValues.hasNext()) {
-						newValue = newValues.next();
-						try {
-							component.setPropertyValue(newValue.getKey(),
-									newValue.getValue().getTextValue());
-						} catch (NotWritablePropertyException e) {
-							errorList.add(new String(
-									"Component property not set: "
-											+ newValue.getKey()
-											+ newValue.getValue()
-													.getTextValue()));
-						}
-					}
-					// componentService.save(c);
-				}
-			}
-
-			// field
-			nodes = rootNode.path("field").getFields();
-			while (nodes.hasNext()) {
-				node = nodes.next();
-				id = String.valueOf(node.getKey());
-				individualChanges = node.getValue();
-
-				Field f1 = p.getSegments().findOneField(id);
-				BeanWrapper field = new BeanWrapperImpl(f1);
-
-				newValues = individualChanges.getFields();
-				while (newValues.hasNext()) {
-					newValue = newValues.next();
-					try {
-						field.setPropertyValue(newValue.getKey(), newValue
-								.getValue().getTextValue());
-					} catch (NotWritablePropertyException e) {
-						errorList.add(new String("profile property not set: "
-								+ newValue.getKey()
-								+ newValue.getValue().getTextValue()));
-					}
-				}
-				// fieldService.save(f1);
-			}
-
-			// table
-			nodes = rootNode.path("table").getFields();
-			while (nodes.hasNext()) {
-				node = nodes.next();
-				id = String.valueOf(node.getKey());
-				individualChanges = node.getValue();
-
-				Table t = p.getTables().findOne(id);
-				BeanWrapper code = new BeanWrapperImpl(t);
-				newValues = individualChanges.getFields();
-				while (newValues.hasNext()) {
-					newValue = newValues.next();
-					try {
-						code.setPropertyValue(newValue.getKey(), newValue
-								.getValue().getTextValue());
-					} catch (NotWritablePropertyException e) {
-						errorList.add(new String("table property not set: "
-								+ newValue.getKey()
-								+ newValue.getValue().getTextValue()));
-					}
-				}
-				// tableService.save(t);
-			}
-
-			// code
-			nodes = rootNode.path("code").getFields();
-			while (nodes.hasNext()) {
-				node = nodes.next();
-				id = String.valueOf(node.getKey());
-				individualChanges = node.getValue();
-
-				Code c1 = p.getTables().findOneCode(id);
-				if (c1 == null) {
-					errorList.add("Code ID not found: " + node.getKey());
-				} else {
-					BeanWrapper code = new BeanWrapperImpl(c1);
-					newValues = individualChanges.getFields();
-					while (newValues.hasNext()) {
-						newValue = newValues.next();
-						try {
-							code.setPropertyValue(newValue.getKey(), newValue
-									.getValue().getTextValue());
-						} catch (NotWritablePropertyException e) {
-							errorList.add(new String("code property not set: "
-									+ newValue.getKey()
-									+ newValue.getValue().getTextValue()));
-						}
-					}
-					// codeService.save(c1);
-				}
-			}
-
-			profileRepository.save(p);
-
-		} catch (Exception e) {
-
-		}
-		return errorList;
-
-	}
-
-	public JsonNode merge(JsonNode mainNode, JsonNode updateNode) {
-		Iterator<String> fieldNames = updateNode.getFieldNames();
-		while (fieldNames.hasNext()) {
-			String fieldName = fieldNames.next();
-			JsonNode jsonNode = mainNode.get(fieldName);
-			// if field exists and is an embedded object
-			if (jsonNode != null && jsonNode.isObject()) {
-				merge(jsonNode, updateNode.get(fieldName));
-			} else {
-				if (mainNode instanceof ObjectNode) {
-					// Overwrite field
-					JsonNode value = updateNode.get(fieldName);
-					((ObjectNode) mainNode).put(fieldName, value);
-				}
-			}
-		}
-		return mainNode;
 	}
 
 	@Override
@@ -1203,6 +874,58 @@ public class ProfileServiceImpl implements ProfileService {
 			rows.add(row);
 		}
 
+	}
+
+	public ProfileRepository getProfileRepository() {
+		return profileRepository;
+	}
+
+	public void setProfileRepository(ProfileRepository profileRepository) {
+		this.profileRepository = profileRepository;
+	}
+
+	public MessageService getMessageService() {
+		return messageService;
+	}
+
+	public void setMessageService(MessageService messageService) {
+		this.messageService = messageService;
+	}
+
+	public SegmentService getSegmentService() {
+		return segmentService;
+	}
+
+	public void setSegmentService(SegmentService segmentService) {
+		this.segmentService = segmentService;
+	}
+
+	public DatatypeService getDatatypeService() {
+		return datatypeService;
+	}
+
+	public void setDatatypeService(DatatypeService datatypeService) {
+		this.datatypeService = datatypeService;
+	}
+
+	public TableService getTableService() {
+		return tableService;
+	}
+
+	public void setTableService(TableService tableService) {
+		this.tableService = tableService;
+	}
+
+	@Override
+	public Profile apply(String changes, Profile profile)
+			throws ProfileSaveException {
+		List<ProfilePropertySaveError> errors = new ProfileChangeService().apply(
+				changes, profile);
+		if (errors != null && !errors.isEmpty()) {
+			throw new ProfileSaveException(errors);
+		}
+
+		return profile;
 	}
 
 }

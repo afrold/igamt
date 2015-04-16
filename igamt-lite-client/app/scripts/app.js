@@ -655,12 +655,15 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
                 $rootScope.processElement(segmentRefOrGroup,element);
             });
         } else if (element.type === "segmentRef") {
-            $rootScope.parentsMap[element.id] = parent;
+            if(parent) {
+                $rootScope.parentsMap[element.id] = parent;
+            }
             var ref = $rootScope.segmentsMap[element.ref.id];
             element.ref["path"] =  ref.name;
             $rootScope.processElement(ref,element);
         }  else if (element.type === "segment") {
             if ($rootScope.segments.indexOf(element) === -1) {
+                element["path"] = element["name"];
                 $rootScope.segments.push(element);
                 element.fields = $filter('orderBy')(element.fields, 'position');
                 angular.forEach(element.fields, function (field) {
@@ -671,9 +674,9 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
             $rootScope.parentsMap[element.id] = parent;
 //            element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
             element["path"] = parent.path+"."+element.position;
-            if(element.type === "component") {
-                element['sub'] = parent.type === 'component';
-            }
+//            if(element.type === "component") {
+//                element['sub'] = parent.type === 'component';
+//            }
             if (angular.isDefined(element.table) && element.table != null) {
                 var table = $rootScope.tablesMap[element.table.id];
                 if ($rootScope.tables.indexOf(table) === -1) {
@@ -690,6 +693,11 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
                 });
             }
         }
+    };
+
+
+    $rootScope.isSubComponent = function(node){
+        node.type === 'component' &&  $rootScope.parentsMap[node.id] && $rootScope.parentsMap[node.id].type === 'component';
     };
 
     $rootScope.findDatatypeRefs = function (datatype, obj) {
@@ -770,7 +778,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 		}
 		
 		return format;
-	}
+	};
     
     $rootScope.isAvailableDTForTable = function (dt) {
     	if(dt != undefined){

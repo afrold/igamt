@@ -37,17 +37,16 @@
                            ng-change="recordChangeForEdit2('segment','edit',segment.id,'name', segment.name)"
                            required>
                 </div>
-                <div class="form-group"
-                     ng-class="{'has-error' : segmentMetaDataForm.label.$invalid && !segmentMetaDataForm.label.$pristine }">
-                    <label>Label</label>
+                <div class="form-group">
+                    <label>Description</label>
                     <input type="text"
-                           ng-change="recordChangeForEdit2('segment','edit',segment.id,'label', segment.label)"
-                           name="label" class="form-control" ng-model="segment.label"
+                           ng-change="recordChangeForEdit2('segment','edit',segment.id,'description', segment.description)"
+                           name="description" class="form-control" ng-model="segment.description"
                            required>
                 </div>
 
                 <div class="form-group">
-                    <label>Text1</label>
+                    <label>Pre-Text</label>
                     <textarea style="width:100%" rows="5" class="igl-input form-control"
                               name="text1"
                                ng-change="recordChangeForEdit2('segment','edit',segment.id,'text1', segment.text1)"
@@ -58,14 +57,16 @@
 
             </div>
             <div class="col-sm-6">
-
-                <div class="form-group">
-                    <label>Description</label>
+                <div class="form-group"
+                     ng-class="{'has-error' : segmentMetaDataForm.label.$invalid && !segmentMetaDataForm.label.$pristine }">
+                    <label>Label</label>
                     <input type="text"
-                           ng-change="recordChangeForEdit2('segment','edit',segment.id,'description', segment.description)"
-                           name="description" class="form-control" ng-model="segment.description"
+                           ng-change="recordChangeForEdit2('segment','edit',segment.id,'label', segment.label)"
+                           name="label" class="form-control" ng-model="segment.label"
                            required>
                 </div>
+
+
 
                 <div class="form-group">
                     <label>Comment</label>
@@ -77,7 +78,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Text2</label>
+                    <label>Post-Text</label>
                     <textarea style="width:100%" class="igl-input form-control"
                               name="text2" rows="5"
                               ng-change="recordChangeForEdit2('segment','edit',segment.id,'text2', segment.text2)"
@@ -165,12 +166,14 @@
                                              <span ng-bind="node.description"></span>
                                          </span>
                              <span ng-show="node.type !== 'segment'">
-                                         <img ng-show="!node.sub" style="width:15px; height:15px"
+                                         <img ng-show="!isSub(node)" style="width:15px; height:15px"
                                               ng-src="images/{{node.type}}.png">
-                                         <img ng-show="node.sub" style="width:15px; height:15px"
+                                         <img ng-show="isSub(node)" style="width:15px; height:15px"
                                               ng-src="images/subcomponent.png">
                                          <span ng-show="node.type !== 'segment'">{{node.position}}:{{node.name}}</span>
                                  </span>
+
+
 </td>
 <td class="col-md-1">
     <div ng-show="node.type === 'field'">
@@ -269,7 +272,10 @@
         <!--ng-bind="node.segment.label"></a>-->
     </div>
     <div ng-show="node.type === 'segment'">-</div>
-    <div ng-show="node.type === 'component' " ng-bind="datatypesMap[node.datatype.id].label">
+    <div ng-show="node.type === 'component' ">
+        <button type="button" ng-click="goToDatatype(datatypesMap[node.datatype.id])" class="btn btn-info btn-xs">
+            {{datatypesMap[node.datatype.id].label}}
+        </button>
     </div>
 </td>
 <td class="col-md-1">

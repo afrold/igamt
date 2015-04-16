@@ -12,7 +12,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "segment")
-public class Segment extends DataModel implements java.io.Serializable, Cloneable {
+public class Segment extends DataModel implements java.io.Serializable,
+		Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -203,28 +204,47 @@ public class Segment extends DataModel implements java.io.Serializable, Cloneabl
 	public void setText2(String text2) {
 		this.text2 = text2;
 	}
-	
+
+	public Predicate findOnePredicate(String predicateId) {
+		for (Predicate predicate : this.getPredicates()) {
+			if (predicate.getId().equals(predicateId)) {
+				return predicate;
+			}
+		}
+		return null;
+	}
+
+	public ConformanceStatement findOneConformanceStatement(String confId) {
+		for (ConformanceStatement conf : this.getConformanceStatements()) {
+			if (conf.getId().equals(confId)) {
+				return conf;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public Segment clone() throws CloneNotSupportedException {
 		Segment clonedSegment = new Segment();
 		clonedSegment.setComment(comment);
-		clonedSegment.setConformanceStatements(new ArrayList<ConformanceStatement>());
-		for(ConformanceStatement cs:this.conformanceStatements){
+		clonedSegment
+				.setConformanceStatements(new ArrayList<ConformanceStatement>());
+		for (ConformanceStatement cs : this.conformanceStatements) {
 			clonedSegment.addConformanceStatement(cs.clone());
 		}
 		clonedSegment.setDescription(description);
 		clonedSegment.setDynamicMappings(new ArrayList<DynamicMapping>());
-		for(DynamicMapping dm:this.dynamicMappings){
+		for (DynamicMapping dm : this.dynamicMappings) {
 			clonedSegment.addDynamicMapping(dm.clone());
 		}
 		clonedSegment.setFields(new ArrayList<Field>());
-		for(Field f:this.fields){
+		for (Field f : this.fields) {
 			clonedSegment.addField(f.clone());
 		}
 		clonedSegment.setLabel(label);
 		clonedSegment.setName(name);
 		clonedSegment.setPredicates(new ArrayList<Predicate>());
-		for(Predicate cp:this.predicates){
+		for (Predicate cp : this.predicates) {
 			clonedSegment.addPredicate(cp.clone());
 		}
 		clonedSegment.setText1(text1);

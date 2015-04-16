@@ -96,6 +96,12 @@ angular.module('igl')
             $rootScope.notifyTableTreeUpdate = new Date().getTime();
             $rootScope.selectProfileTab(4);
         };
+
+        $scope.goToDatatype = function(datatype){
+            $rootScope.datatype = datatype;
+            $rootScope.selectProfileTab(3);
+            $rootScope.notifyDtTreeUpdate = new Date().getTime();
+        };
         
         $scope.deleteTable = function (node) {
         	node.table = null;
@@ -141,6 +147,10 @@ angular.module('igl')
 //			}
             return $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId].datatype: null;
 		};
+
+        $scope.isSub = function(component){
+            return  component.type === 'component' && $rootScope.parentsMap[component.id].type === 'component';
+        };
 
 
 

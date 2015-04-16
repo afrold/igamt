@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -92,14 +95,36 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
+	public Predicate findOnePredicate(String predicateId) {
+		for (Datatype datatype : this.getChildren()) {
+			Predicate predicate = datatype.findOnePredicate(predicateId);
+			if (predicate != null) {
+				return predicate;
+			}
+		}
+		return null;
+	}
+
+	public ConformanceStatement findOneConformanceStatement(
+			String conformanceStatementId) {
+		for (Datatype datatype : this.getChildren()) {
+			ConformanceStatement conf = datatype
+					.findOneConformanceStatement(conformanceStatementId);
+			if (conf != null) {
+				return conf;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public Datatypes clone() throws CloneNotSupportedException {
 		Datatypes clonedDatatypes = new Datatypes();
 		clonedDatatypes.setChildren(new HashSet<Datatype>());
-		for(Datatype dt:this.children){
+		for (Datatype dt : this.children) {
 			clonedDatatypes.addDatatype(dt.clone());
 		}
-		
+
 		return clonedDatatypes;
 	}
 

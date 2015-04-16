@@ -2,8 +2,10 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +16,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Document(collection = "profile")
-public class Profile extends DataModel implements java.io.Serializable, Cloneable{
+public class Profile extends DataModel implements java.io.Serializable,
+		Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -230,7 +233,24 @@ public class Profile extends DataModel implements java.io.Serializable, Cloneabl
 		constraints.setGroups(gContext);
 		return constraints;
 	}
-	
+
+	public Predicate findOnePredicate(String predicateId) {
+		Predicate predicate = this.getSegments().findOnePredicate(predicateId);
+		if (predicate == null)
+			predicate = this.getDatatypes().findOnePredicate(predicateId);
+		return predicate;
+	}
+
+	public ConformanceStatement findOneConformanceStatement(
+			String conformanceStatementId) {
+		ConformanceStatement conformanceStatement = this.getSegments()
+				.findOneConformanceStatement(conformanceStatementId);
+		if (conformanceStatement == null)
+			conformanceStatement = this.getDatatypes()
+					.findOneConformanceStatement(conformanceStatementId);
+		return conformanceStatement;
+	}
+
 	@Override
 	public Profile clone() throws CloneNotSupportedException {
 		Profile clonedProfile = new Profile();
@@ -245,7 +265,7 @@ public class Profile extends DataModel implements java.io.Serializable, Cloneabl
 		clonedProfile.setVersion(version);
 		clonedProfile.setAccountId(accountId);
 		clonedProfile.setScope(scope);
-		
+
 		return clonedProfile;
 	}
 

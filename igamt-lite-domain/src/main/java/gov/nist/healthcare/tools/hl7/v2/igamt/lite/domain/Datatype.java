@@ -165,6 +165,24 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		this.conformanceStatements = conformanceStatements;
 	}
 
+	public Predicate findOnePredicate(String predicateId) {
+		for (Predicate predicate : this.getPredicates()) {
+			if (predicate.getId().equals(predicateId)) {
+				return predicate;
+			}
+		}
+		return null;
+	}
+
+	public ConformanceStatement findOneConformanceStatement(String confId) {
+		for (ConformanceStatement conf : this.getConformanceStatements()) {
+			if (conf.getId().equals(confId)) {
+				return conf;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return "Datatype [id=" + id + ", label=" + label + ", name=" + name
@@ -174,7 +192,7 @@ public class Datatype extends DataModel implements java.io.Serializable,
 	@Override
 	public Datatype clone() throws CloneNotSupportedException {
 		Datatype clonedDT = new Datatype();
-		
+
 		clonedDT.setComment(comment);
 		clonedDT.setConformanceStatements(new ArrayList<ConformanceStatement>());
 		for (ConformanceStatement cs : this.conformanceStatements) {
@@ -194,7 +212,7 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		clonedDT.setLabel(label);
 		clonedDT.setName(name);
 		clonedDT.setUsageNote(usageNote);
-		
+
 		return clonedDT;
 	}
 

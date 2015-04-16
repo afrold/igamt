@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,7 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "segments")
-public class Segments implements java.io.Serializable, Cloneable{
+public class Segments implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -85,22 +88,56 @@ public class Segments implements java.io.Serializable, Cloneable{
 		return null;
 	}
 
+	public Component findOneComponent(String id) {
+		if (this.children != null) {
+			for (Segment m : this.children) {
+				for (Field f : m.getFields()) {
+					Component c = f.getDatatype().findOneComponent(id);
+					if (c != null) {
+						return c;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	public Predicate findOnePredicate(String predicateId) {
+		for (Segment segment : this.getChildren()) {
+			Predicate predicate = segment.findOnePredicate(predicateId);
+			if (predicate != null) {
+				return predicate;
+			}
+		}
+		return null;
+	}
+
+	public ConformanceStatement findOneConformanceStatement(
+			String conformanceStatementId) {
+		for (Segment segment : this.getChildren()) {
+			ConformanceStatement conf = segment
+					.findOneConformanceStatement(conformanceStatementId);
+			if (conf != null) {
+				return conf;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return "Segments [id=" + id + "]";
 	}
-	
-	
+
 	@Override
 	public Segments clone() throws CloneNotSupportedException {
 		Segments clonedSegments = new Segments();
 		clonedSegments.setChildren(new HashSet<Segment>());
-		for(Segment s:this.children){
+		for (Segment s : this.children) {
 			clonedSegments.addSegment(s.clone());
 		}
-		
+
 		return clonedSegments;
-		
-		
+
 	}
 }

@@ -92,7 +92,7 @@
                  ng-class="{'has-error' : igMetaDataForm.identifier.$invalid && !igMetaDataForm.identifier.$pristine }">
                 <label>IGAMT Project Identifier</label>
                 <input type="text"
-                       ng-change="recordChange2('profile',profile.id,'identifier', section.data.identifier)"
+                        ng-change="recordChangeForEdit2('profile','edit',profile.id,'identifier', section.data.identifier)"
                        name="profileIndentifier" class="form-control"
                        ng-model="section.data.identifier"
                        required>
@@ -102,7 +102,8 @@
                  ng-class="{'has-error' : igMetaDataForm.name.$invalid && !igMetaDataForm.name.$pristine }">
                 <label>IG Title</label>
                 <input type="text"
-                       ng-change="recordChange2('profile',profile.id,'name', section.data.name)"
+                        ng-change="recordChangeForEdit2('profile','edit',profile.id,'name', section.data.name)"
+
                        name="name" class="form-control" ng-model="section.data.name"
                        required>
             </div>
@@ -110,7 +111,7 @@
             <div class="form-group">
                 <label>IG Sub-Title</label>
                 <input type="text" name="subTitle"
-                       ng-change="recordChange2('profile',profile.id,'subTitle', section.data.subTitle)"
+                        ng-change="recordChangeForEdit2('profile','edit',profile.id,'subTitle', section.data.subTitle)"
                        class="form-control" ng-model="section.data.subTitle"
                        required>
             </div>
@@ -130,7 +131,7 @@
             <div class="form-group">
                 <label>Organization Name</label>
                 <input type="text" name="orgName"
-                       ng-change="recordChange2('profile',profile.id,'orgName', section.data.orgName)"
+                       ng-change="recordChangeForEdit2('profile','edit',profile.id,'orgName', section.data.orgName)"
                        class="form-control" ng-model="section.data.orgName"
                        required>
             </div>
@@ -147,7 +148,6 @@
                  ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.version.$pristine }">
                 <label>Version</label>
                 <input type="text" name="version" disabled
-                       ng-change="recordChange2('profile',profile.id,'version', section.data.version)"
                        class="form-control" ng-model="section.data.version"
                        required>
             </div>
@@ -156,11 +156,9 @@
                  ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.date.$pristine }">
                 <label>Date</label>
                 <input type="text" name="date" disabled
-                       ng-change="recordChange2('profile',profile.id,'date', section.data.date)"
                        class="form-control" ng-model="section.data.date"
                        required>
             </div>
-
 
             <!--<div class="form-group"-->
                  <!--ng-class="{'has-error' : igMetaDataForm.schemaVersion.$invalid && !igMetaDataForm.schemaVersion.$pristine }">-->
@@ -296,9 +294,9 @@
     <h1 class="page-header">Segment Definition</h1>
     <h3 class="page-header">{{section.data.name}} - {{section.data.description}}</h3>
     <div>
-        <h4>Text1</h4>
-        <textarea disabled style="width:100%; margin-bottom: 20px"  class="form-control"  ng-model="section.data.text1">
-        </textarea>
+        <h4>Pre-Text</h4>
+        <hr/>
+        <p style="text-align:left" ng-model="section.data.text1"></p>
     </div>
 
 
@@ -379,9 +377,11 @@
     </div>
 
     <div>
-        <h4>Text2</h4>
-        <textarea disabled style="width:100%" class="form-control" ng-model="section.data.text2">
-        </textarea>
+        <h4>Post-Text</h4>
+        <hr/>
+        <!--<textarea disabled style="width:100%" class="form-control" ng-model="section.data.text2">-->
+        <!--</textarea>-->
+        <p style="text-align:left" ng-model="section.data.text2"></p>
     </div>
 
 
@@ -428,8 +428,10 @@
     <h3 class="page-header">{{section.data.label}} - {{section.data.description}}</h3>
     <div>
         <h4>Text</h4>
-        <textarea disabled style="width:100%; margin-bottom: 20px"  class="form-control" ng-model="section.data.text1">
-        </textarea>
+        <hr/>
+        <p style="text-align:left" ng-model="section.data.text"></p>
+        <!--<textarea disabled style="width:100%; margin-bottom: 20px"  class="form-control" ng-model="section.data.text1">-->
+        <!--</textarea>-->
     </div>
     <div>
         <table class="table table-bordered">

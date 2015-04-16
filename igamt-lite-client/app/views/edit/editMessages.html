@@ -146,7 +146,7 @@
 
                 <div class="form-group">
                     <label>Profile Version</label>
-                    <input style="width:100%" class="igl-input" type="text"
+                    <input style="width:100%" class="igl-input" type="text" disabled
                            name="version"
                            ng-change="recordChangeForEdit2('message','edit',message.id,'version', message.version)"
                            ng-model="message.version">
@@ -156,7 +156,7 @@
                 <div class="form-group">
                     <label>Profile Date</label>
                     <input style="width:100%" class="igl-input" type="text"
-                           name="date"
+                           name="date" disabled
                            ng-change="recordChangeForEdit2('message','edit',message.id,'date', message.date)"
                            ng-model="message.date">
 
@@ -213,7 +213,7 @@
                                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 <select class="form-control input-sm"
                                                         name="usage"
-                                                        ng-change="recordChangeForEdit2('message','edit',node.id,'usage', node.usage)"
+                                                        ng-change="recordChangeForEdit2(node.type,'edit',node.id,'usage', node.usage)"
                                                         required
                                                         ng-model="node.usage"
                                                         ng-options="usage for usage in usages">
@@ -230,13 +230,13 @@
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="min"
-                                                       ng-change="recordChangeForEdit2('message', 'edit',node.id,'min', node.min)"
+                                                       ng-change="recordChangeForEdit2(node.type, 'edit',node.id,'min', node.min)"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
                                                        ng-model="node.min" required ng-minlength="1">
                                                 <input style="width:45%" class="igl-input" type="text"
                                                        name="max"
-                                                       ng-change="recordChangeForEdit2('message','edit',node.id,'max', node.max)"
+                                                       ng-change="recordChangeForEdit2(node.type,'edit',node.id,'max', node.max)"
                                                        ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.max" required>

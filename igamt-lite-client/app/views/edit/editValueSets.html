@@ -73,6 +73,7 @@
 
 	<div ng-show="!loading">
 		<div class="row">
+            <div class="col-md-8">
 			<div class="page-header">
 				<h3>Tables List</h3>
 				<span class="pull-right">
@@ -84,6 +85,9 @@
 			<div class="igl-table">
 				<table st-table="tmpTables" st-safe-src="tables" class="table table-striped table-bordered">
 					<thead>
+                        <tr>
+                            <th colspan="9"><input st-search="" class="form-control" type="text"/></th>
+                        </tr>
 						<tr class="tbl-header">
 							<th st-sort="mappingId">ID</th>
 							<th st-sort="name">Name</th>
@@ -127,6 +131,7 @@
 					</tbody>
 				</table>
 			</div>
+                </div>
 		</div>
 
 		<div ng-show="loadingSelection" style="text-align: center">

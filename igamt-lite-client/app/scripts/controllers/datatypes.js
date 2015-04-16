@@ -17,7 +17,24 @@ angular.module('igl')
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components: parent.components : $rootScope.datatype != null ? $rootScope.datatype.components:[];
+
+                    if(parent && parent != null){
+
+                        if(parent.datatype){
+                            var dt =  $rootScope.datatypesMap[parent.datatype.id];
+                            return dt.components;
+
+                        }else{
+                            return parent.components;
+                        }
+                    }else {
+                        if($rootScope.datatype != null){
+                            return $rootScope.datatype.components;
+                        }else{
+                            return [];
+                        }
+                     }
+//                    return parent && parent != null ? (parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components: parent.components) : ($rootScope.datatype != null ? $rootScope.datatype.components:[]);
                 },
                 getTemplate: function (node) {
                     return 'DatatypeEditTree.html';
@@ -146,7 +163,7 @@ angular.module('igl')
 
 
         $scope.hasChildren = function(node){
-            return node && node != null && node.datatype && node.datatype.components != null && node.datatype.components.length >0;
+            return node && node != null && node.datatype && $rootScope.datatypesMap[node.datatype.id].components != null && $rootScope.datatypesMap[node.datatype.id].components.length >0;
         };
 
 
@@ -302,12 +319,12 @@ angular.module('igl')
 			$scope.newConstraint.datatype = $rootScope.datatype.name;
 		};
 		
-		$scope.isSubDT = function(componentId){
-			for(var i=0, len = $rootScope.datatype.components.length; i < len; i ++){
-				if($rootScope.datatype.components[i].id === componentId)
+		$scope.isSubDT = function(component){
+ 			for(var i=0, len = $rootScope.datatype.components.length; i < len; i ++){
+				if($rootScope.datatype.components[i].id === component.id)
 					return false;
 			}
-			
+
 			return true;
 		};
 		

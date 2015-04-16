@@ -8,7 +8,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.ProfileSaveResponseMessage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.ChangeCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
@@ -71,6 +73,18 @@ public class ProfileController extends CommonController {
 		logger.debug(ex.getMessage());
 		return new ResponseMessage(ResponseMessage.Type.error,
 				"profileNotFound", null);
+	}
+
+	@ExceptionHandler(ProfileSaveException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public ProfileSaveResponseMessage profileSaveFailed(ProfileSaveException ex) {
+		logger.debug(ex.getMessage());
+		if (ex.getErrors() != null) {
+			return new ProfileSaveResponseMessage(ResponseMessage.Type.error,
+					"profileNotSaved", null, ex.getErrors());
+		}
+		return new ProfileSaveResponseMessage(ResponseMessage.Type.error,
+				"profileNotSaved", null);
 	}
 
 	@ExceptionHandler(OperationNotAllowException.class)
@@ -152,9 +166,9 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/save", method = RequestMethod.POST)
-	public List<String> save(@RequestBody ChangeCommand jsonChanges,
+	public Profile save(@RequestBody ChangeCommand jsonChanges,
 			@PathVariable("id") String id) throws ProfileNotFoundException,
-			UserAccountNotFoundException {
+			UserAccountNotFoundException, ProfileSaveException {
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u
 				.getUsername());

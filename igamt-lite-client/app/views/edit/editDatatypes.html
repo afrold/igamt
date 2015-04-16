@@ -70,6 +70,7 @@
 
 <div ng-show="!loading">
 <div class="row" id="datatypeList">
+<div class="col-md-8">
     <div class="page-header">
         <h3>Datatypes List</h3>
     </div>
@@ -77,6 +78,9 @@
         <table st-table="tmpDatatypes" st-safe-src="datatypes"
                class="table table-striped table-bordered">
             <thead>
+            <tr>
+                <th colspan="4"><input st-search="" class="form-control" type="text"/></th>
+            </tr>
             <tr class="tbl-header">
                 <!--<th></th>-->
                 <th st-sort="label">Flavor</th>
@@ -131,12 +135,13 @@
             <!--</tfoot>-->
         </table>
     </div>
+    </div>
 </div>
 
-<div ng-show="error !== null">
-    <div class="alert alert-danger" role="alert" ng-bind="error"></div>
-    <br/>
-</div>
+<!--<div ng-show="error !== null">-->
+    <!--<div class="alert alert-danger" role="alert" ng-bind="error"></div>-->
+    <!--<br/>-->
+<!--</div>-->
 
 <div ng-show="loadingSelection" style="text-align:center">
     <i class="fa fa-spinner fa-spin"></i>
@@ -259,15 +264,15 @@
                                              <span ng-bind="node.description"></span>
                                          </span>
                                         <span ng-show="node.type !== 'datatype'">
-                                            <img  ng-show="node.type === 'component' && !node.sub" style="width:15px; height:15px"
+                                            <img  ng-show="node.type === 'component' && !isSubDT(node)" style="width:15px; height:15px"
                                                  ng-src="images/component.png">
-                                            <img  ng-show="node.type === 'component' && node.sub" style="width:15px; height:15px"
+                                            <img  ng-show="node.type === 'component' && isSubDT(node)" style="width:15px; height:15px"
                                                   ng-src="images/subcomponent.png">
                                             <span ng-show="node.type !== 'datatype'">{{node.position}}:{{node.name}}</span>
                                         </span>
         </td>
         <td class="col-md-1">
-            <div ng-show="node.type === 'component' && !node.sub">
+            <div ng-show="node.type === 'component' && !isSubDT(node)">
                                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 <select class="form-control input-sm"
                                                         name="usage"
@@ -280,7 +285,7 @@
                                             </span>
                 <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
             </div>
-            <div ng-show="node.type === 'component' && node.sub">
+            <div ng-show="node.type === 'component' && isSubDT(node)">
                                 <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 {{node.usage}}
                                             </span>
@@ -289,7 +294,7 @@
             <div ng-show="node.type === 'datatype'">-</div>
         </td>
         <td class="col-md-1">
-            <div ng-show="node.type === 'component' && !node.sub" ng-controller="DatatypeRowCtrl">
+            <div ng-show="node.type === 'component' && !isSubDT(node)" ng-controller="DatatypeRowCtrl">
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="minLength"
@@ -306,13 +311,13 @@
                                                        ng-model="node.maxLength" required>
                                             </span>
             </div>
-            <div ng-show="node.type === 'component' && node.sub">
+            <div ng-show="node.type === 'component' && isSubDT(node)">
                 -
             </div>
             <div ng-show="node.type === 'datatype'">-</div>
         </td>
         <td class="col-md-1">
-            <div ng-show="node.type === 'component' && !node.sub" ng-controller="DatatypeRowCtrl">
+            <div ng-show="node.type === 'component' && !isSubDT(node)" ng-controller="DatatypeRowCtrl">
                                             <span ng-form name="{{formName}}">
                                             <input style="width:50%" class="igl-input" type="text"
                                                    name="confLength"
@@ -327,7 +332,7 @@
         </td>
 
         <td class="col-md-1">
-            <div ng-show="node.type !== 'datatype'">
+            <div ng-show="node.type === 'component' && !isSubDT(node)">
                 <select class="form-control input-sm"
                         name="datatype"
                         ng-model="node.datatype.id"
@@ -341,14 +346,15 @@
                 <!--ng-bind="node.datatype.label"></a>-->
             </div>
             <div ng-show="node.type === 'datatype'">-</div>
-        </td>
+            <div ng-show="node.type === 'component' && isSubDT(node)" ng-bind="datatypesMap[node.datatype.id].label"/>
+         </td>
 
         <td class="col-md-1">
-            <div ng-show="node.type !== 'datatype'">
+            <div ng-show="node.type === 'component' && !isSubDT(node)">
 											<span ng-show="node.table != undefined">
 												<div class="btn-group" dropdown>
                                                     <button type="button" ng-click="goToTable(tablesMap[node.table.id])"
-                                                            class="btn btn-info btn-xs">{{node.table.mappingId}}
+                                                            class="btn btn-info btn-xs">{{tablesMap[node.table.id].mappingId}}
                                                     </button>
                                                     <button type="button" class="btn btn-info btn-xs dropdown-toggle"
                                                             dropdown-toggle>
@@ -369,11 +375,16 @@
                                                 </button>
                                             </span>
             </div>
+            <div ng-show="node.type === 'component' && isSubDT(node)">
+                <button type="button" ng-click="goToTable(tablesMap[node.table.id])"
+                        class="btn btn-info btn-xs">{{tablesMap[node.table.id].mappingId}}
+                </button>
+            </div>
             <div ng-show="node.type === 'datatype'">-</div>
         </td>
 
         <td class="col-md-1">
-			    <div ng-show="node.type === 'component' && !node.sub">
+			    <div ng-show="node.type === 'component' && !isSubDT(node)">
 					<div ng-show="countPredicate(node.position) == 0">
 						<button type="button" ng-click="managePredicate(node.position)" class="btn btn-info btn-xs">
 							<span><i class="fa fa-plus fa-fw"></i></span>
@@ -385,7 +396,7 @@
                     			</div>
              			</p>
      			</div>
-				<div ng-show="node.type === 'component' && node.sub">
+				<div ng-show="node.type === 'component' && isSubDT(node)">
              			<p ng-repeat="p in findDTByComponentId(node.id).predicates">
                      			<div ng-show="p.constraintTarget.indexOf(node.position + '[') === 0">
                         			{{p.description}}
@@ -396,7 +407,7 @@
         </td>
         
 		<td class="col-md-1">
-        	<div ng-show="node.type === 'component' && !node.sub">
+        	<div ng-show="node.type === 'component' && !isSubDT(node)">
 				<div ng-show="countConformanceStatements(node.position) == 0">
 					<button type="button" ng-click="manageConformanceStatement(node.position)" class="btn btn-info btn-xs">
 						<span><i class="fa fa-plus fa-fw"></i></span>
@@ -408,7 +419,7 @@
                     		</div>
              		</p>
      		</div>
-    		<div ng-show="node.type === 'component' && node.sub">
+    		<div ng-show="node.type === 'component' && isSubDT(node)">
              		<p ng-repeat="c in findDTByComponentId(node.id).conformanceStatements">
                      		<div ng-show="c.constraintTarget.indexOf(node.position + '[') === 0">
                         		{{c.constraintId}}: {{c.description}}
@@ -419,14 +430,14 @@
 		</td>
         
 		<td class="col-md-1">
-            <div ng-show="node.type === 'component' && !node.sub">
+            <div ng-show="node.type === 'component' && !isSubDT(node)">
                 <input style="width:100%" class="igl-input" type="text"
                        name="comment"
                        ng-change="recordDatatypeChange('component','edit',node.id,'comment', node.comment)"
                        ng-model="node.comment">
             </div>
             <div ng-show="node.type === 'datatype'">-</div>
-            <div ng-show="node.type === 'component' && node.sub">{{node.comment}}
+            <div ng-show="node.type === 'component' && isSubDT(node)">{{node.comment}}
             </div>
         </td>
     </tr>

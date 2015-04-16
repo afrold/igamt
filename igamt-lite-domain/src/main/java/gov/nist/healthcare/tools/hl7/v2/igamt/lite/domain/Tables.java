@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "tables")
-public class Tables extends DataModel implements Serializable, Cloneable{
+public class Tables extends DataModel implements Serializable, Cloneable {
 
 	/**
 	 * 
@@ -130,6 +130,12 @@ public class Tables extends DataModel implements Serializable, Cloneable{
 		return null;
 	}
 
+	public void delete(String id) {
+		Table t = findOne(id);
+		if (t != null)
+			this.children.remove(t);
+	}
+
 	@Override
 	public String toString() {
 		return "Tables [id=" + id + ", tableLibraryIdentifier="
@@ -138,23 +144,22 @@ public class Tables extends DataModel implements Serializable, Cloneable{
 				+ ", organizationName=" + organizationName + ", name=" + name
 				+ ", description=" + description + "]";
 	}
-	
+
 	@Override
 	public Tables clone() throws CloneNotSupportedException {
 		Tables clonedTables = new Tables();
 		clonedTables.setChildren(new HashSet<Table>());
-		for(Table t:this.children){
+		for (Table t : this.children) {
 			clonedTables.addTable(t.clone());
 		}
-		
-		
+
 		clonedTables.setDescription(description);
 		clonedTables.setName(name);
 		clonedTables.setOrganizationName(organizationName);
 		clonedTables.setStatus(status);
 		clonedTables.setTableLibraryIdentifier(tableLibraryIdentifier);
 		clonedTables.setTableLibraryVersion(tableLibraryVersion);
-		
+
 		return clonedTables;
 	}
 }
