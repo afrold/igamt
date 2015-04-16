@@ -38,6 +38,9 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
             codes: []
         });
         $rootScope.tables.push(newTable);
+        
+        $rootScope.tablesMap[newTable.id] = newTable;
+        
         $rootScope.table = newTable;
 
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
@@ -154,6 +157,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
         $rootScope.tables.push(newTable);
         $rootScope.table = newTable;
+        $rootScope.tablesMap[newTable.id] = newTable;
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
     };
 
@@ -244,8 +248,7 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
         	$rootScope.recordChangeForEdit2('table', "delete", tableToDelete.id,'id', tableToDelete.id);
         }
         $rootScope.tables.splice($rootScope.tables.indexOf(tableToDelete), 1);
-
-        
+        $rootScope.tablesMap[tableToDelete.id] = undefined;
         
         
         $rootScope.generalInfo.type = 'info';

@@ -91,8 +91,6 @@ angular.module('igl')
             }
         };
 
-
-
         $scope.close = function(){
             $rootScope.datatype = null;
              if ($scope.params)
@@ -178,141 +176,55 @@ angular.module('igl')
         	$rootScope.recordChangeForEdit2('component', 'edit', node.id, 'table' , null);
         };
         
-        $scope.showTableMapModal = false;
-        
-        $scope.displayedTableCollection = [].concat($scope.tables);
-        $scope.displayedCodeCollection = [];
-        
-        
-        $scope.selectedNode = null;
 		$scope.mapTable = function(node) {
-			$scope.selectedNode = node;
-			$scope.selectedTable = null;
-			if(node.table != undefined){
-				$scope.selectedTable = $rootScope.tablesMap[node.table.id];	
-			}
-			
-			if($scope.selectedTable != undefined)
-				$scope.displayedCodeCollection = [].concat($scope.selectedTable.codes);
-			$scope.showTableMapModal = !$scope.showTableMapModal;
+			var modalInstance = $modal.open({
+                templateUrl: 'TableMappingDatatypeCtrl.html',
+                controller: 'TableMappingDatatypeCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                	selectedNode: function () {
+                        return node;
+                    }
+                }
+            });
+            modalInstance.result.then(function (node) {
+                $scope.selectedNode = node;
+            }, function () {
+            });
 		};
 		
-		$scope.selectedTable = null;
-		$scope.selectTable = function(table){
-			$scope.selectedTable = table;
-			$scope.displayedCodeCollection = [].concat($scope.selectedTable.codes);
-	        
+		$scope.managePredicate = function(node){
+			var modalInstance = $modal.open({
+                templateUrl: 'PredicateDatatypeCtrl.html',
+                controller: 'PredicateDatatypeCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                	selectedNode: function () {
+                        return node;
+                    }
+                }
+            });
+            modalInstance.result.then(function (node) {
+                $scope.selectedNode = node;
+            }, function () {
+            });
 		};
 		
-		$scope.mappingTable = function(){
-			$scope.selectedNode.table = {id:$scope.selectedTable.id};
-			$rootScope.recordChangeForEdit2('component', 'edit', $scope.selectedNode.id, 'table' , $scope.selectedTable.id);
-			$scope.showTableMapModal = false;
-		};
-		
-		$scope.countPredicate = function(position){
-			for(var i=0, len = $rootScope.datatype.predicates.length; i < len; i ++){
-				if($rootScope.datatype.predicates[i].constraintTarget.indexOf(position + '[') === 0)
-					return 1;
-			}
-			
-			return 0;
-		};
-		
-		$scope.showPredicateManagerModal = false;
-		$scope.showConformanceStatementManagerModal = false;
-		$scope.selectedPosition = null;
-		$scope.newConstraint = null;
-		
-		$scope.managePredicate = function(position){
-			$scope.selectedPosition = position;
-			$scope.showPredicateManagerModal = !$scope.showPredicateManagerModal;	
-			$scope.newConstraint = angular.fromJson({
-				datatype : '',
-				component_1 : null,
-				subComponent_1 : null,
-				component_2 : null,
-				subComponent_2 : null,
-				verb : null,
-				contraintType : null,
-				value : null,
-				trueUsage : null,
-				falseUsage : null
-			});
-			$scope.newConstraint.datatype = $rootScope.datatype.name;
-		};
-		
-		$scope.deletePredicate = function(predicate){
-			$rootScope.datatype.predicates.splice($rootScope.datatype.predicates.indexOf(predicate),1);
-			if(!$scope.isNewCP(predicate.id)){
-				$rootScope.recordChangeForEdit2('predicate', "delete", predicate.id,'id', predicate.id);
-			}
-		};
-		
-		$scope.deleteConformanceStatement = function(conformanceStatement){
-			$rootScope.datatype.conformanceStatements.splice($rootScope.datatype.conformanceStatements.indexOf(conformanceStatement),1);
-			if(!$scope.isNewCS(conformanceStatement.id)){
-				$rootScope.recordChangeForEdit2('conformanceStatement', "delete", conformanceStatement.id,'id', conformanceStatement.id);
-			}
-		};
-		
-		
-		$scope.isNewCS = function(id){
-			if(id < 0){
-				if($rootScope.changes['conformanceStatement'] !== undefined && $rootScope.changes['conformanceStatement']['add'] !== undefined) {
-	    			for (var i = 0; i < $rootScope.changes['conformanceStatement']['add'].length; i++) {
-	        			var tmp = $rootScope.changes['conformanceStatement']['add'][i];
-	        			if (tmp.obj.id === id) {
-	                        $rootScope.changes['conformanceStatement']['add'].splice(i, 1);
-	                        return true;
-	                   }
-	        		}
-	    		}
-				return true;
-			}
-			return false;
-		};
-		
-		$scope.isNewCP = function(id){
-			if(id < 0) {
-				if($rootScope.changes['predicate'] !== undefined && $rootScope.changes['predicate']['add'] !== undefined) {
-	    			for (var i = 0; i < $rootScope.changes['predicate']['add'].length; i++) {
-	        			var tmp = $rootScope.changes['predicate']['add'][i];
-	        			if (tmp.obj.id === id) {
-	                        $rootScope.changes['predicate']['add'].splice(i, 1);
-	                        return true;
-	                   }
-	        		}
-	    		}
-				return true;
-			}
-			return false;
-		};
-		
-		$scope.updateComponent_1 = function(){
-			$scope.newConstraint.subComponent_1 = null;
-		};
-		
-		$scope.updateComponent_2 = function(){
-			$scope.newConstraint.subComponent_2 = null;
-		};
-		
-		
-		$scope.manageConformanceStatement = function(position){
-			$scope.selectedPosition = position;
-			$scope.showConformanceStatementManagerModal = !$scope.showConformanceStatementManagerModal;	
-			$scope.newConstraint = angular.fromJson({
-				datatype : '',
-				component_1 : null,
-				subComponent_1 : null,
-				component_2 : null,
-				subComponent_2 : null,
-				verb : null,
-				constraintId : null,
-				contraintType : null,
-				value: null
-			});
-			$scope.newConstraint.datatype = $rootScope.datatype.name;
+		$scope.manageConformanceStatement = function(node){
+			var modalInstance = $modal.open({
+                templateUrl: 'ConformanceStatementDatatypeCtrl.html',
+                controller: 'ConformanceStatementDatatypeCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                	selectedNode: function () {
+                        return node;
+                    }
+                }
+            });
+            modalInstance.result.then(function (node) {
+                $scope.selectedNode = node;
+            }, function () {
+            });
 		};
 		
 		$scope.isSubDT = function(componentId){
@@ -327,187 +239,6 @@ angular.module('igl')
 		$scope.findDTByComponentId = function(componentId){
             return $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId].datatype: null;
  		};
-		
-		
-		
-		$scope.deletePredicateByTarget = function(){
-			for(var i=0, len1 = $rootScope.datatype.predicates.length; i < len1; i ++){
-				if($rootScope.datatype.predicates[i].constraintTarget.indexOf($scope.selectedPosition + '[') === 0){
-					$scope.deletePredicate($rootScope.datatype.predicates[i]);
-					return true;
-				}
-			}
-			return false;
-		};
-		
-		$scope.updatePredicate = function() {
-			$rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
-			$scope.deletePredicateByTarget();
-			
-			var position_1 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
-			var location_1 = $scope.genLocation($scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-			var location_2 = $scope.genLocation($scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
-			
-			if(position_1 != null){
-				if($scope.newConstraint.contraintType === 'valued'){
-					var cp = {
-							id : $rootScope.newPredicateFakeId,
-							constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedPosition,
-							constraintTarget : $scope.selectedPosition + '[1]',
-							description : 'If ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
-							trueUsage : $scope.newConstraint.trueUsage,
-							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : '<Presence Path=\"' + location_1 + '\"/>'
-						};
-					$rootScope.datatype.predicates.push(cp);
-					var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
-			        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
-				}else if($scope.newConstraint.contraintType === 'a literal value'){
-					var cp = {
-							id : $rootScope.newPredicateFakeId,
-							constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedPosition,
-							constraintTarget : $scope.selectedPosition + '[1]',
-							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
-							trueUsage : $scope.newConstraint.trueUsage,
-							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
-						};
-					$rootScope.datatype.predicates.push(cp);
-					var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
-			        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
-				}else if($scope.newConstraint.contraintType === 'one of list values'){
-					var cp = {
-							id : $rootScope.newPredicateFakeId,
-							constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedPosition,
-							constraintTarget : $scope.selectedPosition + '[1]',
-							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
-							trueUsage : $scope.newConstraint.trueUsage,
-							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
-						};
-					$rootScope.datatype.predicates.push(cp);
-					var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
-			        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
-				}else if($scope.newConstraint.contraintType === 'formatted value'){
-					var cp = {
-							id : $rootScope.newPredicateFakeId,
-							constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedPosition,
-							constraintTarget : $scope.selectedPosition + '[1]',
-							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
-							trueUsage : $scope.newConstraint.trueUsage,
-							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
-						};
-					$rootScope.datatype.predicates.push(cp);
-					var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
-			        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
-				}else if($scope.newConstraint.contraintType === 'identical to the another node'){
-					var cp = {
-							id : $rootScope.newPredicateFakeId,
-							constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedPosition,
-							constraintTarget : $scope.selectedPosition + '[1]',
-							description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
-							trueUsage : $scope.newConstraint.trueUsage,
-							falseUsage : $scope.newConstraint.falseUsage,
-							assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
-						};
-					$rootScope.datatype.predicates.push(cp);
-					var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
-			        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
-				}
-			}
-		};
-
-        $scope.genPosition = function(datatype, component, subComponent){
-        	var position = null;
-        	if(component != null && subComponent == null){
-				position = datatype + '.' + component.position;
-			}else if(component != null && subComponent != null){
-				position = datatype + '.' + component.position + '.' + subComponent.position;
-			}
-        	
-        	return position;
-        };
-        
-        $scope.genLocation = function(component, subComponent){
-        	var location = null;
-        	if(component != null && subComponent == null){
-        		location = component.position + '[1]';
-			}else if(component != null && subComponent != null){
-				location = component.position + '[1]' + '.' + subComponent.position + '[1]';
-			}
-        	
-        	return location;
-        };
-		
-		$scope.addConformanceStatement = function() {
-			$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
-			
-			var position_1 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-			var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
-			var location_1 = $scope.genLocation($scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-			var location_2 = $scope.genLocation($scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
-			
-			if(position_1 != null){
-				if($scope.newConstraint.contraintType === 'valued'){
-					var cs = {
-							id : $rootScope.newConformanceStatementFakeId,
-							constraintId : $scope.newConstraint.constraintId,
-							constraintTarget : $scope.selectedPosition + '[1]',
-							description : position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
-							assertion : '<Presence Path=\"' + location_1 + '\"/>'
-						};
-					$rootScope.datatype.conformanceStatements.push(cs);
-					var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
-			        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
-				}else if($scope.newConstraint.contraintType === 'a literal value'){
-					var cs = {
-							id : $rootScope.newConformanceStatementFakeId,
-							constraintId : $scope.newConstraint.constraintId,
-							constraintTarget : $scope.selectedPosition + '[1]',
-							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
-							assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
-						};
-					$rootScope.datatype.conformanceStatements.push(cs);
-					var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
-			        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
-				}else if($scope.newConstraint.contraintType === 'one of list values'){
-					var cs = {
-							id : $rootScope.newConformanceStatementFakeId,
-							constraintId : $scope.newConstraint.constraintId,
-							constraintTarget : $scope.selectedPosition + '[1]',
-							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
-							assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
-						};
-					$rootScope.datatype.conformanceStatements.push(cs);
-					var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
-			        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
-				}else if($scope.newConstraint.contraintType === 'formatted value'){
-					var cs = {
-							id : $rootScope.newConformanceStatementFakeId,
-							constraintId : $scope.newConstraint.constraintId,
-							constraintTarget : $scope.selectedPosition + '[1]',
-							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
-							assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
-						};
-					$rootScope.datatype.conformanceStatements.push(cs);
-					var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
-			        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
-				}else if($scope.newConstraint.contraintType === 'identical to the another node'){
-					var cs = {
-							id : $rootScope.newConformanceStatementFakeId,
-							constraintId : $scope.newConstraint.constraintId,
-							constraintTarget : $scope.selectedPosition + '[1]',
-							description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
-							assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
-						};
-					$rootScope.datatype.conformanceStatements.push(cs);
-					var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
-			        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
-				}
-			}
-		};
 		
 		$scope.countConformanceStatements = function(position){
 			var count = 0;
@@ -639,4 +370,336 @@ angular.module('igl').controller('DatatypeReferencesCtrl', function ($scope, $mo
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+});
+
+angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+    $scope.selectedNode = selectedNode;
+	$scope.selectedTable = null;
+	if(selectedNode.table != undefined){
+		$scope.selectedTable = $rootScope.tablesMap[selectedNode.table.id];	
+	}
+	
+	$scope.selectTable = function(table){
+		$scope.selectedTable = table;
+	};
+	
+	$scope.mappingTable = function(){
+		$scope.selectedNode.table = {id:$scope.selectedTable.id};
+		$rootScope.recordChangeForEdit2('component', 'edit', $scope.selectedNode.id, 'table' , $scope.selectedTable.id);
+		$scope.ok();
+	};
+
+    $scope.ok = function () {
+        $modalInstance.close($scope.selectedNode);
+    };
+
+});
+
+angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+	$scope.selectedNode = selectedNode;
+	
+	$scope.newConstraint = angular.fromJson({
+		datatype : '',
+		component_1 : null,
+		subComponent_1 : null,
+		component_2 : null,
+		subComponent_2 : null,
+		verb : null,
+		constraintId : null,
+		contraintType : null,
+		value: null
+	});
+	$scope.newConstraint.datatype = $rootScope.datatype.name;
+	
+	$scope.deleteConformanceStatement = function(conformanceStatement){
+		$rootScope.datatype.conformanceStatements.splice($rootScope.datatype.conformanceStatements.indexOf(conformanceStatement),1);
+		if(!$scope.isNewCS(conformanceStatement.id)){
+			$rootScope.recordChangeForEdit2('conformanceStatement', "delete", conformanceStatement.id,'id', conformanceStatement.id);
+		}
+	};
+	
+	
+	$scope.isNewCS = function(id){
+		if(id < 0){
+			if($rootScope.changes['conformanceStatement'] !== undefined && $rootScope.changes['conformanceStatement']['add'] !== undefined) {
+    			for (var i = 0; i < $rootScope.changes['conformanceStatement']['add'].length; i++) {
+        			var tmp = $rootScope.changes['conformanceStatement']['add'][i];
+        			if (tmp.obj.id === id) {
+                        $rootScope.changes['conformanceStatement']['add'].splice(i, 1);
+                        return true;
+                   }
+        		}
+    		}
+			return true;
+		}
+		return false;
+	};
+	
+	$scope.updateComponent_1 = function(){
+		$scope.newConstraint.subComponent_1 = null;
+	};
+	
+	$scope.updateComponent_2 = function(){
+		$scope.newConstraint.subComponent_2 = null;
+	};
+	
+	$scope.genPosition = function(datatype, component, subComponent){
+    	var position = null;
+    	if(component != null && subComponent == null){
+			position = datatype + '.' + component.position;
+		}else if(component != null && subComponent != null){
+			position = datatype + '.' + component.position + '.' + subComponent.position;
+		}
+    	
+    	return position;
+    };
+    
+    $scope.genLocation = function(component, subComponent){
+    	var location = null;
+    	if(component != null && subComponent == null){
+    		location = component.position + '[1]';
+		}else if(component != null && subComponent != null){
+			location = component.position + '[1]' + '.' + subComponent.position + '[1]';
+		}
+    	
+    	return location;
+    };
+	
+	$scope.addConformanceStatement = function() {
+		$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
+		
+		var position_1 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+		var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+		var location_1 = $scope.genLocation($scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+		var location_2 = $scope.genLocation($scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+		
+		if(position_1 != null){
+			if($scope.newConstraint.contraintType === 'valued'){
+				var cs = {
+						id : $rootScope.newConformanceStatementFakeId,
+						constraintId : $scope.newConstraint.constraintId,
+						constraintTarget : $scope.selectedNode.position + '[1]',
+						description : position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
+						assertion : '<Presence Path=\"' + location_1 + '\"/>'
+					};
+				$rootScope.datatype.conformanceStatements.push(cs);
+				var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
+		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
+			}else if($scope.newConstraint.contraintType === 'a literal value'){
+				var cs = {
+						id : $rootScope.newConformanceStatementFakeId,
+						constraintId : $scope.newConstraint.constraintId,
+						constraintTarget : $scope.selectedNode.position + '[1]',
+						description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
+						assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
+					};
+				$rootScope.datatype.conformanceStatements.push(cs);
+				var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
+		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
+			}else if($scope.newConstraint.contraintType === 'one of list values'){
+				var cs = {
+						id : $rootScope.newConformanceStatementFakeId,
+						constraintId : $scope.newConstraint.constraintId,
+						constraintTarget : $scope.selectedNode.position + '[1]',
+						description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
+						assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
+					};
+				$rootScope.datatype.conformanceStatements.push(cs);
+				var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
+		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
+			}else if($scope.newConstraint.contraintType === 'formatted value'){
+				var cs = {
+						id : $rootScope.newConformanceStatementFakeId,
+						constraintId : $scope.newConstraint.constraintId,
+						constraintTarget : $scope.selectedNode.position + '[1]',
+						description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
+						assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
+					};
+				$rootScope.datatype.conformanceStatements.push(cs);
+				var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
+		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
+			}else if($scope.newConstraint.contraintType === 'identical to the another node'){
+				var cs = {
+						id : $rootScope.newConformanceStatementFakeId,
+						constraintId : $scope.newConstraint.constraintId,
+						constraintTarget : $scope.selectedNode.position + '[1]',
+						description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
+						assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
+					};
+				$rootScope.datatype.conformanceStatements.push(cs);
+				var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
+		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
+			}
+		}
+	};
+	
+	$scope.ok = function () {
+        $modalInstance.close($scope.selectedNode);
+    };
+});
+
+
+angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+	$scope.selectedNode = selectedNode;
+	
+	$scope.newConstraint = angular.fromJson({
+		datatype : '',
+		component_1 : null,
+		subComponent_1 : null,
+		component_2 : null,
+		subComponent_2 : null,
+		verb : null,
+		contraintType : null,
+		value : null,
+		trueUsage : null,
+		falseUsage : null
+	});
+	$scope.newConstraint.datatype = $rootScope.datatype.name;
+	
+	$scope.updateComponent_1 = function(){
+		$scope.newConstraint.subComponent_1 = null;
+	};
+	
+	$scope.updateComponent_2 = function(){
+		$scope.newConstraint.subComponent_2 = null;
+	};
+	
+	$scope.genPosition = function(datatype, component, subComponent){
+    	var position = null;
+    	if(component != null && subComponent == null){
+			position = datatype + '.' + component.position;
+		}else if(component != null && subComponent != null){
+			position = datatype + '.' + component.position + '.' + subComponent.position;
+		}
+    	
+    	return position;
+    };
+    
+    $scope.genLocation = function(component, subComponent){
+    	var location = null;
+    	if(component != null && subComponent == null){
+    		location = component.position + '[1]';
+		}else if(component != null && subComponent != null){
+			location = component.position + '[1]' + '.' + subComponent.position + '[1]';
+		}
+    	
+    	return location;
+    };
+    
+    $scope.deletePredicateByTarget = function(){
+		for(var i=0, len1 = $rootScope.datatype.predicates.length; i < len1; i ++){
+			if($rootScope.datatype.predicates[i].constraintTarget.indexOf($scope.selectedNode.position + '[') === 0){
+				$scope.deletePredicate($rootScope.datatype.predicates[i]);
+				return true;
+			}
+		}
+		return false;
+	};
+	
+	$scope.updatePredicate = function() {
+		$rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
+		$scope.deletePredicateByTarget();
+		
+		var position_1 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+		var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+		var location_1 = $scope.genLocation($scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+		var location_2 = $scope.genLocation($scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+		
+		if(position_1 != null){
+			if($scope.newConstraint.contraintType === 'valued'){
+				var cp = {
+						id : $rootScope.newPredicateFakeId,
+						constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
+						constraintTarget : $scope.selectedNode.position + '[1]',
+						description : 'If ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
+						trueUsage : $scope.newConstraint.trueUsage,
+						falseUsage : $scope.newConstraint.falseUsage,
+						assertion : '<Presence Path=\"' + location_1 + '\"/>'
+					};
+				$rootScope.datatype.predicates.push(cp);
+				var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
+		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
+			}else if($scope.newConstraint.contraintType === 'a literal value'){
+				var cp = {
+						id : $rootScope.newPredicateFakeId,
+						constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
+						constraintTarget : $scope.selectedNode.position + '[1]',
+						description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
+						trueUsage : $scope.newConstraint.trueUsage,
+						falseUsage : $scope.newConstraint.falseUsage,
+						assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
+					};
+				$rootScope.datatype.predicates.push(cp);
+				var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
+		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
+			}else if($scope.newConstraint.contraintType === 'one of list values'){
+				var cp = {
+						id : $rootScope.newPredicateFakeId,
+						constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
+						constraintTarget : $scope.selectedNode.position + '[1]',
+						description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
+						trueUsage : $scope.newConstraint.trueUsage,
+						falseUsage : $scope.newConstraint.falseUsage,
+						assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
+					};
+				$rootScope.datatype.predicates.push(cp);
+				var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
+		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
+			}else if($scope.newConstraint.contraintType === 'formatted value'){
+				var cp = {
+						id : $rootScope.newPredicateFakeId,
+						constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
+						constraintTarget : $scope.selectedNode.position + '[1]',
+						description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
+						trueUsage : $scope.newConstraint.trueUsage,
+						falseUsage : $scope.newConstraint.falseUsage,
+						assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
+					};
+				$rootScope.datatype.predicates.push(cp);
+				var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
+		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
+			}else if($scope.newConstraint.contraintType === 'identical to the another node'){
+				var cp = {
+						id : $rootScope.newPredicateFakeId,
+						constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
+						constraintTarget : $scope.selectedNode.position + '[1]',
+						description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
+						trueUsage : $scope.newConstraint.trueUsage,
+						falseUsage : $scope.newConstraint.falseUsage,
+						assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
+					};
+				$rootScope.datatype.predicates.push(cp);
+				var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
+		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
+			}
+		}
+	};
+	
+	$scope.deletePredicate = function(predicate){
+		$rootScope.datatype.predicates.splice($rootScope.datatype.predicates.indexOf(predicate),1);
+		if(!$scope.isNewCP(predicate.id)){
+			$rootScope.recordChangeForEdit2('predicate', "delete", predicate.id,'id', predicate.id);
+		}
+	};
+	
+	$scope.isNewCP = function(id){
+		if(id < 0) {
+			if($rootScope.changes['predicate'] !== undefined && $rootScope.changes['predicate']['add'] !== undefined) {
+    			for (var i = 0; i < $rootScope.changes['predicate']['add'].length; i++) {
+        			var tmp = $rootScope.changes['predicate']['add'][i];
+        			if (tmp.obj.id === id) {
+                        $rootScope.changes['predicate']['add'].splice(i, 1);
+                        return true;
+                   }
+        		}
+    		}
+			return true;
+		}
+		return false;
+	};
+	
+	$scope.ok = function () {
+        $modalInstance.close($scope.selectedNode);
+    };
+
 });
