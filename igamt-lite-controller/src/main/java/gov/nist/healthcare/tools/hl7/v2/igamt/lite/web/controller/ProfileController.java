@@ -182,7 +182,7 @@ public class ProfileController extends CommonController {
 		return profileService.apply(jsonChanges.getValue(), p);
 	}
 
-	@RequestMapping(value = "/{id}/export/XML", method = RequestMethod.POST, produces = "text/xml")
+	@RequestMapping(value = "/{id}/export/xml", method = RequestMethod.POST, produces = "text/xml")
 	public void export(@PathVariable("id") String id,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
@@ -199,7 +199,7 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-	@RequestMapping(value = "/export/pdf", method = RequestMethod.POST, produces = "application/pdf")
+	@RequestMapping(value = "/{id}/export/pdf", method = RequestMethod.POST, produces = "application/pdf")
 	public void exportPdf(@PathVariable("id") String id,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
@@ -216,7 +216,7 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-	@RequestMapping(value = "/export/xslx", method = RequestMethod.POST, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	@RequestMapping(value = "/{id}/export/xslx", method = RequestMethod.POST, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 	public void exportXlsx(@PathVariable("id") String id,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {

@@ -1408,3 +1408,9 @@ input.account-input {
 //  width: 100%;
 //  display: inline-block;
 //}
+
+.app-modal-window .modal-dialog {
+  width: 90%;
+  height: 90%;
+  overflow-y: auto;
+}

@@ -73,7 +73,7 @@
 
 	<div ng-show="!loading">
 		<div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
 			<div class="page-header">
 				<h3>Tables List</h3>
 				<span class="pull-right">
@@ -99,11 +99,6 @@
 							<th st-sort="extensibility">Extensibility</th>
 							<th></th>
 						</tr>
-						<tr>
-                            <th colspan="9">
-                                <input st-search="" class="form-control" placeholder="search table..." type="text"/>
-                            </th>
-                        </tr>
 					</thead>
 
 					<tbody>
@@ -160,30 +155,30 @@
 							<hr />
 							<div class="col-md-6">
 								<label>Mapping Identifier</label>
-								<input type="text" name="tableIndentifier" ng-change="recordChangeTable(table,'mappingId')" class="form-control" ng-model="table.mappingId" required>
+								<input type="text" name="tableIndentifier" ng-change="recordChangeTable(table,'mappingId', table.mappingId)" class="form-control" ng-model="table.mappingId" required>
 								<label>Version</label>
-								<input type="text" name="version" ng-change="recordChangeTable(table,'version')" class="form-control" ng-model="table.version">
+								<input type="text" name="version" ng-change="recordChangeTable(table,'version', table.version)" class="form-control" ng-model="table.version">
 	                            <label>OID</label>
-	                            <input type="text" name="oid" ng-change="recordChangeTable(table,'oid')" class="form-control" ng-model="table.oid">
+	                            <input type="text" name="oid" ng-change="recordChangeTable(table,'oid', table.oid)" class="form-control" ng-model="table.oid">
 	                            <label>Stability</label>
 	                            <select class="form-control"
                                     name="stability"
-                                    ng-change="recordChangeTable(table,'stability')"
+                                    ng-change="recordChangeTable(table,'stability', table.stability")"
                                     ng-model="table.stability"
                                     ng-options="stability for stability in tableStabilities">
                             	</select>
 	                        </div>
 							<div class="col-md-6">
 								<label>Name</label>
-								<input type="text" name="name" ng-change="recordChangeTable(table,'name')" class="form-control" ng-model="table.name" required>
+								<input type="text" name="name" ng-change="recordChangeTable(table,'name', table.name)" class="form-control" ng-model="table.name" required>
 	                            <label>CodeSys</label>
-		                        <input type="text" name="codesys" ng-change="recordChangeTable(table,'codesys')" class="form-control" ng-model="table.codesys">
+		                        <input type="text" name="codesys" ng-change="recordChangeTable(table,'codesys', table.codesys)" class="form-control" ng-model="table.codesys">
 	                            <label>Type</label>
-	                            <input type="text" name="type" ng-change="recordChangeTable(table,'tableType')" class="form-control" ng-model="table.tableType" required>
+	                            <input type="text" name="type" ng-change="recordChangeTable(table,'tableType', table.tableType)" class="form-control" ng-model="table.tableType" required>
 	                            <label>Extensibility</label>
 	                            <select class="form-control"
                                     name="Extensibility"
-                                    ng-change="recordChangeTable(table,'extensibility')"
+                                    ng-change="recordChangeTable(table,'extensibility', table.extensibility)"
                                     ng-model="table.extensibility"
                                     ng-options="extensibility for extensibility in tableExtensibilities">
                             	</select>
@@ -221,23 +216,23 @@
 									<tbody>
 										<tr ng-repeat="c in table.codes">
 											<td class="col-md-2">
-												<input type="text" style="width: 100%" name="Code" class="igl-input" ng-model="c.code" ng-change="recordChangeCode(c,'code', table.id)">
+												<input type="text" style="width: 100%" name="Code" class="igl-input" ng-model="c.code" ng-change="recordChangeCode(c,'code',c.code ,table.id)">
 											</td>
 											<td class="col-md-3">
-												<input type="text" style="width: 100%" name="Label" class="igl-input" ng-model="c.label" ng-change="recordChangeCode(c,'label',table.id)"></td>
+												<input type="text" style="width: 100%" name="Label" class="igl-input" ng-model="c.label" ng-change="recordChangeCode(c,'label',c.label ,table.id)"></td>
 											<td class="col-md-2">
-												<input type="text" style="width: 100%" name="Codesys" class="igl-input" ng-model="c.codesys" ng-change="recordChangeCode(c,'codesys',table.id)">
+												<input type="text" style="width: 100%" name="Codesys" class="igl-input" ng-model="c.codesys" ng-change="recordChangeCode(c,'codesys',c.codesys ,table.id)">
 											</td>
 											<td class="col-md-2">
 												<select class="form-control" name="Source"
-                                    					ng-change="recordChangeCode(c,'source', table.id)"
+                                    					ng-change="recordChangeCode(c,'source',c.source, table.id)"
                                     					ng-model="c.source"
                                     					ng-options="codeSource for codeSource in codeSources">
                                					</select>
                                				</td>
 											<td class="col-md-2">
 												<select class="form-control" name="Usage"
-                                    					ng-change="recordChangeCode(c,'codeUsage', table.id)"
+                                    					ng-change="recordChangeCode(c,'codeUsage',c.codeUsage, table.id)"
                                     					ng-model="c.codeUsage"
                                     					ng-options="codeUsage for codeUsage in codeUsages">
                                					</select>

@@ -372,14 +372,6 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.newTableFakeId = 0;
     $rootScope.newPredicateFakeId = 0;
     $rootScope.newConformanceStatementFakeId = 0;
-    $rootScope.listToBeAddedConformanceStatements = [];
-    $rootScope.listToBeDeletedConformanceStatements = [];
-    $rootScope.listToBeAddedPredicates = [];
-    $rootScope.listToBeDeletedPredicates = [];
-    $rootScope.listToBeAddedTables = [];
-    $rootScope.listToBeDeletedTables = [];
-    $rootScope.listToBeAddedCodes = [];
-    $rootScope.listToBeDeletedCodes = [];
     $rootScope.segment = null;
     $rootScope.profileTabs = new Array();
     $rootScope.igTabs = new Array();
@@ -433,14 +425,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         $rootScope.newTableFakeId = 0;
         $rootScope.newPredicateFakeId = 0;
         $rootScope.newConformanceStatementFakeId = 0;
-        $rootScope.listToBeAddedConformanceStatements = [];
-        $rootScope.listToBeDeletedConformanceStatements = [];
-        $rootScope.listToBeAddedPredicates = [];
-        $rootScope.listToBeDeletedPredicates = [];
-        $rootScope.listToBeAddedTables = [];
-        $rootScope.listToBeDeletedTables = [];
-        $rootScope.listToBeAddedCodes = [];
-        $rootScope.listToBeDeletedCodes = [];
+        
         $rootScope.parentsMap = [];
     };
 
@@ -723,9 +708,11 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
     $rootScope.findTableRefs = function (table, obj) {
         if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
-            if($rootScope.tablesMap[obj.table.id]=== table && $rootScope.references.indexOf(obj) === -1) {
-                $rootScope.references.push(obj);
-             }
+        	if(obj.table != undefined){
+        		if(obj.table.id === table.id && $rootScope.references.indexOf(obj) === -1) {
+                    $rootScope.references.push(obj);
+                 }	
+        	}
             $rootScope.findTableRefs(table,$rootScope.datatypesMap[obj.datatype.id]);
         }else if(angular.equals(obj.type,'segment')){
             angular.forEach( $rootScope.segments, function (segment) {
