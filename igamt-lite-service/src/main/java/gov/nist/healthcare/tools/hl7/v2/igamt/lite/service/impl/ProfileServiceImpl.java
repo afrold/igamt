@@ -22,10 +22,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.HL7Version;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -384,18 +382,6 @@ ProfileService {
 	private Map<String, Integer> pageByTitle;
 
 	@Override
-	public void onChapter(PdfWriter writer, Document document,
-			float paragraphPosition, Paragraph title) {
-		this.pageByTitle.put(title.getContent(), writer.getPageNumber());
-	}
-
-	@Override
-	public void onSection(PdfWriter writer, Document document,
-			float paragraphPosition, int depth, Paragraph title) {
-		this.pageByTitle.put(title.getContent(), writer.getPageNumber());
-	}
-
-	@Override
 	public InputStream exportAsPdf(Profile p) {
 
 		List<String> header;
@@ -403,28 +389,8 @@ ProfileService {
 		float columnWidths[];
 		List<List<String>> rows;
 
-		ByteArrayOutputStream coverBaos;
-		ByteArrayOutputStream tocTmpBaos;
-		ByteArrayOutputStream tocBaos;
-		ByteArrayOutputStream igTmpBaos;
-		ByteArrayOutputStream igBaos;
-		ByteArrayOutputStream igFinalBaos;
-		Document coverDocument;
-		Document igDocument;
-		Document tocDocument;
-		Document igFinalDocument;
-		@SuppressWarnings("unused")
-		PdfWriter coverWriter;
-		@SuppressWarnings("unused")
-		PdfWriter tocWriter;
-		PdfWriter igWriter;
-		PdfWriter igFinalWriter;
 
 		// Create fonts and colors to be used in generated pdf
-
-		Font chapterFont = FontFactory.getFont(FontFactory.HELVETICA, 24,
-				Font.NORMAL);
-
 		BaseColor headerColor = WebColors.getRGBColor("#0033CC");
 		BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
 		Font coverH1Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
@@ -446,11 +412,12 @@ ProfileService {
 
 		try {
 			/*
-			 * Create cover
+			 * Create cover page
 			 */
-			coverBaos = new ByteArrayOutputStream();
-			coverDocument = new Document(PageSize.A4);
-			coverWriter = PdfWriter.getInstance(coverDocument, coverBaos);
+			ByteArrayOutputStream coverBaos = new ByteArrayOutputStream();
+			Document coverDocument = new Document(PageSize.A4);
+			@SuppressWarnings("unused")
+			PdfWriter coverWriter = PdfWriter.getInstance(coverDocument, coverBaos);
 			coverDocument.open();
 
 
@@ -466,10 +433,8 @@ ProfileService {
 			paragraph.setAlignment(Element.ALIGN_CENTER);
 			paragraph.setSpacingAfter(250);
 			coverDocument.add(paragraph);
-			
-			paragraph = new Paragraph();
 
-			//coverDocument.add(new Paragraph(p.getMetaData().getSchemaVersion(), coverFont));
+			paragraph = new Paragraph();
 			paragraph.add(new Chunk(p.getMetaData().getOrgName(), coverH2Font));
 			paragraph.add(Chunk.NEWLINE);
 			paragraph.add(new Phrase("Document Version " + 
@@ -481,15 +446,15 @@ ProfileService {
 			paragraph.setAlignment(Element.ALIGN_CENTER);
 			coverDocument.add(paragraph);
 
-
 			coverDocument.close();
 
-			tocTmpBaos = new ByteArrayOutputStream();
-			tocDocument = new Document(PageSize.A4);
-			// File tmpTOCFile = File.createTempFile("ProfileTOCTmp", ".pdf");
-			// tocWriter = PdfWriter.getInstance(tocDocument,
-			// FileUtils.openOutputStream(tmpTOCFile));
-			tocWriter = PdfWriter.getInstance(tocDocument, tocTmpBaos);
+			/*
+			 * Initiate table of content
+			 */
+			ByteArrayOutputStream tocTmpBaos = new ByteArrayOutputStream();
+			Document tocDocument = new Document(PageSize.A4);
+			@SuppressWarnings("unused")
+			PdfWriter tocWriter = PdfWriter.getInstance(tocDocument, tocTmpBaos);
 			tocDocument.open();
 			tocDocument.add(new Paragraph("Table of contents", tocTitleFont));
 			tocDocument.add(Chunk.NEWLINE);
@@ -497,9 +462,12 @@ ProfileService {
 			tocPlaceholder = new HashMap<>();
 			pageByTitle = new HashMap<>();
 
-			igTmpBaos = new ByteArrayOutputStream();
-			igDocument = new Document();
-			igWriter = PdfWriter.getInstance(igDocument, igTmpBaos);
+			/*
+			 * Initiate implementation guide
+			 */
+			ByteArrayOutputStream igTmpBaos = new ByteArrayOutputStream();
+			Document igDocument = new Document();
+			PdfWriter igWriter = PdfWriter.getInstance(igDocument, igTmpBaos);
 			igWriter.setPageEvent(this);
 
 			igDocument.setPageSize(PageSize.A4);
@@ -516,7 +484,7 @@ ProfileService {
 			igDocument.add(Chunk.NEWLINE);
 			for (Message m : p.getMessages().getChildren()) {
 
-				this.addContent(tocDocument, igWriter, m.getStructID() + " - "
+				this.addTocContent(tocDocument, igWriter, m.getStructID() + " - "
 						+ m.getDescription());
 
 				igDocument.add(new Paragraph("Message definition: "));
@@ -527,7 +495,7 @@ ProfileService {
 				header = Arrays.asList("Segment", "STD\nUsage", "Local\nUsage",
 						"STD\nCard.", "Local\nCard.", "Comment");
 				columnWidths = new float[] { 4f, 3f, 3f, 2f, 2f, 8f };
-				table = this.createHeader(header, columnWidths, headerFont,
+				table = this.addHeaderPdfTable(header, columnWidths, headerFont,
 						headerColor);
 
 				rows = new ArrayList<List<String>>();
@@ -541,7 +509,7 @@ ProfileService {
 						this.addGroupPdf1(rows, (Group) srog, 0);
 					}
 				}
-				this.addCells(table, rows, cellFont, cpColor);
+				this.addCellsPdfTable(table, rows, cellFont, cpColor);
 				igDocument.add(table);
 			}
 
@@ -565,7 +533,7 @@ ProfileService {
 						1.5f, 1.5f, 2f, 6f };
 
 				for (SegmentRefOrGroup srog : m.getChildren()) {
-					table = this.createHeader(header, columnWidths, headerFont,
+					table = this.addHeaderPdfTable(header, columnWidths, headerFont,
 							headerColor);
 					rows = new ArrayList<List<String>>();
 					if (srog instanceof SegmentRef) {
@@ -598,18 +566,18 @@ ProfileService {
 			for (Datatype d : p.getDatatypes().getChildren()) {
 				if (d.getLabel().contains("_")) {
 
-					this.addContent(tocDocument, igWriter, d.getLabel() + " - "
+					this.addTocContent(tocDocument, igWriter, d.getLabel() + " - "
 							+ d.getDescription());
 
 					igDocument.add(new Paragraph(d.getLabel() + " - "
 							+ d.getDescription() + " Datatype"));
 					igDocument.add(new Paragraph(d.getComment()));
 
-					table = this.createHeader(header, columnWidths, headerFont,
+					table = this.addHeaderPdfTable(header, columnWidths, headerFont,
 							headerColor);
 					rows = new ArrayList<List<String>>();
 					this.addComponentPdf2(rows, d);
-					this.addCells(table, rows, cellFont, cpColor);
+					this.addCellsPdfTable(table, rows, cellFont, cpColor);
 					igDocument.add(Chunk.NEWLINE);
 					igDocument.add(table);
 					igDocument.add(Chunk.NEWLINE);
@@ -636,17 +604,17 @@ ProfileService {
 
 			for (Table t : tables) {
 
-				this.addContent(tocDocument, igWriter, t.getMappingId() + " : "
+				this.addTocContent(tocDocument, igWriter, t.getMappingId() + " : "
 						+ t.getName());
 
 				igDocument.add(new Paragraph("Table " + t.getMappingId()
 						+ " : " + t.getName()));
 
-				table = this.createHeader(header, columnWidths, headerFont,
+				table = this.addHeaderPdfTable(header, columnWidths, headerFont,
 						headerColor);
 				rows = new ArrayList<List<String>>();
 				this.addCodesPdf2(rows, t);
-				this.addCells(table, rows, cellFont, cpColor);
+				this.addCellsPdfTable(table, rows, cellFont, cpColor);
 				igDocument.add(Chunk.NEWLINE);
 				igDocument.add(table);
 				igDocument.add(Chunk.NEWLINE);
@@ -658,8 +626,8 @@ ProfileService {
 			/*
 			 * Second pass: Add footers
 			 */
-			igBaos = this.addPdfPageNumber(igTmpBaos, "ig", p.getMetaData().getName());
-			tocBaos = this.addPdfPageNumber(tocTmpBaos, "toc", p.getMetaData().getName());
+			ByteArrayOutputStream igBaos = this.addPageNumber(igTmpBaos, "ig", p.getMetaData().getName());
+			ByteArrayOutputStream tocBaos = this.addPageNumber(tocTmpBaos, "toc", p.getMetaData().getName());
 
 			/*
 			 * Third pass: Merge
@@ -669,9 +637,9 @@ ProfileService {
 			list.add(tocBaos.toByteArray());
 			list.add(igBaos.toByteArray());
 
-			igFinalBaos = new ByteArrayOutputStream();
-			igFinalDocument = new Document();
-			igFinalWriter = PdfWriter.getInstance(igFinalDocument, igFinalBaos);
+			ByteArrayOutputStream igFinalBaos = new ByteArrayOutputStream();
+			Document igFinalDocument = new Document();
+			PdfWriter igFinalWriter = PdfWriter.getInstance(igFinalDocument, igFinalBaos);
 			igFinalDocument.open();
 			PdfContentByte cb = igFinalWriter.getDirectContent();
 			for (byte[] in : list) {
@@ -692,8 +660,22 @@ ProfileService {
 		}
 	}
 
-	private String getRoman(int number) {
 
+	@Override
+	public void onChapter(PdfWriter writer, Document document,
+			float paragraphPosition, Paragraph title) {
+		this.pageByTitle.put(title.getContent(), writer.getPageNumber());
+	}
+
+
+	@Override
+	public void onSection(PdfWriter writer, Document document,
+			float paragraphPosition, int depth, Paragraph title) {
+		this.pageByTitle.put(title.getContent(), writer.getPageNumber());
+	}
+
+
+	private String getRoman(int number) {
 		String riman[] = { "M", "XM", "CM", "D", "XD", "CD", "C", "XC", "L",
 				"XL", "X", "IX", "V", "IV", "I" };
 		int arab[] = { 1000, 990, 900, 500, 490, 400, 100, 90, 50, 40, 10, 9,
@@ -710,7 +692,8 @@ ProfileService {
 		return result.toString();
 	}
 
-	private ByteArrayOutputStream addPdfPageNumber(
+	
+	private ByteArrayOutputStream addPageNumber(
 			ByteArrayOutputStream srcBaos, String target, String footer) {
 		ByteArrayOutputStream dstBaos = new ByteArrayOutputStream();
 		PdfReader reader;
@@ -719,22 +702,58 @@ ProfileService {
 			PdfStamper stamper = new PdfStamper(reader, dstBaos);
 			int n = reader.getNumberOfPages();
 			for (int i = 1; i <= n; i++) {
-				// setFooter("pname: "+p.getMetaData().getName(), i,
-				// n).writeSelectedRows(
-				setFooter(target, footer, i, n).writeSelectedRows(0, -1, 34,
+				addPageFooter(target, footer, i, n).writeSelectedRows(0, -1, 34,
 						50, stamper.getOverContent(i));
 			}
 			stamper.close();
 			reader.close();
 
 		} catch (IOException | DocumentException e) {
-			// TODO Auto-generated catch block
+			// Returns an empty bytestream in case of error
 			e.printStackTrace();
 		}
 		return dstBaos;
 	}
 
-	private PdfPTable setFooter(String target, String footer, int x, int y) {
+	private void addTocContent(Document tocDocument, PdfWriter igWriter,
+			String title_) {
+		try {
+			// Create TOC
+			final String title = title_;
+			Chunk chunk = new Chunk(title).setLocalGoto(title);
+			tocDocument.add(new Paragraph(chunk));
+			// Add a placeholder for the page reference
+			tocDocument.add(new VerticalPositionMark() {
+				@Override
+				public void draw(PdfContentByte canvas, float llx, float lly,
+						float urx, float ury, float y) {
+					final PdfTemplate createTemplate = canvas.createTemplate(
+							50, 50);
+					ProfileServiceImpl.this.tocPlaceholder.put(title,
+							createTemplate);
+					canvas.addTemplate(createTemplate, urx - 50, y);
+				}
+			});
+
+			// Create page numbers
+			BaseFont baseFont;
+			PdfTemplate template = this.tocPlaceholder.get(title);
+			template.beginText();
+
+			baseFont = BaseFont.createFont();
+			template.setFontAndSize(baseFont, 11);
+			template.setTextMatrix(
+					20 - baseFont.getWidthPoint(
+							String.valueOf(igWriter.getPageNumber()), 12), 0);
+			template.showText(String.valueOf(igWriter.getPageNumber()));
+			template.endText();
+
+		} catch (DocumentException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private PdfPTable addPageFooter(String target, String footer, int x, int y) {
 		PdfPTable table = new PdfPTable(2);
 		table.setTotalWidth(527);
 		table.setLockedWidth(true);
@@ -750,7 +769,7 @@ ProfileService {
 		return table;
 	}
 
-	private PdfPTable createHeader(List<String> headers, float[] columnWidths,
+	private PdfPTable addHeaderPdfTable(List<String> headers, float[] columnWidths,
 			Font headerFont, BaseColor headerColor) {
 		PdfPTable table = new PdfPTable(headers.size());
 		PdfPCell c1;
@@ -775,7 +794,7 @@ ProfileService {
 		return table;
 	}
 
-	private void addCells(PdfPTable table, List<List<String>> rows,
+	private void addCellsPdfTable(PdfPTable table, List<List<String>> rows,
 			Font cellFont, BaseColor cpColor) {
 		for (List<String> cells : rows) {
 			if (cells.size() != 3) {
@@ -904,61 +923,18 @@ ProfileService {
 		rows.add(row);
 	}
 
-	private void addContent(Document tocDocument, PdfWriter igWriter,
-			String title_) {
-		try {
-			// Create TOC
-			final String title = title_;
-			Chunk chunk = new Chunk(title).setLocalGoto(title);
-			tocDocument.add(new Paragraph(chunk));
-			// Add a placeholder for the page reference
-			tocDocument.add(new VerticalPositionMark() {
-				@Override
-				public void draw(PdfContentByte canvas, float llx, float lly,
-						float urx, float ury, float y) {
-					final PdfTemplate createTemplate = canvas.createTemplate(
-							50, 50);
-					ProfileServiceImpl.this.tocPlaceholder.put(title,
-							createTemplate);
-					canvas.addTemplate(createTemplate, urx - 50, y);
-				}
-			});
-
-			// Create page numbers
-			BaseFont baseFont;
-			PdfTemplate template = this.tocPlaceholder.get(title);
-			template.beginText();
-
-			baseFont = BaseFont.createFont();
-			template.setFontAndSize(baseFont, 12);
-			template.setTextMatrix(
-					20 - baseFont.getWidthPoint(
-							String.valueOf(igWriter.getPageNumber()), 12), 0);
-			template.showText(String.valueOf(igWriter.getPageNumber()));
-			template.endText();
-
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
 	private void addSegmentPdf2(Document igDocument, PdfWriter igWriter,
 			Document tocDocument, List<String> header, float[] columnWidths,
 			SegmentRef segRef, Font headerFont, BaseColor headerColor,
 			Font cellFont, BaseColor cpColor) throws DocumentException {
 
-		PdfPTable table = this.createHeader(header, columnWidths, headerFont,
+		PdfPTable table = this.addHeaderPdfTable(header, columnWidths, headerFont,
 				headerColor);
 		ArrayList<List<String>> rows = new ArrayList<List<String>>();
 
 		Segment s = segRef.getRef();
 
-		this.addContent(tocDocument, igWriter,
+		this.addTocContent(tocDocument, igWriter,
 				s.getName() + " - " + s.getDescription());
 
 		igDocument.add(new Paragraph(s.getName() + ": " + s.getDescription()
@@ -966,7 +942,7 @@ ProfileService {
 		igDocument.add(Chunk.NEWLINE);
 		igDocument.add(new Paragraph(s.getText1()));
 		this.addFieldPdf2(rows, s, Boolean.TRUE);
-		this.addCells(table, rows, cellFont, cpColor);
+		this.addCellsPdfTable(table, rows, cellFont, cpColor);
 		igDocument.add(table);
 		igDocument.add(Chunk.NEWLINE);
 		igDocument.add(new Paragraph(s.getText2()));
@@ -1025,8 +1001,6 @@ ProfileService {
 
 	private void addComponentPdf2(List<List<String>> rows, Datatype d) {
 		List<String> row;
-		// System.out.println(StringUtils.repeat("%",25));
-
 		List<Predicate> predicates = d.getPredicates();
 		List<ConformanceStatement> conformanceStatements = d
 				.getConformanceStatements();
