@@ -358,6 +358,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.tablesMap = {};// Map for tables; key:id, value:object
     $rootScope.segments = [];// list of segments of the selected messages
     $rootScope.datatypes = [];// list of datatypes of the selected messages
+    $rootScope.segmentPredicates = [];// list of segment level predicates of the selected messages
+    $rootScope.segmentConformanceStatements = [];// list of segment level Conformance Statements of the selected messages
+    $rootScope.datatypePredicates = [];// list of segment level predicates of the selected messages
+    $rootScope.datatypeConformanceStatements = [];// list of segment level Conformance Statements of the selected messages
     $rootScope.tables = [];// list of tables of the selected messages
     $rootScope.usages = ['R', 'RE', 'O', 'C', "CE","X", "B", "W"];
     $rootScope.codeUsages = ['R', 'P', 'E'];
@@ -417,6 +421,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         $rootScope.tablesMap = {};
         $rootScope.segments = [];
         $rootScope.tables = [];
+        $rootScope.segmentPredicates = [];
+        $rootScope.segmentConformanceStatements = [];
+        $rootScope.datatypePredicates = [];
+        $rootScope.datatypeConformanceStatements = [];
         $rootScope.datatypes = [];
         $rootScope.messages = [];
         $rootScope.messagesData = [];
@@ -650,6 +658,15 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
             if ($rootScope.segments.indexOf(element) === -1) {
                 element["path"] = element["name"];
                 $rootScope.segments.push(element);
+                for(var i=0;i<element.predicates.length;i++){
+                	if ($rootScope.segmentPredicates.indexOf(element.predicates[i]) === -1)
+                		$rootScope.segmentPredicates.push(element.predicates[i]);
+                }
+                
+                for(var i=0;i<element.conformanceStatements.length;i++){
+                	if ($rootScope.segmentConformanceStatements.indexOf(element.conformanceStatements[i]) === -1)
+                		$rootScope.segmentConformanceStatements.push(element.conformanceStatements[i]);
+                }
                 element.fields = $filter('orderBy')(element.fields, 'position');
                 angular.forEach(element.fields, function (field) {
                     $rootScope.processElement(field,element);
@@ -672,6 +689,17 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         } else if (element.type === "datatype") {
             if ($rootScope.datatypes.indexOf(element) === -1) {
                 $rootScope.datatypes.push(element);
+                for(var i=0;i<element.predicates.length;i++){
+                	if ($rootScope.datatypePredicates.indexOf(element.predicates[i]) === -1)
+                		$rootScope.datatypePredicates.push(element.predicates[i]);
+                }
+                
+                for(var i=0;i<element.conformanceStatements.length;i++){
+                	if ($rootScope.datatypeConformanceStatements.indexOf(element.conformanceStatements[i]) === -1)
+                		$rootScope.datatypeConformanceStatements.push(element.conformanceStatements[i]);
+                }
+                
+                
                 element.components = $filter('orderBy')(element.components, 'position');
                 angular.forEach(element.components, function (component) {
                     $rootScope.processElement(component,parent);
