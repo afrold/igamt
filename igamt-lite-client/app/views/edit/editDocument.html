@@ -26,9 +26,9 @@
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li><a ng-click="exportAs('xml')">As XML</a></li>
-                <li><a href="#" ng-click="exportAs('pdf')">As PDF</a></li>
-                <li><a href="#" ng-click="exportAs('xsl')">As XSL</a></li>
+                <li><a ng-click="exportAs(profile.id, 'xml')">As XML</a></li>
+                <li><a ng-click="exportAs(profile.id,'pdf')">As PDF</a></li>
+                <li><a ng-click="exportAs(profile.id,'xsl')">As XSL</a></li>
             </ul>
         </div>
         <button title="Close" type="button" class="btn btn-warning btn-sm"
@@ -36,7 +36,7 @@
             <span><i class="fa fa-times"></i>&nbsp; Close</span>
         </button>
         <button title="Delete" type="button" class="btn btn-danger btn-sm"
-                ng-click="delete()">
+                ng-click="delete(profile.id)">
             <span> <i class="fa fa-trash"></i>&nbsp; Delete</span>
         </button>
 
@@ -540,7 +540,7 @@
 </div>
 
 
-<pre>
-                        {{changes | json}}
-                </pre>
+<!--<pre>-->
+                        <!--{{changes | json}}-->
+                <!--</pre>-->
 

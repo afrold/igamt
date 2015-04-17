@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -12,7 +13,7 @@ public class Mapping implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id 
+	@Id
 	// @GeneratedValue(strategy = GenerationType.AUTO)
 	protected String id;
 
@@ -60,19 +61,21 @@ public class Mapping implements Serializable, Cloneable {
 	public void setReference(Integer reference) {
 		this.reference = reference;
 	}
-	
-	@Override
-	public Mapping clone() throws CloneNotSupportedException {
+
+	public Mapping clone(HashMap<String, Datatype> dtRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		Mapping clonedMapping = new Mapping();
 
 		clonedMapping.setCases(new ArrayList<Case>());
-		for(Case c:this.cases){
-			clonedMapping.getCases().add(c.clone());
+		for (Case c : this.cases) {
+
+			clonedMapping.getCases().add(c.clone(dtRecords, tableRecords));
 		}
-		
+
 		clonedMapping.setPosition(position);
 		clonedMapping.setReference(reference);
-		
+
 		return clonedMapping;
 	}
 

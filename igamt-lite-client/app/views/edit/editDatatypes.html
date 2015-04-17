@@ -1,268 +1,6 @@
 <div ng-controller="DatatypeListCtrl" ng-init="init()" class="container">
 
-<script type="text/ng-template" id="PredicateDatatypeCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Predicate for {{datatype.name}}-{{selectedNode.position}}</h3>
-    </div>
-    <div class="modal-body">
-	<form role="form">
-        <h5>Predicate of {{datatype.name}}.{{selectedNode.position}}</h5>
 
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead>
-                <tr class="tbl-header">
-                    <th class="col-md-9">Desciption</th>
-                    <th class="col-md-1">True Usage</th>
-                    <th class="col-md-1">False Usage</th>
-                    <th class="col-md-1"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="p in datatype.predicates | filter:{constraintTarget:selectedNode.position + '[1]'}:true">
-                    <td class="col-md-9">{{p.description}}</td>
-                    <td class="col-md-1">{{p.trueUsage}}</td>
-                    <td class="col-md-1">{{p.falseUsage}}</td>
-                    <td class="col-md-1">
-                        <button type="button" ng-click="deletePredicate(p)" class="btn btn-xs btn-warning">
-                            <span><i class="fa fa-minus-circle fa-fw"></i></span>
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <h5>Define New Predicate of {{datatype.name}}.{{selectedNode.position}}</h5>
-        
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead>
-                <tr class="tbl-header">
-                    <th class="col-md-10" colspan="4">Desciption</th>
-                    <th class="col-md-1" colspan="1" rowspan="2">True Usage</th>
-                    <th class="col-md-1" colspan="1" rowspan="2">False Usage</th>
-                    <th class="col-md-1" colspan="1" rowspan="2"></th>
-                </tr>
-                <tr class="tbl-header">
-                    <th class="col-md-3" colspan="1">Node</th>
-                    <th class="col-md-2" colspan="1">Verb</th>
-                    <th class="col-md-2" colspan="1">Constraint</th>
-                    <th class="col-md-3" colspan="1">Value</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="col-md-3" colspan="1">
-                    	<span>{{newConstraint.datatype}}.</span>
-        				<select name="component" class="igl-input"
-                			ng-change="updateComponent_1()"
-                			ng-model="newConstraint.component_1"
-                			ng-options="component as component.position for component in datatype.components">
-        				</select>
-        				<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
-        					<select name="subComponent" class="igl-input"
-                 				ng-model="newConstraint.subComponent_1"
-                 				ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
-    						</select>
-    					</span>
-    				</td>
-    				<td class="col-md-2" colspan="1">
-        				<select name="verb" class="igl-input"
-                				ng-change=""
-                				ng-model="newConstraint.verb"
-                				ng-options="constraintVerb for constraintVerb in constraintVerbs">
-        				</select>
-					</td>
-					<td class="col-md-2" colspan="1">
-        				<select name="contraintType" class="igl-input"
-                			ng-change=""
-                			ng-model="newConstraint.contraintType"
-                			ng-options="contraintType for contraintType in contraintTypes">
-        				</select>
-                    </td>
-                	<td class="col-md-3" colspan="1">
-                		<span ng-show="newConstraint.contraintType == 'a literal value'">
-                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
-                		</span>
-                		<span ng-show="newConstraint.contraintType == 'one of list values'">
-                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
-                		</span>
-                		<span ng-show="newConstraint.contraintType == 'formatted value'">
-                			<select name="format" class="igl-input"
-                				ng-model="newConstraint.value"
-                				ng-options="predefinedFormat for predefinedFormat in predefinedFormats">
-        					</select>
-                		</span>
-                		<span ng-show="newConstraint.contraintType == 'identical to the another node'">
-                			<span>{{newConstraint.datatype}}.</span>
-        					<select name="component" class="igl-input"
-                				ng-change="updateComponent_2()"
-                				ng-model="newConstraint.component_2"
-                				ng-options="component as component.position for component in datatype.components">
-        					</select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
-        						<select name="subComponent" class="igl-input"
-                 					ng-model="newConstraint.subComponent_2"
-                 					ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
-    							</select>
-    						</span>
-                		</span>
-                	</td>
-                	<td class="col-md-1" colspan="1">
-                		<select name="trueUsage" class="igl-input"
-                			ng-model="newConstraint.trueUsage"
-                			ng-options="usage for usage in usages">
-        				</select>
-                	</td>
-                	
-                	<td class="col-md-1" colspan="1">
-                		<select name="falseUsage" class="igl-input"
-                			ng-model="newConstraint.falseUsage"
-                			ng-options="usage for usage in usages">
-        				</select>
-                	</td>
-                	
-                    <td class="col-md-1" colspan="1">
-                		<button title="Update Predicate" type="button" class="btn btn-xs btn-success" ng-click="updatePredicate()">
-                    		<span><i class="fa fa-plus-circle fa-fw"></i></span>
-                		</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
-        </button>
-    </div>
-</script>
-
-<script type="text/ng-template" id="ConformanceStatementDatatypeCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">ConformanceStatement for {{datatype.name}}-{{selectedNode.position}}</h3>
-    </div>
-    <div class="modal-body">
-	<form role="form">
-        <h5>ConformanceStatements of {{datatype.name}}.{{selectedNode.position}}</h5>
-
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead>
-                <tr class="tbl-header">
-                    <th class="col-md-2">ID</th>
-                    <th class="col-md-9">Desciption</th>
-                    <th class="col-md-1"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:selectedNode.position + '[1]'}:true">
-                    <td class="col-md-2">{{c.constraintId}}</td>
-                    <td class="col-md-9">{{c.description}}</td>
-                    <td class="col-md-1">
-                        <button type="button" ng-click="deleteConformanceStatement(c)" class="btn btn-xs btn-danger">
-                            <span><i class="fa fa-minus-circle fa-fw"></i></span>
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h5>Define New Conformance Statement of {{segment.name}}.{{selectedNode.position}}</h5>
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered">
-                <thead>
-                <tr class="tbl-header">
-                    <th class="col-md-2" colspan="1" rowspan="2">ID</th>
-                    <th class="col-md-10" colspan="4">Desciption</th>
-                    <th class="col-md-1" colspan="1" rowspan="2"></th>
-                </tr>
-                <tr class="tbl-header">
-                    <th class="col-md-3" colspan="1">Node</th>
-                    <th class="col-md-2" colspan="1">Verb</th>
-                    <th class="col-md-2" colspan="1">Constraint</th>
-                    <th class="col-md-3" colspan="1">Value</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="col-md-2" colspan="1">
-                    	<input style="width:100%" class="igl-input"  ng-model="newConstraint.constraintId" placeholder="Type ID" type="text"/>
-                    </td>
-                    <td class="col-md-3" colspan="1">
-                    	<span>{{newConstraint.datatype}}.</span>
-        				<select name="component" class="igl-input"
-                			ng-change="updateComponent_1()"
-                			ng-model="newConstraint.component_1"
-                			ng-options="component as component.position for component in datatype.components">
-        				</select>
-        				<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
-        					<select name="subComponent" class="igl-input"
-                 				ng-model="newConstraint.subComponent_1"
-                 				ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
-    						</select>
-    					</span>
-    				</td>
-    				<td class="col-md-2" colspan="1">
-        				<select name="verb" class="igl-input"
-                				ng-change=""
-                				ng-model="newConstraint.verb"
-                				ng-options="constraintVerb for constraintVerb in constraintVerbs">
-        				</select>
-					</td>
-					<td class="col-md-2" colspan="1">
-        				<select name="contraintType" class="igl-input"
-                			ng-change=""
-                			ng-model="newConstraint.contraintType"
-                			ng-options="contraintType for contraintType in contraintTypes">
-        				</select>
-                    </td>
-                	<td class="col-md-3" colspan="1">
-                		<span ng-show="newConstraint.contraintType == 'a literal value'">
-                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
-                		</span>
-                		<span ng-show="newConstraint.contraintType == 'one of list values'">
-                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
-                		</span>
-                		<span ng-show="newConstraint.contraintType == 'formatted value'">
-                			<select name="format" class="igl-input"
-                				ng-model="newConstraint.value"
-                				ng-options="predefinedFormat for predefinedFormat in predefinedFormats">
-        					</select>
-                		</span>
-                		<span ng-show="newConstraint.contraintType == 'identical to the another node'">
-                			<span>{{newConstraint.datatype}}.</span>
-                			<select name="component" class="igl-input"
-                				ng-change="updateComponent_2()"
-                				ng-model="newConstraint.component_2"
-                				ng-options="component as component.position for component in datatype.components">
-        					</select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
-        						<select name="subComponent" class="igl-input"
-                 					ng-model="newConstraint.subComponent_2"
-                 					ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
-    							</select>
-    						</span>
-                		</span>
-                	</td>
-                    <td class="col-md-1" colspan="1">
-                        <button title="Add Conformance Statement" type="button" class="btn btn-xs btn-success" ng-click="addConformanceStatement()">
-                    		<span><i class="fa fa-plus-circle fa-fw"></i></span>
-                		</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
-        </button>
-    </div>
-</script>
 
 <script type="text/ng-template" id="ConfirmDatatypeDeleteCtrl.html">
     <div class="modal-header">
@@ -326,109 +64,7 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="TableMappingDatatypeCtrl.html">
-    <div class="modal-header modal-wide">
-        <h3 class="modal-title">Mapping Table for {{datatype.name}}.{{selectedNode.position}}</h3>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-        	<form role="form">
-            	<div class="col-sm-6">
-                	<h5>List of Tables</h5>
-                		<div class="igl-table">
-                    <table st-table="displayedTableCollection" st-safe-src="tables"
-                           class="table table-striped table-bordered">
-                        <thead>
-                        <tr class="tbl-header">
-                            <th st-sort="mappingId">ID</th>
-                            <th st-sort="Name">Name</th>
-                        </tr>
-                        <tr>
-                            <th colspan="2">
-                                <input st-search="" class="form-control" placeholder="search table..." type="text"/>
-                            </th>
-                        </tr>
-                        </thead>
 
-                        <tbody>
-                        <tr ng-repeat="row in displayedTableCollection">
-                            <td>
-                                <a ng-click="selectTable(row)">{{row.mappingId}}</a>
-                            </td>
-                            <td ng-bind-html="row.name"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col-sm-6">
-	 			<span ng-show="selectedTable != undefined">
-	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table for {{datatype.name}}.{{selectedNode.position}}</button>
-	 				<hr/>
-	 				<div class="row">
-                        <div class="col-sm-4">
-                            <p>ID:</p>
-
-                            <p>Name:</p>
-
-                            <p>Type:</p>
-
-                            <p>Stability:</p>
-
-                            <p>Extensibility:</p>
-
-                            <p>List of Codes:</p>
-                        </div>
-                        <div class="col-sm-8">
-                            <p>{{selectedTable.mappingId}}</p>
-
-                            <p>{{selectedTable.name}}</p>
-
-                            <p>{{selectedTable.tableType}}</p>
-
-                            <p>{{selectedTable.stability}}</p>
-
-                            <p>{{selectedTable.extensibility}}</p>
-                        </div>
-                    </div>
-					<div class="igl-table">
-                        <table st-table="displayedCodeCollection" st-safe-src="selectedTable.codes"
-                               class="table table-striped table-bordered">
-                            <thead>
-                            <tr class="tbl-header">
-                                <th st-sort="Code">Code</th>
-                                <th st-sort="Label">Label</th>
-                                <th>Codesys</th>
-                                <th>Usage</th>
-                            </tr>
-                            <tr>
-                                <th colspan="2">
-                                    <input st-search="" class="form-control" placeholder="search code..." type="text"/>
-                                </th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            <tr ng-repeat="row in displayedCodeCollection">
-                                <td ng-bind-html="row.code"></td>
-                                <td ng-bind-html="row.label"></td>
-                                <td ng-bind-html="row.codesys"></td>
-                                <td ng-bind-html="row.codeUsage"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-					
-	 			</span>
-            </div>
-        </form>
-    </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
-        </button>
-    </div>
-</script>
 
 
 <div ng-show="loading" style="text-align:center">
@@ -515,6 +151,376 @@
 </div>
 <div ng-show="!loadingSelection" style="padding-top:40px">
 <div ng-show="datatype !== null">
+
+<script type="text/ng-template" id="TableMappingDatatypeCtrl.html">
+    <div class="modal-header modal-wide">
+        <h3 class="modal-title">Mapping Table for {{datatype.name}}.{{selectedNode.position}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <form role="form">
+                <div class="col-sm-6">
+                    <h5>List of Tables</h5>
+                    <div class="igl-table">
+                        <table st-table="displayedTableCollection" st-safe-src="tables"
+                               class="table table-striped table-bordered">
+                            <thead>
+                            <tr class="tbl-header">
+                                <th st-sort="mappingId">ID</th>
+                                <th st-sort="Name">Name</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">
+                                    <input st-search="" class="form-control" placeholder="search table..." type="text"/>
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr ng-repeat="row in displayedTableCollection">
+                                <td>
+                                    <a ng-click="selectTable(row)">{{row.mappingId}}</a>
+                                </td>
+                                <td ng-bind-html="row.name"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+	 			<span ng-show="selectedTable != undefined">
+	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table for {{datatype.name}}.{{selectedNode.position}}</button>
+	 				<hr/>
+	 				<div class="row">
+                        <div class="col-sm-4">
+                            <p>ID:</p>
+
+                            <p>Name:</p>
+
+                            <p>Type:</p>
+
+                            <p>Stability:</p>
+
+                            <p>Extensibility:</p>
+
+                            <p>List of Codes:</p>
+                        </div>
+                        <div class="col-sm-8">
+                            <p>{{selectedTable.mappingId}}</p>
+
+                            <p>{{selectedTable.name}}</p>
+
+                            <p>{{selectedTable.tableType}}</p>
+
+                            <p>{{selectedTable.stability}}</p>
+
+                            <p>{{selectedTable.extensibility}}</p>
+                        </div>
+                    </div>
+					<div class="igl-table">
+                        <table st-table="displayedCodeCollection" st-safe-src="selectedTable.codes"
+                               class="table table-striped table-bordered">
+                            <thead>
+                            <tr class="tbl-header">
+                                <th st-sort="Code">Code</th>
+                                <th st-sort="Label">Label</th>
+                                <th>Codesys</th>
+                                <th>Usage</th>
+                            </tr>
+                            <tr>
+                                <th colspan="2">
+                                    <input st-search="" class="form-control" placeholder="search code..." type="text"/>
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr ng-repeat="row in displayedCodeCollection">
+                                <td ng-bind-html="row.code"></td>
+                                <td ng-bind-html="row.label"></td>
+                                <td ng-bind-html="row.codesys"></td>
+                                <td ng-bind-html="row.codeUsage"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+	 			</span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
+        </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="PredicateDatatypeCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Predicate for {{datatype.name}}-{{selectedNode.position}}</h3>
+    </div>
+    <div class="modal-body">
+        <form role="form">
+            <h5>Predicate of {{datatype.name}}.{{selectedNode.position}}</h5>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr class="tbl-header">
+                        <th class="col-md-9">Desciption</th>
+                        <th class="col-md-1">True Usage</th>
+                        <th class="col-md-1">False Usage</th>
+                        <th class="col-md-1"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="p in datatype.predicates | filter:{constraintTarget:selectedNode.position + '[1]'}:true">
+                        <td class="col-md-9">{{p.description}}</td>
+                        <td class="col-md-1">{{p.trueUsage}}</td>
+                        <td class="col-md-1">{{p.falseUsage}}</td>
+                        <td class="col-md-1">
+                            <button type="button" ng-click="deletePredicate(p)" class="btn btn-xs btn-warning">
+                                <span><i class="fa fa-minus-circle fa-fw"></i></span>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h5>Define New Predicate of {{datatype.name}}.{{selectedNode.position}}</h5>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr class="tbl-header">
+                        <th class="col-md-10" colspan="4">Desciption</th>
+                        <th class="col-md-1" colspan="1" rowspan="2">True Usage</th>
+                        <th class="col-md-1" colspan="1" rowspan="2">False Usage</th>
+                        <th class="col-md-1" colspan="1" rowspan="2"></th>
+                    </tr>
+                    <tr class="tbl-header">
+                        <th class="col-md-3" colspan="1">Node</th>
+                        <th class="col-md-2" colspan="1">Verb</th>
+                        <th class="col-md-2" colspan="1">Constraint</th>
+                        <th class="col-md-3" colspan="1">Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="col-md-3" colspan="1">
+                            <span>{{newConstraint.datatype}}.</span>
+                            <select name="component" class="igl-input"
+                                    ng-change="updateComponent_1()"
+                                    ng-model="newConstraint.component_1"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        				<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<select name="subComponent" class="igl-input"
+                                    ng-model="newConstraint.subComponent_1"
+                                    ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
+                            </select>
+    					</span>
+                        </td>
+                        <td class="col-md-2" colspan="1">
+                            <select name="verb" class="igl-input"
+                                    ng-change=""
+                                    ng-model="newConstraint.verb"
+                                    ng-options="constraintVerb for constraintVerb in constraintVerbs">
+                            </select>
+                        </td>
+                        <td class="col-md-2" colspan="1">
+                            <select name="contraintType" class="igl-input"
+                                    ng-change=""
+                                    ng-model="newConstraint.contraintType"
+                                    ng-options="contraintType for contraintType in contraintTypes">
+                            </select>
+                        </td>
+                        <td class="col-md-3" colspan="1">
+                		<span ng-show="newConstraint.contraintType == 'a literal value'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'one of list values'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'formatted value'">
+                			<select name="format" class="igl-input"
+                                    ng-model="newConstraint.value"
+                                    ng-options="predefinedFormat for predefinedFormat in predefinedFormats">
+                            </select>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'identical to the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+        					<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+                        </td>
+                        <td class="col-md-1" colspan="1">
+                            <select name="trueUsage" class="igl-input"
+                                    ng-model="newConstraint.trueUsage"
+                                    ng-options="usage for usage in usages">
+                            </select>
+                        </td>
+
+                        <td class="col-md-1" colspan="1">
+                            <select name="falseUsage" class="igl-input"
+                                    ng-model="newConstraint.falseUsage"
+                                    ng-options="usage for usage in usages">
+                            </select>
+                        </td>
+
+                        <td class="col-md-1" colspan="1">
+                            <button title="Update Predicate" type="button" class="btn btn-xs btn-success" ng-click="updatePredicate()">
+                                <span><i class="fa fa-plus-circle fa-fw"></i></span>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
+        </button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="ConformanceStatementDatatypeCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">ConformanceStatement for {{datatype.name}}-{{selectedNode.position}}</h3>
+    </div>
+    <div class="modal-body">
+        <form role="form">
+            <h5>ConformanceStatements of {{datatype.name}}.{{selectedNode.position}}</h5>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr class="tbl-header">
+                        <th class="col-md-2">ID</th>
+                        <th class="col-md-9">Desciption</th>
+                        <th class="col-md-1"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:selectedNode.position + '[1]'}:true">
+                        <td class="col-md-2">{{c.constraintId}}</td>
+                        <td class="col-md-9">{{c.description}}</td>
+                        <td class="col-md-1">
+                            <button type="button" ng-click="deleteConformanceStatement(c)" class="btn btn-xs btn-danger">
+                                <span><i class="fa fa-minus-circle fa-fw"></i></span>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h5>Define New Conformance Statement of {{segment.name}}.{{selectedNode.position}}</h5>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr class="tbl-header">
+                        <th class="col-md-2" colspan="1" rowspan="2">ID</th>
+                        <th class="col-md-10" colspan="4">Desciption</th>
+                        <th class="col-md-1" colspan="1" rowspan="2"></th>
+                    </tr>
+                    <tr class="tbl-header">
+                        <th class="col-md-3" colspan="1">Node</th>
+                        <th class="col-md-2" colspan="1">Verb</th>
+                        <th class="col-md-2" colspan="1">Constraint</th>
+                        <th class="col-md-3" colspan="1">Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="col-md-2" colspan="1">
+                            <input style="width:100%" class="igl-input"  ng-model="newConstraint.constraintId" placeholder="Type ID" type="text"/>
+                        </td>
+                        <td class="col-md-3" colspan="1">
+                            <span>{{newConstraint.datatype}}.</span>
+                            <select name="component" class="igl-input"
+                                    ng-change="updateComponent_1()"
+                                    ng-model="newConstraint.component_1"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        				<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<select name="subComponent" class="igl-input"
+                                    ng-model="newConstraint.subComponent_1"
+                                    ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
+                            </select>
+    					</span>
+                        </td>
+                        <td class="col-md-2" colspan="1">
+                            <select name="verb" class="igl-input"
+                                    ng-change=""
+                                    ng-model="newConstraint.verb"
+                                    ng-options="constraintVerb for constraintVerb in constraintVerbs">
+                            </select>
+                        </td>
+                        <td class="col-md-2" colspan="1">
+                            <select name="contraintType" class="igl-input"
+                                    ng-change=""
+                                    ng-model="newConstraint.contraintType"
+                                    ng-options="contraintType for contraintType in contraintTypes">
+                            </select>
+                        </td>
+                        <td class="col-md-3" colspan="1">
+                		<span ng-show="newConstraint.contraintType == 'a literal value'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'one of list values'">
+                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'formatted value'">
+                			<select name="format" class="igl-input"
+                                    ng-model="newConstraint.value"
+                                    ng-options="predefinedFormat for predefinedFormat in predefinedFormats">
+                            </select>
+                		</span>
+                		<span ng-show="newConstraint.contraintType == 'identical to the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+                        </td>
+                        <td class="col-md-1" colspan="1">
+                            <button title="Add Conformance Statement" type="button" class="btn btn-xs btn-success" ng-click="addConformanceStatement()">
+                                <span><i class="fa fa-plus-circle fa-fw"></i></span>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
+        </button>
+    </div>
+</script>
+
+
 <div class="row">
     <div class="pull-right">
 
@@ -811,6 +817,6 @@
 </div>
 </div>
 </div>
-<pre>
-                        {{changes | json}}
-                </pre>
+<!--<pre>-->
+                        <!--{{changes | json}}-->
+                <!--</pre>-->

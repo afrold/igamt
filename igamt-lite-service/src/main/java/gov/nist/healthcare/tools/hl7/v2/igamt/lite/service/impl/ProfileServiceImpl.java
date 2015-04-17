@@ -32,14 +32,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfileChangeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfilePropertySaveError;
 
@@ -114,18 +110,6 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 
 	@Autowired
 	private ProfileRepository profileRepository;
-
-	@Autowired
-	private MessageService messageService;
-
-	@Autowired
-	private SegmentService segmentService;
-
-	@Autowired
-	private DatatypeService datatypeService;
-
-	@Autowired
-	private TableService tableService;
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -1132,38 +1116,6 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		this.profileRepository = profileRepository;
 	}
 
-	public MessageService getMessageService() {
-		return messageService;
-	}
-
-	public void setMessageService(MessageService messageService) {
-		this.messageService = messageService;
-	}
-
-	public SegmentService getSegmentService() {
-		return segmentService;
-	}
-
-	public void setSegmentService(SegmentService segmentService) {
-		this.segmentService = segmentService;
-	}
-
-	public DatatypeService getDatatypeService() {
-		return datatypeService;
-	}
-
-	public void setDatatypeService(DatatypeService datatypeService) {
-		this.datatypeService = datatypeService;
-	}
-
-	public TableService getTableService() {
-		return tableService;
-	}
-
-	public void setTableService(TableService tableService) {
-		this.tableService = tableService;
-	}
-
 	@Override
 	public Profile apply(String changes, Profile profile)
 			throws ProfileSaveException {
@@ -1171,8 +1123,9 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 				.apply(changes, profile);
 		if (errors != null && !errors.isEmpty()) {
 			throw new ProfileSaveException(errors);
+		} else {
+			profileRepository.save(profile);
 		}
-
 		return profile;
 	}
 

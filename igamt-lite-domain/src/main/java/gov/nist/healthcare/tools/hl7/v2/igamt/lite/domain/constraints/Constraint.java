@@ -102,7 +102,8 @@ public abstract class Constraint implements Serializable, Cloneable {
 	protected Constraint clone() throws CloneNotSupportedException {
 		Constraint c = (Constraint) super.clone();
 		c.setId(null);
-		c.setReference(this.reference.clone());
+		if (reference != null)
+			c.setReference(this.reference.clone());
 		return c;
 	}
 }

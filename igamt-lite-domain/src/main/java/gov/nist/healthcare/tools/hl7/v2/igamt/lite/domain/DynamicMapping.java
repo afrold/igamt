@@ -2,7 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 
 ////@Entity
@@ -11,7 +11,7 @@ public class DynamicMapping implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	// @Id 
+	// @Id
 	// //@Column(name = "ID")
 	// //@GeneratedValue(strategy = GenerationType.AUTO)
 	protected String id;
@@ -80,14 +80,15 @@ public class DynamicMapping implements Serializable, Cloneable {
 		m.setPosition(mappings.size() + 1);
 		mappings.add(m);
 	}
-	
-	@Override
-	public DynamicMapping clone() throws CloneNotSupportedException {
+
+	public DynamicMapping clone(HashMap<String, Datatype> dtRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		DynamicMapping clonedDynamicMapping = new DynamicMapping();
 		clonedDynamicMapping.setId(id);
 		clonedDynamicMapping.setMappings(mappings);
-		for(Mapping m:this.mappings){
-			clonedDynamicMapping.addMapping(m.clone());
+		for (Mapping m : this.mappings) {
+			clonedDynamicMapping.addMapping(m.clone(dtRecords, tableRecords));
 		}
 		clonedDynamicMapping.setMax(max);
 		clonedDynamicMapping.setMin(min);

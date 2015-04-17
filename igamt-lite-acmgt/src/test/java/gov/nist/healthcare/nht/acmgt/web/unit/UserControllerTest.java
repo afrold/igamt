@@ -121,7 +121,7 @@ public class UserControllerTest {
 		Account acc = new Account();
 		acc.setUsername("ut-user00");
 		acc.setEmail("ut-user00@nist.gov");
-		acc.setCompany("company00");
+		acc.setEmployer("company00");
 
 		accountRepository.save(acc);
 	}

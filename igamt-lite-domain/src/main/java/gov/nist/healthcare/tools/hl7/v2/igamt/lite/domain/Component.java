@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.HashMap;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
@@ -37,19 +39,36 @@ public class Component extends DataElement implements Cloneable {
 		return this.getPosition() - o.getPosition();
 	}
 
-	@Override
-	public Component clone() throws CloneNotSupportedException {
+	public Component clone(HashMap<String, Datatype> datatypeRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		Component clonedObj = new Component();
 		clonedObj.setBindingLocation(this.bindingLocation);
 		clonedObj.setBindingStrength(this.bindingStrength);
 		clonedObj.setComment(comment);
 		clonedObj.setConfLength(confLength);
-		clonedObj.setDatatype(datatype.clone());
+		if (datatypeRecords.containsKey(datatype.getId())) {
+			clonedObj.setDatatype(datatypeRecords.get(datatype.getId()));
+		} else {
+			Datatype dt = datatype.clone(datatypeRecords, tableRecords);
+			clonedObj.setDatatype(dt);
+			datatypeRecords.put(datatype.getId(), dt);
+		}
 		clonedObj.setMaxLength(maxLength);
 		clonedObj.setMinLength(minLength);
 		clonedObj.setName(name);
 		clonedObj.setPosition(position);
-		clonedObj.setTable(table.clone());
+		if (table != null) {
+			if (tableRecords.containsKey(table.getId())) {
+				clonedObj.setTable(tableRecords.get(table.getId()));
+			} else {
+				Table dt = table.clone();
+				clonedObj.setTable(dt);
+				tableRecords.put(table.getId(), dt);
+			}
+		} else {
+			clonedObj.setTable(null);
+		}
 		clonedObj.setUsage(usage);
 		return clonedObj;
 	}

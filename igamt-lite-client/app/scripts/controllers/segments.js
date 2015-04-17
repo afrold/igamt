@@ -10,7 +10,7 @@ angular.module('igl')
         $scope.saved = false;
         $scope.message = false;
         $scope.params = null;
-        $scope.tmpSegments =[].concat($rootScope.segments);
+        $scope.tmpSegments =[];
         $scope.segmentCopy = null;
         $scope.init = function () {
             $scope.loading = true;
@@ -41,15 +41,14 @@ angular.module('igl')
 //
         $scope.select = function (segment) {
             if(segment) {
-//            waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
+                $scope.loadingSelection = true;
+                waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
                 $rootScope.segment = segment;
                 $rootScope.segment["type"] = "segment";
-//             $scope.segmentCopy = {};
-//            $scope.segmentCopy = angular.copy(segment,$scope.segmentCopy);
                 if ($scope.params)
                     $scope.params.refresh();
                 $scope.loadingSelection = false;
-//            waitingDialog.hide();
+                waitingDialog.hide();
             }
         };
 

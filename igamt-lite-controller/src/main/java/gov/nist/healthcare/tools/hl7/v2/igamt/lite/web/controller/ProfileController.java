@@ -133,12 +133,11 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		Profile profile = profileService.clone(p);
-		profile.setScope(ProfileScope.USER);
-		profile.setAccountId(account.getId());
-		profileService.save(profile);
-		return profile;
-
+		p.setId(null);
+		p.setScope(ProfileScope.USER);
+		p.setAccountId(account.getId());
+		profileService.save(p);
+		return p;
 	}
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
@@ -216,7 +215,7 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-	@RequestMapping(value = "/{id}/export/xslx", method = RequestMethod.POST, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	@RequestMapping(value = "/{id}/export/xsl", method = RequestMethod.POST, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 	public void exportXlsx(@PathVariable("id") String id,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {

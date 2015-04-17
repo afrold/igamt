@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -117,12 +118,37 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
-	@Override
-	public Datatypes clone() throws CloneNotSupportedException {
+	public boolean deletePredicate(String predicateId) {
+		for (Datatype datatype : this.getChildren()) {
+			if (datatype.deletePredicate(predicateId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean deleteConformanceStatement(String confStatementId) {
+		for (Datatype datatype : this.getChildren()) {
+			if (datatype.deleteConformanceStatement(confStatementId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Datatypes clone(HashMap<String, Datatype> dtRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		Datatypes clonedDatatypes = new Datatypes();
 		clonedDatatypes.setChildren(new HashSet<Datatype>());
 		for (Datatype dt : this.children) {
-			clonedDatatypes.addDatatype(dt.clone());
+			if (dtRecords.containsKey(dt.getId())) {
+				clonedDatatypes.addDatatype(dtRecords.get(dt.getId()));
+			} else {
+				Datatype clone = dt.clone(dtRecords, tableRecords);
+				dtRecords.put(dt.getId(), clone);
+				clonedDatatypes.addDatatype(clone);
+			}
 		}
 
 		return clonedDatatypes;

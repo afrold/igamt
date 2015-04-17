@@ -2,16 +2,13 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test.unit;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.HL7Version;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.ProfileController;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test.integration.ProfileControllerIntegrationTest;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,59 +48,41 @@ public class ProfileControllerTest {
 	public void testGetAllPreloaded() throws Exception {
 		List<Profile> preloaded = findAllPreloaded();
 		when(mockProfileService.findAllPreloaded()).thenReturn(preloaded);
-		mockMvc.perform(get("/profiles/preloaded")).andExpect(status().isOk())
-				.andDo(print());
+		mockMvc.perform(get("/profiles")).andExpect(status().isOk());
 	}
 
-	@Test
-	public void testGetProfile() throws Exception {
-		Profile custom = findOneFull();
-		when(mockProfileService.findOne("3")).thenReturn(custom);
-		mockMvc.perform(get("/profiles/3")).andExpect(status().isOk())
-				.andDo(print());
-	}
+	// @Test
+	// public void testGetProfile() throws Exception {
+	// Profile custom = findOneFull();
+	// when(mockProfileService.findOne("3")).thenReturn(custom);
+	// mockMvc.perform(get("/profiles/3")).andExpect(status().isOk())
+	// .andDo(print());
+	// }
 
 	private List<Profile> findAllPreloaded() {
 		List<Profile> profiles = new ArrayList<Profile>();
-		Profile p = new Profile();
-		ProfileMetaData metaData = new ProfileMetaData();
-		p.setMetaData(metaData);
-		p.setId("1");
-		metaData.setHl7Version(HL7Version.V2_0.value());
-		metaData.setSchemaVersion(SchemaVersion.V1_0.value());
-		ProfileMetaData m = new ProfileMetaData();
-		m.setName("P1");
-		m.setOrgName("NIST");
-		m.setStatus("Completed");
-		p.setMetaData(m);
+		Profile p = profile();
 		profiles.add(p);
-
-		p = new Profile();
-		metaData = new ProfileMetaData();
-		p.setMetaData(metaData);
-		p.setId("2");
-		metaData.setHl7Version(HL7Version.V2_0.value());
-		metaData.setSchemaVersion(SchemaVersion.V1_0.value());
-		m = new ProfileMetaData();
-		m.setName("P2");
-		m.setOrgName("NIST");
-		m.setStatus("Draft");
-		p.setMetaData(m);
+		p = profile();
 		profiles.add(p);
 		return profiles;
 	}
 
-	private Profile findOneFull() {
+	private Profile profile() {
 		String xmlContentsProfile;
 		try {
-			xmlContentsProfile = IOUtils.toString(ProfileController.class
-					.getResourceAsStream("/Profile.xml"));
-			String xmlValueSet = IOUtils.toString(ProfileController.class
-					.getResourceAsStream("/ValueSets_all.xml"));
-			String xmlConstraints = IOUtils.toString(ProfileController.class
-					.getResourceAsStream("/Constraints.xml"));
+			xmlContentsProfile = IOUtils
+					.toString(ProfileControllerIntegrationTest.class
+							.getResourceAsStream("/vxu/Profile.xml"));
+			String xmlValueSet = IOUtils
+					.toString(ProfileControllerIntegrationTest.class
+							.getResourceAsStream("/vxu/ValueSets_all.xml"));
+			String xmlConstraints = IOUtils
+					.toString(ProfileControllerIntegrationTest.class
+							.getResourceAsStream("/vxu/Constraints.xml"));
 			Profile p = new ProfileSerializationImpl().deserializeXMLToProfile(
 					xmlContentsProfile, xmlValueSet, xmlConstraints);
+
 			return p;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

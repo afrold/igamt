@@ -66,7 +66,8 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		profile.setScope(ProfileScope.valueOf(((String) source.get("scope"))));
 		profile.setVersion(((Integer) source.get("version")));
 		profile.setChanges(((String) source.get("changes")));
-		profile.setAccountId(((Long) source.get("accountId")));
+		profile.setAccountId(source.get("accountId") != null ? ((Long) source
+				.get("accountId")) : null);
 		profile.setMetaData(metaData((DBObject) source.get("metaData")));
 		profile.setTables(tables((DBObject) source.get("tables")));
 		profile.setDatatypes(datatypes((DBObject) source.get("datatypes"),
@@ -413,7 +414,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				table.setMappingId(((String) tableObject.get("mappingId")));
 				table.setName(((String) tableObject.get("name")));
 				table.setVersion(((String) tableObject.get("version")));
-				table.setName(((String) tableObject.get("codesys")));
+				table.setCodesys(((String) tableObject.get("codesys")));
 				table.setOid(((String) tableObject.get("oid")));
 				table.setTableType(((String) tableObject.get("tableType")));
 				table.setStability(((String) tableObject.get("stability")));

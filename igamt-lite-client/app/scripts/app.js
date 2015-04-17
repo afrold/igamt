@@ -21,8 +21,8 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular'
-        ,
-        'ngMockE2E'
+//        ,
+//        'ngMockE2E'
      ]);
 
 var

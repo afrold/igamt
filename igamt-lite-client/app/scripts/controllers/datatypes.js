@@ -89,6 +89,8 @@ angular.module('igl')
             }
             $rootScope.datatypes.splice(0, 0, flavor);
             $rootScope.datatype = flavor;
+            $rootScope.datatypesMap[flavor.id] = flavor;
+
 
 //            $rootScope.recordChange2('datatype',tmp.id,null,tmp);
             $rootScope.recordChangeForEdit2('datatype', "add", flavor.id,'datatype', flavor);
@@ -249,7 +251,6 @@ angular.module('igl')
 				if($rootScope.datatype.components[i].id === component.id)
 					return false;
 			}
-
 			return true;
 		};
 		
@@ -299,8 +300,8 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
         if($rootScope.datatype === $scope.dtToDelete){
             $rootScope.datatype = null;
         }
+        $rootScope.datatypesMap[$scope.dtToDelete.id] = null;
         $rootScope.references = [];
-
         if($scope.dtToDelete.id < 0){ //datatype flavor
             var index = $rootScope.changes["datatype"]["add"].indexOf($scope.dtToDelete);
             if (index > -1) $rootScope.changes["datatype"]["add"].splice(index, 1);
@@ -444,11 +445,11 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
         			if (tmp.obj.id === id) {
                         $rootScope.changes['conformanceStatement']['add'].splice(i, 1);
                         if ($rootScope.changes["conformanceStatement"]["add"] && $rootScope.changes["conformanceStatement"]["add"].length === 0) {
-                            delete  $rootScope.changes["conformanceStatement"]["add"];
+                            delete  $rootScope.changes["predicate"]["add"];
                         }
 
-                        if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["conformanceStatement"]).length === 0) {
-                            delete  $rootScope.changes["conformanceStatement"];
+                        if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["predicate"]).length === 0) {
+                            delete  $rootScope.changes["predicate"];
                         }
                         return true;
                    }

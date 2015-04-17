@@ -1,5 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.HashMap;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
@@ -9,7 +11,8 @@ import org.springframework.data.annotation.Id;
  */
 // @Entity
 // @Table(name = "FIELD")
-public class Field extends DataElement implements java.io.Serializable, Cloneable {
+public class Field extends DataElement implements java.io.Serializable,
+		Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -82,20 +85,28 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
 	}
 
 	public int compareTo(Field o) {
-		//return this.getPosition() - o.getPosition();
-		return Integer.parseInt(this.getItemNo()) - Integer.parseInt(o.getItemNo());
+		// return this.getPosition() - o.getPosition();
+		return Integer.parseInt(this.getItemNo())
+				- Integer.parseInt(o.getItemNo());
 
 	}
-	
-	@Override
-	public Field clone() throws CloneNotSupportedException {
+
+	public Field clone(HashMap<String, Datatype> dtRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		Field clonedField = new Field();
-		
+
 		clonedField.setBindingLocation(bindingLocation);
 		clonedField.setBindingStrength(bindingStrength);
 		clonedField.setComment(comment);
 		clonedField.setConfLength(confLength);
-		clonedField.setDatatype(datatype.clone());
+		if (dtRecords.containsKey(datatype.getId())) {
+			clonedField.setDatatype(dtRecords.get(datatype.getId()));
+		} else {
+			Datatype dt = datatype.clone(dtRecords, tableRecords);
+			clonedField.setDatatype(dt);
+			dtRecords.put(datatype.getId(), dt);
+		}
 		clonedField.setItemNo(itemNo);
 		clonedField.setMax(max);
 		clonedField.setMaxLength(maxLength);
@@ -103,10 +114,21 @@ public class Field extends DataElement implements java.io.Serializable, Cloneabl
 		clonedField.setMinLength(minLength);
 		clonedField.setName(name);
 		clonedField.setPosition(position);
-		clonedField.setTable(table.clone());
+		if (table != null) {
+			if (tableRecords.containsKey(table.getId())) {
+				clonedField.setTable(tableRecords.get(table.getId()));
+			} else {
+				Table dt = table.clone();
+				clonedField.setTable(dt);
+				tableRecords.put(table.getId(), dt);
+			}
+		} else {
+			clonedField.setTable(null);
+		}
+
 		clonedField.setText(text);
 		clonedField.setUsage(usage);
-		
+
 		return clonedField;
 	}
 
