@@ -431,6 +431,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 	
 	$scope.deleteConformanceStatement = function(conformanceStatement){
 		$rootScope.datatype.conformanceStatements.splice($rootScope.datatype.conformanceStatements.indexOf(conformanceStatement),1);
+		$rootScope.datatypeConformanceStatements.splice($rootScope.datatypeConformanceStatements.indexOf(conformanceStatement),1);
 		if(!$scope.isNewCS(conformanceStatement.id)){
 			$rootScope.recordChangeForEdit2('conformanceStatement', "delete", conformanceStatement.id,'id', conformanceStatement.id);
 		}
@@ -508,6 +509,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 						assertion : '<Presence Path=\"' + location_1 + '\"/>'
 					};
 				$rootScope.datatype.conformanceStatements.push(cs);
+				$rootScope.datatypeConformanceStatements.push(cs);
 				var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'a literal value'){
@@ -519,6 +521,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 						assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
 					};
 				$rootScope.datatype.conformanceStatements.push(cs);
+				$rootScope.datatypeConformanceStatements.push(cs);
 				var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'one of list values'){
@@ -530,6 +533,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 						assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
 					};
 				$rootScope.datatype.conformanceStatements.push(cs);
+				$rootScope.datatypeConformanceStatements.push(cs);
 				var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'formatted value'){
@@ -541,6 +545,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 						assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
 					};
 				$rootScope.datatype.conformanceStatements.push(cs);
+				$rootScope.datatypeConformanceStatements.push(cs);
 				var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'identical to the another node'){
@@ -552,6 +557,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 						assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 					};
 				$rootScope.datatype.conformanceStatements.push(cs);
+				$rootScope.datatypeConformanceStatements.push(cs);
 				var newCSBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cs};
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}
@@ -642,6 +648,8 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 						assertion : '<Presence Path=\"' + location_1 + '\"/>'
 					};
 				$rootScope.datatype.predicates.push(cp);
+				$rootScope.datatypePredicates.push(cp);
+				$rootScope.datatypePredicates.push({position: $scope.newConstraint.datatype + '.' + cp.constraintTarget , cp:cp});
 				var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 			}else if($scope.newConstraint.contraintType === 'a literal value'){
@@ -655,6 +663,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 						assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
 					};
 				$rootScope.datatype.predicates.push(cp);
+				$rootScope.datatypePredicates.push(cp);
 				var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 			}else if($scope.newConstraint.contraintType === 'one of list values'){
@@ -668,6 +677,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 						assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
 					};
 				$rootScope.datatype.predicates.push(cp);
+				$rootScope.datatypePredicates.push(cp);
 				var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 			}else if($scope.newConstraint.contraintType === 'formatted value'){
@@ -681,6 +691,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 						assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
 					};
 				$rootScope.datatype.predicates.push(cp);
+				$rootScope.datatypePredicates.push(cp);
 				var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 			}else if($scope.newConstraint.contraintType === 'identical to the another node'){
@@ -694,6 +705,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 						assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 					};
 				$rootScope.datatype.predicates.push(cp);
+				$rootScope.datatypePredicates.push(cp);
 				var newCPBlock = {targetType:'datatype', targetId:$rootScope.datatype.id, obj:cp};
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 			}
@@ -702,6 +714,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 	
 	$scope.deletePredicate = function(predicate){
 		$rootScope.datatype.predicates.splice($rootScope.datatype.predicates.indexOf(predicate),1);
+		$rootScope.datatypePredicates.splice($rootScope.datatypePredicates.indexOf(predicate),1);
 		if(!$scope.isNewCP(predicate.id)){
 			$rootScope.recordChangeForEdit2('predicate', "delete", predicate.id,'id', predicate.id);
 		}
