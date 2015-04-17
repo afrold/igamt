@@ -22,7 +22,7 @@ angular.module('igl')
          */
         $scope.init = function () {
 //            $rootScope.context.page = $rootScope.pages[0];
-            $rootScope.selectIgTab(0);
+//            $rootScope.selectIgTab(0);
 //            $scope.preloadedError = null;
 //            $scope.customError = null;
 
@@ -39,8 +39,8 @@ angular.module('igl')
         };
 
         $scope.loadProfiles = function () {
-            $scope.preloadedLoading = true;
-//            if (userInfoService.isAuthenticated()) {
+            if (userInfoService.isAuthenticated()) {
+                $scope.preloadedLoading = true;
             $http.get('api/profiles', {timeout: 60000}).then(function (response) {
                 $rootScope.preloadedIgs = angular.fromJson(response.data);
                 $scope.preloadedLoading = false;
@@ -56,7 +56,7 @@ angular.module('igl')
 //                    $scope.customError = error;
                 $scope.customLoading = false;
             });
-//            }
+            }
         };
 
         /**

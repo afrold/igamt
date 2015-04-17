@@ -433,7 +433,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         $rootScope.newTableFakeId = 0;
         $rootScope.newPredicateFakeId = 0;
         $rootScope.newConformanceStatementFakeId = 0;
-        
+        $rootScope.clearChanges();
         $rootScope.parentsMap = [];
     };
 
