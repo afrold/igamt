@@ -247,7 +247,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				if (elmComponent.getAttribute("Table") != null) {
 					String tableScript = elmComponent.getAttribute("Table");
 					String[] tableTags = tableScript.split("#");
-					System.out.println(tableScript);
+					//System.out.println(tableScript);
 					if (tableTags.length == 1) {
 						componentObj.setTable(this.findTable(tableTags[0],
 								profile.getTables()));

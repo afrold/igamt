@@ -71,6 +71,14 @@ public class ProfileChangeService {
 			ObjectMapper mapper = new ObjectMapper();
 			ObjectNode rootNode = mapper.readTree(jp);
 
+			JsonParser jpol = f.createParser(this.p.getChanges());
+			ObjectNode oldNode = mapper.readTree(jpol);
+			
+			JsonNode newNode = this.merge(rootNode, oldNode);
+			this.p.setChanges(newNode.toString());
+			
+			
+
 			String nodeName = "datatype";
 			if (rootNode.has(nodeName)) {
 				setDatatypeValues(rootNode.path(nodeName).fields());
