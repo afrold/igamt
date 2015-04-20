@@ -141,7 +141,7 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		if (this.children != null) {
 			for (Table m : this.children) {
 				Code c = m.findOneCode(id);
-				if (c.getId().equals(id)) {
+				if (c != null) {
 					return m.deleteCode(c);
 				}
 			}

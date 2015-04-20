@@ -74,12 +74,13 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	}
 
 	public Datatype findOne(String id) {
-		if (this.children != null)
+		if (this.children != null) {
 			for (Datatype m : this.children) {
 				if (m.getId().equals(id)) {
 					return m;
 				}
 			}
+		}
 
 		return null;
 	}

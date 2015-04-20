@@ -31,6 +31,8 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 
 	private String date;
 
+	private String ext;
+
 	private Set<String> encodings = new HashSet<String>();
 
 	public String getName() {
@@ -128,16 +130,24 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
+
 	@Override
 	public ProfileMetaData clone() throws CloneNotSupportedException {
 		ProfileMetaData clonedProfileMetaData = new ProfileMetaData();
-		
+
 		clonedProfileMetaData.setEncodings(new HashSet<String>());
-		for(String s:this.encodings){
+		for (String s : this.encodings) {
 			clonedProfileMetaData.getEncodings().add(s);
 		}
-		
+
 		clonedProfileMetaData.setHl7Version(hl7Version);
 		clonedProfileMetaData.setIdentifier(identifier);
 		clonedProfileMetaData.setName(name);

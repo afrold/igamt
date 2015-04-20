@@ -17,8 +17,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
-//@Component
-@WebFilter(asyncSupported = true)
 public class HTTPSecurityFilter implements Filter {
 
 	/*
@@ -62,24 +60,11 @@ public class HTTPSecurityFilter implements Filter {
 
 		if ( response instanceof HttpServletResponse){
 			HttpServletResponse HttpResponse = (HttpServletResponse)response;
-//			HttpResponse.setHeader("X-Frame-Options", "SAMEORIGIN");
+			HttpResponse.setHeader("X-Frame-Options", "SAMEORIGIN");
 			HttpResponse.setHeader("Cache-Control", cache);
 			HttpResponse.setHeader("X-Content-Type-Options", "nosniff");
 			HttpResponse.setHeader("Strict-Transport-Security", "max-age=31536000");
 			HttpResponse.setHeader("X-XSS-Protection", "1; mode=block");
-			
-			
-//			HttpResponse.setHeader("Access-Control-Allow-Origin", "*");
-//			HttpResponse.setHeader("Access-Control-Allow-Methods",
-//					"POST, GET, OPTIONS, DELETE");
-//			HttpResponse.setHeader("Access-Control-Max-Age", "3600");
-//			HttpResponse.setHeader("Access-Control-Allow-Headers", "x-requested-with");
-			
-			
-//			Cookie cookie = new Cookie("XSRF-TOKEN",
-//					"csrf-token-12345");
-//			cookie.setMaxAge(60); //1 hour
-//			HttpResponse.addCookie(cookie);
 			
 		}
 

@@ -56,6 +56,10 @@ import com.mongodb.DBObject;
 @ReadingConverter
 public class ProfileReadConverter implements Converter<DBObject, Profile> {
 
+	public ProfileReadConverter() {
+		System.out.println("New Converter Created");
+	}
+
 	@Override
 	public Profile convert(DBObject source) {
 		Profile profile = new Profile();
@@ -90,8 +94,9 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		metaData.setSchemaVersion(((String) source.get("schemaVersion")));
 		metaData.setSubTitle(((String) source.get("subTitle")));
 		metaData.setVersion(((String) source.get("version")));
-		metaData.setDate(((String) source.get("datew")));
-
+		metaData.setDate(((String) source.get("date")));
+		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext"))
+				: null);
 		Set<String> encodings = new HashSet<String>();
 		Object encodingObj = source.get("encodings");
 		BasicDBList encodingDBObjects = (BasicDBList) encodingObj;
@@ -184,8 +189,10 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		if (datatypesDBObjects != null) {
 			for (Object childObj : datatypesDBObjects) {
 				DBObject child = (DBObject) childObj;
-				datatypes.addDatatype(datatype(child, datatypes,
-						profile.getTables(), datatypesDBObjects));
+				if (datatypes.findOne(((ObjectId) child.get("_id")).toString()) == null) {
+					datatypes.addDatatype(datatype(child, datatypes,
+							profile.getTables(), datatypesDBObjects));
+				}
 			}
 		}
 
@@ -377,12 +384,13 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		c.setBindingLocation((String) source.get("bindingLocation"));
 		c.setBindingStrength((String) source.get("bindingStrength"));
 		String datatypeId = ((String) source.get("datatype"));
-		Datatype d = findDatatypeById(datatypeId, datatypes);
-
+		Datatype d = datatypes.findOne(datatypeId);
 		if (d == null) {
 			DBObject dObject = findDatatypeById(datatypeId, datatypesDBObjects);
 			d = datatype(dObject, datatypes, tables, datatypesDBObjects);
-			datatypes.addDatatype(d);
+			if (datatypes.findOne(d.getId()) == null) {
+				datatypes.addDatatype(d);
+			}
 		}
 		c.setDatatype(d);
 		return c;
@@ -545,10 +553,9 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 
 	private Datatype findDatatypeById(String id, Datatypes datatypes) {
 		if (datatypes != null) {
-			for (Datatype d : datatypes.getChildren()) {
-				if (d.getId().equals(id)) {
-					return d;
-				}
+			Datatype d = datatypes.findOne(id);
+			if (d != null) {
+				return d;
 			}
 		}
 

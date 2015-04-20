@@ -59,7 +59,7 @@ public class Bootstrap implements InitializingBean {
 
 		// profileRepository.saveAndFlush(profile);
 
-		System.out.println(profile.getId());
+		// System.out.println(profileService.findAllPreloaded().get(0).getId());
 
 	}
 

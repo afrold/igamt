@@ -66,14 +66,12 @@ angular.module('igl')
 
         $scope.flavor = function (datatype) {
             var flavor = angular.copy(datatype);
-            var id = (Math.floor(Math.random()*10000000) + 1);
-            flavor.id = - 1 * id;
-            flavor.label = datatype.label + "_"+id;
+            flavor.id = - 1 * (Math.floor(Math.random()*10000000) + 1);
+            flavor.label = $rootScope.createNewFlavorName(datatype.label);
             if(flavor.components != undefined && flavor.components != null && flavor.components.length != 0){
                 for(var i=0; i < flavor.components.length; i++){
                     flavor.components[i].id = -1* (Math.floor(Math.random()*10000000) + 1);
-//                    flavor.components[i].datatype = datatype.components[i].datatype;
-                }
+                 }
             }
             var predicates = flavor['predicates'];
             if( predicates!= undefined && predicates != null && predicates.length != 0){
@@ -90,17 +88,8 @@ angular.module('igl')
             $rootScope.datatypes.splice(0, 0, flavor);
             $rootScope.datatype = flavor;
             $rootScope.datatypesMap[flavor.id] = flavor;
-
-
-//            $rootScope.recordChange2('datatype',tmp.id,null,tmp);
             $rootScope.recordChangeForEdit2('datatype', "add", flavor.id,'datatype', flavor);
-
-//            $rootScope.recordChangeForEdit2('datatype', "add", null,null, tmp);
-//            type,command,id,valueType,value
-
-
             $scope.select(flavor);
-
         };
 
         $scope.recordDatatypeChange = function(type, command,id,valueType,value){
@@ -247,10 +236,12 @@ angular.module('igl')
 		};
 		
 		$scope.isSubDT = function(component){
- 			for(var i=0, len = $rootScope.datatype.components.length; i < len; i ++){
-				if($rootScope.datatype.components[i].id === component.id)
-					return false;
-			}
+            if($rootScope.datatype != null) {
+                for (var i = 0, len = $rootScope.datatype.components.length; i < len; i++) {
+                    if ($rootScope.datatype.components[i].id === component.id)
+                        return false;
+                }
+            }
 			return true;
 		};
 		

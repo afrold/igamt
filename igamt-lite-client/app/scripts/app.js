@@ -237,8 +237,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 
     //configure $http to show a login dialog whenever a 401 unauthorized response arrives
     $httpProvider.interceptors.push(function ($rootScope, $q) {
-
-
         return {
             response: function (response) {
                 return response   || $q.when(response);
@@ -264,38 +262,37 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
                 return $q.reject(response);
             }
         };
-
-
-
-//
-//        return function (promise) {
-//            return promise.then(
-//                //success -> don't intercept
-//                function (response) {
-//                    return response;
-//                },
-//                //error -> if 401 save the request and broadcast an event
-//                function (response) {
-//                    if (response.status === 401) {
-//                        //We catch everything but this one. So public users are not bothered
-//                        //with a login windows when browsing home.
-//                        if ( response.config.url !== 'api/accounts/cuser') {
-//                            //We don't intercept this request
-//                            var deferred = $q.defer(),
-//                                req = {
-//                                    config: response.config,
-//                                    deferred: deferred
-//                                };
-//                            $rootScope.requests401.push(req);
-//                            $rootScope.$broadcast('event:loginRequired');
-//                            return deferred.promise;
-//                        }
-//                    }
-//                    return $q.reject(response);
-//                }
-//            );
-//        };
     });
+
+
+    $httpProvider.interceptors.push(function ($rootScope, $q) {
+        return {
+            response: function (response) {
+                return response   || $q.when(response);
+            },
+            responseError: function (response) {
+                if (response.status === 401) {
+                    //We catch everything but this one. So public users are not bothered
+                    //with a login windows when browsing home.
+                    if ( response.config.url !== 'api/accounts/cuser') {
+                        //We don't intercept this request
+                        var deferred = $q.defer(),
+                            req = {
+                                config: response.config,
+                                deferred: deferred
+                            };
+                        $rootScope.requests401.push(req);
+                        $rootScope.$broadcast('event:loginRequired');
+//                        return deferred.promise;
+
+                        return  $q.when(response);
+                    }
+                }
+                return $q.reject(response);
+            }
+        };
+    });
+
 
     //intercepts ALL angular ajax http calls
     $httpProvider.interceptors.push(function ($q) {
@@ -513,17 +510,12 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         if($rootScope.changes[type]['edit'] === undefined){
             $rootScope.changes[type]['edit'] = {};
         }
-        
+
         if($rootScope.changes[type]['edit'][object.id] === undefined){
             $rootScope.changes[type]['edit'][object.id] = {};
         }
-
-
         $rootScope.changes[type]['edit'][object.id][changeType] = object[changeType];
-        
-
-        console.log("Change is " + $rootScope.changes[type]['edit'][object.id][changeType]);
-    };
+     };
     
     $rootScope.recordChangeForEdit2 = function(type,command,id,valueType,value) {
         var obj = $rootScope.findObjectInChanges(type, "add", id);
@@ -679,16 +671,16 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 //            if(element.type === "component") {
 //                element['sub'] = parent.type === 'component';
 //            }
-            if (angular.isDefined(element.table) && element.table != null) {
-                var table = $rootScope.tablesMap[element.table.id];
-                if ($rootScope.tables.indexOf(table) === -1) {
-                    $rootScope.tables.push(table);
-                }
-            }
+//            if (angular.isDefined(element.table) && element.table != null) {
+//                var table = $rootScope.tablesMap[element.table.id];
+//                if ($rootScope.tables.indexOf(table) === -1) {
+//                    $rootScope.tables.push(table);
+//                }
+//            }
             $rootScope.processElement($rootScope.datatypesMap[element.datatype.id],element);
         } else if (element.type === "datatype") {
-            if ($rootScope.datatypes.indexOf(element) === -1) {
-                $rootScope.datatypes.push(element);
+//            if ($rootScope.datatypes.indexOf(element) === -1) {
+//                $rootScope.datatypes.push(element);
                 for(var i=0;i<element.predicates.length;i++){
                 	if ($rootScope.datatypePredicates.indexOf(element.predicates[i]) === -1)
                 		$rootScope.datatypePredicates.push(element.predicates[i]);
@@ -704,7 +696,16 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
                 angular.forEach(element.components, function (component) {
                     $rootScope.processElement(component,parent);
                 });
-            }
+//            }
+        }
+    };
+
+
+    $rootScope.createNewFlavorName = function(label){
+        if( $rootScope.profile != null) {
+            return label + "_" + $rootScope.profile.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
+        }else{
+            return null;
         }
     };
 
@@ -890,7 +891,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.$on('event:logoutRequest', function () {
         httpHeaders.common['Authorization'] = null;
         userInfoService.setCurrentUser(null);
-        $http.get('j_spring_security_logout');
+        $http.get('logout');
     });
 
     /**

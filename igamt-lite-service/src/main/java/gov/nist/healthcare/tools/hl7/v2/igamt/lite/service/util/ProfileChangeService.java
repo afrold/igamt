@@ -60,6 +60,11 @@ public class ProfileChangeService {
 
 	Map<String, Datatype> newDatatypesMap = new HashMap<String, Datatype>();
 	Map<String, Table> newTablesMap = new HashMap<String, Table>();
+	Map<String, Component> newComponentsMap = new HashMap<String, Component>();
+	Map<String, Predicate> newPredicatesMap = new HashMap<String, Predicate>();
+	Map<String, ConformanceStatement> newConfStatementsMap = new HashMap<String, ConformanceStatement>();
+	Map<String, Code> newCodesMap = new HashMap<String, Code>();
+
 	List<ProfilePropertySaveError> errors = new ArrayList<ProfilePropertySaveError>();
 	Profile p = null;
 	ObjectMapper mapper = null;
@@ -84,8 +89,29 @@ public class ProfileChangeService {
 			JsonFactory f = new JsonFactory();
 			JsonParser jp = f.createParser(jsonChanges);
 			ObjectNode rootNode = mapper.readTree(jp);
+			String nodeName = null;
 
-			String nodeName = "datatype";
+			nodeName = "code";
+			if (rootNode.has(nodeName)) {
+				setCodeValues(rootNode.path(nodeName).fields());
+			}
+
+			nodeName = "table";
+			if (rootNode.has(nodeName)) {
+				setTableValues(rootNode.path(nodeName).fields());
+			}
+
+			nodeName = "predicate";
+			if (rootNode.has(nodeName)) {
+				setPredicateValues(rootNode.path(nodeName).fields());
+			}
+
+			nodeName = "conformanceStatement";
+			if (rootNode.has(nodeName)) {
+				setConformanceStatementValues(rootNode.path(nodeName).fields());
+			}
+
+			nodeName = "datatype";
 			if (rootNode.has(nodeName)) {
 				setDatatypeValues(rootNode.path(nodeName).fields());
 			}
@@ -123,26 +149,6 @@ public class ProfileChangeService {
 			nodeName = "profile";
 			if (rootNode.has(nodeName)) {
 				setProfileValues(rootNode.path(nodeName).fields());
-			}
-
-			nodeName = "table";
-			if (rootNode.has(nodeName)) {
-				setTableValues(rootNode.path(nodeName).fields());
-			}
-
-			nodeName = "code";
-			if (rootNode.has(nodeName)) {
-				setCodeValues(rootNode.path(nodeName).fields());
-			}
-
-			nodeName = "predicate";
-			if (rootNode.has(nodeName)) {
-				setPredicateValues(rootNode.path(nodeName).fields());
-			}
-
-			nodeName = "conformanceStatement";
-			if (rootNode.has(nodeName)) {
-				setConformanceStatementValues(rootNode.path(nodeName).fields());
 			}
 
 			resolveReferences();
@@ -197,9 +203,34 @@ public class ProfileChangeService {
 			JsonParseException, JsonMappingException, IOException {
 		Datatype datatype = null;
 		if (node != null) {
-			String content = node.toString();
 			datatype = mapper.readValue(node.toString(), Datatype.class);
 			datatype.setId(ObjectId.get().toString());
+
+			if (datatype.getComponents() != null
+					&& !datatype.getComponents().isEmpty()) {
+				for (Component component : datatype.getComponents()) {
+					newComponentsMap.put(component.getId(), component);
+					component.setId(ObjectId.get().toString());
+				}
+			}
+
+			if (datatype.getPredicates() != null
+					&& !datatype.getPredicates().isEmpty()) {
+				for (Predicate p : datatype.getPredicates()) {
+					newPredicatesMap.put(p.getId(), p);
+					p.setId(ObjectId.get().toString());
+				}
+			}
+
+			if (datatype.getConformanceStatements() != null
+					&& !datatype.getConformanceStatements().isEmpty()) {
+				for (ConformanceStatement c : datatype
+						.getConformanceStatements()) {
+					newConfStatementsMap.put(c.getId(), c);
+					c.setId(ObjectId.get().toString());
+				}
+			}
+
 		}
 		return datatype;
 	}
@@ -210,6 +241,12 @@ public class ProfileChangeService {
 		if (node != null) {
 			table = mapper.readValue(node.toString(), Table.class);
 			table.setId(ObjectId.get().toString());
+			if (table.getCodes() != null && !table.getCodes().isEmpty()) {
+				for (Code c : table.getCodes()) {
+					newCodesMap.put(c.getId(), c);
+					c.setId(ObjectId.get().toString());
+				}
+			}
 		}
 		return table;
 	}
@@ -281,8 +318,14 @@ public class ProfileChangeService {
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
-						errors.add(new ProfilePropertySaveError(id, "table",
-								"Table with id=" + id + " not found"));
+						target = newTablesMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id,
+									"table", "Table with id=" + id
+											+ " not found"));
+						}
 					}
 				}
 			} else if (node.getKey().equals(ADD_NODE)) {
@@ -324,8 +367,13 @@ public class ProfileChangeService {
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
-						errors.add(new ProfilePropertySaveError(id, "code",
-								"Code with id=" + id + " not found"));
+						target = newCodesMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id, "code",
+									"Code with id=" + id + " not found"));
+						}
 					}
 				}
 			} else if (node.getKey().equals(ADD_NODE)) {
@@ -341,10 +389,15 @@ public class ProfileChangeService {
 					if (table != null) {
 						table.addCode(code);
 					} else {
-						errors.add(new ProfilePropertySaveError(targetId,
-								"table", "Failed to add new code with id " + id
-										+ ", Table with id=" + targetId
-										+ " not found"));
+						table = newTablesMap.get(targetId);
+						if (table != null) {
+							table.addCode(code);
+						} else {
+							errors.add(new ProfilePropertySaveError(targetId,
+									"table", "Failed to add new code with id "
+											+ id + ", Table with id="
+											+ targetId + " not found"));
+						}
 					}
 
 				}
@@ -381,9 +434,14 @@ public class ProfileChangeService {
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
-						errors.add(new ProfilePropertySaveError(id,
-								"predicate", "Predicate with id=" + id
-										+ " not found"));
+						target = newPredicatesMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id,
+									"predicate", "Predicate with id=" + id
+											+ " not found"));
+						}
 					}
 				}
 
@@ -440,9 +498,15 @@ public class ProfileChangeService {
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
-						errors.add(new ProfilePropertySaveError(id,
-								"predicate", "Predicate with id=" + id
-										+ " not found"));
+						target = newConfStatementsMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id,
+									"conformanceStatement",
+									"ConformanceStatement with id=" + id
+											+ " not found"));
+						}
 					}
 				}
 			} else if (node.getKey().equals(ADD_NODE)) {
@@ -639,16 +703,16 @@ public class ProfileChangeService {
 						}
 						wrapper.setPropertyValue(key, datatype);
 					} else if (key.equals("table")) {
-						if (value.isTextual() && "".equals(value.asText())) {
+						if (("".equals(value.asText()) || value.asText() == null)) {
 							wrapper.setPropertyValue(key, null);
 						} else {
-							String tableId = value.findValue("id").asText();
+							String tableId = value.asText();
 							Table table = p.getTables().findOne(tableId);
-							if (tableId == null) {
+							if (table == null) {
 								table = new Table();
 								table.setId(tableId);
 							}
-							wrapper.setPropertyValue(key, tableId);
+							wrapper.setPropertyValue(key, table);
 						}
 					} else {
 						wrapper.setPropertyValue(key, value.asText());
@@ -680,9 +744,14 @@ public class ProfileChangeService {
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
-						errors.add(new ProfilePropertySaveError(id,
-								"component", "Component with id=" + id
-										+ " not found"));
+						target = newComponentsMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id,
+									"component", "Component with id=" + id
+											+ " not found"));
+						}
 					}
 				}
 			}
@@ -706,8 +775,14 @@ public class ProfileChangeService {
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
-						errors.add(new ProfilePropertySaveError(id, "datatype",
-								"Datatype with id=" + id + " not found"));
+						target = newDatatypesMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id,
+									"datatype", "Datatype with id=" + id
+											+ " not found"));
+						}
 					}
 				}
 			} else if (node.getKey().equals(ADD_NODE)) {

@@ -4,7 +4,7 @@
 
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, userInfoService,$modal) {
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, userInfoService,$modal,$cookies) {
         $scope.loading = false;
         $scope.tmpPreloadedIgs = [].concat($rootScope.preloadedIgs);
         $scope.tmpCustomIgs =  [].concat($rootScope.customIgs);
@@ -123,6 +123,10 @@ angular.module('igl')
                 }, $rootScope.tablesMap);
 
 
+                $rootScope.segments =[];
+                $rootScope.tables = $rootScope.profile.tables.children;
+                $rootScope.datatypes = $rootScope.profile.datatypes.children;
+
                 angular.forEach($rootScope.profile.messages.children, function (child) {
                     this[child.id] = child;
                     angular.forEach(child.children, function (segmentRefOrGroup) {
@@ -130,11 +134,8 @@ angular.module('igl')
                     });
                 }, $rootScope.messagesMap);
 
-                if ($rootScope.profile.messages.children.length === 1) {
-                    $rootScope.segments = [];
-                    $rootScope.tables = [];
-                    $rootScope.datatypes = [];
 
+                if ($rootScope.profile.messages.children.length === 1) {
                     $rootScope.message = $rootScope.messages[0];
                     $rootScope.message.children = $filter('orderBy')($rootScope.message.children, 'position');
                     angular.forEach($rootScope.message.children, function (segmentRefOrGroup) {
@@ -144,7 +145,7 @@ angular.module('igl')
                     $rootScope.segment = $rootScope.segments[0];
                     $rootScope.segment["type"] = "segment";
                     $rootScope.notifySegTreeUpdate = new Date().getTime();
-                 }
+                }
 
                 angular.forEach($rootScope.profile.messages.children, function (message) {
                     var segRefOrGroups = [];
@@ -224,18 +225,71 @@ angular.module('igl')
 
 
         $scope.exportAs = function (id, format) {
-            waitingDialog.show('Exporting profile...', {dialogSize: 'sm', progressType: 'success'});
             var form = document.createElement("form");
             form.action = $rootScope.api('api/profiles/' + id + '/export/' + format);
             form.method = "POST";
             form.target = "_target";
+            var csrfInput = document.createElement("input");
+            csrfInput.name = "X-XSRF-TOKEN";
+            csrfInput.value = $cookies['XSRF-TOKEN'];
+//            console.log("CSRF=" + csrfInput.value);
+            form.appendChild(csrfInput);
             form.style.display = 'none';
-            form.params =
-                document.body.appendChild(form);
+            document.body.appendChild(form);
+//            httpHeaders.common['X-XSRF-TOKEN'] = $cookies['XSRF-TOKEN'];
+//            httpHeaders.common['JSSESSIONID'] = $cookies['JSSESSIONID'];
             form.submit();
-            $rootScope.changes = {};
-            waitingDialog.hide();
-//             $http.post($rootScope.api('api/profiles/'+ id+ '/export'), {params:{'exportType':format},timeout: 60000}).then(function (response) {
+
+
+//            $.fileDownload('api/profiles/' + id + '/export/' + format,
+//                {
+//                    httpMethod : "POST"
+//                }).done(function(e, response)
+//                {
+//                    // success
+//                }).fail(function(e, response)
+//                {
+//                    // failure
+//                });
+//
+
+//            var attachment = format  === 'pdf' ? 'application/pdf': format === 'xsl' ? '': format === 'xml' ? '': null;
+//            if(attachment != null) {
+//                $http.post('api/profiles/' + id + '/export/' + format, {timeout: 60000}).then(function (response, status, headers, config) {
+//                    var element = angular.element('<a/>');
+//                    element.attr({
+//                        href: 'data:attachment/'+ format+',' + encodeURI(response.data),
+//                        target: '_target',
+//                        download: 'Profile.' + format
+//                    })[0].click();
+//
+//                }, function (error) {
+//                    $rootScope.msg().text = 'profileDownloadFailed';
+//                    $rootScope.msg().type="error";
+//                    $rootScope.msg().show = true;
+//
+//                });
+//            }
+
+//            $http({method: 'GET', url: 'api/profiles/' + id + '/export/' + format}).
+//                success(function(response, status, headers, config) {
+////                    var element = angular.element('<a/>');
+////                    element.attr({
+////                        href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
+////                        target: '_blank',
+////                        download: 'filename.csv'
+////                    })[0].click();
+//
+//                    var file = new Blob([response.data], { type: 'application/pdf' });
+//                    saveAs(file, 'Profile.pdf');
+//
+//                }).
+//                error(function(data, status, headers, config) {
+//                    // if there's an error you should see it here
+//                });
+////
+//
+ //             $http.post($rootScope.api('api/profiles/'+ id+ '/export'), {params:{'exportType':format},timeout: 60000}).then(function (response) {
 //                waitingDialog.hide();
 //                $rootScope.changes = {};
 //            }, function (error) {
@@ -285,6 +339,42 @@ angular.module('igl')
             });
 
 
+            $scope.exportChanges = function () {
+                var form = document.createElement("form");
+                form.action = 'api/profiles/export/changes';
+                form.method = "POST";
+                form.target = "_target";
+                var input = document.createElement("textarea");
+                input.name = "content";
+                input.value = angular.fromJson($rootScope.changes);
+                form.appendChild(input);
+                var csrfInput = document.createElement("input");
+                csrfInput.name = "X-XSRF-TOKEN";
+                csrfInput.value = $cookies['XSRF-TOKEN'];
+                form.appendChild(csrfInput);
+                form.style.display = 'none';
+                document.body.appendChild(form);
+                form.submit();
+             };
+
+            $scope.viewChanges = function(changes){
+                var modalInstance = $modal.open({
+                    templateUrl: 'ViewIGChangesCtrl.html',
+                    controller: 'ViewIGChangesCtrl',
+                    resolve: {
+                        changes: function () {
+                            return changes;
+                        }
+                    }
+                });
+                modalInstance.result.then(function (changes) {
+                    $scope.changes = changes;
+                }, function () {
+                });
+            };
+
+
+
             $scope.reset = function () {
 //            $rootScope.context.page = $rootScope.pages[0];
                 $rootScope.selectIgTab(0);
@@ -296,7 +386,7 @@ angular.module('igl')
             $scope.initProfile = function () {
                 $scope.loading = true;
                 if ($rootScope.profile != null && $rootScope.profile != undefined)
-                    $scope.gotoSection($rootScope.profile.metatData, 'metaData');
+                    $scope.gotoSection($rootScope.profile.metaData, 'metaData');
                 $scope.loading = false;
 
             };
@@ -410,6 +500,28 @@ angular.module('igl')
 //    });
 
 
+angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes,$rootScope,$http) {
+    $scope.changes = changes;
+    $scope.loading = false;
+    $scope.exportChanges = function () {
+        $scope.loading = true;
+             waitingDialog.show('Exporting changes...', {dialogSize: 'sm', progressType: 'success'});
+            var form = document.createElement("form");
+            form.action = 'api/profiles/export/changes';
+            form.method = "POST";
+            form.target = "_target";
+            form.style.display = 'none';
+            form.params = document.body.appendChild(form);
+            form.submit();
+            waitingDialog.hide();
+     };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
 angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $modalInstance, profileToDelete,$rootScope,$http) {
     $scope.profileToDelete = profileToDelete;
     $scope.loading = false;
@@ -445,3 +557,4 @@ angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $
         $modalInstance.dismiss('cancel');
     };
 });
+

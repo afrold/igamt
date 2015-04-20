@@ -1,0 +1,17 @@
+{"datatype":
+    {"add":[
+        {"type":"datatype","id":-6329786,"label":"HD_IZ_2","components":[{"type":"component","name":"Namespace ID","usage":"C","minLength":1,"maxLength":"20","confLength":"","table":{"id":"5530963d30040340c9cb4905"},"bindingStrength":"","bindingLocation":"","datatype":{"id":"5530963d30040340c9cb5179"},"position":1,"comment":null,"id":-8136171,"path":"MSH.3.1"},{"type":"component","name":"Universal ID","usage":"C","minLength":1,"maxLength":"199","confLength":"","table":null,"bindingStrength":"","bindingLocation":"","datatype":{"id":"5530963d30040340c9cb517b"},"position":2,"comment":null,"id":-170357,"path":"MSH.3.2"},{"type":"component","name":"Universal ID Type","usage":"C","minLength":1,"maxLength":"6","confLength":"","table":{"id":"5530963d30040340c9cb48b0"},"bindingStrength":"","bindingLocation":"","datatype":{"id":"5530963d30040340c9cb5180"},"position":3,"comment":null,"id":-2775361,"path":"MSH.3.3"}],"name":"HD","description":"Hierarchic Designator","predicates":[{"id":-6997304,"constraintId":"[HD_IZ]1[1]","constraintTarget":"1[1]","reference":null,"description":"If HD.2 (Universal ID) is not valued.","assertion":"<Condition>
+<NOT>
+<Presence Path="2[1]"/>
+</NOT>
+</Condition>","trueUsage":"R","falseUsage":"O"},{"id":-7150533,"constraintId":"[HD_IZ]2[1]","constraintTarget":"2[1]","reference":null,"description":"If HD.1 (Namespace ID) is not valued.","assertion":"<Condition>
+<NOT>
+<Presence Path="1[1]"/>
+</NOT>
+</Condition>","trueUsage":"R","falseUsage":"O"},{"id":-9636061,"constraintId":"[HD_IZ]3[1]","constraintTarget":"3[1]","reference":null,"description":"If HD.2 (Universal ID) is valued.","assertion":"<Condition>
+<Presence Path="2[1]"/>
+</Condition>","trueUsage":"R","falseUsage":"X"}],"conformanceStatements":[{"id":-8121759,"constraintId":"IZ-5","constraintTarget":"2[1]","reference":null,"description":"The value of HD.2 (Universal ID) SHALL be formatted with ISO-compliant OID.","assertion":"<Assertion>
+<Format Path="2[1]" Regex="[0-2](\.(0|[1-9][0-9]*))*"/>
+</Assertion>"},{"id":-5127053,"constraintId":"IZ-6","constraintTarget":"3[1]","reference":null,"description":"The value of HD.3 (Universal ID Type) SHALL be 'ISO'.","assertion":"<Assertion>
+<PlainText IgnoreCase="false" Path="3[1]" Text="ISO"/>
+</Assertion>"}],"comment":null,"usageNote":null,"isSelected":true}]},"field":{"edit":[{"id":"5530963d30040340c9cb5315","datatype":{"id":-6329786}}]}}"

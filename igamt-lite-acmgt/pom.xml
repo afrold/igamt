@@ -11,8 +11,10 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<properties>
-		<spring-security.version>4.0.0.RELEASE</spring-security.version>
-	</properties>
+<!-- 		<spring-security.version>4.0.0.RELEASE</spring-security.version>
+ -->	
+ <spring-security.version>3.1.4.RELEASE</spring-security.version>
+ </properties>
 
 	<build>
 		<finalName>igl-acmgt</finalName>

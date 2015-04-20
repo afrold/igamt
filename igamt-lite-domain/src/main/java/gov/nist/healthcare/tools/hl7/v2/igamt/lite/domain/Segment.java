@@ -231,7 +231,7 @@ public class Segment extends DataModel implements java.io.Serializable,
 
 	public boolean deleteConformanceStatement(String cId) {
 		ConformanceStatement c = findOneConformanceStatement(cId);
-		return c != null && this.getPredicates().remove(c);
+		return c != null && this.getConformanceStatements().remove(c);
 	}
 
 	public Segment clone(HashMap<String, Datatype> dtRecords,
