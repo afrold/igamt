@@ -21,8 +21,8 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular'
-        ,
-        'ngMockE2E'
+//        ,
+//        'ngMockE2E'
      ]);
 
 var
@@ -237,8 +237,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
 
     //configure $http to show a login dialog whenever a 401 unauthorized response arrives
     $httpProvider.interceptors.push(function ($rootScope, $q) {
-
-
         return {
             response: function (response) {
                 return response   || $q.when(response);
@@ -264,38 +262,37 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider) {
                 return $q.reject(response);
             }
         };
-
-
-
-//
-//        return function (promise) {
-//            return promise.then(
-//                //success -> don't intercept
-//                function (response) {
-//                    return response;
-//                },
-//                //error -> if 401 save the request and broadcast an event
-//                function (response) {
-//                    if (response.status === 401) {
-//                        //We catch everything but this one. So public users are not bothered
-//                        //with a login windows when browsing home.
-//                        if ( response.config.url !== 'api/accounts/cuser') {
-//                            //We don't intercept this request
-//                            var deferred = $q.defer(),
-//                                req = {
-//                                    config: response.config,
-//                                    deferred: deferred
-//                                };
-//                            $rootScope.requests401.push(req);
-//                            $rootScope.$broadcast('event:loginRequired');
-//                            return deferred.promise;
-//                        }
-//                    }
-//                    return $q.reject(response);
-//                }
-//            );
-//        };
     });
+
+
+    $httpProvider.interceptors.push(function ($rootScope, $q) {
+        return {
+            response: function (response) {
+                return response   || $q.when(response);
+            },
+            responseError: function (response) {
+                if (response.status === 401) {
+                    //We catch everything but this one. So public users are not bothered
+                    //with a login windows when browsing home.
+                    if ( response.config.url !== 'api/accounts/cuser') {
+                        //We don't intercept this request
+                        var deferred = $q.defer(),
+                            req = {
+                                config: response.config,
+                                deferred: deferred
+                            };
+                        $rootScope.requests401.push(req);
+                        $rootScope.$broadcast('event:loginRequired');
+//                        return deferred.promise;
+
+                        return  $q.when(response);
+                    }
+                }
+                return $q.reject(response);
+            }
+        };
+    });
+
 
     //intercepts ALL angular ajax http calls
     $httpProvider.interceptors.push(function ($q) {
@@ -358,6 +355,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.tablesMap = {};// Map for tables; key:id, value:object
     $rootScope.segments = [];// list of segments of the selected messages
     $rootScope.datatypes = [];// list of datatypes of the selected messages
+    $rootScope.segmentPredicates = [];// list of segment level predicates of the selected messages
+    $rootScope.segmentConformanceStatements = [];// list of segment level Conformance Statements of the selected messages
+    $rootScope.datatypePredicates = [];// list of segment level predicates of the selected messages
+    $rootScope.datatypeConformanceStatements = [];// list of segment level Conformance Statements of the selected messages
     $rootScope.tables = [];// list of tables of the selected messages
     $rootScope.usages = ['R', 'RE', 'O', 'C', "CE","X", "B", "W"];
     $rootScope.codeUsages = ['R', 'P', 'E'];
@@ -417,6 +418,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         $rootScope.tablesMap = {};
         $rootScope.segments = [];
         $rootScope.tables = [];
+        $rootScope.segmentPredicates = [];
+        $rootScope.segmentConformanceStatements = [];
+        $rootScope.datatypePredicates = [];
+        $rootScope.datatypeConformanceStatements = [];
         $rootScope.datatypes = [];
         $rootScope.messages = [];
         $rootScope.messagesData = [];
@@ -425,7 +430,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         $rootScope.newTableFakeId = 0;
         $rootScope.newPredicateFakeId = 0;
         $rootScope.newConformanceStatementFakeId = 0;
-        
+        $rootScope.clearChanges();
         $rootScope.parentsMap = [];
     };
 
@@ -505,17 +510,12 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         if($rootScope.changes[type]['edit'] === undefined){
             $rootScope.changes[type]['edit'] = {};
         }
-        
+
         if($rootScope.changes[type]['edit'][object.id] === undefined){
             $rootScope.changes[type]['edit'][object.id] = {};
         }
-
-
         $rootScope.changes[type]['edit'][object.id][changeType] = object[changeType];
-        
-
-        console.log("Change is " + $rootScope.changes[type]['edit'][object.id][changeType]);
-    };
+     };
     
     $rootScope.recordChangeForEdit2 = function(type,command,id,valueType,value) {
         var obj = $rootScope.findObjectInChanges(type, "add", id);
@@ -650,6 +650,15 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
             if ($rootScope.segments.indexOf(element) === -1) {
                 element["path"] = element["name"];
                 $rootScope.segments.push(element);
+                for(var i=0;i<element.predicates.length;i++){
+                	if ($rootScope.segmentPredicates.indexOf(element.predicates[i]) === -1)
+                		$rootScope.segmentPredicates.push(element.predicates[i]);
+                }
+                
+                for(var i=0;i<element.conformanceStatements.length;i++){
+                	if ($rootScope.segmentConformanceStatements.indexOf(element.conformanceStatements[i]) === -1)
+                		$rootScope.segmentConformanceStatements.push(element.conformanceStatements[i]);
+                }
                 element.fields = $filter('orderBy')(element.fields, 'position');
                 angular.forEach(element.fields, function (field) {
                     $rootScope.processElement(field,element);
@@ -662,21 +671,41 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 //            if(element.type === "component") {
 //                element['sub'] = parent.type === 'component';
 //            }
-            if (angular.isDefined(element.table) && element.table != null) {
-                var table = $rootScope.tablesMap[element.table.id];
-                if ($rootScope.tables.indexOf(table) === -1) {
-                    $rootScope.tables.push(table);
-                }
-            }
+//            if (angular.isDefined(element.table) && element.table != null) {
+//                var table = $rootScope.tablesMap[element.table.id];
+//                if ($rootScope.tables.indexOf(table) === -1) {
+//                    $rootScope.tables.push(table);
+//                }
+//            }
             $rootScope.processElement($rootScope.datatypesMap[element.datatype.id],element);
         } else if (element.type === "datatype") {
-            if ($rootScope.datatypes.indexOf(element) === -1) {
-                $rootScope.datatypes.push(element);
+//            if ($rootScope.datatypes.indexOf(element) === -1) {
+//                $rootScope.datatypes.push(element);
+                for(var i=0;i<element.predicates.length;i++){
+                	if ($rootScope.datatypePredicates.indexOf(element.predicates[i]) === -1)
+                		$rootScope.datatypePredicates.push(element.predicates[i]);
+                }
+                
+                for(var i=0;i<element.conformanceStatements.length;i++){
+                	if ($rootScope.datatypeConformanceStatements.indexOf(element.conformanceStatements[i]) === -1)
+                		$rootScope.datatypeConformanceStatements.push(element.conformanceStatements[i]);
+                }
+                
+                
                 element.components = $filter('orderBy')(element.components, 'position');
                 angular.forEach(element.components, function (component) {
                     $rootScope.processElement(component,parent);
                 });
-            }
+//            }
+        }
+    };
+
+
+    $rootScope.createNewFlavorName = function(label){
+        if( $rootScope.profile != null) {
+            return label + "_" + $rootScope.profile.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
+        }else{
+            return null;
         }
     };
 
@@ -862,7 +891,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.$on('event:logoutRequest', function () {
         httpHeaders.common['Authorization'] = null;
         userInfoService.setCurrentUser(null);
-        $http.get('j_spring_security_logout');
+        $http.get('logout');
     });
 
     /**

@@ -7,6 +7,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,8 +48,6 @@ public class Profile extends DataModel implements java.io.Serializable,
 	protected String comment;
 
 	protected String usageNote;
-
-	private Boolean preloaded;
 
 	private Integer version;
 
@@ -241,6 +240,30 @@ public class Profile extends DataModel implements java.io.Serializable,
 		return predicate;
 	}
 
+	public boolean deletePredicate(String predicateId) {
+		if (this.getSegments().deletePredicate(predicateId)) {
+			return true;
+		}
+
+		if (this.getDatatypes().deletePredicate(predicateId)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public boolean deleteConformanceStatement(String confStatementId) {
+		if (this.getSegments().deleteConformanceStatement(confStatementId)) {
+			return true;
+		}
+
+		if (this.getDatatypes().deleteConformanceStatement(confStatementId)) {
+			return true;
+		}
+
+		return false;
+	}
+
 	public ConformanceStatement findOneConformanceStatement(
 			String conformanceStatementId) {
 		ConformanceStatement conformanceStatement = this.getSegments()
@@ -254,13 +277,20 @@ public class Profile extends DataModel implements java.io.Serializable,
 	@Override
 	public Profile clone() throws CloneNotSupportedException {
 		Profile clonedProfile = new Profile();
+		HashMap<String, Datatype> dtRecords = new HashMap<String, Datatype>();
+		HashMap<String, Segment> segmentRecords = new HashMap<String, Segment>();
+		HashMap<String, Table> tableRecords = new HashMap<String, Table>();
+
 		clonedProfile.setChanges(changes);
 		clonedProfile.setComment(comment);
-		clonedProfile.setDatatypes(datatypes.clone());
-		clonedProfile.setMessages(messages.clone());
+		clonedProfile.setDatatypes(datatypes.clone(dtRecords, tableRecords));
+		clonedProfile.setSegments(segments.clone(dtRecords, segmentRecords,
+				tableRecords));
+		clonedProfile.setTables(tables.clone(tableRecords));
+
+		clonedProfile.setMessages(messages.clone(dtRecords, segmentRecords,
+				tableRecords));
 		clonedProfile.setMetaData(metaData.clone());
-		clonedProfile.setSegments(segments.clone());
-		clonedProfile.setTables(tables.clone());
 		clonedProfile.setUsageNote(usageNote);
 		clonedProfile.setVersion(version);
 		clonedProfile.setAccountId(accountId);

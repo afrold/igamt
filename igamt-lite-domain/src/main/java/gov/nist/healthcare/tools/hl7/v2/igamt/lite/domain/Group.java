@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -90,30 +91,33 @@ public class Group extends SegmentRefOrGroup implements Cloneable {
 		return "Group [name=" + name + ", usage=" + usage + ", min=" + min
 				+ ", max=" + max + "]";
 	}
-	
-	@Override
-	public Group clone() throws CloneNotSupportedException {
+
+	public Group clone(HashMap<String, Datatype> dtRecords,
+			HashMap<String, Segment> segmentRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		Group clonedGroup = new Group();
-		
+
 		clonedGroup.setChildren(new ArrayList<SegmentRefOrGroup>());
-		for(SegmentRefOrGroup srog:this.children){
-			if(srog instanceof Group){
-				Group g = (Group)srog;
-				clonedGroup.addSegmentsOrGroup(g.clone());
-			}else if(srog instanceof SegmentRef){
-				SegmentRef sr = (SegmentRef)srog;
-				clonedGroup.addSegmentsOrGroup(sr.clone());
+		for (SegmentRefOrGroup srog : this.children) {
+			if (srog instanceof Group) {
+				Group g = (Group) srog;
+				clonedGroup.addSegmentsOrGroup(g.clone(dtRecords,
+						segmentRecords, tableRecords));
+			} else if (srog instanceof SegmentRef) {
+				SegmentRef sr = (SegmentRef) srog;
+				clonedGroup.addSegmentsOrGroup(sr.clone(dtRecords,
+						segmentRecords, tableRecords));
 			}
 		}
-		
+
 		clonedGroup.setComment(name);
 		clonedGroup.setMax(max);
 		clonedGroup.setMin(min);
 		clonedGroup.setName(name);
 		clonedGroup.setPosition(position);
 		clonedGroup.setUsage(usage);
-		
-		
+
 		return clonedGroup;
 	}
 

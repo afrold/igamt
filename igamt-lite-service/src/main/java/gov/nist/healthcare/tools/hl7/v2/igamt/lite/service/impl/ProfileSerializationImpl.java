@@ -314,18 +314,22 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	private Datatype findDatatype(String key, Profile profile,
 			Element elmDatatypes) {
-		if (datatypesMap.get(key) != null)
+		if (datatypesMap.containsKey(key)) {
 			return datatypesMap.get(key);
+		}
 		NodeList datatypes = elmDatatypes.getElementsByTagName("Datatype");
 		for (int i = 0; i < datatypes.getLength(); i++) {
 			Element elmDatatype = (Element) datatypes.item(i);
 			if (elmDatatype.getAttribute("ID").equals(key)) {
 				Datatype dt = this.deserializeDatatype(elmDatatype, profile,
 						elmDatatypes);
-				datatypesMap.put(key, dt);
-				return dt;
+				if (datatypesMap.containsKey(key)) {
+					return datatypesMap.get(key);
+				} else {
+					datatypesMap.put(key, dt);
+					return dt;
+				}
 			}
-
 		}
 		throw new IllegalArgumentException("Datatype " + key + " not found");
 	}

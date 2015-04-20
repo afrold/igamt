@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,10 +60,11 @@ public class Segments implements java.io.Serializable, Cloneable {
 		return s;
 	}
 
-	public void delete(String id) {
+	public boolean delete(String id) {
 		Segment d = findOne(id);
 		if (d != null)
-			this.children.remove(d);
+			return this.children.remove(d);
+		return false;
 	}
 
 	public Segment findOne(String id) {
@@ -124,17 +126,44 @@ public class Segments implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
+	public boolean deletePredicate(String predicateId) {
+		for (Segment segment : this.getChildren()) {
+			if (segment.deletePredicate(predicateId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean deleteConformanceStatement(String confStatementId) {
+		for (Segment segment : this.getChildren()) {
+			if (segment.deleteConformanceStatement(confStatementId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public String toString() {
 		return "Segments [id=" + id + "]";
 	}
 
-	@Override
-	public Segments clone() throws CloneNotSupportedException {
+	public Segments clone(HashMap<String, Datatype> dtRecords,
+			HashMap<String, Segment> segmentRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		Segments clonedSegments = new Segments();
 		clonedSegments.setChildren(new HashSet<Segment>());
 		for (Segment s : this.children) {
-			clonedSegments.addSegment(s.clone());
+			if (!segmentRecords.containsKey(s.getId())) {
+				Segment clonedSegment = s.clone(dtRecords, tableRecords);
+				clonedSegments.addSegment(clonedSegment);
+				segmentRecords.put(s.getId(), clonedSegment);
+			} else {
+				clonedSegments.addSegment(segmentRecords.get(s.getId()));
+			}
+
 		}
 
 		return clonedSegments;

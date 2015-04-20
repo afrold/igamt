@@ -1,11 +1,13 @@
-<div ng-controller="ProfileListCtrl" ng-init="init()">
+<div ng-show="isAuthenticated()">
     <!--<div class="row">-->
         <!--<div ng-show="error != null">-->
         <!--<div class="alert alert-danger" role="alert" ng-bind="error"></div>-->
         <!--<br/>-->
         <!--</div>-->
-        <div class="row">
-         <div class="col-md-6">
+        <div class="row" >
+    <!--<div class="row">-->
+
+    <div class="col-md-8">
             <div class="page-header">
                 <h3>Predefined Implementation Guides </h3>
             </div>
@@ -45,10 +47,26 @@
                         <td ng-bind="row.metaData.version"></td>
                         <td ng-bind="row.metaData.date"></td>
                         <td>
-                            <button title="Create Copy" type="button" class="btn btn-xs btn-info"
+                            <button title="Create Copy" type="button" class="btn btn-sm btn-info"
                                     ng-click="clone(row.id)">
                                 <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
                             </button>
+                            <div class="btn-group">
+                                <button ng-disabled="row === profile && hasChanges()" type="button" class="btn btn-primary btn-sm"><span><i
+                                        class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
+                                    Export
+                                </button>
+                                <button ng-disabled="row === profile && hasChanges()" type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                        data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a ng-click="exportAs(row.id, 'xml')">As XML</a></li>
+                                    <li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>
+                                    <li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
@@ -65,12 +83,13 @@
             </div>
             <div ng-show="preloadedLoading" style="text-align:center">
                 <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
-                <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
+                <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
 
             </div>
             </div>
-
-        <div class="col-md-6">
+</div>
+    <div class="row" >
+        <div class="col-md-8">
             <div class="page-header">
                 <h3>Custom Implementation Guides </h3>
             </div>
@@ -102,22 +121,38 @@
                         <td ng-bind="row.metaData.version"></td>
                         <td ng-bind="row.metaData.date"></td>
                         <td>
-                            <button title="Edit" type="button" class="btn btn-xs btn-primary"
+                            <button title="Edit" type="button" class="btn btn-sm btn-primary"
                                     ng-click="edit(row.id)">
                                 <span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>
                             </button>
-                            <button title="Create Copy" type="button" class="btn btn-xs btn-info"
+                            <button title="Create Copy" type="button" class="btn btn-sm btn-info"
                                     ng-click="clone(row.id)">
                                 <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
                             </button>
 
+                            <div class="btn-group">
+                                <button ng-disabled="row === profile && hasChanges()" type="button" class="btn btn-primary btn-sm"><span><i
+                                        class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
+                                    Export
+                                </button>
+                                <button ng-disabled="row === profile && hasChanges()" type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                        data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a ng-click="exportAs(row.id, 'xml')">As XML</a></li>
+                                    <li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>
+                                    <li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>
+                                </ul>
+                            </div>
 
-                            <button title="Diff" type="button" class="btn btn-xs btn-info"
-                                    ng-click="diff(row.id)">
-                                <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Diff</span>
-                            </button>
+                            <!--<button title="Diff" type="button" class="btn btn-xs btn-info"-->
+                                    <!--ng-click="diff(row.id)">-->
+                                <!--<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Diff</span>-->
+                            <!--</button>-->
 
-                            <button title="Delete" type="button" class="btn btn-xs btn-danger"
+                            <button title="Delete" type="button" class="btn btn-sm btn-danger"
                                     ng-click="delete(row.id)">
                                 <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
                             </button>
@@ -140,14 +175,14 @@
 
             <div ng-show="customLoading" style="text-align:center">
                 <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
-                <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
+                <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
 
             </div>
         <!--</div>-->
             </div>
         <!--</div>-->
-    </div>
 </div>
+    </div>
 
 
 

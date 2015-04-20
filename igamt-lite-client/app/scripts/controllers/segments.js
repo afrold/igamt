@@ -10,7 +10,7 @@ angular.module('igl')
         $scope.saved = false;
         $scope.message = false;
         $scope.params = null;
-        $scope.tmpSegments =[].concat($rootScope.segments);
+        $scope.tmpSegments =[];
         $scope.segmentCopy = null;
         $scope.init = function () {
             $scope.loading = true;
@@ -41,15 +41,14 @@ angular.module('igl')
 //
         $scope.select = function (segment) {
             if(segment) {
-//            waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
+                $scope.loadingSelection = true;
+                waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
                 $rootScope.segment = segment;
                 $rootScope.segment["type"] = "segment";
-//             $scope.segmentCopy = {};
-//            $scope.segmentCopy = angular.copy(segment,$scope.segmentCopy);
                 if ($scope.params)
                     $scope.params.refresh();
                 $scope.loadingSelection = false;
-//            waitingDialog.hide();
+                waitingDialog.hide();
             }
         };
 
@@ -243,6 +242,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     
 	$scope.deletePredicate = function(predicate){
 		$rootScope.segment.predicates.splice($rootScope.segment.predicates.indexOf(predicate),1);
+		$rootScope.segmentPredicates.splice($rootScope.segmentPredicates.indexOf(predicate),1);
 		if(!$scope.isNewCP(predicate.id)){
 			$rootScope.recordChangeForEdit2('predicate', "delete", predicate.id,'id', predicate.id);
 		}
@@ -324,6 +324,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 					assertion : '<Presence Path=\"' + location_1 + '\"/>'
 				};
 				$rootScope.segment.predicates.push(cp);
+				$rootScope.segmentPredicates.push(cp);
 				var newCPBlock = {targetType:'segment', targetId:$rootScope.segment.id, obj:cp};
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock)
 			}else if($scope.newConstraint.contraintType === 'a literal value'){
@@ -337,6 +338,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 					assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
 				};
 				$rootScope.segment.predicates.push(cp);
+				$rootScope.segmentPredicates.push(cp);
 				var newCPBlock = {targetType:'segment', targetId:$rootScope.segment.id, obj:cp};
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock)
 			}else if($scope.newConstraint.contraintType === 'one of list values'){
@@ -350,6 +352,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 					assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
 				};
 				$rootScope.segment.predicates.push(cp);
+				$rootScope.segmentPredicates.push(cp);
 				var newCPBlock = {targetType:'segment', targetId:$rootScope.segment.id, obj:cp};
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock)
 			}else if($scope.newConstraint.contraintType === 'formatted value'){
@@ -363,6 +366,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 					assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
 				};
 				$rootScope.segment.predicates.push(cp);
+				$rootScope.segmentPredicates.push(cp);
 				var newCPBlock = {targetType:'segment', targetId:$rootScope.segment.id, obj:cp};
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock)
 			}else if($scope.newConstraint.contraintType === 'identical to the another node'){
@@ -376,6 +380,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 					assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 				};
 				$rootScope.segment.predicates.push(cp);
+				$rootScope.segmentPredicates.push(cp);
 				var newCPBlock = {targetType:'segment', targetId:$rootScope.segment.id, obj:cp};
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock)
 			}
@@ -434,6 +439,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 	
 	$scope.deleteConformanceStatement = function(conformanceStatement){
 		$rootScope.segment.conformanceStatements.splice($rootScope.segment.conformanceStatements.indexOf(conformanceStatement),1);
+		$rootScope.segmentConformanceStatements.splice($rootScope.segmentConformanceStatements.indexOf(conformanceStatement),1);
 		if(!$scope.isNewCS(conformanceStatement.id)){
 			$rootScope.recordChangeForEdit2('conformanceStatement', "delete", conformanceStatement.id,'id', conformanceStatement.id);
 		}
@@ -527,6 +533,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 					assertion : '<Presence Path=\"' + location_1 + '\"/>'
 				};
 				$rootScope.segment.conformanceStatements.push(cs);
+				$rootScope.segmentConformanceStatements.push(cs);
 				var newCSBlock = {targetType:'segment', targetId:$rootScope.segment.id, obj:cs};
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'a literal value'){
@@ -538,6 +545,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 					assertion : '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
 				};
 				$rootScope.segment.conformanceStatements.push(cs);
+				$rootScope.segmentConformanceStatements.push(cs);
 				var newCSBlock = {targetType:'segment', targetId:$rootScope.segment.id, obj:cs};
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'one of list values'){
@@ -549,6 +557,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 					assertion : '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
 				};
 				$rootScope.segment.conformanceStatements.push(cs);
+				$rootScope.segmentConformanceStatements.push(cs);
 				var newCSBlock = {targetType:'segment', targetId:$rootScope.segment.id, obj:cs};
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'formatted value'){
@@ -560,6 +569,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 					assertion : '<Format Path=\"'+ location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
 				};
 				$rootScope.segment.conformanceStatements.push(cs);
+				$rootScope.segmentConformanceStatements.push(cs);
 				var newCSBlock = {targetType:'segment', targetId:$rootScope.segment.id, obj:cs};
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'identical to the another node'){
@@ -571,6 +581,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 					assertion : '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
 				};
 				$rootScope.segment.conformanceStatements.push(cs);
+				$rootScope.segmentConformanceStatements.push(cs);
 				var newCSBlock = {targetType:'segment', targetId:$rootScope.segment.id, obj:cs};
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}

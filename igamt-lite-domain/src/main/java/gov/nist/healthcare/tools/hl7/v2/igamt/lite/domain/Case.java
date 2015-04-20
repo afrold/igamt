@@ -8,6 +8,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 ////@Entity
 ////@Table(name = "CASE")
@@ -16,7 +17,7 @@ public class Case implements Serializable, Cloneable {
 	private static final long serialVersionUID = 1L;
 
 	// //@Column(name = "ID")
-	// @Id 
+	// @Id
 	// //@GeneratedValue(strategy = GenerationType.AUTO)
 	protected String id;
 
@@ -55,13 +56,22 @@ public class Case implements Serializable, Cloneable {
 	public void setDatatype(Datatype datatype) {
 		this.datatype = datatype;
 	}
-	
-	@Override
-	public Case clone() throws CloneNotSupportedException {
+
+	public Case clone(HashMap<String, Datatype> dtRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		Case clonedCase = new Case();
 		clonedCase.setId(null);
 		clonedCase.setValue(value);
-		clonedCase.setDatatype(datatype.clone());
+
+		if (dtRecords.containsKey(datatype.getId())) {
+			clonedCase.setDatatype(dtRecords.get(datatype.getId()));
+		} else {
+			Datatype dt = datatype.clone(dtRecords, tableRecords);
+			clonedCase.setDatatype(dt);
+			dtRecords.put(datatype.getId(), dt);
+		}
+
 		return clonedCase;
 	}
 

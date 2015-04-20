@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.io.Serializable;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 //@Entity
 //@javax.persistence.Table(name = "CODE")
@@ -12,6 +13,7 @@ public class Code extends DataModel implements Serializable, Cloneable {
 	 */
 	private static final long serialVersionUID = 410373025762745686L;
 
+	@Id
 	private String id;
 
 	// @NotNull
@@ -85,7 +87,7 @@ public class Code extends DataModel implements Serializable, Cloneable {
 		return "Code [code=" + code + ", label=" + label + ", codesys="
 				+ codesys + ", source=" + source + "]";
 	}
-	
+
 	@Override
 	public Code clone() throws CloneNotSupportedException {
 		Code clonedCode = new Code();

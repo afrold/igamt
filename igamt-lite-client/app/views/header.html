@@ -20,10 +20,10 @@
         <ul class="nav navbar-nav">
             <!--<li ng-class="{'active':isActive('/home')}"><a href="#/home"><i class="glyphicon glyphicon-home"></i>Home</a></li>-->
             <li ng-class="activeWhen(path()=='/home')">
-                <a href="#/home"><i class="glyphicon glyphicon-home"></i><span msg key="navbar.home"></span></a>
+                <a href="#/home"><i class="fa fa-home"></i><span msg key="navbar.home"></span></a>
             </li>
-            <li ng-class="activeWhen(path()=='/ig')"><a href="#/ig"><i class="glyphicon glyphicon-play-circle"></i><span msg class="msg" key="navbar.igs"></span></a></li>
-            <li ng-class="activeWhen(path()=='/doc')"><a href="#/doc"><i class="glyphicon glyphicon-book"></i><span msg class="msg" key="navbar.documentation"></span></a></li>
+            <li ng-class="activeWhen(path()=='/ig')"><a href="#/ig"><i class="fa fa-files-o"></i><span msg class="msg" key="navbar.igs"></span></a></li>
+            <li ng-class="activeWhen(path()=='/doc')"><a href="#/doc"><i class="fa fa-file-text"></i><span msg class="msg" key="navbar.documentation"></span></a></li>
             <li ng-class="activeWhen(path()=='/about')"><a href="#/about">About</a></li>
             <!--<li ng-class="activeWhen(path()=='/contact')"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>-->
             <li ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()">

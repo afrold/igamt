@@ -22,6 +22,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,12 +134,11 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		Profile profile = profileService.clone(p);
-		profile.setScope(ProfileScope.USER);
-		profile.setAccountId(account.getId());
-		profileService.save(profile);
-		return profile;
-
+		p.setId(null);
+		p.setScope(ProfileScope.USER);
+		p.setAccountId(account.getId());
+		profileService.save(p);
+		return p;
 	}
 
 	@RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
@@ -232,4 +232,17 @@ public class ProfileController extends CommonController {
 				"attachment;filename=Profile.xlsx");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
+
+	@RequestMapping(value = "/export/changes", method = RequestMethod.POST, produces = "application/json")
+	public void exportChanges(@RequestBody ChangeCommand jsonChanges,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ProfileNotFoundException {
+		logger.info("Exporting the changes");
+		response.setContentType("application/json");
+		response.setHeader("Content-disposition",
+				"attachment;filename=Changes.json");
+		FileCopyUtils.copy(IOUtils.toInputStream(jsonChanges.getValue()),
+				response.getOutputStream());
+	}
+
 }

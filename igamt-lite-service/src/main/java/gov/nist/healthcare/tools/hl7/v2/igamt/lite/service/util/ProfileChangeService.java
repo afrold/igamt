@@ -10,6 +10,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -34,6 +35,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bson.types.ObjectId;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.NotWritablePropertyException;
@@ -41,6 +43,7 @@ import org.springframework.beans.NotWritablePropertyException;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,8 +60,25 @@ public class ProfileChangeService {
 
 	Map<String, Datatype> newDatatypesMap = new HashMap<String, Datatype>();
 	Map<String, Table> newTablesMap = new HashMap<String, Table>();
+	Map<String, Component> newComponentsMap = new HashMap<String, Component>();
+	Map<String, Predicate> newPredicatesMap = new HashMap<String, Predicate>();
+	Map<String, ConformanceStatement> newConfStatementsMap = new HashMap<String, ConformanceStatement>();
+	Map<String, Code> newCodesMap = new HashMap<String, Code>();
+
 	List<ProfilePropertySaveError> errors = new ArrayList<ProfilePropertySaveError>();
 	Profile p = null;
+	ObjectMapper mapper = null;
+
+	/**
+	 * 
+	 */
+	public ProfileChangeService() {
+		super();
+		mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+				false);
+
+	}
 
 	public List<ProfilePropertySaveError> apply(String jsonChanges, Profile p)
 			throws ProfileSaveException {
@@ -68,18 +88,30 @@ public class ProfileChangeService {
 		try {
 			JsonFactory f = new JsonFactory();
 			JsonParser jp = f.createParser(jsonChanges);
-			ObjectMapper mapper = new ObjectMapper();
 			ObjectNode rootNode = mapper.readTree(jp);
+			String nodeName = null;
 
-			JsonParser jpol = f.createParser(this.p.getChanges());
-			ObjectNode oldNode = mapper.readTree(jpol);
-			
-			JsonNode newNode = this.merge(rootNode, oldNode);
-			this.p.setChanges(newNode.toString());
-			
-			
+			nodeName = "code";
+			if (rootNode.has(nodeName)) {
+				setCodeValues(rootNode.path(nodeName).fields());
+			}
 
-			String nodeName = "datatype";
+			nodeName = "table";
+			if (rootNode.has(nodeName)) {
+				setTableValues(rootNode.path(nodeName).fields());
+			}
+
+			nodeName = "predicate";
+			if (rootNode.has(nodeName)) {
+				setPredicateValues(rootNode.path(nodeName).fields());
+			}
+
+			nodeName = "conformanceStatement";
+			if (rootNode.has(nodeName)) {
+				setConformanceStatementValues(rootNode.path(nodeName).fields());
+			}
+
+			nodeName = "datatype";
 			if (rootNode.has(nodeName)) {
 				setDatatypeValues(rootNode.path(nodeName).fields());
 			}
@@ -119,22 +151,7 @@ public class ProfileChangeService {
 				setProfileValues(rootNode.path(nodeName).fields());
 			}
 
-			nodeName = "table";
-			if (rootNode.has(nodeName)) {
-				setTableValues(rootNode.path(nodeName).fields());
-			}
-
-			nodeName = "predicate";
-			if (rootNode.has(nodeName)) {
-				setPredicateValues(rootNode.path(nodeName).fields());
-			}
-
-			nodeName = "conformanceStatement";
-			if (rootNode.has(nodeName)) {
-				setConformanceStatementValues(rootNode.path(nodeName).fields());
-			}
-
-			// profileRepository.save(p);
+			resolveReferences();
 
 		} catch (Exception e) {
 			throw new ProfileSaveException(e.getMessage());
@@ -143,12 +160,77 @@ public class ProfileChangeService {
 
 	}
 
+	private void resolveReferences() {
+		for (Segment segment : p.getSegments().getChildren()) {
+			for (Field f : segment.getFields()) {
+				if (newDatatypesMap.containsKey(f.getDatatype().getId())) {
+					f.setDatatype(newDatatypesMap.get(f.getDatatype().getId()));
+				}
+				if (f.getTable() != null) {
+					if (newTablesMap.containsKey(f.getTable().getId())) {
+						f.setTable(newTablesMap.get(f.getTable().getId()));
+					}
+				}
+
+				resolveReferences(f.getDatatype());
+			}
+		}
+	}
+
+	private void resolveReferences(Datatype datatype) {
+		if (datatype.getComponents() != null
+				&& !datatype.getComponents().isEmpty()) {
+			for (Component component : datatype.getComponents()) {
+				if (newDatatypesMap
+						.containsKey(component.getDatatype().getId())) {
+					component.setDatatype(newDatatypesMap.get(component
+							.getDatatype().getId()));
+				}
+
+				if (component.getTable() != null) {
+					if (newTablesMap.containsKey(component.getTable().getId())) {
+						component.setTable(newTablesMap.get(component
+								.getTable().getId()));
+					}
+				}
+				resolveReferences(component.getDatatype());
+			}
+		}
+
+	}
+
 	private Datatype toDatatype(JsonNode node) throws ProfileSaveException,
 			JsonParseException, JsonMappingException, IOException {
 		Datatype datatype = null;
 		if (node != null) {
-			ObjectMapper mapper = new ObjectMapper();
-			datatype = mapper.readValue(node.asText(), Datatype.class);
+			datatype = mapper.readValue(node.toString(), Datatype.class);
+			datatype.setId(ObjectId.get().toString());
+
+			if (datatype.getComponents() != null
+					&& !datatype.getComponents().isEmpty()) {
+				for (Component component : datatype.getComponents()) {
+					newComponentsMap.put(component.getId(), component);
+					component.setId(ObjectId.get().toString());
+				}
+			}
+
+			if (datatype.getPredicates() != null
+					&& !datatype.getPredicates().isEmpty()) {
+				for (Predicate p : datatype.getPredicates()) {
+					newPredicatesMap.put(p.getId(), p);
+					p.setId(ObjectId.get().toString());
+				}
+			}
+
+			if (datatype.getConformanceStatements() != null
+					&& !datatype.getConformanceStatements().isEmpty()) {
+				for (ConformanceStatement c : datatype
+						.getConformanceStatements()) {
+					newConfStatementsMap.put(c.getId(), c);
+					c.setId(ObjectId.get().toString());
+				}
+			}
+
 		}
 		return datatype;
 	}
@@ -157,10 +239,47 @@ public class ProfileChangeService {
 			JsonParseException, JsonMappingException, IOException {
 		Table table = null;
 		if (node != null) {
-			ObjectMapper mapper = new ObjectMapper();
-			table = mapper.readValue(node.asText(), Table.class);
+			table = mapper.readValue(node.toString(), Table.class);
+			table.setId(ObjectId.get().toString());
+			if (table.getCodes() != null && !table.getCodes().isEmpty()) {
+				for (Code c : table.getCodes()) {
+					newCodesMap.put(c.getId(), c);
+					c.setId(ObjectId.get().toString());
+				}
+			}
 		}
 		return table;
+	}
+
+	private Predicate toPredicate(JsonNode node) throws ProfileSaveException,
+			JsonParseException, JsonMappingException, IOException {
+		Predicate p = null;
+		if (node != null) {
+			p = mapper.readValue(node.toString(), Predicate.class);
+			p.setId(ObjectId.get().toString());
+		}
+		return p;
+	}
+
+	private Code toCode(JsonNode node) throws ProfileSaveException,
+			JsonParseException, JsonMappingException, IOException {
+		Code c = null;
+		if (node != null) {
+			c = mapper.readValue(node.toString(), Code.class);
+			c.setId(ObjectId.get().toString());
+		}
+		return c;
+	}
+
+	private ConformanceStatement toConformanceStatement(JsonNode node)
+			throws ProfileSaveException, JsonParseException,
+			JsonMappingException, IOException {
+		ConformanceStatement c = null;
+		if (node != null) {
+			c = mapper.readValue(node.toString(), ConformanceStatement.class);
+			c.setId(ObjectId.get().toString());
+		}
+		return c;
 	}
 
 	private void setProfileValues(Iterator<Entry<String, JsonNode>> nodes)
@@ -199,11 +318,16 @@ public class ProfileChangeService {
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
-						errors.add(new ProfilePropertySaveError(id, "table",
-								"Table with id=" + id + " not found"));
+						target = newTablesMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id,
+									"table", "Table with id=" + id
+											+ " not found"));
+						}
 					}
 				}
-
 			} else if (node.getKey().equals(ADD_NODE)) {
 				JsonNode individualChanges = node.getValue();
 				Iterator<JsonNode> contentIt = individualChanges.iterator();
@@ -226,6 +350,73 @@ public class ProfileChangeService {
 		}
 	}
 
+	private void setCodeValues(Iterator<Entry<String, JsonNode>> nodes)
+			throws ProfileSaveException, JsonParseException,
+			JsonMappingException, IOException {
+		while (nodes.hasNext()) {
+			Entry<String, JsonNode> node = nodes.next();
+			if (node.getKey().equals(EDIT_NODE)) {
+				JsonNode individualChanges = node.getValue();
+				Iterator<JsonNode> contentIt = individualChanges.iterator();
+				while (contentIt.hasNext()) {
+					JsonNode newValue = contentIt.next();
+					String id = newValue.findValue("id").asText();
+					Iterator<Entry<String, JsonNode>> fields = newValue
+							.fields();
+					Code target = p.getTables().findOneCode(id);
+					if (target != null) {
+						setEditValues(fields, new BeanWrapperImpl(target));
+					} else {
+						target = newCodesMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id, "code",
+									"Code with id=" + id + " not found"));
+						}
+					}
+				}
+			} else if (node.getKey().equals(ADD_NODE)) {
+				JsonNode individualChanges = node.getValue();
+				Iterator<JsonNode> contentIt = individualChanges.iterator();
+				while (contentIt.hasNext()) {
+					JsonNode newValue = contentIt.next();
+					String targetId = newValue.findValue("targetId").asText();
+					JsonNode objectNode = newValue.findValue("obj");
+					String id = objectNode.findValue("id").asText();
+					Code code = toCode(objectNode);
+					Table table = p.getTables().findOne(targetId);
+					if (table != null) {
+						table.addCode(code);
+					} else {
+						table = newTablesMap.get(targetId);
+						if (table != null) {
+							table.addCode(code);
+						} else {
+							errors.add(new ProfilePropertySaveError(targetId,
+									"table", "Failed to add new code with id "
+											+ id + ", Table with id="
+											+ targetId + " not found"));
+						}
+					}
+
+				}
+			} else if (node.getKey().equals(DELETE_NODE)) {
+				JsonNode individualChanges = node.getValue();
+				Iterator<JsonNode> contentIt = individualChanges.iterator();
+				while (contentIt.hasNext()) {
+					JsonNode newValue = contentIt.next();
+					String id = newValue.findValue("id").asText();
+					if (!p.getTables().deleteCode(id)) {
+						errors.add(new ProfilePropertySaveError(id,
+								"predicate", "Failed to delete code with id="
+										+ id));
+					}
+				}
+			}
+		}
+	}
+
 	private void setPredicateValues(Iterator<Entry<String, JsonNode>> nodes)
 			throws ProfileSaveException, JsonParseException,
 			JsonMappingException, IOException {
@@ -243,12 +434,47 @@ public class ProfileChangeService {
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
-						errors.add(new ProfilePropertySaveError(id,
-								"predicate", "Predicate with id=" + id
-										+ " not found"));
+						target = newPredicatesMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id,
+									"predicate", "Predicate with id=" + id
+											+ " not found"));
+						}
 					}
 				}
 
+			} else if (node.getKey().equals(ADD_NODE)) {
+				JsonNode individualChanges = node.getValue();
+				Iterator<JsonNode> contentIt = individualChanges.iterator();
+				while (contentIt.hasNext()) {
+					JsonNode newValue = contentIt.next();
+					String targetId = newValue.findValue("targetId").asText();
+					String targetType = newValue.findValue("targetType")
+							.asText();
+					JsonNode objectNode = newValue.findValue("obj");
+					Predicate predicate = toPredicate(objectNode);
+					if ("segment".equals(targetType)) {
+						Segment segment = p.getSegments().findOne(targetId);
+						segment.addPredicate(predicate);
+					} else if ("datatype".equals(targetType)) {
+						Datatype d = p.getDatatypes().findOne(targetId);
+						d.addPredicate(predicate);
+					}
+				}
+			} else if (node.getKey().equals(DELETE_NODE)) {
+				JsonNode individualChanges = node.getValue();
+				Iterator<JsonNode> contentIt = individualChanges.iterator();
+				while (contentIt.hasNext()) {
+					JsonNode newValue = contentIt.next();
+					String id = newValue.findValue("id").asText();
+					if (!p.deletePredicate(id)) {
+						errors.add(new ProfilePropertySaveError(id,
+								"predicate",
+								"Failed to delete predicate with id=" + id));
+					}
+				}
 			}
 		}
 	}
@@ -272,12 +498,48 @@ public class ProfileChangeService {
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
-						errors.add(new ProfilePropertySaveError(id,
-								"predicate", "Predicate with id=" + id
-										+ " not found"));
+						target = newConfStatementsMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id,
+									"conformanceStatement",
+									"ConformanceStatement with id=" + id
+											+ " not found"));
+						}
 					}
 				}
-
+			} else if (node.getKey().equals(ADD_NODE)) {
+				JsonNode individualChanges = node.getValue();
+				Iterator<JsonNode> contentIt = individualChanges.iterator();
+				while (contentIt.hasNext()) {
+					JsonNode newValue = contentIt.next();
+					String targetId = newValue.findValue("targetId").asText();
+					String targetType = newValue.findValue("targetType")
+							.asText();
+					JsonNode objectNode = newValue.findValue("obj");
+					ConformanceStatement conf = toConformanceStatement(objectNode);
+					if ("segment".equals(targetType)) {
+						Segment segment = p.getSegments().findOne(targetId);
+						segment.addConformanceStatement(conf);
+					} else if ("datatype".equals(targetType)) {
+						Datatype d = p.getDatatypes().findOne(targetId);
+						d.addConformanceStatement(conf);
+					}
+				}
+			} else if (node.getKey().equals(DELETE_NODE)) {
+				JsonNode individualChanges = node.getValue();
+				Iterator<JsonNode> contentIt = individualChanges.iterator();
+				while (contentIt.hasNext()) {
+					JsonNode newValue = contentIt.next();
+					String id = newValue.findValue("id").asText();
+					if (!p.deleteConformanceStatement(id)) {
+						errors.add(new ProfilePropertySaveError(id,
+								"conformanceStatement",
+								"Failed to delete conformanceStatement with id="
+										+ id));
+					}
+				}
 			}
 		}
 	}
@@ -441,13 +703,17 @@ public class ProfileChangeService {
 						}
 						wrapper.setPropertyValue(key, datatype);
 					} else if (key.equals("table")) {
-						String tableId = value.findValue("id").asText();
-						Table table = p.getTables().findOne(tableId);
-						if (tableId == null) {
-							table = new Table();
-							table.setId(tableId);
+						if (("".equals(value.asText()) || value.asText() == null)) {
+							wrapper.setPropertyValue(key, null);
+						} else {
+							String tableId = value.asText();
+							Table table = p.getTables().findOne(tableId);
+							if (table == null) {
+								table = new Table();
+								table.setId(tableId);
+							}
+							wrapper.setPropertyValue(key, table);
 						}
-						wrapper.setPropertyValue(key, tableId);
 					} else {
 						wrapper.setPropertyValue(key, value.asText());
 					}
@@ -478,9 +744,14 @@ public class ProfileChangeService {
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
-						errors.add(new ProfilePropertySaveError(id,
-								"component", "Component with id=" + id
-										+ " not found"));
+						target = newComponentsMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id,
+									"component", "Component with id=" + id
+											+ " not found"));
+						}
 					}
 				}
 			}
@@ -504,8 +775,14 @@ public class ProfileChangeService {
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
-						errors.add(new ProfilePropertySaveError(id, "datatype",
-								"Datatype with id=" + id + " not found"));
+						target = newDatatypesMap.get(id);
+						if (target != null) {
+							setEditValues(fields, new BeanWrapperImpl(target));
+						} else {
+							errors.add(new ProfilePropertySaveError(id,
+									"datatype", "Datatype with id=" + id
+											+ " not found"));
+						}
 					}
 				}
 			} else if (node.getKey().equals(ADD_NODE)) {

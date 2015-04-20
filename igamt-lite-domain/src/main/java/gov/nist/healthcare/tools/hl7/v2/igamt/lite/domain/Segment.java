@@ -4,6 +4,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -223,8 +224,19 @@ public class Segment extends DataModel implements java.io.Serializable,
 		return null;
 	}
 
-	@Override
-	public Segment clone() throws CloneNotSupportedException {
+	public boolean deletePredicate(String predicateId) {
+		Predicate p = findOnePredicate(predicateId);
+		return p != null && this.getPredicates().remove(p);
+	}
+
+	public boolean deleteConformanceStatement(String cId) {
+		ConformanceStatement c = findOneConformanceStatement(cId);
+		return c != null && this.getConformanceStatements().remove(c);
+	}
+
+	public Segment clone(HashMap<String, Datatype> dtRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		Segment clonedSegment = new Segment();
 		clonedSegment.setComment(comment);
 		clonedSegment
@@ -235,11 +247,11 @@ public class Segment extends DataModel implements java.io.Serializable,
 		clonedSegment.setDescription(description);
 		clonedSegment.setDynamicMappings(new ArrayList<DynamicMapping>());
 		for (DynamicMapping dm : this.dynamicMappings) {
-			clonedSegment.addDynamicMapping(dm.clone());
+			clonedSegment.addDynamicMapping(dm.clone(dtRecords, tableRecords));
 		}
 		clonedSegment.setFields(new ArrayList<Field>());
 		for (Field f : this.fields) {
-			clonedSegment.addField(f.clone());
+			clonedSegment.addField(f.clone(dtRecords, tableRecords));
 		}
 		clonedSegment.setLabel(label);
 		clonedSegment.setName(name);

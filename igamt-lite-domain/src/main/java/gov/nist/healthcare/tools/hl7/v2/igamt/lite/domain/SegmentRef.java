@@ -1,10 +1,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.HashMap;
+
 import org.bson.types.ObjectId;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class SegmentRef extends SegmentRefOrGroup implements Cloneable{
+public class SegmentRef extends SegmentRefOrGroup implements Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,18 +43,26 @@ public class SegmentRef extends SegmentRefOrGroup implements Cloneable{
 		return "SegmentRef [segment=" + ref + ", usage=" + usage + ", min="
 				+ min + ", max=" + max + "]";
 	}
-	
-	
-	@Override
-	public SegmentRef clone() throws CloneNotSupportedException {
+
+	public SegmentRef clone(HashMap<String, Datatype> dtRecords,
+			HashMap<String, Segment> segmentRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		SegmentRef clonedSegmentRef = new SegmentRef();
 		clonedSegmentRef.setComment(comment);
 		clonedSegmentRef.setMax(max);
 		clonedSegmentRef.setMin(min);
 		clonedSegmentRef.setPosition(position);
-		clonedSegmentRef.setRef(ref.clone());
+
+		if (segmentRecords.containsKey(ref.getId())) {
+			clonedSegmentRef.setRef(segmentRecords.get(ref.getId()));
+		} else {
+			Segment dt = ref.clone(dtRecords, tableRecords);
+			clonedSegmentRef.setRef(dt);
+			segmentRecords.put(ref.getId(), dt);
+		}
 		clonedSegmentRef.setUsage(usage);
-		
+
 		return clonedSegmentRef;
 	}
 

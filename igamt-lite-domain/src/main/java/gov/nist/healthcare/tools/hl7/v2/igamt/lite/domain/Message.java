@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -8,7 +9,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "message")
-public class Message extends DataModel implements java.io.Serializable, Cloneable {
+public class Message extends DataModel implements java.io.Serializable,
+		Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -218,21 +220,25 @@ public class Message extends DataModel implements java.io.Serializable, Cloneabl
 				+ description + "]";
 	}
 
-	@Override
-	public Message clone() throws CloneNotSupportedException {
+	public Message clone(HashMap<String, Datatype> dtRecords,
+			HashMap<String, Segment> segmentRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		Message clonedMessage = new Message();
-		
+
 		clonedMessage.setChildren(new ArrayList<SegmentRefOrGroup>());
-		for(SegmentRefOrGroup srog:this.children){
-			if(srog instanceof Group){
-				Group g = (Group)srog;
-				clonedMessage.addSegmentRefOrGroup(g.clone());
-			}else if(srog instanceof SegmentRef){
-				SegmentRef sr = (SegmentRef)srog;
-				clonedMessage.addSegmentRefOrGroup(sr.clone());
+		for (SegmentRefOrGroup srog : this.children) {
+			if (srog instanceof Group) {
+				Group g = (Group) srog;
+				clonedMessage.addSegmentRefOrGroup(g.clone(dtRecords,
+						segmentRecords, tableRecords));
+			} else if (srog instanceof SegmentRef) {
+				SegmentRef sr = (SegmentRef) srog;
+				clonedMessage.addSegmentRefOrGroup(sr.clone(dtRecords,
+						segmentRecords, tableRecords));
 			}
 		}
-		
+
 		clonedMessage.setComment(comment);
 		clonedMessage.setDescription(description);
 		clonedMessage.setEvent(event);
@@ -244,7 +250,7 @@ public class Message extends DataModel implements java.io.Serializable, Cloneabl
 		clonedMessage.setDate(date);
 		clonedMessage.setOid(oid);
 		clonedMessage.setVersion(version);
-		
+
 		return clonedMessage;
 	}
 }

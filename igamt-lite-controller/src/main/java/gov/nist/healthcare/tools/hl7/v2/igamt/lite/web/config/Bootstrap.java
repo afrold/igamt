@@ -48,13 +48,18 @@ public class Bootstrap implements InitializingBean {
 		// load VXU profile
 		Profile profile = new ProfileSerializationImpl()
 				.deserializeXMLToProfile(p, v, c);
+		profile.getMetaData().setName("VXU V04 Implementation Guide");
 		profile.getMetaData().setIdentifier("IG_VXU_V04");
+		profile.getMetaData().setOrgName("NIST");
+		profile.getMetaData().setSubTitle("NIST");
+		profile.getMetaData().setVersion("1.0");
+		profile.getMetaData().setDate("April 16th 2015");
 		profile.setScope(ProfileScope.PRELOADED);
 		profileService.save(profile);
 
 		// profileRepository.saveAndFlush(profile);
 
-		System.out.println(profile.getId());
+		// System.out.println(profileService.findAllPreloaded().get(0).getId());
 
 	}
 

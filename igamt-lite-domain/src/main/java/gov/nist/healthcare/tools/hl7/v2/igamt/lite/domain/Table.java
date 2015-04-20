@@ -14,7 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * 
  */
 @Document(collection = "table")
-public class Table extends DataModel implements Serializable, Comparable<Table>, Cloneable{
+public class Table extends DataModel implements Serializable,
+		Comparable<Table>, Cloneable {
 
 	/**
 	 * 
@@ -126,6 +127,10 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
 		codes.add(c);
 	}
 
+	public boolean deleteCode(Code c) {
+		return codes.remove(c);
+	}
+
 	public String getStability() {
 		return stability;
 	}
@@ -171,22 +176,21 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
 
 	@Override
 	public int compareTo(Table o) {
-		 int x = String.CASE_INSENSITIVE_ORDER.compare(this.mappingId, o.mappingId);
-	        if (x== 0) {
-	            x= this.mappingId.compareTo(o.mappingId);
-	        }
-	        return x;
+		int x = String.CASE_INSENSITIVE_ORDER.compare(this.mappingId,
+				o.mappingId);
+		if (x == 0) {
+			x = this.mappingId.compareTo(o.mappingId);
+		}
+		return x;
 	}
 
 	@Override
 	public Table clone() throws CloneNotSupportedException {
 		Table clonedTable = new Table();
-		clonedTable.setCodes(codes);
-		for(Code c:this.codes){
+		for (Code c : this.codes) {
 			clonedTable.addCode(c.clone());
 		}
-		
-		
+
 		clonedTable.setCodesys(codesys);
 		clonedTable.setExtensibility(extensibility);
 		clonedTable.setMappingAlternateId(mappingAlternateId);
@@ -196,7 +200,7 @@ public class Table extends DataModel implements Serializable, Comparable<Table>,
 		clonedTable.setStability(stability);
 		clonedTable.setTableType(tableType);
 		clonedTable.setVersion(version);
-		
+
 		return clonedTable;
 	}
 }

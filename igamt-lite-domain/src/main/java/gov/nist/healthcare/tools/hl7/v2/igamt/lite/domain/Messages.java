@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -80,14 +81,17 @@ public class Messages implements java.io.Serializable, Cloneable {
 		return "Messages [id=" + id + "]";
 	}
 
-	@Override
-	public Messages clone() throws CloneNotSupportedException {
+	public Messages clone(HashMap<String, Datatype> dtRecords,
+			HashMap<String, Segment> segmentRecords,
+			HashMap<String, Table> tableRecords)
+			throws CloneNotSupportedException {
 		Messages clonedMessages = new Messages();
 		clonedMessages.setChildren(new HashSet<Message>());
-		for(Message m: this.children){
-			clonedMessages.addMessage(m.clone());
+		for (Message m : this.children) {
+			clonedMessages.addMessage(m.clone(dtRecords, segmentRecords,
+					tableRecords));
 		}
-		
+
 		return clonedMessages;
 	}
 }
