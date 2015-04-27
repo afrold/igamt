@@ -86,15 +86,15 @@
 				<table st-table="tmpTables" st-safe-src="tables" class="table table-striped table-bordered">
 					<thead>
                         <tr>
-                            <th colspan="9"><input st-search="" class="form-control" type="text"/></th>
+                            <th colspan="9"><input st-search="" placeholder="Search Value Sets" class="form-control" type="text"/></th>
                         </tr>
 						<tr class="tbl-header">
 							<th st-sort="mappingId">ID</th>
 							<th st-sort="name">Name</th>
 							<th st-sort="version">Version</th>
-							<th st-sort="codesys">CodeSys</th>
-							<th st-sort="oid">OID</th>
-							<th st-sort="type">Type</th>
+							<!--<th st-sort="codesys">CodeSys</th>-->
+							<!--<th st-sort="oid">OID</th>-->
+							<!--<th st-sort="type">Type</th>-->
 							<th st-sort="stability">Stability</th>
 							<th st-sort="extensibility">Extensibility</th>
 							<th></th>
@@ -106,9 +106,9 @@
 							<td ng-bind-html="row.mappingId"></td>
 							<td ng-bind="row.name"></td>
 							<td ng-bind="row.version"></td>
-							<td ng-bind="row.codesys"></td>
-							<td ng-bind="row.oid"></td>
-							<td ng-bind="row.tableType"></td>
+							<!--<td ng-bind="row.codesys"></td>-->
+							<!--<td ng-bind="row.oid"></td>-->
+							<!--<td ng-bind="row.tableType"></td>-->
 							<td ng-bind="row.stability"></td>
 							<td ng-bind="row.extensibility"></td>
 							<td>

@@ -20,32 +20,32 @@
         <ul class="nav navbar-nav">
             <!--<li ng-class="{'active':isActive('/home')}"><a href="#/home"><i class="glyphicon glyphicon-home"></i>Home</a></li>-->
             <li ng-class="activeWhen(path()=='/home')">
-                <a href="#/home"><i class="fa fa-home"></i><span msg key="navbar.home"></span></a>
+                <a href="#/home"><i class="fa fa-home"></i>&nbsp;<span msg key="navbar.home"></span></a>
             </li>
-            <li ng-class="activeWhen(path()=='/ig')"><a href="#/ig"><i class="fa fa-files-o"></i><span msg class="msg" key="navbar.igs"></span></a></li>
-            <li ng-class="activeWhen(path()=='/doc')"><a href="#/doc"><i class="fa fa-file-text"></i><span msg class="msg" key="navbar.documentation"></span></a></li>
-            <li ng-class="activeWhen(path()=='/about')"><a href="#/about">About</a></li>
+            <li ng-class="activeWhen(path()=='/ig')"><a href="#/ig"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.igs"></span></a></li>
+            <li ng-class="activeWhen(path()=='/doc')"><a href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
+            <li ng-class="activeWhen(path()=='/about')"><a href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
             <!--<li ng-class="activeWhen(path()=='/contact')"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>-->
             <li ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()">
-                <a href="#/registration"><div msg key="navbar.registration"></div></a>
+                <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;<span msg key="navbar.registration"></span></a>
             </li>
             <li ng-class="activeWhen(path()=='/account')" ng-show="isAuthenticated()">
-                <a href="#/account"><div msg key="navbar.account"></div></a>
+                <a href="#/account"><i class="fa fa-user"></i>&nbsp;<span msg key="navbar.account"></span></a>
             </li>
-            <li ng-class="activeWhen(path()=='/forgotten')" ng-show="!isAuthenticated()">
-                <a href="#/forgotten"><div msg key="navbar.forgotten"></div></a>
-            </li>
+            <!--<li ng-class="activeWhen(path()=='/forgotten')" ng-show="!isAuthenticated()">-->
+                <!--<a href="#/forgotten"><div msg key="navbar.forgotten"></div></a>-->
+            <!--</li>-->
 
-            <li class="dropdown" ng-class="activeIfInList(path(), ['/authors'])" ng-show="isSupervisor() || isAdmin()">
-                <a id="reportsmenu" role="button" class="dropdown-toggle" ng-click="isManageOpen=!isManageOpen"><div msg class="msg"key="navbar.manage"></div><b class="caret"></b></a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="reportsmenu">
-                    <li><a tabindex="-1" href="#/authors" ng-click="isManageOpen=false"><div msg key="navbar.manage.authors"></div></a></li>
-                    <li ng-show="isAdmin()"><a tabindex="-1" href="#/supervisors" ng-click="isManageOpen=false"><div msg key="navbar.manage.supervisors"></div></a></li>
-                </ul>
-            </li>
-            <li ng-class="activeWhen(path()=='/admin')" ng-show="">
-                <a href="#/admin"><div msg key="navbar.admin"></div></a>
-            </li>
+            <!--<li class="dropdown" ng-class="activeIfInList(path(), ['/authors'])" ng-show="isSupervisor() || isAdmin()">-->
+                <!--<a id="reportsmenu" role="button" class="dropdown-toggle" ng-click="isManageOpen=!isManageOpen"><span msg class="msg"key="navbar.manage"></span><b class="caret"></b></a>-->
+                <!--<ul class="dropdown-menu" role="menu" aria-labelledby="reportsmenu">-->
+                    <!--<li><a tabindex="-1" href="#/authors" ng-click="isManageOpen=false"><div msg key="navbar.manage.authors"></div></a></li>-->
+                    <!--<li ng-show="isAdmin()"><a tabindex="-1" href="#/supervisors" ng-click="isManageOpen=false"><span msg key="navbar.manage.supervisors"></span></a></li>-->
+                <!--</ul>-->
+            <!--</li>-->
+            <!--<li ng-class="activeWhen(path()=='/admin')" ng-show="">-->
+                <!--<a href="#/admin"><div msg key="navbar.admin"></div></a>-->
+            <!--</li>-->
             <li><div ng-show='showSpinner()'><img src="images/ajax-loader.gif" class="loading"/></div></li>
 
 
@@ -60,13 +60,13 @@
         </ul>
 
         <p class="navbar-text pull-right" style="margin-right: 5em" ng-show="isAuthenticated()">
-            <a href="" ng-click="logout()"><span msg class="msg" key="navbar.logout"></span></a>
+            <a href="" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span msg class="msg" key="navbar.logout"></span></a>
         </p>
         <p class="navbar-text pull-right" style="margin-right: 5em" ng-show="!isAuthenticated()">
-            <a href="" ng-click="loginReq()"><span msg class="msg" key="navbar.login"></span></a>
+            <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;<span msg class="msg" key="navbar.login"></span></a>
         </p>
-        <p class="navbar-text pull-right" ng-class="activeWhen(path()=='/issue')" style="margin-right: 3em">
-            <a href="#/issue"><i class="glyphicon glyphicon-earphone"></i><span msg class="msg" key="navbar.issue"></span></a>
-        </p>
+        <!--<p class="navbar-text pull-right" ng-class="activeWhen(path()=='/issue')" style="margin-right: 3em">-->
+            <!--<a href="#/issue"><i class="fa fa-question"></i><span msg class="msg" key="navbar.issue"></span></a>-->
+        <!--</p>-->
     </div>
 </div>

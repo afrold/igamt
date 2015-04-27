@@ -631,6 +631,12 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         return label != undefined && label != null && (label.indexOf('_') !== -1 || label.indexOf('-') !== -1);
     };
 
+    $rootScope.getDatatype = function(id){
+        $rootScope.datatypesMap != undefined && $rootScope.datatypesMap[id];
+    };
+
+
+
     $rootScope.processElement = function (element, parent) {
         if (element.type === "group" && element.children) {
             $rootScope.parentsMap[element.id] = parent;
@@ -891,7 +897,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.$on('event:logoutRequest', function () {
         httpHeaders.common['Authorization'] = null;
         userInfoService.setCurrentUser(null);
-        $http.get('logout');
+        $http.get('j_spring_security_logout');
     });
 
     /**

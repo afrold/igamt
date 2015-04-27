@@ -49,8 +49,6 @@ public class Profile extends DataModel implements java.io.Serializable,
 
 	protected String usageNote;
 
-	private Integer version;
-
 	private String changes;
 
 	public String getId() {
@@ -94,20 +92,12 @@ public class Profile extends DataModel implements java.io.Serializable,
 		this.messages = messages;
 	}
 
-	public Integer getVersion() {
-		return version;
-	}
-
 	/**
 	 * Do not set the version. Hibernate set the version automatically
 	 * 
 	 * @param version
 	 * @return
 	 */
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-
 	public String getComment() {
 		return comment;
 	}
@@ -292,7 +282,6 @@ public class Profile extends DataModel implements java.io.Serializable,
 				tableRecords));
 		clonedProfile.setMetaData(metaData.clone());
 		clonedProfile.setUsageNote(usageNote);
-		clonedProfile.setVersion(version);
 		clonedProfile.setAccountId(accountId);
 		clonedProfile.setScope(scope);
 

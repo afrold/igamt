@@ -17,11 +17,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileRea
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -35,7 +31,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
 /**
@@ -60,20 +55,19 @@ public class MongoConfig extends AbstractMongoConfiguration {
 	// return dataSource;
 	// }
 
-	@Bean
-	public MongoCredential mongoCredential() throws Exception {
-		Context initCtx = new InitialContext();
-		Context envCtx = (Context) initCtx.lookup("java:comp/env");
-		return (MongoCredential) envCtx.lookup("jdbc/igl_mongo");
-	}
+	// @Bean
+	// public MongoCredential mongoCredential() throws Exception {
+	// Context initCtx = new InitialContext();
+	// Context envCtx = (Context) initCtx.lookup("java:comp/env");
+	// return (MongoCredential) envCtx.lookup("jdbc/igl_mongo");
+	// }
 
 	@Override
 	@Bean
 	public Mongo mongo() throws Exception {
-		MongoCredential credential = mongoCredential();
+		// MongoCredential credential = mongoCredential();
 		return new MongoClient(new ServerAddress(env.getProperty("mongo.host"),
-				Integer.valueOf(env.getProperty("mongo.port"))),
-				Arrays.asList(credential));
+				Integer.valueOf(env.getProperty("mongo.port"))));
 	}
 
 	@Override

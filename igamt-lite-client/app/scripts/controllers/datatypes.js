@@ -152,7 +152,7 @@ angular.module('igl')
 
 
         $scope.hasChildren = function(node){
-            return node && node != null && node.datatype && $rootScope.datatypesMap[node.datatype.id].components != null && $rootScope.datatypesMap[node.datatype.id].components.length >0;
+            return node && node != null && node.datatype &&  $rootScope.getDatatype(node.datatype.id) != undefined && $rootScope.getDatatype(node.datatype.id).components != null && $rootScope.getDatatype(node.datatype.id).components.length >0;
         };
 
 

@@ -84,7 +84,7 @@
     <!--  session  -->
     <session-config>
         <session-timeout>
-            15
+            30
         </session-timeout>
 <!--        <cookie-config>
             <secure>true</secure>

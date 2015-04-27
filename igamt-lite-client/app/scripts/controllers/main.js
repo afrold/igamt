@@ -55,7 +55,9 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal) {
         userInfoService.setCurrentUser(null);
         $scope.username = $scope.password = null;
         $scope.$emit('event:logoutRequest');
-        $location.url('/home');
+        $rootScope.initMaps();
+        $rootScope.profile = null;
+        $location.url('/ig');
     };
 
     $scope.cancel = function () {

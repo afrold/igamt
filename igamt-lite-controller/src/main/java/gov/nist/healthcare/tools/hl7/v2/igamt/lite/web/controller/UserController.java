@@ -21,7 +21,9 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountPasswordResetRepository;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,6 +50,14 @@ import org.springframework.web.util.UriUtils;
 public class UserController {
 
 	static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+	private List<String> skippedValidationEmails = new ArrayList<String>();
+
+	public UserController() {
+		skippedValidationEmails = new ArrayList<String>();
+		skippedValidationEmails.add("haffo@nist.gov");
+		skippedValidationEmails.add("rsnelick@nist.gov");
+	}
 
 	@Value("${unauthenticated.registration.authorized.accountType}")
 	private String AUTHORIZED_ACCOUNT_TYPE_UNAUTH_REG;
@@ -262,8 +272,9 @@ public class UserController {
 		boolean validEntry = true;
 		validEntry = userService.userExists(account.getUsername()) == true ? validEntry = false
 				: validEntry;
-		validEntry = accountRepository.findByTheAccountsEmail(account
-				.getEmail()) != null ? validEntry = false : validEntry;
+		validEntry = !skippedValidationEmails.contains(account.getEmail())
+				&& accountRepository.findByTheAccountsEmail(account.getEmail()) != null ? validEntry = false
+				: validEntry;
 		validEntry = accountRepository.findByTheAccountsUsername(account
 				.getUsername()) != null ? validEntry = false : validEntry;
 

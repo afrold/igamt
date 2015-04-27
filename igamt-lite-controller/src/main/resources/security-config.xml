@@ -3,16 +3,16 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:sec="http://www.springframework.org/schema/security" 
         xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+  	xsi:schemaLocation="http://www.springframework.org/schema/beans	
+ 		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.1.xsd
         http://www.springframework.org/schema/security
-        http://www.springframework.org/schema/security/spring-security-3.1.xsd">
-
-
+        http://www.springframework.org/schema/security/spring-security-3.1.xsd
+         http://www.springframework.org/schema/jee
+         http://www.springframework.org/schema/jee/spring-jee.xsd">
 
 	<context:property-placeholder
 		location="classpath:serverConfigurationWeb.properties, classpath:serverAuthWeb.properties" />
@@ -40,7 +40,7 @@
                 <sec:intercept-url pattern="/j_spring_security_logout" access="isFullyAuthenticated()" />
 		<sec:intercept-url pattern="/**"
 			access="isFullyAuthenticated() and hasRole('admin')" />
-		<sec:logout logout-success-url="/index.html" logout-url="/logout" />
+		<sec:logout logout-success-url="/index.html" />
 <!--    		<sec:custom-filter ref="csrfHeaderFilter" after="CSRF_FILTER"/>
  -->  		
 <!--    			<sec:csrf  token-repository-ref="csrfTokenRepository" />
@@ -85,11 +85,16 @@
 		<property name="authenticationManager" ref="authenticationManager" />
 	</bean>
        
-	<bean id="authDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+<!-- 	<bean id="authDataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.igl.auth.url}"
 		p:username="${jdbc.igl.auth.username}" p:password="${jdbc.igl.auth.password}"
 		p:testWhileIdle="${jdbc.igl.auth.testWhileIdle}" p:testOnBorrow="${jdbc.igl.auth.testOnBorrow}"
 		p:validationQuery="${jdbc.igl.auth.validationQuery}" destroy-method="close" />
+ -->
+
+    <jee:jndi-lookup id="authDataSource" jndi-name="java:comp/env/jdbc/igl_jndi"/>
+ 
+  
 
 	<bean id="expressionHandler"
 		class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">

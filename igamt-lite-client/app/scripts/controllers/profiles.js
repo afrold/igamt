@@ -154,6 +154,8 @@ angular.module('igl')
                     $scope.collectData(message, segRefOrGroups, segments, datatypes);
                     $rootScope.messagesData.push({message: message, segRefOrGroups: segRefOrGroups, segments: segments, datatypes: datatypes});
                 });
+
+                $scope.gotoSection($rootScope.profile.metaData,'metaData');
             }
             $scope.loading = false;
         };

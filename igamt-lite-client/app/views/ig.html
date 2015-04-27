@@ -25,6 +25,11 @@
 
         </div>
 
+    <div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center">
+        <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You can also  <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
+    </div>
+
+
     <script type="text/ng-template" id="ConfirmProfileDeleteCtrl.html">
         <div class="modal-header">
             <h3 class="modal-title">Delete Confirmation

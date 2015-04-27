@@ -67,8 +67,10 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function(node){
-            return node && node != null && ((node.fields && node.fields.length >0 ) || (node.datatype && $rootScope.datatypesMap[node.datatype.id].components && $rootScope.datatypesMap[node.datatype.id].components.length > 0));
+            return node && node != null && ((node.fields && node.fields.length >0 ) || (node.datatype &&  $rootScope.getDatatype(node.datatype.id) != undefined && $rootScope.getDatatype(node.datatype.id).components && $rootScope.getDatatype(node.datatype.id).components.length > 0));
         };
+
+
 
         $scope.validateLabel = function (label, name) {
             if(label && !label.startsWith(name)){

@@ -49,12 +49,13 @@ public class Bootstrap implements InitializingBean {
 		Profile profile = new ProfileSerializationImpl()
 				.deserializeXMLToProfile(p, v, c);
 		profile.getMetaData().setName("VXU V04 Implementation Guide");
-		profile.getMetaData().setIdentifier("IG_VXU_V04");
+		profile.getMetaData().setIdentifier("CDC IG_VXU_V04 Release 1.5");
 		profile.getMetaData().setOrgName("NIST");
 		profile.getMetaData().setSubTitle("NIST");
 		profile.getMetaData().setVersion("1.0");
-		profile.getMetaData().setDate("April 16th 2015");
+		profile.getMetaData().setDate("April 21	st 2015");
 		profile.setScope(ProfileScope.PRELOADED);
+		profile.getMetaData().setHl7Version("2.5.1");
 		profileService.save(profile);
 
 		// profileRepository.saveAndFlush(profile);

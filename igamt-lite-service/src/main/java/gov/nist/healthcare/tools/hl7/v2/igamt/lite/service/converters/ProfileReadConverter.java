@@ -68,7 +68,6 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		profile.setType(((String) source.get("type")));
 		profile.setUsageNote(((String) source.get("usageNote")));
 		profile.setScope(ProfileScope.valueOf(((String) source.get("scope"))));
-		profile.setVersion(((Integer) source.get("version")));
 		profile.setChanges(((String) source.get("changes")));
 		profile.setAccountId(source.get("accountId") != null ? ((Long) source
 				.get("accountId")) : null);
