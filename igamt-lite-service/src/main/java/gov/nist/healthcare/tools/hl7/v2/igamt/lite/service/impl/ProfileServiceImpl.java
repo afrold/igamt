@@ -20,6 +20,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
@@ -27,7 +28,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -253,9 +256,11 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 
 				for (SegmentRefOrGroup srog : m.getChildren()) {
 					if (srog instanceof SegmentRef) {
-						this.addSegmentXlsx(rows, (SegmentRef) srog, 0);
+						this.addSegmentXlsx(rows, (SegmentRef) srog, 0,
+								p.getSegments());
 					} else if (srog instanceof Group) {
-						this.addGroupXlsx(rows, (Group) srog, 0);
+						this.addGroupXlsx(rows, (Group) srog, 0,
+								p.getSegments(), p.getDatatypes());
 					}
 				}
 				this.writeToSheet(rows, header, sheet, headerStyle);
@@ -270,11 +275,15 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 				for (SegmentRefOrGroup srog : m.getChildren()) {
 
 					if (srog instanceof SegmentRef) {
-						this.addSegmentXlsx2(((SegmentRef) srog).getRef(),
-								header, workbook, headerStyle);
+						this.addSegmentXlsx2(
+								p.getSegments().findOne(
+										((SegmentRef) srog).getRef()), header,
+								workbook, headerStyle, p.getDatatypes(),
+								p.getTables());
 					} else if (srog instanceof Group) {
 						this.addGroupXlsx2(header, (Group) srog, workbook,
-								headerStyle);
+								headerStyle, p.getSegments(), p.getDatatypes(),
+								p.getTables());
 					}
 				}
 			}
@@ -497,9 +506,11 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 
 				for (SegmentRefOrGroup srog : segRefOrGroups) {
 					if (srog instanceof SegmentRef) {
-						this.addSegmentPdf1(rows, (SegmentRef) srog, 0);
+						this.addSegmentPdf1(rows, (SegmentRef) srog, 0,
+								p.getSegments());
 					} else if (srog instanceof Group) {
-						this.addGroupPdf1(rows, (Group) srog, 0);
+						this.addGroupPdf1(rows, (Group) srog, 0,
+								p.getSegments(), p.getDatatypes());
 					}
 				}
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
@@ -532,12 +543,16 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 					if (srog instanceof SegmentRef) {
 						this.addSegmentPdf2(igDocument, igWriter, tocDocument,
 								header, columnWidths, (SegmentRef) srog,
-								headerFont, headerColor, cellFont, cpColor);
+								headerFont, headerColor, cellFont, cpColor,
+								p.getSegments(), p.getDatatypes(),
+								p.getTables());
 
 					} else if (srog instanceof Group) {
 						this.addGroupPdf2(igDocument, igWriter, tocDocument,
 								header, columnWidths, (Group) srog, headerFont,
-								headerColor, cellFont, cpColor);
+								headerColor, cellFont, cpColor,
+								p.getSegments(), p.getDatatypes(),
+								p.getTables());
 					}
 				}
 			}
@@ -569,7 +584,8 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 					table = this.addHeaderPdfTable(header, columnWidths,
 							headerFont, headerColor);
 					rows = new ArrayList<List<String>>();
-					this.addComponentPdf2(rows, d);
+					this.addComponentPdf2(rows, d, p.getDatatypes(),
+							p.getTables());
 					this.addCellsPdfTable(table, rows, cellFont, cpColor);
 					igDocument.add(Chunk.NEWLINE);
 					igDocument.add(table);
@@ -808,7 +824,8 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		}
 	}
 
-	private void addGroupPdf1(List<List<String>> rows, Group g, Integer depth) {
+	private void addGroupPdf1(List<List<String>> rows, Group g, Integer depth,
+			Segments segments, Datatypes datatypes) {
 		String indent = StringUtils.repeat(" ", 2 * depth);
 
 		List<String> row = Arrays.asList(
@@ -824,9 +841,11 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		Collections.sort(segsOrGroups);
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
-				this.addSegmentPdf1(rows, (SegmentRef) srog, depth + 1);
+				this.addSegmentPdf1(rows, (SegmentRef) srog, depth + 1,
+						segments);
 			} else if (srog instanceof Group) {
-				this.addGroupPdf1(rows, (Group) srog, depth + 1);
+				this.addGroupPdf1(rows, (Group) srog, depth + 1, segments,
+						datatypes);
 			}
 		}
 
@@ -838,7 +857,8 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 	private void addGroupPdf2(Document igDocument, PdfWriter igWriter,
 			Document tocDocument, List<String> header, float[] columnWidths,
 			Group g, Font headerFont, BaseColor headerColor, Font cellFont,
-			BaseColor cpColor) throws DocumentException {
+			BaseColor cpColor, Segments segments, Datatypes datatypes,
+			Tables tables) throws DocumentException {
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
 		Collections.sort(segsOrGroups);
@@ -846,41 +866,47 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 			if (srog instanceof SegmentRef) {
 				this.addSegmentPdf2(igDocument, igWriter, tocDocument, header,
 						columnWidths, (SegmentRef) srog, headerFont,
-						headerColor, cellFont, cpColor);
+						headerColor, cellFont, cpColor, segments, datatypes,
+						tables);
 			} else if (srog instanceof Group) {
 				this.addGroupPdf2(igDocument, igWriter, tocDocument, header,
 						columnWidths, (Group) srog, headerFont, headerColor,
-						cellFont, cpColor);
+						cellFont, cpColor, segments, datatypes, tables);
 			}
 		}
 	}
 
 	private void addGroupXlsx2(List<String> header, Group g,
-			XSSFWorkbook workbook, XSSFCellStyle headerStyle)
+			XSSFWorkbook workbook, XSSFCellStyle headerStyle,
+			Segments segments, Datatypes datatypes, Tables tables)
 			throws DocumentException {
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
 		Collections.sort(segsOrGroups);
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
-				this.addSegmentXlsx2(((SegmentRef) srog).getRef(), header,
-						workbook, headerStyle);
+				this.addSegmentXlsx2(
+						segments.findOne(((SegmentRef) srog).getRef()), header,
+						workbook, headerStyle, datatypes, tables);
 			} else if (srog instanceof Group) {
-				this.addGroupXlsx2(header, (Group) srog, workbook, headerStyle);
+				this.addGroupXlsx2(header, (Group) srog, workbook, headerStyle,
+						segments, datatypes, tables);
 			}
 		}
 	}
 
 	private void addSegmentXlsx2(Segment s, List<String> header,
-			XSSFWorkbook workbook, XSSFCellStyle headerStyle) {
+			XSSFWorkbook workbook, XSSFCellStyle headerStyle,
+			Datatypes datatypes, Tables tables) {
 		List<List<String>> rows = new ArrayList<List<String>>();
 		XSSFSheet sheet = workbook.createSheet(s.getName());
 		rows.add(header);
-		this.addFieldPdf2(rows, s, Boolean.FALSE);
+		this.addFieldPdf2(rows, s, Boolean.FALSE, datatypes, tables);
 		this.writeToSheet(rows, header, sheet, headerStyle);
 	}
 
-	private void addGroupXlsx(List<List<String>> rows, Group g, Integer depth) {
+	private void addGroupXlsx(List<List<String>> rows, Group g, Integer depth,
+			Segments segments, Datatypes datatypes) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
 
 		List<String> row = Arrays.asList(
@@ -894,9 +920,11 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		Collections.sort(segsOrGroups);
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
-				this.addSegmentXlsx(rows, (SegmentRef) srog, depth + 1);
+				this.addSegmentXlsx(rows, (SegmentRef) srog, depth + 1,
+						segments);
 			} else if (srog instanceof Group) {
-				this.addGroupXlsx(rows, (Group) srog, depth + 1);
+				this.addGroupXlsx(rows, (Group) srog, depth + 1, segments,
+						datatypes);
 			}
 		}
 		row = Arrays.asList(indent + "END " + g.getName() + " GROUP", "", "",
@@ -905,26 +933,27 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 	}
 
 	private void addSegmentPdf1(List<List<String>> rows, SegmentRef s,
-			Integer depth) {
+			Integer depth, Segments segments) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
-
-		List<String> row = Arrays.asList(indent + s.getRef().getName(), s
+		Segment segment = segments.findOne(s.getRef());
+		List<String> row = Arrays.asList(indent + segment.getName(), s
 				.getUsage().value(), "", "[" + String.valueOf(s.getMin())
-				+ ".." + String.valueOf(s.getMax()) + "]", "", s.getRef()
-				.getComment() == null ? "" : s.getRef().getComment());
+				+ ".." + String.valueOf(s.getMax()) + "]", "", segment
+				.getComment() == null ? "" : segment.getComment());
 		rows.add(row);
 	}
 
 	private void addSegmentPdf2(Document igDocument, PdfWriter igWriter,
 			Document tocDocument, List<String> header, float[] columnWidths,
 			SegmentRef segRef, Font headerFont, BaseColor headerColor,
-			Font cellFont, BaseColor cpColor) throws DocumentException {
+			Font cellFont, BaseColor cpColor, Segments segments,
+			Datatypes datatypes, Tables tables) throws DocumentException {
 
 		PdfPTable table = this.addHeaderPdfTable(header, columnWidths,
 				headerFont, headerColor);
 		ArrayList<List<String>> rows = new ArrayList<List<String>>();
 
-		Segment s = segRef.getRef();
+		Segment s = segments.findOne(segRef.getRef());
 
 		this.addTocContent(tocDocument, igWriter,
 				s.getName() + " - " + s.getDescription());
@@ -933,7 +962,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 				+ " Segment"));
 		igDocument.add(Chunk.NEWLINE);
 		igDocument.add(new Paragraph(s.getText1()));
-		this.addFieldPdf2(rows, s, Boolean.TRUE);
+		this.addFieldPdf2(rows, s, Boolean.TRUE, datatypes, tables);
 		this.addCellsPdfTable(table, rows, cellFont, cpColor);
 		igDocument.add(table);
 		igDocument.add(Chunk.NEWLINE);
@@ -946,11 +975,11 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 			if (f.getText() != null && f.getText().length() != 0) {
 				Font fontbold = FontFactory.getFont("Times-Roman", 12,
 						Font.BOLD);
-				igDocument.add(new Paragraph(
-						s.getName() + "-"
-								+ f.getItemNo().replaceFirst("^0+(?!$)", "")
-								+ " " + f.getName() + " ("
-								+ f.getDatatype().getLabel() + ")", fontbold));
+				igDocument.add(new Paragraph(s.getName() + "-"
+						+ f.getItemNo().replaceFirst("^0+(?!$)", "") + " "
+						+ f.getName() + " ("
+						+ datatypes.findOne(f.getDatatype()).getLabel() + ")",
+						fontbold));
 				igDocument.add(new Paragraph(f.getText()));
 			}
 		}
@@ -959,13 +988,13 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 	}
 
 	private void addSegmentXlsx(List<List<String>> rows, SegmentRef s,
-			Integer depth) {
+			Integer depth, Segments segments) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
-
-		List<String> row = Arrays.asList(indent + s.getRef().getName(), s
+		Segment segment = segments.findOne(s.getRef());
+		List<String> row = Arrays.asList(indent + segment.getName(), s
 				.getUsage().value(), "", "[" + String.valueOf(s.getMin())
-				+ ".." + String.valueOf(s.getMax()) + "]", "", s.getRef()
-				.getComment() == null ? "" : s.getRef().getComment());
+				+ ".." + String.valueOf(s.getMax()) + "]", "", segment
+				.getComment() == null ? "" : segment.getComment());
 		rows.add(row);
 	}
 
@@ -991,7 +1020,8 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		return constraints;
 	}
 
-	private void addComponentPdf2(List<List<String>> rows, Datatype d) {
+	private void addComponentPdf2(List<List<String>> rows, Datatype d,
+			Datatypes datatypes, Tables tables) {
 		List<String> row;
 		List<Predicate> predicates = d.getPredicates();
 		List<ConformanceStatement> conformanceStatements = d
@@ -1009,12 +1039,12 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 						c.getPosition().toString(),
 						c.getName(),
 						c.getConfLength(),
-						c.getDatatype().getLabel(),
+						datatypes.findOne(c.getDatatype()).getLabel(),
 						c.getUsage().value(),
 						"[" + String.valueOf(c.getMinLength()) + ","
-								+ String.valueOf(c.getMaxLength()) + "]", (c
-								.getTable() == null) ? "" : c.getTable()
-								.getMappingId(), c.getComment());
+								+ String.valueOf(c.getMaxLength()) + "]",
+						(c.getTable() == null) ? "" : tables.findOne(
+								c.getTable()).getMappingId(), c.getComment());
 				rows.add(row);
 
 				List<Constraint> constraints = this.findConstraints(
@@ -1039,7 +1069,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 	}
 
 	private void addFieldPdf2(List<List<String>> rows, Segment s,
-			Boolean inlineConstraints) {
+			Boolean inlineConstraints, Datatypes datatypes, Tables tables) {
 		List<String> row;
 		List<Predicate> predicates = s.getPredicates();
 		List<ConformanceStatement> conformanceStatements = s
@@ -1052,15 +1082,15 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 					// f.getItemNo().replaceFirst("^0+(?!$)", ""),
 					String.valueOf(f.getPosition()),
 					f.getName(),
-					f.getDatatype().getLabel(),
+					datatypes.findOne(f.getDatatype()).getLabel(),
 					f.getUsage().value(),
 					"",
 					"[" + String.valueOf(f.getMin()) + ".."
 							+ String.valueOf(f.getMax()) + "]",
 					"",
 					"[" + String.valueOf(f.getMinLength()) + ".."
-							+ String.valueOf(f.getMaxLength()) + "]", (f
-							.getTable() == null) ? "" : f.getTable()
+							+ String.valueOf(f.getMaxLength()) + "]",
+					(f.getTable() == null) ? "" : tables.findOne(f.getTable())
 							.getMappingId(), f.getComment());
 			rows.add(row);
 
@@ -1119,19 +1149,19 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 	}
 
 	@Override
-	public Profile apply(String changes, Profile profile)
-			throws ProfileSaveException {
+	public Profile apply(Profile newProfile, Profile oldProfile,
+			String newValues) throws ProfileSaveException {
 		List<ProfilePropertySaveError> errors = new ProfileChangeService()
-				.apply(changes, profile);
+				.apply(newProfile, oldProfile, newValues);
 		if (errors != null && !errors.isEmpty()) {
 			throw new ProfileSaveException(errors);
 		} else {
 			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			profile.getMetaData().setDate(
+			newProfile.getMetaData().setDate(
 					dateFormat.format(Calendar.getInstance().getTime()));
-			profileRepository.save(profile);
+			profileRepository.save(newProfile);
 		}
-		return profile;
+		return newProfile;
 	}
 
 }

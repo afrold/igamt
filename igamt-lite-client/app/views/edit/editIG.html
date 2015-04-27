@@ -14,7 +14,7 @@
             </button>
 
             <div class="btn-group">
-                <button type="button" class="btn btn-primary btn-sm"><span><i
+                <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm"><span><i
                         class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
                     Export
                 </button>
@@ -127,5 +127,6 @@
 </div>
 
 <div class="container" ng-show="profile === null">
+    <br/>
     No Implementation Guide Selected.
 </div>

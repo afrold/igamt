@@ -48,5 +48,26 @@
     </script>
 
 
+    <script type="text/ng-template" id="ConfirmProfileCloseCtrl.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Close Confirmation
+            </h3>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to close the profile ? You have unsaved changes</p>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+            </button>
+            <button class="btn btn-warning" ng-click="close()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Close</span>
+            </button>
+            <button class="btn btn-success" ng-click="saveAndClose()"><span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Save And Close</span>
+            </button>
+        </div>
+    </script>
+
+
+
 </div>
 

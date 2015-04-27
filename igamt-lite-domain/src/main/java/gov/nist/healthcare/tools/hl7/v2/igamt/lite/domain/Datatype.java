@@ -4,7 +4,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -125,21 +124,21 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		components.add(c);
 	}
 
-	public Component findOneComponent(String id) {
-		if (this.components != null) {
-			for (Component c : this.components) {
-				if (c.getId().equals(id)) {
-					return c;
-				} else {
-					Component r = c.getDatatype().findOneComponent(id);
-					if (r != null) {
-						return r;
-					}
-				}
-			}
-		}
-		return null;
-	}
+	// public Component findOneComponent(String id) {
+	// if (this.components != null) {
+	// for (Component c : this.components) {
+	// if (c.getId().equals(id)) {
+	// return c;
+	// } else {
+	// Component r = c.getDatatype().findOneComponent(id);
+	// if (r != null) {
+	// return r;
+	// }
+	// }
+	// }
+	// }
+	// return null;
+	// }
 
 	public String getComment() {
 		return comment;
@@ -200,9 +199,8 @@ public class Datatype extends DataModel implements java.io.Serializable,
 				+ ", description=" + description + "]";
 	}
 
-	public Datatype clone(HashMap<String, Datatype> datatypeRecords,
-			HashMap<String, Table> tableRecords)
-			throws CloneNotSupportedException {
+	@Override
+	public Datatype clone() throws CloneNotSupportedException {
 		Datatype clonedDT = new Datatype();
 
 		clonedDT.setComment(comment);
@@ -218,7 +216,7 @@ public class Datatype extends DataModel implements java.io.Serializable,
 
 		clonedDT.setComponents(new ArrayList<Component>());
 		for (Component c : this.components) {
-			clonedDT.addComponent(c.clone(datatypeRecords, tableRecords));
+			clonedDT.addComponent(c.clone());
 		}
 		clonedDT.setDescription(description);
 		clonedDT.setLabel(label);

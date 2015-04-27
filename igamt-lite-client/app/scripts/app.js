@@ -586,6 +586,20 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         return undefined;
     };
 
+
+    $rootScope.isNewObject = function(type, command, id){
+        if($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
+            for (var i = 0; i < $rootScope.changes[type][command].length; i++) {
+                var tmp = $rootScope.changes[type][command][i];
+                if (tmp.id === id) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+
+
     $rootScope.removeObjectFromChanges = function(type, command, id){
         if($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
             for (var i = 0; i < $rootScope.changes[type][command].length; i++) {
@@ -632,77 +646,80 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     };
 
     $rootScope.getDatatype = function(id){
-        $rootScope.datatypesMap != undefined && $rootScope.datatypesMap[id];
+        return $rootScope.datatypesMap && $rootScope.datatypesMap[id];
     };
 
 
-
     $rootScope.processElement = function (element, parent) {
-        if (element.type === "group" && element.children) {
-            $rootScope.parentsMap[element.id] = parent;
-//            element["parent"] = parent;
-            element.children = $filter('orderBy')(element.children, 'position');
-            angular.forEach(element.children, function (segmentRefOrGroup) {
-                $rootScope.processElement(segmentRefOrGroup,element);
-            });
-        } else if (element.type === "segmentRef") {
-            if(parent) {
+        try {
+            if (element.type === "group" && element.children) {
                 $rootScope.parentsMap[element.id] = parent;
-            }
-            var ref = $rootScope.segmentsMap[element.ref.id];
-            element.ref["path"] =  ref.name;
-            $rootScope.processElement(ref,element);
-        }  else if (element.type === "segment") {
-            if ($rootScope.segments.indexOf(element) === -1) {
-                element["path"] = element["name"];
-                $rootScope.segments.push(element);
-                for(var i=0;i<element.predicates.length;i++){
-                	if ($rootScope.segmentPredicates.indexOf(element.predicates[i]) === -1)
-                		$rootScope.segmentPredicates.push(element.predicates[i]);
-                }
-                
-                for(var i=0;i<element.conformanceStatements.length;i++){
-                	if ($rootScope.segmentConformanceStatements.indexOf(element.conformanceStatements[i]) === -1)
-                		$rootScope.segmentConformanceStatements.push(element.conformanceStatements[i]);
-                }
-                element.fields = $filter('orderBy')(element.fields, 'position');
-                angular.forEach(element.fields, function (field) {
-                    $rootScope.processElement(field,element);
+//            element["parent"] = parent;
+                element.children = $filter('orderBy')(element.children, 'position');
+                angular.forEach(element.children, function (segmentRefOrGroup) {
+                    $rootScope.processElement(segmentRefOrGroup, element);
                 });
-            }
-        } else if (element.type === "field" || element.type === "component") {
-            $rootScope.parentsMap[element.id] = parent;
+            } else if (element.type === "segmentRef") {
+                if (parent) {
+                    $rootScope.parentsMap[element.id] = parent;
+                }
+                var ref = $rootScope.segmentsMap[element.ref];
+                //element.ref["path"] = ref.name;
+                $rootScope.processElement(ref, element);
+            } else if (element.type === "segment") {
+                if ($rootScope.segments.indexOf(element) === -1) {
+                    element["path"] = element["name"];
+                    $rootScope.segments.push(element);
+                    for (var i = 0; i < element.predicates.length; i++) {
+                        if ($rootScope.segmentPredicates.indexOf(element.predicates[i]) === -1)
+                            $rootScope.segmentPredicates.push(element.predicates[i]);
+                    }
+
+                    for (var i = 0; i < element.conformanceStatements.length; i++) {
+                        if ($rootScope.segmentConformanceStatements.indexOf(element.conformanceStatements[i]) === -1)
+                            $rootScope.segmentConformanceStatements.push(element.conformanceStatements[i]);
+                    }
+                    element.fields = $filter('orderBy')(element.fields, 'position');
+                    angular.forEach(element.fields, function (field) {
+                        $rootScope.processElement(field, element);
+                    });
+                }
+            } else if (element.type === "field" || element.type === "component") {
+                $rootScope.parentsMap[element.id] = parent;
 //            element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
-            element["path"] = parent.path+"."+element.position;
+                element["path"] = parent.path + "." + element.position;
 //            if(element.type === "component") {
 //                element['sub'] = parent.type === 'component';
 //            }
 //            if (angular.isDefined(element.table) && element.table != null) {
-//                var table = $rootScope.tablesMap[element.table.id];
+//                var table = $rootScope.tablesMap[element.table];
 //                if ($rootScope.tables.indexOf(table) === -1) {
 //                    $rootScope.tables.push(table);
 //                }
 //            }
-            $rootScope.processElement($rootScope.datatypesMap[element.datatype.id],element);
-        } else if (element.type === "datatype") {
+                $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+            } else if (element.type === "datatype") {
 //            if ($rootScope.datatypes.indexOf(element) === -1) {
 //                $rootScope.datatypes.push(element);
-                for(var i=0;i<element.predicates.length;i++){
-                	if ($rootScope.datatypePredicates.indexOf(element.predicates[i]) === -1)
-                		$rootScope.datatypePredicates.push(element.predicates[i]);
+                for (var i = 0; i < element.predicates.length; i++) {
+                    if ($rootScope.datatypePredicates.indexOf(element.predicates[i]) === -1)
+                        $rootScope.datatypePredicates.push(element.predicates[i]);
                 }
-                
-                for(var i=0;i<element.conformanceStatements.length;i++){
-                	if ($rootScope.datatypeConformanceStatements.indexOf(element.conformanceStatements[i]) === -1)
-                		$rootScope.datatypeConformanceStatements.push(element.conformanceStatements[i]);
+
+                for (var i = 0; i < element.conformanceStatements.length; i++) {
+                    if ($rootScope.datatypeConformanceStatements.indexOf(element.conformanceStatements[i]) === -1)
+                        $rootScope.datatypeConformanceStatements.push(element.conformanceStatements[i]);
                 }
-                
-                
+
+
                 element.components = $filter('orderBy')(element.components, 'position');
                 angular.forEach(element.components, function (component) {
-                    $rootScope.processElement(component,parent);
+                    $rootScope.processElement(component, parent);
                 });
 //            }
+            }
+        }catch (e){
+           throw e;
         }
     };
 
@@ -722,10 +739,10 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
     $rootScope.findDatatypeRefs = function (datatype, obj) {
         if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
-            if($rootScope.datatypesMap[obj.datatype.id] === datatype && $rootScope.references.indexOf(obj) === -1) {
+            if($rootScope.datatypesMap[obj.datatype] === datatype && $rootScope.references.indexOf(obj) === -1) {
                 $rootScope.references.push(obj);
              }
-            $rootScope.findDatatypeRefs(datatype,$rootScope.datatypesMap[obj.datatype.id]);
+            $rootScope.findDatatypeRefs(datatype,$rootScope.datatypesMap[obj.datatype]);
         }else if(angular.equals(obj.type,'segment')){
             angular.forEach( $rootScope.segments, function (segment) {
                 angular.forEach(segment.fields, function (field) {
@@ -744,11 +761,11 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
     $rootScope.findTableRefs = function (table, obj) {
         if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
         	if(obj.table != undefined){
-        		if(obj.table.id === table.id && $rootScope.references.indexOf(obj) === -1) {
+        		if(obj.table === table.id && $rootScope.references.indexOf(obj) === -1) {
                     $rootScope.references.push(obj);
                  }	
         	}
-            $rootScope.findTableRefs(table,$rootScope.datatypesMap[obj.datatype.id]);
+            $rootScope.findTableRefs(table,$rootScope.datatypesMap[obj.datatype]);
         }else if(angular.equals(obj.type,'segment')){
             angular.forEach( $rootScope.segments, function (segment) {
                 angular.forEach(segment.fields, function (field) {

@@ -35,7 +35,7 @@ public class SegmentRefWriteConverter implements
 		dbo.put("usage", source.getUsage().value());
 		dbo.put("position", source.getPosition());
 		dbo.put("comment", source.getComment());
-		dbo.put("ref", source.getRef().getId());
+		dbo.put("ref", source.getRef());
 		return dbo;
 	}
 

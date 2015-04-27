@@ -297,18 +297,18 @@ public class AccountController {
 
 		Account acc = accountRepository.findOne(id);
 		if (acc == null || acc.isEntityDisabled()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"badAccount", id.toString());
 		} else {
 			// Validation
 			if (account.getEmail() == null || account.getEmail().isEmpty()) {
-				return new ResponseMessage(ResponseMessage.Type.error,
+				return new ResponseMessage(ResponseMessage.Type.danger,
 						"emptyEmail", account.getEmail());
 			}
 			if (!acc.getEmail().equalsIgnoreCase(account.getEmail())
 					&& accountRepository.findByTheAccountsEmail(account
 							.getEmail()) != null) {
-				return new ResponseMessage(ResponseMessage.Type.error,
+				return new ResponseMessage(ResponseMessage.Type.danger,
 						"duplicateEmail", account.getEmail());
 			}
 

@@ -11,12 +11,8 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -39,24 +35,26 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		String p = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/vxu/Profile.xml"));
-		String v = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/vxu/ValueSets_all.xml"));
-		String c = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/vxu/Constraints.xml"));
-		// load VXU profile
-		Profile profile = new ProfileSerializationImpl()
-				.deserializeXMLToProfile(p, v, c);
-		profile.getMetaData().setName("VXU V04 Implementation Guide");
-		profile.getMetaData().setIdentifier("CDC IG_VXU_V04 Release 1.5");
-		profile.getMetaData().setOrgName("NIST");
-		profile.getMetaData().setSubTitle("NIST");
-		profile.getMetaData().setVersion("1.0");
-		profile.getMetaData().setDate("April 21	st 2015");
-		profile.setScope(ProfileScope.PRELOADED);
-		profile.getMetaData().setHl7Version("2.5.1");
-		profileService.save(profile);
+		// String p = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/profiles/vxu/Profile.xml"));
+		// String v = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/profiles/vxu/ValueSets_all.xml"));
+		// String c = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/profiles/vxu/Constraints.xml"));
+		// // load VXU profile
+		// Profile profile = new ProfileSerializationImpl()
+		// .deserializeXMLToProfile(p, v, c);
+		// profile.getMetaData().setName("VXU V04 Implementation Guide");
+		// profile.getMetaData().setIdentifier("CDC IG_VXU_V04 Release 1.5");
+		// profile.getMetaData().setOrgName("NIST");
+		// profile.getMetaData().setSubTitle("NIST");
+		// profile.getMetaData().setVersion("1.0");
+		// DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		// profile.getMetaData().setDate(
+		// dateFormat.format(Calendar.getInstance().getTime()));
+		// profile.setScope(ProfileScope.PRELOADED);
+		// profile.getMetaData().setHl7Version("2.5.1");
+		// profileService.save(profile);
 
 		// profileRepository.saveAndFlush(profile);
 

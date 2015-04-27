@@ -80,6 +80,12 @@ public class ProfileChangeService {
 
 	}
 
+	public List<ProfilePropertySaveError> apply(Profile newProfile,
+			Profile oldProfile, String newValues) {
+
+		return new ArrayList<ProfilePropertySaveError>();
+	}
+
 	public List<ProfilePropertySaveError> apply(String jsonChanges, Profile p)
 			throws ProfileSaveException {
 
@@ -163,16 +169,16 @@ public class ProfileChangeService {
 	private void resolveReferences() {
 		for (Segment segment : p.getSegments().getChildren()) {
 			for (Field f : segment.getFields()) {
-				if (newDatatypesMap.containsKey(f.getDatatype().getId())) {
-					f.setDatatype(newDatatypesMap.get(f.getDatatype().getId()));
+				if (newDatatypesMap.containsKey(f.getDatatype())) {
+					f.setDatatype(newDatatypesMap.get(f.getDatatype()).getId());
 				}
 				if (f.getTable() != null) {
-					if (newTablesMap.containsKey(f.getTable().getId())) {
-						f.setTable(newTablesMap.get(f.getTable().getId()));
+					if (newTablesMap.containsKey(f.getTable())) {
+						f.setTable(newTablesMap.get(f.getTable()).getId());
 					}
 				}
 
-				resolveReferences(f.getDatatype());
+				resolveReferences(p.getDatatypes().findOne(f.getDatatype()));
 			}
 		}
 	}
@@ -181,19 +187,19 @@ public class ProfileChangeService {
 		if (datatype.getComponents() != null
 				&& !datatype.getComponents().isEmpty()) {
 			for (Component component : datatype.getComponents()) {
-				if (newDatatypesMap
-						.containsKey(component.getDatatype().getId())) {
-					component.setDatatype(newDatatypesMap.get(component
-							.getDatatype().getId()));
+				if (newDatatypesMap.containsKey(component.getDatatype())) {
+					component.setDatatype(newDatatypesMap.get(
+							component.getDatatype()).getId());
 				}
 
 				if (component.getTable() != null) {
-					if (newTablesMap.containsKey(component.getTable().getId())) {
-						component.setTable(newTablesMap.get(component
-								.getTable().getId()));
+					if (newTablesMap.containsKey(component.getTable())) {
+						component.setTable(newTablesMap.get(
+								component.getTable()).getId());
 					}
 				}
-				resolveReferences(component.getDatatype());
+				resolveReferences(p.getDatatypes().findOne(
+						component.getDatatype()));
 			}
 		}
 
@@ -740,7 +746,8 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Iterator<Entry<String, JsonNode>> fields = newValue
 							.fields();
-					Component target = p.getSegments().findOneComponent(id);
+					Component target = p.getSegments().findOneComponent(id,
+							p.getDatatypes());
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {

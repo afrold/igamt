@@ -16,7 +16,7 @@ angular.module('igl')
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
                 getNodes: function (parent) {
-                    return parent ? parent.fields ? parent.fields: parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components:parent.children : $rootScope.segment != null ? $rootScope.segment.fields:[];
+                    return parent ? parent.fields ? parent.fields: parent.datatype ? $rootScope.datatypesMap[parent.datatype].components:parent.children : $rootScope.segment != null ? $rootScope.segment.fields:[];
                 },
                 getTemplate: function (node) {
                     return 'SegmentEditTree.html';
@@ -67,7 +67,7 @@ angular.module('igl')
         };
 
         $scope.hasChildren = function(node){
-            return node && node != null && ((node.fields && node.fields.length >0 ) || (node.datatype &&  $rootScope.getDatatype(node.datatype.id) != undefined && $rootScope.getDatatype(node.datatype.id).components && $rootScope.getDatatype(node.datatype.id).components.length > 0));
+            return node && node != null && ((node.fields && node.fields.length >0 ) || (node.datatype &&  $rootScope.getDatatype(node.datatype) && $rootScope.getDatatype(node.datatype).components && $rootScope.getDatatype(node.datatype).components.length > 0));
         };
 
 
@@ -126,14 +126,16 @@ angular.module('igl')
  		};
 
 		$scope.findDTByComponentId = function(componentId){
-            return $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId].datatype: null;
+            return $rootScope.parentsMap && $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId].datatype: null;
 		};
 
-
         $scope.isSub = function(component){
-            return  component.type === 'component' && $rootScope.parentsMap[component.id].type === 'component';
+            return $scope.isSubDT(component);
         };
-		
+
+        $scope.isSubDT = function(component){
+            return component.type === 'component' && $rootScope.parentsMap && $rootScope.parentsMap[component.id] && $rootScope.parentsMap[component.id].type === 'component';
+        };
 
 		$scope.managePredicate = function(node){
 			var modalInstance = $modal.open({
@@ -205,7 +207,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
     $scope.selectedNode = selectedNode;
 	$scope.selectedTable = null;
 	if(selectedNode.table != undefined){
-		$scope.selectedTable = $rootScope.tablesMap[selectedNode.table.id];	
+		$scope.selectedTable = $rootScope.tablesMap[selectedNode.table];
 	}
 	
 	$scope.selectTable = function(table){
@@ -213,8 +215,8 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
 	};
 	
 	$scope.mappingTable = function(){
-		$scope.selectedNode.table = {id:$scope.selectedTable.id};
-		$rootScope.recordChangeForEdit2('field','edit',$scope.selectedNode.id,'table',$scope.selectedNode.table.id);
+		$scope.selectedNode.table = $scope.selectedTable.id;
+		$rootScope.recordChangeForEdit2('field','edit',$scope.selectedNode.id,'table',$scope.selectedNode.table);
 		$scope.ok();
 	};
 
@@ -251,7 +253,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 	};
 	
 	$scope.isNewCP = function(id){
-		if(id < 0) {
+		if($rootScope.isNewObject("predicate", "add",id)) {
 			if($rootScope.changes['predicate'] !== undefined && $rootScope.changes['predicate']['add'] !== undefined) {
     			for (var i = 0; i < $rootScope.changes['predicate']['add'].length; i++) {
         			var tmp = $rootScope.changes['predicate']['add'][i];
@@ -317,7 +319,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 		if(position_1 != null){
 			if($scope.newConstraint.contraintType === 'valued'){
 				var cp = {
-					id : $rootScope.newPredicateFakeId,
+					id : new ObjectId().toString(),
 					constraintId : $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
 					constraintTarget : $scope.selectedNode.position + '[1]',
 					description : 'If ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
@@ -331,7 +333,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock)
 			}else if($scope.newConstraint.contraintType === 'a literal value'){
 				var cp = {
-					id : $rootScope.newPredicateFakeId,
+					id : new ObjectId().toString(),
 					constraintId : $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
 					constraintTarget : $scope.selectedNode.position + '[1]',
 					description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
@@ -345,7 +347,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock)
 			}else if($scope.newConstraint.contraintType === 'one of list values'){
 				var cp = {
-					id : $rootScope.newPredicateFakeId,
+					id :new ObjectId().toString(),
 					constraintId : $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
 					constraintTarget : $scope.selectedNode.position + '[1]',
 					description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
@@ -359,7 +361,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock)
 			}else if($scope.newConstraint.contraintType === 'formatted value'){
 				var cp = {
-					id : $rootScope.newPredicateFakeId,
+					id :new ObjectId().toString(),
 					constraintId : $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
 					constraintTarget : $scope.selectedNode.position + '[1]',
 					description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
@@ -373,7 +375,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock)
 			}else if($scope.newConstraint.contraintType === 'identical to the another node'){
 				var cp = {
-					id : $rootScope.newPredicateFakeId,
+					id : new ObjectId().toString(),
 					constraintId : $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
 					constraintTarget : $scope.selectedNode.position + '[1]',
 					description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
@@ -449,7 +451,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 	
 	
 	$scope.isNewCS = function(id){
-		if(id < 0){
+		if($rootScope.isNewObject("conformanceStatement", "add",id)){
 			if($rootScope.changes['conformanceStatement'] !== undefined && $rootScope.changes['conformanceStatement']['add'] !== undefined) {
     			for (var i = 0; i < $rootScope.changes['conformanceStatement']['add'].length; i++) {
         			var tmp = $rootScope.changes['conformanceStatement']['add'][i];
@@ -528,7 +530,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 		if(position_1 != null){
 			if($scope.newConstraint.contraintType === 'valued'){
 				var cs = {
-					id : $rootScope.newConformanceStatementFakeId,
+					id : new ObjectId().toString(),
 					constraintId : $scope.newConstraint.constraintId,
 					constraintTarget : $scope.selectedNode.position + '[1]',
 					description : position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + '.',
@@ -540,7 +542,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'a literal value'){
 				var cs = {
-					id : $rootScope.newConformanceStatementFakeId,
+					id :new ObjectId().toString(),
 					constraintId : $scope.newConstraint.constraintId,
 					constraintTarget : $scope.selectedNode.position + '[1]',
 					description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
@@ -552,7 +554,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'one of list values'){
 				var cs = {
-					id : $rootScope.newConformanceStatementFakeId,
+					id : new ObjectId().toString(),
 					constraintId : $scope.newConstraint.constraintId,
 					constraintTarget : $scope.selectedNode.position + '[1]',
 					description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
@@ -564,7 +566,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'formatted value'){
 				var cs = {
-					id : $rootScope.newConformanceStatementFakeId,
+					id : new ObjectId().toString(),
 					constraintId : $scope.newConstraint.constraintId,
 					constraintTarget : $scope.selectedNode.position + '[1]',
 					description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
@@ -576,7 +578,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'identical to the another node'){
 				var cs = {
-					id : $rootScope.newConformanceStatementFakeId,
+					id : new ObjectId().toString(),
 					constraintId : $scope.newConstraint.constraintId,
 					constraintTarget : $scope.selectedNode.position + '[1]',
 					description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',

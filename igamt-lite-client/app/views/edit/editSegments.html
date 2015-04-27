@@ -124,9 +124,9 @@
                                              <span ng-bind="node.description"></span>
                                          </span>
                              <span ng-show="node.type !== 'segment'">
-                                         <img ng-show="!node.sub" style="width:15px; height:15px"
+                                         <img ng-show="!isSubDT(node)" style="width:15px; height:15px"
                                               ng-src="images/{{node.type}}.png">
-                                         <img ng-show="node.sub" style="width:15px; height:15px"
+                                         <img ng-show="isSubDT(node)" style="width:15px; height:15px"
                                               ng-src="images/subcomponent.png">
                                          <span ng-show="node.type !== 'segment'">{{node.position}}:{{node.name}}</span>
                                  </span>
@@ -219,24 +219,27 @@
                     name="segment"
                     ng-change="onDatatypeChange(node)"
                     required
-                    ng-model="node.datatype.id"
-                    ng-selected="dt.id === node.datatype.id"
-                    ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype.id].name">
+                    ng-model="node.datatype"
+                    ng-selected="dt.id === node.datatype"
+                    ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype].name">
             </select>
             <!--<a class="point"-->
             <!--ng-click="goToSegment(node.segment)"-->
             <!--ng-bind="node.segment.label"></a>-->
         </div>
         <div ng-show="node.type === 'segment'">-</div>
-        <div ng-show="node.type === 'component' " ng-bind="datatypesMap[node.datatype.id].label">
+        <div ng-show="node.type === 'component'">
+            <button type="button" ng-click="goToDatatype(datatypesMap[node.datatype])"
+                    class="btn btn-info btn-xs">{{datatypesMap[node.datatype].label}}
+            </button>
         </div>
     </td>
     <td class="col-md-1">
         <div ng-show="node.type === 'field'">
-		<span ng-show="node.table != undefined">
+		<span ng-show="node.table != undefined && node.table !== null">
 			<div class="btn-group" dropdown>
-                <button type="button" ng-click="goToTable(tablesMap[node.table.id])" class="btn btn-info btn-xs">
-                    {{tablesMap[node.table.id].mappingId}}
+                <button type="button" ng-click="goToTable(tablesMap[node.table])" class="btn btn-info btn-xs">
+                    {{tablesMap[node.table].mappingId}}
                 </button>
                 <button type="button" class="btn btn-info btn-xs dropdown-toggle" dropdown-toggle>
                     <span class="caret"></span>
@@ -246,11 +249,11 @@
                     <li><a ng-click="mapTable(node)">Change Table</a></li>
                     <li><a ng-click="deleteTable(node)">Release Table</a></li>
                     <li class="divider"></li>
-                    <li><a ng-click="goToTable(tablesMap[node.table.id])">Details</a></li>
+                    <li><a ng-click="goToTable(tablesMap[node.table])">Details</a></li>
                 </ul>
             </div>
         </span>
-											<span ng-show="node.table == undefined && isAvailableDTForTable(datatypesMap[node.datatype.id])">
+											<span ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTable(datatypesMap[node.datatype])">
 												<button ng-click="mapTable(node)" class="btn btn-xs btn-info">
                                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                                 </button>
@@ -258,11 +261,11 @@
         </div>
 
         <div ng-show="node.type === 'component'">
-											<span ng-show="node.table != undefined">
+											<span ng-show="node.table != undefined && node.table != null">
 												<div class="btn-group" dropdown>
-                                                    <button type="button" ng-click="goToTable(tablesMap[node.table.id])"
+                                                    <button type="button" ng-click="goToTable(tablesMap[node.table])"
                                                             class="btn btn-info btn-xs">
-                                                        {{tablesMap[node.table.id].mappingId}}
+                                                        {{tablesMap[node.table].mappingId}}
                                                     </button>
                                                 </div>
                                             </span>
@@ -390,19 +393,19 @@
                                     placeholder="Field"
                                     ng-options="field as field.position for field in segment.fields">
                             </select>
-        				<span ng-show="datatypesMap[newConstraint.field_1.datatype.id].components.length > 0">.
+        				<span ng-show="datatypesMap[newConstraint.field_1.datatype].components.length > 0">.
         					<select name="component" class="igl-input"
                                     placeholder="Component"
                                     ng-change="updateComponent_1()"
                                     ng-model="newConstraint.component_1"
-                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype.id].components">
+                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype].components">
                             </select>
     					</span>
-    					<span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
+    					<span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
         					<select name="subComponent" class="igl-input"
                                     placeholder="SubComponent"
                                     ng-model="newConstraint.subComponent_1"
-                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components">
+                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components">
                             </select>
     					</span>
                         </td>
@@ -538,17 +541,17 @@
                                     ng-model="newConstraint.field_1"
                                     ng-options="field as field.position for field in segment.fields">
                             </select>
-        				<span ng-show="datatypesMap[newConstraint.field_1.datatype.id].components.length > 0">.
+        				<span ng-show="datatypesMap[newConstraint.field_1.datatype].components.length > 0">.
         					<select name="component" class="igl-input"
                                     ng-change="updateComponent_1()"
                                     ng-model="newConstraint.component_1"
-                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype.id].components">
+                                    ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype].components">
                             </select>
     					</span>
-    					<span ng-show="datatypesMap[newConstraint.component_1.datatype.id].components.length > 0">.
+    					<span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
         					<select name="subComponent" class="igl-input"
                                     ng-model="newConstraint.subComponent_1"
-                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype.id].components">
+                                    ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components">
                             </select>
     					</span>
                         </td>
@@ -748,60 +751,8 @@
 </div>
 </div>
 
-<!--<div ng-show="loading" style="text-align: center">-->
-    <!--<img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>-->
-<!--</div>-->
-<!--<div ng-show="!loading">-->
-<!--<div class="row" style="margin-top:10px">-->
-    <!--<ul class="nav nav-tabs">-->
-        <!--<li ng-show="show(segment)"-->
-            <!--ng-repeat="seg in segments"-->
-            <!--ng-class="{'active':segment != null && segment.id === seg.id}"><a-->
-                <!--ng-click="select(seg)">{{seg.name}}</a></li>-->
-    <!--</ul>-->
-<!--</div>-->
-<!--<div>-->
-<!--<span class="igl-title">Edit Segment: {{segment.name}} - {{segment.label}}</span>-->
-<!--<span class="pull-right">-->
-<!--<button title="Close" type="button" class="btn btn-xs btn-primary"-->
-<!--ng-click="close()">-->
-<!--<span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>-->
-<!--</button>-->
-<!--</span>-->
-<!--</span>-->
-<!--</div>-->
-<!--<div>-->
-<!--<span>Selected Segment : {{segment.label}}</span>-->
-<!--<span class="pull-right">-->
-
-<!--&lt;!&ndash;<button title="Clone" type="button" class="btn btn-xs btn-info"&ndash;&gt;-->
-<!--&lt;!&ndash;ng-click="clone()">&ndash;&gt;-->
-<!--&lt;!&ndash;<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>&ndash;&gt;-->
-<!--&lt;!&ndash;</button>&ndash;&gt;-->
-
-<!--&lt;!&ndash;<button title="Reset" type="button" class="btn btn-xs btn-warning"&ndash;&gt;-->
-<!--&lt;!&ndash;ng-click="reset()" ng-disabled="true">&ndash;&gt;-->
-<!--&lt;!&ndash;<span><i class="fa fa-times fa-fw">&nbsp; </i>Reset</span>&ndash;&gt;-->
-<!--&lt;!&ndash;</button>&ndash;&gt;-->
-
-<!--&lt;!&ndash;<button title="Delete" type="button"&ndash;&gt;-->
-<!--&lt;!&ndash;class="btn btn-xs btn-danger"&ndash;&gt;-->
-<!--&lt;!&ndash;ng-click="delete()">&ndash;&gt;-->
-<!--&lt;!&ndash;<span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>&ndash;&gt;-->
-<!--&lt;!&ndash;</button>&ndash;&gt;-->
-<!--</span>-->
-<!--<hr/>-->
-<!--&lt;!&ndash;<button title="Save" type="button" class="btn btn-xs btn-success"&ndash;&gt;-->
-<!--&lt;!&ndash;ng-click="save()">&ndash;&gt;-->
-<!--&lt;!&ndash;<span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Save</span>&ndash;&gt;-->
-<!--&lt;!&ndash;</button>&ndash;&gt;-->
 
 
-<!--</div>-->
-
-<!--<pre>-->
-                        <!--{{changes | json}}-->
-                <!--</pre>-->
-<!--<pre>-->
-<!--{{changes | json}}-->
-<!--</pre>-->
+<pre>
+{{changes | json}}
+</pre>

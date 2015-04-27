@@ -183,10 +183,10 @@
             <tbody>
             <tr ng-repeat="segRefOrGroup in section.data.segRefOrGroups" class="row">
                 <td class="col-md-2">
-                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segmentsMap[segRefOrGroup.ref.id].name"></span>
+                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segmentsMap[segRefOrGroup.ref].name"></span>
                 </td>
                 <td class="col-md-2">
-                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segmentsMap[segRefOrGroup.ref.id].description"></span>
+                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segmentsMap[segRefOrGroup.ref].description"></span>
                     <span ng-show="segRefOrGroup.type === 'group'">
                         -- {{segRefOrGroup.name | uppercase }} begin
                     </span>
@@ -197,7 +197,7 @@
 
                 </td>
                 <td class="col-md-1">
-                    <span ng-show="segRefOrGroup.predicates != null && segRefOrGroup.predicates.length > 0">C({{segRefOrGroup.predicates[0].trueUsage}}, {{segRefOrGroup.predicates[0].falseUsage}})</span>
+                    <span ng-show="segRefOrGroup.predicates != null && segRefOrGroup.predicates.length > 0">C({{segRefOrGroup.predicates[0].trueUsage}}/{{segRefOrGroup.predicates[0].falseUsage}})</span>
                             <span ng-show="!segRefOrGroup.predicates || segRefOrGroup.predicates == null || segRefOrGroup.predicates.length == 0"
                                   ng-bind="segRefOrGroup.usage"></span>
                 </td>
@@ -311,10 +311,10 @@
                     <span>[{{field.minLength}},{{field.maxLength}}]</span>
                 </td>
                 <td class="col-md-1">
-                    <span>{{datatypesMap[field.datatype.id].label}}</span>
+                    <span>{{datatypesMap[field.datatype].label}}</span>
                 </td>
                 <td class="col-md-1">
-                    <span>{{tablesMap[field.table.id].mappingId}}</span>
+                    <span>{{tablesMap[field.table].mappingId}}</span>
                 </td>
                 <td class="col-md-2">
                      <span ng-show="trim" class="constraint_trim">
@@ -435,13 +435,13 @@
                 </td>
 
                 <td class="col-md-1">
-                    <span ng-bind="datatypesMap[component.datatype.id].label"></span>
+                    <span ng-bind="datatypesMap[component.datatype].label"></span>
                 </td>
                 <td class="col-md-1">
                     <span>[{{component.minLenghth}},{{component.maxLength}}]</span>
                 </td>
                 <td class="col-md-1">
-                    <span>{{tablesMap[component.table.id].mappingId}}</span>
+                    <span>{{tablesMap[component.table].mappingId}}</span>
                 </td>
                 <td class="col-md-2">
                 </td>

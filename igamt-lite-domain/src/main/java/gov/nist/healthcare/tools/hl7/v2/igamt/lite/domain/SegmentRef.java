@@ -1,10 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.HashMap;
-
 import org.bson.types.ObjectId;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class SegmentRef extends SegmentRefOrGroup implements Cloneable {
 
@@ -16,16 +12,16 @@ public class SegmentRef extends SegmentRefOrGroup implements Cloneable {
 		this.id = ObjectId.get().toString();
 	}
 
-	@JsonIgnoreProperties({ "label", "fields", "dynamicMappings", "name",
-			"description", "predicates", "conformanceStatements", "comment",
-			"usageNote", "type", "text1", "text2" })
-	private Segment ref;
+	// @JsonIgnoreProperties({ "label", "fields", "dynamicMappings", "name",
+	// "description", "predicates", "conformanceStatements", "comment",
+	// "usageNote", "type", "text1", "text2" })
+	private String ref;
 
-	public Segment getRef() {
+	public String getRef() {
 		return ref;
 	}
 
-	public void setRef(Segment ref) {
+	public void setRef(String ref) {
 		this.ref = ref;
 		// this.refId = ref != null ? ref.getId() : null;
 	}
@@ -44,23 +40,22 @@ public class SegmentRef extends SegmentRefOrGroup implements Cloneable {
 				+ min + ", max=" + max + "]";
 	}
 
-	public SegmentRef clone(HashMap<String, Datatype> dtRecords,
-			HashMap<String, Segment> segmentRecords,
-			HashMap<String, Table> tableRecords)
-			throws CloneNotSupportedException {
+	@Override
+	public SegmentRef clone() throws CloneNotSupportedException {
 		SegmentRef clonedSegmentRef = new SegmentRef();
 		clonedSegmentRef.setComment(comment);
 		clonedSegmentRef.setMax(max);
 		clonedSegmentRef.setMin(min);
 		clonedSegmentRef.setPosition(position);
+		clonedSegmentRef.setRef(ref);
 
-		if (segmentRecords.containsKey(ref.getId())) {
-			clonedSegmentRef.setRef(segmentRecords.get(ref.getId()));
-		} else {
-			Segment dt = ref.clone(dtRecords, tableRecords);
-			clonedSegmentRef.setRef(dt);
-			segmentRecords.put(ref.getId(), dt);
-		}
+		// if (segmentRecords.containsKey(ref.getId())) {
+		// clonedSegmentRef.setRef(segmentRecords.get(ref.getId()));
+		// } else {
+		// Segment dt = ref.clone(dtRecords, tableRecords);
+		// clonedSegmentRef.setRef(dt);
+		// segmentRecords.put(ref.getId(), dt);
+		// }
 		clonedSegmentRef.setUsage(usage);
 
 		return clonedSegmentRef;

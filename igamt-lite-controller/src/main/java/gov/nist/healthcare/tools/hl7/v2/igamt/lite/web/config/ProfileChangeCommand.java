@@ -10,18 +10,30 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 6, 2015
  */
-public class ChangeCommand {
-	private String value;
+public class ProfileChangeCommand {
+	private String changes;
 
-	public String getValue() {
-		return value;
+	private Profile profile;
+
+	public String getChanges() {
+		return changes;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setChanges(String changes) {
+		this.changes = changes;
+	}
+
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 
 }

@@ -708,26 +708,30 @@
             <div ng-show="node.type === 'component' && !isSubDT(node)">
                 <select class="form-control input-sm"
                         name="datatype"
-                        ng-model="node.datatype.id"
+                        ng-model="node.datatype"
                         ng-change="onDatatypeChange(node)"
                         required
-                        ng-selected="dt.id === node.datatype.id"
-                        ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype.id].name">
+                        ng-selected="dt.id === node.datatype"
+                        ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype].name">
                 </select>
                 <!--<a class="point"-->
                 <!--ng-click="goToDatatype(node.datatype)"-->
                 <!--ng-bind="node.datatype.label"></a>-->
             </div>
             <div ng-show="node.type === 'datatype'">-</div>
-            <div ng-show="node.type === 'component' && isSubDT(node)" ng-bind="datatypesMap[node.datatype.id].label"/>
+            <div ng-show="node.type === 'component' && isSubDT(node)">
+                <button type="button" ng-click="goToDatatype(datatypesMap[node.datatype])"
+                        class="btn btn-info btn-xs">{{datatypesMap[node.datatype].label}}
+                </button>
+            </div>
          </td>
 
         <td class="col-md-1">
             <div ng-show="node.type === 'component' && !isSubDT(node)">
-											<span ng-show="node.table != undefined">
+											<span ng-show="node.table != undefined  && node.table !== null">
 												<div class="btn-group" dropdown>
-                                                    <button type="button" ng-click="goToTable(tablesMap[node.table.id])"
-                                                            class="btn btn-info btn-xs">{{tablesMap[node.table.id].mappingId}}
+                                                    <button type="button" ng-click="goToTable(tablesMap[node.table])"
+                                                            class="btn btn-info btn-xs">{{tablesMap[node.table].mappingId}}
                                                     </button>
                                                     <button type="button" class="btn btn-info btn-xs dropdown-toggle"
                                                             dropdown-toggle>
@@ -738,19 +742,19 @@
                                                         <li><a ng-click="mapTable(node)">Change Table</a></li>
                                                         <li><a ng-click="deleteTable(node)">Release Table</a></li>
                                                         <li class="divider"></li>
-                                                        <li><a ng-click="goToTable(tablesMap[node.table.id])">Details</a></li>
+                                                        <li><a ng-click="goToTable(tablesMap[node.table])">Details</a></li>
                                                     </ul>
                                                 </div>
                                             </span>
-											<span ng-show="node.table == undefined  && isAvailableDTForTable(datatypesMap[node.datatype.id])">
+											<span ng-show="(node.table == undefined || node.table == null)  && isAvailableDTForTable(datatypesMap[node.datatype])">
 												<button ng-click="mapTable(node)" class="btn btn-xs btn-info">
                                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                                 </button>
                                             </span>
             </div>
             <div ng-show="node.type === 'component' && isSubDT(node)">
-                <button type="button" ng-click="goToTable(tablesMap[node.table.id])"
-                        class="btn btn-info btn-xs">{{tablesMap[node.table.id].mappingId}}
+                <button type="button" ng-click="goToTable(tablesMap[node.table])"
+                        class="btn btn-info btn-xs" ng-show="node.table !== null && node.table !== undefined">{{tablesMap[node.table].mappingId}}
                 </button>
             </div>
             <div ng-show="node.type === 'datatype'">-</div>

@@ -276,7 +276,7 @@ public class Profile extends DataModel implements java.io.Serializable,
 		clonedProfile.setDatatypes(datatypes.clone(dtRecords, tableRecords));
 		clonedProfile.setSegments(segments.clone(dtRecords, segmentRecords,
 				tableRecords));
-		clonedProfile.setTables(tables.clone(tableRecords));
+		clonedProfile.setTables(tables.clone());
 
 		clonedProfile.setMessages(messages.clone(dtRecords, segmentRecords,
 				tableRecords));

@@ -100,13 +100,15 @@ public class Field extends DataElement implements java.io.Serializable,
 		clonedField.setBindingStrength(bindingStrength);
 		clonedField.setComment(comment);
 		clonedField.setConfLength(confLength);
-		if (dtRecords.containsKey(datatype.getId())) {
-			clonedField.setDatatype(dtRecords.get(datatype.getId()));
-		} else {
-			Datatype dt = datatype.clone(dtRecords, tableRecords);
-			clonedField.setDatatype(dt);
-			dtRecords.put(datatype.getId(), dt);
-		}
+		clonedField.setDatatype(datatype);
+
+		// if (dtRecords.containsKey(datatype)) {
+		// clonedField.setDatatype(dtRecords.get(datatype.getId()));
+		// } else {
+		// Datatype dt = datatype.clone(dtRecords, tableRecords);
+		// clonedField.setDatatype(dt);
+		// dtRecords.put(datatype.getId(), dt);
+		// }
 		clonedField.setItemNo(itemNo);
 		clonedField.setMax(max);
 		clonedField.setMaxLength(maxLength);
@@ -114,22 +116,23 @@ public class Field extends DataElement implements java.io.Serializable,
 		clonedField.setMinLength(minLength);
 		clonedField.setName(name);
 		clonedField.setPosition(position);
-		if (table != null) {
-			if (tableRecords.containsKey(table.getId())) {
-				clonedField.setTable(tableRecords.get(table.getId()));
-			} else {
-				Table dt = table.clone();
-				clonedField.setTable(dt);
-				tableRecords.put(table.getId(), dt);
-			}
-		} else {
-			clonedField.setTable(null);
-		}
+		clonedField.setTable(table);
+
+		// if (table != null) {
+		// if (tableRecords.containsKey(table.getId())) {
+		// clonedField.setTable(tableRecords.get(table.getId()));
+		// } else {
+		// Table dt = table.clone();
+		// clonedField.setTable(dt);
+		// tableRecords.put(table.getId(), dt);
+		// }
+		// } else {
+		// clonedField.setTable(null);
+		// }
 
 		clonedField.setText(text);
 		clonedField.setUsage(usage);
 
 		return clonedField;
 	}
-
 }

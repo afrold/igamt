@@ -21,7 +21,7 @@ angular.module('igl')
                     if(parent && parent != null){
 
                         if(parent.datatype){
-                            var dt =  $rootScope.datatypesMap[parent.datatype.id];
+                            var dt =  $rootScope.datatypesMap[parent.datatype];
                             return dt.components;
 
                         }else{
@@ -34,7 +34,7 @@ angular.module('igl')
                             return [];
                         }
                      }
-//                    return parent && parent != null ? (parent.datatype ? $rootScope.datatypesMap[parent.datatype.id].components: parent.components) : ($rootScope.datatype != null ? $rootScope.datatype.components:[]);
+//                    return parent && parent != null ? (parent.datatype ? $rootScope.datatypesMap[parent.datatype].components: parent.components) : ($rootScope.datatype != null ? $rootScope.datatype.components:[]);
                 },
                 getTemplate: function (node) {
                     return 'DatatypeEditTree.html';
@@ -66,23 +66,23 @@ angular.module('igl')
 
         $scope.flavor = function (datatype) {
             var flavor = angular.copy(datatype);
-            flavor.id = - 1 * (Math.floor(Math.random()*10000000) + 1);
+            flavor.id = new ObjectId().toString();
             flavor.label = $rootScope.createNewFlavorName(datatype.label);
             if(flavor.components != undefined && flavor.components != null && flavor.components.length != 0){
                 for(var i=0; i < flavor.components.length; i++){
-                    flavor.components[i].id = -1* (Math.floor(Math.random()*10000000) + 1);
+                    flavor.components[i].id = new ObjectId().toString();
                  }
             }
             var predicates = flavor['predicates'];
             if( predicates!= undefined && predicates != null && predicates.length != 0){
                 angular.forEach(predicates, function (predicate) {
-                    predicate.id = -1 * (Math.floor(Math.random()*10000000) + 1);
+                    predicate.id = new ObjectId().toString();
                 });
             }
             var conformanceStatements = flavor['conformanceStatements'];
             if(conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0){
                 angular.forEach(conformanceStatements, function (conformanceStatement) {
-                    conformanceStatement.id = -1 * (Math.floor(Math.random()*10000000) + 1);
+                    conformanceStatement.id = new ObjectId().toString();
                 });
             }
             $rootScope.datatypes.splice(0, 0, flavor);
@@ -152,7 +152,7 @@ angular.module('igl')
 
 
         $scope.hasChildren = function(node){
-            return node && node != null && node.datatype &&  $rootScope.getDatatype(node.datatype.id) != undefined && $rootScope.getDatatype(node.datatype.id).components != null && $rootScope.getDatatype(node.datatype.id).components.length >0;
+            return node && node != null && node.datatype &&  $rootScope.getDatatype(node.datatype) != undefined && $rootScope.getDatatype(node.datatype).components != null && $rootScope.getDatatype(node.datatype).components.length >0;
         };
 
 
@@ -385,7 +385,7 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
     $scope.selectedNode = selectedNode;
 	$scope.selectedTable = null;
 	if(selectedNode.table != undefined){
-		$scope.selectedTable = $rootScope.tablesMap[selectedNode.table.id];	
+		$scope.selectedTable = $rootScope.tablesMap[selectedNode.table];
 	}
 	
 	$scope.selectTable = function(table){
@@ -393,7 +393,7 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
 	};
 	
 	$scope.mappingTable = function(){
-		$scope.selectedNode.table = {id:$scope.selectedTable.id};
+		$scope.selectedNode.table = $scope.selectedTable.id;
 		$rootScope.recordChangeForEdit2('component', 'edit', $scope.selectedNode.id, 'table' , $scope.selectedTable.id);
 		$scope.ok();
 	};
@@ -430,7 +430,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 	
 	
 	$scope.isNewCS = function(id){
-		if(id < 0){
+		if($rootScope.isNewObject('conformanceStatement', 'add', id)){
 			if($rootScope.changes['conformanceStatement'] !== undefined && $rootScope.changes['conformanceStatement']['add'] !== undefined) {
     			for (var i = 0; i < $rootScope.changes['conformanceStatement']['add'].length; i++) {
         			var tmp = $rootScope.changes['conformanceStatement']['add'][i];
@@ -493,7 +493,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 		if(position_1 != null){
 			if($scope.newConstraint.contraintType === 'valued'){
 				var cs = {
-						id : $rootScope.newConformanceStatementFakeId,
+						id : new ObjectId().toString(),
 						constraintId : $scope.newConstraint.constraintId,
 						constraintTarget : $scope.selectedNode.position + '[1]',
 						description : position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
@@ -505,7 +505,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'a literal value'){
 				var cs = {
-						id : $rootScope.newConformanceStatementFakeId,
+						id : new ObjectId().toString(),
 						constraintId : $scope.newConstraint.constraintId,
 						constraintTarget : $scope.selectedNode.position + '[1]',
 						description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
@@ -517,7 +517,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'one of list values'){
 				var cs = {
-						id : $rootScope.newConformanceStatementFakeId,
+						id : new ObjectId().toString(),
 						constraintId : $scope.newConstraint.constraintId,
 						constraintTarget : $scope.selectedNode.position + '[1]',
 						description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
@@ -529,7 +529,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'formatted value'){
 				var cs = {
-						id : $rootScope.newConformanceStatementFakeId,
+						id : new ObjectId().toString(),
 						constraintId : $scope.newConstraint.constraintId,
 						constraintTarget : $scope.selectedNode.position + '[1]',
 						description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
@@ -541,7 +541,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 		        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null,'conformanceStatement', newCSBlock);
 			}else if($scope.newConstraint.contraintType === 'identical to the another node'){
 				var cs = {
-						id : $rootScope.newConformanceStatementFakeId,
+						id : new ObjectId().toString(),
 						constraintId : $scope.newConstraint.constraintId,
 						constraintTarget : $scope.selectedNode.position + '[1]',
 						description : 'The value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
@@ -630,7 +630,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 		if(position_1 != null){
 			if($scope.newConstraint.contraintType === 'valued'){
 				var cp = {
-						id : $rootScope.newPredicateFakeId,
+						id : new ObjectId().toString(),
 						constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
 						constraintTarget : $scope.selectedNode.position + '[1]',
 						description : 'If ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType,
@@ -645,7 +645,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 			}else if($scope.newConstraint.contraintType === 'a literal value'){
 				var cp = {
-						id : $rootScope.newPredicateFakeId,
+						id : new ObjectId().toString(),
 						constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
 						constraintTarget : $scope.selectedNode.position + '[1]',
 						description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
@@ -659,7 +659,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 			}else if($scope.newConstraint.contraintType === 'one of list values'){
 				var cp = {
-						id : $rootScope.newPredicateFakeId,
+						id : new ObjectId().toString(),
 						constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
 						constraintTarget : $scope.selectedNode.position + '[1]',
 						description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' ' +  $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
@@ -673,7 +673,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 			}else if($scope.newConstraint.contraintType === 'formatted value'){
 				var cp = {
-						id : $rootScope.newPredicateFakeId,
+						id : new ObjectId().toString(),
 						constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
 						constraintTarget : $scope.selectedNode.position + '[1]',
 						description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
@@ -687,7 +687,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 		        $rootScope.recordChangeForEdit2('predicate', "add", null,'predicate', newCPBlock);
 			}else if($scope.newConstraint.contraintType === 'identical to the another node'){
 				var cp = {
-						id : $rootScope.newPredicateFakeId,
+						id : new ObjectId().toString(),
 						constraintId : $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
 						constraintTarget : $scope.selectedNode.position + '[1]',
 						description : 'If the value of ' + position_1 + ' ' +  $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
@@ -712,7 +712,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
 	};
 	
 	$scope.isNewCP = function(id){
-		if(id < 0) {
+		if($rootScope.isNewObject("predicate","add",id)) {
 			if($rootScope.changes['predicate'] !== undefined && $rootScope.changes['predicate']['add'] !== undefined) {
     			for (var i = 0; i < $rootScope.changes['predicate']['add'].length; i++) {
         			var tmp = $rootScope.changes['predicate']['add'][i];

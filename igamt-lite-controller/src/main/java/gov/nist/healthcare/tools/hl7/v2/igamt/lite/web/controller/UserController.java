@@ -115,14 +115,14 @@ public class UserController {
 		// null ? validEntry = false : validEntry;
 
 		if (!validEntry) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"duplicateInformation", null);
 		}
 
 		// verify account type
 		if (account.getAccountType() == null
 				|| account.getAccountType().isEmpty()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"accountTypeMissing", null);
 		}
 		boolean validAccountType = false;
@@ -132,7 +132,7 @@ public class UserController {
 			}
 		}
 		if (!validAccountType) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"accountTypeNotValid", null);
 		}
 
@@ -151,7 +151,7 @@ public class UserController {
 					generatedPassword, "user," + account.getAccountType());
 			User user = userService.retrieveUserByUsername(generatedUsername);
 		} catch (Exception e) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"errorWithUser", null);
 		}
 
@@ -166,7 +166,7 @@ public class UserController {
 
 			accountRepository.save(registeredAccount);
 		} catch (Exception e) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"errorWithAccount", null);
 		}
 
@@ -214,13 +214,13 @@ public class UserController {
 		Account acc = accountRepository.findOne(accountId);
 
 		if (acc == null || acc.isEntityDisabled()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"badAccount", accountId.toString());
 		}
 
 		// verify account is pending
 		if (!acc.isPending()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"accountIsNotPending", accountId.toString());
 		}
 
@@ -279,7 +279,7 @@ public class UserController {
 				.getUsername()) != null ? validEntry = false : validEntry;
 
 		if (!validEntry) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"duplicateInformation", null);
 		}
 
@@ -288,7 +288,7 @@ public class UserController {
 
 		if (account.getAccountType() == null
 				|| !authAccT.contains(account.getAccountType())) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"accountTypeNotValid", null);
 		}
 
@@ -298,7 +298,7 @@ public class UserController {
 					account.getPassword(), "user," + account.getAccountType());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"errorWithUser", null);
 		}
 
@@ -320,7 +320,7 @@ public class UserController {
 			accountRepository.save(registeredAccount);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"errorWithAccount", null);
 		}
 
@@ -348,12 +348,12 @@ public class UserController {
 				acc = accountRepository.findByTheAccountsEmail(username);
 			}
 		} else {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"noUsernameOrEmail", null);
 		}
 
 		if (acc == null) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"wrongUsernameOrEmail", null);
 		}
 
@@ -407,18 +407,18 @@ public class UserController {
 
 		// check there is a username in the request
 		if (acc.getUsername() == null || acc.getUsername().isEmpty()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"usernameMissing", null);
 		}
 
 		if (acc.getNewPassword() == null || acc.getNewPassword().length() < 4) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"invalidPassword", null);
 		}
 
 		Account onRecordAccount = accountRepository.findOne(accountId);
 		if (!onRecordAccount.getUsername().equals(acc.getUsername())) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"invalidUsername", null);
 		}
 
@@ -445,7 +445,7 @@ public class UserController {
 
 		// check there is a username in the request
 		if (acc.getUsername() == null || acc.getUsername().isEmpty()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"usernameMissing", null);
 		}
 
@@ -458,7 +458,7 @@ public class UserController {
 
 		// check there is a reset request on record
 		if (apr == null) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"noResetRequestFound", null);
 		}
 
@@ -467,7 +467,7 @@ public class UserController {
 		// check that for username, the token in record is the token passed in
 		// request
 		if (!apr.getCurrentToken().equals(token)) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"incorrectToken", null);
 		}
 
@@ -475,7 +475,7 @@ public class UserController {
 
 		// check token is not expired
 		if (apr.isTokenExpired()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"expiredToken", null);
 		}
 
@@ -517,7 +517,7 @@ public class UserController {
 
 		// check there is a username in the request
 		if (racc.getUsername() == null || racc.getUsername().isEmpty()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"usernameMissing", null);
 		}
 
@@ -530,7 +530,7 @@ public class UserController {
 
 		// check there is a reset request on record
 		if (apr == null) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"noResetRequestFound", null);
 		}
 
@@ -539,7 +539,7 @@ public class UserController {
 		// check that for username, the token in record is the token passed in
 		// request
 		if (!apr.getCurrentToken().equals(token)) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"incorrectToken", null);
 		}
 
@@ -547,7 +547,7 @@ public class UserController {
 
 		// check token is not expired
 		if (apr.isTokenExpired()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"expiredToken", null);
 		}
 
@@ -600,13 +600,13 @@ public class UserController {
 	public ResponseMessage retrieveForgottenUsername(@RequestParam String email) {
 
 		if (email == null || email.isEmpty()) {
-			return new ResponseMessage(ResponseMessage.Type.error, "badEmail",
+			return new ResponseMessage(ResponseMessage.Type.danger, "badEmail",
 					email);
 		}
 
 		Account acc = accountRepository.findByTheAccountsEmail(email);
 		if (acc == null) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"noEmailRecords", email);
 		}
 
@@ -628,12 +628,12 @@ public class UserController {
 		Account acc = accountRepository.findOne(id);
 
 		if (acc == null || acc.isEntityDisabled()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"badAccount", id.toString());
 		} else {
 			User u = userService.retrieveUserByUsername(acc.getUsername());
 			if (u == null || !u.isEnabled()) {
-				return new ResponseMessage(ResponseMessage.Type.error,
+				return new ResponseMessage(ResponseMessage.Type.danger,
 						"badAccount", id.toString());
 			} else {
 				logger.debug("^^^^^^^^^^^^^^^^ about to disable user "
