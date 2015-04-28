@@ -10,7 +10,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.ProfileSaveResponseMessage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.ProfileSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.ProfileChangeCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
@@ -81,13 +81,13 @@ public class ProfileController extends CommonController {
 
 	@ExceptionHandler(ProfileSaveException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ProfileSaveResponseMessage profileSaveFailed(ProfileSaveException ex) {
+	public ProfileSaveResponse profileSaveFailed(ProfileSaveException ex) {
 		logger.debug(ex.getMessage());
 		if (ex.getErrors() != null) {
-			return new ProfileSaveResponseMessage(ResponseMessage.Type.danger,
+			return new ProfileSaveResponse(ResponseMessage.Type.danger,
 					"profileNotSaved", null, ex.getErrors());
 		}
-		return new ProfileSaveResponseMessage(ResponseMessage.Type.danger,
+		return new ProfileSaveResponse(ResponseMessage.Type.danger,
 				"profileNotSaved", null);
 	}
 
@@ -172,7 +172,7 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/save", method = RequestMethod.POST)
-	public Profile save(@RequestBody ProfileChangeCommand command,
+	public ProfileSaveResponse save(@RequestBody ProfileChangeCommand command,
 			@PathVariable("id") String id) throws ProfileNotFoundException,
 			UserAccountNotFoundException, ProfileSaveException {
 		User u = userService.getCurrentUser();
@@ -185,8 +185,10 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		return profileService.apply(command.getProfile(), p,
+		Profile saved = profileService.apply(command.getProfile(), p,
 				command.getChanges());
+		return new ProfileSaveResponse(saved.getMetaData().getDate(), saved
+				.getMetaData().getVersion());
 	}
 
 	@RequestMapping(value = "/{id}/export/xml", method = RequestMethod.POST, produces = "text/xml")

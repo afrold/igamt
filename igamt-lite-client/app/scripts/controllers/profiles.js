@@ -268,15 +268,12 @@ angular.module('igl')
             var changes = angular.toJson($rootScope.changes);
             var data = {"changes": changes, "profile": $rootScope.profile};
             $http.post('api/profiles/' + $rootScope.profile.id + '/save', data, {timeout: 60000}).then(function (response) {
+                var saveResponse = angular.fromJson(response.data);
+                $rootScope.profile.metaData.date = saveResponse.date;
+                $rootScope.profile.metaData.version = saveResponse.version;
                 $rootScope.msg().text = "igSaveSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
-                var profile = angular.fromJson(response.data);
-                var index = $rootScope.customIgs.indexOf($rootScope.profile);
-                $rootScope.customIgs[index] = profile;
-                $rootScope.profile = profile;
-                $scope.openProfile($rootScope.profile);
-                $scope.initProfile();
                 waitingDialog.hide();
             }, function (error) {
                 $scope.error = error;
@@ -412,14 +409,13 @@ angular.module('igl').controller('ConfirmProfileCloseCtrl', function ($scope, $m
     };
 
     $scope.saveAndClose = function () {
-        $scope.cancel();
         waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
         var changes = angular.toJson($rootScope.changes);
         var data = {"changes": changes, "profile": $rootScope.profile};
         $http.post('api/profiles/' + $rootScope.profile.id + '/save', data, {timeout: 60000}).then(function (response) {
-            var profile = angular.fromJson(response.data);
-            var index = $rootScope.customIgs.indexOf($rootScope.profile);
-            $rootScope.customIgs[index] = profile;
+            var saveResponse = angular.fromJson(response.data);
+            $rootScope.profile.metaData.date = saveResponse.date;
+            $rootScope.profile.metaData.version = saveResponse.version;
             $scope.close();
             waitingDialog.hide();
         }, function (error) {
@@ -427,7 +423,9 @@ angular.module('igl').controller('ConfirmProfileCloseCtrl', function ($scope, $m
             $rootScope.msg().text = "igSaveFailed";
             $rootScope.msg().type = "error";
             $rootScope.msg().show = true;
-             waitingDialog.hide();
+            $scope.close();
+            waitingDialog.hide();
+
         });
     };
 
