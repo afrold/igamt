@@ -274,6 +274,7 @@ angular.module('igl')
                 $rootScope.msg().text = "igSaveSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
+                $rootScope.clearChanges();
                 waitingDialog.hide();
             }, function (error) {
                 $scope.error = error;
