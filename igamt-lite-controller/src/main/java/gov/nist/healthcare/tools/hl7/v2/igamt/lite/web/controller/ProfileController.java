@@ -5,6 +5,7 @@ import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
@@ -48,6 +49,9 @@ public class ProfileController extends CommonController {
 
 	@Autowired
 	private ProfileService profileService;
+
+	@Autowired
+	private ProfileConfiguration profileConfig;
 
 	@Autowired
 	UserService userService;
@@ -144,6 +148,22 @@ public class ProfileController extends CommonController {
 		p.getMetaData().setDate(
 				dateFormat.format(Calendar.getInstance().getTime()));
 		profileService.save(p);
+		return p;
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public Profile get(@PathVariable("id") String id)
+			throws UserAccountNotFoundException, ProfileNotFoundException {
+		logger.info("fetching profile with id=" + id);
+		User u = userService.getCurrentUser();
+		Account account = accountRepository.findByTheAccountsUsername(u
+				.getUsername());
+		if (account == null)
+			throw new UserAccountNotFoundException();
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
 		return p;
 	}
 
@@ -252,6 +272,11 @@ public class ProfileController extends CommonController {
 				"attachment;filename=Changes.json");
 		FileCopyUtils.copy(IOUtils.toInputStream(jsonChanges.getChanges()),
 				response.getOutputStream());
+	}
+
+	@RequestMapping(value = "/config", method = RequestMethod.GET)
+	public ProfileConfiguration config() {
+		return profileConfig;
 	}
 
 }

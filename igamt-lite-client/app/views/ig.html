@@ -36,14 +36,17 @@
             </h3>
         </div>
         <div class="modal-body">
-            <p>Are you sure you want to delete the profile ? </p>
+            <p>Are you sure you want to delete the profile ? This operation is irreversible</p>
         </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+            <button class="btn btn-default"  ng-disabled="loading" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
             </button>
-            <button class="btn btn-danger" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+            <button class="btn btn-danger"  ng-disabled="loading" ng-click="delete()"><span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
             </button>
+            <div  ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+                 <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+            </div>
         </div>
     </script>
 
@@ -54,19 +57,85 @@
             </h3>
         </div>
         <div class="modal-body">
-            <p>Are you sure you want to close the profile ? You have unsaved changes</p>
+            <p>You currently have unsaved changes. Are you sure you want to close the profile ? All unsaved changes will be lost</p>
         </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+            <button class="btn btn-default"  ng-disabled="loading" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
             </button>
-            <button class="btn btn-warning" ng-click="close()"><span><i class="fa fa-check fa-fw">&nbsp; </i>Close</span>
+            <button class="btn btn-warning"  ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Open</span>
             </button>
-            <button class="btn btn-success" ng-click="saveAndClose()"><span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Save And Close</span>
+            <button class="btn btn-primary"  ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Close</span>
             </button>
+            <div  ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+                 <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+            </div>
         </div>
     </script>
 
+
+    <script type="text/ng-template" id="ConfirmProfileOpenCtrl.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Open Confirmation
+            </h3>
+        </div>
+        <div class="modal-body">
+            <p>You currently have an open profile with unsaved changes. Are you sure you want to open the profile ? All unsaved changes will be lost</p>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" ng-disabled="loading" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+            </button>
+            <button class="btn btn-warning"  ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Open</span>
+            </button>
+            <button class="btn btn-primary"  ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Open</span>
+            </button>
+            <div  ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+                 <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+            </div>
+        </div>
+    </script>
+
+
+    <script type="text/ng-template" id="RichTextCtrl.html">
+    <div class="modal-header modal-wide">
+        <h3 class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} : {{editorTarget.title}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div ng-show="!editorTarget.disabled" text-angular style="width:100%"
+                 name="globalEditor"
+                 ng-model="editorTarget.obj[editorTarget.key]"></div>
+
+            <div ng-show="editorTarget.disabled" style="width:100%"
+                 name="globalEditor"
+                 ng-bind-html="editorTarget.obj[editorTarget.key]"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="close()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
+        </button>
+    </div>
+</script>
+
+    <script type="text/ng-template" id="InputTextCtrl.html">
+        <div class="modal-header">
+            <h3 class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} : {{editorTarget.title}}</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <textarea rows="5" style="width:100%" type="text" ng-show="!editorTarget.disabled"
+                        name="inputEditor" class="form-control" ng-model="editorTarget.obj[editorTarget.key]"
+                        ></textarea>
+                <p ng-show="editorTarget.disabled" ng-bind-html="editorTarget.obj[editorTarget.key]">
+                </p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="close()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
+            </button>
+        </div>
+    </script>
 
 
 </div>

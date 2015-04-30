@@ -216,7 +216,7 @@
                                                         ng-change="recordChangeForEdit2(node.type,'edit',node.id,'usage', node.usage)"
                                                         required
                                                         ng-model="node.usage"
-                                                        ng-options="usage for usage in usages">
+                                                        ng-options="usage for usage in config.usages">
                                                 </select>
                                             </span>
                     <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}, {{node.predicates[0].falseUsage}})</span>
@@ -349,11 +349,4 @@
     </script>
 </div>
 </div>
-
-<br/>
-<pre>
-{{changes | json}}
-</pre>
-
-
 </div>

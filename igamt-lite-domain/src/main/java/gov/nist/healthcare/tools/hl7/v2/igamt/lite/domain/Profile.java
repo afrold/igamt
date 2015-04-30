@@ -75,7 +75,6 @@ public class Profile extends DataModel implements java.io.Serializable,
 		this.segments = segments;
 	}
 
-	//
 	public Datatypes getDatatypes() {
 		return datatypes;
 	}

@@ -71,11 +71,18 @@
 	</div>
 
 
-	<div ng-show="!loading">
+	<div ng-show="!loading" style="margin-top:20px">
+
+        <accordion close-others="true">
+            <accordion-group is-open="accordion.listStatus">
+                <accordion-heading>
+                    <i class="pull-left glyphicon" ng-class="{'fa fa-chevron-down': accordion.listStatus, 'fa fa-chevron-right': !accordion.listStatus}"></i>ValueSets List
+                </accordion-heading>
+                <div class="container">
 		<div class="row">
             <div class="col-md-12">
 			<div class="page-header">
-				<h3>Tables List</h3>
+				<!--<h3>Tables List</h3>-->
 				<span class="pull-right">
 					<button title="Add new Table" type="button" class="btn btn-xs btn-info" ng-click="addTable()">
 						<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Add Table</span>
@@ -128,7 +135,20 @@
 			</div>
                 </div>
 		</div>
+        </div>
+                </accordion-group>
 
+                <accordion-group is-open="accordion.tableStatus">
+
+                <accordion-heading>
+                    <i class="pull-left glyphicon" ng-class="{'fa fa-chevron-down': accordion.tableStatus, 'fa fa-chevron-right': !accordion.tableStatus}"></i> ValueSet Definition
+                </accordion-heading>
+
+                <!--<div ng-show="error !== null">-->
+                <!--<div class="alert alert-danger" role="alert" ng-bind="error"></div>-->
+                <!--<br/>-->
+                <!--</div>-->
+                <div class="container">
 		<div ng-show="loadingSelection" style="text-align: center">
 			<i class="fa fa-spinner fa-spin"></i>
 		</div>
@@ -165,7 +185,7 @@
                                     name="stability"
                                     ng-change="recordChangeTable(table,'stability', table.stability)"
                                     ng-model="table.stability"
-                                    ng-options="stability for stability in tableStabilities">
+                                    ng-options="stability for stability in config.tableStabilities">
                             	</select>
 	                        </div>
 							<div class="col-md-6">
@@ -180,7 +200,7 @@
                                     name="Extensibility"
                                     ng-change="recordChangeTable(table,'extensibility', table.extensibility)"
                                     ng-model="table.extensibility"
-                                    ng-options="extensibility for extensibility in tableExtensibilities">
+                                    ng-options="extensibility for extensibility in config.tableExtensibilities">
                             	</select>
 	                        </div>
 						</div>
@@ -227,14 +247,14 @@
 												<select class="form-control" name="Source"
                                     					ng-change="recordChangeCode(c,'source',c.source, table.id)"
                                     					ng-model="c.source"
-                                    					ng-options="codeSource for codeSource in codeSources">
+                                    					ng-options="codeSource for codeSource in config.codeSources">
                                					</select>
                                				</td>
 											<td class="col-md-2">
 												<select class="form-control" name="Usage"
                                     					ng-change="recordChangeCode(c,'codeUsage',c.codeUsage, table.id)"
                                     					ng-model="c.codeUsage"
-                                    					ng-options="codeUsage for codeUsage in codeUsages">
+                                    					ng-options="codeUsage for codeUsage in config.codeUsages">
                                					</select>
                             				</td>
 											<td class="col-md-1">
@@ -252,6 +272,9 @@
 			</div>
 		</div>
 	</div>
+                </accordion-group>
+            </accordion>
+    </div>
 </div>
 
 

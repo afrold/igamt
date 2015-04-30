@@ -1,6 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-
 ////@Entity
 //@javax.persistence.Table(name = "DATAELEMENT")
 ////@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -70,6 +69,16 @@ public abstract class DataElement extends DataModel implements
 
 	// //@Column(name = "COMMENT")
 	protected String comment;
+
+	protected String text;
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
 
 	// Caution, not persisted. Use at your own risk
 	public String getDatatype() {

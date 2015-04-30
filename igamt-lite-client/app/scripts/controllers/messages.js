@@ -42,7 +42,7 @@ angular.module('igl')
             $rootScope.message = $rootScope.messagesMap[messageId];
             $scope.params.refresh();
             $scope.loadingSelection = false;
-            waitingDialog.hide();
+             waitingDialog.hide();
         };
 
         $scope.close = function(){

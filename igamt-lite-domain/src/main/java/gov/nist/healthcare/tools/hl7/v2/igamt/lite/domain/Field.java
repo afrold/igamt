@@ -33,8 +33,6 @@ public class Field extends DataElement implements java.io.Serializable,
 	// @NotNull
 	private String max;
 
-	private String text;
-
 	public String getItemNo() {
 		return itemNo;
 	}
@@ -65,14 +63,6 @@ public class Field extends DataElement implements java.io.Serializable,
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
 	}
 
 	@Override

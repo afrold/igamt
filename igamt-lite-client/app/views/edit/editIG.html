@@ -1,3 +1,4 @@
+<div ng-show="!loadingProfile">
 <div class="container" ng-show="profile !== null">
     <div class="row">
     <div style="margin-top:20px">
@@ -41,7 +42,7 @@
             </button>
 
             <button title="Delete" type="button" class="btn btn-danger btn-sm"
-                    ng-click="delete(profile.id)">
+                    ng-click="confirmDelete(profile)">
                 <span> <i class="fa fa-trash"></i>&nbsp; Delete</span>
             </button>
 
@@ -124,9 +125,14 @@
     </div>
 
         </div>
+
+<div class="container" ng-show="profile === null" style="text-align:center; padding-top:20px">
+     <p>No Implementation Guide Selected.</p>
+</div>
 </div>
 
-<div class="container" ng-show="profile === null">
-    <br/>
-    No Implementation Guide Selected.
+<div class="container" ng-show="loadingProfile" style="text-align:center; padding-top:20px">
+    <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
+    <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+
 </div>

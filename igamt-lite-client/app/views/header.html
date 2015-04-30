@@ -32,20 +32,22 @@
             <li ng-class="activeWhen(path()=='/account')" ng-show="isAuthenticated()">
                 <a href="#/account"><i class="fa fa-user"></i>&nbsp;<span msg key="navbar.account"></span></a>
             </li>
-            <!--<li ng-class="activeWhen(path()=='/forgotten')" ng-show="!isAuthenticated()">-->
-                <!--<a href="#/forgotten"><div msg key="navbar.forgotten"></div></a>-->
-            <!--</li>-->
+            <li ng-class="activeWhen(path()=='/forgotten')" ng-show="!isAuthenticated()">
+                <a href="#/forgotten"><div msg key="navbar.forgotten"></div></a>
+            </li>
 
-            <!--<li class="dropdown" ng-class="activeIfInList(path(), ['/authors'])" ng-show="isSupervisor() || isAdmin()">-->
-                <!--<a id="reportsmenu" role="button" class="dropdown-toggle" ng-click="isManageOpen=!isManageOpen"><span msg class="msg"key="navbar.manage"></span><b class="caret"></b></a>-->
-                <!--<ul class="dropdown-menu" role="menu" aria-labelledby="reportsmenu">-->
-                    <!--<li><a tabindex="-1" href="#/authors" ng-click="isManageOpen=false"><div msg key="navbar.manage.authors"></div></a></li>-->
-                    <!--<li ng-show="isAdmin()"><a tabindex="-1" href="#/supervisors" ng-click="isManageOpen=false"><span msg key="navbar.manage.supervisors"></span></a></li>-->
-                <!--</ul>-->
-            <!--</li>-->
-            <!--<li ng-class="activeWhen(path()=='/admin')" ng-show="">-->
-                <!--<a href="#/admin"><div msg key="navbar.admin"></div></a>-->
-            <!--</li>-->
+            <li class="dropdown" ng-class="activeIfInList(path(), ['/authors'])" ng-show="isSupervisor() || isAdmin()">
+                <a id="reportsmenu" role="button" class="dropdown-toggle" href="#" ng-click="isManageOpen=!isManageOpen"><span msg class="msg" key="navbar.manage"></span><b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="reportsmenu">
+                    <li><a tabindex="-1" href="#/authors" ng-click="isManageOpen=false"><span msg key="navbar.manage.authors"></span></a></li>
+                    <li ng-show="isAdmin()"><a tabindex="-1" href="#/supervisors" ng-click="isManageOpen=false"><span msg key="navbar.manage.supervisors"></span></a></li>
+                </ul>
+
+
+            </li>
+            <li ng-class="activeWhen(path()=='/admin')" ng-show="">
+                <a href="#/admin"><div msg key="navbar.admin"></div></a>
+            </li>
             <li><div ng-show='showSpinner()'><img src="images/ajax-loader.gif" class="loading"/></div></li>
 
 

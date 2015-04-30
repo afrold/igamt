@@ -10,6 +10,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     $scope.saved = false;
     $scope.message = false;
     $scope.params = null;
+    $scope.accordion = {listStatus:true, tableStatus: false};
     $scope.init = function () {
     };
 
@@ -19,6 +20,8 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         if ($scope.params)
             $scope.params.refresh();
         $scope.loadingSelection = false;
+        $scope.accordion.tableStatus = true;
+        $scope.accordion.listStatus= !$scope.accordion.tableStatus;
     };
 
     $scope.addTable = function () {
@@ -42,6 +45,9 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.tablesMap[newTable.id] = newTable;
         
         $rootScope.table = newTable;
+
+        $scope.accordion.tableStatus = true;
+        $scope.accordion.listStatus= !$scope.accordion.tableStatus;
 
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
 
@@ -129,6 +135,8 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
     $scope.close = function () {
         $rootScope.table = null;
+        $scope.accordion.tableStatus = false;
+        $scope.accordion.listStatus= !$scope.accordion.tableStatus;
     };
 
     $scope.cloneTable = function (table) {
@@ -175,6 +183,8 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.tables.push(newTable);
         $rootScope.table = newTable;
         $rootScope.tablesMap[newTable.id] = newTable;
+        $scope.accordion.tableStatus = true;
+        $scope.accordion.listStatus= !$scope.accordion.tableStatus;
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
     };
 

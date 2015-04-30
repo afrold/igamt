@@ -21,9 +21,7 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountPasswordResetRepository;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,25 +49,25 @@ public class UserController {
 
 	static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-	private List<String> skippedValidationEmails = new ArrayList<String>();
+	// private List<String> skippedValidationEmails = new ArrayList<String>();
 
 	public UserController() {
-		skippedValidationEmails = new ArrayList<String>();
-		skippedValidationEmails.add("haffo@nist.gov");
-		skippedValidationEmails.add("rsnelick@nist.gov");
+		// skippedValidationEmails = new ArrayList<String>();
+		// skippedValidationEmails.add("haffo@nist.gov");
+		// skippedValidationEmails.add("rsnelick@nist.gov");
 	}
 
 	@Value("${unauthenticated.registration.authorized.accountType}")
 	private String AUTHORIZED_ACCOUNT_TYPE_UNAUTH_REG;
 
-	@Value("${server.scheme}")
-	private String SERVER_SCHEME;
-
-	@Value("${server.hostname}")
-	private String SERVER_HOSTNAME;
-
-	@Value("${server.port}")
-	private String SERVER_PORT;
+	// @Value("${server.scheme}")
+	// private String SERVER_SCHEME;
+	//
+	// @Value("${server.hostname}")
+	// private String SERVER_HOSTNAME;
+	//
+	// @Value("${server.port}")
+	// private String SERVER_PORT;
 
 	@Value("${server.email}")
 	private String SERVER_EMAIL;
@@ -186,15 +184,16 @@ public class UserController {
 
 		accountResetPasswordRepository.save(arp);
 
-		String port = "";
-		if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
-			port = ":" + SERVER_PORT;
-		}
+		// String port = "";
+		// if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
+		// port = ":" + SERVER_PORT;
+		// }
 
 		// Generate url and email
-		String url = SERVER_SCHEME + "://" + SERVER_HOSTNAME + port + "/igamt"
-				+ "/#/registerResetPassword?userId=" + account.getUsername()
-				+ "&username=" + account.getUsername() + "&token="
+
+		String url = getUrl(request) + "/#/registerResetPassword?userId="
+				+ account.getUsername() + "&username=" + account.getUsername()
+				+ "&token="
 				+ UriUtils.encodeQueryParam(arp.getCurrentToken(), "UTF-8");
 
 		// generate and send email
@@ -208,7 +207,8 @@ public class UserController {
 	@PreAuthorize("hasRole('supervisor') or hasRole('admin')")
 	@RequestMapping(value = "/accounts/{accountId}/resendregistrationinvite", method = RequestMethod.POST)
 	public ResponseMessage resendRegistrationWhenAuthenticated(
-			@PathVariable Long accountId) throws Exception {
+			@PathVariable Long accountId, HttpServletRequest request)
+			throws Exception {
 
 		// get account
 		Account acc = accountRepository.findOne(accountId);
@@ -238,14 +238,13 @@ public class UserController {
 
 		accountResetPasswordRepository.save(arp);
 
-		// generate url
-		String port = "";
-		if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
-			port = ":" + SERVER_PORT;
-		}
+		// // generate url
+		// String port = "";
+		// if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
+		// port = ":" + SERVER_PORT;
+		// }
 
-		String url = SERVER_SCHEME + "://" + SERVER_HOSTNAME + port
-				+ "/igl-client" + "/#/registerResetPassword?userId="
+		String url = getUrl(request) + "/#/registerResetPassword?userId="
 				+ acc.getUsername() + "&" + "username=" + acc.getUsername()
 				+ "&" + "token="
 				+ UriUtils.encodeQueryParam(arp.getCurrentToken(), "UTF-8");
@@ -272,9 +271,8 @@ public class UserController {
 		boolean validEntry = true;
 		validEntry = userService.userExists(account.getUsername()) == true ? validEntry = false
 				: validEntry;
-		validEntry = !skippedValidationEmails.contains(account.getEmail())
-				&& accountRepository.findByTheAccountsEmail(account.getEmail()) != null ? validEntry = false
-				: validEntry;
+		validEntry = accountRepository.findByTheAccountsEmail(account
+				.getEmail()) != null ? validEntry = false : validEntry;
 		validEntry = accountRepository.findByTheAccountsUsername(account
 				.getUsername()) != null ? validEntry = false : validEntry;
 
@@ -319,6 +317,7 @@ public class UserController {
 
 			accountRepository.save(registeredAccount);
 		} catch (Exception e) {
+			userService.deleteUser(account.getUsername());
 			logger.error(e.getMessage(), e);
 			return new ResponseMessage(ResponseMessage.Type.danger,
 					"errorWithAccount", null);
@@ -374,15 +373,14 @@ public class UserController {
 		arp.setNumberOfReset(arp.getNumberOfReset() + 1);
 
 		accountResetPasswordRepository.save(arp);
-
-		String port = "";
-		if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
-			port = ":" + SERVER_PORT;
-		}
+		//
+		// String port = "";
+		// if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
+		// port = ":" + SERVER_PORT;
+		// }
 
 		// Generate url and email
-		String url = SERVER_SCHEME + "://" + SERVER_HOSTNAME + port
-				+ "/igl-client" + "/#/resetPassword?userId="
+		String url = getUrl(request) + "/#/resetPassword?userId="
 				+ user.getUsername() + "&username=" + acc.getUsername()
 				+ "&token="
 				+ UriUtils.encodeQueryParam(arp.getCurrentToken(), "UTF-8");
@@ -876,5 +874,11 @@ public class UserController {
 		}
 
 		return result.toString();
+	}
+
+	private String getUrl(HttpServletRequest request) {
+		String scheme = request.getScheme();
+		String host = request.getHeader("Host");
+		return scheme + "://" + host + "/igamt";
 	}
 }

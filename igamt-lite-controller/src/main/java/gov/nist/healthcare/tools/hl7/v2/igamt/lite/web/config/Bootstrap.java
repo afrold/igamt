@@ -56,10 +56,6 @@ public class Bootstrap implements InitializingBean {
 		// profile.getMetaData().setHl7Version("2.5.1");
 		// profileService.save(profile);
 
-		// profileRepository.saveAndFlush(profile);
-
-		// System.out.println(profileService.findAllPreloaded().get(0).getId());
-
 	}
 
 }

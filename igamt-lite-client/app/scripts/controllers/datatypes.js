@@ -13,6 +13,7 @@ angular.module('igl')
         $scope.params = null;
         $scope.tmpDatatypes =[].concat($rootScope.datatypes);
         $scope.datatypeCopy = null;
+        $scope.accordion = {listStatus:true, datatypeStatus: false};
         $scope.init = function () {
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
@@ -62,7 +63,9 @@ angular.module('igl')
             if ($scope.params)
                 $scope.params.refresh();
             $scope.loadingSelection = false;
-         };
+            $scope.accordion.datatypeStatus = true;
+            $scope.accordion.listStatus= !$scope.accordion.datatypeStatus;
+        };
 
         $scope.flavor = function (datatype) {
             var flavor = angular.copy(datatype);
@@ -104,6 +107,8 @@ angular.module('igl')
              if ($scope.params)
                 $scope.params.refresh();
             $scope.loadingSelection = false;
+            $scope.accordion.datatypeStatus = false;
+            $scope.accordion.listStatus= !$scope.accordion.datatypeStatus;
         };
 
         $scope.delete = function (datatype) {

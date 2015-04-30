@@ -19,7 +19,6 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.repo.AccountSpecsHelper;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,12 +57,12 @@ public class AccountController {
 
 	public final String DEFAULT_PAGE_SIZE = "0";
 
-	private List<String> skippedValidationEmails = new ArrayList<String>();
+	// private List<String> skippedValidationEmails = new ArrayList<String>();
 
 	public AccountController() {
-		skippedValidationEmails = new ArrayList<String>();
-		skippedValidationEmails.add("haffo@nist.gov");
-		skippedValidationEmails.add("rsnelick@nist.gov");
+		// skippedValidationEmails = new ArrayList<String>();
+		// skippedValidationEmails.add("haffo@nist.gov");
+		// skippedValidationEmails.add("rsnelick@nist.gov");
 	}
 
 	@Inject
@@ -332,8 +331,7 @@ public class AccountController {
 	public ResponseMessage accountEmailExist(@PathVariable String email,
 			@RequestParam(required = false) String email1) {
 
-		if (!skippedValidationEmails.contains(email)
-				&& accountRepository.findByTheAccountsEmail(email) != null) {
+		if (accountRepository.findByTheAccountsEmail(email) != null) {
 			return new ResponseMessage(ResponseMessage.Type.success,
 					"emailFound", email);
 		} else {
