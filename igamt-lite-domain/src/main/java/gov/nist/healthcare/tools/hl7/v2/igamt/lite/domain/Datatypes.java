@@ -114,6 +114,17 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
+	public Datatype findOneDatatype(String label) {
+		if (this.children != null)
+			for (Datatype d : this.children) {
+				if (d.getLabel() == label) {
+					return d;
+				}
+			}
+
+		return null;
+	}
+
 	public Predicate findOnePredicate(String predicateId) {
 		for (Datatype datatype : this.getChildren()) {
 			Predicate predicate = datatype.findOnePredicate(predicateId);

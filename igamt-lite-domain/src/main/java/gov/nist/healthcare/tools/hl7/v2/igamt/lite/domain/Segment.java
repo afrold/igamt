@@ -187,7 +187,7 @@ public class Segment extends DataModel implements java.io.Serializable,
 	@Override
 	public String toString() {
 		return "Segment [id=" + id + "label=" + label + ", name=" + name
-				+ ", description=" + description + "]";
+				+ ", description=" + description +  ", comment=" + comment + "]";
 	}
 
 	public String getText1() {
