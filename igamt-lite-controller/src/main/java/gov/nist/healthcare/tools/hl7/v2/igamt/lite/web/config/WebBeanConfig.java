@@ -36,8 +36,8 @@ public class WebBeanConfig {
 				"2.3", "2.3.1", "2.4", "2.5", "2.5.1", "2.6", "2.7", "2.8" }));
 		config.setSchemaVersions(toSet(new String[] { "1.0", "1.5", "2.0",
 				"2.5" }));
-		config.setUsages(toSet(new String[] { "R", "RE", "O", "C", "CE", "X",
-				"B", "W" }));
+		config.setUsages(toSet(new String[] { "R", "RE", "O", "C", "X", "B",
+				"W" }));
 		config.setCodeUsages(toSet(new String[] { "R", "P", "E" }));
 		config.setCodeSources(toSet(new String[] { "HL7", "Local", "Redefined",
 				"SDO" }));
@@ -48,7 +48,7 @@ public class WebBeanConfig {
 		config.setConstraintTypes(toSet(new String[] { "valued",
 				"a literal value", "one of list values", "formatted value",
 				"identical to the another node" }));
-		config.setConstraintTypes(toSet(new String[] { "ISO-compliant OID",
+		config.setPredefinedFormats(toSet(new String[] { "ISO-compliant OID",
 				"Alphanumeric", "YYYY", "YYYYMM", "YYYYMMDD", "YYYYMMDDhh",
 				"YYYYMMDDhhmm", "YYYYMMDDhhmmss", "YYYYMMDDhhmmss.sss",
 				"YYYY+-ZZZZ", "YYYYMM+-ZZZZ", "YYYYMMDD+-ZZZZ",
