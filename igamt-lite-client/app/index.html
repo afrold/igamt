@@ -1,6 +1,6 @@
 <!doctype html>
 <html class="no-js"
-      lang="en" class="ng-app:igl"  id="ng-app"
+      lang="en" class="ng-app:igl" id="ng-app"
         >
 <head>
     <meta charset="utf-8">
@@ -20,6 +20,9 @@
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/sass-bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/textAngular/src/textAngular.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -28,11 +31,11 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <!--<link rel="stylesheet" href="styles/font-awesome.min.css">-->
-    <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.css" />
-    <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css" />
+    <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.css"/>
+    <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css"/>
 
 </head>
-<body ng-controller="MainCtrl" ng-app="igl"  id="ehrbody">
+<body ng-controller="MainCtrl" ng-app="igl" id="ehrbody">
 <div ng-include="'views/header.html'"></div>
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
@@ -40,14 +43,43 @@
 <![endif]-->
 
 
-
 <!-- Add your site or application content here -->
 <div class="container">
-    <div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">
-        <button type="button" class="close" ng-click="msg().show=false">×</button>
-        <div msg key-expr="msg().text"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10">
+                <div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">
+                    <button type="button" class="close" ng-click="msg().show=false">×</button>
+                    <div msg key-expr="msg().text"></div>
+                </div>
+            </div>
+        </div>
     </div>
     <div ng-view=""></div>
+
+    <script type="text/ng-template" id="warning-dialog.html">
+        <div class="modal-header">
+            <h3>Your session will expire soon!</h3>
+        </div>
+        <div idle-countdown="countdown" ng-init="countdown=30" class="modal-body">
+            <progressbar type="warning" max="30" value="30" animate="false" class="progress-striped active">Your session
+                will expire in {{countdown}} second(s).
+            </progressbar>
+        </div>
+    </script>
+
+    <script type="text/ng-template" id="timedout-dialog.html">
+        <div class="modal-header">
+            <h3>Session Expired</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                Your session has expired due to inactivity for a long time.
+            </p>
+        </div>
+    </script>
+
+
 </div>
 <div ng-include="'views/footer.html'"></div>
 
@@ -61,7 +93,6 @@
 <!--ga('create', 'UA-XXXXX-X');-->
 <!--ga('send', 'pageview');-->
 <!--</script>-->
-
 
 
 <!-- build:js(.) scripts/plugins.js -->
@@ -82,12 +113,21 @@
 <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
 <script src="bower_components/lodash/dist/lodash.compat.js"></script>
 <script src="bower_components/restangular/dist/restangular.js"></script>
+<script src="bower_components/ng-idle/angular-idle.js"></script>
+<script src="bower_components/rangy/rangy-core.min.js"></script>
+<script src="bower_components/rangy/rangy-cssclassapplier.min.js"></script>
+<script src="bower_components/rangy/rangy-selectionsaverestore.min.js"></script>
+<script src="bower_components/rangy/rangy-serializer.min.js"></script>
+<script src="bower_components/textAngular/src/textAngular.js"></script>
+<script src="bower_components/textAngular/src/textAngular-sanitize.js"></script>
+<script src="bower_components/textAngular/src/textAngularSetup.js"></script>
 <!-- endbower -->
 <!-- endbuild -->
 
 <!-- build:js scripts/modules.js -->
 <!--<script src="lib/angular-mocks/angular-mocks.js"></script>-->
 <script src="lib/utils.js"></script>
+<script src="lib/Objectid.js"></script>
 <script src="lib/angular-treetable/js/jquery.treetable.js"></script>
 <script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
 <script src="lib/jquery.i18n.properties-1.0.9.js"></script>
@@ -130,15 +170,14 @@
 <script src="scripts/controllers/issue.js"></script>
 <script src="scripts/controllers/registration.js"></script>
 <script src="scripts/controllers/account.js"></script>
- <script src="scripts/controllers/registerUser.js"></script>
+<script src="scripts/controllers/registerUser.js"></script>
 <script src="scripts/controllers/registerResetPassword.js"></script>
- <script src="scripts/controllers/manageAccounts.js"></script>
+<script src="scripts/controllers/manageAccounts.js"></script>
 <script src="scripts/controllers/manageCEHRTs.js"></script>
 <script src="scripts/services/AccountLoader.js"></script>
 <script src="lib/jquery-file-download.js"></script>
 
 <!-- endbuild -->
-
 
 
 </body>

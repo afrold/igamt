@@ -204,7 +204,7 @@
                                             <img ng-if="node.type === 'group'" style="width:15px; height:15px"
                                                  ng-src="images/group.png">
                                             <a class="point" ng-if="node.type === 'segmentRef'"
-                                               ng-click="goToSegment(node.ref.id)">{{node.position}}.{{segmentsMap[node.ref.id].name}}:{{segmentsMap[node.ref.id].description}}</a>
+                                               ng-click="goToSegment(node.ref)">{{node.position}}.{{segmentsMap[node.ref].name}}:{{segmentsMap[node.ref].description}}</a>
                                             <span ng-if="node.type === 'group'">{{node.position}}.{{node.name}}</span>
                                         </span>
             </td>
@@ -216,7 +216,7 @@
                                                         ng-change="recordChangeForEdit2(node.type,'edit',node.id,'usage', node.usage)"
                                                         required
                                                         ng-model="node.usage"
-                                                        ng-options="usage for usage in usages">
+                                                        ng-options="usage for usage in config.usages">
                                                 </select>
                                             </span>
                     <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}, {{node.predicates[0].falseUsage}})</span>
@@ -247,7 +247,7 @@
             <!--<td class="col-md-1">-->
             <!--<span ng-show="node.type === 'segmentRef'">-->
             <!--<a class="point"-->
-            <!--ng-click="goToSegment(node.ref.id)"-->
+            <!--ng-click="goToSegment(node.ref)"-->
             <!--ng-bind="node.ref.label"></a>-->
             <!--</span>-->
 
@@ -270,12 +270,12 @@
                 <div ng-show="node.type === 'segmentRef'">
 
                                 <span ng-show="trim" class="constraint_trim">
-                                              <span ng-repeat="predicate in node.ref.predicates">
+                                              <span ng-repeat="predicate in segmentsMap[node.ref].predicates">
                                                  {{predicate.description}}
                                               </span>
                                             </span>
                                          <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="predicate in node.ref.predicates">
+                                              <p ng-repeat="predicate in segmentsMap[node.ref].predicates">
                                                   {{predicate.description}}
                                               </p>
                                             </span>
@@ -310,12 +310,12 @@
                 </div>
                 <div ng-show="node.type === 'segmentRef'">
                                 <span ng-show="trim" class="constraint_trim">
-                                               <span ng-repeat="conStatement in node.ref.conformanceStatements">
+                                               <span ng-repeat="conStatement in segmentsMap[node.ref].conformanceStatements">
                                                     {{conStatement.constraintId}} : {{conStatement.description}}
                                              </span>
                                             </span>
                                          <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="conStatement in node.ref.conformanceStatements">
+                                              <p ng-repeat="conStatement in segmentsMap[node.ref].conformanceStatements">
                                                   {{conStatement.constraintId}} : {{conStatement.description}}
                                               </p>
                                             </span>
@@ -349,11 +349,4 @@
     </script>
 </div>
 </div>
-
-<!--<br/>-->
-<!--<pre>-->
-<!--{{changes | json}}-->
-<!--</pre>-->
-
-
 </div>

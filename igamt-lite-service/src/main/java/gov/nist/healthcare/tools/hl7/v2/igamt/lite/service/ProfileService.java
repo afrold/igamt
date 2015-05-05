@@ -36,8 +36,8 @@ public interface ProfileService {
 
 	public Profile clone(Profile p) throws CloneNotSupportedException;
 
-	public Profile apply(String changes, Profile profile)
-			throws ProfileSaveException;
+	public Profile apply(Profile newProfile, Profile oldProfile,
+			String newValues) throws ProfileSaveException;
 
 	public InputStream exportAsPdf(Profile p);
 

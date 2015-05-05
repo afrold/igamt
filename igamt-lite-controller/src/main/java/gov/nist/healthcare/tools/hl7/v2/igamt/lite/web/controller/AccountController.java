@@ -57,6 +57,14 @@ public class AccountController {
 
 	public final String DEFAULT_PAGE_SIZE = "0";
 
+	// private List<String> skippedValidationEmails = new ArrayList<String>();
+
+	public AccountController() {
+		// skippedValidationEmails = new ArrayList<String>();
+		// skippedValidationEmails.add("haffo@nist.gov");
+		// skippedValidationEmails.add("rsnelick@nist.gov");
+	}
+
 	@Inject
 	AccountRepository accountRepository;
 
@@ -288,18 +296,18 @@ public class AccountController {
 
 		Account acc = accountRepository.findOne(id);
 		if (acc == null || acc.isEntityDisabled()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"badAccount", id.toString());
 		} else {
 			// Validation
 			if (account.getEmail() == null || account.getEmail().isEmpty()) {
-				return new ResponseMessage(ResponseMessage.Type.error,
+				return new ResponseMessage(ResponseMessage.Type.danger,
 						"emptyEmail", account.getEmail());
 			}
 			if (!acc.getEmail().equalsIgnoreCase(account.getEmail())
 					&& accountRepository.findByTheAccountsEmail(account
 							.getEmail()) != null) {
-				return new ResponseMessage(ResponseMessage.Type.error,
+				return new ResponseMessage(ResponseMessage.Type.danger,
 						"duplicateEmail", account.getEmail());
 			}
 

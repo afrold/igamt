@@ -247,7 +247,7 @@ public class Segment extends DataModel implements java.io.Serializable,
 		clonedSegment.setDescription(description);
 		clonedSegment.setDynamicMappings(new ArrayList<DynamicMapping>());
 		for (DynamicMapping dm : this.dynamicMappings) {
-			clonedSegment.addDynamicMapping(dm.clone(dtRecords, tableRecords));
+			clonedSegment.addDynamicMapping(dm.clone());
 		}
 		clonedSegment.setFields(new ArrayList<Field>());
 		for (Field f : this.fields) {

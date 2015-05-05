@@ -1,7 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -158,19 +157,21 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 				+ ", description=" + description + "]";
 	}
 
-	public Tables clone(HashMap<String, Table> tableRecords)
-			throws CloneNotSupportedException {
+	@Override
+	public Tables clone() throws CloneNotSupportedException {
 		Tables clonedTables = new Tables();
 		clonedTables.setChildren(new HashSet<Table>());
 		for (Table t : this.children) {
-			clonedTables.addTable(t.clone());
-			if (tableRecords.containsKey(t.getId())) {
-				clonedTables.addTable(tableRecords.get(t.getId()));
-			} else {
-				Table clone = t.clone();
-				tableRecords.put(t.getId(), clone);
-				clonedTables.addTable(clone);
-			}
+			Table clone = t.clone();
+			clone.setId(t.getId());
+			clonedTables.addTable(clone);
+			// if (tableRecords.containsKey(t.getId())) {
+			// clonedTables.addTable(tableRecords.get(t.getId()));
+			// } else {
+			// Table clone = t.clone();
+			// tableRecords.put(t.getId(), clone);
+			// clonedTables.addTable(clone);
+			// }
 		}
 
 		clonedTables.setDescription(description);

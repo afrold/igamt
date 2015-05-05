@@ -68,7 +68,6 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		profile.setType(((String) source.get("type")));
 		profile.setUsageNote(((String) source.get("usageNote")));
 		profile.setScope(ProfileScope.valueOf(((String) source.get("scope"))));
-		profile.setVersion(((Integer) source.get("version")));
 		profile.setChanges(((String) source.get("changes")));
 		profile.setAccountId(source.get("accountId") != null ? ((Long) source
 				.get("accountId")) : null);
@@ -347,8 +346,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		f.setMaxLength((String) source.get("maxLength"));
 		f.setConfLength((String) source.get("confLength"));
 		f.setPosition((Integer) source.get("position"));
-		f.setTable(source.get("table") != null ? findTableById(
-				((String) source.get("table")), tables) : null);
+		f.setTable(((String) source.get("table")));
 		f.setUsage(Usage.valueOf((String) source.get("usage")));
 		f.setBindingLocation((String) source.get("bindingLocation"));
 		f.setBindingStrength((String) source.get("bindingStrength"));
@@ -356,13 +354,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		f.setMin((Integer) source.get("min"));
 		f.setMax((String) source.get("max"));
 		f.setText((String) source.get("text"));
-		Datatype d = findDatatypeById(((String) source.get("datatype")),
-				datatypes);
-		if (d == null) {
-			throw new ProfileConversionException("Datatype "
-					+ (String) source.get("datatype") + " not found");
-		}
-		f.setDatatype(d);
+		f.setDatatype(((String) source.get("datatype")));
 		return f;
 	}
 
@@ -378,21 +370,11 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		c.setMaxLength((String) source.get("maxLength"));
 		c.setConfLength((String) source.get("confLength"));
 		c.setPosition((Integer) source.get("position"));
-		c.setTable(source.get("table") != null ? findTableById(
-				((String) source.get("table")), tables) : null);
+		c.setTable(((String) source.get("table")));
 		c.setUsage(Usage.valueOf((String) source.get("usage")));
 		c.setBindingLocation((String) source.get("bindingLocation"));
 		c.setBindingStrength((String) source.get("bindingStrength"));
-		String datatypeId = ((String) source.get("datatype"));
-		Datatype d = datatypes.findOne(datatypeId);
-		if (d == null) {
-			DBObject dObject = findDatatypeById(datatypeId, datatypesDBObjects);
-			d = datatype(dObject, datatypes, tables, datatypesDBObjects);
-			if (datatypes.findOne(d.getId()) == null) {
-				datatypes.addDatatype(d);
-			}
-		}
-		c.setDatatype(d);
+		c.setDatatype(((String) source.get("datatype")));
 		return c;
 	}
 
@@ -504,7 +486,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		segRef.setPosition((Integer) source.get("position"));
 		segRef.setMin((Integer) source.get("min"));
 		segRef.setMax((String) source.get("max"));
-		segRef.setRef(findSegmentById(((String) source.get("ref")), segments));
+		segRef.setRef((String) source.get("ref"));
 		return segRef;
 	}
 
@@ -562,34 +544,34 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return null;
 	}
 
-	private DBObject findDatatypeById(String id, BasicDBList datatypes)
-			throws ProfileConversionException {
-		if (datatypes != null) {
-			for (Object d : datatypes) {
-				DBObject dbObj = (DBObject) d;
-				String di = ((ObjectId) dbObj.get("_id")).toString();
-				if (id.equals(di)) {
-					return dbObj;
-				}
-			}
-		}
-		throw new ProfileConversionException("Datatype DBObject " + id
-				+ " not found");
-	}
-
-	private Table findTableById(String id, Tables tables) {
-		if (id == null) {
-			return null;
-		}
-		if (tables != null) {
-			for (Table t : tables.getChildren()) {
-				if (t.getId().equals(id)) {
-					return t;
-				}
-			}
-		}
-		throw new IllegalArgumentException("Table " + id
-				+ " not found in the profile");
-	}
+	// private DBObject findDatatypeById(String id, BasicDBList datatypes)
+	// throws ProfileConversionException {
+	// if (datatypes != null) {
+	// for (Object d : datatypes) {
+	// DBObject dbObj = (DBObject) d;
+	// String di = ((ObjectId) dbObj.get("_id")).toString();
+	// if (id.equals(di)) {
+	// return dbObj;
+	// }
+	// }
+	// }
+	// throw new ProfileConversionException("Datatype DBObject " + id
+	// + " not found");
+	// }
+	//
+	// private Table findTableById(String id, Tables tables) {
+	// if (id == null) {
+	// return null;
+	// }
+	// if (tables != null) {
+	// for (Table t : tables.getChildren()) {
+	// if (t.getId().equals(id)) {
+	// return t;
+	// }
+	// }
+	// }
+	// throw new IllegalArgumentException("Table " + id
+	// + " not found in the profile");
+	// }
 
 }

@@ -18,34 +18,76 @@ import java.util.List;
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 16, 2015
  */
-public class ProfileSaveResponseMessage extends ResponseMessage {
+public class ProfileSaveResponse extends ResponseMessage {
 
 	private List<ProfilePropertySaveError> errors = null;
+
+	private String date;
+
+	private String version;
+
+	/**
+	 * @param type
+	 * @param text
+	 * @param resourceId
+	 * @param manualHandle
+	 * @param date
+	 * @param version
+	 */
+	public ProfileSaveResponse(String date, String version) {
+		super(Type.success, null);
+		this.date = date;
+		this.version = version;
+	}
 
 	/**
 	 * @param type
 	 * @param text
 	 */
-	public ProfileSaveResponseMessage(Type type, String text) {
+	public ProfileSaveResponse(Type type, String text) {
 		super(type, text);
 	}
 
-	public ProfileSaveResponseMessage(Type type, String text,
-			String resourceId, String manualHandle,
-			List<ProfilePropertySaveError> errors) {
+	public ProfileSaveResponse(Type type, String text, String resourceId,
+			String manualHandle, List<ProfilePropertySaveError> errors) {
 		super(type, text, resourceId, manualHandle);
 		this.errors = errors;
 	}
 
-	public ProfileSaveResponseMessage(Type type, String text,
-			String resourceId, List<ProfilePropertySaveError> errors) {
+	public ProfileSaveResponse(Type type, String text, String resourceId,
+			List<ProfilePropertySaveError> errors) {
 		super(type, text, resourceId);
 		this.errors = errors;
 	}
 
-	public ProfileSaveResponseMessage(Type type, String text,
+	public ProfileSaveResponse(Type type, String text,
 			List<ProfilePropertySaveError> errors) {
 		super(type, text);
 		this.errors = errors;
 	}
+
+	public List<ProfilePropertySaveError> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<ProfilePropertySaveError> errors) {
+		this.errors = errors;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 }

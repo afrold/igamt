@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('igl')
-.controller('RegisterResetPasswordCtrl', ['$scope', '$resource', '$dialog', '$routeParams', 'isFirstSetup',
-    function ($scope, $resource, $dialog, $routeParams, isFirstSetup) {
+.controller('RegisterResetPasswordCtrl', ['$scope', '$resource', '$modal', '$routeParams', 'isFirstSetup',
+    function ($scope, $resource, $modal, $routeParams, isFirstSetup) {
+        $scope.agreed = false;
         $scope.displayForm = true;
         $scope.isFirstSetup = isFirstSetup;
 
@@ -36,38 +37,39 @@ angular.module('igl')
         $scope.user.userId = $routeParams.userId;
         $scope.user.token = $routeParams.token;
 
-        var dialogOptions = {
-            backdrop: true,
-            keyboard: true,
-            backdropClick: false,
-            controller: 'AgreementCtrl',
-            templateUrl: 'views/agreement.html'
-        };
 
-        $scope.confirmRegistration = function() {
-            $dialog.dialog(angular.extend(dialogOptions))
-            .open()
-            .then(function(result) {
-                if(result) {
-                    var initAcctPass = new AcctInitPassword($scope.user);
-                    initAcctPass.signedConfidentialityAgreement = true;
-                    initAcctPass.$save(function() {
-                        $scope.user.password = '';
-                        $scope.user.passwordConfirm = '';
-                    });
-                }
-                else {
-                    //console.log("Agreement not accepted");
-                }
-            });
-        };
+
+//        $scope.confirmRegistration = function() {
+//            var modalInstance = $modal.open({
+//                backdrop: true,
+//                keyboard: true,
+//                backdropClick: false,
+//                controller: 'AgreementCtrl',
+//                templateUrl: 'views/agreement.html'
+//            });
+//            modalInstance.result.then(function (result) {
+//                if(result) {
+//                    var initAcctPass = new AcctInitPassword($scope.user);
+//                    initAcctPass.signedConfidentialityAgreement = true;
+//                    initAcctPass.$save(function() {
+//                        $scope.user.password = '';
+//                        $scope.user.passwordConfirm = '';
+//                    });
+//                }
+//                else {
+//                    //console.log("Agreement not accepted");
+//                }
+//            });
+//        };
 
         $scope.changePassword = function() {
-            var resetAcctPass = new AcctResetPassword($scope.user);
-            resetAcctPass.$save(function() {
-                $scope.user.password = '';
-                $scope.user.passwordConfirm = '';
-            });
+            if($scope.agreed) {
+                var resetAcctPass = new AcctResetPassword($scope.user);
+                resetAcctPass.$save(function () {
+                    $scope.user.password = '';
+                    $scope.user.passwordConfirm = '';
+                });
+            }
         };
     }
 ]);

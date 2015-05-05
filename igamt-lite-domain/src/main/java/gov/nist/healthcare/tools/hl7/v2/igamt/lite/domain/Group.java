@@ -1,7 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -92,22 +91,20 @@ public class Group extends SegmentRefOrGroup implements Cloneable {
 				+ ", max=" + max + "]";
 	}
 
-	public Group clone(HashMap<String, Datatype> dtRecords,
-			HashMap<String, Segment> segmentRecords,
-			HashMap<String, Table> tableRecords)
-			throws CloneNotSupportedException {
+	@Override
+	public Group clone() throws CloneNotSupportedException {
 		Group clonedGroup = new Group();
 
 		clonedGroup.setChildren(new ArrayList<SegmentRefOrGroup>());
 		for (SegmentRefOrGroup srog : this.children) {
 			if (srog instanceof Group) {
 				Group g = (Group) srog;
-				clonedGroup.addSegmentsOrGroup(g.clone(dtRecords,
-						segmentRecords, tableRecords));
+				clonedGroup.addSegmentsOrGroup(g.clone());
 			} else if (srog instanceof SegmentRef) {
 				SegmentRef sr = (SegmentRef) srog;
-				clonedGroup.addSegmentsOrGroup(sr.clone(dtRecords,
-						segmentRecords, tableRecords));
+				SegmentRef clone = sr.clone();
+				clone.setId(sr.getId());
+				clonedGroup.addSegmentsOrGroup(clone);
 			}
 		}
 

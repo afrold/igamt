@@ -230,12 +230,14 @@ public class Message extends DataModel implements java.io.Serializable,
 		for (SegmentRefOrGroup srog : this.children) {
 			if (srog instanceof Group) {
 				Group g = (Group) srog;
-				clonedMessage.addSegmentRefOrGroup(g.clone(dtRecords,
-						segmentRecords, tableRecords));
+				Group clone = g.clone();
+				clone.setId(g.getId());
+				clonedMessage.addSegmentRefOrGroup(clone);
 			} else if (srog instanceof SegmentRef) {
 				SegmentRef sr = (SegmentRef) srog;
-				clonedMessage.addSegmentRefOrGroup(sr.clone(dtRecords,
-						segmentRecords, tableRecords));
+				SegmentRef clone = sr.clone();
+				clone.setId(sr.getId());
+				clonedMessage.addSegmentRefOrGroup(clone);
 			}
 		}
 

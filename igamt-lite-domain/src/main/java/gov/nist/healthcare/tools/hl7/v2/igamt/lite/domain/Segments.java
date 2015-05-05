@@ -90,11 +90,11 @@ public class Segments implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
-	public Component findOneComponent(String id) {
+	public Component findOneComponent(String id, Datatypes datatypes) {
 		if (this.children != null) {
 			for (Segment m : this.children) {
 				for (Field f : m.getFields()) {
-					Component c = f.getDatatype().findOneComponent(id);
+					Component c = datatypes.findOneComponent(f.getDatatype());
 					if (c != null) {
 						return c;
 					}

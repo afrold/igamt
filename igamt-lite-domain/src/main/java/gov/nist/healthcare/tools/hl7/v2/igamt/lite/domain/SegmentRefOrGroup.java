@@ -2,12 +2,20 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import org.springframework.data.annotation.Id;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = As.EXISTING_PROPERTY, property = "type")
+@JsonSubTypes({
+		@JsonSubTypes.Type(value = Group.class, name = Constant.GROUP),
+		@JsonSubTypes.Type(value = SegmentRef.class, name = Constant.SEGMENTREF) })
 public abstract class SegmentRefOrGroup extends DataModel implements
-		java.io.Serializable, Comparable<SegmentRefOrGroup>  {
+		java.io.Serializable, Comparable<SegmentRefOrGroup> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id 
+	@Id
 	protected String id;
 
 	// //@NotNull
@@ -73,8 +81,9 @@ public abstract class SegmentRefOrGroup extends DataModel implements
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	
+
+	@Override
 	public int compareTo(SegmentRefOrGroup o) {
-		return (int) (this.getPosition() - o.getPosition());
+		return this.getPosition() - o.getPosition();
 	}
 }

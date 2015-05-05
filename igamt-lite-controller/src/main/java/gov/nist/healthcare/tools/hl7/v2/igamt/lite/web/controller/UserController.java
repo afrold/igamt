@@ -49,17 +49,25 @@ public class UserController {
 
 	static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+	// private List<String> skippedValidationEmails = new ArrayList<String>();
+
+	public UserController() {
+		// skippedValidationEmails = new ArrayList<String>();
+		// skippedValidationEmails.add("haffo@nist.gov");
+		// skippedValidationEmails.add("rsnelick@nist.gov");
+	}
+
 	@Value("${unauthenticated.registration.authorized.accountType}")
 	private String AUTHORIZED_ACCOUNT_TYPE_UNAUTH_REG;
 
-	@Value("${server.scheme}")
-	private String SERVER_SCHEME;
-
-	@Value("${server.hostname}")
-	private String SERVER_HOSTNAME;
-
-	@Value("${server.port}")
-	private String SERVER_PORT;
+	// @Value("${server.scheme}")
+	// private String SERVER_SCHEME;
+	//
+	// @Value("${server.hostname}")
+	// private String SERVER_HOSTNAME;
+	//
+	// @Value("${server.port}")
+	// private String SERVER_PORT;
 
 	@Value("${server.email}")
 	private String SERVER_EMAIL;
@@ -105,14 +113,14 @@ public class UserController {
 		// null ? validEntry = false : validEntry;
 
 		if (!validEntry) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"duplicateInformation", null);
 		}
 
 		// verify account type
 		if (account.getAccountType() == null
 				|| account.getAccountType().isEmpty()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"accountTypeMissing", null);
 		}
 		boolean validAccountType = false;
@@ -122,7 +130,7 @@ public class UserController {
 			}
 		}
 		if (!validAccountType) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"accountTypeNotValid", null);
 		}
 
@@ -141,7 +149,7 @@ public class UserController {
 					generatedPassword, "user," + account.getAccountType());
 			User user = userService.retrieveUserByUsername(generatedUsername);
 		} catch (Exception e) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"errorWithUser", null);
 		}
 
@@ -156,7 +164,7 @@ public class UserController {
 
 			accountRepository.save(registeredAccount);
 		} catch (Exception e) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"errorWithAccount", null);
 		}
 
@@ -176,15 +184,16 @@ public class UserController {
 
 		accountResetPasswordRepository.save(arp);
 
-		String port = "";
-		if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
-			port = ":" + SERVER_PORT;
-		}
+		// String port = "";
+		// if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
+		// port = ":" + SERVER_PORT;
+		// }
 
 		// Generate url and email
-		String url = SERVER_SCHEME + "://" + SERVER_HOSTNAME + port + "/igamt"
-				+ "/#/registerResetPassword?userId=" + account.getUsername()
-				+ "&username=" + account.getUsername() + "&token="
+
+		String url = getUrl(request) + "/#/registerResetPassword?userId="
+				+ account.getUsername() + "&username=" + account.getUsername()
+				+ "&token="
 				+ UriUtils.encodeQueryParam(arp.getCurrentToken(), "UTF-8");
 
 		// generate and send email
@@ -198,19 +207,20 @@ public class UserController {
 	@PreAuthorize("hasRole('supervisor') or hasRole('admin')")
 	@RequestMapping(value = "/accounts/{accountId}/resendregistrationinvite", method = RequestMethod.POST)
 	public ResponseMessage resendRegistrationWhenAuthenticated(
-			@PathVariable Long accountId) throws Exception {
+			@PathVariable Long accountId, HttpServletRequest request)
+			throws Exception {
 
 		// get account
 		Account acc = accountRepository.findOne(accountId);
 
 		if (acc == null || acc.isEntityDisabled()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"badAccount", accountId.toString());
 		}
 
 		// verify account is pending
 		if (!acc.isPending()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"accountIsNotPending", accountId.toString());
 		}
 
@@ -228,14 +238,13 @@ public class UserController {
 
 		accountResetPasswordRepository.save(arp);
 
-		// generate url
-		String port = "";
-		if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
-			port = ":" + SERVER_PORT;
-		}
+		// // generate url
+		// String port = "";
+		// if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
+		// port = ":" + SERVER_PORT;
+		// }
 
-		String url = SERVER_SCHEME + "://" + SERVER_HOSTNAME + port
-				+ "/igl-client" + "/#/registerResetPassword?userId="
+		String url = getUrl(request) + "/#/registerResetPassword?userId="
 				+ acc.getUsername() + "&" + "username=" + acc.getUsername()
 				+ "&" + "token="
 				+ UriUtils.encodeQueryParam(arp.getCurrentToken(), "UTF-8");
@@ -268,7 +277,7 @@ public class UserController {
 				.getUsername()) != null ? validEntry = false : validEntry;
 
 		if (!validEntry) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"duplicateInformation", null);
 		}
 
@@ -277,7 +286,7 @@ public class UserController {
 
 		if (account.getAccountType() == null
 				|| !authAccT.contains(account.getAccountType())) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"accountTypeNotValid", null);
 		}
 
@@ -287,7 +296,7 @@ public class UserController {
 					account.getPassword(), "user," + account.getAccountType());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"errorWithUser", null);
 		}
 
@@ -308,8 +317,9 @@ public class UserController {
 
 			accountRepository.save(registeredAccount);
 		} catch (Exception e) {
+			userService.deleteUser(account.getUsername());
 			logger.error(e.getMessage(), e);
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"errorWithAccount", null);
 		}
 
@@ -337,12 +347,12 @@ public class UserController {
 				acc = accountRepository.findByTheAccountsEmail(username);
 			}
 		} else {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"noUsernameOrEmail", null);
 		}
 
 		if (acc == null) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"wrongUsernameOrEmail", null);
 		}
 
@@ -363,15 +373,14 @@ public class UserController {
 		arp.setNumberOfReset(arp.getNumberOfReset() + 1);
 
 		accountResetPasswordRepository.save(arp);
-
-		String port = "";
-		if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
-			port = ":" + SERVER_PORT;
-		}
+		//
+		// String port = "";
+		// if (SERVER_PORT != null && !SERVER_PORT.isEmpty()) {
+		// port = ":" + SERVER_PORT;
+		// }
 
 		// Generate url and email
-		String url = SERVER_SCHEME + "://" + SERVER_HOSTNAME + port
-				+ "/igl-client" + "/#/resetPassword?userId="
+		String url = getUrl(request) + "/#/resetPassword?userId="
 				+ user.getUsername() + "&username=" + acc.getUsername()
 				+ "&token="
 				+ UriUtils.encodeQueryParam(arp.getCurrentToken(), "UTF-8");
@@ -396,18 +405,18 @@ public class UserController {
 
 		// check there is a username in the request
 		if (acc.getUsername() == null || acc.getUsername().isEmpty()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"usernameMissing", null);
 		}
 
 		if (acc.getNewPassword() == null || acc.getNewPassword().length() < 4) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"invalidPassword", null);
 		}
 
 		Account onRecordAccount = accountRepository.findOne(accountId);
 		if (!onRecordAccount.getUsername().equals(acc.getUsername())) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"invalidUsername", null);
 		}
 
@@ -434,7 +443,7 @@ public class UserController {
 
 		// check there is a username in the request
 		if (acc.getUsername() == null || acc.getUsername().isEmpty()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"usernameMissing", null);
 		}
 
@@ -447,7 +456,7 @@ public class UserController {
 
 		// check there is a reset request on record
 		if (apr == null) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"noResetRequestFound", null);
 		}
 
@@ -456,7 +465,7 @@ public class UserController {
 		// check that for username, the token in record is the token passed in
 		// request
 		if (!apr.getCurrentToken().equals(token)) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"incorrectToken", null);
 		}
 
@@ -464,7 +473,7 @@ public class UserController {
 
 		// check token is not expired
 		if (apr.isTokenExpired()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"expiredToken", null);
 		}
 
@@ -506,7 +515,7 @@ public class UserController {
 
 		// check there is a username in the request
 		if (racc.getUsername() == null || racc.getUsername().isEmpty()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"usernameMissing", null);
 		}
 
@@ -519,7 +528,7 @@ public class UserController {
 
 		// check there is a reset request on record
 		if (apr == null) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"noResetRequestFound", null);
 		}
 
@@ -528,7 +537,7 @@ public class UserController {
 		// check that for username, the token in record is the token passed in
 		// request
 		if (!apr.getCurrentToken().equals(token)) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"incorrectToken", null);
 		}
 
@@ -536,7 +545,7 @@ public class UserController {
 
 		// check token is not expired
 		if (apr.isTokenExpired()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"expiredToken", null);
 		}
 
@@ -589,13 +598,13 @@ public class UserController {
 	public ResponseMessage retrieveForgottenUsername(@RequestParam String email) {
 
 		if (email == null || email.isEmpty()) {
-			return new ResponseMessage(ResponseMessage.Type.error, "badEmail",
+			return new ResponseMessage(ResponseMessage.Type.danger, "badEmail",
 					email);
 		}
 
 		Account acc = accountRepository.findByTheAccountsEmail(email);
 		if (acc == null) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"noEmailRecords", email);
 		}
 
@@ -617,12 +626,12 @@ public class UserController {
 		Account acc = accountRepository.findOne(id);
 
 		if (acc == null || acc.isEntityDisabled()) {
-			return new ResponseMessage(ResponseMessage.Type.error,
+			return new ResponseMessage(ResponseMessage.Type.danger,
 					"badAccount", id.toString());
 		} else {
 			User u = userService.retrieveUserByUsername(acc.getUsername());
 			if (u == null || !u.isEnabled()) {
-				return new ResponseMessage(ResponseMessage.Type.error,
+				return new ResponseMessage(ResponseMessage.Type.danger,
 						"badAccount", id.toString());
 			} else {
 				logger.debug("^^^^^^^^^^^^^^^^ about to disable user "
@@ -865,5 +874,11 @@ public class UserController {
 		}
 
 		return result.toString();
+	}
+
+	private String getUrl(HttpServletRequest request) {
+		String scheme = request.getScheme();
+		String host = request.getHeader("Host");
+		return scheme + "://" + host + "/igamt";
 	}
 }

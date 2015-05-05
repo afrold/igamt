@@ -39,9 +39,9 @@
                                 <div msg key='registration.email.error'></div>
                             </h4>
                             <ul>
-                                <li ng-class="emailUnique">
-                                    <div msg key='registration.email.error.notUnique'></div>
-                                </li>
+                                <!--<li ng-class="emailUnique">-->
+                                    <!--<div msg key='registration.email.error.notUnique'></div>-->
+                                <!--</li>-->
                                 <li ng-class="emailValid">
                                     <div msg key='registration.email.error.valid'></div>
                                 </li>
@@ -77,7 +77,7 @@
 
                 <div class="form-group control-group">
                     <label class="control-label col-md-3" for="inputTitle">
-                        <div msg key='registration.employer'></div>
+                        <div msg key='registration.title'></div>
                     </label>
 
                     <div class="controls col-md-7">
@@ -248,7 +248,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-3 col-md-7">
-                        <button class="btn btn-primary" id="createAccountButton" ng-click='registerAccount()'
+                        <button class="btn btn-default" id="createAccountButton" ng-click='registerAccount()'
                                 ng-disabled='!addAccountForm.$valid || registered'>
                             <div msg key="registration.createButton"></div>
                         </button>
@@ -261,6 +261,7 @@
                       <!---->
                     <!--</div>-->
                 <!--</div>-->
+                    </div>
             </form>
         </div>
     </div>

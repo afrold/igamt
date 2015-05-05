@@ -88,12 +88,29 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	public Component findOneComponent(String id) {
 		if (this.children != null)
 			for (Datatype m : this.children) {
-				Component c = m.findOneComponent(id);
+				Component c = findOneComponent(id, m);
 				if (c != null) {
 					return c;
 				}
 			}
 
+		return null;
+	}
+
+	public Component findOneComponent(String id, Datatype datatype) {
+		if (datatype.getComponents() != null) {
+			for (Component c : datatype.getComponents()) {
+				if (c.getId().equals(id)) {
+					return c;
+				} else {
+					Component r = findOneComponent(id,
+							this.findOne(c.getDatatype()));
+					if (r != null) {
+						return r;
+					}
+				}
+			}
+		}
 		return null;
 	}
 
@@ -157,7 +174,8 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 			if (dtRecords.containsKey(dt.getId())) {
 				clonedDatatypes.addDatatype(dtRecords.get(dt.getId()));
 			} else {
-				Datatype clone = dt.clone(dtRecords, tableRecords);
+				Datatype clone = dt.clone();
+				clone.setId(dt.getId());
 				dtRecords.put(dt.getId(), clone);
 				clonedDatatypes.addDatatype(clone);
 			}

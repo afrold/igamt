@@ -1,5 +1,4 @@
-<div ng-controller="DatatypeListCtrl" ng-init="init()" class="container">
-
+<div ng-controller="DatatypeListCtrl" ng-init="init()">
 
 
 <script type="text/ng-template" id="ConfirmDatatypeDeleteCtrl.html">
@@ -65,87 +64,100 @@
 </script>
 
 
-
-
 <div ng-show="loading" style="text-align:center">
     <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
 </div>
 
-<div ng-show="!loading">
-<div class="row" id="datatypeList">
-<div class="col-md-8">
-    <div class="page-header">
-        <h3>Datatypes List</h3>
-    </div>
-    <div class="igl-table">
-        <table st-table="tmpDatatypes" st-safe-src="datatypes"
-               class="table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th colspan="4"><input st-search="" class="form-control" type="text"/></th>
-            </tr>
-            <tr class="tbl-header">
-                <!--<th></th>-->
-                <th st-sort="label">Flavor</th>
-                <th st-sort="name">Base</th>
-                <th st-sort="description">Description</th>
-                <th>
-                </th>
+<div ng-show="!loading"  style="margin-top: 20px">
+<accordion close-others="true">
+<accordion-group is-open="accordion.listStatus">
+    <accordion-heading>
+        <i class="pull-left glyphicon" ng-class="{'fa fa-chevron-down': accordion.listStatus, 'fa fa-chevron-right': !accordion.listStatus}"></i> Datatypes List
+    </accordion-heading>
 
-                <!--<th></th>-->
-            </tr>
-            <!--<tr>-->
-            <!--<th colspan="4">-->
-            <!--<input st-search placeholder="Search" class="input-sm form-control" type="search"/>-->
-            <!--</th>-->
-            <!--</tr>-->
-            </thead>
-            <tbody>
-            <tr st-select-row="row" st-select-mode="single" ng-repeat="row in tmpDatatypes">
-                <!--<td cs-select="row"><input ng-click="select(row)"-->
-                <!--ng-checked="datatype != null && row.id == datatype.id"-->
-                <!--type="radio"></td>-->
-                <td ng-bind="row.label"></td>
-                <td ng-bind-html="row.name"></td>
-                <td ng-bind-html="row.description"></td>
+    <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <!--<div class="page-header">-->
+                <!--<h3>Datatypes List</h3>-->
+            <!--</div>-->
+            <div class="igl-table">
+                <table st-table="tmpDatatypes" st-safe-src="datatypes"
+                       class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th colspan="4"><input st-search="" placeholder="Search Datatype" class="form-control"
+                                               type="text"/></th>
+                    </tr>
+                    <tr class="tbl-header">
+                        <!--<th></th>-->
+                        <th st-sort="label">Flavor</th>
+                        <th st-sort="name">Base</th>
+                        <th st-sort="description">Description</th>
+                        <th>
+                        </th>
 
-                <td>
+                        <!--<th></th>-->
+                    </tr>
+                    <!--<tr>-->
+                    <!--<th colspan="4">-->
+                    <!--<input st-search placeholder="Search" class="input-sm form-control" type="search"/>-->
+                    <!--</th>-->
+                    <!--</tr>-->
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="row in tmpDatatypes">
+                        <!--<td cs-select="row"><input ng-click="select(row)"-->
+                        <!--ng-checked="datatype != null && row.id == datatype.id"-->
+                        <!--type="radio"></td>-->
+                        <td ng-bind="row.label"></td>
+                        <td ng-bind-html="row.name"></td>
+                        <td ng-bind-html="row.description"></td>
+                        <td>
+                            <button title="Edit" type="button"
+                                    class="btn btn-xs btn-primary"
+                                    click-go="/profiles/#datatypeDef"
+                                    ng-click="select(row)">
+                                <span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>
+                            </button>
+                            <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
+                                    click-go="/profiles/#datatypeDef"
+                                    ng-click="flavor(row)">
+                                <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
+                            </button>
+                            <button title="Delete" type="button" class="btn btn-xs btn-danger"
+                                    ng-click="delete(row)">
+                                <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <!--<tfoot>-->
+                    <!--<tr>-->
+                    <!--<td colspan="4" class="text-center">-->
+                    <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--</tfoot>-->
+                </table>
+            </div>
+        </div>
+    </div>
+        </div>
+</accordion-group>
 
-                    <button title="Edit" type="button"
-                            class="btn btn-xs btn-primary"
-                            click-go="/profiles/#datatypeDef"
-                            ng-click="select(row)">
-                        <span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>
-                    </button>
-                    <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
-                            click-go="/profiles/#datatypeDef"
-                            ng-click="flavor(row)">
-                        <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
-                    </button>
-                    <button title="Delete" type="button" class="btn btn-xs btn-danger"
-                            ng-click="delete(row)">
-                        <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-            <!--<tfoot>-->
-            <!--<tr>-->
-            <!--<td colspan="4" class="text-center">-->
-            <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
-            <!--</td>-->
-            <!--</tr>-->
-            <!--</tfoot>-->
-        </table>
-    </div>
-    </div>
-</div>
+<accordion-group heading="Datatype Definition" is-open="accordion.datatypeStatus">
+
+
+<accordion-heading>
+    <i class="pull-left glyphicon" ng-class="{'fa fa-chevron-down': accordion.datatypeStatus, 'fa fa-chevron-right': !accordion.datatypeStatus}"></i> Datatype Definition
+</accordion-heading>
 
 <!--<div ng-show="error !== null">-->
-    <!--<div class="alert alert-danger" role="alert" ng-bind="error"></div>-->
-    <!--<br/>-->
+<!--<div class="alert alert-danger" role="alert" ng-bind="error"></div>-->
+<!--<br/>-->
 <!--</div>-->
-
+<div class="container">
 <div ng-show="loadingSelection" style="text-align:center">
     <i class="fa fa-spinner fa-spin"></i>
 </div>
@@ -161,6 +173,7 @@
             <form role="form">
                 <div class="col-sm-6">
                     <h5>List of Tables</h5>
+
                     <div class="igl-table">
                         <table st-table="displayedTableCollection" st-safe-src="tables"
                                class="table table-striped table-bordered">
@@ -189,7 +202,9 @@
                 </div>
                 <div class="col-sm-6">
 	 			<span ng-show="selectedTable != undefined">
-	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table for {{datatype.name}}.{{selectedNode.position}}</button>
+	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table for
+                        {{datatype.name}}.{{selectedNode.position}}
+                    </button>
 	 				<hr/>
 	 				<div class="row">
                         <div class="col-sm-4">
@@ -326,27 +341,29 @@
                             <select name="verb" class="igl-input"
                                     ng-change=""
                                     ng-model="newConstraint.verb"
-                                    ng-options="constraintVerb for constraintVerb in constraintVerbs">
+                                    ng-options="constraintVerb for constraintVerb in config.constraintVerbs">
                             </select>
                         </td>
                         <td class="col-md-2" colspan="1">
                             <select name="contraintType" class="igl-input"
                                     ng-change=""
                                     ng-model="newConstraint.contraintType"
-                                    ng-options="contraintType for contraintType in contraintTypes">
+                                    ng-options="contraintType for contraintType in config.constraintTypes">
                             </select>
                         </td>
                         <td class="col-md-3" colspan="1">
                 		<span ng-show="newConstraint.contraintType == 'a literal value'">
-                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value"
+                                   placeholder="Literal Value" type="text"/>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'one of list values'">
-                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value"
+                                   placeholder="CSV Value" type="text"/>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'formatted value'">
                 			<select name="format" class="igl-input"
                                     ng-model="newConstraint.value"
-                                    ng-options="predefinedFormat for predefinedFormat in predefinedFormats">
+                                    ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats">
                             </select>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'identical to the another node'">
@@ -367,19 +384,20 @@
                         <td class="col-md-1" colspan="1">
                             <select name="trueUsage" class="igl-input"
                                     ng-model="newConstraint.trueUsage"
-                                    ng-options="usage for usage in usages">
+                                    ng-options="usage for usage in config.usages">
                             </select>
                         </td>
 
                         <td class="col-md-1" colspan="1">
                             <select name="falseUsage" class="igl-input"
                                     ng-model="newConstraint.falseUsage"
-                                    ng-options="usage for usage in usages">
+                                    ng-options="usage for usage in config.usages">
                             </select>
                         </td>
 
                         <td class="col-md-1" colspan="1">
-                            <button title="Update Predicate" type="button" class="btn btn-xs btn-success" ng-click="updatePredicate()">
+                            <button title="Update Predicate" type="button" class="btn btn-xs btn-success"
+                                    ng-click="updatePredicate()">
                                 <span><i class="fa fa-plus-circle fa-fw"></i></span>
                             </button>
                         </td>
@@ -417,7 +435,8 @@
                         <td class="col-md-2">{{c.constraintId}}</td>
                         <td class="col-md-9">{{c.description}}</td>
                         <td class="col-md-1">
-                            <button type="button" ng-click="deleteConformanceStatement(c)" class="btn btn-xs btn-danger">
+                            <button type="button" ng-click="deleteConformanceStatement(c)"
+                                    class="btn btn-xs btn-danger">
                                 <span><i class="fa fa-minus-circle fa-fw"></i></span>
                             </button>
                         </td>
@@ -427,6 +446,7 @@
             </div>
 
             <h5>Define New Conformance Statement of {{segment.name}}.{{selectedNode.position}}</h5>
+
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
                     <thead>
@@ -445,7 +465,8 @@
                     <tbody>
                     <tr>
                         <td class="col-md-2" colspan="1">
-                            <input style="width:100%" class="igl-input"  ng-model="newConstraint.constraintId" placeholder="Type ID" type="text"/>
+                            <input style="width:100%" class="igl-input" ng-model="newConstraint.constraintId"
+                                   placeholder="Type ID" type="text"/>
                         </td>
                         <td class="col-md-3" colspan="1">
                             <span>{{newConstraint.datatype}}.</span>
@@ -465,27 +486,29 @@
                             <select name="verb" class="igl-input"
                                     ng-change=""
                                     ng-model="newConstraint.verb"
-                                    ng-options="constraintVerb for constraintVerb in constraintVerbs">
+                                    ng-options="constraintVerb for constraintVerb in config.constraintVerbs">
                             </select>
                         </td>
                         <td class="col-md-2" colspan="1">
                             <select name="contraintType" class="igl-input"
                                     ng-change=""
                                     ng-model="newConstraint.contraintType"
-                                    ng-options="contraintType for contraintType in contraintTypes">
+                                    ng-options="contraintType for contraintType in config.constraintTypes">
                             </select>
                         </td>
                         <td class="col-md-3" colspan="1">
                 		<span ng-show="newConstraint.contraintType == 'a literal value'">
-                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value"
+                                   placeholder="Literal Value" type="text"/>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'one of list values'">
-                			<input style="width:100%" class="igl-input"  ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value"
+                                   placeholder="CSV Value" type="text"/>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'formatted value'">
                 			<select name="format" class="igl-input"
                                     ng-model="newConstraint.value"
-                                    ng-options="predefinedFormat for predefinedFormat in predefinedFormats">
+                                    ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats">
                             </select>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'identical to the another node'">
@@ -504,7 +527,8 @@
                 		</span>
                         </td>
                         <td class="col-md-1" colspan="1">
-                            <button title="Add Conformance Statement" type="button" class="btn btn-xs btn-success" ng-click="addConformanceStatement()">
+                            <button title="Add Conformance Statement" type="button" class="btn btn-xs btn-success"
+                                    ng-click="addConformanceStatement()">
                                 <span><i class="fa fa-plus-circle fa-fw"></i></span>
                             </button>
                         </td>
@@ -526,19 +550,16 @@
 
         <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
                 ng-click="flavor(datatype)"
-                click-go="/profiles/#datatypeDef"
-                >
+                 >
             <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
         </button>
         <button title="Close" type="button" class="btn btn-xs btn-warning"
-                click-go="/profiles/#datatypeList"
-                ng-click="close()">
+                 ng-click="close()">
             <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
         </button>
         <button title="Delete" type="button"
                 class="btn btn-xs btn-danger"
-                 click-go="/profiles/#datatypeList"
-                ng-click="delete(datatype)">
+                 ng-click="delete(datatype)">
             <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
     </div>
@@ -546,7 +567,7 @@
 
 <hr/>
 
-<div class="row" id="datatypeDef">
+<div class="row">
     <div class="page-header">
         <h3>Datatype Metadata</h3>
     </div>
@@ -563,32 +584,29 @@
             </div>
             <div class="form-group">
                 <label>Comment</label>
-                <textarea style="width:100%" rows="5" class="igl-input form-control"
-                          name="comment"
-                          ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)"
-                          ng-model="datatype.comment"></textarea>
-
+                <input type="text"
+                       ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)"
+                       name="label" class="form-control" ng-model="datatype.comment"
+                >
             </div>
-
         </div>
         <div class="col-sm-6">
             <div class="form-group"
                  ng-class="{'has-error' : datatypeMetaDataForm.label.$invalid && !datatypeMetaDataForm.label.$pristine }">
                 <label>Label</label>
                 <input type="text"
-                        ng-change="recordDatatypeChange('datatype','edit',datatype.id,'label', datatype.label)"
-
+                       ng-change="recordDatatypeChange('datatype','edit',datatype.id,'label', datatype.label)"
                        name="label" class="form-control" ng-model="datatype.label"
                        required>
             </div>
 
             <div class="form-group">
-                <label>Text</label>
-                <textarea style="width:100%" rows="5" class="igl-input form-control"
-                          name="text"
-                           ng-change="recordDatatypeChange('datatype','edit',datatype.id,'text', datatype.text)"
-
-                          ng-model="datatype.text"></textarea>
+                <label>Definition Text</label>
+                <!--<div text-angular="text-angular" name="dtDefinition" ng-change="recordDatatypeChange('datatype','edit',datatype.id,'text', datatype.text)" ng-model="datatype.text"></div>-->
+                <div text-angular style="width:100%"
+                     name="text"
+                     ng-change="recordDatatypeChange('datatype','edit',datatype.id,'text', datatype.text)"
+                     ng-model="datatype.text"></div>
 
             </div>
 
@@ -614,7 +632,7 @@
 <table tt-table tt-params="params" class="table table-striped table-bordered">
     <thead>
     <tr class="tbl-header row">
-        <th class="col-md-4">Name</th>
+        <th class="col-md-3">Name</th>
         <th class="col-md-1">Usage</th>
         <th class="col-md-1">Length</th>
         <th class="col-md-1">ConfLength</th>
@@ -622,6 +640,7 @@
         <th class="col-md-1">ValueSet</th>
         <th class="col-md-1">Predicate</th>
         <th class="col-md-1">Conformance Statement</th>
+        <th class="col-md-1">Def. Text</th>
         <th class="col-md-1">Comment</th>
     </tr>
     </thead>
@@ -629,7 +648,7 @@
 </table>
 <script type="text/ng-template" id="DatatypeEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" class="row">
-        <td class="col-md-4">
+        <td class="col-md-3">
                                         <span ng-show="node.type === 'datatype'">
                                              <span style="width:60%" type="text"
                                                    name="name"
@@ -637,10 +656,12 @@
                                              <span ng-bind="node.description"></span>
                                          </span>
                                         <span ng-show="node.type !== 'datatype'">
-                                            <img  ng-show="node.type === 'component' && !isSubDT(node)" style="width:15px; height:15px"
+                                            <img ng-show="node.type === 'component' && !isSubDT(node)"
+                                                 style="width:15px; height:15px"
                                                  ng-src="images/component.png">
-                                            <img  ng-show="node.type === 'component' && isSubDT(node)" style="width:15px; height:15px"
-                                                  ng-src="images/subcomponent.png">
+                                            <img ng-show="node.type === 'component' && isSubDT(node)"
+                                                 style="width:15px; height:15px"
+                                                 ng-src="images/subcomponent.png">
                                             <span ng-show="node.type !== 'datatype'">{{node.position}}:{{node.name}}</span>
                                         </span>
         </td>
@@ -649,11 +670,11 @@
                                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 <select class="form-control input-sm"
                                                         name="usage"
-                                                         ng-change="recordDatatypeChange('component','edit',node.id,'usage', node.usage)"
+                                                        ng-change="recordDatatypeChange('component','edit',node.id,'usage', node.usage)"
 
                                                         required
                                                         ng-model="node.usage"
-                                                        ng-options="usage for usage in usages">
+                                                        ng-options="usage for usage in config.usages">
                                                 </select>
                                             </span>
                 <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
@@ -671,13 +692,13 @@
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="minLength"
-                                                        ng-change="recordDatatypeChange('component','edit',node.id,'minLength', node.minLength)"
+                                                       ng-change="recordDatatypeChange('component','edit',node.id,'minLength', node.minLength)"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
                                                        ng-model="node.minLength" required ng-minlength="1">
                                                 <input style="width:45%" class="igl-input" type="text"
                                                        name="maxLength"
-                                                        ng-change="recordDatatypeChange('component','edit',node.id,'maxLength', node.maxLength)"
+                                                       ng-change="recordDatatypeChange('component','edit',node.id,'maxLength', node.maxLength)"
 
                                                        ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
@@ -694,7 +715,7 @@
                                             <span ng-form name="{{formName}}">
                                             <input style="width:50%" class="igl-input" type="text"
                                                    name="confLength"
-                                                    ng-change="recordDatatypeChange('component','edit',node.id,'confLength', node.confLength)"
+                                                   ng-change="recordDatatypeChange('component','edit',node.id,'confLength', node.confLength)"
 
                                                    ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
                                                    ng-pattern="/^\d+$/"
@@ -708,26 +729,31 @@
             <div ng-show="node.type === 'component' && !isSubDT(node)">
                 <select class="form-control input-sm"
                         name="datatype"
-                        ng-model="node.datatype.id"
+                        ng-model="node.datatype"
                         ng-change="onDatatypeChange(node)"
                         required
-                        ng-selected="dt.id === node.datatype.id"
-                        ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype.id].name">
+                        ng-selected="dt.id === node.datatype"
+                        ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype].name">
                 </select>
                 <!--<a class="point"-->
                 <!--ng-click="goToDatatype(node.datatype)"-->
                 <!--ng-bind="node.datatype.label"></a>-->
             </div>
             <div ng-show="node.type === 'datatype'">-</div>
-            <div ng-show="node.type === 'component' && isSubDT(node)" ng-bind="datatypesMap[node.datatype.id].label"/>
-         </td>
+            <div ng-show="node.type === 'component' && isSubDT(node)">
+                <button type="button" ng-click="goToDatatype(datatypesMap[node.datatype])"
+                        class="btn btn-info btn-xs">{{datatypesMap[node.datatype].label}}
+                </button>
+            </div>
+        </td>
 
         <td class="col-md-1">
             <div ng-show="node.type === 'component' && !isSubDT(node)">
-											<span ng-show="node.table != undefined">
+											<span ng-show="node.table != undefined  && node.table !== null">
 												<div class="btn-group" dropdown>
-                                                    <button type="button" ng-click="goToTable(tablesMap[node.table.id])"
-                                                            class="btn btn-info btn-xs">{{tablesMap[node.table.id].mappingId}}
+                                                    <button type="button" ng-click="goToTable(tablesMap[node.table])"
+                                                            class="btn btn-info btn-xs">
+                                                        {{tablesMap[node.table].mappingId}}
                                                     </button>
                                                     <button type="button" class="btn btn-info btn-xs dropdown-toggle"
                                                             dropdown-toggle>
@@ -738,69 +764,93 @@
                                                         <li><a ng-click="mapTable(node)">Change Table</a></li>
                                                         <li><a ng-click="deleteTable(node)">Release Table</a></li>
                                                         <li class="divider"></li>
-                                                        <li><a ng-click="goToTable(tablesMap[node.table.id])">Details</a></li>
+                                                        <li><a ng-click="goToTable(tablesMap[node.table])">Details</a>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </span>
-											<span ng-show="node.table == undefined  && isAvailableDTForTable(datatypesMap[node.datatype.id])">
+											<span ng-show="(node.table == undefined || node.table == null)  && isAvailableDTForTable(datatypesMap[node.datatype])">
 												<button ng-click="mapTable(node)" class="btn btn-xs btn-info">
                                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                                 </button>
                                             </span>
             </div>
             <div ng-show="node.type === 'component' && isSubDT(node)">
-                <button type="button" ng-click="goToTable(tablesMap[node.table.id])"
-                        class="btn btn-info btn-xs">{{tablesMap[node.table.id].mappingId}}
+                <button type="button" ng-click="goToTable(tablesMap[node.table])"
+                        class="btn btn-info btn-xs" ng-show="node.table !== null && node.table !== undefined">
+                    {{tablesMap[node.table].mappingId}}
                 </button>
             </div>
             <div ng-show="node.type === 'datatype'">-</div>
         </td>
 
         <td class="col-md-1">
-			    <div ng-show="node.type === 'component' && !isSubDT(node)">
-					<div ng-show="countPredicate(node.position) == 0">
-						<button type="button" ng-click="managePredicate(node)" class="btn btn-info btn-xs">
-							<span><i class="fa fa-plus fa-fw"></i></span>
-            			</button>
-					</div>
-
-					<p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                        <a ng-click="managePredicate(node)">{{p.description}}</a>
-             		</p>
-     			</div>
-				<div ng-show="node.type === 'component' && isSubDT(node)">
-					<p ng-repeat="p in datatypesMap[findDTByComponentId(node.id).id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-            			{{p.description}}
-        			</p>
- 				</div>
-    			<div ng-show="node.type === 'datatype'">-</div>
-        </td>
-        
-		<td class="col-md-1">
-        	<div ng-show="node.type === 'component' && !isSubDT(node)">
-				<div ng-show="countConformanceStatements(node.position) == 0">
-					<button type="button" ng-click="manageConformanceStatement(node)" class="btn btn-info btn-xs">
-						<span><i class="fa fa-plus fa-fw"></i></span>
-            		</button>
-				</div>
-				<p ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
-                	<a ng-click="manageConformanceStatement(node)">{{c.constraintId}}: {{c.description}} </a>
-             	</p>
-     		</div>
-    		<div ng-show="node.type === 'component' && isSubDT(node)">
-             	<p ng-repeat="c in datatypesMap[findDTByComponentId(node.id).id].conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
-            		{{c.constraintId}}: {{c.description}}
-        		</p>
-      		</div>
-    		<div ng-show="node.type === 'datatype'">-</div>
-		</td>
-        
-		<td class="col-md-1">
             <div ng-show="node.type === 'component' && !isSubDT(node)">
-                <input style="width:100%" class="igl-input" type="text"
-                       name="comment"
-                       ng-change="recordDatatypeChange('component','edit',node.id,'comment', node.comment)"
-                       ng-model="node.comment">
+                <div ng-show="countPredicate(node.position) == 0">
+                    <button type="button" ng-click="managePredicate(node)" class="btn btn-info btn-xs">
+                        <span><i class="fa fa-plus fa-fw"></i></span>
+                    </button>
+                </div>
+
+                <p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                    <a ng-click="managePredicate(node)">{{p.description}}</a>
+                </p>
+            </div>
+            <div ng-show="node.type === 'component' && isSubDT(node)">
+                <p ng-repeat="p in datatypesMap[findDTByComponentId(node.id).id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                    {{p.description}}
+                </p>
+            </div>
+            <div ng-show="node.type === 'datatype'">-</div>
+        </td>
+
+        <td class="col-md-1">
+            <div ng-show="node.type === 'component' && !isSubDT(node)">
+                <div ng-show="countConformanceStatements(node.position) == 0">
+                    <button type="button" ng-click="manageConformanceStatement(node)" class="btn btn-info btn-xs">
+                        <span><i class="fa fa-plus fa-fw"></i></span>
+                    </button>
+                </div>
+                <p ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
+                    <a ng-click="manageConformanceStatement(node)">{{c.constraintId}}: {{c.description}} </a>
+                </p>
+            </div>
+            <div ng-show="node.type === 'component' && isSubDT(node)">
+                <p ng-repeat="c in datatypesMap[findDTByComponentId(node.id).id].conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
+                    {{c.constraintId}}: {{c.description}}
+                </p>
+            </div>
+            <div ng-show="node.type === 'datatype'">-</div>
+        </td>
+
+        <td class="col-md-1">
+            <div ng-show="node.type === 'component' && !isSubDT(node)">
+                <button type="button" ng-click="openRichTextDlg(node, 'text','Definition Text', false)" class="btn btn-info btn-xs">
+                    <i ng-show="node.text === '' || node.text === null" class="fa fa-plus fa-fw"></i>
+                    <i ng-show="node.text !== '' && node.text !== null" class="fa fa-pencil fa-fw"></i>
+                </button>
+                <!--<input style="width:100%" class="igl-input" type="text"-->
+                <!--name="comment"-->
+                <!--ng-change="recordDatatypeChange('component','edit',node.id,'comment', node.comment)"-->
+                <!--ng-model="node.comment">-->
+            </div>
+            <div ng-show="node.type === 'datatype'">-</div>
+            <div ng-show="node.type === 'component' && isSubDT(node)">
+                <button type="button" ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="btn btn-info btn-xs">
+                    <i class="fa fa-eye fa-fw"></i>
+                 </button>
+            </div>
+        </td>
+        <td class="col-md-1">
+            <div ng-show="node.type === 'component' && !isSubDT(node)">
+                <button ng-show="node.comment === '' || node.comment === null" type="button" ng-click="openInputTextDlg(node, 'comment', 'Comment',false)" class="btn btn-info btn-xs">
+                    <i class="fa fa-plus fa-fw"></i>
+                 </button>
+                <a  class="point" ng-click="openInputTextDlg(node, 'comment', false)" ng-show="node.comment !== '' && node.comment !== null" ng-bind="node.comment"></a>
+                 <!--<input style="width:100%" class="igl-input" type="text"-->
+                <!--name="comment"-->
+                <!--ng-change="recordDatatypeChange('component','edit',node.id,'comment', node.comment)"-->
+                <!--ng-model="node.comment">-->
             </div>
             <div ng-show="node.type === 'datatype'">-</div>
             <div ng-show="node.type === 'component' && isSubDT(node)">{{node.comment}}
@@ -815,6 +865,9 @@
 </div>
 </div>
 </div>
+</div>
+</accordion-group>
+</accordion>
 </div>
 </div>
 <!--<pre>-->

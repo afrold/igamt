@@ -99,7 +99,7 @@ public class ProfileChangeServiceTest {
 				.toArray(new Message[] {})[0];
 		SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
 		Group group = (Group) message.getChildren().get(5);
-		Segment segment = segmentRef.getRef();
+		Segment segment = p1.getSegments().findOne(segmentRef.getRef());
 		Field field = segment.getFields().get(0);
 		Datatype datatype = p1.getDatatypes().getChildren()
 				.toArray(new Datatype[] {})[0];
@@ -137,7 +137,7 @@ public class ProfileChangeServiceTest {
 			assertEquals("posttest", segment.getText2());
 			assertEquals("desc", segment.getDescription());
 
-			assertEquals(datatype.getId(), field.getDatatype().getId());
+			assertEquals(datatype.getId(), field.getDatatype());
 
 			assertEquals("X", field.getUsage().value());
 			assertEquals(new Integer(10), field.getMin());

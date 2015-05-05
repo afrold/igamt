@@ -46,7 +46,7 @@ public class SerializationTest {
 				.deserializeXMLToProfile(p, v, c);
 
 		Set<Datatype> datatypeSet = new HashSet<Datatype>();
-		collectDatatype(profile, datatypeSet);
+		collectDatatype(profile, datatypeSet, profile.getDatatypes());
 		assertEquals(profile.getDatatypes().getChildren().size(),
 				datatypeSet.size());
 
@@ -59,22 +59,25 @@ public class SerializationTest {
 		// assertEquals(1, profile.getMessages().getMessages().size());
 	}
 
-	private void collectDatatype(Profile p, Set<Datatype> set) {
+	private void collectDatatype(Profile p, Set<Datatype> set,
+			Datatypes datatypes) {
 		for (Segment s : p.getSegments().getChildren()) {
 			for (Field f : s.getFields()) {
-				Datatype d = f.getDatatype();
-				collectDatatype(d, set);
+				Datatype d = datatypes.findOne(f.getDatatype());
+				collectDatatype(d, set, datatypes);
 			}
 		}
 	}
 
-	private void collectDatatype(Datatype d, Set<Datatype> set) {
+	private void collectDatatype(Datatype d, Set<Datatype> set,
+			Datatypes datatypes) {
 		if (!set.contains(d)) {
 			set.add(d);
 		}
 		if (d.getComponents() != null) {
 			for (Component c : d.getComponents()) {
-				collectDatatype(c.getDatatype(), set);
+				Datatype datatype = datatypes.findOne(c.getDatatype());
+				collectDatatype(datatype, set, datatypes);
 			}
 		}
 	}

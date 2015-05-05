@@ -4,28 +4,20 @@
 
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, userInfoService,$modal,$cookies) {
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, userInfoService, $modal, $cookies, $timeout) {
         $scope.loading = false;
         $scope.tmpPreloadedIgs = [].concat($rootScope.preloadedIgs);
-        $scope.tmpCustomIgs =  [].concat($rootScope.customIgs);
+        $scope.tmpCustomIgs = [].concat($rootScope.customIgs);
         $scope.error = null;
         $scope.preloadedLoading = false;
         $scope.customLoading = false;
-//        $scope.preLoadedError = null;
-//        $scope.customError = null;
-        // step: 0; list of profile
-        // step 1: edit profile
-
+        $scope.loadingProfile = false;
+        $scope.toEditProfileId = null;
 
         /**
          * init the controller
          */
         $scope.init = function () {
-//            $rootScope.context.page = $rootScope.pages[0];
-//            $rootScope.selectIgTab(0);
-//            $scope.preloadedError = null;
-//            $scope.customError = null;
-
             $scope.loadProfiles();
 
             /**
@@ -35,55 +27,43 @@ angular.module('igl')
                 $scope.loadProfiles();
             });
 
+            $rootScope.$on('event:openProfileRequest', function (profile) {
+                $scope.openProfile(profile);
+            });
 
         };
 
         $scope.loadProfiles = function () {
             if (userInfoService.isAuthenticated()) {
+                $rootScope.selectIgTab(0);
                 $scope.preloadedLoading = true;
-            $http.get('api/profiles', {timeout: 60000}).then(function (response) {
-                $rootScope.preloadedIgs = angular.fromJson(response.data);
-                $scope.preloadedLoading = false;
-            }, function (error) {
-//                    $scope.preLoadedError = error;
-                $scope.preloadedLoading = false;
-            });
-            $scope.customLoading = true;
-            $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
-                $rootScope.customIgs = angular.fromJson(response.data);
-                $scope.customLoading = false;
-            }, function (error) {
-//                    $scope.customError = error;
-                $scope.customLoading = false;
-            });
+                $http.get('api/profiles', {timeout: 60000}).then(function (response) {
+                    $rootScope.preloadedIgs = angular.fromJson(response.data);
+                    $scope.preloadedLoading = false;
+                }, function (error) {
+                    $scope.preloadedLoading = false;
+                });
+                $scope.customLoading = true;
+                $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
+                    $rootScope.customIgs = angular.fromJson(response.data);
+                    $scope.customLoading = false;
+                }, function (error) {
+                    $scope.customLoading = false;
+                });
+
+                $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {
+                    $rootScope.config = angular.fromJson(response.data);
+                }, function (error) {
+                });
             }
         };
 
-        /**
-         * On 'event:loginConfirmed', resend all the 401 requests.
-         */
-        $rootScope.$on('event:loginConfirmed', function () {
-            var i,
-                requests = $rootScope.requests401,
-                retry = function (req) {
-                    $http(req.config).then(function (response) {
-                        req.deferred.resolve(response);
-                    });
-                };
-
-            for (i = 0; i < requests.length; i += 1) {
-                retry(requests[i]);
-            }
-            $rootScope.requests401 = [];
-        });
-
-        $scope.clone = function (id) {
+        $scope.clone = function (profile) {
             waitingDialog.show('Cloning profile...', {dialogSize: 'sm', progressType: 'info'});
-             $http.post('api/profiles/' + id + '/clone', {timeout: 60000}).then(function (response) {
+            $http.post('api/profiles/' + profile.id + '/clone', {timeout: 60000}).then(function (response) {
                 $rootScope.customIgs.push(angular.fromJson(response.data));
                 waitingDialog.hide();
             }, function (error) {
-//                $scope.error = error;
                 waitingDialog.hide();
             });
         };
@@ -97,18 +77,34 @@ angular.module('igl')
             return null;
         };
 
-        $scope.edit = function (id) {
-            waitingDialog.show('Loading profile...', {dialogSize: 'sm', progressType: 'info'});
-            $scope.openProfile( $scope.findOne(id));
-            waitingDialog.hide();
+        $scope.edit = function (profile) {
+            $scope.toEditProfileId = profile.id;
+            try {
+                if ($rootScope.profile != null && $rootScope.profile === profile) {
+                    $rootScope.selectIgTab(1);
+                } else if ($rootScope.profile && $rootScope.profile != null && $rootScope.hasChanges()) {
+                    $scope.confirmOpen(profile);
+                } else {
+                    $timeout(
+                        function () {
+                            $scope.openProfile(profile);
+                        }, 100);
+                }
+                $scope.toEditProfileId = null;
+            } catch (e) {
+                $rootScope.msg().text = "igInitFailed";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                $scope.loadingProfile = false;
+                $scope.toEditProfileId = null;
+            }
         };
 
         $scope.openProfile = function (profile) {
-            $scope.loading = true;
+            $scope.loadingProfile = true;
+            $rootScope.selectIgTab(1);
             if (profile != null) {
                 $rootScope.initMaps();
-//                $rootScope.context.page = $rootScope.pages[1];
-                $rootScope.selectIgTab(1);
                 $rootScope.profile = profile;
                 $rootScope.messages = $rootScope.profile.messages.children;
                 angular.forEach($rootScope.profile.datatypes.children, function (child) {
@@ -123,7 +119,7 @@ angular.module('igl')
                 }, $rootScope.tablesMap);
 
 
-                $rootScope.segments =[];
+                $rootScope.segments = [];
                 $rootScope.tables = $rootScope.profile.tables.children;
                 $rootScope.datatypes = $rootScope.profile.datatypes.children;
 
@@ -154,8 +150,9 @@ angular.module('igl')
                     $scope.collectData(message, segRefOrGroups, segments, datatypes);
                     $rootScope.messagesData.push({message: message, segRefOrGroups: segRefOrGroups, segments: segments, datatypes: datatypes});
                 });
+                $scope.gotoSection($rootScope.profile.metaData, 'metaData');
+                $scope.loadingProfile = false;
             }
-            $scope.loading = false;
         };
 
 
@@ -182,9 +179,9 @@ angular.module('igl')
                     });
                 } else if (node.type === 'segmentRef') {
                     segRefOrGroups.push(node);
-                    $scope.collectData($rootScope.segmentsMap[node.ref.id], segRefOrGroups, segments, datatypes);
+                    $scope.collectData($rootScope.segmentsMap[node.ref], segRefOrGroups, segments, datatypes);
                 } else if (node.type === 'component' || node.type === 'subcomponent' || node.type === 'field') {
-                    $scope.collectData($rootScope.datatypesMap[node.datatype.id], segRefOrGroups, segments, datatypes);
+                    $scope.collectData($rootScope.datatypesMap[node.datatype], segRefOrGroups, segments, datatypes);
                 } else if (node.type === 'datatype') {
                     if (datatypes.indexOf(node) === -1) {
                         datatypes.push(node);
@@ -196,14 +193,6 @@ angular.module('igl')
                     }
                 }
             }
-        };
-
-        $scope.delete = function (id) {
-//            waitingDialog.show('Deleting profile...', {dialogSize: 'sm', progressType: 'danger'});
-            var profile = $scope.findOne(id);
-            if (profile != null) {
-                $scope.confirmDelete(profile);
-             }
         };
 
         $scope.confirmDelete = function (profile) {
@@ -223,6 +212,33 @@ angular.module('igl')
         };
 
 
+        $scope.confirmClose = function () {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmProfileCloseCtrl.html',
+                controller: 'ConfirmProfileCloseCtrl'
+            });
+            modalInstance.result.then(function () {
+            }, function () {
+            });
+        };
+
+
+        $scope.confirmOpen = function (profile) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmProfileOpenCtrl.html',
+                controller: 'ConfirmProfileOpenCtrl',
+                resolve: {
+                    profileToOpen: function () {
+                        return profile;
+                    }
+                }
+            });
+            modalInstance.result.then(function (profile) {
+                $scope.openProfile(profile);
+            }, function () {
+            });
+        };
+
 
         $scope.exportAs = function (id, format) {
             var form = document.createElement("form");
@@ -239,72 +255,19 @@ angular.module('igl')
 //            httpHeaders.common['X-XSRF-TOKEN'] = $cookies['XSRF-TOKEN'];
 //            httpHeaders.common['JSSESSIONID'] = $cookies['JSSESSIONID'];
             form.submit();
-
-
-//            $.fileDownload('api/profiles/' + id + '/export/' + format,
-//                {
-//                    httpMethod : "POST"
-//                }).done(function(e, response)
-//                {
-//                    // success
-//                }).fail(function(e, response)
-//                {
-//                    // failure
-//                });
-//
-
-//            var attachment = format  === 'pdf' ? 'application/pdf': format === 'xsl' ? '': format === 'xml' ? '': null;
-//            if(attachment != null) {
-//                $http.post('api/profiles/' + id + '/export/' + format, {timeout: 60000}).then(function (response, status, headers, config) {
-//                    var element = angular.element('<a/>');
-//                    element.attr({
-//                        href: 'data:attachment/'+ format+',' + encodeURI(response.data),
-//                        target: '_target',
-//                        download: 'Profile.' + format
-//                    })[0].click();
-//
-//                }, function (error) {
-//                    $rootScope.msg().text = 'profileDownloadFailed';
-//                    $rootScope.msg().type="error";
-//                    $rootScope.msg().show = true;
-//
-//                });
-//            }
-
-//            $http({method: 'GET', url: 'api/profiles/' + id + '/export/' + format}).
-//                success(function(response, status, headers, config) {
-////                    var element = angular.element('<a/>');
-////                    element.attr({
-////                        href: 'data:attachment/csv;charset=utf-8,' + encodeURI(data),
-////                        target: '_blank',
-////                        download: 'filename.csv'
-////                    })[0].click();
-//
-//                    var file = new Blob([response.data], { type: 'application/pdf' });
-//                    saveAs(file, 'Profile.pdf');
-//
-//                }).
-//                error(function(data, status, headers, config) {
-//                    // if there's an error you should see it here
-//                });
-////
-//
- //             $http.post($rootScope.api('api/profiles/'+ id+ '/export'), {params:{'exportType':format},timeout: 60000}).then(function (response) {
-//                waitingDialog.hide();
-//                $rootScope.changes = {};
-//            }, function (error) {
-//                $scope.error = error;
-//                waitingDialog.hide();
-//            });
         };
 
 
         $scope.close = function () {
-            $rootScope.changes = {}; // FIXME
-            $rootScope.profile = null;
-//            $rootScope.context.page = $rootScope.pages[0];
-            $rootScope.selectIgTab(0);
-            $rootScope.initMaps();
+            if ($rootScope.hasChanges()) {
+                $scope.confirmClose();
+            } else {
+                waitingDialog.show('Closing profile...', {dialogSize: 'sm', progressType: 'info'});
+                $rootScope.profile = null;
+                $rootScope.selectIgTab(0);
+                $rootScope.initMaps();
+                waitingDialog.hide();
+            }
         };
 
 
@@ -315,206 +278,97 @@ angular.module('igl')
 
 
         $scope.save = function () {
-//            if (userInfoService.isAuthenticated()) {
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
-            var data = {"value": changes};
-            $http.post($rootScope.api('api/profiles/' + $rootScope.profile.id + '/save'), data, {timeout: 60000}).then(function (response) {
+            var data = {"changes": changes, "profile": $rootScope.profile};
+            $http.post('api/profiles/' + $rootScope.profile.id + '/save', data, {timeout: 60000}).then(function (response) {
+                var saveResponse = angular.fromJson(response.data);
+                $rootScope.profile.metaData.date = saveResponse.date;
+                $rootScope.profile.metaData.version = saveResponse.version;
                 $rootScope.msg().text = "igSaveSuccess";
-                $rootScope.msg().type="success";
+                $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;
-                var profile = angular.fromJson(response.data);
-                var index = $rootScope.customIgs.indexOf($rootScope.profile);
-                $rootScope.customIgs[index] = profile;
-                $rootScope.profile = profile;
-                $scope.openProfile($rootScope.profile);
-                $scope.initProfile();
+                $rootScope.clearChanges();
                 waitingDialog.hide();
             }, function (error) {
                 $scope.error = error;
                 $rootScope.msg().text = "igSaveFailed";
-                $rootScope.msg().type="error";
+                $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
                 waitingDialog.hide();
             });
-
-
-            $scope.exportChanges = function () {
-                var form = document.createElement("form");
-                form.action = 'api/profiles/export/changes';
-                form.method = "POST";
-                form.target = "_target";
-                var input = document.createElement("textarea");
-                input.name = "content";
-                input.value = angular.fromJson($rootScope.changes);
-                form.appendChild(input);
-                var csrfInput = document.createElement("input");
-                csrfInput.name = "X-XSRF-TOKEN";
-                csrfInput.value = $cookies['XSRF-TOKEN'];
-                form.appendChild(csrfInput);
-                form.style.display = 'none';
-                document.body.appendChild(form);
-                form.submit();
-             };
-
-            $scope.viewChanges = function(changes){
-                var modalInstance = $modal.open({
-                    templateUrl: 'ViewIGChangesCtrl.html',
-                    controller: 'ViewIGChangesCtrl',
-                    resolve: {
-                        changes: function () {
-                            return changes;
-                        }
-                    }
-                });
-                modalInstance.result.then(function (changes) {
-                    $scope.changes = changes;
-                }, function () {
-                });
-            };
-
-
-
-            $scope.reset = function () {
-//            $rootScope.context.page = $rootScope.pages[0];
-                $rootScope.selectIgTab(0);
-                $rootScope.changes = {};
-                $rootScope.profile = null;
-            };
-
-
-            $scope.initProfile = function () {
-                $scope.loading = true;
-                if ($rootScope.profile != null && $rootScope.profile != undefined)
-                    $scope.gotoSection($rootScope.profile.metaData, 'metaData');
-                $scope.loading = false;
-
-            };
-
         };
 
-
-
-    });
-//
-//angular.module('igl')
-//    .controller('EditProfileCtrl', function ($scope, $rootScope, Restangular, $http, userInfoService,$modal) {
-//
-//        $scope.error = null;
-//        $scope.loading = false;
-//
-//        /**
-//         * init the controller
-//         */
-////        $scope.init = function () {
-////            $scope.loading = true;
-////            if ($rootScope.profile != null && $rootScope.profile != undefined)
-////                $scope.gotoSection($rootScope.profile.metatData, 'metaData');
-////            $scope.loading = false;
-////
-////        };
-//
-//
-//
-////        $scope.confirmDelete = function (profile) {
-////            var modalInstance = $modal.open({
-////                templateUrl: 'ConfirmProfileDeleteCtrl.html',
-////                controller: 'ConfirmProfileDeleteCtrl',
-////                resolve: {
-////                    profileToDelete: function () {
-////                        return profile;
-////                    }
-////                }
-////            });
-////            modalInstance.result.then(function (profile) {
-////                $scope.profileToDelete = profile;
-////            }, function () {
-////            });
-////        };
-////
-////
-////
-////        $scope.delete = function () {
-////            $scope.confirmDelete($rootScope.profile);
-////        };
-////
-////        $scope.save = function () {
-//////            if (userInfoService.isAuthenticated()) {
-////                waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
-////                var changes = angular.toJson($rootScope.changes);
-////                var data = {"value": changes};
-////                $http.post($rootScope.api('api/profiles/' + $rootScope.profile.id + '/save'), data, {timeout: 60000}).then(function (response) {
-////                    $rootScope.msg().text = "igSavedSuccess";
-////                    $rootScope.msg().type="success";
-////                    $rootScope.msg().show = true;
-////                    var profile = angular.fromJson(response.data);
-////                    var index = $rootScope.customIgs.indexOf($rootScope.profile);
-////                    $rootScope.customIgs[index] = profile;
-////                    $rootScope.profile = profile;
-////
-////                    waitingDialog.hide();
-////                    $rootScope.changes = {};
-////                }, function (error) {
-////                    $scope.error = error;
-////                    $rootScope.msg().text = "igSavedFailed";
-////                    $rootScope.msg().type="error";
-////                    $rootScope.msg().show = true;
-////                    waitingDialog.hide();
-////                });
-//////            }
-////        };
-//
-//
-////        $scope.exportAs = function (format) {
-//////            if (userInfoService.isAuthenticated()) {
-////                waitingDialog.show('Exporting profile...', {dialogSize: 'sm', progressType: 'info'});
-//////            var data = angular.toJson($rootScope.changes);
-////                var form = document.createElement("form");
-////                form.action = $rootScope.api('api/profiles/' + $rootScope.profile.id + '/export/' + format);
-////                form.method = "POST";
-////                form.target = "_target";
-////                form.style.display = 'none';
-////                form.params =
-////                    document.body.appendChild(form);
-////                form.submit();
-////                waitingDialog.hide();
-//////            }
-////        };
-////
-//
-////        $scope.close = function () {
-////            $rootScope.changes = {}; // FIXME
-////            $rootScope.profile = null;
-//////            $rootScope.context.page = $rootScope.pages[0];
-////            $rootScope.selectIgTab(0);
-////            $rootScope.initMaps();
-////        };
-////
-////
-////        $scope.gotoSection = function (obj, type) {
-////            $rootScope.section['data'] = obj;
-////            $rootScope.section['type'] = type;
-////        };
-//
-//
-//    });
-
-
-angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes,$rootScope,$http) {
-    $scope.changes = changes;
-    $scope.loading = false;
-    $scope.exportChanges = function () {
-        $scope.loading = true;
-             waitingDialog.show('Exporting changes...', {dialogSize: 'sm', progressType: 'success'});
+        $scope.exportChanges = function () {
             var form = document.createElement("form");
             form.action = 'api/profiles/export/changes';
             form.method = "POST";
             form.target = "_target";
+            var input = document.createElement("textarea");
+            input.name = "content";
+            input.value = angular.fromJson($rootScope.changes);
+            form.appendChild(input);
+            var csrfInput = document.createElement("input");
+            csrfInput.name = "X-XSRF-TOKEN";
+            csrfInput.value = $cookies['XSRF-TOKEN'];
+            form.appendChild(csrfInput);
             form.style.display = 'none';
-            form.params = document.body.appendChild(form);
+            document.body.appendChild(form);
             form.submit();
-            waitingDialog.hide();
-     };
+        };
+
+        $scope.viewChanges = function (changes) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ViewIGChangesCtrl.html',
+                controller: 'ViewIGChangesCtrl',
+                resolve: {
+                    changes: function () {
+                        return changes;
+                    }
+                }
+            });
+            modalInstance.result.then(function (changes) {
+                $scope.changes = changes;
+            }, function () {
+            });
+        };
+
+
+        $scope.reset = function () {
+//            $rootScope.context.page = $rootScope.pages[0];
+            $rootScope.selectIgTab(0);
+            $rootScope.changes = {};
+            $rootScope.profile = null;
+        };
+
+
+        $scope.initProfile = function () {
+            $scope.loading = true;
+            if ($rootScope.profile != null && $rootScope.profile != undefined)
+                $scope.gotoSection($rootScope.profile.metaData, 'metaData');
+            $scope.loading = false;
+
+        };
+
+
+    });
+
+
+angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes, $rootScope, $http) {
+    $scope.changes = changes;
+    $scope.loading = false;
+    $scope.exportChanges = function () {
+        $scope.loading = true;
+        waitingDialog.show('Exporting changes...', {dialogSize: 'sm', progressType: 'success'});
+        var form = document.createElement("form");
+        form.action = 'api/profiles/export/changes';
+        form.method = "POST";
+        form.target = "_target";
+        form.style.display = 'none';
+        form.params = document.body.appendChild(form);
+        form.submit();
+        waitingDialog.hide();
+    };
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
@@ -522,32 +376,34 @@ angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalIn
 });
 
 
-angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $modalInstance, profileToDelete,$rootScope,$http) {
+angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $modalInstance, profileToDelete, $rootScope, $http) {
     $scope.profileToDelete = profileToDelete;
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
-//        waitingDialog.show('Deleting profile...', {dialogSize: 'sm', progressType: 'danger'});
         $http.post($rootScope.api('api/profiles/' + $scope.profileToDelete.id + '/delete'), {timeout: 60000}).then(function (response) {
             var index = $rootScope.customIgs.indexOf($scope.profileToDelete);
             if (index > -1) $rootScope.customIgs.splice(index, 1);
             $rootScope.backUp = null;
-            if($scope.profileToDelete === $rootScope.profile){
+            if ($scope.profileToDelete === $rootScope.profile) {
                 $rootScope.initMaps();
                 $rootScope.profile = null;
                 $rootScope.selectIgTab(0);
             }
             $rootScope.msg().text = "igDeleteSuccess";
-            $rootScope.msg().type="success";
+            $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
             $rootScope.manualHandle = true;
             $scope.profileToDelete = null;
-//            waitingDialog.hide();
+            $scope.loading = false;
+
             $modalInstance.close($scope.profileToDelete);
 
         }, function (error) {
             $scope.error = error;
+            $scope.loading = false;
             $modalInstance.close($scope.profileToDelete);
+
 
 //            waitingDialog.hide();
         });
@@ -557,4 +413,105 @@ angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $
         $modalInstance.dismiss('cancel');
     };
 });
+
+
+angular.module('igl').controller('ConfirmProfileCloseCtrl', function ($scope, $modalInstance, $rootScope, $http) {
+    $scope.loading = false;
+    $scope.discardChangesAndClose = function () {
+        $scope.loading = true;
+        $http.get('api/profiles/' + $rootScope.profile.id, {timeout: 60000}).then(function (response) {
+            var index = $rootScope.customIgs.indexOf($rootScope.profile);
+            $rootScope.customIgs[index] = angular.fromJson(response.data);
+            $scope.loading = false;
+            $scope.clear();
+        }, function (error) {
+            $scope.loading = false;
+            $rootScope.msg().text = "igResetFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+            $modalInstance.dismiss('cancel');
+        });
+    };
+
+    $scope.clear = function () {
+        $rootScope.changes = {};
+        $rootScope.profile = null;
+        $rootScope.selectIgTab(0);
+        $rootScope.initMaps();
+        $modalInstance.close();
+    };
+
+
+    $scope.saveChangesAndClose = function () {
+        $scope.loading = true;
+        var changes = angular.toJson($rootScope.changes);
+        var data = {"changes": changes, "profile": $rootScope.profile};
+        $http.post('api/profiles/' + $rootScope.profile.id + '/save', data, {timeout: 60000}).then(function (response) {
+            var saveResponse = angular.fromJson(response.data);
+            $rootScope.profile.metaData.date = saveResponse.date;
+            $rootScope.profile.metaData.version = saveResponse.version;
+            $scope.loading = false;
+            $scope.clear();
+        }, function (error) {
+            $rootScope.msg().text = "igSaveFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+            $scope.loading = false;
+            $modalInstance.dismiss('cancel');
+        });
+    };
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+
+angular.module('igl').controller('ConfirmProfileOpenCtrl', function ($scope, $modalInstance, profileToOpen, $rootScope, $http) {
+    $scope.profileToOpen = profileToOpen;
+    $scope.loading = false;
+    $scope.discardChangesAndOpen = function () {
+        $scope.loading = true;
+         $http.get('api/profiles/' + $rootScope.profile.id, {timeout: 60000}).then(function (response) {
+            var index = $rootScope.customIgs.indexOf($rootScope.profile);
+            $rootScope.customIgs[index] = angular.fromJson(response.data);
+            $scope.loading = false;
+            $modalInstance.close($scope.profileToOpen);
+         }, function (error) {
+            $scope.loading = false;
+             $rootScope.msg().text = "igResetFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+            $modalInstance.dismiss('cancel');
+        });
+    };
+
+
+    $scope.saveChangesAndOpen = function () {
+        $scope.loading = true;
+        var changes = angular.toJson($rootScope.changes);
+        var data = {"changes": changes, "profile": $rootScope.profile};
+        $http.post('api/profiles/' + $rootScope.profile.id + '/save', data, {timeout: 60000}).then(function (response) {
+            var saveResponse = angular.fromJson(response.data);
+            $rootScope.profile.metaData.date = saveResponse.date;
+            $rootScope.profile.metaData.version = saveResponse.version;
+            $scope.loading = false;
+            $modalInstance.close($scope.profileToOpen);
+        }, function (error) {
+            $rootScope.msg().text = "igSaveFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+            $scope.loading = false;
+            $modalInstance.dismiss('cancel');
+        });
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+
+
+});
+
+
+
 

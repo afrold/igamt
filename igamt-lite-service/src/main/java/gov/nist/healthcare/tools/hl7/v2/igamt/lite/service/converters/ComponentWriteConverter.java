@@ -34,13 +34,12 @@ public class ComponentWriteConverter implements Converter<Component, DBObject> {
 		dbo.put("minLength", source.getMinLength());
 		dbo.put("maxLength", source.getMaxLength());
 		dbo.put("confLength", source.getConfLength());
-		dbo.put("table", source.getTable() != null ? source.getTable().getId()
-				: null);
+		dbo.put("table", source.getTable());
 		dbo.put("bindingStrength", source.getBindingStrength());
 		dbo.put("bindingLocation", source.getBindingLocation());
 		dbo.put("position", source.getPosition());
 		dbo.put("comment", source.getComment());
-		dbo.put("datatype", source.getDatatype().getId());
+		dbo.put("datatype", source.getDatatype());
 		return dbo;
 	}
 

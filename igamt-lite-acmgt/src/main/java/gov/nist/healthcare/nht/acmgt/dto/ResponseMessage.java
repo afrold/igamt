@@ -15,7 +15,7 @@ package gov.nist.healthcare.nht.acmgt.dto;
  */
 public class ResponseMessage {
     public enum Type {
-        success, warn, error, info;
+        success, warn, danger, info;
     }
 
     private final Type type;

@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 ////@Entity
 //@javax.persistence.Table(name = "DATAELEMENT")
 ////@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -11,7 +9,7 @@ public abstract class DataElement extends DataModel implements
 
 	private static final long serialVersionUID = 1L;
 
-	// @Id 
+	// @Id
 	// //@Column(name = "ID")
 	// //@GeneratedValue(strategy = GenerationType.TABLE)
 	// protected String id;
@@ -37,13 +35,13 @@ public abstract class DataElement extends DataModel implements
 	// //@Column(name = "CONF_LENGTH")
 	protected String confLength;
 
-	@JsonIgnoreProperties({ "mappingAlternateId", "mappingId", "name",
-			"version", "codesys", "oid", "tableType", "stability",
-			"extensibility", "type", "codes" })
+	// @JsonIgnoreProperties({ "mappingAlternateId", "mappingId", "name",
+	// "version", "codesys", "oid", "tableType", "stability",
+	// "extensibility", "type", "codes" })
 	// //@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
 	// CascadeType.PERSIST, CascadeType.MERGE })
 	// //@JoinColumn(name = "TABLE_ID")
-	protected Table table;
+	protected String table;
 
 	// protected String tableId;
 
@@ -58,10 +56,10 @@ public abstract class DataElement extends DataModel implements
 
 	// //@JsonIgnore
 
-	@JsonIgnoreProperties({ "label", "components", "name", "description",
-			"predicates", "conformanceStatements", "comment", "usageNote",
-			"type" })
-	protected Datatype datatype;
+	// @JsonIgnoreProperties({ "label", "components", "name", "description",
+	// "predicates", "conformanceStatements", "comment", "usageNote",
+	// "type" })
+	protected String datatype;
 
 	// protected String datatypeId;
 
@@ -72,12 +70,22 @@ public abstract class DataElement extends DataModel implements
 	// //@Column(name = "COMMENT")
 	protected String comment;
 
+	protected String text;
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
 	// Caution, not persisted. Use at your own risk
-	public Datatype getDatatype() {
+	public String getDatatype() {
 		return datatype;
 	}
 
-	public void setDatatype(Datatype datatype) {
+	public void setDatatype(String datatype) {
 		this.datatype = datatype;
 		// this.datatypeId = datatype != null ? datatype.getId() : null;
 		// this.setDatatypeLabel(datatype != null ? datatype.getLabel() : null);
@@ -123,11 +131,11 @@ public abstract class DataElement extends DataModel implements
 		this.confLength = confLength;
 	}
 
-	public Table getTable() {
+	public String getTable() {
 		return table;
 	}
 
-	public void setTable(Table table) {
+	public void setTable(String table) {
 		this.table = table;
 		// this.tableId = table != null ? table.getId() : null;
 	}
@@ -198,9 +206,10 @@ public abstract class DataElement extends DataModel implements
 
 		return de;
 	}
-	
+
+	@Override
 	public int compareTo(DataElement o) {
-		return (int) (this.getPosition() - o.getPosition());
+		return this.getPosition() - o.getPosition();
 	}
 
 }

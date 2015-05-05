@@ -49,30 +49,30 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 			if (authException instanceof BadCredentialsException) {
 				logger.error("ERROR: Bad Credentials", authException);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
-						ResponseMessage.Type.error, authException.getMessage()));
+						ResponseMessage.Type.danger, authException.getMessage()));
 			} else if (authException instanceof DisabledException) {
 				logger.error("ERROR: Disabled User", authException);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
-						ResponseMessage.Type.error, authException.getMessage()));
+						ResponseMessage.Type.danger, authException.getMessage()));
 			} else if (authException instanceof LockedException) {
 				logger.error("ERROR: Locked User", authException);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
-						ResponseMessage.Type.error, authException.getMessage()));
+						ResponseMessage.Type.danger, authException.getMessage()));
 			} else if (authException instanceof CredentialsExpiredException) {
 				logger.error("ERROR: Credentials Expired", authException);
 				mapper.writeValue(response.getWriter(),
-						new ResponseMessage(ResponseMessage.Type.error,
+						new ResponseMessage(ResponseMessage.Type.danger,
 								"accountCredentialsExpired"));
 			} else if (authException instanceof AccountExpiredException) {
 				logger.error("ERROR: Account Expired", authException);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
-						ResponseMessage.Type.error, authException.getMessage()));
+						ResponseMessage.Type.danger, authException.getMessage()));
 			} else {
 				logger.debug("[Exception]: "
 						+ authException.getClass().getSimpleName());
 				logger.error("ERROR: Other Error", authException);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
-						ResponseMessage.Type.error, "accessDenied"));
+						ResponseMessage.Type.danger, "accessDenied"));
 			}
 
 		} catch (IOException e) {

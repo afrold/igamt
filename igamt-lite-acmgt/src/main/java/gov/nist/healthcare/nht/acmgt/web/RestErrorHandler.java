@@ -51,7 +51,7 @@ public class RestErrorHandler {
 		BindingResult result = ex.getBindingResult();
 		String errorMessage = "validationError"
 				+ this.processFieldErrors(result.getFieldErrors());
-		return new ResponseMessage(ResponseMessage.Type.error, errorMessage, "");
+		return new ResponseMessage(ResponseMessage.Type.danger, errorMessage, "");
 	}
 
 	private String processFieldErrors(List<FieldError> fieldErrors) {

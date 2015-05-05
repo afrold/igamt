@@ -5,18 +5,22 @@ import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.ProfileSaveResponseMessage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.ChangeCommand;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.ProfileSaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.ProfileChangeCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,6 +51,9 @@ public class ProfileController extends CommonController {
 	private ProfileService profileService;
 
 	@Autowired
+	private ProfileConfiguration profileConfig;
+
+	@Autowired
 	UserService userService;
 
 	@Autowired
@@ -64,7 +71,7 @@ public class ProfileController extends CommonController {
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseMessage profileNotFound(UserAccountNotFoundException ex) {
 		logger.debug(ex.getMessage());
-		return new ResponseMessage(ResponseMessage.Type.error,
+		return new ResponseMessage(ResponseMessage.Type.danger,
 				"accountNotFound", null);
 	}
 
@@ -72,19 +79,19 @@ public class ProfileController extends CommonController {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ResponseMessage profileNotFound(ProfileException ex) {
 		logger.debug(ex.getMessage());
-		return new ResponseMessage(ResponseMessage.Type.error,
+		return new ResponseMessage(ResponseMessage.Type.danger,
 				"profileNotFound", null);
 	}
 
 	@ExceptionHandler(ProfileSaveException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ProfileSaveResponseMessage profileSaveFailed(ProfileSaveException ex) {
+	public ProfileSaveResponse profileSaveFailed(ProfileSaveException ex) {
 		logger.debug(ex.getMessage());
 		if (ex.getErrors() != null) {
-			return new ProfileSaveResponseMessage(ResponseMessage.Type.error,
+			return new ProfileSaveResponse(ResponseMessage.Type.danger,
 					"profileNotSaved", null, ex.getErrors());
 		}
-		return new ProfileSaveResponseMessage(ResponseMessage.Type.error,
+		return new ProfileSaveResponse(ResponseMessage.Type.danger,
 				"profileNotSaved", null);
 	}
 
@@ -92,7 +99,7 @@ public class ProfileController extends CommonController {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseMessage OperationNotAllowException(ProfileException ex) {
 		logger.debug(ex.getMessage());
-		return new ResponseMessage(ResponseMessage.Type.error,
+		return new ResponseMessage(ResponseMessage.Type.danger,
 				"operationNotAllow", ex.getMessage());
 	}
 
@@ -137,7 +144,26 @@ public class ProfileController extends CommonController {
 		p.setId(null);
 		p.setScope(ProfileScope.USER);
 		p.setAccountId(account.getId());
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		p.getMetaData().setDate(
+				dateFormat.format(Calendar.getInstance().getTime()));
 		profileService.save(p);
+		return p;
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public Profile get(@PathVariable("id") String id)
+			throws UserAccountNotFoundException, ProfileNotFoundException {
+		logger.info("fetching profile with id=" + id);
+		User u = userService.getCurrentUser();
+		Account account = accountRepository.findByTheAccountsUsername(u
+				.getUsername());
+		if (account == null)
+			throw new UserAccountNotFoundException();
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
 		return p;
 	}
 
@@ -166,7 +192,7 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/save", method = RequestMethod.POST)
-	public Profile save(@RequestBody ChangeCommand jsonChanges,
+	public ProfileSaveResponse save(@RequestBody ProfileChangeCommand command,
 			@PathVariable("id") String id) throws ProfileNotFoundException,
 			UserAccountNotFoundException, ProfileSaveException {
 		User u = userService.getCurrentUser();
@@ -174,12 +200,15 @@ public class ProfileController extends CommonController {
 				.getUsername());
 		if (account == null)
 			throw new UserAccountNotFoundException();
-		logger.info("Applying changes = " + jsonChanges);
+		logger.info("Applying changes to profile=" + id);
 		Profile p = profileService.findOne(id);
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		return profileService.apply(jsonChanges.getValue(), p);
+		Profile saved = profileService.apply(command.getProfile(), p,
+				command.getChanges());
+		return new ProfileSaveResponse(saved.getMetaData().getDate(), saved
+				.getMetaData().getVersion());
 	}
 
 	@RequestMapping(value = "/{id}/export/xml", method = RequestMethod.POST, produces = "text/xml")
@@ -234,15 +263,20 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/export/changes", method = RequestMethod.POST, produces = "application/json")
-	public void exportChanges(@RequestBody ChangeCommand jsonChanges,
+	public void exportChanges(@RequestBody ProfileChangeCommand jsonChanges,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
 		logger.info("Exporting the changes");
 		response.setContentType("application/json");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Changes.json");
-		FileCopyUtils.copy(IOUtils.toInputStream(jsonChanges.getValue()),
+		FileCopyUtils.copy(IOUtils.toInputStream(jsonChanges.getChanges()),
 				response.getOutputStream());
+	}
+
+	@RequestMapping(value = "/config", method = RequestMethod.GET)
+	public ProfileConfiguration config() {
+		return profileConfig;
 	}
 
 }

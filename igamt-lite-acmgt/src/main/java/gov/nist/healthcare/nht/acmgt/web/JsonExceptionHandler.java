@@ -44,15 +44,15 @@ public class JsonExceptionHandler implements HandlerExceptionResolver {
 			if (ex instanceof AccessDeniedException) {
 				logger.error("ERROR: Access Denied", ex);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
-						ResponseMessage.Type.error, "accessDenied"));
+						ResponseMessage.Type.danger, "accessDenied"));
 			} else if (ex instanceof BadCredentialsException) {
 				logger.error("ERROR: Bad Credentials", ex);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
-						ResponseMessage.Type.error, ex.getMessage()));
+						ResponseMessage.Type.danger, ex.getMessage()));
 			} else {
 				logger.error("ERROR: " + ex.getMessage(), ex);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
-						ResponseMessage.Type.error, "internalError"));
+						ResponseMessage.Type.danger, "internalError"));
 			}
 		} catch (IOException e) {
 			// give up

@@ -49,8 +49,6 @@ public class Profile extends DataModel implements java.io.Serializable,
 
 	protected String usageNote;
 
-	private Integer version;
-
 	private String changes;
 
 	public String getId() {
@@ -77,7 +75,6 @@ public class Profile extends DataModel implements java.io.Serializable,
 		this.segments = segments;
 	}
 
-	//
 	public Datatypes getDatatypes() {
 		return datatypes;
 	}
@@ -94,20 +91,12 @@ public class Profile extends DataModel implements java.io.Serializable,
 		this.messages = messages;
 	}
 
-	public Integer getVersion() {
-		return version;
-	}
-
 	/**
 	 * Do not set the version. Hibernate set the version automatically
 	 * 
 	 * @param version
 	 * @return
 	 */
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-
 	public String getComment() {
 		return comment;
 	}
@@ -286,13 +275,12 @@ public class Profile extends DataModel implements java.io.Serializable,
 		clonedProfile.setDatatypes(datatypes.clone(dtRecords, tableRecords));
 		clonedProfile.setSegments(segments.clone(dtRecords, segmentRecords,
 				tableRecords));
-		clonedProfile.setTables(tables.clone(tableRecords));
+		clonedProfile.setTables(tables.clone());
 
 		clonedProfile.setMessages(messages.clone(dtRecords, segmentRecords,
 				tableRecords));
 		clonedProfile.setMetaData(metaData.clone());
 		clonedProfile.setUsageNote(usageNote);
-		clonedProfile.setVersion(version);
 		clonedProfile.setAccountId(accountId);
 		clonedProfile.setScope(scope);
 
