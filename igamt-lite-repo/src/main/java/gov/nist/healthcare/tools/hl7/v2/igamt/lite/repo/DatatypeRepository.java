@@ -17,10 +17,15 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.List;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.query.Param;
 
 public interface DatatypeRepository extends MongoRepository<Datatype, String> {
+	
+	List<Datatype> findByLabel(@Param("label") String label);
 
 } 
