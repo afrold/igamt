@@ -158,6 +158,7 @@ public class Segments implements java.io.Serializable, Cloneable {
 		for (Segment s : this.children) {
 			if (!segmentRecords.containsKey(s.getId())) {
 				Segment clonedSegment = s.clone(dtRecords, tableRecords);
+				clonedSegment.setId(s.getId());
 				clonedSegments.addSegment(clonedSegment);
 				segmentRecords.put(s.getId(), clonedSegment);
 			} else {

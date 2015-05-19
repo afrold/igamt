@@ -68,9 +68,9 @@ public abstract class DataElement extends DataModel implements
 	protected Integer position = 0;
 
 	// //@Column(name = "COMMENT")
-	protected String comment;
+	protected String comment = "";
 
-	protected String text;
+	protected String text = "";
 
 	public String getText() {
 		return text;
