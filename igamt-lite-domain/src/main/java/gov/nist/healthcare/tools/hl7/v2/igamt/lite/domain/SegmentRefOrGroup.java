@@ -32,7 +32,7 @@ public abstract class SegmentRefOrGroup extends DataModel implements
 	// @Column(nullable = false, name = "SEGMENTREFORGROUP_POSITION")
 	protected Integer position = 0;
 
-	protected String comment;
+	protected String comment = "";
 
 	public Usage getUsage() {
 		return usage;

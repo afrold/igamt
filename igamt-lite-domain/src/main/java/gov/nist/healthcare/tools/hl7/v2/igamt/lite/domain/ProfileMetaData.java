@@ -162,4 +162,14 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 		return clonedProfileMetaData;
 	}
 
+	@Override
+	public String toString() {
+		return "ProfileMetaData [name=" + name + ", identifier=" + identifier
+				+ ", subTitle=" + subTitle + ", version=" + version
+				+ ", orgName=" + orgName + ", status=" + status + ", topics="
+				+ topics + ", type=" + type + ", hl7Version=" + hl7Version
+				+ ", schemaVersion=" + schemaVersion + ", date=" + date
+				+ ", ext=" + ext + ", encodings=" + encodings + "]";
+	}
+
 }
