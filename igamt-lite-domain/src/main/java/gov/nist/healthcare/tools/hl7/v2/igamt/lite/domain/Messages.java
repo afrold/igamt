@@ -64,6 +64,17 @@ public class Messages implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
+	public Message findOneByStrucId(String id) {
+		if (this.getChildren() != null)
+			for (Message m : this.getChildren()) {
+				if (m.getStructID().equals(id)) {
+					return m;
+				}
+			}
+
+		return null;
+	}
+
 	public SegmentRefOrGroup findOneSegmentRefOrGroup(String id) {
 		if (this.getChildren() != null) {
 			for (Message message : this.getChildren()) {
