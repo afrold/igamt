@@ -40,6 +40,7 @@ public class Component extends DataElement implements Cloneable {
 	@Override
 	public Component clone() throws CloneNotSupportedException {
 		Component clonedObj = new Component();
+		clonedObj.setId(id);
 		clonedObj.setBindingLocation(this.bindingLocation);
 		clonedObj.setBindingStrength(this.bindingStrength);
 		clonedObj.setComment(comment);

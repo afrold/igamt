@@ -241,6 +241,7 @@ public class Message extends DataModel implements java.io.Serializable,
 			}
 		}
 
+		clonedMessage.setId(id);
 		clonedMessage.setComment(comment);
 		clonedMessage.setDescription(description);
 		clonedMessage.setEvent(event);

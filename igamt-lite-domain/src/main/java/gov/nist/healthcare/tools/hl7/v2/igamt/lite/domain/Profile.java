@@ -45,11 +45,11 @@ public class Profile extends DataModel implements java.io.Serializable,
 
 	private Long accountId;
 
-	protected String comment;
+	protected String comment = "";
 
-	protected String usageNote;
+	protected String usageNote = "";
 
-	private String changes;
+	private String changes = "";
 	
 	private String baseId; //baseId is the original version of the profile that was cloned
 

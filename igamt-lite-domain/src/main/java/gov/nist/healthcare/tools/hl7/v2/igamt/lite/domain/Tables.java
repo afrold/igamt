@@ -174,6 +174,7 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 			// }
 		}
 
+		clonedTables.setId(id);
 		clonedTables.setDescription(description);
 		clonedTables.setName(name);
 		clonedTables.setOrganizationName(organizationName);
