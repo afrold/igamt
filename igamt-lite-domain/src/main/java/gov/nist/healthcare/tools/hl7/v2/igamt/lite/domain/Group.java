@@ -108,7 +108,8 @@ public class Group extends SegmentRefOrGroup implements Cloneable {
 			}
 		}
 
-		clonedGroup.setComment(name);
+		clonedGroup.setId(id);
+		clonedGroup.setComment(comment);
 		clonedGroup.setMax(max);
 		clonedGroup.setMin(min);
 		clonedGroup.setName(name);

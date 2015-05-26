@@ -86,6 +86,7 @@ public class Field extends DataElement implements java.io.Serializable,
 			throws CloneNotSupportedException {
 		Field clonedField = new Field();
 
+		clonedField.setId(id);
 		clonedField.setBindingLocation(bindingLocation);
 		clonedField.setBindingStrength(bindingStrength);
 		clonedField.setComment(comment);

@@ -191,6 +191,7 @@ public class Table extends DataModel implements Serializable,
 			clonedTable.addCode(c.clone());
 		}
 
+		clonedTable.setId(id);
 		clonedTable.setCodesys(codesys);
 		clonedTable.setExtensibility(extensibility);
 		clonedTable.setMappingAlternateId(mappingAlternateId);

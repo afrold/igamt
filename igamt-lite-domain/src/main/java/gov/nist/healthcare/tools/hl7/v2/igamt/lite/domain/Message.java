@@ -51,9 +51,9 @@ public class Message extends DataModel implements java.io.Serializable,
 	// @NotNull
 	protected Integer position = 0;
 
-	protected String comment;
+	protected String comment = "";
 
-	protected String usageNote;
+	protected String usageNote = "";
 
 	public String getId() {
 		return id;
@@ -241,6 +241,7 @@ public class Message extends DataModel implements java.io.Serializable,
 			}
 		}
 
+		clonedMessage.setId(id);
 		clonedMessage.setComment(comment);
 		clonedMessage.setDescription(description);
 		clonedMessage.setEvent(event);

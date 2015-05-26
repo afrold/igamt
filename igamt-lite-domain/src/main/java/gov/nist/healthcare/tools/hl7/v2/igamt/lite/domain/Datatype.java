@@ -43,9 +43,9 @@ public class Datatype extends DataModel implements java.io.Serializable,
 	// @DBRef
 	// private Datatypes datatypes;
 
-	protected String comment;
+	protected String comment = "";
 
-	protected String usageNote;
+	protected String usageNote = "";
 
 	public String getId() {
 		return id;

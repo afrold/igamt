@@ -91,6 +91,7 @@ public class Code extends DataModel implements Serializable, Cloneable {
 	@Override
 	public Code clone() throws CloneNotSupportedException {
 		Code clonedCode = new Code();
+		clonedCode.setId(id);
 		clonedCode.setCodesys(codesys);
 		clonedCode.setCode(code);
 		clonedCode.setCodeUsage(codeUsage);

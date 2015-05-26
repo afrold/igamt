@@ -41,15 +41,15 @@ public abstract class DataElement extends DataModel implements
 	// //@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {
 	// CascadeType.PERSIST, CascadeType.MERGE })
 	// //@JoinColumn(name = "TABLE_ID")
-	protected String table;
+	protected String table = "";
 
 	// protected String tableId;
 
 	// //@Column(nullable = true, name = "BINDING_STRENGTH")
-	protected String bindingStrength;
+	protected String bindingStrength = "";
 
 	// //@Column(nullable = true, name = "BINDING_LOCATION")
-	protected String bindingLocation;
+	protected String bindingLocation = "";
 
 	// //@Column(nullable = true, name = "DATATYPE_LABEL")
 	// protected String datatypeLabel;
@@ -68,9 +68,9 @@ public abstract class DataElement extends DataModel implements
 	protected Integer position = 0;
 
 	// //@Column(name = "COMMENT")
-	protected String comment;
+	protected String comment = "";
 
-	protected String text;
+	protected String text = "";
 
 	public String getText() {
 		return text;

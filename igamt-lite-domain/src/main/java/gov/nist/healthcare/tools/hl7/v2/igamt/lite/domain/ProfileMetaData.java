@@ -6,32 +6,37 @@ import java.util.Set;
 public class ProfileMetaData implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
+	
+	public ProfileMetaData() {
+		super();
+		this.type = "profileMetaData";
+	}
 
 	// //@NotNull
 	private String name;
 
-	private String identifier;
+	private String identifier = "";
 
-	private String subTitle;
+	private String subTitle = "";
 
-	private String version;
+	private String version = "";
 
 	// //@NotNull
-	private String orgName;
+	private String orgName = "";
 
-	private String status;
+	private String status = "";
 
-	private String topics;
+	private String topics = "";
 
-	private String type;
+	private String type = "";
 
-	private String hl7Version;
+	private String hl7Version = "";
 
-	private String schemaVersion;
+	private String schemaVersion = "";
 
-	private String date;
+	private String date = "";
 
-	private String ext;
+	private String ext = "";
 
 	private Set<String> encodings = new HashSet<String>();
 
@@ -160,6 +165,16 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 		clonedProfileMetaData.setSubTitle(subTitle);
 		clonedProfileMetaData.setVersion(hl7Version);
 		return clonedProfileMetaData;
+	}
+
+	@Override
+	public String toString() {
+		return "ProfileMetaData [name=" + name + ", identifier=" + identifier
+				+ ", subTitle=" + subTitle + ", version=" + version
+				+ ", orgName=" + orgName + ", status=" + status + ", topics="
+				+ topics + ", type=" + type + ", hl7Version=" + hl7Version
+				+ ", schemaVersion=" + schemaVersion + ", date=" + date
+				+ ", ext=" + ext + ", encodings=" + encodings + "]";
 	}
 
 }

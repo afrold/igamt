@@ -46,11 +46,11 @@ public class Segment extends DataModel implements java.io.Serializable,
 
 	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
 
-	protected String comment;
+	protected String comment = "";
 
-	private String text1;
+	private String text1 = "";
 
-	private String text2;
+	private String text2 = "";
 
 	public String getId() {
 		return id;
@@ -186,7 +186,7 @@ public class Segment extends DataModel implements java.io.Serializable,
 
 	@Override
 	public String toString() {
-		return "Segment [id=" + id + "label=" + label + ", name=" + name
+		return "Segment [id=" + id + ", label=" + label + ", name=" + name
 				+ ", description=" + description +  ", comment=" + comment + "]";
 	}
 
