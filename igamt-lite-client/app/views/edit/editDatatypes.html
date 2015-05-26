@@ -698,7 +698,6 @@
                                                 <input style="width:45%" class="igl-input" type="text"
                                                        name="maxLength"
                                                        ng-change="recordDatatypeChange('component','edit',node.id,'maxLength', node.maxLength)"
-
                                                        ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.maxLength" required>
