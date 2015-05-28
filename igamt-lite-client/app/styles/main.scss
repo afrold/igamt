@@ -18,6 +18,8 @@ body {
 //  padding-top: 20px;
 //  padding-bottom: 20px;
 //  background-color: #f5f5f9;
+  background: #021a4c url(../images/bg_body4.jpg) no-repeat 50% -10px;
+  color: #000;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -99,7 +101,7 @@ body {
   background: #f5f5f5;
 }
 
-#cf-validator-footer {
+#footer {
   text-align: center;
   font-size: .9em;
 }
@@ -169,16 +171,16 @@ body {
 }
 
 
-.cf-validator-footeritem {
+.footeritem {
   display: inline-block;
   vertical-align: top;
 }
 
-.cf-validator-footerImage {
+.footerImage {
   height: 60px;
 }
 
-.cf-validator-footerTextItem {
+.footerTextItem {
   padding-right: 20px;
   padding-left: 20px;
   width: 350px;
@@ -554,7 +556,7 @@ ul > li.igl-tbl-item > a {
 
 
 #ehrbody {
-  background: #f5f5f5;
+//  background: #f5f5f5;
 }
 
 .form-horizontal {
@@ -1428,6 +1430,63 @@ input.account-input {
   overflow-y: auto;
 }
 
-.panel-body{
 
+
+.navbar-collapse {
+  border-width: 0 0 0px;
+  //  height: 10px;
+}
+
+//.navbar-nav > li > a {padding-top:10px !important; padding-bottom:10px !important;}
+//.navbar {min-height:32px !important}
+//
+
+//.navbar-text > li > a {padding-top:5px !important; padding-bottom:5px !important;}
+//.navbar-text {min-height:32px !important}
+ //
+.nav > li > a {padding-top:8px !important; padding-bottom:8px !important;}
+.nav {min-height:32px !important}
+
+.nav-tabs > li > a {padding-top:8px !important; padding-bottom:8px !important;}
+.nav-tabs {min-height:32px !important}
+
+
+.navbar-text {
+   margin-bottom: 0px;
+   margin-top: 0px;
+}
+
+
+#appcontainer{
+  border:1px;
+  border-color: #000000;
+  min-height: 500px;
+}
+
+.appcontent{
+  margin-top:7px;
+  //  border:2px;
+  //  border-color: #ffec9d;
+  //  border-bottom: 0px solid #ffcc00;
+  border:1px solid #bce8f1;
+}
+
+
+#wrapper {
+  position: relative;
+  width: 95%;
+  margin: 0 auto;
+  background: #f5f5f5;
+  color: black;
+  box-shadow: 0 0 6px #021a4c;
+
+}
+
+.box {
+  display: block;
+  text-align: left;
+  float: left;
+  margin-right: 20px;
+  margin-left: 20px;
+  font-size: 12px;
 }

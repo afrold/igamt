@@ -182,12 +182,13 @@
     <table tt-table tt-params="params" class="table table-striped table-bordered">
         <thead>
         <tr class="tbl-header row">
-            <th class="col-md-6">Name</th>
+            <th class="col-md-5">Name</th>
             <th class="col-md-1">Usage</th>
             <th class="col-md-1">Cardinality</th>
             <!--<th class="col-md-1">Ref</th>-->
             <th class="col-md-2">Predicate</th>
             <th class="col-md-2">Conformance Statement</th>
+            <th class="col-md-1">Comment</th>
         </tr>
         </thead>
         <tbody></tbody>
@@ -341,10 +342,26 @@
 
 
 
-
-
-
             </td>
+
+
+            <td class="col-md-1">
+                <div ng-show="node.type === 'segmentRef' || node.type === 'group'">
+                    <button ng-show="node.comment === '' || node.comment === null" type="button" ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="btn btn-info btn-xs">
+                        <i class="fa fa-plus fa-fw"></i>
+                    </button>
+                    <a  class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)" ng-show="node.comment !== '' && node.comment !== null" ng-bind="node.comment"></a>
+                    <!--<input style="width:100%" class="igl-input" type="text"-->
+                    <!--name="comment"-->
+                    <!--ng-change="recordDatatypeChange('component','edit',node.id,'comment', node.comment)"-->
+                    <!--ng-model="node.comment">-->
+                </div>
+                <!--<div ng-show="node.type === 'component' " ng-bind="node.comment"></div>-->
+                <!--<div ng-show="node.type === 'segment'">-</div>-->
+            </td>
+
+
+
         </tr>
     </script>
 </div>

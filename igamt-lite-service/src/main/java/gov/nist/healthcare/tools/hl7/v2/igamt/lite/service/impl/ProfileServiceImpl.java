@@ -39,8 +39,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfileChangeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfilePropertySaveError;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -1149,19 +1147,18 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 	}
 
 	@Override
-	public Profile apply(Profile newProfile, Profile oldProfile,
-			String newValues) throws ProfileSaveException {
-		List<ProfilePropertySaveError> errors = new ProfileChangeService()
-				.apply(newProfile, oldProfile, newValues);
-		if (errors != null && !errors.isEmpty()) {
-			throw new ProfileSaveException(errors);
-		} else {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			newProfile.getMetaData().setDate(
-					dateFormat.format(Calendar.getInstance().getTime()));
-			profileRepository.save(newProfile);
-		}
-		return newProfile;
+	public Profile apply(Profile p) throws ProfileSaveException {
+		// List<ProfilePropertySaveError> errors = new ProfileChangeService()
+		// .apply(newProfile, oldProfile, newValues);
+		// if (errors != null && !errors.isEmpty()) {
+		// throw new ProfileSaveException(errors);
+		// } else {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		p.getMetaData().setDate(
+				dateFormat.format(Calendar.getInstance().getTime()));
+		profileRepository.save(p);
+		// }
+		return p;
 	}
 
 }

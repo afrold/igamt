@@ -10,7 +10,7 @@ angular.module('igl')
         $scope.saved = false;
         $scope.message = false;
         $scope.params = null;
-        $scope.tmpSegments =[];
+        $scope.tmpSegments =[].concat($rootScope.segments);
         $scope.segmentCopy = null;
         $scope.init = function () {
             $scope.loading = true;

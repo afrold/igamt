@@ -50,8 +50,9 @@ public class Profile extends DataModel implements java.io.Serializable,
 	protected String usageNote = "";
 
 	private String changes = "";
-	
-	private String baseId; //baseId is the original version of the profile that was cloned
+
+	private String baseId = null; // baseId is the original version of the
+									// profile that was cloned
 
 	public String getBaseId() {
 		return baseId;

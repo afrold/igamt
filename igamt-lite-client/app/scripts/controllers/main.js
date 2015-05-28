@@ -436,6 +436,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.recordChange = function(object,changeType) {
         var type = object.type;
 
+
         if($rootScope.changes[type] === undefined){
             $rootScope.changes[type] = {};
         }

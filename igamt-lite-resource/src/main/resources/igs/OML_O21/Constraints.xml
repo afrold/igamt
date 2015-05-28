@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConformanceContext UUID="13066d43-1a33-462c-82c8-0169564a731c" xsi:noNamespaceSchemaLocation="../ConformanceContext.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <MetaData>
+        <Description>Conformance context for OML_O21</Description>
+    </MetaData>
+    <Predicates>
+        <Datatype/>
+        <Segment/>
+        <Group/>
+    </Predicates>
+    <Constraints>
+        <Datatype/>
+        <Segment/>
+        <Group/>
+    </Constraints>
+</ConformanceContext>

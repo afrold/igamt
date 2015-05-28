@@ -6,11 +6,17 @@
 angular.module('igl')
     .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, userInfoService, $modal, $cookies, $timeout) {
         $scope.loading = false;
+        $scope.accordion = {preloadedStatus:true, customStatus: true};
+        $rootScope.preloadedIgs = [];
+        $rootScope.customIgs = [];
         $scope.tmpPreloadedIgs = [].concat($rootScope.preloadedIgs);
         $scope.tmpCustomIgs = [].concat($rootScope.customIgs);
         $scope.error = null;
         $scope.preloadedLoading = false;
         $scope.customLoading = false;
+        $scope.preloadedError = null;
+        $scope.customError = null;
+
         $scope.loadingProfile = false;
         $scope.toEditProfileId = null;
 
@@ -34,6 +40,8 @@ angular.module('igl')
         };
 
         $scope.loadProfiles = function () {
+            $scope.preloadedError = null;
+            $scope.customError = null;
             if (userInfoService.isAuthenticated()) {
                 $rootScope.selectIgTab(0);
                 $scope.preloadedLoading = true;
@@ -42,6 +50,7 @@ angular.module('igl')
                     $scope.preloadedLoading = false;
                 }, function (error) {
                     $scope.preloadedLoading = false;
+                    $scope.preloadedError = "Failed to load the profiles";
                 });
                 $scope.customLoading = true;
                 $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
@@ -49,6 +58,7 @@ angular.module('igl')
                     $scope.customLoading = false;
                 }, function (error) {
                     $scope.customLoading = false;
+                    $scope.customError = "Failed to load the profiles";
                 });
 
                 $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {
@@ -59,11 +69,16 @@ angular.module('igl')
         };
 
         $scope.clone = function (profile) {
+            $scope.toEditProfileId = profile.id;
             waitingDialog.show('Cloning profile...', {dialogSize: 'sm', progressType: 'info'});
             $http.post('api/profiles/' + profile.id + '/clone', {timeout: 60000}).then(function (response) {
                 $rootScope.customIgs.push(angular.fromJson(response.data));
+                $scope.accordion.preloadedStatus = false;
+                $scope.accordion.customStatus= !$scope.accordion.preloadedStatus;
+                $scope.toEditProfileId = null;
                 waitingDialog.hide();
             }, function (error) {
+                $scope.toEditProfileId = null;
                 waitingDialog.hide();
             });
         };
@@ -82,15 +97,16 @@ angular.module('igl')
             try {
                 if ($rootScope.profile != null && $rootScope.profile === profile) {
                     $rootScope.selectIgTab(1);
+                    $scope.toEditProfileId = null;
                 } else if ($rootScope.profile && $rootScope.profile != null && $rootScope.hasChanges()) {
                     $scope.confirmOpen(profile);
+                    $scope.toEditProfileId = null;
                 } else {
                     $timeout(
                         function () {
                             $scope.openProfile(profile);
-                        }, 100);
+                        }, 1000);
                 }
-                $scope.toEditProfileId = null;
             } catch (e) {
                 $rootScope.msg().text = "igInitFailed";
                 $rootScope.msg().type = "danger";
@@ -152,6 +168,8 @@ angular.module('igl')
                 });
                 $scope.gotoSection($rootScope.profile.metaData, 'metaData');
                 $scope.loadingProfile = false;
+                $scope.toEditProfileId = null;
+
             }
         };
 
@@ -403,7 +421,9 @@ angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $
             $scope.error = error;
             $scope.loading = false;
             $modalInstance.close($scope.profileToDelete);
-
+            $rootScope.msg().text = "igDeleteFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
 
 //            waitingDialog.hide();
         });

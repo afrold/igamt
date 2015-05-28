@@ -144,6 +144,7 @@ public class ProfileController extends CommonController {
 		p.setId(null);
 		p.setScope(ProfileScope.USER);
 		p.setAccountId(account.getId());
+		p.setBaseId(id);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		p.getMetaData().setDate(
 				dateFormat.format(Calendar.getInstance().getTime()));
@@ -205,8 +206,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		Profile saved = profileService.apply(command.getProfile(), p,
-				command.getChanges());
+		Profile saved = profileService.apply(command.getProfile());
 		return new ProfileSaveResponse(saved.getMetaData().getDate(), saved
 				.getMetaData().getVersion());
 	}
