@@ -39,6 +39,8 @@ public interface ProfileService {
 	public Profile apply(Profile newProfile, Profile oldProfile,
 			String newValues) throws ProfileSaveException;
 
+	public InputStream exportAsPdfFromXsl(Profile p, String inlineConstraints);
+
 	public InputStream exportAsPdf(Profile p);
 
 	public InputStream exportAsXml(Profile p);
