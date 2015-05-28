@@ -245,6 +245,23 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
+	@RequestMapping(value = "/{id}/export/pdf/{inlineConstraints}", method = RequestMethod.POST, produces = "application/pdf")
+	public void exportPdfFromXsl(@PathVariable("id") String id, @PathVariable("inlineConstraints") String inlineConstraints,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ProfileNotFoundException {
+		logger.info("Exporting as pdf file profile with id=" + id);
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
+		InputStream content = null;
+		content = profileService.exportAsPdfFromXsl(p, inlineConstraints);
+		response.setContentType("application/pdf");
+		response.setHeader("Content-disposition",
+				"attachment;filename=Profile.pdf");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+
 	@RequestMapping(value = "/{id}/export/xslx", method = RequestMethod.POST, produces = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 	public void exportXlsx(@PathVariable("id") String id,
 			HttpServletRequest request, HttpServletResponse response)

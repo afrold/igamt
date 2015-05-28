@@ -38,6 +38,8 @@ public interface ProfileService {
 
 	public Profile apply(Profile p) throws ProfileSaveException;
 
+	public InputStream exportAsPdfFromXsl(Profile p, String inlineConstraints);
+
 	public InputStream exportAsPdf(Profile p);
 
 	public InputStream exportAsXml(Profile p);
