@@ -159,13 +159,13 @@ angular.module('igl')
                     $rootScope.notifySegTreeUpdate = new Date().getTime();
                 }
 
-                angular.forEach($rootScope.profile.messages.children, function (message) {
-                    var segRefOrGroups = [];
-                    var segments = [];
-                    var datatypes = [];
-                    $scope.collectData(message, segRefOrGroups, segments, datatypes);
-                    $rootScope.messagesData.push({message: message, segRefOrGroups: segRefOrGroups, segments: segments, datatypes: datatypes});
-                });
+//                angular.forEach($rootScope.profile.messages.children, function (message) {
+//                    var segRefOrGroups = [];
+//                    var segments = [];
+//                    var datatypes = [];
+//                    $scope.collectData(message, segRefOrGroups, segments, datatypes);
+//                    $rootScope.messagesData.push({message: message, segRefOrGroups: segRefOrGroups, segments: segments, datatypes: datatypes});
+//                });
                 $scope.gotoSection($rootScope.profile.metaData, 'metaData');
                 $scope.loadingProfile = false;
                 $scope.toEditProfileId = null;
