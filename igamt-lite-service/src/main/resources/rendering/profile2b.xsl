@@ -493,17 +493,21 @@
 		<a name="valuesets"></a>
 		<br></br>
 		<h3 style="page-break-before: always">
-			<xsl:value-of select="@AlternateId" />
+			<xsl:value-of select="@Id" />
 			:
 			<xsl:value-of select="@Name" />
 		</h3>
 		<table width="100%" border="1" cellspacing="0" cellpadding="0">
-			<col style="width:25%"></col>
-			<col style="width:75%"></col>
+			<col style="width:15%"></col>
+			<col style="width:15%"></col>
+			<col style="width:70%"></col>
 			<thead style="background:#0033CC; color:white; align:center">
 				<tr>
 					<th>
 						Value
+					</th>
+					<th>
+						Codesys
 					</th>
 					<th>
 						Description
@@ -516,6 +520,9 @@
 					<tr>
 						<td>
 							<xsl:value-of select="@Code" />
+						</td>
+						<td>
+							<xsl:value-of select="@Codesys" />
 						</td>
 						<td>
 							<xsl:value-of select="@DisplayName" />
