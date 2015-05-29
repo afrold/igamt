@@ -19,6 +19,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -46,4 +47,5 @@ public interface ProfileService {
 
 	public InputStream exportAsXlsx(Profile p);
 
+	public InputStream exportAsZip(Profile p) throws IOException;
 }

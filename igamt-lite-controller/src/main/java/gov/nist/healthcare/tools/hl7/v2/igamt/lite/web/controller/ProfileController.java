@@ -228,6 +228,24 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
+	@RequestMapping(value = "/{id}/export/zip", method = RequestMethod.POST, produces = "application/zip")
+	public void exportZip(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ProfileNotFoundException {
+		logger.info("Exporting as xml file profile with id=" + id);
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
+		InputStream content = null;
+		content = profileService.exportAsZip(p);
+		response.setContentType("application/zip");
+		response.setHeader("Content-disposition",
+				"attachment;filename=Profile-"
+						+ p.getMetaData().getIdentifier() + ".zip");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+
 	@RequestMapping(value = "/{id}/export/pdf", method = RequestMethod.POST, produces = "application/pdf")
 	public void exportPdf(@PathVariable("id") String id,
 			HttpServletRequest request, HttpServletResponse response)
@@ -246,7 +264,8 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/export/pdf/{inlineConstraints}", method = RequestMethod.POST, produces = "application/pdf")
-	public void exportPdfFromXsl(@PathVariable("id") String id, @PathVariable("inlineConstraints") String inlineConstraints,
+	public void exportPdfFromXsl(@PathVariable("id") String id,
+			@PathVariable("inlineConstraints") String inlineConstraints,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
 		logger.info("Exporting as pdf file profile with id=" + id);
