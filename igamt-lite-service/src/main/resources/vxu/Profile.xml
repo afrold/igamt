@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ConformanceProfile ID="8b90939b-6f69-4770-87ac-666ac7b5a411">
+    <Encodings>
+		<Encoding>ER7</Encoding>
+		<Encoding>XML</Encoding>
+	</Encodings>
+	
+	<MetaData Name="VXU_V04" OrgName="NIST">
+	</MetaData>
     <Messages>
         <Message ID="bd9977cf-c416-4003-9978-c58570056679" Type="VXU" Event="V04" StructID="VXU_V04" Description="Unsolicited vaccination record update">
             <Segment Ref="MSH_IZ 1_5_Z22" Usage="R" Min="1" Max="1"/>

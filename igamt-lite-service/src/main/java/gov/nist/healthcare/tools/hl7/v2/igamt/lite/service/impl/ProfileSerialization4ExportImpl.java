@@ -38,12 +38,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -56,41 +58,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
 
 import nu.xom.Attribute;
 import nu.xom.Builder;
-import nu.xom.Nodes;
 import nu.xom.ParsingException;
 import nu.xom.Serializer;
 import nu.xom.ValidityException;
-import nu.xom.XMLException;
-import nu.xom.xslt.XSLException;
-import nu.xom.xslt.XSLTransform;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.pdf.PdfWriter;
 
 public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 
@@ -1105,16 +1093,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		}
 		return null;
 	}
-
-	private Table findTable(String mappingId, Tables tableLibrary) {
-		for (Table t : tableLibrary.getChildren()) {
-			if (t.getMappingId().equals(mappingId))
-				return t;
-		}
-
-		return null;
-	}
-
+	
 	public HashMap<String, Datatype> getDatatypesMap() {
 		return datatypesMap;
 	}
@@ -1224,5 +1203,84 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		//		} catch (TransformerException e) {
 		//			e.printStackTrace();
 		//		}
+	}
+	
+	
+	public File serializeProfileToZipFile(Profile profile) throws UnsupportedEncodingException {
+		File out;
+		try {
+			out = File.createTempFile("Profile_" + profile.getId(), ".zip");
+			FileOutputStream outputStream = (FileOutputStream) Files.newOutputStream(out.toPath());
+			
+			int read = 0;
+			byte[] bytes = new byte[1024];
+			
+			InputStream is = this.serializeProfileToZip(profile);
+			while ((read = is.read(bytes)) != -1) {
+				outputStream.write(bytes, 0, read);
+			}
+			
+			is.close();
+			outputStream.close();
+			
+			return out;
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			return null;
+		}
+
+	}
+	
+
+	@Override
+	public InputStream serializeProfileToZip(Profile profile) throws IOException {
+		ByteArrayOutputStream outputStream = null;
+		byte[] bytes;
+		outputStream = new ByteArrayOutputStream();
+		ZipOutputStream out = new ZipOutputStream(outputStream);
+		
+		this.generateProfileIS(out, this.serializeProfileToXML(profile));
+		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(profile.getTables()));
+		this.generateConstraintsIS(out, new ConstraintsSerializationImpl().serializeConstraintsToXML(profile.getConformanceStatements(), profile.getPredicates()));
+		
+		out.close();
+		bytes = outputStream.toByteArray();
+		return new ByteArrayInputStream(bytes);
+	}
+	
+	private void generateProfileIS(ZipOutputStream out, String profileXML) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("Profile.xml"));
+		InputStream inProfile = IOUtils.toInputStream(profileXML);
+		int lenTP;
+        while ((lenTP = inProfile.read(buf)) > 0) {
+            out.write(buf, 0, lenTP);
+        }
+        out.closeEntry();
+        inProfile.close();
+	}
+	
+	private void generateValueSetIS(ZipOutputStream out, String valueSetXML) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("ValueSet.xml"));
+		InputStream inValueSet = IOUtils.toInputStream(valueSetXML);
+		int lenTP;
+        while ((lenTP = inValueSet.read(buf)) > 0) {
+            out.write(buf, 0, lenTP);
+        }
+        out.closeEntry();
+        inValueSet.close();
+	}
+	
+	private void generateConstraintsIS(ZipOutputStream out, String constraintsXML) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("Profile.xml"));
+		InputStream inConstraints = IOUtils.toInputStream(constraintsXML);
+		int lenTP;
+        while ((lenTP = inConstraints.read(buf)) > 0) {
+            out.write(buf, 0, lenTP);
+        }
+        out.closeEntry();
+        inConstraints.close();
 	}
 }

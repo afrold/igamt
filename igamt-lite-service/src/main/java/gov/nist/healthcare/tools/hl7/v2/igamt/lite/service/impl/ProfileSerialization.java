@@ -11,17 +11,20 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import nu.xom.Document;
 
 public interface ProfileSerialization {
-	Profile deserializeXMLToProfile(String xmlContentsProfile,
-			String xmlValueSet, String xmlConstraints);
+	Profile deserializeXMLToProfile(String xmlContentsProfile, String xmlValueSet, String xmlConstraints);
 
-	Profile deserializeXMLToProfile(Document docProfile, Document docValueSet,
-			Document docConstraints);
+	Profile deserializeXMLToProfile(Document docProfile, Document docValueSet, Document docConstraints);
 
 	String serializeProfileToXML(Profile profile);
 
 	Document serializeProfileToDoc(Profile profile);
+
+	InputStream serializeProfileToZip(Profile profile) throws IOException;
 }
