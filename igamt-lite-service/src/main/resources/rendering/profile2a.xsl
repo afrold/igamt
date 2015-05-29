@@ -52,7 +52,7 @@
 				</h2>
 				<a name="valuesets"></a>
 				<xsl:apply-templates select="ConformanceProfile/Tables">
-					<xsl:sort select="@AlternateId"></xsl:sort>
+					<xsl:sort select="@Id"></xsl:sort>
 				</xsl:apply-templates>
 			</body>
 		</html>
@@ -474,23 +474,30 @@
 			<tbody>
 				<xsl:for-each select="TableElement">
 					<xsl:sort select="@Code" />
-					<tr>
-						<td>
-							<xsl:value-of select="@Code" />
-						</td>
-						<td>
-							<xsl:value-of select="@Codesys" />
-						</td>
-						<td>
-							<xsl:value-of select="@DisplayName" />
-						</td>
-					</tr>
+						<xsl:call-template name="tableElement">
+							<xsl:with-param name="style" select="'background-color:white;'">
+							</xsl:with-param>
+						</xsl:call-template>
 				</xsl:for-each>
 			</tbody>
 		</table>
 		<br></br>
 		<a href="#top">Link to top</a>
+	</xsl:template>
 
+	<xsl:template name="tableElement">
+		<xsl:param name="style" />
+		<tr style="{$style}">
+			<td>
+				<xsl:value-of select="@Code" />
+			</td>
+			<td>
+				<xsl:value-of select="@Codesys" />
+			</td>
+			<td>
+				<xsl:value-of select="@DisplayName" />
+			</td>
+		</tr>
 	</xsl:template>
 
 </xsl:stylesheet>

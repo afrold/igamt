@@ -52,7 +52,7 @@
 				</h2>
 				<a name="valuesets"></a>
 				<xsl:apply-templates select="ConformanceProfile/Tables">
-					<xsl:sort select="@AlternateId"></xsl:sort>
+					<xsl:sort select="@Id"></xsl:sort>
 				</xsl:apply-templates>
 			</body>
 		</html>
@@ -90,7 +90,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<xsl:for-each select="Elt">					
+				<xsl:for-each select="Elt">
 					<xsl:if test="@Diff = 'del'">
 						<xsl:call-template name="elt">
 							<xsl:with-param name="style"
@@ -390,7 +390,6 @@
 							<xsl:with-param name="style" select="'background-color:yellow;'">
 							</xsl:with-param>
 						</xsl:call-template>
-
 					</xsl:if>
 				</xsl:for-each>
 			</tbody>
@@ -489,9 +488,6 @@
 	</xsl:template>
 
 	<xsl:template match="TableDefinition">
-
-		<a name="valuesets"></a>
-		<br></br>
 		<h3 style="page-break-before: always">
 			<xsl:value-of select="@Id" />
 			:
@@ -517,23 +513,45 @@
 			<tbody>
 				<xsl:for-each select="TableElement">
 					<xsl:sort select="@Code" />
-					<tr>
-						<td>
-							<xsl:value-of select="@Code" />
-						</td>
-						<td>
-							<xsl:value-of select="@Codesys" />
-						</td>
-						<td>
-							<xsl:value-of select="@DisplayName" />
-						</td>
-					</tr>
+					<xsl:if test="@Diff = 'del'">
+						<xsl:call-template name="tableElement">
+							<xsl:with-param name="style"
+								select="'background-color:red;text-decoration:line-through'">
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:if>
+					<xsl:if test="@Diff = 'add'">
+						<xsl:call-template name="tableElement">
+							<xsl:with-param name="style" select="'background-color:green;'">
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:if>
+					<xsl:if test="@Diff = 'edit'">
+						<xsl:call-template name="tableElement">
+							<xsl:with-param name="style" select="'background-color:yellow;'">
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:if>
 				</xsl:for-each>
 			</tbody>
 		</table>
 		<br></br>
 		<a href="#top">Link to top</a>
+	</xsl:template>
 
+	<xsl:template name="tableElement">
+		<xsl:param name="style" />
+		<tr style="{$style}">
+			<td>
+				<xsl:value-of select="@Code" />
+			</td>
+			<td>
+				<xsl:value-of select="@Codesys" />
+			</td>
+			<td>
+				<xsl:value-of select="@DisplayName" />
+			</td>
+		</tr>
 	</xsl:template>
 
 </xsl:stylesheet>
