@@ -4,7 +4,7 @@
 
 
 angular.module('igl')
-    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams,$filter, $http,$modal) {
+    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams,$filter, $http,$modal,$timeout) {
         $scope.loading = false;
         $scope.loadingSelection = false;
         $scope.readonly = false;
@@ -46,25 +46,39 @@ angular.module('igl')
 //                }
             });
 
-            $scope.$watch(function () {
-                return $rootScope.notifyDtTreeUpdate;
-            }, function (changeId) {
-                if(changeId != 0) {
-                    $scope.params.refresh();
+//            $scope.$watch(function () {
+//                return $rootScope.notifyDtTreeUpdate;
+//            }, function (changeId) {
+//                if(changeId != 0) {
+//                    $scope.params.refresh();
+//                }
+//            });
+
+
+            $rootScope.$on('event:openDatatype',function (event, datatype){
+                if(datatype && datatype != null) {
+                    $rootScope.selectProfileTab(3);
+                    $scope.select(datatype);
                 }
+                event.stopPropagation();
             });
+
 
             $scope.loading = false;
         };
 
         $scope.select = function (datatype) {
+            $scope.loadingSelection = true;
             $rootScope.datatype = datatype;
             $rootScope.datatype["type"] = "datatype";
-            if ($scope.params)
-                $scope.params.refresh();
-            $scope.loadingSelection = false;
             $scope.accordion.datatypeStatus = true;
             $scope.accordion.listStatus= !$scope.accordion.datatypeStatus;
+            $timeout(
+                function () {
+                    if ($scope.params)
+                        $scope.params.refresh();
+                    $scope.loadingSelection = false;
+                }, 500);
         };
 
         $scope.flavor = function (datatype) {
@@ -179,9 +193,10 @@ angular.module('igl')
         };
 		
 		$scope.goToTable = function(table){
-        	$rootScope.table = table;
-            $rootScope.notifyTableTreeUpdate = new Date().getTime();
-            $rootScope.selectProfileTab(4);
+//        	$rootScope.table = table;
+//            $rootScope.notifyTableTreeUpdate = new Date().getTime();
+
+            $rootScope.$emit('event:openTable', table);
         };
         
         $scope.deleteTable = function (node) {

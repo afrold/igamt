@@ -85,7 +85,7 @@
                 <div ng-include="'views/edit/editMessages.html'"></div>
             </tab>
 
-            <tab select="selectProfileTab(2)" active="profileTabs[2]">
+            <tab disabled="message === null" select="selectProfileTab(2)" active="profileTabs[2]">
                 <tab-heading>
                     <!--<span class="badge">S</span>-->
                     <i class="fa fa-book fa-fw"></i>
@@ -94,7 +94,7 @@
                 <div ng-include="'views/edit/editSegments.html'"></div>
             </tab>
 
-            <tab select="selectProfileTab(3)" active="profileTabs[3]">
+            <tab disabled="message === null" select="selectProfileTab(3)" active="profileTabs[3]">
                 <tab-heading>
                     <!--<span class="badge">D</span>-->
                     <i class="fa fa-book fa-fw"></i>
@@ -103,7 +103,7 @@
                 <div ng-include="'views/edit/editDatatypes.html'"></div>
             </tab>
 
-            <tab select="selectProfileTab(4)" active="profileTabs[4]">
+            <tab disabled="message === null" select="selectProfileTab(4)" active="profileTabs[4]">
                 <tab-heading>
                     <!--<span class="badge">V</span>-->
                     <i class="fa fa-book fa-fw"></i>
@@ -111,7 +111,7 @@
                 </tab-heading>
                 <div ng-include="'views/edit/editValueSets.html'"></div>
             </tab>
-            <tab select="selectProfileTab(5)" active="profileTabs[5]">
+            <tab disabled="message === null" select="selectProfileTab(5)" active="profileTabs[5]">
                 <tab-heading>
                     <!--<span class="badge">C</span>-->
                     <i class="fa fa-book fa-fw"></i>

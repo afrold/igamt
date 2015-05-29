@@ -342,11 +342,6 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.profileTabs = new Array();
     $rootScope.igTabs = new Array();
     $rootScope.config= {};
-    $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
-    $rootScope.notifyMsgTreeUpdate = '0'; // TODO: FIXME
-    $rootScope.notifyDtTreeUpdate = '0'; // TODO: FIXME
-    $rootScope.notifyTableTreeUpdate = '0'; // TODO: FIXME
-    $rootScope.notifySegTreeUpdate = '0'; // TODO: FIXME
     $rootScope.messagesData = [];
     $rootScope.messages = [];// list of messages
     $rootScope.customIgs=[];

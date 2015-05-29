@@ -6,7 +6,7 @@
 
 
 angular.module('igl')
-    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams) {
+    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $timeout) {
         $scope.loading = false;
         $scope.loadingSelection = false;
         $scope.tmpMessages =[].concat($rootScope.messages);
@@ -23,39 +23,47 @@ angular.module('igl')
                     initialState: 'expanded'
                 }
             });
-
-
-            $scope.$watch(function () {
-                return $rootScope.notifyMsgTreeUpdate;
-            }, function (messageId) {
-                if (messageId != 0) {
-                    $scope.params.refresh();
+            $rootScope.$on('event:openMessage',function (event,messageId){
+                if(messageId && messageId != null && messageId !== '') {
+                    $rootScope.selectProfileTab(1);
+                    $scope.select(messageId);
+                    var segment = $rootScope.segments[0];
+                    segment["type"] = "segment";
+                    $rootScope.$emit('event:openSegment', segment, false);
                 }
             });
-
             $scope.loading = false;
         };
 
         $scope.select = function (messageId) {
-            waitingDialog.show('Loading Message...', {dialogSize: 'sm', progressType: 'danger'});
-            $scope.loadingSelection = true;
+             $scope.loadingSelection = true;
             $rootScope.message = $rootScope.messagesMap[messageId];
-            $scope.params.refresh();
-            $scope.loadingSelection = false;
-             waitingDialog.hide();
-        };
+            $timeout(
+                function () {
+                    if ($scope.params)
+                        $scope.params.refresh();
+                    $scope.loadingSelection = false;
+                }, 500);
+
+         };
 
         $scope.close = function(){
+            $scope.loadingSelection = true;
             $rootScope.message = null;
-            if ($scope.params)
-                $scope.params.refresh();
-            $scope.loadingSelection = false;
+            $timeout(
+                function () {
+                    if ($scope.params)
+                        $scope.params.refresh();
+                    $scope.loadingSelection = false;
+                }, 500);
         };
 
         $scope.goToSegment = function (segmentId) {
-            $rootScope.segment = $rootScope.segmentsMap[segmentId];
-            $rootScope.notifySegTreeUpdate = new Date().getTime();
-            $rootScope.selectProfileTab(2);
+//            $rootScope.segment = $rootScope.segmentsMap[segmentId];
+//            $rootScope.notifySegTreeUpdate = new Date().getTime();
+//            $rootScope.selectProfileTab(2);
+            $rootScope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
+
         };
 
         $scope.hasChildren = function (node) {

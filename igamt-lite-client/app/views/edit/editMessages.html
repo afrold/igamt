@@ -2,7 +2,7 @@
 
 
 <div ng-show="loading" style="text-align:center">
-    <i class="fa fa-spinner fa-spin"></i>
+     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
 </div>
 
 <div ng-show="!loading">
@@ -44,7 +44,7 @@
                     <td>
                         <button title="Edit" type="button" class="btn btn-xs btn-primary"
                                 ng-click="select(row.id)">
-                            <span><i class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>
+                            <span><i class="fa fa-pencil fa-fw"></i></span>
                         </button>
                     </td>
                 </tr>
@@ -54,27 +54,29 @@
     </div>
 </div>
 
-<div ng-show="loadingSelection" style="text-align:center">
-    <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
+<div ng-show="loadingSelection" style="text-align:center; padding-top:20px">
+     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
 </div>
 
-<!--<div ng-show="info !== null" style="text-align:center">-->
-<!--<div class="alert alert-info" role="alert" ng-bind="info"></div>-->
-<!--</div>-->
-
 <div ng-show="message !== null && !loadingSelection" style="padding-top:40px">
-    <div>
-        <span class="igl-title">Conformance Profile MetaData</span>
-                        <span class="pull-right">
-                        <button title="Close" type="button" class="btn btn-xs btn-warning"
+
+
+<div class="page-header">
+<span class="header4">Conformance Profile: {{message.identifier}}</span>
+     <span class="pull-right">
+                        <button title="Close" type="button" class="btn btn-sm btn-warning"
                                 ng-click="close()">
                             <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
                         </button>
                         </span>
+</div>
 
-    </div>
-    <hr/>
-    <form name="messageMetaDataForm" novalidate>
+
+        <div class="page-header">
+            <span class="header5">MetaData</span>
+        </div>
+
+     <form name="messageMetaDataForm" novalidate>
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group"
@@ -176,9 +178,15 @@
         </div>
     </form>
 
+    <!--<div class="page-header">-->
+        <!--<span class="igl-title">Conformance Profile Content</span>-->
+    <!--</div>-->
+
+
     <div class="page-header">
-        <span class="igl-title">Conformance Profile Content</span>
+        <span class="header5">Definition</span>
     </div>
+
     <table tt-table tt-params="params" class="table table-striped table-bordered">
         <thead>
         <tr class="tbl-header row">

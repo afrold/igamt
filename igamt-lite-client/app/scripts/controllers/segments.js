@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal) {
+    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal,$timeout) {
         $scope.loading = false;
         $scope.loadingSelection = false;
         $scope.readonly = false;
@@ -27,28 +27,36 @@ angular.module('igl')
 //                }
             });
 
-
-            $scope.$watch(function () {
-                return $rootScope.notifySegTreeUpdate;
-            }, function (changeId) {
-                if(changeId != 0) {
-                    $scope.params.refresh();
+            $rootScope.$on('event:openSegment',function (event,segment, goto){
+                if(segment && segment != null) {
+                    if(goto) {
+                        $rootScope.selectProfileTab(2);
+                    }
+                    $scope.select(segment);
+                    event.stopPropagation();
                 }
             });
-            $scope.select($rootScope.segments[0]);
+
+            if($rootScope.segments && $rootScope.segments.length > 0) {
+                $scope.select($rootScope.segments[0]);
+            }
+
             $scope.loading = false;
         };
 //
         $scope.select = function (segment) {
             if(segment) {
                 $scope.loadingSelection = true;
-                waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
+                //waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
                 $rootScope.segment = segment;
                 $rootScope.segment["type"] = "segment";
-                if ($scope.params)
-                    $scope.params.refresh();
-                $scope.loadingSelection = false;
-                waitingDialog.hide();
+                $timeout(
+                    function () {
+                        if ($scope.params)
+                            $scope.params.refresh();
+                        $scope.loadingSelection = false;
+                    }, 500);
+               // waitingDialog.hide();
             }
         };
 
@@ -92,15 +100,15 @@ angular.module('igl')
         };
         
         $scope.goToTable = function(table){
-        	$rootScope.table = table;
-            $rootScope.notifyTableTreeUpdate = new Date().getTime();
-            $rootScope.selectProfileTab(4);
+//        	$rootScope.table = table;
+//            $rootScope.notifyTableTreeUpdate = new Date().getTime();
+//            $rootScope.selectProfileTab(4);
+            $rootScope.$emit('event:openTable', table);
+
         };
 
         $scope.goToDatatype = function(datatype){
-            $rootScope.datatype = datatype;
-            $rootScope.selectProfileTab(3);
-            $rootScope.notifyDtTreeUpdate = new Date().getTime();
+            $rootScope.$emit('event:openDatatype', datatype);
         };
         
         $scope.deleteTable = function (node) {

@@ -362,22 +362,22 @@ div.ngRow.selected {
 }
 
 select.form-control {
-  background-color: #d9edf7;
-  color: #3a87ad;
+//  background-color: #d9edf7;
+//  color: #3a87ad;
   cursor: pointer;
 }
 
 
 select.form-control:checked{
-  background-color: #428bca;
-  color: #d9edf7;
+//  background-color: #428bca;
+//  color: #d9edf7;
   cursor: pointer;
 }
 
 
 input.form-control {
-  background-color: #d9edf7;
-  color: #3a87ad;
+//  background-color: #ebdb0b;
+//  color: black;
   cursor: pointer;
 }
 
@@ -387,7 +387,6 @@ input.form-control {
 
 
 .igl-input {
-  background-color: #d9edf7;
   cursor: pointer;
   background-image: none;
   border: 1px solid #cccccc;
@@ -404,8 +403,8 @@ input.form-control {
   font: inherit;
   margin: 0;
   opacity: 1;
-  background-color: #d9edf7;
-  color: #3a87ad;
+//  background-color: #ebdb0b;
+//  color: black;
   cursor: pointer;
 }
 
@@ -514,8 +513,10 @@ ul > li.igl-tbl-item > a {
 }
 
 .igl-table{
-  height: 500px !important;
+ //  overflow: scroll;
+  max-height: 400px !important;
   overflow: scroll;
+
 }
 
 #userInfo {
@@ -1489,4 +1490,18 @@ input.account-input {
   margin-right: 20px;
   margin-left: 20px;
   font-size: 12px;
+}
+
+.igl-spinner {
+  text-align:center;
+}
+
+.header4{
+  font-size:25px;
+  font-weight: bold;
+}
+
+.header5{
+  font-size:20px;
+  font-weight: bold;
 }

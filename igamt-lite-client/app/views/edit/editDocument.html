@@ -1,4 +1,4 @@
-<div class="container bs-docs-container ig-doc">
+<!--<div class="container bs-docs-container ig-doc">-->
 
 <!--<div ng-show="loading" style="text-align:center">-->
     <!--<i class="fa fa-spinner fa-spin"></i>-->
@@ -6,7 +6,6 @@
 <!--<div ng-show="!loading">-->
 <!--<div class="row" style="margin-top: 10px">-->
 <!--</div>-->
-<div class="row" style="margin-left: 0px">
 <!--<div class="col-md-3" role="complementary">-->
     <!--<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">-->
         <!--<ul class="nav bs-docs-nav-container bs-docs-nav">-->
@@ -44,12 +43,15 @@
     <!--</nav>-->
 <!--</div>-->
 
+<div class="">
+<!--<div class="col-md-12" role="main">-->
+<div  style="padding-top:20px">
+<!--<div class="bs-docs-section" ng-show="section.type === 'metaData'">-->
+<div ng-show="section.type === 'metaData'">
 
-<div class="col-md-12" role="main">
-<div>
-<div class="bs-docs-section" ng-show="section.type === 'metaData'">
-    <!--<h1 id="info" class="page-header">Implementation Guide MetaData</h1>-->
+<!--<h1 id="info" class="page-header">Implementation Guide MetaData</h1>-->
     <form name="igMetaDataForm" novalidate>
+        <div class="row">
         <div class="col-md-6">
 
             <div class="form-group">
@@ -148,6 +150,7 @@
                        <!--class="form-control" ng-model="section.data.topics">-->
             <!--</div>-->
         </div>
+            </div>
     </form>
 
 </div>
@@ -497,7 +500,6 @@
 <!--</div>-->
 
 
-</div>
 
 </div>
 <!--</div>-->
@@ -505,9 +507,7 @@
 </div>
 <!--<a class="point" class="back-to-top" href="#top"> Back to top </a>-->
 
-</div>
-</div>
-</div>
+
 
 
 <!--<pre>-->

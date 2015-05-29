@@ -2,7 +2,7 @@
  * Created by Jungyub on 4/01/15.
  */
 
-angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal) {
+angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal,$timeout) {
     $scope.loading = false;
     $scope.loadingSelection = false;
     $scope.tmpTables = [].concat($rootScope.tables);
@@ -12,16 +12,21 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     $scope.params = null;
     $scope.accordion = {listStatus:true, tableStatus: false};
     $scope.init = function () {
+        $rootScope.$on('event:openTable',function (event,table){
+            if(table && table != null) {
+                $rootScope.selectProfileTab(4);
+                $scope.select(table);
+            }
+            event.stopPropagation();
+        });
     };
 
     $scope.select = function (table) {
         $scope.loadingSelection = true;
         $rootScope.table = table;
-        if ($scope.params)
-            $scope.params.refresh();
-        $scope.loadingSelection = false;
         $scope.accordion.tableStatus = true;
         $scope.accordion.listStatus= !$scope.accordion.tableStatus;
+        $scope.loadingSelection = false;
     };
 
     $scope.addTable = function () {

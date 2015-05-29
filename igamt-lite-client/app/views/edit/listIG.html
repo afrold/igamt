@@ -52,29 +52,28 @@
                                 <td ng-bind="row.metaData.version"></td>
                                 <td ng-bind="row.metaData.date"></td>
                                 <td>
-                                    <button ng-hide="toEditProfileId != null && toEditProfileId === row.id" title="Create Copy" type="button" class="btn btn-sm btn-info"
+                                    <button ng-hide="toEditProfileId != null && toEditProfileId === row.id" title="Create Copy" type="button" class="btn btn-xs btn-info"
                                             ng-click="clone(row)">
-                                        <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
+                                        <span><i class="fa fa-plus-circle fa-fw"></i></span>
                                     </button>
                                     <div class="btn-group" ng-hide="toEditProfileId != null && toEditProfileId === row.id">
                                         <button ng-disabled="row === profile && hasChanges()" type="button"
-                                                class="btn btn-primary btn-sm"><span><i
-                                                class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
-                                            Export
-                                        </button>
+                                                class="btn btn-primary btn-xs"><span><i
+                                                class="fa fa-download fa-fw"></i></span>
+                                         </button>
                                         <button ng-disabled="row === profile && hasChanges()" type="button"
-                                                class="btn btn-primary btn-sm dropdown-toggle"
+                                                class="btn btn-primary btn-xs dropdown-toggle"
                                                 data-toggle="dropdown" aria-expanded="false">
                                             <span class="caret"></span>
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a ng-click="exportAs(row.id, 'xml')">As XML</a></li>
+                                            <li><a ng-click="exportAs(row.id, 'zip')">As ZIP</a></li>
                                             <li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>
                                             <li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>
                                         </ul>
                                     </div>
-                                    <span ng-show="toEditProfileId != null && toEditProfileId === row.id"><img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/></span>
+                                    <span ng-show="toEditProfileId != null && toEditProfileId === row.id"><i class="fa fa-spinner fa-pulse fa-2x"></i></span>
                                 </td>
                             </tr>
                             </tbody>
@@ -91,7 +90,7 @@
                 </div>
                 <div ng-show="preloadedLoading" style="text-align:center">
                     <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
-                    <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+                    <i class="fa fa-spinner fa-pulse fa-2x"></i>
 
                 </div>
             </div>
@@ -145,29 +144,28 @@
                                 <td ng-bind="row.metaData.version"></td>
                                 <td ng-bind="row.metaData.date"></td>
                                 <td>
-                                    <button ng-hide="toEditProfileId != null && toEditProfileId === row.id" title="Edit" type="button" class="btn btn-sm btn-primary"
+                                    <button ng-hide="toEditProfileId != null && toEditProfileId === row.id" title="Edit" type="button" class="btn btn-xs btn-default"
                                             ng-click="edit(row)">
                                         <span><i
-                                                class="fa fa-pencil fa-fw"></i>&nbsp; Edit</span>
+                                                class="fa fa-pencil fa-fw"></i></span>
                                     </button>
-                                    <button ng-hide="toEditProfileId != null && toEditProfileId === row.id" title="Create Copy" type="button" class="btn btn-sm btn-info"
+                                    <button ng-hide="toEditProfileId != null && toEditProfileId === row.id" title="Create Copy" type="button" class="btn btn-xs btn-info"
                                             ng-click="clone(row)">
-                                        <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Clone</span>
+                                        <span><i class="fa fa-plus-circle fa-fw"></i></span>
                                     </button>
                                     <div class="btn-group" ng-hide="toEditProfileId != null && toEditProfileId === row.id">
                                         <button ng-disabled="row === profile && hasChanges()" type="button"
-                                                class="btn btn-primary btn-sm"><span><i
-                                                class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
-                                            Export
-                                        </button>
+                                                class="btn btn-primary btn-xs"><span><i
+                                                class="fa fa-download fa-fw"></i></span>
+                                         </button>
                                         <button ng-disabled="row === profile && hasChanges()" type="button"
-                                                class="btn btn-primary btn-sm dropdown-toggle"
+                                                class="btn btn-primary btn-xs dropdown-toggle"
                                                 data-toggle="dropdown" aria-expanded="false">
                                             <span class="caret"></span>
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul ng-disabled="row === profile && hasChanges()" class="dropdown-menu" role="menu">
-                                            <li><a ng-click="exportAs(row.id, 'xml')">As XML</a></li>
+                                            <li><a ng-click="exportAs(row.id, 'zip')">As ZIP</a></li>
                                             <li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>
                                             <li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>
                                         </ul>
@@ -178,12 +176,12 @@
                                     <!--<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Diff</span>-->
                                     <!--</button>-->
 
-                                    <button title="Delete" type="button" class="btn btn-sm btn-danger" ng-hide="toEditProfileId != null && toEditProfileId === row.id"
+                                    <button title="Delete" type="button" class="btn btn-xs btn-danger" ng-hide="toEditProfileId != null && toEditProfileId === row.id"
                                             ng-click="confirmDelete(row)">
-                                        <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+                                        <span><i class="fa fa-trash-o fa-fw"></i></span>
                                     </button>
 
-                                    <span ng-show="toEditProfileId != null && toEditProfileId === row.id"><img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/></span>
+                                    <span ng-show="toEditProfileId != null && toEditProfileId === row.id"><i class="fa fa-spinner fa-pulse fa-2x"></i></span>
 
                                 </td>
                             </tr>
@@ -204,7 +202,7 @@
 
                 <div ng-show="customLoading" style="text-align:center">
                     <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
-                    <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+                    <i class="fa fa-spinner fa-pulse fa-2x"></i>
 
                 </div>
                 <!--</div>-->

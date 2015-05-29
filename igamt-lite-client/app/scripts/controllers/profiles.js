@@ -29,12 +29,14 @@ angular.module('igl')
             /**
              * On 'event:loginConfirmed', resend all the 401 requests.
              */
-            $scope.$on('event:loginConfirmed', function () {
+            $scope.$on('event:loginConfirmed', function (event) {
                 $scope.loadProfiles();
+                event.stopPropagation();
             });
 
-            $rootScope.$on('event:openProfileRequest', function (profile) {
+            $rootScope.$on('event:openProfileRequest', function (event,profile) {
                 $scope.openProfile(profile);
+                event.stopPropagation();
             });
 
         };
@@ -147,16 +149,15 @@ angular.module('igl')
                 }, $rootScope.messagesMap);
 
 
-                if ($rootScope.profile.messages.children.length === 1) {
-                    $rootScope.message = $rootScope.messages[0];
-                    $rootScope.message.children = $filter('orderBy')($rootScope.message.children, 'position');
-                    angular.forEach($rootScope.message.children, function (segmentRefOrGroup) {
+                if ($rootScope.messages.length === 1) {
+                    var message = $rootScope.messages[0];
+                    message.children = $filter('orderBy')(message.children, 'position');
+                    angular.forEach(message.children, function (segmentRefOrGroup) {
                         $rootScope.processElement(segmentRefOrGroup);
                     });
-                    $rootScope.notifyMsgTreeUpdate = new Date().getTime();
-                    $rootScope.segment = $rootScope.segments[0];
-                    $rootScope.segment["type"] = "segment";
-                    $rootScope.notifySegTreeUpdate = new Date().getTime();
+                    $rootScope.$emit('event:openMessage', message.id);
+
+
                 }
 
 //                angular.forEach($rootScope.profile.messages.children, function (message) {
