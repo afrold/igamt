@@ -47,4 +47,7 @@ public interface ProfileService {
 
 	public InputStream exportAsXlsx(Profile p);
 
+	public InputStream diffToPdf(Profile p);
+
+	public InputStream diffToJson(Profile p);
 }

@@ -19,6 +19,7 @@
 				<br></br>
 				<a href="#messages">Messages definifion</a>
 				<br></br>
+
 				<a href="#segments">Segments definition</a>
 				<br></br>
 				<a href="#datatypes">Datatypes definition</a>
@@ -60,10 +61,10 @@
 	</xsl:template>
 	<xsl:template match="MessageDisplay">
 		<h3 style="page-break-before: always">
-			<b>Message Definition:</b>
+			Message Definition:
 			<xsl:value-of select="@Description" />
-			<br></br>
-			<b>Profile:</b>
+			<br/>
+			Profile:
 			<xsl:value-of select="@StructID" />
 		</h3>
 		<table width="1000" border="1" cellspacing="0" cellpadding="1">
@@ -152,8 +153,9 @@
 			<xsl:value-of select="@Description" />
 		</h3>
 
+		<!-- <span style="background-color:#FFFF00"> <xsl:value-of select="./Text[@Type='Text1']" 
+			/> </span> -->
 		<xsl:value-of select="./Text[@Type='Text1']" />
-
 		<table width="1000" border="1" cellspacing="0" cellpadding="1">
 			<thead style="background:#0033CC;color:white;align:center">
 				<tr>
@@ -332,8 +334,6 @@
 	</xsl:template>
 
 	<xsl:template match="Datatype">
-
-		<a name="datatypes"></a>
 		<h3 style="page-break-before: always">
 			<xsl:value-of select="@Label" />
 			:

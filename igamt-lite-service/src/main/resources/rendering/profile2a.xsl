@@ -66,6 +66,8 @@
 			<b>Profile:</b>
 			<xsl:value-of select="@StructID" />
 		</h3>
+		<xsl:text>Comment:</xsl:text>
+		<xsl:value-of select="Comment" />
 		<table width="1000" border="1" cellspacing="0" cellpadding="1">
 			<thead>
 				<tr style="background:#0033CC; color:white">
@@ -449,7 +451,7 @@
 
 		<a name="valuesets"></a>
 		<br></br>
-		<h3 style="page-break-before: always">
+		<h3 style="page-break-before:auto">
 			<xsl:value-of select="@Id" />
 			:
 			<xsl:value-of select="@Name" />
@@ -474,10 +476,10 @@
 			<tbody>
 				<xsl:for-each select="TableElement">
 					<xsl:sort select="@Code" />
-						<xsl:call-template name="tableElement">
-							<xsl:with-param name="style" select="'background-color:white;'">
-							</xsl:with-param>
-						</xsl:call-template>
+					<xsl:call-template name="tableElement">
+						<xsl:with-param name="style" select="'background-color:white;'">
+						</xsl:with-param>
+					</xsl:call-template>
 				</xsl:for-each>
 			</tbody>
 		</table>
