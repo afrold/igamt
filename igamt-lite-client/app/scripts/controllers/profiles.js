@@ -6,11 +6,17 @@
 angular.module('igl')
     .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, userInfoService, $modal, $cookies, $timeout) {
         $scope.loading = false;
+        $scope.accordion = {preloadedStatus:true, customStatus: true};
+        $rootScope.preloadedIgs = [];
+        $rootScope.customIgs = [];
         $scope.tmpPreloadedIgs = [].concat($rootScope.preloadedIgs);
         $scope.tmpCustomIgs = [].concat($rootScope.customIgs);
         $scope.error = null;
         $scope.preloadedLoading = false;
         $scope.customLoading = false;
+        $scope.preloadedError = null;
+        $scope.customError = null;
+
         $scope.loadingProfile = false;
         $scope.toEditProfileId = null;
 
@@ -23,17 +29,21 @@ angular.module('igl')
             /**
              * On 'event:loginConfirmed', resend all the 401 requests.
              */
-            $scope.$on('event:loginConfirmed', function () {
+            $scope.$on('event:loginConfirmed', function (event) {
                 $scope.loadProfiles();
+                event.stopPropagation();
             });
 
-            $rootScope.$on('event:openProfileRequest', function (profile) {
+            $rootScope.$on('event:openProfileRequest', function (event,profile) {
                 $scope.openProfile(profile);
+                event.stopPropagation();
             });
 
         };
 
         $scope.loadProfiles = function () {
+            $scope.preloadedError = null;
+            $scope.customError = null;
             if (userInfoService.isAuthenticated()) {
                 $rootScope.selectIgTab(0);
                 $scope.preloadedLoading = true;
@@ -42,6 +52,7 @@ angular.module('igl')
                     $scope.preloadedLoading = false;
                 }, function (error) {
                     $scope.preloadedLoading = false;
+                    $scope.preloadedError = "Failed to load the profiles";
                 });
                 $scope.customLoading = true;
                 $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
@@ -49,6 +60,7 @@ angular.module('igl')
                     $scope.customLoading = false;
                 }, function (error) {
                     $scope.customLoading = false;
+                    $scope.customError = "Failed to load the profiles";
                 });
 
                 $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {
@@ -59,11 +71,16 @@ angular.module('igl')
         };
 
         $scope.clone = function (profile) {
+            $scope.toEditProfileId = profile.id;
             waitingDialog.show('Cloning profile...', {dialogSize: 'sm', progressType: 'info'});
             $http.post('api/profiles/' + profile.id + '/clone', {timeout: 60000}).then(function (response) {
                 $rootScope.customIgs.push(angular.fromJson(response.data));
+                $scope.accordion.preloadedStatus = false;
+                $scope.accordion.customStatus= !$scope.accordion.preloadedStatus;
+                $scope.toEditProfileId = null;
                 waitingDialog.hide();
             }, function (error) {
+                $scope.toEditProfileId = null;
                 waitingDialog.hide();
             });
         };
@@ -82,15 +99,16 @@ angular.module('igl')
             try {
                 if ($rootScope.profile != null && $rootScope.profile === profile) {
                     $rootScope.selectIgTab(1);
+                    $scope.toEditProfileId = null;
                 } else if ($rootScope.profile && $rootScope.profile != null && $rootScope.hasChanges()) {
                     $scope.confirmOpen(profile);
+                    $scope.toEditProfileId = null;
                 } else {
                     $timeout(
                         function () {
                             $scope.openProfile(profile);
-                        }, 100);
+                        }, 1000);
                 }
-                $scope.toEditProfileId = null;
             } catch (e) {
                 $rootScope.msg().text = "igInitFailed";
                 $rootScope.msg().type = "danger";
@@ -131,27 +149,28 @@ angular.module('igl')
                 }, $rootScope.messagesMap);
 
 
-                if ($rootScope.profile.messages.children.length === 1) {
-                    $rootScope.message = $rootScope.messages[0];
-                    $rootScope.message.children = $filter('orderBy')($rootScope.message.children, 'position');
-                    angular.forEach($rootScope.message.children, function (segmentRefOrGroup) {
+                if ($rootScope.messages.length === 1) {
+                    var message = $rootScope.messages[0];
+                    message.children = $filter('orderBy')(message.children, 'position');
+                    angular.forEach(message.children, function (segmentRefOrGroup) {
                         $rootScope.processElement(segmentRefOrGroup);
                     });
-                    $rootScope.notifyMsgTreeUpdate = new Date().getTime();
-                    $rootScope.segment = $rootScope.segments[0];
-                    $rootScope.segment["type"] = "segment";
-                    $rootScope.notifySegTreeUpdate = new Date().getTime();
+                    $rootScope.$emit('event:openMessage', message.id);
+
+
                 }
 
-                angular.forEach($rootScope.profile.messages.children, function (message) {
-                    var segRefOrGroups = [];
-                    var segments = [];
-                    var datatypes = [];
-                    $scope.collectData(message, segRefOrGroups, segments, datatypes);
-                    $rootScope.messagesData.push({message: message, segRefOrGroups: segRefOrGroups, segments: segments, datatypes: datatypes});
-                });
+//                angular.forEach($rootScope.profile.messages.children, function (message) {
+//                    var segRefOrGroups = [];
+//                    var segments = [];
+//                    var datatypes = [];
+//                    $scope.collectData(message, segRefOrGroups, segments, datatypes);
+//                    $rootScope.messagesData.push({message: message, segRefOrGroups: segRefOrGroups, segments: segments, datatypes: datatypes});
+//                });
                 $scope.gotoSection($rootScope.profile.metaData, 'metaData');
                 $scope.loadingProfile = false;
+                $scope.toEditProfileId = null;
+
             }
         };
 
@@ -403,7 +422,9 @@ angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $
             $scope.error = error;
             $scope.loading = false;
             $modalInstance.close($scope.profileToDelete);
-
+            $rootScope.msg().text = "igDeleteFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
 
 //            waitingDialog.hide();
         });

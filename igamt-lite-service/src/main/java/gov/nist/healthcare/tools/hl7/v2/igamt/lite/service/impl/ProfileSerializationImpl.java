@@ -34,7 +34,10 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -44,6 +47,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -51,6 +56,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import nu.xom.Attribute;
 
+import org.apache.commons.io.IOUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -519,7 +525,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					elmComponent.addAttribute(new Attribute("ConfLength", c
 							.getConfLength()));
 
-				String tableScript = "";
 				if (c.getTable() != null && !c.getTable().equals(""))
 					elmComponent.addAttribute(new Attribute("Table", tables
 							.findOne(c.getTable()).getMappingId() + ""));
@@ -726,15 +731,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return null;
 	}
 
-	private Table findTable(String mappingId, Tables tableLibrary) {
-		for (Table t : tableLibrary.getChildren()) {
-			if (t.getMappingId().equals(mappingId))
-				return t;
-		}
-
-		return null;
-	}
-
 	public HashMap<String, Datatype> getDatatypesMap() {
 		return datatypesMap;
 	}
@@ -750,7 +746,60 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	public void setSegmentsMap(HashMap<String, Segment> segmentsMap) {
 		this.segmentsMap = segmentsMap;
 	}
+	
+	@Override
+	public InputStream serializeProfileToZip(Profile profile) throws IOException{
+		ByteArrayOutputStream outputStream = null;
+		byte[] bytes;
+		outputStream = new ByteArrayOutputStream();
+		ZipOutputStream out = new ZipOutputStream(outputStream);
+		
+		this.generateProfileIS(out, this.serializeProfileToXML(profile));
+		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(profile.getTables()));
+		this.generateConstraintsIS(out, new ConstraintsSerializationImpl().serializeConstraintsToXML(profile.getConformanceStatements(), profile.getPredicates()));
+		
+		out.close();
+		bytes = outputStream.toByteArray();
+		return new ByteArrayInputStream(bytes);
+	}
 
+	
+	private void generateProfileIS(ZipOutputStream out, String profileXML) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("Profile.xml"));
+		InputStream inProfile = IOUtils.toInputStream(profileXML);
+		int lenTP;
+        while ((lenTP = inProfile.read(buf)) > 0) {
+            out.write(buf, 0, lenTP);
+        }
+        out.closeEntry();
+        inProfile.close();
+	}
+	
+	private void generateValueSetIS(ZipOutputStream out, String valueSetXML) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("ValueSet.xml"));
+		InputStream inValueSet = IOUtils.toInputStream(valueSetXML);
+		int lenTP;
+        while ((lenTP = inValueSet.read(buf)) > 0) {
+            out.write(buf, 0, lenTP);
+        }
+        out.closeEntry();
+        inValueSet.close();
+	}
+	
+	private void generateConstraintsIS(ZipOutputStream out, String constraintsXML) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("Profile.xml"));
+		InputStream inConstraints = IOUtils.toInputStream(constraintsXML);
+		int lenTP;
+        while ((lenTP = inConstraints.read(buf)) > 0) {
+            out.write(buf, 0, lenTP);
+        }
+        out.closeEntry();
+        inConstraints.close();
+	}
+	
 	public static void main(String[] args) throws IOException {
 		ProfileSerializationImpl test1 = new ProfileSerializationImpl();
 		TableSerializationImpl test2 = new TableSerializationImpl();

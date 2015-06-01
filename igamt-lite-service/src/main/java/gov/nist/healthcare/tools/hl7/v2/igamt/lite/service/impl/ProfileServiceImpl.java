@@ -39,8 +39,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfileChangeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfilePropertySaveError;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -242,6 +240,16 @@ ProfileService {
 	}
 
 	@Override
+	public InputStream exportAsZip(Profile p) throws IOException {
+		if (p != null) {
+			return new ProfileSerialization4ExportImpl()
+					.serializeProfileToZip(p);
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	@Override
 	public InputStream exportAsXlsx(Profile p) {
 		try {
 			File tmpXlsxFile = File.createTempFile("ProfileTmp", ".xslx");
@@ -354,12 +362,13 @@ ProfileService {
 		sheet.autoSizeColumn(8);
 	}
 
+	@Override
 	public InputStream exportAsPdfFromXsl(Profile p, String inlineConstraints) {
-		//Note: inlineConstraint can be true or false
+		// Note: inlineConstraint can be true or false
 		try {
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
-			//			File tmpXmlFile = new File("/Users/marieros/Documents/testXslt/nvo/pp.xml");
+
 			String stringProfile = new ProfileSerialization4ExportImpl()
 			.serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
@@ -367,7 +376,6 @@ ProfileService {
 
 			// Apply XSL transformation on xml file to generate html
 			File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
-			//			File tmpHtmlFile = new File("/Users/marieros/Documents/testXslt/nvo/hh.html");
 			Builder builder = new Builder();
 			nu.xom.Document input = builder.build(tmpXmlFile);
 			nu.xom.Document stylesheet = builder.build(this.getClass().getResourceAsStream(
@@ -377,7 +385,6 @@ ProfileService {
 			Nodes output = transform.transform(input);
 			nu.xom.Document result = XSLTransform.toDocument(output);
 			FileUtils.writeStringToFile(tmpHtmlFile, result.toXML());
-
 
 			// Convert html document to pdf
 			Document document = new Document();
@@ -695,7 +702,8 @@ ProfileService {
 		}
 	}
 
-	public void registerChange(Map<String, List<String>> dict, String key, String value){
+	public void registerChange(Map<String, List<String>> dict, String key,
+			String value) {
 		if (dict.containsKey(key)) {
 			dict.get(key).add(value);
 		} else {
@@ -1458,19 +1466,18 @@ ProfileService {
 	}
 
 	@Override
-	public Profile apply(Profile newProfile, Profile oldProfile,
-			String newValues) throws ProfileSaveException {
-		List<ProfilePropertySaveError> errors = new ProfileChangeService()
-		.apply(newProfile, oldProfile, newValues);
-		if (errors != null && !errors.isEmpty()) {
-			throw new ProfileSaveException(errors);
-		} else {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-			newProfile.getMetaData().setDate(
-					dateFormat.format(Calendar.getInstance().getTime()));
-			profileRepository.save(newProfile);
-		}
-		return newProfile;
+	public Profile apply(Profile p) throws ProfileSaveException {
+		// List<ProfilePropertySaveError> errors = new ProfileChangeService()
+		// .apply(newProfile, oldProfile, newValues);
+		// if (errors != null && !errors.isEmpty()) {
+		// throw new ProfileSaveException(errors);
+		// } else {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		p.getMetaData().setDate(
+				dateFormat.format(Calendar.getInstance().getTime()));
+		profileRepository.save(p);
+		// }
+		return p;
 	}
 
 }

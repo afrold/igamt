@@ -1,4 +1,4 @@
-<div class="container bs-docs-container ig-doc">
+<!--<div class="container bs-docs-container ig-doc">-->
 
 <!--<div ng-show="loading" style="text-align:center">-->
     <!--<i class="fa fa-spinner fa-spin"></i>-->
@@ -6,52 +6,53 @@
 <!--<div ng-show="!loading">-->
 <!--<div class="row" style="margin-top: 10px">-->
 <!--</div>-->
-<div class="row" style="margin-left: 0px">
-<div class="col-md-3" role="complementary">
-    <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">
-        <ul class="nav bs-docs-nav-container bs-docs-nav">
-            <li class="point">
-                <a class="point" ng-click="gotoSection(profile.metaData, 'metaData')">Implementation Guide MetaData</a>
-            </li>
-            <li>
-                <span>Conformance Profiles</span>
-                <ul class="nav">
-                    <li class="igl-tbl-item point" ng-repeat="msg in messagesData">
-                        <a ng-click="gotoSection(msg.message, 'message')">{{msg.message.identifier}}</a>
-                        <ul class="nav">
-                            <li class="igl-tbl-item">
-                                <!--<span>{{msg.message.identifier}} Message Definition</span>-->
-                                <span>{{msg.message.identifier}} Segments Definition</span>
-                                <ul class="nav">
-                                    <li class="igl-tbl-item point" ng-repeat="segment in msg.segments">
-                                        <a class="point" ng-click="gotoSection(segment, 'segment')">{{segment.name}} -
-                                            {{segment.description}}</a>
-                                    </li>
-                                </ul>
-                                <span>{{msg.message.identifier}} Datatypes Definition</span>
-                                <ul class="nav">
-                                    <li ng-repeat="datatype in msg.datatypes" class="igl-tbl-item point">
-                                        <a class="point" ng-click="gotoSection(datatype, 'datatype')">{{datatype.label}} -
-                                            {{datatype.description}}</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
-</div>
+<!--<div class="col-md-3" role="complementary">-->
+    <!--<nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix-top">-->
+        <!--<ul class="nav bs-docs-nav-container bs-docs-nav">-->
+            <!--<li class="point">-->
+                <!--<a class="point" ng-click="gotoSection(profile.metaData, 'metaData')">Implementation Guide MetaData</a>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<span>Conformance Profiles</span>-->
+                <!--<ul class="nav">-->
+                    <!--<li class="igl-tbl-item point" ng-repeat="msg in messagesData">-->
+                        <!--<a ng-click="gotoSection(msg.message, 'message')">{{msg.message.identifier}}</a>-->
+                        <!--<ul class="nav">-->
+                            <!--<li class="igl-tbl-item">-->
+                                <!--&lt;!&ndash;<span>{{msg.message.identifier}} Message Definition</span>&ndash;&gt;-->
+                                <!--<span>{{msg.message.identifier}} Segments Definition</span>-->
+                                <!--<ul class="nav">-->
+                                    <!--<li class="igl-tbl-item point" ng-repeat="segment in msg.segments">-->
+                                        <!--<a class="point" ng-click="gotoSection(segment, 'segment')">{{segment.name}} --->
+                                            <!--{{segment.description}}</a>-->
+                                    <!--</li>-->
+                                <!--</ul>-->
+                                <!--<span>{{msg.message.identifier}} Datatypes Definition</span>-->
+                                <!--<ul class="nav">-->
+                                    <!--<li ng-repeat="datatype in msg.datatypes" class="igl-tbl-item point">-->
+                                        <!--<a class="point" ng-click="gotoSection(datatype, 'datatype')">{{datatype.label}} --->
+                                            <!--{{datatype.description}}</a>-->
+                                    <!--</li>-->
+                                <!--</ul>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</nav>-->
+<!--</div>-->
 
+<div class="">
+<!--<div class="col-md-12" role="main">-->
+<div  style="padding-top:20px">
+<!--<div class="bs-docs-section" ng-show="section.type === 'metaData'">-->
+<div ng-show="section.type === 'metaData'">
 
-<div class="col-md-9" role="main">
-<div>
-<div class="bs-docs-section" ng-show="section.type === 'metaData'">
-    <h1 id="info" class="page-header">Implementation Guide MetaData</h1>
-
+<!--<h1 id="info" class="page-header">Implementation Guide MetaData</h1>-->
     <form name="igMetaDataForm" novalidate>
-        <div class="col-sm-6">
+        <div class="row">
+        <div class="col-md-6">
 
             <div class="form-group">
                 <label>IGAMT Project Identifier</label>
@@ -98,7 +99,7 @@
             </div>
 
         </div>
-        <div class="col-sm-6">
+        <div class="col-md-6">
             <div class="form-group">
                 <label>Organization Name</label>
                 <input type="text" name="orgName"
@@ -149,366 +150,364 @@
                        <!--class="form-control" ng-model="section.data.topics">-->
             <!--</div>-->
         </div>
+            </div>
     </form>
 
 </div>
 
 
-<div class="bs-docs-section" ng-show="section.type === 'message'">
-    <div>
-        <h1 class="page-header">{{section.data.identifier}} Message
-            Definition</h1>
-        <h3>Message {{section.data.structID}}</h3>
+<!--<div class="bs-docs-section" ng-show="section.type === 'message'">-->
+    <!--<div>-->
+        <!--<h1 class="page-header">{{section.data.identifier}} Message-->
+            <!--Definition</h1>-->
+        <!--<h3>Message {{section.data.structID}}</h3>-->
 
-        <div>
-            <h4>Text1</h4>
-        <textarea disabled  style="width:100%; margin-bottom: 20px" class="form-control" ng-bind="section.data.comment"
-                ></textarea>
-        </div>
-
-
-
-        <table class="table table-bordered">
-            <thead>
-            <tr class="ig-tbl-header row">
-                <th class="col-md-2">Segment</th>
-                <th class="col-md-2">Name</th>
-                <th class="col-md-1">Usage</th>
-                <th class="col-md-1">Cardi</th>
-                <th class="col-md-2">Conf. Statement</th>
-                <th class="col-md-2">Predicate</th>
-                <th class="col-md-2">Comment</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="segRefOrGroup in section.data.segRefOrGroups" class="row">
-                <td class="col-md-2">
-                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segmentsMap[segRefOrGroup.ref].name"></span>
-                </td>
-                <td class="col-md-2">
-                    <span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segmentsMap[segRefOrGroup.ref].description"></span>
-                    <span ng-show="segRefOrGroup.type === 'group'">
-                        -- {{segRefOrGroup.name | uppercase }} begin
-                    </span>
-
-                    <span ng-show="segRefOrGroup.type === 'end-group'">
-                        -- {{segRefOrGroup.name | uppercase }} end
-                    </span>
-
-                </td>
-                <td class="col-md-1">
-                    <span ng-show="segRefOrGroup.predicates != null && segRefOrGroup.predicates.length > 0">C({{segRefOrGroup.predicates[0].trueUsage}}/{{segRefOrGroup.predicates[0].falseUsage}})</span>
-                            <span ng-show="!segRefOrGroup.predicates || segRefOrGroup.predicates == null || segRefOrGroup.predicates.length == 0"
-                                  ng-bind="segRefOrGroup.usage"></span>
-                </td>
-                <td class="col-md-1">
-                        <span ng-show="segRefOrGroup.type !== 'end-group'">
-                        <span>[{{segRefOrGroup.min}}..{{segRefOrGroup.max}}]</span>
-                        </span>
-                </td>
-                <td class="col-md-2">
-
-                </td>
-                <td class="col-md-2">
-
-                </td>
-                <td class="col-md-2">
-                         <span ng-show="segRefOrGroup.type !== 'end-group'">
-                        <span ng-bind="segRefOrGroup.comment"></span>
-                        </span>
-                </td>
-            </tr>
-
-
-            </tbody>
-        </table>
-
-
-        <div ng-show="section.data.conformanceStatements && section.data.conformanceStatements.length > 0">
-            <h4>Conformance Statement</h4>
-            <table class="table table-bordered">
-                <thead>
-                <tr class="ig-tbl-header row">
-                    <th>ID</th>
-                    <th>Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="conStatement in section.data.conformanceStatements" class="row">
-                    <td>{{conStatement.constraintId}}</td>
-                    <td>{{conStatement.description}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div ng-show="section.data.predicates && section.data.predicates.length > 0">
-            <h4>Conditional Predicates</h4>
-            <table class="table table-bordered">
-                <thead>
-                <tr class="ig-tbl-header row">
-                    <th>Description</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="predicate in section.data.predicates" class="row">
-                    <td>{{predicate.description}}</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-    </div>
-</div>
-
-
-<div class="bs-docs-section" ng-show="section.type === 'segment'">
-    <h1 class="page-header">Segment Definition</h1>
-    <h3 class="page-header">{{section.data.name}} - {{section.data.description}}</h3>
-    <div>
-        <h4>Pre-Text</h4>
-        <hr/>
-        <p style="text-align:left" ng-model="section.data.text1"></p>
-    </div>
+        <!--<div>-->
+            <!--<h4>Text1</h4>-->
+        <!--<textarea disabled  style="width:100%; margin-bottom: 20px" class="form-control" ng-bind="section.data.comment"-->
+                <!--><!--</textarea>-->
+        <!--</div>-->
 
 
 
+        <!--<table class="table table-bordered">-->
+            <!--<thead>-->
+            <!--<tr class="ig-tbl-header row">-->
+                <!--<th class="col-md-2">Segment</th>-->
+                <!--<th class="col-md-2">Name</th>-->
+                <!--<th class="col-md-1">Usage</th>-->
+                <!--<th class="col-md-1">Cardi</th>-->
+                <!--<th class="col-md-2">Conf. Statement</th>-->
+                <!--<th class="col-md-2">Predicate</th>-->
+                <!--<th class="col-md-2">Comment</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr ng-repeat="segRefOrGroup in section.data.segRefOrGroups" class="row">-->
+                <!--<td class="col-md-2">-->
+                    <!--<span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segmentsMap[segRefOrGroup.ref].name"></span>-->
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
+                    <!--<span ng-show="segRefOrGroup.type === 'segmentRef'" ng-bind="segmentsMap[segRefOrGroup.ref].description"></span>-->
+                    <!--<span ng-show="segRefOrGroup.type === 'group'">-->
+                        <!---- {{segRefOrGroup.name | uppercase }} begin-->
+                    <!--</span>-->
 
-    <div>
-        <table class="table table-bordered">
-            <thead>
-            <tr class="ig-tbl-header row">
-                <th class="col-md-1">SEQ</th>
-                <th class="col-md-1">Field</th>
-                <th class="col-md-1">Usage</th>
-                <th class="col-md-1">Cardi</th>
-                <th class="col-md-1">Length</th>
-                <th class="col-md-1">Datatype</th>
-                <th class="col-md-1">ValueSet</th>
-                <th class="col-md-2">Conf Statement</th>
-                <th class="col-md-2">Predicate</th>
-                <th class="col-md-2">Comments</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="field in section.data.fields" class="row">
-                <td class="col-md-1">
-                    <span ng-bind="field.position"></span>
-                </td>
-                <td class="col-md-2">
-                    <span ng-bind="field.name"></span>
-                </td>
-                <td class="col-md-1">
-                    <span ng-show="field.predicates != null && field.predicates.length > 0">C({{field.predicates[0].trueUsage}}/{{field.predicates[0].falseUsage}})</span>
-                            <span ng-show="!field.predicates || field.predicates == null || field.predicates.length == 0"
-                                  ng-bind="field.usage"></span>
-                </td>
+                    <!--<span ng-show="segRefOrGroup.type === 'end-group'">-->
+                        <!---- {{segRefOrGroup.name | uppercase }} end-->
+                    <!--</span>-->
 
-                <td class="col-md-1">
-                    <span>[{{field.min}}..{{field.max}}]</span>
-                </td>
-                <td class="col-md-1">
-                    <span>[{{field.minLength}},{{field.maxLength}}]</span>
-                </td>
-                <td class="col-md-1">
-                    <span>{{datatypesMap[field.datatype].label}}</span>
-                </td>
-                <td class="col-md-1">
-                    <span>{{tablesMap[field.table].mappingId}}</span>
-                </td>
-                <td class="col-md-2">
-                     <span ng-show="trim" class="constraint_trim">
-                                              <span ng-repeat="predicate in field.datatype.predicates">
-                                                 {{predicate.description}}
-                                              </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="predicate in field.datatype.predicates">
-                                                  {{predicate.description}}
-                                              </p>
-                                            </span>
-                </td>
-                <td class="col-md-2">
-                     <span ng-show="trim" class="constraint_trim">
-                                               <span ng-repeat="conStatement in field.datatype.conformanceStatements">
-                                                    {{conStatement.constraintId}} : {{conStatement.description}}
-                                             </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="conStatement in field.datatype.conformanceStatements">
-                                                  {{conStatement.constraintId}} : {{conStatement.description}}
-                                              </p>
-                                            </span>
-                </td>
-                <td class="col-md-2">
-                    <span ng-bind="field.comment"></span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+                <!--</td>-->
+                <!--<td class="col-md-1">-->
+                    <!--<span ng-show="segRefOrGroup.predicates != null && segRefOrGroup.predicates.length > 0">C({{segRefOrGroup.predicates[0].trueUsage}}/{{segRefOrGroup.predicates[0].falseUsage}})</span>-->
+                            <!--<span ng-show="!segRefOrGroup.predicates || segRefOrGroup.predicates == null || segRefOrGroup.predicates.length == 0"-->
+                                  <!--ng-bind="segRefOrGroup.usage"></span>-->
+                <!--</td>-->
+                <!--<td class="col-md-1">-->
+                        <!--<span ng-show="segRefOrGroup.type !== 'end-group'">-->
+                        <!--<span>[{{segRefOrGroup.min}}..{{segRefOrGroup.max}}]</span>-->
+                        <!--</span>-->
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
 
-    <div>
-        <h4>Post-Text</h4>
-        <hr/>
-        <!--<textarea disabled style="width:100%" class="form-control" ng-model="section.data.text2">-->
-        <!--</textarea>-->
-        <p style="text-align:left" ng-model="section.data.text2"></p>
-    </div>
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
+
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
+                         <!--<span ng-show="segRefOrGroup.type !== 'end-group'">-->
+                        <!--<span ng-bind="segRefOrGroup.comment"></span>-->
+                        <!--</span>-->
+                <!--</td>-->
+            <!--</tr>-->
 
 
-    <div ng-show="section.data.conformanceStatements && section.data.conformanceStatements.length > 0">
-        <h4>Conformance Statement</h4>
-        <table class="table table-bordered">
-            <thead>
-            <tr class="ig-tbl-header">
-                <th>ID</th>
-                <th>Description</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="conStatement in section.data.conformanceStatements">
-                <td>{{conStatement.constraintId}}</td>
-                <td>{{conStatement.description}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div ng-show="section.data.predicates && section.data.predicates.length > 0">
-        <h4>Conditional Predicates</h4>
-        <table class="table table-bordered">
-            <thead>
-            <tr class="ig-tbl-header">
-                <th>Description</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="predicate in section.data.predicates">
-                <td>{{predicate.description}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+            <!--</tbody>-->
+        <!--</table>-->
 
 
+        <!--<div ng-show="section.data.conformanceStatements && section.data.conformanceStatements.length > 0">-->
+            <!--<h4>Conformance Statement</h4>-->
+            <!--<table class="table table-bordered">-->
+                <!--<thead>-->
+                <!--<tr class="ig-tbl-header row">-->
+                    <!--<th>ID</th>-->
+                    <!--<th>Description</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr ng-repeat="conStatement in section.data.conformanceStatements" class="row">-->
+                    <!--<td>{{conStatement.constraintId}}</td>-->
+                    <!--<td>{{conStatement.description}}</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<div ng-show="section.data.predicates && section.data.predicates.length > 0">-->
+            <!--<h4>Conditional Predicates</h4>-->
+            <!--<table class="table table-bordered">-->
+                <!--<thead>-->
+                <!--<tr class="ig-tbl-header row">-->
+                    <!--<th>Description</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr ng-repeat="predicate in section.data.predicates" class="row">-->
+                    <!--<td>{{predicate.description}}</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
 
-</div>
+
+    <!--</div>-->
+<!--</div>-->
 
 
-<div class="bs-docs-section" ng-show="section.type === 'datatype'">
-    <h1 class="page-header">Datatype Definition</h1>
-    <h3 class="page-header">{{section.data.label}} - {{section.data.description}}</h3>
-    <div>
-        <h4>Text</h4>
-        <hr/>
-        <p style="text-align:left" ng-model="section.data.text"></p>
-        <!--<textarea disabled style="width:100%; margin-bottom: 20px"  class="form-control" ng-model="section.data.text1">-->
-        <!--</textarea>-->
-    </div>
-    <div>
-        <table class="table table-bordered">
-            <thead>
-            <tr class="ig-tbl-header row">
-                <th class="col-md-1">SEQ</th>
-                <th class="col-md-1">Component</th>
-                <th class="col-md-1">Usage</th>
-                <th class="col-md-1">Datatype</th>
-                <th class="col-md-1">Length</th>
-                <th class="col-md-1">ValueSet</th>
-                <th class="col-md-2">Conf Statement</th>
-                <th class="col-md-2">Predicate</th>
-                <th class="col-md-2">Comments</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="component in section.data.components" class="row">
-                <td class="col-md-1">
-                    <span ng-bind="component.position"></span>
-                </td>
-                <td class="col-md-2">
-                    <span ng-bind="component.name"></span>
-                </td>
-                <td class="col-md-1">
-                    <span ng-show="component.predicates != null && component.predicates.length > 0">C({{component.predicates[0].trueUsage}}, {{component.predicates[0].falseUsage}})</span>
-                            <span ng-show="!component.predicates || component.predicates == null || component.predicates.length == 0"
-                                  ng-bind="component.usage"></span>
-                </td>
-
-                <td class="col-md-1">
-                    <span ng-bind="datatypesMap[component.datatype].label"></span>
-                </td>
-                <td class="col-md-1">
-                    <span>[{{component.minLenghth}},{{component.maxLength}}]</span>
-                </td>
-                <td class="col-md-1">
-                    <span>{{tablesMap[component.table].mappingId}}</span>
-                </td>
-                <td class="col-md-2">
-                </td>
-                <td class="col-md-2">
-                </td>
-                <td class="col-md-2">
-                    <span ng-bind="component.comment"></span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div ng-show="section.data.conformanceStatements && section.data.conformanceStatements.length > 0">
-        <h4>Conformance Statement</h4>
-        <table class="table table-bordered">
-            <thead>
-            <tr class="ig-tbl-header">
-                <th>ID</th>
-                <th>Description</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="conStatement in section.data.conformanceStatements">
-                <td>{{conStatement.constraintId}}</td>
-                <td>{{conStatement.description}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div ng-show="section.data.predicates && section.data.predicates.length > 0">
-        <h4>Conditional Predicates</h4>
-        <table class="table table-bordered">
-            <thead>
-            <tr class="ig-tbl-header">
-                <th>Description</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="predicate in section.data.predicates">
-                <td>{{predicate.description}}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-</div>
+<!--<div class="bs-docs-section" ng-show="section.type === 'segment'">-->
+    <!--<h1 class="page-header">Segment Definition</h1>-->
+    <!--<h3 class="page-header">{{section.data.name}} - {{section.data.description}}</h3>-->
+    <!--<div>-->
+        <!--<h4>Pre-Text</h4>-->
+        <!--<hr/>-->
+        <!--<p style="text-align:left" ng-model="section.data.text1"></p>-->
+    <!--</div>-->
 
 
 
 
+    <!--<div>-->
+        <!--<table class="table table-bordered">-->
+            <!--<thead>-->
+            <!--<tr class="ig-tbl-header row">-->
+                <!--<th class="col-md-1">SEQ</th>-->
+                <!--<th class="col-md-1">Field</th>-->
+                <!--<th class="col-md-1">Usage</th>-->
+                <!--<th class="col-md-1">Cardi</th>-->
+                <!--<th class="col-md-1">Length</th>-->
+                <!--<th class="col-md-1">Datatype</th>-->
+                <!--<th class="col-md-1">ValueSet</th>-->
+                <!--<th class="col-md-2">Conf Statement</th>-->
+                <!--<th class="col-md-2">Predicate</th>-->
+                <!--<th class="col-md-2">Comments</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr ng-repeat="field in section.data.fields" class="row">-->
+                <!--<td class="col-md-1">-->
+                    <!--<span ng-bind="field.position"></span>-->
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
+                    <!--<span ng-bind="field.name"></span>-->
+                <!--</td>-->
+                <!--<td class="col-md-1">-->
+                    <!--<span ng-show="field.predicates != null && field.predicates.length > 0">C({{field.predicates[0].trueUsage}}/{{field.predicates[0].falseUsage}})</span>-->
+                            <!--<span ng-show="!field.predicates || field.predicates == null || field.predicates.length == 0"-->
+                                  <!--ng-bind="field.usage"></span>-->
+                <!--</td>-->
 
-</div>
+                <!--<td class="col-md-1">-->
+                    <!--<span>[{{field.min}}..{{field.max}}]</span>-->
+                <!--</td>-->
+                <!--<td class="col-md-1">-->
+                    <!--<span>[{{field.minLength}},{{field.maxLength}}]</span>-->
+                <!--</td>-->
+                <!--<td class="col-md-1">-->
+                    <!--<span>{{datatypesMap[field.datatype].label}}</span>-->
+                <!--</td>-->
+                <!--<td class="col-md-1">-->
+                    <!--<span>{{tablesMap[field.table].mappingId}}</span>-->
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
+                     <!--<span ng-show="trim" class="constraint_trim">-->
+                                              <!--<span ng-repeat="predicate in field.datatype.predicates">-->
+                                                 <!--{{predicate.description}}-->
+                                              <!--</span>-->
+                                            <!--</span>-->
+                                         <!--<span ng-show="!trim" class="constraint_verbose">-->
+                                              <!--<p ng-repeat="predicate in field.datatype.predicates">-->
+                                                  <!--{{predicate.description}}-->
+                                              <!--</p>-->
+                                            <!--</span>-->
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
+                     <!--<span ng-show="trim" class="constraint_trim">-->
+                                               <!--<span ng-repeat="conStatement in field.datatype.conformanceStatements">-->
+                                                    <!--{{conStatement.constraintId}} : {{conStatement.description}}-->
+                                             <!--</span>-->
+                                            <!--</span>-->
+                                         <!--<span ng-show="!trim" class="constraint_verbose">-->
+                                              <!--<p ng-repeat="conStatement in field.datatype.conformanceStatements">-->
+                                                  <!--{{conStatement.constraintId}} : {{conStatement.description}}-->
+                                              <!--</p>-->
+                                            <!--</span>-->
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
+                    <!--<span ng-bind="field.comment"></span>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+    <!--</div>-->
+
+    <!--<div>-->
+        <!--<h4>Post-Text</h4>-->
+        <!--<hr/>-->
+        <!--&lt;!&ndash;<textarea disabled style="width:100%" class="form-control" ng-model="section.data.text2">&ndash;&gt;-->
+        <!--&lt;!&ndash;</textarea>&ndash;&gt;-->
+        <!--<p style="text-align:left" ng-model="section.data.text2"></p>-->
+    <!--</div>-->
 
 
-</div>
+    <!--<div ng-show="section.data.conformanceStatements && section.data.conformanceStatements.length > 0">-->
+        <!--<h4>Conformance Statement</h4>-->
+        <!--<table class="table table-bordered">-->
+            <!--<thead>-->
+            <!--<tr class="ig-tbl-header">-->
+                <!--<th>ID</th>-->
+                <!--<th>Description</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr ng-repeat="conStatement in section.data.conformanceStatements">-->
+                <!--<td>{{conStatement.constraintId}}</td>-->
+                <!--<td>{{conStatement.description}}</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+    <!--</div>-->
+    <!--<div ng-show="section.data.predicates && section.data.predicates.length > 0">-->
+        <!--<h4>Conditional Predicates</h4>-->
+        <!--<table class="table table-bordered">-->
+            <!--<thead>-->
+            <!--<tr class="ig-tbl-header">-->
+                <!--<th>Description</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr ng-repeat="predicate in section.data.predicates">-->
+                <!--<td>{{predicate.description}}</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+    <!--</div>-->
+
+
+
+<!--</div>-->
+
+
+<!--<div class="bs-docs-section" ng-show="section.type === 'datatype'">-->
+    <!--<h1 class="page-header">Datatype Definition</h1>-->
+    <!--<h3 class="page-header">{{section.data.label}} - {{section.data.description}}</h3>-->
+    <!--<div>-->
+        <!--<h4>Text</h4>-->
+        <!--<hr/>-->
+        <!--<p style="text-align:left" ng-model="section.data.text"></p>-->
+        <!--&lt;!&ndash;<textarea disabled style="width:100%; margin-bottom: 20px"  class="form-control" ng-model="section.data.text1">&ndash;&gt;-->
+        <!--&lt;!&ndash;</textarea>&ndash;&gt;-->
+    <!--</div>-->
+    <!--<div>-->
+        <!--<table class="table table-bordered">-->
+            <!--<thead>-->
+            <!--<tr class="ig-tbl-header row">-->
+                <!--<th class="col-md-1">SEQ</th>-->
+                <!--<th class="col-md-1">Component</th>-->
+                <!--<th class="col-md-1">Usage</th>-->
+                <!--<th class="col-md-1">Datatype</th>-->
+                <!--<th class="col-md-1">Length</th>-->
+                <!--<th class="col-md-1">ValueSet</th>-->
+                <!--<th class="col-md-2">Conf Statement</th>-->
+                <!--<th class="col-md-2">Predicate</th>-->
+                <!--<th class="col-md-2">Comments</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr ng-repeat="component in section.data.components" class="row">-->
+                <!--<td class="col-md-1">-->
+                    <!--<span ng-bind="component.position"></span>-->
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
+                    <!--<span ng-bind="component.name"></span>-->
+                <!--</td>-->
+                <!--<td class="col-md-1">-->
+                    <!--<span ng-show="component.predicates != null && component.predicates.length > 0">C({{component.predicates[0].trueUsage}}, {{component.predicates[0].falseUsage}})</span>-->
+                            <!--<span ng-show="!component.predicates || component.predicates == null || component.predicates.length == 0"-->
+                                  <!--ng-bind="component.usage"></span>-->
+                <!--</td>-->
+
+                <!--<td class="col-md-1">-->
+                    <!--<span ng-bind="datatypesMap[component.datatype].label"></span>-->
+                <!--</td>-->
+                <!--<td class="col-md-1">-->
+                    <!--<span>[{{component.minLenghth}},{{component.maxLength}}]</span>-->
+                <!--</td>-->
+                <!--<td class="col-md-1">-->
+                    <!--<span>{{tablesMap[component.table].mappingId}}</span>-->
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
+                <!--</td>-->
+                <!--<td class="col-md-2">-->
+                    <!--<span ng-bind="component.comment"></span>-->
+                <!--</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+    <!--</div>-->
+
+    <!--<div ng-show="section.data.conformanceStatements && section.data.conformanceStatements.length > 0">-->
+        <!--<h4>Conformance Statement</h4>-->
+        <!--<table class="table table-bordered">-->
+            <!--<thead>-->
+            <!--<tr class="ig-tbl-header">-->
+                <!--<th>ID</th>-->
+                <!--<th>Description</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr ng-repeat="conStatement in section.data.conformanceStatements">-->
+                <!--<td>{{conStatement.constraintId}}</td>-->
+                <!--<td>{{conStatement.description}}</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+    <!--</div>-->
+
+    <!--<div ng-show="section.data.predicates && section.data.predicates.length > 0">-->
+        <!--<h4>Conditional Predicates</h4>-->
+        <!--<table class="table table-bordered">-->
+            <!--<thead>-->
+            <!--<tr class="ig-tbl-header">-->
+                <!--<th>Description</th>-->
+            <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+            <!--<tr ng-repeat="predicate in section.data.predicates">-->
+                <!--<td>{{predicate.description}}</td>-->
+            <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+    <!--</div>-->
+
+<!--</div>-->
+
+
+
+
+
+<!--</div>-->
+
+
 
 </div>
 <!--</div>-->
 
-
+</div>
 <!--<a class="point" class="back-to-top" href="#top"> Back to top </a>-->
 
-</div>
-</div>
-</div>
+
 
 
 <!--<pre>-->

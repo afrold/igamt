@@ -9,9 +9,9 @@
 		<param-name>webAppRootKey</param-name>
 		<param-value>igamt</param-value>
 	</context-param>
-	<error-page>
-		<location>/error.html</location>
-	</error-page>
+	<!-- <error-page>
+		<location>/views/error.html</location>
+	</error-page> -->
  	<resource-ref>
 		<description>DB Connection</description>
 		<res-ref-name>jdbc/igl_jndi</res-ref-name>

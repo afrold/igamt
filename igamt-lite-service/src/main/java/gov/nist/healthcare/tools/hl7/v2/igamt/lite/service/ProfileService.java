@@ -19,6 +19,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -36,8 +37,7 @@ public interface ProfileService {
 
 	public Profile clone(Profile p) throws CloneNotSupportedException;
 
-	public Profile apply(Profile newProfile, Profile oldProfile,
-			String newValues) throws ProfileSaveException;
+	public Profile apply(Profile p) throws ProfileSaveException;
 
 	public InputStream exportAsPdfFromXsl(Profile p, String inlineConstraints);
 
@@ -50,4 +50,6 @@ public interface ProfileService {
 	public InputStream diffToPdf(Profile p);
 
 	public InputStream diffToJson(Profile p);
+
+	InputStream exportAsZip(Profile p) throws IOException;
 }

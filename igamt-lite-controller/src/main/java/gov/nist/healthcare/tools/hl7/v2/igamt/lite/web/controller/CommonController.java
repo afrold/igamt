@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 public class CommonController {
 
-	Logger logger = LoggerFactory.getLogger(ProfileController.class);
+	Logger logger = LoggerFactory.getLogger(CommonController.class);
 
 	@ExceptionHandler(Exception.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public String exception(Exception ex) {
 		logger.debug(ex.getMessage());
 		return "ERROR:" + ex.getMessage();

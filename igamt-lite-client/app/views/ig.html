@@ -63,7 +63,7 @@
         <div class="modal-footer">
             <button class="btn btn-default"  ng-disabled="loading" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
             </button>
-            <button class="btn btn-warning"  ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Open</span>
+            <button class="btn btn-warning"  ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Close</span>
             </button>
             <button class="btn btn-primary"  ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Close</span>
             </button>
@@ -120,7 +120,9 @@
 
     <script type="text/ng-template" id="InputTextCtrl.html">
         <div class="modal-header">
-            <h3 class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} : {{editorTarget.title}}</h3>
+            <h3 ng-show="editorTarget.obj.type === 'segmentRef'">{{editorTarget.obj.position}}.{{segmentsMap[editorTarget.obj.ref].name}}:{{segmentsMap[editorTarget.obj.ref].description}}</h3>
+            <h3 ng-show="editorTarget.obj.type === 'group'">{{editorTarget.obj.position}}.{{editorTarget.obj.name}}</h3>
+            <h3 ng-show="editorTarget.obj.type !=  'segmentRef' && editorTarget.obj.type !=  'group'" class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} : {{editorTarget.title}}</h3>
         </div>
         <div class="modal-body">
             <div class="row">

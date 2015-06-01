@@ -35,7 +35,8 @@
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css"/>
 
 </head>
-<body ng-controller="MainCtrl" ng-app="igl" id="ehrbody">
+<body ng-controller="MainCtrl" ng-app="igl">
+<div id="wrapper">
 <div ng-include="'views/header.html'"></div>
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
@@ -44,7 +45,7 @@
 
 
 <!-- Add your site or application content here -->
-<div class="container">
+<div class="container" id="appcontainer">
     <div class="container">
         <div class="row">
             <div class="col-md-10">
@@ -81,7 +82,9 @@
 
 
 </div>
-promo
+
+
+<div ng-include="'views/footer.html'"></div>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <!--<script>-->
@@ -179,6 +182,6 @@ promo
 
 <!-- endbuild -->
 
-
+</div>
 </body>
 </html>
