@@ -52,7 +52,7 @@
 				</h2>
 				<a name="valuesets"></a>
 				<xsl:apply-templates select="ConformanceProfile/Tables">
-					<xsl:sort select="@AlternateId"></xsl:sort>
+					<xsl:sort select="@Id"></xsl:sort>
 				</xsl:apply-templates>
 			</body>
 		</html>
@@ -66,6 +66,8 @@
 			<b>Profile:</b>
 			<xsl:value-of select="@StructID" />
 		</h3>
+		<xsl:text>Comment:</xsl:text>
+		<xsl:value-of select="Comment" />
 		<table width="1000" border="1" cellspacing="0" cellpadding="1">
 			<thead>
 				<tr style="background:#0033CC; color:white">
@@ -449,18 +451,22 @@
 
 		<a name="valuesets"></a>
 		<br></br>
-		<h3 style="page-break-before: always">
-			<xsl:value-of select="@AlternateId" />
+		<h3 style="page-break-before:auto">
+			<xsl:value-of select="@Id" />
 			:
 			<xsl:value-of select="@Name" />
 		</h3>
 		<table width="100%" border="1" cellspacing="0" cellpadding="0">
-			<col style="width:25%"></col>
-			<col style="width:75%"></col>
+			<col style="width:15%"></col>
+			<col style="width:15%"></col>
+			<col style="width:70%"></col>
 			<thead style="background:#0033CC; color:white; align:center">
 				<tr>
 					<th>
 						Value
+					</th>
+					<th>
+						Codesys
 					</th>
 					<th>
 						Description
@@ -470,20 +476,30 @@
 			<tbody>
 				<xsl:for-each select="TableElement">
 					<xsl:sort select="@Code" />
-					<tr>
-						<td>
-							<xsl:value-of select="@Code" />
-						</td>
-						<td>
-							<xsl:value-of select="@DisplayName" />
-						</td>
-					</tr>
+					<xsl:call-template name="tableElement">
+						<xsl:with-param name="style" select="'background-color:white;'">
+						</xsl:with-param>
+					</xsl:call-template>
 				</xsl:for-each>
 			</tbody>
 		</table>
 		<br></br>
 		<a href="#top">Link to top</a>
+	</xsl:template>
 
+	<xsl:template name="tableElement">
+		<xsl:param name="style" />
+		<tr style="{$style}">
+			<td>
+				<xsl:value-of select="@Code" />
+			</td>
+			<td>
+				<xsl:value-of select="@Codesys" />
+			</td>
+			<td>
+				<xsl:value-of select="@DisplayName" />
+			</td>
+		</tr>
 	</xsl:template>
 
 </xsl:stylesheet>

@@ -7,6 +7,7 @@ import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileDiff;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
@@ -263,9 +264,14 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
+<<<<<<< HEAD
+	@RequestMapping(value = "/{id}/export/pdf2/{inlineConstraints}", method = RequestMethod.POST, produces = "application/pdf")
+	public void exportPdfFromXsl(@PathVariable("id") String id, @PathVariable("inlineConstraints") String inlineConstraints,
+=======
 	@RequestMapping(value = "/{id}/export/pdf/{inlineConstraints}", method = RequestMethod.POST, produces = "application/pdf")
 	public void exportPdfFromXsl(@PathVariable("id") String id,
 			@PathVariable("inlineConstraints") String inlineConstraints,
+>>>>>>> 77498c6e5d8cdf51f969ddcdbd58174311990b8d
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
 		logger.info("Exporting as pdf file profile with id=" + id);
@@ -278,6 +284,40 @@ public class ProfileController extends CommonController {
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.pdf");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+
+	@RequestMapping(value = "/{id}/delta/pdf", method = RequestMethod.POST, produces = "application/pdf")
+	public void deltaPdf(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ProfileNotFoundException {
+		logger.info("Exporting delta as pdf file profile with id=" + id);
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
+		InputStream content = null;
+		content = profileService.diffToPdf(p);
+		response.setContentType("application/pdf");
+		response.setHeader("Content-disposition",
+				"attachment;filename=ProfileDelta.pdf");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+
+	@RequestMapping(value = "/{id}/delta/json", method = RequestMethod.POST, produces = "application/json")
+	public void deltaJson(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ProfileNotFoundException {
+		logger.info("Exporting delta as json file profile with id=" + id);
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
+		InputStream content = null;
+		content = profileService.diffToJson(p);
+		response.setContentType("application/json");
+		response.setHeader("Content-disposition",
+				"attachment;filename=ProfileDelta.json");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 

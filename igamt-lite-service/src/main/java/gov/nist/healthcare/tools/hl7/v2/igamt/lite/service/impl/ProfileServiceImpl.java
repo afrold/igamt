@@ -60,12 +60,11 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
+import nu.xom.Builder;
+import nu.xom.Nodes;
+import nu.xom.ParsingException;
+import nu.xom.xslt.XSLException;
+import nu.xom.xslt.XSLTransform;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -110,7 +109,7 @@ import com.mongodb.MongoException;
 
 @Service
 public class ProfileServiceImpl extends PdfPageEventHelper implements
-		ProfileService {
+ProfileService {
 
 	@Autowired
 	private ProfileRepository profileRepository;
@@ -212,11 +211,29 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		return new ProfileClone().clone(p);
 	}
 
+	public InputStream diffToPdf(Profile p){
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new  ProfileDiffImpl()).diffToPdf(base, p);		
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream diffToJson(Profile p){
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new  ProfileDiffImpl()).diffToJson(base, p);		
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
 	@Override
 	public InputStream exportAsXml(Profile p) {
 		if (p != null) {
 			return IOUtils.toInputStream(new ProfileSerializationImpl()
-					.serializeProfileToXML(p));
+			.serializeProfileToXML(p));
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -286,8 +303,8 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 						this.addSegmentXlsx2(
 								p.getSegments().findOne(
 										((SegmentRef) srog).getRef()), header,
-								workbook, headerStyle, p.getDatatypes(),
-								p.getTables());
+										workbook, headerStyle, p.getDatatypes(),
+										p.getTables());
 					} else if (srog instanceof Group) {
 						this.addGroupXlsx2(header, (Group) srog, workbook,
 								headerStyle, p.getSegments(), p.getDatatypes(),
@@ -351,25 +368,23 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		try {
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
-			// File tmpXmlFile = new
-			// File("/Users/marieros/Documents/testXslt/nvo/pp.xml");
+
 			String stringProfile = new ProfileSerialization4ExportImpl()
-					.serializeProfileToXML(p);
+			.serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
 					Charset.forName("UTF-8"));
 
 			// Apply XSL transformation on xml file to generate html
-			Source text = new StreamSource(tmpXmlFile);
-			TransformerFactory factory = TransformerFactory.newInstance();
-			Source xslt = new StreamSource(this.getClass().getResourceAsStream(
-					"/rendering/profile2a.xsl"));
-			Transformer transformer;
-			transformer = factory.newTransformer(xslt);
-			transformer.setParameter("inlineConstraints", inlineConstraints);
 			File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
-			// File tmpHtmlFile = new
-			// File("/Users/marieros/Documents/testXslt/nvo/hh.html");
-			transformer.transform(text, new StreamResult(tmpHtmlFile));
+			Builder builder = new Builder();
+			nu.xom.Document input = builder.build(tmpXmlFile);
+			nu.xom.Document stylesheet = builder.build(this.getClass().getResourceAsStream(
+					"/rendering/profile2a.xsl"));
+			XSLTransform transform = new XSLTransform(stylesheet);  
+			transform.setParameter("inlineConstraints", inlineConstraints);
+			Nodes output = transform.transform(input);
+			nu.xom.Document result = XSLTransform.toDocument(output);
+			FileUtils.writeStringToFile(tmpHtmlFile, result.toXML());
 
 			// Convert html document to pdf
 			Document document = new Document();
@@ -381,7 +396,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 					FileUtils.openInputStream(tmpHtmlFile));
 			document.close();
 			return FileUtils.openInputStream(tmpPdfFile);
-		} catch (IOException | TransformerException | DocumentException e) {
+		} catch (IOException | DocumentException | ParsingException | XSLException e) {
 			return new NullInputStream(1L);
 		}
 	}
@@ -405,7 +420,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
 		Font coverH1Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24, Font.UNDERLINE
-						| Font.BOLD, BaseColor.BLUE);
+				| Font.BOLD, BaseColor.BLUE);
 		Font coverH2Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL,
 				BaseColor.BLUE);
@@ -414,7 +429,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 				BaseColor.BLACK);
 		Font titleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE
-						| Font.BOLD | Font.ITALIC, BaseColor.BLACK);
+				| Font.BOLD | Font.ITALIC, BaseColor.BLACK);
 		Font headerFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL,
 				BaseColor.WHITE);
@@ -471,7 +486,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 			Document tocDocument = new Document(PageSize.A4);
 			@SuppressWarnings("unused")
 			PdfWriter tocWriter = PdfWriter
-					.getInstance(tocDocument, tocTmpBaos);
+			.getInstance(tocDocument, tocTmpBaos);
 			tocDocument.open();
 			tocDocument.add(new Paragraph("Table of contents", tocTitleFont));
 			tocDocument.add(Chunk.NEWLINE);
@@ -540,7 +555,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 
 				tocDocument.add(Chunk.NEWLINE);
 				tocDocument
-						.add(new Paragraph("Segments definition", titleFont));
+				.add(new Paragraph("Segments definition", titleFont));
 				tocDocument.add(Chunk.NEWLINE);
 
 				igDocument.add(new Paragraph("Segments definition", titleFont));
@@ -697,283 +712,282 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		}
 	}
 
-	// public Map<String, List<String>> compareMetadata(ProfileMetaData m1,
-	// ProfileMetaData m2){
-	// Map<String, List<String>> rst = new HashMap<String, List<String>>();
+	//	public Map<String, List<String>> compareMetadata(ProfileMetaData m1, ProfileMetaData m2){
+	//		Map<String, List<String>> rst = new HashMap<String, List<String>>(); 
 	//
-	// m1.getHl7Version()
-	// m1.getIdentifier()
-	// m1.getName()
-	// m1.getOrgName();
-	// m1.getSchemaVersion();
-	// m1.getStatus();
-	// m1.getTopics();
-	// m1.getType();
-	// m1.getDate();
-	// m1.getSubTitle();
-	// m1.getVersion();
+	//		m1.getHl7Version() 
+	//		m1.getIdentifier() 
+	//		m1.getName() 
+	//		m1.getOrgName();
+	//		m1.getSchemaVersion();
+	//		m1.getStatus();
+	//		m1.getTopics();
+	//		m1.getType();
+	//		m1.getDate();
+	//		m1.getSubTitle();
+	//		m1.getVersion();
+	//
+	//		
+	//		return rst;
+	//	}
+	//
+	//	@Override
+	//	public InputStream compare(Profile p, Profile p2) {
+	//
+	//		List<String> header;
+	//		PdfPTable table;
+	//		float columnWidths[];
+	//		List<List<String>> rows;
 	//
 	//
-	// return rst;
-	// }
+	//		try {
+	//			paragraph = new Paragraph(p.getMetaData().getSubTitle(),
+	//					coverH2Font);
+	//			paragraph.setAlignment(Element.ALIGN_CENTER);
+	//			coverDocument.add(paragraph);
+	//			paragraph = new Paragraph(
+	//					"HL7 v" + p.getMetaData().getHl7Version(), coverH2Font);
+	//			paragraph.setAlignment(Element.ALIGN_CENTER);
+	//			paragraph.setSpacingAfter(250);
+	//			coverDocument.add(paragraph);
 	//
-	// @Override
-	// public InputStream compare(Profile p, Profile p2) {
+	//			paragraph = new Paragraph();
+	//			paragraph.add(new Chunk(p.getMetaData().getOrgName(), coverH2Font));
+	//			paragraph.add(Chunk.NEWLINE);
+	//			paragraph.add(new Phrase("Document Version "
+	//					+ p.getMetaData().getVersion(), coverH2Font));
+	//			paragraph.add(Chunk.NEWLINE);
+	//			paragraph.add(new Phrase("Status : " + p.getMetaData().getStatus(),
+	//					coverH2Font));
+	//			paragraph.add(Chunk.NEWLINE);
+	//			paragraph.add(new Chunk(p.getMetaData().getDate(), coverH2Font));
+	//			paragraph.setAlignment(Element.ALIGN_CENTER);
+	//			coverDocument.add(paragraph);
 	//
-	// List<String> header;
-	// PdfPTable table;
-	// float columnWidths[];
-	// List<List<String>> rows;
+	//			coverDocument.close();
 	//
+	//			/*
+	//			 * Initiate table of content
+	//			 */
+	//			ByteArrayOutputStream tocTmpBaos = new ByteArrayOutputStream();
+	//			Document tocDocument = new Document(PageSize.A4);
+	//			@SuppressWarnings("unused")
+	//			PdfWriter tocWriter = PdfWriter
+	//					.getInstance(tocDocument, tocTmpBaos);
+	//			tocDocument.open();
+	//			tocDocument.add(new Paragraph("Table of contents", tocTitleFont));
+	//			tocDocument.add(Chunk.NEWLINE);
 	//
-	// try {
-	// paragraph = new Paragraph(p.getMetaData().getSubTitle(),
-	// coverH2Font);
-	// paragraph.setAlignment(Element.ALIGN_CENTER);
-	// coverDocument.add(paragraph);
-	// paragraph = new Paragraph(
-	// "HL7 v" + p.getMetaData().getHl7Version(), coverH2Font);
-	// paragraph.setAlignment(Element.ALIGN_CENTER);
-	// paragraph.setSpacingAfter(250);
-	// coverDocument.add(paragraph);
+	//			tocPlaceholder = new HashMap<>();
+	//			pageByTitle = new HashMap<>();
 	//
-	// paragraph = new Paragraph();
-	// paragraph.add(new Chunk(p.getMetaData().getOrgName(), coverH2Font));
-	// paragraph.add(Chunk.NEWLINE);
-	// paragraph.add(new Phrase("Document Version "
-	// + p.getMetaData().getVersion(), coverH2Font));
-	// paragraph.add(Chunk.NEWLINE);
-	// paragraph.add(new Phrase("Status : " + p.getMetaData().getStatus(),
-	// coverH2Font));
-	// paragraph.add(Chunk.NEWLINE);
-	// paragraph.add(new Chunk(p.getMetaData().getDate(), coverH2Font));
-	// paragraph.setAlignment(Element.ALIGN_CENTER);
-	// coverDocument.add(paragraph);
+	//			/*
+	//			 * Initiate implementation guide
+	//			 */
+	//			ByteArrayOutputStream igTmpBaos = new ByteArrayOutputStream();
+	//			Document igDocument = new Document();
+	//			PdfWriter igWriter = PdfWriter.getInstance(igDocument, igTmpBaos);
+	//			igWriter.setPageEvent(this);
 	//
-	// coverDocument.close();
+	//			igDocument.setPageSize(PageSize.A4);
+	//			igDocument.setMargins(36f, 36f, 36f, 36f); // 72pt = 1 inch
+	//			igDocument.open();
 	//
-	// /*
-	// * Initiate table of content
-	// */
-	// ByteArrayOutputStream tocTmpBaos = new ByteArrayOutputStream();
-	// Document tocDocument = new Document(PageSize.A4);
-	// @SuppressWarnings("unused")
-	// PdfWriter tocWriter = PdfWriter
-	// .getInstance(tocDocument, tocTmpBaos);
-	// tocDocument.open();
-	// tocDocument.add(new Paragraph("Table of contents", tocTitleFont));
-	// tocDocument.add(Chunk.NEWLINE);
+	//			/*
+	//			 * Adding messages definition
+	//			 */
+	//			tocDocument.add(new Paragraph("Messages definition", titleFont));
+	//			tocDocument.add(Chunk.NEWLINE);
 	//
-	// tocPlaceholder = new HashMap<>();
-	// pageByTitle = new HashMap<>();
+	//			igDocument.add(new Paragraph("Messages definition", titleFont));
+	//			igDocument.add(Chunk.NEWLINE);
+	//			for (Message m : p.getMessages().getChildren()) {
 	//
-	// /*
-	// * Initiate implementation guide
-	// */
-	// ByteArrayOutputStream igTmpBaos = new ByteArrayOutputStream();
-	// Document igDocument = new Document();
-	// PdfWriter igWriter = PdfWriter.getInstance(igDocument, igTmpBaos);
-	// igWriter.setPageEvent(this);
+	//				this.addTocContent(tocDocument, igWriter, m.getStructID()
+	//						+ " - " + m.getDescription());
 	//
-	// igDocument.setPageSize(PageSize.A4);
-	// igDocument.setMargins(36f, 36f, 36f, 36f); // 72pt = 1 inch
-	// igDocument.open();
+	//				igDocument.add(new Paragraph("Message definition: "));
+	//				igDocument.add(new Paragraph(m.getStructID() + " - "
+	//						+ m.getDescription()));
+	//				igDocument.add(Chunk.NEWLINE);
 	//
-	// /*
-	// * Adding messages definition
-	// */
-	// tocDocument.add(new Paragraph("Messages definition", titleFont));
-	// tocDocument.add(Chunk.NEWLINE);
+	//				header = Arrays.asList("Segment", "STD\nUsage", "Local\nUsage",
+	//						"STD\nCard.", "Local\nCard.", "Comment");
+	//				columnWidths = new float[] { 4f, 3f, 3f, 2f, 2f, 8f };
+	//				table = this.addHeaderPdfTable(header, columnWidths,
+	//						headerFont, headerColor);
 	//
-	// igDocument.add(new Paragraph("Messages definition", titleFont));
-	// igDocument.add(Chunk.NEWLINE);
-	// for (Message m : p.getMessages().getChildren()) {
+	//				rows = new ArrayList<List<String>>();
 	//
-	// this.addTocContent(tocDocument, igWriter, m.getStructID()
-	// + " - " + m.getDescription());
+	//				List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
 	//
-	// igDocument.add(new Paragraph("Message definition: "));
-	// igDocument.add(new Paragraph(m.getStructID() + " - "
-	// + m.getDescription()));
-	// igDocument.add(Chunk.NEWLINE);
+	//				for (SegmentRefOrGroup srog : segRefOrGroups) {
+	//					if (srog instanceof SegmentRef) {
+	//						this.addSegmentPdf1(rows, (SegmentRef) srog, 0,
+	//								p.getSegments());
+	//					} else if (srog instanceof Group) {
+	//						this.addGroupPdf1(rows, (Group) srog, 0,
+	//								p.getSegments(), p.getDatatypes());
+	//					}
+	//				}
+	//				this.addCellsPdfTable(table, rows, cellFont, cpColor);
+	//				igDocument.add(table);
+	//			}
 	//
-	// header = Arrays.asList("Segment", "STD\nUsage", "Local\nUsage",
-	// "STD\nCard.", "Local\nCard.", "Comment");
-	// columnWidths = new float[] { 4f, 3f, 3f, 2f, 2f, 8f };
-	// table = this.addHeaderPdfTable(header, columnWidths,
-	// headerFont, headerColor);
+	//			/*
+	//			 * Adding segments details
+	//			 */
+	//			for (Message m : p.getMessages().getChildren()) {
+	//				igDocument.newPage();
 	//
-	// rows = new ArrayList<List<String>>();
+	//				tocDocument.add(Chunk.NEWLINE);
+	//				tocDocument
+	//						.add(new Paragraph("Segments definition", titleFont));
+	//				tocDocument.add(Chunk.NEWLINE);
 	//
-	// List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
+	//				igDocument.add(new Paragraph("Segments definition", titleFont));
+	//				igDocument.add(Chunk.NEWLINE);
+	//				header = Arrays.asList("Seq", "Element Name", "DT",
+	//						"STD\nUsage", "Local\nUsage", "Std\nCard.",
+	//						"Local\nCard.", "Len", "Value\nSet", "Comment");
+	//				columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 1.5f,
+	//						1.5f, 1.5f, 2f, 6f };
 	//
-	// for (SegmentRefOrGroup srog : segRefOrGroups) {
-	// if (srog instanceof SegmentRef) {
-	// this.addSegmentPdf1(rows, (SegmentRef) srog, 0,
-	// p.getSegments());
-	// } else if (srog instanceof Group) {
-	// this.addGroupPdf1(rows, (Group) srog, 0,
-	// p.getSegments(), p.getDatatypes());
-	// }
-	// }
-	// this.addCellsPdfTable(table, rows, cellFont, cpColor);
-	// igDocument.add(table);
-	// }
+	//				for (SegmentRefOrGroup srog : m.getChildren()) {
+	//					table = this.addHeaderPdfTable(header, columnWidths,
+	//							headerFont, headerColor);
+	//					rows = new ArrayList<List<String>>();
+	//					if (srog instanceof SegmentRef) {
+	//						this.addSegmentPdf2(igDocument, igWriter, tocDocument,
+	//								header, columnWidths, (SegmentRef) srog,
+	//								headerFont, headerColor, cellFont, cpColor,
+	//								p.getSegments(), p.getDatatypes(),
+	//								p.getTables());
 	//
-	// /*
-	// * Adding segments details
-	// */
-	// for (Message m : p.getMessages().getChildren()) {
-	// igDocument.newPage();
+	//					} else if (srog instanceof Group) {
+	//						this.addGroupPdf2(igDocument, igWriter, tocDocument,
+	//								header, columnWidths, (Group) srog, headerFont,
+	//								headerColor, cellFont, cpColor,
+	//								p.getSegments(), p.getDatatypes(),
+	//								p.getTables());
+	//					}
+	//				}
+	//			}
 	//
-	// tocDocument.add(Chunk.NEWLINE);
-	// tocDocument
-	// .add(new Paragraph("Segments definition", titleFont));
-	// tocDocument.add(Chunk.NEWLINE);
+	//			/*
+	//			 * Adding datatypes
+	//			 */
+	//			igDocument.add(new Paragraph("Datatypes", titleFont));
+	//			igDocument.add(Chunk.NEWLINE);
 	//
-	// igDocument.add(new Paragraph("Segments definition", titleFont));
-	// igDocument.add(Chunk.NEWLINE);
-	// header = Arrays.asList("Seq", "Element Name", "DT",
-	// "STD\nUsage", "Local\nUsage", "Std\nCard.",
-	// "Local\nCard.", "Len", "Value\nSet", "Comment");
-	// columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 1.5f,
-	// 1.5f, 1.5f, 2f, 6f };
+	//			tocDocument.add(Chunk.NEWLINE);
+	//			tocDocument.add(new Paragraph("Datatypes", titleFont));
+	//			tocDocument.add(Chunk.NEWLINE);
 	//
-	// for (SegmentRefOrGroup srog : m.getChildren()) {
-	// table = this.addHeaderPdfTable(header, columnWidths,
-	// headerFont, headerColor);
-	// rows = new ArrayList<List<String>>();
-	// if (srog instanceof SegmentRef) {
-	// this.addSegmentPdf2(igDocument, igWriter, tocDocument,
-	// header, columnWidths, (SegmentRef) srog,
-	// headerFont, headerColor, cellFont, cpColor,
-	// p.getSegments(), p.getDatatypes(),
-	// p.getTables());
+	//			header = Arrays.asList("Seq", "Element Name", "Conf length", "DT",
+	//					"Usage", "Len", "Table", "Comment");
+	//			columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 2f, 2f, 6f };
 	//
-	// } else if (srog instanceof Group) {
-	// this.addGroupPdf2(igDocument, igWriter, tocDocument,
-	// header, columnWidths, (Group) srog, headerFont,
-	// headerColor, cellFont, cpColor,
-	// p.getSegments(), p.getDatatypes(),
-	// p.getTables());
-	// }
-	// }
-	// }
+	//			for (Datatype d : p.getDatatypes().getChildren()) {
+	//				if (d.getLabel().contains("_")) {
 	//
-	// /*
-	// * Adding datatypes
-	// */
-	// igDocument.add(new Paragraph("Datatypes", titleFont));
-	// igDocument.add(Chunk.NEWLINE);
+	//					this.addTocContent(tocDocument, igWriter, d.getLabel()
+	//							+ " - " + d.getDescription());
 	//
-	// tocDocument.add(Chunk.NEWLINE);
-	// tocDocument.add(new Paragraph("Datatypes", titleFont));
-	// tocDocument.add(Chunk.NEWLINE);
+	//					igDocument.add(new Paragraph(d.getLabel() + " - "
+	//							+ d.getDescription() + " Datatype"));
+	//					igDocument.add(new Paragraph(d.getComment()));
 	//
-	// header = Arrays.asList("Seq", "Element Name", "Conf length", "DT",
-	// "Usage", "Len", "Table", "Comment");
-	// columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 2f, 2f, 6f };
+	//					table = this.addHeaderPdfTable(header, columnWidths,
+	//							headerFont, headerColor);
+	//					rows = new ArrayList<List<String>>();
+	//					this.addComponentPdf2(rows, d, p.getDatatypes(),
+	//							p.getTables());
+	//					this.addCellsPdfTable(table, rows, cellFont, cpColor);
+	//					igDocument.add(Chunk.NEWLINE);
+	//					igDocument.add(table);
+	//					igDocument.add(Chunk.NEWLINE);
+	//				}
+	//			}
 	//
-	// for (Datatype d : p.getDatatypes().getChildren()) {
-	// if (d.getLabel().contains("_")) {
+	//			/*
+	//			 * Adding value sets
+	//			 */
+	//			igDocument.add(new Paragraph("Value Sets", titleFont));
+	//			igDocument.add(Chunk.NEWLINE);
 	//
-	// this.addTocContent(tocDocument, igWriter, d.getLabel()
-	// + " - " + d.getDescription());
+	//			tocDocument.add(Chunk.NEWLINE);
+	//			tocDocument.add(new Paragraph("Value Sets", titleFont));
+	//			tocDocument.add(Chunk.NEWLINE);
 	//
-	// igDocument.add(new Paragraph(d.getLabel() + " - "
-	// + d.getDescription() + " Datatype"));
-	// igDocument.add(new Paragraph(d.getComment()));
+	//			header = Arrays.asList("Value", "Description");
 	//
-	// table = this.addHeaderPdfTable(header, columnWidths,
-	// headerFont, headerColor);
-	// rows = new ArrayList<List<String>>();
-	// this.addComponentPdf2(rows, d, p.getDatatypes(),
-	// p.getTables());
-	// this.addCellsPdfTable(table, rows, cellFont, cpColor);
-	// igDocument.add(Chunk.NEWLINE);
-	// igDocument.add(table);
-	// igDocument.add(Chunk.NEWLINE);
-	// }
-	// }
+	//			columnWidths = new float[] { 2f, 6f };
 	//
-	// /*
-	// * Adding value sets
-	// */
-	// igDocument.add(new Paragraph("Value Sets", titleFont));
-	// igDocument.add(Chunk.NEWLINE);
+	//			List<Table> tables = new ArrayList<Table>(p.getTables()
+	//					.getChildren());
+	//			Collections.sort(tables);
 	//
-	// tocDocument.add(Chunk.NEWLINE);
-	// tocDocument.add(new Paragraph("Value Sets", titleFont));
-	// tocDocument.add(Chunk.NEWLINE);
+	//			for (Table t : tables) {
 	//
-	// header = Arrays.asList("Value", "Description");
+	//				this.addTocContent(tocDocument, igWriter, t.getMappingId()
+	//						+ " : " + t.getName());
 	//
-	// columnWidths = new float[] { 2f, 6f };
+	//				igDocument.add(new Paragraph("Table " + t.getMappingId()
+	//						+ " : " + t.getName()));
 	//
-	// List<Table> tables = new ArrayList<Table>(p.getTables()
-	// .getChildren());
-	// Collections.sort(tables);
+	//				table = this.addHeaderPdfTable(header, columnWidths,
+	//						headerFont, headerColor);
+	//				rows = new ArrayList<List<String>>();
+	//				this.addCodesPdf2(rows, t);
+	//				this.addCellsPdfTable(table, rows, cellFont, cpColor);
+	//				igDocument.add(Chunk.NEWLINE);
+	//				igDocument.add(table);
+	//				igDocument.add(Chunk.NEWLINE);
+	//			}
 	//
-	// for (Table t : tables) {
+	//			igDocument.close();
+	//			tocDocument.close();
 	//
-	// this.addTocContent(tocDocument, igWriter, t.getMappingId()
-	// + " : " + t.getName());
+	//			/*
+	//			 * Second pass: Add footers
+	//			 */
+	//			ByteArrayOutputStream igBaos = this.addPageNumber(igTmpBaos, "ig",
+	//					p.getMetaData().getName());
+	//			ByteArrayOutputStream tocBaos = this.addPageNumber(tocTmpBaos,
+	//					"toc", p.getMetaData().getName());
 	//
-	// igDocument.add(new Paragraph("Table " + t.getMappingId()
-	// + " : " + t.getName()));
+	//			/*
+	//			 * Third pass: Merge
+	//			 */
+	//			List<byte[]> list = new ArrayList<byte[]>();
+	//			list.add(coverBaos.toByteArray());
+	//			list.add(tocBaos.toByteArray());
+	//			list.add(igBaos.toByteArray());
 	//
-	// table = this.addHeaderPdfTable(header, columnWidths,
-	// headerFont, headerColor);
-	// rows = new ArrayList<List<String>>();
-	// this.addCodesPdf2(rows, t);
-	// this.addCellsPdfTable(table, rows, cellFont, cpColor);
-	// igDocument.add(Chunk.NEWLINE);
-	// igDocument.add(table);
-	// igDocument.add(Chunk.NEWLINE);
-	// }
+	//			ByteArrayOutputStream igFinalBaos = new ByteArrayOutputStream();
+	//			Document igFinalDocument = new Document();
+	//			PdfWriter igFinalWriter = PdfWriter.getInstance(igFinalDocument,
+	//					igFinalBaos);
+	//			igFinalDocument.open();
+	//			PdfContentByte cb = igFinalWriter.getDirectContent();
+	//			for (byte[] in : list) {
+	//				PdfReader readerf = new PdfReader(in);
+	//				for (int i = 1; i <= readerf.getNumberOfPages(); i++) {
+	//					igFinalDocument.newPage();
+	//					PdfImportedPage page = igFinalWriter.getImportedPage(
+	//							readerf, i);
+	//					cb.addTemplate(page, 0, 0);
+	//				}
+	//			}
+	//			igFinalDocument.close();
 	//
-	// igDocument.close();
-	// tocDocument.close();
-	//
-	// /*
-	// * Second pass: Add footers
-	// */
-	// ByteArrayOutputStream igBaos = this.addPageNumber(igTmpBaos, "ig",
-	// p.getMetaData().getName());
-	// ByteArrayOutputStream tocBaos = this.addPageNumber(tocTmpBaos,
-	// "toc", p.getMetaData().getName());
-	//
-	// /*
-	// * Third pass: Merge
-	// */
-	// List<byte[]> list = new ArrayList<byte[]>();
-	// list.add(coverBaos.toByteArray());
-	// list.add(tocBaos.toByteArray());
-	// list.add(igBaos.toByteArray());
-	//
-	// ByteArrayOutputStream igFinalBaos = new ByteArrayOutputStream();
-	// Document igFinalDocument = new Document();
-	// PdfWriter igFinalWriter = PdfWriter.getInstance(igFinalDocument,
-	// igFinalBaos);
-	// igFinalDocument.open();
-	// PdfContentByte cb = igFinalWriter.getDirectContent();
-	// for (byte[] in : list) {
-	// PdfReader readerf = new PdfReader(in);
-	// for (int i = 1; i <= readerf.getNumberOfPages(); i++) {
-	// igFinalDocument.newPage();
-	// PdfImportedPage page = igFinalWriter.getImportedPage(
-	// readerf, i);
-	// cb.addTemplate(page, 0, 0);
-	// }
-	// }
-	// igFinalDocument.close();
-	//
-	// return new ByteArrayInputStream(igFinalBaos.toByteArray());
-	// } catch (DocumentException | IOException e) {
-	// e.printStackTrace();
-	// return new NullInputStream(1L);
-	// }
-	// }
+	//			return new ByteArrayInputStream(igFinalBaos.toByteArray());
+	//		} catch (DocumentException | IOException e) {
+	//			e.printStackTrace();
+	//			return new NullInputStream(1L);
+	//		}
+	//	}
 
 	@Override
 	public void onChapter(PdfWriter writer, Document document,
@@ -1137,7 +1151,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 				"",
 				"[" + String.valueOf(g.getMin()) + ".."
 						+ String.valueOf(g.getMax()) + "]", "",
-				"BEGIN " + g.getName() + " GROUP");
+						"BEGIN " + g.getName() + " GROUP");
 		rows.add(row);
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
@@ -1182,7 +1196,7 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 	private void addGroupXlsx2(List<String> header, Group g,
 			XSSFWorkbook workbook, XSSFCellStyle headerStyle,
 			Segments segments, Datatypes datatypes, Tables tables)
-			throws DocumentException {
+					throws DocumentException {
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
 		Collections.sort(segsOrGroups);
@@ -1346,8 +1360,8 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 						c.getUsage().value(),
 						"[" + String.valueOf(c.getMinLength()) + ","
 								+ String.valueOf(c.getMaxLength()) + "]",
-						(c.getTable() == null) ? "" : tables.findOne(
-								c.getTable()).getMappingId(), c.getComment());
+								(c.getTable() == null) ? "" : tables.findOne(
+										c.getTable()).getMappingId(), c.getComment());
 				rows.add(row);
 
 				List<Constraint> constraints = this.findConstraints(
@@ -1390,11 +1404,11 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 					"",
 					"[" + String.valueOf(f.getMin()) + ".."
 							+ String.valueOf(f.getMax()) + "]",
-					"",
-					"[" + String.valueOf(f.getMinLength()) + ".."
-							+ String.valueOf(f.getMaxLength()) + "]",
-					(f.getTable() == null) ? "" : tables.findOne(f.getTable())
-							.getMappingId(), f.getComment());
+							"",
+							"[" + String.valueOf(f.getMinLength()) + ".."
+									+ String.valueOf(f.getMaxLength()) + "]",
+									(f.getTable() == null) ? "" : tables.findOne(f.getTable())
+											.getMappingId(), f.getComment());
 			rows.add(row);
 
 			if (inlineConstraints) {

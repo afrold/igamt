@@ -19,6 +19,7 @@
 				<br></br>
 				<a href="#messages">Messages definifion</a>
 				<br></br>
+
 				<a href="#segments">Segments definition</a>
 				<br></br>
 				<a href="#datatypes">Datatypes definition</a>
@@ -52,7 +53,7 @@
 				</h2>
 				<a name="valuesets"></a>
 				<xsl:apply-templates select="ConformanceProfile/Tables">
-					<xsl:sort select="@AlternateId"></xsl:sort>
+					<xsl:sort select="@Id"></xsl:sort>
 				</xsl:apply-templates>
 			</body>
 		</html>
@@ -60,10 +61,10 @@
 	</xsl:template>
 	<xsl:template match="MessageDisplay">
 		<h3 style="page-break-before: always">
-			<b>Message Definition:</b>
+			Message Definition:
 			<xsl:value-of select="@Description" />
-			<br></br>
-			<b>Profile:</b>
+			<br/>
+			Profile:
 			<xsl:value-of select="@StructID" />
 		</h3>
 		<table width="1000" border="1" cellspacing="0" cellpadding="1">
@@ -90,7 +91,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<xsl:for-each select="Elt">					
+				<xsl:for-each select="Elt">
 					<xsl:if test="@Diff = 'del'">
 						<xsl:call-template name="elt">
 							<xsl:with-param name="style"
@@ -152,8 +153,9 @@
 			<xsl:value-of select="@Description" />
 		</h3>
 
+		<!-- <span style="background-color:#FFFF00"> <xsl:value-of select="./Text[@Type='Text1']" 
+			/> </span> -->
 		<xsl:value-of select="./Text[@Type='Text1']" />
-
 		<table width="1000" border="1" cellspacing="0" cellpadding="1">
 			<thead style="background:#0033CC;color:white;align:center">
 				<tr>
@@ -332,8 +334,6 @@
 	</xsl:template>
 
 	<xsl:template match="Datatype">
-
-		<a name="datatypes"></a>
 		<h3 style="page-break-before: always">
 			<xsl:value-of select="@Label" />
 			:
@@ -390,7 +390,6 @@
 							<xsl:with-param name="style" select="'background-color:yellow;'">
 							</xsl:with-param>
 						</xsl:call-template>
-
 					</xsl:if>
 				</xsl:for-each>
 			</tbody>
@@ -489,21 +488,22 @@
 	</xsl:template>
 
 	<xsl:template match="TableDefinition">
-
-		<a name="valuesets"></a>
-		<br></br>
 		<h3 style="page-break-before: always">
-			<xsl:value-of select="@AlternateId" />
+			<xsl:value-of select="@Id" />
 			:
 			<xsl:value-of select="@Name" />
 		</h3>
 		<table width="100%" border="1" cellspacing="0" cellpadding="0">
-			<col style="width:25%"></col>
-			<col style="width:75%"></col>
+			<col style="width:15%"></col>
+			<col style="width:15%"></col>
+			<col style="width:70%"></col>
 			<thead style="background:#0033CC; color:white; align:center">
 				<tr>
 					<th>
 						Value
+					</th>
+					<th>
+						Codesys
 					</th>
 					<th>
 						Description
@@ -513,20 +513,45 @@
 			<tbody>
 				<xsl:for-each select="TableElement">
 					<xsl:sort select="@Code" />
-					<tr>
-						<td>
-							<xsl:value-of select="@Code" />
-						</td>
-						<td>
-							<xsl:value-of select="@DisplayName" />
-						</td>
-					</tr>
+					<xsl:if test="@Diff = 'del'">
+						<xsl:call-template name="tableElement">
+							<xsl:with-param name="style"
+								select="'background-color:red;text-decoration:line-through'">
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:if>
+					<xsl:if test="@Diff = 'add'">
+						<xsl:call-template name="tableElement">
+							<xsl:with-param name="style" select="'background-color:green;'">
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:if>
+					<xsl:if test="@Diff = 'edit'">
+						<xsl:call-template name="tableElement">
+							<xsl:with-param name="style" select="'background-color:yellow;'">
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:if>
 				</xsl:for-each>
 			</tbody>
 		</table>
 		<br></br>
 		<a href="#top">Link to top</a>
+	</xsl:template>
 
+	<xsl:template name="tableElement">
+		<xsl:param name="style" />
+		<tr style="{$style}">
+			<td>
+				<xsl:value-of select="@Code" />
+			</td>
+			<td>
+				<xsl:value-of select="@Codesys" />
+			</td>
+			<td>
+				<xsl:value-of select="@DisplayName" />
+			</td>
+		</tr>
 	</xsl:template>
 
 </xsl:stylesheet>
