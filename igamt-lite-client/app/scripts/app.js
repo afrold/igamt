@@ -6,7 +6,7 @@
  * @description
  * # clientApp
  *
- * Main module of the application.
+ * Main module oƒf the application.
  */
 var app = angular
     .module('igl', [
