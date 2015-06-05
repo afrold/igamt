@@ -17,11 +17,13 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 public interface ProfileService {
 
@@ -50,6 +52,8 @@ public interface ProfileService {
 	public InputStream diffToPdf(Profile p);
 
 	public InputStream diffToJson(Profile p);
+
+	public Map<String, List<ElementChange>> delta(Profile p);
 
 	InputStream exportAsZip(Profile p) throws IOException;
 }

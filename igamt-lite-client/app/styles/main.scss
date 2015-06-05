@@ -22,6 +22,17 @@ body {
   color: #000;
 }
 
+#wrapper {
+  position: relative;
+  width: 95%;
+  margin: 0 auto;
+  background: #f5f5f5;
+  color: black;
+  box-shadow: 0 0 6px #021a4c;
+
+}
+
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -116,6 +127,14 @@ body {
 }
 
 
+//#apptitle {
+//  margin-bottom: 5px;
+//  display: inline-block;
+//  margin-left: 10px;
+//  font-size: 32px;
+//  color: #F3C60D;
+//}
+
 #apptitle {
   margin-bottom: 5px;
   display: inline-block;
@@ -124,10 +143,11 @@ body {
   color: #F3C60D;
 }
 
+
 #appsubtitle {
   font-size: 14px;
   margin-left: 10px;
-  color: #ffcc00;
+  color: white;
   text-shadow: none;
 }
 
@@ -1109,12 +1129,12 @@ h4.addPOAFormDateSectionTitle {
 //  border-bottom: 0px solid #ffcc00;
 //}
 
-#appsubtitle {
-  font-size: 14px;
-  margin-left: 10px;
-  color: #ffcc00;
-  text-shadow: none;
-}
+//#appsubtitle {
+//  font-size: 14px;
+//  margin-left: 10px;
+//  color: #ffcc00;
+//  text-shadow: none;
+//}
 
 #ehrbody {
   background: #f5f5f5;
@@ -1478,15 +1498,15 @@ input.account-input {
 }
 
 
-#apptitle {
-  position: relative;
-  width: 95%;
-  margin: 0 auto;
-  background: #f5f5f5;
-  color: black;
-  box-shadow: 0 0 6px #021a4c;
-
-}
+//#apptitle {
+//  position: relative;
+//  width: 95%;
+//  margin: 0 auto;
+//  background: #f5f5f5;
+//  color: black;
+//  box-shadow: 0 0 6px #021a4c;
+//
+//}
 
 .box {
   display: block;

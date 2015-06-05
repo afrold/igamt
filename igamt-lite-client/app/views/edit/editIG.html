@@ -11,8 +11,13 @@
 
             <button title="Apply Changes" ng-disabled="!hasChanges()" type="button" class="btn btn-success btn-sm"
                     ng-click="save()">
-                <span><i class="fa fa-check-square"></i>&nbsp; Apply</span>
+                <span><i class="fa fa-check"></i>&nbsp; Apply</span>
             </button>
+
+            <!--<button title="Verify Changes" ng-disabled="!hasChanges()" type="button" class="btn btn-success btn-sm"-->
+                    <!--ng-click="verify()">-->
+                <!--<span><i class="fa fa-check-circle"></i>&nbsp; Verify</span>-->
+            <!--</button>-->
 
             <div class="btn-group">
                 <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm"><span><i
@@ -28,6 +33,7 @@
                     <li><a ng-click="exportAs(profile.id, 'zip')">As ZIP</a></li>
                     <li><a ng-click="exportAs(profile.id,'pdf')">As PDF</a></li>
                     <li><a ng-click="exportAs(profile.id,'xslx')">As XSLX</a></li>
+                    <li><a ng-click="exportDelta(profile.id,'pdf')">Delta</a></li>
                 </ul>
             </div>
 
