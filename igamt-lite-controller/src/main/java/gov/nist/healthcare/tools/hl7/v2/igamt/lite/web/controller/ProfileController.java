@@ -264,14 +264,10 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-<<<<<<< HEAD
-	@RequestMapping(value = "/{id}/export/pdf2/{inlineConstraints}", method = RequestMethod.POST, produces = "application/pdf")
-	public void exportPdfFromXsl(@PathVariable("id") String id, @PathVariable("inlineConstraints") String inlineConstraints,
-=======
+
 	@RequestMapping(value = "/{id}/export/pdf/{inlineConstraints}", method = RequestMethod.POST, produces = "application/pdf")
 	public void exportPdfFromXsl(@PathVariable("id") String id,
 			@PathVariable("inlineConstraints") String inlineConstraints,
->>>>>>> 77498c6e5d8cdf51f969ddcdbd58174311990b8d
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
 		logger.info("Exporting as pdf file profile with id=" + id);

@@ -229,6 +229,50 @@ ProfileService {
 		}
 	}
 
+	public InputStream verifySegment(Profile p, String id, String type) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new ElementVerification().verifySegment(p, base, id, type));		
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream verifyDatatype(Profile p, String id, String type) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new ElementVerification().verifyDatatype(p, base, id, type));		
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream verifyValueSet(Profile p, String id, String type) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new ElementVerification().verifyValueSet(p, base, id, type));		
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream verifyUsage(Profile p, String id, String type, String eltName, String eltValue) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new ElementVerification().verifyUsage(p, base, id, type, eltName, eltValue));		
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream verifyCardinality(Profile p, String id, String type, String eltName, String eltValue) {
+		return (new ElementVerification().verifyCardinality(p, id, type, eltName, eltValue));		
+	}
+
+	public InputStream verifyLength(Profile p, String id, String type, String eltName, String eltValue) {
+		return (new ElementVerification().verifyLength(p, id, type, eltName, eltValue));		
+	}
+
 	@Override
 	public InputStream exportAsXml(Profile p) {
 		if (p != null) {
@@ -243,7 +287,7 @@ ProfileService {
 	public InputStream exportAsZip(Profile p) throws IOException {
 		if (p != null) {
 			return new ProfileSerialization4ExportImpl()
-					.serializeProfileToZip(p);
+			.serializeProfileToZip(p);
 		} else {
 			return new NullInputStream(1L);
 		}

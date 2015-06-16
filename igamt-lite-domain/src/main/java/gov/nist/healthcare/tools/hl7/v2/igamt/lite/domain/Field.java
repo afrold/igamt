@@ -69,7 +69,7 @@ public class Field extends DataElement implements java.io.Serializable,
 	public String toString() {
 		return "Field [id=" + id + ", itemNo=" + itemNo + ", min=" + min
 				+ ", max=" + max + ", datatype=" + datatype + name + ", usage="
-				+ usage + "minLeLength" + minLength + ", maxLength="
+				+ usage + "minLength" + minLength + ", maxLength="
 				+ maxLength + ", confLength=" + confLength + ", table=" + table
 				+ "]";
 	}

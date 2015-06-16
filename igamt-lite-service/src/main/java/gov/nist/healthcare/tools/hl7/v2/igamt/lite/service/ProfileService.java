@@ -18,10 +18,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ElementVerification;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import org.apache.commons.io.input.NullInputStream;
 
 public interface ProfileService {
 
@@ -52,4 +55,17 @@ public interface ProfileService {
 	public InputStream diffToJson(Profile p);
 
 	InputStream exportAsZip(Profile p) throws IOException;
+
+	public InputStream verifySegment(Profile p, String id, String type);
+
+	public InputStream verifyDatatype(Profile p, String id, String type);
+
+	public InputStream verifyValueSet(Profile p, String id, String type);
+
+	public InputStream verifyUsage(Profile p, String id, String type, String eltName, String eltValue);
+
+	public InputStream verifyCardinality(Profile p, String id, String type, String eltName, String eltValue);
+	
+	public InputStream verifyLength(Profile p, String id, String type, String eltName, String eltValue);
+	
 }
