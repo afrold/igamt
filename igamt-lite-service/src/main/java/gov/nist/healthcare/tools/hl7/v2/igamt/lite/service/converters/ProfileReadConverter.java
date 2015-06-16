@@ -78,11 +78,11 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		profile.setSegments(segments((DBObject) source.get("segments"), profile));
 		profile.setMessages(messages((DBObject) source.get("messages"), profile));
 
-		Object baseId = source.get("baseId") != null
-				&& source.get("baseId") != "" ? source.get("baseId") : null;
-		if (baseId != null) {
-			profile.setBaseId((String) baseId);
-		}
+		Object baseId = source.get("baseId");
+		profile.setBaseId(baseId != null ? (String) baseId : null);
+
+		Object sourceId = source.get("sourceId");
+		profile.setSourceId(sourceId != null ? (String) sourceId : null);
 
 		return profile;
 

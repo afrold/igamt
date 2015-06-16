@@ -54,6 +54,8 @@ public class Profile extends DataModel implements java.io.Serializable,
 	private String baseId = null; // baseId is the original version of the
 									// profile that was cloned
 
+	private String sourceId;
+
 	public String getBaseId() {
 		return baseId;
 	}
@@ -154,6 +156,14 @@ public class Profile extends DataModel implements java.io.Serializable,
 
 	public void setAccountId(Long accountId) {
 		this.accountId = accountId;
+	}
+
+	public String getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(String sourceId) {
+		this.sourceId = sourceId;
 	}
 
 	@Override
@@ -294,7 +304,8 @@ public class Profile extends DataModel implements java.io.Serializable,
 		clonedProfile.setUsageNote(usageNote);
 		clonedProfile.setAccountId(accountId);
 		clonedProfile.setScope(scope);
-		clonedProfile.setBaseId(baseId);
+		clonedProfile.setBaseId(baseId != null ? baseId : id);
+		clonedProfile.setSourceId(id);
 
 		return clonedProfile;
 	}

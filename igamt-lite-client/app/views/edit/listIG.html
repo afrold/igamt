@@ -71,6 +71,7 @@
                                             <li><a ng-click="exportAs(row.id, 'zip')">As ZIP</a></li>
                                             <li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>
                                             <li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>
+                                            <li><a ng-click="exportDelta(row.id,'pdf')">Delta</a></li>
                                         </ul>
                                     </div>
                                     <span ng-show="toEditProfileId != null && toEditProfileId === row.id"><i class="fa fa-spinner fa-pulse fa-2x"></i></span>
@@ -168,6 +169,7 @@
                                             <li><a ng-click="exportAs(row.id, 'zip')">As ZIP</a></li>
                                             <li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>
                                             <li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>
+                                            <li><a ng-click="exportDelta(row.id,'pdf')">Delta</a></li>
                                         </ul>
                                     </div>
 

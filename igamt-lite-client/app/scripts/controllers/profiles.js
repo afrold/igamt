@@ -19,6 +19,8 @@ angular.module('igl')
 
         $scope.loadingProfile = false;
         $scope.toEditProfileId = null;
+        $scope.verificationResult = null;
+        $scope.verificationError = null;
 
         /**
          * init the controller
@@ -259,9 +261,10 @@ angular.module('igl')
         };
 
 
-        $scope.exportAs = function (id, format) {
+
+         $scope.exportAs = function (id, format) {
             var form = document.createElement("form");
-            form.action = $rootScope.api('api/profiles/' + id + '/export/' + format);
+            form.action = $rootScope.api('api/profiles/' + id + '/export/' + format+'/true');
             form.method = "POST";
             form.target = "_target";
             var csrfInput = document.createElement("input");
@@ -276,6 +279,38 @@ angular.module('igl')
             form.submit();
         };
 
+        $scope.exportDelta = function (id, format) {
+            var form = document.createElement("form");
+            form.action = $rootScope.api('api/profiles/' + id + '/delta/' + format);
+            form.method = "POST";
+            form.target = "_target";
+            var csrfInput = document.createElement("input");
+            csrfInput.name = "X-XSRF-TOKEN";
+            csrfInput.value = $cookies['XSRF-TOKEN'];
+//            console.log("CSRF=" + csrfInput.value);
+            form.appendChild(csrfInput);
+            form.style.display = 'none';
+            document.body.appendChild(form);
+//            httpHeaders.common['X-XSRF-TOKEN'] = $cookies['XSRF-TOKEN'];
+//            httpHeaders.common['JSSESSIONID'] = $cookies['JSSESSIONID'];
+            form.submit();
+        };
+
+//
+//        $scope.verify = function (id) {
+//            waitingDialog.show('Verifying changes...', {dialogSize: 'sm', progressType: 'info'});
+//            $scope.verificationError = null;
+//            $scope.loading = true;
+//            $http.get('api/profiles/' + id + '/verify', {timeout: 60000}).then(function (response) {
+//                $rootScope.verificationResult = angular.fromJson(response.data);
+//                $scope.loading = false;
+//                waitingDialog.hide();
+//            }, function (error) {
+//                $scope.loading = false;
+//                $scope.verificationError = "Verification Failed";
+//                waitingDialog.hide();
+//            });
+//        };
 
         $scope.close = function () {
             if ($rootScope.hasChanges()) {
