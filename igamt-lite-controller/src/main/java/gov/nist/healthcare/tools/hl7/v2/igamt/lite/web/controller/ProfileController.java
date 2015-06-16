@@ -351,4 +351,56 @@ public class ProfileController extends CommonController {
 		return profileConfig;
 	}
 
+	@RequestMapping(value = "/{id}/verify/segment/{sId}", method = RequestMethod.POST, produces = "application/json")
+	public void verifySegment(@PathVariable("id") String id, @PathVariable("sId") String sId,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ProfileNotFoundException {
+		logger.info("Verifying segment " + sId + " from profile " + id);
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
+		InputStream content = null;
+		content = profileService.verifySegment(p, id, "segment");
+		response.setContentType("application/json");
+		response.setHeader("Content-disposition",
+				"attachment;filename=ProfileDelta.json");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+
+	@RequestMapping(value = "/{id}/verify/datatype/{dtId}", method = RequestMethod.POST, produces = "application/json")
+	public void verifyDatatype(@PathVariable("id") String id, @PathVariable("dtId") String dtId,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ProfileNotFoundException {
+		logger.info("Verifying datatype " + dtId + " from profile " + id);
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
+		InputStream content = null;
+		content = profileService.verifyDatatype(p, id, "datatype");
+		response.setContentType("application/json");
+		response.setHeader("Content-disposition",
+				"attachment;filename=ProfileDelta.json");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+
+	@RequestMapping(value = "/{id}/verify/valueset/{vsId}", method = RequestMethod.POST, produces = "application/json")
+	public void verifyValueSet(@PathVariable("id") String id, @PathVariable("vsId") String vsId,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ProfileNotFoundException {
+		logger.info("Verifying segment " + vsId + " from profile " + id);
+		Profile p = profileService.findOne(id);
+		if (p == null) {
+			throw new ProfileNotFoundException(id);
+		}
+		InputStream content = null;
+		content = profileService.verifyValueSet(p, id, "valueset");
+		response.setContentType("application/json");
+		response.setHeader("Content-disposition",
+				"attachment;filename=ProfileDelta.json");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+
+	
 }

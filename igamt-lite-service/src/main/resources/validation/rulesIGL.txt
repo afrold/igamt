@@ -1,0 +1,31 @@
+{ 
+ "2.7.1":{ 
+		"usageMap":{
+			"R" : ["R"],
+			"RE": ["RE", "R"], 
+			"C" : ["C", "C(O/O)","C(X,X)"],
+			"W" : ["W","X"],
+			"F" : ["F","X"],
+			"NA" : ["NA","X"],
+			"O": ["R", "RE", "O", "C", "C(R/R)", "C(R/RE)", "C(R/O)", "C(RE/R)", "C(R/X)", "C(RE/RE)", "C(RE/O)", "C(RE/X)", "C(O/R)", "C(O/RE)", "C(O/O)", "C(O/X)", "C(X/R)", "C(X/RE)", "C(X/O)", "X"],
+			"B" : ["B","O", "X"],
+			"C(R/R)":["R","RE","C(R/R)"], 
+			"C(R/RE)":["R","RE","C(R/R)","C(R/RE)"],
+			"C(R/X)":["R","RE","C(R/X)"],
+			"C(RE/R)":["R","RE","C(R/R)","C(RE/R)"],
+			"C(RE/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)"],
+			"C(RE/O)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(RE/RE)","C(R/O)","C(RE/O)"],
+			"C(RE/X)":["R","RE","C(R/X)","C(RE/X)"],
+			"C(O/R)":["R","RE","C(R/R)","C(RE/R)","C(O/R)"],
+			"C(O/RE)":["R","RE","C(R/R)","C(R/RE)","C(RE/R)","C(O/R)","C(O/RE)"], 
+			"C(O/O)":["R","RE","C(R/R)","C(R/RE)", "C(R/O)","C(R/X)","C(RE/R)","C(RE/RE)","C(RE/O)","C(RE/X)","C(O/R)","C(O/RE)","C(O,O)","C(O/X)","C(X/R)","C(X/RE)","C(X/O)"], 
+			"C(O/X)":["R","RE","C(R/X)","C(RE/X)","C(O/X)"],
+			"C(X/R)":["R","RE","C(X/R)"],
+			"C(X/RE)":["R","RE","C(X/R)","C(X,RE)"],
+			"C(X/O)":["R","RE","C(X/R)","C(X/RE)","C(X/O)"],
+			"X":["X"]
+		 },
+		 "usageList":["R","RE","O", "C(R/R)","C(R/RE)", "C(R/X)", "C(RE/R)","C(RE/RE)","C(RE/O)","C(RE/X)","C(O/R)","C(O/RE)","C(O/O)","C(O/X)","C(X/R)","C(X/RE)","C(X/O)","C(X,X)","X"] 
+     }
+ }
+ 
