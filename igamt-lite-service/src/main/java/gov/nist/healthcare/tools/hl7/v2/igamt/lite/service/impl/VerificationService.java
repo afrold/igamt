@@ -30,7 +30,7 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
-public class ElementVerification {
+public class VerificationService {
 	
 
 	public InputStream verifySegment(Profile p, Profile baseP, String id, String type) {
@@ -541,7 +541,7 @@ public class ElementVerification {
 	}
 
 	public static void main(String[] args) throws IOException {
-		ElementVerification ev = new ElementVerification();
+		VerificationService ev = new VerificationService();
 		System.out.println(ev.allowedChangesUsage("2.7.1", "RE").contains("R"));
 
 
