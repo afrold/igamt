@@ -244,6 +244,14 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		}
 	}
 
+	public ElementVerification verifyMessages(Profile p, String id, String type) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new VerificationService().verifyMessages(p, base, id, type));		
+		}
+		return null;
+	}
+
 	public ElementVerification verifyMessage(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {

@@ -58,6 +58,8 @@ public interface ProfileService {
 
 	InputStream exportAsZip(Profile p) throws IOException;
 
+	public ElementVerification verifyMessages(Profile p, String id, String type);
+
 	public ElementVerification verifyMessage(Profile p, String id, String type);
 
 	public ElementVerification verifySegmentRefOrGroup(Profile p, String id, String type);

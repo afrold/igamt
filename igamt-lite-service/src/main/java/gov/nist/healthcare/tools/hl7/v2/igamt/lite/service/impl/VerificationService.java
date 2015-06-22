@@ -44,6 +44,14 @@ public class VerificationService {
 		super();
 	}
 
+	public ElementVerification verifyMessages(Profile p, Profile baseP, String id, String type) {
+		ElementVerification evm = new ElementVerification(id, type);
+		for (Message m: p.getMessages().getChildren()){
+			evm.addChildrenVerification(verifyMessages(p, baseP, m.getId(), m.getType()));
+		}
+		return evm;
+	}
+
 	public ElementVerification verifyMessage(Profile p, Profile baseP, String id, String type) {
 		ElementVerification evm = new ElementVerification(id, type);
 		Message m = p.getMessages().findOne(id);
@@ -53,7 +61,7 @@ public class VerificationService {
 		}
 		return evm;
 	}
-
+	
 	private ElementVerification verifySegmentRef(SegmentRefOrGroup srog) {
 		String result = "";
 		ElementVerification evsrog = new ElementVerification(srog.getId(), srog.getType());
