@@ -18,6 +18,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
 import java.io.IOException;
@@ -57,16 +58,30 @@ public interface ProfileService {
 
 	InputStream exportAsZip(Profile p) throws IOException;
 
-	public InputStream verifySegment(Profile p, String id, String type);
+	public ElementVerification verifyMessage(Profile p, String id, String type);
 
-	public InputStream verifyDatatype(Profile p, String id, String type);
+	public ElementVerification verifySegmentRefOrGroup(Profile p, String id, String type);
 
-	public InputStream verifyValueSet(Profile p, String id, String type);
+	public ElementVerification verifySegments(Profile p, String id, String type);
 
-	public InputStream verifyUsage(Profile p, String id, String type, String eltName, String eltValue);
+	public ElementVerification verifySegment(Profile p, String id, String type);
 
-	public InputStream verifyCardinality(Profile p, String id, String type, String eltName, String eltValue);
+	public ElementVerification verifyField(Profile p, String id, String type);
+
+	public ElementVerification verifyDatatypes(Profile p, String id, String type);
+
+	public ElementVerification verifyDatatype(Profile p, String id, String type);
+
+	public ElementVerification verifyComponent(Profile p, String id, String type);
+
+	public ElementVerification verifyValueSetLibrary(Profile p, String id, String type);
+
+	public ElementVerification verifyValueSet(Profile p, String id, String type);
+
+	public ElementVerification verifyUsage(Profile p, String id, String type, String eltName, String eltValue);
+
+	public ElementVerification verifyCardinality(Profile p, String id, String type, String eltName, String eltValue);
 	
-	public InputStream verifyLength(Profile p, String id, String type, String eltName, String eltValue);
+	public ElementVerification verifyLength(Profile p, String id, String type, String eltName, String eltValue);
 	
 }

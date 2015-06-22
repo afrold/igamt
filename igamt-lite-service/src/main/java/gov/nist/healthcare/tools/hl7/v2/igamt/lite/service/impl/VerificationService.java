@@ -3,9 +3,16 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerificationResult;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 
@@ -31,9 +38,80 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class VerificationService {
-	
 
-	public InputStream verifySegment(Profile p, Profile baseP, String id, String type) {
+
+	public VerificationService() {
+		super();
+	}
+
+	public ElementVerification verifyMessage(Profile p, Profile baseP, String id, String type) {
+		ElementVerification evm = new ElementVerification(id, type);
+		Message m = p.getMessages().findOne(id);
+
+		for (SegmentRefOrGroup srog : m.getChildren()){
+			evm.addChildrenVerification(verifySegmentOrGroup(p, baseP, srog.getId(), srog.getType()));
+		}
+		return evm;
+	}
+
+	private ElementVerification verifySegmentRef(SegmentRefOrGroup srog) {
+		String result = "";
+		ElementVerification evsrog = new ElementVerification(srog.getId(), srog.getType());
+		ElementVerificationResult evsrogRst = new ElementVerificationResult("usage", srog.getUsage().value(), result);
+		evsrog.addElementVerifications(evsrogRst);
+
+		result = this.validateChangeCardinality(String.valueOf(srog.getMin()), srog.getMax(), srog.getUsage());
+		evsrogRst = new ElementVerificationResult("min", String.valueOf(srog.getMin()), result);
+		evsrog.addElementVerifications(evsrogRst);
+
+		result = this.validateChangeCardinality(String.valueOf(srog.getMin()), srog.getMax(), srog.getUsage());
+		evsrogRst = new ElementVerificationResult("max", String.valueOf(srog.getMax()), result);
+		evsrog.addElementVerifications(evsrogRst);
+
+		return evsrog;
+	}
+
+	private ElementVerification verifyGroup(SegmentRefOrGroup srog) {
+		ElementVerification evsrog = verifySegmentRef(srog);
+		for (SegmentRefOrGroup child : ((Group) srog).getChildren()){
+			if (child instanceof SegmentRef){
+				evsrog.addChildrenVerification(verifySegmentRef(child));
+			} else if (child instanceof Group){
+				evsrog.addChildrenVerification(verifyGroup(child));
+			}
+		}
+		return evsrog;
+	}
+
+	public ElementVerification verifySegmentOrGroup(Profile p, Profile baseP, String id, String type) {
+		SegmentRefOrGroup srog = p.getMessages().findOneSegmentRefOrGroup(id);
+		ElementVerification evSrog = verifySegmentRef(srog); //verify usage, min and max for segref and group
+		if (srog instanceof Group){
+			evSrog.addChildrenVerification(verifyGroup(srog));
+		}
+		return evSrog;
+	}
+
+	public ElementVerification verifySegments(Profile p, Profile baseP, String id, String type) {
+		ElementVerification evsLib = new ElementVerification(id, type);
+		for (Segment s : p.getSegments().getChildren()){
+			ElementVerification evs = verifySegment(p, baseP, s.getId(), s.getType());
+			evs.addChildrenVerification(evsLib);
+		}
+		return evsLib;
+	}
+
+	public ElementVerification verifySegment(Profile p, Profile baseP, String id, String type) {
+		ElementVerification evs = new ElementVerification(id, type);
+		Segment s = p.getSegments().findOne(id);
+		for (Field f : s.getFields()){
+			ElementVerification evf = verifyField(p, baseP, f.getId(), f.getType());
+			evs.addChildrenVerification(evf);
+		}
+		return evs;
+	}
+
+	public InputStream verifySegment2(Profile p, Profile baseP, String id, String type) {
 		String result = "";
 		Segment s = p.getSegments().findOne(id);
 
@@ -104,9 +182,54 @@ public class VerificationService {
 		} 
 	}
 
+	public ElementVerification verifyField(Profile p, Profile baseP, String id, String type) {
+		String result = "";
+		ElementVerification evc = new ElementVerification(id, type);
+		Field f = p.getSegments().findOneField(id);
+
+		ElementVerificationResult evcRst = new ElementVerificationResult("usage", f.getUsage().value(), result);
+		evc.addElementVerifications(evcRst);
+
+		result = this.validateChangeLength(String.valueOf(f.getMinLength()), f.getMaxLength());
+		evcRst = new ElementVerificationResult("minLength", String.valueOf(f.getMinLength()), result);
+		evc.addElementVerifications(evcRst);
+
+		result = this.validateChangeLength(String.valueOf(f.getMinLength()), f.getMaxLength());
+		evcRst = new ElementVerificationResult("maxLength", String.valueOf(f.getMaxLength()), result);
+		evc.addElementVerifications(evcRst);
+
+		result = this.validateChangeCardinality(String.valueOf(f.getMin()), f.getMax(), f.getUsage());
+		evcRst = new ElementVerificationResult("min", String.valueOf(f.getMin()), result);
+		evc.addElementVerifications(evcRst);
+
+		result = this.validateChangeCardinality(String.valueOf(f.getMin()), f.getMax(), f.getUsage());
+		evcRst = new ElementVerificationResult("max", String.valueOf(f.getMax()), result);
+		evc.addElementVerifications(evcRst);
+
+		return evc;
+	}
 
 
-	public InputStream verifyDatatype(Profile p, Profile baseP, String id, String type) {
+
+	public ElementVerification verifyDatatypes(Profile p, Profile baseP, String id, String type) {
+		Datatypes dtLib = p.getDatatypes();
+		ElementVerification evdtLib = new ElementVerification(id, type);
+		for (Datatype dt : dtLib.getChildren()){
+			evdtLib.addChildrenVerification(verifyDatatype(p, baseP, dt.getId(), dt.getType()));
+		}
+		return evdtLib;
+	}
+
+	public ElementVerification verifyDatatype(Profile p, Profile baseP, String id, String type) {
+		Datatype dt = p.getDatatypes().findOne(id); 
+		ElementVerification evdt = new ElementVerification(id, type);
+		for (Component c : dt.getComponents()){
+			evdt.addChildrenVerification(verifyComponent(p, baseP, c.getId(), c.getType()));
+		}
+		return evdt;
+	}
+
+	public InputStream verifyDatatype2(Profile p, Profile baseP, String id, String type) {
 		String result = "";
 		Datatype dt = p.getDatatypes().findOne(id);
 
@@ -163,7 +286,55 @@ public class VerificationService {
 		} 
 	}
 
-	public InputStream verifyValueSet(Profile p, Profile baseP, String id, String type) {
+	public ElementVerification verifyComponent(Profile p, Profile baseP, String id, String type) {
+		String result = "";
+		ElementVerification evc = new ElementVerification(id, type);
+		Component c = p.getDatatypes().findOneComponent(id);
+		// TDL Check c.getDatatype()? c.getTable() ?
+
+		ElementVerificationResult evcRst = new ElementVerificationResult("usage", c.getUsage().value(), result);
+		evc.addElementVerifications(evcRst);
+
+		result = this.validateChangeLength(String.valueOf(c.getMinLength()), c.getMaxLength());
+		evcRst = new ElementVerificationResult("minLength", String.valueOf(c.getMinLength()), result);
+		evc.addElementVerifications(evcRst);
+
+		result = this.validateChangeLength(String.valueOf(c.getMinLength()), c.getMaxLength());
+		evcRst = new ElementVerificationResult("maxLength", String.valueOf(c.getMaxLength()), result);
+		evc.addElementVerifications(evcRst);
+
+		return evc;
+	}
+
+	public ElementVerification verifyValueSetLibrary(Profile p, Profile baseP, String id, String type) {
+		// Type is ValueSet (or Table)
+		ElementVerification evTLib = new ElementVerification(id, type);
+		for (Table t : p.getTables().getChildren()){
+			evTLib.addChildrenVerification(verifyValueSet(p, baseP, t.getId(), t.getType()));
+		}
+		return evTLib;
+	}
+
+
+	public ElementVerification verifyValueSet(Profile p, Profile baseP, String id, String type) {
+		// Type is ValueSet (or Table)
+		String result = "";
+		Table t = p.getTables().findOne(id);
+		ElementVerification evt = new ElementVerification(id, type);
+		for (Code c : t.getCodes()){
+			result = this.validateChangeUsage(p.getMetaData().getHl7Version(), 
+					Usage.fromValue(baseP.getTables().findOneCode(id).getCodeUsage()), 
+					Usage.fromValue(p.getTables().findOneCode(id).getCodeUsage()));
+			ElementVerification evc = new ElementVerification(c.getId(), c.getType());
+			ElementVerificationResult evcRst = new ElementVerificationResult("usage", c.getCodeUsage(), result);
+			evc.addElementVerifications(evcRst);
+			evt.addChildrenVerification(evc);
+		} 
+		return evt;
+	}
+
+
+	public InputStream verifyValueSet2(Profile p, Profile baseP, String id, String type) {
 		// Type is ValueSet (or Table)
 		String result = "";
 		Table t = p.getTables().findOne(id);
@@ -185,7 +356,7 @@ public class VerificationService {
 			generator.writeArrayFieldStart("eltVerification");
 
 			for (Code c : t.getCodes()){
-				
+
 				generator.writeStartObject();
 				generator.writeStringField("eltName", "usage");
 				generator.writeStringField("eltAtt", c.getCodeUsage());
@@ -209,7 +380,7 @@ public class VerificationService {
 	}
 
 
-	public InputStream verifyUsage(Profile p, Profile baseP, String id, String type, String eltName, String eltValue){
+	public ElementVerification verifyUsage(Profile p, Profile baseP, String id, String type, String eltName, String eltValue){
 		// Type can be Field, Component, Code
 		// EltName is Usage
 		String hl7Version = p.getMetaData().getHl7Version();
@@ -217,6 +388,54 @@ public class VerificationService {
 		Usage currentUsage = Usage.R;
 
 		switch(type){
+		case "segmentreforgroup":
+			SegmentRefOrGroup srog = p.getMessages().findOneSegmentRefOrGroup(id);
+			currentUsage = srog.getUsage();
+			SegmentRefOrGroup basesrog = baseP.getMessages().findOneSegmentRefOrGroup(id);
+			referenceUsage = basesrog.getUsage(); 
+			break;
+		case "field":
+			Field f = p.getSegments().findOneField(id);
+			currentUsage = f.getUsage();
+			Field basef = baseP.getSegments().findOneField(id);
+			referenceUsage = basef.getUsage(); 
+			break;
+		case "component":
+			Component c = p.getDatatypes().findOneComponent(id);
+			currentUsage = c.getUsage();
+			Component basec = baseP.getDatatypes().findOneComponent(id);
+			referenceUsage = basec.getUsage();
+			break;
+		case "code":
+			Code cd = p.getTables().findOneCode(id);
+			currentUsage = Usage.fromValue(cd.getCodeUsage());
+			Code basecd = baseP.getTables().findOneCode(id);
+			referenceUsage = Usage.fromValue(basecd.getCodeUsage());
+			break;
+		}
+
+		String result = this.validateChangeUsage(hl7Version, referenceUsage, currentUsage);
+		ElementVerification ev = new ElementVerification(id, type);
+		ElementVerificationResult evRst = new ElementVerificationResult(eltName, eltValue, result);
+		ev.addElementVerifications(evRst);
+
+		return ev;
+	}
+
+	public InputStream verifyUsage2(Profile p, Profile baseP, String id, String type, String eltName, String eltValue){
+		// Type can be Field, Component, Code
+		// EltName is Usage
+		String hl7Version = p.getMetaData().getHl7Version();
+		Usage referenceUsage = Usage.R; 
+		Usage currentUsage = Usage.R;
+
+		switch(type){
+		case "segmentreforgroup":
+			SegmentRefOrGroup srog = p.getMessages().findOneSegmentRefOrGroup(id);
+			currentUsage = srog.getUsage();
+			SegmentRefOrGroup basesrog = baseP.getMessages().findOneSegmentRefOrGroup(id);
+			referenceUsage = basesrog.getUsage(); 
+			break;
 		case "field":
 			Field f = p.getSegments().findOneField(id);
 			currentUsage = f.getUsage();
@@ -241,8 +460,25 @@ public class VerificationService {
 		return this.generateOneJsonResult(id, type, eltName, eltValue, result);
 	}
 
+	public ElementVerification verifyCardinality(Profile p, String id, String type, String eltName, String eltValue){
+		//Type can be Field
+		//EltName can be cardMin or cardMax
 
-	public InputStream verifyCardinality(Profile p, String id, String type, String eltName, String eltValue){
+		Field f = p.getSegments().findOneField(id);
+
+		String currentMin = (String) (eltName.equalsIgnoreCase("min") ? eltValue : f.getMin());
+		String currentMax = (String) (eltName.equalsIgnoreCase("max") ? eltValue : f.getMax());
+		Usage currentUsage = f.getUsage();
+
+		String result = this.validateChangeCardinality(currentMin, currentMax, currentUsage);
+
+		ElementVerification ev = new ElementVerification(id, type);
+		ElementVerificationResult evRst = new ElementVerificationResult(eltName, eltValue, result);
+		ev.addElementVerifications(evRst);
+		return ev;
+	}
+
+	public InputStream verifyCardinality2(Profile p, String id, String type, String eltName, String eltValue){
 		//Type can be Field
 		//EltName can be cardMin or cardMax
 
@@ -257,7 +493,49 @@ public class VerificationService {
 
 	}
 
-	public InputStream verifyLength(Profile p, String id, String type, String eltName, String eltValue){
+	public ElementVerification verifyLength(Profile p, String id, String type, String eltName, String eltValue){
+		//type is either Field or Component
+		//eltName is minLength or maxLength
+		String currentMinLength = "";
+		String currentMaxLength = "";
+		Field f; Component c;
+		if (type.equalsIgnoreCase("field")){
+			f = p.getSegments().findOneField(id);
+			switch(eltName){
+			case "minLength":
+				currentMinLength = eltValue;
+				currentMaxLength = f.getMaxLength();
+				break;
+			case "maxLength":
+				currentMinLength = String.valueOf(f.getMinLength());
+				currentMaxLength = eltValue;
+				break;
+			}
+		}
+
+		if (type.equalsIgnoreCase("component")){
+			c = p.getDatatypes().findOneComponent(id);
+
+			switch(eltName){
+			case "minLength":
+				currentMinLength = eltValue;
+				currentMaxLength = c.getMaxLength();
+				break;
+			case "maxLength":
+				currentMinLength = String.valueOf(c.getMinLength());
+				currentMaxLength = eltValue;
+				break;
+			}
+		}
+
+		String result = this.validateChangeLength(currentMinLength, currentMaxLength);
+		ElementVerification ev = new ElementVerification(id, type);
+		ElementVerificationResult evRst = new ElementVerificationResult(eltName, eltValue, result);
+		ev.addElementVerifications(evRst);
+		return ev;
+	}
+
+	public InputStream verifyLength2(Profile p, String id, String type, String eltName, String eltValue){
 		//type is either Field or Component
 		//eltName is minLength or maxLength
 		String currentMinLength = "";
@@ -294,7 +572,6 @@ public class VerificationService {
 
 		String result = this.validateChangeLength(currentMinLength, currentMaxLength);
 		return this.generateOneJsonResult(id, type, eltName, eltValue, result);
-
 	}
 
 

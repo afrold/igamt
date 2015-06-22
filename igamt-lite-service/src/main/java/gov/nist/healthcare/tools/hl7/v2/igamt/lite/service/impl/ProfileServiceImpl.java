@@ -22,6 +22,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
@@ -243,47 +244,99 @@ public class ProfileServiceImpl extends PdfPageEventHelper implements
 		}
 	}
 
-	public InputStream verifySegment(Profile p, String id, String type) {
+	public ElementVerification verifyMessage(Profile p, String id, String type) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new VerificationService().verifyMessage(p, base, id, type));		
+		}
+		return null;
+	}
+
+	public ElementVerification verifySegmentRefOrGroup(Profile p, String id, String type) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new VerificationService().verifySegmentOrGroup(p, base, id, type));		
+		}
+		return null;
+	}
+
+	public ElementVerification verifySegments(Profile p, String id, String type) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new VerificationService().verifySegments(p, base, id, type));		
+		}
+		return null;
+	}
+
+	public ElementVerification verifySegment(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
 			return (new VerificationService().verifySegment(p, base, id, type));		
-		} else {
-			return new NullInputStream(1L);
 		}
+		return null;
 	}
 
-	public InputStream verifyDatatype(Profile p, String id, String type) {
+	public ElementVerification verifyField(Profile p, String id, String type) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new VerificationService().verifyField(p, base, id, type));		
+		}
+		return null;
+	}
+
+	public ElementVerification verifyDatatypes(Profile p, String id, String type) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new VerificationService().verifyDatatypes(p, base, id, type));		
+		}
+		return null;
+	}
+
+	public ElementVerification verifyDatatype(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
 			return (new VerificationService().verifyDatatype(p, base, id, type));		
-		} else {
-			return new NullInputStream(1L);
 		}
+		return null;
 	}
 
-	public InputStream verifyValueSet(Profile p, String id, String type) {
+	public ElementVerification verifyComponent(Profile p, String id, String type) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new VerificationService().verifyComponent(p, base, id, type));		
+		}
+		return null;
+	}
+
+	public ElementVerification verifyValueSetLibrary(Profile p, String id, String type) {
+		Profile base = this.findOne(p.getBaseId());
+		if (base != null) {
+			return (new VerificationService().verifyValueSetLibrary(p, base, id, type));		
+		}
+		return null;
+	}
+
+	public ElementVerification verifyValueSet(Profile p, String id, String type) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
 			return (new VerificationService().verifyValueSet(p, base, id, type));		
-		} else {
-			return new NullInputStream(1L);
 		}
+		return null;
 	}
 
-	public InputStream verifyUsage(Profile p, String id, String type, String eltName, String eltValue) {
+	public ElementVerification verifyUsage(Profile p, String id, String type, String eltName, String eltValue) {
 		Profile base = this.findOne(p.getBaseId());
 		if (base != null) {
 			return (new VerificationService().verifyUsage(p, base, id, type, eltName, eltValue));		
-		} else {
-			return new NullInputStream(1L);
 		}
+		return null;
 	}
 
-	public InputStream verifyCardinality(Profile p, String id, String type, String eltName, String eltValue) {
+	public ElementVerification verifyCardinality(Profile p, String id, String type, String eltName, String eltValue) {
 		return (new VerificationService().verifyCardinality(p, id, type, eltName, eltValue));		
 	}
 
-	public InputStream verifyLength(Profile p, String id, String type, String eltName, String eltValue) {
+	public ElementVerification verifyLength(Profile p, String id, String type, String eltName, String eltValue) {
 		return (new VerificationService().verifyLength(p, id, type, eltName, eltValue));		
 	}
 
