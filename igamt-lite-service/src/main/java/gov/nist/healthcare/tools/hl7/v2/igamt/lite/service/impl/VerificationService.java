@@ -298,7 +298,6 @@ public class VerificationService {
 		String result = "";
 		ElementVerification evc = new ElementVerification(id, type);
 		Component c = p.getDatatypes().findOneComponent(id);
-		// TDL Check c.getDatatype()? c.getTable() ?
 
 		ElementVerificationResult evcRst = new ElementVerificationResult("usage", c.getUsage().value(), result);
 		evc.addElementVerifications(evcRst);
@@ -310,6 +309,12 @@ public class VerificationService {
 		result = this.validateChangeLength(String.valueOf(c.getMinLength()), c.getMaxLength());
 		evcRst = new ElementVerificationResult("maxLength", String.valueOf(c.getMaxLength()), result);
 		evc.addElementVerifications(evcRst);
+		
+		Datatype dt = p.getDatatypes().findOneDatatype(c.getDatatype());
+		evc.addChildrenVerification(verifyDatatype(p, baseP, dt.getId(), dt.getType()));
+		
+		Table t = p.getTables().findOne(c.getTable());
+		evc.addChildrenVerification(verifyValueSet(p, baseP, t.getId(), t.getType()));
 
 		return evc;
 	}
@@ -389,18 +394,24 @@ public class VerificationService {
 
 
 	public ElementVerification verifyUsage(Profile p, Profile baseP, String id, String type, String eltName, String eltValue){
-		// Type can be Field, Component, Code
+		// Type can be SegmentRef, Group, Field, Component, Code
 		// EltName is Usage
 		String hl7Version = p.getMetaData().getHl7Version();
 		Usage referenceUsage = Usage.R; 
 		Usage currentUsage = Usage.R;
 
 		switch(type){
-		case "segmentreforgroup":
+		case "segmentRef":
 			SegmentRefOrGroup srog = p.getMessages().findOneSegmentRefOrGroup(id);
 			currentUsage = srog.getUsage();
 			SegmentRefOrGroup basesrog = baseP.getMessages().findOneSegmentRefOrGroup(id);
 			referenceUsage = basesrog.getUsage(); 
+			break;
+		case "group":
+			SegmentRefOrGroup srog_ = p.getMessages().findOneSegmentRefOrGroup(id);
+			currentUsage = srog_.getUsage();
+			SegmentRefOrGroup basesrog_ = baseP.getMessages().findOneSegmentRefOrGroup(id);
+			referenceUsage = basesrog_.getUsage(); 
 			break;
 		case "field":
 			Field f = p.getSegments().findOneField(id);
