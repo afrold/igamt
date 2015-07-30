@@ -1,0 +1,92 @@
+Coherence checking / verification
+
+
+Object verifications:
+*********************
+
+Objects to verify:
+
+	Profile
+	Datatype
+	Segment
+	ValueSet
+
+
+Dataflow wise:
+
+	Request:
+	{"id":"___", "type":"___"}
+
+	Response:
+	{"id":"___", "type":"___", 
+	eltVerification:[{"eltName":"___", "attValue":"___", "result":"___"}],
+	childrenVerification: [ "id":"___", "type":"___", eltVerification:["eltName":"___", "attValue":"___", "result":"___"]
+	...
+	]}
+
+	Result is either "ok" or error message.
+
+
+
+Attribute verifications:
+************************
+
+Verifications:
+
+	Usage verification:
+		New usage cannot be less restrictive than reference usage
+		Use rules.txt for precedence.
+
+	Cardinality verifications:
+		Cardinality max:
+			Type check:
+				Cardinality min must be a positive integer
+
+			Values have to be verified against usage:
+			   if X usage, then cardinality min cannot be greater than 0
+			   if R usage, then cardinality min has to be greater than zero and cardinality max cannot be less than cardinality min
+			   if RE usage, then cardinality min has to be greater than zero and cardinality max cannot be less than cardinality min
+			   if C,CE,O, or C* usage, cardinality min cannot be less than or greater than zero
+		Cardinality max:
+			Type check:
+				Cardinality max must be a positive integer or star
+
+			Values have to be verified against usage:
+			   if X usage, then cardinality max cannot be greater than 0
+			   if R usage, then cardinality max has to be integer greater than zero or star and cardinality max cannot be less than cardinality min
+			   if RE usage, then cardinality max has to be greater than zero or star and cardinality max cannot be less than cardinality min
+			   if C,CE,O, or C* usage, cardinality max can not be less than 1 
+
+
+	Length verifications:
+		MinLength:
+			Type check:
+				minLength must be a positive integer
+			Meaning check
+				minLength cannot be greater than maxLength
+
+		MaxLength:
+			Type check:
+				maxLength must be a positive integer
+			Meaning check
+				maxLength cannot be greater than maxLength
+
+
+
+Attribute to verify:
+
+	Field 		=> usage, cardMin, cardMax, minLength, maxLength (Segment)
+	Component 	=> usage, minLength, maxLength (Datatype)
+	Code 		=> usage (Table)
+
+
+Dataflow wise:
+
+	Request:
+	{"id":"___", "type":"___", "eltName":"___", "attValue":"___"}
+
+	Response:
+	{"id":"___", "type":"___", "eltName":"___", "attValue":"___", "result":""}
+
+	Result is either "ok" or error message.
+
