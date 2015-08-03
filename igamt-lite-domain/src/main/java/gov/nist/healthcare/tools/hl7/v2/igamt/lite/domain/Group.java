@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,10 @@ public class Group extends SegmentRefOrGroup implements Cloneable {
 	// @NotNull
 	private String name;
 
+	protected List<Predicate> predicates = new ArrayList<Predicate>();
+
+	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
+
 	public List<SegmentRefOrGroup> getChildren() {
 		return children;
 	}
@@ -30,6 +37,31 @@ public class Group extends SegmentRefOrGroup implements Cloneable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void addPredicate(Predicate p) {
+		predicates.add(p);
+	}
+
+	public void addConformanceStatement(ConformanceStatement cs) {
+		conformanceStatements.add(cs);
+	}
+
+	public List<Predicate> getPredicates() {
+		return predicates;
+	}
+
+	public List<ConformanceStatement> getConformanceStatements() {
+		return conformanceStatements;
+	}
+
+	public void setPredicates(List<Predicate> predicates) {
+		this.predicates = predicates;
+	}
+
+	public void setConformanceStatements(
+			List<ConformanceStatement> conformanceStatements) {
+		this.conformanceStatements = conformanceStatements;
 	}
 
 	public void addSegmentsOrGroup(SegmentRefOrGroup e) {
@@ -85,6 +117,34 @@ public class Group extends SegmentRefOrGroup implements Cloneable {
 		return false;
 	}
 
+	public Predicate findOnePredicate(String predicateId) {
+		for (Predicate predicate : this.getPredicates()) {
+			if (predicate.getId().equals(predicateId)) {
+				return predicate;
+			}
+		}
+		return null;
+	}
+
+	public ConformanceStatement findOneConformanceStatement(String confId) {
+		for (ConformanceStatement conf : this.getConformanceStatements()) {
+			if (conf.getId().equals(confId)) {
+				return conf;
+			}
+		}
+		return null;
+	}
+
+	public boolean deletePredicate(String predicateId) {
+		Predicate p = findOnePredicate(predicateId);
+		return p != null && this.getPredicates().remove(p);
+	}
+
+	public boolean deleteConformanceStatement(String cId) {
+		ConformanceStatement c = findOneConformanceStatement(cId);
+		return c != null && this.getConformanceStatements().remove(c);
+	}
+
 	@Override
 	public String toString() {
 		return "Group [name=" + name + ", usage=" + usage + ", min=" + min
@@ -115,6 +175,16 @@ public class Group extends SegmentRefOrGroup implements Cloneable {
 		clonedGroup.setName(name);
 		clonedGroup.setPosition(position);
 		clonedGroup.setUsage(usage);
+		clonedGroup
+		.setConformanceStatements(new ArrayList<ConformanceStatement>());
+		for (ConformanceStatement cs : this.conformanceStatements) {
+			clonedGroup.addConformanceStatement(cs.clone());
+		}
+		clonedGroup.setPredicates(new ArrayList<Predicate>());
+		for (Predicate cp : this.predicates) {
+			clonedGroup.addPredicate(cp.clone());
+		}
+
 
 		return clonedGroup;
 	}
