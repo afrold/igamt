@@ -17,21 +17,27 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 	private static final long serialVersionUID = -2904036105687742572L;
 
 	@Id
-	private String id;
+	private String id; //FIXME Not used in new model
 
 	private String tableLibraryIdentifier;
 
-	private String status;
+	private String status; //FIXME Not used in new model
 
 	private String tableLibraryVersion;
 
-	private String organizationName;
+	private String organizationName; //FIXME Not used in new model
 
-	private String name;
+	private String name; //FIXME Not used in new model
 
 	private String description;
 
 	private Set<Table> children = new HashSet<Table>();
+	
+	//New concepts
+	private String valueSetLibraryIdentifier = "";
+	private String valueSetLibraryVersion = "";
+	private String profileName = "";
+	
 
 	public Tables() {
 		super();
@@ -101,6 +107,30 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 
 	public void setChildren(Set<Table> children) {
 		this.children = children;
+	}
+
+	public String getValueSetLibraryIdentifier() {
+		return valueSetLibraryIdentifier;
+	}
+
+	public void setValueSetLibraryIdentifier(String valueSetLibraryIdentifier) {
+		this.valueSetLibraryIdentifier = valueSetLibraryIdentifier;
+	}
+
+	public String getValueSetLibraryVersion() {
+		return valueSetLibraryVersion;
+	}
+
+	public void setValueSetLibraryVersion(String valueSetLibraryVersion) {
+		this.valueSetLibraryVersion = valueSetLibraryVersion;
+	}
+
+	public String getProfileName() {
+		return profileName;
+	}
+
+	public void setProfileName(String profileName) {
+		this.profileName = profileName;
 	}
 
 	public void addTable(Table t) {
@@ -181,6 +211,10 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		clonedTables.setStatus(status);
 		clonedTables.setTableLibraryIdentifier(tableLibraryIdentifier);
 		clonedTables.setTableLibraryVersion(tableLibraryVersion);
+
+		clonedTables.setValueSetLibraryIdentifier(valueSetLibraryIdentifier);
+		clonedTables.setValueSetLibraryVersion(valueSetLibraryVersion);
+		clonedTables.setProfileName(profileName);
 
 		return clonedTables;
 	}

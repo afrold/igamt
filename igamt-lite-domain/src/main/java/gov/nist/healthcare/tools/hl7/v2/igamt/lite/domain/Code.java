@@ -28,6 +28,12 @@ public class Code extends DataModel implements Serializable, Cloneable {
 
 	private String codeUsage;
 
+	//Added compared to IGL
+	private String comment = "";
+
+	//Added to comply with new value set definition
+	private String codeSystemVersion = "";
+	
 	public Code() {
 		super();
 		this.type = Constant.CODE;
@@ -82,10 +88,27 @@ public class Code extends DataModel implements Serializable, Cloneable {
 		this.codeUsage = codeUsage;
 	}
 
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+	public String getCodeSystemVersion() {
+		return codeSystemVersion;
+	}
+
+	public void setCodeSystemVersion(String codeSystemVersion) {
+		this.codeSystemVersion = codeSystemVersion;
+	}
+
 	@Override
 	public String toString() {
 		return "Code [code=" + code + ", label=" + label + ", codesys="
-				+ codesys + ", source=" + source + "]";
+				+ codesys + ", source=" + source + "codeSystemVersion" + 
+				codeSystemVersion + "]";
 	}
 
 	@Override
@@ -97,6 +120,8 @@ public class Code extends DataModel implements Serializable, Cloneable {
 		clonedCode.setCodeUsage(codeUsage);
 		clonedCode.setLabel(label);
 		clonedCode.setSource(source);
+		clonedCode.setComment(comment);
+		clonedCode.setCodeSystemVersion(codeSystemVersion);
 
 		return clonedCode;
 	}
