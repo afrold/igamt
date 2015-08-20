@@ -234,7 +234,6 @@ Cloneable {
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
 		constraints.setGroups(gContext);
-		constraints.setMessages(mContext);
 		return constraints;
 	}
 
@@ -299,7 +298,6 @@ Cloneable {
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
 		constraints.setGroups(gContext);
-		constraints.setMessages(mContext);
 		return constraints;
 	}
 
