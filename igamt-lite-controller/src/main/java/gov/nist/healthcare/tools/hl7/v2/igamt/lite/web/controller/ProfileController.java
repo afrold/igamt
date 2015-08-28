@@ -4,10 +4,12 @@ import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
@@ -46,6 +48,9 @@ public class ProfileController extends CommonController {
 
 	@Autowired
 	private ProfileService profileService;
+
+	@Autowired
+	private ProfileExportService profileExport;
 
 	@Autowired
 	private ProfileConfiguration profileConfig;
@@ -202,7 +207,7 @@ public class ProfileController extends CommonController {
 		logger.info("Exporting as xml file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
-		content = profileService.exportAsXml(p);
+		content = profileExport.exportAsXml(p);
 		response.setContentType("text/xml");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.xml");
@@ -216,7 +221,7 @@ public class ProfileController extends CommonController {
 		logger.info("Exporting as xml file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
-		content = profileService.exportAsZip(p);
+		content = profileExport.exportAsZip(p);
 		response.setContentType("application/zip");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile-"
@@ -251,7 +256,7 @@ public class ProfileController extends CommonController {
 		logger.info("Exporting as pdf file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
-		content = profileService.exportAsPdfFromXsl(p, inlineConstraints);
+		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.pdf");
@@ -325,7 +330,7 @@ public class ProfileController extends CommonController {
 		logger.info("Exporting as spreadsheet profile with id=" + id);
 		InputStream content = null;
 		Profile p = findProfile(id);
-		content = profileService.exportAsXlsx(p);
+		content = profileExport.exportAsXlsx(p);
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.xlsx");
@@ -338,7 +343,7 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{id}/verify/segment/{sId}", method = RequestMethod.POST, produces = "application/json")
-	public void verifySegment(@PathVariable("id") String id, @PathVariable("sId") String sId,
+	public ElementVerification verifySegment(@PathVariable("id") String id, @PathVariable("sId") String sId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
 		logger.info("Verifying segment " + sId + " from profile " + id);
@@ -346,16 +351,12 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		InputStream content = null;
-		content = profileService.verifySegment(p, id, "segment");
-		response.setContentType("application/json");
-		response.setHeader("Content-disposition",
-				"attachment;filename=ProfileDelta.json");
-		FileCopyUtils.copy(content, response.getOutputStream());
+		return profileService.verifySegment(p, id, "segment");
+
 	}
 
 	@RequestMapping(value = "/{id}/verify/datatype/{dtId}", method = RequestMethod.POST, produces = "application/json")
-	public void verifyDatatype(@PathVariable("id") String id, @PathVariable("dtId") String dtId,
+	public ElementVerification verifyDatatype(@PathVariable("id") String id, @PathVariable("dtId") String dtId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
 		logger.info("Verifying datatype " + dtId + " from profile " + id);
@@ -363,16 +364,11 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		InputStream content = null;
-		content = profileService.verifyDatatype(p, id, "datatype");
-		response.setContentType("application/json");
-		response.setHeader("Content-disposition",
-				"attachment;filename=ProfileDelta.json");
-		FileCopyUtils.copy(content, response.getOutputStream());
+		return profileService.verifyDatatype(p, id, "datatype");
 	}
 
 	@RequestMapping(value = "/{id}/verify/valueset/{vsId}", method = RequestMethod.POST, produces = "application/json")
-	public void verifyValueSet(@PathVariable("id") String id, @PathVariable("vsId") String vsId,
+	public ElementVerification verifyValueSet(@PathVariable("id") String id, @PathVariable("vsId") String vsId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
 		logger.info("Verifying segment " + vsId + " from profile " + id);
@@ -380,13 +376,8 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		InputStream content = null;
-		content = profileService.verifyValueSet(p, id, "valueset");
-		response.setContentType("application/json");
-		response.setHeader("Content-disposition",
-				"attachment;filename=ProfileDelta.json");
-		FileCopyUtils.copy(content, response.getOutputStream());
-	}
+		return profileService.verifyValueSet(p, id, "valueset");
+		}
 
 	
 }
