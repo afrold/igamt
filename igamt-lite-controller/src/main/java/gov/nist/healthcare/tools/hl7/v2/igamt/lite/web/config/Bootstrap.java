@@ -87,16 +87,16 @@ public class Bootstrap implements InitializingBean {
 		for (String i : new String[]{"1", "3", "4", "8"}){
 
 			p = IOUtils.toString(this.getClass().getResourceAsStream(
-					"/igs/ADT_0" + i + "/Profile.xml"));
+					"/igs/ADT_A0" + i + "/Profile.xml"));
 			v = IOUtils.toString(this.getClass().getResourceAsStream(
-					"/igs/ADT_0" + i + "/ValueSets_HL7.xml"));
+					"/igs/ADT_A0" + i + "/ValueSets_HL7.xml"));
 			c = IOUtils.toString(this.getClass().getResourceAsStream(
-					"/igs/ADT_0" + i + "/Constraints.xml"));
+					"/igs/ADT_A0" + i + "/Constraints.xml"));
 			profile = new ProfileSerializationImpl().deserializeXMLToProfile(p,
 					v,
 					c);
-			profile.getMetaData().setName("ADT_0"+i+" Implementation Guide");
-			profile.getMetaData().setIdentifier("ADT_0"+i);
+			profile.getMetaData().setName("ADT_A0"+i+" Implementation Guide");
+			profile.getMetaData().setIdentifier("ADT_A0"+i);
 			profile.getMetaData().setOrgName("NIST");
 			profile.getMetaData().setSubTitle("NIST");
 			profile.getMetaData().setVersion("1.0");
