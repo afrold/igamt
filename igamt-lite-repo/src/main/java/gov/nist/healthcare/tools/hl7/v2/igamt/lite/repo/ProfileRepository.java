@@ -27,5 +27,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 	
 	 List<Profile> findByAccountId(Long accountId);
 
-	
+	 List<Profile> findByHl7Version(String hl7version);	
 }

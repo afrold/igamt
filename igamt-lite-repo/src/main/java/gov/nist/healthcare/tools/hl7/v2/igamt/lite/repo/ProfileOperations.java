@@ -21,4 +21,10 @@ import java.util.List;
 public interface ProfileOperations {
 	 List<Profile> findPreloaded();
 	 
+	 public List<Profile> findStandard();
+	 
+	 public List<Profile> findStandardByVersion(String hl7version);
+	 
+	 public List<String> findHl7Versions();
+	 
 }

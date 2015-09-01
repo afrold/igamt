@@ -8,11 +8,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileCreationServiceImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.ProfileSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.ProfileChangeCommand;
@@ -60,6 +62,9 @@ public class ProfileController extends CommonController {
 
 	@Autowired
 	AccountRepository accountRepository;
+	
+	@Autowired
+	private ProfileCreationService profileCreation;
 
 	public ProfileService getProfileService() {
 		return profileService;
@@ -378,6 +383,25 @@ public class ProfileController extends CommonController {
 		}
 		return profileService.verifyValueSet(p, id, "valueset");
 		}
+	
+	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
+	public List<String> findHl7Versions() {
+		logger.info("Fetching all HL7 versions");
+		List<String> result = profileCreation.findHl7Versions();
+		return result;
+	}
 
+	@RequestMapping(value = "/hl7/messages/{hl7Version}", method = RequestMethod.GET)
+	public List<String[]> getMessagesListByVersion(@PathVariable("hl7Version") String hl7Version) {
+		logger.info("fetching messages of version hl7Version=" + hl7Version);
+		List<String[]> messages = profileCreation.summary(hl7Version);
+		return messages;
+	}
+
+	@RequestMapping(value = "/create/{msgIds}", method = RequestMethod.POST, produces = "application/json")
+	public Profile createIG(@PathVariable("msgIds") List<String> msgIds) {
+		logger.info("Creation of profile");
+		return profileCreation.createIntegratedProfile(msgIds);
+	}
 	
 }
