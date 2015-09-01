@@ -55,6 +55,8 @@ Cloneable {
 	// profile that was cloned
 
 	private String sourceId;
+	
+	private String hl7Version = "";
 
 	public String getBaseId() {
 		return baseId;
@@ -164,6 +166,14 @@ Cloneable {
 
 	public void setSourceId(String sourceId) {
 		this.sourceId = sourceId;
+	}
+
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
 	}
 
 	@Override
@@ -420,8 +430,21 @@ Cloneable {
 		clonedProfile.setScope(scope);
 		clonedProfile.setBaseId(baseId != null ? baseId : id);
 		clonedProfile.setSourceId(id);
+		clonedProfile.setHl7Version(hl7Version);
 
 		return clonedProfile;
+	}
+	
+	public void merge(Profile p){
+		//Note: merge is used for creation of new profiles do we don't consider constraints and annotations
+		//in each profile, there is one message library with one message
+		this.tables.merge(p.getTables());
+		this.datatypes.merge(p.getDatatypes());
+		this.segments.merge(p.getSegments());
+
+		for (Message m : p.getMessages().getChildren()){
+			this.messages.addMessage(m);	
+		}
 	}
 
 }

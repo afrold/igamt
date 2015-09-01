@@ -31,9 +31,9 @@ public class Table extends DataModel implements Serializable,
 	private String mappingId; //FIXME Not used in new model
 
 	// @NotNull
-	private String name; //FIXME Not used in new model
-
-	private String version; //FIXME Not used in new model
+	private String name; //FIXME Used for merge
+	private String version; // FIXME Used for merge
+	
 	private String codesys; //FIXME Not used in new model
 	private String oid;
 	private String tableType; //FIXME Not used in new model

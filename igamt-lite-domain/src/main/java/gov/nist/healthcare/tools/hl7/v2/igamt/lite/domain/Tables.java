@@ -148,6 +148,18 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		return null;
 	}
 
+	public Table findOneByNameAndByVersion(String name, String hl7Version) {
+		if (this.children != null) {
+			for (Table t: this.children){
+				if (t.getName().equals(name)
+						&& t.getVersion().equals(hl7Version)){
+					return t;
+				}
+			}
+		}
+		return null;
+	}	
+	
 	public Code findOneCode(String id) {
 		if (this.children != null) {
 			for (Table m : this.children) {
@@ -217,5 +229,15 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		clonedTables.setProfileName(profileName);
 
 		return clonedTables;
+	}
+	
+	public void merge(Tables tbls){
+		for (Table t: tbls.getChildren()){
+			if (this.findOneByNameAndByVersion(t.getName(), t.getVersion()) == null){
+				this.addTable(t);
+			} else {
+				t.setId(this.findOneByNameAndByVersion(t.getName(), t.getVersion()).getId());
+			}
+		}
 	}
 }

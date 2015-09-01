@@ -35,6 +35,8 @@ public class Datatype extends DataModel implements java.io.Serializable,
 	private String name;
 
 	private String description;
+	
+	private String hl7Version;
 
 	protected List<Predicate> predicates = new ArrayList<Predicate>();
 
@@ -102,6 +104,14 @@ public class Datatype extends DataModel implements java.io.Serializable,
 	// public void setDatatypes(Datatypes datatypes) {
 	// this.datatypes = datatypes;
 	// }
+
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
 
 	public List<Predicate> getPredicates() {
 		return predicates;
@@ -225,4 +235,27 @@ public class Datatype extends DataModel implements java.io.Serializable,
 
 		return clonedDT;
 	}
+
+	public boolean isEqual(Datatype dt) {
+		if (dt == null)
+			return false;
+		if (hl7Version == null) {
+			if (dt.hl7Version != null)
+				return false;
+		} else if (!hl7Version.equals(dt.hl7Version))
+			return false;
+		if (label == null) {
+			if (dt.label != null)
+				return false;
+		} else if (!label.equals(dt.label))
+			return false;
+		if (name == null) {
+			if (dt.name != null)
+				return false;
+		} else if (!name.equals(dt.name))
+			return false;
+		return true;
+	}
+	
+	
 }

@@ -85,6 +85,19 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
+	public Datatype findOneByNameAndByLabelAndByVersion(String name, String label, String version) {
+		if (this.children != null) {
+			for (Datatype dt : this.children) {
+				if (dt.getName().equals(name) 
+						&& dt.getLabel().equals(label)
+						&& dt.getHl7Version().equals(version)) {
+					return dt;
+				}
+			}
+		}
+		return null;
+	}
+
 	public Component findOneComponent(String id) {
 		if (this.children != null)
 			for (Datatype m : this.children) {
@@ -182,6 +195,17 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		}
 
 		return clonedDatatypes;
+	}
+	
+	public void merge(Datatypes dts){
+		for (Datatype dt : dts.getChildren()){
+			if (this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getLabel(), dt.getHl7Version()) == null){
+				this.addDatatype(dt);
+			} else {
+				dt.setId(this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getLabel(), dt.getHl7Version()).getId()); //FIXME Probably useless...
+			}
+		}
+		
 	}
 
 }

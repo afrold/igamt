@@ -42,6 +42,8 @@ public class Segment extends DataModel implements java.io.Serializable,
 
 	private String description;
 
+	private String hl7Version;
+
 	protected List<Predicate> predicates = new ArrayList<Predicate>();
 
 	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
@@ -82,6 +84,14 @@ public class Segment extends DataModel implements java.io.Serializable,
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
 	}
 
 	public List<Field> getFields() {
