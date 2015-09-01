@@ -357,7 +357,6 @@ public class ProfileController extends CommonController {
 			throw new ProfileNotFoundException(id);
 		}
 		return profileService.verifySegment(p, id, "segment");
-
 	}
 
 	@RequestMapping(value = "/{id}/verify/datatype/{dtId}", method = RequestMethod.POST, produces = "application/json")
