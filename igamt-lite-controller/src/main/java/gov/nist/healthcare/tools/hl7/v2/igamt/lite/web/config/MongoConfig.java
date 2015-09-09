@@ -39,7 +39,7 @@ import com.mongodb.ServerAddress;
  */
 
 @Configuration
-@EnableMongoRepositories(basePackages = "gov.nist.healthcare.tools")
+@EnableMongoRepositories(basePackages={"gov.nist.healthcare"})
 @PropertySource(value = "classpath:igl-mongo.properties")
 public class MongoConfig extends AbstractMongoConfiguration {
 

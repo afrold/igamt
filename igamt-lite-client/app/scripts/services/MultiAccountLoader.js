@@ -2,13 +2,13 @@
 
 angular.module('igl').factory('Authors', ['$resource',
     function ($resource) {
-        return $resource('action/shortaccounts', {filter:'accountType::author'});
+        return $resource('api/shortaccounts', {filter:'accountType::author'});
     }
 ]);
 
 angular.module('igl').factory('Supervisors', ['$resource',
     function ($resource) {
-        return $resource('action/shortaccounts', {filter:'accountType::supervisor'});
+        return $resource('api/shortaccounts', {filter:'accountType::supervisor'});
     }
 ]);
 

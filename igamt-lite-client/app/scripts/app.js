@@ -25,7 +25,7 @@ var app = angular
         'textAngular'
 //        ,
 //        'ngMockE2E'
-     ]);
+    ]);
 
 var
 //the HTTP headers to be used by all requests
@@ -79,16 +79,19 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider,Keepaliv
         .when('/registration', {
             templateUrl: 'views/account/registration.html',
             controller: 'RegistrationCtrl'
+        }).when('/useraccount', {
+            templateUrl: 'views/account/userAccount.html',
+            controller: 'AccountMgtCtrl'
         })
-        .when('/account', {
-            templateUrl: 'views/account/account.html',
-            controller: 'AccountCtrl',
-            resolve: {
-                login: ['LoginService', function(LoginService){
-                    return LoginService();
-                }]
-            }
-        })
+//        .when('/account', {
+//            templateUrl: 'views/account/account.html',
+//            controller: 'AccountCtrl',
+//            resolve: {
+//                login: ['LoginService', function(LoginService){
+//                    return LoginService();
+//                }]
+//            }
+//        })
         .when('/registerResetPassword', {
             templateUrl: 'views/account/registerResetPassword.html',
             controller: 'RegisterResetPasswordCtrl',
@@ -107,29 +110,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider,Keepaliv
                 }
             }
         })
-        .when('/authors', {
-            templateUrl: 'views/account/manageAccounts.html',
-            controller: 'ManageAccountsCtrl',
-            resolve: {
-                accountType: function() {
-                    return 'author';
-                },
-                accountList:  ['MultiAuthorsLoader', function(MultiAuthorsLoader) {
-                    return MultiAuthorsLoader();
-                }]
-            }
-        }) .when('/supervisors', {
-            templateUrl: 'views/account/manageAccounts.html',
-            controller: 'ManageAccountsCtrl',
-            resolve: {
-                accountType: function() {
-                    return 'supervisor';
-                },
-                accountList:  ['MultiSupervisorsLoader', function(MultiSupervisorsLoader) {
-                    return MultiSupervisorsLoader();
-                }]
-            }
-        }).when('/registrationSubmitted', {
+        .when('/registrationSubmitted', {
             templateUrl: 'views/account/registrationSubmitted.html'
         })
         .otherwise({
@@ -144,7 +125,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider,Keepaliv
 //                return "http://localhost:8080/igl-api"+ value;
                 if(config.url.startsWith("api")){
 //                    config.url = "http://localhost:8080/igl-api/"+  config.url;
-                 }
+                }
                 return config || $q.when(config);
             }
         }
@@ -160,6 +141,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider,Keepaliv
                     loginMessage = {
                         text: response.data.text,
                         type: response.data.type,
+                        skip: response.data.skip,
                         show: true,
                         manualHandle: response.data.manualHandle
                     };
@@ -175,6 +157,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider,Keepaliv
                     msg = {
                         text: response.data.text,
                         type: response.data.type,
+                        skip: response.data.skip,
                         show: true,
                         manualHandle: response.data.manualHandle
                     };
@@ -317,7 +300,7 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
     //Check if the login dialog is already displayed.
     $rootScope.loginDialogShown = false;
-
+    $rootScope.subActivePath = null;
 
 
 
@@ -421,6 +404,16 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
         else {
             //console.log("cookie not found");
         }
+    };
+
+
+
+    $rootScope.isSubActive = function (path) {
+        return path === $rootScope.subActivePath;
+    };
+
+    $rootScope.setSubActive = function (path) {
+        $rootScope.subActivePath = path;
     };
 
 

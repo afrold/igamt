@@ -1,118 +1,119 @@
 'use strict';
 
 angular.module('igl')
-.controller('ManageAccountsCtrl', ['$scope', 'accountType', 'accountList', 'Account', '$modal', '$resource',
-    function ($scope, accountType, accountList, Account, $modal, $resource) {
-        $scope.accountType = accountType;
-        $scope.accountList = accountList;
+.controller('ManageAccountsCtrl', ['$scope', 'MultiAuthorsLoader', 'MultiSupervisorsLoader','Account', '$modal', '$resource','AccountLoader','userInfoService','$location',
+    function ($scope, MultiAuthorsLoader, MultiSupervisorsLoader, Account, $modal, $resource, AccountLoader, userInfoService, $location) {
+
+        //$scope.accountTypes = [{ 'name':'Author', 'type':'author'}, {name:'Supervisor', type:'supervisor'}];
+        //$scope.accountType = $scope.accountTypes[0];
         $scope.tmpAccountList = [].concat($scope.accountList);
+        $scope.account = null;
+        $scope.accountOrig = null;
+        $scope.accountType = "author";
+//        var PasswordChange = $resource('api/accounts/:id/passwordchange', {id:'@id'});
+        var PasswordChange = $resource('api/accounts/:id/userpasswordchange', {id:'@id'});
+        var ApproveAccount = $resource('api/accounts/:id/approveaccount', {id:'@id'});
+        var SuspendAccount = $resource('api/accounts/:id/suspendaccount', {id:'@id'});
+        $scope.msg = null;
 
-        var InviteSender = $resource('api/accounts/:id/resendregistrationinvite', {id:'@id'});
+        $scope.accountpwd = {};
 
-//        //Paging options for the ngGrid
-//        $scope.pagingOptions = {
-//            pageSizes: [10, 50, 100],
-//            pageSize: 10,
-//            totalServerItems: 0,
-//            currentPage: 1
-//        };
-//
-//        //Filter options for the ngGrid
-//        $scope.filterOptions = {
-//            filterText: '',
-//            useExternalFilter: false
-//        };
-//
-//        $scope.cellTemplate = {
-////            authorizedVendor: '<button type="button" class="btn btn-small" ng-click="deleteAccount(row)"><i class="icon-minus-sign"></i>Disable</button><button type="button" class="btn btn-small" ng-click="resendInvite(row)">Resend Invite</button>',
-//            supervisor: '<button type="button" class="btn btn-small" ng-click="deleteAccount(row)"><i class="icon-minus-sign"></i>Disable</button><button type="button" class="btn btn-small" ng-click="resendInvite(row)">Resend Invite</button>',
-//            author: '<button type="button" class="btn btn-small" ng-click="deleteAccount(row)"><i class="icon-minus-sign"></i>Disable</button>'
-//        };
-//
-//        $scope.columnDefs= [
-//            {
-//                field:'id',
-//                visible:false
-//            },
-//            {
-//                field:'employer',
-//                displayName:'Employer',
-//                enableSorting:true
-//            },
-//            {
-//                field:'firstname',
-//                displayName:'First Name',
-//                enableSorting:true
-//            },
-//            {
-//                field:'lastname',
-//                displayName:'Last Name',
-//                enableSorting:true
-//            },
-//            {
-//                field:'email',
-//                displayName:'Email Address',
-//                enableSorting:true
-//            },
-//            {
-//                displayName:'Action',
-//                cellTemplate:$scope.cellTemplate[$scope.accountType],
-//                width:185
-//            }
-//        ];
-//
-//        $scope.gridOptions = {
-//            data: 'accountList',
-//            columnDefs: $scope.columnDefs,
-//            showColumnMenu:true,
-//            //enablePaging:true,
-//            enableColumnResize: true,
-//            enableRowSelection: false,
-//            //pagingOptions: $scope.pagingOptions,
-//            //plugins: [new ngGridCsvExportPlugin()],
-//            //showFooter: true,
-//            //showFilter: true,
-//            showGroupPanel: true,
-//            filterOptions: $scope.filterOptions
-//        };
 
-        $scope.resendInvite = function(row) {
-            //TODO
-//            console.log('Resend for', $scope.accountList[row.rowIndex]);
-            InviteSender.save({id:row.id},
-                function() {},
-                function() {
-//                    console.log('There was an error resending the invitation');
-                }
-            );
+        $scope.updateAccount = function() {
+            //not sure it is very clean...
+            //TODO: Add call back?
+            new Account($scope.account).$save();
+            $scope.accountOrig = angular.copy($scope.account);
         };
 
-        $scope.deleteAccount = function(row) {
-//            var title = $.i18n.prop('manage.account.deleteModal.title');
-//            var msg = $.i18n.prop('manage.account.deleteModal.msg');
-//            var okButton = $.i18n.prop('manage.account.deleteModal.okButton');
-//            var cancelButton = $.i18n.prop('manage.account.deleteModal.cancelButton');
-//            var btns = [{result:'cancel', label: cancelButton}, {result:'ok', label: okButton, cssClass: 'btn'}];
-            $scope.confirmDelete = function (accountToDelete) {
-                var modalInstance = $modal.open({
-                    templateUrl: 'ConfirmAccountDeleteCtrl.html',
-                    controller: 'ConfirmAccountDeleteCtrl',
-                    resolve: {
-                        accountToDelete: function () {
-                            return accountToDelete;
-                        },
-                        accountList: function () {
-                            return $scope.accountList;
-                        }
+        $scope.resetForm = function() {
+            $scope.account = angular.copy($scope.accountOrig);
+        };
+
+        //TODO: Change that: formData is only supported on modern browsers
+        $scope.isUnchanged = function(formData) {
+            return angular.equals(formData, $scope.accountOrig);
+        };
+
+        $scope.changePassword = function() {
+            var user = new PasswordChange();
+            user.username = $scope.account.username;
+            user.password = $scope.accountpwd.currentPassword;
+            user.newPassword = $scope.accountpwd.newPassword;
+            user.id = $scope.account.id;
+            //TODO: Check return value???
+            user.$save().then(function(result){
+                 $scope.msg = angular.fromJson(result);
+            });
+        };
+
+        $scope.loadAccounts = function(){
+            $scope.msg = null;
+            new MultiAuthorsLoader().then(function(response){
+                $scope.accountList = response;
+                $scope.tmpAccountList = [].concat($scope.accountList);
+            });
+        };
+
+        $scope.init = function(){
+            if (userInfoService.isAuthenticated()) {
+                $scope.loadAccounts();
+            }else{
+                $location.path('/home');
+            }
+        };
+
+        $scope.selectAccount = function(row) {
+            $scope.accountpwd = {};
+            $scope.account = row;
+            $scope.accountOrig = angular.copy($scope.account);
+        };
+
+        $scope.deleteAccount = function() {
+            $scope.confirmDelete($scope.account);
+        };
+
+        $scope.confirmDelete = function (accountToDelete) {
+            var modalInstance = $modal.open({
+                templateUrl: 'ConfirmAccountDeleteCtrl.html',
+                controller: 'ConfirmAccountDeleteCtrl',
+                resolve: {
+                    accountToDelete: function () {
+                        return accountToDelete;
+                    },
+                    accountList: function () {
+                        return $scope.accountList;
                     }
-                });
-                modalInstance.result.then(function (accountToDelete,accountList ) {
-                    $scope.accountToDelete = accountToDelete;
-                    $scope.accountList = accountList;
-                }, function () {
-                });
-            };
+                }
+            });
+            modalInstance.result.then(function (accountToDelete,accountList ) {
+                $scope.accountToDelete = accountToDelete;
+                $scope.accountList = accountList;
+            }, function () {
+            });
         };
+
+        $scope.approveAccount = function() {
+            var user = new ApproveAccount();
+            user.username = $scope.account.username;
+            user.id = $scope.account.id;
+            user.$save().then(function(result){
+                $scope.account.pending = false;
+                $scope.msg = angular.fromJson(result);
+            });
+        };
+
+        $scope.suspendAccount = function(){
+            var user = new SuspendAccount();
+            user.username = $scope.account.username;
+            user.id = $scope.account.id;
+            user.$save().then(function(result){
+                $scope.account.pending = true;
+                $scope.msg = angular.fromJson(result);
+            });
+        };
+
+
     }
 ]);
 

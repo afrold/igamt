@@ -23,6 +23,7 @@ public class CurrentUser {
 	private String username;
 	private Long accountId;
 	private boolean isAuthenticated = false;
+	private boolean isPending = false;
 	private Collection<GrantedAuthority> authorities;
 
 	/**
@@ -84,5 +85,16 @@ public class CurrentUser {
 	public void setAccountId(Long accountId) {
 		this.accountId = accountId;
 	}
+
+	public boolean isPending() {
+		return isPending;
+	}
+
+	public void setPending(boolean isPending) {
+		this.isPending = isPending;
+	}
+	
+	
+	
 
 }

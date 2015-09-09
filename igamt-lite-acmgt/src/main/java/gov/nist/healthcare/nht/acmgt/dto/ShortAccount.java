@@ -37,6 +37,8 @@ public class ShortAccount implements Serializable {
 	private String username;
 	private String accountType;
 	private String title;
+	private boolean pending;
+	private boolean entityDisabled;
 
 	/**
 	 * @return the email
@@ -150,7 +152,23 @@ public class ShortAccount implements Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
+	public boolean isPending() {
+		return pending;
+	}
+
+	public void setPending(boolean pending) {
+		this.pending = pending;
+	}
+
+	public boolean isEntityDisabled() {
+		return entityDisabled;
+	}
+
+	public void setEntityDisabled(boolean entityDisabled) {
+		this.entityDisabled = entityDisabled;
+	}
+
 	
 	
 	

@@ -6,14 +6,15 @@
 
 package gov.nist.healthcare.nht.acmgt.general;
 
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -86,7 +87,7 @@ public class CustomJdbcUserDetailsManager extends JdbcDaoImpl implements
 	// ~ Instance fields
 	// ================================================================================================
 
-	protected final Log logger = LogFactory.getLog(getClass());
+	Logger logger = LoggerFactory.getLogger(CustomJdbcUserDetailsManager.class);
 
 	private String createUserSql = DEF_CREATE_USER_SQL;
 	private String deleteUserSql = DEF_DELETE_USER_SQL;
@@ -233,7 +234,9 @@ public class CustomJdbcUserDetailsManager extends JdbcDaoImpl implements
 				createNewAuthentication(currentUser, newPassword));
 
 		userCache.removeUserFromCache(username);
-	}
+	} 
+	
+	
 
 	protected Authentication createNewAuthentication(
 			Authentication currentAuth, String newPassword) {
@@ -591,7 +594,7 @@ public class CustomJdbcUserDetailsManager extends JdbcDaoImpl implements
 					}
 
 				});
-	}
+	} 
 
 	@Override
 	protected UserDetails createUserDetails(String username,

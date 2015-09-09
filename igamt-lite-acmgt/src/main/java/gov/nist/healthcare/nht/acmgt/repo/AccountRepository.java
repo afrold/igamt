@@ -18,16 +18,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
+
+
 /**
  * Repository interface for {@link Account} instances. Provides basic CRUD
  * operations due to the extension of {@link JpaRepository}.
  * 
  * @author fdevaulx
- */
+ */ 
 public interface AccountRepository extends JpaRepository<Account, Long>,
 		JpaSpecificationExecutor<Account> {
 
-	/**
+	/** 
 	 * Find an account by the username of the account. Username is unique.
 	 * */
 	@Query("select a from Account a where a.username = ?1")

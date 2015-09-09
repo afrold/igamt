@@ -238,11 +238,7 @@ public class AccountController {
 			if (authU.getAuthorities().contains(
 					new SimpleGrantedAuthority("author"))) {
 				filter.clear();
-				filter.add("accountType::authorizedVendor");
-			} else if (authU.getAuthorities().contains(
-					new SimpleGrantedAuthority("authorizedVendor"))) {
-				return saccs;
-			} else if (authU.getAuthorities().contains(
+ 			} else if (authU.getAuthorities().contains(
 					new SimpleGrantedAuthority("supervisor"))
 					|| authU.getAuthorities().contains(
 							new SimpleGrantedAuthority("admin"))) {
@@ -267,7 +263,8 @@ public class AccountController {
 					sacc.setJuridiction(acc.getJuridiction());
 					sacc.setPhone(acc.getPhone());
 					sacc.setTitle(acc.getTitle());
-
+					sacc.setPending(acc.isPending());
+					sacc.setEntityDisabled(acc.isEntityDisabled());
 					saccs.add(sacc);
 				}
 			}

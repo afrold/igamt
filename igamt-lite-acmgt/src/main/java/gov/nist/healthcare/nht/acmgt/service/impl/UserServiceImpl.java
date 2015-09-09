@@ -136,7 +136,21 @@ public class UserServiceImpl implements UserService {
 		jdbcUserDetailsManager.getJdbcTemplate().update(
 				jdbcUserDetailsManager.DEF_CHANGE_PASSWORD_SQL,
 				newEncodedPassword, username);
-	}
+	}  
+	
+	
+	@Override
+	public void changePasswordForUser(String newPassword,
+			String username) throws BadCredentialsException {
+		String newEncodedPassword = passwordEncoder.encodePassword(newPassword,
+				username);
+		// logger.debug("[PASS] - old: " + oldPassword + " - new: " +
+		// newEncodedPassword);
+		jdbcUserDetailsManager.getJdbcTemplate().update(
+				jdbcUserDetailsManager.DEF_CHANGE_PASSWORD_SQL,
+				newEncodedPassword, username);
+	} 
+	
 
 	/*
 	 * (non-Javadoc)

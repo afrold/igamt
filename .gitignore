@@ -5,3 +5,4 @@
 *.classpath*
 *bower-components*
 *.tmp*
+/bin

@@ -73,7 +73,15 @@ public interface UserService {
 	 * @param newPassword the new password for this principal
 	 * @throws BadCredentialsException the oldPassword is incorrect
 	 */
-	public abstract void changePasswordForUser(String oldPassword, String newPassword, String username) throws BadCredentialsException;
+	public abstract void changePasswordForUser(String oldPassword, String newPassword, String username) throws BadCredentialsException; 
+	
+	/**
+	 * Changes the password for this username
+	 * 
+	 * @param newPassword the new password for this principal
+	 * @throws BadCredentialsException the oldPassword is incorrect
+	 */
+	public void changePasswordForUser(String newPassword, String username) throws BadCredentialsException;
 	
 	/**
 	 * Deletes a user

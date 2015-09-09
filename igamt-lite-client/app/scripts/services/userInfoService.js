@@ -30,7 +30,6 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
     function($cookieStore, userLoaderService) {
         var currentUser = null;
         var supervisor = false,
-        authorizedVendor = false,
         author = false,
         admin = false,
         id = null,
@@ -45,7 +44,6 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             username = $cookieStore.get('username');
             author = $cookieStore.get('author');
             supervisor = $cookieStore.get('supervisor');
-            authorizedVendor = $cookieStore.get('authorizedVendor');
             admin = $cookieStore.get('admin');
         };
 
@@ -54,7 +52,6 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             $cookieStore.put('username', username);
             $cookieStore.put('author', author);
             $cookieStore.put('supervisor', supervisor);
-            $cookieStore.put('authorizedVendor', authorizedVendor);
             $cookieStore.put('admin', admin);
         };
 
@@ -63,7 +60,6 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             $cookieStore.remove('username');
             $cookieStore.remove('author');
             $cookieStore.remove('supervisor');
-            $cookieStore.remove('authorizedVendor');
             $cookieStore.remove('admin');
             $cookieStore.remove('hthd');
         };
@@ -112,8 +108,12 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             return supervisor;
         };
 
+        var isPending = function() {
+            return isAuthenticated() ? currentUser.pending: false;
+        };
+
         var isAuthenticated = function() {
-            if ( angular.isObject(currentUser) && currentUser.authenticated === true) {
+            if ( angular.isObject(currentUser) && currentUser.authenticated ===true) {
                 return true;
             }
             else {
@@ -168,7 +168,6 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
                 supervisor = false;
                 author = false;
                 admin = false;
-                authorizedVendor = false;
                 //clearCookie();
             }
         };
@@ -186,6 +185,7 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             isAdmin: isAdmin,
             isAuthor: isAuthor,
             isAuthenticated: isAuthenticated,
+            isPending: isPending,
             isSupervisor: isSupervisor,
             setCurrentUser: setCurrentUser,
             loadFromServer: loadFromServer,

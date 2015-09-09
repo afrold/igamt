@@ -1,218 +1,266 @@
-<div style="padding-top:10px">
-<accordion close-others="false">
-    <accordion-group is-open="accordion.preloadedStatus">
-        <accordion-heading>
-            <i class="pull-left glyphicon"
-               ng-class="{'fa fa-chevron-down': accordion.preloadedStatus, 'fa fa-chevron-right': !accordion.preloadedStatus}"></i>
-            Predefined Implementation Guides
-        </accordion-heading>
+<div class="panel panel-info" style="margin-left:5px">
+<div class="panel-heading">
+   <div msg key="ig.listTitle"></div>
+</div>
+<div class="panel-body"><!--<accordion close-others="false">-->
+<!--<accordion-group is-open="accordion.preloadedStatus">-->
+<!--<accordion-heading>-->
+<!--<i class="pull-left glyphicon"-->
+<!--ng-class="{'fa fa-chevron-down': accordion.preloadedStatus, 'fa fa-chevron-right': !accordion.preloadedStatus}"></i>-->
+<!--Predefined Implementation Guides-->
+<!--</accordion-heading>-->
 
-        <div class="row">
-            <!--<div class="row">-->
-
-            <div class="col-md-12">
-                <!--<div class="page-header">-->
-                    <!--<h3>Predefined Implementation Guides </h3>-->
-                <!--</div>-->
-
-                <div ng-show="preloadedError !== null">
-                    <div class="alert alert-danger" role="alert" ng-bind="preloadedError"></div>
-                </div>
-                <div ng-show="preloadedError === null">
-                    <div class="igl-table" ng-hide="preloadedLoading">
-                        <!-- Default panel contents -->
-                        <!--<div class="panel-heading"><i class="fa fa-list"></i>&nbsp;-->
-                        <!--Predefined Profiles-->
-                        <!--</div>-->
-                        <!--<div class="panel-body">-->
-                        <table st-table="tmpPreloadedIgs" st-safe-src="preloadedIgs"
-                               class="profile-list table table-striped table-bordered">
-                            <thead>
-                            <tr>
-                                <th colspan="6"><input st-search="" placeholder="Search IG" class="form-control"
-                                                       type="text"/></th>
-                            </tr>
-                            <tr class="tbl-header">
-                                <th st-sort="identifier">IG Identifier</th>
-                                <th st-sort="name">IG Title</th>
-                                <th st-sort="orgName">Organization Name</th>
-                                <th st-sort="version">Version</th>
-                                <th st-sort="date">Date</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="row in tmpPreloadedIgs">
-                                <td ng-bind="row.metaData.identifier"></td>
-                                <td ng-bind="row.metaData.name"></td>
-                                <td ng-bind="row.metaData.orgName"></td>
-                                <!--<td ng-bind-html="row.metaData.hl7Version"></td>-->
-                                <!--<td ng-bind-html="row.metaData.schemaVersion"></td>-->
-                                <!--<td ng-bind-html="row.metaData.type"></td>-->
-                                <td ng-bind="row.metaData.version"></td>
-                                <td ng-bind="row.metaData.date"></td>
-                                <td>
-                                    <button ng-hide="toEditProfileId != null && toEditProfileId === row.id" title="Create Copy" type="button" class="btn btn-xs btn-info"
-                                            ng-click="clone(row)">
-                                        <span><i class="fa fa-plus-circle fa-fw"></i></span>
-                                    </button>
-                                    <div class="btn-group" ng-hide="toEditProfileId != null && toEditProfileId === row.id">
-                                        <button ng-disabled="row === profile && hasChanges()" type="button"
-                                                class="btn btn-primary btn-xs"><span><i
-                                                class="fa fa-download fa-fw"></i></span>
-                                         </button>
-                                        <button ng-disabled="row === profile && hasChanges()" type="button"
-                                                class="btn btn-primary btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a ng-click="exportAs(row.id, 'zip')">As ZIP</a></li>
-                                            <li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>
-                                            <li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>
-                                            <li><a ng-click="exportDelta(row.id,'pdf')">Delta</a></li>
-                                        </ul>
-                                    </div>
-                                    <span ng-show="toEditProfileId != null && toEditProfileId === row.id"><i class="fa fa-spinner fa-pulse fa-2x"></i></span>
-                                </td>
-                            </tr>
-                            </tbody>
-                            <!--<tfoot>-->
-                            <!--<tr>-->
-                            <!--<td colspan="4" class="text-center">-->
-                            <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
-                            <!--</td>-->
-                            <!--</tr>-->
-
-                            <!--</tfoot>-->
-                        </table>
-                    </div>
-                </div>
-                <div ng-show="preloadedLoading" style="text-align:center">
-                    <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
-                    <i class="fa fa-spinner fa-pulse fa-2x"></i>
-
+<div class="row" style="margin-bottom: 20px">
+    <!--<div class="row">-->
+    <div class="col-md-8">
+        <form id="selectIgTypeForm">
+            <div class="form-group">
+                <label class="col-md-3" for="igType"><div msg key='ig.selectIgType'></div></label>
+                <div class="col-md-5">
+                    <select class="form-control input-sm"
+                            ng-change="loadProfiles()"
+                            name="igType"
+                            id="igType"
+                            required
+                            ng-model="igContext.igType"
+                            ng-options="tt.name for tt in igTypes">
+                    </select>
                 </div>
             </div>
-        </div>
-
-    </accordion-group>
-
-    <accordion-group heading="Custom Implementation Guides" is-open="accordion.customStatus">
-
-        <accordion-heading>
-            <i class="pull-left glyphicon"
-               ng-class="{'fa fa-chevron-down': accordion.customStatus, 'fa fa-chevron-right': !accordion.customStatus}"></i>
-            Custom Implementation Guides
-        </accordion-heading>
-        <div class="row">
-            <div class="col-md-12">
-                <!--<div class="page-header">-->
-                    <!--<h3>Custom Implementation Guides </h3>-->
-                <!--</div>-->
-
-                <div ng-show="customError !== null">
-                    <div class="alert alert-danger" role="alert" ng-bind="customError"></div>
-                </div>
-                <div ng-show="customError === null">
-                    <div class="igl-table" ng-hide="customLoading">
-                        <table st-table="tmpCustomIgs" st-safe-src="customIgs"
-                               class="profile-list table table-striped table-bordered">
-                            <thead>
-                            <tr>
-                                <th colspan="6"><input st-search="" placeholder="Search IG" class="form-control"
-                                                       type="text"/></th>
-                            </tr>
-                            <tr class="tbl-header">
-                                <th>IG Identifier</th>
-                                <th>IG Title</th>
-                                <th>Organization Name</th>
-                                <th>Version</th>
-                                <th>Date</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <tr ng-repeat="row in tmpCustomIgs">
-                                <td ng-bind="row.metaData.identifier"></td>
-                                <td ng-bind="row.metaData.name"></td>
-                                <td ng-bind="row.metaData.orgName"></td>
-                                <!--<td ng-bind-html="row.metaData.hl7Version"></td>-->
-                                <!--<td ng-bind-html="row.metaData.schemaVersion"></td>-->
-                                <!--<td ng-bind-html="row.metaData.type"></td>-->
-                                <td ng-bind="row.metaData.version"></td>
-                                <td ng-bind="row.metaData.date"></td>
-                                <td>
-                                    <button ng-hide="toEditProfileId != null && toEditProfileId === row.id" title="Edit" type="button" class="btn btn-xs btn-default"
-                                            ng-click="edit(row)">
-                                        <span><i
-                                                class="fa fa-pencil fa-fw"></i></span>
-                                    </button>
-                                    <button ng-hide="toEditProfileId != null && toEditProfileId === row.id" title="Create Copy" type="button" class="btn btn-xs btn-info"
-                                            ng-click="clone(row)">
-                                        <span><i class="fa fa-plus-circle fa-fw"></i></span>
-                                    </button>
-                                    <div class="btn-group" ng-hide="toEditProfileId != null && toEditProfileId === row.id">
-                                        <button ng-disabled="row === profile && hasChanges()" type="button"
-                                                class="btn btn-primary btn-xs"><span><i
-                                                class="fa fa-download fa-fw"></i></span>
-                                         </button>
-                                        <button ng-disabled="row === profile && hasChanges()" type="button"
-                                                class="btn btn-primary btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-expanded="false">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul ng-disabled="row === profile && hasChanges()" class="dropdown-menu" role="menu">
-                                            <li><a ng-click="exportAs(row.id, 'zip')">As ZIP</a></li>
-                                            <li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>
-                                            <li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>
-                                            <li><a ng-click="exportDelta(row.id,'pdf')">Delta</a></li>
-                                        </ul>
-                                    </div>
-
-                                    <!--<button title="Diff" type="button" class="btn btn-xs btn-info"-->
-                                    <!--ng-click="diff(row.id)">-->
-                                    <!--<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Diff</span>-->
-                                    <!--</button>-->
-
-                                    <button title="Delete" type="button" class="btn btn-xs btn-danger" ng-hide="toEditProfileId != null && toEditProfileId === row.id"
-                                            ng-click="confirmDelete(row)">
-                                        <span><i class="fa fa-trash-o fa-fw"></i></span>
-                                    </button>
-
-                                    <span ng-show="toEditProfileId != null && toEditProfileId === row.id"><i class="fa fa-spinner fa-pulse fa-2x"></i></span>
-
-                                </td>
-                            </tr>
-                            </tbody>
-                            <!--<tfoot>-->
-                            <!--<tr>-->
-                            <!--<td colspan="4" class="text-center">-->
-                            <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
-                            <!--</td>-->
-                            <!--</tr>-->
-                            <!--</tfoot>-->
-
-                        </table>
-                    </div>
-
-                    <!--</div>-->
-                </div>
-
-                <div ng-show="customLoading" style="text-align:center">
-                    <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
-                    <i class="fa fa-spinner fa-pulse fa-2x"></i>
-
-                </div>
-                <!--</div>-->
-            </div>
-            <!--</div>-->
-        </div>
-    </accordion-group>
-</accordion>
-
+        </form>
+    </div>
 </div>
 
+<div class="row">
+<!--<div class="row">-->
+<div class="col-md-12">
+    <div ng-show="error !== null">
+        <div class="alert alert-danger" role="alert" ng-bind="error"></div>
+    </div>
+    <div ng-show="error === null">
+
+            <!-- Default panel contents -->
+            <!--<div class="panel-heading"><i class="fa fa-list"></i>&nbsp;-->
+            <!--Predefined Profiles-->
+            <!--</div>-->
+            <!--<div class="panel-body">-->
+            <div class="panel panel-info" style="margin-left:5px">
+                <div class="panel-heading" ng-bind="igContext.igType.name"></div>
+                <div class="panel-body">
+                    <div ng-hide="loading">
+            <table st-table="tmpIgs" st-safe-src="preloadedIgs"
+                   class="profile-list table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th colspan="6"><input st-search="" placeholder="Search IG" class="form-control"
+                                           type="text"/></th>
+                </tr>
+                <tr class="tbl-header">
+                    <th st-sort="identifier">IG Identifier</th>
+                    <th st-sort="name">IG Title</th>
+                    <th st-sort="orgName">Organization Name</th>
+                    <th st-sort="version">Version</th>
+                    <th st-sort="date">Date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in tmpIgs">
+                    <td ng-bind="row.metaData.identifier"></td>
+                    <td ng-bind="row.metaData.name"></td>
+                    <td ng-bind="row.metaData.orgName"></td>
+                    <!--<td ng-bind-html="row.metaData.hl7Version"></td>-->
+                    <!--<td ng-bind-html="row.metaData.schemaVersion"></td>-->
+                    <!--<td ng-bind-html="row.metaData.type"></td>-->
+                    <td ng-bind="row.metaData.version"></td>
+                    <td ng-bind="row.metaData.date"></td>
+                    <td>
+
+                        <button ng-show="igContext.igType.type === 'USER' && (toEditProfileId === null || toEditProfileId !== row.id)"
+                                title="Edit"
+                                type="button" class="btn btn-xs btn-war"
+                                ng-click="edit(row)">
+                                        <span><i
+                                                class="fa fa-pencil fa-fw"></i></span>
+                        </button>
+
+                        <button ng-hide="toEditProfileId != null && toEditProfileId === row.id"
+                                title="Create Copy" type="button" class="btn btn-xs btn-info"
+                                ng-click="clone(row)">
+                            <span><i class="fa fa-plus-circle fa-fw"></i></span>
+                        </button>
+                        <div class="btn-group" ng-hide="toEditProfileId != null && toEditProfileId === row.id">
+                            <button ng-disabled="row === profile && hasChanges()" type="button"
+                                    class="btn btn-primary btn-xs"><span><i
+                                    class="fa fa-download fa-fw"></i></span>
+                            </button>
+                            <button ng-disabled="row === profile && hasChanges()" type="button"
+                                    class="btn btn-primary btn-xs dropdown-toggle"
+                                    data-toggle="dropdown" aria-expanded="false">
+                                <span class="caret"></span>
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a ng-click="exportAs(row.id, 'zip')">As ZIP</a></li>
+                                <li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>
+                                <li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>
+                                <li><a ng-click="exportDelta(row.id,'pdf')">Delta</a></li>
+                            </ul>
+                        </div>
+
+                        <button title="Delete" type="button" class="btn btn-xs btn-danger"
+                                ng-show="igContext.igType.type === 'USER' && (toEditProfileId === null || toEditProfileId !== row.id)"
+                                ng-click="confirmDelete(row)">
+                            <span><i class="fa fa-trash-o fa-fw"></i></span>
+                        </button>
+
+                                <span ng-show="toEditProfileId != null && toEditProfileId === row.id"><i
+                                        class="fa fa-spinner fa-pulse fa-2x"></i></span>
+                    </td>
+                </tr>
+                </tbody>
+                <!--<tfoot>-->
+                <!--<tr>-->
+                <!--<td colspan="4" class="text-center">-->
+                <!--<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>-->
+                <!--</td>-->
+                <!--</tr>-->
+
+                <!--</tfoot>-->
+            </table>
+                        </div>
+                    <div ng-show="loading" style="text-align:center">
+                        <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
+                        <i class="fa fa-spinner fa-pulse fa-2x"></i>
+
+                    </div>
+
+</div>
+    </div>
+</div>
+
+<!--</accordion-group>-->
+
+<!--<accordion-group heading="Custom Implementation Guides" is-open="accordion.customStatus">-->
+
+<!--<accordion-heading>-->
+<!--<i class="pull-left glyphicon"-->
+<!--ng-class="{'fa fa-chevron-down': accordion.customStatus, 'fa fa-chevron-right': !accordion.customStatus}"></i>-->
+<!--Custom Implementation Guides-->
+<!--</accordion-heading>-->
+<!--<div class="row">-->
+<!--<div class="col-md-12">-->
+<!--&lt;!&ndash;<div class="page-header">&ndash;&gt;-->
+<!--&lt;!&ndash;<h3>Custom Implementation Guides </h3>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--<div ng-show="error !== null">-->
+<!--<div class="alert alert-danger" role="alert" ng-bind="error"></div>-->
+<!--</div>-->
+<!--<div ng-show="error === null">-->
+<!--<div class="igl-table" ng-hide="customLoading">-->
+<!--<table st-table="tmpIgs" st-safe-src="customIgs"-->
+<!--class="profile-list table table-striped table-bordered">-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th colspan="6"><input st-search="" placeholder="Search IG" class="form-control"-->
+<!--type="text"/></th>-->
+<!--</tr>-->
+<!--<tr class="tbl-header">-->
+<!--<th>IG Identifier</th>-->
+<!--<th>IG Title</th>-->
+<!--<th>Organization Name</th>-->
+<!--<th>Version</th>-->
+<!--<th>Date</th>-->
+<!--<th>Actions</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody>-->
+
+<!--<tr ng-repeat="row in tmpIgs">-->
+<!--<td ng-bind="row.metaData.identifier"></td>-->
+<!--<td ng-bind="row.metaData.name"></td>-->
+<!--<td ng-bind="row.metaData.orgName"></td>-->
+<!--&lt;!&ndash;<td ng-bind-html="row.metaData.hl7Version"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;<td ng-bind-html="row.metaData.schemaVersion"></td>&ndash;&gt;-->
+<!--&lt;!&ndash;<td ng-bind-html="row.metaData.type"></td>&ndash;&gt;-->
+<!--<td ng-bind="row.metaData.version"></td>-->
+<!--<td ng-bind="row.metaData.date"></td>-->
+<!--<td>-->
+<!--<button ng-hide="toEditProfileId != null && toEditProfileId === row.id" title="Edit"-->
+<!--type="button" class="btn btn-xs btn-default"-->
+<!--ng-click="edit(row)">-->
+<!--<span><i-->
+<!--class="fa fa-pencil fa-fw"></i></span>-->
+<!--</button>-->
+<!--<button ng-hide="toEditProfileId != null && toEditProfileId === row.id"-->
+<!--title="Create Copy" type="button" class="btn btn-xs btn-info"-->
+<!--ng-click="clone(row)">-->
+<!--<span><i class="fa fa-plus-circle fa-fw"></i></span>-->
+<!--</button>-->
+<!--<div class="btn-group" ng-hide="toEditProfileId != null && toEditProfileId === row.id">-->
+<!--<button ng-disabled="row === profile && hasChanges()" type="button"-->
+<!--class="btn btn-primary btn-xs"><span><i-->
+<!--class="fa fa-download fa-fw"></i></span>-->
+<!--</button>-->
+<!--<button ng-disabled="row === profile && hasChanges()" type="button"-->
+<!--class="btn btn-primary btn-xs dropdown-toggle"-->
+<!--data-toggle="dropdown" aria-expanded="false">-->
+<!--<span class="caret"></span>-->
+<!--<span class="sr-only">Toggle Dropdown</span>-->
+<!--</button>-->
+<!--<ul ng-disabled="row === profile && hasChanges()" class="dropdown-menu" role="menu">-->
+<!--<li><a ng-click="exportAs(row.id, 'zip')">As ZIP</a></li>-->
+<!--<li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>-->
+<!--<li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>-->
+<!--<li><a ng-click="exportDelta(row.id,'pdf')">Delta</a></li>-->
+<!--</ul>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;<button title="Diff" type="button" class="btn btn-xs btn-info"&ndash;&gt;-->
+<!--&lt;!&ndash;ng-click="diff(row.id)">&ndash;&gt;-->
+<!--&lt;!&ndash;<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Diff</span>&ndash;&gt;-->
+<!--&lt;!&ndash;</button>&ndash;&gt;-->
+
+<!--<button title="Delete" type="button" class="btn btn-xs btn-danger"-->
+<!--ng-hide="toEditProfileId != null && toEditProfileId === row.id"-->
+<!--ng-click="confirmDelete(row)">-->
+<!--<span><i class="fa fa-trash-o fa-fw"></i></span>-->
+<!--</button>-->
+
+<!--<span ng-show="toEditProfileId != null && toEditProfileId === row.id"><i-->
+<!--class="fa fa-spinner fa-pulse fa-2x"></i></span>-->
+
+<!--</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--&lt;!&ndash;<tfoot>&ndash;&gt;-->
+<!--&lt;!&ndash;<tr>&ndash;&gt;-->
+<!--&lt;!&ndash;<td colspan="4" class="text-center">&ndash;&gt;-->
+<!--&lt;!&ndash;<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="7"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;</td>&ndash;&gt;-->
+<!--&lt;!&ndash;</tr>&ndash;&gt;-->
+<!--&lt;!&ndash;</tfoot>&ndash;&gt;-->
+
+<!--</table>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--</div>-->
+
+<!--<div ng-show="customLoading" style="text-align:center">-->
+<!--&lt;!&ndash;<i class="fa fa-spinner fa-spin fa-lg"></i>&ndash;&gt;-->
+<!--<i class="fa fa-spinner fa-pulse fa-2x"></i>-->
+
+<!--</div>-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--</div>-->
+<!--</accordion-group>-->
+<!--</accordion>-->
+
+</div>
+</div>
+</div>
+</div>

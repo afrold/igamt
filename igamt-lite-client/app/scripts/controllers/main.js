@@ -68,6 +68,11 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
         return userInfoService.isAuthenticated();
     };
 
+    $scope.isPending = function() {
+        return userInfoService.isPending();
+    };
+
+
     $scope.isSupervisor = function() {
         return userInfoService.isSupervisor();
     };
