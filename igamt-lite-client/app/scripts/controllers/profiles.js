@@ -81,8 +81,13 @@ angular.module('igl')
             $scope.toEditProfileId = profile.id;
             waitingDialog.show('Cloning profile...', {dialogSize: 'sm', progressType: 'info'});
             $http.post('api/profiles/' + profile.id + '/clone', {timeout: 60000}).then(function (response) {
-                $rootScope.igs.push(angular.fromJson(response.data));
                 $scope.toEditProfileId = null;
+                if($scope.igContext.igType.type === 'USER'){
+                    $rootScope.igs.push(angular.fromJson(response.data));
+                 }else {
+                    $scope.igContext.igType = $scope.igTypes[1];
+                    $scope.loadProfiles();
+                }
                 waitingDialog.hide();
             }, function (error) {
                 $scope.toEditProfileId = null;
@@ -341,6 +346,13 @@ angular.module('igl')
                 var saveResponse = angular.fromJson(response.data);
                 $rootScope.profile.metaData.date = saveResponse.date;
                 $rootScope.profile.metaData.version = saveResponse.version;
+                var found = $scope.findOne($rootScope.profile.id);
+                if(found != null){
+                    var index = $rootScope.igs.indexOf(found);
+                    if(index > 0){
+                        $rootScope.igs [index] = $rootScope.profile;
+                    }
+                }
                 $rootScope.msg().text = "igSaveSuccess";
                 $rootScope.msg().type = "success";
                 $rootScope.msg().show = true;

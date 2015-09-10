@@ -72,15 +72,11 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				.get("accountId")) : null);
 		profile.setMetaData(metaData((DBObject) source.get("metaData")));
 		profile.setTables(tables((DBObject) source.get("tables")));
-		System.out.println("tables set");
-		profile.setDatatypes(datatypes((DBObject) source.get("datatypes"),
+ 		profile.setDatatypes(datatypes((DBObject) source.get("datatypes"),
 				profile));
-		System.out.println("datatypes set");
-		profile.setSegments(segments((DBObject) source.get("segments"), profile));
-		System.out.println("segments set");
-		profile.setMessages(messages((DBObject) source.get("messages"), profile));
-		System.out.println("messages set");
-		Object baseId = source.get("baseId");
+ 		profile.setSegments(segments((DBObject) source.get("segments"), profile));
+ 		profile.setMessages(messages((DBObject) source.get("messages"), profile));
+ 		Object baseId = source.get("baseId");
 		profile.setBaseId(baseId != null ? (String) baseId : null);
 
 		Object sourceId = source.get("sourceId");

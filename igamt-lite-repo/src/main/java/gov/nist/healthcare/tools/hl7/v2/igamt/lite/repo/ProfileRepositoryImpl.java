@@ -38,7 +38,7 @@ public class ProfileRepositoryImpl implements ProfileOperations   {
 	 */
 	@Override
 	public List<Profile> findPreloaded() {
- 	    Criteria where = Criteria.where("scope").is(ProfileScope.HL7STANDARD);
+ 	    Criteria where = Criteria.where("scope").is(ProfileScope.PRELOADED);
 	    Query query = Query.query(where);
 	    return mongo.find(query, Profile.class);
  	}

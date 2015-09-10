@@ -810,9 +810,15 @@ public class UserController {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 		msg.setSubject("New Registration Application on IGAMT");
 		msg.setTo(ADMIN_EMAIL);
-		msg.setText("Hello Admin,  \n A new application has been submitted by "
-				+ acc.getFullName() + " with username=" + acc.getUsername()
-				+ " \n\n" + " and is waiting for approval." + "\n\n"
+		msg.setText("Hello Admin,  \n A new application has been submitted and is waiting for approval. The user information are as follow: \n\n"
+				+ "Name: " + acc.getFullName() + "\n"
+				+ "Email: " + acc.getEmail()  + "\n"
+				+ "Username: " + acc.getUsername()+ "\n"
+				+ "Title/Position: " + acc.getTitle() + "\n"
+				+ "Employer: " + acc.getEmployer() + "\n"
+				+ "Juridiction: " + acc.getJuridiction() + "\n"
+				+ "Phone Number: " + acc.getPhone() + "\n"
+				+ " \n\n"
 				+ "Sincerely, " + "\n\n" + "The NIST IGAMT Team" + "\n\n");
 		try {
 			this.mailSender.send(msg);
