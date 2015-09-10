@@ -43,6 +43,10 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		//init();
+	} 
+	
+	private void init()throws Exception {
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
 				"/igs/VXU_V04/Profile.xml"));
 		String v = IOUtils.toString(this.getClass().getResourceAsStream(

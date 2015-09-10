@@ -32,22 +32,8 @@ angular.module('igl')
          * init the controller
          */
         $scope.init = function () {
-//            $scope.$watch('config.type',
-//                function (igType) {
-//                    if(igType != null){
-//                        $scope.loadProfiles();
-//                    }
-//                }
-//            );
-
-            $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {
-                $rootScope.config = angular.fromJson(response.data);
-            }, function (error) {
-            });
-
             $scope.igContext.igType = $scope.igTypes[1];
             $scope.loadProfiles();
-
             /**
              * On 'event:loginConfirmed', resend all the 401 requests.
              */
