@@ -3,21 +3,21 @@
      <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
 </div>
 <div ng-show="!loading">
-<div class="row" style="margin-top:10px">
+<div class="row" style="margin-top:5px">
     <ul class="nav nav-tabs">
         <li ng-show="show(segment)"
             ng-repeat="seg in segments"
             ng-class="{'active':segment != null && segment.id === seg.id}"><a
                 ng-click="select(seg)">{{seg.name}}</a></li>
     </ul>
-</div>
+<div class="panel panel-info">
+<div class="panel-body">
 <div ng-show="loadingSelection" style="text-align:center; padding-top:20px">
     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
 </div>
 <div ng-show="!loadingSelection">
 <div ng-show="segment !== null">
-
-    <div class="row">
+    <div class="">
 
     <div class="page-header">
         <span class="header4">Segment {{segment.name}}: {{segment.label}}</span>
@@ -26,7 +26,7 @@
             <span class="header5">Metadata</span>
         </div>
         <form name="segmentMetaDataForm" novalidate>
-            <div class="row">
+            <div class="">
                 <div class="col-sm-6">
                     <div class="form-group"
                          ng-class="{'has-error' : segmentMetaDataForm.name.$invalid && !segmentMetaDataForm.name.$pristine }">
@@ -89,7 +89,7 @@
         </form>
     </div>
 
-    <div class="row">
+    <div class="">
 
     <div class="page-header">
         <span class="header5">Definition</span>
@@ -788,6 +788,8 @@
 </script>
 
     </div>
+</div>
+</div>
 </div>
 </div>
 </div>

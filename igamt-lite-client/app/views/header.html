@@ -25,53 +25,41 @@
             <li ng-class="activeWhen(path()=='/ig')"><a class="point" href="#/ig"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.igs"></span></a></li>
             <li ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
             <li ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
-            <!--<li ng-class="activeWhen(path()=='/contact')"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>-->
+
+
             <li ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()">
-                <a class="point" href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;<span msg key="navbar.registration"></span></a>
+                <a href="#/registration"><div msg key="navbar.registration"></div></a>
             </li>
-            <li ng-class="activeWhen(path()=='/account')" ng-show="isAuthenticated()">
-                <a class="point" href="#/account"><i class="fa fa-user"></i>&nbsp;<span msg key="navbar.account"></span></a>
-            </li>
+
             <li ng-class="activeWhen(path()=='/forgotten')" ng-show="!isAuthenticated()">
-                <a class="point" href="#/forgotten"><div msg key="navbar.forgotten"></div></a>
+                <a href="#/forgotten"><div msg key="navbar.forgotten"></div></a>
             </li>
 
-            <li class="dropdown" ng-class="activeIfInList(path(), ['/authors'])" ng-show="isSupervisor() || isAdmin()">
-                <a class="point" id="reportsmenu" role="button" class="dropdown-toggle" href="#" ng-click="isManageOpen=!isManageOpen"><span msg class="msg" key="navbar.manage"></span><b class="caret"></b></a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="reportsmenu">
-                    <li><a class="point" tabindex="-1" href="#/authors" ng-click="isManageOpen=false"><span msg key="navbar.manage.authors"></span></a></li>
-                    <li ng-show="isAdmin()"><a class="point" tabindex="-1" href="#/supervisors" ng-click="isManageOpen=false"><span msg key="navbar.manage.supervisors"></span></a></li>
-                </ul>
+            <li  ng-show="isAuthenticated()" ng-class="activeWhen(path()=='/useraccount')"><a class="point" href="#/useraccount"><i class="fa fa-user"></i>&nbsp;My Account</a></li>
 
-
-            </li>
-            <li ng-class="activeWhen(path()=='/admin')" ng-show="">
-                <a class="point" href="#/admin"><div msg key="navbar.admin"></div></a>
-            </li>
-            <li ng-show='showSpinner()' ><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
-
-
-            <!--<li ng-class="activeWhen(path()=='/registerUser')" ng-show="isAdmin()">-->
-                <!--<a href="#/registerUser"><div msg key="navbar.registerUser"></div></a>-->
+            <!--<li ng-class="activeWhen(path()=='/contact')"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>-->
+            <!--<li ng-class="activeWhen(language()=='en')" ng-show="false">-->
+                <!--<a class="point" ng-click="setLanguage('en')"><div msg class="msg" key="navbar.lang.english"></div></a>-->
             <!--</li>-->
-        </ul>
-        <ul class="nav nav-pills pull-right">
-            <li ng-class="activeWhen(language()=='en')" ng-show="false">
-                <a class="point" ng-click="setLanguage('en')"><div msg class="msg" key="navbar.lang.english"></div></a>
-            </li>
-            <li class="navbar-text" style="margin-right: 5em" ng-show="isAuthenticated()">
+
+            <li class="pull-right" style="margin-right: 5em" ng-show="isAuthenticated()">
                 <a class="point" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span msg class="msg" key="navbar.logout"></span></a>
             </li>
-            <li class="navbar-text" style="margin-right: 5em" ng-show="!isAuthenticated()">
+            <li class="pull-right" style="margin-right: 5em" ng-show="!isAuthenticated()">
                 <a class="point" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;<span msg class="msg" key="navbar.login"></span></a>
             </li>
 
+            <li ng-show='showSpinner()' ><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
 
+            <!--<li ng-class="activeWhen(path()=='/registerUser')" ng-show="isAdmin()">-->
+            <!--<a href="#/registerUser"><div msg key="navbar.registerUser"></div></a>-->
+            <!--</li>-->
         </ul>
 
 
+
         <!--<p class="navbar-text pull-right" ng-class="activeWhen(path()=='/issue')" style="margin-right: 3em">-->
-            <!--<a href="#/issue"><i class="fa fa-question"></i><span msg class="msg" key="navbar.issue"></span></a>-->
+        <!--<a href="#/issue"><i class="fa fa-question"></i><span msg class="msg" key="navbar.issue"></span></a>-->
         <!--</p>-->
     </div>
 </div>

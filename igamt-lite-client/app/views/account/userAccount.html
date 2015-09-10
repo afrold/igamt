@@ -1,0 +1,57 @@
+<div id="subNavBar" class="subNavBar" ng-controller="AccountMgtCtrl" ng-init="init()">
+    <ul class="clearfix mainSubNav">
+        <!--<li ng-show="!isAuthenticated()" ng-click="setSubActive('registration')" class="jslink">-->
+        <!--<a ng-class="{'current':isSubActive('registration')}" class="point"><i-->
+        <!--class="fa fa-chevron-circle-right"></i>&nbsp;<span msg key="navbar.registration"></span></a>-->
+        <!--</li>-->
+        <li ng-click="setSubActive('account')" class="jslink" ng-show="isAuthenticated()">
+            <a class="point" ng-class="{'current':isSubActive('account')}"><i class="fa fa-user"></i>&nbsp;<span msg
+                                                                                                                 key="navbar.account"></span></a>
+        </li>
+
+        <!--<li ng-show="!isAuthenticated()" ng-click="setSubActive('forgotten')" class="jslink">-->
+        <!--<a class="point" ng-class="{'current':isSubActive('forgotten')}">-->
+        <!--&nbsp;<span msg key="navbar.forgotten"></span>-->
+        <!--</a>-->
+        <!--</li>-->
+
+        <li ng-show="isSupervisor() || isAdmin()" ng-click="setSubActive('accounts')" class="jslink">
+            <a class="point" ng-class="{'current':isSubActive('accounts')}">
+                <i class="fa fa-cog"></i>&nbsp;<span msg key="navbar.manage"></span>
+            </a>
+        </li>
+    </ul>
+
+    <!--<div id="registration" ng-show="isSubActive('registration')" class="accountMgt">-->
+    <!--<div ng-include="'views/account/registration.html'"></div>-->
+    <!--</div>-->
+
+    <div class="container" ng-show="msg() != null && msg().skip === true">
+        <div class="row">
+            <div class="col-md-12">
+                <div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">
+                    <button type="button" class="close" ng-click="msg().show=false">×</button>
+                    <div msg key-expr="msg().text"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="account" class="accountMgt">
+        <div ng-include="'views/account/account.html'"></div>
+    </div>
+
+    <!--<div id="forgotten" class="accountMgt">-->
+    <!--<div ng-include="'views/account/forgotten.html'"></div>-->
+    <!--</div>-->
+    <div id="accounts" class="accountMgt">
+        <div ng-include="'views/account/accounts.html'"></div>
+    </div>
+
+
+    <!--<div id="admin" class="accountMgt">-->
+    <!--<div ng-include="'views/account/admin.html'"></div>-->
+    <!--</div>-->
+
+</div>

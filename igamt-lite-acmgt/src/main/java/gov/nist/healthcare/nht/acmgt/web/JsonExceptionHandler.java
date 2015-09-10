@@ -25,23 +25,24 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+ 
 
 /**
  * Called when an exception occurs during request processing. Transforms the
  * exception message into JSON format.
- */
+ */  
 @Component
 public class JsonExceptionHandler implements HandlerExceptionResolver {
 	private final ObjectMapper mapper = new ObjectMapper();
 
 	static final Logger logger = LoggerFactory
-			.getLogger(JsonExceptionHandler.class);
+			.getLogger(JsonExceptionHandler.class); 
 
-	@Override
+	@Override   
 	public ModelAndView resolveException(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex) {
 		try {
-			if (ex instanceof AccessDeniedException) {
+			if (ex instanceof AccessDeniedException) { 
 				logger.error("ERROR: Access Denied", ex);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
 						ResponseMessage.Type.danger, "accessDenied"));

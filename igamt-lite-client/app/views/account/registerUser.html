@@ -10,7 +10,7 @@
                 <div class="controls">
                     <select class="select-xlarge" ng-model="newUser.accountType" id="selectAccountType" name="selectAccountType" ng-options="accountType for accountType in accountTypes" required>
                     </select>
-                    <span class="valid" ng-show="newMatchform.selectCEHRT.$valid"><img alt="check OK" src="images/check.png"/></span><br/>
+                    <span class="valid" ng-show="newMatchform.selectCEHRT.$valid"><i class="fa fa-check success"></i></span><br/>
                 </div>
             </div>
             <div class="control-group">
@@ -20,7 +20,7 @@
                     <div class="input-help">
                         <h4><div msg key='registerUser.email.error'></div></h4>
                     </div>
-                    <span class="valid" ng-show="createAccountForm.inputEmail.$valid"><img alt="check OK" src="images/check.png"/></span><br>
+                    <span class="valid" ng-show="createAccountForm.inputEmail.$valid"><i class="fa fa-check success"></i></span><br>
                 </div>
             </div>
             <div class="control-group">

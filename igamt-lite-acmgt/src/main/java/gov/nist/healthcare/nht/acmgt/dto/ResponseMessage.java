@@ -22,6 +22,7 @@ public class ResponseMessage {
     private final String text;
     private final String resourceId;
     private final String manualHandle;
+    private   boolean skip;
 
     public ResponseMessage(Type type, String text, String resourceId, String manualHandle) {
         this.type = type;
@@ -29,12 +30,21 @@ public class ResponseMessage {
         this.resourceId = resourceId;
         this.manualHandle = manualHandle;
     }
-  
+    
+
     public ResponseMessage(Type type, String text, String resourceId) {
         this.type = type;
         this.text = text;
         this.resourceId = resourceId;
         this.manualHandle = "false";
+    }
+  
+    public ResponseMessage(Type type, String text, String resourceId,boolean skip) {
+        this.type = type;
+        this.text = text;
+        this.resourceId = resourceId;
+        this.manualHandle = "false";
+        this.skip = skip;
     }
 
     public ResponseMessage(Type type, String text) {
@@ -59,4 +69,17 @@ public class ResponseMessage {
     public String getManualHandle() {
         return manualHandle;
     }
+
+
+	public boolean isSkip() {
+		return skip;
+	}
+
+
+	public void setSkip(boolean skip) {
+		this.skip = skip;
+	}
+    
+    
+    
 }

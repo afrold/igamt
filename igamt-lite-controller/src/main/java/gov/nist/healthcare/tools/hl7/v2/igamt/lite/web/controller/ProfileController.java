@@ -128,11 +128,12 @@ public class ProfileController extends CommonController {
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u
 				.getUsername());
-		if (account != null) {
-			return profileService.findByAccountId(account.getId());
+		if(account == null){
+			throw new UserAccountNotFoundException();
+
 		}
-		throw new UserAccountNotFoundException();
-	}
+		return profileService.findByAccountId(account.getId());
+ 	}
 
 	@RequestMapping(value = "/{id}/clone", method = RequestMethod.POST)
 	public Profile clone(@PathVariable("id") String id)

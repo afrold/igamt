@@ -6,7 +6,7 @@ angular.module('igl')
 .controller('AccountCtrl', ['$scope', '$resource', 'AccountLoader', 'Account', 'userInfoService', '$location',
     function ($scope, $resource, AccountLoader, Account, userInfoService, $location) {
         var PasswordChange = $resource('api/accounts/:id/passwordchange', {id:'@id'});
-        
+
         $scope.accountpwd = {};
 
         $scope.initModel = function(data) {
@@ -31,6 +31,7 @@ angular.module('igl')
             return angular.equals(formData, $scope.accountOrig);
         };
 
+
         $scope.changePassword = function() {
             var user = new PasswordChange();
             user.username = $scope.account.username;
@@ -38,7 +39,9 @@ angular.module('igl')
             user.newPassword = $scope.accountpwd.newPassword;
             user.id = $scope.account.id;
             //TODO: Check return value???
-            user.$save();
+            user.$save().then(function(result){
+                $scope.msg = angular.fromJson(result);
+            });
         };
 
         $scope.deleteAccount = function () {
@@ -68,3 +71,25 @@ angular.module('igl')
         );
     }
 ]);
+
+
+angular.module('igl')
+    .controller('AccountMgtCtrl', ['$scope', '$resource', 'AccountLoader', 'Account', 'userInfoService', '$location', '$rootScope',
+        function ($scope, $resource, AccountLoader, Account, userInfoService, $location,$rootScope) {
+            $scope.setSubActive = function (id) {
+                if(id && id != null) {
+                    $rootScope.setSubActive(id);
+                    $('.accountMgt').hide();
+                    $('#' + id).show();
+                }
+            };
+            $scope.init = function(){
+                if($rootScope.subActivePath == null){
+                    $rootScope.subActivePath = "account";
+                }
+                $scope.setSubActive($rootScope.subActivePath);
+            };
+
+
+        }
+    ]);
