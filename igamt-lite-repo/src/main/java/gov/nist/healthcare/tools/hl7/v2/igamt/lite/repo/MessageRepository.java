@@ -26,5 +26,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface MessageRepository extends MongoRepository<Message, String> , MessageOperations  {
 	
 	public List<Message> findByVersion(String hl7Version);
- 
+	 
+	public List<Message> findById(String id);
+	 
 } 

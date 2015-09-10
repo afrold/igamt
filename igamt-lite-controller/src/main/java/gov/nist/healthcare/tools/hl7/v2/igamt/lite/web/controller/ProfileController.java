@@ -14,7 +14,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileCreationServiceImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.ProfileSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.ProfileChangeCommand;
@@ -39,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -397,10 +397,10 @@ public class ProfileController extends CommonController {
 		return messages;
 	}
 
-	@RequestMapping(value = "/create/{msgIds}", method = RequestMethod.POST, produces = "application/json")
-	public Profile createIG(@PathVariable("msgIds") List<String> msgIds) {
+	@RequestMapping(value = "/create/{hl7Version}", method = RequestMethod.POST, produces = "application/json")
+	public Profile createIG(@PathVariable("hl7Version") String hl7Version, @RequestParam List<String> msgIds) throws ProfileException {
 		logger.info("Creation of profile");
-		return profileCreation.createIntegratedProfile(msgIds);
+		return profileCreation.createIntegratedProfile(msgIds, hl7Version);
 	}
 	
 }
