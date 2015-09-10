@@ -59,7 +59,7 @@ public class ProfileRepositoryImpl implements ProfileOperations   {
 	
 	public List<String> findHl7Versions(){
 		return new ArrayList<String>(
-				Arrays.asList("2.0","2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7", "2.8"));
+				Arrays.asList("2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"));
 	}
 	
 }
