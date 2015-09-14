@@ -27,15 +27,15 @@
 						<source>1.7</source>
 						<target>1.7</target>
  					</configuration>
-
-					<dependencies>
+ 
+<!--					<dependencies>
 						<dependency>
 							<groupId>org.codehaus.groovy</groupId>
 							<artifactId>groovy-eclipse-compiler</artifactId>
 							<version>2.7.0-01</version>
 						</dependency>
 					</dependencies>
-				</plugin>
+-->				</plugin>
 
 				<plugin>
 					<artifactId>maven-eclipse-plugin</artifactId>
