@@ -34,7 +34,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
 
 import java.io.ByteArrayInputStream;
@@ -70,7 +69,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.BaseColor;
@@ -100,9 +98,6 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 @Service
 public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExportService{
-
-	@Autowired
-	private ProfileRepository profileRepository;
 
 	@Override
 	public InputStream exportAsXml(Profile p) {

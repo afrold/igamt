@@ -17,97 +17,29 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
-import nu.xom.Builder;
-import nu.xom.Nodes;
-import nu.xom.ParsingException;
-import nu.xom.xslt.XSLException;
-import nu.xom.xslt.XSLTransform;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.html.WebColors;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfImportedPage;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPageEventHelper;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfTemplate;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.VerticalPositionMark;
-import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.mongodb.MongoException;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
