@@ -23,24 +23,33 @@ public class Table extends DataModel implements Serializable,
 	private static final long serialVersionUID = 734059059225906039L;
 
 	@Id
-	private String id;
+	private String id; //FIXME Not used in new model
 
-	private String mappingAlternateId;
-
-	// @NotNull
-	private String mappingId;
+	private String mappingAlternateId; //FIXME Not used in new model
 
 	// @NotNull
-	private String name;
+	private String mappingId; //FIXME Not used in new model
 
-	private String version;
-	private String codesys;
+	// @NotNull
+	private String name; //FIXME Used for merge
+	private String version; // FIXME Used for merge
+	
+	private String codesys; //FIXME Not used in new model
 	private String oid;
-	private String tableType;
+	private String tableType; //FIXME Not used in new model
 	private String stability;
 	private String extensibility;
 
 	private List<Code> codes = new ArrayList<Code>();
+	
+	//New concepts
+	private String commonName = "";
+	private String binding = "";
+	private String bindingIdentifier = "";
+	private String contentDefinition = "";
+	private String rootCodeSystems = "";
+	private String purpose = "";
+
 
 	// @DBRef
 	// private Tables tables;
@@ -147,6 +156,55 @@ public class Table extends DataModel implements Serializable,
 		this.extensibility = extensibility;
 	}
 
+
+	public String getCommonName() {
+		return commonName;
+	}
+
+	public void setCommonName(String commonName) {
+		this.commonName = commonName;
+	}
+
+	public String getBinding() {
+		return binding;
+	}
+
+	public void setBinding(String binding) {
+		this.binding = binding;
+	}
+
+	public String getBindingIdentifier() {
+		return bindingIdentifier;
+	}
+
+	public void setBindingIdentifier(String bindingIdentifier) {
+		this.bindingIdentifier = bindingIdentifier;
+	}
+
+	public String getContentDefinition() {
+		return contentDefinition;
+	}
+
+	public void setContentDefinition(String contentDefinition) {
+		this.contentDefinition = contentDefinition;
+	}
+
+	public String getRootCodeSystems() {
+		return rootCodeSystems;
+	}
+
+	public void setRootCodeSystems(String rootCodeSystems) {
+		this.rootCodeSystems = rootCodeSystems;
+	}
+
+	public String getPurpose() {
+		return purpose;
+	}
+
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
+	}
+
 	public Code findOneCode(String id) {
 		if (this.codes != null)
 			for (Code m : this.codes) {
@@ -202,6 +260,13 @@ public class Table extends DataModel implements Serializable,
 		clonedTable.setTableType(tableType);
 		clonedTable.setVersion(version);
 
+		clonedTable.setCommonName(commonName);
+		clonedTable.setBinding(binding);
+		clonedTable.setBindingIdentifier(bindingIdentifier);
+		clonedTable.setContentDefinition(contentDefinition);
+		clonedTable.setRootCodeSystems(rootCodeSystems);
+		clonedTable.setPurpose(purpose);
+		
 		return clonedTable;
 	}
 }

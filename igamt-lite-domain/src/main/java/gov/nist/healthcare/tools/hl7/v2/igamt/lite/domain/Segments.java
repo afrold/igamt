@@ -78,6 +78,17 @@ public class Segments implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
+	public Segment findOneByNameAndByHl7Version(String name, String hl7Version) {
+		if (this.children != null)
+			for (Segment s : this.children) {
+				if (s.getName().equals(name)
+						&& s.getHl7Version().equals(hl7Version)) {
+					return s;
+				}
+			}
+		return null;
+	}
+
 	public Field findOneField(String id) {
 		if (this.children != null) {
 			for (Segment m : this.children) {
@@ -169,5 +180,15 @@ public class Segments implements java.io.Serializable, Cloneable {
 
 		return clonedSegments;
 
+	}
+	
+	public void merge(Segments sgts){
+		for (Segment s: sgts.getChildren()){
+			if (this.findOneByNameAndByHl7Version(s.getName(), s.getHl7Version()) == null){
+				this.addSegment(s);
+			} else {
+				s.setId(this.findOneByNameAndByHl7Version(s.getName(), s.getHl7Version()).getId()); //FIXME probably useless
+			}
+		}
 	}
 }

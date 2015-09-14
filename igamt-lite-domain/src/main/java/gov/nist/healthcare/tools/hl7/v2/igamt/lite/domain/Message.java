@@ -1,5 +1,8 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +57,10 @@ public class Message extends DataModel implements java.io.Serializable,
 	protected String comment = "";
 
 	protected String usageNote = "";
+
+	protected List<Predicate> predicates = new ArrayList<Predicate>();
+
+	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
 
 	public String getId() {
 		return id;
@@ -152,6 +159,31 @@ public class Message extends DataModel implements java.io.Serializable,
 		this.usageNote = usageNote;
 	}
 
+	public void addPredicate(Predicate p) {
+		predicates.add(p);
+	}
+
+	public void addConformanceStatement(ConformanceStatement cs) {
+		conformanceStatements.add(cs);
+	}
+
+	public List<Predicate> getPredicates() {
+		return predicates;
+	}
+
+	public List<ConformanceStatement> getConformanceStatements() {
+		return conformanceStatements;
+	}
+
+	public void setPredicates(List<Predicate> predicates) {
+		this.predicates = predicates;
+	}
+
+	public void setConformanceStatements(
+			List<ConformanceStatement> conformanceStatements) {
+		this.conformanceStatements = conformanceStatements;
+	}
+
 	public Boolean deleteSegmentRefOrGroup(String id) {
 		if (this.getChildren() != null) {
 			for (int i = 0; i < this.getChildren().size(); i++) {
@@ -187,6 +219,34 @@ public class Message extends DataModel implements java.io.Serializable,
 			}
 		}
 		return null;
+	}
+
+	public Predicate findOnePredicate(String predicateId) {
+		for (Predicate predicate : this.getPredicates()) {
+			if (predicate.getId().equals(predicateId)) {
+				return predicate;
+			}
+		}
+		return null;
+	}
+
+	public ConformanceStatement findOneConformanceStatement(String confId) {
+		for (ConformanceStatement conf : this.getConformanceStatements()) {
+			if (conf.getId().equals(confId)) {
+				return conf;
+			}
+		}
+		return null;
+	}
+
+	public boolean deletePredicate(String predicateId) {
+		Predicate p = findOnePredicate(predicateId);
+		return p != null && this.getPredicates().remove(p);
+	}
+
+	public boolean deleteConformanceStatement(String cId) {
+		ConformanceStatement c = findOneConformanceStatement(cId);
+		return c != null && this.getConformanceStatements().remove(c);
 	}
 
 	public String getVersion() {
@@ -253,7 +313,16 @@ public class Message extends DataModel implements java.io.Serializable,
 		clonedMessage.setDate(date);
 		clonedMessage.setOid(oid);
 		clonedMessage.setVersion(version);
-
+		clonedMessage
+		.setConformanceStatements(new ArrayList<ConformanceStatement>());
+		for (ConformanceStatement cs : this.conformanceStatements) {
+			clonedMessage.addConformanceStatement(cs.clone());
+		}
+		clonedMessage.setPredicates(new ArrayList<Predicate>());
+		for (Predicate cp : this.predicates) {
+			clonedMessage.addPredicate(cp.clone());
+		}
+		
 		return clonedMessage;
 	}
 }

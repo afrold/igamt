@@ -17,10 +17,15 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+
+import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface MessagesRepository extends MongoRepository<Messages, String> {
+	
+	List<Message> findByChildren_Id(String id);
 
 } 

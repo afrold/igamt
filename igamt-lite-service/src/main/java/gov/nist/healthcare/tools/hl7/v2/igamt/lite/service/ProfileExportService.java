@@ -8,23 +8,30 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
+
+/**
+ * 
+ * @author Olivier MARIE-ROSE
+ * 
+ */
+
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
 
-/**
- * @author Harold Affo (harold.affo@nist.gov)
- * Mar 30, 2015
- */
-public interface ProfileOperations {
-	 List<Profile> findPreloaded();
-	 
-	 public List<Profile> findStandard();
-	 
-	 public List<Profile> findStandardByVersion(String hl7version);
-	 
-	 public List<String> findHl7Versions();
-	 
+public interface ProfileExportService {
+	
+	InputStream exportAsPdf(Profile p) throws IOException;
+	
+	InputStream exportAsPdfFromXsl(Profile p, String inlineConstraints) throws IOException;
+
+	InputStream exportAsXlsx(Profile p) throws IOException;
+	
+	InputStream exportAsXml(Profile p) throws IOException;
+	
+	InputStream exportAsZip(Profile p) throws IOException;
+	
 }

@@ -8,7 +8,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
@@ -36,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,6 +52,9 @@ public class ProfileController extends CommonController {
 	private ProfileService profileService;
 
 	@Autowired
+	private ProfileExportService profileExport;
+
+	@Autowired
 	private ProfileConfiguration profileConfig;
 
 	@Autowired
@@ -56,6 +62,9 @@ public class ProfileController extends CommonController {
 
 	@Autowired
 	AccountRepository accountRepository;
+	
+	@Autowired
+	private ProfileCreationService profileCreation;
 
 	public ProfileService getProfileService() {
 		return profileService;
@@ -204,7 +213,7 @@ public class ProfileController extends CommonController {
 		logger.info("Exporting as xml file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
-		content = profileService.exportAsXml(p);
+		content = profileExport.exportAsXml(p);
 		response.setContentType("text/xml");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.xml");
@@ -218,7 +227,7 @@ public class ProfileController extends CommonController {
 		logger.info("Exporting as xml file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
-		content = profileService.exportAsZip(p);
+		content = profileExport.exportAsZip(p);
 		response.setContentType("application/zip");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile-"
@@ -253,7 +262,7 @@ public class ProfileController extends CommonController {
 		logger.info("Exporting as pdf file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
-		content = profileService.exportAsPdfFromXsl(p, inlineConstraints);
+		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.pdf");
@@ -327,7 +336,7 @@ public class ProfileController extends CommonController {
 		logger.info("Exporting as spreadsheet profile with id=" + id);
 		InputStream content = null;
 		Profile p = findProfile(id);
-		content = profileService.exportAsXlsx(p);
+		content = profileExport.exportAsXlsx(p);
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.xlsx");
@@ -348,9 +357,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		ElementVerification content = null;
-		content = profileService.verifySegment(p, id, "segment");
-		 return content;
+		return profileService.verifySegment(p, id, "segment");
 	}
 
 	@RequestMapping(value = "/{id}/verify/datatype/{dtId}", method = RequestMethod.POST, produces = "application/json")
@@ -362,9 +369,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		ElementVerification content = null;
-		content = profileService.verifyDatatype(p, id, "datatype");
-		 return content;
+		return profileService.verifyDatatype(p, id, "datatype");
 	}
 
 	@RequestMapping(value = "/{id}/verify/valueset/{vsId}", method = RequestMethod.POST, produces = "application/json")
@@ -376,10 +381,27 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		ElementVerification content = null;
-		content = profileService.verifyValueSet(p, id, "valueset");
-	   return content;
+		return profileService.verifyValueSet(p, id, "valueset");
+		}
+	
+	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
+	public List<String> findHl7Versions() {
+		logger.info("Fetching all HL7 versions");
+		List<String> result = profileCreation.findHl7Versions();
+		return result;
 	}
 
+	@RequestMapping(value = "/hl7/messages/{hl7Version}", method = RequestMethod.GET)
+	public List<String[]> getMessagesListByVersion(@PathVariable("hl7Version") String hl7Version) {
+		logger.info("fetching messages of version hl7Version=" + hl7Version);
+		List<String[]> messages = profileCreation.summary(hl7Version);
+		return messages;
+	}
+
+	@RequestMapping(value = "/create/{hl7Version}", method = RequestMethod.POST, produces = "application/json")
+	public Profile createIG(@PathVariable("hl7Version") String hl7Version, @RequestParam List<String> msgIds) throws ProfileException {
+		logger.info("Creation of profile");
+		return profileCreation.createIntegratedProfile(msgIds, hl7Version);
+	}
 	
 }
