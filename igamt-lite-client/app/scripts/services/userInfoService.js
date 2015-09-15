@@ -109,16 +109,17 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
         };
 
         var isPending = function() {
-            return isAuthenticated() ? currentUser.pending: false;
+            return isAuthenticated() && currentUser != null ? currentUser.pending: false;
         };
 
         var isAuthenticated = function() {
-            if ( angular.isObject(currentUser) && currentUser.authenticated ===true) {
-                return true;
-            }
-            else {
-                return false;
-            }
+//            if ( angular.isObject(currentUser) && currentUser.authenticated === true) {
+//                return true;
+//            }
+//            else {
+//                return false;
+//            }
+        	return true;
         };
 
         var loadFromServer = function() {

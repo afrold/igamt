@@ -46,8 +46,19 @@ angular.module('igl')
             $rootScope.$on('event:openProfileRequest', function (event, profile) {
                 $scope.openProfile(profile);
             });
-
+           
         };
+
+        $rootScope.$on('event:IgsPushed', function(event, profile) {
+        	if($scope.igContext.igType.type === 'USER'){
+                $rootScope.igs.push(profile);
+             }else {
+                $scope.igContext.igType = $scope.igTypes[1];
+                $scope.loadProfiles();
+                profile = $scope.findOne(profile.id);
+            }
+          	$scope.edit(profile);
+          });
 
         $scope.loadProfiles = function () {
             $scope.error = null;

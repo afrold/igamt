@@ -1,10 +1,9 @@
 ///**
 // * Created by haffo on 2/2/15.
 // */
-//
-//angular.module('igl').run(function ($httpBackend, $q, $http) {
-//
-//
+
+angular.module('igl').run(function ($httpBackend, $q, $http) {
+
 //    $httpBackend.whenGET('api/profiles').respond(function (method, url, data, headers) {
 //        var request = new XMLHttpRequest();
 //        request.open('GET', '../../resources/profiles1.json', false);
@@ -174,6 +173,6 @@
 //
 //    $httpBackend.whenGET(/resources\//).passThrough();
 //
-//
-//});
-//
+
+});
+

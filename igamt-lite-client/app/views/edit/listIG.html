@@ -8,7 +8,7 @@
         <form id="selectIgTypeForm">
             <div class="form-group">
                 <label class="col-md-3" for="igType"><div msg key='ig.selectIgType'></div></label>
-                <div class="col-md-5">
+                <div class="col-md-4">
                     <select class="form-control input-sm"
                             ng-change="loadProfiles()"
                             name="igType"
@@ -17,7 +17,10 @@
                             ng-model="igContext.igType"
                             ng-options="tt.name for tt in igTypes">
                     </select>
-                </div>
+                 </div>
+                 <div class="col-md-2">
+                     <button type="button" class="btn btn-default" ng-click="hl7Versions()" ng-controller="HL7VersionsDlgCtrl">Create Guide</button>
+                 </div>
             </div>
         </form>
     </div>
