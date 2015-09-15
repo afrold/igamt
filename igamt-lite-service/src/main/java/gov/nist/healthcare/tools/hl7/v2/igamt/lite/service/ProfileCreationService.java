@@ -8,23 +8,27 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+/**
+ * 
+ * @author Olivier MARIE-ROSE
+ * 
+ */
+
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.List;
 
-/**
- * @author Harold Affo (harold.affo@nist.gov)
- * Mar 30, 2015
- */
-public interface ProfileOperations {
-	 List<Profile> findPreloaded();
-	 
-	 public List<Profile> findStandard();
-	 
-	 public List<Profile> findStandardByVersion(String hl7version);
-	 
-	 public List<String> findHl7Versions();
-	 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+
+public interface ProfileCreationService {
+	
+	List<String> findHl7Versions();
+	
+	List<Profile> findProfilesByHl7Versions();
+	
+	List<String[]> summary(String hl7Version);
+	
+	Profile createIntegratedProfile(List<String> msgIds, String hl7Version) throws ProfileException;
+	
 }

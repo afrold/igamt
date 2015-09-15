@@ -59,7 +59,7 @@ public class PersistenceContext extends AbstractMongoConfiguration {
 				env.getProperty("mongo.username"),
 				env.getProperty("mongo.dbname"),
 				env.getProperty("mongo.password").toCharArray());
-		return new MongoClient(new ServerAddress("localhost",
+		return new MongoClient(new ServerAddress(env.getProperty("mongo.host"),
 				Integer.valueOf(env.getProperty("mongo.port"))),
 				Arrays.asList(credential));
 	}

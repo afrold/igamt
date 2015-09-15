@@ -42,21 +42,11 @@ public interface ProfileService {
 
 	public Profile apply(Profile p) throws ProfileSaveException;
 
-	public InputStream exportAsPdfFromXsl(Profile p, String inlineConstraints);
-
-	public InputStream exportAsPdf(Profile p);
-
-	public InputStream exportAsXml(Profile p);
-
-	public InputStream exportAsXlsx(Profile p);
-
 	public InputStream diffToPdf(Profile p);
 
 	public InputStream diffToJson(Profile p);
 
 	public Map<String, List<ElementChange>> delta(Profile p);
-
-	InputStream exportAsZip(Profile p) throws IOException;
 
 	public ElementVerification verifyMessages(Profile p, String id, String type);
 
