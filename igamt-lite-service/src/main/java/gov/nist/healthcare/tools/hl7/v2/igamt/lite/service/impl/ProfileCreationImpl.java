@@ -118,7 +118,6 @@ public class ProfileCreationImpl implements ProfileCreationService{
 				}
 			}
 		}
-		profileService.save(pTarget);
 		return pTarget;
 	}
 	
