@@ -27,12 +27,14 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 
 	private String organizationName;
 
-	private String name;
+	private String name; //FIXME Not used in new model
 
 	private String description;
 	
 	private String dateCreated;
 
+	private String profileName = "";
+	
 	private Set<Table> children = new HashSet<Table>();
 
 	public Tables() {
@@ -63,6 +65,14 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 
 	public void setValueSetLibraryVersion(String valueSetLibraryVersion) {
 		this.valueSetLibraryVersion = valueSetLibraryVersion;
+	}
+	
+	public String getProfileName() {
+		return profileName;
+	}
+
+	public void setProfileName(String profileName) {
+		this.profileName = profileName;
 	}
 
 	public String getDateCreated() {
@@ -127,6 +137,19 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 
 		return null;
 	}
+	
+	public Table findOneByNameAndByVersion(String name, String hl7Version) {
+		if (this.children != null) {
+			for (Table t: this.children){
+				if (t.getName().equals(name)
+						&& t.getVersion().equals(hl7Version)){
+					return t;
+				}
+			}
+		}
+		return null;
+	}	
+	
 
 	public Code findOneCode(String id) {
 		if (this.children != null) {
@@ -190,8 +213,20 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		clonedTables.setStatus(status);
 		clonedTables.setValueSetLibraryIdentifier(valueSetLibraryIdentifier);
 		clonedTables.setValueSetLibraryVersion(valueSetLibraryVersion);
+		clonedTables.setProfileName(profileName);
 		clonedTables.setDateCreated(dateCreated);
 
 		return clonedTables;
 	}
+	
+	public void merge(Tables tbls){
+		for (Table t: tbls.getChildren()){
+			if (this.findOneByNameAndByVersion(t.getName(), t.getVersion()) == null){
+				this.addTable(t);
+			} else {
+				t.setId(this.findOneByNameAndByVersion(t.getName(), t.getVersion()).getId());
+			}
+		}
+	}
+
 }

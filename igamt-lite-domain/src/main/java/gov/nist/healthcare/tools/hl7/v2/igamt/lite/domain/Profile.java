@@ -56,6 +56,8 @@ public class Profile extends DataModel implements java.io.Serializable,
 
 	private String constraintId;
 	
+	private String hl7Version = "";
+	
 	private String sourceId;
 
 	public String getBaseId() {
@@ -104,6 +106,14 @@ public class Profile extends DataModel implements java.io.Serializable,
 
 	public void setMessages(Messages messages) {
 		this.messages = messages;
+	}
+	
+	public String getConstraintId() {
+		return constraintId;
+	}
+
+	public void setConstraintId(String constraintId) {
+		this.constraintId = constraintId;
 	}
 
 	/**
@@ -168,6 +178,14 @@ public class Profile extends DataModel implements java.io.Serializable,
 		this.sourceId = sourceId;
 	}
 
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
+	
 	@Override
 	public String toString() {
 		// return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
@@ -177,12 +195,40 @@ public class Profile extends DataModel implements java.io.Serializable,
 
 	@JsonIgnore
 	public Constraints getConformanceStatements() {
+		//TODO Only byID constraints are considered; might want to consider byName
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
 		Context gContext = new Context();
+		Context mContext = new Context();
 
 		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Message m : this.getMessages().getChildren()) {
+			ByID byID = new ByID();
+			byID.setByID("" + m.getId());
+			if (m.getConformanceStatements().size() > 0) {
+				byID.setConformanceStatements(m.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		mContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Message m : this.getMessages().getChildren()) {
+			for (SegmentRefOrGroup srog: m.getChildren()){
+				if (srog instanceof Group) {
+					ByID byID = new ByID();
+					byID.setByID("" + srog.getId());
+					if (((Group) srog).getConformanceStatements().size() > 0) {
+						byID.setConformanceStatements(((Group) srog).getConformanceStatements());
+						byNameOrByIDs.add(byID);
+					}
+				}
+			}
+		}
+		gContext.setByNameOrByIDs(byNameOrByIDs);
+		
 		for (Segment s : this.getSegments().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID("" + s.getId());
@@ -212,32 +258,61 @@ public class Profile extends DataModel implements java.io.Serializable,
 
 	@JsonIgnore
 	public Constraints getPredicates() {
+		//TODO Only byID constraints are considered; might want to consider byName
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
 		Context gContext = new Context();
+		Context mContext = new Context();
 
-		Set<ByNameOrByID> byNameOrByIDsSEG = new HashSet<ByNameOrByID>();
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Message m : this.getMessages().getChildren()) {
+			ByID byID = new ByID();
+			byID.setByID("" + m.getId());
+			if (m.getPredicates().size() > 0) {
+				byID.setPredicates(m.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		mContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Message m : this.getMessages().getChildren()) {
+			for (SegmentRefOrGroup srog: m.getChildren()){
+				if (srog instanceof Group) {
+					ByID byID = new ByID();
+					byID.setByID("" + srog.getId());
+					if (((Group) srog).getPredicates().size() > 0) {
+						byID.setPredicates(((Group) srog).getPredicates());
+						byNameOrByIDs.add(byID);
+					}
+				}
+			}
+		}
+		gContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Segment s : this.getSegments().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID("" + s.getId());
 			if (s.getPredicates().size() > 0) {
 				byID.setPredicates(s.getPredicates());
-				byNameOrByIDsSEG.add(byID);
+				byNameOrByIDs.add(byID);
 			}
 		}
-		sContext.setByNameOrByIDs(byNameOrByIDsSEG);
+		sContext.setByNameOrByIDs(byNameOrByIDs);
 
-		Set<ByNameOrByID> byNameOrByIDsDT = new HashSet<ByNameOrByID>();
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Datatype d : this.getDatatypes().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID("" + d.getId());
 			if (d.getPredicates().size() > 0) {
 				byID.setPredicates(d.getPredicates());
-				byNameOrByIDsDT.add(byID);
+				byNameOrByIDs.add(byID);
 			}
 		}
-		dtContext.setByNameOrByIDs(byNameOrByIDsDT);
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
 
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
@@ -246,13 +321,64 @@ public class Profile extends DataModel implements java.io.Serializable,
 	}
 
 	public Predicate findOnePredicate(String predicateId) {
-		Predicate predicate = this.getSegments().findOnePredicate(predicateId);
-		if (predicate == null)
-			predicate = this.getDatatypes().findOnePredicate(predicateId);
-		return predicate;
+		for (Message m : this.messages.getChildren()){
+			if (m.findOnePredicate(predicateId) != null){
+				return m.findOnePredicate(predicateId);
+			}
+			for (SegmentRefOrGroup srog: m.getChildren()){
+				//TODO Check depth of search
+				if (srog instanceof Group) {
+					if (((Group) srog).findOnePredicate(predicateId) != null){
+						return ((Group) srog).findOnePredicate(predicateId);
+					}		
+				}
+			}
+		}
+		if (this.getSegments().findOnePredicate(predicateId) != null){
+			return this.getSegments().findOnePredicate(predicateId);
+		} else if (this.getDatatypes().findOnePredicate(predicateId) != null){
+			return this.getDatatypes().findOnePredicate(predicateId);
+		} 
+		return null;
+	}
+	
+	public ConformanceStatement findOneConformanceStatement(
+			String conformanceStatementId) {
+		for (Message m : this.messages.getChildren()){
+			if (m.findOneConformanceStatement(conformanceStatementId) != null){
+				return m.findOneConformanceStatement(conformanceStatementId);
+			}
+			for (SegmentRefOrGroup srog: m.getChildren()){
+				//TODO Check depth of search
+				if (srog instanceof Group) {
+					if (((Group) srog).findOneConformanceStatement(conformanceStatementId) != null){
+						return ((Group) srog).findOneConformanceStatement(conformanceStatementId);
+					}		
+				}
+			}
+		}
+		if (this.getSegments().findOneConformanceStatement(conformanceStatementId) != null){
+			return this.getSegments().findOneConformanceStatement(conformanceStatementId);
+		} else if (this.getDatatypes().findOneConformanceStatement(conformanceStatementId) != null){
+			return this.getDatatypes().findOneConformanceStatement(conformanceStatementId);
+		} 
+		return null;
 	}
 
 	public boolean deletePredicate(String predicateId) {
+		for (Message m : this.messages.getChildren()){
+			if (m.deletePredicate(predicateId)){
+				return true;
+			}
+			for (SegmentRefOrGroup srog: m.getChildren()){
+				//TODO Check depth of search
+				if (srog instanceof Group) {
+					if (((Group) srog).deletePredicate(predicateId)){
+						return true;
+					}		
+				}
+			}
+		}
 		if (this.getSegments().deletePredicate(predicateId)) {
 			return true;
 		}
@@ -265,6 +391,19 @@ public class Profile extends DataModel implements java.io.Serializable,
 	}
 
 	public boolean deleteConformanceStatement(String confStatementId) {
+		for (Message m : this.messages.getChildren()){
+			if (m.deleteConformanceStatement(confStatementId)){
+				return true;
+			}
+			for (SegmentRefOrGroup srog: m.getChildren()){
+				//TODO Check depth of search
+				if (srog instanceof Group) {
+					if (((Group) srog).deleteConformanceStatement(confStatementId)){
+						return true;
+					}		
+				}
+			}
+		}
 		if (this.getSegments().deleteConformanceStatement(confStatementId)) {
 			return true;
 		}
@@ -274,16 +413,6 @@ public class Profile extends DataModel implements java.io.Serializable,
 		}
 
 		return false;
-	}
-
-	public ConformanceStatement findOneConformanceStatement(
-			String conformanceStatementId) {
-		ConformanceStatement conformanceStatement = this.getSegments()
-				.findOneConformanceStatement(conformanceStatementId);
-		if (conformanceStatement == null)
-			conformanceStatement = this.getDatatypes()
-					.findOneConformanceStatement(conformanceStatementId);
-		return conformanceStatement;
 	}
 
 	@Override
@@ -308,16 +437,21 @@ public class Profile extends DataModel implements java.io.Serializable,
 		clonedProfile.setScope(scope);
 		clonedProfile.setBaseId(baseId != null ? baseId : id);
 		clonedProfile.setSourceId(id);
+		clonedProfile.setHl7Version(hl7Version);
 
 		return clonedProfile;
 	}
 
-	public String getConstraintId() {
-		return constraintId;
-	}
+	
+	public void merge(Profile p){
+		//Note: merge is used for creation of new profiles do we don't consider constraints and annotations
+		//in each profile, there is one message library with one message
+		this.tables.merge(p.getTables());
+		this.datatypes.merge(p.getDatatypes());
+		this.segments.merge(p.getSegments());
 
-	public void setConstraintId(String constraintId) {
-		this.constraintId = constraintId;
+		for (Message m : p.getMessages().getChildren()){
+			this.messages.addMessage(m);	
+		}
 	}
-
 }

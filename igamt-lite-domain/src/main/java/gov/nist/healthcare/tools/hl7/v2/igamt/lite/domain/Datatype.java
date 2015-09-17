@@ -36,6 +36,8 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
 
 	private String description;
 
+	private String hl7Version;
+
 	// @DBRef
 	// private Datatypes datatypes;
 
@@ -98,6 +100,14 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
 	// public void setDatatypes(Datatypes datatypes) {
 	// this.datatypes = datatypes;
 	// }
+	
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
 
 	public void addComponent(Component c) {
 		c.setPosition(components.size() + 1);
@@ -168,4 +178,26 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
 
 		return clonedDT;
 	}
+
+	public boolean isEqual(Datatype dt) {
+		if (dt == null)
+			return false;
+		if (hl7Version == null) {
+			if (dt.hl7Version != null)
+				return false;
+		} else if (!hl7Version.equals(dt.hl7Version))
+			return false;
+		if (label == null) {
+			if (dt.label != null)
+				return false;
+		} else if (!label.equals(dt.label))
+			return false;
+		if (name == null) {
+			if (dt.name != null)
+				return false;
+		} else if (!name.equals(dt.name))
+			return false;
+		return true;
+	}
+	
 }
