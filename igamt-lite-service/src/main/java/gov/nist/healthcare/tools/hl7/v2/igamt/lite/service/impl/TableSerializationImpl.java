@@ -39,9 +39,8 @@ public class TableSerializationImpl implements TableSerialization {
 
                 Element elmTableLibrary = (Element) tableLibraryDoc.getElementsByTagName("ValueSetLibrary").item(0);
 
-                tableLibrary.setName(elmTableLibrary.getAttribute("Name"));
+//                tableLibrary.setName(elmTableLibrary.getAttribute("Name"));
                 tableLibrary.setValueSetLibraryIdentifier(elmTableLibrary.getAttribute("ValueSetLibraryIdentifier"));
-
                 if (elmTableLibrary.getAttribute("Description") != null && !elmTableLibrary.getAttribute("Description").equals("")) tableLibrary.setDescription(elmTableLibrary.getAttribute("Description"));
                 if (elmTableLibrary.getAttribute("OrganizationName") != null && !elmTableLibrary.getAttribute("OrganizationName").equals("")) tableLibrary.setOrganizationName(elmTableLibrary.getAttribute("OrganizationName"));
                 if (elmTableLibrary.getAttribute("ValueSetLibraryVersion") != null && !elmTableLibrary.getAttribute("ValueSetLibraryVersion").equals("")) tableLibrary.setValueSetLibraryVersion(elmTableLibrary.getAttribute("ValueSetLibraryVersion"));
