@@ -97,7 +97,7 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		}
 		return null;
 	}
-
+	
 	public Component findOneComponent(String id) {
 		if (this.children != null)
 			for (Datatype m : this.children) {
@@ -130,11 +130,21 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	public Datatype findOneDatatype(String label) {
 		if (this.children != null)
 			for (Datatype d : this.children) {
-				if (d.getLabel() == label) {
+				if (d.getLabel().equals(label)) {
 					return d;
 				}
 			}
 
+		return null;
+	}
+	
+	public Datatype findOneDatatypeByBase(String baseName){
+		if (this.children != null)
+			for (Datatype d : this.children){
+				if(d.getName().equals(baseName)) {
+					return d;
+				}
+			}
 		return null;
 	}
 

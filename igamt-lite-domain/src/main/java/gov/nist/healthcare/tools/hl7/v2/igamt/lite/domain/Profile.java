@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Document(collection = "profile")
 public class Profile extends DataModel implements java.io.Serializable,
-Cloneable {
+		Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -52,11 +52,13 @@ Cloneable {
 	private String changes = "";
 
 	private String baseId = null; // baseId is the original version of the
-	// profile that was cloned
+									// profile that was cloned
 
-	private String sourceId;
+	private String constraintId;
 	
 	private String hl7Version = "";
+	
+	private String sourceId;
 
 	public String getBaseId() {
 		return baseId;
@@ -104,6 +106,14 @@ Cloneable {
 
 	public void setMessages(Messages messages) {
 		this.messages = messages;
+	}
+	
+	public String getConstraintId() {
+		return constraintId;
+	}
+
+	public void setConstraintId(String constraintId) {
+		this.constraintId = constraintId;
 	}
 
 	/**
@@ -175,7 +185,7 @@ Cloneable {
 	public void setHl7Version(String hl7Version) {
 		this.hl7Version = hl7Version;
 	}
-
+	
 	@Override
 	public String toString() {
 		// return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
@@ -218,7 +228,7 @@ Cloneable {
 			}
 		}
 		gContext.setByNameOrByIDs(byNameOrByIDs);
-
+		
 		for (Segment s : this.getSegments().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID("" + s.getId());
@@ -239,7 +249,6 @@ Cloneable {
 			}
 		}
 		dtContext.setByNameOrByIDs(byNameOrByIDs);
-
 
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
@@ -332,7 +341,7 @@ Cloneable {
 		} 
 		return null;
 	}
-
+	
 	public ConformanceStatement findOneConformanceStatement(
 			String conformanceStatementId) {
 		for (Message m : this.messages.getChildren()){
@@ -354,8 +363,6 @@ Cloneable {
 			return this.getDatatypes().findOneConformanceStatement(conformanceStatementId);
 		} 
 		return null;
-
-
 	}
 
 	public boolean deletePredicate(String predicateId) {
@@ -434,6 +441,7 @@ Cloneable {
 
 		return clonedProfile;
 	}
+
 	
 	public void merge(Profile p){
 		//Note: merge is used for creation of new profiles do we don't consider constraints and annotations
@@ -446,5 +454,4 @@ Cloneable {
 			this.messages.addMessage(m);	
 		}
 	}
-
 }

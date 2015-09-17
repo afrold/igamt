@@ -399,7 +399,7 @@ public class ProfileDiffSerializationImpl {
 
 	private nu.xom.Element serializeTable(Table t){
 		nu.xom.Element elmt = new nu.xom.Element("TableDefinition");
-		elmt.addAttribute(new Attribute("Id", t.getMappingId()));
+		elmt.addAttribute(new Attribute("Id", t.getBindingIdentifier()));
 		elmt.addAttribute(new Attribute("Name", t.getName()));
 
 		if (this.diff.findOneByTableId(t.getId()) != null){
@@ -518,7 +518,7 @@ public class ProfileDiffSerializationImpl {
 			component.setComment("new component comment");
 			component.setMinLength(56346);
 			table.setName("illegal name change-for test purpose");
-			code.setLabel("illegal new label-for test purpose");
+			code.setDisplayName("illegal new label-for test purpose");
 
 			ProfileDiffImpl diff = new ProfileDiffImpl();
 			diff.compare(p1, p2);

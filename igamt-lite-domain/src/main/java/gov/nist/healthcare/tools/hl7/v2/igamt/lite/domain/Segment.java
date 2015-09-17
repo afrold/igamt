@@ -13,7 +13,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "segment")
-public class Segment extends DataModel implements java.io.Serializable,
+public class Segment extends DataModelWithConstraints implements java.io.Serializable,
 		Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -41,12 +41,8 @@ public class Segment extends DataModel implements java.io.Serializable,
 	private String name;
 
 	private String description;
-
+	
 	private String hl7Version;
-
-	protected List<Predicate> predicates = new ArrayList<Predicate>();
-
-	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
 
 	protected String comment = "";
 
@@ -85,7 +81,7 @@ public class Segment extends DataModel implements java.io.Serializable,
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
+	
 	public String getHl7Version() {
 		return hl7Version;
 	}
@@ -96,14 +92,6 @@ public class Segment extends DataModel implements java.io.Serializable,
 
 	public List<Field> getFields() {
 		return fields;
-	}
-
-	public void addPredicate(Predicate p) {
-		predicates.add(p);
-	}
-
-	public void addConformanceStatement(ConformanceStatement cs) {
-		conformanceStatements.add(cs);
 	}
 
 	public void addField(Field field) {
@@ -143,36 +131,6 @@ public class Segment extends DataModel implements java.io.Serializable,
 		}
 	}
 
-	public List<Predicate> getPredicates() {
-		return predicates;
-	}
-
-	// public void setPredicates(Set<Predicate> predicates) {
-	// if (predicates != null) {
-	// this.predicates.clear();
-	// Iterator<Predicate> it = predicates.iterator();
-	// while (it.hasNext()) {
-	// addPredicate(it.next());
-	// }
-	// }
-	// }
-
-	public List<ConformanceStatement> getConformanceStatements() {
-		return conformanceStatements;
-	}
-
-	// public void setConformanceStatements(
-	// Set<ConformanceStatement> conformanceStatements) {
-	// if (conformanceStatements != null) {
-	// this.conformanceStatements.clear();
-	// Iterator<ConformanceStatement> it = conformanceStatements
-	// .iterator();
-	// while (it.hasNext()) {
-	// addConformanceStatement(it.next());
-	// }
-	// }
-	// }
-
 	public String getComment() {
 		return comment;
 	}
@@ -183,15 +141,6 @@ public class Segment extends DataModel implements java.io.Serializable,
 
 	public void setFields(List<Field> fields) {
 		this.fields = fields;
-	}
-
-	public void setPredicates(List<Predicate> predicates) {
-		this.predicates = predicates;
-	}
-
-	public void setConformanceStatements(
-			List<ConformanceStatement> conformanceStatements) {
-		this.conformanceStatements = conformanceStatements;
 	}
 
 	@Override
@@ -214,34 +163,6 @@ public class Segment extends DataModel implements java.io.Serializable,
 
 	public void setText2(String text2) {
 		this.text2 = text2;
-	}
-
-	public Predicate findOnePredicate(String predicateId) {
-		for (Predicate predicate : this.getPredicates()) {
-			if (predicate.getId().equals(predicateId)) {
-				return predicate;
-			}
-		}
-		return null;
-	}
-
-	public ConformanceStatement findOneConformanceStatement(String confId) {
-		for (ConformanceStatement conf : this.getConformanceStatements()) {
-			if (conf.getId().equals(confId)) {
-				return conf;
-			}
-		}
-		return null;
-	}
-
-	public boolean deletePredicate(String predicateId) {
-		Predicate p = findOnePredicate(predicateId);
-		return p != null && this.getPredicates().remove(p);
-	}
-
-	public boolean deleteConformanceStatement(String cId) {
-		ConformanceStatement c = findOneConformanceStatement(cId);
-		return c != null && this.getConformanceStatements().remove(c);
 	}
 
 	public Segment clone(HashMap<String, Datatype> dtRecords,

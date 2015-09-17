@@ -514,10 +514,10 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 			for (Table t : tables) {
 
-				this.addTocContent(tocDocument, igWriter, t.getMappingId()
+				this.addTocContent(tocDocument, igWriter, t.getBindingIdentifier()
 						+ " : " + t.getName());
 
-				igDocument.add(new Paragraph("Table " + t.getMappingId()
+				igDocument.add(new Paragraph("Table " + t.getBindingIdentifier()
 						+ " : " + t.getName()));
 
 				table = this.addHeaderPdfTable(header, columnWidths,
@@ -1233,7 +1233,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 						"[" + String.valueOf(c.getMinLength()) + ","
 								+ String.valueOf(c.getMaxLength()) + "]",
 						(c.getTable() == null) ? "" : tables.findOne(
-								c.getTable()).getMappingId(), c.getComment());
+								c.getTable()).getBindingIdentifier(), c.getComment());
 				rows.add(row);
 
 				List<Constraint> constraints = this.findConstraints(
@@ -1280,7 +1280,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					"[" + String.valueOf(f.getMinLength()) + ".."
 							+ String.valueOf(f.getMaxLength()) + "]",
 					(f.getTable() == null) ? "" : tables.findOne(f.getTable())
-							.getMappingId(), f.getComment());
+							.getBindingIdentifier(), f.getComment());
 			rows.add(row);
 
 			if (inlineConstraints) {
@@ -1323,7 +1323,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		List<Code> codes = t.getCodes();
 
 		for (Code c : codes) {
-			row = Arrays.asList(c.getCode(), c.getLabel());
+			row = Arrays.asList(c.getValue(), c.getDisplayName());
 			rows.add(row);
 		}
 

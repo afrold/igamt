@@ -353,6 +353,5 @@ public class ProfileController extends CommonController {
 	public Profile createIG(@PathVariable("hl7Version") String hl7Version, @PathVariable("messageIds") String[] messageIds, @RequestParam List<String> msgIds) throws ProfileException {
 		log.info("Creation of profile");
 		return profileCreation.createIntegratedProfile(msgIds, hl7Version);
-	}
-	
+	}	
 }

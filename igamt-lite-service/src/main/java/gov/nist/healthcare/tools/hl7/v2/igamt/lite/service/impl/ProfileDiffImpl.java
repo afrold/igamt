@@ -1294,20 +1294,20 @@ public class ProfileDiffImpl {
 			for (Code c : t.getCodes()) {
 				ElementChange ec = new ElementChange(c.getId(), t.getId());
 				if (tables2.findOneCode(c.getId()) == null) {
-					ec.recordChange("deleted", c.getLabel(), "");
+					ec.recordChange("deleted", c.getDisplayName(), "");
 					ec.setChangeType("del");
 				} else {
 					Code c2 = tables2.findOneCode(c.getId());
-					if (!(c.getLabel().equals(c2.getLabel()))) {
-						ec.recordChange("DisplayName", c.getLabel(),
-								c2.getLabel());
+					if (!(c.getDisplayName().equals(c2.getDisplayName()))) {
+						ec.recordChange("DisplayName", c.getDisplayName(),
+								c2.getDisplayName());
 					}
-					if (!(c.getCodesys().equals(c2.getCodesys()))) {
-						ec.recordChange("CodeSys", c.getCodesys(),
-								c2.getCodesys());
+					if (!(c.getCodeSystem().equals(c2.getCodeSystem()))) {
+						ec.recordChange("CodeSys", c.getCodeSystem(),
+								c2.getCodeSystem());
 					}
-					if (!(c.getCode().equals(c2.getCode()))) {
-						ec.recordChange("Code", c.getCode(), c2.getCode());
+					if (!(c.getValue().equals(c2.getValue()))) {
+						ec.recordChange("Code", c.getValue(), c2.getValue());
 					}
 					ec.setChangeType("edit");
 				}
@@ -1319,7 +1319,7 @@ public class ProfileDiffImpl {
 			for (Code c : t.getCodes()) {
 				if (tables.findOneCode(c.getId()) == null) {
 					ElementChange ec = new ElementChange(c.getId(), t.getId());
-					ec.recordChange("added", "", c.getLabel());
+					ec.recordChange("added", "", c.getDisplayName());
 					ec.setChangeType("add");
 					this.codesChanges.add(ec);
 				}
