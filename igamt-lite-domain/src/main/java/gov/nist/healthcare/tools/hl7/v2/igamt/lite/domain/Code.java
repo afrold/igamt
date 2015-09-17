@@ -17,22 +17,18 @@ public class Code extends DataModel implements Serializable, Cloneable {
 	private String id;
 
 	// @NotNull
-	private String code;
+	private String value;
 
 	// @NotNull
-	private String label;
+	private String displayName;
 
-	private String codesys;
-
-	private String source;
+	private String codeSystem;
+	
+	private String codeSystemVersion;
 
 	private String codeUsage;
 
-	//Added compared to IGL
-	private String comment = "";
-
-	//Added to comply with new value set definition
-	private String codeSystemVersion = "";
+	private String comments;
 	
 	public Code() {
 		super();
@@ -44,56 +40,28 @@ public class Code extends DataModel implements Serializable, Cloneable {
 		return id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public String getValue() {
+		return value;
 	}
 
-	public String getCode() {
-		return code;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public String getDisplayName() {
+		return displayName;
 	}
 
-	public String getLabel() {
-		return label;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
-	public void setLabel(String label) {
-		this.label = label;
+	public String getCodeSystem() {
+		return codeSystem;
 	}
 
-	public String getCodesys() {
-		return codesys;
-	}
-
-	public void setCodesys(String codesys) {
-		this.codesys = codesys;
-	}
-
-	public String getSource() {
-		return source;
-	}
-
-	public void setSource(String source) {
-		this.source = source;
-	}
-
-	public String getCodeUsage() {
-		return codeUsage;
-	}
-
-	public void setCodeUsage(String codeUsage) {
-		this.codeUsage = codeUsage;
-	}
-
-	public String getComment() {
-		return comment;
-	}
-
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setCodeSystem(String codeSystem) {
+		this.codeSystem = codeSystem;
 	}
 
 	public String getCodeSystemVersion() {
@@ -104,24 +72,44 @@ public class Code extends DataModel implements Serializable, Cloneable {
 		this.codeSystemVersion = codeSystemVersion;
 	}
 
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getCodeUsage() {
+		return codeUsage;
+	}
+
+	public void setCodeUsage(String codeUsage) {
+		this.codeUsage = codeUsage;
+	}
+
 	@Override
 	public String toString() {
-		return "Code [code=" + code + ", label=" + label + ", codesys="
-				+ codesys + ", source=" + source + "codeSystemVersion" + 
-				codeSystemVersion + "]";
+		return "Code [id=" + id + ", value=" + value + ", displayName=" + displayName + ", codeSystem=" + codeSystem
+				+ ", codeSystemVersion=" + codeSystemVersion + ", codeUsage=" + codeUsage + ", comments=" + comments
+				+ "]";
 	}
 
 	@Override
 	public Code clone() throws CloneNotSupportedException {
 		Code clonedCode = new Code();
 		clonedCode.setId(id);
-		clonedCode.setCodesys(codesys);
-		clonedCode.setCode(code);
+		clonedCode.setType(type);
+		clonedCode.setValue(value);
+		clonedCode.setDisplayName(displayName);
+		clonedCode.setComments(comments);
 		clonedCode.setCodeUsage(codeUsage);
-		clonedCode.setLabel(label);
-		clonedCode.setSource(source);
-		clonedCode.setComment(comment);
 		clonedCode.setCodeSystemVersion(codeSystemVersion);
+		clonedCode.setCodeSystem(codeSystem);
 
 		return clonedCode;
 	}

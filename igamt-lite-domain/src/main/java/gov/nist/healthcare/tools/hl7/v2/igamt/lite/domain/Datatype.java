@@ -12,7 +12,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "datatype")
-public class Datatype extends DataModel implements java.io.Serializable,
+public class Datatype extends DataModelWithConstraints implements java.io.Serializable,
 		Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -35,12 +35,6 @@ public class Datatype extends DataModel implements java.io.Serializable,
 	private String name;
 
 	private String description;
-	
-	private String hl7Version;
-
-	protected List<Predicate> predicates = new ArrayList<Predicate>();
-
-	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
 
 	// @DBRef
 	// private Datatypes datatypes;
@@ -105,30 +99,6 @@ public class Datatype extends DataModel implements java.io.Serializable,
 	// this.datatypes = datatypes;
 	// }
 
-	public String getHl7Version() {
-		return hl7Version;
-	}
-
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
-	}
-
-	public List<Predicate> getPredicates() {
-		return predicates;
-	}
-
-	public List<ConformanceStatement> getConformanceStatements() {
-		return conformanceStatements;
-	}
-
-	public void addPredicate(Predicate p) {
-		predicates.add(p);
-	}
-
-	public void addConformanceStatement(ConformanceStatement cs) {
-		conformanceStatements.add(cs);
-	}
-
 	public void addComponent(Component c) {
 		c.setPosition(components.size() + 1);
 		components.add(c);
@@ -166,43 +136,6 @@ public class Datatype extends DataModel implements java.io.Serializable,
 		this.usageNote = usageNote;
 	}
 
-	public void setPredicates(List<Predicate> predicates) {
-		this.predicates = predicates;
-	}
-
-	public void setConformanceStatements(
-			List<ConformanceStatement> conformanceStatements) {
-		this.conformanceStatements = conformanceStatements;
-	}
-
-	public Predicate findOnePredicate(String predicateId) {
-		for (Predicate predicate : this.getPredicates()) {
-			if (predicate.getId().equals(predicateId)) {
-				return predicate;
-			}
-		}
-		return null;
-	}
-
-	public ConformanceStatement findOneConformanceStatement(String confId) {
-		for (ConformanceStatement conf : this.getConformanceStatements()) {
-			if (conf.getId().equals(confId)) {
-				return conf;
-			}
-		}
-		return null;
-	}
-
-	public boolean deletePredicate(String predicateId) {
-		Predicate p = findOnePredicate(predicateId);
-		return p != null && this.getPredicates().remove(p);
-	}
-
-	public boolean deleteConformanceStatement(String cId) {
-		ConformanceStatement c = findOneConformanceStatement(cId);
-		return c != null && this.getPredicates().remove(c);
-	}
-
 	@Override
 	public String toString() {
 		return "Datatype [id=" + id + ", label=" + label + ", name=" + name
@@ -235,27 +168,4 @@ public class Datatype extends DataModel implements java.io.Serializable,
 
 		return clonedDT;
 	}
-
-	public boolean isEqual(Datatype dt) {
-		if (dt == null)
-			return false;
-		if (hl7Version == null) {
-			if (dt.hl7Version != null)
-				return false;
-		} else if (!hl7Version.equals(dt.hl7Version))
-			return false;
-		if (label == null) {
-			if (dt.label != null)
-				return false;
-		} else if (!label.equals(dt.label))
-			return false;
-		if (name == null) {
-			if (dt.name != null)
-				return false;
-		} else if (!name.equals(dt.name))
-			return false;
-		return true;
-	}
-	
-	
 }

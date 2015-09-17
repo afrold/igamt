@@ -51,6 +51,15 @@ import org.xml.sax.SAXException;
 
 public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
+	public String releaseConstraintId(String xmlConstraints){
+		if(xmlConstraints != null){
+			Document conformanceContextDoc = this.stringToDom(xmlConstraints);
+			Element elmConformanceContext = (Element) conformanceContextDoc.getElementsByTagName("ConformanceContext").item(0);
+			return elmConformanceContext.getAttribute("UUID");
+		}
+		return null;
+	}
+	
 	@Override
 	public Constraints deserializeXMLToConformanceStatements(
 			String xmlConstraints) {
