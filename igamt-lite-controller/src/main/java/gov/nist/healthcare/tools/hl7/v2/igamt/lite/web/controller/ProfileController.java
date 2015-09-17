@@ -384,7 +384,7 @@ public class ProfileController extends CommonController {
 		return profileService.verifyValueSet(p, id, "valueset");
 		}
 	
-	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/hl7/versions", method = RequestMethod.GET, produces = "application/json")
 	public List<String> findHl7Versions() {
 		logger.info("Fetching all HL7 versions");
 		List<String> result = profileCreation.findHl7Versions();
@@ -399,9 +399,17 @@ public class ProfileController extends CommonController {
 	}
 
 	@RequestMapping(value = "/create/{hl7Version}", method = RequestMethod.POST, produces = "application/json")
-	public Profile createIG(@PathVariable("hl7Version") String hl7Version, @RequestParam List<String> msgIds) throws ProfileException {
+	public Profile createIG(@PathVariable("hl7Version") String hl7Version, @RequestParam List<String> msgIds) throws ProfileException, UserAccountNotFoundException {
 		logger.info("Creation of profile");
-		return profileCreation.createIntegratedProfile(msgIds, hl7Version);
+		User u = userService.getCurrentUser();
+		Account account = accountRepository.findByTheAccountsUsername(u
+				.getUsername());
+		if (account == null)
+			throw new UserAccountNotFoundException();
+		Profile p = profileCreation.createIntegratedProfile(msgIds, hl7Version);
+		p.setAccountId(account.getId());		
+		profileService.save(p);
+		return p;
 	}
 	
 }

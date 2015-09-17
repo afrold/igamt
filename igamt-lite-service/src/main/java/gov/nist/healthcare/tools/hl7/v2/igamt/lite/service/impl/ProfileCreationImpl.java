@@ -97,7 +97,7 @@ public class ProfileCreationImpl implements ProfileCreationService{
 //		metaData.setSchemaVersion(SchemaVersion.V1_0.value());
 		
 		//Setting profile info
-		pTarget.setScope(ProfileScope.PRELOADED);
+		pTarget.setScope(ProfileScope.USER);
 		pTarget.setComment("Created " + date.toString());
 		
 		//Filling libraries
