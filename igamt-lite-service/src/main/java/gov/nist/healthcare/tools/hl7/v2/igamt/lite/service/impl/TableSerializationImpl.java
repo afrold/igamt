@@ -39,9 +39,8 @@ public class TableSerializationImpl implements TableSerialization {
 
                 Element elmTableLibrary = (Element) tableLibraryDoc.getElementsByTagName("ValueSetLibrary").item(0);
 
-                tableLibrary.setName(elmTableLibrary.getAttribute("Name"));
+//                tableLibrary.setName(elmTableLibrary.getAttribute("Name"));
                 tableLibrary.setValueSetLibraryIdentifier(elmTableLibrary.getAttribute("ValueSetLibraryIdentifier"));
-
                 if (elmTableLibrary.getAttribute("Description") != null && !elmTableLibrary.getAttribute("Description").equals("")) tableLibrary.setDescription(elmTableLibrary.getAttribute("Description"));
                 if (elmTableLibrary.getAttribute("OrganizationName") != null && !elmTableLibrary.getAttribute("OrganizationName").equals("")) tableLibrary.setOrganizationName(elmTableLibrary.getAttribute("OrganizationName"));
                 if (elmTableLibrary.getAttribute("ValueSetLibraryVersion") != null && !elmTableLibrary.getAttribute("ValueSetLibraryVersion").equals("")) tableLibrary.setValueSetLibraryVersion(elmTableLibrary.getAttribute("ValueSetLibraryVersion"));
@@ -117,10 +116,6 @@ public class TableSerializationImpl implements TableSerialization {
         	
         	 	for (int i = 0; i < valueSetDefinitionsNode.getLength(); i++) {
         	 		Element valueSetDefinitionsElement = (Element) valueSetDefinitionsNode.item(i);
-        	 		
-        	 		String group = valueSetDefinitionsElement.getAttribute("Group");
-        	 		int order = Integer.parseInt(valueSetDefinitionsElement.getAttribute("Order"));
-        	 		
         	 		NodeList valueSetDefinitionNodes = valueSetDefinitionsElement.getElementsByTagName("ValueSetDefinition");
                     for (int j = 0; j < valueSetDefinitionNodes.getLength(); j++) {
                             Element elmTable = (Element) valueSetDefinitionNodes.item(j);
@@ -129,8 +124,11 @@ public class TableSerializationImpl implements TableSerialization {
 
                             tableObj.setBindingIdentifier(elmTable.getAttribute("BindingIdentifier"));
                             tableObj.setName(elmTable.getAttribute("Name"));
-                            tableObj.setGroup(group);
-                            tableObj.setOrder(order);
+                            tableObj.setGroup(valueSetDefinitionsElement.getAttribute("Group"));
+                            String orderStr = valueSetDefinitionsElement.getAttribute("Order");
+                            if(orderStr != null && !orderStr.equals("")){
+                            	tableObj.setOrder(Integer.parseInt(orderStr));
+                	 		}
 
                             if (elmTable.getAttribute("Description") != null && !elmTable.getAttribute("Description").equals("")) tableObj.setDescription(elmTable.getAttribute("Description"));
                             if (elmTable.getAttribute("Version") != null && !elmTable.getAttribute("Version").equals("")) tableObj.setVersion(elmTable.getAttribute("Version"));

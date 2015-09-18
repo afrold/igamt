@@ -113,12 +113,12 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
         };
 
         var isAuthenticated = function() {
-//            if ( angular.isObject(currentUser) && currentUser.authenticated === true) {
-//                return true;
-//            }
-//            else {
-//                return false;
-//            }
+            if ( angular.isObject(currentUser) && currentUser.authenticated === true) {
+                return true;
+            }
+            else {
+                return false;
+            }
         	return true;
         };
 

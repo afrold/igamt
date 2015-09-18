@@ -85,6 +85,8 @@ public class ProfileSerializationImpl implements ProfileSerialization {
                 // Read Profile Libs
                 profile.setSegments(new Segments());
                 profile.setDatatypes(new Datatypes());
+                
+                
                 profile.setTables(new TableSerializationImpl().deserializeXMLToTableLibrary(xmlValueSet));
                 this.conformanceStatement = new ConstraintsSerializationImpl().deserializeXMLToConformanceStatements(xmlConstraints);
                 this.predicates = new ConstraintsSerializationImpl().deserializeXMLToPredicates(xmlConstraints);
