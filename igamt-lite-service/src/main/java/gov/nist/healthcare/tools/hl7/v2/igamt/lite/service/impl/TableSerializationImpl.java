@@ -32,187 +32,174 @@ import org.xml.sax.SAXException;
 
 public class TableSerializationImpl implements TableSerialization {
 
-	@Override
-	public Tables deserializeXMLToTableLibrary(String xmlContents) {
-		Document tableLibraryDoc = this.stringToDom(xmlContents);
-		Tables tableLibrary = new Tables();
+        @Override
+        public Tables deserializeXMLToTableLibrary(String xmlContents) {
+                Document tableLibraryDoc = this.stringToDom(xmlContents);
+                Tables tableLibrary = new Tables();
 
-		Element elmTableLibrary = (Element) tableLibraryDoc
-				.getElementsByTagName("TableLibrary").item(0);
-		tableLibrary
-				.setDescription(elmTableLibrary.getAttribute("Description"));
-		tableLibrary.setName(elmTableLibrary.getAttribute("Name"));
-		tableLibrary.setOrganizationName(elmTableLibrary
-				.getAttribute("OrganizationName"));
-		tableLibrary.setStatus(elmTableLibrary.getAttribute("Status"));
-		tableLibrary.setTableLibraryIdentifier(elmTableLibrary
-				.getAttribute("TableLibraryIdentifier"));
-		tableLibrary.setTableLibraryVersion(elmTableLibrary
-				.getAttribute("TableLibraryVersion"));
+                Element elmTableLibrary = (Element) tableLibraryDoc.getElementsByTagName("ValueSetLibrary").item(0);
 
-		this.deserializeXMLToTable(elmTableLibrary, tableLibrary);
+//                tableLibrary.setName(elmTableLibrary.getAttribute("Name"));
+                tableLibrary.setValueSetLibraryIdentifier(elmTableLibrary.getAttribute("ValueSetLibraryIdentifier"));
+                if (elmTableLibrary.getAttribute("Description") != null && !elmTableLibrary.getAttribute("Description").equals("")) tableLibrary.setDescription(elmTableLibrary.getAttribute("Description"));
+                if (elmTableLibrary.getAttribute("OrganizationName") != null && !elmTableLibrary.getAttribute("OrganizationName").equals("")) tableLibrary.setOrganizationName(elmTableLibrary.getAttribute("OrganizationName"));
+                if (elmTableLibrary.getAttribute("ValueSetLibraryVersion") != null && !elmTableLibrary.getAttribute("ValueSetLibraryVersion").equals("")) tableLibrary.setValueSetLibraryVersion(elmTableLibrary.getAttribute("ValueSetLibraryVersion"));
+                if (elmTableLibrary.getAttribute("Status") != null && !elmTableLibrary.getAttribute("Status").equals("")) tableLibrary.setStatus(elmTableLibrary.getAttribute("Status"));
+                if (elmTableLibrary.getAttribute("DateCreated") != null && !elmTableLibrary.getAttribute("DateCreated").equals("")) tableLibrary.setDateCreated(elmTableLibrary.getAttribute("DateCreated"));
 
-		return tableLibrary;
-	}
+                this.deserializeXMLToTable(elmTableLibrary, tableLibrary);
 
-	@Override
-	public Tables deserializeXMLToTableLibrary(nu.xom.Document xmlDoc) {
-		return deserializeXMLToTableLibrary(xmlDoc.toString());
-	}
+                return tableLibrary;
+        }
 
-	@Override
-	public String serializeTableLibraryToXML(Tables tableLibrary) {
-		return this.serializeTableLibraryToDoc(tableLibrary).toXML();
-	}
+        @Override
+        public Tables deserializeXMLToTableLibrary(nu.xom.Document xmlDoc) {
+                return deserializeXMLToTableLibrary(xmlDoc.toString());
+        }
 
-	@Override
-	public nu.xom.Document serializeTableLibraryToDoc(Tables tableLibrary) {
-		nu.xom.Element elmTableLibrary = new nu.xom.Element("TableLibrary");
-		elmTableLibrary.setNamespaceURI("http://www.nist.gov/healthcare/data");
-		elmTableLibrary.addAttribute(new Attribute("TableLibraryIdentifier",
-				tableLibrary.getTableLibraryIdentifier()));
-		elmTableLibrary.addAttribute(new Attribute("Status", tableLibrary
-				.getStatus()));
-		elmTableLibrary.addAttribute(new Attribute("TableLibraryVersion",
-				tableLibrary.getTableLibraryVersion()));
-		elmTableLibrary.addAttribute(new Attribute("OrganizationName",
-				tableLibrary.getOrganizationName()));
-		elmTableLibrary.addAttribute(new Attribute("Name", tableLibrary
-				.getName()));
-		elmTableLibrary.addAttribute(new Attribute("Description", tableLibrary
-				.getDescription()));
+        @Override
+        public String serializeTableLibraryToXML(Tables tableLibrary) {
+                return this.serializeTableLibraryToDoc(tableLibrary).toXML();
+        }
 
-		for (Table t : tableLibrary.getChildren()) {
-			nu.xom.Element elmTableDefinition = new nu.xom.Element(
-					"TableDefinition");
-			elmTableDefinition.addAttribute(new Attribute("AlternateId", (t
-					.getMappingAlternateId() == null) ? "" : t
-					.getMappingAlternateId()));
-			elmTableDefinition.addAttribute(new Attribute("Id", (t
-					.getMappingId() == null) ? "" : t.getMappingId()));
-			elmTableDefinition.addAttribute(new Attribute("Name",
-					(t.getName() == null) ? "" : t.getName()));
-			elmTableDefinition.addAttribute(new Attribute("Version", (t
-					.getVersion() == null) ? "" : "" + t.getVersion()));
-			elmTableDefinition.addAttribute(new Attribute("Codesys", (t
-					.getCodesys() == null) ? "" : t.getCodesys()));
-			elmTableDefinition.addAttribute(new Attribute("Oid",
-					(t.getOid() == null) ? "" : t.getOid()));
-			elmTableDefinition.addAttribute(new Attribute("Type", (t
-					.getTableType() == null) ? "" : t.getTableType()));
-			elmTableDefinition.addAttribute(new Attribute("Extensibility", (t
-					.getExtensibility() == null) ? "" : t.getExtensibility()));
-			elmTableDefinition.addAttribute(new Attribute("Stability", (t
-					.getStability() == null) ? "" : t.getStability()));
+        @Override
+        public nu.xom.Document serializeTableLibraryToDoc(Tables tableLibrary) {
+                nu.xom.Element elmTableLibrary = new nu.xom.Element("ValueSetLibrary");
+                elmTableLibrary.setNamespaceURI("http://www.nist.gov/healthcare/data");
+                elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier",tableLibrary.getValueSetLibraryIdentifier()));
+                elmTableLibrary.addAttribute(new Attribute("Status", tableLibrary.getStatus()));
+                elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryVersion", tableLibrary.getValueSetLibraryVersion()));
+                elmTableLibrary.addAttribute(new Attribute("OrganizationName", tableLibrary.getOrganizationName()));
+                elmTableLibrary.addAttribute(new Attribute("Name", tableLibrary.getName()));
+                elmTableLibrary.addAttribute(new Attribute("Description", tableLibrary.getDescription()));
 
-			elmTableLibrary.appendChild(elmTableDefinition);
+                nu.xom.Element elmValueSetDefinitions = new nu.xom.Element("ValueSetDefinitions");
+                elmTableLibrary.appendChild(elmValueSetDefinitions);
 
-			if (t.getCodes() != null) {
-				for (Code c : t.getCodes()) {
-					nu.xom.Element elmTableElement = new nu.xom.Element(
-							"TableElement");
-					elmTableElement.addAttribute(new Attribute("Code", (c
-							.getCode() == null) ? "" : c.getCode()));
-					elmTableElement.addAttribute(new Attribute("DisplayName",
-							(c.getLabel() == null) ? "" : c.getLabel()));
-					elmTableElement.addAttribute(new Attribute("Codesys", (c
-							.getCodesys() == null) ? "" : c.getCodesys()));
-					elmTableElement.addAttribute(new Attribute("Source", (c
-							.getSource() == null) ? "" : c.getSource()));
-					elmTableElement.addAttribute(new Attribute("Usage", (c
-							.getCodeUsage() == null) ? "" : c.getCodeUsage()));
-					elmTableDefinition.appendChild(elmTableElement);
-				}
-			}
+                for (Table t : tableLibrary.getChildren()) {
+                        nu.xom.Element elmValueSetDefinition = new nu.xom.Element("ValueSetDefinition");
+                        elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
+                        elmValueSetDefinition.addAttribute(new Attribute("Name", (t.getName() == null) ? "" : t.getName()));
+                        elmValueSetDefinition.addAttribute(new Attribute("Description", (t.getDescription() == null) ? "" : t.getDescription()));
+                        elmValueSetDefinition.addAttribute(new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
+                        elmValueSetDefinition.addAttribute(new Attribute("Oid",(t.getOid() == null) ? "" : t.getOid()));
+                        elmValueSetDefinition.addAttribute(new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability()));
+                        elmValueSetDefinition.addAttribute(new Attribute("Extensibility", (t.getExtensibility() == null) ? "" : t.getExtensibility()));
+                        elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition", (t.getContentDefinition() == null) ? "" : t.getContentDefinition()));
 
-		}
 
-		nu.xom.Document doc = new nu.xom.Document(elmTableLibrary);
+                        elmValueSetDefinitions.appendChild(elmValueSetDefinition);
 
-		return doc;
-	}
+                        if (t.getCodes() != null) {
+                                for (Code c : t.getCodes()) {
+                                        nu.xom.Element elmValueElement = new nu.xom.Element("ValueElement");
+                                        elmValueElement.addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
+                                        elmValueElement.addAttribute(new Attribute("DisplayName",(c.getDisplayName() == null) ? "" : c.getDisplayName()));
+                                        elmValueElement.addAttribute(new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
+                                        elmValueElement.addAttribute(new Attribute("CodeSystemVersion", (c.getCodeSystemVersion() == null) ? "" : c.getCodeSystemVersion()));
+                                        elmValueElement.addAttribute(new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
+                                        elmValueElement.addAttribute(new Attribute("Comments", (c.getComments() == null) ? "" : c.getComments()));
+                                        elmValueSetDefinition.appendChild(elmValueElement);
+                                }
+                        }
 
-	private void deserializeXMLToTable(Element elmTableLibrary,
-			Tables tableLibrary) {
+                }
 
-		NodeList nodes = elmTableLibrary
-				.getElementsByTagName("TableDefinition");
-		for (int i = 0; i < nodes.getLength(); i++) {
-			Element elmTable = (Element) nodes.item(i);
+                nu.xom.Document doc = new nu.xom.Document(elmTableLibrary);
 
-			Table tableObj = new Table();
+                return doc;
+        }
 
-			tableObj.setCodesys(elmTable.getAttribute("Codesys"));
-			tableObj.setMappingAlternateId(elmTable.getAttribute("AlternateId"));
-			tableObj.setMappingId(elmTable.getAttribute("Id"));
-			tableObj.setName(elmTable.getAttribute("Name"));
-			tableObj.setOid(elmTable.getAttribute("Oid"));
-			tableObj.setTableType(elmTable.getAttribute("Type"));
-			if (elmTable.getAttribute("Version") != null
-					&& !elmTable.getAttribute("Version").equals(""))
-				tableObj.setVersion(elmTable.getAttribute("Version"));
+        private void deserializeXMLToTable(Element elmTableLibrary, Tables tableLibrary) {
+        	
+        	 	NodeList valueSetDefinitionsNode = elmTableLibrary.getElementsByTagName("ValueSetDefinitions");
+        	
+        	 	for (int i = 0; i < valueSetDefinitionsNode.getLength(); i++) {
+        	 		Element valueSetDefinitionsElement = (Element) valueSetDefinitionsNode.item(i);
+        	 		NodeList valueSetDefinitionNodes = valueSetDefinitionsElement.getElementsByTagName("ValueSetDefinition");
+                    for (int j = 0; j < valueSetDefinitionNodes.getLength(); j++) {
+                            Element elmTable = (Element) valueSetDefinitionNodes.item(j);
 
-			if (elmTable.getAttribute("Extensibility") != null
-					&& !elmTable.getAttribute("Extensibility").equals("")) {
-				tableObj.setExtensibility(elmTable
-						.getAttribute("Extensibility"));
-			} else {
-				tableObj.setStability("Open");
-			}
+                            Table tableObj = new Table();
 
-			if (elmTable.getAttribute("Stability") != null
-					&& !elmTable.getAttribute("Stability").equals("")) {
-				tableObj.setStability(elmTable.getAttribute("Stability"));
-			} else {
-				tableObj.setStability("Static");
-			}
+                            tableObj.setBindingIdentifier(elmTable.getAttribute("BindingIdentifier"));
+                            tableObj.setName(elmTable.getAttribute("Name"));
+                            tableObj.setGroup(valueSetDefinitionsElement.getAttribute("Group"));
+                            String orderStr = valueSetDefinitionsElement.getAttribute("Order");
+                            if(orderStr != null && !orderStr.equals("")){
+                            	tableObj.setOrder(Integer.parseInt(orderStr));
+                	 		}
 
-			this.deserializeXMLToCode(elmTable, tableObj);
-			tableLibrary.addTable(tableObj);
-		}
+                            if (elmTable.getAttribute("Description") != null && !elmTable.getAttribute("Description").equals("")) tableObj.setDescription(elmTable.getAttribute("Description"));
+                            if (elmTable.getAttribute("Version") != null && !elmTable.getAttribute("Version").equals("")) tableObj.setVersion(elmTable.getAttribute("Version"));
+                            if (elmTable.getAttribute("Oid") != null && !elmTable.getAttribute("Oid").equals("")) tableObj.setOid(elmTable.getAttribute("Oid"));
 
-	}
+                            if (elmTable.getAttribute("Extensibility") != null && !elmTable.getAttribute("Extensibility").equals("")) {
+                                    tableObj.setExtensibility(elmTable.getAttribute("Extensibility"));
+                            } else {
+                                    tableObj.setStability("Open");
+                            }
 
-	private void deserializeXMLToCode(Element elmTable, Table tableObj) {
-		NodeList nodes = elmTable.getElementsByTagName("TableElement");
+                            if (elmTable.getAttribute("Stability") != null && !elmTable.getAttribute("Stability").equals("")) {
+                                    tableObj.setStability(elmTable.getAttribute("Stability"));
+                            } else {
+                                    tableObj.setStability("Static");
+                            }
 
-		for (int i = 0; i < nodes.getLength(); i++) {
-			Element elmCode = (Element) nodes.item(i);
+                            if (elmTable.getAttribute("ContentDefinition") != null && !elmTable.getAttribute("ContentDefinition").equals("")) {
+                                    tableObj.setContentDefinition(elmTable.getAttribute("ContentDefinition"));
+                            } else {
+                                    tableObj.setContentDefinition("Extensional");
+                            }
 
-			Code codeObj = new Code();
+                            this.deserializeXMLToCode(elmTable, tableObj);
+                            tableLibrary.addTable(tableObj);
+                    }
+        	 	}
+        }
 
-			codeObj.setCode(elmCode.getAttribute("Code"));
-			codeObj.setCodesys(elmCode.getAttribute("Codesys"));
-			codeObj.setLabel(elmCode.getAttribute("DisplayName"));
-			codeObj.setSource(elmCode.getAttribute("Source"));
-			if (elmCode.getAttribute("Usage") != null
-					&& !elmTable.getAttribute("Usage").equals("")) {
-				codeObj.setCodeUsage(elmTable.getAttribute("Usage"));
-			} else {
-				codeObj.setCodeUsage("R");
-			}
+        private void deserializeXMLToCode(Element elmTable, Table tableObj) {
+                NodeList nodes = elmTable.getElementsByTagName("ValueElement");
 
-			tableObj.addCode(codeObj);
-		}
+                for (int i = 0; i < nodes.getLength(); i++) {
+                        Element elmCode = (Element) nodes.item(i);
 
-	}
+                        Code codeObj = new Code();
 
-	private Document stringToDom(String xmlSource) {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setNamespaceAware(true);
-		factory.setIgnoringComments(false);
-		factory.setIgnoringElementContentWhitespace(true);
-		DocumentBuilder builder;
-		try {
-			builder = factory.newDocumentBuilder();
-			return builder.parse(new InputSource(new StringReader(xmlSource)));
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+                        codeObj.setValue(elmCode.getAttribute("Value"));
+                        codeObj.setDisplayName(elmCode.getAttribute("DisplayName"));
+
+                        if (elmCode.getAttribute("CodeSystem") != null && !elmTable.getAttribute("CodeSystem").equals("")) codeObj.setCodeSystem(elmTable.getAttribute("CodeSystem"));
+                        if (elmCode.getAttribute("CodeSystemVersion") != null && !elmTable.getAttribute("CodeSystemVersion").equals("")) codeObj.setCodeSystemVersion(elmTable.getAttribute("CodeSystemVersion"));
+                        if (elmCode.getAttribute("Comments") != null && !elmTable.getAttribute("Comments").equals("")) codeObj.setComments(elmTable.getAttribute("Comments"));
+
+                        if (elmCode.getAttribute("Usage") != null && !elmTable.getAttribute("Usage").equals("")) {
+                                codeObj.setCodeUsage(elmTable.getAttribute("Usage"));
+                        } else {
+                                codeObj.setCodeUsage("R");
+                        }
+
+                        tableObj.addCode(codeObj);
+                }
+
+        }
+
+        private Document stringToDom(String xmlSource) {
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                factory.setNamespaceAware(true);
+                factory.setIgnoringComments(false);
+                factory.setIgnoringElementContentWhitespace(true);
+                DocumentBuilder builder;
+                try {
+                        builder = factory.newDocumentBuilder();
+                        return builder.parse(new InputSource(new StringReader(xmlSource)));
+                } catch (ParserConfigurationException e) {
+                        e.printStackTrace();
+                } catch (SAXException e) {
+                        e.printStackTrace();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+                return null;
+        }
 }

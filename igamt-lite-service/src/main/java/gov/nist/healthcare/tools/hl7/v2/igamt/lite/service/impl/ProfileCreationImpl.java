@@ -39,14 +39,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 
 @Service
-public class ProfileCreationImpl implements ProfileCreationService {
+public class ProfileCreationImpl implements ProfileCreationService{
 
 	@Autowired
 	private ProfileRepository profileRepository;
@@ -54,21 +53,21 @@ public class ProfileCreationImpl implements ProfileCreationService {
 	@Autowired
 	private ProfileService profileService;
 
+
 	@Override
 	public List<String> findHl7Versions() {
-		// fetching messages of version hl7Version
+		//fetching messages of version hl7Version
 		return profileRepository.findHl7Versions();
 	}
 
 	@Override
 	public List<String[]> summary(String hl7Version) {
-		// Fetching messages of version hl7Version
+		//Fetching messages of version hl7Version
 		List<String[]> rst = new ArrayList<String[]>();
-		List<Profile> pl = profileRepository.findStandardByVersion(hl7Version);
-		for (Profile p : pl) {
-			for (Message m : p.getMessages().getChildren()) {
-				String[] msgDesc = new String[] { m.getId(), m.getStructID(), m.getVersion(), m.getType(), m.getEvent(),
-						m.getDescription() };
+		List<Profile> pl = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version);
+		for (Profile p : pl){
+			for (Message m: p.getMessages().getChildren()){
+				String[] msgDesc = new String [] {m.getId(), m.getEvent(), m.getStructID(), m.getDescription()};
 				rst.add(msgDesc);
 			}
 		}
@@ -77,71 +76,68 @@ public class ProfileCreationImpl implements ProfileCreationService {
 
 	@Override
 	public Profile createIntegratedProfile(List<String> msgIds, String hl7Version) throws ProfileException {
-		// Creation of profile
-		Profile pSource = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version)
-				.get(0);
+		//Creation of profile
+		Profile pSource = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).get(0);
 
 		Profile pTarget = new Profile();
 
-		// Setting metaData
+		//Setting metaData
 		ProfileMetaData metaData = new ProfileMetaData();
 		pTarget.setMetaData(metaData);
 		DateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
 		Date date = new Date();
 		metaData.setDate(dateFormat.format(date));
 		metaData.setVersion("1.0");
-		// metaData.setName("");
-		// metaData.setOrgName("");
-		// metaData.setSubTitle("");
+//		metaData.setName("");
+//		metaData.setOrgName("");
+//		metaData.setSubTitle("");
 
 		metaData.setHl7Version(hl7Version);
 		metaData.setStatus("Draft");
-		// metaData.setSchemaVersion(SchemaVersion.V1_0.value());
-
-		// Setting profile info
+//		metaData.setSchemaVersion(SchemaVersion.V1_0.value());
+		
+		//Setting profile info
 		pTarget.setScope(ProfileScope.USER);
 		pTarget.setComment("Created " + date.toString());
-
-		// Filling libraries
+		
+		//Filling libraries--was
 		Messages msgsTarget = new Messages();
 		Segments sgtsTarget = new Segments();
 		Datatypes dtsTarget = new Datatypes();
-		Tables tabsTarget = new Tables();
 		pTarget.setMessages(msgsTarget);
 		pTarget.setSegments(sgtsTarget);
 		pTarget.setDatatypes(dtsTarget);
-		pTarget.setTables(tabsTarget);
-		for (String msgId : msgIds) {
+
+		for (String msgId : msgIds){
 			Message m = pSource.getMessages().findOne(msgId);
 			msgsTarget.addMessage(m);
-			for (SegmentRefOrGroup sg : m.getChildren()) {
-				if (sg instanceof SegmentRef) {
+			for (SegmentRefOrGroup sg : m.getChildren()){
+				if (sg instanceof SegmentRef){
 					addSegment((SegmentRef) sg, pSource, pTarget);
-				} else if (sg instanceof Group) {
+				} else if (sg instanceof Group){
 					addGroup((Group) sg, pSource, pTarget);
 				}
 			}
 		}
-		profileService.save(pTarget);
 		return pTarget;
 	}
-
-	private void addSegment(SegmentRef sref, Profile pSource, Profile pTarget) {
+	
+	private void addSegment(SegmentRef sref, Profile pSource, Profile pTarget){
 		Segments sgtsTarget = pTarget.getSegments();
 		Datatypes dtsTarget = pTarget.getDatatypes();
 		Segment sgt = pSource.getSegments().findOne(sref.getRef());
 		sgtsTarget.addSegment(sgt);
-		for (Field f : sgt.getFields()) {
+		for (Field f : sgt.getFields()){
 			Datatype dt = pSource.getDatatypes().findOne(f.getDatatype());
 			dtsTarget.addDatatype(dt);
 		}
 	}
-
-	private void addGroup(Group g, Profile pSource, Profile pTarget) {
-		for (SegmentRefOrGroup sg : g.getChildren()) {
-			if (sg instanceof SegmentRef) {
+	
+	private void addGroup(Group g, Profile pSource, Profile pTarget){
+		for (SegmentRefOrGroup sg : g.getChildren()){
+			if (sg instanceof SegmentRef){
 				addSegment((SegmentRef) sg, pSource, pTarget);
-			} else if (sg instanceof Group) {
+			} else if (sg instanceof Group){
 				addGroup((Group) sg, pSource, pTarget);
 			}
 		}
@@ -149,8 +145,9 @@ public class ProfileCreationImpl implements ProfileCreationService {
 
 	@Override
 	public List<Profile> findProfilesByHl7Versions() {
-		// Fetching all HL7Standard profiles
+		//Fetching all HL7Standard profiles
 		return profileRepository.findByScope(ProfileScope.HL7STANDARD);
 	}
+
 
 }

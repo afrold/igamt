@@ -122,12 +122,6 @@ public class ProfileController extends CommonController {
 		return result;
 	}
 
-	@RequestMapping(value = "/abc/def/ghi", method = RequestMethod.GET)
-	public String tryIt() {
-		log.info("abc=>");
-		return "{abc}";
-	}
-	
 	@RequestMapping(value = "/cuser", method = RequestMethod.GET)
 	public List<Profile> userProfiles() throws UserAccountNotFoundException {
 		log.info("Fetching all custom profiles...");
