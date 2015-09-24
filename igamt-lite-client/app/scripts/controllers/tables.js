@@ -34,11 +34,9 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         var newTable = angular.fromJson({
             id: new ObjectId().toString(),
             type: 'table',
-            mappingAlternateId: '',
-            mappingId: '',
+            bindingIdentifier: '',
             name: '',
             version: '',
-            codesys: '',
             oid: '',
             tableType: '',
             stability: '',
@@ -58,46 +56,45 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
     };
 
-    $scope.addCode = function () {
-        $rootScope.newCodeFakeId = $rootScope.newCodeFakeId - 1;
-        var newCode = {
+    $scope.addValue = function () {
+        $rootScope.newValueFakeId = $rootScope.newValueFakeId - 1;
+        var newValue = {
             id: new ObjectId().toString(),
-            type: 'code',
-            code: '',
-            label: '',
-            codesys: '',
-            source: '',
+            type: 'value',
+            value: '',
+            displayName: '',
+            codeSystem: '',
             codeUsage: ''
         };
 
 
-        $rootScope.table.codes.unshift(newCode);
-        var newCodeBlock = {targetType:'table', targetId:$rootScope.table.id, obj:newCode};
-        if(!$scope.isNewObject('table', 'addd', $rootScope.table.id)){
-        	$rootScope.recordChangeForEdit2('code', "add", null,'code', newCodeBlock);
+        $rootScope.table.codes.unshift(newValue);
+        var newValueBlock = {targetType:'table', targetId:$rootScope.table.id, obj:newValue};
+        if(!$scope.isNewObject('table', 'add', $rootScope.table.id)){
+        	$rootScope.recordChangeForEdit2('value', "add", null,'value', newValueBlock);
         }
     };
 
-    $scope.deleteCode = function (code) {
-        if (!$scope.isNewCodeThenDelete(code.id)) {
-            $rootScope.recordChangeForEdit2('code', "delete", code.id,'id', code.id);
+    $scope.deleteValue = function (value) {
+        if (!$scope.isNewValueThenDelete(value.id)) {
+            $rootScope.recordChangeForEdit2('value', "delete", value.id,'id', value.id);
         }
-        $rootScope.table.codes.splice($rootScope.table.codes.indexOf(code), 1);
+        $rootScope.table.codes.splice($rootScope.table.codes.indexOf(value), 1);
     };
 
-    $scope.isNewCodeThenDelete = function (id) {
-    	if($rootScope.isNewObject('code', 'add',id)){
-    		if($rootScope.changes['code'] !== undefined && $rootScope.changes['code']['add'] !== undefined) {
-    			for (var i = 0; i < $rootScope.changes['code']['add'].length; i++) {
-        			var tmp = $rootScope.changes['code']['add'][i];
+    $scope.isNewValueThenDelete = function (id) {
+    	if($rootScope.isNewObject('value', 'add',id)){
+    		if($rootScope.changes['value'] !== undefined && $rootScope.changes['value']['add'] !== undefined) {
+    			for (var i = 0; i < $rootScope.changes['value']['add'].length; i++) {
+        			var tmp = $rootScope.changes['value']['add'][i];
         			if (tmp.obj.id === id) {
-                        $rootScope.changes['code']['add'].splice(i, 1);
-                        if ($rootScope.changes["code"]["add"] && $rootScope.changes["code"]["add"].length === 0) {
-                            delete  $rootScope.changes["code"]["add"];
+                        $rootScope.changes['value']['add'].splice(i, 1);
+                        if ($rootScope.changes["value"]["add"] && $rootScope.changes["value"]["add"].length === 0) {
+                            delete  $rootScope.changes["value"]["add"];
                         }
 
-                        if ($rootScope.changes["code"] && Object.getOwnPropertyNames($rootScope.changes["code"]).length === 0) {
-                            delete  $rootScope.changes["code"];
+                        if ($rootScope.changes["value"] && Object.getOwnPropertyNames($rootScope.changes["value"]).length === 0) {
+                            delete  $rootScope.changes["value"];
                         }
                         return true;
                    }
@@ -105,17 +102,17 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     		}
     		return true;
     	}
-    	if($rootScope.changes['code'] !== undefined && $rootScope.changes['code']['edit'] !== undefined) {
-    		for (var i = 0; i < $rootScope.changes['code']['edit'].length; i++) {
-    			var tmp = $rootScope.changes['code']['edit'][i];
+    	if($rootScope.changes['value'] !== undefined && $rootScope.changes['value']['edit'] !== undefined) {
+    		for (var i = 0; i < $rootScope.changes['value']['edit'].length; i++) {
+    			var tmp = $rootScope.changes['value']['edit'][i];
     			if (tmp.id === id) {
-                    $rootScope.changes['code']['edit'].splice(i, 1);
-                    if ($rootScope.changes["code"]["edit"] && $rootScope.changes["code"]["edit"].length === 0) {
-                        delete  $rootScope.changes["code"]["edit"];
+                    $rootScope.changes['value']['edit'].splice(i, 1);
+                    if ($rootScope.changes["value"]["edit"] && $rootScope.changes["value"]["edit"].length === 0) {
+                        delete  $rootScope.changes["value"]["edit"];
                     }
 
-                    if ($rootScope.changes["code"] && Object.getOwnPropertyNames($rootScope.changes["code"]).length === 0) {
-                        delete  $rootScope.changes["code"];
+                    if ($rootScope.changes["value"] && Object.getOwnPropertyNames($rootScope.changes["value"]).length === 0) {
+                        delete  $rootScope.changes["value"];
                     }
                     return false;
                }
@@ -125,17 +122,12 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         return false;
     };
 
-    $scope.isNewCode = function (id) {
-//        if (id < 0) return true;
-//        else return false;
-//
-        return $scope.isNewObject('code', 'addd', id);
+    $scope.isNewValue = function (id) {
+        return $scope.isNewObject('value', 'add', id);
     };
 
     $scope.isNewTable = function (id) {
-//    	if (id < 0) return true;
-//        else return false;
-        return $scope.isNewObject('table', 'addd',id);
+        return $scope.isNewObject('table', 'add',id);
     };
 
     $scope.close = function () {
@@ -149,11 +141,9 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         var newTable = angular.fromJson({
             id:new ObjectId().toString(),
             type: '',
-            mappingAlternateId: '',
-            mappingId: '',
+            bindingIdentifier: '',
             name: '',
             version: '',
-            codesys: '',
             oid: '',
             tableType: '',
             stability: '',
@@ -161,8 +151,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
             codes: []
         });
         newTable.type = 'table';
-        newTable.mappingId = table.mappingId + '_' + $rootScope.postfixCloneTable + $rootScope.newTableFakeId;
-        newTable.mappingAlternateId = table.mappingAlternateId + '_' + $rootScope.postfixCloneTable + $rootScope.newTableFakeId;
+        newTable.bindingIdentifier = table.bindingIdentifier + '_' + $rootScope.postfixCloneTable + $rootScope.newTableFakeId;
         newTable.name = table.name + '_' + $rootScope.postfixCloneTable + $rootScope.newTableFakeId;
         newTable.version = table.version;
         newTable.oid = table.oid;
@@ -171,18 +160,17 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         newTable.extensibility = table.extensibility;
 
         for (var i = 0, len1 = table.codes.length; i < len1; i++) {
-            $rootScope.newCodeFakeId = $rootScope.newCodeFakeId - 1;
-            var newCode = {
+            $rootScope.newValueFakeId = $rootScope.newValueFakeId - 1;
+            var newValue = {
                     id: new ObjectId().toString(),
-                    type: 'code',
-                    code: table.codes[i].code,
-                    label: table.codes[i].label,
-                    codesys: table.codes[i].codesys,
-                    source: table.codes[i].source,
+                    type: 'value',
+                    value: table.codes[i].value,
+                    displayName: table.codes[i].displayName,
+                    codeSystem: table.codes[i].codeSystem,
                     codeUsage: table.codes[i].codeUsage
                 };
             
-            newTable.codes.push(newCode);
+            newTable.codes.push(newValue);
         }
 
         $rootScope.tables.push(newTable);
@@ -193,10 +181,10 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
     };
 
-    $scope.recordChangeCode = function (code, valueType, value ,tableId) {
+    $scope.recordChangeValue = function (value, valueType, value ,tableId) {
         if (!$scope.isNewTable(tableId)) {
-            if (!$scope.isNewCode(code.id)) {
-            	$rootScope.recordChangeForEdit2('code', 'edit',code.id,valueType,value);  
+            if (!$scope.isNewValue(value.id)) {
+            	$rootScope.recordChangeForEdit2('value', 'edit',value.id,valueType,value);  
             }
         }
     };
@@ -211,8 +199,8 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         for (var i = 0, len = table.codes.length; i < len; i++) {
             if (table.codes[i].codeUsage !== usage) {
                 table.codes[i].codeUsage = usage;
-                if (!$scope.isNewTable(table.id) && !$scope.isNewCode(table.codes[i].id)) {
-                    $rootScope.recordChangeForEdit2('code','edit',table.codes[i].id,'codeUsage',usage);  
+                if (!$scope.isNewTable(table.id) && !$scope.isNewValue(table.codes[i].id)) {
+                    $rootScope.recordChangeForEdit2('value','edit',table.codes[i].id,'codeUsage',usage);  
                 }
             }
         }
@@ -284,7 +272,7 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
         
         
         $rootScope.generalInfo.type = 'info';
-        $rootScope.generalInfo.message = "Table " + $scope.tableToDelete.mappingId + " deleted successfully";
+        $rootScope.generalInfo.message = "Table " + $scope.tableToDelete.bindingIdentifier + " deleted successfully";
 
         if ($rootScope.table === $scope.tableToDelete) {
             $rootScope.table = null;
