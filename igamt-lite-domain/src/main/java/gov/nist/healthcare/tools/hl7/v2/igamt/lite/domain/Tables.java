@@ -17,27 +17,25 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 	private static final long serialVersionUID = -2904036105687742572L;
 
 	@Id
-	private String id; //FIXME Not used in new model
+	private String id;
 
-	private String tableLibraryIdentifier;
+	private String valueSetLibraryIdentifier;
 
-	private String status; //FIXME Not used in new model
+	private String status;
 
-	private String tableLibraryVersion;
+	private String valueSetLibraryVersion;
 
-	private String organizationName; //FIXME Not used in new model
+	private String organizationName;
 
 	private String name; //FIXME Not used in new model
 
 	private String description;
-
-	private Set<Table> children = new HashSet<Table>();
 	
-	//New concepts
-	private String valueSetLibraryIdentifier = "";
-	private String valueSetLibraryVersion = "";
+	private String dateCreated;
+
 	private String profileName = "";
 	
+	private Set<Table> children = new HashSet<Table>();
 
 	public Tables() {
 		super();
@@ -52,13 +50,37 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 	public void setId(String id) {
 		this.id = id;
 	}
-
-	public String getTableLibraryIdentifier() {
-		return tableLibraryIdentifier;
+	
+	public String getValueSetLibraryIdentifier() {
+		return valueSetLibraryIdentifier;
 	}
 
-	public void setTableLibraryIdentifier(String tableLibraryIdentifier) {
-		this.tableLibraryIdentifier = tableLibraryIdentifier;
+	public void setValueSetLibraryIdentifier(String valueSetLibraryIdentifier) {
+		this.valueSetLibraryIdentifier = valueSetLibraryIdentifier;
+	}
+
+	public String getValueSetLibraryVersion() {
+		return valueSetLibraryVersion;
+	}
+
+	public void setValueSetLibraryVersion(String valueSetLibraryVersion) {
+		this.valueSetLibraryVersion = valueSetLibraryVersion;
+	}
+	
+	public String getProfileName() {
+		return profileName;
+	}
+
+	public void setProfileName(String profileName) {
+		this.profileName = profileName;
+	}
+
+	public String getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(String dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 
 	public String getStatus() {
@@ -67,14 +89,6 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 
 	public void setStatus(String status) {
 		this.status = status;
-	}
-
-	public String getTableLibraryVersion() {
-		return tableLibraryVersion;
-	}
-
-	public void setTableLibraryVersion(String tableLibraryVersion) {
-		this.tableLibraryVersion = tableLibraryVersion;
 	}
 
 	public String getOrganizationName() {
@@ -109,30 +123,6 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		this.children = children;
 	}
 
-	public String getValueSetLibraryIdentifier() {
-		return valueSetLibraryIdentifier;
-	}
-
-	public void setValueSetLibraryIdentifier(String valueSetLibraryIdentifier) {
-		this.valueSetLibraryIdentifier = valueSetLibraryIdentifier;
-	}
-
-	public String getValueSetLibraryVersion() {
-		return valueSetLibraryVersion;
-	}
-
-	public void setValueSetLibraryVersion(String valueSetLibraryVersion) {
-		this.valueSetLibraryVersion = valueSetLibraryVersion;
-	}
-
-	public String getProfileName() {
-		return profileName;
-	}
-
-	public void setProfileName(String profileName) {
-		this.profileName = profileName;
-	}
-
 	public void addTable(Table t) {
 		children.add(t);
 	}
@@ -147,7 +137,7 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 
 		return null;
 	}
-
+	
 	public Table findOneByNameAndByVersion(String name, String hl7Version) {
 		if (this.children != null) {
 			for (Table t: this.children){
@@ -160,6 +150,7 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		return null;
 	}	
 	
+
 	public Code findOneCode(String id) {
 		if (this.children != null) {
 			for (Table m : this.children) {
@@ -192,11 +183,10 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 
 	@Override
 	public String toString() {
-		return "Tables [id=" + id + ", tableLibraryIdentifier="
-				+ tableLibraryIdentifier + ", status=" + status
-				+ ", tableLibraryVersion=" + tableLibraryVersion
-				+ ", organizationName=" + organizationName + ", name=" + name
-				+ ", description=" + description + "]";
+		return "Tables [id=" + id + ", valueSetLibraryIdentifier=" + valueSetLibraryIdentifier + ", status=" + status
+				+ ", valueSetLibraryVersion=" + valueSetLibraryVersion + ", organizationName=" + organizationName
+				+ ", name=" + name + ", description=" + description + ", dateCreated=" + dateCreated + ", children="
+				+ children + "]";
 	}
 
 	@Override
@@ -221,12 +211,10 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		clonedTables.setName(name);
 		clonedTables.setOrganizationName(organizationName);
 		clonedTables.setStatus(status);
-		clonedTables.setTableLibraryIdentifier(tableLibraryIdentifier);
-		clonedTables.setTableLibraryVersion(tableLibraryVersion);
-
 		clonedTables.setValueSetLibraryIdentifier(valueSetLibraryIdentifier);
 		clonedTables.setValueSetLibraryVersion(valueSetLibraryVersion);
 		clonedTables.setProfileName(profileName);
+		clonedTables.setDateCreated(dateCreated);
 
 		return clonedTables;
 	}
@@ -240,4 +228,5 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 			}
 		}
 	}
+
 }

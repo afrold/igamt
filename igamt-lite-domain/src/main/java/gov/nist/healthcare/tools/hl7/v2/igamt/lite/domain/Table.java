@@ -23,33 +23,24 @@ public class Table extends DataModel implements Serializable,
 	private static final long serialVersionUID = 734059059225906039L;
 
 	@Id
-	private String id; //FIXME Not used in new model
-
-	private String mappingAlternateId; //FIXME Not used in new model
+	private String id;
 
 	// @NotNull
-	private String mappingId; //FIXME Not used in new model
+	private String bindingIdentifier;
 
 	// @NotNull
-	private String name; //FIXME Used for merge
-	private String version; // FIXME Used for merge
-	
-	private String codesys; //FIXME Not used in new model
+	private String name;
+
+	private String description;
+	private String version;
 	private String oid;
-	private String tableType; //FIXME Not used in new model
 	private String stability;
 	private String extensibility;
+	private String contentDefinition;
+	private String group;
+	private int order;
 
 	private List<Code> codes = new ArrayList<Code>();
-	
-	//New concepts
-	private String commonName = "";
-	private String binding = "";
-	private String bindingIdentifier = "";
-	private String contentDefinition = "";
-	private String rootCodeSystems = "";
-	private String purpose = "";
-
 
 	// @DBRef
 	// private Tables tables;
@@ -68,28 +59,35 @@ public class Table extends DataModel implements Serializable,
 		this.id = id;
 	}
 
-	public String getMappingAlternateId() {
-		return mappingAlternateId;
-	}
-
-	public void setMappingAlternateId(String mappingAlternateId) {
-		this.mappingAlternateId = mappingAlternateId;
-	}
-
-	public String getMappingId() {
-		return mappingId;
-	}
-
-	public void setMappingId(String mappingId) {
-		this.mappingId = mappingId;
-	}
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getBindingIdentifier() {
+		return bindingIdentifier;
+	}
+
+	public void setBindingIdentifier(String bindingIdentifier) {
+		this.bindingIdentifier = bindingIdentifier;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getContentDefinition() {
+		return contentDefinition;
+	}
+
+	public void setContentDefinition(String contentDefinition) {
+		this.contentDefinition = contentDefinition;
 	}
 
 	public String getVersion() {
@@ -100,28 +98,12 @@ public class Table extends DataModel implements Serializable,
 		this.version = version;
 	}
 
-	public String getCodesys() {
-		return codesys;
-	}
-
-	public void setCodesys(String codesys) {
-		this.codesys = codesys;
-	}
-
 	public String getOid() {
 		return oid;
 	}
 
 	public void setOid(String oid) {
 		this.oid = oid;
-	}
-
-	public String getTableType() {
-		return tableType;
-	}
-
-	public void setTableType(String tableType) {
-		this.tableType = tableType;
 	}
 
 	public List<Code> getCodes() {
@@ -155,54 +137,21 @@ public class Table extends DataModel implements Serializable,
 	public void setExtensibility(String extensibility) {
 		this.extensibility = extensibility;
 	}
-
-
-	public String getCommonName() {
-		return commonName;
+	
+	public String getGroup() {
+		return group;
 	}
 
-	public void setCommonName(String commonName) {
-		this.commonName = commonName;
+	public void setGroup(String group) {
+		this.group = group;
 	}
 
-	public String getBinding() {
-		return binding;
+	public int getOrder() {
+		return order;
 	}
 
-	public void setBinding(String binding) {
-		this.binding = binding;
-	}
-
-	public String getBindingIdentifier() {
-		return bindingIdentifier;
-	}
-
-	public void setBindingIdentifier(String bindingIdentifier) {
-		this.bindingIdentifier = bindingIdentifier;
-	}
-
-	public String getContentDefinition() {
-		return contentDefinition;
-	}
-
-	public void setContentDefinition(String contentDefinition) {
-		this.contentDefinition = contentDefinition;
-	}
-
-	public String getRootCodeSystems() {
-		return rootCodeSystems;
-	}
-
-	public void setRootCodeSystems(String rootCodeSystems) {
-		this.rootCodeSystems = rootCodeSystems;
-	}
-
-	public String getPurpose() {
-		return purpose;
-	}
-
-	public void setPurpose(String purpose) {
-		this.purpose = purpose;
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 	public Code findOneCode(String id) {
@@ -215,29 +164,21 @@ public class Table extends DataModel implements Serializable,
 
 		return null;
 	}
-
-	// public Tables getTables() {
-	// return tables;
-	// }
-	//
-	// public void setTables(Tables tables) {
-	// this.tables = tables;
-	// }
-
+	
 	@Override
 	public String toString() {
-		return "Table [id=" + id + ", mappingAlternateId=" + mappingAlternateId
-				+ ", mappingId=" + mappingId + ", name=" + name + ", version="
-				+ version + ", codesys=" + codesys + ", oid=" + oid + ", type="
-				+ tableType + ", codes=" + codes + "]";
+		return "Table [id=" + id + ", bindingIdentifier=" + bindingIdentifier + ", name=" + name + ", description="
+				+ description + ", version=" + version + ", oid=" + oid + ", stability=" + stability
+				+ ", extensibility=" + extensibility + ", contentDefinition=" + contentDefinition + ", group=" + group
+				+ ", order=" + order + ", codes=" + codes + "]";
 	}
 
 	@Override
 	public int compareTo(Table o) {
-		int x = String.CASE_INSENSITIVE_ORDER.compare(this.mappingId,
-				o.mappingId);
+		int x = String.CASE_INSENSITIVE_ORDER.compare(this.bindingIdentifier,
+				o.bindingIdentifier);
 		if (x == 0) {
-			x = this.mappingId.compareTo(o.mappingId);
+			x = this.bindingIdentifier.compareTo(o.bindingIdentifier);
 		}
 		return x;
 	}
@@ -250,23 +191,18 @@ public class Table extends DataModel implements Serializable,
 		}
 
 		clonedTable.setId(id);
-		clonedTable.setCodesys(codesys);
 		clonedTable.setExtensibility(extensibility);
-		clonedTable.setMappingAlternateId(mappingAlternateId);
-		clonedTable.setMappingId(mappingId);
+		clonedTable.setBindingIdentifier(bindingIdentifier);
+		clonedTable.setDescription(description);
+		clonedTable.setContentDefinition(contentDefinition);
 		clonedTable.setName(name);
 		clonedTable.setOid(oid);
 		clonedTable.setStability(stability);
-		clonedTable.setTableType(tableType);
 		clonedTable.setVersion(version);
+		clonedTable.setType(type);
+		clonedTable.setGroup(group);
+		clonedTable.setOrder(order);
 
-		clonedTable.setCommonName(commonName);
-		clonedTable.setBinding(binding);
-		clonedTable.setBindingIdentifier(bindingIdentifier);
-		clonedTable.setContentDefinition(contentDefinition);
-		clonedTable.setRootCodeSystems(rootCodeSystems);
-		clonedTable.setPurpose(purpose);
-		
 		return clonedTable;
 	}
 }
