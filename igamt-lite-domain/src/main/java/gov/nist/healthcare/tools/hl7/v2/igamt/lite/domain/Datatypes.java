@@ -1,18 +1,22 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
 @Document(collection = "datatypes")
 public class Datatypes implements java.io.Serializable, Cloneable {
+
+	Logger log = LoggerFactory.getLogger(Datatypes.class);
 
 	private static final long serialVersionUID = 1L;
 
@@ -76,8 +80,12 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	public Datatype findOne(String id) {
 		if (this.children != null) {
 			for (Datatype m : this.children) {
-				if (m.getId().equals(id)) {
-					return m;
+				try {
+					if (m.getId().equals(id)) {
+						return m;
+					}
+				} catch (Exception e) {
+					log.error("m was null at id=" + id);
 				}
 			}
 		}
@@ -88,9 +96,7 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 	public Datatype findOneByNameAndByLabelAndByVersion(String name, String label, String version) {
 		if (this.children != null) {
 			for (Datatype dt : this.children) {
-				if (dt.getName().equals(name) 
-						&& dt.getLabel().equals(label)
-						&& dt.getHl7Version().equals(version)) {
+				if (dt.getName().equals(name) && dt.getLabel().equals(label) && dt.getHl7Version().equals(version)) {
 					return dt;
 				}
 			}
@@ -116,8 +122,7 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 				if (c.getId().equals(id)) {
 					return c;
 				} else {
-					Component r = findOneComponent(id,
-							this.findOne(c.getDatatype()));
+					Component r = findOneComponent(id, this.findOne(c.getDatatype()));
 					if (r != null) {
 						return r;
 					}
@@ -138,6 +143,16 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
+	public Datatype findOneDatatypeByBase(String baseName) {
+		if (this.children != null)
+			for (Datatype d : this.children) {
+				if (d.getName().equals(baseName)) {
+					return d;
+				}
+			}
+		return null;
+	}
+
 	public Predicate findOnePredicate(String predicateId) {
 		for (Datatype datatype : this.getChildren()) {
 			Predicate predicate = datatype.findOnePredicate(predicateId);
@@ -148,11 +163,9 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
-	public ConformanceStatement findOneConformanceStatement(
-			String conformanceStatementId) {
+	public ConformanceStatement findOneConformanceStatement(String conformanceStatementId) {
 		for (Datatype datatype : this.getChildren()) {
-			ConformanceStatement conf = datatype
-					.findOneConformanceStatement(conformanceStatementId);
+			ConformanceStatement conf = datatype.findOneConformanceStatement(conformanceStatementId);
 			if (conf != null) {
 				return conf;
 			}
@@ -178,8 +191,7 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return false;
 	}
 
-	public Datatypes clone(HashMap<String, Datatype> dtRecords,
-			HashMap<String, Table> tableRecords)
+	public Datatypes clone(HashMap<String, Datatype> dtRecords, HashMap<String, Table> tableRecords)
 			throws CloneNotSupportedException {
 		Datatypes clonedDatatypes = new Datatypes();
 		clonedDatatypes.setChildren(new HashSet<Datatype>());
@@ -196,16 +208,17 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 
 		return clonedDatatypes;
 	}
-	
-	public void merge(Datatypes dts){
-		for (Datatype dt : dts.getChildren()){
-			if (this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getLabel(), dt.getHl7Version()) == null){
+
+	public void merge(Datatypes dts) {
+		for (Datatype dt : dts.getChildren()) {
+			if (this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getLabel(), dt.getHl7Version()) == null) {
 				this.addDatatype(dt);
 			} else {
-				dt.setId(this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getLabel(), dt.getHl7Version()).getId()); //FIXME Probably useless...
+				dt.setId(this.findOneByNameAndByLabelAndByVersion(dt.getName(), dt.getLabel(), dt.getHl7Version())
+						.getId()); // FIXME Probably useless...
 			}
 		}
-		
+
 	}
 
 }

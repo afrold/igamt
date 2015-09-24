@@ -123,10 +123,9 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider,Keepaliv
         return {
             request: function (config) {
 //                return "http://localhost:8080/igamt"+ value;
-                console.log("config.url0=" + config.url);
                 if(config.url.startsWith("api")){
                    config.url = "http://localhost:8080/igamt/"+  config.url;
-                   console.log("config.url1=" + config.url);
+                   console.log("config.url=" + config.url);
                 }
                 return config || $q.when(config);
             }

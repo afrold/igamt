@@ -14,8 +14,9 @@ angular.module('igl').controller(
 				});
 
 				hl7VersionsInstance.result.then(function(result) {
-					var profile = $scope.createProfile(result);
-					$rootScope.$broadcast('event:IgsPushed', profile);
+					console.log(result);
+					$scope.createProfile($rootScope.hl7Version, result);
+					$rootScope.$broadcast('event:IgsPushed', $scope.profile);
 				});
 			};
 			
@@ -34,24 +35,21 @@ angular.module('igl').controller(
 			};
 
 			$scope.createProfile = function(hl7Version, msgIds) {
-				 $http.get('/api/profiles/createIntegrationProfile/' + hl7Version + '/' + msgIds, {timeout:
-				 60000}).then(function
+				var iprw = {
+						"hl7Version" : hl7Version,
+						"msgIds" : msgIds,
+						"timeout" : 60000
+				};
+				 $http.post('api/profiles/hl7/createIntegrationProfile', iprw).then(function
 				 (response) {
-					 profile = angular.fromJson(response.data);
+					 $scope.profile = angular.fromJson(response.data);
 				 });
-				 return profile;
-//				var request = new XMLHttpRequest();
-//				request
-//						.open('GET', '../../resources/profile-2.5.1.json',
-//								false);
-//				request.send(null);
-//				var profile = angular.fromJson(request.response);
-//				return profile;
+				 return $scope.profile;
 			}
 		});
 
 angular.module('igl').controller('HL7VersionsInstanceDlgCtrl',
-		function($scope, $modalInstance, $http, hl7Versions) {
+		function($scope, $rootScope, $modalInstance, $http, hl7Versions) {
 
 			$scope.selected = {
 				item : hl7Versions[0]
@@ -60,38 +58,13 @@ angular.module('igl').controller('HL7VersionsInstanceDlgCtrl',
 			var profileVersions = [];
 
 			$scope.loadProfilesByVersion = function() {
-				 console.log("==>0");
-				 $http.get('/api/profiles/messageListByVersion/' + $scope.hl7Version, {
+				 console.log("$scope.hl7Version=" + $scope.hl7Version);
+				 $rootScope.hl7Version = $scope.hl7Version;
+				 $http.get('api/profiles/hl7/messageListByVersion/' + $scope.hl7Version, {
 					 	timeout : 60000
 					 }).then(function (response) {
-						 console.log("==>1");
-					 $scope.profilesByVersion = angular.fromJson(response.data);
-					 console.log("response.data=" + response.data);
-					 console.log("$scope.profilesByVersion=" +
-					 $scope.profilesByVersion);
+					 $scope.messagesByVersion = angular.fromJson(response.data);
 				 });
-//				$scope.profilesByVersion = [ {
-//					"Id" : "aId",
-//					"StructID" : "aStructID",
-//					"Version" : "aVersion",
-//					"Type" : "aType",
-//					"Event" : "aEvent",
-//					"Description" : "aDescription"
-//				}, {
-//					"Id" : "bId",
-//					"StructID" : "bStructID",
-//					"Version" : "bVersion",
-//					"Type" : "bType",
-//					"Event" : "bEvent",
-//					"Description" : "bDescription"
-//				}, {
-//					"Id" : "cId",
-//					"StructID" : "cStructID",
-//					"Version" : "cVersion",
-//					"Type" : "cType",
-//					"Event" : "cEvent",
-//					"Description" : "cDescription"
-//				} ]
 			};
 
 			$scope.trackSelections = function(bool, id) {

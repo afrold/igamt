@@ -59,9 +59,10 @@
         </div
 		<form>
 		<table class="profile-list table table-striped table-bordered">
-			<tr class="tbl-header"><th>&nbsp;</th><th>Id</th><th>StructID</th><th>Version</th><th>Type</th><th>Event</th><th>Description</th></tr>
-			<tbody ng:repeat="p in profilesByVersion">
-				<tr><td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, p.Id)"></td><td>{{p.Id}}</td><td>{{p.StructID}}</td><td>{{p.Version}}</td><td>{{p.Type}}</td><td>{{p.Event}}</td><td>{{p.Description}}</td></tr>
+			<tr class="tbl-header"><th>&nbsp;</th><th>Struct Id</th><th>Version</th><th>Type</th><th>Event</th><th>Description</th></tr>
+			<tbody ng:repeat="m in messagesByVersion | orderBy: m[1]">
+				<tr><td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
+					<td>{{m[1]}}</td><td>{{m[2]}}</td><td>{{m[3]}}</td><td>{{m[4]}}</td><td>{{m[5]}}</td></tr>
 			</tbody>
 		</table>
         <div class="modal-footer">
