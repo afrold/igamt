@@ -1,6 +1,6 @@
 angular.module('igl').controller(
 		'HL7VersionsDlgCtrl',
-		function($scope, $rootScope, $modal, $log, $http) {
+		function($scope, $rootScope, $modal, $log, $http, $httpBackend) {
 
 			$scope.hl7Versions = function() {
 				var hl7VersionsInstance = $modal.open({
@@ -16,7 +16,6 @@ angular.module('igl').controller(
 				hl7VersionsInstance.result.then(function(result) {
 					console.log(result);
 					$scope.createProfile($rootScope.hl7Version, result);
-					$rootScope.$broadcast('event:IgsPushed', $scope.profile);
 				});
 			};
 			
@@ -43,6 +42,7 @@ angular.module('igl').controller(
 				 $http.post('api/profiles/hl7/createIntegrationProfile', iprw).then(function
 				 (response) {
 					 $scope.profile = angular.fromJson(response.data);
+					 $rootScope.$broadcast('event:IgsPushed', $scope.profile);
 				 });
 				 return $scope.profile;
 			}

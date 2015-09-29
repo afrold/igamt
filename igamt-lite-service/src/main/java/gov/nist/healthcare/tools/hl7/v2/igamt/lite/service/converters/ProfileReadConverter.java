@@ -130,6 +130,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				children.add(segment((DBObject) child, profile.getDatatypes(),
 						profile.getTables()));
 			}
+			segments.setChildren(children);
 		}
 		log.trace("Segments converted");
 		return segments;
