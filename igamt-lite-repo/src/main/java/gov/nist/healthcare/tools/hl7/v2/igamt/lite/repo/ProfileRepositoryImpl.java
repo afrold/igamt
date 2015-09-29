@@ -17,20 +17,24 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+
 public class ProfileRepositoryImpl implements ProfileOperations   {
-	
+
+	 private Logger log = LoggerFactory.getLogger(ProfileRepositoryImpl.class);
+
 	 @Autowired
 	 private MongoOperations mongo;
 	 
@@ -52,14 +56,16 @@ public class ProfileRepositoryImpl implements ProfileOperations   {
  	}
 	
 	public List<Profile> findStandardByVersion(String hl7version) {
-		Criteria where = Criteria.where("scope").is(ProfileScope.HL7STANDARD).andOperator(Criteria.where("hl7version").is(hl7version));
+		log.debug("findStandardByVersion");
+		Criteria where = Criteria.where("scope").is(ProfileScope.HL7STANDARD).andOperator(Criteria.where("metaData.hl7Version").is(hl7version));
 		Query query = Query.query(where);
-	    return mongo.find(query, Profile.class);
+		List<Profile> list =  mongo.find(query, Profile.class);
+		log.debug("findStandardByVersion list.size()=" + list.size());
+	    return list;
  	}
 	
-	public List<String> findHl7Versions(){
+	public List<String> findHl7Versions() {
 		return new ArrayList<String>(
-				Arrays.asList("2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"));
+				Arrays.asList("2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"));
 	}
-	
 }

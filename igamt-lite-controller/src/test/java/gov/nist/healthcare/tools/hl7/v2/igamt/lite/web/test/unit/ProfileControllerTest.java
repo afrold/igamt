@@ -50,7 +50,7 @@ public class ProfileControllerTest {
 		when(mockProfileService.findAllPreloaded()).thenReturn(preloaded);
 		mockMvc.perform(get("/profiles")).andExpect(status().isOk());
 	}
-
+	
 	// @Test
 	// public void testGetProfile() throws Exception {
 	// Profile custom = findOneFull();
