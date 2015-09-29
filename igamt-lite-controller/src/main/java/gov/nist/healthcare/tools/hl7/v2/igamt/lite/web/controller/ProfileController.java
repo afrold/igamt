@@ -187,7 +187,6 @@ public class ProfileController extends CommonController {
 		} else {
 			throw new OperationNotAllowException("delete");
 		}
-
 	}
 
 	@RequestMapping(value = "/{id}/save", method = RequestMethod.POST)
