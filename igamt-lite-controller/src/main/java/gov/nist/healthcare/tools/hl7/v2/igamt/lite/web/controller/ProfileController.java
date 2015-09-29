@@ -22,6 +22,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotF
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +47,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/profiles")
 public class ProfileController extends CommonController {
 
-	Logger logger = LoggerFactory.getLogger(ProfileController.class);
+	Logger log = LoggerFactory.getLogger(ProfileController.class);
 
 	@Autowired
 	private ProfileService profileService;
@@ -77,7 +78,7 @@ public class ProfileController extends CommonController {
 	@ExceptionHandler(UserAccountNotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseMessage profileNotFound(UserAccountNotFoundException ex) {
-		logger.debug(ex.getMessage());
+		log.debug(ex.getMessage());
 		return new ResponseMessage(ResponseMessage.Type.danger,
 				"accountNotFound", null);
 	}
@@ -85,7 +86,7 @@ public class ProfileController extends CommonController {
 	@ExceptionHandler(ProfileNotFoundException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ResponseMessage profileNotFound(ProfileException ex) {
-		logger.debug(ex.getMessage());
+		log.debug(ex.getMessage());
 		return new ResponseMessage(ResponseMessage.Type.danger,
 				"profileNotFound", null);
 	}
@@ -93,7 +94,7 @@ public class ProfileController extends CommonController {
 	@ExceptionHandler(ProfileSaveException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ProfileSaveResponse profileSaveFailed(ProfileSaveException ex) {
-		logger.debug(ex.getMessage());
+		log.debug(ex.getMessage());
 		if (ex.getErrors() != null) {
 			return new ProfileSaveResponse(ResponseMessage.Type.danger,
 					"profileNotSaved", null, ex.getErrors());
@@ -105,7 +106,7 @@ public class ProfileController extends CommonController {
 	@ExceptionHandler(OperationNotAllowException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseMessage OperationNotAllowException(ProfileException ex) {
-		logger.debug(ex.getMessage());
+		log.debug(ex.getMessage());
 		return new ResponseMessage(ResponseMessage.Type.danger,
 				"operationNotAllow", ex.getMessage());
 	}
@@ -117,14 +118,20 @@ public class ProfileController extends CommonController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public List<Profile> preloaded() {
-		logger.info("Fetching all preloaded profiles...");
+		log.info("Fetching all preloaded profiles...");
 		List<Profile> result = profileService.findAllPreloaded();
 		return result;
 	}
 
+	@RequestMapping(value = "/abc/def/ghi", method = RequestMethod.GET)
+	public String tryIt() {
+		log.info("abc=>");
+		return "{abc}";
+	}
+	
 	@RequestMapping(value = "/cuser", method = RequestMethod.GET)
 	public List<Profile> userProfiles() throws UserAccountNotFoundException {
-		logger.info("Fetching all custom profiles...");
+		log.info("Fetching all custom profiles...");
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u
 				.getUsername());
@@ -139,7 +146,7 @@ public class ProfileController extends CommonController {
 	public Profile clone(@PathVariable("id") String id)
 			throws ProfileNotFoundException, UserAccountNotFoundException,
 			ProfileException, CloneNotSupportedException {
-		logger.info("Clone profile with id=" + id);
+		log.info("Clone profile with id=" + id);
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u
 				.getUsername());
@@ -159,7 +166,7 @@ public class ProfileController extends CommonController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Profile get(@PathVariable("id") String id)
 			throws UserAccountNotFoundException, ProfileNotFoundException {
-		logger.info("fetching profile with id=" + id);
+		log.info("Fetching profile with id=" + id);
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u
 				.getUsername());
@@ -178,7 +185,7 @@ public class ProfileController extends CommonController {
 				.getUsername());
 		if (account == null)
 			throw new UserAccountNotFoundException();
-		logger.info("Delete profile with id=" + id);
+		log.info("Delete profile with id=" + id);
 		Profile p = findProfile(id);
 		if (p.getAccountId() == account.getId()) {
 			profileService.delete(id);
@@ -198,7 +205,7 @@ public class ProfileController extends CommonController {
 				.getUsername());
 		if (account == null)
 			throw new UserAccountNotFoundException();
-		logger.info("Applying changes to profile=" + id);
+		log.info("Applying changes to profile=" + id);
 		Profile p = findProfile(id);
 		Profile saved = profileService.apply(command.getProfile());
 		return new ProfileSaveResponse(saved.getMetaData().getDate(), saved
@@ -209,7 +216,7 @@ public class ProfileController extends CommonController {
 	public void export(@PathVariable("id") String id,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
-		logger.info("Exporting as xml file profile with id=" + id);
+		log.info("Exporting as xml file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
 		content = profileExport.exportAsXml(p);
@@ -223,7 +230,7 @@ public class ProfileController extends CommonController {
 	public void exportZip(@PathVariable("id") String id,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
-		logger.info("Exporting as xml file profile with id=" + id);
+		log.info("Exporting as xml file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
 		content = profileExport.exportAsZip(p);
@@ -234,31 +241,12 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-	// @RequestMapping(value = "/{id}/export/pdf", method = RequestMethod.POST,
-	// produces = "application/pdf")
-	// public void exportPdf(@PathVariable("id") String id,
-	// HttpServletRequest request, HttpServletResponse response)
-	// throws IOException, ProfileNotFoundException {
-	// logger.info("Exporting as pdf file profile with id=" + id);
-	// Profile p = profileService.findOne(id);
-	// if (p == null) {
-	// throw new ProfileNotFoundException(id);
-	// }
-	// InputStream content = null;
-	// content = profileService.exportAsPdf(p);
-	// response.setContentType("application/pdf");
-	// response.setHeader("Content-disposition",
-	// "attachment;filename=Profile.pdf");
-	// FileCopyUtils.copy(content, response.getOutputStream());
-	// }
-
-
 	@RequestMapping(value = "/{id}/export/pdf/{inlineConstraints}", method = RequestMethod.POST, produces = "application/pdf")
 	public void exportPdfFromXsl(@PathVariable("id") String id,
 			@PathVariable("inlineConstraints") String inlineConstraints,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
-		logger.info("Exporting as pdf file profile with id=" + id);
+		log.info("Exporting as pdf file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
 		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
@@ -272,7 +260,7 @@ public class ProfileController extends CommonController {
 	public void deltaPdf(@PathVariable("id") String id,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
-		logger.info("Exporting delta as pdf file profile with id=" + id);
+		log.info("Exporting delta as pdf file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
 		content = profileService.diffToPdf(p);
@@ -281,43 +269,6 @@ public class ProfileController extends CommonController {
 				"attachment;filename=ProfileDelta.pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
-
-	// @RequestMapping(value = "/{id}/verifyItem", method = RequestMethod.POST,
-	// produces = "application/pdf")
-	// public ElementChange deltaPdf(@PathVariable("id") String id,
-	// HttpServletRequest request, HttpServletResponse response)
-	// throws IOException, ProfileNotFoundException {
-	// logger.info("Exporting delta as pdf file profile with id=" + id);
-	// Profile p = findProfile(id);
-	// InputStream content = null;
-	// content = profileService.diffToPdf(p);
-	// response.setContentType("application/pdf");
-	// response.setHeader("Content-disposition",
-	// "attachment;filename=ProfileDelta.pdf");
-	// FileCopyUtils.copy(content, response.getOutputStream());
-	// }
-
-	// @RequestMapping(value = "/{id}/delta/json", method = RequestMethod.GET)
-	// public Map<String, List<ElementChange>> deltaJson(
-	// @PathVariable("id") String id, HttpServletRequest request,
-	// HttpServletResponse response) throws IOException,
-	// ProfileNotFoundException {
-	// logger.info("Exporting delta as json file profile with id=" + id);
-	// Profile p = findProfile(id);
-	// Map<String, List<ElementChange>> delta = profileService.delta(p);
-	// return delta;
-	// }
-
-	// @RequestMapping(value = "/{id}/verify", method = RequestMethod.GET)
-	// public Map<String, List<ElementChange>> verify(
-	// @PathVariable("id") String id, HttpServletRequest request,
-	// HttpServletResponse response) throws IOException,
-	// ProfileNotFoundException {
-	// logger.info("Exporting delta as json file profile with id=" + id);
-	// Profile p = findProfile(id);
-	// Map<String, List<ElementChange>> delta = profileService.delta(p);
-	// return delta;
-	// }
 
 	private Profile findProfile(String profileId)
 			throws ProfileNotFoundException {
@@ -332,7 +283,7 @@ public class ProfileController extends CommonController {
 	public void exportXlsx(@PathVariable("id") String id,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
-		logger.info("Exporting as spreadsheet profile with id=" + id);
+		log.info("Exporting as spreadsheet profile with id=" + id);
 		InputStream content = null;
 		Profile p = findProfile(id);
 		content = profileExport.exportAsXlsx(p);
@@ -351,7 +302,7 @@ public class ProfileController extends CommonController {
 	public ElementVerification verifySegment(@PathVariable("id") String id, @PathVariable("sId") String sId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
-		logger.info("Verifying segment " + sId + " from profile " + id);
+		log.info("Verifying segment " + sId + " from profile " + id);
 		Profile p = profileService.findOne(id);
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
@@ -363,7 +314,7 @@ public class ProfileController extends CommonController {
 	public ElementVerification verifyDatatype(@PathVariable("id") String id, @PathVariable("dtId") String dtId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
-		logger.info("Verifying datatype " + dtId + " from profile " + id);
+		log.info("Verifying datatype " + dtId + " from profile " + id);
 		Profile p = profileService.findOne(id);
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
@@ -375,7 +326,7 @@ public class ProfileController extends CommonController {
 	public ElementVerification verifyValueSet(@PathVariable("id") String id, @PathVariable("vsId") String vsId,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
-		logger.info("Verifying segment " + vsId + " from profile " + id);
+		log.info("Verifying segment " + vsId + " from profile " + id);
 		Profile p = profileService.findOne(id);
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
@@ -383,32 +334,23 @@ public class ProfileController extends CommonController {
 		return profileService.verifyValueSet(p, id, "valueset");
 		}
 	
-	@RequestMapping(value = "/hl7/versions", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/hl7/findVersions", method = RequestMethod.GET, produces = "application/json")
 	public List<String> findHl7Versions() {
-		logger.info("Fetching all HL7 versions");
+		log.info("Fetching all HL7 versions");
 		List<String> result = profileCreation.findHl7Versions();
 		return result;
 	}
 
-	@RequestMapping(value = "/hl7/messages/{hl7Version}", method = RequestMethod.GET)
-	public List<String[]> getMessagesListByVersion(@PathVariable("hl7Version") String hl7Version) {
-		logger.info("fetching messages of version hl7Version=" + hl7Version);
+	@RequestMapping(value = "/messageListByVersion/{hl7Version}", method = RequestMethod.GET, produces = "application/json")
+	public List<String[]> getMessageListByVersion(@PathVariable("hl7Version") String hl7Version) {
+		log.info("Fetching messages of version hl7Version=" + hl7Version);
 		List<String[]> messages = profileCreation.summary(hl7Version);
 		return messages;
 	}
 
-	@RequestMapping(value = "/create/{hl7Version}", method = RequestMethod.POST, produces = "application/json")
-	public Profile createIG(@PathVariable("hl7Version") String hl7Version, @RequestParam List<String> msgIds) throws ProfileException, UserAccountNotFoundException {
-		logger.info("Creation of profile");
-		User u = userService.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u
-				.getUsername());
-		if (account == null)
-			throw new UserAccountNotFoundException();
-		Profile p = profileCreation.createIntegratedProfile(msgIds, hl7Version);
-		p.setAccountId(account.getId());		
-		profileService.save(p);
-		return p;
-	}
-	
+	@RequestMapping(value = "/createIntegrationProfile/{hl7Version}/{messageIds}", method = RequestMethod.POST, produces = "application/json")
+	public Profile createIG(@PathVariable("hl7Version") String hl7Version, @PathVariable("messageIds") String[] messageIds, @RequestParam List<String> msgIds) throws ProfileException {
+		log.info("Creation of profile");
+		return profileCreation.createIntegratedProfile(msgIds, hl7Version);
+	}	
 }
