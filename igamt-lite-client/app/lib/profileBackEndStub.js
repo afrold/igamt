@@ -173,6 +173,26 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 //
 //    $httpBackend.whenGET(/resources\//).passThrough();
 //
-
+//    $httpBackend.whenGET('api/profiles/hl7/findVersions').respond(function (method, url, data, headers) {
+//        return [200, ["2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"], {}];
+//    });
+//    
+//    $httpBackend.whenGET('api/profiles/hl7/messageListByVersion/2.7').respond(function (method, url, data, headers) {
+//        var msgList = [["P11", "P11", "", "DFT", "Detail financial transactions"], 
+//         ["O07", "O07", "", "OMN", "Non-stock requisition order message"], 
+//         ["I08", "I08", "", "RQA", "Request patient authorization"]]
+//        return [200, msgList, {}];
+//    });
+//    
+//    $httpBackend.whenPOST('api/profiles/hl7/createIntegrationProfile').respond(function (method, url, data, headers) {
+//    	console.log('api/profiles/hl7/createIntegrationProfile start');
+//        var profile = null;
+//        var request = new XMLHttpRequest();
+//        request.open('GET', '../../resources/profiles.1/profile-2.7.json', false);
+//        request.send(null);
+//        var profile = angular.fromJson(request.response);
+//        console.log(profile);
+//        return [request.status, profile, {}];
+//    });
 });
 

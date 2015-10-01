@@ -20,6 +20,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.ProfileServiceImplIntegrationTest;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfileChangeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfilePropertySaveError;
@@ -33,10 +34,15 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 16, 2015
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = PersistenceContext.class)
 public class ProfileChangeServiceTest {
 
 	@BeforeClass

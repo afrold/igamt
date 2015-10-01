@@ -33,5 +33,4 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 	 List<Profile> findByScope(ProfileScope scope);
 	 
 	 List<Profile> findByScopeAndMetaData_Hl7Version(ProfileScope scope, String hl7version);
-	 
 }
