@@ -181,7 +181,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
     };
 
-    $scope.recordChangeValue = function (value, valueType, value ,tableId) {
+    $scope.recordChangeValue = function (value, valueType, tableId) {
         if (!$scope.isNewTable(tableId)) {
             if (!$scope.isNewValue(value.id)) {
             	$rootScope.recordChangeForEdit2('value', 'edit',value.id,valueType,value);  
