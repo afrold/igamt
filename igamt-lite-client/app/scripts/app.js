@@ -23,8 +23,8 @@ var app = angular
         'ngTreetable',
         'restangular',
         'textAngular'
-//        ,
-//        'ngMockE2E'
+        ,
+        'ngMockE2E'
     ]);
 
 var

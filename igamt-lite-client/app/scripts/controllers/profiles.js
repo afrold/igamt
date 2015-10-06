@@ -14,6 +14,7 @@ angular.module('igl')
         $scope.tmpIgs = [].concat($rootScope.igs);
         $scope.error = null;
         $scope.loading = false;
+        $scope.collapsed = [];
 
         $scope.igTypes = [
             {
@@ -29,14 +30,14 @@ angular.module('igl')
         $scope.verificationError = null;
 
         /**
-         * init the controller
-         */
+		 * init the controller
+		 */
         $scope.init = function () {
             $scope.igContext.igType = $scope.igTypes[1];
             $scope.loadProfiles();
             /**
-             * On 'event:loginConfirmed', resend all the 401 requests.
-             */
+			 * On 'event:loginConfirmed', resend all the 401 requests.
+			 */
             $scope.$on('event:loginConfirmed', function (event) {
                 $scope.igContext.igType = $scope.igTypes[1];
                 $scope.loadProfiles();
@@ -57,7 +58,7 @@ angular.module('igl')
                 $scope.loadProfiles();
                 profile = $scope.findOne(profile.id);
             }
-          	$scope.edit(profile);
+// $scope.edit(profile);
           });
 
         $scope.loadProfiles = function () {
@@ -181,13 +182,14 @@ angular.module('igl')
 
                 }
 
-//                angular.forEach($rootScope.profile.messages.children, function (message) {
-//                    var segRefOrGroups = [];
-//                    var segments = [];
-//                    var datatypes = [];
-//                    $scope.collectData(message, segRefOrGroups, segments, datatypes);
-//                    $rootScope.messagesData.push({message: message, segRefOrGroups: segRefOrGroups, segments: segments, datatypes: datatypes});
-//                });
+// angular.forEach($rootScope.profile.messages.children, function (message) {
+// var segRefOrGroups = [];
+// var segments = [];
+// var datatypes = [];
+// $scope.collectData(message, segRefOrGroups, segments, datatypes);
+// $rootScope.messagesData.push({message: message, segRefOrGroups:
+// segRefOrGroups, segments: segments, datatypes: datatypes});
+// });
                 $scope.gotoSection($rootScope.profile.metaData, 'metaData');
                 $scope.loadingProfile = false;
                 $scope.toEditProfileId = null;
@@ -288,12 +290,12 @@ angular.module('igl')
             var csrfInput = document.createElement("input");
             csrfInput.name = "X-XSRF-TOKEN";
             csrfInput.value = $cookies['XSRF-TOKEN'];
-//            console.log("CSRF=" + csrfInput.value);
+// console.log("CSRF=" + csrfInput.value);
             form.appendChild(csrfInput);
             form.style.display = 'none';
             document.body.appendChild(form);
-//            httpHeaders.common['X-XSRF-TOKEN'] = $cookies['XSRF-TOKEN'];
-//            httpHeaders.common['JSSESSIONID'] = $cookies['JSSESSIONID'];
+// httpHeaders.common['X-XSRF-TOKEN'] = $cookies['XSRF-TOKEN'];
+// httpHeaders.common['JSSESSIONID'] = $cookies['JSSESSIONID'];
             form.submit();
         };
 
@@ -305,30 +307,32 @@ angular.module('igl')
             var csrfInput = document.createElement("input");
             csrfInput.name = "X-XSRF-TOKEN";
             csrfInput.value = $cookies['XSRF-TOKEN'];
-//            console.log("CSRF=" + csrfInput.value);
+// console.log("CSRF=" + csrfInput.value);
             form.appendChild(csrfInput);
             form.style.display = 'none';
             document.body.appendChild(form);
-//            httpHeaders.common['X-XSRF-TOKEN'] = $cookies['XSRF-TOKEN'];
-//            httpHeaders.common['JSSESSIONID'] = $cookies['JSSESSIONID'];
+// httpHeaders.common['X-XSRF-TOKEN'] = $cookies['XSRF-TOKEN'];
+// httpHeaders.common['JSSESSIONID'] = $cookies['JSSESSIONID'];
             form.submit();
         };
 
 //
-//        $scope.verify = function (id) {
-//            waitingDialog.show('Verifying changes...', {dialogSize: 'sm', progressType: 'info'});
-//            $scope.verificationError = null;
-//            $scope.loading = true;
-//            $http.get('api/profiles/' + id + '/verify', {timeout: 60000}).then(function (response) {
-//                $rootScope.verificationResult = angular.fromJson(response.data);
-//                $scope.loading = false;
-//                waitingDialog.hide();
-//            }, function (error) {
-//                $scope.loading = false;
-//                $scope.verificationError = "Verification Failed";
-//                waitingDialog.hide();
-//            });
-//        };
+// $scope.verify = function (id) {
+// waitingDialog.show('Verifying changes...', {dialogSize: 'sm', progressType:
+// 'info'});
+// $scope.verificationError = null;
+// $scope.loading = true;
+// $http.get('api/profiles/' + id + '/verify', {timeout: 60000}).then(function
+// (response) {
+// $rootScope.verificationResult = angular.fromJson(response.data);
+// $scope.loading = false;
+// waitingDialog.hide();
+// }, function (error) {
+// $scope.loading = false;
+// $scope.verificationError = "Verification Failed";
+// waitingDialog.hide();
+// });
+// };
 
         $scope.close = function () {
             if ($rootScope.hasChanges()) {
@@ -414,7 +418,7 @@ angular.module('igl')
 
 
         $scope.reset = function () {
-//            $rootScope.context.page = $rootScope.pages[0];
+// $rootScope.context.page = $rootScope.pages[0];
             $rootScope.selectIgTab(0);
             $rootScope.changes = {};
             $rootScope.profile = null;
@@ -428,10 +432,94 @@ angular.module('igl')
             $scope.loading = false;
 
         };
+        
+        $scope.createGuide = function() {
+        	$scope.isVersionSelect = true;
+        };
 
+		$scope.listHL7Versions = function() {
+			var hl7Versions = [];
+			$http.get('api/profiles/hl7/findVersions', {
+				timeout : 60000
+			}).then(
+					function(response) {
+						var len = response.data.length;
+						for (var i = 0; i < len; i++) {
+							hl7Versions.push(response.data[i]);
+						}
+					});
+			return hl7Versions;
+		};
+		
+		$scope.createProfile = function(hl7Version, msgIds) {
+			$scope.isVersionSelect = false;
+			$scope.isEditing = true;
+			var iprw = {
+					"hl7Version" : hl7Version,
+					"msgIds" : msgIds,
+					"timeout" : 60000
+			};
+			 $http.post('api/profiles/hl7/createIntegrationProfile', iprw).then(function
+			 (response) {
+				 $scope.profile = angular.fromJson(response.data);
+				 $scope.getLeveledProfile($scope.profile);
+				 $rootScope.$broadcast('event:IgsPushed', $scope.profile);
+			 });
+			 return $scope.profile;
+		};
+		
+		$scope.getLeveledProfile = function(profile) {
+			$scope.leveledProfile = [{title : 'Datatypes', children : profile.datatypes.children},
+			                         {title : 'Segments', children : profile.segments.children},
+			                         {title : 'Messages', children : profile.messages.children},
+			                         {title : 'ValueSets', children : profile.tables.children}];
+		};
 
+		$scope.toggle = function(node) {
+			if($scope.collapsed[node] === undefined) {
+				$scope.collapsed.push(node);
+				$scope.collapsed[node] = false;
+			}
+			$scope.collapsed[node] = !$scope.collapsed[node];
+		}
+		
+		$scope.tocSelection = function(node, nnode) {
+			switch(node) {
+		    case "Datatypes": {
+		    	$scope.subview = "views/edit/editDataTypes.html";
+	            $rootScope.datatype = datatype;
+	            $rootScope.datatype["type"] = "datatype";
+		    	break;
+		    }
+		    case "Segments": {
+		    	$scope.subview = "views/edit/editSegments.html";
+		    	$rootScope.segment = nnode;
+		    	$rootScope.segment["type"] = "segment";
+		    	break;
+		    }
+		    case "Messages": {
+		    	$scope.subview = "views/edit/editMessages.html";
+		    	$rootScope.message = $rootScope.messagesMap[nnode.id];
+		    	break;
+		    }
+		    case "ValueSets": {
+		    	$scope.subview = "views/edit/editValueSets.html";
+		        $rootScope.table = nnode;
+		    	break;
+		    }
+		    default: {
+		    	$scope.subview = "nts.html";
+		    }
+		    }
+			return $scope.subview;
+		}
+		
+		$scope.showSelected = function(node) {
+			$scope.selectedNode = node;
+		};
     });
 
+		
 
 angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes, $rootScope, $http) {
     $scope.changes = changes;
@@ -486,7 +574,7 @@ angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
 
-//            waitingDialog.hide();
+// waitingDialog.hide();
         });
     };
 
@@ -521,7 +609,6 @@ angular.module('igl').controller('ConfirmProfileCloseCtrl', function ($scope, $m
         $rootScope.initMaps();
         $modalInstance.close();
     };
-
 
     $scope.saveChangesAndClose = function () {
         $scope.loading = true;

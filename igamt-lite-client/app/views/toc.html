@@ -1,0 +1,46 @@
+<style>
+.vid {
+	clear:both;
+}
+.icon {
+	margin:0em 0em 0em 0em;	
+	width:1em;
+}	
+.subicon {
+	margin:0em 1em 0em 2em;	
+}	
+.txt {
+	margin:0em 0em 0em 2em;
+	padding:0em 0em 0em 1em;
+	text-align:left;
+	width:15em;
+}
+</style>
+<div class="vid  container">
+	<div class="row">
+	  <div class="col-sm-12">
+	    <h3>Table of Contents</h3>
+	  </div>
+	</div>
+	<div class="row" ng-repeat="node in leveledProfile" ng-model="leveledProfile">
+		<div class="col-md-1 icon"><a class="btn btn-success btn-xs" ng-if="node.children && node.children.length > 0" ng-click="toggle(node.title)">
+						<span class="glyphicon"
+				        ng-class="{
+				          'glyphicon-chevron-right': collapsed[node.title],
+				          'glyphicon-chevron-down': !collapsed[node.title]
+				        }"></span></a></div>
+		    <div class="col-md-1 txt">{{node.title}}</div>
+			<div class="vid row" ng-repeat="nnode in node.children" ng-if="!collapsed[node.title]">
+		    <div class="col-md-1 subicon"><a class="btn btn-link btn-xs">
+				<span class="glyphicon" 			        
+				ng-class="{
+				          'glyphicon-chevron-right': !collapsed[node.title]
+				        }"  ng-click="tocSelection(node.title, nnode)"></span></a></div>
+			<div class="col-md-1 txt">{{nnode.messageType}}{{nnode.label}}</div>
+		    <div class="col-md-1"><a class="pull-right btn btn-danger btn-xs" ng-click="remove(this)"><span
+		        class="glyphicon glyphicon-remove"></span></a></div>
+		    <div class="col-md-1"><a class="pull-right btn btn-primary btn-xs" ng-click="add(this)" style="margin-right: 8px;"><span
+		        class="glyphicon glyphicon-plus"></span></a></div>
+			</div>
+	</div>
+</div>
