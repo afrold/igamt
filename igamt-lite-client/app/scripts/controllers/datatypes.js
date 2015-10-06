@@ -457,11 +457,11 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
         			if (tmp.obj.id === id) {
                         $rootScope.changes['conformanceStatement']['add'].splice(i, 1);
                         if ($rootScope.changes["conformanceStatement"]["add"] && $rootScope.changes["conformanceStatement"]["add"].length === 0) {
-                            delete  $rootScope.changes["predicate"]["add"];
+                            delete  $rootScope.changes["conformanceStatement"]["add"];
                         }
 
-                        if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["predicate"]).length === 0) {
-                            delete  $rootScope.changes["predicate"];
+                        if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["conformanceStatement"]).length === 0) {
+                            delete  $rootScope.changes["conformanceStatement"];
                         }
                         return true;
                    }

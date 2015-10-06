@@ -1,5 +1,26 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
@@ -17,31 +38,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.ProfileSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.ProfileChangeCommand;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationProfileRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/profiles")
@@ -123,12 +122,6 @@ public class ProfileController extends CommonController {
 		return result;
 	}
 
-	@RequestMapping(value = "/abc/def/ghi", method = RequestMethod.GET)
-	public String tryIt() {
-		log.info("abc=>");
-		return "{abc}";
-	}
-	
 	@RequestMapping(value = "/cuser", method = RequestMethod.GET)
 	public List<Profile> userProfiles() throws UserAccountNotFoundException {
 		log.info("Fetching all custom profiles...");
@@ -341,16 +334,17 @@ public class ProfileController extends CommonController {
 		return result;
 	}
 
-	@RequestMapping(value = "/messageListByVersion/{hl7Version}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/hl7/messageListByVersion/{hl7Version:.*}", method = RequestMethod.GET, produces = "application/json")
 	public List<String[]> getMessageListByVersion(@PathVariable("hl7Version") String hl7Version) {
 		log.info("Fetching messages of version hl7Version=" + hl7Version);
 		List<String[]> messages = profileCreation.summary(hl7Version);
+		log.debug("messages=" + messages.size());
 		return messages;
 	}
 
-	@RequestMapping(value = "/createIntegrationProfile/{hl7Version}/{messageIds}", method = RequestMethod.POST, produces = "application/json")
-	public Profile createIG(@PathVariable("hl7Version") String hl7Version, @PathVariable("messageIds") String[] messageIds, @RequestParam List<String> msgIds) throws ProfileException {
+	@RequestMapping(value = "/hl7/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public Profile createIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws ProfileException {
 		log.info("Creation of profile");
-		return profileCreation.createIntegratedProfile(msgIds, hl7Version);
-	}	
+		return profileCreation.createIntegratedProfile(iprw.getMsgIds(), iprw.getHl7Version());
+	}
 }

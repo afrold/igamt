@@ -119,7 +119,7 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             else {
                 return false;
             }
-        	return true;
+//        	return true;
         };
 
         var loadFromServer = function() {

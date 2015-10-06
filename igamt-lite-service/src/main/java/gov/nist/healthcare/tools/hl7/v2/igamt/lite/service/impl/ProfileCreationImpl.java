@@ -39,6 +39,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
@@ -52,7 +53,6 @@ public class ProfileCreationImpl implements ProfileCreationService{
 
 	@Autowired
 	private ProfileService profileService;
-
 
 	@Override
 	public List<String> findHl7Versions() {
@@ -78,7 +78,6 @@ public class ProfileCreationImpl implements ProfileCreationService{
 	public Profile createIntegratedProfile(List<String> msgIds, String hl7Version) throws ProfileException {
 		//Creation of profile
 		Profile pSource = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).get(0);
-
 		Profile pTarget = new Profile();
 
 		//Setting metaData
@@ -100,13 +99,16 @@ public class ProfileCreationImpl implements ProfileCreationService{
 		pTarget.setScope(ProfileScope.USER);
 		pTarget.setComment("Created " + date.toString());
 		
-		//Filling libraries
+		//Filling libraries--was
 		Messages msgsTarget = new Messages();
 		Segments sgtsTarget = new Segments();
 		Datatypes dtsTarget = new Datatypes();
+		Tables tabTarget = new Tables();
 		pTarget.setMessages(msgsTarget);
 		pTarget.setSegments(sgtsTarget);
 		pTarget.setDatatypes(dtsTarget);
+		pTarget.setTables(tabTarget);
+
 		for (String msgId : msgIds){
 			Message m = pSource.getMessages().findOne(msgId);
 			msgsTarget.addMessage(m);

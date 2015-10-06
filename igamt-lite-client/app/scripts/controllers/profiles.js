@@ -52,7 +52,7 @@ angular.module('igl')
         $rootScope.$on('event:IgsPushed', function(event, profile) {
         	if($scope.igContext.igType.type === 'USER'){
                 $rootScope.igs.push(profile);
-             }else {
+             } else {
                 $scope.igContext.igType = $scope.igTypes[1];
                 $scope.loadProfiles();
                 profile = $scope.findOne(profile.id);

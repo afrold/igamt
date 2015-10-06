@@ -1,212 +1,205 @@
 <div ng-controller="MessageListCtrl" ng-init="init()">
 
 
-<div ng-show="loading" style="text-align:center">
-     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
-</div>
+	<div ng-show="loading" style="text-align: center">
+		<i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+	</div>
 
-<div ng-show="!loading">
+	<div ng-show="!loading">
 
-<div class="panel panel-info">
+		<div class="panel panel-info">
 
-<div class="panel-heading">
-    Conformance Profile List
-</div>
-<div class="panel-body">
-<div class="row">
-    <div class="col-md-12">
-        <div class="">
-            <table st-table="messages"
-                   class="table table-striped table-bordered">
-                <thead>
-                <tr class="tbl-header">
-                    <th st-sort="identifier">Identifier</th>
-                    <th st-sort="messageType">Type</th>
-                    <th st-sort="event">Event</th>
-                    <th st-sort="structID">Struct ID</th>
-                    <th>Description</th>
-                    <th>Comment</th>
-                    <th></th>
-                </tr>
-                <!--<tr>-->
-                <!--<th colspan="7">-->
-                <!--<input st-search class="input-sm form-control" type="search"/>-->
-                <!--</th>-->
-                <!--</tr>-->
-                </thead>
-                <tbody>
-                <tr ng-repeat="row in messages">
-                    <!--<td cs-select="row"><input ng-click="select(row.id)"-->
-                    <!--ng-checked="message != null && row.id == message.id"-->
-                    <!--type="radio"></td>-->
-                    <td ng-bind="row.identifier"></td>
-                    <td ng-bind="row.messageType"></td>
-                    <td ng-bind-html="row.event"></td>
-                    <td ng-bind-html="row.structID"></td>
-                    <td ng-bind-html="row.description"></td>
-                    <td ng-bind="row.comment"></td>
-                    <td>
-                        <button title="Edit" type="button" class="btn btn-xs btn-primary"
-                                ng-click="select(row.id)">
-                            <span><i class="fa fa-pencil fa-fw"></i></span>
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-</div>
-</div>
+			<div class="panel-heading">Conformance Profile List</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="">
+							<table st-table="messages"
+								class="table table-striped table-bordered">
+								<thead>
+									<tr class="tbl-header">
+										<th st-sort="identifier">Identifier</th>
+										<th st-sort="messageType">Type</th>
+										<th st-sort="event">Event</th>
+										<th st-sort="structID">Struct ID</th>
+										<th>Description</th>
+										<th>Comment</th>
+										<th></th>
+									</tr>
+									<!--<tr>-->
+									<!--<th colspan="7">-->
+									<!--<input st-search class="input-sm form-control" type="search"/>-->
+									<!--</th>-->
+									<!--</tr>-->
+								</thead>
+								<tbody>
+									<tr ng-repeat="row in messages">
+										<!--<td cs-select="row"><input ng-click="select(row.id)"-->
+										<!--ng-checked="message != null && row.id == message.id"-->
+										<!--type="radio"></td>-->
+										<td ng-bind="row.identifier"></td>
+										<td ng-bind="row.messageType"></td>
+										<td ng-bind-html="row.event"></td>
+										<td ng-bind-html="row.structID"></td>
+										<td ng-bind-html="row.description"></td>
+										<td ng-bind="row.comment"></td>
+										<td>
+											<button title="Edit" type="button"
+												class="btn btn-xs btn-primary" ng-click="select(row.id)">
+												<span><i class="fa fa-pencil fa-fw"></i></span>
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-<div class="" style="padding-top:20px">
-<div ng-show="loadingSelection" style="text-align:center;">
-     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
-</div>
+		<div class="" style="padding-top: 20px">
+			<div ng-show="loadingSelection" style="text-align: center;">
+				<i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+			</div>
 
-<div class="panel panel-info" ng-show="message !== null && !loadingSelection" >
-<div class="panel-heading">
-    Conformance Profile: {{message.identifier}}
-         <span class="pull-right">
-                        <button title="Close" type="button" class="btn btn-sm btn-warning"
-                                ng-click="close()">
-                            <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
-                        </button>
-                        </span>
+			<div class="panel panel-info"
+				ng-show="message !== null && !loadingSelection">
+				<div class="panel-heading">
+					Conformance Profile: {{message.identifier}} <span
+						class="pull-right">
+						<button title="Close" type="button" class="btn btn-sm btn-warning"
+							ng-click="close()">
+							<span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
+						</button>
+					</span>
 
-</div>
-<div class="panel-body">
-        <div class="page-header">
-            <span class="header5">MetaData</span>
-        </div>
+				</div>
+				<div class="panel-body">
+					<div class="page-header">
+						<span class="header5">MetaData</span>
+					</div>
 
-     <form name="messageMetaDataForm" novalidate>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="form-group"
-                     ng-class="{'has-error' : messageMetaDataForm.identifier.$invalid && !messageMetaDataForm.identifier.$pristine }">
-                    <label>Profile Identifier</label>
-                    <input type="text"
-                           ng-change="recordChangeForEdit2('message','edit',message.id,'identifier', message.identifier)"
-                           name="identifier" class="form-control" ng-model="message.identifier"
-                           required>
-                </div>
+					<form name="messageMetaDataForm" novalidate>
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group"
+									ng-class="{'has-error' : messageMetaDataForm.identifier.$invalid && !messageMetaDataForm.identifier.$pristine }">
+									<label>Profile Identifier</label> <input type="text"
+										ng-change="recordChangeForEdit2('message','edit',message.id,'identifier', message.identifier)"
+										name="identifier" class="form-control"
+										ng-model="message.identifier" required>
+								</div>
 
-                <div class="form-group">
-                    <label>Profile OID</label>
-                    <input type="text"
-                            ng-change="recordChangeForEdit2('message','edit',message.id,'oid', message.oid)"
-                           name="oid" class="form-control" ng-model="message.oid"
-                           required>
-                </div>
+								<div class="form-group">
+									<label>Profile OID</label> <input type="text"
+										ng-change="recordChangeForEdit2('message','edit',message.id,'oid', message.oid)"
+										name="oid" class="form-control" ng-model="message.oid"
+										required>
+								</div>
 
-                <div class="form-group">
-                    <label>IGAMT ID</label>
-                    <input type="text" disabled
-                            name="id" class="form-control" ng-model="message.id"
-                           required>
-                </div>
+								<div class="form-group">
+									<label>IGAMT ID</label> <input type="text" disabled name="id"
+										class="form-control" ng-model="message.id" required>
+								</div>
 
 
 
 
-                <!--<div class="form-group">-->
-                    <!--<label>Description</label>-->
-                    <!--<input type="text"-->
-                           <!--ng-change="recordChange2('message',message.id,'description', message.description)"-->
-                           <!--name="structID" class="form-control" ng-model="message.description"-->
-                           <!--required>-->
-                <!--</div>-->
+								<!--<div class="form-group">-->
+								<!--<label>Description</label>-->
+								<!--<input type="text"-->
+								<!--ng-change="recordChange2('message',message.id,'description', message.description)"-->
+								<!--name="structID" class="form-control" ng-model="message.description"-->
+								<!--required>-->
+								<!--</div>-->
 
-                <!--<div class="form-group">-->
-                    <!--<label>Comment</label>-->
-                    <!--<input style="width:100%" class="igl-input" type="text"-->
-                           <!--name="comment"-->
-                           <!--ng-change="recordChange2('message',message.id,'comment', message.comment)"-->
-                           <!--ng-model="message.comment">-->
+								<!--<div class="form-group">-->
+								<!--<label>Comment</label>-->
+								<!--<input style="width:100%" class="igl-input" type="text"-->
+								<!--name="comment"-->
+								<!--ng-change="recordChange2('message',message.id,'comment', message.comment)"-->
+								<!--ng-model="message.comment">-->
 
-                <!--</div>-->
-            </div>
-            <div class="col-sm-6">
-                <!--<div class="form-group"-->
-                     <!--ng-class="{'has-error' : messageMetaDataForm.type.$invalid && !messageMetaDataForm.type.$pristine }">-->
-                    <!--<label>Type</label>-->
-                    <!--<input type="text" name="type" class="form-control" ng-model="message.messageType"-->
-                           <!--required disabled>-->
-                <!--</div>-->
+								<!--</div>-->
+							</div>
+							<div class="col-sm-6">
+								<!--<div class="form-group"-->
+								<!--ng-class="{'has-error' : messageMetaDataForm.type.$invalid && !messageMetaDataForm.type.$pristine }">-->
+								<!--<label>Type</label>-->
+								<!--<input type="text" name="type" class="form-control" ng-model="message.messageType"-->
+								<!--required disabled>-->
+								<!--</div>-->
 
-                <!--<div class="form-group"-->
-                     <!--ng-class="{'has-error' : messageMetaDataForm.structID.$invalid && !messageMetaDataForm.structID.$pristine }">-->
-                    <!--<label>Struct ID</label>-->
-                    <!--<input type="text" name="structID" class="form-control" ng-model="message.structID"-->
-                           <!--required disabled>-->
-                <!--</div>-->
+								<!--<div class="form-group"-->
+								<!--ng-class="{'has-error' : messageMetaDataForm.structID.$invalid && !messageMetaDataForm.structID.$pristine }">-->
+								<!--<label>Struct ID</label>-->
+								<!--<input type="text" name="structID" class="form-control" ng-model="message.structID"-->
+								<!--required disabled>-->
+								<!--</div>-->
 
-                <!--<div class="form-group"-->
-                     <!--ng-class="{'has-error' : messageMetaDataForm.event.$invalid && !messageMetaDataForm.event.$pristine }">-->
-                    <!--<label>Event</label>-->
-                    <!--<input type="text" name="event" class="form-control" ng-model="message.event"-->
-                           <!--required disabled>-->
-                <!--</div>-->
-
-
-                <div class="form-group">
-                    <label>Profile Version</label>
-                    <input style="width:100%" class="igl-input" type="text" disabled
-                           name="version"
-                           ng-change="recordChangeForEdit2('message','edit',message.id,'version', message.version)"
-                           ng-model="message.version">
-
-                </div>
-
-                <div class="form-group">
-                    <label>Profile Date</label>
-                    <input style="width:100%" class="igl-input" type="text"
-                           name="date" disabled
-                           ng-change="recordChangeForEdit2('message','edit',message.id,'date', message.date)"
-                           ng-model="message.date">
-
-                </div>
-
-                <div class="form-group">
-                    <label>Comment</label>
-                    <input style="width:100%" class="igl-input" type="text"
-                           name="comment"
-                           ng-change="recordChangeForEdit2('message','edit',message.id,'comment', message.comment)"
-                           ng-model="message.comment">
-
-                </div>
+								<!--<div class="form-group"-->
+								<!--ng-class="{'has-error' : messageMetaDataForm.event.$invalid && !messageMetaDataForm.event.$pristine }">-->
+								<!--<label>Event</label>-->
+								<!--<input type="text" name="event" class="form-control" ng-model="message.event"-->
+								<!--required disabled>-->
+								<!--</div>-->
 
 
-            </div>
-        </div>
-    </form>
+								<div class="form-group">
+									<label>Profile Version</label> <input style="width: 100%"
+										class="igl-input" type="text" disabled name="version"
+										ng-change="recordChangeForEdit2('message','edit',message.id,'version', message.version)"
+										ng-model="message.version">
 
-    <!--<div class="page-header">-->
-        <!--<span class="igl-title">Conformance Profile Content</span>-->
-    <!--</div>-->
+								</div>
+
+								<div class="form-group">
+									<label>Profile Date</label> <input style="width: 100%"
+										class="igl-input" type="text" name="date" disabled
+										ng-change="recordChangeForEdit2('message','edit',message.id,'date', message.date)"
+										ng-model="message.date">
+
+								</div>
+
+								<div class="form-group">
+									<label>Comment</label> <input style="width: 100%"
+										class="igl-input" type="text" name="comment"
+										ng-change="recordChangeForEdit2('message','edit',message.id,'comment', message.comment)"
+										ng-model="message.comment">
+
+								</div>
 
 
-    <div class="page-header">
-        <span class="header5">Definition</span>
-    </div>
+							</div>
+						</div>
+					</form>
 
-    <table tt-table tt-params="params" class="table table-striped table-bordered">
-        <thead>
-        <tr class="tbl-header row">
-            <th class="col-md-5">Name</th>
-            <th class="col-md-1">Usage</th>
-            <th class="col-md-1">Cardinality</th>
-            <!--<th class="col-md-1">Ref</th>-->
-            <th class="col-md-2">Predicate</th>
-            <th class="col-md-2">Conformance Statement</th>
-            <th class="col-md-1">Comment</th>
-        </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-    <script type="text/ng-template" id="MessageEditTree.html">
+					<!--<div class="page-header">-->
+					<!--<span class="igl-title">Conformance Profile Content</span>-->
+					<!--</div>-->
+
+
+					<div class="page-header">
+						<span class="header5">Definition</span>
+					</div>
+
+					<table tt-table tt-params="params"
+						class="table table-striped table-bordered">
+						<thead>
+							<tr class="tbl-header row">
+								<th class="col-md-5">Name</th>
+								<th class="col-md-1">Usage</th>
+								<th class="col-md-1">Cardinality</th>
+								<!--<th class="col-md-1">Ref</th>-->
+								<th class="col-md-2">Predicate</th>
+								<th class="col-md-2">Conformance Statement</th>
+								<th class="col-md-1">Comment</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+					<script type="text/ng-template" id="MessageEditTree.html">
         <tr tt-node is-branch="hasChildren(node)" class="row">
             <td class="col-md-6">
                                         <span ng-show="node.type !== 'segmentRef' && node.type !== 'group'">
@@ -224,7 +217,8 @@
             </td>
             <td class="col-md-1">
                 <div ng-show="node.type === 'segmentRef' || node.type === 'group'">
-                                            <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
+                                            <!--<span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">-->
+											<span>
                                                 <select class="form-control input-sm"
                                                         name="usage"
                                                         ng-change="recordChangeForEdit2(node.type,'edit',node.id,'usage', node.usage)"
@@ -233,7 +227,7 @@
                                                         ng-options="usage for usage in config.usages">
                                                 </select>
                                             </span>
-                    <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}, {{node.predicates[0].falseUsage}})</span>
+                    						<!--<span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}, {{node.predicates[0].falseUsage}})</span>-->
 
                 </div>
                 <div ng-show="node.type !== 'segmentRef' && node.type !== 'group'">-</div>
@@ -268,93 +262,31 @@
             <!--<div ng-show="node.type !== 'segmentRef'">-</div>-->
             <!--</td>-->
             <td class="col-md-2">
-            <!-- <div ng-show="node.type !== 'segmentRef' && node.type !== 'group'">
-                             <span ng-show="trim" class="constraint_trim">
-                                              <span ng-repeat="predicate in node.predicates">
-                                                 {{predicate.description}}
-                                              </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="predicate in node.predicates">
-                                                  {{predicate.description}}
-                                              </p>
-                                            </span>
-                </div>
-
-                <div ng-show="node.type === 'segmentRef'">
-
-                                <span ng-show="trim" class="constraint_trim">
-                                              <span ng-repeat="predicate in segmentsMap[node.ref].predicates">
-                                                 {{predicate.description}}
-                                              </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="predicate in segmentsMap[node.ref].predicates">
-                                                  {{predicate.description}}
-                                              </p>
-                                            </span>
-                </div>
-
-                <div ng-show="node.type === 'group'">
-                    <span ng-show="trim" class="constraint_trim">
-                                              <span ng-repeat="predicate in node.predicates">
-                                                 {{predicate.description}}
-                                              </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="predicate in node.predicates">
-                                                  {{predicate.description}}
-                                              </p>
-                                            </span>
-
-                </div>-->
+				<div ng-show="node.type === 'group'">
+            		<div ng-show="countPredicates(node) == 0">
+                		<button type="button" ng-click="managePredicate(node)" class="btn btn-info btn-xs">
+                    		<span><i class="fa fa-plus fa-fw"></i></span>
+                		</button>
+            		</div>
+            		<p ng-repeat="p in node.predicates">
+						<a ng-click="managePredicate(node)">{{p.description}}</a>
+            		</p>
+        		</div>
+        		<div ng-show="node.type !== 'group'">-</div>
             </td>
+
             <td class="col-md-2">
-            <!--<div ng-show="node.type !== 'segmentRef' && node.type !== 'group'">
-                             <span ng-show="trim" class="constraint_trim">
-                                               <span ng-repeat="conStatement in node.conformanceStatements">
-                                                    {{conStatement.constraintId}} : {{conStatement.description}}
-                                             </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="conStatement in node.conformanceStatements">
-                                                  {{conStatement.constraintId}} : {{conStatement.description}}
-                                              </p>
-                                            </span>
-                </div>
-                <div ng-show="node.type === 'segmentRef'">
-                                <span ng-show="trim" class="constraint_trim">
-                                               <span ng-repeat="conStatement in segmentsMap[node.ref].conformanceStatements">
-                                                    {{conStatement.constraintId}} : {{conStatement.description}}
-                                             </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="conStatement in segmentsMap[node.ref].conformanceStatements">
-                                                  {{conStatement.constraintId}} : {{conStatement.description}}
-                                              </p>
-                                            </span>
-                </div>
-
-
-                <div ng-show="node.type === 'group'">
-<span ng-show="trim" class="constraint_trim">
-                                               <span ng-repeat="conStatement in node.conformanceStatements">
-                                                    {{conStatement.constraintId}} : {{conStatement.description}}
-                                             </span>
-                                            </span>
-                                         <span ng-show="!trim" class="constraint_verbose">
-                                              <p ng-repeat="conStatement in node.conformanceStatements">
-                                                  {{conStatement.constraintId}} : {{conStatement.description}}
-                                              </p>
-                                            </span>
-
-
-
-                 </div>-->
-
-
-
-
+				<div ng-show="node.type === 'group'">
+            		<div ng-show="countConformanceStatements(node) == 0">
+                		<button type="button" ng-click="manageConformanceStatement(node)" class="btn btn-info btn-xs">
+                    		<span><i class="fa fa-plus fa-fw"></i></span>
+                		</button>
+            		</div>
+            		<p ng-repeat="c in node.conformanceStatements">
+                		<a ng-click="manageConformanceStatement(node)">{{c.constraintId}}: {{c.description}}</a>
+            		</p>
+        		</div>
+        		<div ng-show="node.type !== 'group'">-</div>
             </td>
 
 
@@ -377,8 +309,266 @@
 
         </tr>
     </script>
-</div>
-</div>
-</div>
-</div>
+				</div>
+				
+				<script type="text/ng-template" id="PredicateMessageCtrl.html">
+    				<div class="modal-header">
+        				<h3 class="modal-title">Predicates for {{selectedNode.name}}</h3>
+    				</div>
+    				
+					<div class="modal-body">
+        				<form role="form">
+            				<h5>Predicates of {{selectedNode.name}}</h5>
+
+            				<div class="table-responsive">
+                				<table class="table table-striped table-bordered">
+									<thead>
+                    					<tr class="tbl-header">
+                        					<th class="col-md-7">Condition</th>
+											<th class="col-md-2">Target Location</th>
+											<th class="col-md-1">True Usage</th>
+                        					<th class="col-md-1">False Usage</th>
+                        					<th class="col-md-1"></th>
+                    					</tr>
+                    				</thead>
+                    
+									<tbody>
+                    					<tr ng-repeat="p in selectedNode.predicates">
+                        					<td class="col-md-7">{{p.description}}</td>
+											<td class="col-md-2">{{p.constraintId}}</td>
+											<td class="col-md-1">{{p.trueUsage}}</td>
+                        					<td class="col-md-1">{{p.falseUsage}}</td>
+                        					<td class="col-md-1">
+                            					<button type="button" ng-click="deletePredicate(p)" class="btn btn-xs btn-danger">
+                                					<span><i class="fa fa-minus-circle fa-fw"></i></span>
+                            					</button>
+                        					</td>
+                    					</tr>
+                    				</tbody>
+                				</table>
+            				</div>
+
+            				<h5>Define New Predicate of {{selectedNode.name}}</h5>
+
+            				<div class="table-responsive">
+                				<table class="table table-striped table-bordered">
+									<thead>
+                    					<tr class="tbl-header">
+											<th class="col-md-2" colspan="1" rowspan="2">Target Node</th>
+                        					<th class="col-md-1" colspan="1" rowspan="2">True Usage</th>
+                        					<th class="col-md-1" colspan="1" rowspan="2">False Usage</th>
+											<th class="col-md-8" colspan="4">Condition</th>
+                        					<th class="col-md-1" colspan="1" rowspan="2"></th>
+                    					</tr>
+                    					<tr class="tbl-header">
+                        					<th class="col-md-2" colspan="1">Node</th>
+                        					<th class="col-md-2" colspan="1">Verb</th>
+                       	 					<th class="col-md-2" colspan="1">Constraint</th>
+                        					<th class="col-md-2" colspan="1">Value</th>
+                    					</tr>
+                    				</thead>
+									<tbody>
+										<tr>
+											<td class="col-md-2" colspan="1">
+												<span>{{newConstraint.location_T}}</span>
+												<span ng-show="newConstraint.childNodes_T != null && newConstraint.childNodes_T.length > 0">
+													<select name="child" class="igl-input" ng-change="updateLocationT()" ng-model="newConstraint.currentNode_T" ng-options="child as child.name for child in newConstraint.childNodes_T" />
+												</span>
+				                        	</td>
+
+											<td class="col-md-1" colspan="1">
+                            					<select name="trueUsage" class="igl-input" ng-model="newConstraint.trueUsage" ng-options="usage for usage in config.usages"/>
+                        					</td>
+
+                        					<td class="col-md-1" colspan="1">
+                            					<select name="falseUsage" class="igl-input" ng-model="newConstraint.falseUsage" ng-options="usage for usage in config.usages"/>
+                        					</td>
+                        				
+											<td class="col-md-2" colspan="1">
+												<span>{{newConstraint.location_1}}</span>
+												<span ng-show="newConstraint.childNodes_1 != null && newConstraint.childNodes_1.length > 0">
+													<select name="child" class="igl-input" ng-change="updateLocation1()" ng-model="newConstraint.currentNode_1" ng-options="child as child.name for child in newConstraint.childNodes_1" />
+												</span>
+				                        	</td>
+                        
+											<td class="col-md-2" colspan="1">
+                           	 					<select name="verb" class="igl-input"
+                                    				ng-change=""
+                                    				ng-model="newConstraint.verb"
+                                    				ng-options="constraintVerb for constraintVerb in config.constraintVerbs">
+                            					</select>
+                        					</td>
+                        
+											<td class="col-md-2" colspan="1">
+                            					<select name="contraintType" class="igl-input"
+                                    				ng-change=""
+                                    				ng-model="newConstraint.contraintType"
+                                    				ng-options="contraintType for contraintType in config.constraintTypes">
+                            					</select>
+                        					</td>
+                        
+											<td class="col-md-2" colspan="1">
+                								<span ng-show="newConstraint.contraintType == 'a literal value'">
+                									<input style="width:100%" class="igl-input" ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
+                								</span>
+                		
+												<span ng-show="newConstraint.contraintType == 'one of list values'">
+                									<input style="width:100%" class="igl-input" ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
+                								</span>
+                		
+												<span ng-show="newConstraint.contraintType == 'formatted value'">
+                									<select name="format" class="igl-input" ng-model="newConstraint.value" ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats" />
+                								</span>
+                		
+												<span ng-show="newConstraint.contraintType == 'identical to the another node'">
+													<span>{{newConstraint.location_2}}</span>
+													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
+														<select name="child" class="igl-input" ng-change="updateLocation2()" ng-model="newConstraint.currentNode_2" ng-options="child as child.name for child in newConstraint.childNodes_2" />
+													</span>
+                								</span>
+                        					</td>
+											
+											<td class="col-md-1" colspan="1">
+                            					<button title="Add Predicate" type="button" class="btn btn-xs btn-success" ng-click="addPredicate()">
+                                					<span><i class="fa fa-plus-circle fa-fw"></i></span>
+                            					</button>
+                        					</td>
+                    					</tr>
+                    				</tbody>
+                				</table>
+            				</div>
+        				</form>
+    				</div>
+    
+					<div class="modal-footer">
+        				<button class="btn btn-primary" ng-click="ok()">
+							<span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
+        				</button>
+    				</div>
+				</script>
+				
+				
+
+				<script type="text/ng-template" id="ConformanceStatementMessageCtrl.html">
+    				<div class="modal-header">
+        				<h3 class="modal-title">ConformanceStatement for {{selectedNode.name}}</h3>
+    				</div>
+    				
+					<div class="modal-body">
+        				<form role="form">
+            				<h5>ConformanceStatements of {{selectedNode.name}}</h5>
+
+            				<div class="table-responsive">
+                				<table class="table table-striped table-bordered">
+									<thead>
+                    					<tr class="tbl-header">
+                        					<th class="col-md-2">ID</th>
+                        					<th class="col-md-9">Desciption</th>
+                        					<th class="col-md-1"></th>
+                    					</tr>
+                    				</thead>
+                    
+									<tbody>
+                    					<tr ng-repeat="c in selectedNode.conformanceStatements">
+                        					<td class="col-md-2">{{c.constraintId}}</td>
+                        					<td class="col-md-9">{{c.description}}</td>
+                        					<td class="col-md-1">
+                            					<button type="button" ng-click="deleteConformanceStatement(c)" class="btn btn-xs btn-danger">
+                                					<span><i class="fa fa-minus-circle fa-fw"></i></span>
+                            					</button>
+                        					</td>
+                    					</tr>
+                    				</tbody>
+                				</table>
+            				</div>
+
+            				<h5>Define New Conformance Statement of {{selectedNode.name}}</h5>
+
+            				<div class="table-responsive">
+                				<table class="table table-striped table-bordered">
+                    				<thead>
+                    					<tr class="tbl-header">
+                        					<th class="col-md-2" colspan="1" rowspan="2">ID</th>
+                        					<th class="col-md-10" colspan="4">Desciption</th>
+                        					<th class="col-md-1" colspan="1" rowspan="2"></th>
+                    					</tr>
+                    					<tr class="tbl-header">
+                        					<th class="col-md-3" colspan="1">Node</th>
+                        					<th class="col-md-2" colspan="1">Verb</th>
+                        					<th class="col-md-2" colspan="1">Constraint</th>
+                        					<th class="col-md-3" colspan="1">Value</th>
+                    					</tr>
+                    				</thead>
+                    
+									<tbody>
+										<tr>
+                        					<td class="col-md-2" colspan="1">
+                            					<input style="width:100%" class="igl-input" ng-model="newConstraint.constraintId" placeholder="Type ID" type="text"/>
+                        					</td>
+                        				
+											<td class="col-md-3" colspan="1">
+												<span>{{newConstraint.location_1}}</span>
+												<span ng-show="newConstraint.childNodes_1 != null && newConstraint.childNodes_1.length > 0">
+													<select name="child" class="igl-input" ng-change="updateLocation1()" ng-model="newConstraint.currentNode_1" ng-options="child as child.name for child in newConstraint.childNodes_1" />
+												</span>
+				                        	</td>
+                        
+											<td class="col-md-2" colspan="1">
+                           	 					<select name="verb" class="igl-input"
+                                    				ng-change=""
+                                    				ng-model="newConstraint.verb"
+                                    				ng-options="constraintVerb for constraintVerb in config.constraintVerbs">
+                            					</select>
+                        					</td>
+                        
+											<td class="col-md-2" colspan="1">
+                            					<select name="contraintType" class="igl-input"
+                                    				ng-change=""
+                                    				ng-model="newConstraint.contraintType"
+                                    				ng-options="contraintType for contraintType in config.constraintTypes">
+                            					</select>
+                        					</td>
+                        
+											<td class="col-md-3" colspan="1">
+                								<span ng-show="newConstraint.contraintType == 'a literal value'">
+                									<input style="width:100%" class="igl-input" ng-model="newConstraint.value" placeholder="Literal Value" type="text"/>
+                								</span>
+                		
+												<span ng-show="newConstraint.contraintType == 'one of list values'">
+                									<input style="width:100%" class="igl-input" ng-model="newConstraint.value" placeholder="CSV Value" type="text"/>
+                								</span>
+                		
+												<span ng-show="newConstraint.contraintType == 'formatted value'">
+                									<select name="format" class="igl-input" ng-model="newConstraint.value" ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats" />
+                								</span>
+                		
+												<span ng-show="newConstraint.contraintType == 'identical to the another node'">
+													<span>{{newConstraint.location_2}}</span>
+													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
+														<select name="child" class="igl-input" ng-change="updateLocation2()" ng-model="newConstraint.currentNode_2" ng-options="child as child.name for child in newConstraint.childNodes_2" />
+													</span>
+                								</span>
+                        					</td>
+                        				
+											<td class="col-md-1" colspan="1">
+                            					<button title="Add Conformance Statement" type="button" class="btn btn-xs btn-success" ng-click="addConformanceStatement()">
+                                					<span><i class="fa fa-plus-circle fa-fw"></i></span>
+                            					</button>
+                        					</td>
+                    					</tr>
+                    				</tbody>
+                				</table>
+            				</div>
+        				</form>
+    				</div>
+    
+					<div class="modal-footer">
+        				<button class="btn btn-primary" ng-click="ok()">
+							<span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
+        				</button>
+    				</div>
+				</script>
+			</div>
+		</div>
+	</div>
 </div>

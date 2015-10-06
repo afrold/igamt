@@ -50,7 +50,7 @@ CREATE TABLE `Account` (
 
 LOCK TABLES `Account` WRITE;
 /*!40000 ALTER TABLE `Account` DISABLE KEYS */;
-INSERT INTO `Account` VALUES (44,'author','haffo@nist.gov','NIST','\0','Harold Affo','NIST','\0','2408988391','','Software Engineer','haffo');
+INSERT INTO `Account` VALUES (44,'author','jungyubw@nist.gov','NIST','\0','Jungyub Woo','NIST','\0','2408988391','','Software Engineer','woorion');
 /*!40000 ALTER TABLE `Account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +79,7 @@ CREATE TABLE `AccountPasswordReset` (
 
 LOCK TABLES `AccountPasswordReset` WRITE;
 /*!40000 ALTER TABLE `AccountPasswordReset` DISABLE KEYS */;
-INSERT INTO `AccountPasswordReset` VALUES (1,'aGFmZm8yMDE1NDc1MjI1',6,'2015-05-05 11:15:26','haffo');
+INSERT INTO `AccountPasswordReset` VALUES (1,'aGFmZm8yMDE1NDc1MjI1',6,'2015-05-05 11:15:26','woorion');
 /*!40000 ALTER TABLE `AccountPasswordReset` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,7 +136,7 @@ CREATE TABLE `authorities` (
 
 LOCK TABLES `authorities` WRITE;
 /*!40000 ALTER TABLE `authorities` DISABLE KEYS */;
-INSERT INTO `authorities` VALUES ('haffo','author'),('haffo','user');
+INSERT INTO `authorities` VALUES ('woorion','author'),('woorion','user'),('woorion','admin');
 /*!40000 ALTER TABLE `authorities` ENABLE KEYS */;
 UNLOCK TABLES;
 
