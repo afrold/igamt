@@ -40,7 +40,7 @@
 	    Table of Contents
 	  </div>
 	</div>
-	<div class="row" ng-class="showToC ? 'opaque' : 'transparent'" ng-repeat="node in leveledProfile"  ng-init="toggleToCContents(node.title)" ng-model="leveledProfile">
+	<div class="row" ng-class="showToC ? 'opaque' : 'transparent'" ng-repeat="node in leveledProfile track by $index"  ng-init="toggleToCContents(node.title)" ng-model="leveledProfile">
 		<div class="col-md-1 icon"><a class="btn btn-success btn-xs" ng-if="node.children && node.children.length > 0" ng-click="toggleToCContents(node.title)">
 						<span class="glyphicon"
 				        ng-class="{
@@ -48,7 +48,7 @@
 				          'glyphicon-chevron-down': !collapsed[node.title]
 				        }"></span></a></div>
 		    <div context-menu context-menu-close="closedCtxMenu(node, $index)" data-target="headContextDiv.html" class="col-md-1 txt">{{node.title}}</div>
-			<div class="vid row" ng-repeat="nnode in node.children" ng-if="!collapsed[node.title]">
+			<div class="vid row" ng-repeat="nnode in node.children track by $index" ng-if="!collapsed[node.title]">
 			
 		    <div ng-if="node.title !== 'Messages'" class="col-md-1 subicon" ng-include="'nMessage.html'"></div>
 		    <div context-menu context-menu-close="closedCtxMenu(nnode, $index)" ng-if="node.title === 'Messages'" class="col-md-1 subicon" data-target="messageContextDiv.html" ng-include="'Message.html'"></div>
