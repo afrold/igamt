@@ -2,9 +2,8 @@
  * Created by haffo on 1/12/15.
  */
 
-
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, userInfoService, $modal, $cookies, $timeout) {
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc) {
         $scope.loading = false;
         $rootScope.igs = [];
         $scope.igContext = {
@@ -181,19 +180,9 @@ angular.module('igl')
 
 
                 }
-
-// angular.forEach($rootScope.profile.messages.children, function (message) {
-// var segRefOrGroups = [];
-// var segments = [];
-// var datatypes = [];
-// $scope.collectData(message, segRefOrGroups, segments, datatypes);
-// $rootScope.messagesData.push({message: message, segRefOrGroups:
-// segRefOrGroups, segments: segments, datatypes: datatypes});
-// });
                 $scope.gotoSection($rootScope.profile.metaData, 'metaData');
                 $scope.loadingProfile = false;
                 $scope.toEditProfileId = null;
-
             }
         };
 
@@ -290,12 +279,9 @@ angular.module('igl')
             var csrfInput = document.createElement("input");
             csrfInput.name = "X-XSRF-TOKEN";
             csrfInput.value = $cookies['XSRF-TOKEN'];
-// console.log("CSRF=" + csrfInput.value);
             form.appendChild(csrfInput);
             form.style.display = 'none';
             document.body.appendChild(form);
-// httpHeaders.common['X-XSRF-TOKEN'] = $cookies['XSRF-TOKEN'];
-// httpHeaders.common['JSSESSIONID'] = $cookies['JSSESSIONID'];
             form.submit();
         };
 
@@ -307,32 +293,11 @@ angular.module('igl')
             var csrfInput = document.createElement("input");
             csrfInput.name = "X-XSRF-TOKEN";
             csrfInput.value = $cookies['XSRF-TOKEN'];
-// console.log("CSRF=" + csrfInput.value);
             form.appendChild(csrfInput);
             form.style.display = 'none';
             document.body.appendChild(form);
-// httpHeaders.common['X-XSRF-TOKEN'] = $cookies['XSRF-TOKEN'];
-// httpHeaders.common['JSSESSIONID'] = $cookies['JSSESSIONID'];
             form.submit();
         };
-
-//
-// $scope.verify = function (id) {
-// waitingDialog.show('Verifying changes...', {dialogSize: 'sm', progressType:
-// 'info'});
-// $scope.verificationError = null;
-// $scope.loading = true;
-// $http.get('api/profiles/' + id + '/verify', {timeout: 60000}).then(function
-// (response) {
-// $rootScope.verificationResult = angular.fromJson(response.data);
-// $scope.loading = false;
-// waitingDialog.hide();
-// }, function (error) {
-// $scope.loading = false;
-// $scope.verificationError = "Verification Failed";
-// waitingDialog.hide();
-// });
-// };
 
         $scope.close = function () {
             if ($rootScope.hasChanges()) {
@@ -346,12 +311,10 @@ angular.module('igl')
             }
         };
 
-
         $scope.gotoSection = function (obj, type) {
             $rootScope.section['data'] = obj;
             $rootScope.section['type'] = type;
         };
-
 
         $scope.save = function () {
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
@@ -452,7 +415,7 @@ angular.module('igl')
 		};
 		
 		$scope.createProfile = function(hl7Version, msgIds) {
-			$scope.isVersionSelect = false;
+			$scope.isVersionSelect = true;
 			$scope.isEditing = true;
 			var iprw = {
 					"hl7Version" : hl7Version,
@@ -469,19 +432,20 @@ angular.module('igl')
 		};
 		
 		$scope.getLeveledProfile = function(profile) {
-			$scope.leveledProfile = [{title : 'Datatypes', children : profile.datatypes.children},
-			                         {title : 'Segments', children : profile.segments.children},
-			                         {title : 'Messages', children : profile.messages.children},
-			                         {title : 'ValueSets', children : profile.tables.children}];
+			$scope.leveledProfile = [{title : "Datatypes", children : profile.datatypes.children},
+			                         {title : "Segments", children : profile.segments.children},
+			                         {title : "Messages", children : profile.messages.children},
+			                         {title : "ValueSets", children : profile.tables.children}];
 		};
 
-		$scope.toggle = function(node) {
+		$scope.toggleToCContents = function(node) {
 			if($scope.collapsed[node] === undefined) {
 				$scope.collapsed.push(node);
-				$scope.collapsed[node] = false;
+				$scope.collapsed[node] = true;
+			} else {
+				$scope.collapsed[node] = !$scope.collapsed[node];
 			}
-			$scope.collapsed[node] = !$scope.collapsed[node];
-		}
+		};
 		
 		$scope.tocSelection = function(node, nnode) {
 			switch(node) {
@@ -517,8 +481,76 @@ angular.module('igl')
 		$scope.showSelected = function(node) {
 			$scope.selectedNode = node;
 		};
-    });
+		
+		$scope.closedCtxMenu = function(node, $index) {
+			var item = ContextMenuSvc.get();
+			switch (item) {
+			case "Add": 
+				var newNode = (JSON.parse(JSON.stringify(node)));
+				newNode.id = null;
+				if(newNode.type === 'message') {
+					newNode.messageType = newNode.messageType + " " + timeStamp();
+				}
+				for (var i in $scope.profile.messages.children) {
+					console.log($scope.profile.messages.children[i].messageType);
+				}
+				$scope.profile.messages.children.splice(2, 0, newNode);
+				for (var i in $scope.profile.messages.children) {
+					console.log($scope.profile.messages.children[i].messageType);
+				}
+				
+				function timeStamp() {
+					// Create a date object with the current time
+					  var now = new Date();
 
+					// Create an array with the current month, day and time
+					  var date = [ now.getMonth() + 1, now.getDate(), now.getFullYear() ];
+
+					// Create an array with the current hour, minute and second
+					  var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
+
+					// Determine AM or PM suffix based on the hour
+					  var suffix = ( time[0] < 12 ) ? "AM" : "PM";
+
+					// Convert hour from military time
+					  time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
+
+					// If hour is 0, set it to 12
+					  time[0] = time[0] || 12;
+
+					// If seconds and minutes are less than 10, add a zero
+					  for ( var i = 1; i < 3; i++ ) {
+					    if ( time[i] < 10 ) {
+					      time[i] = "0" + time[i];
+					    }
+					  }
+
+					// Return the formatted string
+					  return date.join("/") + " " + time.join(":") + " " + suffix;
+				};
+				break;
+			case "Delete": 
+//				var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
+				break;
+			default: 
+				alert("Defaulted!!");
+			}
+		
+//		var segments = function(messages) {
+//			var segs = [];
+//			for (var msg in messages.children) {
+//				segs.concat(msg)
+//			}
+//		}
+		};
+});
+
+angular.module('igl').controller('ContextMenuCtrl', function ($scope, $rootScope, ContextMenuSvc) {
+	
+	$scope.clicked = function(item) {
+		ContextMenuSvc.put(item);
+	};
+});
 		
 
 angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes, $rootScope, $http) {

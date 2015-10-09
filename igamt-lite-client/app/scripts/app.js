@@ -22,7 +22,8 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular',
-        'textAngular'
+        'textAngular',
+        'ng-context-menu'
         ,
         'ngMockE2E'
     ]);
@@ -43,7 +44,7 @@ var
 //the message to be shown to the user
 var msg = {};
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider,KeepaliveProvider, IdleProvider) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider) {
 
 
     $routeProvider
@@ -297,7 +298,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider,Keepaliv
 });
 
 
-app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,userInfoService,$http) {
+app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http) {
 
 
     //Check if the login dialog is already displayed.
@@ -421,7 +422,6 @@ app.run(function ($rootScope, $location, Restangular, $modal,$filter,base64,user
 
 
 });
-
 
 
 app.controller('ErrorDetailsCtrl', function ($scope, $modalInstance, error) {

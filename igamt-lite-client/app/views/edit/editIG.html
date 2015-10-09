@@ -8,34 +8,69 @@
 	clear:both;
 	height:100%;
 }
+.vid {
+	clear:both;
+	float:left;
+}
+.collapse-width {
+  position: relative;
+  overflow: hidden;
+  -webkit-transition: width 0.35s ease;
+    -moz-transition: width 0.35s ease;
+    -o-transition: width 0.35s ease;
+    transition: width 0.35s ease;
+}
+.opaque {
+	opacity:1;
+}
+.transparent {
+	opacity:0;
+}
+#closeopen {
+	background-color: red;
+	margin:1em 0em 0px 1em; 
+}
 </style>
 <div ng-show="!loadingProfile">
 <div class="container" style="text-align:center; padding-top:20px">
-	<div>
+	<div class="container">
+	<div class="row">
 		<button type="button" class="btn btn-default nav-bar" ng-click="createGuide()" ng-disabled="isVersionSelect">Create Guide</button>
     	<p ng-show="!isVersionSelect && !isEditing">No Implementation Guide Selected.</p>
 		<div ng-show="isVersionSelect && !isEditing">
-			<span class="nav-bar"> Select HL7 version:</span>
+			<span class="nav-bar">Select HL7 version:</span>
 			<div ng-init="hl7Versions =  listHL7Versions()"></div>
 			<label class="nav-bar"  ng-repeat="hl7Version in hl7Versions">
-				<input type="radio" ng-model="hl7Version" value="{{hl7Version}}" name="hl7Versions" ng-change="string">
+				<input type="radio" ng-model="hl7Version" value="{{hl7Version}}" name="hl7Versions" ng-change="selectVersion(hl7Version)">
 				{{hl7Version}}
 			</label>
 			<button type="button" class="btn btn-default nav-bar" ng-click="createProfile(hl7Version, [])">Next >></button>
 		</div>
 		<div ng-show="!isVersionSelect && isEditing" class="nav-bar">
-			Current version: {{hl7Version}}
+			Current version: {{profile.metaData.hl7Version}}
 		</div>
-		<div class="container">
+	<div class="row">
+		<div class="container" ng-init="showToC = true">
+		<div id="closeopen" class="vid row">
+			<a class="btn btn-success btn-xs" ng-click="showToC = !showToC">
+				<span class="glyphicon"
+			      ng-class="{
+			        'glyphicon-chevron-left': showToC,
+			        'glyphicon-chevron-right': !showToC
+			      }">{{showToC ? 'close' : 'open'}}</span></a>
+		</div>
 		<div class="row">
-		<div id="toc" class="col-md-4" ng-include="'views/toc.html'" ng-show="!isVersionSelect && isEditing"></div>
-		<div id="edit" class="col-md-8" ng-show="subview !== undefined">
-			<ng-include src="subview"/>
-		</div>
+ 		
+			<div id="toc" ng-class="showToC ? 'col-md-4' : 'col-md-1'" ng-include="'views/toc.html'" ng-show="isVersionSelect && isEditing"></div>
+			<div id="edit" ng-class="showToC ? 'col-md-8' : 'col-md-11'" ng-show="subview !== undefined">
+				<ng-include src="subview"/>
+			</div>
+
 		</div>
 		</div>
 	</div>
-</div>
+	</div>
+	</div>
 </div>
 
 <div class="container" ng-show="loadingProfile" style="text-align:center; padding-top:20px">

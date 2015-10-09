@@ -4,13 +4,6 @@
 	</div>
 	<div ng-show="!loading">
 		<div class="row" style="margin-top: 5px">
-		<!--
-			<ul class="nav nav-tabs">
-				<li ng-show="show(segment)" ng-repeat="seg in segments"
-					ng-class="{'active':segment != null && segment.id === seg.id}"><a
-					ng-click="select(seg)">{{seg.name}}</a></li>
-			</ul>
-		-->
 			<div class="panel panel-info">
 				<div class="panel-body">
 					<div ng-show="loadingSelection"
@@ -19,15 +12,13 @@
 					</div>
 					<div ng-show="!loadingSelection">
 						<div ng-show="segment !== null">
-							<div class="">
-
 								<div class="page-header">
 									<span class="header4">Segment {{segment.name}}:
 										{{segment.label}}</span>
 								</div>
-								<div class="page-header">
-									<span class="header5">Metadata</span>
-								</div>
+								<accordion close-others="false">
+								<accordion-group heading="MetaData" is-open="false">
+								
 								<form name="segmentMetaDataForm" novalidate>
 									<div class="">
 										<div class="col-sm-6">
@@ -85,21 +76,10 @@
 										</div>
 									</div>
 								</form>
-							</div>
-
-							<div class="">
-
-								<div class="page-header">
-									<span class="header5">Definition</span>
-								</div>
-
+							</accordion-group>
+								<accordion-group heading="Definition" is-open="false">
 								<form style="margin-top: 20px" class="form-horizontal"
 									name="editSegmentForm">
-									<!--<div>-->
-									<!--<label for="segmentLabel">Name:</label>-->
-									<!--<input type="text" ng-model="segment.label" ng-disabled="isFlavor(segment.label)"-->
-									<!--ng-focus="isFlavor(segment.label)" class="form-control" id="segmentLabel">-->
-									<!--</div>-->
 									<div style="margin-top: 20px">
 										<div class="table-responsive">
 											<table tt-table tt-params="params"
@@ -121,7 +101,19 @@
 												</thead>
 												<tbody></tbody>
 											</table>
-											<script type="text/ng-template" id="SegmentEditTree.html">
+										</div>
+									</div>
+								</form>
+								</accordion-group>
+								</accordion>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>											
+<script type="text/ng-template" id="SegmentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)" class="row">
     <td class="col-md-2">
                                         <span ng-show="node.type === 'segment'">
@@ -364,14 +356,8 @@
     </tr>
     </script>
 
-										</div>
-									</div>
 
-								</form>
-
-							</div>
-
-							<script type="text/ng-template"
+<script type="text/ng-template"
 								id="ConformanceStatementSegmentCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">ConformanceStatement for {{segment.name}}-{{selectedNode.position}}</h3>
@@ -788,9 +774,3 @@
     </div>
 </script>
 
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>

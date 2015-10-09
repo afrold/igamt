@@ -1,7 +1,4 @@
 <style>
-.vid {
-	clear:both;
-}
 .icon {
 	margin:0em 0em 0em 0em;	
 	width:1em;
@@ -15,32 +12,83 @@
 	text-align:left;
 	width:15em;
 }
+.position-fixed {
+  position:fixed;
+}
+.horizontal {
+	font-size:large;
+	text-align:left;
+	text-wrap:none;
+	transform: rotate(0deg);
+	transform-origin: left top 0;	
+}
+.vertical {
+	font-size:medium;
+	text-wrap:none;
+	transform: rotate(270deg);
+	-webkit-transform-origin: 60% 80%;
+	transform-origin: 60% 80%;	
+}
+#tocLabel{
+	margin:5px 0px 10px 10px; 
+}
 </style>
-<div class="vid  container">
+	      
+<div class="vid container">
 	<div class="row">
-	  <div class="col-sm-12">
-	    <h3>Table of Contents</h3>
+	  <div id= "tocLabel" class="col-sm-12" ng-class="showToC ? 'horizontal' : 'vertical'">
+	    Table of Contents
 	  </div>
 	</div>
-	<div class="row" ng-repeat="node in leveledProfile" ng-model="leveledProfile">
-		<div class="col-md-1 icon"><a class="btn btn-success btn-xs" ng-if="node.children && node.children.length > 0" ng-click="toggle(node.title)">
+	<div class="row" ng-class="showToC ? 'opaque' : 'transparent'" ng-repeat="node in leveledProfile"  ng-init="toggleToCContents(node.title)" ng-model="leveledProfile">
+		<div class="col-md-1 icon"><a class="btn btn-success btn-xs" ng-if="node.children && node.children.length > 0" ng-click="toggleToCContents(node.title)">
 						<span class="glyphicon"
 				        ng-class="{
 				          'glyphicon-chevron-right': collapsed[node.title],
 				          'glyphicon-chevron-down': !collapsed[node.title]
 				        }"></span></a></div>
-		    <div class="col-md-1 txt">{{node.title}}</div>
+		    <div context-menu context-menu-close="closedCtxMenu(node, $index)" data-target="headContextDiv.html" class="col-md-1 txt">{{node.title}}</div>
 			<div class="vid row" ng-repeat="nnode in node.children" ng-if="!collapsed[node.title]">
-		    <div class="col-md-1 subicon"><a class="btn btn-link btn-xs">
-				<span class="glyphicon" 			        
-				ng-class="{
-				          'glyphicon-chevron-right': !collapsed[node.title]
-				        }"  ng-click="tocSelection(node.title, nnode)"></span></a></div>
-			<div class="col-md-1 txt">{{nnode.messageType}}{{nnode.label}}</div>
-		    <div class="col-md-1"><a class="pull-right btn btn-danger btn-xs" ng-click="remove(this)"><span
-		        class="glyphicon glyphicon-remove"></span></a></div>
-		    <div class="col-md-1"><a class="pull-right btn btn-primary btn-xs" ng-click="add(this)" style="margin-right: 8px;"><span
-		        class="glyphicon glyphicon-plus"></span></a></div>
+			
+		    <div ng-if="node.title !== 'Messages'" class="col-md-1 subicon" ng-include="'nMessage.html'"></div>
+		    <div context-menu context-menu-close="closedCtxMenu(nnode, $index)" ng-if="node.title === 'Messages'" class="col-md-1 subicon" data-target="messageContextDiv.html" ng-include="'Message.html'"></div>
 			</div>
 	</div>
 </div>
+
+<!--
+	Context menu partials.
+-->
+<div class="dropdown position-fixed" id="headContextDiv.html" ng-controller="ContextMenuCtrl">
+<ul class="dropdown-menu" role="menu">
+<li>
+<a class="pointer" role="menuitem" tabindex="1" ng-click="clicked('Add')">Add</a>
+</li>
+</ul>
+</div>
+
+<div class="dropdown position-fixed" id="messageContextDiv.html" ng-controller="ContextMenuCtrl">
+<ul class="dropdown-menu" role="menu">
+<li>
+<a class="pointer" role="menuitem" tabindex="1" ng-click="clicked('Add')">Add</a>
+</li>
+<li>
+<a class="pointer" role="menuitem" tabindex="2" ng-click="clicked('Delete')">Delete</a>
+</li>
+</ul>
+</div>
+ 
+<script type="text/ng-template" id="nMessage.html">
+<a class="btn btn-link btn-xs" ng-click="tocSelection(node.title, nnode)">
+<span class="glyphicon" 			        
+	ng-class="{
+	          'glyphicon-chevron-right': !collapsed[node.title]
+	        }"></span><span class="txt">{{nnode.messageType}}{{nnode.label}}</span></a>	
+</script>
+<script type="text/ng-template" id="Message.html">
+<a class="btn btn-link btn-xs" ng-click="tocSelection(node.title, nnode)">
+<span class="glyphicon" 			        
+	ng-class="{
+	          'glyphicon-chevron-right': !collapsed[node.title]
+	        }"></span><span class="txt">{{nnode.messageType}}{{nnode.label}}</span></a>	
+</script>

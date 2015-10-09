@@ -9,9 +9,9 @@
  */
 //
 
-angular.module('igl').factory('ContextMenuSvc', function (item) {
+angular.module('igl').factory('ContextMenuSvc', function () {
 	
-    var state {};
+	var state = {};
     
     state.item = null;
     
@@ -19,11 +19,13 @@ angular.module('igl').factory('ContextMenuSvc', function (item) {
     	var tmp = state.item;
     	state.item = null;
     	return tmp;
-    }
+    };
     
     state.put = function(item) {
     	state.item = item;
-    }
+    };
+    
+    return state;
 });
 
 
