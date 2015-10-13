@@ -47,15 +47,10 @@
             can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
     </div>
 
-	<script type="text/ng-template" id="hl7VersionsDlg.html">
-        <div class="modal-header">
-            <h3 class="modal-title">HL7 Versions</h3>
+	<script type="text/ng-template" id="hl7MessagesDlg.html">
+        <div ig-modals class="modal-header">
+            <h4 class="modal-title">HL7 Messages for version: {{hl7Version}}</h4>
         </div>
-        <div class="modal-body">
-        	<label for="versionSelect"> Select Hl7 Version: </label><br/> 
-       		<select class="form-control input-sm" name="versionSelect" ng-options="option for option in hl7Versions" ng-model="hl7Version" ng-change="loadProfilesByVersion()">
-			</select>
-        </div
 		<form>
 		<table class="profile-list table table-striped table-bordered">
 			<tr class="tbl-header"><th>&nbsp;</th><th>Struct Id</th><th>Version</th><th>Type</th><th>Event</th><th>Description</th></tr>

@@ -186,7 +186,6 @@ angular.module('igl')
             }
         };
 
-
         $scope.collectData = function (node, segRefOrGroups, segments, datatypes) {
             if (node) {
                 if (node.type === 'message') {
@@ -400,7 +399,25 @@ angular.module('igl')
         	$scope.isVersionSelect = true;
         };
 
-		$scope.listHL7Versions = function() {
+		$scope.pickHL7Messages = function() {
+			$scope.loadMessages4Version();
+			var hl7hl7MessagesSelected = $modal.open({
+				templateUrl : 'hl7MessagesDlg.html',
+				controller : 'HL7VMessagesDlgCtrl',
+				resolve : {
+					hl7Version : function() {
+						return $scope.hl7Version;
+					}
+				}
+			});
+
+			hl7hl7MessagesSelected.result.then(function(result) {
+				console.log(result);
+				$scope.createProfile($rootScope.hl7Version, result);
+			});
+		};
+        
+        $scope.listHL7Versions = function() {
 			var hl7Versions = [];
 			$http.get('api/profiles/hl7/findVersions', {
 				timeout : 60000
@@ -412,6 +429,16 @@ angular.module('igl')
 						}
 					});
 			return hl7Versions;
+		};
+		
+		$scope.loadMessages4Version = function() {
+			 console.log("$scope.hl7Version=" + $scope.hl7Version);
+			 $rootScope.hl7Version = $scope.hl7Version;
+			 $http.get('api/profiles/hl7/messageListByVersion/' + $scope.hl7Version, {
+				 	timeout : 60000
+				 }).then(function (response) {
+				 $rootScope.messagesByVersion = angular.fromJson(response.data);
+			 });
 		};
 		
 		$scope.createProfile = function(hl7Version, msgIds) {
@@ -476,6 +503,10 @@ angular.module('igl')
 		    }
 		    }
 			return $scope.subview;
+		}
+		
+		$scope.selectVersion = function(hl7Version) {
+			$scope.hl7Version = hl7Version;
 		}
 		
 		$scope.showSelected = function(node) {

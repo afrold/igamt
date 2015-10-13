@@ -30,6 +30,15 @@
 	background-color: red;
 	margin:1em 0em 0px 1em; 
 }
+.btn-onc {
+  color: #333;
+  background-color: #ddd;
+  border-style:none;
+}
+.btn:focus,.btn:active:focus,.btn.active:focus,
+.btn.focus,.btn:active.focus,.btn.active.focus {
+    outline: none;
+}
 </style>
 <div ng-show="!loadingProfile">
 <div class="container" style="text-align:center; padding-top:20px">
@@ -40,23 +49,23 @@
 		<div ng-show="isVersionSelect && !isEditing">
 			<span class="nav-bar">Select HL7 version:</span>
 			<div ng-init="hl7Versions =  listHL7Versions()"></div>
-			<label class="nav-bar"  ng-repeat="hl7Version in hl7Versions">
-				<input type="radio" ng-model="hl7Version" value="{{hl7Version}}" name="hl7Versions" ng-change="selectVersion(hl7Version)">
-				{{hl7Version}}
+			<label class="nav-bar"  ng-repeat="v in hl7Versions">
+				<input type="radio" ng-model="$parent.hl7Version" ng-click="selectVersion(hl7Version)" ng-value="{{v}}" name="hl7Versions">
+				{{v}}
 			</label>
-			<button type="button" class="btn btn-default nav-bar" ng-click="createProfile(hl7Version, [])">Next >></button>
+			<button type="button" class="btn btn-default nav-bar" ng-click="pickHL7Messages()">Next >></button>
 		</div>
 		<div ng-show="!isVersionSelect && isEditing" class="nav-bar">
 			Current version: {{profile.metaData.hl7Version}}
 		</div>
 	<div class="row">
 		<div class="container" ng-init="showToC = true">
-		<div id="closeopen" class="vid row">
-			<a class="btn btn-success btn-xs" ng-click="showToC = !showToC">
-				<span class="glyphicon"
+		<div id="closeopen" class="vid row" ng-show="isVersionSelect && isEditing">
+			<a class="btn btn-onc btn-xs" ng-click="showToC = !showToC">
+				<span class="fa fa-lg"
 			      ng-class="{
-			        'glyphicon-chevron-left': showToC,
-			        'glyphicon-chevron-right': !showToC
+			        'fa-angle-double-left': showToC,
+			        'fa-angle-double-right': !showToC
 			      }">{{showToC ? 'close' : 'open'}}</span></a>
 		</div>
 		<div class="row">
