@@ -115,12 +115,16 @@ public class ProfileCreationServiceTest {
 		List<String[]> msgDesc = profileCreation.summary("2.7");
 		assertEquals(4, msgDesc.get(0).length);
 		
-		// Creation of a profile with one message id
-		Profile pNew = profileCreation.createIntegratedProfile(Arrays.asList(msgDesc.get(0)[0]), "2.7");
-		assertEquals(1, pNew.getMessages().getChildren().size());
+		// Creation of a profile with three message ids
+		List<String> msgIds = new ArrayList<String>();
+		msgIds.add(msgDesc.get(0)[0]);
+		msgIds.add(msgDesc.get(1)[0]);
+		msgIds.add(msgDesc.get(2)[0]);
+		Profile pNew = profileCreation.createIntegratedProfile(msgIds, "2.7");
+		assertEquals(3, pNew.getMessages().getChildren().size());
 		File OUTPUT_DIR = new File(System.getenv("IGAMT") + "/profiles");
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.writerWithDefaultPrettyPrinter().writeValue(new File(OUTPUT_DIR + ".1", "profile-" + "2.7" + ".json"),
+		mapper.writerWithDefaultPrettyPrinter().writeValue(new File(OUTPUT_DIR + ".3", "profile-" + "2.7" + ".json"),
 				pNew);
 
 
