@@ -112,8 +112,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	@Override
 	public InputStream exportAsZip(Profile p) throws IOException {
 		if (p != null) {
-			return new ProfileSerialization4ExportImpl()
-			.serializeProfileToZip(p);
+			return new ProfileSerializationImpl().serializeProfileToZip(p);
 		} else {
 			return new NullInputStream(1L);
 		}

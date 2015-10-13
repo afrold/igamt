@@ -25,6 +25,8 @@ public class Message extends DataModel implements java.io.Serializable,
 
 	@Id
 	private String id;
+	
+	private String name;
 
 	private String identifier;
 
@@ -324,5 +326,13 @@ public class Message extends DataModel implements java.io.Serializable,
 		}
 		
 		return clonedMessage;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
