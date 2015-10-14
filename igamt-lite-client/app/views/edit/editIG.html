@@ -40,6 +40,10 @@
     outline: none;
 }
 </style>
+<ng-include src="'views/edit/editDataTypes.html'"></ng-include>
+<ng-include src="'views/edit/editSegments.html'"></ng-include>
+<ng-include src="'views/edit/editMessages.html'"></ng-include>
+<ng-include src="'views/edit/editValueSets.html'"></ng-include>
 <div ng-show="!loadingProfile">
 <div class="container" style="text-align:center; padding-top:20px">
 	<div class="container">
@@ -50,7 +54,7 @@
 			<span class="nav-bar">Select HL7 version:</span>
 			<div ng-init="hl7Versions =  listHL7Versions()"></div>
 			<label class="nav-bar"  ng-repeat="v in hl7Versions">
-				<input type="radio" ng-model="$parent.hl7Version" ng-click="selectVersion(hl7Version)" ng-value="{{v}}" name="hl7Versions">
+				<input type="radio" ng-model="$parent.hl7Version" ng-click="setVersion(hl7Version)" ng-value="{{v}}" name="hl7Versions">
 				{{v}}
 			</label>
 			<button type="button" class="btn btn-default nav-bar" ng-click="pickHL7Messages()">Next >></button>
@@ -85,8 +89,33 @@
 <div class="container" ng-show="loadingProfile" style="text-align:center; padding-top:20px">
     <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
 </div>
+
+<script type="text/ng-template" id="hl7MessagesDlg.html">
+        <div ig-modals class="modal-header">
+            <h4 class="modal-title">HL7 Messages for version: {{hl7Version}}</h4>
+        </div>
+		<form>
+		<table class="profile-list table table-striped table-bordered">
+			<tr class="tbl-header"><th>&nbsp;</th><th>Struct Id</th><th>Version</th><th>Type</th><th>Event</th><th>Description</th></tr>
+			<tbody ng-repeat="m in messagesByVersion | orderBy: m[1]">
+				<tr><td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
+					<td>{{m[1]}}</td><td>{{m[2]}}</td><td>{{m[3]}}</td><td>{{m[4]}}</td><td>{{m[5]}}</td></tr>
+			</tbody>
+		</table>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+		</form>
+</script>
 <script type="text/ng-template" id="nts.html">
 	<div>
 	Nothing to see.
 	</div>
+</script>
+<script type="text/ng-template" id="editSegments.html">
+</script>
+<script type="text/ng-template" id="editMessages.html">
+</script>
+<script type="text/ng-template" id="editValueSets.html">
 </script>

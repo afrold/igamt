@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc) {
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, HL7VersionSvc) {
         $scope.loading = false;
         $rootScope.igs = [];
         $scope.igContext = {
@@ -57,7 +57,6 @@ angular.module('igl')
                 $scope.loadProfiles();
                 profile = $scope.findOne(profile.id);
             }
-// $scope.edit(profile);
           });
 
         $scope.loadProfiles = function () {
@@ -380,7 +379,6 @@ angular.module('igl')
 
 
         $scope.reset = function () {
-// $rootScope.context.page = $rootScope.pages[0];
             $rootScope.selectIgTab(0);
             $rootScope.changes = {};
             $rootScope.profile = null;
@@ -400,8 +398,8 @@ angular.module('igl')
         };
 
 		$scope.pickHL7Messages = function() {
-			$scope.loadMessages4Version();
-			var hl7hl7MessagesSelected = $modal.open({
+			var hl7MessagesSelected;
+			hl7MessagesSelected = $modal.open({
 				templateUrl : 'hl7MessagesDlg.html',
 				controller : 'HL7VMessagesDlgCtrl',
 				resolve : {
@@ -411,12 +409,12 @@ angular.module('igl')
 				}
 			});
 
-			hl7hl7MessagesSelected.result.then(function(result) {
+			hl7MessagesSelected.result.then(function(result) {
 				console.log(result);
 				$scope.createProfile($rootScope.hl7Version, result);
 			});
 		};
-        
+		
         $scope.listHL7Versions = function() {
 			var hl7Versions = [];
 			$http.get('api/profiles/hl7/findVersions', {
@@ -429,16 +427,6 @@ angular.module('igl')
 						}
 					});
 			return hl7Versions;
-		};
-		
-		$scope.loadMessages4Version = function() {
-			 console.log("$scope.hl7Version=" + $scope.hl7Version);
-			 $rootScope.hl7Version = $scope.hl7Version;
-			 $http.get('api/profiles/hl7/messageListByVersion/' + $scope.hl7Version, {
-				 	timeout : 60000
-				 }).then(function (response) {
-				 $rootScope.messagesByVersion = angular.fromJson(response.data);
-			 });
 		};
 		
 		$scope.createProfile = function(hl7Version, msgIds) {
@@ -477,24 +465,24 @@ angular.module('igl')
 		$scope.tocSelection = function(node, nnode) {
 			switch(node) {
 		    case "Datatypes": {
-		    	$scope.subview = "views/edit/editDataTypes.html";
-	            $rootScope.datatype = datatype;
+		    	$scope.subview = "EditDatatypes.html";
+	            $rootScope.datatype = nnode;
 	            $rootScope.datatype["type"] = "datatype";
 		    	break;
 		    }
 		    case "Segments": {
-		    	$scope.subview = "views/edit/editSegments.html";
+		    	$scope.subview = "EditSegments.html";
 		    	$rootScope.segment = nnode;
 		    	$rootScope.segment["type"] = "segment";
 		    	break;
 		    }
 		    case "Messages": {
-		    	$scope.subview = "views/edit/editMessages.html";
+		    	$scope.subview = "EditMessages.html";
 		    	$rootScope.message = $rootScope.messagesMap[nnode.id];
 		    	break;
 		    }
 		    case "ValueSets": {
-		    	$scope.subview = "views/edit/editValueSets.html";
+		    	$scope.subview = "EditValueSets.html";
 		        $rootScope.table = nnode;
 		    	break;
 		    }
@@ -505,8 +493,12 @@ angular.module('igl')
 			return $scope.subview;
 		}
 		
-		$scope.selectVersion = function(hl7Version) {
-			$scope.hl7Version = hl7Version;
+		$scope.getVersion = function() {
+			return HL7VersionSvc.hl7Version;
+		}
+				
+		$scope.setVersion = function(hl7Version) {
+			HL7VersionSvc.hl7Version = hl7Version;
 		}
 		
 		$scope.showSelected = function(node) {
@@ -519,6 +511,8 @@ angular.module('igl')
 			case "Add": 
 				var newNode = (JSON.parse(JSON.stringify(node)));
 				newNode.id = null;
+				
+				// Nodesd must have unique names so we timestamp when we duplicate.
 				if(newNode.type === 'message') {
 					newNode.messageType = newNode.messageType + " " + timeStamp();
 				}
@@ -561,18 +555,12 @@ angular.module('igl')
 				};
 				break;
 			case "Delete": 
+// not to be implemented at this time.
 //				var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
 				break;
 			default: 
-				alert("Defaulted!!");
+				console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
 			}
-		
-//		var segments = function(messages) {
-//			var segs = [];
-//			for (var msg in messages.children) {
-//				segs.concat(msg)
-//			}
-//		}
 		};
 });
 
@@ -716,7 +704,6 @@ angular.module('igl').controller('ConfirmProfileOpenCtrl', function ($scope, $mo
         });
     };
 
-
     $scope.saveChangesAndOpen = function () {
         $scope.loading = true;
         var changes = angular.toJson($rootScope.changes);
@@ -739,7 +726,6 @@ angular.module('igl').controller('ConfirmProfileOpenCtrl', function ($scope, $mo
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-
 
 });
 

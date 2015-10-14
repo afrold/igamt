@@ -1,3 +1,4 @@
+<script type="text/ng-template" id="EditDatatypes.html">
 <div ng-controller="DatatypeListCtrl" ng-init="init()" class="container">
 
 <div ng-show="loading" style="text-align:center">
@@ -14,9 +15,6 @@
     <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <!--<div class="page-header">-->
-                <!--<h3>Datatypes List</h3>-->
-            <!--</div>-->
             <div class="igl-table">
                 <table st-table="tmpDatatypes" st-safe-src="datatypes"
                        class="table table-striped table-bordered table-condensed">
@@ -31,26 +29,15 @@
                                                type="text"/></th>
                     </tr>
                     <tr class="tbl-header">
-                        <!--<th></th>-->
                         <th st-sort="label">Flavor</th>
                         <th st-sort="name">Base</th>
                         <th st-sort="description">Description</th>
                         <th>
                         </th>
-
-                        <!--<th></th>-->
                     </tr>
-                    <!--<tr>-->
-                    <!--<th colspan="4">-->
-                    <!--<input st-search placeholder="Search" class="input-sm form-control" type="search"/>-->
-                    <!--</th>-->
-                    <!--</tr>-->
                     </thead>
                     <tbody>
                     <tr ng-repeat="row in tmpDatatypes">
-                        <!--<td cs-select="row"><input ng-click="select(row)"-->
-                        <!--ng-checked="datatype != null && row.id == datatype.id"-->
-                        <!--type="radio"></td>-->
                         <td ng-bind="row.label"></td>
                         <td ng-bind-html="row.name"></td>
                         <td ng-bind-html="row.description"></td>
@@ -84,11 +71,6 @@
 <accordion-heading>
     <i class="pull-left glyphicon" ng-class="{'fa fa-caret-down': accordion.datatypeStatus, 'fa fa-caret-right': !accordion.datatypeStatus}"></i> Datatype Definition
 </accordion-heading>
-
-<!--<div ng-show="error !== null">-->
-<!--<div class="alert alert-danger" role="alert" ng-bind="error"></div>-->
-<!--<br/>-->
-<!--</div>-->
 <div class="container">
 <div ng-show="loadingSelection" style="text-align:center; padding-top:20px">
     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
@@ -154,7 +136,6 @@
 
             <div class="form-group">
                 <label>Definition Text</label>
-                <!--<div text-angular="text-angular" name="dtDefinition" ng-change="recordDatatypeChange('datatype','edit',datatype.id,'text', datatype.text)" ng-model="datatype.text"></div>-->
                 <div text-angular style="width:100%"
                      name="text"
                      ng-change="recordDatatypeChange('datatype','edit',datatype.id,'text', datatype.text)"
@@ -172,11 +153,6 @@
     <span class="header5">Definition</span>
 </div>
 <form style="margin-top: 20px" class="form-horizontal" name="editDatatypeForm">
-<!--<div>-->
-<!--<label for="datatypeLabel">Name:</label>-->
-<!--<input type="text" ng-model="datatype.label" ng-disabled="isFlavor(datatype.label)"-->
-<!--ng-focus="isFlavor(datatype.label)" class="form-control" id="datatypeLabel">-->
-<!--</div>-->
 <div style="margin-top: 20px">
 <div class="table-responsive">
 <table tt-table tt-params="params" class="table table-striped table-bordered">
@@ -405,8 +381,6 @@
             </div>
         </td>
     </tr>
-</script>
-
 </div>
 </div>
 </form>
@@ -417,9 +391,7 @@
 </accordion-group>
 </accordion>
 </div>
-
-
-
+</script>
 <script type="text/ng-template" id="ConfirmDatatypeDeleteCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Delete Confirmation

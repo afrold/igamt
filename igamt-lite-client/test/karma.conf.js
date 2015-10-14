@@ -18,7 +18,11 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'bower_components/jquery/dist/jquery.js',
       'bower_components/angular/angular.js',
+      'bower_components/ng-idle/angular-idle.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'bower_components/angular-smart-table/dist/smart-table.js',
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-animate/angular-animate.js',
       'bower_components/angular-cookies/angular-cookies.js',
@@ -27,9 +31,15 @@ module.exports = function(config) {
       'bower_components/angular-route/angular-route.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
+      'app/lib/angular-mocks/angular-mocks.js',
+      'app/lib/utils.js',
+      'app/lib/Objectid.js',
+      'app/lib/angular-treetable/js/jquery.treetable.js',
+      'app/lib/angular-treetable/js/angular-treetable.min.js',
+      'app/lib/jquery.i18n.properties-1.0.9.js',
+      'app/scripts/app.js',
       'app/scripts/**/*.js',
-      'test/mock/**/*.js',
-      'test/spec/**/*.js'
+      'test/spec/services/**/*.js'
     ],
 
     // list of files / patterns to exclude
