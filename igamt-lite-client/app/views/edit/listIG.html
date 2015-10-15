@@ -18,16 +18,12 @@
                             ng-options="tt.name for tt in igTypes">
                     </select>
                  </div>
-                 <div class="col-md-2">
-                     <button type="button" class="btn btn-default" ng-click="hl7Versions()" ng-controller="HL7VersionsDlgCtrl">Create Guide</button>
-                 </div>
             </div>
         </form>
     </div>
 </div>
 
 <div class="row">
-<!--<div class="row">-->
 <div class="col-md-12">
     <div ng-show="error !== null">
         <div class="alert alert-danger" role="alert" ng-bind="error"></div>
@@ -65,9 +61,6 @@
                     <td ng-bind="row.metaData.identifier"></td>
                     <td ng-bind="row.metaData.name"></td>
                     <td ng-bind="row.metaData.orgName"></td>
-                    <!--<td ng-bind-html="row.metaData.hl7Version"></td>-->
-                    <!--<td ng-bind-html="row.metaData.schemaVersion"></td>-->
-                    <!--<td ng-bind-html="row.metaData.type"></td>-->
                     <td ng-bind="row.metaData.version"></td>
                     <td ng-bind="row.metaData.date"></td>
                     <td>
@@ -118,9 +111,7 @@
             </table>
                         </div>
                     <div ng-show="loading" style="text-align:center">
-                        <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
                         <i class="fa fa-spinner fa-pulse fa-2x"></i>
-
                     </div>
 
 </div>

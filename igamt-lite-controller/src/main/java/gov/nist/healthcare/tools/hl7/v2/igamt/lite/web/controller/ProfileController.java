@@ -219,8 +219,9 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-	@RequestMapping(value = "/{id}/export/zip", method = RequestMethod.POST, produces = "application/zip")
+	@RequestMapping(value = "/{id}/export/zip/{inlineConstraints}", method = RequestMethod.POST, produces = "application/zip")
 	public void exportZip(@PathVariable("id") String id,
+			@PathVariable("inlineConstraints") String inlineConstraints,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
 		log.info("Exporting as xml file profile with id=" + id);
