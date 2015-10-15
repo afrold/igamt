@@ -19,8 +19,6 @@ module.exports = function (grunt) {
     var appConfig = {
         app: require('./bower.json').appPath || 'app',
         dist: '../igamt-lite-controller/src/main/webapp'
-//      dist: 'dist'
-
     };
 
     // Define the configuration for all the tasks
@@ -58,7 +56,7 @@ module.exports = function (grunt) {
                     livereload: '<%= connect.options.livereload %>'
                 },
                 files: [
-                    '<%= yeoman.app %>/{,*/}*.html',
+                    '<%= yeoman.app %>/{,**/}*.html',
                     '.tmp/styles/{,*/}*.css',
                     '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]

@@ -175,7 +175,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenGET('api/profiles/hl7/findVersions').respond(function (method, url, data, headers) {
     	console.log('api/profiles/hl7/findVersions');
-        return [200, ["2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"], {}];
+        return [200, ["2.3","2.31","2.4","2.5","2.51","2.6","2.7"], {}];
     });
     
     $httpBackend.whenGET('api/profiles/hl7/messageListByVersion/2.7').respond(function (method, url, data, headers) {
