@@ -8,7 +8,7 @@ describe("hl7Version service", function () {
 	beforeEach(function() {
 		console.log("0 here==>");
 		module('igl');
-		inject(function (_HL7VersionSvc_, $httpBackend) {{{{{}}}}
+		inject(function (_HL7VersionSvc_, $httpBackend) {
 			HL7VersionSvc = _HL7VersionSvc_;
 			console.log("1 here==>");
 	  		httpBackend = $httpBackend;
