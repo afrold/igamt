@@ -33,6 +33,7 @@
 <!--    	 	    <sec:intercept-url pattern="/api/accounts/login/**" method="OPTIONS" access="isAnonymous()" />
  -->                 <sec:intercept-url pattern="/api/sooa/accounts/**" access="isAnonymous()" />
                 <sec:intercept-url pattern="/api/sooa/usernames/**" access="isAnonymous()" />
+                <sec:intercept-url pattern="/api/profiles/config" access="isAnonymous()" />
                 <sec:intercept-url pattern="/api/sooa/emails/**" access="isAnonymous()" />
                 <sec:intercept-url pattern="/api/sooa/issues/**" access="isFullyAuthenticated() and hasRole('admin')" />
                 <sec:intercept-url pattern="/api/accounts/cuser" access="isAnonymous() or isFullyAuthenticated()" />
