@@ -25,6 +25,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -120,29 +121,20 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 	}
 
 	@Override
-	public String serializeConstraintsToXML(Constraints conformanceStatements,
-			Constraints predicates) {
-		return this
-				.serializeConstraintsToDoc(conformanceStatements, predicates)
-				.toXML();
+	public String serializeConstraintsToXML(Constraints conformanceStatements, Constraints predicates) {
+		return this.serializeConstraintsToDoc(conformanceStatements, predicates).toXML();
 	}
-
+	
 	@Override
-	public nu.xom.Document serializeConstraintsToDoc(
-			Constraints conformanceStatements, Constraints predicates) {
+	public nu.xom.Document serializeConstraintsToDoc(Constraints conformanceStatements, Constraints predicates) {
 		nu.xom.Element e = new nu.xom.Element("ConformanceContext");
-		e.addAttribute(new Attribute("UUID", ""));
-		e.addNamespaceDeclaration("xsi",
-				"http://www.w3.org/2001/XMLSchema-instance");
-		e.addAttribute(new Attribute("xsi:noNamespaceSchemaLocation",
-				"http://www.w3.org/2001/XMLSchema-instance",
-				"ConformanceContext.xsd"));
+		e.addAttribute(new Attribute("UUID", UUID.randomUUID().toString()));
+		e.addNamespaceDeclaration("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+		e.addAttribute(new Attribute("xsi:noNamespaceSchemaLocation", "http://www.w3.org/2001/XMLSchema-instance", "ConformanceContext.xsd"));
 
 		nu.xom.Element metaData_Elm = new nu.xom.Element("MetaData");
-		nu.xom.Element metaData_Description_Elm = new nu.xom.Element(
-				"Description");
-		metaData_Description_Elm
-				.appendChild("Auto Serialized Constranints XML");
+		nu.xom.Element metaData_Description_Elm = new nu.xom.Element("Description");
+		metaData_Description_Elm.appendChild("Auto Serialized Constranints XML");
 		metaData_Elm.appendChild(metaData_Description_Elm);
 
 		e.appendChild(metaData_Elm);
@@ -150,8 +142,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		nu.xom.Element predicates_Elm = new nu.xom.Element("Predicates");
 
 		nu.xom.Element predicates_dataType_Elm = new nu.xom.Element("Datatype");
-		for (ByNameOrByID byNameOrByIDObj : predicates.getDatatypes()
-				.getByNameOrByIDs()) {
+		for (ByNameOrByID byNameOrByIDObj : predicates.getDatatypes().getByNameOrByIDs()) {
 			nu.xom.Element dataTypeConstaint = this
 					.serializeByNameOrByID(byNameOrByIDObj);
 			if (dataTypeConstaint != null)
@@ -215,7 +206,6 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		constraints_Elm.appendChild(constraints_group_Elm);
 
 		e.appendChild(constraints_Elm);
-
 		return new nu.xom.Document(e);
 	}
 
@@ -227,13 +217,13 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 					.addAttribute(new Attribute("Name", byNameObj.getByName()));
 
 			for (Constraint c : byNameObj.getPredicates()) {
-				nu.xom.Element elmConstaint = this.serializeConstaint(c);
+				nu.xom.Element elmConstaint = this.serializeConstaint(c, "Predicate");
 				if (elmConstaint != null)
 					elmByName.appendChild(elmConstaint);
 			}
 
 			for (Constraint c : byNameObj.getConformanceStatements()) {
-				nu.xom.Element elmConstaint = this.serializeConstaint(c);
+				nu.xom.Element elmConstaint = this.serializeConstaint(c, "Constraint");
 				if (elmConstaint != null)
 					elmByName.appendChild(elmConstaint);
 			}
@@ -245,13 +235,13 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			elmByID.addAttribute(new Attribute("ID", byIDObj.getByID()));
 
 			for (Constraint c : byIDObj.getConformanceStatements()) {
-				nu.xom.Element elmConstaint = this.serializeConstaint(c);
+				nu.xom.Element elmConstaint = this.serializeConstaint(c, "Constraint");
 				if (elmConstaint != null)
 					elmByID.appendChild(elmConstaint);
 			}
 
 			for (Constraint c : byIDObj.getPredicates()) {
-				nu.xom.Element elmConstaint = this.serializeConstaint(c);
+				nu.xom.Element elmConstaint = this.serializeConstaint(c, "Predicate");
 				if (elmConstaint != null)
 					elmByID.appendChild(elmConstaint);
 			}
@@ -262,8 +252,8 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		return null;
 	}
 
-	private nu.xom.Element serializeConstaint(Constraint c) {
-		nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
+	private nu.xom.Element serializeConstaint(Constraint c, String type) {
+		nu.xom.Element elmConstraint = new nu.xom.Element(type);
 		elmConstraint.addAttribute(new Attribute("ID", c.getConstraintId()));
 		if (c.getConstraintTarget() != null
 				&& !c.getConstraintTarget().equals(""))

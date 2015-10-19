@@ -38,7 +38,7 @@ angular.module('igl')
 //                    return parent && parent != null ? (parent.datatype ? $rootScope.datatypesMap[parent.datatype].components: parent.components) : ($rootScope.datatype != null ? $rootScope.datatype.components:[]);
                 },
                 getTemplate: function (node) {
-                    return 'DatatypeEditTree.html';
+                    return node.type ==='Datatype' ? 'DatatypeEditTree.html' : node.type ==='component' && !$scope.isSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && $scope.isSubDT(node) ? 'DatatypeSubComponentEditTree':'';
                 }
 //                ,
 //                options: {

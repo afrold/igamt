@@ -10,6 +10,8 @@ angular.module('igl')
         $scope.account = null;
         $scope.accountOrig = null;
         $scope.accountType = "author";
+        $scope.scrollbarWidth = $scope.getScrollbarWidth();
+
 //        var PasswordChange = $resource('api/accounts/:id/passwordchange', {id:'@id'});
         var PasswordChange = $resource('api/accounts/:id/userpasswordchange', {id:'@id'});
         var ApproveAccount = $resource('api/accounts/:id/approveaccount', {id:'@id'});
