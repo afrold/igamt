@@ -244,7 +244,112 @@
       "usageNote" : "",
       "predicates" : [ ],
       "conformanceStatements" : [ ]
-    } ]
+    }, {
+      "type" : "message",
+      "id" : "5609387d3004519331049899",
+      "identifier" : "DefaultA50Identifier",
+      "messageType" : "ADT1",
+      "event" : "A50",
+      "structID" : "A50",
+      "description" : "ADT message",
+      "version" : null,
+      "date" : "54/28/2015",
+      "oid" : null,
+      "children" : [ {
+        "type" : "segmentRef",
+        "predicates" : [ ],
+        "conformanceStatements" : [ ],
+        "id" : "5609387d300451933104989a",
+        "usage" : "R",
+        "min" : 1,
+        "max" : "1",
+        "position" : 1,
+        "comment" : "",
+        "ref" : "5609387d30045193310484f4"
+      }, {
+        "type" : "segmentRef",
+        "predicates" : [ ],
+        "conformanceStatements" : [ ],
+        "id" : "5609387d300451933104989b",
+        "usage" : "O",
+        "min" : 0,
+        "max" : "*",
+        "position" : 2,
+        "comment" : "",
+        "ref" : "5609387d30045193310488b7"
+      }, {
+        "type" : "segmentRef",
+        "predicates" : [ ],
+        "conformanceStatements" : [ ],
+        "id" : "5609387d300451933104989c",
+        "usage" : "O",
+        "min" : 0,
+        "max" : "1",
+        "position" : 3,
+        "comment" : "",
+        "ref" : "5609387d3004519331048883"
+      }, {
+        "type" : "segmentRef",
+        "predicates" : [ ],
+        "conformanceStatements" : [ ],
+        "id" : "5609387d300451933104989d",
+        "usage" : "R",
+        "min" : 1,
+        "max" : "1",
+        "position" : 4,
+        "comment" : "",
+        "ref" : "5609387d3004519331048419"
+      }, {
+        "type" : "segmentRef",
+        "predicates" : [ ],
+        "conformanceStatements" : [ ],
+        "id" : "5609387d300451933104989e",
+        "usage" : "R",
+        "min" : 1,
+        "max" : "1",
+        "position" : 5,
+        "comment" : "",
+        "ref" : "5609387d3004519331048256"
+      }, {
+        "type" : "segmentRef",
+        "predicates" : [ ],
+        "conformanceStatements" : [ ],
+        "id" : "5609387d300451933104989f",
+        "usage" : "O",
+        "min" : 0,
+        "max" : "1",
+        "position" : 6,
+        "comment" : "",
+        "ref" : "5609387d3004519331048492"
+      }, {
+        "type" : "segmentRef",
+        "predicates" : [ ],
+        "conformanceStatements" : [ ],
+        "id" : "5609387d30045193310498a0",
+        "usage" : "R",
+        "min" : 1,
+        "max" : "1",
+        "position" : 7,
+        "comment" : "",
+        "ref" : "5609387d30045193310486e2"
+      }, {
+        "type" : "segmentRef",
+        "predicates" : [ ],
+        "conformanceStatements" : [ ],
+        "id" : "5609387d30045193310498a1",
+        "usage" : "R",
+        "min" : 1,
+        "max" : "1",
+        "position" : 8,
+        "comment" : "",
+        "ref" : "5609387d30045193310488c8"
+      } ],
+      "position" : 1,
+      "comment" : "",
+      "usageNote" : "",
+      "predicates" : [ ],
+      "conformanceStatements" : [ ]
+    }]
   },
   "tables" : {
     "type" : "tablelibrary",

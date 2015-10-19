@@ -32,7 +32,6 @@
     <!--<link rel="stylesheet" href="styles/font-awesome.min.css">-->
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.css"/>
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css"/>
-
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()">
 <div id="wrapper">
@@ -83,7 +82,6 @@
 
     </div>
 
-
     <div ng-include="'views/footer.html'"></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -127,10 +125,11 @@
     <script src="bower_components/textAngular/src/textAngular.js"></script>
     <script src="bower_components/textAngular/src/textAngular-sanitize.js"></script>
     <script src="bower_components/textAngular/src/textAngularSetup.js"></script>
+    <script src="bower_components/ng-context-menu/dist/ng-context-menu.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js scripts/modules.js -->
-    <!-- <script src="lib/angular-mocks/angular-mocks.js"></script> -->
+    <script src="lib/angular-mocks/angular-mocks.js"></script>
 
  	<script src="lib/utils.js"></script>
     <script src="lib/Objectid.js"></script>
@@ -142,7 +141,7 @@
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     
- 	<!-- <script src="lib/profileBackEndStub.js"></script> -->
+ 	<script src="lib/profileBackEndStub.js"></script>
 	
     <script src="lib/jquery-file-download.js"></script>
 
@@ -152,7 +151,9 @@
     <script src="scripts/services/base64.js"></script>
     <script src="scripts/services/userInfoService.js"></script>
     <script src="scripts/services/AccountLoader.js"></script>
-    <script src="scripts/services/MultiAccountLoader.js"></script>
+    <script src="scripts/services/MultiAccountLoader.js"></script>     
+    <script src="scripts/services/contextMenuSvc.js"></script>
+    <script src="scripts/services/hl7-version-svc.js"></script>
 
 
     <script src="scripts/filters/yesno.js"></script>
@@ -191,7 +192,7 @@
     <script src="scripts/controllers/segments.js"></script>
     <script src="scripts/controllers/tables.js"></script>
     <script src="scripts/controllers/constraints.js"></script>
-	<script src="scripts/controllers/hl7-versions.js"></script>
+	<script src="scripts/controllers/hl7-messages-dlg.js"></script>
 
     <!-- endbuild -->
 

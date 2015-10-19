@@ -1,144 +1,183 @@
-<div ng-controller="SegmentListCtrl" ng-init="init()" class="container">
-	<div ng-show="loading" style="text-align: center">
-		<i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
-	</div>
-	<div ng-show="!loading">
-		<div class="row" style="margin-top: 5px">
-			<ul class="nav nav-tabs">
-				<li ng-show="show(segment)" ng-repeat="seg in segments"
-					ng-class="{'active':segment != null && segment.id === seg.id}"><a
-					ng-click="select(seg)">{{seg.name}}</a></li>
-			</ul>
-			<div class="panel panel-info">
-				<div class="panel-body">
-					<div ng-show="loadingSelection"
-						style="text-align: center; padding-top: 20px">
-						<i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
-					</div>
-					<div ng-show="!loadingSelection">
-						<div ng-show="segment !== null">
-							<div class="">
-
-								<div class="page-header">
+<script type="text/ng-template" id="EditSegments.html">
+    <div ng-controller="SegmentListCtrl" ng-init="init()" class="container">
+        <div ng-show="loading" style="text-align: center">
+            <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+        </div>
+        <div ng-show="!loading">
+            <div class="row" style="margin-top: 5px">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        <div ng-show="loadingSelection"
+                             style="text-align: center; padding-top: 20px">
+                            <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+                        </div>
+                        <div ng-show="!loadingSelection">
+                            <div ng-show="segment !== null" id="executionPanel">
+                                <div class="page-header">
 									<span class="header4">Segment {{segment.name}}:
 										{{segment.label}}</span>
-								</div>
-								<div class="page-header">
-									<span class="header5">Metadata</span>
-								</div>
-								<form name="segmentMetaDataForm" novalidate>
-									<div class="">
-										<div class="col-sm-6">
-											<div class="form-group"
-												ng-class="{'has-error' : segmentMetaDataForm.name.$invalid && !segmentMetaDataForm.name.$pristine }">
-												<label>Name</label> <input type="text" disabled
-													name="identifier" class="form-control"
-													ng-model="segment.name"
-													ng-change="recordChangeForEdit2('segment','edit',segment.id,'name', segment.name)"
-													required>
-											</div>
-											<div class="form-group">
-												<label>Description</label> <input type="text"
-													ng-change="recordChangeForEdit2('segment','edit',segment.id,'description', segment.description)"
-													name="description" class="form-control"
-													ng-model="segment.description" required>
-											</div>
+                                </div>
+                                <accordion close-others="false">
+                                    <accordion-group heading="MetaData" is-open="false">
 
-											<div class="form-group">
-												<label>Definition Pre-Text</label>
-												<div text-angular style="width: 100%" name="text1"
-													ng-change="recordChangeForEdit2('segment','edit',segment.id,'text1', segment.text1)"
-													ng-model="segment.text1"></div>
+                                        <form name="segmentMetaDataForm" novalidate>
+                                            <div class="">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group"
+                                                         ng-class="{'has-error' : segmentMetaDataForm.name.$invalid && !segmentMetaDataForm.name.$pristine }">
+                                                        <label>Name</label> <input type="text" disabled
+                                                                                   name="identifier"
+                                                                                   class="form-control"
+                                                                                   ng-model="segment.name"
+                                                                                   ng-change="recordChangeForEdit2('segment','edit',segment.id,'name', segment.name)"
+                                                                                   required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Description</label> <input type="text"
+                                                                                          ng-change="recordChangeForEdit2('segment','edit',segment.id,'description', segment.description)"
+                                                                                          name="description"
+                                                                                          class="form-control"
+                                                                                          ng-model="segment.description"
+                                                                                          required>
+                                                    </div>
 
-											</div>
+                                                    <div class="form-group">
+                                                        <label>Definition Pre-Text</label>
 
+                                                        <div text-angular style="width: 100%" name="text1"
+                                                             ng-change="recordChangeForEdit2('segment','edit',segment.id,'text1', segment.text1)"
+                                                             ng-model="segment.text1"></div>
 
-										</div>
-										<div class="col-sm-6">
-											<div class="form-group"
-												ng-class="{'has-error' : segmentMetaDataForm.label.$invalid && !segmentMetaDataForm.label.$pristine }">
-												<label>Label</label> <input type="text"
-													ng-change="recordChangeForEdit2('segment','edit',segment.id,'label', segment.label)"
-													name="label" class="form-control" ng-model="segment.label"
-													required>
-											</div>
+                                                    </div>
 
 
-											<div class="form-group">
-												<label>Comment</label> <input style="width: 100%"
-													class="igl-input" type="text" name="comment"
-													ng-change="recordChangeForEdit2('segment','edit',segment.id,'comment', segment.comment)"
-													ng-model="segment.comment">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group"
+                                                         ng-class="{'has-error' : segmentMetaDataForm.label.$invalid && !segmentMetaDataForm.label.$pristine }">
+                                                        <label>Label</label> <input type="text"
+                                                                                    ng-change="recordChangeForEdit2('segment','edit',segment.id,'label', segment.label)"
+                                                                                    name="label" class="form-control"
+                                                                                    ng-model="segment.label"
+                                                                                    required>
+                                                    </div>
 
-											</div>
+
+                                                    <div class="form-group">
+                                                        <label>Comment</label> <input style="width: 100%"
+                                                                                      class="igl-input" type="text"
+                                                                                      name="comment"
+                                                                                      ng-change="recordChangeForEdit2('segment','edit',segment.id,'comment', segment.comment)"
+                                                                                      ng-model="segment.comment">
+
+                                                    </div>
 
 
-											<div class="form-group">
-												<label>Definition Post-Text</label>
-												<div text-angular style="width: 100%" name="text2"
-													ng-change="recordChangeForEdit2('segment','edit',segment.id,'text2', segment.text2)"
-													ng-model="segment.text2"></div>
-											</div>
+                                                    <div class="form-group">
+                                                        <label>Definition Post-Text</label>
 
-										</div>
-									</div>
-								</form>
-							</div>
+                                                        <div text-angular style="width: 100%" name="text2"
+                                                             ng-change="recordChangeForEdit2('segment','edit',segment.id,'text2', segment.text2)"
+                                                             ng-model="segment.text2"></div>
+                                                    </div>
 
-							<div class="">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </accordion-group>
+                                    <accordion-group heading="Definition" is-open="false">
+                                        <form style="margin-top: 20px" class="form-horizontal"
+                                              name="editSegmentForm">
+                                            <div style="margin-top: 20px">
+                                                <div class="table-responsive">
+                                                    <table tt-table tt-params="params"
+                                                           class="table table-striped table-bordered table-fix-header table-condensed profile-table">
+                                                        <thead>
+                                                        <tr class="tbl-header"
+                                                            style="margin-right: {{scrollbarWidth}}px;">
+                                                            <th class="col-xs-2 col-fixed-450">Name</th>
+                                                            <th class="col-xs-1 col-fixed-80">Usage</th>
+                                                            <th class="col-xs-1 col-fixed-100">Cardinality</th>
+                                                            <th class="col-xs-1 col-fixed-100">Length</th>
+                                                            <th class="col-xs-1 col-fixed-80">ConfLength</th>
+                                                            <th class="col-xs-1 col-fixed-100">Datatype</th>
+                                                            <th class="col-xs-1 col-fixed-100">ValueSet</th>
+                                                            <th class="col-xs-1" ng-style="predWidth">Predicate</th>
+                                                            <th class="col-xs-1" ng-style="csWidth">Conformance
+                                                                Statement
+                                                            </th>
+                                                            <th class="col-xs-1" ng-style="defTxtWidth">Def.Text</th>
+                                                            <th class="col-xs-1" ng-style="commentWidth">Comment</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </accordion-group>
+                                </accordion>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
 
-								<div class="page-header">
-									<span class="header5">Definition</span>
-								</div>
 
-								<form style="margin-top: 20px" class="form-horizontal"
-									name="editSegmentForm">
-									<!--<div>-->
-									<!--<label for="segmentLabel">Name:</label>-->
-									<!--<input type="text" ng-model="segment.label" ng-disabled="isFlavor(segment.label)"-->
-									<!--ng-focus="isFlavor(segment.label)" class="form-control" id="segmentLabel">-->
-									<!--</div>-->
-									<div style="margin-top: 20px">
-										<div class="table-responsive">
-											<table tt-table tt-params="params"
-												class="table table-striped table-bordered">
-												<thead>
-													<tr class="tbl-header row">
-														<th class="col-md-2">Name</th>
-														<th class="col-md-1">Usage</th>
-														<th class="col-md-1">Cardinality</th>
-														<th class="col-md-1">Length</th>
-														<th class="col-md-1">ConfLength</th>
-														<th class="col-md-1">Datatype</th>
-														<th class="col-md-1">ValueSet</th>
-														<th class="col-md-1">Predicate</th>
-														<th class="col-md-1">Conformance Statement</th>
-														<th class="col-md-1">Def.Text</th>
-														<th class="col-md-1">Comment</th>
-													</tr>
-												</thead>
-												<tbody></tbody>
-											</table>
-											<script type="text/ng-template" id="SegmentEditTree.html">
-    <tr tt-node is-branch="hasChildren(node)" class="row">
-    <td class="col-md-2">
-                                        <span ng-show="node.type === 'segment'">
-                                             <img style="width:15px; height:15px"
-                                                  ng-src="images/{{node.type}}.png">
-                                             <span style="width:60%">{{node.name}}:</span>
-                                             <span ng-bind="node.description"></span>
-                                         </span>
-                             <span ng-show="node.type !== 'segment'">
-                                         <img ng-show="!isSubDT(node)" style="width:15px; height:15px"
+<script type="text/ng-template" id="SegmentEditTree.html">
+    <tr tt-node is-branch="hasChildren(node)">
+        <td class="col-xs-2 col-fixed-450">
+            <img style="width:15px; height:15px"
+                 ng-src="images/{{node.type}}.png">
+            <span style="width:60%">{{node.name}}:</span>
+            <span ng-bind="node.description"></span>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
+        </td>
+
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1" ng-style="predWidth">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1" ng-style="csWidth">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1" ng-style="defTxtWidth">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1" ng-style="commentWidth">
+            <div>-</div>
+        </td>
+    </tr>
+</script>
+
+<script type="text/ng-template" id="SegmentFieldEditTree.html">
+    <tr tt-node is-branch="hasChildren(node)">
+        <td class="col-xs-2 col-fixed-450">
+                                          <img style="width:15px; height:15px"
                                               ng-src="images/{{node.type}}.png">
-                                         <img ng-show="isSubDT(node)" style="width:15px; height:15px"
-                                              ng-src="images/subcomponent.png">
-                                         <span ng-show="node.type !== 'segment'">{{node.position}}:{{node.name}}</span>
-                                 </span>
-    </td>
-    <td class="col-md-1">
-        <div ng-show="node.type === 'field'">
-                                            <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
+                                         <span>{{node.position}}:{{node.name}}</span>
+         </td>
+        <td class="col-xs-1 col-fixed-80">
+                                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
                                                 <select class="form-control input-sm"
                                                         name="usage"
                                                         ng-change="recordChangeForEdit2('field','edit',node.id,'usage', node.usage)"
@@ -149,17 +188,9 @@
                                             </span>
             <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
 
-        </div>
-        <div ng-show="node.type === 'segment'">-</div>
-        <div ng-show="node.type === 'component' ">
-                            <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0"
-                                  ng-bind="node.usage">
-                            </span>
-            <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
-        </div>
-    </td>
-    <td class="col-md-1">
-        <div ng-show="node.type === 'field'" ng-controller="SegmentRowCtrl">
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            <div ng-controller="SegmentRowCtrl">
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="min"
@@ -174,14 +205,10 @@
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.max" required>
                                             </span>
-        </div>
-        <div ng-show="node.type === 'segment'">-</div>
-        <div ng-show="node.type === 'component' ">
-            -
-        </div>
-    </td>
-    <td class="col-md-1">
-        <div ng-show="node.type === 'field'" ng-controller="SegmentRowCtrl">
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            <div ng-controller="SegmentRowCtrl">
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="minLength"
@@ -196,14 +223,10 @@
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.maxLength" required>
                                             </span>
-        </div>
-        <div ng-show="node.type === 'segment'">-</div>
-        <div ng-show="node.type === 'component' ">
-            [{{node.minLength}},{{node.maxLength}}]
-        </div>
-    </td>
-    <td class="col-md-1">
-        <div ng-show="node.type === 'field'" ng-controller="SegmentRowCtrl">
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+            <div ng-controller="SegmentRowCtrl">
                                             <span ng-form name="{{formName}}">
                                             <input style="width:50%" class="igl-input" type="text"
                                                    name="confLength"
@@ -212,14 +235,10 @@
                                                    ng-pattern="/^\d+$/"
                                                    ng-model="node.confLength">
                                             </span>
-        </div>
-        <div ng-show="node.type === 'segment'">-</div>
-        <div ng-show="node.type === 'component' " ng-bind="node.confLength">
-        </div>
-    </td>
+            </div>
+        </td>
 
-    <td class="col-md-1">
-        <div ng-show="node.type === 'field'">
+        <td class="col-xs-1 col-fixed-100">
             <select class="form-control input-sm"
                     name="segment"
                     ng-change="onDatatypeChange(node)"
@@ -228,20 +247,9 @@
                     ng-selected="dt.id === node.datatype"
                     ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype].name">
             </select>
-            <!--<a class="point"-->
-            <!--ng-click="goToSegment(node.segment)"-->
-            <!--ng-bind="node.segment.label"></a>-->
-        </div>
-        <div ng-show="node.type === 'segment'">-</div>
-        <div ng-show="node.type === 'component'">
-            <button type="button" ng-click="goToDatatype(datatypesMap[node.datatype])"
-                    class="btn btn-info btn-xs">{{datatypesMap[node.datatype].label}}
-            </button>
-        </div>
-    </td>
-    <td class="col-md-1">
-        <div ng-show="node.type === 'field'">
-		<span ng-show="node.table != undefined && node.table !== null">
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+ 		<span ng-show="node.table != undefined && node.table !== null">
 			<div class="btn-group" dropdown>
                 <button type="button" ng-click="goToTable(tablesMap[node.table])" class="btn btn-info btn-xs">
                     {{tablesMap[node.table].bindingIdentifier}}
@@ -263,23 +271,8 @@
                                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                                 </button>
                                             </span>
-        </div>
-
-        <div ng-show="node.type === 'component'">
-											<span ng-show="node.table != undefined && node.table != null">
-												<div class="btn-group" dropdown>
-                                                    <button type="button" ng-click="goToTable(tablesMap[node.table])"
-                                                            class="btn btn-info btn-xs">
-                                                        {{tablesMap[node.table].bindingIdentifier}}
-                                                    </button>
-                                                </div>
-                                            </span>
-        </div>
-
-        <div ng-show="node.type === 'segment'">-</div>
-    </td>
-    <td class="col-md-1">
-        <div ng-show="node.type === 'field'">
+        </td>
+        <td class="col-xs-1" ng-style="predWidth">
             <div ng-show="countPredicate(node.position) == 0">
                 <button type="button" ng-click="managePredicate(node)" class="btn btn-info btn-xs">
                     <span><i class="fa fa-plus fa-fw"></i></span>
@@ -288,16 +281,8 @@
             <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
                 <a ng-click="managePredicate(node)">{{p.description}}</a>
             </p>
-        </div>
-        <div ng-show="node.type === 'component'">
-            <p ng-repeat="p in datatypesMap[findDTByComponentId(node.id).id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                {{p.description}}
-            </p>
-        </div>
-        <div ng-show="node.type === 'segment'">-</div>
-    </td>
-    <td class="col-md-1">
-        <div ng-show="node.type === 'field'">
+        </td>
+        <td class="col-xs-1" ng-style="csWidth">
             <div ng-show="countConformanceStatements(node.position) == 0">
                 <button type="button" ng-click="manageConformanceStatement(node)" class="btn btn-info btn-xs">
                     <span><i class="fa fa-plus fa-fw"></i></span>
@@ -306,71 +291,120 @@
             <p ng-repeat="c in segment.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
                 <a ng-click="manageConformanceStatement(node)">{{c.constraintId}}: {{c.description}}</a>
             </p>
-        </div>
-        <div ng-show="node.type === 'component'">
-            <p ng-repeat="c in datatypesMap[findDTByComponentId(node.id).id].conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
-                {{c.constraintId}}: {{c.description}}
-            </p>
-        </div>
-        <div ng-show="node.type === 'segment'">-</div>
-    </td>
-    <!--<td class="col-md-1">-->
-        <!--<div ng-show="node.type === 'field'">-->
-            <!--<input style="width:100%" class="igl-input" type="text"-->
-                   <!--name="comment"-->
-                   <!--ng-change="recordChangeForEdit2('field','edit',node.id,'comment', node.comment)"-->
+        </td>
 
-                   <!--ng-model="node.comment">-->
-        <!--</div>-->
-        <!--<div ng-show="node.type === 'component' " ng-bind="node.comment"></div>-->
-        <!--<div ng-show="node.type === 'segment'">-</div>-->
-    <!--</td>-->
+        <td class="col-xs-1" ng-style="defTxtWidth">
+            <button type="button" ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
 
-    <td class="col-md-1">
-        <div ng-show="node.type === 'field'">
-            <button type="button" ng-click="openRichTextDlg(node, 'text','Definition Text', false)" class="btn btn-info btn-xs">
-                <i ng-show="node.text === '' || node.text === null" class="fa fa-plus fa-fw"></i>
-                <i ng-show="node.text !== '' && node.text !== null" class="fa fa-pencil fa-fw"></i>
-            </button>
-            <!--<input style="width:100%" class="igl-input" type="text"-->
-            <!--name="comment"-->
-            <!--ng-change="recordDatatypeChange('component','edit',node.id,'comment', node.comment)"-->
-            <!--ng-model="node.comment">-->
-        </div>
-        <div ng-show="node.type === 'segment'">-</div>
-        <div ng-show="node.type === 'component'">
-            <button type="button" ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)" class="btn btn-info btn-xs">
-                <i class="fa fa-eye fa-fw"></i>
-            </button>
-        </div>
-    </td>
-    <td class="col-md-1">
-        <div ng-show="node.type === 'field'">
-            <button ng-show="node.comment === '' || node.comment === null" type="button" ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="btn btn-info btn-xs">
+                    class="btn btn-info btn-xs">
+                <i class="fa fa-plus fa-fw" ng-show="node.text === '' || node.text === null"></i>
+                <i class="fa fa-pencil fa-fw" ng-show="node.text !== '' && node.text !== null"></i>
+             </button>
+        </td>
+
+        <td class="col-xs-1" ng-style="commentWidth">
+            <button ng-show="node.comment === '' || node.comment === null" type="button"
+                    ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="btn btn-info btn-xs">
                 <i class="fa fa-plus fa-fw"></i>
             </button>
-            <a  class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)" ng-show="node.comment !== '' && node.comment !== null" ng-bind="node.comment"></a>
-            <!--<input style="width:100%" class="igl-input" type="text"-->
-            <!--name="comment"-->
-            <!--ng-change="recordDatatypeChange('component','edit',node.id,'comment', node.comment)"-->
-            <!--ng-model="node.comment">-->
-        </div>
-        <div ng-show="node.type === 'component' " ng-bind="node.comment"></div>
-        <div ng-show="node.type === 'segment'">-</div>
-    </td>
-
+            <a class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)"
+               tooltip-html="node.comment" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip"
+               tooltip-trigger tooltip-animation="false" tooltip-placement="left"
+               ng-show="node.comment !== '' && node.comment !== null" ng-bind="node.comment"></a>
+        </td>
     </tr>
-    </script>
+</script>
 
-										</div>
-									</div>
+<script type="text/ng-template" id="SegmentComponentEditTree.html">
+    <tr tt-node is-branch="hasChildren(node)">
+        <td class="col-xs-2 col-fixed-450">
+                             <span>
+                                         <img ng-show="!isSubDT(node)" style="width:15px; height:15px"
+                                              ng-src="images/{{node.type}}.png">
+                                         <img ng-show="isSubDT(node)" style="width:15px; height:15px"
+                                              ng-src="images/subcomponent.png">
+                                         <span>{{node.position}}:{{node.name}}</span>
+                                 </span>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+            <div>
+                            <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0"
+                                  ng-bind="node.usage">
+                            </span>
+                <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            <div>
+                -
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            <div>
+                [{{node.minLength}},{{node.maxLength}}]
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+            <div ng-bind="node.confLength">
+            </div>
+        </td>
 
-								</form>
+        <td class="col-xs-1 col-fixed-100">
+            <div>
+                <button type="button" ng-click="goToDatatype(datatypesMap[node.datatype])"
+                        class="btn btn-info btn-xs">{{datatypesMap[node.datatype].label}}
+                </button>
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            <div>
+											<span ng-show="node.table != undefined && node.table != null">
+												<div class="btn-group" dropdown>
+                                                    <button type="button" ng-click="goToTable(tablesMap[node.table])"
+                                                            class="btn btn-info btn-xs">
+                                                        {{tablesMap[node.table].bindingIdentifier}}
+                                                    </button>
+                                                </div>
+                                            </span>
+            </div>
 
-							</div>
+            <div ng-show="node.type === 'segment'">-</div>
+        </td>
+        <td class="col-xs-1" ng-style="predWidth">
+            <div>
+                <p ng-repeat="p in datatypesMap[findDTByComponentId(node.id).id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                    {{p.description}}
+                </p>
+            </div>
+        </td>
+        <td class="col-xs-1" ng-style="csWidth">
+            <div>
+                <p ng-repeat="c in datatypesMap[findDTByComponentId(node.id).id].conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
+                    {{c.constraintId}}: {{c.description}}
+                </p>
+            </div>
+        </td>
 
-							<script type="text/ng-template"
-								id="ConformanceStatementSegmentCtrl.html">
+        <td class="col-xs-1" ng-style="defTxtWidth">
+            <div>
+                <button type="button" ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)"
+                        class="btn btn-info btn-xs">
+                    <i class="fa fa-eye fa-fw"></i>
+                </button>
+            </div>
+        </td>
+        <td class="col-xs-1" ng-style="commentWidth">
+            <div  tooltip-html="node.comment" tooltip-append-to-body="true"
+                  tooltip-class="constraints-tooltip"
+                  tooltip-trigger tooltip-animation="false" tooltip-placement="left"></div>
+        </td>
+    </tr>
+</script>
+
+
+<script type="text/ng-template"
+        id="ConformanceStatementSegmentCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">ConformanceStatement for {{segment.name}}-{{selectedNode.position}}</h3>
     </div>
@@ -522,7 +556,7 @@
 </script>
 
 
-							<script type="text/ng-template" id="PredicateSegmentCtrl.html">
+<script type="text/ng-template" id="PredicateSegmentCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Predicate for {{segment.name}}-{{selectedNode.position}}</h3>
     </div>
@@ -679,7 +713,7 @@
 </script>
 
 
-							<script type="text/ng-template" id="TableMappingSegmentCtrl.html">
+<script type="text/ng-template" id="TableMappingSegmentCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Mapping Table for {{segment.name}}-{{selectedNode.position}}</h3>
     </div>
@@ -786,9 +820,3 @@
     </div>
 </script>
 
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>

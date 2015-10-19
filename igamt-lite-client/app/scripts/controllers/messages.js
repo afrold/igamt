@@ -17,7 +17,7 @@ angular.module('igl')
                     return parent && parent!= null ? parent.children : $rootScope.message != null ? $rootScope.message.children : [];
                 },
                 getTemplate: function (node) {
-                    return 'MessageEditTree.html';
+                    return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageEditTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefEditTree.html' : 'MessageGroupEditTree.html';
                 },
                 options: {
                     initialState: 'expanded'

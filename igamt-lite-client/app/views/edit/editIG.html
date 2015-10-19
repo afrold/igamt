@@ -1,168 +1,150 @@
+<style>
+    .nav-bar {
+        position: relative;
+        float: left;
+        margin: 0em 0em 0em 1em;
+    }
+
+    #toc {
+        clear: both;
+        height: 100%;
+    }
+
+    .vid {
+        clear: both;
+        float: left;
+    }
+
+    .collapse-width {
+        position: relative;
+        overflow: hidden;
+        -webkit-transition: width 0.35s ease;
+        -moz-transition: width 0.35s ease;
+        -o-transition: width 0.35s ease;
+        transition: width 0.35s ease;
+    }
+
+    .opaque {
+        opacity: 1;
+    }
+
+    .transparent {
+        opacity: 0;
+    }
+
+    #closeopen {
+        background-color: red;
+        margin: 1em 0em 0px 1em;
+    }
+
+    .btn-onc {
+        color: #333;
+        background-color: #ddd;
+        border-style: none;
+    }
+
+    .btn:focus, .btn:active:focus, .btn.active:focus,
+    .btn.focus, .btn:active.focus, .btn.active.focus {
+        outline: none;
+    }
+</style>
+<ng-include src="'views/edit/editDataTypes.html'"></ng-include>
+<ng-include src="'views/edit/editSegments.html'"></ng-include>
+<ng-include src="'views/edit/editMessages.html'"></ng-include>
+<ng-include src="'views/edit/editValueSets.html'"></ng-include>
 <div ng-show="!loadingProfile">
-<div class="container" ng-show="profile !== null">
-    <div class="row">
-    <div style="margin-top:20px">
-        <span style="font-size: 22px">Implementation Guide: {{profile.metaData.identifier}}</span>
-        <div class="pull-right">
-            <!--<button title="Cancel Edit" type="button" class="btn btn-warning btn-sm"-->
-            <!--ng-click="reset()">-->
-            <!--<span><i class="fa fa-times"></i>&nbsp; Reset</span>-->
-            <!--</button>-->
-
-            <button title="Apply Changes" ng-disabled="!hasChanges()" type="button" class="btn btn-success btn-sm"
-                    ng-click="save()">
-                <span><i class="fa fa-check"></i>&nbsp; Apply</span>
-            </button>
-
-            <!--<button title="Verify Changes" ng-disabled="!hasChanges()" type="button" class="btn btn-success btn-sm"-->
-                    <!--ng-click="verify()">-->
-                <!--<span><i class="fa fa-check-circle"></i>&nbsp; Verify</span>-->
-            <!--</button>-->
-
-            <div class="btn-group">
-                <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm"><span><i
-                        class="fa fa-file-text-o fa-fw">&nbsp; </i></span>
-                    Export
+    <div class="container" style="text-align:center; padding-top:20px">
+        <div class="container">
+            <div class="row">
+                <button type="button" class="btn btn-default nav-bar" ng-click="createGuide()"
+                        ng-disabled="isVersionSelect">Create Guide
                 </button>
-                <button ng-disabled="hasChanges()" type="button" class="btn btn-primary btn-sm dropdown-toggle"
-                        data-toggle="dropdown" aria-expanded="false">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a ng-click="exportAs(profile.id, 'zip')">As ZIP</a></li>
-                    <li><a ng-click="exportAs(profile.id,'pdf')">As PDF</a></li>
-                    <li><a ng-click="exportAs(profile.id,'xslx')">As XSLX</a></li>
-                    <li><a ng-click="exportDelta(profile.id,'pdf')">Delta</a></li>
-                </ul>
+                <p ng-show="!isVersionSelect && !isEditing">No Implementation Guide Selected.</p>
+
+                <div ng-show="isVersionSelect && !isEditing">
+                    <span class="nav-bar">Select HL7 version:</span>
+
+                    <div ng-init="hl7Versions =  listHL7Versions()"></div>
+                    <label class="nav-bar" ng-repeat="v in hl7Versions">
+                        <input type="radio" ng-model="$parent.hl7Version" ng-click="setVersion(hl7Version)"
+                               ng-value="{{v}}" name="hl7Versions">
+                        {{v}}
+                    </label>
+                    <button type="button" class="btn btn-default nav-bar" ng-click="pickHL7Messages()">Next >></button>
+                </div>
+                <div ng-show="!isVersionSelect && isEditing" class="nav-bar">
+                    Current version: {{profile.metaData.hl7Version}}
+                </div>
+                <div class="row">
+                    <div class="container" ng-init="showToC = true">
+                        <div id="closeopen" class="vid row" ng-show="isVersionSelect && isEditing">
+                            <a class="btn btn-onc btn-xs" ng-click="showToC = !showToC">
+				<span class="fa fa-lg"
+                      ng-class="{
+			        'fa-angle-double-left': showToC,
+			        'fa-angle-double-right': !showToC
+			      }">{{showToC ? 'close' : 'open'}}</span></a>
+                        </div>
+                        <div class="row">
+
+                            <div id="toc" ng-class="showToC ? 'col-md-4' : 'col-md-1'" ng-include="'views/toc.html'"
+                                 ng-show="isVersionSelect && isEditing"></div>
+                            <div id="edit" ng-class="showToC ? 'col-md-8' : 'col-md-11'"
+                                 ng-show="subview !== undefined">
+                                <ng-include src="subview"/>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <!--<button ng-disabled="!hasChanges()"   ng-click="exportChanges()" type="button" class="btn btn-primary btn-sm"><span><i-->
-            <!--class="fa fa-file-text-o fa-fw">&nbsp; </i></span>-->
-            <!--Export Changes-->
-            <!--</button>-->
-
-            <button title="Close" type="button" class="btn btn-warning btn-sm"
-                    ng-click="close()">
-                <span><i class="fa fa-times"></i>&nbsp; Close</span>
-            </button>
-
-            <button title="Delete" type="button" class="btn btn-danger btn-sm"
-                    ng-click="confirmDelete(profile)">
-                <span> <i class="fa fa-trash"></i>&nbsp; Delete</span>
-            </button>
-
         </div>
-        </div>
-    <br/>
-
-    <!--<div ng-show="error !== null">-->
-        <!--<div class="alert alert-danger" role="alert" ng-bind="error"></div>-->
-        <!--<br/>-->
-    <!--</div>-->
-    <!--<div ng-show="generalInfo.message !== null">-->
-        <!--<br/>-->
-
-        <!--<div class="alert alert-{{generalInfo.type}}" role="alert" ng-bind="generalInfo.message"></div>-->
-        <!--<br/>-->
-    <!--</div>-->
-    </div>
-    <div class="row">
-        <div ng-show="loading" style="text-align:center">
-            <i class="fa fa-spinner fa-spin"></i>
-        </div>
-        <div ng-show="!loading">
-        <tabset>
-            <tab select="selectProfileTab(0)" active="profileTabs[0]">
-                <tab-heading>
-                    <!--<span class="badge">1</span>-->
-                    <i class="fa fa-file-text-o fa-fw"></i>
-                    MetaData
-                </tab-heading>
-                <div class="panel panel-info">
-                    <div class="panel-body">
-                <div ng-include="'views/edit/editDocument.html'"></div>
-                        </div>
-                    </div>
-            </tab>
-
-            <tab select="selectProfileTab(1)" active="profileTabs[1]">
-                <tab-heading>
-                    <!--<span class="badge">M</span>-->
-                    <i class="fa fa-book fa-fw"></i>
-                    Conformance Profiles
-                </tab-heading>
-                <div class="panel panel-info">
-                    <div class="panel-body">
-                <div ng-include="'views/edit/editMessages.html'"></div>
-                        </div>
-                    </div>
-            </tab>
-
-            <tab disabled="message === null" select="selectProfileTab(2)" active="profileTabs[2]">
-                <tab-heading>
-                    <!--<span class="badge">S</span>-->
-                    <i class="fa fa-book fa-fw"></i>
-                    Segments
-                </tab-heading>
-                <div class="panel panel-info">
-                    <div class="panel-body">
-                <div ng-include="'views/edit/editSegments.html'"></div>
-                        </div>
-                    </div>
-            </tab>
-
-            <tab disabled="message === null" select="selectProfileTab(3)" active="profileTabs[3]">
-                <tab-heading>
-                    <!--<span class="badge">D</span>-->
-                    <i class="fa fa-book fa-fw"></i>
-                    Datatypes
-                </tab-heading>
-                <div class="panel panel-info">
-                    <div class="panel-body">
-                <div ng-include="'views/edit/editDatatypes.html'"></div>
-                        </div>
-                    </div>
-            </tab>
-
-            <tab disabled="message === null" select="selectProfileTab(4)" active="profileTabs[4]">
-                <tab-heading>
-                    <!--<span class="badge">V</span>-->
-                    <i class="fa fa-book fa-fw"></i>
-                    ValueSets
-                </tab-heading>
-                <div class="panel panel-info">
-                    <div class="panel-body">
-                <div ng-include="'views/edit/editValueSets.html'"></div>
-                        </div>
-                    </div>
-            </tab>
-            <tab disabled="message === null" select="selectProfileTab(5)" active="profileTabs[5]">
-                <tab-heading>
-                    <!--<span class="badge">C</span>-->
-                    <i class="fa fa-book fa-fw"></i>
-                    Constraints
-                </tab-heading>
-                <div class="panel panel-info">
-                    <div class="panel-body">
-                <div ng-include="'views/edit/constraints.html'"></div>
-                        </div>
-                    </div>
-            </tab>
-        </tabset>
-        </div>
-
     </div>
 
+    <div class="container" ng-show="loadingProfile" style="text-align:center; padding-top:20px">
+        <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+    </div>
+
+    <script type="text/ng-template" id="hl7MessagesDlg.html">
+        <div ig-modals class="modal-header">
+            <h4 class="modal-title">HL7 Messages for version: {{hl7Version}}</h4>
         </div>
-
-<div class="container" ng-show="profile === null" style="text-align:center; padding-top:20px">
-     <p>No Implementation Guide Selected.</p>
-</div>
-</div>
-
-<div class="container" ng-show="loadingProfile" style="text-align:center; padding-top:20px">
-    <!--<i class="fa fa-spinner fa-spin fa-lg"></i>-->
-    <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
-
+        <form>
+            <table class="profile-list table table-striped table-bordered">
+                <tr class="tbl-header">
+                    <th>&nbsp;</th>
+                    <th>Struct Id</th>
+                    <th>Version</th>
+                    <th>Type</th>
+                    <th>Event</th>
+                    <th>Description</th>
+                </tr>
+                <tbody ng-repeat="m in messagesByVersion | orderBy: m[1]">
+                <tr>
+                    <td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
+                    <td>{{m[1]}}</td>
+                    <td>{{m[2]}}</td>
+                    <td>{{m[3]}}</td>
+                    <td>{{m[4]}}</td>
+                    <td>{{m[5]}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+            </div>
+        </form>
+    </script>
+    <script type="text/ng-template" id="nts.html">
+        <div>
+            Nothing to see.
+        </div>
+    </script>
+    <script type="text/ng-template" id="editSegments.html">
+    </script>
+    <script type="text/ng-template" id="editMessages.html">
+    </script>
+    <script type="text/ng-template" id="editValueSets.html">
+    </script>
 </div>

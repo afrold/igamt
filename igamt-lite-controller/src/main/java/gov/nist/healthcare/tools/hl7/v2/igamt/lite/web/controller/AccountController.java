@@ -125,6 +125,7 @@ public class AccountController {
 					sacc.setJuridiction(acc.getJuridiction());
 					sacc.setPhone(acc.getPhone());
 					sacc.setTitle(acc.getTitle());
+					sacc.setUsername(acc.getUsername());
 					saccs.add(sacc);
 				}
 			}
@@ -265,6 +266,7 @@ public class AccountController {
 					sacc.setTitle(acc.getTitle());
 					sacc.setPending(acc.isPending());
 					sacc.setEntityDisabled(acc.isEntityDisabled());
+					sacc.setUsername(acc.getUsername());
 					saccs.add(sacc);
 				}
 			}
