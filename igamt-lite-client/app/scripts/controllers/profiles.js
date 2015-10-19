@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, HL7VersionSvc) {
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, HL7VersionSvc, MessageSelectionSvc) {
         $scope.loading = false;
         $rootScope.igs = [];
         $scope.igContext = {
@@ -397,24 +397,6 @@ angular.module('igl')
         	$scope.isVersionSelect = true;
         };
 
-		$scope.pickHL7Messages = function() {
-			var hl7MessagesSelected;
-			hl7MessagesSelected = $modal.open({
-				templateUrl : 'hl7MessagesDlg.html',
-				controller : 'HL7VMessagesDlgCtrl',
-				resolve : {
-					hl7Version : function() {
-						return $scope.hl7Version;
-					}
-				}
-			});
-
-			hl7MessagesSelected.result.then(function(result) {
-				console.log(result);
-				$scope.createProfile($rootScope.hl7Version, result);
-			});
-		};
-		
         $scope.listHL7Versions = function() {
 			var hl7Versions = [];
 			$http.get('api/profiles/hl7/findVersions', {
@@ -429,6 +411,34 @@ angular.module('igl')
 			return hl7Versions;
 		};
 		
+		$scope.pickHL7Messages = function() {
+			var hl7MessagesSelected;
+			hl7MessagesSelected = $modal.open({
+				templateUrl : 'hl7MessagesDlg.html',
+				controller : 'HL7VMessagesDlgCtrl',
+			});
+			
+			hl7MessagesSelected.result.then(function(result) {
+				console.log(result);
+				var hl7Version = HL7VersionSvc.hl7Version;
+				$scope.createProfile(hl7Version, result);
+			});
+		};
+		
+		$scope.pickHL7MessagesDlg = function() {
+			var hl7MessagesSelected;
+			hl7MessagesSelected = $modal.open({
+				templateUrl : 'hl7MessagesDlg.html',
+				controller : 'HL7VMessagesDlgCtrl',
+//				resolve : {
+//					hl7Version : function() {
+//						return $scope.hl7Version;
+//					}
+//				}
+			});
+			
+		};
+		
 		$scope.createProfile = function(hl7Version, msgIds) {
 			$scope.isVersionSelect = true;
 			$scope.isEditing = true;
@@ -438,13 +448,25 @@ angular.module('igl')
 					"timeout" : 60000
 			};
 			 $http.post('api/profiles/hl7/createIntegrationProfile', iprw).then(function
-			 (response) {
+					 (response) {
 				 $scope.profile = angular.fromJson(response.data);
 				 $scope.getLeveledProfile($scope.profile);
 				 $rootScope.$broadcast('event:IgsPushed', $scope.profile);
 			 });
-			 return $scope.profile;
 		};
+		
+		$scope.updateProfile = function(msgIds) {
+			var iprw = {
+					"profile" : $scope.profile,
+					"msgIds" : msgIds,
+					"timeout" : 60000
+			};
+			 $http.post('api/profiles/hl7/updateIntegrationProfile', iprw).then(function
+					 (response) {
+				 $scope.profile = angular.fromJson(response.data);
+				 $scope.getLeveledProfile($scope.profile);
+			 });
+		}
 		
 		$scope.getLeveledProfile = function(profile) {
 			$scope.leveledProfile = [{title : "Datatypes", children : profile.datatypes.children},
@@ -508,11 +530,39 @@ angular.module('igl')
 		$scope.closedCtxMenu = function(node, $index) {
 			var item = ContextMenuSvc.get();
 			switch (item) {
+			case "Add":
+				if (node === "Messages") {
+					var hl7MessagesSelected;
+					hl7MessagesSelected = $modal.open({
+						templateUrl : 'hl7MessagesDlg.html',
+						controller : 'HL7VMessagesDlgCtrl',
+					});
+					
+					hl7MessagesSelected.result.then(function(result) {
+						console.log(result);
+						$scope.updateProfile(result);
+					});
+				} else {
+					alert("Was not Messages. Was:" + node);
+				}
+				break;
+			case "Delete": 
+				// not to be implemented at this time.
+				// var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
+				break;
+			default: 
+				console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
+			}
+		};
+		
+		$scope.closedCtxSubMenu = function(node, $index) {
+			var item = ContextMenuSvc.get();
+			switch (item) {
 			case "Add": 
 				var newNode = (JSON.parse(JSON.stringify(node)));
 				newNode.id = null;
 				
-				// Nodesd must have unique names so we timestamp when we duplicate.
+				// Nodes must have unique names so we timestamp when we duplicate.
 				if(newNode.type === 'message') {
 					newNode.messageType = newNode.messageType + " " + timeStamp();
 				}
@@ -523,45 +573,16 @@ angular.module('igl')
 				for (var i in $scope.profile.messages.children) {
 					console.log($scope.profile.messages.children[i].messageType);
 				}
-				
-				function timeStamp() {
-					// Create a date object with the current time
-					  var now = new Date();
-
-					// Create an array with the current month, day and time
-					  var date = [ now.getMonth() + 1, now.getDate(), now.getFullYear() ];
-
-					// Create an array with the current hour, minute and second
-					  var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
-
-					// Determine AM or PM suffix based on the hour
-					  var suffix = ( time[0] < 12 ) ? "AM" : "PM";
-
-					// Convert hour from military time
-					  time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
-
-					// If hour is 0, set it to 12
-					  time[0] = time[0] || 12;
-
-					// If seconds and minutes are less than 10, add a zero
-					  for ( var i = 1; i < 3; i++ ) {
-					    if ( time[i] < 10 ) {
-					      time[i] = "0" + time[i];
-					    }
-					  }
-
-					// Return the formatted string
-					  return date.join("/") + " " + time.join(":") + " " + suffix;
-				};
 				break;
 			case "Delete": 
-// not to be implemented at this time.
-//				var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
+				// not to be implemented at this time.
+				// var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
 				break;
 			default: 
 				console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
 			}
 		};
+
 });
 
 angular.module('igl').controller('ContextMenuCtrl', function ($scope, $rootScope, ContextMenuSvc) {
@@ -726,6 +747,36 @@ angular.module('igl').controller('ConfirmProfileOpenCtrl', function ($scope, $mo
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+
+	function timeStamp() {
+		// Create a date object with the current time
+		  var now = new Date();
+
+		// Create an array with the current month, day and time
+		  var date = [ now.getMonth() + 1, now.getDate(), now.getFullYear() ];
+
+		// Create an array with the current hour, minute and second
+		  var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
+
+		// Determine AM or PM suffix based on the hour
+		  var suffix = ( time[0] < 12 ) ? "AM" : "PM";
+
+		// Convert hour from military time
+		  time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
+
+		// If hour is 0, set it to 12
+		  time[0] = time[0] || 12;
+
+		// If seconds and minutes are less than 10, add a zero
+		  for ( var i = 1; i < 3; i++ ) {
+		    if ( time[i] < 10 ) {
+		      time[i] = "0" + time[i];
+		    }
+		  }
+
+		// Return the formatted string
+		  return date.join("/") + " " + time.join(":") + " " + suffix;
+	};
 
 });
 
