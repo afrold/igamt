@@ -56,33 +56,15 @@
 
         <div ng-view></div>
 
-        <script type="text/ng-template" id="warning-dialog.html">
-            <div class="modal-header">
-                <h3>Your session will expire soon!</h3>
-            </div>
-            <div idle-countdown="countdown" ng-init="countdown=30" class="modal-body">
-                <progressbar type="warning" max="30" value="30" animate="false" class="progress-striped active">Your
-                    session
-                    will expire in {{countdown}} second(s).
-                </progressbar>
-            </div>
-        </script>
-
-        <script type="text/ng-template" id="timedout-dialog.html">
-            <div class="modal-header">
-                <h3>Session Expired</h3>
-            </div>
-            <div class="modal-body">
-                <p>
-                    Your session has expired due to inactivity for a long time.
-                </p>
-            </div>
-        </script>
-
-
     </div>
 
     <div ng-include="'views/footer.html'"></div>
+    <div ng-include="'views/session-templates.html'"></div>
+    <div ng-include="'views/edit/datatype-templates.html'"></div>
+    <div ng-include="'views/edit//valueset-templates.html'"></div>
+    <div ng-include="'views/edit/segment-templates.html'"></div>
+    <div ng-include="'views/edit/message-templates.html'"></div>
+
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <!--<script>-->
