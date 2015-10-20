@@ -12,6 +12,8 @@ angular.module('igl')
         $scope.params = null;
         $scope.tmpSegments = [].concat($rootScope.segments);
         $scope.segmentCopy = null;
+
+
         $scope.init = function () {
             $scope.loading = true;
             $scope.params = new ngTreetableParams({
@@ -19,7 +21,7 @@ angular.module('igl')
                     return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];
                 },
                 getTemplate: function (node) {
-                    return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : node.type === 'component' ? 'SegmentComponentEditTree.html' : '';
+                    return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
                 }
 //                ,
 //                options: {
@@ -29,12 +31,8 @@ angular.module('igl')
 
             $rootScope.$on('event:openSegment', function (event, segment, goto) {
                 if (segment && segment != null) {
-                    if (goto) {
-                        $rootScope.selectProfileTab(2);
-                    }
                     $scope.select(segment);
-                    event.stopPropagation();
-                }
+                 }
             });
 
             if ($rootScope.segments && $rootScope.segments.length > 0) {
@@ -44,79 +42,24 @@ angular.module('igl')
             $scope.loading = false;
         };
 
-
-        $scope.getTableWidth = function () {
-            if ($scope.tableWidth === null) {
-                $scope.tableWidth = $("#executionPanel").width();
-            }
-            return $scope.tableWidth;
-        };
-
-        $scope.getDynamicWidth = function (a,b) {
-            var tableWidth = $scope.getTableWidth();
-            if (tableWidth > 0) {
-                var otherColumsWidth = !$scope.nodeData || $scope.nodeData === null || $scope.nodeData.type === 'MESSAGE' ? 700 : 950;
-                var left = tableWidth - otherColumsWidth;
-                return {"width": a * parseInt(left / b) + "px"};
-            }
-            return "";
-        };
-
-
-        $scope.getCsWidth = function () {
-            if ($scope.csWidth === null) {
-                    $scope.csWidth = $scope.getDynamicWidth(1,4);
-             }
-            return $scope.csWidth;
-        };
-
-        $scope.getPredWidth = function () {
-            if ($scope.predWidth === null) {
-                    $scope.predWidth =$scope.getDynamicWidth(1,4);
-             }
-            return $scope.predWidth;
-        };
-
-        $scope.getDefTxtWidth = function () {
-            if ($scope.defTxtWidth === null) {
-                $scope.defTxtWidth =$scope.getDynamicWidth(1,4);
-            }
-            return $scope.defTxtWidth;
-        };
-
-        $scope.getCommentWidth = function () {
-            if ($scope.commentWidth === null) {
-                $scope.commentWidth =$scope.getDynamicWidth(1,4);
-            }
-            return $scope.commentWidth;
-        };
-
-
 //
         $scope.select = function (segment) {
             if (segment) {
                 $scope.loadingSelection = true;
-                //waitingDialog.show('Loading Segment ' + segment.name + "...", {dialogSize: 'sm', progressType: 'info'});
                 $rootScope.segment = segment;
                 $rootScope.segment["type"] = "segment";
                 $timeout(
                     function () {
-                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                        $scope.csWidth = null;
-                        $scope.predWidth = null;
                         $scope.tableWidth = null;
-                        $scope.defTxtWidth = null;
-                        $scope.commentWidth = null;
-                        $scope.getCsWidth();
-                        $scope.getPredWidth();
-                        $scope.getDefTxtWidth();
-                        $scope.getCommentWidth();
+                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                        $scope.csWidth = $scope.getDynamicWidth(1,3,990);
+                        $scope.predWidth = $scope.getDynamicWidth(1,3,990);
+                        $scope.commentWidth = $scope.getDynamicWidth(1,3,990);
                         if ($scope.params)
                             $scope.params.refresh();
                         $scope.loadingSelection = false;
                     }, 500);
-                // waitingDialog.hide();
-            }
+             }
         };
 
         $scope.reset = function () {

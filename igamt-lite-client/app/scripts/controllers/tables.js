@@ -14,11 +14,9 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     $scope.init = function () {
         $rootScope.$on('event:openTable',function (event,table){
             if(table && table != null) {
-                $rootScope.selectProfileTab(4);
-                $scope.select(table);
+                 $scope.select(table);
             }
-            event.stopPropagation();
-        });
+         });
     };
 
     $scope.select = function (table) {

@@ -1844,6 +1844,14 @@ table.profile-table td {
   max-width: 550px;
 }
 
+.col-fixed-350 {
+  float: left;
+  white-space: nowrap;
+  width: 350px;
+  min-width: 350px;
+  max-width: 350px;
+}
+
 
 .col-fixed-6000 {
   float: left;
