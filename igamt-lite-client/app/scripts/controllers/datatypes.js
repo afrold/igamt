@@ -5,83 +5,11 @@
 
 angular.module('igl')
     .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout) {
-        $scope.loading = false;
-        $scope.loadingSelection = false;
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
-        $scope.params = null;
-        $scope.tmpDatatypes = [].concat($rootScope.datatypes);
         $scope.datatypeCopy = null;
-        $scope.accordion = {listStatus: true, datatypeStatus: false};
         $scope.init = function () {
-            $scope.loading = true;
-            $scope.params = new ngTreetableParams({
-                getNodes: function (parent) {
-
-                    if (parent && parent != null) {
-
-                        if (parent.datatype) {
-                            var dt = $rootScope.datatypesMap[parent.datatype];
-                            return dt.components;
-
-                        } else {
-                            return parent.components;
-                        }
-                    } else {
-                        if ($rootScope.datatype != null) {
-                            return $rootScope.datatype.components;
-                        } else {
-                            return [];
-                        }
-                    }
-//                    return parent && parent != null ? (parent.datatype ? $rootScope.datatypesMap[parent.datatype].components: parent.components) : ($rootScope.datatype != null ? $rootScope.datatype.components:[]);
-                },
-                getTemplate: function (node) {
-                    return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !$scope.isSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && $scope.isSubDT(node) ? 'DatatypeSubComponentEditTree' : '';
-                }
-//                ,
-//                options: {
-//                    initialState: 'expanded'
-//                }
-            });
-
-//            $scope.$watch(function () {
-//                return $rootScope.notifyDtTreeUpdate;
-//            }, function (changeId) {
-//                if(changeId != 0) {
-//                    $scope.params.refresh();
-//                }
-//            });
-
-
-            $rootScope.$on('event:openDatatype', function (event, datatype) {
-                if (datatype && datatype != null) {
-                    $scope.select(datatype);
-                }
-            });
-
-
-            $scope.loading = false;
-        };
-
-        $scope.select = function (datatype) {
-            $scope.loadingSelection = true;
-            $rootScope.datatype = datatype;
-            $rootScope.datatype["type"] = "datatype";
-            $scope.accordion.datatypeStatus = true;
-            $scope.accordion.listStatus = !$scope.accordion.datatypeStatus;
-            $timeout(
-                function () {
-                    $scope.tableWidth = null;
-                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                    $scope.csWidth = $scope.getDynamicWidth(1,3,890);
-                    $scope.predWidth = $scope.getDynamicWidth(1,3,890);
-                    $scope.commentWidth = $scope.getDynamicWidth(1,3,890);
-                    if ($scope.params)
-                        $scope.params.refresh();
-                    $scope.loadingSelection = false;
-                }, 500);
         };
 
         $scope.flavor = function (datatype) {
@@ -121,8 +49,7 @@ angular.module('igl')
 
         $scope.close = function () {
             $rootScope.datatype = null;
-            if ($scope.params)
-                $scope.params.refresh();
+            $scope.refreshTree();
             $scope.loadingSelection = false;
             $scope.accordion.datatypeStatus = false;
             $scope.accordion.listStatus = !$scope.accordion.datatypeStatus;
@@ -191,15 +118,12 @@ angular.module('igl')
         };
 
         $scope.refreshTree = function () {
-            if ($scope.params)
-                $scope.params.refresh();
+            if ($scope.datatypesParams)
+                $scope.datatypesParams.refresh();
         };
 
         $scope.goToTable = function (table) {
-//        	$rootScope.table = table;
-//            $rootScope.notifyTableTreeUpdate = new Date().getTime();
-
-            $rootScope.$emit('event:openTable', table);
+            $scope.$emit('event:openTable', table);
         };
 
         $scope.deleteTable = function (node) {
