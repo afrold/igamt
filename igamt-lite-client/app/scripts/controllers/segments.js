@@ -483,6 +483,29 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         }
         return false;
     };
+    
+    $scope.changeConstraintType = function () {
+    	$scope.newConstraint = angular.fromJson({
+	        segment: '',
+	        field_1: null,
+	        component_1: null,
+	        subComponent_1: null,
+	        field_2: null,
+	        component_2: null,
+	        subComponent_2: null,
+	        verb: null,
+	        constraintId: null,
+	        contraintType: null,
+	        value: null
+	    });
+		$scope.newConstraint.segment = $rootScope.segment.name;
+		
+    	if($scope.constraintType === 'Complex'){
+    		$scope.newComplexConstraint = [];
+    		$scope.newComplexConstraintFormula = '';
+    		$scope.newComplexConstraintId = '';
+    	}
+    }
 
     $scope.updateField_1 = function () {
         $scope.newConstraint.component_1 = null;
@@ -546,10 +569,16 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     description: position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + '.',
                     assertion: '<Presence Path=\"' + location_1 + '\"/>'
                 };
-                $rootScope.segment.conformanceStatements.push(cs);
-                $rootScope.segmentConformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                
+                if($scope.constraintType === 'Plain'){
+                	$rootScope.segment.conformanceStatements.push(cs);
+                    $rootScope.segmentConformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+                
             } else if ($scope.newConstraint.contraintType === 'a literal value') {
                 var cs = {
                     id: new ObjectId().toString(),
@@ -558,10 +587,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
                     assertion: '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
                 };
-                $rootScope.segment.conformanceStatements.push(cs);
-                $rootScope.segmentConformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                if($scope.constraintType === 'Plain'){
+                	$rootScope.segment.conformanceStatements.push(cs);
+                    $rootScope.segmentConformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             } else if ($scope.newConstraint.contraintType === 'one of list values') {
                 var cs = {
                     id: new ObjectId().toString(),
@@ -570,10 +603,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
                     assertion: '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
                 };
-                $rootScope.segment.conformanceStatements.push(cs);
-                $rootScope.segmentConformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                if($scope.constraintType === 'Plain'){
+                	$rootScope.segment.conformanceStatements.push(cs);
+                    $rootScope.segmentConformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             } else if ($scope.newConstraint.contraintType === 'formatted value') {
                 var cs = {
                     id: new ObjectId().toString(),
@@ -582,10 +619,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
                     assertion: '<Format Path=\"' + location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
                 };
-                $rootScope.segment.conformanceStatements.push(cs);
-                $rootScope.segmentConformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                if($scope.constraintType === 'Plain'){
+                	$rootScope.segment.conformanceStatements.push(cs);
+                    $rootScope.segmentConformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             } else if ($scope.newConstraint.contraintType === 'identical to the another node') {
                 var cs = {
                     id: new ObjectId().toString(),
@@ -594,10 +635,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
                     assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
                 };
-                $rootScope.segment.conformanceStatements.push(cs);
-                $rootScope.segmentConformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                if($scope.constraintType === 'Plain'){
+                	$rootScope.segment.conformanceStatements.push(cs);
+                    $rootScope.segmentConformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             }
         }
     };
