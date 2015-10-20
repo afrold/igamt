@@ -33,7 +33,17 @@ angular.module('igl')
         $scope.commentWidth = null;
         $scope.loadingSelection = false;
         $scope.scrollbarWidth = 0;
-        $scope.accordi = {metaData:false, definition:true};
+        $scope.accordi = {metaData:false, definition:true, igList:true, igDetails:false};
+
+        $scope.selectIgTab = function (value) {
+            if(value === 1) {
+                $scope.accordi.igList = false;
+                $scope.accordi.igDetails = true;
+            }else {
+                $scope.accordi.igList = true;
+                $scope.accordi.igDetails = false;
+            }
+        };
 
         $scope.segmentsParams = new ngTreetableParams({
             getNodes: function (parent) {
@@ -86,6 +96,7 @@ angular.module('igl')
         $scope.init = function () {
             $scope.igContext.igType = $scope.igTypes[1];
             $scope.loadProfiles();
+            $scope.getScrollbarWidth();
             /**
              * On 'event:loginConfirmed', resend all the 401 requests.
              */
@@ -130,7 +141,6 @@ angular.module('igl')
         $scope.loadProfiles = function () {
             $scope.error = null;
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
-                $rootScope.selectIgTab(0);
                 $scope.loading = true;
                 if ($scope.igContext.igType.type === 'PRELOADED') {
                     $http.get('api/profiles', {timeout: 60000}).then(function (response) {
@@ -186,7 +196,7 @@ angular.module('igl')
             $scope.toEditProfileId = profile.id;
             try {
                 if ($rootScope.profile != null && $rootScope.profile === profile) {
-                    $rootScope.selectIgTab(1);
+                    $scope.selectIgTab(1);
                     $scope.toEditProfileId = null;
                 } else if ($rootScope.profile && $rootScope.profile != null && $rootScope.hasChanges()) {
                     $scope.confirmOpen(profile);
@@ -208,7 +218,7 @@ angular.module('igl')
 
         $scope.openProfile = function (profile) {
             $scope.loadingProfile = true;
-            $rootScope.selectIgTab(1);
+            $scope.selectIgTab(1);
             if (profile != null) {
                 $rootScope.initMaps();
                 $rootScope.profile = profile;
@@ -371,7 +381,7 @@ angular.module('igl')
             } else {
                 waitingDialog.show('Closing profile...', {dialogSize: 'sm', progressType: 'info'});
                 $rootScope.profile = null;
-                $rootScope.selectIgTab(0);
+                $scope.selectIgTab(0);
                 $rootScope.initMaps();
                 waitingDialog.hide();
             }
@@ -447,7 +457,7 @@ angular.module('igl')
 
 
         $scope.reset = function () {
-            $rootScope.selectIgTab(0);
+            $scope.selectIgTab(0);
             $rootScope.changes = {};
             $rootScope.profile = null;
         };
@@ -700,34 +710,6 @@ angular.module('igl')
                 },100);
         };
 
-        $scope.getScrollbarWidth = function() {
-            if($scope.scrollbarWidth == 0) {
-                var outer = document.createElement("div");
-                outer.style.visibility = "hidden";
-                outer.style.width = "100px";
-                outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
-
-                document.body.appendChild(outer);
-
-                var widthNoScroll = outer.offsetWidth;
-                // force scrollbars
-                outer.style.overflow = "scroll";
-
-                // add innerdiv
-                var inner = document.createElement("div");
-                inner.style.width = "100%";
-                outer.appendChild(inner);
-
-                var widthWithScroll = inner.offsetWidth;
-
-                // remove divs
-                outer.parentNode.removeChild(outer);
-
-                $scope.scrollbarWidth = widthNoScroll - widthWithScroll;
-            }
-
-            return $scope.scrollbarWidth;
-        };
 
         $scope.getTableWidth = function () {
             if ($scope.tableWidth === null || $scope.tableWidth == 0) {
@@ -835,7 +817,7 @@ angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $
             if ($scope.profileToDelete === $rootScope.profile) {
                 $rootScope.initMaps();
                 $rootScope.profile = null;
-                $rootScope.selectIgTab(0);
+                $scope.selectIgTab(0);
             }
             $rootScope.msg().text = "igDeleteSuccess";
             $rootScope.msg().type = "success";
@@ -885,7 +867,7 @@ angular.module('igl').controller('ConfirmProfileCloseCtrl', function ($scope, $m
     $scope.clear = function () {
         $rootScope.changes = {};
         $rootScope.profile = null;
-        $rootScope.selectIgTab(0);
+        $scope.selectIgTab(0);
         $rootScope.initMaps();
         $modalInstance.close();
     };

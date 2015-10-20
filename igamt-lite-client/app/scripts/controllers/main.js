@@ -344,8 +344,6 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.newPredicateFakeId = 0;
     $rootScope.newConformanceStatementFakeId = 0;
     $rootScope.segment = null;
-    $rootScope.profileTabs = new Array();
-    $rootScope.igTabs = new Array();
     $rootScope.config= {};
     $rootScope.messagesData = [];
     $rootScope.messages = [];// list of messages
@@ -359,26 +357,45 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
 
 
 
-
+    // TODO: remove
     $rootScope.selectProfileTab = function (value) {
-        $rootScope.profileTabs[0] = false;
-        $rootScope.profileTabs[1] = false;
-        $rootScope.profileTabs[2] = false;
-        $rootScope.profileTabs[3] = false;
-        $rootScope.profileTabs[4] = false;
-        $rootScope.profileTabs[5] = false;
-        $rootScope.profileTabs[value] = true;
+//        $rootScope.profileTabs[0] = false;
+//        $rootScope.profileTabs[1] = false;
+//        $rootScope.profileTabs[2] = false;
+//        $rootScope.profileTabs[3] = false;
+//        $rootScope.profileTabs[4] = false;
+//        $rootScope.profileTabs[5] = false;
+//        $rootScope.profileTabs[value] = true;
     };
 
-    $rootScope.selectIgTab = function (value) {
-        $rootScope.igTabs[0] = false;
-        $rootScope.igTabs[1] = false;
-        $rootScope.igTabs[value] = true;
-        if(value === 1) {
-            $rootScope.selectProfileTab(0);
+    $scope.getScrollbarWidth = function() {
+        if($scope.scrollbarWidth == 0) {
+            var outer = document.createElement("div");
+            outer.style.visibility = "hidden";
+            outer.style.width = "100px";
+            outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
+
+            document.body.appendChild(outer);
+
+            var widthNoScroll = outer.offsetWidth;
+            // force scrollbars
+            outer.style.overflow = "scroll";
+
+            // add innerdiv
+            var inner = document.createElement("div");
+            inner.style.width = "100%";
+            outer.appendChild(inner);
+
+            var widthWithScroll = inner.offsetWidth;
+
+            // remove divs
+            outer.parentNode.removeChild(outer);
+
+            $scope.scrollbarWidth = widthNoScroll - widthWithScroll;
         }
-    };
 
+        return $scope.scrollbarWidth;
+    };
     $rootScope.initMaps = function () {
         $rootScope.segment = null;
         $rootScope.datatype = null;
