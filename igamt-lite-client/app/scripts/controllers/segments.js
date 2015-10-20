@@ -443,7 +443,6 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 		
     	if($scope.constraintType === 'Complex'){
     		$scope.newComplexConstraint = [];
-    		$scope.newComplexConstraintFormula = '';
     		$scope.newComplexConstraintId = '';
     	}
     }
@@ -491,6 +490,49 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 
         return location;
     };
+    
+    $scope.addComplexConformanceStatement = function(cs){
+    	cs.constraintId = $scope.newComplexConstraintId;
+    	
+    	$rootScope.segment.conformanceStatements.push(cs);
+        $rootScope.segmentConformanceStatements.push(cs);
+        var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+    };
+    
+    $scope.compositeConformanceStatements = function(cs1, cs2, type){
+    	if(type === 'AND'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'AND(' + cs1.constraintId + ',' + cs2.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: '['+ cs1.description + ']' + 'AND' + '[' + cs2.description + ']',
+                    assertion: '<AND>' + cs1.assertion + cs2.assertion + '</AND>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if(type === 'OR'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'OR(' + cs1.constraintId + ',' + cs2.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: '['+ cs1.description + ']' + 'OR' + '[' + cs2.description + ']',
+                    assertion: '<OR>' + cs1.assertion + cs2.assertion + '</OR>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if(type === 'IFTHEN'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'IFTHEN(' + cs1.constraintId + ',' + cs2.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: 'IF ['+ cs1.description + ']' + 'THEN ' + '[' + cs2.description + ']',
+                    assertion: '<IMPLY>' + cs1.assertion + cs2.assertion + '</IMPLY>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}
+    	
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(cs1), 1);
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(cs2), 1);
+    };
 
     $scope.addConformanceStatement = function () {
         $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
@@ -516,7 +558,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     $rootScope.segmentConformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
                     $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
-                }else ($scope.constraintType === 'Complex'){
+                }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
                 
@@ -533,7 +575,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     $rootScope.segmentConformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
                     $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
-                }else ($scope.constraintType === 'Complex'){
+                }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
             } else if ($scope.newConstraint.contraintType === 'one of list values') {
@@ -549,7 +591,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     $rootScope.segmentConformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
                     $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
-                }else ($scope.constraintType === 'Complex'){
+                }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
             } else if ($scope.newConstraint.contraintType === 'formatted value') {
@@ -565,7 +607,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     $rootScope.segmentConformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
                     $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
-                }else ($scope.constraintType === 'Complex'){
+                }else if($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
             } else if ($scope.newConstraint.contraintType === 'identical to the another node') {
@@ -581,7 +623,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     $rootScope.segmentConformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
                     $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
-                }else ($scope.constraintType === 'Complex'){
+                }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
             }
