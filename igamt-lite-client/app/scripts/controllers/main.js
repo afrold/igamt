@@ -358,6 +358,76 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.section = {};
     $rootScope.parentsMap = {};
 
+    $scope.csWidth = null;
+    $scope.predWidth = null;
+    $scope.tableWidth = null;
+    $scope.commentWidth = null;
+
+
+    $scope.getTableWidth = function () {
+        if ($scope.tableWidth === null) {
+            $scope.tableWidth = $("#executionPanel").width();
+        }
+        return $scope.tableWidth;
+    };
+
+    $scope.getDynamicWidth = function (a,b,otherColumsWidth) {
+        var tableWidth = $scope.getTableWidth();
+        if (tableWidth > 0) {
+            var left = tableWidth - otherColumsWidth;
+            return {"width": a * parseInt(left / b) + "px"};
+        }
+        return "";
+    };
+
+
+    $scope.getConstraintAsString = function (constraint) {
+       return constraint.constraintId + " - " + constraint.description;
+     };
+
+
+    $scope.getConstraintsAsString = function (constraints) {
+        var str = '';
+        for (var index in constraints) {
+            str = str + "<p style=\"text-align: left\">" + constraints[index].id + " - " + constraints[index].description + "</p>";
+        }
+        return str;
+    };
+
+    $scope.getPredicatesAsMultipleLinesString = function (node) {
+        var html = "";
+        angular.forEach(node.predicates, function (predicate) {
+            html = html + "<p>" + predicate.description + "</p>";
+        });
+        return html;
+    };
+
+    $scope.getPredicatesAsOneLineString = function (node) {
+        var html = "";
+        angular.forEach(node.predicates, function (predicate) {
+            html = html + predicate.description;
+        });
+        return $sce.trustAsHtml(html);
+    };
+
+
+    $scope.getConfStatementsAsMultipleLinesString = function (node) {
+        var html = "";
+        angular.forEach(node.conformanceStatements, function (conStatement) {
+            html = html + "<p>" + conStatement.id + " : " + conStatement.description + "</p>";
+        });
+        return html;
+    };
+
+    $scope.getConfStatementsAsOneLineString = function (node) {
+        var html = "";
+        angular.forEach(node.conformanceStatements, function (conStatement) {
+            html = html + conStatement.id + " : " + conStatement.description;
+        });
+        return $sce.trustAsHtml(html);
+    };
+
+
     $rootScope.selectProfileTab = function (value) {
         $rootScope.profileTabs[0] = false;
         $rootScope.profileTabs[1] = false;

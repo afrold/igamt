@@ -23,23 +23,27 @@ angular.module('igl')
                     initialState: 'expanded'
                 }
             });
-            $rootScope.$on('event:openMessage',function (event,messageId){
-                if(messageId && messageId != null && messageId !== '') {
-                    $rootScope.selectProfileTab(1);
-                    $scope.select(messageId);
-                    var segment = $rootScope.segments[0];
-                    segment["type"] = "segment";
-                    $rootScope.$emit('event:openSegment', segment, false);
+            $rootScope.$on('event:openMessage',function (event,message){
+                if(message && message != null) {
+                    $scope.select(message);
+//                    var segment = $rootScope.segments[0];
+//                    segment["type"] = "segment";
+//                    $rootScope.$emit('event:openSegment', segment, false);
                 }
             });
             $scope.loading = false;
         };
 
-        $scope.select = function (messageId) {
-             $scope.loadingSelection = true;
-            $rootScope.message = $rootScope.messagesMap[messageId];
+        $scope.select = function (message) {
+            $scope.loadingSelection = true;
+            $rootScope.message = message;
             $timeout(
                 function () {
+                    $scope.tableWidth = null;
+                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                    $scope.csWidth = $scope.getDynamicWidth(1,3,630);
+                    $scope.predWidth = $scope.getDynamicWidth(1,3,630);
+                    $scope.commentWidth = $scope.getDynamicWidth(1,3,630);
                     if ($scope.params)
                         $scope.params.refresh();
                     $scope.loadingSelection = false;

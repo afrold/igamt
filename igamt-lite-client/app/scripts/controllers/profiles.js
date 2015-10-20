@@ -466,25 +466,31 @@ angular.module('igl')
 			switch(node) {
 		    case "Datatypes": {
 		    	$scope.subview = "EditDatatypes.html";
-	            $rootScope.datatype = nnode;
-	            $rootScope.datatype["type"] = "datatype";
-		    	break;
+//	            $rootScope.datatype = nnode;
+//	            $rootScope.datatype["type"] = "datatype";
+                $rootScope.$broadcast('event:openDatatype',nnode);
+
+                break;
 		    }
 		    case "Segments": {
 		    	$scope.subview = "EditSegments.html";
-		    	$rootScope.segment = nnode;
-		    	$rootScope.segment["type"] = "segment";
+//		    	$rootScope.segment = nnode;
+//		    	$rootScope.segment["type"] = "segment";
+                $rootScope.$broadcast('event:openSegment',nnode);
 		    	break;
 		    }
 		    case "Messages": {
 		    	$scope.subview = "EditMessages.html";
-		    	$rootScope.message = $rootScope.messagesMap[nnode.id];
-		    	break;
+//		    	$rootScope.message = $rootScope.messagesMap[nnode.id];
+                $rootScope.$broadcast('event:openMessage',nnode);
+
+                break;
 		    }
 		    case "ValueSets": {
 		    	$scope.subview = "EditValueSets.html";
-		        $rootScope.table = nnode;
-		    	break;
+//		        $rootScope.table = nnode;
+                $rootScope.$broadcast('event:openTable',nnode);
+ 		    	break;
 		    }
 		    default: {
 		    	$scope.subview = "nts.html";
