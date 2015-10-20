@@ -48,10 +48,6 @@
         outline: none;
     }
 </style>
-<ng-include src="'views/edit/editDataTypes.html'"></ng-include>
-<ng-include src="'views/edit/editSegments.html'"></ng-include>
-<ng-include src="'views/edit/editMessages.html'"></ng-include>
-<ng-include src="'views/edit/editValueSets.html'"></ng-include>
 <div ng-show="!loadingProfile">
     <div class="container" style="text-align:center; padding-top:20px">
         <div class="container">
@@ -85,7 +81,7 @@
 			        'fa-angle-double-right': !showToC
 			      }">{{showToC ? 'close' : 'open'}}</span></a>
                         </div>
-                        <div class="row">
+                        <div class="row" id="nodeDetailsPanel">
 
                             <div id="toc" ng-class="showToC ? 'col-md-4' : 'col-md-1'" ng-include="'views/toc.html'"
                                  ng-show="isVersionSelect && isEditing"></div>
@@ -141,10 +137,10 @@
             Nothing to see.
         </div>
     </script>
-    <script type="text/ng-template" id="editSegments.html">
-    </script>
-    <script type="text/ng-template" id="editMessages.html">
-    </script>
-    <script type="text/ng-template" id="editValueSets.html">
-    </script>
+    <!--<script type="text/ng-template" id="editSegments.html">-->
+    <!--</script>-->
+    <!--<script type="text/ng-template" id="editMessages.html">-->
+    <!--</script>-->
+    <!--<script type="text/ng-template" id="editValueSets.html">-->
+    <!--</script>-->
 </div>

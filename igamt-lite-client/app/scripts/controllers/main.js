@@ -136,7 +136,6 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     };
 
     $rootScope.started = false;
-    $scope.scrollbarWidth = null;
 
     Idle.watch();
 
@@ -358,74 +357,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.section = {};
     $rootScope.parentsMap = {};
 
-    $scope.csWidth = null;
-    $scope.predWidth = null;
-    $scope.tableWidth = null;
-    $scope.commentWidth = null;
 
-
-    $scope.getTableWidth = function () {
-        if ($scope.tableWidth === null) {
-            $scope.tableWidth = $("#executionPanel").width();
-        }
-        return $scope.tableWidth;
-    };
-
-    $scope.getDynamicWidth = function (a,b,otherColumsWidth) {
-        var tableWidth = $scope.getTableWidth();
-        if (tableWidth > 0) {
-            var left = tableWidth - otherColumsWidth;
-            return {"width": a * parseInt(left / b) + "px"};
-        }
-        return "";
-    };
-
-
-    $scope.getConstraintAsString = function (constraint) {
-       return constraint.constraintId + " - " + constraint.description;
-     };
-
-
-    $scope.getConstraintsAsString = function (constraints) {
-        var str = '';
-        for (var index in constraints) {
-            str = str + "<p style=\"text-align: left\">" + constraints[index].id + " - " + constraints[index].description + "</p>";
-        }
-        return str;
-    };
-
-    $scope.getPredicatesAsMultipleLinesString = function (node) {
-        var html = "";
-        angular.forEach(node.predicates, function (predicate) {
-            html = html + "<p>" + predicate.description + "</p>";
-        });
-        return html;
-    };
-
-    $scope.getPredicatesAsOneLineString = function (node) {
-        var html = "";
-        angular.forEach(node.predicates, function (predicate) {
-            html = html + predicate.description;
-        });
-        return $sce.trustAsHtml(html);
-    };
-
-
-    $scope.getConfStatementsAsMultipleLinesString = function (node) {
-        var html = "";
-        angular.forEach(node.conformanceStatements, function (conStatement) {
-            html = html + "<p>" + conStatement.id + " : " + conStatement.description + "</p>";
-        });
-        return html;
-    };
-
-    $scope.getConfStatementsAsOneLineString = function (node) {
-        var html = "";
-        angular.forEach(node.conformanceStatements, function (conStatement) {
-            html = html + conStatement.id + " : " + conStatement.description;
-        });
-        return $sce.trustAsHtml(html);
-    };
 
 
     $rootScope.selectProfileTab = function (value) {
@@ -930,38 +862,6 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
             }
         });
     };
-
-
-    $scope.getScrollbarWidth = function() {
-
-        if($scope.scrollbarWidth == null) {
-            var outer = document.createElement("div");
-            outer.style.visibility = "hidden";
-            outer.style.width = "100px";
-            outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
-
-            document.body.appendChild(outer);
-
-            var widthNoScroll = outer.offsetWidth;
-            // force scrollbars
-            outer.style.overflow = "scroll";
-
-            // add innerdiv
-            var inner = document.createElement("div");
-            inner.style.width = "100%";
-            outer.appendChild(inner);
-
-            var widthWithScroll = inner.offsetWidth;
-
-            // remove divs
-            outer.parentNode.removeChild(outer);
-
-            $scope.scrollbarWidth = widthNoScroll - widthWithScroll;
-        }
-
-        return $scope.scrollbarWidth;
-    };
-
 
     $scope.init = function(){
         $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {

@@ -3,28 +3,11 @@
  */
 
 angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal,$timeout) {
-    $scope.loading = false;
-    $scope.loadingSelection = false;
-    $scope.tmpTables = [].concat($rootScope.tables);
     $scope.readonly = false;
     $scope.saved = false;
     $scope.message = false;
     $scope.params = null;
-    $scope.accordion = {listStatus:true, tableStatus: false};
     $scope.init = function () {
-        $rootScope.$on('event:openTable',function (event,table){
-            if(table && table != null) {
-                 $scope.select(table);
-            }
-         });
-    };
-
-    $scope.select = function (table) {
-        $scope.loadingSelection = true;
-        $rootScope.table = table;
-        $scope.accordion.tableStatus = true;
-        $scope.accordion.listStatus= !$scope.accordion.tableStatus;
-        $scope.loadingSelection = false;
     };
 
     $scope.addTable = function () {
@@ -42,14 +25,8 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
             codes: []
         });
         $rootScope.tables.push(newTable);
-        
         $rootScope.tablesMap[newTable.id] = newTable;
-        
         $rootScope.table = newTable;
-
-        $scope.accordion.tableStatus = true;
-        $scope.accordion.listStatus= !$scope.accordion.tableStatus;
-
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
 
     };
@@ -130,8 +107,6 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
     $scope.close = function () {
         $rootScope.table = null;
-        $scope.accordion.tableStatus = false;
-        $scope.accordion.listStatus= !$scope.accordion.tableStatus;
     };
 
     $scope.cloneTable = function (table) {
@@ -174,8 +149,6 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.tables.push(newTable);
         $rootScope.table = newTable;
         $rootScope.tablesMap[newTable.id] = newTable;
-        $scope.accordion.tableStatus = true;
-        $scope.accordion.listStatus= !$scope.accordion.tableStatus;
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
     };
 

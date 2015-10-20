@@ -4,63 +4,11 @@
 
 angular.module('igl')
     .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout) {
-        $scope.loading = false;
-        $scope.loadingSelection = false;
+//        $scope.loading = false;
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
-        $scope.params = null;
-        $scope.tmpSegments = [].concat($rootScope.segments);
         $scope.segmentCopy = null;
-
-
-        $scope.init = function () {
-            $scope.loading = true;
-            $scope.params = new ngTreetableParams({
-                getNodes: function (parent) {
-                    return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];
-                },
-                getTemplate: function (node) {
-                    return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
-                }
-//                ,
-//                options: {
-//                    initialState: 'expanded'
-//                }
-            });
-
-            $rootScope.$on('event:openSegment', function (event, segment, goto) {
-                if (segment && segment != null) {
-                    $scope.select(segment);
-                 }
-            });
-
-            if ($rootScope.segments && $rootScope.segments.length > 0) {
-                $scope.select($rootScope.segments[0]);
-            }
-
-            $scope.loading = false;
-        };
-
-//
-        $scope.select = function (segment) {
-            if (segment) {
-                $scope.loadingSelection = true;
-                $rootScope.segment = segment;
-                $rootScope.segment["type"] = "segment";
-                $timeout(
-                    function () {
-                        $scope.tableWidth = null;
-                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                        $scope.csWidth = $scope.getDynamicWidth(1,3,990);
-                        $scope.predWidth = $scope.getDynamicWidth(1,3,990);
-                        $scope.commentWidth = $scope.getDynamicWidth(1,3,990);
-                        if ($scope.params)
-                            $scope.params.refresh();
-                        $scope.loadingSelection = false;
-                    }, 500);
-             }
-        };
 
         $scope.reset = function () {
 //            $scope.loadingSelection = true;
@@ -71,8 +19,7 @@ angular.module('igl')
 
         $scope.close = function () {
             $rootScope.segment = null;
-            if ($scope.params)
-                $scope.params.refresh();
+            $scope.refreshTree();
             $scope.loadingSelection = false;
         };
 
@@ -89,27 +36,21 @@ angular.module('igl')
         };
 
         $scope.onDatatypeChange = function (node) {
-//            $rootScope.recordChange(node,'datatype');
-//            $rootScope.recordChangeForEdit2('field','edit',node.id,'datatype',node.id);
             $rootScope.recordChangeForEdit2('field', 'edit', node.id, 'datatype', node.datatype);
             $scope.refreshTree();
         };
 
         $scope.refreshTree = function () {
-            if ($scope.params)
-                $scope.params.refresh();
+            if ($scope.segmentsParams)
+                $scope.segmentsParams.refresh();
         };
 
         $scope.goToTable = function (table) {
-//        	$rootScope.table = table;
-//            $rootScope.notifyTableTreeUpdate = new Date().getTime();
-//            $rootScope.selectProfileTab(4);
-            $rootScope.$emit('event:openTable', table);
-
+            $scope.$emit('event:openTable', table);
         };
 
         $scope.goToDatatype = function (datatype) {
-            $rootScope.$emit('event:openDatatype', datatype);
+            $scope.$emit('event:openDatatype', datatype);
         };
 
         $scope.deleteTable = function (node) {
