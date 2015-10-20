@@ -491,6 +491,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 
 angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.selectedNode = selectedNode;
+    $scope.constraintType = 'Plain';
 
     $scope.newConstraint = angular.fromJson({
         segment: '',

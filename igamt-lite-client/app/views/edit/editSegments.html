@@ -437,6 +437,11 @@
             </div>
 
             <h5>Define New Conformance Statement of {{segment.name}}-{{selectedNode.position}}</h5>
+			<label for="constraintTypeSelect">Constraint Type: </label>
+    		<select name="constraintTypeSelect" ng-model="constraintType">
+      			<option value="Plain">Plain</option>
+      			<option value="Complex">Complex</option>
+    		</select>		
 
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
