@@ -411,69 +411,68 @@ angular.module('igl')
 			return hl7Versions;
 		};
 		
-		$scope.pickHL7Messages = function() {
-			var hl7MessagesSelected;
-			hl7MessagesSelected = $modal.open({
-				templateUrl : 'hl7MessagesDlg.html',
-				controller : 'HL7VMessagesDlgCtrl',
-			});
-			
-			hl7MessagesSelected.result.then(function(result) {
-				console.log(result);
-				var hl7Version = HL7VersionSvc.hl7Version;
-				$scope.createProfile(hl7Version, result);
-			});
-		};
+//		$scope.pickHL7Messages = function() {
+//			var hl7MessagesSelected;
+//			hl7MessagesSelected = $modal.open({
+//				templateUrl : 'hl7MessagesDlg.html',
+//				controller : 'HL7VMessagesDlgCtrl',
+//			});
+//			
+//			hl7MessagesSelected.result.then(function(result) {
+//				console.log(result);
+//				var hl7Version = HL7VersionSvc.hl7Version;
+//				$scope.createProfile(hl7Version, result);
+//			});
+//		};
 		
-		$scope.pickHL7MessagesDlg = function() {
-			var hl7MessagesSelected;
-			hl7MessagesSelected = $modal.open({
-				templateUrl : 'hl7MessagesDlg.html',
-				controller : 'HL7VMessagesDlgCtrl',
-//				resolve : {
-//					hl7Version : function() {
-//						return $scope.hl7Version;
-//					}
-//				}
-			});
-			
-		};
+//		$scope.pickHL7MessagesDlg = function() {
+//			var hl7MessagesSelected;
+//			hl7MessagesSelected = $modal.open({
+//				templateUrl : 'hl7MessagesDlg.html',
+//				controller : 'HL7VMessagesDlgCtrl',
+////				resolve : {
+////					hl7Version : function() {
+////						return $scope.hl7Version;
+////					}
+////				}
+//			});
+//			
+//		};
 		
-		$scope.createProfile = function(hl7Version, msgIds) {
-			$scope.isVersionSelect = true;
-			$scope.isEditing = true;
-			var iprw = {
-					"hl7Version" : hl7Version,
-					"msgIds" : msgIds,
-					"timeout" : 60000
-			};
-			 $http.post('api/profiles/hl7/createIntegrationProfile', iprw).then(function
-					 (response) {
-				 $scope.profile = angular.fromJson(response.data);
-				 $scope.getLeveledProfile($scope.profile);
-				 $rootScope.$broadcast('event:IgsPushed', $scope.profile);
-			 });
-		};
+//		$scope.createProfile = function(hl7Version, msgIds) {
+//			$scope.isEditing = true;
+//			var iprw = {
+//					"hl7Version" : hl7Version,
+//					"msgIds" : msgIds,
+//					"timeout" : 60000
+//			};
+//			 $http.post('api/profiles/hl7/createIntegrationProfile', iprw).then(function
+//					 (response) {
+//				 $scope.profile = angular.fromJson(response.data);
+//				 $scope.getLeveledProfile($scope.profile);
+//				 $rootScope.$broadcast('event:IgsPushed', $scope.profile);
+//			 });
+//		};
 		
-		$scope.updateProfile = function(msgIds) {
-			var iprw = {
-					"profile" : $scope.profile,
-					"msgIds" : msgIds,
-					"timeout" : 60000
-			};
-			 $http.post('api/profiles/hl7/updateIntegrationProfile', iprw).then(function
-					 (response) {
-				 $scope.profile = angular.fromJson(response.data);
-				 $scope.getLeveledProfile($scope.profile);
-			 });
-		}
+//		$scope.updateProfile = function(msgIds) {
+//			var iprw = {
+//					"profile" : $scope.profile,
+//					"msgIds" : msgIds,
+//					"timeout" : 60000
+//			};
+//			 $http.post('api/profiles/hl7/updateIntegrationProfile', iprw).then(function
+//					 (response) {
+//				 $scope.profile = angular.fromJson(response.data);
+//				 $scope.getLeveledProfile($scope.profile);
+//			 });
+//		}
 		
-		$scope.getLeveledProfile = function(profile) {
-			$scope.leveledProfile = [{title : "Datatypes", children : profile.datatypes.children},
-			                         {title : "Segments", children : profile.segments.children},
-			                         {title : "Messages", children : profile.messages.children},
-			                         {title : "ValueSets", children : profile.tables.children}];
-		};
+//		$scope.getLeveledProfile = function(profile) {
+//			$scope.leveledProfile = [{title : "Datatypes", children : profile.datatypes.children},
+//			                         {title : "Segments", children : profile.segments.children},
+//			                         {title : "Messages", children : profile.messages.children},
+//			                         {title : "ValueSets", children : profile.tables.children}];
+//		};
 
 		$scope.toggleToCContents = function(node) {
 			if($scope.collapsed[node] === undefined) {
@@ -515,36 +514,43 @@ angular.module('igl')
 			return $scope.subview;
 		}
 		
-		$scope.getVersion = function() {
+		$scope.getHL7Version = function() {
 			return HL7VersionSvc.hl7Version;
-		}
+		};
 				
-		$scope.setVersion = function(hl7Version) {
+		$scope.setHL7Version = function(hl7Version) {
 			HL7VersionSvc.hl7Version = hl7Version;
-		}
+		};
 		
 		$scope.showSelected = function(node) {
 			$scope.selectedNode = node;
 		};
-		
+		$scope.loadProfilesByVersion = function() {
+			console.log("I ran");
+		};
 		$scope.closedCtxMenu = function(node, $index) {
 			var item = ContextMenuSvc.get();
 			switch (item) {
 			case "Add":
-				if (node === "Messages") {
-					var hl7MessagesSelected;
-					hl7MessagesSelected = $modal.open({
-						templateUrl : 'hl7MessagesDlg.html',
-						controller : 'HL7VMessagesDlgCtrl',
-					});
-					
-					hl7MessagesSelected.result.then(function(result) {
-						console.log(result);
-						$scope.updateProfile(result);
-					});
-				} else {
-					alert("Was not Messages. Was:" + node);
-				}
+//				if (node === "Messages") {
+//					var hl7VersionsInstance;
+//					hl7VersionsInstance = $modal.open({
+//						templateUrl : 'hl7MessagesDlg.html',
+//						controller : 'HL7VersionsInstanceDlgCtrl',
+//						resolve : {
+//							hl7Versions : function() {
+//								return $scope.listHL7Versions();
+//							}
+//						}
+//					});
+//					
+//					hl7VersionsInstance.result.then(function(result) {
+//						console.log(result);
+//						$scope.updateProfile(result);
+//					});
+//				} else {
+//					alert("Was not Messages. Was:" + node);
+//				}
 				break;
 			case "Delete": 
 				// not to be implemented at this time.
@@ -564,7 +570,7 @@ angular.module('igl')
 				
 				// Nodes must have unique names so we timestamp when we duplicate.
 				if(newNode.type === 'message') {
-					newNode.messageType = newNode.messageType + " " + timeStamp();
+					newNode.messageType = newNode.messageType + "-" + profile.metaData.ext +  "-"  + timeStamp();
 				}
 				for (var i in $scope.profile.messages.children) {
 					console.log($scope.profile.messages.children[i].messageType);
@@ -574,6 +580,7 @@ angular.module('igl')
 					console.log($scope.profile.messages.children[i].messageType);
 				}
 				break;
+			case "Clone": 
 			case "Delete": 
 				// not to be implemented at this time.
 				// var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
