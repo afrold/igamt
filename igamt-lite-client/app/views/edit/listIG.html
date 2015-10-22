@@ -9,7 +9,7 @@
         <form id="selectIgTypeForm">
             <div class="form-group">
                 <label class="col-md-2" for="igType">
-                    <span msg key='ig.selectIgType'></span>
+
                 </label>
 
                 <div class="col-md-10">
@@ -19,7 +19,8 @@
                             id="igType"
                             required
                             ng-model="igContext.igType"
-                            ng-options="tt.name for tt in igTypes">
+                            ng-options="tt.name for tt in igTypes | uppercase">
+                        <option value=""  msg key='ig.selectIgType'></option>
                     </select>
                  </div>
             </div>

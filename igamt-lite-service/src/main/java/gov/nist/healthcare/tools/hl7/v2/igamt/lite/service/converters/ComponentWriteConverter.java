@@ -12,6 +12,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 
+import org.bson.types.ObjectId;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
 
@@ -27,7 +28,7 @@ public class ComponentWriteConverter implements Converter<Component, DBObject> {
 	@Override
 	public DBObject convert(Component source) {
 		DBObject dbo = new BasicDBObject();
-		dbo.put("_id", source.getId());
+  		dbo.put("_id", source.getId());
 		dbo.put("type", source.getType());
 		dbo.put("name", source.getName());
 		dbo.put("usage", source.getUsage().value());
