@@ -289,7 +289,7 @@
             </div>
 
             <p ng-repeat="c in segment.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
-                <a ng-click="manageConformanceStatement(c)"
+                <a ng-click="manageConformanceStatement(node)"
                    tooltip-html="getConstraintAsString(c)" tooltip-append-to-body="true"
                    tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(c)" tooltip-trigger
                    tooltip-animation="false" tooltip-placement="left"></a>
@@ -516,7 +516,7 @@
 					ng-model="complexConstraint"
 					ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
     		</select>
-			<button  ng-show="constraintType == 'Complex'" title="Add Complex Constraint" type="button" class="btn btn-xs btn-success" ng-click="compositeConformanceStatements()">
+			<button  ng-show="constraintType == 'Complex'" title="Add Complex Constraint" type="button" class="btn btn-xs btn-success" ng-click="addComplexConformanceStatement()">
             	<span><i class="fa fa-plus-circle fa-fw"></i></span>
             </button>
 		
