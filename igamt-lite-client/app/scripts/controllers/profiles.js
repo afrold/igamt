@@ -496,37 +496,36 @@ angular.module('igl')
 				$scope.collapsed[node] = !$scope.collapsed[node];
 			}
 		};
-		
-		$scope.tocSelection = function(node, nnode) {
-			switch(node) {
-		    case "Datatypes": {
-		    	$scope.subview = "EditDatatypes.html";
-	            $rootScope.datatype = nnode;
-	            $rootScope.datatype["type"] = "datatype";
-		    	break;
-		    }
-		    case "Segments": {
-		    	$scope.subview = "EditSegments.html";
-		    	$rootScope.segment = nnode;
-		    	$rootScope.segment["type"] = "segment";
-		    	break;
-		    }
-		    case "Messages": {
-		    	$scope.subview = "EditMessages.html";
-		    	$rootScope.message = $rootScope.messagesMap[nnode.id];
-		    	break;
-		    }
-		    case "ValueSets": {
-		    	$scope.subview = "EditValueSets.html";
-		        $rootScope.table = nnode;
-		    	break;
-		    }
-		    default: {
-		    	$scope.subview = "nts.html";
-		    }
-		    }
-			return $scope.subview;
-		}
+
+        $scope.tocSelection = function (node, nnode) {
+            switch (node) {
+                case "Datatypes":
+                {
+                    $scope.selectDatatype(nnode);
+                    break;
+                }
+                case "Segments":
+                {
+                    $scope.selectSegment(nnode);
+                    break;
+                }
+                case "Messages":
+                {
+                    $scope.selectMessage(nnode);
+                    break;
+                }
+                case "ValueSets":
+                {
+                    $scope.selectTable(nnode);
+                    break;
+                }
+                default:
+                {
+                    $scope.subview = "nts.html";
+                }
+            }
+            return $scope.subview;
+        };
 		
 		$scope.getHL7Version = function() {
 			return HL7VersionSvc.hl7Version;
@@ -637,6 +636,137 @@ angular.module('igl')
 			// Return the formatted string
 			  return date.join("/") + " " + time.join(":") + " " + suffix;
 		};
+
+
+        $scope.selectSegment = function (segment) {
+            $scope.subview = "EditSegments.html";
+            if (segment && segment != null) {
+                $scope.loadingSelection = true;
+                $rootScope.segment = segment;
+                $rootScope.segment["type"] = "segment";
+                $timeout(
+                    function () {
+                        $scope.tableWidth = null;
+                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                        $scope.csWidth = $scope.getDynamicWidth(1, 3, 990);
+                        $scope.predWidth = $scope.getDynamicWidth(1, 3, 990);
+                        $scope.commentWidth = $scope.getDynamicWidth(1, 3, 990);
+                        if ($scope.segmentsParams)
+                            $scope.segmentsParams.refresh();
+                        $scope.loadingSelection = false;
+                    },100);
+            }
+        };
+
+        $scope.selectDatatype = function (datatype) {
+            $scope.subview = "EditDatatypes.html";
+            if (datatype && datatype != null) {
+                $scope.loadingSelection = true;
+                $rootScope.datatype = datatype;
+                $rootScope.datatype["type"] = "datatype";
+                $timeout(
+                    function () {
+                        $scope.tableWidth = null;
+                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                        $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
+                        $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
+                        $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
+                        if ($scope.datatypesParams)
+                            $scope.datatypesParams.refresh();
+                        $scope.loadingSelection = false;
+                    },100);
+            }
+        };
+
+        $scope.selectMessage = function (message) {
+            $scope.subview = "EditMessages.html";
+            $scope.loadingSelection = true;
+            $rootScope.message = message;
+            $timeout(
+                function () {
+                    $scope.tableWidth = null;
+                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                    $scope.csWidth = $scope.getDynamicWidth(1, 3, 630);
+                    $scope.predWidth = $scope.getDynamicWidth(1, 3, 630);
+                    $scope.commentWidth = $scope.getDynamicWidth(1, 3, 630);
+                    if ($scope.messagesParams)
+                        $scope.messagesParams.refresh();
+                    $scope.loadingSelection = false;
+                },100);
+        };
+
+        $scope.selectTable = function (table) {
+            $scope.subview = "EditValueSets.html";
+            $scope.loadingSelection = true;
+            $timeout(
+                function () {
+                    $rootScope.table = table;
+                    $scope.loadingSelection = false;
+                },100);
+        };
+
+
+        $scope.getTableWidth = function () {
+            if ($scope.tableWidth === null || $scope.tableWidth == 0) {
+                $scope.tableWidth = $("#nodeDetailsPanel").width();
+            }
+            return $scope.tableWidth;
+        };
+
+        $scope.getDynamicWidth = function (a, b, otherColumsWidth) {
+            var tableWidth = $scope.getTableWidth();
+            if (tableWidth > 0) {
+                var left = tableWidth - otherColumsWidth;
+                return {"width": a * parseInt(left / b) + "px"};
+            }
+            return "";
+        };
+
+
+        $scope.getConstraintAsString = function (constraint) {
+            return constraint.constraintId + " - " + constraint.description;
+        };
+
+        $scope.getConstraintsAsString = function (constraints) {
+            var str = '';
+            for (var index in constraints) {
+                str = str + "<p style=\"text-align: left\">" + constraints[index].id + " - " + constraints[index].description + "</p>";
+            }
+            return str;
+        };
+
+        $scope.getPredicatesAsMultipleLinesString = function (node) {
+            var html = "";
+            angular.forEach(node.predicates, function (predicate) {
+                html = html + "<p>" + predicate.description + "</p>";
+            });
+            return html;
+        };
+
+        $scope.getPredicatesAsOneLineString = function (node) {
+            var html = "";
+            angular.forEach(node.predicates, function (predicate) {
+                html = html + predicate.description;
+            });
+            return $sce.trustAsHtml(html);
+        };
+
+
+        $scope.getConfStatementsAsMultipleLinesString = function (node) {
+            var html = "";
+            angular.forEach(node.conformanceStatements, function (conStatement) {
+                html = html + "<p>" + conStatement.id + " : " + conStatement.description + "</p>";
+            });
+            return html;
+        };
+
+        $scope.getConfStatementsAsOneLineString = function (node) {
+            var html = "";
+            angular.forEach(node.conformanceStatements, function (conStatement) {
+                html = html + conStatement.id + " : " + conStatement.description;
+            });
+            return $sce.trustAsHtml(html);
+        };
 });
 
 angular.module('igl').controller('ContextMenuCtrl', function ($scope, $rootScope, ContextMenuSvc) {

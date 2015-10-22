@@ -1,6 +1,7 @@
 //$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 //// bower:scss
 @import "font-awesome/scss/font-awesome.scss";
+
 // endbower
 
 $icon-font-path: "../fonts/";
@@ -227,7 +228,6 @@ body {
   background-color: #ffcc00;
   color: #222222;
 }
-
 
 .navbar .nav > li > .dropdown-menu:before {
 
@@ -1120,11 +1120,11 @@ h4.addPOAFormDateSectionTitle {
 //}
 
 #ehrbody {
-//  background: #f5f5f5;
+  //  background: #f5f5f5;
 }
 
 .form-horizontal {
-//  background: #f5f5f5;
+  //  background: #f5f5f5;
 }
 
 #ehrfooter {
@@ -1853,7 +1853,6 @@ table.profile-table td {
   background-color: black;
 }
 
-//<<<<<<< HEAD resolve these conflicts 
 .panel-heading {
   text-align: left
 }
@@ -1864,108 +1863,108 @@ table.ig-list-table {
 
 .panel {
   border-radius: 0px;
-//=======
+}
+
 .tococ {
-	background-color: #d9edf7;
-	color: #3a87ad;
- 	position: relative;
- 	margin: 1em 0em 1em 0em;
- 	
-	.lbl-horizontal {
-	display: inline-block;
-	text-align: left;
-	text-wrap: none;
-	vertical-align: text-center;
-	top: 50%;
-  	transform: translateY(-50%);	
-  	transform: rotate(0deg);
+  background-color: #d9edf7;
+  color: #3a87ad;
+  position: relative;
+  margin: 1em 0em 1em 0em;
+
+  .lbl-horizontal {
+    display: inline-block;
+    text-align: left;
+    text-wrap: none;
+    vertical-align: text-center;
+    top: 50%;
+    transform: translateY(-50%);
+    transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
     -moz-transform: rotate(0deg);
     -ms-transform: rotate(0deg);
     transform-origin: left top 0;
-	}
-	
-	.btn-horzvert {
-	position: absolute;
-	top: 0;
-	right: 0;
-	}
-	
-	.lbl-vertical {
-	position: absolute;
-	top: 9em;
-	left: 0;
-	width: 8em;
-	display: inline-block;
-	font-size: small;
-	text-align: right;
-	text-wrap: none;
-	vertical-align: text-top;
-	transform: rotate(270deg);
+  }
+
+  .btn-horzvert {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .lbl-vertical {
+    position: absolute;
+    top: 9em;
+    left: 0;
+    width: 8em;
+    display: inline-block;
+    font-size: small;
+    text-align: right;
+    text-wrap: none;
+    vertical-align: text-top;
+    transform: rotate(270deg);
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
     -ms-transform: rotate(270deg);
-	transform-origin: top left;
-	}
-	
-	.opaque {
-		opacity: 1;
-	}
+    transform-origin: top left;
+  }
 
-	.transparent {
-		opacity: 0;
-	}
-	
+  .opaque {
+    opacity: 1;
+  }
+
+  .transparent {
+    opacity: 0;
+  }
+
 }
 
 .toc-horz {
-	vertical-align: text-center;
-	width: 25%;
-	opacity: 1;
+  vertical-align: text-center;
+  width: 25%;
+  opacity: 1;
 }
 
 .toc-vert {
-	height: 9em;
-	width: 2%;
+  height: 9em;
+  width: 2%;
 }
 
 .edit-horz {
-	vertical-align: text-center;
-	width: 75%;
-	opacity: 1;
+  vertical-align: text-center;
+  width: 75%;
+  opacity: 1;
 }
 
 .edit-vert {
-	width: 98%;
+  width: 98%;
 }
 
 .position-fixed {
-  position:fixed;
+  position: fixed;
 }
 
 .nav-bar {
-	position: relative;
-	float: left;
-	margin: 0em 0em 0em 1em;
+  position: relative;
+  float: left;
+  margin: 0em 0em 0em 1em;
 }
 
 .vid {
-	clear: both;
-	float: left;
+  clear: both;
+  float: left;
 }
 
 .icon {
-	margin:0em 0em 1em 0em;	
-	width:1em;
-}	
+  margin: 0em 0em 1em 0em;
+  width: 1em;
+}
 
 .subicon {
-	margin:0em 1em 0em 2em;	
-}	
+  margin: 0em 1em 0em 2em;
+}
 
 .txt {
-	margin:0em 0em 0em 1em;
-	padding:0em 0em 1em 1em;
-	text-align:left;
-// >>>>>>> toc
+  margin: 0em 0em 0em 1em;
+  padding: 0em 0em 1em 1em;
+  text-align: left;
 }
