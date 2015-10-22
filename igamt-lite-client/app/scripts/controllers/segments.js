@@ -376,6 +376,12 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.selectedNode = selectedNode;
     $scope.constraintType = 'Plain';
+    $scope.firstConstraint = null;
+    $scope.secondConstraint = null;
+    $scope.compositeType = null;
+    $scope.complexConstraint = null;
+    $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraint = [];
 
     $scope.newConstraint = angular.fromJson({
         segment: '',
@@ -398,6 +404,10 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         if (!$scope.isNewCS(conformanceStatement.id)) {
             $rootScope.recordChangeForEdit2('conformanceStatement', "delete", conformanceStatement.id, 'id', conformanceStatement.id);
         }
+    };
+    
+    $scope.deleteConformanceStatementForComplex = function (conformanceStatement) {
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(conformanceStatement), 1);
     };
 
 
@@ -491,47 +501,47 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         return location;
     };
     
-    $scope.addComplexConformanceStatement = function(cs){
-    	cs.constraintId = $scope.newComplexConstraintId;
+    $scope.addComplexConformanceStatement = function(){
+    	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
     	
-    	$rootScope.segment.conformanceStatements.push(cs);
-        $rootScope.segmentConformanceStatements.push(cs);
-        var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+    	$rootScope.segment.conformanceStatements.push($scope.complexConstraint);
+        $rootScope.segmentConformanceStatements.push($scope.complexConstraint);
+        var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: $scope.complexConstraint};
         $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
     };
     
-    $scope.compositeConformanceStatements = function(cs1, cs2, type){
-    	if(type === 'AND'){
+    $scope.compositeConformanceStatements = function(){
+    	if($scope.compositeType === 'AND'){
     		var cs = {
                     id: new ObjectId().toString(),
-                    constraintId: 'AND(' + cs1.constraintId + ',' + cs2.constraintId + ')',
+                    constraintId: 'AND(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
                     constraintTarget: $scope.selectedNode.position + '[1]',
-                    description: '['+ cs1.description + ']' + 'AND' + '[' + cs2.description + ']',
-                    assertion: '<AND>' + cs1.assertion + cs2.assertion + '</AND>'
+                    description: '['+ $scope.firstConstraint.description + ']' + 'AND' + '[' + $scope.secondConstraint.description + ']',
+                    assertion: '<AND>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</AND>'
             };
     		$scope.newComplexConstraint.push(cs);
-    	}else if(type === 'OR'){
+    	}else if($scope.compositeType === 'OR'){
     		var cs = {
                     id: new ObjectId().toString(),
-                    constraintId: 'OR(' + cs1.constraintId + ',' + cs2.constraintId + ')',
+                    constraintId: 'OR(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
                     constraintTarget: $scope.selectedNode.position + '[1]',
-                    description: '['+ cs1.description + ']' + 'OR' + '[' + cs2.description + ']',
-                    assertion: '<OR>' + cs1.assertion + cs2.assertion + '</OR>'
+                    description: '['+ $scope.firstConstraint.description + ']' + 'OR' + '[' + $scope.secondConstraint.description + ']',
+                    assertion: '<OR>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</OR>'
             };
     		$scope.newComplexConstraint.push(cs);
-    	}else if(type === 'IFTHEN'){
+    	}else if($scope.compositeType === 'IFTHEN'){
     		var cs = {
                     id: new ObjectId().toString(),
-                    constraintId: 'IFTHEN(' + cs1.constraintId + ',' + cs2.constraintId + ')',
+                    constraintId: 'IFTHEN(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
                     constraintTarget: $scope.selectedNode.position + '[1]',
-                    description: 'IF ['+ cs1.description + ']' + 'THEN ' + '[' + cs2.description + ']',
-                    assertion: '<IMPLY>' + cs1.assertion + cs2.assertion + '</IMPLY>'
+                    description: 'IF ['+ $scope.firstConstraint.description + ']' + 'THEN ' + '[' + $scope.secondConstraint.description + ']',
+                    assertion: '<IMPLY>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</IMPLY>'
             };
     		$scope.newComplexConstraint.push(cs);
     	}
     	
-    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(cs1), 1);
-    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(cs2), 1);
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
     };
 
     $scope.addConformanceStatement = function () {
