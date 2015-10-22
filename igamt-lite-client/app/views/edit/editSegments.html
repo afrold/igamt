@@ -449,6 +449,77 @@
 
             <h5>Define New Conformance Statement of {{segment.name}}-{{selectedNode.position}}</h5>
 
+			<label for="constraintTypeSelect">Cconstraint Type: </label>
+    		<select name="constraintTypeSelect" ng-model="constraintType">
+      			<option value="Complex">Complex</option>
+      			<option value="Plain">Plain</option>
+    		</select>
+
+			<div class="table-responsive">
+                <table ng-show="constraintType == 'Complex'" class="table table-striped table-bordered">
+                    <thead>
+                    <tr class="tbl-header">
+                        <th class="col-md-2">ID</th>
+                        <th class="col-md-9">Desciption</th>
+                        <th class="col-md-1"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="newComplexConstraint">
+                        <td class="col-md-2">{{c.constraintId}}</td>
+                        <td class="col-md-9">{{c.description}}</td>
+                        <td class="col-md-1">
+                            <button type="button" ng-click="deleteConformanceStatementForComplex(c)"
+                                    class="btn btn-xs btn-danger">
+                                <span><i class="fa fa-minus-circle fa-fw"></i></span>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+			<label ng-show="constraintType == 'Complex'" for="firstConstraintSelect">First Constraint:</label>
+    		<select ng-show="constraintType == 'Complex'"
+					name="firstConstraintSelect" 
+					ng-model="firstConstraint"
+					ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
+    		</select>
+
+			<label ng-show="constraintType == 'Complex'" for="secondConstraintSelect">Second Constraint:</label>
+    		<select ng-show="constraintType == 'Complex'"
+					name="secondConstraintSelect" 
+					ng-model="secondConstraint"
+					ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
+    		</select>
+
+			<label ng-show="constraintType == 'Complex'" for="compositeTypeSelect">Composite Type:</label>
+    		<select ng-show="constraintType == 'Complex'"
+					name="compositeTypeSelect" 
+					ng-model="compositeType">
+				<option value="AND">AND</option>
+      			<option value="OR">OR</option>
+				<option value="IFTHEN">IFTHEN</option>
+    		</select>
+		
+			<button  ng-show="constraintType == 'Complex'" title="Composite Two Constraints" type="button" class="btn btn-xs btn-success" ng-click="compositeConformanceStatements()">
+            	<span><i class="fa fa-plus-circle fa-fw"></i></span>
+            </button>
+
+			<br/>
+
+			<label ng-show="constraintType == 'Complex'" for="complexConstraintIdInput">Complex Constraint ID: </label>
+			<input ng-show="constraintType == 'Complex'" name="complexConstraintIdInput" class="igl-input" ng-model="newComplexConstraintId" type="text"/>
+			<label ng-show="constraintType == 'Complex'" for="complexConstraintSelect">Complex Constraint:</label>
+    		<select ng-show="constraintType == 'Complex'"
+					name="complexConstraintSelect" 
+					ng-model="complexConstraint"
+					ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
+    		</select>
+			<button  ng-show="constraintType == 'Complex'" title="Add Complex Constraint" type="button" class="btn btn-xs btn-success" ng-click="compositeConformanceStatements()">
+            	<span><i class="fa fa-plus-circle fa-fw"></i></span>
+            </button>
+		
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
                     <thead>
