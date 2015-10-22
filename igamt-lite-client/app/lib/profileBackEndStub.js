@@ -6,7 +6,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenGET('api/profiles').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profiles1.json', false);
+        request.open('GET', '../../resources/profile4.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         return [request.status, profile, {}];
@@ -61,7 +61,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     // clone and set id to 3
     $httpBackend.whenPOST('api/profiles/552014603004d0a9f09caf16/clone').respond(function (method, url, d, headers) {
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profile1.json', false);
+        request.open('GET', '../../resources/profile4.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         profile.id = "552014603004d0a9f09caf11";
@@ -91,7 +91,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenGET('api/profiles/cuser').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profiles2.json', false);
+        request.open('GET', '../../resources/profile4.json', false);
         request.send(null);
         var profiles = angular.fromJson(request.response);
         return [request.status, profiles, {}];
@@ -100,7 +100,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     $httpBackend.whenGET('api/profiles/2').respond(function (method, url, data, headers) {
         var profile = null;
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profile1.json', false);
+        request.open('GET', '../../resources/profile4.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         profile.id = 2;
@@ -206,5 +206,15 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         console.log('api/profiles/hl7/createIntegrationProfile end');
         return [request.status, profile, {}];
     });
+
+
+    $httpBackend.whenPOST('api/profiles/config').respond(function (method, url, data, headers) {
+         var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/config.json', false);
+        request.send(null);
+        var d = angular.fromJson(request.response);
+        return [request.status, d, {}];
+    });
+
 });
 

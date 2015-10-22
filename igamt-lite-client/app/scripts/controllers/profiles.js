@@ -88,6 +88,13 @@ angular.module('igl')
             return true;
         };
 
+        $rootScope.closeProfile = function(){
+            $rootScope.profile = null;
+            $rootScope.isEditing = false;
+            $scope.selectIgTab(0);
+            $rootScope.initMaps();
+            $rootScope.clearChanges();
+        };
 
         $scope.messagesParams = new ngTreetableParams({
             getNodes: function (parent) {
