@@ -1,4 +1,5 @@
-<ng-include src="'views/edit/editDatatypes.html'"></ng-include>
+<ng-include src="'views/edit/editDocument.html'"></ng-include>
+<ng-include src="'views/edit/editDataTypes.html'"></ng-include>
 <ng-include src="'views/edit/editSegments.html'"></ng-include>
 <ng-include src="'views/edit/editMessages.html'"></ng-include>
 <ng-include src="'views/edit/editValueSets.html'"></ng-include>
@@ -73,6 +74,7 @@
 							        'fa-caret-right': !showToC
 								      }">
 								    </span>
+<!-- <<<<<<< Updated upstream -->
                                     </a>
                                 </div>
                             </div>
@@ -96,17 +98,39 @@
             </div>
         </div>
     </div>
-    <!-- 		<div class="container" ng-show="loadingProfile"
-                style="text-align: center; padding-top: 20px">
-                <img class="ajax-loading" ng-src="images/ajax-loader.gif"
-                    alt="loading..." />
-            </div> -->
+<!-- ======= This was done in a pinch.
+								  </a>
+						</div>
+					</div>
+					<div class="panel-body" ng-show="showToC">
+						<div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
+						</div>
+					</div>
+				</div>
+			</div> 
+				<div ng-class="showToC ? 'col-md-8' : 'col-md-11'">
+				<div class="panel panel-info">
+					<div class="panel-heading">Edit Area</div>
+					<div class="panel-body">
+						<div id="edit" ng-show="subview !== undefined">{{subview}}
+							<ng-include src="subview"></ng-include>
+						</div>
+					</div>
+				</div>
+			</div>				
+ 				</div>
+			</div>
+		</div>
+	</div>
+>>>>>>> Stashed changes -->
 </div>
 
 <script type="text/ng-template" id="nts.html">
     <div>
         Nothing to see.
     </div>
+</script>
+<script type="text/ng-template" id="editDocument.html">
 </script>
 <script type="text/ng-template" id="editSegments.html">
 </script>

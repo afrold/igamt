@@ -83,6 +83,13 @@ angular.module('igl').controller(
  				 });
 			};
 						
+			$scope.getLeveledProfile = function(profile) {
+				$rootScope.leveledProfile = [{title : "Metadata", children : []},
+				                         {title : "Datatypes", children : profile.datatypes.children},
+				                         {title : "Segments", children : profile.segments.children},
+				                         {title : "Messages", children : profile.messages.children},
+				                         {title : "ValueSets", children : profile.tables.children}];
+			};
 
 			$scope.setHL7Version = function(hl7Version) {
 				HL7VersionSvc.hl7Version = hl7Version;
