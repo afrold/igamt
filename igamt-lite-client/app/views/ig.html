@@ -53,7 +53,6 @@
 
         <!--</tabset>-->
 
-
     </div>
 
     <div style="font-size: 18px;text-align: center" ng-show="isPending()">
@@ -68,23 +67,83 @@
         can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
 </div>
 
-<script type="text/ng-template" id="ConfirmProfileDeleteCtrl.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Delete Confirmation
-        </h3>
-    </div>
-    <div class="modal-body">
-        <p>Are you sure you want to delete the profile ? This operation is irreversible</p>
-    </div>
-     <div class="modal-footer">
-        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
-                class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+	<script type="text/ng-template" id="hl7VersionsDlg.html">
+        <div class="modal-header">
+            <h3 class="modal-title">HL7 Versions</h3>
+        </div>
+        <div class="modal-body">
+        	<label for="versionSelect"> Select HL7 Version: </label>
+       		<select ng-show="!profile" class="form-control input-sm" name="versionSelect" ng-options="option for option in hl7Versions" ng-model="hl7Version" ng-change="loadProfilesByVersion()">
+			</select>
+       		<span ng-show="profile" name="versionSelect" >{{profile.metaData.hl7Version}}
+			</span>
+        </div>
+		<form>
+		<table class="profile-list table table-striped table-bordered">
+			<tr class="tbl-header"><th>&nbsp;</th><th>Struct Id</th><th>Version</th><th>Type</th><th>Event</th><th>Description</th></tr>
+			<tbody ng:repeat="m in messagesByVersion | orderBy: m[1]">
+				<tr><td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
+					<td>{{m[1]}}</td><td>{{m[2]}}</td><td>{{m[3]}}</td><td>{{m[4]}}</td><td>{{m[5]}}</td></tr>
+			</tbody>
+		</table>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+		</form>
+	</script>
+<!--  This is unfamiliar; I don't think it's being used.	
+	<script type="text/ng-template" id="hl7MessagesDlg.html">
+        <div ig-modals class="modal-header">
+            <h4 class="modal-title">HL7 Messages for version: {{hl7Version}}</h4>
+        </div>
+        <form>
+            <table class="profile-list table table-striped table-bordered">
+                <tr class="tbl-header">
+                    <th>&nbsp;</th>
+                    <th>Struct Id</th>
+                    <th>Version</th>
+                    <th>Type</th>
+                    <th>Event</th>
+                    <th>Description</th>
+                </tr>
+                <tbody ng-repeat="m in messagesByVersion | orderBy: m[1]">
+                <tr>
+                    <td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
+                    <td>{{m[1]}}</td>
+                    <td>{{m[2]}}</td>
+                    <td>{{m[3]}}</td>
+                    <td>{{m[4]}}</td>
+                    <td>{{m[5]}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+            </div>
+        </form>
+	</script>    
+-->	
+    <script type="text/ng-template" id="ConfirmProfileDeleteCtrl.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Delete Confirmation
+            </h3>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete the profile ? This operation is irreversible</p>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" ng-disabled="loading" ng-click="cancel()"><span><i
+                    class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+            </button>
+            <button class="btn btn-danger" ng-disabled="loading" ng-click="delete()"><span><i
+                    class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+            </button>
+            <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+                <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+            </div>
         </div>
     </div>
 </script>

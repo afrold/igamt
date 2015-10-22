@@ -71,6 +71,8 @@ public abstract class DataElement extends DataModel implements
 	protected String comment = "";
 
 	protected String text = "";
+	
+	protected boolean hide;
 
 	public String getText() {
 		return text;
@@ -196,6 +198,14 @@ public abstract class DataElement extends DataModel implements
 	// public void setTableId(String tableId) {
 	// this.tableId = tableId;
 	// }
+
+	public boolean isHide() {
+		return hide;
+	}
+
+	public void setHide(boolean hide) {
+		this.hide = hide;
+	}
 
 	@Override
 	protected DataElement clone() throws CloneNotSupportedException {
