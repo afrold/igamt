@@ -388,9 +388,7 @@ angular.module('igl')
                 $scope.confirmClose();
             } else {
                 waitingDialog.show('Closing profile...', {dialogSize: 'sm', progressType: 'info'});
-                $rootScope.profile = null;
-                $scope.selectIgTab(0);
-                $rootScope.initMaps();
+                $rootScope.closeProfile();
                 waitingDialog.hide();
             }
         };
@@ -465,9 +463,8 @@ angular.module('igl')
 
 
         $scope.reset = function () {
-            $scope.selectIgTab(0);
-            $rootScope.changes = {};
-            $rootScope.profile = null;
+             $rootScope.changes = {};
+             $rootScope.closeProfile();
         };
 
 
@@ -820,10 +817,8 @@ angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $
             if (index > -1) $rootScope.igs.splice(index, 1);
             $rootScope.backUp = null;
             if ($scope.profileToDelete === $rootScope.profile) {
-                $rootScope.initMaps();
-                $rootScope.profile = null;
-                $scope.selectIgTab(0);
-            }
+                $rootScope.closeProfile();
+             }
             $rootScope.msg().text = "igDeleteSuccess";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
@@ -870,10 +865,7 @@ angular.module('igl').controller('ConfirmProfileCloseCtrl', function ($scope, $m
     };
 
     $scope.clear = function () {
-        $rootScope.changes = {};
-        $rootScope.profile = null;
-        $scope.selectIgTab(0);
-        $rootScope.initMaps();
+        $rootScope.closeProfile();
         $modalInstance.close();
     };
 

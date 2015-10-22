@@ -1,11 +1,11 @@
 <div class="vid container">
 	<div class="row" ng-repeat="node in leveledProfile track by $index"  ng-init="toggleToCContents(node.title)" ng-model="leveledProfile" style="margin: 1em 0em 0em 0em">
-		<div class="col-md-1 icon"><a class="btn btn-success btn-xs" ng-if="node.children && node.children.length > 0" ng-click="toggleToCContents(node.title)">
-						<span class="glyphicon"
+		<div class="col-md-1 icon"><a  ng-if="node.children && node.children.length > 0" ng-click="toggleToCContents(node.title)">
+						<i class="fa"
 				        ng-class="{
-				          'glyphicon-chevron-right': collapsed[node.title],
-				          'glyphicon-chevron-down': !collapsed[node.title]
-				        }"></span></a></div>
+				          'fa-caret-right': collapsed[node.title],
+				          'fa-caret-down': !collapsed[node.title]
+				        }"></i></a></div>
 			<div ng-switch on="node.title">
 			<div ng-switch-when="Messages">
 		    <div context-menu context-menu-close="closedCtxMenu(node.title, $index)" data-target="messageHeadContextDiv.html" class="col-md-1 txt">{{node.title}}</div>

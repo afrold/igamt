@@ -409,7 +409,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				table.setBindingIdentifier(((String) tableObject.get("bindingIdentifier")));
 				table.setName(((String) tableObject.get("name")));
 				table.setDescription(((String) tableObject.get("description")));
-				table.setOrder(((int) tableObject.get("order")));
+				table.setOrder(tableObject.get("order") != null ? ((Integer) tableObject.get("order")): 0);
 				table.setGroup(((String) tableObject.get("group")));
 				table.setVersion(((String) tableObject.get("version")));
 				table.setOid(((String) tableObject.get("oid")));

@@ -456,6 +456,14 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
         return Object.getOwnPropertyNames($rootScope.changes).length !== 0;
     };
 
+    $rootScope.closeProfile = function(){
+        $rootScope.profile = null;
+        $rootScope.isEditing = false;
+        $scope.selectIgTab(0);
+        $rootScope.initMaps();
+        $rootScope.clearChanges();
+    };
+
     $rootScope.recordChange = function(object,changeType) {
         var type = object.type;
 
