@@ -73,9 +73,21 @@ angular.module('igl')
                 }
             },
             getTemplate: function (node) {
-                return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !$scope.isSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && $scope.isSubDT(node) ? 'DatatypeSubComponentEditTree' : '';
+                return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentEditTree.html' : '';
             }
         });
+
+
+        $scope.isDatatypeSubDT = function (component) {
+            if ($rootScope.datatype != null) {
+                for (var i = 0, len = $rootScope.datatype.components.length; i < len; i++) {
+                    if ($rootScope.datatype.components[i].id === component.id)
+                        return false;
+                }
+            }
+            return true;
+        };
+
 
         $scope.messagesParams = new ngTreetableParams({
             getNodes: function (parent) {
