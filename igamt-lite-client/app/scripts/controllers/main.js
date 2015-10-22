@@ -882,10 +882,10 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     };
 
     $scope.init = function(){
-        $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {
-            $rootScope.config = angular.fromJson(response.data);
-        }, function (error) {
-        });
+//        $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {
+//            $rootScope.config = angular.fromJson(response.data);
+//        }, function (error) {
+//        });
     }
 
 }]);

@@ -1,105 +1,114 @@
-<script type="text/ng-template" id="EditMetaData.html">
-<form name="igMetaDataForm" novalidate>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>IGAMT Project Identifier</label>
-                <input type="text"
-                       ng-class="{'has-error' : igMetaDataForm.identifier.$invalid && !igMetaDataForm.identifier.$pristine }"
-                       ng-change="recordChangeForEdit2('profile','edit',profile.id,'identifier', profile.identifier)"
-                       name="profileIndentifier" class="form-control"
-                       ng-model="profile.identifier"
-                       required>
+<script type="text/ng-template" id="EditMetadata.html">
+    <div class="row" style="margin-bottom:20px">
+        <div class="col-md-12">
+
+            <div class="page-header">
+									<span class="header4"> Metadata</span>
             </div>
 
-            <div class="form-group"
-                    >
-                <label>IG Title</label>
-                <input type="text"
-                       ng-class="{'has-error' : igMetaDataForm.name.$invalid && !igMetaDataForm.name.$pristine }"
-                       ng-change="recordChangeForEdit2('profile','edit',profile.id,'name', profile.name)"
+             <form name="igMetaDataForm" novalidate>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group left-content">
+                            <label>IGAMT Project Identifier</label>
+                            <input type="text"
+                                   ng-class="{'has-error' : igMetaDataForm.identifier.$invalid && !igMetaDataForm.identifier.$pristine }"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'identifier', profile.identifier)"
+                                   name="profileIndentifier" class="form-control"
+                                   ng-model="profile.identifier"
+                                   required>
+                        </div>
 
-                       name="name" class="form-control" ng-model="profile.name"
-                       required>
+                        <div class="form-group left-content"
+                                >
+                            <label>IG Title</label>
+                            <input type="text"
+                                   ng-class="{'has-error' : igMetaDataForm.name.$invalid && !igMetaDataForm.name.$pristine }"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'name', profile.name)"
+
+                                   name="name" class="form-control" ng-model="profile.name"
+                                   required>
+                        </div>
+
+                        <div class="form-group left-content">
+                            <label>IG Sub-Title</label>
+                            <input type="text" name="subTitle"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'subTitle', profile.subTitle)"
+                                   class="form-control" ng-model="profile.subTitle"
+                                   required>
+                        </div>
+                        <!--<div class="form-group"-->
+                        <!--ng-class="{'has-error' : igMetaDataForm.status.$invalid && !igMetaDataForm.status.$pristine }">-->
+                        <!--<label>Status</label>-->
+                        <!--<select class="form-control"-->
+                        <!--name="status"-->
+                        <!--ng-change="recordChange2('profile',profile.id,'status', profile.status)"-->
+                        <!--ng-model="profile.metaData.status"-->
+                        <!--ng-options="status for status in statuses">-->
+                        <!--</select>-->
+                        <!--</div>-->
+
+                        <div class="form-group left-content">
+                            <label>Extension</label>
+                            <input type="text" name="version"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'ext', profile.metaData.ext)"
+                                   class="form-control" ng-model="profile.metaData.ext">
+                        </div>
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group left-content">
+                            <label>Organization Name</label>
+                            <input type="text" name="orgName"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'orgName', profile.metaData.orgName)"
+                                   class="form-control" ng-model="profile.metaData.orgName"
+                                   required>
+                        </div>
+
+                        <!--<div class="form-group">-->
+                        <!--<label>Type</label>-->
+                        <!--<input type="text"-->
+                        <!--ng-change="recordChange2('profile',profile.id,'type', profile.metaData.type)"-->
+                        <!--name="type" class="form-control" ng-model="profile.metaData.type"-->
+                        <!--required>-->
+                        <!--</div>-->
+
+                        <div class="form-group left-content"
+                             ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.version.$pristine }">
+                            <label>Version</label>
+                            <input type="text" name="version"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'version', profile.metaData.version)"
+                                   class="form-control" ng-model="profile.metaData.version"
+                                   required>
+                        </div>
+
+                        <div class="form-group left-content"
+                             ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.date.$pristine }">
+                            <label>Date</label>
+                            <input type="text" name="date" disabled
+                                   class="form-control" ng-model="profile.metaData.date"
+                                   required>
+                        </div>
+
+                        <!--<div class="form-group"-->
+                        <!--ng-class="{'has-error' : igMetaDataForm.schemaVersion.$invalid && !igMetaDataForm.schemaVersion.$pristine }">-->
+                        <!--<label>Schema version</label>-->
+                        <!--<select class="form-control" disabled-->
+                        <!--required-->
+                        <!--name="schemaVersion"-->
+                        <!--ng-model="profile.metaData.schemaVersion"-->
+                        <!--ng-options="schemaVersion for schemaVersion in schemaVersions">-->
+                        <!--</select>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                        <!--<label>Topics</label>-->
+                        <!--<input type="text" name="topics"-->
+                        <!--ng-change="recordChange2('profile',profile.id,'topics', profile.metaData.topics)"-->
+                        <!--class="form-control" ng-model="profile.metaData.topics">-->
+                        <!--</div>-->
+                    </div>
+                </div>
+            </form>
             </div>
-
-            <div class="form-group">
-                <label>IG Sub-Title</label>
-                <input type="text" name="subTitle"
-                       ng-change="recordChangeForEdit2('profile','edit',profile.id,'subTitle', profile.subTitle)"
-                       class="form-control" ng-model="profile.subTitle"
-                       required>
-            </div>
-            <!--<div class="form-group"-->
-            <!--ng-class="{'has-error' : igMetaDataForm.status.$invalid && !igMetaDataForm.status.$pristine }">-->
-            <!--<label>Status</label>-->
-            <!--<select class="form-control"-->
-            <!--name="status"-->
-            <!--ng-change="recordChange2('profile',profile.id,'status', profile.status)"-->
-            <!--ng-model="profile.metaData.status"-->
-            <!--ng-options="status for status in statuses">-->
-            <!--</select>-->
-            <!--</div>-->
-
-            <div class="form-group">
-                <label>Ext</label>
-                <input type="text" name="version"
-                       ng-change="recordChangeForEdit2('profile','edit',profile.id,'ext', profile.metaData.ext)"
-                       class="form-control" ng-model="profile.metaData.ext">
-            </div>
-
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label>Organization Name</label>
-                <input type="text" name="orgName"
-                       ng-change="recordChangeForEdit2('profile','edit',profile.id,'orgName', profile.metaData.orgName)"
-                       class="form-control" ng-model="profile.metaData.orgName"
-                       required>
-            </div>
-
-            <!--<div class="form-group">-->
-            <!--<label>Type</label>-->
-            <!--<input type="text"-->
-            <!--ng-change="recordChange2('profile',profile.id,'type', profile.metaData.type)"-->
-            <!--name="type" class="form-control" ng-model="profile.metaData.type"-->
-            <!--required>-->
-            <!--</div>-->
-
-            <div class="form-group"
-                 ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.version.$pristine }">
-                <label>Version</label>
-                <input type="text" name="version"
-                       ng-change="recordChangeForEdit2('profile','edit',profile.id,'version', profile.metaData.version)"
-                       class="form-control" ng-model="profile.metaData.version"
-                       required>
-            </div>
-
-            <div class="form-group"
-                 ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.date.$pristine }">
-                <label>Date</label>
-                <input type="text" name="date" disabled
-                       class="form-control" ng-model="profile.metaData.date"
-                       required>
-            </div>
-
-            <!--<div class="form-group"-->
-            <!--ng-class="{'has-error' : igMetaDataForm.schemaVersion.$invalid && !igMetaDataForm.schemaVersion.$pristine }">-->
-            <!--<label>Schema version</label>-->
-            <!--<select class="form-control" disabled-->
-            <!--required-->
-            <!--name="schemaVersion"-->
-            <!--ng-model="profile.metaData.schemaVersion"-->
-            <!--ng-options="schemaVersion for schemaVersion in schemaVersions">-->
-            <!--</select>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label>Topics</label>-->
-            <!--<input type="text" name="topics"-->
-            <!--ng-change="recordChange2('profile',profile.id,'topics', profile.metaData.topics)"-->
-            <!--class="form-control" ng-model="profile.metaData.topics">-->
-            <!--</div>-->
-        </div>
-    </div>
-</form>
 </script>

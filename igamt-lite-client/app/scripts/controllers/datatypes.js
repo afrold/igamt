@@ -37,7 +37,7 @@ angular.module('igl')
             $rootScope.datatype = flavor;
             $rootScope.datatypesMap[flavor.id] = flavor;
             $rootScope.recordChangeForEdit2('datatype', "add", flavor.id, 'datatype', flavor);
-            $scope.select(flavor);
+            $scope.selectDatatype(flavor);
         };
 
         $scope.recordDatatypeChange = function (type, command, id, valueType, value) {
