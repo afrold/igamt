@@ -1,20 +1,19 @@
 angular.module('igl').controller('HL7VMessagesDlgCtrl',
-		function($scope, $rootScope, $modalInstance, $http, HL7VersionSvc) {
+		function($scope, $rootScope, $modalInstance, $http, HL7VersionSvc, MessageSelectionSvc) {
 
 			var profileVersions = [];
 			
-			$scope.hl7Version = HL7VersionSvc.hl7Version;
+			var hl7Version = HL7VersionSvc.hl7Version;
+			var messageIdsCurrent = MessageSelectionSvc.messageIds;
 			
-			 $http.get('api/profiles/hl7/messageListByVersion/' + $scope.hl7Version, {
+			 $http.get('api/profiles/hl7/messageListByVersion/' + hl7Version + '/' + messageIdsCurrent, {
 				 	timeout : 60000
 				 }).then(function (response) {
-					 $scope.messagesByVersion = angular.fromJson(response.data);
+					 var messagesUpdated = angular.fromJson(response.data);
+					 MessageSelectionSvc.messages = messagesUpdated;
+					 $scope.messagesByVersion = messagesUpdated;
 			 });
 			
-//			$scope.getVersion = function() {
-//				return HL7VersionSvc.hl7Version;
-//			}
-					
 			$scope.trackSelections = function(bool, id) {
 				if (bool) {
 					profileVersions.push(id);

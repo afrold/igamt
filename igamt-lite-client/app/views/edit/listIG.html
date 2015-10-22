@@ -20,7 +20,10 @@
                             ng-model="igContext.igType"
                             ng-options="tt.name for tt in igTypes">
                     </select>
-                </div>
+                 </div>
+				<button type="button" class="col-md-2 btn btn-default pull-right"
+				ng-click="hl7Versions('btn')" ng-controller="HL7VersionsDlgCtrl">Create
+				Guide</button>
             </div>
         </form>
     </div>

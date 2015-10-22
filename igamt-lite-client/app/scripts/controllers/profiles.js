@@ -469,310 +469,175 @@ angular.module('igl')
             $scope.loading = false;
 
         };
-
-        $scope.createGuide = function () {
-            $scope.isVersionSelect = true;
+        
+        $scope.createGuide = function() {
+        	$scope.isVersionSelect = true;
         };
 
-        $scope.pickHL7Messages = function () {
-            var hl7MessagesSelected;
-            hl7MessagesSelected = $modal.open({
-                templateUrl: 'hl7MessagesDlg.html',
-                controller: 'HL7VMessagesDlgCtrl',
-                resolve: {
-                    hl7Version: function () {
-                        return $scope.hl7Version;
-                    }
-                }
-            });
+        $scope.listHL7Versions = function() {
+			var hl7Versions = [];
+			$http.get('api/profiles/hl7/findVersions', {
+				timeout : 60000
+			}).then(
+					function(response) {
+						var len = response.data.length;
+						for (var i = 0; i < len; i++) {
+							hl7Versions.push(response.data[i]);
+						}
+					});
+			return hl7Versions;
+		};
+		
+		$scope.toggleToCContents = function(node) {
+			if($scope.collapsed[node] === undefined) {
+				$scope.collapsed.push(node);
+				$scope.collapsed[node] = true;
+			} else {
+				$scope.collapsed[node] = !$scope.collapsed[node];
+			}
+		};
+		
+		$scope.tocSelection = function(node, nnode) {
+			switch(node) {
+		    case "Datatypes": {
+		    	$scope.subview = "EditDatatypes.html";
+	            $rootScope.datatype = nnode;
+	            $rootScope.datatype["type"] = "datatype";
+		    	break;
+		    }
+		    case "Segments": {
+		    	$scope.subview = "EditSegments.html";
+		    	$rootScope.segment = nnode;
+		    	$rootScope.segment["type"] = "segment";
+		    	break;
+		    }
+		    case "Messages": {
+		    	$scope.subview = "EditMessages.html";
+		    	$rootScope.message = $rootScope.messagesMap[nnode.id];
+		    	break;
+		    }
+		    case "ValueSets": {
+		    	$scope.subview = "EditValueSets.html";
+		        $rootScope.table = nnode;
+		    	break;
+		    }
+		    default: {
+		    	$scope.subview = "nts.html";
+		    }
+		    }
+			return $scope.subview;
+		}
+		
+		$scope.getHL7Version = function() {
+			return HL7VersionSvc.hl7Version;
+		};
+				
+		$scope.setHL7Version = function(hl7Version) {
+			HL7VersionSvc.hl7Version = hl7Version;
+		};
+		
+		$scope.showSelected = function(node) {
+			$scope.selectedNode = node;
+		};
+		$scope.loadProfilesByVersion = function() {
+			console.log("I ran");
+		};
+		$scope.closedCtxMenu = function(node, $index) {
+			var item = ContextMenuSvc.get();
+			switch (item) {
+			case "Add":
+//				if (node === "Messages") {
+//					var hl7VersionsInstance;
+//					hl7VersionsInstance = $modal.open({
+//						templateUrl : 'hl7MessagesDlg.html',
+//						controller : 'HL7VersionsInstanceDlgCtrl',
+//						resolve : {
+//							hl7Versions : function() {
+//								return $scope.listHL7Versions();
+//							}
+//						}
+//					});
+//					
+//					hl7VersionsInstance.result.then(function(result) {
+//						console.log(result);
+//						$scope.updateProfile(result);
+//					});
+//				} else {
+//					alert("Was not Messages. Was:" + node);
+//				}
+				break;
+			case "Delete": 
+				// not to be implemented at this time.
+				// var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
+				break;
+			default: 
+				console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
+			}
+		};
+		
+		$scope.closedCtxSubMenu = function(node, $index) {
+			var item = ContextMenuSvc.get();
+			switch (item) {
+			case "Add": {
+				// not to be implemented at this time.
+				
+			}
+			case "Clone": {
+				var newNode = (JSON.parse(JSON.stringify(node)));
+				newNode.id = null;
+				
+				// Nodes must have unique names so we timestamp when we duplicate.
+				if(newNode.type === 'message') {
+					newNode.messageType = newNode.messageType + "-" + $rootScope.profile.metaData.ext +  "-"  + timeStamp();
+				}
+				for (var i in $rootScope.profile.messages.children) {
+					console.log($rootScope.profile.messages.children[i].messageType);
+				}
+				$rootScope.profile.messages.children.splice(2, 0, newNode);
+				for (var i in $rootScope.profile.messages.children) {
+					console.log($rootScope.profile.messages.children[i].messageType);
+				}
+				break;
+			}
+			case "Delete": 
+				// not to be implemented at this time.
+				// var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
+				break;
+			default: 
+				console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
+			}
+		};
 
-            hl7MessagesSelected.result.then(function (result) {
-                console.log(result);
-                $scope.createProfile($rootScope.hl7Version, result);
-            });
-        };
+		function timeStamp() {
+			// Create a date object with the current time
+			  var now = new Date();
 
-        $scope.listHL7Versions = function () {
-            var hl7Versions = [];
-            $http.get('api/profiles/hl7/findVersions', {
-                timeout: 60000
-            }).then(
-                function (response) {
-                    var len = response.data.length;
-                    for (var i = 0; i < len; i++) {
-                        hl7Versions.push(response.data[i]);
-                    }
-                });
-            return hl7Versions;
-        };
+			// Create an array with the current month, day and time
+			  var date = [ now.getMonth() + 1, now.getDate(), now.getFullYear() ];
 
-        $scope.createProfile = function (hl7Version, msgIds) {
-            $scope.isVersionSelect = true;
-            $scope.isEditing = true;
-            var iprw = {
-                "hl7Version": hl7Version,
-                "msgIds": msgIds,
-                "timeout": 60000
-            };
-            $http.post('api/profiles/hl7/createIntegrationProfile', iprw).then(function
-                (response) {
-                $scope.profile = angular.fromJson(response.data);
-                $scope.getLeveledProfile($scope.profile);
-                $rootScope.$broadcast('event:IgsPushed', $scope.profile);
-            });
-            return $scope.profile;
-        };
+			// Create an array with the current hour, minute and second
+			  var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
 
-        $scope.getLeveledProfile = function (profile) {
-            $scope.leveledProfile = [
-                {title: "Datatypes", children: profile.datatypes.children},
-                {title: "Segments", children: profile.segments.children},
-                {title: "Messages", children: profile.messages.children},
-                {title: "ValueSets", children: profile.tables.children}
-            ];
-        };
+			// Determine AM or PM suffix based on the hour
+			  var suffix = ( time[0] < 12 ) ? "AM" : "PM";
 
-        $scope.toggleToCContents = function (node) {
-            if ($scope.collapsed[node] === undefined) {
-                $scope.collapsed.push(node);
-                $scope.collapsed[node] = true;
-            } else {
-                $scope.collapsed[node] = !$scope.collapsed[node];
-            }
-        };
+			// Convert hour from military time
+			  time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
 
-        $scope.tocSelection = function (node, nnode) {
-            switch (node) {
-                case "Datatypes":
-                {
-                    $scope.selectDatatype(nnode);
-                    break;
-                }
-                case "Segments":
-                {
-                    $scope.selectSegment(nnode);
-                    break;
-                }
-                case "Messages":
-                {
-                    $scope.selectMessage(nnode);
-                    break;
-                }
-                case "ValueSets":
-                {
-                    $scope.selectTable(nnode);
-                    break;
-                }
-                default:
-                {
-                    $scope.subview = "nts.html";
-                }
-            }
-            return $scope.subview;
-        };
+			// If hour is 0, set it to 12
+			  time[0] = time[0] || 12;
 
-        $scope.getVersion = function () {
-            return HL7VersionSvc.hl7Version;
-        };
+			// If seconds and minutes are less than 10, add a zero
+			  for ( var i = 1; i < 3; i++ ) {
+			    if ( time[i] < 10 ) {
+			      time[i] = "0" + time[i];
+			    }
+			  }
 
-        $scope.setVersion = function (hl7Version) {
-            HL7VersionSvc.hl7Version = hl7Version;
-        };
-
-        $scope.showSelected = function (node) {
-            $scope.selectedNode = node;
-        };
-
-        $scope.closedCtxMenu = function (node, $index) {
-            var item = ContextMenuSvc.get();
-            switch (item) {
-                case "Add":
-                    var newNode = (JSON.parse(JSON.stringify(node)));
-                    newNode.id = null;
-
-                    // Nodesd must have unique names so we timestamp when we duplicate.
-                    if (newNode.type === 'message') {
-                        newNode.messageType = newNode.messageType + " " + timeStamp();
-                    }
-                    for (var i in $scope.profile.messages.children) {
-                        console.log($scope.profile.messages.children[i].messageType);
-                    }
-                    $scope.profile.messages.children.splice(2, 0, newNode);
-                    for (var i in $scope.profile.messages.children) {
-                        console.log($scope.profile.messages.children[i].messageType);
-                    }
-
-                function timeStamp() {
-                    // Create a date object with the current time
-                    var now = new Date();
-
-                    // Create an array with the current month, day and time
-                    var date = [ now.getMonth() + 1, now.getDate(), now.getFullYear() ];
-
-                    // Create an array with the current hour, minute and second
-                    var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
-
-                    // Determine AM or PM suffix based on the hour
-                    var suffix = ( time[0] < 12 ) ? "AM" : "PM";
-
-                    // Convert hour from military time
-                    time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
-
-                    // If hour is 0, set it to 12
-                    time[0] = time[0] || 12;
-
-                    // If seconds and minutes are less than 10, add a zero
-                    for (var i = 1; i < 3; i++) {
-                        if (time[i] < 10) {
-                            time[i] = "0" + time[i];
-                        }
-                    }
-
-                    // Return the formatted string
-                    return date.join("/") + " " + time.join(":") + " " + suffix;
-                };
-                    break;
-                case "Delete":
-// not to be implemented at this time.
-//				var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
-                    break;
-                default:
-                    console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
-            }
-        };
-
-        $scope.selectSegment = function (segment) {
-            $scope.subview = "EditSegments.html";
-            if (segment && segment != null) {
-                $scope.loadingSelection = true;
-                $rootScope.segment = segment;
-                $rootScope.segment["type"] = "segment";
-                $timeout(
-                    function () {
-                        $scope.tableWidth = null;
-                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                        $scope.csWidth = $scope.getDynamicWidth(1, 3, 990);
-                        $scope.predWidth = $scope.getDynamicWidth(1, 3, 990);
-                        $scope.commentWidth = $scope.getDynamicWidth(1, 3, 990);
-                        if ($scope.segmentsParams)
-                            $scope.segmentsParams.refresh();
-                        $scope.loadingSelection = false;
-                    },100);
-            }
-        };
-
-        $scope.selectDatatype = function (datatype) {
-            $scope.subview = "EditDatatypes.html";
-            if (datatype && datatype != null) {
-                $scope.loadingSelection = true;
-                $rootScope.datatype = datatype;
-                $rootScope.datatype["type"] = "datatype";
-                $timeout(
-                    function () {
-                        $scope.tableWidth = null;
-                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                        $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
-                        $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
-                        $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
-                        if ($scope.datatypesParams)
-                            $scope.datatypesParams.refresh();
-                        $scope.loadingSelection = false;
-                    },100);
-            }
-        };
-
-
-        $scope.selectMessage = function (message) {
-            $scope.subview = "EditMessages.html";
-            $scope.loadingSelection = true;
-            $rootScope.message = message;
-            $timeout(
-                function () {
-                    $scope.tableWidth = null;
-                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                    $scope.csWidth = $scope.getDynamicWidth(1, 3, 630);
-                    $scope.predWidth = $scope.getDynamicWidth(1, 3, 630);
-                    $scope.commentWidth = $scope.getDynamicWidth(1, 3, 630);
-                    if ($scope.messagesParams)
-                        $scope.messagesParams.refresh();
-                    $scope.loadingSelection = false;
-                },100);
-        };
-
-        $scope.selectTable = function (table) {
-            $scope.subview = "EditValueSets.html";
-            $scope.loadingSelection = true;
-            $timeout(
-                function () {
-                    $rootScope.table = table;
-                    $scope.loadingSelection = false;
-                },100);
-        };
-
-
-        $scope.getTableWidth = function () {
-            if ($scope.tableWidth === null || $scope.tableWidth == 0) {
-                $scope.tableWidth = $("#nodeDetailsPanel").width();
-            }
-            return $scope.tableWidth;
-        };
-
-        $scope.getDynamicWidth = function (a, b, otherColumsWidth) {
-            var tableWidth = $scope.getTableWidth();
-            if (tableWidth > 0) {
-                var left = tableWidth - otherColumsWidth;
-                return {"width": a * parseInt(left / b) + "px"};
-            }
-            return "";
-        };
-
-
-        $scope.getConstraintAsString = function (constraint) {
-            return constraint.constraintId + " - " + constraint.description;
-        };
-
-
-        $scope.getConstraintsAsString = function (constraints) {
-            var str = '';
-            for (var index in constraints) {
-                str = str + "<p style=\"text-align: left\">" + constraints[index].id + " - " + constraints[index].description + "</p>";
-            }
-            return str;
-        };
-
-        $scope.getPredicatesAsMultipleLinesString = function (node) {
-            var html = "";
-            angular.forEach(node.predicates, function (predicate) {
-                html = html + "<p>" + predicate.description + "</p>";
-            });
-            return html;
-        };
-
-        $scope.getPredicatesAsOneLineString = function (node) {
-            var html = "";
-            angular.forEach(node.predicates, function (predicate) {
-                html = html + predicate.description;
-            });
-            return $sce.trustAsHtml(html);
-        };
-
-
-        $scope.getConfStatementsAsMultipleLinesString = function (node) {
-            var html = "";
-            angular.forEach(node.conformanceStatements, function (conStatement) {
-                html = html + "<p>" + conStatement.id + " : " + conStatement.description + "</p>";
-            });
-            return html;
-        };
-
-        $scope.getConfStatementsAsOneLineString = function (node) {
-            var html = "";
-            angular.forEach(node.conformanceStatements, function (conStatement) {
-                html = html + conStatement.id + " : " + conStatement.description;
-            });
-            return $sce.trustAsHtml(html);
-        };
-    });
+			// Return the formatted string
+			  return date.join("/") + " " + time.join(":") + " " + suffix;
+		};
+});
 
 angular.module('igl').controller('ContextMenuCtrl', function ($scope, $rootScope, ContextMenuSvc) {
 
@@ -936,9 +801,4 @@ angular.module('igl').controller('ConfirmProfileOpenCtrl', function ($scope, $mo
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-
 });
-
-
-
-
