@@ -47,8 +47,11 @@ angular.module('igl').controller(
 				return hl7Versions;
 			};
 
+            /**
+             * TODO: Handle error from server
+             * @param msgIds
+             */
 			$scope.createProfile = function(hl7Version, msgIds) {
-				$rootScope.isEditing = true;
 				var iprw = {
 						"hl7Version" : hl7Version,
 						"msgIds" : msgIds,
@@ -56,13 +59,17 @@ angular.module('igl').controller(
 				};
 				 $http.post('api/profiles/hl7/createIntegrationProfile', iprw).then(function
 				 (response) {
-					 $rootScope.profile = angular.fromJson(response.data);
-					 $scope.getLeveledProfile($rootScope.profile);
-					 $rootScope.$broadcast('event:IgsPushed', $rootScope.profile);
+					 var profile = angular.fromJson(response.data);
+                     $rootScope.$broadcast('event:openProfileRequest',profile);
+ 					 $rootScope.$broadcast('event:IgsPushed',profile);
 				 });
 				 return $scope.profile;
 			};
 
+            /**
+             * TODO: Handle error from server
+             * @param msgIds
+             */
 			$scope.updateProfile = function(msgIds) {
 				var iprw = {
 						"profile" : $rootScope.profile,
@@ -71,17 +78,11 @@ angular.module('igl').controller(
 				};
 				 $http.post('api/profiles/hl7/updateIntegrationProfile', iprw).then(function
 						 (response) {
-					 $rootScope.profile = angular.fromJson(response.data);
-					 $scope.getLeveledProfile($rootScope.profile);
-				 });
+                     var profile = angular.fromJson(response.data);
+                     $rootScope.$broadcast('event:openProfileRequest', profile);
+ 				 });
 			};
 						
-			$scope.getLeveledProfile = function(profile) {
-				$rootScope.leveledProfile = [{title : "Datatypes", children : profile.datatypes.children},
-				                         {title : "Segments", children : profile.segments.children},
-				                         {title : "Messages", children : profile.messages.children},
-				                         {title : "ValueSets", children : profile.tables.children}];
-			};
 
 			$scope.setHL7Version = function(hl7Version) {
 				HL7VersionSvc.hl7Version = hl7Version;
