@@ -565,6 +565,7 @@ angular.module('igl')
 			var item = ContextMenuSvc.get();
 			switch (item) {
 			case "Add": {
+				// not to be implemented at this time.
 				
 			}
 			case "Clone": {
