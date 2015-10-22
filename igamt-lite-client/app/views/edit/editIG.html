@@ -6,8 +6,8 @@
 	<div class="container" style="text-align: center; padding-top: 20px">
 		<div class="row">
 			<p ng-show="!isEditing">No Implementation Guide Selected.</p>
-			<div ng-show="isEditing" class="nav-bar">Current version:
-				{{getVersion()}}</div>
+			<div ng-show="isEditing" class="nav-bar" style="margin: 0em 0em 1em 2em">Current version:
+				{{profile.metaData.hl7Version}}</div>
 		</div>
 		<div class="row">
 			<div class="container" ng-init="showToC = true">
