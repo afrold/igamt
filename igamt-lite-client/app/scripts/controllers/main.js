@@ -631,8 +631,6 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
         return label != undefined && label != null && (label.indexOf('_') !== -1 || label.indexOf('-') !== -1);
     };
 
-
-
     $rootScope.isFlavor = function(label){ //FIXME. weak check
         return label != undefined && label != null && (label.indexOf('_') !== -1 || label.indexOf('-') !== -1);
     };

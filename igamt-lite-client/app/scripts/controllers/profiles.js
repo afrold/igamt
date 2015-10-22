@@ -204,7 +204,7 @@ angular.module('igl')
                     $timeout(
                         function () {
                             $scope.openProfile(profile);
-                        }, 1000);
+                        }, 500);
                 }
             } catch (e) {
                 $rootScope.msg().text = "igInitFailed";
@@ -215,7 +215,17 @@ angular.module('igl')
             }
         };
 
+
+        $scope.getLeveledProfile = function(profile) {
+            $rootScope.leveledProfile = [{title : "Datatypes", children : profile.datatypes.children},
+                {title : "Segments", children : profile.segments.children},
+                {title : "Messages", children : profile.messages.children},
+                {title : "ValueSets", children : profile.tables.children}];
+        };
+
         $scope.openProfile = function (profile) {
+            $rootScope.isEditing = true;
+            $scope.getLeveledProfile(profile);
             $scope.loadingProfile = true;
             $scope.selectIgTab(1);
             if (profile != null) {
@@ -233,7 +243,6 @@ angular.module('igl')
                     this[child.id] = child;
                 }, $rootScope.tablesMap);
 
-
                 $rootScope.segments = [];
                 $rootScope.tables = $rootScope.profile.tables.children;
                 $rootScope.datatypes = $rootScope.profile.datatypes.children;
@@ -246,17 +255,6 @@ angular.module('igl')
                 }, $rootScope.messagesMap);
 
 
-                if ($rootScope.messages.length === 1) {
-                    var message = $rootScope.messages[0];
-                    message.children = $filter('orderBy')(message.children, 'position');
-                    angular.forEach(message.children, function (segmentRefOrGroup) {
-                        $rootScope.processElement(segmentRefOrGroup);
-                    });
-                    $rootScope.$emit('event:openMessage', message.id);
-
-
-                }
-                $scope.gotoSection($rootScope.profile.metaData, 'metaData');
                 $scope.loadingProfile = false;
                 $scope.toEditProfileId = null;
             }
