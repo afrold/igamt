@@ -1,30 +1,4 @@
 <div id="subNavBar" class="subNavBar" ng-controller="AccountMgtCtrl" ng-init="init()">
-    <ul class="clearfix mainSubNav">
-        <!--<li ng-show="!isAuthenticated()" ng-click="setSubActive('registration')" class="jslink">-->
-        <!--<a ng-class="{'current':isSubActive('registration')}" class="point"><i-->
-        <!--class="fa fa-chevron-circle-right"></i>&nbsp;<span msg key="navbar.registration"></span></a>-->
-        <!--</li>-->
-        <li ng-click="setSubActive('account')" class="jslink" ng-show="isAuthenticated()">
-            <a class="point" ng-class="{'current':isSubActive('account')}"><i class="fa fa-user"></i>&nbsp;<span msg
-                                                                                                                 key="navbar.account"></span></a>
-        </li>
-
-        <!--<li ng-show="!isAuthenticated()" ng-click="setSubActive('forgotten')" class="jslink">-->
-        <!--<a class="point" ng-class="{'current':isSubActive('forgotten')}">-->
-        <!--&nbsp;<span msg key="navbar.forgotten"></span>-->
-        <!--</a>-->
-        <!--</li>-->
-
-        <li ng-show="isSupervisor() || isAdmin()" ng-click="setSubActive('accounts')" class="jslink">
-            <a class="point" ng-class="{'current':isSubActive('accounts')}">
-                <i class="fa fa-cog"></i>&nbsp;<span msg key="navbar.manage"></span>
-            </a>
-        </li>
-    </ul>
-
-    <!--<div id="registration" ng-show="isSubActive('registration')" class="accountMgt">-->
-    <!--<div ng-include="'views/account/registration.html'"></div>-->
-    <!--</div>-->
 
     <div class="container" ng-show="msg() != null && msg().skip === true">
         <div class="row">
@@ -36,18 +10,79 @@
             </div>
         </div>
     </div>
+    <div class="container" style="margin-top: 20px">
+    <accordion close-others="true">
+        <accordion-group is-open="accordi.account" panel-class="panel-info" ng-show="isAuthenticated()">
+            <accordion-heading>
+                <i class="fa"
+                   ng-class="{'fa-caret-down': accordi.account, 'fa-caret-right': !accordi.account}"></i>
+                <i class="fa fa-user"></i>&nbsp;<span msg
+                                                                                                                     key="navbar.account"></span></a>
+            </accordion-heading>
+            <!--<div class="panel panel-info">-->
+            <!--<div class="panel-body">-->
+            <div id="account" class="accountMgt">
+                <div ng-include="'views/account/account.html'"></div>
+            </div>
+            <!--</div>-->
+            <!--</div>-->
+        </accordion-group>
+
+        <accordion-group is-open="accordi.accounts" panel-class="panel-info" >
+            <accordion-heading>
+                <i class="fa"
+                   ng-class="{'fa-caret-down': accordi.accounts, 'fa-caret-right': !accordi.accounts}"></i>
+                <i class="fa fa-cog"></i>&nbsp;<span msg key="navbar.manage"></span>
+            </accordion-heading>
+            <!--<div class="panel panel-info">-->
+            <!--<div class="panel-body">-->
+            <div id="accounts" class="accountMgt">
+                <div ng-include="'views/account/accounts.html'"></div>
+            </div>
+
+            <!--</div>-->
+            <!--</div>-->
+        </accordion-group>
 
 
-    <div id="account" class="accountMgt">
-        <div ng-include="'views/account/account.html'"></div>
+        </accordion>
     </div>
+
+    <!--<ul class="clearfix mainSubNav">-->
+        <!--&lt;!&ndash;<li ng-show="!isAuthenticated()" ng-click="setSubActive('registration')" class="jslink">&ndash;&gt;-->
+        <!--&lt;!&ndash;<a ng-class="{'current':isSubActive('registration')}" class="point"><i&ndash;&gt;-->
+        <!--&lt;!&ndash;class="fa fa-chevron-circle-right"></i>&nbsp;<span msg key="navbar.registration"></span></a>&ndash;&gt;-->
+        <!--&lt;!&ndash;</li>&ndash;&gt;-->
+        <!--<li ng-click="setSubActive('account')" class="jslink" ng-show="isAuthenticated()">-->
+            <!--<a class="point" ng-class="{'current':isSubActive('account')}"><i class="fa fa-user"></i>&nbsp;<span msg-->
+                                                                                                                 <!--key="navbar.account"></span></a>-->
+        <!--</li>-->
+
+        <!--&lt;!&ndash;<li ng-show="!isAuthenticated()" ng-click="setSubActive('forgotten')" class="jslink">&ndash;&gt;-->
+        <!--&lt;!&ndash;<a class="point" ng-class="{'current':isSubActive('forgotten')}">&ndash;&gt;-->
+        <!--&lt;!&ndash;&nbsp;<span msg key="navbar.forgotten"></span>&ndash;&gt;-->
+        <!--&lt;!&ndash;</a>&ndash;&gt;-->
+        <!--&lt;!&ndash;</li>&ndash;&gt;-->
+
+        <!--<li ng-show="isSupervisor() || isAdmin()" ng-click="setSubActive('accounts')" class="jslink">-->
+            <!--<a class="point" ng-class="{'current':isSubActive('accounts')}">-->
+                <!--<i class="fa fa-cog"></i>&nbsp;<span msg key="navbar.manage"></span>-->
+            <!--</a>-->
+        <!--</li>-->
+    <!--</ul>-->
+
+    <!--<div id="registration" ng-show="isSubActive('registration')" class="accountMgt">-->
+    <!--<div ng-include="'views/account/registration.html'"></div>-->
+    <!--</div>-->
+
+
+
+
+
 
     <!--<div id="forgotten" class="accountMgt">-->
     <!--<div ng-include="'views/account/forgotten.html'"></div>-->
     <!--</div>-->
-    <div id="accounts" class="accountMgt">
-        <div ng-include="'views/account/accounts.html'"></div>
-    </div>
 
 
     <!--<div id="admin" class="accountMgt">-->

@@ -76,12 +76,11 @@
     <div class="modal-body">
         <p>Are you sure you want to delete the profile ? This operation is irreversible</p>
     </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-default" ng-disabled="loading" ng-click="cancel()"><span><i
+     <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
-        <button class="btn btn-danger" ng-disabled="loading" ng-click="delete()"><span><i
+        <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
                 class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -99,9 +98,7 @@
     <div class="modal-body">
         <p>You currently have unsaved changes. Are you sure you want to close the profile ? All unsaved changes will
             be lost</p>
-    </div>
-    </div>
-    <div class="modal-footer">
+
         <button class="btn btn-default" ng-disabled="loading" ng-click="cancel()"><span><i
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
@@ -111,6 +108,9 @@
         <button class="btn btn-primary" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
                 class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Close</span>
         </button>
+
+    </div>
+     <div class="modal-footer">
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>
@@ -127,17 +127,17 @@
         <p>You currently have an open profile with unsaved changes. Are you sure you want to open the profile ? All
             unsaved changes will be lost</p>
     </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-default" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+     <div class="modal-footer">
+         <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+         </button>
+         <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
+                 class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Open</span>
+         </button>
+         <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
+                 class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Open</span>
         </button>
-        <button class="btn btn-warning" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
-                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Open</span>
-        </button>
-        <button class="btn btn-primary" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
-                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Open</span>
-        </button>
+
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>

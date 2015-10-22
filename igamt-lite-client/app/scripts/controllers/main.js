@@ -355,6 +355,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.section = {};
     $rootScope.parentsMap = {};
 
+    $scope.scrollbarWidth = 0;
 
 
     // TODO: remove

@@ -32,7 +32,6 @@ angular.module('igl')
         $scope.tableWidth = null;
         $scope.commentWidth = null;
         $scope.loadingSelection = false;
-        $scope.scrollbarWidth = 0;
         $scope.accordi = {metaData:false, definition:true, igList:true, igDetails:false};
 
         $scope.selectIgTab = function (value) {

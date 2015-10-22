@@ -12,7 +12,7 @@
 
 
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <!--Body content-->
             <!--<div ng-show="accountType === 'author'">-->
                 <h3>
@@ -72,11 +72,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr st-select-row="row" st-select-mode="single" ng-repeat="row in tmpAccountList">
-                        <td cs-select="row" st-ratio="5">
+                    <tr ng-repeat="row in tmpAccountList">
+                        <td st-ratio="5">
                             <input ng-click="selectAccount(row)"
                                    ng-checked="account != null && row == account"
-                                   type="radio"></td>
+                                   type="radio">
+                            </td>
                         <td ng-bind="row.fullName" st-ratio="20"></td>
                         <td ng-bind="row.email" st-ratio="20"></td>
                         <td ng-bind="row.phone" st-ratio="10"></td>
