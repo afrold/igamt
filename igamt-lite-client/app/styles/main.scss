@@ -26,7 +26,7 @@ body {
   position: relative;
   width: 95%;
   margin: 0 auto;
-  background: #f5f5f5;
+  background: #ffffff;
   color: black;
   box-shadow: 0 0 6px #021a4c;
 
@@ -568,7 +568,7 @@ ul > li.igl-tbl-item > a {
 }
 
 .form-horizontal {
-  background: #f5f5f5;
+  //background: #f5f5f5;
 }
 
 #ehrfooter {
@@ -1120,11 +1120,11 @@ h4.addPOAFormDateSectionTitle {
 //}
 
 #ehrbody {
-  background: #f5f5f5;
+//  background: #f5f5f5;
 }
 
 .form-horizontal {
-  background: #f5f5f5;
+//  background: #f5f5f5;
 }
 
 #ehrfooter {
@@ -1824,6 +1824,14 @@ table.profile-table td {
   width: 350px;
   min-width: 350px;
   max-width: 350px;
+}
+
+.col-fixed-250 {
+  float: left;
+  white-space: nowrap;
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
 }
 
 .col-fixed-6000 {

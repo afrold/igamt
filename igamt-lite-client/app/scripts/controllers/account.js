@@ -76,6 +76,9 @@ angular.module('igl')
 angular.module('igl')
     .controller('AccountMgtCtrl', ['$scope', '$resource', 'AccountLoader', 'Account', 'userInfoService', '$location', '$rootScope',
         function ($scope, $resource, AccountLoader, Account, userInfoService, $location,$rootScope) {
+
+
+            $scope.accordi = { account : true, accounts:false};
             $scope.setSubActive = function (id) {
                 if(id && id != null) {
                     $rootScope.setSubActive(id);

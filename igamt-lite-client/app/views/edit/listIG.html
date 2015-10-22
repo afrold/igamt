@@ -59,7 +59,7 @@
                             <td st-ratio="20">
                                 <button ng-show="igContext.igType.type === 'USER'"
                                         title="Edit"
-                                        type="button" class="btn btn-xs btn-success"
+                                        type="button" class="btn btn-xs btn-primary"
                                         ng-click="edit(row)">
                                         <span><i
                                                 class="fa fa-pencil fa-fw"></i></span>
@@ -87,6 +87,20 @@
                                         <li><a ng-click="exportDelta(row.id,'pdf')">Delta</a></li>
                                     </ul>
                                 </div>
+
+                                <!--<div class="dropdown">-->
+                                    <!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+                                        <!--Dropdown-->
+                                        <!--<span class="caret"></span>-->
+                                    <!--</button>-->
+                                    <!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
+                                        <!--<li><a href="#">Action</a></li>-->
+                                        <!--<li><a href="#">Another action</a></li>-->
+                                        <!--<li><a href="#">Something else here</a></li>-->
+                                        <!--<li><a href="#">Separated link</a></li>-->
+                                    <!--</ul>-->
+                                <!--</div>-->
+
                                 <button title="Delete" type="button" class="btn btn-xs btn-danger"
                                         ng-show="igContext.igType.type === 'USER'"
                                         ng-click="confirmDelete(row)">
@@ -98,8 +112,8 @@
                             </td>
                         </tr>
                         </tbody>
-                        <tfoot>
-                        <tr ng-show="igs.length > 20">
+                        <tfoot ng-show="igs.length >= 20">
+                        <tr style="margin-right: {{scrollbarWidth}}px;">
                             <td colspan="7">
                                 <div st-pagination="" st-items-by-page="20" st-displayed-pages="7"></div>
                             </td>
