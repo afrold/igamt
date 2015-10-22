@@ -7,6 +7,9 @@
 				          'glyphicon-chevron-down': !collapsed[node.title]
 				        }"></span></a></div>
 			<div ng-switch on="node.title">
+			<div ng-switch-when="Metadata">
+		    <div class="col-md-1 txt" ng-include="'Metadata.html'">{{node.title}}</div>
+		    </div>
 			<div ng-switch-when="Messages">
 		    <div context-menu context-menu-close="closedCtxMenu(node.title, $index)" data-target="messageHeadContextDiv.html" class="col-md-1 txt">{{node.title}}</div>
 		    </div>
@@ -51,7 +54,13 @@
 </li>
 </ul>
 </div>
- 
+ <script type="text/ng-template" id="Metadata.html">
+<a class="btn btn-link btn-xs" ng-click="tocSelection(node.title, node)">
+<span class="fa" 			        
+	ng-class="{
+	          'fa-circle': !collapsed[node.title]
+	        }"></span><span class="txt">{{node.title}}</span></a>	
+</script>
 <script type="text/ng-template" id="nMessage.html">
 <a class="btn btn-link btn-xs" ng-click="tocSelection(node.title, nnode)">
 <span class="fa" 			        
