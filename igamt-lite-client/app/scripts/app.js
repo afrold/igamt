@@ -24,8 +24,8 @@ var app = angular
         'restangular',
         'textAngular',
         'ng-context-menu'
-//        ,
-//        'ngMockE2E'
+        ,
+        'ngMockE2E'
     ]);
 
 var
