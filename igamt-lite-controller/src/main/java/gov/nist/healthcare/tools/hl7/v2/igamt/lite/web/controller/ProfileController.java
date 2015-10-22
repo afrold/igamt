@@ -302,7 +302,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		return profileService.verifySegment(p, id, "segment");
+		return profileService.verifySegment(p, sId, "segment");
 	}
 
 	@RequestMapping(value = "/{id}/verify/datatype/{dtId}", method = RequestMethod.POST, produces = "application/json")
@@ -314,7 +314,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		return profileService.verifyDatatype(p, id, "datatype");
+		return profileService.verifyDatatype(p, dtId, "datatype");
 	}
 
 	@RequestMapping(value = "/{id}/verify/valueset/{vsId}", method = RequestMethod.POST, produces = "application/json")
@@ -326,7 +326,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		return profileService.verifyValueSet(p, id, "valueset");
+		return profileService.verifyValueSet(p, vsId, "valueset");
 		}
 	
 	@RequestMapping(value = "/hl7/findVersions", method = RequestMethod.GET, produces = "application/json")
