@@ -244,7 +244,8 @@ public class ProfileController extends CommonController {
 		log.info("Exporting as pdf file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
-		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
+//		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
+		content = profileExport.exportAsPdf(p);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.pdf");

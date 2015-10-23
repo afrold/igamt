@@ -248,7 +248,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 
                 if (t.getCodes() != null) {
                         for (Code c : t.getCodes()) {
-                                nu.xom.Element elmTableElement = new nu.xom.Element("ValueSetElement");
+                                nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
                                 elmTableElement.addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
                                 elmTableElement.addAttribute(new Attribute("Label",(c.getLabel() == null) ? "" : c.getLabel()));
                                 elmTableElement.addAttribute(new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
