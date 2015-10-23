@@ -25,14 +25,14 @@ angular.module('igl')
         };
 
         $scope.countConformanceStatements = function (node) {
-            if (node != null) {
+            if (node != null && node.conformanceStatements) {
                 return node.conformanceStatements.length;
             }
             return 0;
         };
 
         $scope.countPredicates = function (node) {
-            if (node != null) {
+            if (node != null && node.predicates) {
                 return node.predicates.length;
             }
             return 0;

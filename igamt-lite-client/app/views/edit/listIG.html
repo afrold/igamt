@@ -5,34 +5,33 @@
 <!--<div class="panel-body">-->
 <div class="row">
     <div ng-hide="loading">
-    <div class="col-md-12" >
-        <form id="selectIgTypeForm">
-            <div class="form-group">
-                <label class="col-md-2" for="igType">
-                    <span msg key='ig.selectIgType'></span>
-                </label>
-
-                <div class="col-md-10">
+        <div class="col-md-12">
+            <h4 msg key='ig.selectIgType'></h4>
+        </div>
+        <div class="col-md-12">
+            <form id="selectIgTypeForm">
+                <div class="form-group">
                     <select class="form-control input-sm"
                             ng-change="loadProfiles()"
                             name="igType"
                             id="igType"
                             required
                             ng-model="igContext.igType"
-                            ng-options="tt.name for tt in igTypes">
+                            ng-options="tt.name for tt in igTypes | uppercase">
                     </select>
-                 </div>
-            </div>
-        </form>
-    </div>
-    <div class="col-md-12" style="margin-left:8px; margin-top: 5px">
-        <div ng-show="error === null">
-            <div class="">
-                <!--<h5><b>{{igContext.igType.name}}</b>, Total#: {{igs.length}}</h5>-->
-                <!--<hr />-->
+                </div>
+            </form>
+        </div>
+        <div class="col-md-12" style="margin-left:8px; margin-top: 5px">
+            <div ng-show="error === null">
+                <div class="">
+                    <!--<h5><b>{{igContext.igType.name}}</b>, Total#: {{igs.length}}</h5>-->
+                    <!--<hr />-->
                     <button type="button" class="btn btn-info btn-sm"
-                            ng-click="hl7Versions('btn')" ng-controller="HL7VersionsDlgCtrl"><i class="fa fa-plus"></i>  Create
-                        Guide</button>
+                            ng-click="hl7Versions('btn')" ng-controller="HL7VersionsDlgCtrl"><i class="fa fa-plus"></i>
+                        Create
+                        Guide
+                    </button>
                     <table st-table="tmpIgs" st-safe-src="igs"
                            class="table table-striped table-bordered table-fix-header table-condensed ig-list-table">
                         <thead>
@@ -92,16 +91,16 @@
                                 </div>
 
                                 <!--<div class="dropdown">-->
-                                    <!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
-                                        <!--Dropdown-->
-                                        <!--<span class="caret"></span>-->
-                                    <!--</button>-->
-                                    <!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
-                                        <!--<li><a href="#">Action</a></li>-->
-                                        <!--<li><a href="#">Another action</a></li>-->
-                                        <!--<li><a href="#">Something else here</a></li>-->
-                                        <!--<li><a href="#">Separated link</a></li>-->
-                                    <!--</ul>-->
+                                <!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
+                                <!--Dropdown-->
+                                <!--<span class="caret"></span>-->
+                                <!--</button>-->
+                                <!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
+                                <!--<li><a href="#">Action</a></li>-->
+                                <!--<li><a href="#">Another action</a></li>-->
+                                <!--<li><a href="#">Something else here</a></li>-->
+                                <!--<li><a href="#">Separated link</a></li>-->
+                                <!--</ul>-->
                                 <!--</div>-->
 
                                 <button title="Delete" type="button" class="btn btn-xs btn-danger"
@@ -111,7 +110,7 @@
                                 </button>
 
                                 <!--<span ng-show="toEditProfileId != null && toEditProfileId === row.id"><i-->
-                                        <!--class="fa fa-spinner fa-pulse fa-2x"></i></span>-->
+                                <!--class="fa fa-spinner fa-pulse fa-2x"></i></span>-->
                             </td>
                         </tr>
                         </tbody>
@@ -123,13 +122,13 @@
                         </tr>
                         </tfoot>
                     </table>
-             </div>
-        </div>
-        <div ng-show="error !== null">
-            <div class="alert alert-danger" role="alert" ng-bind="error"></div>
+                </div>
+            </div>
+            <div ng-show="error !== null">
+                <div class="alert alert-danger" role="alert" ng-bind="error"></div>
+            </div>
         </div>
     </div>
-        </div>
     <div ng-show="loading" style="text-align:center">
         <i class="fa fa-spinner fa-pulse fa-2x"></i>
     </div>

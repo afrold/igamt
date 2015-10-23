@@ -73,7 +73,7 @@
         </div>
         <div class="modal-body">
         	<label for="versionSelect"> Select HL7 Version: </label>
-       		<select ng-show="!profile" class="form-control input-sm" name="versionSelect" ng-options="option for option in hl7Versions" ng-model="hl7Version" ng-change="loadProfilesByVersion()">
+       		<select ng-show="!profile" id="versionSelect" class="form-control input-sm" name="versionSelect" ng-options="option for option in hl7Versions" ng-model="hl7Version" ng-change="loadProfilesByVersion()">
 			</select>
        		<span ng-show="profile" name="versionSelect" >{{profile.metaData.hl7Version}}
 			</span>
@@ -81,7 +81,7 @@
 		<form>
 		<table class="profile-list table table-striped table-bordered">
 			<tr class="tbl-header"><th>&nbsp;</th><th>Struct Id</th><th>Version</th><th>Type</th><th>Event</th><th>Description</th></tr>
-			<tbody ng:repeat="m in messagesByVersion | orderBy: m[1]">
+			<tbody ng-repeat="m in messagesByVersion | orderBy: m[1]">
 				<tr><td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
 					<td>{{m[1]}}</td><td>{{m[2]}}</td><td>{{m[3]}}</td><td>{{m[4]}}</td><td>{{m[5]}}</td></tr>
 			</tbody>
@@ -135,10 +135,10 @@
         </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-default" ng-disabled="loading" ng-click="cancel()"><span><i
+            <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                     class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
             </button>
-            <button class="btn btn-danger" ng-disabled="loading" ng-click="delete()"><span><i
+            <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
                     class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
             </button>
             <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -158,18 +158,20 @@
         <p>You currently have unsaved changes. Are you sure you want to close the profile ? All unsaved changes will
             be lost</p>
 
-        <button class="btn btn-default" ng-disabled="loading" ng-click="cancel()"><span><i
-                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-        </button>
-        <button class="btn btn-warning" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
-                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Close</span>
-        </button>
-        <button class="btn btn-primary" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
-                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Close</span>
-        </button>
+
 
     </div>
      <div class="modal-footer">
+         <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+         </button>
+         <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
+                 class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Close</span>
+         </button>
+         <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
+                 class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Close</span>
+         </button>
+
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>
@@ -255,10 +257,10 @@
     </div>
 </script>
 
-<div ng-include="'views/edit/editDatatypes.html'"></div>
-<div ng-include="'views/edit/editSegments.html'"></div>
-<div ng-include="'views/edit/editValueSets.html'"></div>
-<div ng-include="'views/edit/editMessages.html'"></div>
+<!--<div ng-include="'views/edit/editDatatypes.html'"></div>-->
+<!--<div ng-include="'views/edit/editSegments.html'"></div>-->
+<!--<div ng-include="'views/edit/editValueSets.html'"></div>-->
+<!--<div ng-include="'views/edit/editMessages.html'"></div>-->
 
 
 </div>

@@ -26,7 +26,8 @@
 	<sec:http pattern="/styles/**" security="none" />
 	<sec:http pattern="/views/**" security="none" />
     <sec:http pattern="/fonts/**" security="none" />
-	<sec:http pattern="/lib/**" security="none" />	 
+	<sec:http pattern="/lib/**" security="none" />
+	<sec:http pattern="/api/profiles/config" security="none" />
 	
 	<sec:http create-session="ifRequired" use-expressions="true">
 		<sec:http-basic entry-point-ref="restAuthenticationEntryPoint" />
