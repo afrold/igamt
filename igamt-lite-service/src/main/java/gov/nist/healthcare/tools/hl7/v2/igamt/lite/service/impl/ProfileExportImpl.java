@@ -1322,7 +1322,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		List<Code> codes = t.getCodes();
 
 		for (Code c : codes) {
-			row = Arrays.asList(c.getValue(), c.getDisplayName());
+			row = Arrays.asList(c.getValue(), c.getLabel());
 			rows.add(row);
 		}
 

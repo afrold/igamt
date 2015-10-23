@@ -869,7 +869,7 @@
                             <thead>
                             <tr class="tbl-header">
                                 <th st-sort="Value">Value</th>
-                                <th st-sort="DisplayName">DisplayName</th>
+                                <th st-sort="Label">Label</th>
                                 <th>Codesystem</th>
                                 <th>Usage</th>
                             </tr>
@@ -883,7 +883,7 @@
                             <tbody>
                             <tr ng-repeat="row in displayedCodeCollection">
                                 <td ng-bind-html="row.value"></td>
-                                <td ng-bind-html="row.displayName"></td>
+                                <td ng-bind-html="row.label"></td>
                                 <td ng-bind-html="row.codeSystem"></td>
                                 <td ng-bind-html="row.codeUsage"></td>
                             </tr>
