@@ -43,9 +43,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -237,7 +239,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		try {
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
-
 			String stringProfile = new ProfileSerialization4ExportImpl()
 					.serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
@@ -257,7 +258,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 			// Convert html document to pdf
 			Document document = new Document();
-			File tmpPdfFile = File.createTempFile("ProfileTemp", ".pdf");
+			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+			File tmpPdfFile = File.createTempFile("Profile_"+timeStamp, ".pdf");
 			PdfWriter writer = PdfWriter.getInstance(document,
 					FileUtils.openOutputStream(tmpPdfFile));
 			document.open();
