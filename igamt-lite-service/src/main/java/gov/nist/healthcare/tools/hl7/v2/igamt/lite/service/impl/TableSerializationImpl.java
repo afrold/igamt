@@ -106,7 +106,7 @@ public class TableSerializationImpl implements TableSerialization {
                                 for (Code c : t.getCodes()) {
                                         nu.xom.Element elmValueElement = new nu.xom.Element("ValueElement");
                                         elmValueElement.addAttribute(new Attribute("Value", c.getValue()));
-                                        elmValueElement.addAttribute(new Attribute("DisplayName", c.getDisplayName()));
+                                        elmValueElement.addAttribute(new Attribute("Label", c.getLabel()));
                                         if(c.getCodeSystem() != null && !c.getCodeSystem().equals(""))
                                         	elmValueElement.addAttribute(new Attribute("CodeSystem", c.getCodeSystem()));
                                         if(c.getCodeSystem() != null && !c.getCodeSystem().equals(""))
@@ -182,7 +182,7 @@ public class TableSerializationImpl implements TableSerialization {
                         Code codeObj = new Code();
 
                         codeObj.setValue(elmCode.getAttribute("Value"));
-                        codeObj.setDisplayName(elmCode.getAttribute("DisplayName"));
+                        codeObj.setLabel(elmCode.getAttribute("Label"));
 
                         if (elmCode.getAttribute("CodeSystem") != null && !elmTable.getAttribute("CodeSystem").equals("")) codeObj.setCodeSystem(elmTable.getAttribute("CodeSystem"));
                         if (elmCode.getAttribute("CodeSystemVersion") != null && !elmTable.getAttribute("CodeSystemVersion").equals("")) codeObj.setCodeSystemVersion(elmTable.getAttribute("CodeSystemVersion"));

@@ -344,7 +344,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.newPredicateFakeId = 0;
     $rootScope.newConformanceStatementFakeId = 0;
     $rootScope.segment = null;
-    $rootScope.config= {};
+    $rootScope.config= null;
     $rootScope.messagesData = [];
     $rootScope.messages = [];// list of messages
     $rootScope.customIgs=[];

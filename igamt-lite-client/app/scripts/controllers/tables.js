@@ -37,7 +37,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
             id: new ObjectId().toString(),
             type: 'value',
             value: '',
-            displayName: '',
+            label: '',
             codeSystem: '',
             codeUsage: ''
         };
@@ -138,7 +138,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
                     id: new ObjectId().toString(),
                     type: 'value',
                     value: table.codes[i].value,
-                    displayName: table.codes[i].displayName,
+                    label: table.codes[i].label,
                     codeSystem: table.codes[i].codeSystem,
                     codeUsage: table.codes[i].codeUsage
                 };

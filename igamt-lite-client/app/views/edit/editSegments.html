@@ -448,7 +448,7 @@
 
             <h5>Define New Conformance Statement of {{segment.name}}-{{selectedNode.position}}</h5>
 
-			<label for="constraintTypeSelect">Cconstraint Type: </label>
+			<label for="constraintTypeSelect">Constraint Type: </label>
     		<select name="constraintTypeSelect" ng-model="constraintType">
       			<option value="Complex">Complex</option>
       			<option value="Plain">Plain</option>
@@ -685,7 +685,7 @@
             </div>
             <h5>Define New Predicate of {{segment.name}}-{{selectedNode.position}}</h5>
 
-			<label for="constraintTypeSelect">Cconstraint Type: </label>
+			<label for="constraintTypeSelect">Constraint Type: </label>
     		<select name="constraintTypeSelect" ng-model="constraintType">
       			<option value="Complex">Complex</option>
       			<option value="Plain">Plain</option>
@@ -967,7 +967,7 @@
                             <thead>
                             <tr class="tbl-header">
                                 <th st-sort="Value">Value</th>
-                                <th st-sort="DisplayName">DisplayName</th>
+                                <th st-sort="Label">Label</th>
                                 <th>Codesystem</th>
                                 <th>Usage</th>
                             </tr>
@@ -981,7 +981,7 @@
                             <tbody>
                             <tr ng-repeat="row in displayedCodeCollection">
                                 <td ng-bind-html="row.value"></td>
-                                <td ng-bind-html="row.displayName"></td>
+                                <td ng-bind-html="row.label"></td>
                                 <td ng-bind-html="row.codeSystem"></td>
                                 <td ng-bind-html="row.codeUsage"></td>
                             </tr>

@@ -250,7 +250,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
                         for (Code c : t.getCodes()) {
                                 nu.xom.Element elmTableElement = new nu.xom.Element("ValueElement");
                                 elmTableElement.addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
-                                elmTableElement.addAttribute(new Attribute("DisplayName",(c.getDisplayName() == null) ? "" : c.getDisplayName()));
+                                elmTableElement.addAttribute(new Attribute("Label",(c.getLabel() == null) ? "" : c.getLabel()));
                                 elmTableElement.addAttribute(new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
                                 elmTableElement.addAttribute(new Attribute("CodeSystemVersion", (c.getCodeSystemVersion() == null) ? "" : c.getCodeSystemVersion()));
                                 elmTableElement.addAttribute(new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
@@ -1155,7 +1155,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
                 message.setComment("Message comment");
 
                 field.setComment("wawa");
-                field.setText("This field is used to decide whether to process the message as defined in HL7 Application (level 7) Processing rules. <b>This is a required field.</b> Use “P” for Production and “T” for Testing, all other valuesText regarding a field");
+                field.setText("This field is used to decide whether to process the message as defined in HL7 Application (level 7) Processing rules. <b>This is a required field.</b> Use ���P��� for Production and ���T��� for Testing, all other valuesText regarding a field");
                 group.setMax("*");
                 group.setComment("new group comment");
 

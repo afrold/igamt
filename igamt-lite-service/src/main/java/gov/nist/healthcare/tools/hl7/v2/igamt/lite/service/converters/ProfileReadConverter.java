@@ -444,7 +444,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 						code.setCodeSystemVersion(((String) codeObject.get("codeSystemVersion")));
 						code.setCodeUsage(((String) codeObject.get("codeUsage")));
 						code.setType(((String) codeObject.get("type")));
-						code.setDisplayName(((String) codeObject.get("displayName")));
+						code.setLabel(((String) codeObject.get("label")));
 						code.setComments(((String) codeObject.get("comments")));
 						table.addCode(code);
 					}

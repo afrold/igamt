@@ -255,13 +255,27 @@ angular.module('igl')
                 $rootScope.messages = $rootScope.profile.messages.children;
                 angular.forEach($rootScope.profile.datatypes.children, function (child) {
                     this[child.id] = child;
+                    if(child.displayName){ // TODO: Change displayName to label
+                        child.label = child.displayName;
+                    }
                 }, $rootScope.datatypesMap);
                 angular.forEach($rootScope.profile.segments.children, function (child) {
                     this[child.id] = child;
+                    if(child.displayName){ // TODO: Change displayName to label
+                        child.label = child.displayName;
+                    }
                 }, $rootScope.segmentsMap);
 
                 angular.forEach($rootScope.profile.tables.children, function (child) {
                     this[child.id] = child;
+                    if(child.displayName){ // TODO: Change displayName to label
+                        child.label = child.displayName;
+                    }
+                    angular.forEach(child.codes, function (code) {
+                         if(code.displayName){ // TODO: Change displayName to label
+                             code.label = code.displayName;
+                        }
+                    });
                 }, $rootScope.tablesMap);
 
                 $rootScope.segments = [];
@@ -275,7 +289,7 @@ angular.module('igl')
                     });
                 }, $rootScope.messagesMap);
 
-                if ($rootScope.config === null) {
+                if (!$rootScope.config || $rootScope.config === null) {
                     $http.get('api/profiles/config').then(function (response) {
                         $rootScope.config = angular.fromJson(response.data);
                         $scope.loadingProfile = false;

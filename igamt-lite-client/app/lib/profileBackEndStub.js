@@ -208,11 +208,12 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     });
 
 
-    $httpBackend.whenPOST('api/profiles/config').respond(function (method, url, data, headers) {
+    $httpBackend.whenGET('api/profiles/config').respond(function (method, url, data, headers) {
          var request = new XMLHttpRequest();
         request.open('GET', '../../resources/config.json', false);
         request.send(null);
         var d = angular.fromJson(request.response);
+        console.log('api/profiles/config end');
         return [request.status, d, {}];
     });
 
