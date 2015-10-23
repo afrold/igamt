@@ -43,9 +43,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -237,7 +240,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		try {
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
-
 			String stringProfile = new ProfileSerialization4ExportImpl()
 					.serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
@@ -257,7 +259,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 			// Convert html document to pdf
 			Document document = new Document();
-			File tmpPdfFile = File.createTempFile("ProfileTemp", ".pdf");
+			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+			File tmpPdfFile = File.createTempFile("Profile_"+timeStamp, ".pdf");
 			PdfWriter writer = PdfWriter.getInstance(document,
 					FileUtils.openOutputStream(tmpPdfFile));
 			document.open();
@@ -373,7 +376,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			igWriter.setPageEvent(this);
 
 			igDocument.setPageSize(PageSize.A4);
-			igDocument.setMargins(36f, 36f, 36f, 36f); // 72pt = 1 inch
+			igDocument.setMargins(36f, 36f, 46f, 46f); // 72pt = 1 inch
 			igDocument.open();
 
 			/*
@@ -503,9 +506,9 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			tocDocument.add(new Paragraph("Value Sets", titleFont));
 			tocDocument.add(Chunk.NEWLINE);
 
-			header = Arrays.asList("Value", "Description");
+			header = Arrays.asList("Value", "Code system", "Usage", "Description");
 
-			columnWidths = new float[] { 2f, 6f };
+			columnWidths = new float[] { 2f, 1f, 1f, 6f };
 
 			List<Table> tables = new ArrayList<Table>(p.getTables()
 					.getChildren());
@@ -516,8 +519,16 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				this.addTocContent(tocDocument, igWriter, t.getBindingIdentifier()
 						+ " : " + t.getName());
 
-				igDocument.add(new Paragraph("Table " + t.getBindingIdentifier()
+				igDocument.add(new Paragraph("Value set " + t.getBindingIdentifier()
 						+ " : " + t.getName()));
+				StringBuilder sb = new StringBuilder();
+				sb.append("\nStability: ");
+				sb.append(t.getStability()==null ? "Static":t.getStability());
+				sb.append("\nExtensibility: ");
+				sb.append(t.getExtensibility() == null ? "Closed":t.getExtensibility());
+				sb.append("\nContent: ");
+				sb.append(t.getContentDefinition() == null ? "Extensional":t.getContentDefinition());
+				igDocument.add(new Chunk(sb.toString(), cellFont));
 
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerColor);
@@ -1318,15 +1329,22 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	}
 
 	private void addCodesPdf2(List<List<String>> rows, Table t) {
-		List<String> row;
+		List<String> row = new ArrayList<String>();
 		List<Code> codes = t.getCodes();
 
 		for (Code c : codes) {
-			row = Arrays.asList(c.getValue(), c.getDisplayName());
+			row = Arrays.asList(c.getValue(), c.getCodeSystem(), c.getCodeUsage(), c.getDisplayName());
 			rows.add(row);
 		}
-
+		Collections.sort(rows, codeComparator);
 	}
+	
+	public static Comparator<List<String>> codeComparator = new Comparator<List<String>>() {
+		public int compare(List<String> o1, List<String> o2) {
+			return o1.get(0).compareTo(o2.get(0));
+		}
+		
+	};
 
 
 
