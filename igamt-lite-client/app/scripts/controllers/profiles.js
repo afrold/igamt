@@ -88,6 +88,13 @@ angular.module('igl')
             return true;
         };
 
+        $rootScope.closeProfile = function(){
+            $rootScope.profile = null;
+            $rootScope.isEditing = false;
+            $scope.selectIgTab(0);
+            $rootScope.initMaps();
+            $rootScope.clearChanges();
+        };
 
         $scope.messagesParams = new ngTreetableParams({
             getNodes: function (parent) {
@@ -229,6 +236,7 @@ angular.module('igl')
 
         $scope.getLeveledProfile = function (profile) {
             $rootScope.leveledProfile = [
+                {title: "Metadata", children: []},
                 {title: "Datatypes", children: profile.datatypes.children},
                 {title: "Segments", children: profile.segments.children},
                 {title: "Messages", children: profile.messages.children},
@@ -272,6 +280,7 @@ angular.module('igl')
                         $rootScope.config = angular.fromJson(response.data);
                         $scope.loadingProfile = false;
                         $scope.toEditProfileId = null;
+                        $scope.selectMetaData();
                     }, function (error) {
                         $scope.loadingProfile = false;
                         $scope.toEditProfileId = null;
@@ -279,6 +288,7 @@ angular.module('igl')
                 }else{
                     $scope.loadingProfile = false;
                     $scope.toEditProfileId = null;
+                    $scope.selectMetaData();
                 }
             }
         };
@@ -517,6 +527,11 @@ angular.module('igl')
 
         $scope.tocSelection = function (node, nnode) {
             switch (node) {
+                case "Metadata":
+                {
+                    $scope.selectMetaData();
+                    break;
+                }
                 case "Datatypes":
                 {
                     $scope.selectDatatype(nnode);
@@ -676,6 +691,15 @@ angular.module('igl')
                         $scope.loadingSelection = false;
                     }, 100);
             }
+        };
+
+        $scope.selectMetaData = function () {
+            $scope.subview = "EditMetadata.html";
+                 $scope.loadingSelection = true;
+                $timeout(
+                    function () {
+                        $scope.loadingSelection = false;
+                    }, 100);
         };
 
         $scope.selectDatatype = function (datatype) {
