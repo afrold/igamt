@@ -4,63 +4,11 @@
 
 angular.module('igl')
     .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout) {
-        $scope.loading = false;
-        $scope.loadingSelection = false;
+//        $scope.loading = false;
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
-        $scope.params = null;
-        $scope.tmpSegments = [].concat($rootScope.segments);
         $scope.segmentCopy = null;
-
-
-        $scope.init = function () {
-            $scope.loading = true;
-            $scope.params = new ngTreetableParams({
-                getNodes: function (parent) {
-                    return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];
-                },
-                getTemplate: function (node) {
-                    return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
-                }
-//                ,
-//                options: {
-//                    initialState: 'expanded'
-//                }
-            });
-
-            $rootScope.$on('event:openSegment', function (event, segment, goto) {
-                if (segment && segment != null) {
-                    $scope.select(segment);
-                 }
-            });
-
-            if ($rootScope.segments && $rootScope.segments.length > 0) {
-                $scope.select($rootScope.segments[0]);
-            }
-
-            $scope.loading = false;
-        };
-
-//
-        $scope.select = function (segment) {
-            if (segment) {
-                $scope.loadingSelection = true;
-                $rootScope.segment = segment;
-                $rootScope.segment["type"] = "segment";
-                $timeout(
-                    function () {
-                        $scope.tableWidth = null;
-                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                        $scope.csWidth = $scope.getDynamicWidth(1,3,990);
-                        $scope.predWidth = $scope.getDynamicWidth(1,3,990);
-                        $scope.commentWidth = $scope.getDynamicWidth(1,3,990);
-                        if ($scope.params)
-                            $scope.params.refresh();
-                        $scope.loadingSelection = false;
-                    }, 500);
-             }
-        };
 
         $scope.reset = function () {
 //            $scope.loadingSelection = true;
@@ -71,8 +19,7 @@ angular.module('igl')
 
         $scope.close = function () {
             $rootScope.segment = null;
-            if ($scope.params)
-                $scope.params.refresh();
+            $scope.refreshTree();
             $scope.loadingSelection = false;
         };
 
@@ -89,27 +36,21 @@ angular.module('igl')
         };
 
         $scope.onDatatypeChange = function (node) {
-//            $rootScope.recordChange(node,'datatype');
-//            $rootScope.recordChangeForEdit2('field','edit',node.id,'datatype',node.id);
             $rootScope.recordChangeForEdit2('field', 'edit', node.id, 'datatype', node.datatype);
             $scope.refreshTree();
         };
 
         $scope.refreshTree = function () {
-            if ($scope.params)
-                $scope.params.refresh();
+            if ($scope.segmentsParams)
+                $scope.segmentsParams.refresh();
         };
 
         $scope.goToTable = function (table) {
-//        	$rootScope.table = table;
-//            $rootScope.notifyTableTreeUpdate = new Date().getTime();
-//            $rootScope.selectProfileTab(4);
-            $rootScope.$emit('event:openTable', table);
-
+            $scope.$emit('event:openTable', table);
         };
 
         $scope.goToDatatype = function (datatype) {
-            $rootScope.$emit('event:openDatatype', datatype);
+            $scope.$emit('event:openDatatype', datatype);
         };
 
         $scope.deleteTable = function (node) {
@@ -237,8 +178,16 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
 
 angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.selectedNode = selectedNode;
+    $scope.constraintType = 'Plain';
+    $scope.firstConstraint = null;
+    $scope.secondConstraint = null;
+    $scope.compositeType = null;
+    $scope.complexConstraint = null;
+    $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraint = [];
+    
     $scope.newConstraint = angular.fromJson({
-        segment: '',
+    	segment: '',
         field_1: null,
         component_1: null,
         subComponent_1: null,
@@ -252,13 +201,17 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         falseUsage: null
     });
     $scope.newConstraint.segment = $rootScope.segment.name;
-
+    
     $scope.deletePredicate = function (predicate) {
         $rootScope.segment.predicates.splice($rootScope.segment.predicates.indexOf(predicate), 1);
         $rootScope.segmentPredicates.splice($rootScope.segmentPredicates.indexOf(predicate), 1);
         if (!$scope.isNewCP(predicate.id)) {
             $rootScope.recordChangeForEdit2('predicate', "delete", predicate.id, 'id', predicate.id);
         }
+    };
+    
+    $scope.deletePredicateForComplex = function (predicate) {
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(predicate), 1);
     };
 
     $scope.isNewCP = function (id) {
@@ -286,6 +239,29 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         }
         return false;
     };
+    
+    $scope.changeConstraintType = function () {
+    	$scope.newConstraint = angular.fromJson({
+    		segment: '',
+            field_1: null,
+            component_1: null,
+            subComponent_1: null,
+            field_2: null,
+            component_2: null,
+            subComponent_2: null,
+            verb: null,
+            contraintType: null,
+            value: null,
+            trueUsage: null,
+            falseUsage: null
+	    });
+		$scope.newConstraint.segment = $rootScope.segment.name;
+		
+    	if($scope.constraintType === 'Complex'){
+    		$scope.newComplexConstraint = [];
+    		$scope.newComplexConstraintId = '';
+    	}
+    }
 
     $scope.updateField_1 = function () {
         $scope.newConstraint.component_1 = null;
@@ -315,6 +291,55 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         }
         return false;
     };
+    
+    $scope.addComplexConformanceStatement = function(){
+        $scope.deletePredicateByTarget();
+        $scope.complexConstraint.constraintId = $scope.newConstraint.segment + '-' + $scope.selectedNode.position;
+        $rootScope.segment.predicates.push($scope.complexConstraint);
+        $rootScope.segmentPredicates.push($scope.complexConstraint);
+        var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: $scope.complexConstraint};
+        $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+    };
+    
+    $scope.compositeConformanceStatements = function(){
+    	if($scope.compositeType === 'AND'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'AND(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: '['+ $scope.firstConstraint.description + '] ' + 'AND' + ' [' + $scope.secondConstraint.description + ']',
+                    trueUsage: $scope.firstConstraint.trueUsage,
+                    falseUsage: $scope.firstConstraint.falseUsage,
+                    assertion: '<AND>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</AND>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if($scope.compositeType === 'OR'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'OR(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: '['+ $scope.firstConstraint.description + '] ' + 'OR' + ' [' + $scope.secondConstraint.description + ']',
+                    trueUsage: $scope.firstConstraint.trueUsage,
+                    falseUsage: $scope.firstConstraint.falseUsage,
+                    assertion: '<OR>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</OR>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if($scope.compositeType === 'IFTHEN'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'IFTHEN(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: 'IF ['+ $scope.firstConstraint.description + '] ' + 'THEN ' + ' [' + $scope.secondConstraint.description + ']',
+                    trueUsage: $scope.firstConstraint.trueUsage,
+                    falseUsage: $scope.firstConstraint.falseUsage,
+                    assertion: '<IMPLY>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</IMPLY>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}
+    	
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
+    };
 
     $scope.updatePredicate = function () {
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
@@ -327,75 +352,143 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 
         if (position_1 != null) {
             if ($scope.newConstraint.contraintType === 'valued') {
-                var cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
-                    constraintTarget: $scope.selectedNode.position + '[1]',
-                    description: 'If ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType,
-                    trueUsage: $scope.newConstraint.trueUsage,
-                    falseUsage: $scope.newConstraint.falseUsage,
-                    assertion: '<Presence Path=\"' + location_1 + '\"/>'
-                };
-                $rootScope.segment.predicates.push(cp);
-                $rootScope.segmentPredicates.push(cp);
-                var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cp};
-                $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                if($scope.constraintType === 'Plain'){
+                	var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
+                            constraintTarget: $scope.selectedNode.position + '[1]',
+                            description: 'If ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType,
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<Presence Path=\"' + location_1 + '\"/>'
+                    };
+                	
+                	$rootScope.segment.predicates.push(cp);
+                    $rootScope.segmentPredicates.push(cp);
+                    var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                }else if ($scope.constraintType === 'Complex'){
+                	var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.selectedNode.position + '[1]',
+                            description: 'If ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType,
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<Presence Path=\"' + location_1 + '\"/>'
+                    };
+                	$scope.newComplexConstraint.push(cp);
+                }
             } else if ($scope.newConstraint.contraintType === 'a literal value') {
-                var cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
-                    constraintTarget: $scope.selectedNode.position + '[1]',
-                    description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
-                    trueUsage: $scope.newConstraint.trueUsage,
-                    falseUsage: $scope.newConstraint.falseUsage,
-                    assertion: '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
-                };
-                $rootScope.segment.predicates.push(cp);
-                $rootScope.segmentPredicates.push(cp);
-                var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cp};
-                $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                if($scope.constraintType === 'Plain'){
+                    var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
+                            constraintTarget: $scope.selectedNode.position + '[1]',
+                            description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
+                        };
+
+                	$rootScope.segment.predicates.push(cp);
+                    $rootScope.segmentPredicates.push(cp);
+                    var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                }else if ($scope.constraintType === 'Complex'){
+                    var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.selectedNode.position + '[1]',
+                            description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
+                        };
+
+                	$scope.newComplexConstraint.push(cp);
+                }
             } else if ($scope.newConstraint.contraintType === 'one of list values') {
-                var cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
-                    constraintTarget: $scope.selectedNode.position + '[1]',
-                    description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
-                    trueUsage: $scope.newConstraint.trueUsage,
-                    falseUsage: $scope.newConstraint.falseUsage,
-                    assertion: '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
-                };
-                $rootScope.segment.predicates.push(cp);
-                $rootScope.segmentPredicates.push(cp);
-                var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cp};
-                $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                if($scope.constraintType === 'Plain'){
+                	var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
+                            constraintTarget: $scope.selectedNode.position + '[1]',
+                            description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+                	$rootScope.segment.predicates.push(cp);
+                    $rootScope.segmentPredicates.push(cp);
+                    var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                }else if ($scope.constraintType === 'Complex'){
+                	var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.selectedNode.position + '[1]',
+                            description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+                	$scope.newComplexConstraint.push(cp);
+                }
             } else if ($scope.newConstraint.contraintType === 'formatted value') {
-                var cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
-                    constraintTarget: $scope.selectedNode.position + '[1]',
-                    description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
-                    trueUsage: $scope.newConstraint.trueUsage,
-                    falseUsage: $scope.newConstraint.falseUsage,
-                    assertion: '<Format Path=\"' + location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
-                };
-                $rootScope.segment.predicates.push(cp);
-                $rootScope.segmentPredicates.push(cp);
-                var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cp};
-                $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                if($scope.constraintType === 'Plain'){
+                	var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
+                            constraintTarget: $scope.selectedNode.position + '[1]',
+                            description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<Format Path=\"' + location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
+                        };
+                	$rootScope.segment.predicates.push(cp);
+                    $rootScope.segmentPredicates.push(cp);
+                    var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                }else if ($scope.constraintType === 'Complex'){
+                	var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.selectedNode.position + '[1]',
+                            description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<Format Path=\"' + location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
+                        };
+                	$scope.newComplexConstraint.push(cp);
+                }
             } else if ($scope.newConstraint.contraintType === 'identical to the another node') {
-                var cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
-                    constraintTarget: $scope.selectedNode.position + '[1]',
-                    description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
-                    trueUsage: $scope.newConstraint.trueUsage,
-                    falseUsage: $scope.newConstraint.falseUsage,
-                    assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
-                };
-                $rootScope.segment.predicates.push(cp);
-                $rootScope.segmentPredicates.push(cp);
-                var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cp};
-                $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                if($scope.constraintType === 'Plain'){
+                	var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.segment + '-' + $scope.selectedNode.position,
+                            constraintTarget: $scope.selectedNode.position + '[1]',
+                            description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
+                        };
+                	$rootScope.segment.predicates.push(cp);
+                    $rootScope.segmentPredicates.push(cp);
+                    var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                }else if ($scope.constraintType === 'Complex'){
+                	var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.selectedNode.position + '[1]',
+                            description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
+                        };
+                	$scope.newComplexConstraint.push(cp);
+                }
             }
         }
     };
@@ -434,6 +527,13 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 
 angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.selectedNode = selectedNode;
+    $scope.constraintType = 'Plain';
+    $scope.firstConstraint = null;
+    $scope.secondConstraint = null;
+    $scope.compositeType = null;
+    $scope.complexConstraint = null;
+    $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraint = [];
 
     $scope.newConstraint = angular.fromJson({
         segment: '',
@@ -456,6 +556,10 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         if (!$scope.isNewCS(conformanceStatement.id)) {
             $rootScope.recordChangeForEdit2('conformanceStatement', "delete", conformanceStatement.id, 'id', conformanceStatement.id);
         }
+    };
+    
+    $scope.deleteConformanceStatementForComplex = function (conformanceStatement) {
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(conformanceStatement), 1);
     };
 
 
@@ -482,6 +586,28 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         }
         return false;
     };
+    
+    $scope.changeConstraintType = function () {
+    	$scope.newConstraint = angular.fromJson({
+	        segment: '',
+	        field_1: null,
+	        component_1: null,
+	        subComponent_1: null,
+	        field_2: null,
+	        component_2: null,
+	        subComponent_2: null,
+	        verb: null,
+	        constraintId: null,
+	        contraintType: null,
+	        value: null
+	    });
+		$scope.newConstraint.segment = $rootScope.segment.name;
+		
+    	if($scope.constraintType === 'Complex'){
+    		$scope.newComplexConstraint = [];
+    		$scope.newComplexConstraintId = '';
+    	}
+    }
 
     $scope.updateField_1 = function () {
         $scope.newConstraint.component_1 = null;
@@ -526,6 +652,49 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 
         return location;
     };
+    
+    $scope.addComplexConformanceStatement = function(){
+    	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+    	
+    	$rootScope.segment.conformanceStatements.push($scope.complexConstraint);
+        $rootScope.segmentConformanceStatements.push($scope.complexConstraint);
+        var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: $scope.complexConstraint};
+        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+    };
+    
+    $scope.compositeConformanceStatements = function(){
+    	if($scope.compositeType === 'AND'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'AND(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: '['+ $scope.firstConstraint.description + '] ' + 'AND' + ' [' + $scope.secondConstraint.description + ']',
+                    assertion: '<AND>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</AND>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if($scope.compositeType === 'OR'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'OR(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: '['+ $scope.firstConstraint.description + '] ' + 'OR' + ' [' + $scope.secondConstraint.description + ']',
+                    assertion: '<OR>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</OR>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if($scope.compositeType === 'IFTHEN'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'IFTHEN(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: 'IF ['+ $scope.firstConstraint.description + '] ' + 'THEN ' + ' [' + $scope.secondConstraint.description + ']',
+                    assertion: '<IMPLY>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</IMPLY>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}
+    	
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
+    };
 
     $scope.addConformanceStatement = function () {
         $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
@@ -545,10 +714,16 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     description: position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + '.',
                     assertion: '<Presence Path=\"' + location_1 + '\"/>'
                 };
-                $rootScope.segment.conformanceStatements.push(cs);
-                $rootScope.segmentConformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                
+                if($scope.constraintType === 'Plain'){
+                	$rootScope.segment.conformanceStatements.push(cs);
+                    $rootScope.segmentConformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+                
             } else if ($scope.newConstraint.contraintType === 'a literal value') {
                 var cs = {
                     id: new ObjectId().toString(),
@@ -557,10 +732,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
                     assertion: '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
                 };
-                $rootScope.segment.conformanceStatements.push(cs);
-                $rootScope.segmentConformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                if($scope.constraintType === 'Plain'){
+                	$rootScope.segment.conformanceStatements.push(cs);
+                    $rootScope.segmentConformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             } else if ($scope.newConstraint.contraintType === 'one of list values') {
                 var cs = {
                     id: new ObjectId().toString(),
@@ -569,10 +748,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
                     assertion: '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
                 };
-                $rootScope.segment.conformanceStatements.push(cs);
-                $rootScope.segmentConformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                if($scope.constraintType === 'Plain'){
+                	$rootScope.segment.conformanceStatements.push(cs);
+                    $rootScope.segmentConformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             } else if ($scope.newConstraint.contraintType === 'formatted value') {
                 var cs = {
                     id: new ObjectId().toString(),
@@ -581,10 +764,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
                     assertion: '<Format Path=\"' + location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
                 };
-                $rootScope.segment.conformanceStatements.push(cs);
-                $rootScope.segmentConformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                if($scope.constraintType === 'Plain'){
+                	$rootScope.segment.conformanceStatements.push(cs);
+                    $rootScope.segmentConformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             } else if ($scope.newConstraint.contraintType === 'identical to the another node') {
                 var cs = {
                     id: new ObjectId().toString(),
@@ -593,10 +780,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
                     assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
                 };
-                $rootScope.segment.conformanceStatements.push(cs);
-                $rootScope.segmentConformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                if($scope.constraintType === 'Plain'){
+                	$rootScope.segment.conformanceStatements.push(cs);
+                    $rootScope.segmentConformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             }
         }
     };

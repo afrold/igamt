@@ -20,7 +20,7 @@ public class Code extends DataModel implements Serializable, Cloneable {
 	private String value;
 
 	// @NotNull
-	private String displayName;
+	private String label;
 
 	private String codeSystem;
 	
@@ -48,12 +48,14 @@ public class Code extends DataModel implements Serializable, Cloneable {
 		this.value = value;
 	}
 
-	public String getDisplayName() {
-		return displayName;
+ 
+
+	public String getLabel() {
+		return label;
 	}
 
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 	public String getCodeSystem() {
@@ -94,7 +96,7 @@ public class Code extends DataModel implements Serializable, Cloneable {
 
 	@Override
 	public String toString() {
-		return "Code [id=" + id + ", value=" + value + ", displayName=" + displayName + ", codeSystem=" + codeSystem
+		return "Code [id=" + id + ", value=" + value + ", label=" + label + ", codeSystem=" + codeSystem
 				+ ", codeSystemVersion=" + codeSystemVersion + ", codeUsage=" + codeUsage + ", comments=" + comments
 				+ "]";
 	}
@@ -105,7 +107,7 @@ public class Code extends DataModel implements Serializable, Cloneable {
 		clonedCode.setId(id);
 		clonedCode.setType(type);
 		clonedCode.setValue(value);
-		clonedCode.setDisplayName(displayName);
+		clonedCode.setLabel(label);
 		clonedCode.setComments(comments);
 		clonedCode.setCodeUsage(codeUsage);
 		clonedCode.setCodeSystemVersion(codeSystemVersion);

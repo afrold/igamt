@@ -65,13 +65,18 @@ public class Field extends DataElement implements java.io.Serializable,
 		this.id = id;
 	}
 
+	
+
 	@Override
 	public String toString() {
 		return "Field [id=" + id + ", itemNo=" + itemNo + ", min=" + min
-				+ ", max=" + max + ", datatype=" + datatype + name + ", usage="
-				+ usage + "minLength" + minLength + ", maxLength="
-				+ maxLength + ", confLength=" + confLength + ", table=" + table
-				+ "]";
+				+ ", max=" + max + ", name=" + name + ", usage=" + usage
+				+ ", minLength=" + minLength + ", maxLength=" + maxLength
+				+ ", confLength=" + confLength + ", table=" + table
+				+ ", bindingStrength=" + bindingStrength + ", bindingLocation="
+				+ bindingLocation + ", datatype=" + datatype + ", position="
+				+ position + ", comment=" + comment + ", text=" + text
+				+ ", type=" + type + "]";
 	}
 
 	public int compareTo(Field o) {

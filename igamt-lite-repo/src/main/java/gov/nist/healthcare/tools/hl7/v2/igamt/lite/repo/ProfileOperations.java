@@ -25,6 +25,5 @@ public interface ProfileOperations {
 	 
 	 public List<Profile> findStandardByVersion(String hl7version);
 	 
-	 public List<String> findHl7Versions();
-	 
+	 public List<String> findHl7Versions();	 
 }

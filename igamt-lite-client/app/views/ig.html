@@ -1,52 +1,130 @@
 <div class="container" ng-controller="ProfileListCtrl" ng-init="init()">
 
-    <div class="row" ng-show="isAuthenticated()">
-        <!--<div class="row">-->
-        <div ng-show="!isPending()">
-            <tabset>
-                <tab select="selectIgTab(0)" active="igTabs[0]">
-                    <tab-heading>
-                        <!--<span class="badge">1</span>-->
-                        <i class="fa fa-file-text-o fa-fw"></i>
-                        Implementation Guide List
-                    </tab-heading>
-                    <div class="panel panel-info">
-                        <div class="panel-body">
-                            <div ng-include="'views/edit/listIG.html'"></div>
-                        </div>
-                    </div>
-                </tab>
+<div class="row" ng-show="isAuthenticated()">
+    <!--<div class="row">-->
+    <div ng-show="!isPending()">
 
-                <tab select="selectIgTab(1)" active="igTabs[1]">
-                    <tab-heading>
-                        <!--<span class="badge">1</span>-->
-                        <i class="fa fa-pencil fa-fw"></i>
-                        Edit Implementation Guide
-                    </tab-heading>
-                    <div class="panel panel-info">
-                        <div class="panel-body">
-                            <div ng-include="'views/edit/editIG.html'"></div>
-                       </div>
-                    </div>
-                </tab>
+        <accordion close-others="false">
+            <accordion-group is-open="accordi.igList" panel-class="panel-info">
+                <accordion-heading>
+                    <i class="fa"
+                       ng-class="{'fa-caret-down': accordi.igList, 'fa-caret-right': !accordi.igList}"></i>
+                    <i class="fa fa-file-text-o fa-fw"></i> Implementation Guide List
+                </accordion-heading>
+                <!--<div class="panel panel-info">-->
+                    <!--<div class="panel-body">-->
+                        <div ng-include="'views/edit/listIG.html'"></div>
+                    <!--</div>-->
+                <!--</div>-->
+            </accordion-group>
 
-            </tabset>
+            <accordion-group is-open="accordi.igDetails" panel-class="panel-info">
+                <accordion-heading>
+                    <i class="fa"
+                       ng-class="{'fa-caret-down': accordi.igDetails, 'fa-caret-right': !accordi.igDetails}"></i> Edit Implementation Guide
+                </accordion-heading>
+                <!--<div class="panel panel-info">-->
+                    <!--<div class="panel-body">-->
+                        <div ng-include="'views/edit/editIG.html'"></div>
+                    <!--</div>-->
+                <!--</div>-->
+
+            </accordion-group>
+        </accordion>
+
+        <!--<tabset>-->
+            <!--<tab select="selectIgTab(0)" active="igTabs[0]">-->
+                <!--<tab-heading>-->
+                    <!--&lt;!&ndash;<span class="badge">1</span>&ndash;&gt;-->
 
 
-        </div>
+                <!--</tab-heading>-->
 
-        <div style="font-size: 18px;text-align: center" ng-show="isPending()">
-            <div msg key='account.pendingSection'></div>
-        </div>
+            <!--</tab>-->
+
+            <!--<tab select="selectIgTab(1)" active="igTabs[1]">-->
+                <!--<tab-heading>-->
+                    <!--&lt;!&ndash;<span class="badge">1</span>&ndash;&gt;-->
+                    <!--<i class="fa fa-pencil fa-fw"></i>-->
+                    <!--Edit Implementation Guide-->
+                <!--</tab-heading>-->
+
+            <!--</tab>-->
+
+        <!--</tabset>-->
 
     </div>
 
-
-    <div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center">
-        <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You
-            can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
+    <div style="font-size: 18px;text-align: center" ng-show="isPending()">
+        <div msg key='account.pendingSection'></div>
     </div>
-    
+
+</div>
+
+
+<div ng-show="!isAuthenticated()" style="font-size: 18px;text-align: center">
+    <p>Please <a href="" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;login</a> to access this page. You
+        can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
+</div>
+
+	<script type="text/ng-template" id="hl7VersionsDlg.html">
+        <div class="modal-header">
+            <h3 class="modal-title">HL7 Versions</h3>
+        </div>
+        <div class="modal-body">
+        	<label for="versionSelect"> Select HL7 Version: </label>
+       		<select ng-show="!profile" id="versionSelect" class="form-control input-sm" name="versionSelect" ng-options="option for option in hl7Versions" ng-model="hl7Version" ng-change="loadProfilesByVersion()">
+			</select>
+       		<span ng-show="profile" name="versionSelect" >{{profile.metaData.hl7Version}}
+			</span>
+        </div>
+		<form>
+		<table class="profile-list table table-striped table-bordered">
+			<tr class="tbl-header"><th>&nbsp;</th><th>Struct Id</th><th>Version</th><th>Type</th><th>Event</th><th>Description</th></tr>
+			<tbody ng-repeat="m in messagesByVersion | orderBy: m[1]">
+				<tr><td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
+					<td>{{m[1]}}</td><td>{{m[2]}}</td><td>{{m[3]}}</td><td>{{m[4]}}</td><td>{{m[5]}}</td></tr>
+			</tbody>
+		</table>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+		</form>
+	</script>
+<!--  This is unfamiliar; I don't think it's being used.	
+	<script type="text/ng-template" id="hl7MessagesDlg.html">
+        <div ig-modals class="modal-header">
+            <h4 class="modal-title">HL7 Messages for version: {{hl7Version}}</h4>
+        </div>
+        <form>
+            <table class="profile-list table table-striped table-bordered">
+                <tr class="tbl-header">
+                    <th>&nbsp;</th>
+                    <th>Struct Id</th>
+                    <th>Version</th>
+                    <th>Type</th>
+                    <th>Event</th>
+                    <th>Description</th>
+                </tr>
+                <tbody ng-repeat="m in messagesByVersion | orderBy: m[1]">
+                <tr>
+                    <td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
+                    <td>{{m[1]}}</td>
+                    <td>{{m[2]}}</td>
+                    <td>{{m[3]}}</td>
+                    <td>{{m[4]}}</td>
+                    <td>{{m[5]}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
+                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+            </div>
+        </form>
+	</script>    
+-->	
     <script type="text/ng-template" id="ConfirmProfileDeleteCtrl.html">
         <div class="modal-header">
             <h3 class="modal-title">Delete Confirmation
@@ -57,123 +135,132 @@
         </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-default" ng-disabled="loading" ng-click="cancel()"><span><i
+            <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
                     class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
             </button>
-            <button class="btn btn-danger" ng-disabled="loading" ng-click="delete()"><span><i
+            <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
                     class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
             </button>
             <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
                 <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
             </div>
         </div>
-    </script>
+    </div>
+</script>
 
 
-    <script type="text/ng-template" id="ConfirmProfileCloseCtrl.html">
-        <div class="modal-header">
-            <h3 class="modal-title">Close Confirmation
-            </h3>
-        </div>
-        <div class="modal-body">
-            <p>You currently have unsaved changes. Are you sure you want to close the profile ? All unsaved changes will
-                be lost</p>
-        </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-default" ng-disabled="loading" ng-click="cancel()"><span><i
-                    class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-warning" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
-                    class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Close</span>
-            </button>
-            <button class="btn btn-primary" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
-                    class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Close</span>
-            </button>
-            <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-                <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
-            </div>
-        </div>
-    </script>
+<script type="text/ng-template" id="ConfirmProfileCloseCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Close Confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+        <p>You currently have unsaved changes. Are you sure you want to close the profile ? All unsaved changes will
+            be lost</p>
 
 
-    <script type="text/ng-template" id="ConfirmProfileOpenCtrl.html">
-        <div class="modal-header">
-            <h3 class="modal-title">Open Confirmation
-            </h3>
+
+    </div>
+     <div class="modal-footer">
+         <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+         </button>
+         <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
+                 class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Close</span>
+         </button>
+         <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
+                 class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Close</span>
+         </button>
+
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>
-        <div class="modal-body">
-            <p>You currently have an open profile with unsaved changes. Are you sure you want to open the profile ? All
-                unsaved changes will be lost</p>
-        </div>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-default" ng-disabled="loading" ng-click="cancel()"><span><i
-                    class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-warning" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
-                    class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Open</span>
-            </button>
-            <button class="btn btn-primary" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
-                    class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Open</span>
-            </button>
-            <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-                <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
-            </div>
-        </div>
-    </script>
+    </div>
+</script>
 
 
-    <script type="text/ng-template" id="RichTextCtrl.html">
-        <div class="modal-header modal-wide">
-            <h3 class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} :
-                {{editorTarget.title}}</h3>
-        </div>
-        <div class="modal-body">
-            <div class="row">
-                <div ng-show="!editorTarget.disabled" text-angular style="width:100%"
-                     name="globalEditor"
-                     ng-model="editorTarget.obj[editorTarget.key]"></div>
+<script type="text/ng-template" id="ConfirmProfileOpenCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Open Confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+        <p>You currently have an open profile with unsaved changes. Are you sure you want to open the profile ? All
+            unsaved changes will be lost</p>
+    </div>
+     <div class="modal-footer">
+         <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+         </button>
+         <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
+                 class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Open</span>
+         </button>
+         <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
+                 class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Open</span>
+        </button>
 
-                <div ng-show="editorTarget.disabled" style="width:100%"
-                     name="globalEditor"
-                     ng-bind-html="editorTarget.obj[editorTarget.key]"></div>
-            </div>
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="close()"><span><i class="fa fa-times fa-fw">
-                &nbsp; </i>Close</span>
-            </button>
-        </div>
-    </script>
+    </div>
+</script>
 
-    <script type="text/ng-template" id="InputTextCtrl.html">
-        <div class="modal-header">
-            <h3 ng-show="editorTarget.obj.type === 'segmentRef'">
-                {{editorTarget.obj.position}}.{{segmentsMap[editorTarget.obj.ref].name}}:{{segmentsMap[editorTarget.obj.ref].description}}</h3>
 
-            <h3 ng-show="editorTarget.obj.type === 'group'">{{editorTarget.obj.position}}.{{editorTarget.obj.name}}</h3>
+<script type="text/ng-template" id="RichTextCtrl.html">
+    <div class="modal-header modal-wide">
+        <h3 class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} :
+            {{editorTarget.title}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div ng-show="!editorTarget.disabled" text-angular style="width:100%"
+                 name="globalEditor"
+                 ng-model="editorTarget.obj[editorTarget.key]"></div>
 
-            <h3 ng-show="editorTarget.obj.type !=  'segmentRef' && editorTarget.obj.type !=  'group'"
-                class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} :
-                {{editorTarget.title}}</h3>
+            <div ng-show="editorTarget.disabled" style="width:100%"
+                 name="globalEditor"
+                 ng-bind-html="editorTarget.obj[editorTarget.key]"></div>
         </div>
-        <div class="modal-body">
-            <div class="row">
-                <textarea rows="5" style="width:100%" type="text" ng-show="!editorTarget.disabled"
-                          name="inputEditor" class="form-control" ng-model="editorTarget.obj[editorTarget.key]"
-                        ></textarea>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="close()"><span><i class="fa fa-times fa-fw">
+            &nbsp; </i>Close</span>
+        </button>
+    </div>
+</script>
 
-                <p ng-show="editorTarget.disabled" ng-bind-html="editorTarget.obj[editorTarget.key]">
-                </p>
-            </div>
+<script type="text/ng-template" id="InputTextCtrl.html">
+    <div class="modal-header">
+        <h3 ng-show="editorTarget.obj.type === 'segmentRef'">
+            {{editorTarget.obj.position}}.{{segmentsMap[editorTarget.obj.ref].name}}:{{segmentsMap[editorTarget.obj.ref].description}}</h3>
+
+        <h3 ng-show="editorTarget.obj.type === 'group'">{{editorTarget.obj.position}}.{{editorTarget.obj.name}}</h3>
+
+        <h3 ng-show="editorTarget.obj.type !=  'segmentRef' && editorTarget.obj.type !=  'group'"
+            class="modal-title">{{editorTarget.obj.position}} . {{editorTarget.obj.name}} :
+            {{editorTarget.title}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <textarea rows="5" style="width:100%" type="text" ng-show="!editorTarget.disabled"
+                      name="inputEditor" class="form-control" ng-model="editorTarget.obj[editorTarget.key]"
+                    ></textarea>
+
+            <p ng-show="editorTarget.disabled" ng-bind-html="editorTarget.obj[editorTarget.key]">
+            </p>
         </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="close()"><span><i class="fa fa-times fa-fw">
-                &nbsp; </i>Close</span>
-            </button>
-        </div>
-    </script>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="close()"><span><i class="fa fa-times fa-fw">
+            &nbsp; </i>Close</span>
+        </button>
+    </div>
+</script>
+
+<!--<div ng-include="'views/edit/editDatatypes.html'"></div>-->
+<!--<div ng-include="'views/edit/editSegments.html'"></div>-->
+<!--<div ng-include="'views/edit/editValueSets.html'"></div>-->
+<!--<div ng-include="'views/edit/editMessages.html'"></div>-->
 
 
 </div>

@@ -26,6 +26,7 @@ import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
@@ -243,7 +244,8 @@ public class ProfileController extends CommonController {
 		log.info("Exporting as pdf file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
-		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
+//		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
+		content = profileExport.exportAsPdf(p);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.pdf");
@@ -301,7 +303,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		return profileService.verifySegment(p, id, "segment");
+		return profileService.verifySegment(p, sId, "segment");
 	}
 
 	@RequestMapping(value = "/{id}/verify/datatype/{dtId}", method = RequestMethod.POST, produces = "application/json")
@@ -313,7 +315,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		return profileService.verifyDatatype(p, id, "datatype");
+		return profileService.verifyDatatype(p, dtId, "datatype");
 	}
 
 	@RequestMapping(value = "/{id}/verify/valueset/{vsId}", method = RequestMethod.POST, produces = "application/json")
@@ -325,7 +327,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		return profileService.verifyValueSet(p, id, "valueset");
+		return profileService.verifyValueSet(p, vsId, "valueset");
 		}
 	
 	@RequestMapping(value = "/hl7/findVersions", method = RequestMethod.GET, produces = "application/json")
@@ -335,10 +337,11 @@ public class ProfileController extends CommonController {
 		return result;
 	}
 
-	@RequestMapping(value = "/hl7/messageListByVersion/{hl7Version:.*}", method = RequestMethod.GET, produces = "application/json")
-	public List<String[]> getMessageListByVersion(@PathVariable("hl7Version") String hl7Version) {
+	// TODO Change to query as is but with $nin a list of messages that can be empty. 
+	@RequestMapping(value = "/hl7/messageListByVersion/{hl7Version:.*}/{messageIds}", method = RequestMethod.GET, produces = "application/json")
+	public List<String[]> getMessageListByVersion(@PathVariable("hl7Version") String hl7Version, @PathVariable("messageIds") List<String> messageIds) {
 		log.info("Fetching messages of version hl7Version=" + hl7Version);
-		List<String[]> messages = profileCreation.summary(hl7Version);
+		List<String[]> messages = profileCreation.summary(hl7Version, messageIds);
 		log.debug("messages=" + messages.size());
 		return messages;
 	}
@@ -347,5 +350,11 @@ public class ProfileController extends CommonController {
 	public Profile createIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws ProfileException {
 		log.info("Creation of profile");
 		return profileCreation.createIntegratedProfile(iprw.getMsgIds(), iprw.getHl7Version());
+	}
+
+	@RequestMapping(value = "/hl7/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public Profile updateIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws ProfileException {
+		log.info("Update profile with additional messages.");
+		return profileCreation.updateIntegratedProfile(iprw.getMsgIds(), iprw.getProfile());
 	}
 }

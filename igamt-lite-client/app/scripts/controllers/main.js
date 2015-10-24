@@ -136,7 +136,6 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     };
 
     $rootScope.started = false;
-    $scope.scrollbarWidth = null;
 
     Idle.watch();
 
@@ -345,9 +344,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.newPredicateFakeId = 0;
     $rootScope.newConformanceStatementFakeId = 0;
     $rootScope.segment = null;
-    $rootScope.profileTabs = new Array();
-    $rootScope.igTabs = new Array();
-    $rootScope.config= {};
+    $rootScope.config= null;
     $rootScope.messagesData = [];
     $rootScope.messages = [];// list of messages
     $rootScope.customIgs=[];
@@ -358,95 +355,48 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.section = {};
     $rootScope.parentsMap = {};
 
-    $scope.csWidth = null;
-    $scope.predWidth = null;
-    $scope.tableWidth = null;
-    $scope.commentWidth = null;
+    $scope.scrollbarWidth = 0;
 
 
-    $scope.getTableWidth = function () {
-        if ($scope.tableWidth === null) {
-            $scope.tableWidth = $("#executionPanel").width();
-        }
-        return $scope.tableWidth;
-    };
-
-    $scope.getDynamicWidth = function (a,b,otherColumsWidth) {
-        var tableWidth = $scope.getTableWidth();
-        if (tableWidth > 0) {
-            var left = tableWidth - otherColumsWidth;
-            return {"width": a * parseInt(left / b) + "px"};
-        }
-        return "";
-    };
-
-
-    $scope.getConstraintAsString = function (constraint) {
-       return constraint.constraintId + " - " + constraint.description;
-     };
-
-
-    $scope.getConstraintsAsString = function (constraints) {
-        var str = '';
-        for (var index in constraints) {
-            str = str + "<p style=\"text-align: left\">" + constraints[index].id + " - " + constraints[index].description + "</p>";
-        }
-        return str;
-    };
-
-    $scope.getPredicatesAsMultipleLinesString = function (node) {
-        var html = "";
-        angular.forEach(node.predicates, function (predicate) {
-            html = html + "<p>" + predicate.description + "</p>";
-        });
-        return html;
-    };
-
-    $scope.getPredicatesAsOneLineString = function (node) {
-        var html = "";
-        angular.forEach(node.predicates, function (predicate) {
-            html = html + predicate.description;
-        });
-        return $sce.trustAsHtml(html);
-    };
-
-
-    $scope.getConfStatementsAsMultipleLinesString = function (node) {
-        var html = "";
-        angular.forEach(node.conformanceStatements, function (conStatement) {
-            html = html + "<p>" + conStatement.id + " : " + conStatement.description + "</p>";
-        });
-        return html;
-    };
-
-    $scope.getConfStatementsAsOneLineString = function (node) {
-        var html = "";
-        angular.forEach(node.conformanceStatements, function (conStatement) {
-            html = html + conStatement.id + " : " + conStatement.description;
-        });
-        return $sce.trustAsHtml(html);
-    };
-
-
+    // TODO: remove
     $rootScope.selectProfileTab = function (value) {
-        $rootScope.profileTabs[0] = false;
-        $rootScope.profileTabs[1] = false;
-        $rootScope.profileTabs[2] = false;
-        $rootScope.profileTabs[3] = false;
-        $rootScope.profileTabs[4] = false;
-        $rootScope.profileTabs[5] = false;
-        $rootScope.profileTabs[value] = true;
+//        $rootScope.profileTabs[0] = false;
+//        $rootScope.profileTabs[1] = false;
+//        $rootScope.profileTabs[2] = false;
+//        $rootScope.profileTabs[3] = false;
+//        $rootScope.profileTabs[4] = false;
+//        $rootScope.profileTabs[5] = false;
+//        $rootScope.profileTabs[value] = true;
     };
 
-    $rootScope.selectIgTab = function (value) {
-        $rootScope.igTabs[0] = false;
-        $rootScope.igTabs[1] = false;
-        $rootScope.igTabs[value] = true;
-        if(value === 1) {
-            $rootScope.selectProfileTab(0);
+    $scope.getScrollbarWidth = function() {
+        if($scope.scrollbarWidth == 0) {
+            var outer = document.createElement("div");
+            outer.style.visibility = "hidden";
+            outer.style.width = "100px";
+            outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
+
+            document.body.appendChild(outer);
+
+            var widthNoScroll = outer.offsetWidth;
+            // force scrollbars
+            outer.style.overflow = "scroll";
+
+            // add innerdiv
+            var inner = document.createElement("div");
+            inner.style.width = "100%";
+            outer.appendChild(inner);
+
+            var widthWithScroll = inner.offsetWidth;
+
+            // remove divs
+            outer.parentNode.removeChild(outer);
+
+            $scope.scrollbarWidth = widthNoScroll - widthWithScroll;
         }
-    };
 
+        return $scope.scrollbarWidth;
+    };
     $rootScope.initMaps = function () {
         $rootScope.segment = null;
         $rootScope.datatype = null;
@@ -505,6 +455,8 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.hasChanges = function(){
         return Object.getOwnPropertyNames($rootScope.changes).length !== 0;
     };
+
+
 
     $rootScope.recordChange = function(object,changeType) {
         var type = object.type;
@@ -680,8 +632,6 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.apply = function(label){ //FIXME. weak check
         return label != undefined && label != null && (label.indexOf('_') !== -1 || label.indexOf('-') !== -1);
     };
-
-
 
     $rootScope.isFlavor = function(label){ //FIXME. weak check
         return label != undefined && label != null && (label.indexOf('_') !== -1 || label.indexOf('-') !== -1);
@@ -931,43 +881,11 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
         });
     };
 
-
-    $scope.getScrollbarWidth = function() {
-
-        if($scope.scrollbarWidth == null) {
-            var outer = document.createElement("div");
-            outer.style.visibility = "hidden";
-            outer.style.width = "100px";
-            outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
-
-            document.body.appendChild(outer);
-
-            var widthNoScroll = outer.offsetWidth;
-            // force scrollbars
-            outer.style.overflow = "scroll";
-
-            // add innerdiv
-            var inner = document.createElement("div");
-            inner.style.width = "100%";
-            outer.appendChild(inner);
-
-            var widthWithScroll = inner.offsetWidth;
-
-            // remove divs
-            outer.parentNode.removeChild(outer);
-
-            $scope.scrollbarWidth = widthNoScroll - widthWithScroll;
-        }
-
-        return $scope.scrollbarWidth;
-    };
-
-
     $scope.init = function(){
-        $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {
-            $rootScope.config = angular.fromJson(response.data);
-        }, function (error) {
-        });
+//        $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {
+//            $rootScope.config = angular.fromJson(response.data);
+//        }, function (error) {
+//        });
     }
 
 }]);

@@ -19,6 +19,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.List;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
 public interface ProfileCreationService {
@@ -27,8 +28,10 @@ public interface ProfileCreationService {
 	
 	List<Profile> findProfilesByHl7Versions();
 	
-	List<String[]> summary(String hl7Version);
+	List<String[]> summary(String hl7Version, List<String> messageIds);
 	
 	Profile createIntegratedProfile(List<String> msgIds, String hl7Version) throws ProfileException;
+
+	Profile updateIntegratedProfile(List<String> msgIds, Profile pTarget) throws ProfileException;
 	
 }

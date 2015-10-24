@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, HL7VersionSvc) {
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, HL7VersionSvc, ngTreetableParams) {
         $scope.loading = false;
         $rootScope.igs = [];
         $scope.igContext = {
@@ -27,16 +27,97 @@ angular.module('igl')
         $scope.toEditProfileId = null;
         $scope.verificationResult = null;
         $scope.verificationError = null;
+        $scope.csWidth = null;
+        $scope.predWidth = null;
+        $scope.tableWidth = null;
+        $scope.commentWidth = null;
+        $scope.loadingSelection = false;
+        $scope.accordi = {metaData: false, definition: true, igList: true, igDetails: false};
+
+        $scope.selectIgTab = function (value) {
+            if (value === 1) {
+                $scope.accordi.igList = false;
+                $scope.accordi.igDetails = true;
+            } else {
+                $scope.accordi.igList = true;
+                $scope.accordi.igDetails = false;
+            }
+        };
+
+        $scope.segmentsParams = new ngTreetableParams({
+            getNodes: function (parent) {
+                return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];
+            },
+            getTemplate: function (node) {
+                return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
+            }
+        });
+
+        $scope.datatypesParams = new ngTreetableParams({
+            getNodes: function (parent) {
+                if (parent && parent != null) {
+
+                    if (parent.datatype) {
+                        var dt = $rootScope.datatypesMap[parent.datatype];
+                        return dt.components;
+
+                    } else {
+                        return parent.components;
+                    }
+                } else {
+                    if ($rootScope.datatype != null) {
+                        return $rootScope.datatype.components;
+                    } else {
+                        return [];
+                    }
+                }
+            },
+            getTemplate: function (node) {
+                return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentEditTree.html' : '';
+            }
+        });
+
+
+        $scope.isDatatypeSubDT = function (component) {
+            if ($rootScope.datatype != null) {
+                for (var i = 0, len = $rootScope.datatype.components.length; i < len; i++) {
+                    if ($rootScope.datatype.components[i].id === component.id)
+                        return false;
+                }
+            }
+            return true;
+        };
+
+        $rootScope.closeProfile = function(){
+            $rootScope.profile = null;
+            $rootScope.isEditing = false;
+            $scope.selectIgTab(0);
+            $rootScope.initMaps();
+            $rootScope.clearChanges();
+        };
+
+        $scope.messagesParams = new ngTreetableParams({
+            getNodes: function (parent) {
+                return parent && parent != null ? parent.children : $rootScope.message != null ? $rootScope.message.children : [];
+            },
+            getTemplate: function (node) {
+                return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageEditTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefEditTree.html' : 'MessageGroupEditTree.html';
+            },
+            options: {
+                initialState: 'expanded'
+            }
+        });
 
         /**
-		 * init the controller
-		 */
+         * init the controller
+         */
         $scope.init = function () {
             $scope.igContext.igType = $scope.igTypes[1];
             $scope.loadProfiles();
+            $scope.getScrollbarWidth();
             /**
-			 * On 'event:loginConfirmed', resend all the 401 requests.
-			 */
+             * On 'event:loginConfirmed', resend all the 401 requests.
+             */
             $scope.$on('event:loginConfirmed', function (event) {
                 $scope.igContext.igType = $scope.igTypes[1];
                 $scope.loadProfiles();
@@ -46,23 +127,37 @@ angular.module('igl')
             $rootScope.$on('event:openProfileRequest', function (event, profile) {
                 $scope.openProfile(profile);
             });
-           
+
+            $scope.$on('event:openDatatype', function (event, datatype) {
+                $scope.selectDatatype(datatype); // Shoudl we open in a dialog ??
+            });
+
+            $scope.$on('event:openSegment', function (event, segment) {
+                $scope.selectSegment(segment); // Shoudl we open in a dialog ??
+            });
+
+            $scope.$on('event:openMessage', function (event, message) {
+                $scope.selectMessage(message); // Shoudl we open in a dialog ??
+            });
+
+            $scope.$on('event:openTable', function (event, table) {
+                $scope.selectTable(table); // Shoudl we open in a dialog ??
+            });
         };
 
-        $rootScope.$on('event:IgsPushed', function(event, profile) {
-        	if($scope.igContext.igType.type === 'USER'){
+        $rootScope.$on('event:IgsPushed', function (event, profile) {
+            if ($scope.igContext.igType.type === 'USER') {
                 $rootScope.igs.push(profile);
-             } else {
+            } else {
                 $scope.igContext.igType = $scope.igTypes[1];
                 $scope.loadProfiles();
                 profile = $scope.findOne(profile.id);
             }
-          });
+        });
 
         $scope.loadProfiles = function () {
             $scope.error = null;
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
-                $rootScope.selectIgTab(0);
                 $scope.loading = true;
                 if ($scope.igContext.igType.type === 'PRELOADED') {
                     $http.get('api/profiles', {timeout: 60000}).then(function (response) {
@@ -92,9 +187,9 @@ angular.module('igl')
             waitingDialog.show('Cloning profile...', {dialogSize: 'sm', progressType: 'info'});
             $http.post('api/profiles/' + profile.id + '/clone', {timeout: 60000}).then(function (response) {
                 $scope.toEditProfileId = null;
-                if($scope.igContext.igType.type === 'USER'){
+                if ($scope.igContext.igType.type === 'USER') {
                     $rootScope.igs.push(angular.fromJson(response.data));
-                 }else {
+                } else {
                     $scope.igContext.igType = $scope.igTypes[1];
                     $scope.loadProfiles();
                 }
@@ -118,7 +213,7 @@ angular.module('igl')
             $scope.toEditProfileId = profile.id;
             try {
                 if ($rootScope.profile != null && $rootScope.profile === profile) {
-                    $rootScope.selectIgTab(1);
+                    $scope.selectIgTab(1);
                     $scope.toEditProfileId = null;
                 } else if ($rootScope.profile && $rootScope.profile != null && $rootScope.hasChanges()) {
                     $scope.confirmOpen(profile);
@@ -127,7 +222,7 @@ angular.module('igl')
                     $timeout(
                         function () {
                             $scope.openProfile(profile);
-                        }, 1000);
+                        }, 500);
                 }
             } catch (e) {
                 $rootScope.msg().text = "igInitFailed";
@@ -138,24 +233,50 @@ angular.module('igl')
             }
         };
 
+
+        $scope.getLeveledProfile = function (profile) {
+            $rootScope.leveledProfile = [
+                {title: "Metadata", children: []},
+                {title: "Datatypes", children: profile.datatypes.children},
+                {title: "Segments", children: profile.segments.children},
+                {title: "Messages", children: profile.messages.children},
+                {title: "ValueSets", children: profile.tables.children}
+            ];
+        };
+
         $scope.openProfile = function (profile) {
+            $rootScope.isEditing = true;
+                $scope.getLeveledProfile(profile);
             $scope.loadingProfile = true;
-            $rootScope.selectIgTab(1);
+            $scope.selectIgTab(1);
             if (profile != null) {
                 $rootScope.initMaps();
                 $rootScope.profile = profile;
                 $rootScope.messages = $rootScope.profile.messages.children;
                 angular.forEach($rootScope.profile.datatypes.children, function (child) {
                     this[child.id] = child;
+                    if(child.displayName){ // TODO: Change displayName to label
+                        child.label = child.displayName;
+                    }
                 }, $rootScope.datatypesMap);
                 angular.forEach($rootScope.profile.segments.children, function (child) {
                     this[child.id] = child;
+                    if(child.displayName){ // TODO: Change displayName to label
+                        child.label = child.displayName;
+                    }
                 }, $rootScope.segmentsMap);
 
                 angular.forEach($rootScope.profile.tables.children, function (child) {
                     this[child.id] = child;
+                    if(child.displayName){ // TODO: Change displayName to label
+                        child.label = child.displayName;
+                    }
+                    angular.forEach(child.codes, function (code) {
+                         if(code.displayName){ // TODO: Change displayName to label
+                             code.label = code.displayName;
+                        }
+                    });
                 }, $rootScope.tablesMap);
-
 
                 $rootScope.segments = [];
                 $rootScope.tables = $rootScope.profile.tables.children;
@@ -168,20 +289,21 @@ angular.module('igl')
                     });
                 }, $rootScope.messagesMap);
 
-
-                if ($rootScope.messages.length === 1) {
-                    var message = $rootScope.messages[0];
-                    message.children = $filter('orderBy')(message.children, 'position');
-                    angular.forEach(message.children, function (segmentRefOrGroup) {
-                        $rootScope.processElement(segmentRefOrGroup);
+                if (!$rootScope.config || $rootScope.config === null) {
+                    $http.get('api/profiles/config').then(function (response) {
+                        $rootScope.config = angular.fromJson(response.data);
+                        $scope.loadingProfile = false;
+                        $scope.toEditProfileId = null;
+                        $scope.selectMetaData();
+                    }, function (error) {
+                        $scope.loadingProfile = false;
+                        $scope.toEditProfileId = null;
                     });
-                    $rootScope.$emit('event:openMessage', message.id);
-
-
+                }else{
+                    $scope.loadingProfile = false;
+                    $scope.toEditProfileId = null;
+                    $scope.selectMetaData();
                 }
-                $scope.gotoSection($rootScope.profile.metaData, 'metaData');
-                $scope.loadingProfile = false;
-                $scope.toEditProfileId = null;
             }
         };
 
@@ -302,9 +424,7 @@ angular.module('igl')
                 $scope.confirmClose();
             } else {
                 waitingDialog.show('Closing profile...', {dialogSize: 'sm', progressType: 'info'});
-                $rootScope.profile = null;
-                $rootScope.selectIgTab(0);
-                $rootScope.initMaps();
+                $rootScope.closeProfile();
                 waitingDialog.hide();
             }
         };
@@ -323,9 +443,9 @@ angular.module('igl')
                 $rootScope.profile.metaData.date = saveResponse.date;
                 $rootScope.profile.metaData.version = saveResponse.version;
                 var found = $scope.findOne($rootScope.profile.id);
-                if(found != null){
+                if (found != null) {
                     var index = $rootScope.igs.indexOf(found);
-                    if(index > 0){
+                    if (index > 0) {
                         $rootScope.igs [index] = $rootScope.profile;
                     }
                 }
@@ -379,9 +499,8 @@ angular.module('igl')
 
 
         $scope.reset = function () {
-            $rootScope.selectIgTab(0);
-            $rootScope.changes = {};
-            $rootScope.profile = null;
+             $rootScope.changes = {};
+             $rootScope.closeProfile();
         };
 
 
@@ -392,191 +511,329 @@ angular.module('igl')
             $scope.loading = false;
 
         };
-        
-        $scope.createGuide = function() {
-        	$scope.isVersionSelect = true;
+
+        $scope.createGuide = function () {
+            $scope.isVersionSelect = true;
         };
 
-		$scope.pickHL7Messages = function() {
-			var hl7MessagesSelected;
-			hl7MessagesSelected = $modal.open({
-				templateUrl : 'hl7MessagesDlg.html',
-				controller : 'HL7VMessagesDlgCtrl',
-				resolve : {
-					hl7Version : function() {
-						return $scope.hl7Version;
-					}
-				}
-			});
+        $scope.listHL7Versions = function () {
+            var hl7Versions = [];
+            $http.get('api/profiles/hl7/findVersions', {
+                timeout: 60000
+            }).then(
+                function (response) {
+                    var len = response.data.length;
+                    for (var i = 0; i < len; i++) {
+                        hl7Versions.push(response.data[i]);
+                    }
+                });
+            return hl7Versions;
+        };
 
-			hl7MessagesSelected.result.then(function(result) {
-				console.log(result);
-				$scope.createProfile($rootScope.hl7Version, result);
-			});
-		};
-		
-        $scope.listHL7Versions = function() {
-			var hl7Versions = [];
-			$http.get('api/profiles/hl7/findVersions', {
-				timeout : 60000
-			}).then(
-					function(response) {
-						var len = response.data.length;
-						for (var i = 0; i < len; i++) {
-							hl7Versions.push(response.data[i]);
-						}
-					});
-			return hl7Versions;
-		};
-		
-		$scope.createProfile = function(hl7Version, msgIds) {
-			$scope.isVersionSelect = true;
-			$scope.isEditing = true;
-			var iprw = {
-					"hl7Version" : hl7Version,
-					"msgIds" : msgIds,
-					"timeout" : 60000
-			};
-			 $http.post('api/profiles/hl7/createIntegrationProfile', iprw).then(function
-			 (response) {
-				 $scope.profile = angular.fromJson(response.data);
-				 $scope.getLeveledProfile($scope.profile);
-				 $rootScope.$broadcast('event:IgsPushed', $scope.profile);
-			 });
-			 return $scope.profile;
-		};
-		
-		$scope.getLeveledProfile = function(profile) {
-			$scope.leveledProfile = [{title : "Datatypes", children : profile.datatypes.children},
-			                         {title : "Segments", children : profile.segments.children},
-			                         {title : "Messages", children : profile.messages.children},
-			                         {title : "ValueSets", children : profile.tables.children}];
-		};
+        $scope.toggleToCContents = function (node) {
+            if ($scope.collapsed[node] === undefined) {
+                $scope.collapsed.push(node);
+                $scope.collapsed[node] = true;
+            } else {
+                $scope.collapsed[node] = !$scope.collapsed[node];
+            }
+        };
 
-		$scope.toggleToCContents = function(node) {
-			if($scope.collapsed[node] === undefined) {
-				$scope.collapsed.push(node);
-				$scope.collapsed[node] = true;
-			} else {
-				$scope.collapsed[node] = !$scope.collapsed[node];
-			}
-		};
-		
-		$scope.tocSelection = function(node, nnode) {
-			switch(node) {
-		    case "Datatypes": {
-		    	$scope.subview = "EditDatatypes.html";
-//	            $rootScope.datatype = nnode;
-//	            $rootScope.datatype["type"] = "datatype";
-                $rootScope.$broadcast('event:openDatatype',nnode);
+        $scope.tocSelection = function (node, nnode) {
+            switch (node) {
+                case "Metadata":
+                {
+                    $scope.selectMetaData();
+                    break;
+                }
+                case "Datatypes":
+                {
+                    $scope.selectDatatype(nnode);
+                    break;
+                }
+                case "Segments":
+                {
+                    $scope.selectSegment(nnode);
+                    break;
+                }
+                case "Messages":
+                {
+                    $scope.selectMessage(nnode);
+                    break;
+                }
+                case "ValueSets":
+                {
+                    $scope.selectTable(nnode);
+                    break;
+                }
+                default:
+                {
+                    $scope.subview = "nts.html";
+                }
+            }
+            return $scope.subview;
+        };
 
-                break;
-		    }
-		    case "Segments": {
-		    	$scope.subview = "EditSegments.html";
-//		    	$rootScope.segment = nnode;
-//		    	$rootScope.segment["type"] = "segment";
-                $rootScope.$broadcast('event:openSegment',nnode);
-		    	break;
-		    }
-		    case "Messages": {
-		    	$scope.subview = "EditMessages.html";
-//		    	$rootScope.message = $rootScope.messagesMap[nnode.id];
-                $rootScope.$broadcast('event:openMessage',nnode);
+        $scope.getHL7Version = function () {
+            return HL7VersionSvc.hl7Version;
+        };
 
-                break;
-		    }
-		    case "ValueSets": {
-		    	$scope.subview = "EditValueSets.html";
-//		        $rootScope.table = nnode;
-                $rootScope.$broadcast('event:openTable',nnode);
- 		    	break;
-		    }
-		    default: {
-		    	$scope.subview = "nts.html";
-		    }
-		    }
-			return $scope.subview;
-		}
-		
-		$scope.getVersion = function() {
-			return HL7VersionSvc.hl7Version;
-		}
-				
-		$scope.setVersion = function(hl7Version) {
-			HL7VersionSvc.hl7Version = hl7Version;
-		}
-		
-		$scope.showSelected = function(node) {
-			$scope.selectedNode = node;
-		};
-		
-		$scope.closedCtxMenu = function(node, $index) {
-			var item = ContextMenuSvc.get();
-			switch (item) {
-			case "Add": 
-				var newNode = (JSON.parse(JSON.stringify(node)));
-				newNode.id = null;
-				
-				// Nodesd must have unique names so we timestamp when we duplicate.
-				if(newNode.type === 'message') {
-					newNode.messageType = newNode.messageType + " " + timeStamp();
-				}
-				for (var i in $scope.profile.messages.children) {
-					console.log($scope.profile.messages.children[i].messageType);
-				}
-				$scope.profile.messages.children.splice(2, 0, newNode);
-				for (var i in $scope.profile.messages.children) {
-					console.log($scope.profile.messages.children[i].messageType);
-				}
-				
-				function timeStamp() {
-					// Create a date object with the current time
-					  var now = new Date();
+        $scope.setHL7Version = function (hl7Version) {
+            HL7VersionSvc.hl7Version = hl7Version;
+        };
 
-					// Create an array with the current month, day and time
-					  var date = [ now.getMonth() + 1, now.getDate(), now.getFullYear() ];
+        $scope.showSelected = function (node) {
+            $scope.selectedNode = node;
+        };
+        $scope.loadProfilesByVersion = function () {
+            console.log("I ran");
+        };
+        $scope.closedCtxMenu = function (node, $index) {
+            var item = ContextMenuSvc.get();
+            switch (item) {
+                case "Add":
+//				if (node === "Messages") {
+//					var hl7VersionsInstance;
+//					hl7VersionsInstance = $modal.open({
+//						templateUrl : 'hl7MessagesDlg.html',
+//						controller : 'HL7VersionsInstanceDlgCtrl',
+//						resolve : {
+//							hl7Versions : function() {
+//								return $scope.listHL7Versions();
+//							}
+//						}
+//					});
+//					
+//					hl7VersionsInstance.result.then(function(result) {
+//						console.log(result);
+//						$scope.updateProfile(result);
+//					});
+//				} else {
+//					alert("Was not Messages. Was:" + node);
+//				}
+                    break;
+                case "Delete":
+                    // not to be implemented at this time.
+                    // var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
+                    break;
+                default:
+                    console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
+            }
+        };
 
-					// Create an array with the current hour, minute and second
-					  var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
+        $scope.closedCtxSubMenu = function (node, $index) {
+            var item = ContextMenuSvc.get();
+            switch (item) {
+                case "Add":
+                {
+                    // not to be implemented at this time.
 
-					// Determine AM or PM suffix based on the hour
-					  var suffix = ( time[0] < 12 ) ? "AM" : "PM";
+                }
+                case "Clone":
+                {
+                    var newNode = (JSON.parse(JSON.stringify(node)));
+                    newNode.id = null;
 
-					// Convert hour from military time
-					  time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
+                    // Nodes must have unique names so we timestamp when we duplicate.
+                    if (newNode.type === 'message') {
+                        newNode.messageType = newNode.messageType + "-" + $rootScope.profile.metaData.ext + "-" + timeStamp();
+                    }
+                    for (var i in $rootScope.profile.messages.children) {
+                        console.log($rootScope.profile.messages.children[i].messageType);
+                    }
+                    $rootScope.profile.messages.children.splice(2, 0, newNode);
+                    for (var i in $rootScope.profile.messages.children) {
+                        console.log($rootScope.profile.messages.children[i].messageType);
+                    }
+                    break;
+                }
+                case "Delete":
+                    // not to be implemented at this time.
+                    // var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
+                    break;
+                default:
+                    console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
+            }
+        };
 
-					// If hour is 0, set it to 12
-					  time[0] = time[0] || 12;
+        function timeStamp() {
+            // Create a date object with the current time
+            var now = new Date();
 
-					// If seconds and minutes are less than 10, add a zero
-					  for ( var i = 1; i < 3; i++ ) {
-					    if ( time[i] < 10 ) {
-					      time[i] = "0" + time[i];
-					    }
-					  }
+            // Create an array with the current month, day and time
+            var date = [ now.getMonth() + 1, now.getDate(), now.getFullYear() ];
 
-					// Return the formatted string
-					  return date.join("/") + " " + time.join(":") + " " + suffix;
-				};
-				break;
-			case "Delete": 
-// not to be implemented at this time.
-//				var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
-				break;
-			default: 
-				console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
-			}
-		};
-});
+            // Create an array with the current hour, minute and second
+            var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
+
+            // Determine AM or PM suffix based on the hour
+            var suffix = ( time[0] < 12 ) ? "AM" : "PM";
+
+            // Convert hour from military time
+            time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
+
+            // If hour is 0, set it to 12
+            time[0] = time[0] || 12;
+
+            // If seconds and minutes are less than 10, add a zero
+            for (var i = 1; i < 3; i++) {
+                if (time[i] < 10) {
+                    time[i] = "0" + time[i];
+                }
+            }
+
+            // Return the formatted string
+            return date.join("/") + " " + time.join(":") + " " + suffix;
+        };
+
+
+        $scope.selectSegment = function (segment) {
+            $scope.subview = "EditSegments.html";
+            if (segment && segment != null) {
+                $scope.loadingSelection = true;
+                $rootScope.segment = segment;
+                $rootScope.segment["type"] = "segment";
+                $timeout(
+                    function () {
+                        $scope.tableWidth = null;
+                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                        $scope.csWidth = $scope.getDynamicWidth(1, 3, 990);
+                        $scope.predWidth = $scope.getDynamicWidth(1, 3, 990);
+                        $scope.commentWidth = $scope.getDynamicWidth(1, 3, 990);
+                        if ($scope.segmentsParams)
+                            $scope.segmentsParams.refresh();
+                        $scope.loadingSelection = false;
+                    }, 100);
+            }
+        };
+
+        $scope.selectMetaData = function () {
+            $scope.subview = "EditMetadata.html";
+                 $scope.loadingSelection = true;
+                $timeout(
+                    function () {
+                        $scope.loadingSelection = false;
+                    }, 100);
+        };
+
+        $scope.selectDatatype = function (datatype) {
+            $scope.subview = "EditDatatypes.html";
+            if (datatype && datatype != null) {
+                $scope.loadingSelection = true;
+                $rootScope.datatype = datatype;
+                $rootScope.datatype["type"] = "datatype";
+                $timeout(
+                    function () {
+                        $scope.tableWidth = null;
+                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                        $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
+                        $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
+                        $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
+                        if ($scope.datatypesParams)
+                            $scope.datatypesParams.refresh();
+                        $scope.loadingSelection = false;
+                    }, 100);
+            }
+        };
+
+        $scope.selectMessage = function (message) {
+            $scope.subview = "EditMessages.html";
+            $scope.loadingSelection = true;
+            $rootScope.message = message;
+            $timeout(
+                function () {
+                    $scope.tableWidth = null;
+                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                    $scope.csWidth = $scope.getDynamicWidth(1, 3, 630);
+                    $scope.predWidth = $scope.getDynamicWidth(1, 3, 630);
+                    $scope.commentWidth = $scope.getDynamicWidth(1, 3, 630);
+                    if ($scope.messagesParams)
+                        $scope.messagesParams.refresh();
+                    $scope.loadingSelection = false;
+                }, 100);
+        };
+
+        $scope.selectTable = function (table) {
+            $scope.subview = "EditValueSets.html";
+            $scope.loadingSelection = true;
+            $timeout(
+                function () {
+                    $rootScope.table = table;
+                    $scope.loadingSelection = false;
+                }, 100);
+        };
+
+
+        $scope.getTableWidth = function () {
+            if ($scope.tableWidth === null || $scope.tableWidth == 0) {
+                $scope.tableWidth = $("#nodeDetailsPanel").width();
+            }
+            return $scope.tableWidth;
+        };
+
+        $scope.getDynamicWidth = function (a, b, otherColumsWidth) {
+            var tableWidth = $scope.getTableWidth();
+            if (tableWidth > 0) {
+                var left = tableWidth - otherColumsWidth;
+                return {"width": a * parseInt(left / b) + "px"};
+            }
+            return "";
+        };
+
+
+        $scope.getConstraintAsString = function (constraint) {
+            return constraint.constraintId + " - " + constraint.description;
+        };
+
+        $scope.getConstraintsAsString = function (constraints) {
+            var str = '';
+            for (var index in constraints) {
+                str = str + "<p style=\"text-align: left\">" + constraints[index].id + " - " + constraints[index].description + "</p>";
+            }
+            return str;
+        };
+
+        $scope.getPredicatesAsMultipleLinesString = function (node) {
+            var html = "";
+            angular.forEach(node.predicates, function (predicate) {
+                html = html + "<p>" + predicate.description + "</p>";
+            });
+            return html;
+        };
+
+        $scope.getPredicatesAsOneLineString = function (node) {
+            var html = "";
+            angular.forEach(node.predicates, function (predicate) {
+                html = html + predicate.description;
+            });
+            return $sce.trustAsHtml(html);
+        };
+
+
+        $scope.getConfStatementsAsMultipleLinesString = function (node) {
+            var html = "";
+            angular.forEach(node.conformanceStatements, function (conStatement) {
+                html = html + "<p>" + conStatement.id + " : " + conStatement.description + "</p>";
+            });
+            return html;
+        };
+
+        $scope.getConfStatementsAsOneLineString = function (node) {
+            var html = "";
+            angular.forEach(node.conformanceStatements, function (conStatement) {
+                html = html + conStatement.id + " : " + conStatement.description;
+            });
+            return $sce.trustAsHtml(html);
+        };
+    });
 
 angular.module('igl').controller('ContextMenuCtrl', function ($scope, $rootScope, ContextMenuSvc) {
-	
-	$scope.clicked = function(item) {
-		ContextMenuSvc.put(item);
-	};
+
+    $scope.clicked = function (item) {
+        ContextMenuSvc.put(item);
+    };
 });
-		
+
 
 angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes, $rootScope, $http) {
     $scope.changes = changes;
@@ -610,10 +867,8 @@ angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $
             if (index > -1) $rootScope.igs.splice(index, 1);
             $rootScope.backUp = null;
             if ($scope.profileToDelete === $rootScope.profile) {
-                $rootScope.initMaps();
-                $rootScope.profile = null;
-                $rootScope.selectIgTab(0);
-            }
+                $rootScope.closeProfile();
+             }
             $rootScope.msg().text = "igDeleteSuccess";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
@@ -660,10 +915,7 @@ angular.module('igl').controller('ConfirmProfileCloseCtrl', function ($scope, $m
     };
 
     $scope.clear = function () {
-        $rootScope.changes = {};
-        $rootScope.profile = null;
-        $rootScope.selectIgTab(0);
-        $rootScope.initMaps();
+        $rootScope.closeProfile();
         $modalInstance.close();
     };
 
@@ -732,9 +984,4 @@ angular.module('igl').controller('ConfirmProfileOpenCtrl', function ($scope, $mo
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-
 });
-
-
-
-
