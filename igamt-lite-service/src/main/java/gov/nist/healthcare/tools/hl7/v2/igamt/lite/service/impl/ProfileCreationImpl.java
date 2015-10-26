@@ -112,17 +112,6 @@ public class ProfileCreationImpl implements ProfileCreationService {
 		pTarget.setDatatypes(dtsTarget);
 		pTarget.setTables(tabTarget);
 
-//		for (String msgId : msgIds) {
-//			Message m = pSource.getMessages().findOne(msgId);
-//			msgsTarget.addMessage(m);
-//			for (SegmentRefOrGroup sg : m.getChildren()) {
-//				if (sg instanceof SegmentRef) {
-//					addSegment((SegmentRef) sg, pSource, pTarget);
-//				} else if (sg instanceof Group) {
-//					addGroup((Group) sg, pSource, pTarget);
-//				}
-//			}
-//		}
 		addMessages(msgIds, pSource, pTarget);
 		return pTarget;
 	}
