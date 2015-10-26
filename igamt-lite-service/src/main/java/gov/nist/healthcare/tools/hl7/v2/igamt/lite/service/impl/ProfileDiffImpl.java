@@ -1294,13 +1294,13 @@ public class ProfileDiffImpl {
 			for (Code c : t.getCodes()) {
 				ElementChange ec = new ElementChange(c.getId(), t.getId());
 				if (tables2.findOneCode(c.getId()) == null) {
-					ec.recordChange("deleted", c.getDisplayName(), "");
+					ec.recordChange("deleted", c.getLabel(), "");
 					ec.setChangeType("del");
 				} else {
 					Code c2 = tables2.findOneCode(c.getId());
-					if (!(c.getDisplayName().equals(c2.getDisplayName()))) {
-						ec.recordChange("DisplayName", c.getDisplayName(),
-								c2.getDisplayName());
+					if (!(c.getLabel().equals(c2.getLabel()))) {
+						ec.recordChange("Label", c.getLabel(),
+								c2.getLabel());
 					}
 					if (!(c.getCodeSystem().equals(c2.getCodeSystem()))) {
 						ec.recordChange("CodeSys", c.getCodeSystem(),
@@ -1319,7 +1319,7 @@ public class ProfileDiffImpl {
 			for (Code c : t.getCodes()) {
 				if (tables.findOneCode(c.getId()) == null) {
 					ElementChange ec = new ElementChange(c.getId(), t.getId());
-					ec.recordChange("added", "", c.getDisplayName());
+					ec.recordChange("added", "", c.getLabel());
 					ec.setChangeType("add");
 					this.codesChanges.add(ec);
 				}

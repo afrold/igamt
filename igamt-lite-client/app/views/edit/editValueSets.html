@@ -23,135 +23,148 @@
 							</span>
                     <hr/>
                 </div>
-                <accordion close-others="false">
-                    <accordion-group is-open="accordi.metaData" panel-class="panel-info">
-                        <accordion-heading>
-                            <i class="fa" ng-class="{'fa-caret-down': accordi.metaData, 'fa-caret-right': !accordi.metaData}"></i> MetaData
-                        </accordion-heading>
+                <div class="col-md-12">
+                    <accordion close-others="false">
+                        <accordion-group is-open="accordi.metaData" panel-class="panel-info">
+                            <accordion-heading>
+                                <i class="fa"
+                                   ng-class="{'fa-caret-down': accordi.metaData, 'fa-caret-right': !accordi.metaData}"></i>
+                                MetaData
+                            </accordion-heading>
 
-                        <form name="segmentMetaDataForm" novalidate>
-                        <div class="col-md-12">
-                            <div class="col-md-6">
-                                <label>Mapping Identifier</label>
-                                <input type="text" name="tableIndentifier"
-                                       ng-change="recordChangeTable(table,'bindingIdentifier', table.bindingIdentifier)"
-                                       class="form-control" ng-model="table.bindingIdentifier" required>
-                                <label>Version</label>
-                                <input type="text" name="version"
-                                       ng-change="recordChangeTable(table,'version', table.version)" class="form-control"
-                                       ng-model="table.version">
-                                <label>OID</label>
-                                <input type="text" name="oid" ng-change="recordChangeTable(table,'oid', table.oid)"
-                                       class="form-control" ng-model="table.oid">
-                                <label>Stability</label>
-                                <select class="form-control"
-                                        name="stability"
-                                        ng-change="recordChangeTable(table,'stability', table.stability)"
-                                        ng-model="table.stability"
-                                        ng-options="stability for stability in config.tableStabilities">
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label>Name</label>
-                                <input type="text" name="name" ng-change="recordChangeTable(table,'name', table.name)"
-                                       class="form-control" ng-model="table.name" required>
-                                <label>Type</label>
-                                <input type="text" name="type"
-                                       ng-change="recordChangeTable(table,'tableType', table.tableType)"
-                                       class="form-control" ng-model="table.tableType" required>
-                                <label>Extensibility</label>
-                                <select class="form-control"
-                                        name="Extensibility"
-                                        ng-change="recordChangeTable(table,'extensibility', table.extensibility)"
-                                        ng-model="table.extensibility"
-                                        ng-options="extensibility for extensibility in config.tableExtensibilities">
-                                </select>
-                            </div>
-                        </div>
+                            <form name="segmentMetaDataForm" novalidate>
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <label>Mapping Identifier</label>
+                                        <input type="text" name="tableIndentifier"
+                                               ng-change="recordChangeTable(table,'bindingIdentifier', table.bindingIdentifier)"
+                                               class="form-control" ng-model="table.bindingIdentifier" required>
+                                        <label>Version</label>
+                                        <input type="text" name="version"
+                                               ng-change="recordChangeTable(table,'version', table.version)"
+                                               class="form-control"
+                                               ng-model="table.version">
+                                        <label>OID</label>
+                                        <input type="text" name="oid"
+                                               ng-change="recordChangeTable(table,'oid', table.oid)"
+                                               class="form-control" ng-model="table.oid">
+                                        <label>Stability</label>
+                                        <select class="form-control"
+                                                name="stability"
+                                                ng-change="recordChangeTable(table,'stability', table.stability)"
+                                                ng-model="table.stability"
+                                                ng-options="stability for stability in config.tableStabilities">
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Name</label>
+                                        <input type="text" name="name"
+                                               ng-change="recordChangeTable(table,'name', table.name)"
+                                               class="form-control" ng-model="table.name" required>
+                                        <label>Type</label>
+                                        <input type="text" name="type"
+                                               ng-change="recordChangeTable(table,'tableType', table.tableType)"
+                                               class="form-control" ng-model="table.tableType" required>
+                                        <label>Extensibility</label>
+                                        <select class="form-control"
+                                                name="Extensibility"
+                                                ng-change="recordChangeTable(table,'extensibility', table.extensibility)"
+                                                ng-model="table.extensibility"
+                                                ng-options="extensibility for extensibility in config.tableExtensibilities">
+                                        </select>
+                                    </div>
+                                </div>
 
-                        </form>
-                    </accordion-group>
-                    <accordion-group is-open="accordi.definition" panel-class="panel-info">
-                        <accordion-heading>
-                            <i class="fa" ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i> Values
-                        </accordion-heading>
-                <form class="form-horizontal"
-                      name="editTableForm">
+                            </form>
+                        </accordion-group>
+                        <accordion-group is-open="accordi.definition" panel-class="panel-info">
+                            <accordion-heading>
+                                <i class="fa"
+                                   ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i>
+                                Values
+                            </accordion-heading>
+                            <form class="form-horizontal"
+                                  name="editTableForm">
 
-                    <div class="col-md-12">
-                        <br/>
+                                <div class="col-md-12">
+                                    <br/>
  							<span class="pull-right">
 								<button title="Add new Value" type="button"
                                         class="btn btn-sm btn-primary" ng-click="addValue()">
                                     <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Add Value</span>
                                 </button>
 							</span>
-                        <hr/>
+                                    <hr/>
 
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                <tr class="tbl-header">
-                                    <th class="col-md-2">Value</th>
-                                    <th class="col-md-3">DisplayName</th>
-                                    <th class="col-md-2">CodeSystem</th>
-                                    <th class="col-md-2">Usage
-                                        <div class="btn-group btn-group-xs btn-info" role="group" aria-label="...">
-                                            <button type="button" ng-click="setAllCodeUsage(table, 'R')"
-                                                    class="btn btn-default btn-info">R
-                                            </button>
-                                            <button type="button" ng-click="setAllCodeUsage(table, 'P')"
-                                                    class="btn btn-default btn-info">P
-                                            </button>
-                                            <button type="button" ng-click="setAllCodeUsage(table, 'E')"
-                                                    class="btn btn-default btn-info">E
-                                            </button>
-                                        </div>
-                                    </th>
-                                    <th class="col-md-1">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="c in table.codes">
-                                    <td class="col-md-2">
-                                        <input type="text" style="width: 100%" name="Value" class="igl-input"
-                                               ng-model="c.value"
-                                               ng-change="recordChangeValue(c,'value',c.value ,table.id)">
-                                    </td>
-                                    <td class="col-md-3">
-                                        <input type="text" style="width: 100%" name="DisplayNmae" class="igl-input"
-                                               ng-model="c.displayName"
-                                               ng-change="recordChangeValue(c,'displayName',c.displayName ,table.id)">
-                                    </td>
-                                    <td class="col-md-2">
-                                        <input type="text" style="width: 100%" name="CodeSystem" class="igl-input"
-                                               ng-model="c.codeSystem"
-                                               ng-change="recordChangeValue(c,'codeSystem',c.codeSystem ,table.id)">
-                                    </td>
-                                    <td class="col-md-2">
-                                        <select class="form-control" name="Usage"
-                                                ng-change="recordChangeValue(c,'codeUsage',c.codeUsage, table.id)"
-                                                ng-model="c.codeUsage"
-                                                ng-options="codeUsage for codeUsage in config.codeUsages">
-                                        </select>
-                                    </td>
-                                    <td class="col-md-1">
-                                        <button title="Delete" type="button" class="btn btn-sm btn-danger"
-                                                ng-click="deleteValue(c)">
-                                            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </form>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered">
+                                            <thead>
+                                            <tr class="tbl-header">
+                                                <th class="col-md-2">Value</th>
+                                                <th class="col-md-3">DisplayName</th>
+                                                <th class="col-md-2">CodeSystem</th>
+                                                <th class="col-md-2">Usage
+                                                    <div class="btn-group btn-group-xs btn-info" role="group"
+                                                         aria-label="...">
+                                                        <button type="button" ng-click="setAllCodeUsage(table, 'R')"
+                                                                class="btn btn-default btn-info">R
+                                                        </button>
+                                                        <button type="button" ng-click="setAllCodeUsage(table, 'P')"
+                                                                class="btn btn-default btn-info">P
+                                                        </button>
+                                                        <button type="button" ng-click="setAllCodeUsage(table, 'E')"
+                                                                class="btn btn-default btn-info">E
+                                                        </button>
+                                                    </div>
+                                                </th>
+                                                <th class="col-md-1">Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="c in table.codes">
+                                                <td class="col-md-2">
+                                                    <input type="text" style="width: 100%" name="Value"
+                                                           class="igl-input"
+                                                           ng-model="c.value"
+                                                           ng-change="recordChangeValue(c,'value',c.value ,table.id)">
+                                                </td>
+                                                <td class="col-md-3">
+                                                    <input type="text" style="width: 100%" name="Label"
+                                                           class="igl-input"
+                                                           ng-model="c.label"
+                                                           ng-change="recordChangeValue(c,'label',c.label ,table.id)">
+                                                </td>
+                                                <td class="col-md-2">
+                                                    <input type="text" style="width: 100%" name="CodeSystem"
+                                                           class="igl-input"
+                                                           ng-model="c.codeSystem"
+                                                           ng-change="recordChangeValue(c,'codeSystem',c.codeSystem ,table.id)">
+                                                </td>
+                                                <td class="col-md-2">
+                                                    <select class="form-control" name="Usage"
+                                                            ng-change="recordChangeValue(c,'codeUsage',c.codeUsage, table.id)"
+                                                            ng-model="c.codeUsage"
+                                                            ng-options="codeUsage for codeUsage in config.codeUsages">
+                                                    </select>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <button title="Delete" type="button" class="btn btn-sm btn-danger"
+                                                            ng-click="deleteValue(c)">
+                                                        <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
                         </accordion-group>
                     </accordion>
-      </div>
+                </div>
             </div>
         </div>
+    </div>
 </script>
 
 <script type="text/ng-template" id="ConfirmValueSetDeleteCtrl.html">

@@ -51,8 +51,8 @@
 					<u>Value sets definition</u>
 				</h2>
 				<a name="valuesets"></a>
-				<xsl:apply-templates select="ConformanceProfile/Tables">
-					<xsl:sort select="@Id"></xsl:sort>
+				<xsl:apply-templates select="ConformanceProfile/ValueSets">
+					<xsl:sort select="@BindingIdentifier"></xsl:sort>
 				</xsl:apply-templates>
 			</body>
 		</html>
@@ -447,26 +447,30 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="TableDefinition">
+	<xsl:template match="ValueSetDefinition">
 
 		<a name="valuesets"></a>
 		<br></br>
 		<h3 style="page-break-before:auto">
-			<xsl:value-of select="@Id" />
+			<xsl:value-of select="@BindingIdentifier" />
 			:
 			<xsl:value-of select="@Name" />
 		</h3>
 		<table width="100%" border="1" cellspacing="0" cellpadding="0">
 			<col style="width:15%"></col>
 			<col style="width:15%"></col>
-			<col style="width:70%"></col>
+			<col style="width:10%"></col>
+			<col style="width:60%"></col>
 			<thead style="background:#0033CC; color:white; align:center">
 				<tr>
 					<th>
 						Value
 					</th>
 					<th>
-						Codesys
+						Code System
+					</th>
+					<th>
+						Usage
 					</th>
 					<th>
 						Description
@@ -474,9 +478,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				<xsl:for-each select="TableElement">
-					<xsl:sort select="@Code" />
-					<xsl:call-template name="tableElement">
+				<xsl:for-each select="ValueElement">
+					<xsl:sort select="@Value" />
+					<xsl:call-template name="ValueElement">
 						<xsl:with-param name="style" select="'background-color:white;'">
 						</xsl:with-param>
 					</xsl:call-template>
@@ -487,14 +491,17 @@
 		<a href="#top">Link to top</a>
 	</xsl:template>
 
-	<xsl:template name="tableElement">
+	<xsl:template name="ValueElement">
 		<xsl:param name="style" />
 		<tr style="{$style}">
 			<td>
-				<xsl:value-of select="@Code" />
+				<xsl:value-of select="@Value" />
 			</td>
 			<td>
-				<xsl:value-of select="@Codesys" />
+				<xsl:value-of select="@CodeSystem" />
+			</td>
+			<td>
+				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
 				<xsl:value-of select="@DisplayName" />

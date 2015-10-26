@@ -244,7 +244,8 @@ public class ProfileController extends CommonController {
 		log.info("Exporting as pdf file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
-		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
+//		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
+		content = profileExport.exportAsPdf(p);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition",
 				"attachment;filename=Profile.pdf");
@@ -302,7 +303,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		return profileService.verifySegment(p, id, "segment");
+		return profileService.verifySegment(p, sId, "segment");
 	}
 
 	@RequestMapping(value = "/{id}/verify/datatype/{dtId}", method = RequestMethod.POST, produces = "application/json")
@@ -314,7 +315,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		return profileService.verifyDatatype(p, id, "datatype");
+		return profileService.verifyDatatype(p, dtId, "datatype");
 	}
 
 	@RequestMapping(value = "/{id}/verify/valueset/{vsId}", method = RequestMethod.POST, produces = "application/json")
@@ -326,7 +327,7 @@ public class ProfileController extends CommonController {
 		if (p == null) {
 			throw new ProfileNotFoundException(id);
 		}
-		return profileService.verifyValueSet(p, id, "valueset");
+		return profileService.verifyValueSet(p, vsId, "valueset");
 		}
 	
 	@RequestMapping(value = "/hl7/findVersions", method = RequestMethod.GET, produces = "application/json")

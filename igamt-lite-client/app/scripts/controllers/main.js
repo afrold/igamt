@@ -344,7 +344,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.newPredicateFakeId = 0;
     $rootScope.newConformanceStatementFakeId = 0;
     $rootScope.segment = null;
-    $rootScope.config= {};
+    $rootScope.config= null;
     $rootScope.messagesData = [];
     $rootScope.messages = [];// list of messages
     $rootScope.customIgs=[];
@@ -455,6 +455,8 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     $rootScope.hasChanges = function(){
         return Object.getOwnPropertyNames($rootScope.changes).length !== 0;
     };
+
+
 
     $rootScope.recordChange = function(object,changeType) {
         var type = object.type;
@@ -880,10 +882,10 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     };
 
     $scope.init = function(){
-        $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {
-            $rootScope.config = angular.fromJson(response.data);
-        }, function (error) {
-        });
+//        $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {
+//            $rootScope.config = angular.fromJson(response.data);
+//        }, function (error) {
+//        });
     }
 
 }]);

@@ -518,7 +518,7 @@ public class ProfileDiffSerializationImpl {
 			component.setComment("new component comment");
 			component.setMinLength(56346);
 			table.setName("illegal name change-for test purpose");
-			code.setDisplayName("illegal new label-for test purpose");
+			code.setLabel("illegal new label-for test purpose");
 
 			ProfileDiffImpl diff = new ProfileDiffImpl();
 			diff.compare(p1, p2);
