@@ -252,6 +252,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
                                         if (elmComponent.getAttribute("BindingLocation") != null) {
                                                 componentObj.setBindingLocation(elmComponent.getAttribute("BindingLocation"));
                                         }
+                                        
+                                        if(elmComponent.getAttribute("Hide") != null && elmComponent.getAttribute("Hide").equals("true") ){
+                                        	componentObj.setHide(true);
+                                        }else{
+                                        	componentObj.setHide(false);
+                                        }
 
                                         componentObj.setUsage(Usage.fromValue(elmComponent.getAttribute("Usage")));
 
@@ -612,15 +618,21 @@ public class ProfileSerializationImpl implements ProfileSerialization {
                 fieldObj.setName(fieldElm.getAttribute("Name"));
                 fieldObj.setUsage(Usage.fromValue(fieldElm.getAttribute("Usage")));
                 if (fieldElm.getAttribute("Binding") != null) {
-                        fieldObj.setTable(findTableIdByMappingId(fieldElm.getAttribute("Binding"), profile.getTables()));
+                    fieldObj.setTable(findTableIdByMappingId(fieldElm.getAttribute("Binding"), profile.getTables()));
                 }
 
                 if (fieldElm.getAttribute("BindingStrength") != null) {
-                        fieldObj.setBindingStrength(fieldElm.getAttribute("BindingStrength"));
+                	fieldObj.setBindingStrength(fieldElm.getAttribute("BindingStrength"));
                 }
 
                 if (fieldElm.getAttribute("BindingLocation") != null) {
-                        fieldObj.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
+                	fieldObj.setBindingLocation(fieldElm.getAttribute("BindingLocation"));
+                }
+                
+                if(fieldElm.getAttribute("Hide") != null && fieldElm.getAttribute("Hide").equals("true") ){
+                	fieldObj.setHide(true);
+                }else{
+                	fieldObj.setHide(false);
                 }
 
                 fieldObj.setDatatype(this.findDatatype(
