@@ -136,7 +136,7 @@ public class ProfileCreationServiceTest {
 				pNew);
 	}
 	
-//	@Test
+	@Test
 	public void testProfileUpdate() throws IOException, ProfileException {
 		// Collect version numbers
 		assertEquals(7, profileCreation.findHl7Versions().size());
