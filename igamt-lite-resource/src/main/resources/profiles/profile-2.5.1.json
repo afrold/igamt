@@ -1,7 +1,7 @@
 {
   "type" : "profile",
   "scope" : "HL7STANDARD",
-  "_id" : "{ \"$oid\" : \"562e6b073004b9e3b6191206\"}",
+  "_id" : { "$oid" : "562e6b073004b9e3b6191206"},
   "metaData" : {
     "name" : "Default Name",
     "identifier" : "Default Identifier",
