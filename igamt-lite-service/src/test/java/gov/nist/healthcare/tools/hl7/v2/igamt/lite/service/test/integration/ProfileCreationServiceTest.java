@@ -106,7 +106,7 @@ public class ProfileCreationServiceTest {
 		assertEquals(msgDesc.size(), msgDesc1.size() + ss.length);
 	}
 	
-//	@Test
+	@Test
 	public void testProfileCreation() throws IOException, ProfileException {
 		// Collect version numbers
 		assertEquals(7, profileCreation.findHl7Versions().size());
