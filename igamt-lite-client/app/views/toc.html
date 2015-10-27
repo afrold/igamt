@@ -1,34 +1,41 @@
 <div class="vid container">
-    <div class="row" ng-repeat="node in leveledProfile track by $index" ng-init="toggleToCContents(node.title)"
+    <div class="" ng-repeat="node in leveledProfile track by $index" ng-init="toggleToCContents(node.title)"
          ng-model="leveledProfile" style="margin: 1em 0em 0em 0em">
-        <div class="col-md-1 icon" ng-show="node.children && node.children.length > 0"><a
-                                      ng-click="toggleToCContents(node.title)">
-            <i class="fa"
-               ng-class="{
-				          'fa-caret-right': collapsed[node.title],
-				          'fa-caret-down': !collapsed[node.title]
-				        }"></i></a></div>
+
         <div ng-switch on="node.title">
             <div ng-switch-when="Metadata">
-                <div class="col-md-1 txt" ng-include="'Metadata.html'">{{node.title}}
+                <div class="txt" ng-include="'Metadata.html'"><b> {{node.title}}</b>
                 </div>
             </div>
             <div ng-switch-when="Messages">
                 <div context-menu context-menu-close="closedCtxMenu(node.title, $index)"
-                     data-target="messageHeadContextDiv.html" class="col-md-1 txt">{{node.title}}
+                     data-target="messageHeadContextDiv.html" class="txt">
+                     <a class="point" ng-show="node.children && node.children.length > 0"
+                        ng-click="toggleToCContents(node.title)">
+                         <i class="fa"
+                            ng-class="{
+				          'fa-caret-right': collapsed[node.title],
+				          'fa-caret-down': !collapsed[node.title]
+				        }"></i><b> {{node.title}}</b></a>
                 </div>
             </div>
             <div ng-switch-default>
                 <div context-menu context-menu-close="closedCtxMenu(node.title, $index)"
-                     data-target="headContextDiv.html" class="col-md-1 txt">{{node.title}}
+                     data-target="headContextDiv.html" class="txt">
+                     <a class="point" ng-show="node.children && node.children.length > 0"
+                             ng-click="toggleToCContents(node.title)">
+                         <i class="fa"
+                            ng-class="{
+				          'fa-caret-right': collapsed[node.title],
+				          'fa-caret-down': !collapsed[node.title]
+				        }"></i> <b> {{node.title}}</b></a>
                 </div>
             </div>
         </div>
-        <div class="vid row" ng-repeat="nnode in node.children track by $index" ng-if="!collapsed[node.title]">
-
-            <div ng-if="node.title !== 'Messages'" class="col-md-1 subicon" ng-include="'nMessage.html'"></div>
+        <div class="" ng-repeat="nnode in node.children track by $index" ng-if="!collapsed[node.title]">
+            <div ng-if="node.title !== 'Messages'" class="sub-txt" ng-include="'nMessage.html'"></div>
             <div context-menu context-menu-close="closedCtxSubMenu(nnode, $index)" ng-if="node.title === 'Messages'"
-                 class="col-md-1 subicon" data-target="messageContextDiv.html" ng-include="'Message.html'"></div>
+                 class="sub-txt" data-target="messageContextDiv.html" ng-include="'Message.html'"></div>
         </div>
     </div>
 </div>
@@ -63,27 +70,35 @@
     </ul>
 </div>
 <script type="text/ng-template" id="Metadata.html">
-    <a class="point" ng-click="tocSelection(node.title, node)">
-<span class="fa"
-      ng-class="{
-	          '': !collapsed[node.title]
-	        }"></span><span class="txt">{{node.title}}</span></a>
+    <a class="point txt" ng-click="tocSelection(node.title, node)">
+<!--<span class="fa"-->
+      <!--ng-class="{-->
+	          <!--'': !collapsed[node.title]-->
+	        <!--}"></span>-->
+        <span class="">{{node.title}}</span></a>
 </script>
 <script type="text/ng-template" id="nMessage.html">
-    <a class="point" ng-click="tocSelection(node.title, nnode)">
-<span class="fa"
-      ng-class="{
-	          '': !collapsed[node.title]
-	        }"></span><span class="txt" ng-show="nnode.label">{{nnode.messageType}}{{nnode.label}}</span>
-        <span class="txt" ng-show="!nnode.label">{{nnode.messageType}}{{nnode.name}}</span></a>
+    <a class="point txt" ng-click="tocSelection(node.title, nnode)">
+<!--<span class="fa"-->
+      <!--ng-class="{-->
+	          <!--'': !collapsed[node.title]-->
+	        <!--}"></span>-->
+        <span class="" ng-show="nnode.type === 'segment'">{{nnode.label}}</span>
+        <span class="" ng-show="nnode.type === 'table'">{{nnode.bindingIdentifier}}</span>
+        <span class="" ng-show="nnode.type === 'datatype'">{{nnode.label}}</span>
+        <span class="" ng-show="nnode.type === 'message'">{{nnode.structID}}</span>
+
+    </a>
 </script>
 <script type="text/ng-template" id="Message.html">
-    <a class="point" ng-click="tocSelection(node.title, nnode)">
-<span class="fa"
-      ng-class="{
-	          '': !collapsed[node.title]
-	        }"></span>
-        <span class="txt" ng-show="nnode.label">{{nnode.messageType}}{{nnode.label}}</span>
-        <span class="txt" ng-show="!nnode.label">{{nnode.messageType}}{{nnode.name}}</span>
-    </a>
+    <a class="point txt" ng-click="tocSelection(node.title, nnode)">
+<!--<span class="fa"-->
+      <!--ng-class="{-->
+	          <!--'': !collapsed[node.title]-->
+	        <!--}"></span>-->
+        <span class="" ng-show="nnode.type === 'segment'">{{nnode.label}}</span>
+        <span class="" ng-show="nnode.type === 'table'">{{nnode.bindingIdentifier}}</span>
+        <span class="" ng-show="nnode.type === 'datatype'">{{nnode.label}}</span>
+        <span class="" ng-show="nnode.type === 'message'">{{nnode.structID}}</span>
+     </a>
 </script>

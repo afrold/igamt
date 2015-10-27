@@ -27,11 +27,11 @@
                 <div class="">
                     <!--<h5><b>{{igContext.igType.name}}</b>, Total#: {{igs.length}}</h5>-->
                     <!--<hr />-->
-                    <button type="button" class="btn btn-info btn-sm"
-                            ng-click="hl7Versions('btn')" ng-controller="HL7VersionsDlgCtrl"><i class="fa fa-plus"></i>
-                        Create
-                        Guide
-                    </button>
+                    <!--<button type="button" class="btn btn-info btn-sm"-->
+                            <!--ng-click="hl7Versions('btn')" ng-controller="HL7VersionsDlgCtrl"><i class="fa fa-plus"></i>-->
+                        <!--Create-->
+                        <!--Guide-->
+                    <!--</button>-->
                     <table st-table="tmpIgs" st-safe-src="igs"
                            class="table table-striped table-bordered table-fix-header table-condensed ig-list-table">
                         <thead>
@@ -71,24 +71,24 @@
                                         ng-click="clone(row)">
                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                 </button>
-                                <div class="btn-group">
-                                    <button ng-disabled="row === profile && hasChanges()" type="button"
-                                            class="btn btn-warning btn-xs"><span><i
-                                            class="fa fa-download fa-fw"></i></span>
-                                    </button>
-                                    <button ng-disabled="row === profile && hasChanges()" type="button"
-                                            class="btn btn-warning btn-xs dropdown-toggle"
-                                            data-toggle="dropdown" aria-expanded="false">
-                                        <span class="caret"></span>
-                                        <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <li><a ng-click="exportAs(row.id, 'zip')">As ZIP</a></li>
-                                        <li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>
-                                        <li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>
-                                        <li><a ng-click="exportDelta(row.id,'pdf')">Delta</a></li>
-                                    </ul>
-                                </div>
+                                <!--<div class="btn-group">-->
+                                    <!--<button ng-disabled="row === profile && hasChanges()" type="button"-->
+                                            <!--class="btn btn-warning btn-xs"><span><i-->
+                                            <!--class="fa fa-download fa-fw"></i></span>-->
+                                    <!--</button>-->
+                                    <!--<button ng-disabled="row === profile && hasChanges()" type="button"-->
+                                            <!--class="btn btn-warning btn-xs dropdown-toggle"-->
+                                            <!--data-toggle="dropdown" aria-expanded="false">-->
+                                        <!--<span class="caret"></span>-->
+                                        <!--<span class="sr-only">Toggle Dropdown</span>-->
+                                    <!--</button>-->
+                                    <!--<ul class="dropdown-menu" role="menu">-->
+                                        <!--<li><a ng-click="exportAs(row.id, 'zip')">As ZIP</a></li>-->
+                                        <!--<li><a ng-click="exportAs(row.id,'pdf')">As PDF</a></li>-->
+                                        <!--<li><a ng-click="exportAs(row.id,'xslx')">As XSLX</a></li>-->
+                                        <!--<li><a ng-click="exportDelta(row.id,'pdf')">Delta</a></li>-->
+                                    <!--</ul>-->
+                                <!--</div>-->
 
                                 <!--<div class="dropdown">-->
                                 <!--<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->

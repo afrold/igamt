@@ -475,12 +475,12 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 2f, 2f, 6f };
 
 			for (Datatype d : p.getDatatypes().getChildren()) {
-				if (d.getLabel().contains("_")) {
+//				if ((d.getLabel() != null && d.getLabel().contains("_"))) {
 
-					this.addTocContent(tocDocument, igWriter, d.getLabel()
+					this.addTocContent(tocDocument, igWriter, d.getLabel() != null ?  d.getLabel() : d.getName()
 							+ " - " + d.getDescription());
 
-					igDocument.add(new Paragraph(d.getLabel() + " - "
+					igDocument.add(new Paragraph( d.getLabel() != null ?  d.getLabel() : d.getName() + " - "
 							+ d.getDescription() + " Datatype"));
 					igDocument.add(new Paragraph(d.getComment()));
 
@@ -493,7 +493,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					igDocument.add(Chunk.NEWLINE);
 					igDocument.add(table);
 					igDocument.add(Chunk.NEWLINE);
-				}
+//				}
 			}
 
 			/*

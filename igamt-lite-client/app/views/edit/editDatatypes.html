@@ -97,7 +97,7 @@
                                             <th class="col-xs-1 col-fixed-100">Length</th>
                                             <th class="col-xs-1 col-fixed-80">ConfLength</th>
                                             <th class="col-xs-1 col-fixed-100">Datatype</th>
-                                            <th class="col-xs-1 col-fixed-100">ValueSet</th>
+                                            <th class="col-xs-1 col-fixed-130">ValueSet</th>
                                             <th class="col-xs-1" ng-style="predWidth">Predicate</th>
                                             <th class="col-xs-2" ng-style="csWidth">Conformance
                                                 Statement
@@ -161,7 +161,7 @@
             <div>-</div>
         </td>
 
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-130">
             <div>-</div>
         </td>
 
@@ -251,11 +251,10 @@
             </div>
         </td>
 
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-130">
             <div>
-											<span ng-show="node.table != undefined  && node.table !== null">
-
-                                                <div class="btn-group">
+											<div ng-show="node.table != undefined  && node.table !== null">
+                                                <div class="btn-group" dropdown>
                                                     <button type="button" ng-click="goToTable(tablesMap[node.table])"
                                                             class="btn btn-info btn-xs">
                                                         {{tablesMap[node.table].bindingIdentifier}}
@@ -273,12 +272,12 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-                                            </span>
-											<span ng-show="(node.table == undefined || node.table == null)  && isAvailableDTForTable(datatypesMap[node.datatype])">
+                                            </div>
+											<div ng-show="(node.table == undefined || node.table == null)  && isAvailableDTForTable(datatypesMap[node.datatype])">
 												<button ng-click="mapTable(node)" class="btn btn-xs btn-info">
                                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                                 </button>
-                                            </span>
+                                            </div>
             </div>
         </td>
 
@@ -381,7 +380,7 @@
             </div>
         </td>
 
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-130">
             <div>
                 <button type="button" ng-click="goToTable(tablesMap[node.table])"
                         class="btn btn-info btn-xs" ng-show="node.table !== null && node.table !== undefined">

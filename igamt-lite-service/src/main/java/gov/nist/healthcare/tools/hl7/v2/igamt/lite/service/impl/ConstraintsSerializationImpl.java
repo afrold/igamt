@@ -293,7 +293,9 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		nu.xom.Element elmDescription = new nu.xom.Element("Description");
 		elmDescription.appendChild(c.getDescription());
 		elmConstraint.appendChild(elmDescription);
-		elmConstraint.appendChild(this.innerXMLHandler(c.getAssertion()));
+ 		nu.xom.Node n = this.innerXMLHandler(c.getAssertion()); //TODO: FIXME. WOO: Escape ""
+		if(n != null)
+		elmConstraint.appendChild(n);
 
 		return elmConstraint;
 	}

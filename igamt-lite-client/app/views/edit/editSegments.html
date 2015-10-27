@@ -100,7 +100,7 @@
                                                 <th class="col-xs-1 col-fixed-100">Length</th>
                                                 <th class="col-xs-1 col-fixed-80">ConfLength</th>
                                                 <th class="col-xs-1 col-fixed-100">Datatype</th>
-                                                <th class="col-xs-1 col-fixed-100">ValueSet</th>
+                                                <th class="col-xs-1 col-fixed-130">ValueSet</th>
                                                 <th class="col-xs-1" ng-style="predWidth">Predicate</th>
                                                 <th class="col-xs-1" ng-style="csWidth">Conformance
                                                     Statement
@@ -147,7 +147,7 @@
         <td class="col-xs-1 col-fixed-100">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-130">
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="predWidth">
@@ -244,7 +244,7 @@
                     ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype].name">
             </select>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-130">
             <div ng-show="node.table != undefined && node.table !== null">
                 <div class="btn-group" dropdown>
                     <button type="button" ng-click="goToTable(tablesMap[node.table])" class="btn btn-info btn-xs">
@@ -360,7 +360,7 @@
                 </button>
             </div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-130">
             <div>
 											<span ng-show="node.table != undefined && node.table != null">
 												<div class="btn-group" dropdown>

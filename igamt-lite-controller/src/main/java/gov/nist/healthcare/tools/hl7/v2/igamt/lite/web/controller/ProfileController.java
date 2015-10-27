@@ -2,6 +2,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -216,7 +218,7 @@ public class ProfileController extends CommonController {
 		content = profileExport.exportAsXml(p);
 		response.setContentType("text/xml");
 		response.setHeader("Content-disposition",
-				"attachment;filename=Profile.xml");
+				"attachment;filename=" +  p.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -231,8 +233,7 @@ public class ProfileController extends CommonController {
 		content = profileExport.exportAsZip(p);
 		response.setContentType("application/zip");
 		response.setHeader("Content-disposition",
-				"attachment;filename=Profile-"
-						+ p.getMetaData().getIdentifier() + ".zip");
+				"attachment;filename=" +  p.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) +  ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -248,7 +249,7 @@ public class ProfileController extends CommonController {
 		content = profileExport.exportAsPdf(p);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition",
-				"attachment;filename=Profile.pdf");
+				"attachment;filename=" +  p.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -262,7 +263,7 @@ public class ProfileController extends CommonController {
 		content = profileService.diffToPdf(p);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition",
-				"attachment;filename=ProfileDelta.pdf");
+				"attachment;filename=" +  p.getMetaData().getName()  + "-Delta-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -285,7 +286,7 @@ public class ProfileController extends CommonController {
 		content = profileExport.exportAsXlsx(p);
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.setHeader("Content-disposition",
-				"attachment;filename=Profile.xlsx");
+				"attachment;filename=" +  p.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 

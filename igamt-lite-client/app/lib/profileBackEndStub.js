@@ -16,7 +16,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/shortaccounts.json', false);
         request.send(null);
-        var profile = angular.fromJson(request.response);
+        var profile = request.response;
         return [request.status, profile, {}];
     });
 

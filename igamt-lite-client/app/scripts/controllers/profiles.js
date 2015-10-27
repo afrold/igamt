@@ -245,13 +245,17 @@ angular.module('igl')
         };
 
         $scope.openProfile = function (profile) {
-            $rootScope.isEditing = true;
-                $scope.getLeveledProfile(profile);
-            $scope.loadingProfile = true;
-            $scope.selectIgTab(1);
             if (profile != null) {
-                $rootScope.initMaps();
+                $scope.loadingProfile = true;
+                $rootScope.isEditing = true;
+                $scope.selectIgTab(1);
                 $rootScope.profile = profile;
+                $rootScope.profile.messages.children =  $filter('orderBy')($rootScope.profile.messages.children, 'label');
+                $rootScope.profile.segments.children =  $filter('orderBy')($rootScope.profile.segments.children, 'label');
+                $rootScope.profile.datatypes.children =  $filter('orderBy')($rootScope.profile.datatypes.children, 'label');
+                $rootScope.profile.tables.children =  $filter('orderBy')($rootScope.profile.tables.children, 'label');
+                $scope.getLeveledProfile($rootScope.profile);
+                $rootScope.initMaps();
                 $rootScope.messages = $rootScope.profile.messages.children;
                 angular.forEach($rootScope.profile.datatypes.children, function (child) {
                     this[child.id] = child;

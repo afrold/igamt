@@ -27,6 +27,7 @@ public class CommonController {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public String exception(Exception ex) {
 		logger.debug(ex.getMessage());
+		ex.printStackTrace();
 		return "Sorry, an error occured" ;
 	}
 }

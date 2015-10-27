@@ -1784,6 +1784,14 @@ table.profile-table td {
   max-width: 100px;
 }
 
+.col-fixed-130 {
+  float: left;
+  width: 130px;
+  min-width: 130px;
+  max-width: 130px;
+}
+
+
 .col-fixed-2-100 {
   min-width: 100px;
 }
@@ -1964,9 +1972,23 @@ table.ig-list-table {
 
 .txt {
   margin: 0em 0em 0em 1em;
-  padding: 0em 0em 1em 1em;
   text-align: left;
 }
+
+
+.sub-txt {
+  margin: 0em 0em 0em 2em;
+  text-align: left;
+}
+
+
+//.txt {
+//  //  margin: 0em 0em 0em 1em;
+//  //  padding: 0em 0em 1em 1em;
+//  text-align: left;
+//}
+
+
 
 .col-fixed-50{
   width:50px
