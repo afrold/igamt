@@ -428,7 +428,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 				tocDocument.add(Chunk.NEWLINE);
 				tocDocument
-						.add(new Paragraph("Segments definition", titleFont));
+						.add(new Paragraph("Segments definition " + m.getStructID(), titleFont));
 				tocDocument.add(Chunk.NEWLINE);
 
 				igDocument.add(new Paragraph("Segments definition", titleFont));
@@ -935,10 +935,10 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				public void draw(PdfContentByte canvas, float llx, float lly,
 						float urx, float ury, float y) {
 					final PdfTemplate createTemplate = canvas.createTemplate(
-							50, 50);
+							60, 60);
 					ProfileExportImpl.this.tocPlaceholder.put(title,
 							createTemplate);
-					canvas.addTemplate(createTemplate, urx - 50, y);
+					canvas.addTemplate(createTemplate, urx - 60, y);
 				}
 			});
 
@@ -1281,7 +1281,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					// f.getItemNo().replaceFirst("^0+(?!$)", ""),
 					String.valueOf(f.getPosition()),
 					f.getName(),
-					datatypes.findOne(f.getDatatype()).getLabel(),
+					f.getDatatype() == null ? "NULL":f.getDatatype(), //datatypes.findOne(f.getDatatype()).getLabel(),
 					f.getUsage().value(),
 					"",
 					"[" + String.valueOf(f.getMin()) + ".."
@@ -1289,8 +1289,9 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					"",
 					"[" + String.valueOf(f.getMinLength()) + ".."
 							+ String.valueOf(f.getMaxLength()) + "]",
-					(f.getTable() == null) ? "" : tables.findOne(f.getTable())
-							.getBindingIdentifier(), f.getComment());
+					(tables.findOneByName(f.getTable()) == null) ?
+							"NULL" : tables.findOneByName(f.getTable()).getBindingIdentifier(), 
+					f.getComment() == null ? "" : f.getComment());
 			rows.add(row);
 
 			if (inlineConstraints) {
