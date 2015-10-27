@@ -150,6 +150,17 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		return null;
 	}	
 	
+	public Table findOneByName(String name) {
+		if (this.children != null) {
+			for (Table t: this.children){
+				if (t.getName().equals(name)){
+					return t;
+				}
+			}
+		}
+		return null;
+	}	
+	
 
 	public Code findOneCode(String id) {
 		if (this.children != null) {
