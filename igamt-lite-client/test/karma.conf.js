@@ -14,7 +14,7 @@ module.exports = function(config) {
     basePath: '../',
 
     // testing framework to use (jasmine/mocha/qunit/...)
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine-jquery','jasmine'],
 
     // list of files / patterns to load in the browser
     files: [
@@ -31,7 +31,14 @@ module.exports = function(config) {
       'bower_components/angular-route/angular-route.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
-      'app/lib/angular-mocks/angular-mocks.js',
+      'bower_components/lodash/dist/lodash.compat.js',
+      'bower_components/restangular/dist/restangular.js',
+      'bower_components/rangy/rangy-core.js',
+      'bower_components/rangy/rangy-selectionsaverestore.js',
+      'bower_components/textAngular/src/textAngular.js',
+      'bower_components/textAngular/src/textAngularSetup.js',
+      'bower_components/ng-context-menu/dist/ng-context-menu.js',
+// gcr: Jasmine inject() will not execute if this file is included. 'app/lib/angular-mocks/angular-mocks.js',
       'app/lib/utils.js',
       'app/lib/Objectid.js',
       'app/lib/angular-treetable/js/jquery.treetable.js',
@@ -39,7 +46,11 @@ module.exports = function(config) {
       'app/lib/jquery.i18n.properties-1.0.9.js',
       'app/scripts/app.js',
       'app/scripts/**/*.js',
-      'test/spec/services/**/*.js'
+      'test/spec/services/**/*.js',
+      { pattern:  'test/fixtures/profiles/*.json',
+          watched:  true,
+          served:   true,
+          included: false }
     ],
 
     // list of files / patterns to exclude
@@ -63,6 +74,7 @@ module.exports = function(config) {
     // Which plugins to enable
     plugins: [
       'karma-phantomjs-launcher',
+      'karma-jasmine-jquery',
       'karma-jasmine'
     ],
 
