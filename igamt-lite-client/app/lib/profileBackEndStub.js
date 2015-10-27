@@ -207,7 +207,6 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, profile, {}];
     });
 
-
     $httpBackend.whenGET('api/profiles/config').respond(function (method, url, data, headers) {
          var request = new XMLHttpRequest();
         request.open('GET', '../../resources/config.json', false);
