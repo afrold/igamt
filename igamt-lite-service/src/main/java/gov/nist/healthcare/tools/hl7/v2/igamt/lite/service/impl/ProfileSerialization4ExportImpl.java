@@ -685,8 +685,11 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
                         elmField.addAttribute(new Attribute("Name", f.getName()));
                         elmField.addAttribute(new Attribute("Usage", f.getUsage()
                                         .toString()));
-                        elmField.addAttribute(new Attribute("Datatype", datatypes.findOne(
-                                        f.getDatatype()).getLabel()));
+//                        elmField.addAttribute(new Attribute("Datatype", datatypes.findOne(
+//                                f.getDatatype()).getLabel()));
+                        if (f.getDatatype() != null && datatypes.findOne(f.getDatatype()) != null){
+                        	elmField.addAttribute(new Attribute("Datatype", datatypes.findOne(f.getDatatype()).getLabel()));
+                        }
                         elmField.addAttribute(new Attribute("MinLength", ""
                                         + f.getMinLength()));
                         elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
