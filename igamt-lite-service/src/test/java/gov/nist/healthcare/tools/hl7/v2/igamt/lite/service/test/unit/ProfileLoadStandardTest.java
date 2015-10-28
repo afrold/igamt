@@ -10,12 +10,17 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
@@ -104,24 +109,19 @@ public class ProfileLoadStandardTest {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//Load all the standard profiles
+		
+//		//Load all the standard profiles
+//		ApplicationContext ctx = new AnnotationConfigApplicationContext(PersistenceContext.class);
+//		MongoClient mongo = (MongoClient)ctx.getBean("mongo");
+//		DB db = mongo.getDB(env.getProperty("mongo.dbname"));
+//		DBCollection collection = db.getCollection("profile");
+//
+//		List<String> profilesjson = IOUtils.readLines(this.getClass().getClassLoader().getResourceAsStream("profilesStandardJson/profile-export.json"));
+//		for (String pp:profilesjson){
+//			DBObject dbObject = (DBObject) JSON.parse(pp);
+//			collection.save(dbObject);
+//		}
 
-		ApplicationContext ctx = new AnnotationConfigApplicationContext(PersistenceContext.class);
-		MongoClient mongo = (MongoClient)ctx.getBean("mongo");
-		DB db = mongo.getDB(env.getProperty("mongo.dbname"));
-		DBCollection collection = db.getCollection("profile");
-
-		for (String hl7version : Arrays.asList("2.1", "2.2", "2.3", "2.3.1", "2.4", "2.5", "2.5.1", "2.6", "2.7")){
-			if (profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7version).isEmpty()){
-				try {
-					String profileJson = IOUtils.toString(this.getClass().getClassLoader().getResource("profiles/profile-"+hl7version+".json"));
-					DBObject dbObject = (DBObject) JSON.parse(profileJson);
-					collection.save(dbObject);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	@After
@@ -130,38 +130,69 @@ public class ProfileLoadStandardTest {
 		//		profileRepository.deleteAll();
 	}
 
-
 	@Test
-	public void testStandardProfilesLoaded0() throws CloneNotSupportedException, IOException {
+	public void testStandardPresence() {
 		//		Test if there is at least one profile saved
 		for (String hl7version : Arrays.asList("2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7")){
 			assertEquals(true, profileRepository.findStandardByVersion(hl7version).size() >= 1);
 		}
+	}
+	
+	@Test
+	public void testStandardContent() {
+		//		Test some elements in version 2.7
+		String hl7version = "2.5.1";
+		Profile p = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7version).get(0);
+		
+		Messages msgs = p.getMessages();
+		Segments sgts = p.getSegments();
+		Datatypes vsds = p.getDatatypes();
+		
+		Message m = msgs.findOneByStrucId("A03");
+		assertNotNull(m);
+		
+		Segment sgt = sgts.findOneByName("EVN");
+		assertNotNull(m.findOneSegmentRefOrGroup(sgt.getId()));
+		assertEquals("1", m.findOneSegmentRefOrGroup(sgt.getId()).getMax());
+		
+		Datatype dt = vsds.findOneDatatype("CWE");
+		assertEquals("Coded with Exceptions", dt.getDescription());;
+		
+		Component cpt;
+		
+		
+		
+	}
+		
+	
+	@Test
+	public void printStandard() throws CloneNotSupportedException, IOException {
 
 		//Select profile
-		String hl7version = "2.7";
+		String hl7version = "2.5.1";
 		Profile p = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7version).get(0);
 
 		InputStream content = null;
-		// Print one programatically with iText
-		content = profileExport.exportAsPdf(p);
-		try {
-			writeStream(content);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error while writing stream");
-		}
 
-//		// Print one using XSL stylesheet
-//		String inlineConstraints = "true";
-//		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
-//
+//		// Print one programmatically with iText
+//		content = profileExport.exportAsPdf(p);
 //		try {
 //			writeStream(content);
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //			System.out.println("Error while writing stream");
 //		}
+
+//		// Print one using XSL stylesheet
+		String inlineConstraints = "true";
+		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
+
+		try {
+			writeStream(content);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Error while writing stream");
+		}
 
 	}
 

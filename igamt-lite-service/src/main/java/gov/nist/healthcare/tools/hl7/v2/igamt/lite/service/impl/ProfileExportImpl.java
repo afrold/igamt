@@ -239,6 +239,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		// Note: inlineConstraint can be true or false
 		try {
 			// Generate xml file containing profile
+//			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//			File tmpXmlFile = new File("ProfileTemp_" + timeStamp + ".xml");
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
 			String stringProfile = new ProfileSerialization4ExportImpl()
 					.serializeProfileToXML(p);
@@ -259,8 +261,9 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 			// Convert html document to pdf
 			Document document = new Document();
-			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-			File tmpPdfFile = File.createTempFile("Profile_"+timeStamp, ".pdf");
+//			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//			File tmpPdfFile = new File("Profile_" + timeStamp + ".pdf");
+			File tmpPdfFile = File.createTempFile("Profile", ".pdf");
 			PdfWriter writer = PdfWriter.getInstance(document,
 					FileUtils.openOutputStream(tmpPdfFile));
 			document.open();

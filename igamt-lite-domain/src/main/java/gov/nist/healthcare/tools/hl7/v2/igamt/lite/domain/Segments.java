@@ -74,7 +74,6 @@ public class Segments implements java.io.Serializable, Cloneable {
 					return m;
 				}
 			}
-
 		return null;
 	}
 
@@ -83,6 +82,26 @@ public class Segments implements java.io.Serializable, Cloneable {
 			for (Segment s : this.children) {
 				if (s.getName().equals(name)
 						&& s.getHl7Version().equals(hl7Version)) {
+					return s;
+				}
+			}
+		return null;
+	}
+
+	public Segment findOneByName(String name) {
+		if (this.children != null)
+			for (Segment s : this.children) {
+				if (s.getName().equals(name)) {
+					return s;
+				}
+			}
+		return null;
+	}
+
+	public Segment findOneByLabel(String label) {
+		if (this.children != null)
+			for (Segment s : this.children) {
+				if (s.getLabel().equals(label)) {
 					return s;
 				}
 			}
