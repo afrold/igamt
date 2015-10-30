@@ -46,12 +46,14 @@ module.exports = function(config) {
       'app/lib/jquery.i18n.properties-1.0.9.js',
       'app/scripts/app.js',
       'app/scripts/**/*.js',
-      'test/spec/services/**/*.js',
+      'test/spec/services/**/*.js'
+      ,
       { pattern:  'test/fixtures/profiles/*.json',
           watched:  true,
           served:   true,
           included: false }
     ],
+// The above "pattern" must be in order to load any of the profile-*.json files.     
 
     // list of files / patterns to exclude
     exclude: [],
