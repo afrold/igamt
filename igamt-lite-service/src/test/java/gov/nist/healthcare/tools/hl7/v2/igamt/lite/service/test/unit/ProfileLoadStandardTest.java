@@ -20,34 +20,21 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.VerificationService;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.IOUtils;
@@ -63,28 +50,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.env.Environment;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
-import org.springframework.data.mongodb.core.convert.CustomConversions;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.github.fakemongo.Fongo;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
-import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
-//@ContextConfiguration(classes = {PersistenceContext.class})
+@ContextConfiguration(classes = {PersistenceContextUnit.class})
 public class ProfileLoadStandardTest {  
 	Logger logger = LoggerFactory.getLogger( ProfileLoadStandardTest.class ); 
 
@@ -99,9 +76,6 @@ public class ProfileLoadStandardTest {
 
 	@Autowired
 	ProfileService profileService;
-
-	@Autowired 
-	VerificationService verificationService;
 
 	@Autowired
 	ProfileExportService profileExport;
@@ -156,8 +130,8 @@ public class ProfileLoadStandardTest {
 
 	@After
 	public void tearDown() throws Exception {
-		// Clear all data in DB
-		//		profileRepository.deleteAll();
+		//		 Clear all data in DB
+		profileRepository.deleteAll();
 	}
 
 	@Rule
@@ -180,28 +154,44 @@ public class ProfileLoadStandardTest {
 
 	@Test
 	public void testMessageContent() {
-		//Test ADT_A03 Discharge/End visit (Event A03) (chap 03 p.6)
+		//Test SUR Summary Product Experience Report (Event P09) (chap 07 p.101)
 
-		assertTrue(false); //FIXME write testMessageContent
+		Message m = profile251.getMessages().findOneByStrucId("P09");
 
-		Messages msgs = profile251.getMessages();
-		Segments sgts = profile251.getSegments();
+		logger.info(String.valueOf(m.getChildren().size()) + " " + m.toString());
 
-		Message m = msgs.findOneByStrucId("A03");
-		assertNotNull(m);
-
-		int i = 0;
+		ArrayList<Segment> sgt = new ArrayList<Segment>(); 
+		ArrayList<Group> grp = new ArrayList<Group>(); 
 		for (Object sg : m.getChildren().toArray()){
-			if (sg instanceof SegmentRef)
-				logger.debug("--------> " + String.valueOf(i) + " " + sgts.findOneSegmentById(((SegmentRef) sg).getRef()) + ((SegmentRef) sg).toString());
-			if (sg instanceof Group)	
-				logger.debug("--------> " + String.valueOf(i) + " " + ((Group) sg).toString());
-
-			i += 1;
+			if (sg instanceof SegmentRef){
+				sgt.add(profile251.getSegments().findOneSegmentById(((SegmentRef) sg).getRef()));
+			}
+			if (sg instanceof Group){
+				this.printSubGroup((Group)sg, sgt, grp);
+				grp.add((Group) sg);
+			}
 		}
 
+		assertNotNull(m);
+		assertEquals("SUR", m.getMessageType());
+		assertEquals("P09", m.getEvent());
+		assertEquals("P09", m.getStructID());
+		assertEquals("summary product experience report", m.getDescription().toLowerCase());
+		assertEquals(9, sgt.size());
+		assertEquals(3, grp.size());
 	}
 
+	private void printSubGroup(Group sgs, ArrayList<Segment> sgt, ArrayList<Group> grp){
+		for (Object sg : sgs.getChildren()){
+			if (sg instanceof SegmentRef){
+				sgt.add(profile251.getSegments().findOneSegmentById(((SegmentRef) sg).getRef()));
+			}
+			if (sg instanceof Group){
+				this.printSubGroup((Group)sg, sgt, grp);
+				grp.add((Group) sg);
+			}
+		}
+	}
 
 	@Test
 	public void testSegmentContent() {
@@ -281,85 +271,10 @@ public class ProfileLoadStandardTest {
 		}
 		Code c = tbl.findOneCodeByValue("A");
 		assertEquals("A", c.getValue());
-		//		assertEquals("Ambiguous", c.getLabel()); FIXME  (remove when new json profiles are pushed)
+		assertEquals("Ambiguous", c.getLabel()); // FIXME  (remove when new json profiles are pushed)
 		assertEquals("O", c.getCodeUsage());
 		assertEquals("0001", c.getCodeSystem());
-		//		assertEquals("2.5.1", c.getCodeSystemVersion()); FIXME (remove when new json profiles are pushed)
-	}
-
-	//	@Test
-	public void printStandard() throws CloneNotSupportedException, IOException {
-
-		//Select profile
-		String hl7version = "2.5.1";
-		Profile p = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7version).get(0);
-
-		InputStream content = null;
-
-		// Print one programmatically with iText
-		content = profileExport.exportAsPdf(p);
-		try {
-			writeStream(content);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.debug("Error while writing stream");
-		}
-
-		//		// Print one using XSL stylesheet
-		//		String inlineConstraints = "true";
-		//		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
-		//
-		//		try {
-		//			writeStream(content);
-		//		} catch (Exception e) {
-		//			e.printStackTrace();
-		//			System.out.println("Error while writing stream");
-		//		}
-
-	}
-
-	private void writeStream(InputStream content) throws IOException{
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-		File tmpPdfFile = new File("Profile_"+timeStamp+".pdf");
-		OutputStream out=new FileOutputStream(tmpPdfFile);
-		byte buf[]=new byte[1024];
-		int len;
-		while((len=content.read(buf))>0)
-			out.write(buf,0,len);
-		out.close();
-	}
-
-
-	@Configuration
-	@EnableMongoRepositories(basePackages = "gov.nist.healthcare.tools")
-	@ComponentScan(basePackages = "gov.nist.healthcare.tools")
-	static class ProfileTestConfiguration extends AbstractMongoConfiguration {
-
-		@Override
-		public Mongo mongo() {
-			return new Fongo("igl").getMongo();
-		}
-
-		@Override
-		@Bean
-		public CustomConversions customConversions() {
-			List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
-			converterList.add(new FieldWriteConverter());
-			converterList.add(new ComponentWriteConverter());
-			converterList.add(new SegmentRefWriteConverter());
-			converterList.add(new ProfileReadConverter());
-			return new CustomConversions(converterList);
-		}
-
-		@Override
-		protected String getDatabaseName() {
-			return "igl";
-		}
-
-		@Override
-		public String getMappingBasePackage() {
-			return "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain";
-		}
+		//		assertEquals("2.5.1", c.getCodeSystemVersion()); Can be null
 	}
 
 
