@@ -149,7 +149,7 @@ public class Datatype extends DataModelWithConstraints implements java.io.Serial
 	@Override
 	public String toString() {
 		return "Datatype [id=" + id + ", label=" + label + ", name=" + name
-				+ ", description=" + description + "]";
+				+ ", description=" + description + ", components=" + components + "]";
 	}
 
 	@Override
