@@ -21,29 +21,29 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 public class MessageRepositoryImpl implements MessageOperations   {
-	
-	 @Autowired
-	 private MongoOperations mongo;
+
+	private Logger log = LoggerFactory.getLogger(MessageRepositoryImpl.class);
+
+	@Autowired
+	private MongoOperations mongo;
 
 	/* (non-Javadoc)
 	 * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageOperations#finfByProfileId(java.lang.String)
 	 */
 	@Override
 	public List<Message> findByMessagesId(String messagesId) {
-		   Criteria where = Criteria.where("messages.id").is(messagesId);
-		    Query query = Query.query(where);
-		    return mongo.find(query, Message.class);
+		log.debug("Querying message library by Id");
+		Criteria where = Criteria.where("messages.id").is(messagesId);
+		Query query = Query.query(where);
+		return mongo.find(query, Message.class);
 	}
-	 
-	 
- 
-	
-	
-	
+
 }
