@@ -19,12 +19,15 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.MessagesReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,14 +45,16 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
+
 @Configuration
 @PropertySource("classpath:db-test-config.properties")
-@EnableMongoRepositories("gov.nist.healthcare.tools")
+@EnableMongoRepositories(basePackages = {"gov.nist.healthcare.tools.hl7.v2.igamt.lite"})
 // @EnableTransactionManagement(proxyTargetClass = true)
-@ComponentScan("gov.nist.healthcare.tools.hl7.v2.igamt.lite")
+@ComponentScan(basePackages = "gov.nist.healthcare.tools.hl7.v2.igamt.lite")
 public class PersistenceContext extends AbstractMongoConfiguration {
 
 	@Autowired
+	@Resource
 	private Environment env;
 
 	@Override
@@ -62,6 +67,8 @@ public class PersistenceContext extends AbstractMongoConfiguration {
 		return new MongoClient(new ServerAddress(env.getProperty("mongo.host"),
 				Integer.valueOf(env.getProperty("mongo.port"))),
 				Arrays.asList(credential));
+
+//		return new Fongo("igl").getMongo();
 	}
 
 	@Override
@@ -75,16 +82,12 @@ public class PersistenceContext extends AbstractMongoConfiguration {
 		return new CustomConversions(converterList);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.data.mongodb.config.AbstractMongoConfiguration#
-	 * getDatabaseName()
-	 */
+
 	@Override
 	protected String getDatabaseName() {
 		return env.getProperty("mongo.dbname");
 	}
+
 
 	@Override
 	public String getMappingBasePackage() {
