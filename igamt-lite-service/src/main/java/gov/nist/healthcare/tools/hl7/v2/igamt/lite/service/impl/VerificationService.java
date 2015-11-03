@@ -22,6 +22,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -63,7 +64,7 @@ public class VerificationService {
 		}
 		return evm;
 	}
-	
+
 	private ElementVerification verifySegmentRef(SegmentRefOrGroup srog) {
 		String result = "";
 		ElementVerification evsrog = new ElementVerification(srog.getId(), srog.getType());
@@ -113,7 +114,7 @@ public class VerificationService {
 
 	public ElementVerification verifySegment(Profile p, Profile baseP, String id, String type) {
 		ElementVerification evs = new ElementVerification(id, type);
-		Segment s = p.getSegments().findOne(id);
+		Segment s = p.getSegments().findOneSegmentById(id);
 		for (Field f : s.getFields()){
 			ElementVerification evf = verifyField(p, baseP, f.getId(), f.getType());
 			evs.addChildrenVerification(evf);
@@ -123,7 +124,7 @@ public class VerificationService {
 
 	public InputStream verifySegment2(Profile p, Profile baseP, String id, String type) {
 		String result = "";
-		Segment s = p.getSegments().findOne(id);
+		Segment s = p.getSegments().findOneSegmentById(id);
 
 		try {
 			//Create temporary file
@@ -311,11 +312,11 @@ public class VerificationService {
 		result = this.validateChangeLength(String.valueOf(c.getMinLength()), c.getMaxLength());
 		evcRst = new ElementVerificationResult("maxLength", String.valueOf(c.getMaxLength()), result);
 		evc.addElementVerifications(evcRst);
-		
-		Datatype dt = p.getDatatypes().findOneDatatype(c.getDatatype());
+
+		Datatype dt = p.getDatatypes().findOneDatatypeByLabel(c.getDatatype());
 		evc.addChildrenVerification(verifyDatatype(p, baseP, dt.getId(), dt.getType()));
-		
-		Table t = p.getTables().findOne(c.getTable());
+
+		Table t = p.getTables().findOneTableById(c.getTable());
 		evc.addChildrenVerification(verifyValueSet(p, baseP, t.getId(), t.getType()));
 
 		return evc;
@@ -334,12 +335,12 @@ public class VerificationService {
 	public ElementVerification verifyValueSet(Profile p, Profile baseP, String id, String type) {
 		// Type is ValueSet (or Table)
 		String result = "";
-		Table t = p.getTables().findOne(id);
+		Table t = p.getTables().findOneTableById(id);
 		ElementVerification evt = new ElementVerification(id, type);
 		for (Code c : t.getCodes()){
 			result = this.validateChangeUsage(p.getMetaData().getHl7Version(), 
-					Usage.fromValue(baseP.getTables().findOneCode(id).getCodeUsage()), 
-					Usage.fromValue(p.getTables().findOneCode(id).getCodeUsage()));
+					Usage.fromValue(baseP.getTables().findOneCodeById(id).getCodeUsage()), 
+					Usage.fromValue(p.getTables().findOneCodeById(id).getCodeUsage()));
 			ElementVerification evc = new ElementVerification(c.getId(), c.getType());
 			ElementVerificationResult evcRst = new ElementVerificationResult("usage", c.getCodeUsage(), result);
 			evc.addElementVerifications(evcRst);
@@ -352,7 +353,7 @@ public class VerificationService {
 	public InputStream verifyValueSet2(Profile p, Profile baseP, String id, String type) {
 		// Type is ValueSet (or Table)
 		String result = "";
-		Table t = p.getTables().findOne(id);
+		Table t = p.getTables().findOneTableById(id);
 
 		try {
 			//Create temporary file
@@ -376,8 +377,8 @@ public class VerificationService {
 				generator.writeStringField("eltName", "usage");
 				generator.writeStringField("eltAtt", c.getCodeUsage());
 				result = this.validateChangeUsage(p.getMetaData().getHl7Version(), 
-						Usage.fromValue(baseP.getTables().findOneCode(id).getCodeUsage()), 
-						Usage.fromValue(p.getTables().findOneCode(id).getCodeUsage()));
+						Usage.fromValue(baseP.getTables().findOneCodeById(id).getCodeUsage()), 
+						Usage.fromValue(p.getTables().findOneCodeById(id).getCodeUsage()));
 				generator.writeStringField("result", result);
 				generator.writeEndObject();
 
@@ -428,9 +429,9 @@ public class VerificationService {
 			referenceUsage = basec.getUsage();
 			break;
 		case "code":
-			Code cd = p.getTables().findOneCode(id);
+			Code cd = p.getTables().findOneCodeById(id);
 			currentUsage = Usage.fromValue(cd.getCodeUsage());
-			Code basecd = baseP.getTables().findOneCode(id);
+			Code basecd = baseP.getTables().findOneCodeById(id);
 			referenceUsage = Usage.fromValue(basecd.getCodeUsage());
 			break;
 		}
@@ -470,9 +471,9 @@ public class VerificationService {
 			referenceUsage = basec.getUsage();
 			break;
 		case "code":
-			Code cd = p.getTables().findOneCode(id);
+			Code cd = p.getTables().findOneCodeById(id);
 			currentUsage = Usage.fromValue(cd.getCodeUsage());
-			Code basecd = baseP.getTables().findOneCode(id);
+			Code basecd = baseP.getTables().findOneCodeById(id);
 			referenceUsage = Usage.fromValue(basecd.getCodeUsage());
 			break;
 		}
@@ -596,11 +597,27 @@ public class VerificationService {
 	}
 
 
+	public HashSet<String> duplicates (String[] values) {
+		//Return hashset with duplicated values
+		HashSet<String> set = new HashSet<String>();
+		HashSet<String> set2 = new HashSet<String>(); 
+        for (String valueElement : values)
+        {
+            if(!set.add(valueElement))
+            {
+            	if (!set.add(valueElement))
+            		set2.add(valueElement);
+            }
+        }
+        return set2;
+	}
+
 	private InputStream generateOneJsonResult(String id, String type, String eltName, String eltValue, String result){
 
 		try {
 			//Create temporary file
-			File tmpJsonFile = File.createTempFile("resultTmp", ".json");
+//			File tmpJsonFile = File.createTempFile("resultTmp", ".json"); FIXME
+			File tmpJsonFile = new File("/Users/marieros/git/igamt_github4/igamt-lite-service/src/test/java/gov/nist/healthcare/tools/hl7/v2/igamt/lite/service/test/resultTmp.json");
 
 			//Generate json file
 			JsonFactory factory = new JsonFactory();
@@ -840,9 +857,8 @@ public class VerificationService {
 
 	public static void main(String[] args) throws IOException {
 		VerificationService ev = new VerificationService();
-		System.out.println(ev.allowedChangesUsage("2.7.1", "RE").contains("R"));
-
-
+//		System.out.println(ev.allowedChangesUsage("2.7.1", "RE").contains("R"));
+		System.out.println(ev.allowedChangesUsage("2.7.1", "RE").toString());
 
 	}
 

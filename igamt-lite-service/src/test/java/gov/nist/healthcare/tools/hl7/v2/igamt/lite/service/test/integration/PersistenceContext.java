@@ -48,7 +48,7 @@ import com.mongodb.ServerAddress;
 
 @Configuration
 @PropertySource("classpath:db-test-config.properties")
-@EnableMongoRepositories(basePackages = {"gov.nist.healthcare.tools.hl7.v2.igamt.lite"})
+@EnableMongoRepositories(basePackages = {"gov.nist.healthcare.tools"})
 // @EnableTransactionManagement(proxyTargetClass = true)
 @ComponentScan(basePackages = "gov.nist.healthcare.tools.hl7.v2.igamt.lite")
 public class PersistenceContext extends AbstractMongoConfiguration {

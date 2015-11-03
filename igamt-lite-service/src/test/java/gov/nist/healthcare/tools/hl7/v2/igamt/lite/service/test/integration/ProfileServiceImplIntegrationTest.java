@@ -126,7 +126,7 @@ public class ProfileServiceImplIntegrationTest {
 				.toArray(new Message[] {})[0];
 		SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
 		Group group = (Group) message.getChildren().get(5);
-		Segment segment = p1.getSegments().findOne(segmentRef.getRef());
+		Segment segment = p1.getSegments().findOneSegmentById(segmentRef.getRef());
 		Field field = segment.getFields().get(0);
 		Datatype datatype = p1.getDatatypes().getChildren()
 				.toArray(new Datatype[] {})[0];

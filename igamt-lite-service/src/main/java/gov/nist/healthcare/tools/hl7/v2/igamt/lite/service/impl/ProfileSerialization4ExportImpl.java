@@ -543,7 +543,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
                 nu.xom.Element elmSegment = new nu.xom.Element("Elt");
                 elmSegment.addAttribute(new Attribute("IDRef", segmentRef.getId()));
                 elmSegment.addAttribute(new Attribute("IDSeg", segmentRef.getRef()));
-                elmSegment.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + ((Segment)segments.findOne(segmentRef.getRef())).getName()));
+                elmSegment.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getName()));
                 elmSegment.addAttribute(new Attribute("Depth", String.valueOf(depth)));
                 elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage()
                                 .value()));
@@ -622,7 +622,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
                 nu.xom.Element elmSegment = new nu.xom.Element("Segment");
                 elmSegment.addAttribute(new Attribute("IDRef", segmentRef.getId()));
                 elmSegment.addAttribute(new Attribute("IDSeg", segmentRef.getRef()));
-                elmSegment.addAttribute(new Attribute("Ref", ((Segment)segments.findOne(segmentRef.getRef())).getName()));
+                elmSegment.addAttribute(new Attribute("Ref", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getName()));
                 elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage()
                                 .value()));
                 elmSegment.addAttribute(new Attribute("Min", segmentRef.getMin() + ""));
@@ -652,7 +652,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
         }
 
         private void serializeSegment(nu.xom.Element ss, SegmentRef sr, Segments segments, Tables tables, Datatypes datatypes) {
-                Segment s = segments.findOne(((SegmentRef) sr).getRef());
+                Segment s = segments.findOneSegmentById(((SegmentRef) sr).getRef());
                 nu.xom.Element elmSegment = new nu.xom.Element("Segment");
                 elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
                 elmSegment.addAttribute(new Attribute("Name", s.getName()));
@@ -701,7 +701,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
                                 elmField.addAttribute(new Attribute("ConfLength", f
                                                 .getConfLength()));
                         if (f.getTable() != null && !f.getTable().equals(""))
-                                elmField.addAttribute(new Attribute("Binding", tables.findOne(
+                                elmField.addAttribute(new Attribute("Binding", tables.findOneTableById(
                                                 f.getTable()).getBindingIdentifier()));
                         if (f.getItemNo() != null && !f.getItemNo().equals(""))
                                 elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
@@ -805,7 +805,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 
                                 if (c.getTable() != null && !c.getTable().equals(""))
                                         elmComponent.addAttribute(new Attribute("Binding", tables
-                                                        .findOne(c.getTable()).getBindingIdentifier() + ""));
+                                                        .findOneTableById(c.getTable()).getBindingIdentifier() + ""));
 
                                 List<Constraint> constraints = findConstraints( i, d.getPredicates(), d.getConformanceStatements());
                                 if (!constraints.isEmpty()) {
@@ -1129,7 +1129,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
                                 .toArray(new Message[] {})[0];
                 SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
                 Group group = (Group) message.getChildren().get(5);
-                Segment segment = p1.getSegments().findOne(segmentRef.getRef());
+                Segment segment = p1.getSegments().findOneSegmentById(segmentRef.getRef());
                 Field field = segment.getFields().get(0);
                 Datatype datatype = p1.getDatatypes().getChildren()
                                 .toArray(new Datatype[] {})[0];

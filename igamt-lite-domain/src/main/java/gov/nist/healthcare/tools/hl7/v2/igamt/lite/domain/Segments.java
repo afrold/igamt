@@ -61,13 +61,13 @@ public class Segments implements java.io.Serializable, Cloneable {
 	}
 
 	public boolean delete(String id) {
-		Segment d = findOne(id);
+		Segment d = findOneSegmentById(id);
 		if (d != null)
 			return this.children.remove(d);
 		return false;
 	}
 
-	public Segment findOne(String id) {
+	public Segment findOneSegmentById(String id) {
 		if (this.children != null)
 			for (Segment m : this.children) {
 				if (m.getId().equals(id)) {
@@ -77,7 +77,7 @@ public class Segments implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
-	public Segment findOneByNameAndByHl7Version(String name, String hl7Version) {
+	public Segment findOneSegmentByNameAndByHl7Version(String name, String hl7Version) {
 		if (this.children != null)
 			for (Segment s : this.children) {
 				if (s.getName().equals(name)
@@ -88,7 +88,7 @@ public class Segments implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
-	public Segment findOneByName(String name) {
+	public Segment findOneSegmentByName(String name) {
 		if (this.children != null)
 			for (Segment s : this.children) {
 				if (s.getName().equals(name)) {
@@ -98,7 +98,7 @@ public class Segments implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
-	public Segment findOneByLabel(String label) {
+	public Segment findOneSegmentByLabel(String label) {
 		if (this.children != null)
 			for (Segment s : this.children) {
 				if (s.getLabel().equals(label)) {
@@ -203,10 +203,10 @@ public class Segments implements java.io.Serializable, Cloneable {
 	
 	public void merge(Segments sgts){
 		for (Segment s: sgts.getChildren()){
-			if (this.findOneByNameAndByHl7Version(s.getName(), s.getHl7Version()) == null){
+			if (this.findOneSegmentByNameAndByHl7Version(s.getName(), s.getHl7Version()) == null){
 				this.addSegment(s);
 			} else {
-				s.setId(this.findOneByNameAndByHl7Version(s.getName(), s.getHl7Version()).getId()); //FIXME probably useless
+				s.setId(this.findOneSegmentByNameAndByHl7Version(s.getName(), s.getHl7Version()).getId()); //FIXME probably useless
 			}
 		}
 	}

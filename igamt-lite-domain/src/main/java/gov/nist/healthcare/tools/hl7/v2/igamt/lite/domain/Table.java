@@ -154,17 +154,26 @@ public class Table extends DataModel implements Serializable,
 		this.order = order;
 	}
 
-	public Code findOneCode(String id) {
+	public Code findOneCodeById(String id) {
 		if (this.codes != null)
 			for (Code m : this.codes) {
 				if (id.equals(m.getId())) {
 					return m;
 				}
 			}
-
 		return null;
 	}
-	
+
+	public Code findOneCodeByValue(String value) {
+		if (this.codes != null)
+			for (Code c : this.codes) {
+				if (value.equals(c.getValue())) {
+					return c;
+				}
+			}
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return "Table [id=" + id + ", bindingIdentifier=" + bindingIdentifier + ", name=" + name + ", description="

@@ -43,12 +43,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,7 +171,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 					if (srog instanceof SegmentRef) {
 						this.addSegmentXlsx2(
-								p.getSegments().findOne(
+								p.getSegments().findOneSegmentById(
 										((SegmentRef) srog).getRef()), header,
 								workbook, headerStyle, p.getDatatypes(),
 								p.getTables());
@@ -1088,7 +1086,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
 				this.addSegmentXlsx2(
-						segments.findOne(((SegmentRef) srog).getRef()), header,
+						segments.findOneSegmentById(((SegmentRef) srog).getRef()), header,
 						workbook, headerStyle, datatypes, tables);
 			} else if (srog instanceof Group) {
 				this.addGroupXlsx2(header, (Group) srog, workbook, headerStyle,
@@ -1137,7 +1135,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	private void addSegmentPdf1(List<List<String>> rows, SegmentRef s,
 			Integer depth, Segments segments) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
-		Segment segment = segments.findOne(s.getRef());
+		Segment segment = segments.findOneSegmentById(s.getRef());
 		List<String> row = Arrays.asList(indent + segment.getName(), s
 				.getUsage().value(), "", "[" + String.valueOf(s.getMin())
 				+ ".." + String.valueOf(s.getMax()) + "]", "", segment
@@ -1155,7 +1153,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				headerFont, headerColor);
 		ArrayList<List<String>> rows = new ArrayList<List<String>>();
 
-		Segment s = segments.findOne(segRef.getRef());
+		Segment s = segments.findOneSegmentById(segRef.getRef());
 
 		this.addTocContent(tocDocument, igWriter,
 				s.getName() + " - " + s.getDescription());
@@ -1192,7 +1190,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	private void addSegmentXlsx(List<List<String>> rows, SegmentRef s,
 			Integer depth, Segments segments) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
-		Segment segment = segments.findOne(s.getRef());
+		Segment segment = segments.findOneSegmentById(s.getRef());
 		List<String> row = Arrays.asList(indent + segment.getName(), s
 				.getUsage().value(), "", "[" + String.valueOf(s.getMin())
 				+ ".." + String.valueOf(s.getMax()) + "]", "", segment
@@ -1245,7 +1243,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 						c.getUsage().value(),
 						"[" + String.valueOf(c.getMinLength()) + ","
 								+ String.valueOf(c.getMaxLength()) + "]",
-						(c.getTable() == null) ? "" : tables.findOne(
+						(c.getTable() == null) ? "" : tables.findOneTableById(
 								c.getTable()).getBindingIdentifier(), c.getComment());
 				rows.add(row);
 
@@ -1292,8 +1290,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					"",
 					"[" + String.valueOf(f.getMinLength()) + ".."
 							+ String.valueOf(f.getMaxLength()) + "]",
-					(tables.findOneByName(f.getTable()) == null) ?
-							"NULL" : tables.findOneByName(f.getTable()).getBindingIdentifier(), 
+					(tables.findOneTableByName(f.getTable()) == null) ?
+							"NULL" : tables.findOneTableByName(f.getTable()).getBindingIdentifier(), 
 					f.getComment() == null ? "" : f.getComment());
 			rows.add(row);
 

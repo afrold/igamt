@@ -320,7 +320,7 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Iterator<Entry<String, JsonNode>> fields = newValue
 							.fields();
-					Table target = p.getTables().findOne(id);
+					Table target = p.getTables().findOneTableById(id);
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
@@ -369,7 +369,7 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Iterator<Entry<String, JsonNode>> fields = newValue
 							.fields();
-					Code target = p.getTables().findOneCode(id);
+					Code target = p.getTables().findOneCodeById(id);
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
@@ -391,7 +391,7 @@ public class ProfileChangeService {
 					JsonNode objectNode = newValue.findValue("obj");
 					String id = objectNode.findValue("id").asText();
 					Code code = toCode(objectNode);
-					Table table = p.getTables().findOne(targetId);
+					Table table = p.getTables().findOneTableById(targetId);
 					if (table != null) {
 						table.addCode(code);
 					} else {
@@ -462,7 +462,7 @@ public class ProfileChangeService {
 					JsonNode objectNode = newValue.findValue("obj");
 					Predicate predicate = toPredicate(objectNode);
 					if ("segment".equals(targetType)) {
-						Segment segment = p.getSegments().findOne(targetId);
+						Segment segment = p.getSegments().findOneSegmentById(targetId);
 						segment.addPredicate(predicate);
 					} else if ("datatype".equals(targetType)) {
 						Datatype d = p.getDatatypes().findOne(targetId);
@@ -526,7 +526,7 @@ public class ProfileChangeService {
 					JsonNode objectNode = newValue.findValue("obj");
 					ConformanceStatement conf = toConformanceStatement(objectNode);
 					if ("segment".equals(targetType)) {
-						Segment segment = p.getSegments().findOne(targetId);
+						Segment segment = p.getSegments().findOneSegmentById(targetId);
 						segment.addConformanceStatement(conf);
 					} else if ("datatype".equals(targetType)) {
 						Datatype d = p.getDatatypes().findOne(targetId);
@@ -646,7 +646,7 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Iterator<Entry<String, JsonNode>> fields = newValue
 							.fields();
-					Segment target = p.getSegments().findOne(id);
+					Segment target = p.getSegments().findOneSegmentById(id);
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
@@ -713,7 +713,7 @@ public class ProfileChangeService {
 							wrapper.setPropertyValue(key, null);
 						} else {
 							String tableId = value.asText();
-							Table table = p.getTables().findOne(tableId);
+							Table table = p.getTables().findOneTableById(tableId);
 							if (table == null) {
 								table = new Table();
 								table.setId(tableId);

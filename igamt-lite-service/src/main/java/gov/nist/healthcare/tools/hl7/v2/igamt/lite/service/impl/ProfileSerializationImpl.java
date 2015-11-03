@@ -463,7 +463,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
                         if (f.getConfLength() != null && !f.getConfLength().equals(""))
                                 elmField.addAttribute(new Attribute("ConfLength", ExportUtil.str(f.getConfLength())));
                         if (f.getTable() != null && !f.getTable().equals(""))
-                                elmField.addAttribute(new Attribute("Binding", tables.findOne(f.getTable()).getBindingIdentifier()));
+                                elmField.addAttribute(new Attribute("Binding", tables.findOneTableById(f.getTable()).getBindingIdentifier()));
                         if (f.getItemNo() != null && !f.getItemNo().equals(""))
                                 elmField.addAttribute(new Attribute("ItemNo",ExportUtil.str( f.getItemNo())));
                         elmSegment.appendChild(elmField);
@@ -498,7 +498,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
                                 if (c.getConfLength() != null && !c.getConfLength().equals(""))
                                         elmComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(c.getConfLength())));
                                 if (c.getTable() != null && !c.getTable().equals(""))
-                                        elmComponent.addAttribute(new Attribute("Binding", tables.findOne(c.getTable()).getBindingIdentifier() + ""));
+                                        elmComponent.addAttribute(new Attribute("Binding", tables.findOneTableById(c.getTable()).getBindingIdentifier() + ""));
                                 elmDatatype.appendChild(elmComponent);
                         }
                 }

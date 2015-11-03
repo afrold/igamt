@@ -308,7 +308,7 @@ public class ProfileDiffImpl {
 							.findOneSegmentRefOrGroup(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
 					if (srog instanceof SegmentRef) {
-						Segment s = p1.getSegments().findOne(
+						Segment s = p1.getSegments().findOneSegmentById(
 								((SegmentRef) srog).getRef());
 						deltaDocument.add(new Paragraph(s.getLabel()
 								+ " edited", eltNameFont));
@@ -350,7 +350,7 @@ public class ProfileDiffImpl {
 				deltaDocument.add(new Paragraph("No changes", valueFont));
 			for (ElementChange ec : this.segmentsChanges) {
 				if (ec.getChangeType().equals("edit")) {
-					Segment s = p1.getSegments().findOne(ec.getId());
+					Segment s = p1.getSegments().findOneSegmentById(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
 					deltaDocument.add(new Paragraph(s.getLabel() + " edited",
 							eltNameFont));
@@ -368,12 +368,12 @@ public class ProfileDiffImpl {
 				}
 				if (ec.getChangeType().equals("del")) {
 					deltaDocument.add(Chunk.NEWLINE);
-					Segment s = p1.getSegments().findOne(ec.getId());
+					Segment s = p1.getSegments().findOneSegmentById(ec.getId());
 					deltaDocument.add(new Paragraph(s.getLabel() + " deleted",
 							eltNameFont));
 				}
 				if (ec.getChangeType().equals("add")) {
-					Segment s = p2.getSegments().findOne(ec.getId());
+					Segment s = p2.getSegments().findOneSegmentById(ec.getId());
 					deltaDocument.add(new Paragraph(s.getLabel() + " added",
 							eltNameFont));
 				}
@@ -758,7 +758,7 @@ public class ProfileDiffImpl {
 				ElementChange ec = new ElementChange(srog.getId(), m.getId());
 				if (mlib2.findOneSegmentRefOrGroup(srog.getId()) == null) {
 					if (srog instanceof SegmentRef) {
-						Segment s = slib1.findOne(((SegmentRef) srog).getRef());
+						Segment s = slib1.findOneSegmentById(((SegmentRef) srog).getRef());
 						ec.recordChange("deleted", s.getName(), "");
 						ec.setChangeType("del");
 					} else if (srog instanceof Group) {
@@ -794,7 +794,7 @@ public class ProfileDiffImpl {
 				ElementChange ec = new ElementChange(srog.getId(), m.getId());
 				if (mlib1.findOneSegmentRefOrGroup(srog.getId()) == null) {
 					if (srog instanceof SegmentRef) {
-						Segment s = slib2.findOne(((SegmentRef) srog).getRef());
+						Segment s = slib2.findOneSegmentById(((SegmentRef) srog).getRef());
 						ec.recordChange("added", "", s.getName());
 						ec.setChangeType("add");
 					} else if (srog instanceof Group) {
@@ -810,7 +810,7 @@ public class ProfileDiffImpl {
 	private void compareSegRef(SegmentRefOrGroup sr, Segments s1, Messages mlib2) {
 		ElementChange ec = new ElementChange(sr.getId(), s1.getId());
 		if (mlib2.findOneSegmentRefOrGroup(sr.getId()) == null) {
-			Segment s = s1.findOne(((SegmentRef) sr).getRef());
+			Segment s = s1.findOneSegmentById(((SegmentRef) sr).getRef());
 			ec.recordChange("deleted", s.getName(), "");
 			ec.setChangeType("del");
 		} else {
@@ -877,11 +877,11 @@ public class ProfileDiffImpl {
 	private void compareSegments(Segments slib1, Segments slib2) {
 		for (Segment s : slib1.getChildren()) {
 			ElementChange ec = new ElementChange(s.getId(), slib1.getId());
-			if (slib2.findOne(s.getId()) == null) {
+			if (slib2.findOneSegmentById(s.getId()) == null) {
 				ec.recordChange("deleted", s.getName(), "");
 				ec.setChangeType("del");
 			} else {
-				Segment s2 = slib2.findOne(s.getId());
+				Segment s2 = slib2.findOneSegmentById(s.getId());
 				if (!(s.getDescription().equals(s2.getDescription()))) {
 					ec.recordChange("Description", s.getDescription(),
 							s2.getDescription());
@@ -969,7 +969,7 @@ public class ProfileDiffImpl {
 		}
 
 		for (Segment s : slib2.getChildren()) {
-			if (slib1.findOne(s.getId()) == null) {
+			if (slib1.findOneSegmentById(s.getId()) == null) {
 				ElementChange ec = new ElementChange(s.getId(), slib2.getId());
 				ec.recordChange("added", "", s.getName());
 				ec.setChangeType("add");
@@ -1266,11 +1266,11 @@ public class ProfileDiffImpl {
 	private void compareTables(Tables tables, Tables tables2) {
 		for (Table t : tables.getChildren()) {
 			ElementChange ec = new ElementChange(t.getId(), tables.getId());
-			if (tables2.findOne(t.getId()) == null) {
+			if (tables2.findOneTableById(t.getId()) == null) {
 				ec.recordChange("deleted", t.getName(), "");
 				ec.setChangeType("del");
 			} else {
-				Table t2 = tables2.findOne(t.getId());
+				Table t2 = tables2.findOneTableById(t.getId());
 				if (!(t.getName().equals(t2.getName()))) {
 					ec.recordChange("Name", t.getName(), t2.getName());
 				}
@@ -1280,7 +1280,7 @@ public class ProfileDiffImpl {
 				this.tablesChanges.add(ec);
 		}
 		for (Table t : tables2.getChildren()) {
-			if (tables.findOne(t.getId()) == null) {
+			if (tables.findOneTableById(t.getId()) == null) {
 				ElementChange ec = new ElementChange(t.getId(), tables2.getId());
 				ec.recordChange("added", "", t.getName());
 				ec.setChangeType("add");
@@ -1293,11 +1293,11 @@ public class ProfileDiffImpl {
 		for (Table t : tables.getChildren()) {
 			for (Code c : t.getCodes()) {
 				ElementChange ec = new ElementChange(c.getId(), t.getId());
-				if (tables2.findOneCode(c.getId()) == null) {
+				if (tables2.findOneCodeById(c.getId()) == null) {
 					ec.recordChange("deleted", c.getLabel(), "");
 					ec.setChangeType("del");
 				} else {
-					Code c2 = tables2.findOneCode(c.getId());
+					Code c2 = tables2.findOneCodeById(c.getId());
 					if (!(c.getLabel().equals(c2.getLabel()))) {
 						ec.recordChange("Label", c.getLabel(),
 								c2.getLabel());
@@ -1317,7 +1317,7 @@ public class ProfileDiffImpl {
 		}
 		for (Table t : tables2.getChildren()) {
 			for (Code c : t.getCodes()) {
-				if (tables.findOneCode(c.getId()) == null) {
+				if (tables.findOneCodeById(c.getId()) == null) {
 					ElementChange ec = new ElementChange(c.getId(), t.getId());
 					ec.recordChange("added", "", c.getLabel());
 					ec.setChangeType("add");
@@ -1881,14 +1881,14 @@ public class ProfileDiffImpl {
 					.toArray(new Message[] {})[0];
 			SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
 			Group group = (Group) message.getChildren().get(5);
-			Segment segment = p2.getSegments().findOne(segmentRef.getRef());
+			Segment segment = p2.getSegments().findOneSegmentById(segmentRef.getRef());
 			Field field = segment.getFields().get(0);
 			Datatype datatype = p2.getDatatypes().getChildren()
 					.toArray(new Datatype[] {})[0];
 
 			// Fake addition
 			SegmentRef segmentRef3 = (SegmentRef) message.getChildren().get(4);
-			Segment segment3 = p1.getSegments().findOne(segmentRef3.getRef());
+			Segment segment3 = p1.getSegments().findOneSegmentById(segmentRef3.getRef());
 			p1.getSegments().delete(segment3.getId());
 
 			segmentRef.setMin(3);

@@ -100,9 +100,26 @@ public class ElementVerification {
 
 	@Override
 	public String toString() {
-		return "ElementVerification [id=" + id + ", type=" + type
-				+ ", elementVerifications=" + elementVerifications
-				+ ", childrenVerification=" + childrenVerification + "]";
+		StringBuilder sb = new StringBuilder();
+		sb.append("ElementVerification [id=" + id + ", type=" + type);
+		sb.append(", elementVerifications=[");
+		for (ElementVerificationResult evr: elementVerifications)
+		{
+		    sb.append(evr.toString());
+		    sb.append("\t");
+		}
+		sb.append("]");
+		sb.append(", childrenVerification=[");
+		for (ElementVerification evr: childrenVerification)
+		{
+		    sb.append(evr.toString());
+		    sb.append("\t");
+		}
+		sb.append("]");		
+//		return "ElementVerification [id=" + id + ", type=" + type
+//				+ ", elementVerifications=" + elementVerifications
+//				+ ", childrenVerification=" + childrenVerification + "]";
+		return sb.toString();
 	}
 
 

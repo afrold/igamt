@@ -425,7 +425,7 @@ public class ProfileDiffSerializationImpl {
 		nu.xom.Element elmc = new nu.xom.Element("TableElement");
 
 		if (ec.getChangeType().equals("edit")){
-			Code c = p1.getTables().findOneCode(ec.getId());
+			Code c = p1.getTables().findOneCodeById(ec.getId());
 			elmc.addAttribute(new Attribute("Id", c.getId()));
 			elmc.addAttribute(new Attribute("Diff", "edit"));
 
@@ -434,13 +434,13 @@ public class ProfileDiffSerializationImpl {
 			}
 		}
 		if (ec.getChangeType().equals("del")){
-			Code c = p1.getTables().findOneCode(ec.getId());
+			Code c = p1.getTables().findOneCodeById(ec.getId());
 			elmc.addAttribute(new Attribute("Id", c.getId()));
 			elmc.addAttribute(new Attribute("Diff", "del"));
 			elmc.addAttribute(new Attribute("Name", ec.getChange().get("deleted").get("basevalue")));
 		}
 		if (ec.getChangeType().equals("add")){
-			Code c = p2.getTables().findOneCode(ec.getId());
+			Code c = p2.getTables().findOneCodeById(ec.getId());
 			elmc.addAttribute(new Attribute("Id", c.getId()));
 			elmc.addAttribute(new Attribute("Name", ec.getChange().get("added").get("newvalue")));
 			elmc.addAttribute(new Attribute("Diff", "add"));
@@ -488,7 +488,7 @@ public class ProfileDiffSerializationImpl {
 					.toArray(new Message[] {})[0];
 			SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
 			Group group = (Group) message.getChildren().get(5);
-			Segment segment = p2.getSegments().findOne(segmentRef.getRef());
+			Segment segment = p2.getSegments().findOneSegmentById(segmentRef.getRef());
 			Field field = segment.getFields().get(0);
 			Datatype datatype = p2.getDatatypes().getChildren()
 					.toArray(new Datatype[] {})[0];
@@ -499,7 +499,7 @@ public class ProfileDiffSerializationImpl {
 
 			//Fake addition
 			SegmentRef segmentRef3 = (SegmentRef) message.getChildren().get(4);
-			Segment segment3 = p1.getSegments().findOne(segmentRef3.getRef());
+			Segment segment3 = p1.getSegments().findOneSegmentById(segmentRef3.getRef());
 			p1.getSegments().delete(segment3.getId());
 
 

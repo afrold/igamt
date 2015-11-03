@@ -127,18 +127,17 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		children.add(t);
 	}
 
-	public Table findOne(String id) {
+	public Table findOneTableById(String id) {
 		if (this.children != null)
 			for (Table m : this.children) {
 				if (m.getId().equals(id)) {
 					return m;
 				}
 			}
-
 		return null;
 	}
 	
-	public Table findOneByNameAndByVersion(String name, String hl7Version) {
+	public Table findOneTableByNameAndByVersion(String name, String hl7Version) {
 		if (this.children != null) {
 			for (Table t: this.children){
 				if (t.getName().equals(name)
@@ -150,7 +149,7 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		return null;
 	}	
 	
-	public Table findOneByName(String name) {
+	public Table findOneTableByName(String name) {
 		if (this.children != null) {
 			for (Table t: this.children){
 				if (t.getName().equals(name)){
@@ -161,11 +160,22 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 		return null;
 	}	
 	
-
-	public Code findOneCode(String id) {
+	public Code findOneCodeById(String id) {
 		if (this.children != null) {
 			for (Table m : this.children) {
-				Code c = m.findOneCode(id);
+				Code c = m.findOneCodeById(id);
+				if (c != null) {
+					return c;
+				}
+			}
+		}
+		return null;
+	}
+	
+	public Code findOneCodeByValue(String value) {
+		if (this.children != null) {
+			for (Table t : this.children) {
+				Code c = t.findOneCodeByValue(value);
 				if (c != null) {
 					return c;
 				}
@@ -175,7 +185,7 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 	}
 
 	public void delete(String id) {
-		Table t = findOne(id);
+		Table t = findOneTableById(id);
 		if (t != null)
 			this.children.remove(t);
 	}
@@ -183,7 +193,7 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 	public boolean deleteCode(String id) {
 		if (this.children != null) {
 			for (Table m : this.children) {
-				Code c = m.findOneCode(id);
+				Code c = m.findOneCodeById(id);
 				if (c != null) {
 					return m.deleteCode(c);
 				}
@@ -232,10 +242,10 @@ public class Tables extends DataModel implements Serializable, Cloneable {
 	
 	public void merge(Tables tbls){
 		for (Table t: tbls.getChildren()){
-			if (this.findOneByNameAndByVersion(t.getName(), t.getVersion()) == null){
+			if (this.findOneTableByNameAndByVersion(t.getName(), t.getVersion()) == null){
 				this.addTable(t);
 			} else {
-				t.setId(this.findOneByNameAndByVersion(t.getName(), t.getVersion()).getId());
+				t.setId(this.findOneTableByNameAndByVersion(t.getName(), t.getVersion()).getId());
 			}
 		}
 	}

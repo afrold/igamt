@@ -144,7 +144,7 @@ public class ProfileCreationImpl implements ProfileCreationService {
 	private void addSegment(SegmentRef sref, Profile pSource, Profile pTarget) {
 		Segments sgtsTarget = pTarget.getSegments();
 		Datatypes dtsTarget = pTarget.getDatatypes();
-		Segment sgt = pSource.getSegments().findOne(sref.getRef());
+		Segment sgt = pSource.getSegments().findOneSegmentById(sref.getRef());
 		sgtsTarget.addSegment(sgt);
 		for (Field f : sgt.getFields()) {
 			Datatype dt = pSource.getDatatypes().findOne(f.getDatatype());

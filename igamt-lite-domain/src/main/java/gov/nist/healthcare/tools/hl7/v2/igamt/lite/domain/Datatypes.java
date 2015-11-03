@@ -127,14 +127,13 @@ public class Datatypes implements java.io.Serializable, Cloneable {
 		return null;
 	}
 
-	public Datatype findOneDatatype(String label) {
+	public Datatype findOneDatatypeByLabel(String label) {
 		if (this.children != null)
 			for (Datatype d : this.children) {
 				if (d.getLabel().equals(label)) {
 					return d;
 				}
 			}
-
 		return null;
 	}
 	
