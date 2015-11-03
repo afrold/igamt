@@ -277,9 +277,10 @@ public class Message extends DataModel implements java.io.Serializable,
 
 	@Override
 	public String toString() {
-		return "Message [id=" + id + ", type=" + messageType + ", event="
-				+ event + ", structID=" + structID + ", description="
-				+ description + "]";
+		return "Message [id=" + id + ", name=" + name 
+				+ ", identifier=" + identifier + ", type=" + messageType 
+				+ ", event=" + event + ", structID=" + structID 
+				+ ", date=" + date + ", description=" + description + "]";
 	}
 
 	public Message clone(HashMap<String, Datatype> dtRecords,
