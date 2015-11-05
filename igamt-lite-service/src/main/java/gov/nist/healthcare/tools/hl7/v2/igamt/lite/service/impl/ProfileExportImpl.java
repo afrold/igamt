@@ -35,6 +35,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit.ProfileVerificationTest;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -70,6 +71,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.BaseColor;
@@ -99,6 +102,7 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 
 @Service
 public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExportService{
+	Logger logger = LoggerFactory.getLogger( ProfileExportImpl.class ); 
 
 	@Override
 	public InputStream exportAsXml(Profile p) {
@@ -1243,7 +1247,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 						c.getUsage().value(),
 						"[" + String.valueOf(c.getMinLength()) + ","
 								+ String.valueOf(c.getMaxLength()) + "]",
-						(c.getTable() == null) ? "" : tables.findOneTableById(
+						(c.getTable() == null | c.getTable().equals("") | tables.findOneTableById(
+								c.getTable()) == null) ? "" : tables.findOneTableById(
 								c.getTable()).getBindingIdentifier(), c.getComment());
 				rows.add(row);
 
