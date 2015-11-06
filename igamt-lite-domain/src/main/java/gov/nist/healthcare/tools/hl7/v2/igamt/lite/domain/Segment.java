@@ -106,7 +106,16 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 					return m;
 				}
 			}
+		return null;
+	}
 
+	public Field findOneFieldByName(String name) {
+		if (this.fields != null)
+			for (Field m : this.fields) {
+				if (name.equals(m.getName())) {
+					return m;
+				}
+			}
 		return null;
 	}
 
