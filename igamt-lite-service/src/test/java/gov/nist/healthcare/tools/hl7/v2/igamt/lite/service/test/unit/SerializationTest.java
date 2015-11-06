@@ -1,7 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
@@ -32,6 +31,7 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -68,7 +68,8 @@ public class SerializationTest {
 		return null;
 	}
 
-	//	@Test
+	@Ignore
+	@Test
 	public void testSerialization() throws IOException {
 		// ProfileSerializationImpl ProfileSerializationImpl = new
 		// ProfileSerializationImpl();
@@ -155,12 +156,10 @@ public class SerializationTest {
 
 			// validate the DOM tree; if document is invalid, SAXException is raised
 			validator.validate(new DOMSource((Node) document));
-			assertTrue(true);
 		} catch (SAXException e) {
 			// Instance document is invalid!
-			logger.debug("Instance document is invalid!");
 			e.printStackTrace();
-			assertTrue(false);
+			fail("Instance document is invalid!");
 		} catch (ParserConfigurationException e1) {
 			logger.debug("Parser configuration error!");
 			e1.printStackTrace();
@@ -196,12 +195,10 @@ public class SerializationTest {
 
 			// validate the DOM tree; if document is invalid, SAXException is raised
 			validator.validate(new DOMSource((Node) document));
-			assertTrue(true);
 		} catch (SAXException e) {
 			// Instance document is invalid!
-			logger.debug("Instance document is invalid!");
 			e.printStackTrace();
-			assertTrue(false);
+			fail("Instance document is invalid!");
 		} catch (ParserConfigurationException e1) {
 			logger.debug("Parser configuration error!");
 			e1.printStackTrace();
@@ -238,18 +235,17 @@ public class SerializationTest {
 
 			// validate the DOM tree; if document is invalid, SAXException is raised
 			validator.validate(new DOMSource((Node) document));
-			assertTrue(true);
 		} catch (SAXException e) {
 			// Instance document is invalid!
-			logger.debug("Instance document is invalid!");
 			e.printStackTrace();
-			assertTrue(false);
+			fail("Instance document is invalid!");
 		} catch (ParserConfigurationException e1) {
 			logger.debug("Parser configuration error!");
 			e1.printStackTrace();
 		}
 	}
 
+	@Ignore("Not yet implemented")
 	@Test
 	public void testDeserializationXMLToProfile() throws IOException {
 		//TODO
