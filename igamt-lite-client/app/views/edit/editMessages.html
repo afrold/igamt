@@ -29,6 +29,7 @@
                                                                                          name="identifier"
                                                                                          class="form-control"
                                                                                          ng-model="message.identifier"
+                                                                                         ng-disabled="options.readonly"
                                                                                          required>
                                             </div>
 
@@ -38,12 +39,14 @@
                                                                                   name="oid"
                                                                                   class="form-control"
                                                                                   ng-model="message.oid"
+                                                                                  ng-disabled="options.readonly"
                                                                                   required>
                                             </div>
 
                                             <div class="form-group">
                                                 <label>IGAMT ID</label> <input type="text" disabled name="id"
                                                                                class="form-control"
+                                                                               ng-disabled="options.readonly"
                                                                                ng-model="message.id" required>
                                             </div>
                                         </div>
@@ -54,7 +57,9 @@
                                                                                       type="text"
                                                                                       disabled name="version"
                                                                                       ng-change="recordChangeForEdit2('message','edit',message.id,'version', message.version)"
-                                                                                      ng-model="message.version">
+                                                                                      ng-model="message.version"
+                                                                                      ng-disabled="options.readonly"
+                                                    >
 
                                             </div>
 
@@ -63,6 +68,7 @@
                                                                                    class="igl-input" type="text"
                                                                                    name="date" disabled
                                                                                    ng-change="recordChangeForEdit2('message','edit',message.id,'date', message.date)"
+                                                                                   ng-disabled="options.readonly"
                                                                                    ng-model="message.date">
 
                                             </div>
@@ -72,6 +78,7 @@
                                                                               class="igl-input" type="text"
                                                                               name="comment"
                                                                               ng-change="recordChangeForEdit2('message','edit',message.id,'comment', message.comment)"
+                                                                              ng-disabled="options.readonly"
                                                                               ng-model="message.comment">
                                             </div>
                                         </div>
@@ -194,10 +201,10 @@
 
         <td class="col-xs-1" ng-style="commentWidth">
             <div>
-                <button ng-show="node.comment === '' || node.comment === null" type="button"
-                        ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="btn btn-info btn-xs">
+                <a ng-show="node.comment === '' || node.comment === null" type="button"
+                        ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="point">
                     <i class="fa fa-plus fa-fw"></i>
-                </button>
+                </a>
                 <a class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)"
                    tooltip-html="node.comment" tooltip-append-to-body="true"
                    tooltip-class="constraints-tooltip"
@@ -263,9 +270,9 @@
         <td class="col-xs-2" ng-style="predWidth">
             <div>
                 <div ng-show="countPredicates(node) == 0">
-                    <button type="button" ng-click="managePredicate(node)" class="btn btn-info btn-xs">
+                    <a type="button" ng-click="managePredicate(node)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                    </button>
+                    </a>
                 </div>
                 <p ng-repeat="p in node.predicates">
                     <a ng-click="managePredicate(node)"
@@ -281,9 +288,9 @@
         <td class="col-xs-3" ng-style="csWidth">
             <div>
                 <div ng-show="countConformanceStatements(node) == 0">
-                    <button type="button" ng-click="manageConformanceStatement(node)" class="btn btn-info btn-xs">
+                    <a  ng-click="manageConformanceStatement(node)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                    </button>
+                    </a>
                 </div>
                 <p ng-repeat="c in node.conformanceStatements">
                     <a ng-click="manageConformanceStatement(node)"
@@ -298,10 +305,10 @@
 
         <td class="col-xs-1" ng-style="commentWidth">
             <div>
-                <button ng-show="node.comment === '' || node.comment === null" type="button"
-                        ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="btn btn-info btn-xs">
+                <a ng-show="node.comment === '' || node.comment === null"
+                        ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="point">
                     <i class="fa fa-plus fa-fw"></i>
-                </button>
+                </a>
                 <a class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)"
                    tooltip-html="node.comment" tooltip-append-to-body="true"
                    tooltip-class="constraints-tooltip"
@@ -596,4 +603,114 @@
             <span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
         </button>
     </div>
+</script>
+
+
+<script type="text/ng-template" id="MessageReadTree.html">
+    <tr tt-node is-branch="hasChildren(node)">
+        <td class="col-xs-4 col-fixed-450">
+            <span>{{::node.event}}^{{::node.structID}}:{{::node.description}}</span>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
+        </td>
+        <td class="col-xs-2" ng-style="predWidth">
+            <div>-</div>
+        </td>
+        <td class="col-xs-3" ng-style="csWidth">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1" ng-style="commentWidth">
+            <div>-</div>
+        </td>
+    </tr>
+</script>
+
+<script type="text/ng-template" id="MessageSegmentRefReadTree.html">
+    <tr tt-node is-branch="hasChildren(node)">
+        <td class="col-xs-4 col-fixed-450">
+            <img style="width:15px; height:15px"
+                 ng-src="images/segment.png">
+            <a class="point"
+               ng-click="goToSegment(node.ref)">{{::node.position}}.{{::segmentsMap[node.ref].name}}:{{::segmentsMap[node.ref].description}}</a>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+                  <span ng-bind="node.usage"></span>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            [{{::node.min}}, {{::node.max}}]
+        </td>
+
+        <td class="col-xs-2" ng-style="predWidth">
+            <div>-</div>
+        </td>
+
+        <td class="col-xs-3" ng-style="csWidth">
+            <div>-</div>
+        </td>
+
+
+        <td class="col-xs-1" ng-style="commentWidth">
+                 <span ng-show="node.comment !== '' && node.comment !== null"
+                   tooltip-html="node.comment" tooltip-append-to-body="true"
+                   tooltip-class="constraints-tooltip"
+                   tooltip-trigger tooltip-animation="false" tooltip-placement="left"
+                  ng-bind="node.comment"></span>
+         </td>
+    </tr>
+</script>
+
+<script type="text/ng-template" id="MessageGroupReadTree.html">
+    <tr tt-node is-branch="hasChildren(node)">
+        <td class="col-xs-4 col-fixed-450">
+                                        <span>
+
+                                            <img style="width:15px; height:15px"
+                                                 ng-src="images/group.png">
+                                            <span>{{::node.position}}.{{::node.name}}</span>
+                                        </span>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+            <div>
+ 				 <span ng-bind="node.usage"></span>
+
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+                                           [{{::node.min}}, {{::node.max}}]
+         </td>
+
+        <td class="col-xs-2" ng-style="predWidth">
+                 <p ng-repeat="p in node.predicates">
+                    <span
+                       tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
+                       tooltip-animation="false" tooltip-placement="left"
+                            ></span>
+                </p>
+         </td>
+
+        <td class="col-xs-3" ng-style="csWidth">
+
+                <p ng-repeat="c in node.conformanceStatements">
+                    <span
+                       tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
+                       tooltip-animation="false" tooltip-placement="left"
+                            ></span>
+                </p>
+         </td>
+
+
+        <td class="col-xs-1" ng-style="commentWidth">
+                 <span ng-show="node.comment !== '' && node.comment !== null"
+                   tooltip-html="node.comment" tooltip-append-to-body="true"
+                   tooltip-class="constraints-tooltip"
+                   tooltip-trigger tooltip-animation="false" tooltip-placement="left"
+                   ng-bind="node.comment"></span>
+         </td>
+    </tr>
 </script>
