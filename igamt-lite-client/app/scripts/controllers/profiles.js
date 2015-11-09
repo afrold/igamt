@@ -888,7 +888,7 @@ angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalIn
 });
 
 
-angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $modalInstance, profileToDelete, $rootScope, $http) {
+angular.module('igl').controller( 'ConfirmProfileDeleteCtrl', function ($scope, $modalInstance, profileToDelete, $rootScope, $http) {
     $scope.profileToDelete = profileToDelete;
     $scope.loading = false;
     $scope.delete = function () {
