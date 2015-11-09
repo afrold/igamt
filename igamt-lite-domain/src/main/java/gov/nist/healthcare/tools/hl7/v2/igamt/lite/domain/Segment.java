@@ -120,7 +120,6 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 	}
 
 	public void addDynamicMapping(DynamicMapping d) {
-		d.setPosition(dynamicMappings.size() + 1);
 		dynamicMappings.add(d);
 	}
 
