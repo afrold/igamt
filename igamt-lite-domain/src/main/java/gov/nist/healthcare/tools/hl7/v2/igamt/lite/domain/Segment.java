@@ -139,6 +139,17 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 		}
 	}
 
+	public Mapping findOneMappingByPositionAndByReference(int position, int reference) {
+		if (this.dynamicMappings != null)
+			for (DynamicMapping d : this.dynamicMappings) {
+				for (Mapping m: d.getMappings()){
+					if (m.getPosition() == position && m.getReference() == reference){
+						return m;
+					}
+				}
+			}
+		return null;
+	}
 	public String getComment() {
 		return comment;
 	}
