@@ -15,6 +15,10 @@ angular.module('igl')
         $scope.loading = false;
         $scope.collapsed = [];
 
+        $scope.options = {
+            'readonly': false
+        };
+
         $scope.igTypes = [
             {
                 name: "Predefined Implementation Guides", type: 'PRELOADED'
@@ -49,7 +53,11 @@ angular.module('igl')
                 return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];
             },
             getTemplate: function (node) {
-                return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
+                if($scope.options.readonly) {
+                    return node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
+                }else{
+                    return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
+                }
             }
         });
 
@@ -73,7 +81,11 @@ angular.module('igl')
                 }
             },
             getTemplate: function (node) {
-                return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentEditTree.html' : '';
+                if($scope.options.readonly){
+                    return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentReadTree.html' : '';
+                }else {
+                    return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentEditTree.html' : '';
+                }
             }
         });
 
@@ -88,6 +100,8 @@ angular.module('igl')
             return true;
         };
 
+
+
         $rootScope.closeProfile = function(){
             $rootScope.profile = null;
             $rootScope.isEditing = false;
@@ -101,7 +115,11 @@ angular.module('igl')
                 return parent && parent != null ? parent.children : $rootScope.message != null ? $rootScope.message.children : [];
             },
             getTemplate: function (node) {
-                return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageEditTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefEditTree.html' : 'MessageGroupEditTree.html';
+                if($scope.options.readonly){
+                    return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageReadTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefReadTree.html' : 'MessageGroupReadTree.html';
+                }else{
+                    return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageEditTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefEditTree.html' : 'MessageGroupEditTree.html';
+                }
             },
             options: {
                 initialState: 'expanded'
@@ -209,7 +227,7 @@ angular.module('igl')
             return null;
         };
 
-        $scope.edit = function (profile) {
+        $scope.show = function (profile) {
             $scope.toEditProfileId = profile.id;
             try {
                 if ($rootScope.profile != null && $rootScope.profile === profile) {
@@ -233,6 +251,15 @@ angular.module('igl')
             }
         };
 
+        $scope.edit = function (profile) {
+            $scope.options.readonly = false;
+            $scope.show(profile);
+        };
+
+        $scope.view = function (profile) {
+            $scope.options.readonly = true;
+            $scope.show(profile);
+        };
 
         $scope.getLeveledProfile = function (profile) {
             $rootScope.leveledProfile = [

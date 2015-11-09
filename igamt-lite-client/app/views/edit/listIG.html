@@ -59,6 +59,13 @@
                             <td st-ratio="10" ng-bind="row.metaData.version"></td>
                             <td st-ratio="10" ng-bind="row.metaData.date"></td>
                             <td st-ratio="20">
+                                <button
+                                        title="View Readonly"
+                                        type="button" class="btn btn-xs btn-primary"
+                                        ng-click="view(row)">
+                                        <span><i class="fa fa-eye"></i></span>
+                                </button>
+
                                 <button ng-show="igContext.igType.type === 'USER'"
                                         title="Edit"
                                         type="button" class="btn btn-xs btn-primary"
