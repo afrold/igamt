@@ -213,6 +213,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		segRef.setType(((String) source.get("type")));
 		segRef.setLabel((String) source.get("label"));
 		segRef.setName(((String) source.get("name")));
+		segRef.setHl7Version(((String) source.get("hl7Version")));
 		segRef.setDescription((String) source.get("description"));
 		segRef.setComment((String) source.get("comment"));
 		segRef.setUsageNote((String) source.get("usageNote"));
