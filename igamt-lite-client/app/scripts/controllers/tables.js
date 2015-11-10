@@ -36,10 +36,10 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         var newValue = {
             id: new ObjectId().toString(),
             type: 'value',
-            value: '',
-            label: '',
-            codeSystem: '',
-            codeUsage: ''
+            value: 'TypeValue',
+            label: 'TypeLabel',
+            codeSystem: 'NO CodeSystem',
+            codeUsage: 'E'
         };
 
 

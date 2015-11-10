@@ -305,32 +305,21 @@
         </td>
 
         <td class="col-xs-1 col-fixed-130">
-            <div>
-                <div ng-show="node.table != undefined  && node.table !== null">
-                    <div class="btn-group" dropdown>
-                        <button type="button" ng-click="goToTable(tablesMap[node.table])"
-                                class="btn btn-info btn-xs">
-                            {{tablesMap[node.table].bindingIdentifier}}
-                        </button>
-                        <button type="button" class="btn btn-info btn-xs dropdown-toggle"
-                                dropdown-toggle>
-                            <span class="caret"></span>
-                            <span class="sr-only">Split button!</span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a ng-click="mapTable(node)">Change Table</a></li>
-                            <li><a ng-click="deleteTable(node)">Release Table</a></li>
-                            <li class="divider"></li>
-                            <li><a ng-click="goToTable(tablesMap[node.table])">Details</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div ng-show="(node.table == undefined || node.table == null)  && isAvailableDTForTable(datatypesMap[node.datatype])">
-                    <a ng-click="mapTable(node)" class="point">
-                        <span><i class="fa fa-plus fa-fw"></i></span>
-                    </a>
-                </div>
+			<div ng-show="node.table != undefined && node.table !== null">
+				<a ng-click="goToTable(tablesMap[node.table])" class="point">
+                    <span>{{tablesMap[node.table].bindingIdentifier}}</span>
+                </a>
+				<a ng-click="mapTable(node)" class="point">
+                    <span><i class="fa fa-pencil fa-fw"></i></span>
+                </a>
+				<a ng-click="deleteTable(node)" class="point">
+                    <span><i class="fa fa-times fa-fw"></i></span>
+                </a>
+            </div>
+            <div ng-show="(node.table == undefined || node.table === null) && isAvailableDTForTable(datatypesMap[node.datatype])">
+				<a ng-click="mapTable(node)" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
             </div>
         </td>
 
@@ -343,9 +332,9 @@
                 </div>
 
                 <p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                    <a ng-click="managePredicate(node)" tooltip-html="getConstraintAsString(p)"
+                    <a ng-click="managePredicate(node)" tooltip-html="getPredicateAsString(p)"
                        tooltip-append-to-body="true"
-                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
+                       tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
                        tooltip-animation="false" tooltip-placement="left"></a>
                 </p>
             </div>
@@ -359,9 +348,9 @@
                     </a>
                 </div>
                 <p ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
-                    <a ng-click="manageConformanceStatement(node)" tooltip-html="getConstraintAsString(c)"
+                    <a ng-click="manageConformanceStatement(node)" tooltip-html="getConformanceStatementAsString(c)"
                        tooltip-append-to-body="true"
-                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(c)" tooltip-trigger
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)" tooltip-trigger
                        tooltip-animation="false" tooltip-placement="left"></a>
                 </p>
             </div>
@@ -420,7 +409,7 @@
 
         <td class="col-xs-1 col-fixed-100">
             <div>
-                {{::datatypesMap[node.datatype].name}}
+                {{::datatypesMap[node.datatype].label}}
             </div>
         </td>
 
@@ -437,18 +426,18 @@
 
         <td class="col-xs-1" ng-style="predWidth">
             <p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                <span tooltip-html="getConstraintAsString(p)"
+                <span tooltip-html="getPredicateAsString(p)"
                    tooltip-append-to-body="true"
-                   tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
+                   tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
                    tooltip-animation="false" tooltip-placement="left"></span>
              </p>
         </td>
 
         <td class="col-xs-2" ng-style="csWidth">
             <p ng-repeat="c in datatype.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
-                <span tooltip-html="getConstraintAsString(c)"
+                <span tooltip-html="getConformanceStatementAsString(c)"
                    tooltip-append-to-body="true"
-                   tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(c)" tooltip-trigger
+                   tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)" tooltip-trigger
                    tooltip-animation="false" tooltip-placement="left"></span>
             </p>
         </td>
@@ -515,21 +504,19 @@
          </td>
 
         <td class="col-xs-1" ng-style="predWidth">
-                 <p ng-repeat="p in datatypesMap[findDTByComponentId(node.id).id].predicates | filter:{constraintTarget:node.position + '[1]'}:true"
-                   tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
-                   tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
-                   tooltip-animation="false" tooltip-placement="left"
-                        >
-                </p>
+                 <p ng-repeat="p in parentsMap[node.id].predicates  | filter:{constraintTarget:node.position + '[1]'}:true"
+                   tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true"
+                   tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
+                   tooltip-animation="false" tooltip-placement="left">
+            	</p>
          </td>
 
         <td class="col-xs-2" ng-style="csWidth">
-                 <p ng-repeat="c in datatypesMap[findDTByComponentId(node.id).id].conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true"
-                   tooltip-html="getConstraintAsString(c)" tooltip-append-to-body="true"
-                   tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(c)" tooltip-trigger
-                   tooltip-animation="false" tooltip-placement="left"
-                        >
-                </p>
+                 <p ng-repeat="c in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true"
+                   tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true"
+                   tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)" tooltip-trigger
+                   tooltip-animation="false" tooltip-placement="left">
+            	</p>
          </td>
 
         <td class="col-xs-1 col-fixed-80">
@@ -593,19 +580,19 @@
          </td>
 
         <td class="col-xs-1" ng-style="predWidth">
-                 <p ng-repeat="p in datatypesMap[findDTByComponentId(node.id).id].predicates | filter:{constraintTarget:node.position + '[1]'}:true"
-                   tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
-                   tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
-                   tooltip-animation="false" tooltip-placement="left" >
-                </p>
+				<p ng-repeat="p in parentsMap[node.id].predicates  | filter:{constraintTarget:node.position + '[1]'}:true"
+                   tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true"
+                   tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
+                   tooltip-animation="false" tooltip-placement="left">
+            	</p>
          </td>
 
         <td class="col-xs-2" ng-style="csWidth">
-                 <p ng-repeat="c in datatypesMap[findDTByComponentId(node.id).id].conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true"
-                   tooltip-html="getConstraintAsString(c)" tooltip-append-to-body="true"
-                   tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(c)" tooltip-trigger
-                   tooltip-animation="false" tooltip-placement="left" >
-                </p>
+                 <p ng-repeat="c in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true"
+                   tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true"
+                   tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)" tooltip-trigger
+                   tooltip-animation="false" tooltip-placement="left">
+            	</p>
          </td>
 
         <td class="col-xs-1 col-fixed-80">

@@ -118,12 +118,55 @@ angular.module('igl')
                 if($scope.options.readonly){
                     return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageReadTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefReadTree.html' : 'MessageGroupReadTree.html';
                 }else{
-                    return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageEditTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefEditTree.html' : 'MessageGroupEditTree.html';
+                	if(node.type === 'segmentRef'){
+                    	return 'MessageSegmentRefEditTree.html';
+                    }else if(node.type === 'group'){
+                    	return 'MessageGroupEditTree.html';
+                    }else if(node.type === 'field'){
+                    	return 'MessageFieldViewTree.html';
+                    }else if(node.type === 'component'){
+                    	return 'MessageComponentViewTree.html';
+                    }else {
+                    	return 'MessageEditTree.html';
+                    }
                 }
-            },
-            options: {
-                initialState: 'expanded'
             }
+//            ,
+//            options: {
+//                initialState: 'expanded'
+//            }
+        });
+        
+        
+        $scope.messagesParams = new ngTreetableParams({
+            getNodes: function (parent) {
+            	if(!parent || parent == null) {
+            		if($rootScope.message != null) {
+            			return $rootScope.message.children;
+            		}else {
+            			return [];
+            		}
+            	}else if(parent.type === 'segmentRef'){
+            		return $rootScope.segmentsMap[parent.ref].fields;
+            	}else if(parent.type === 'field'){
+            		return $rootScope.datatypesMap[parent.datatype].components;
+            	}else if(parent.type === 'component'){
+            		return $rootScope.datatypesMap[parent.datatype].components;
+            	}else if(parent.type === 'group'){
+            		return parent.children;
+            	}else {
+            		return [];
+            	}
+            	
+            },
+            getTemplate: function (node) {
+//                return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageEditTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefEditTree.html' : 'MessageGroupEditTree.html';
+                
+                
+            }
+//            options: {
+//                initialState: 'expanded'
+//            }
         });
 
         /**
@@ -814,6 +857,14 @@ angular.module('igl')
 
         $scope.getConstraintAsString = function (constraint) {
             return constraint.constraintId + " - " + constraint.description;
+        };
+        
+        $scope.getConformanceStatementAsString = function (constraint) {
+            return "[" + constraint.constraintId + "]" + constraint.description;
+        };
+        
+        $scope.getPredicateAsString = function (constraint) {
+            return constraint.description;
         };
 
         $scope.getConstraintsAsString = function (constraints) {
