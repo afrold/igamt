@@ -41,14 +41,6 @@
             <!--<li ng-class="activeWhen(language()=='en')" ng-show="false">-->
                 <!--<a class="point" ng-click="setLanguage('en')"><div msg class="msg" key="navbar.lang.english"></div></a>-->
             <!--</li>-->
-
-            <li class="" style="margin-right: 5em" ng-show="isAuthenticated()">
-                <a class="point" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span msg class="msg" key="navbar.logout"></span></a>
-            </li>
-            <li class="" style="margin-right: 5em" ng-show="!isAuthenticated()">
-                <a class="point" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;<span msg class="msg" key="navbar.login"></span></a>
-            </li>
-
             <li ng-show='showSpinner()' ><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
 
             <!--<li ng-class="activeWhen(path()=='/registerUser')" ng-show="isAdmin()">-->
@@ -56,6 +48,14 @@
             <!--</li>-->
         </ul>
 
+        <ul class="nav navbar-nav navbar-right" style="margin-right: 5px">
+            <li class="" style="margin-right: 5em" ng-show="isAuthenticated()">
+                <a class="point" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span msg class="msg" key="navbar.logout"></span></a>
+            </li>
+            <li class="" style="margin-right: 5em" ng-show="!isAuthenticated()">
+                <a class="point" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;<span msg class="msg" key="navbar.login"></span></a>
+            </li>
+        </ul>
 
 
         <!--<p class="navbar-text pull-right" ng-class="activeWhen(path()=='/issue')" style="margin-right: 3em">-->
