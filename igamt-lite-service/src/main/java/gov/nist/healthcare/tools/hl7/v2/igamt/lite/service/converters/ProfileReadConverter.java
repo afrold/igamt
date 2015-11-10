@@ -394,6 +394,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		tables.setOrganizationName(((String) source.get("organizationName")));
 		tables.setName(((String) source.get("name")));
 		tables.setDescription(((String) source.get("description")));
+		tables.setDateCreated(((String) source.get("dateCreated")));
 
 		tables.setChildren(new HashSet<Table>());
 
