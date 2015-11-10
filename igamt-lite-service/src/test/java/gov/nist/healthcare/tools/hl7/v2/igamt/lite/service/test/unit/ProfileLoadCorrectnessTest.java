@@ -11,13 +11,20 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
@@ -125,7 +132,7 @@ public class ProfileLoadCorrectnessTest {
 	@After
 	public void tearDown() throws Exception {
 		//		 Clear all data in DB
-		profileRepository.deleteAll();
+		//		profileRepository.deleteAll();
 	}
 
 	@Rule
@@ -197,14 +204,14 @@ public class ProfileLoadCorrectnessTest {
 						for (Object fieldObject : fieldObjects) {
 							String name = (String) ((DBObject) fieldObject).get("name");
 							Field f = seg.findOneFieldByName(name);
-//							assertEquals(readMongoId((DBObject) fieldObject), f.getId());
+							//							assertEquals(readMongoId((DBObject) fieldObject), f.getId());
 							assertEquals((String) ((DBObject) fieldObject).get("type"), f.getType());
 							assertEquals((String) ((DBObject) fieldObject).get("name"), f.getName());
 							assertEquals((String) ((DBObject) fieldObject).get("comment"), f.getComment());
 							assertEquals((Integer) ((DBObject) fieldObject).get("minLength"), f.getMinLength());
 							assertEquals((String) ((DBObject) fieldObject).get("maxLength"), f.getMaxLength());
 							assertEquals((String) ((DBObject) fieldObject).get("confLength"), f.getConfLength());
-//							assertEquals((Integer) ((DBObject) fieldObject).get("position"), f.getPosition()); TODO Check why it fails
+							//							assertEquals((Integer) ((DBObject) fieldObject).get("position"), f.getPosition()); //TODO Check why it fails
 							assertEquals((String) ((DBObject) fieldObject).get("table"), f.getTable());
 							assertEquals(Usage.valueOf((String) ((DBObject) fieldObject).get("usage")), f.getUsage());
 							assertEquals((String) ((DBObject) fieldObject).get("bindingLocation"), f.getBindingLocation());
@@ -214,62 +221,131 @@ public class ProfileLoadCorrectnessTest {
 							assertEquals((String) ((DBObject) fieldObject).get("max"), f.getMax());
 							assertEquals((String) ((DBObject) fieldObject).get("text"), f.getText());
 							assertEquals((String) ((DBObject) fieldObject).get("datatype"), f.getDatatype());
-						}	
+						}
 					}
-				}
 
-				// Check constraints TODO
-
-				//		BasicDBList confStsObjects = (BasicDBList) source
-				//				.get("conformanceStatements");
-				//		if (confStsObjects != null) {
-				//			List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
-				//			for (Object confStObject : confStsObjects) {
-				//				ConformanceStatement cs = conformanceStatement((DBObject) confStObject);
-				//				confStatements.add(cs);
-				//			}
-				//			seg.setConformanceStatements(confStatements);
-				//		}
-				//
-				//		BasicDBList predDBObjects = (BasicDBList) source.get("predicates");
-				//		if (predDBObjects != null) {
-				//			List<Predicate> predicates = new ArrayList<Predicate>();
-				//			for (Object predObj : predDBObjects) {
-				//				DBObject predObject = (DBObject) predObj;
-				//				Predicate pred = predicate(predObject);
-				//				predicates.add(pred);
-				//			}
-				//			seg.setPredicates(predicates);
-				//		}
-
-				// Check dynamic mapping TODO
-				//		BasicDBList dynamicMappingsDBObjects = (BasicDBList) source
-				//				.get("dynamicMappings");
-				//		if (dynamicMappingsDBObjects != null) {
-				//			List<DynamicMapping> dynamicMappings = new ArrayList<DynamicMapping>();
-				//			for (Object dynObj : dynamicMappingsDBObjects) {
-				//				DBObject dynObject = (DBObject) dynObj;
-				//				DynamicMapping dyn = dynamicMapping(dynObject, datatypes);
-				//				dynamicMappings.add(dyn);
-				//			}
-				//			seg.setDynamicMappings(dynamicMappings);
-				//		}
-
-
+					BasicDBList dynamicMappingsDBObjects = (BasicDBList) ((DBObject) child).get("dynamicMappings");
+					if (dynamicMappingsDBObjects != null) {
+						for (Object mapObj : dynamicMappingsDBObjects) {
+							DBObject dynObject = (DBObject) ((DBObject) mapObj).get("mappings");
+							String position = (String) ((DBObject) dynObject).get("position");
+							String reference = (String) ((DBObject) dynObject).get("reference");
+							Mapping m = seg.findOneMappingByPositionAndByReference(Integer.valueOf(position), Integer.valueOf(reference));
+							assertNotNull(m); //TODO We should iterate through the cases...
+						}
+					}
+				}		
+				//TODO Check constraints are loaded 
 			}
 		}
 	}
-	
-	@Ignore
+
 	@Test 
 	public void testDatatypes() {
-		//TODO
+		DBObject datatypesJson = (DBObject) jsonObject.get("datatypes");
+		BasicDBList datatypesDBObjects = (BasicDBList) datatypesJson.get("children");
+		if (datatypesDBObjects != null) {
+			for (Object childObj : datatypesDBObjects) {
+				DBObject child = (DBObject) childObj;
+				String label = (String) ((DBObject) child).get("label");
+				Datatype dt = p.getDatatypes().findOneDatatypeByLabel(label);
+
+				if (dt == null){
+					fail("Datatype not found");
+				} else {
+
+					assertEquals((String) ((DBObject) child).get("type"), dt.getType());
+					assertEquals((String) ((DBObject) child).get("name"), dt.getName());
+					assertEquals((String) ((DBObject) child).get("description"), dt.getDescription());
+					assertEquals((String) ((DBObject) child).get("comment"), dt.getComment());
+					assertEquals((String) ((DBObject) child).get("hl7Version"), dt.getHl7Version());
+					assertEquals((String) ((DBObject) child).get("usageNote"), dt.getUsageNote());
+
+					BasicDBList componentsObjects = (BasicDBList) ((DBObject) child).get("components");
+					if (componentsObjects != null) {
+						for (Object componentObject : componentsObjects) {
+							String id = (String) ((DBObject) componentObject).get("id");
+							Component c = p.getDatatypes().findOneComponent(id, dt);
+
+							assertEquals((String) ((DBObject) componentObject).get("type"), c.getType());
+							assertEquals((String) ((DBObject) componentObject).get("name"), c.getName());
+							assertEquals((String) ((DBObject) componentObject).get("comment"), c.getComment());
+							assertEquals((Integer) ((DBObject) componentObject).get("minLength"), c.getMinLength());
+							assertEquals((String) ((DBObject) componentObject).get("maxLength"), c.getMaxLength());
+							assertEquals((String) ((DBObject) componentObject).get("confLength"), c.getConfLength());
+							assertEquals((Integer) ((DBObject) componentObject).get("position"), c.getPosition()); 
+							assertEquals((String) ((DBObject) componentObject).get("table"), c.getTable());
+							assertEquals(Usage.valueOf((String) ((DBObject) componentObject).get("usage")), c.getUsage());
+							assertEquals((String) ((DBObject) componentObject).get("bindingLocation"), c.getBindingLocation());
+							assertEquals((String) ((DBObject) componentObject).get("bindingStrength"), c.getBindingStrength());
+							assertEquals((String) ((DBObject) componentObject).get("text"), c.getText());
+							assertEquals((String) ((DBObject) componentObject).get("datatype"), c.getDatatype());
+
+						}
+					}
+					//TODO Check constraints are loaded
+				}
+			}
+		}
 	}
 
-	@Ignore
 	@Test 
 	public void testTables() {
-		//TODO		
+
+		DBObject tablesJson = (DBObject) jsonObject.get("tables");
+		Tables vsd = p.getTables();
+
+		assertEquals((String) ((DBObject) tablesJson).get("valueSetLibraryIdentifier"), vsd.getValueSetLibraryIdentifier());
+		assertEquals((String) ((DBObject) tablesJson).get("valueSetLibraryVersion"), vsd.getValueSetLibraryVersion());
+		assertEquals((String) ((DBObject) tablesJson).get("valueSetLibraryStatus"), vsd.getStatus());
+		assertEquals((String) ((DBObject) tablesJson).get("organizationName"), vsd.getOrganizationName());
+		assertEquals((String) ((DBObject) tablesJson).get("Description"), vsd.getDescription());
+		assertEquals((String) ((DBObject) tablesJson).get("Name"), vsd.getName());
+		assertEquals((String) ((DBObject) tablesJson).get("dateCreated"), vsd.getDateCreated());
+
+		BasicDBList valueSetsDBObjects = (BasicDBList) tablesJson.get("children");
+		if (valueSetsDBObjects != null) {
+			for (Object childObj : valueSetsDBObjects) {
+				DBObject child = (DBObject) childObj;
+				String name = (String) ((DBObject) child).get("name");
+				Table vs = p.getTables().findOneTableByName(name);
+
+				if (vs == null){
+					fail("ValueSet not found");
+				} else {
+					assertEquals((String) ((DBObject) child).get("type"), vs.getType());
+					assertEquals((String) ((DBObject) child).get("name"), vs.getName());
+					assertEquals((String) ((DBObject) child).get("description"), vs.getDescription());
+					assertEquals((String) ((DBObject) child).get("bindingIdentifier"), vs.getBindingIdentifier());
+					assertEquals((String) ((DBObject) child).get("description"), vs.getDescription());
+					assertEquals((String) ((DBObject) child).get("version"), vs.getVersion());
+					assertEquals((String) ((DBObject) child).get("oid"), vs.getOid());
+					assertEquals((String) ((DBObject) child).get("stability"), vs.getStability());
+					assertEquals((String) ((DBObject) child).get("extensibility"), vs.getExtensibility());
+					assertEquals((String) ((DBObject) child).get("contentDefinition"), vs.getContentDefinition());
+					assertEquals((Integer) ((DBObject) child).get("group"), vs.getGroup());
+//					assertEquals((Integer) ((DBObject) child).get("order"), vs.getOrder());
+
+					BasicDBList codesObjects = (BasicDBList) ((DBObject) child).get("codes");
+					if (codesObjects != null) {
+						for (Object codeObject : codesObjects) {
+							DBObject codeElm = (DBObject) codeObject;
+
+							String id = (String) ((DBObject) codeElm).get("id");
+							Code c = p.getTables().findOneCodeById(id);
+
+							assertEquals((String) ((DBObject) codeElm).get("type"), c.getType());
+							assertEquals((String) ((DBObject) codeElm).get("comment"), c.getComments());
+							assertEquals((String) ((DBObject) codeElm).get("value"), c.getValue());
+							assertEquals((String) ((DBObject) codeElm).get("codeSystem"), c.getCodeSystem());
+							assertEquals((String) ((DBObject) codeElm).get("codeSystemVersion"), c.getCodeSystemVersion());
+							assertEquals((String) ((DBObject) codeElm).get("codeUsage"), c.getCodeUsage());
+							assertEquals((String) ((DBObject) codeElm).get("label"), c.getLabel());
+						}
+					}
+				}
+			}
+		}
 	}
 
 	@Ignore
