@@ -112,34 +112,6 @@ angular.module('igl')
             $rootScope.clearChanges();
         };
 
-//        $scope.messagesParams = new ngTreetableParams({
-//            getNodes: function (parent) {
-//                return parent && parent != null ? parent.children : $rootScope.message != null ? $rootScope.message.children : [];
-//            },
-//            getTemplate: function (node) {
-//                if($scope.options.readonly){
-//                    return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageReadTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefReadTree.html' : 'MessageGroupReadTree.html';
-//                }else{
-//                	if(node.type === 'segmentRef'){
-//                    	return 'MessageSegmentRefEditTree.html';
-//                    }else if(node.type === 'group'){
-//                    	return 'MessageGroupEditTree.html';
-//                    }else if(node.type === 'field'){
-//                    	return 'MessageFieldViewTree.html';
-//                    }else if(node.type === 'component'){
-//                    	return 'MessageComponentViewTree.html';
-//                    }else {
-//                    	return 'MessageEditTree.html';
-//                    }
-//                }
-//            }
-////            ,
-////            options: {
-////                initialState: 'expanded'
-////            }
-//        });
-        
-        
         $scope.messagesParams = new ngTreetableParams({
             getNodes: function (parent) {
             	if(!parent || parent == null) {
@@ -175,22 +147,19 @@ angular.module('igl')
                     }else {
                         return 'MessageReadTree.html';
                     }
-                 }else{
-                    if(node.type === 'segmentRef'){
+                 }else {
+                    if (node.type === 'segmentRef') {
                         return 'MessageSegmentRefEditTree.html';
-                    }else if(node.type === 'group'){
+                    } else if (node.type === 'group') {
                         return 'MessageGroupEditTree.html';
-                    }else if(node.type === 'field'){
+                    } else if (node.type === 'field') {
                         return 'MessageFieldViewTree.html';
-                    }else if(node.type === 'component'){
+                    } else if (node.type === 'component') {
                         return 'MessageComponentViewTree.html';
-                    }else {
+                    } else {
                         return 'MessageEditTree.html';
                     }
                 }
-//                return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageEditTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefEditTree.html' : 'MessageGroupEditTree.html';
-                
-                
             }
 //            options: {
 //                initialState: 'expanded'
@@ -861,6 +830,15 @@ angular.module('igl')
             $timeout(
                 function () {
                     $rootScope.table = table;
+                    $rootScope.codeSystems = [];
+                    
+                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
+                    	if($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0){
+                    		if($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== ''){
+                    			$rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+                    		}
+            			}
+                	}
                     $scope.loadingSelection = false;
                 }, 100);
         };
