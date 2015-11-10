@@ -109,6 +109,11 @@
     <script src="bower_components/ng-context-menu/dist/ng-context-menu.js"></script>
     <script src="bower_components/bootstrap-material-design/dist/js/material.js"></script>
     <script src="bower_components/bootstrap-material-design/dist/js/ripples.js"></script>
+    
+    <script src="http://ui-grid.info/docs/grunt-scripts/csv.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/pdfmake.js"></script>
+    <script src="http://ui-grid.info/docs/grunt-scripts/vfs_fonts.js"></script>
+    
     <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
@@ -124,12 +129,12 @@
     
     <!-- Toogle in/out for ui testing -->
     <script src="lib/angular-mocks/angular-mocks.js"></script>
-	<script src="lib/profileBackEndStub.js"></script>
 
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
+	<script src="lib/profileBackEndStub.js"></script>
     <script src="scripts/services/profiles.js"></script>
     <script src="scripts/services/i18n.js"></script>
     <script src="scripts/services/base64.js"></script>
@@ -137,8 +142,9 @@
     <script src="scripts/services/AccountLoader.js"></script>
     <script src="scripts/services/MultiAccountLoader.js"></script>     
     <script src="scripts/services/ContextMenuSvc.js"></script>
-    <script src="scripts/services/HL7VersionSvc.js"></script>
     <script src="scripts/services/MessageSelectionSvc.js"></script>
+    <script src="scripts/services/ProfileAccessSvc.js"></script>
+    <script src="scripts/services/ToCSvc.js"></script>
 
 
     <script src="scripts/filters/yesno.js"></script>

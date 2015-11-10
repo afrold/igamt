@@ -2,8 +2,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 	
 	var toc = this;
 	
-	var headers = [{"Metadata","Data Types","Segments","Messages","Value Sets"];
-	}
+	var headers = ["Metadata","Data Types","Segments","Messages","Value Sets"];
 
 	toc.getRoot = function(profile) {
 		

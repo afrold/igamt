@@ -3,8 +3,9 @@
  */
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, HL7VersionSvc, ngTreetableParams) {
+    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, ToCSvc, ProfileAccessSvc, ngTreetableParams, $interval, uiGridTreeViewConstants) {
         $scope.loading = false;
+    	$scope.uiGrid = {};
         $rootScope.igs = [];
         $scope.igContext = {
             type: 'USER'
@@ -123,7 +124,6 @@ angular.module('igl')
                 $scope.loadProfiles();
             });
 
-
             $rootScope.$on('event:openProfileRequest', function (event, profile) {
                 $scope.openProfile(profile);
             });
@@ -161,7 +161,7 @@ angular.module('igl')
                 $scope.loading = true;
                 if ($scope.igContext.igType.type === 'PRELOADED') {
                     $http.get('api/profiles', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs = angular.fromJson(response.data);
+                        $rootScope.igs.push(angular.fromJson(response.data));
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -170,7 +170,7 @@ angular.module('igl')
                     });
                 } else if ($scope.igContext.igType.type === 'USER') {
                     $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs = angular.fromJson(response.data);
+                        $rootScope.igs.push(angular.fromJson(response.data));
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -285,7 +285,115 @@ angular.module('igl')
                 $rootScope.segments = [];
                 $rootScope.tables = $rootScope.profile.tables.children;
                 $rootScope.datatypes = $rootScope.profile.datatypes.children;
+                
+                $scope.gridOptions = {
+                	    enableSorting: true,
+                	    enableFiltering: true,
+                	    showTreeExpandNoChildren: true,
+                	    paginationPageSizes: [5, 10],
+                	    paginationPageSize: 5,
+                	    columnDefs: [
+                	      { name: 'id', width: '30%' },
+                	      { name: 'parentId', width: '20%' },
+                	      { name: 'name', width: '20%' },
+                	     ]
+                	  };
+                var data=[
+                          {
+                            "id": 1,
+                            "parentId": 1,
+                            "name": "TopLoc1",
+                            "children": [
+                              {
+                                "id": 2,
+                                "parentId": 1,
+                                "name": "Loc1 child",
+                                "children": [
+                                  {
+                                    "id": 4,
+                                    "parentId": 2,
+                                    "name": "Loc2 child",
+                                    "children": []
+                                  }
+                                ]
+                              },
+                              {
+                                "id": 3,
+                                "parentId": 1,
+                                "name": "Loc1 child",
+                                "children": []
+                              }
+                            ]
+                          },
+                          {
+                            "id": 5,
+                            "parentId": 5,
+                            "name": "Top Loc 2",
+                            "children": [
+                              {
+                                "id": 6,
+                                "parentId": 5,
+                                "name": "Loc5 child",
+                                "children": [
+                                  {
+                                    "id": 8,
+                                    "parentId": 6,
+                                    "name": "Loc6 child",
+                                    "children": []
+                                  },
+                                  {
+                                    "id": 9,
+                                    "parentId": 6,
+                                    "name": "Loc5 child",
+                                    "children": []
+                                  },
+                                  {
+                                    "id": 10,
+                                    "parentId": 6,
+                                    "name": "Loc5 child",
+                                    "children": [
+                                      {
+                                        "id": 11,
+                                        "parentId": 10,
+                                        "name": "Loc10 child",
+                                        "children": [
+                                          {
+                                            "id": 12,
+                                            "parentId": 11,
+                                            "name": "Loc11 child",
+                                            "children": []
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "id": 7,
+                                "parentId": 5,
+                                "name": "Loc5 child",
+                                "children": []
+                              }
+                            ]
+                          }
+                        ]
+                var writeoutNode = function( childArray, currentLevel, dataArray ){
+                	  childArray.forEach( function( childNode ){
+                	    if ( childNode.children.length > 0 ){
+                	      childNode.$$treeLevel = currentLevel;
+                	    }
+                	    dataArray.push( childNode );
+                	    writeoutNode( childNode.children, currentLevel + 1, dataArray );
+                	  });
+                	};
+                	$scope.gridOptions.data = [];
+                	writeoutNode( data, 0, $scope.gridOptions.data );
 
+                $scope.tocData = [{
+                	"name" : "Metadata"	
+                }, {"name" : "Datatypes"}, {"name" : "Segments"}];
+                
                 angular.forEach($rootScope.profile.messages.children, function (child) {
                     this[child.id] = child;
                     angular.forEach(child.children, function (segmentRefOrGroup) {
@@ -578,13 +686,13 @@ angular.module('igl')
             return $scope.subview;
         };
 
-        $scope.getHL7Version = function () {
-            return HL7VersionSvc.hl7Version;
-        };
-
-        $scope.setHL7Version = function (hl7Version) {
-            HL7VersionSvc.hl7Version = hl7Version;
-        };
+//        $scope.getHL7Version = function () {
+//            return HL7VersionSvc.hl7Version;
+//        };
+//
+//        $scope.setHL7Version = function (hl7Version) {
+//            HL7VersionSvc.hl7Version = hl7Version;
+//        };
 
         $scope.showSelected = function (node) {
             $scope.selectedNode = node;

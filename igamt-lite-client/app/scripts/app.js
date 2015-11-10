@@ -23,7 +23,10 @@ var app = angular
         'ngTreetable',
         'restangular',
         'textAngular',
-        'ng-context-menu'
+        'ng-context-menu',
+        'ui.grid',
+        'ui.grid.treeView',
+        'ui.grid.pagination'
         ,
         'ngMockE2E'
     ]);
