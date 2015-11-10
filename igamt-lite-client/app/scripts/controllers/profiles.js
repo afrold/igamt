@@ -109,33 +109,6 @@ angular.module('igl')
             $rootScope.initMaps();
             $rootScope.clearChanges();
         };
-
-        $scope.messagesParams = new ngTreetableParams({
-            getNodes: function (parent) {
-                return parent && parent != null ? parent.children : $rootScope.message != null ? $rootScope.message.children : [];
-            },
-            getTemplate: function (node) {
-                if($scope.options.readonly){
-                    return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageReadTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefReadTree.html' : 'MessageGroupReadTree.html';
-                }else{
-                	if(node.type === 'segmentRef'){
-                    	return 'MessageSegmentRefEditTree.html';
-                    }else if(node.type === 'group'){
-                    	return 'MessageGroupEditTree.html';
-                    }else if(node.type === 'field'){
-                    	return 'MessageFieldViewTree.html';
-                    }else if(node.type === 'component'){
-                    	return 'MessageComponentViewTree.html';
-                    }else {
-                    	return 'MessageEditTree.html';
-                    }
-                }
-            }
-//            ,
-//            options: {
-//                initialState: 'expanded'
-//            }
-        });
         
         
         $scope.messagesParams = new ngTreetableParams({
@@ -160,9 +133,21 @@ angular.module('igl')
             	
             },
             getTemplate: function (node) {
-//                return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageEditTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefEditTree.html' : 'MessageGroupEditTree.html';
-                
-                
+                if($scope.options.readonly){
+                    return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageReadTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefReadTree.html' : 'MessageGroupReadTree.html';
+                }else{
+                	if(node.type === 'segmentRef'){
+                    	return 'MessageSegmentRefEditTree.html';
+                    }else if(node.type === 'group'){
+                    	return 'MessageGroupEditTree.html';
+                    }else if(node.type === 'field'){
+                    	return 'MessageFieldViewTree.html';
+                    }else if(node.type === 'component'){
+                    	return 'MessageComponentViewTree.html';
+                    }else {
+                    	return 'MessageEditTree.html';
+                    }
+                }
             }
 //            options: {
 //                initialState: 'expanded'
