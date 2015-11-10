@@ -402,6 +402,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
         $rootScope.datatype = null;
         $rootScope.message = null;
         $rootScope.table = null;
+        $rootScope.codeSystems = [];
         $rootScope.messagesMap = {};
         $rootScope.segmentsMap = {};
         $rootScope.datatypesMap = {};

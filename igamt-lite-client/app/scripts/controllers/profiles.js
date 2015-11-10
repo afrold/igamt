@@ -818,6 +818,15 @@ angular.module('igl')
             $timeout(
                 function () {
                     $rootScope.table = table;
+                    $rootScope.codeSystems = [];
+                    
+                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
+                    	if($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0){
+                    		if($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== ''){
+                    			$rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+                    		}
+            			}
+                	}
                     $scope.loadingSelection = false;
                 }, 100);
         };
