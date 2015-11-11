@@ -3,8 +3,8 @@
  */
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, ToCSvc, ProfileAccessSvc, ngTreetableParams, $interval, uiGridTreeViewConstants) {
-        $scope.loading = false;
+<<<<.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, ToCSvc, ProfileAccessSvc, ngTreetableParams, $interval, uiGridTreeViewConstants, ColumnSettings) {
+====    $scope.loading = false;
     	$scope.uiGrid = {};
         $rootScope.igs = [];
         $scope.igContext = {
@@ -15,6 +15,8 @@ angular.module('igl')
         $scope.error = null;
         $scope.loading = false;
         $scope.collapsed = [];
+        $scope.columnSettings = ColumnSettings;
+//        $scope.visibleColumns = angular.copy(ColumnSettings.visibleColumns);
 
         $scope.options = {
             'readonly': false
@@ -110,8 +112,7 @@ angular.module('igl')
             $rootScope.initMaps();
             $rootScope.clearChanges();
         };
-        
-        
+
         $scope.messagesParams = new ngTreetableParams({
             getNodes: function (parent) {
             	if(!parent || parent == null) {
@@ -135,18 +136,29 @@ angular.module('igl')
             },
             getTemplate: function (node) {
                 if($scope.options.readonly){
-                    return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageReadTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefReadTree.html' : 'MessageGroupReadTree.html';
-                }else{
-                	if(node.type === 'segmentRef'){
-                    	return 'MessageSegmentRefEditTree.html';
+
+                    if(node.type === 'segmentRef'){
+                        return 'MessageSegmentRefReadTree.html';
                     }else if(node.type === 'group'){
-                    	return 'MessageGroupEditTree.html';
+                        return 'MessageGroupReadTree.html';
                     }else if(node.type === 'field'){
-                    	return 'MessageFieldViewTree.html';
+                        return 'MessageFieldViewTree.html';
                     }else if(node.type === 'component'){
-                    	return 'MessageComponentViewTree.html';
+                        return 'MessageComponentViewTree.html';
                     }else {
-                    	return 'MessageEditTree.html';
+                        return 'MessageReadTree.html';
+                    }
+                 }else {
+                    if (node.type === 'segmentRef') {
+                        return 'MessageSegmentRefEditTree.html';
+                    } else if (node.type === 'group') {
+                        return 'MessageGroupEditTree.html';
+                    } else if (node.type === 'field') {
+                        return 'MessageFieldViewTree.html';
+                    } else if (node.type === 'component') {
+                        return 'MessageComponentViewTree.html';
+                    } else {
+                        return 'MessageEditTree.html';
                     }
                 }
             }
@@ -1009,6 +1021,34 @@ angular.module('igl')
             });
             return $sce.trustAsHtml(html);
         };
+
+        $scope.getSegmentRefNodeName = function (node) {
+          return node.position + "." + $rootScope.segmentsMap[node.ref].name + ":" + $rootScope.segmentsMap[node.ref].description;
+        };
+
+        $scope.getGroupNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $scope.getFieldNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $scope.getComponentNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $scope.getDatatypeNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $scope.onColumnToggle = function (item) {
+           $scope.columnSettings.save();
+        };
+
+
+
+
     });
 
 angular.module('igl').controller('ContextMenuCtrl', function ($scope, $rootScope, ContextMenuSvc) {

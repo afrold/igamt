@@ -219,7 +219,13 @@
         <td class="col-xs-2 col-fixed-250">
             <img style="width:15px; height:15px"
                  ng-src="images/{{node.type}}.png">
-            <span>{{node.position}}:{{node.name}}</span>
+            <span
+               tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node)" tooltip-trigger
+               tooltip-animation="false" tooltip-placement="left"
+                    ></span>
+
+
         </td>
         <td class="col-xs-1 col-fixed-80">
                                              <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
@@ -368,7 +374,11 @@
         <td class="col-xs-2 col-fixed-250">
             <img style="width:15px; height:15px"
                  ng-src="images/{{::node.type}}.png">
-            <span>{{::node.position}}:{{::node.name}}</span>
+             <span
+                    tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"
+                    tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node)" tooltip-trigger
+                    tooltip-animation="false" tooltip-placement="left"
+                    ></span>
         </td>
 
         <td class="col-xs-1 col-fixed-80">
@@ -442,7 +452,11 @@
                                               ng-src="images/{{node.type}}.png">
                                          <img ng-show="isSubDT(node)" style="width:15px; height:15px"
                                               ng-src="images/subcomponent.png">
-                                         <span>{{node.position}}:{{node.name}}</span>
+                                  <span
+                                         tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true"
+                                         tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger
+                                         tooltip-animation="false" tooltip-placement="left"
+                                         ></span>
                                  </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
@@ -530,7 +544,11 @@
                                               ng-src="images/{{::node.type}}.png">
                                          <img ng-show="isSubDT(node)" style="width:15px; height:15px"
                                               ng-src="images/subcomponent.png">
-                                         <span>{{::node.position}}:{{::node.name}}</span>
+                                   <span
+                                          tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true"
+                                          tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger
+                                          tooltip-animation="false" tooltip-placement="left"
+                                          ></span>
                                  </span>
         </td>
         <td class="col-xs-1 col-fixed-80">

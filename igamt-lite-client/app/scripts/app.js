@@ -11,6 +11,7 @@
 var app = angular
     .module('igl', [
         'ngAnimate',
+        'LocalStorageModule',
         'ngCookies',
         'ngMessages',
         'ngResource',
@@ -23,7 +24,9 @@ var app = angular
         'ngTreetable',
         'restangular',
         'textAngular',
-        'ng-context-menu'
+        'ng-context-menu',
+        'table-settings',
+        'angularjs-dropdown-multiselect'
         ,
         'ngMockE2E'
     ]);
@@ -449,6 +452,34 @@ app.filter('flavors',function(){
         });
     };
 });
+
+
+app.factory('StorageService',
+    ['$rootScope', 'localStorageService', function ($rootScope, localStorageService) {
+        var service = {
+            TABLE_COLUMN_SETTINGS_KEY: 'SETTINGS_KEY',
+            remove: function (key) {
+                return localStorageService.remove(key);
+            },
+
+            removeList: function removeItems(key1, key2, key3) {
+                return localStorageService.remove(key1, key2, key3);
+            },
+
+            clearAll: function () {
+                return localStorageService.clearAll();
+            },
+            set: function (key, val) {
+                return localStorageService.set(key, val);
+            },
+            get: function (key) {
+                return localStorageService.get(key);
+            }
+        };
+        return service;
+    }]
+);
+
 
 
 //
