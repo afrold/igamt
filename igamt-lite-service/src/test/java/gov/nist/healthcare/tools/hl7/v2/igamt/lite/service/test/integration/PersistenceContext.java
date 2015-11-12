@@ -17,10 +17,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +24,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +39,12 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
+
+
 @Configuration
 @PropertySource("classpath:db-test-config.properties")
 @EnableMongoRepositories(basePackages = {"gov.nist.healthcare.tools"})
@@ -51,7 +52,6 @@ import com.mongodb.ServerAddress;
 @ComponentScan(basePackages = "gov.nist.healthcare.tools.hl7.v2.igamt.lite")
 public class PersistenceContext extends AbstractMongoConfiguration {
 
-	@Autowired
 	@Resource
 	private Environment env;
 
