@@ -3,8 +3,8 @@
  */
 
 angular.module('igl')
-<<<<.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, ToCSvc, ProfileAccessSvc, ngTreetableParams, $interval, uiGridTreeViewConstants, ColumnSettings) {
-====    $scope.loading = false;
+.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, DeleteMessageSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
+		$scope.loading = false;
     	$scope.uiGrid = {};
         $rootScope.igs = [];
         $scope.igContext = {
@@ -353,114 +353,6 @@ angular.module('igl')
                 $rootScope.tables = $rootScope.profile.tables.children;
                 $rootScope.datatypes = $rootScope.profile.datatypes.children;
                 
-                $scope.gridOptions = {
-                	    enableSorting: true,
-                	    enableFiltering: true,
-                	    showTreeExpandNoChildren: true,
-                	    paginationPageSizes: [5, 10],
-                	    paginationPageSize: 5,
-                	    columnDefs: [
-                	      { name: 'id', width: '30%' },
-                	      { name: 'parentId', width: '20%' },
-                	      { name: 'name', width: '20%' },
-                	     ]
-                	  };
-                var data=[
-                          {
-                            "id": 1,
-                            "parentId": 1,
-                            "name": "TopLoc1",
-                            "children": [
-                              {
-                                "id": 2,
-                                "parentId": 1,
-                                "name": "Loc1 child",
-                                "children": [
-                                  {
-                                    "id": 4,
-                                    "parentId": 2,
-                                    "name": "Loc2 child",
-                                    "children": []
-                                  }
-                                ]
-                              },
-                              {
-                                "id": 3,
-                                "parentId": 1,
-                                "name": "Loc1 child",
-                                "children": []
-                              }
-                            ]
-                          },
-                          {
-                            "id": 5,
-                            "parentId": 5,
-                            "name": "Top Loc 2",
-                            "children": [
-                              {
-                                "id": 6,
-                                "parentId": 5,
-                                "name": "Loc5 child",
-                                "children": [
-                                  {
-                                    "id": 8,
-                                    "parentId": 6,
-                                    "name": "Loc6 child",
-                                    "children": []
-                                  },
-                                  {
-                                    "id": 9,
-                                    "parentId": 6,
-                                    "name": "Loc5 child",
-                                    "children": []
-                                  },
-                                  {
-                                    "id": 10,
-                                    "parentId": 6,
-                                    "name": "Loc5 child",
-                                    "children": [
-                                      {
-                                        "id": 11,
-                                        "parentId": 10,
-                                        "name": "Loc10 child",
-                                        "children": [
-                                          {
-                                            "id": 12,
-                                            "parentId": 11,
-                                            "name": "Loc11 child",
-                                            "children": []
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  }
-                                ]
-                              },
-                              {
-                                "id": 7,
-                                "parentId": 5,
-                                "name": "Loc5 child",
-                                "children": []
-                              }
-                            ]
-                          }
-                        ]
-                var writeoutNode = function( childArray, currentLevel, dataArray ){
-                	  childArray.forEach( function( childNode ){
-                	    if ( childNode.children.length > 0 ){
-                	      childNode.$$treeLevel = currentLevel;
-                	    }
-                	    dataArray.push( childNode );
-                	    writeoutNode( childNode.children, currentLevel + 1, dataArray );
-                	  });
-                	};
-                	$scope.gridOptions.data = [];
-                	writeoutNode( data, 0, $scope.gridOptions.data );
-
-                $scope.tocData = [{
-                	"name" : "Metadata"	
-                }, {"name" : "Datatypes"}, {"name" : "Segments"}];
-                
                 angular.forEach($rootScope.profile.messages.children, function (child) {
                     this[child.id] = child;
                     angular.forEach(child.children, function (segmentRefOrGroup) {
@@ -541,7 +433,6 @@ angular.module('igl')
             });
         };
 
-
         $scope.confirmClose = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'ConfirmProfileCloseCtrl.html',
@@ -551,7 +442,6 @@ angular.module('igl')
             }, function () {
             });
         };
-
 
         $scope.confirmOpen = function (profile) {
             var modalInstance = $modal.open({
@@ -792,9 +682,8 @@ angular.module('igl')
 //				}
                     break;
                 case "Delete":
-                    // not to be implemented at this time.
-                    // var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
-                    break;
+                	ProfileAccessSvc.
+                	break;
                 default:
                     console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
             }
@@ -806,7 +695,6 @@ angular.module('igl')
                 case "Add":
                 {
                     // not to be implemented at this time.
-
                 }
                 case "Clone":
                 {
@@ -827,9 +715,8 @@ angular.module('igl')
                     break;
                 }
                 case "Delete":
-                    // not to be implemented at this time.
-                    // var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
-                    break;
+                	DeleteMessageSvc.delete($rootScope.profile, node);
+                	break;
                 default:
                     console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
             }
