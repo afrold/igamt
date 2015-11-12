@@ -160,8 +160,11 @@
         <td class="col-xs-2 col-fixed-250">
             <img style="width:15px; height:15px"
                  ng-src="images/segment.png">
-            <a class="point"
-               ng-click="goToSegment(node.ref)">{{node.position}}.{{segmentsMap[node.ref].name}}:{{segmentsMap[node.ref].description}}</a>
+            <a ng-click="goToSegment(node.ref)" class="point"
+               tooltip-html="getSegmentRefNodeName(node)" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node)" tooltip-trigger
+               tooltip-animation="false" tooltip-placement="left"
+             ></a>
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>
@@ -231,10 +234,10 @@
 		</td>
         <td class="col-xs-1" ng-style="commentWidth">
             <div>
-                <button ng-show="node.comment === '' || node.comment === null" type="button"
-                        ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="btn btn-info btn-xs">
+                <a ng-show="node.comment === '' || node.comment === null"
+                        ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="point">
                     <i class="fa fa-plus fa-fw"></i>
-                </button>
+                </a>
                 <a class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)"
                    tooltip-html="node.comment" tooltip-append-to-body="true"
                    tooltip-class="constraints-tooltip"
@@ -249,10 +252,13 @@
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
                                         <span>
-
                                             <img style="width:15px; height:15px"
                                                  ng-src="images/group.png">
-                                            <span>{{node.position}}.{{node.name}}</span>
+                                              <span
+                                                 tooltip-html="getGroupNodeName(node)" tooltip-append-to-body="true"
+                                                 tooltip-class="constraints-tooltip" ng-bind-html="getGroupNodeName(node)" tooltip-trigger
+                                                 tooltip-animation="false" tooltip-placement="left"
+                                                      ></span>
                                         </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
@@ -303,9 +309,9 @@
         <td class="col-xs-1" ng-style="predWidth">
             <div>
                 <div ng-show="countPredicates(node) == 0">
-                    <button type="button" ng-click="managePredicate(node)" class="btn btn-info btn-xs">
+                    <a   ng-click="managePredicate(node)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                    </button>
+                    </a>
                 </div>
                 <p ng-repeat="p in node.predicates">
                     <a ng-click="managePredicate(node)"
@@ -321,9 +327,9 @@
         <td class="col-xs-1" ng-style="csWidth">
             <div>
                 <div ng-show="countConformanceStatements(node) == 0">
-                    <button type="button" ng-click="manageConformanceStatement(node)" class="btn btn-info btn-xs">
+                    <a  ng-click="manageConformanceStatement(node)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
-                    </button>
+                    </a>
                 </div>
                 <p ng-repeat="c in node.conformanceStatements">
                     <a ng-click="manageConformanceStatement(node)"
@@ -341,10 +347,10 @@
 
         <td class="col-xs-1" ng-style="commentWidth">
             <div>
-                <button ng-show="node.comment === '' || node.comment === null" type="button"
-                        ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="btn btn-info btn-xs">
+                <a ng-show="node.comment === '' || node.comment === null" class="point"
+                        ng-click="openInputTextDlg(node, 'comment', 'Comment', false)">
                     <i class="fa fa-plus fa-fw"></i>
-                </button>
+                </a>
                 <a class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)"
                    tooltip-html="node.comment" tooltip-append-to-body="true"
                    tooltip-class="constraints-tooltip"
@@ -359,7 +365,11 @@
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
             <img style="width:15px; height:15px" ng-src="images/{{node.type}}.png">
-            <span>{{node.position}}:{{node.name}}</span>
+            <span
+                    tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"
+                    tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node)" tooltip-trigger
+                    tooltip-animation="false" tooltip-placement="left"
+                    ></span>
         </td>
         <td class="col-xs-1 col-fixed-80">
            	<div>
@@ -423,7 +433,11 @@
         	<span>
             	<img ng-show="!isSubDT(node)" style="width:15px; height:15px" ng-src="images/{{node.type}}.png" />
                 <img ng-show="isSubDT(node)" style="width:15px; height:15px" ng-src="images/subcomponent.png" />
-                <span>{{node.position}}:{{node.name}}</span>
+                <span
+                        tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true"
+                        tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger
+                        tooltip-animation="false" tooltip-placement="left"
+                        ></span>
             </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
@@ -772,7 +786,7 @@
 
 <script type="text/ng-template" id="MessageReadTree.html">
     <tr tt-node is-branch="hasChildren(node)">
-        <td class="col-xs-4 col-fixed-450">
+        <td class="col-xs-2 col-fixed-250">
             <span>{{::node.event}}^{{::node.structID}}:{{::node.description}}</span>
         </td>
         <td class="col-xs-1 col-fixed-80">
@@ -781,10 +795,29 @@
         <td class="col-xs-1 col-fixed-100">
             <div>-</div>
         </td>
+
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+            <div>-</div>
+        </td>
+
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
+        </td>
+
+        <td class="col-xs-1 col-fixed-130">
+            <div>-</div>
+        </td>
+
         <td class="col-xs-2" ng-style="predWidth">
             <div>-</div>
         </td>
         <td class="col-xs-3" ng-style="csWidth">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth">
@@ -795,11 +828,16 @@
 
 <script type="text/ng-template" id="MessageSegmentRefReadTree.html">
     <tr tt-node is-branch="hasChildren(node)">
-        <td class="col-xs-4 col-fixed-450">
+        <td class="col-xs-2 col-fixed-250">
             <img style="width:15px; height:15px"
                  ng-src="images/segment.png">
-            <a class="point"
-               ng-click="goToSegment(node.ref)">{{::node.position}}.{{::segmentsMap[node.ref].name}}:{{::segmentsMap[node.ref].description}}</a>
+            <a
+                    tooltip-html="getGroupNodeName(node)" tooltip-append-to-body="true"
+                    class="point"
+                    ng-click="getSegmentRefNodeName(node.ref)"
+                    tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node)" tooltip-trigger
+                    tooltip-animation="false" tooltip-placement="left"
+                    ></a>
         </td>
         <td class="col-xs-1 col-fixed-80">
                   <span ng-bind="node.usage"></span>
@@ -808,6 +846,20 @@
             [{{::node.min}}, {{::node.max}}]
         </td>
 
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-130">
+            <div>-</div>
+        </td>
+
+
         <td class="col-xs-2" ng-style="predWidth">
             <div>-</div>
         </td>
@@ -815,7 +867,9 @@
         <td class="col-xs-3" ng-style="csWidth">
             <div>-</div>
         </td>
-
+        <td class="col-xs-1 col-fixed-80">
+            <div>-</div>
+        </td>
 
         <td class="col-xs-1" ng-style="commentWidth">
                  <span ng-show="node.comment !== '' && node.comment !== null"
@@ -829,12 +883,16 @@
 
 <script type="text/ng-template" id="MessageGroupReadTree.html">
     <tr tt-node is-branch="hasChildren(node)">
-        <td class="col-xs-4 col-fixed-450">
+        <td class="col-xs-2 col-fixed-250">
                                         <span>
 
                                             <img style="width:15px; height:15px"
                                                  ng-src="images/group.png">
-                                            <span>{{::node.position}}.{{::node.name}}</span>
+                                              <span
+                                                     tooltip-html="getGroupNodeName(node)" tooltip-append-to-body="true"
+                                                     tooltip-class="constraints-tooltip" ng-bind-html="getGroupNodeName(node)" tooltip-trigger
+                                                     tooltip-animation="false" tooltip-placement="left"
+                                                     ></span>
                                         </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
@@ -847,27 +905,47 @@
                                            [{{::node.min}}, {{::node.max}}]
          </td>
 
-        <td class="col-xs-2" ng-style="predWidth">
-                 <p ng-repeat="p in node.predicates">
-                    <span
+
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-100">
+            <div>-</div>
+        </td>
+        <td class="col-xs-1 col-fixed-130">
+            <div>-</div>
+        </td>
+
+        <td class="col-xs-1" ng-style="predWidth">
+            <div>
+                <p ng-repeat="p in node.predicates">
+                    <a ng-click="managePredicate(node)"
                        tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
                        tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
                        tooltip-animation="false" tooltip-placement="left"
-                            ></span>
+
+                            ></a>
                 </p>
-         </td>
+            </div>
+        </td>
 
-        <td class="col-xs-3" ng-style="csWidth">
-
+        <td class="col-xs-1" ng-style="csWidth">
+            <div>
                 <p ng-repeat="c in node.conformanceStatements">
-                    <span
+                    <a ng-click="manageConformanceStatement(node)"
                        tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
                        tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
                        tooltip-animation="false" tooltip-placement="left"
-                            ></span>
+                            ></a>
                 </p>
-         </td>
-
+            </div>
+        </td>
+        <td class="col-xs-1 col-fixed-80">
+            <div>-</div>
+        </td>
 
         <td class="col-xs-1" ng-style="commentWidth">
                  <span ng-show="node.comment !== '' && node.comment !== null"

@@ -1,6 +1,6 @@
 angular.module('igl').controller(
 		'HL7VersionsDlgCtrl',
-		function($scope, $rootScope, $modal, $log, $http, $httpBackend, HL7VersionSvc) {
+		function($scope, $rootScope, $modal, $log, $http, $httpBackend, ProfileAccessSvc) {
 
 			$rootScope.clickSource = {};
 			
@@ -17,11 +17,12 @@ angular.module('igl').controller(
 				});
 
 				hl7VersionsInstance.result.then(function(result) {
-					var hl7Version = HL7VersionSvc.hl7Version;
+					var hl7Version = $rootScope.hl7Version;
 					switch ($rootScope.clickSource) {
 					case "btn": { 
 						$scope.createProfile(hl7Version, result);
-						$rootScope.selectIgTab(1);
+//						$rootScope.selectIgTab(1);
+						$rootScope.hl7Version = null;
 						break;
 					}
 					case "ctx": {
@@ -42,7 +43,7 @@ angular.module('igl').controller(
 							for (var i = 0; i < len; i++) {
 								hl7Versions.push(response.data[i]);
 							}
-//							$scope.setHL7Version(hl7Versions[len -1]);
+							$rootScope.hl7Version = hl7Versions[len -1];
 						});
 				return hl7Versions;
 			};
@@ -91,10 +92,6 @@ angular.module('igl').controller(
 				                         {title : "ValueSets", children : profile.tables.children}];
 			};
 
-			$scope.setHL7Version = function(hl7Version) {
-				HL7VersionSvc.hl7Version = hl7Version;
-			};
-			
 			$scope.closedCtxMenu = function(node, $index) {
 				console.log("closedCtxMenu");
 			};
@@ -102,7 +99,7 @@ angular.module('igl').controller(
 		});
 
 angular.module('igl').controller('HL7VersionsInstanceDlgCtrl',
-		function($scope, $rootScope, $modalInstance, $http, hl7Versions, HL7VersionSvc) {
+		function($scope, $rootScope, $modalInstance, $http, hl7Versions, ProfileAccessSvc) {
 
 			$scope.selected = {
 				item : hl7Versions[0]
@@ -139,7 +136,7 @@ angular.module('igl').controller('HL7VersionsInstanceDlgCtrl',
 		    });
 		    
 		    $scope.getHL7Version = function() {
-				return $rootScope.profile.metaData.hl7Version;
+				return ProfileAccessSvc.getVersion($rootScope.profile);
 			};
 
 			$scope.hl7Versions = hl7Versions;

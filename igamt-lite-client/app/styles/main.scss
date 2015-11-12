@@ -2006,3 +2006,8 @@ table.ig-list-table {
 .form-group{
   text-align:left;
 }
+
+ul.dropdown-menu, ul.dropdown-menu > li {
+  background: #f9f9f9;
+  cursor: pointer;
+}
