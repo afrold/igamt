@@ -26,11 +26,12 @@ var app = angular
         'textAngular',
         'ng-context-menu',
         'table-settings',
-        'angularjs-dropdown-multiselect',
-        'ui.grid',
-        'ui.grid.treeView'
-        ,
-        'ngMockE2E'
+        'angularjs-dropdown-multiselect'
+//        ,
+//        'ui.grid',
+//        'ui.grid.treeView'
+//        ,
+//        'ngMockE2E'
     ]);
 
 var
