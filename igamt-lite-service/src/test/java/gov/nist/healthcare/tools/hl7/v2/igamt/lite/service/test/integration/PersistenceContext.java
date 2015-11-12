@@ -17,21 +17,13 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
-<<<<<<< HEAD
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
 
-=======
->>>>>>> ui-toc
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -60,7 +52,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRef
 @ComponentScan(basePackages = "gov.nist.healthcare.tools.hl7.v2.igamt.lite")
 public class PersistenceContext extends AbstractMongoConfiguration {
 
-	@Autowired
 	@Resource
 	private Environment env;
 
