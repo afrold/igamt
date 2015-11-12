@@ -3,8 +3,8 @@
  */
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, ToCSvc, ProfileAccessSvc, ngTreetableParams, $interval, uiGridTreeViewConstants) {
-        $scope.loading = false;
+<<<<.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, ToCSvc, ProfileAccessSvc, ngTreetableParams, $interval, uiGridTreeViewConstants, ColumnSettings) {
+====    $scope.loading = false;
     	$scope.uiGrid = {};
         $rootScope.igs = [];
         $scope.igContext = {
@@ -15,6 +15,12 @@ angular.module('igl')
         $scope.error = null;
         $scope.loading = false;
         $scope.collapsed = [];
+        $scope.columnSettings = ColumnSettings;
+//        $scope.visibleColumns = angular.copy(ColumnSettings.visibleColumns);
+
+        $scope.options = {
+            'readonly': false
+        };
 
         $scope.igTypes = [
             {
@@ -50,7 +56,11 @@ angular.module('igl')
                 return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];
             },
             getTemplate: function (node) {
-                return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
+                if($scope.options.readonly) {
+                    return node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
+                }else{
+                    return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
+                }
             }
         });
 
@@ -74,7 +84,11 @@ angular.module('igl')
                 }
             },
             getTemplate: function (node) {
-                return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentEditTree.html' : '';
+                if($scope.options.readonly){
+                    return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentReadTree.html' : '';
+                }else {
+                    return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentEditTree.html' : '';
+                }
             }
         });
 
@@ -89,6 +103,8 @@ angular.module('igl')
             return true;
         };
 
+
+
         $rootScope.closeProfile = function(){
             $rootScope.profile = null;
             $rootScope.isEditing = false;
@@ -99,14 +115,56 @@ angular.module('igl')
 
         $scope.messagesParams = new ngTreetableParams({
             getNodes: function (parent) {
-                return parent && parent != null ? parent.children : $rootScope.message != null ? $rootScope.message.children : [];
+            	if(!parent || parent == null) {
+            		if($rootScope.message != null) {
+            			return $rootScope.message.children;
+            		}else {
+            			return [];
+            		}
+            	}else if(parent.type === 'segmentRef'){
+            		return $rootScope.segmentsMap[parent.ref].fields;
+            	}else if(parent.type === 'field'){
+            		return $rootScope.datatypesMap[parent.datatype].components;
+            	}else if(parent.type === 'component'){
+            		return $rootScope.datatypesMap[parent.datatype].components;
+            	}else if(parent.type === 'group'){
+            		return parent.children;
+            	}else {
+            		return [];
+            	}
+            	
             },
             getTemplate: function (node) {
-                return node.type !== 'segmentRef' && node.type !== 'group' ? 'MessageEditTree.html' : node.type === 'segmentRef' ? 'MessageSegmentRefEditTree.html' : 'MessageGroupEditTree.html';
-            },
-            options: {
-                initialState: 'expanded'
+                if($scope.options.readonly){
+
+                    if(node.type === 'segmentRef'){
+                        return 'MessageSegmentRefReadTree.html';
+                    }else if(node.type === 'group'){
+                        return 'MessageGroupReadTree.html';
+                    }else if(node.type === 'field'){
+                        return 'MessageFieldViewTree.html';
+                    }else if(node.type === 'component'){
+                        return 'MessageComponentViewTree.html';
+                    }else {
+                        return 'MessageReadTree.html';
+                    }
+                 }else {
+                    if (node.type === 'segmentRef') {
+                        return 'MessageSegmentRefEditTree.html';
+                    } else if (node.type === 'group') {
+                        return 'MessageGroupEditTree.html';
+                    } else if (node.type === 'field') {
+                        return 'MessageFieldViewTree.html';
+                    } else if (node.type === 'component') {
+                        return 'MessageComponentViewTree.html';
+                    } else {
+                        return 'MessageEditTree.html';
+                    }
+                }
             }
+//            options: {
+//                initialState: 'expanded'
+//            }
         });
 
         /**
@@ -209,7 +267,7 @@ angular.module('igl')
             return null;
         };
 
-        $scope.edit = function (profile) {
+        $scope.show = function (profile) {
             $scope.toEditProfileId = profile.id;
             try {
                 if ($rootScope.profile != null && $rootScope.profile === profile) {
@@ -233,6 +291,15 @@ angular.module('igl')
             }
         };
 
+        $scope.edit = function (profile) {
+            $scope.options.readonly = false;
+            $scope.show(profile);
+        };
+
+        $scope.view = function (profile) {
+            $scope.options.readonly = true;
+            $scope.show(profile);
+        };
 
         $scope.getLeveledProfile = function (profile) {
             $rootScope.leveledProfile = [
@@ -871,6 +938,15 @@ angular.module('igl')
             $timeout(
                 function () {
                     $rootScope.table = table;
+                    $rootScope.codeSystems = [];
+                    
+                    for (var i = 0; i < $rootScope.table.codes.length; i++) {
+                    	if($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0){
+                    		if($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== ''){
+                    			$rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+                    		}
+            			}
+                	}
                     $scope.loadingSelection = false;
                 }, 100);
         };
@@ -895,6 +971,14 @@ angular.module('igl')
 
         $scope.getConstraintAsString = function (constraint) {
             return constraint.constraintId + " - " + constraint.description;
+        };
+        
+        $scope.getConformanceStatementAsString = function (constraint) {
+            return "[" + constraint.constraintId + "]" + constraint.description;
+        };
+        
+        $scope.getPredicateAsString = function (constraint) {
+            return constraint.description;
         };
 
         $scope.getConstraintsAsString = function (constraints) {
@@ -937,6 +1021,34 @@ angular.module('igl')
             });
             return $sce.trustAsHtml(html);
         };
+
+        $scope.getSegmentRefNodeName = function (node) {
+          return node.position + "." + $rootScope.segmentsMap[node.ref].name + ":" + $rootScope.segmentsMap[node.ref].description;
+        };
+
+        $scope.getGroupNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $scope.getFieldNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $scope.getComponentNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $scope.getDatatypeNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $scope.onColumnToggle = function (item) {
+           $scope.columnSettings.save();
+        };
+
+
+
+
     });
 
 angular.module('igl').controller('ContextMenuCtrl', function ($scope, $rootScope, ContextMenuSvc) {
@@ -969,7 +1081,7 @@ angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalIn
 });
 
 
-angular.module('igl').controller('ConfirmProfileDeleteCtrl', function ($scope, $modalInstance, profileToDelete, $rootScope, $http) {
+angular.module('igl').controller( 'ConfirmProfileDeleteCtrl', function ($scope, $modalInstance, profileToDelete, $rootScope, $http) {
     $scope.profileToDelete = profileToDelete;
     $scope.loading = false;
     $scope.delete = function () {

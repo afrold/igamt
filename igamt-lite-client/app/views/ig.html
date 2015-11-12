@@ -213,13 +213,9 @@
     </div>
     <div class="modal-body">
         <div class="row">
-            <div ng-show="!editorTarget.disabled" text-angular style="width:100%"
-                 name="globalEditor"
+            <div text-angular style="width:100%"
+                 name="globalEditor" ta-disabled="editorTarget.disabled"
                  ng-model="editorTarget.obj[editorTarget.key]"></div>
-
-            <div ng-show="editorTarget.disabled" style="width:100%"
-                 name="globalEditor"
-                 ng-bind-html="editorTarget.obj[editorTarget.key]"></div>
         </div>
     </div>
     <div class="modal-footer">
@@ -242,12 +238,9 @@
     </div>
     <div class="modal-body">
         <div class="row">
-            <textarea rows="5" style="width:100%" type="text" ng-show="!editorTarget.disabled"
+            <textarea rows="5" style="width:100%" type="text" ng-disabled="editorTarget.disabled"
                       name="inputEditor" class="form-control" ng-model="editorTarget.obj[editorTarget.key]"
                     ></textarea>
-
-            <p ng-show="editorTarget.disabled" ng-bind-html="editorTarget.obj[editorTarget.key]">
-            </p>
         </div>
     </div>
     <div class="modal-footer">

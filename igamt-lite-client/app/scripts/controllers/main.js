@@ -402,6 +402,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
         $rootScope.datatype = null;
         $rootScope.message = null;
         $rootScope.table = null;
+        $rootScope.codeSystems = [];
         $rootScope.messagesMap = {};
         $rootScope.segmentsMap = {};
         $rootScope.datatypesMap = {};
@@ -676,7 +677,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
                         $rootScope.processElement(field, element);
                     });
                 }
-            } else if (element.type === "field" || element.type === "component") {
+            } else if (element.type === "field") {
                 $rootScope.parentsMap[element.id] = parent;
 //            element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
                 element["path"] = parent.path + "." + element.position;
@@ -690,7 +691,21 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
 //                }
 //            }
                 $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
-            } else if (element.type === "datatype") {
+            } else if (element.type === "component") {
+                $rootScope.parentsMap[element.id] = parent;
+//              element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
+                  element["path"] = parent.path + "." + element.position;
+//              if(element.type === "component") {
+//                  element['sub'] = parent.type === 'component';
+//              }
+//              if (angular.isDefined(element.table) && element.table != null) {
+//                  var table = $rootScope.tablesMap[element.table];
+//                  if ($rootScope.tables.indexOf(table) === -1) {
+//                      $rootScope.tables.push(table);
+//                  }
+//              }
+                  $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+              } else if (element.type === "datatype") {
 //            if ($rootScope.datatypes.indexOf(element) === -1) {
 //                $rootScope.datatypes.push(element);
                 for (var i = 0; i < element.predicates.length; i++) {
@@ -706,7 +721,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
 
                 element.components = $filter('orderBy')(element.components, 'position');
                 angular.forEach(element.components, function (component) {
-                    $rootScope.processElement(component, parent);
+                    $rootScope.processElement(component, element);
                 });
 //            }
             }
@@ -714,6 +729,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
             throw e;
         }
     };
+
 
 
     $rootScope.createNewFlavorName = function(label){

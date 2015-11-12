@@ -3,132 +3,139 @@
 <ng-include src="'views/edit/editSegments.html'"></ng-include>
 <ng-include src="'views/edit/editMessages.html'"></ng-include>
 <ng-include src="'views/edit/editValueSets.html'"></ng-include>
-<div ng-show="loadingProfile">
-    <div class="container" style="text-align: center; padding-top: 20px">
+<div ng-show="!loadingProfile">
+    <div class="row" ng-show="!isEditing">
+        <p>No Implementation Guide Selected.</p>
+    </div>
+    <div ng-show="isEditing">
         <div class="row">
-            <p ng-show="!isEditing">No Implementation Guide Selected.</p>
-
-            <div ng-show="isEditing" class="nav-bar" style="margin: 0em 0em 1em 2em">
-                <div style="text-align:left">Current version:
-				{{profile.metaData.hl7Version}}</div>
-
-                <div class="">
-                <button title="Save Changes" type="button" class="btn btn-xs btn-success"
-                        ng-show="igContext.igType.type === 'USER'"
-                        ng-click="save()">
-                    <span><i class="fa fa-check fa-fw"></i> Apply</span>
-                </button>
-
-                <div class="btn-group">
-                    <button ng-disabled="hasChanges()" type="button"
-                            class="btn btn-primary btn-xs"><span><i
-                            class="fa fa-download fa-fw"></i> Export</span>
-                    </button>
-                    <button ng-disabled="hasChanges()" type="button"
-                            class="btn btn-primary btn-xs dropdown-toggle"
-                            data-toggle="dropdown" aria-expanded="false">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a ng-click="exportAs(profile.id, 'zip')">As ZIP</a></li>
-                        <li><a ng-click="exportAs(profile.id,'pdf')">As PDF</a></li>
-                        <!--<li><a ng-click="exportAs(profile.id,'xslx')">As XSLX</a></li>-->
-                        <!--<li><a ng-click="exportDelta(profile.id,'pdf')">Delta</a></li>-->
-                    </ul>
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h3>{{profile.identifier}}</h3>
                 </div>
+            </div>
+            <div class="col-md-12">
+                <span>Current version: {{profile.metaData.hl7Version}}
+                </span>
 
-                <button title="Close the profile" type="button" class="btn btn-xs btn-warning"
-                         ng-click="close()">
-                    <span><i class="fa fa-close fa-fw"></i>Close</span>
-                </button>
+                <div class="pull-right"  >
+                    <button title="Save Changes" type="button" class="btn btn-xs btn-success"
+                            ng-hide="options.readonly"
+                            ng-show="igContext.igType.type === 'USER'"
+                            ng-click="save()">
+                        <span><i class="fa fa-check fa-fw"></i> Apply</span>
+                    </button>
 
-                <button title="Delete permanently" type="button" class="btn btn-xs btn-danger"
-                        ng-show="igContext.igType.type === 'USER'"
-                        ng-click="confirmDelete(profile)">
-                    <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
-                </button>
+                    <div class="btn-group">
+                        <button ng-disabled="hasChanges()" type="button"
+                                class="btn btn-primary btn-xs"><span><i
+                                class="fa fa-download fa-fw"></i> Export</span>
+                        </button>
+                        <button ng-disabled="hasChanges()" type="button"
+                                class="btn btn-primary btn-xs dropdown-toggle"
+                                data-toggle="dropdown" aria-expanded="false">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu igl-menu" role="menu">
+                            <li><a class="point" ng-click="exportAs(profile.id, 'zip')">As ZIP</a></li>
+                            <li><a class="point" ng-click="exportAs(profile.id,'pdf')">As PDF</a></li>
+                            <!--<li><a ng-click="exportAs(profile.id,'xslx')">As XSLX</a></li>-->
+                            <!--<li><a ng-click="exportDelta(profile.id,'pdf')">Delta</a></li>-->
+                        </ul>
                     </div>
+
+                    <button title="Close the profile" type="button" class="btn btn-xs btn-warning"
+                            ng-click="close()">
+                        <span><i class="fa fa-close fa-fw"></i>Close</span>
+                    </button>
+
+                    <button title="Delete permanently" type="button" class="btn btn-xs btn-danger"
+                            ng-show="igContext.igType.type === 'USER'" ng-hide="options.readonly"
+                            ng-click="confirmDelete(profile)">
+                        <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="container" ng-init="showToC = true">
-                <div class="row" ng-show="isEditing">
-                    <div ng-class="showToC ? 'col-md-3' : 'col-md-1 col-fixed-100'">
-                        <div class="panel panel-info">
-                            <div class="panel-heading">
-                                <div ng-show="showToC">
-                                    Table of Contents
-                                    <a class="btn btn-onc btn-xs" ng-click="showToC = !showToC">
+        <div class="row" ng-init="showToC = true">
+            <div ng-class="showToC ? 'col-md-3' : 'col-md-1 col-fixed-100'">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div ng-show="showToC">
+                            Table of Contents
+                            <a class="btn btn-onc btn-xs" ng-click="showToC = !showToC">
 									<span class="fa fa-lg"
                                           ng-class="{
 							        'fa-caret-left': showToC
 								      }">
 								    </span>
-                                    </a>
-                                </div>
-                                <div ng-show="!showToC">
-                                    <a class="btn btn-onc btn-xs" ng-click="showToC = !showToC">
+                            </a>
+                        </div>
+                        <div ng-show="!showToC">
+                            <a class="btn btn-onc btn-xs" ng-click="showToC = !showToC">
 									<span class="fa fa-lg"
                                           ng-class="{
 							        'fa-caret-right': !showToC
 								      }">
 								    </span>
-<!-- <<<<<<< Updated upstream -->
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="panel-body" ng-show="showToC">
-                                <div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
-                                </div>
-                            </div>
+                                <!-- <<<<<<< Updated upstream -->
+                            </a>
                         </div>
                     </div>
-                    <div ng-class="showToC ? 'col-md-9' : 'col-md-11'">
-                        <div class="panel panel-info">
-                            <div class="panel-heading">Edit Area</div>
-                            <div class="panel-body">
-                                <div id="edit" ng-show="subview !== undefined">
-                                    <ng-include src="subview"></ng-include>
-                                </div>
-                            </div>
+                    <div class="panel-body" ng-show="showToC">
+                        <div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-class="showToC ? 'col-md-9' : 'col-md-11'">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Edit Area</div>
+                    <div class="panel-body">
+                        <div id="edit" ng-show="subview !== undefined">
+                            <ng-include src="subview"></ng-include>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-<!-- ======= This was done in a pinch.
-								  </a>
-						</div>
-					</div>
-					<div class="panel-body" ng-show="showToC">
-						<div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
-						</div>
-					</div>
-				</div>
-			</div> 
-				<div ng-class="showToC ? 'col-md-8' : 'col-md-11'">
-				<div class="panel panel-info">
-					<div class="panel-heading">Edit Area</div>
-					<div class="panel-body">
-						<div id="edit" ng-show="subview !== undefined">{{subview}}
-							<ng-include src="subview"></ng-include>
-						</div>
-					</div>
-				</div>
-			</div>				
- 				</div>
-			</div>
-		</div>
-	</div>
->>>>>>> Stashed changes -->
+    <!-- ======= This was done in a pinch.
+                                      </a>
+                            </div>
+                        </div>
+                        <div class="panel-body" ng-show="showToC">
+                            <div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div ng-class="showToC ? 'col-md-8' : 'col-md-11'">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">Edit Area</div>
+                        <div class="panel-body">
+                            <div id="edit" ng-show="subview !== undefined">{{subview}}
+                                <ng-include src="subview"></ng-include>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    >>>>>>> Stashed changes -->
+</div>
+<div ng-show="loadingProfile"
+     style="text-align: center;">
+    <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
 </div>
 
 <!--<script type="text/ng-template" id="nts.html">-->
-    <!--<div>-->
-        <!--Nothing to see.-->
-    <!--</div>-->
+<!--<div>-->
+<!--Nothing to see.-->
+<!--</div>-->
 <!--</script>-->
 <!--<script type="text/ng-template" id="editDocument.html">-->
 <!--</script>-->

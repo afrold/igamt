@@ -2,7 +2,7 @@
  * Created by Jungyub on 4/01/15.
  */
 
-angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal,$timeout) {
+angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout) {
     $scope.readonly = false;
     $scope.saved = false;
     $scope.message = false;
@@ -30,16 +30,31 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
 
     };
+    
+    $scope.addCodeSystem = function (codeSystem) {
+    	if($rootScope.codeSystems.indexOf(codeSystem) < 0){
+    		if(codeSystem && codeSystem !== ''){
+    			$rootScope.codeSystems.push(codeSystem);
+    		}
+		}
+    };
+    
+    $scope.updateCodeSystem = function (table,codeSystem) {
+    	for (var i = 0; i < $rootScope.table.codes.length; i++) {
+    		$rootScope.table.codes[i].codeSystem = codeSystem;
+    		$scope.recordChangeValue($rootScope.table.codes[i],'codeSystem',$rootScope.table.codes[i].codeSystem,table.id);
+    	}
+    }
 
     $scope.addValue = function () {
         $rootScope.newValueFakeId = $rootScope.newValueFakeId - 1;
         var newValue = {
             id: new ObjectId().toString(),
             type: 'value',
-            value: '',
-            label: '',
-            codeSystem: '',
-            codeUsage: ''
+            value: 'newValue' + $rootScope.newValueFakeId,
+            label: 'newDescription',
+            codeSystem: 'NA',
+            codeUsage: 'E'
         };
 
 

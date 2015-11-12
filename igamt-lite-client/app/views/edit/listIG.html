@@ -58,6 +58,8 @@
                             <td st-ratio="10" ng-bind="row.metaData.version"></td>
                             <td st-ratio="10" ng-bind="row.metaData.date"></td>
                             <td st-ratio="20">
+
+
                                 <button ng-show="igContext.igType.type === 'USER'"
                                         title="Edit"
                                         type="button" class="btn btn-xs btn-primary"
@@ -65,6 +67,14 @@
                                         <span><i
                                                 class="fa fa-pencil fa-fw"></i></span>
                                 </button>
+
+                                <button
+                                        title="View Readonly"
+                                        type="button" class="btn btn-xs btn-warning"
+                                        ng-click="view(row)">
+                                    <span><i class="fa fa-eye"></i></span>
+                                </button>
+
                                 <button
                                         title="Create Copy" type="button" class="btn btn-xs btn-info"
                                         ng-click="clone(row)">

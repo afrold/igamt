@@ -40,11 +40,14 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -343,14 +346,14 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 
 	// private Datatype findDatatype(String key, Profile profile,
-			// Element elmDatatypes) {
-		// if (datatypesMap.containsKey(key)) {
-			// return datatypesMap.get(key);
-			// }
-		// NodeList datatypes = elmDatatypes.getElementsByTagName("Datatype");
-		// for (int i = 0; i < datatypes.getLength(); i++) {
-			// Element elmDatatype = (Element) datatypes.item(i);
-			// if (elmDatatype.getAttribute("ID").equals(key)) {
+	// Element elmDatatypes) {
+	// if (datatypesMap.containsKey(key)) {
+	// return datatypesMap.get(key);
+	// }
+	// NodeList datatypes = elmDatatypes.getElementsByTagName("Datatype");
+	// for (int i = 0; i < datatypes.getLength(); i++) {
+	// Element elmDatatype = (Element) datatypes.item(i);
+	// if (elmDatatype.getAttribute("ID").equals(key)) {
 	// Datatype dt = this.deserializeDatatype(elmDatatype, profile,
 	// elmDatatypes);
 	// if (datatypesMap.containsKey(key)) {
@@ -471,6 +474,26 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				elmField.addAttribute(new Attribute("ItemNo",ExportUtil.str( f.getItemNo())));
 			elmSegment.appendChild(elmField);
 		}
+
+		if (s.getDynamicMappings() != null){
+			for (DynamicMapping dynmap: s.getDynamicMappings()){
+				nu.xom.Element elmDynamicMappings = new nu.xom.Element("DynamicMapping");
+				for (Mapping m: dynmap.getMappings()){
+					nu.xom.Element elmMapping = new nu.xom.Element("Mapping");
+					elmMapping.addAttribute(new Attribute("Position", String.valueOf(m.getPosition())));
+					elmMapping.addAttribute(new Attribute("Reference", String.valueOf(m.getReference())));
+					for (Case c : m.getCases()){
+						nu.xom.Element elmCase = new nu.xom.Element("Case");
+						elmCase.addAttribute(new Attribute("Value", c.getValue()));
+						elmCase.addAttribute(new Attribute("Datatype", c.getDatatype().getId())); //TODO Used getId instead of getLabel or getName since profileReadConverter uses it
+						elmMapping.appendChild(elmCase);
+					}
+					elmDynamicMappings.appendChild(elmMapping);
+				}
+				elmSegment.appendChild(elmDynamicMappings);
+			}
+		}
+
 		return elmSegment;
 	}
 

@@ -106,12 +106,20 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 					return m;
 				}
 			}
+		return null;
+	}
 
+	public Field findOneFieldByName(String name) {
+		if (this.fields != null)
+			for (Field m : this.fields) {
+				if (name.equals(m.getName())) {
+					return m;
+				}
+			}
 		return null;
 	}
 
 	public void addDynamicMapping(DynamicMapping d) {
-		d.setPosition(dynamicMappings.size() + 1);
 		dynamicMappings.add(d);
 	}
 
@@ -131,6 +139,17 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 		}
 	}
 
+	public Mapping findOneMappingByPositionAndByReference(int position, int reference) {
+		if (this.dynamicMappings != null)
+			for (DynamicMapping d : this.dynamicMappings) {
+				for (Mapping m: d.getMappings()){
+					if (m.getPosition() == position && m.getReference() == reference){
+						return m;
+					}
+				}
+			}
+		return null;
+	}
 	public String getComment() {
 		return comment;
 	}

@@ -19,9 +19,39 @@ angular.module('igl')
         $scope.goToSegment = function (segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
         };
+        
+        $scope.goToDatatype = function (datatype) {
+            $scope.$emit('event:openDatatype', datatype);
+        };
+        
+        $scope.goToTable = function (table) {
+            $scope.$emit('event:openTable', table);
+        };
 
         $scope.hasChildren = function (node) {
-            return node && node != null && node.type !== 'segmentRef' && node.children && node.children.length > 0;
+          if(node && node != null){
+          	if(node.type === 'group'){
+          		return node.children && node.children.length > 0;
+          	}else if(node.type === 'segmentRef'){
+          		return $rootScope.segmentsMap[node.ref].fields && $rootScope.segmentsMap[node.ref].fields.length > 0;
+          	}else if(node.type === 'field' || node.type === 'component'){
+          		return $rootScope.datatypesMap[node.datatype].components && $rootScope.datatypesMap[node.datatype].components.length > 0;
+          	}
+          	
+          	
+          	return false;
+          }else {
+          	return false;
+          }
+          
+        };
+        
+        $scope.isSub = function (component) {
+            return $scope.isSubDT(component);
+        };
+
+        $scope.isSubDT = function (component) {
+            return component.type === 'component' && $rootScope.parentsMap && $rootScope.parentsMap[component.id] && $rootScope.parentsMap[component.id].type === 'component';
         };
 
         $scope.countConformanceStatements = function (node) {
