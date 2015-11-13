@@ -715,7 +715,7 @@ angular.module('igl')
                     break;
                 }
                 case "Delete":
-                	DeleteMessageSvc.delete($rootScope.profile, node);
+                	DeleteMessageSvc.deleteMessage($rootScope.profile, node);
                 	break;
                 default:
                     console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
