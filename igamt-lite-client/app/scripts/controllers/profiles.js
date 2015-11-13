@@ -215,11 +215,13 @@ angular.module('igl')
 
         $scope.loadProfiles = function () {
             $scope.error = null;
+//            $rootScope.igs = [];
+//            $scope.tmpIgs = [].concat($rootScope.igs);
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
                 $scope.loading = true;
                 if ($scope.igContext.igType.type === 'PRELOADED') {
                     $http.get('api/profiles', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs.push(angular.fromJson(response.data));
+                        $rootScope.igs = angular.fromJson(response.data);
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -228,7 +230,7 @@ angular.module('igl')
                     });
                 } else if ($scope.igContext.igType.type === 'USER') {
                     $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs.push(angular.fromJson(response.data));
+                        $rootScope.igs = angular.fromJson(response.data);
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -271,16 +273,12 @@ angular.module('igl')
             $scope.toEditProfileId = profile.id;
             try {
                 if ($rootScope.profile != null && $rootScope.profile === profile) {
-                    $scope.selectIgTab(1);
-                    $scope.toEditProfileId = null;
+                    $scope.openProfile(profile);
                 } else if ($rootScope.profile && $rootScope.profile != null && $rootScope.hasChanges()) {
                     $scope.confirmOpen(profile);
                     $scope.toEditProfileId = null;
                 } else {
-                    $timeout(
-                        function () {
-                            $scope.openProfile(profile);
-                        }, 500);
+                    $scope.openProfile(profile);
                 }
             } catch (e) {
                 $rootScope.msg().text = "igInitFailed";
@@ -312,70 +310,73 @@ angular.module('igl')
         };
 
         $scope.openProfile = function (profile) {
-            if (profile != null) {
-                $scope.loadingProfile = true;
-                $rootScope.isEditing = true;
-                $scope.selectIgTab(1);
-                $rootScope.profile = profile;
-                $rootScope.profile.messages.children =  $filter('orderBy')($rootScope.profile.messages.children, 'label');
-                $rootScope.profile.segments.children =  $filter('orderBy')($rootScope.profile.segments.children, 'label');
-                $rootScope.profile.datatypes.children =  $filter('orderBy')($rootScope.profile.datatypes.children, 'label');
-                $rootScope.profile.tables.children =  $filter('orderBy')($rootScope.profile.tables.children, 'label');
-                $scope.getLeveledProfile($rootScope.profile);
-                $rootScope.initMaps();
-                $rootScope.messages = $rootScope.profile.messages.children;
-                angular.forEach($rootScope.profile.datatypes.children, function (child) {
-                    this[child.id] = child;
-                    if(child.displayName){ // TODO: Change displayName to label
-                        child.label = child.displayName;
-                    }
-                }, $rootScope.datatypesMap);
-                angular.forEach($rootScope.profile.segments.children, function (child) {
-                    this[child.id] = child;
-                    if(child.displayName){ // TODO: Change displayName to label
-                        child.label = child.displayName;
-                    }
-                }, $rootScope.segmentsMap);
-
-                angular.forEach($rootScope.profile.tables.children, function (child) {
-                    this[child.id] = child;
-                    if(child.displayName){ // TODO: Change displayName to label
-                        child.label = child.displayName;
-                    }
-                    angular.forEach(child.codes, function (code) {
-                         if(code.displayName){ // TODO: Change displayName to label
-                             code.label = code.displayName;
+            $timeout(function() {
+                if (profile != null) {
+                    $scope.selectIgTab(1);
+                    $scope.loadingProfile = true;
+                    $rootScope.isEditing = true;
+                    $scope.selectIgTab(1);
+                    $rootScope.profile = profile;
+                    $rootScope.profile.messages.children = $filter('orderBy')($rootScope.profile.messages.children, 'label');
+                    $rootScope.profile.segments.children = $filter('orderBy')($rootScope.profile.segments.children, 'label');
+                    $rootScope.profile.datatypes.children = $filter('orderBy')($rootScope.profile.datatypes.children, 'label');
+                    $rootScope.profile.tables.children = $filter('orderBy')($rootScope.profile.tables.children, 'label');
+                    $scope.getLeveledProfile($rootScope.profile);
+                    $rootScope.initMaps();
+                    $rootScope.messages = $rootScope.profile.messages.children;
+                    angular.forEach($rootScope.profile.datatypes.children, function (child) {
+                        this[child.id] = child;
+                        if (child.displayName) { // TODO: Change displayName to label
+                            child.label = child.displayName;
                         }
-                    });
-                }, $rootScope.tablesMap);
+                    }, $rootScope.datatypesMap);
+                    angular.forEach($rootScope.profile.segments.children, function (child) {
+                        this[child.id] = child;
+                        if (child.displayName) { // TODO: Change displayName to label
+                            child.label = child.displayName;
+                        }
+                    }, $rootScope.segmentsMap);
 
-                $rootScope.segments = [];
-                $rootScope.tables = $rootScope.profile.tables.children;
-                $rootScope.datatypes = $rootScope.profile.datatypes.children;
-                
-                angular.forEach($rootScope.profile.messages.children, function (child) {
-                    this[child.id] = child;
-                    angular.forEach(child.children, function (segmentRefOrGroup) {
-                        $rootScope.processElement(segmentRefOrGroup);
-                    });
-                }, $rootScope.messagesMap);
+                    angular.forEach($rootScope.profile.tables.children, function (child) {
+                        this[child.id] = child;
+                        if (child.displayName) { // TODO: Change displayName to label
+                            child.label = child.displayName;
+                        }
+                        angular.forEach(child.codes, function (code) {
+                            if (code.displayName) { // TODO: Change displayName to label
+                                code.label = code.displayName;
+                            }
+                        });
+                    }, $rootScope.tablesMap);
 
-                if (!$rootScope.config || $rootScope.config === null) {
-                    $http.get('api/profiles/config').then(function (response) {
-                        $rootScope.config = angular.fromJson(response.data);
+                    $rootScope.segments = [];
+                    $rootScope.tables = $rootScope.profile.tables.children;
+                    $rootScope.datatypes = $rootScope.profile.datatypes.children;
+
+                    angular.forEach($rootScope.profile.messages.children, function (child) {
+                        this[child.id] = child;
+                        angular.forEach(child.children, function (segmentRefOrGroup) {
+                            $rootScope.processElement(segmentRefOrGroup);
+                        });
+                    }, $rootScope.messagesMap);
+
+                    if (!$rootScope.config || $rootScope.config === null) {
+                        $http.get('api/profiles/config').then(function (response) {
+                            $rootScope.config = angular.fromJson(response.data);
+                            $scope.loadingProfile = false;
+                            $scope.toEditProfileId = null;
+                            $scope.selectMetaData();
+                        }, function (error) {
+                            $scope.loadingProfile = false;
+                            $scope.toEditProfileId = null;
+                        });
+                    } else {
                         $scope.loadingProfile = false;
                         $scope.toEditProfileId = null;
                         $scope.selectMetaData();
-                    }, function (error) {
-                        $scope.loadingProfile = false;
-                        $scope.toEditProfileId = null;
-                    });
-                }else{
-                    $scope.loadingProfile = false;
-                    $scope.toEditProfileId = null;
-                    $scope.selectMetaData();
+                    }
                 }
-            }
+            },100);
         };
 
         $scope.collectData = function (node, segRefOrGroups, segments, datatypes) {

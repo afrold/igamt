@@ -1300,7 +1300,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 						c.getUsage().value(),
 						"[" + String.valueOf(c.getMinLength()) + ","
 								+ String.valueOf(c.getMaxLength()) + "]",
-								(c.getTable() == null | c.getTable().equals("") | tables.findOneTableById(
+								(c.getTable() == null || c.getTable().equals("") || tables.findOneTableById(
 										c.getTable()) == null) ? "" : tables.findOneTableById(
 												c.getTable()).getBindingIdentifier(), c.getComment());
 				rows.add(row);

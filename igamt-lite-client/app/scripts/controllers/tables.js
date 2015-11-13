@@ -47,7 +47,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     }
 
     $scope.addValue = function () {
-        $rootScope.newValueFakeId = $rootScope.newValueFakeId - 1;
+        $rootScope.newValueFakeId = $rootScope.newValueFakeId ?  $rootScope.newValueFakeId - 1: -1;
         var newValue = {
             id: new ObjectId().toString(),
             type: 'value',
