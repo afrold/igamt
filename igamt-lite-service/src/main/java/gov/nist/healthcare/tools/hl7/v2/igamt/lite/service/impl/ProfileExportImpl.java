@@ -1302,7 +1302,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 						c.getConfLength(),
 						datatypes.findOne(c.getDatatype()).getLabel(),
 						c.getUsage().value(),
-						"[" + String.valueOf(c.getMinLength()) + ","
+						"[" + String.valueOf(c.getMinLength()) + ".."
 								+ String.valueOf(c.getMaxLength()) + "]",
 								(c.getTable() == null | tables.findOneTableById(c.getTable()) == null ?
 										"" : tables.findOneTableById(c.getTable()).getName()),
