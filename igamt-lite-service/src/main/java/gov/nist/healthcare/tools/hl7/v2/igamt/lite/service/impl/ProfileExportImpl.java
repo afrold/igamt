@@ -35,7 +35,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit.ProfileVerificationTest;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -108,7 +107,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	public InputStream exportAsXml(Profile p) {
 		if (p != null) {
 			return IOUtils.toInputStream(new ProfileSerializationImpl()
-					.serializeProfileToXML(p));
+			.serializeProfileToXML(p));
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -125,15 +124,19 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 	@Override
 	public InputStream exportAsXlsx(Profile p) {
+		logger.debug("Export profile id: " + p.getId() + " as xslx");
 		try {
 			File tmpXlsxFile = File.createTempFile("ProfileTmp", ".xslx");
 
-			// Blank workbook
 			XSSFWorkbook workbook = new XSSFWorkbook();
 			XSSFSheet sheet;
 			XSSFCellStyle headerStyle;
 			List<List<String>> rows;
+			List<String> row;
 			List<String> header;
+
+			List<String> sheetNames = new ArrayList<String>();
+			String sheetName;
 
 			headerStyle = workbook.createCellStyle();
 			headerStyle.setFillPattern(XSSFCellStyle.BORDER_THICK);
@@ -142,48 +145,128 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			headerStyle.setFillBackgroundColor(IndexedColors.LIGHT_BLUE
 					.getIndex());
 
+			//Adding list of elements
+			sheet = workbook.createSheet("Message list");
+			header = Arrays.asList("Messages");
+			rows = new ArrayList<List<String>>();
+			rows.add(header);
+			row = new ArrayList<String>();
 			for (Message m : p.getMessages().getChildren()) {
-				// Create a blank sheet
-				sheet = workbook
-						.createSheet(m.getStructID() + " Segment Usage");
+				row = Arrays.asList(m.getMessageType()+ "_"+ m.getStructID());
+				rows.add(row);
+			}
+			this.writeToSheet(rows, header, sheet, headerStyle);
 
-				rows = new ArrayList<List<String>>();
+			sheet = workbook.createSheet("Segment list");
+			header = Arrays.asList("Segments");
+			rows = new ArrayList<List<String>>();
+			rows.add(header);
+			row = new ArrayList<String>();
+			for (Segment s: p.getSegments().getChildren()) {
+				row = Arrays.asList(s.getLabel());
+				rows.add(row);
+			}
+			this.writeToSheet(rows, header, sheet, headerStyle);
 
-				header = Arrays.asList("SEGMENT", "CDC Usage", "Local Usage",
-						"CDC Cardinality", "Local Cardinality", "Comments");
-				rows.add(header);
+			sheet = workbook.createSheet("Datatype list");
+			header = Arrays.asList("Datatypes");
+			rows = new ArrayList<List<String>>();
+			rows.add(header);
+			row = new ArrayList<String>();
+			for (Datatype dt: p.getDatatypes().getChildren()) {
+				row = Arrays.asList(dt.getLabel());
+				rows.add(row);
+			}
+			this.writeToSheet(rows, header, sheet, headerStyle);
 
-				for (SegmentRefOrGroup srog : m.getChildren()) {
-					if (srog instanceof SegmentRef) {
-						this.addSegmentXlsx(rows, (SegmentRef) srog, 0,
-								p.getSegments());
-					} else if (srog instanceof Group) {
-						this.addGroupXlsx(rows, (Group) srog, 0,
-								p.getSegments(), p.getDatatypes());
+			sheet = workbook.createSheet("Value set list");
+			header = Arrays.asList("Value sets");
+			rows = new ArrayList<List<String>>();
+			rows.add(header);
+			row = new ArrayList<String>();
+			for (Table t: p.getTables().getChildren()) {
+				row = Arrays.asList(t.getName());
+				rows.add(row);
+			}
+			this.writeToSheet(rows, header, sheet, headerStyle);
+
+			// Adding messages
+			for (Message m : p.getMessages().getChildren()) {
+				sheetName = "MSG_"+m.getMessageType()+ "_"+ m.getStructID();
+				if (sheetNames.contains(sheetName)){
+					logger.debug(sheetName + " already added!!");
+				} else {
+					sheetNames.add(sheetName);
+					sheet = workbook
+							.createSheet(sheetName); //Sheet name must be unique
+
+					header = Arrays.asList("SEGMENT", "CDC Usage", "Local Usage",
+							"CDC Cardinality", "Local Cardinality", "Comments");
+					rows = new ArrayList<List<String>>();
+					rows.add(header);
+
+					for (SegmentRefOrGroup srog : m.getChildren()) {
+						if (srog instanceof SegmentRef) {
+							this.addSegmentInfoXlsx(rows, (SegmentRef) srog, 0,
+									p.getSegments());
+						} else if (srog instanceof Group) {
+							this.addGroupInfoXlsx(rows, (Group) srog, 0,
+									p.getSegments(), p.getDatatypes());
+						}
 					}
+					this.writeToSheet(rows, header, sheet, headerStyle);
 				}
-				this.writeToSheet(rows, header, sheet, headerStyle);
 			}
 
-			for (Message m : p.getMessages().getChildren()) {
+			// Adding segments 
+			for (Segment s: p.getSegments().getChildren()) {
 				rows = new ArrayList<List<String>>();
 				header = Arrays.asList("Segment", "Name", "DT", "STD\nUsage",
 						"Local\nUsage", "STD\nCard.", "Local\nCard.", "Len",
 						"Value set", "Comment");
+				sheetName = "SGT_"+s.getLabel();
+				if (sheetNames.contains(sheetName)){
+					logger.debug(sheetName + " already added!!");
+				} else {
+					sheetNames.add(sheetName);
+					sheet = workbook.createSheet(sheetName);
+					rows.add(header);
+					this.addFields(rows, s, Boolean.FALSE, p.getDatatypes(), p.getTables());
+					this.writeToSheet(rows, header, sheet, headerStyle);
+				}
+			}
 
-				for (SegmentRefOrGroup srog : m.getChildren()) {
+			// Adding datatypes
+			for (Datatype dt : p.getDatatypes().getChildren()){
+				rows = new ArrayList<List<String>>();
+				header = Arrays.asList("Component", "Name", "Len.", "DT", "Usage",
+						"Card.", "Value set", "Comment");
+				sheetName = "DT_"+dt.getLabel();
+				if (sheetNames.contains(sheetName)){
+					logger.debug(sheetName + " already added!!");
+				} else {
+					sheetNames.add(sheetName);
+					sheet = workbook.createSheet(sheetName);
+					rows.add(header);
+					this.addComponents(rows, dt, p.getDatatypes(), p.getTables());
+					this.writeToSheet(rows, header, sheet, headerStyle);
+				}
+			}
 
-					if (srog instanceof SegmentRef) {
-						this.addSegmentXlsx2(
-								p.getSegments().findOneSegmentById(
-										((SegmentRef) srog).getRef()), header,
-								workbook, headerStyle, p.getDatatypes(),
-								p.getTables());
-					} else if (srog instanceof Group) {
-						this.addGroupXlsx2(header, (Group) srog, workbook,
-								headerStyle, p.getSegments(), p.getDatatypes(),
-								p.getTables());
-					}
+			// Adding value sets
+			for (Table t: p.getTables().getChildren()){
+				sheetName = "VS_"+t.getBindingIdentifier();
+				if (sheetNames.contains(sheetName)){
+					logger.debug(sheetName + " already added!!");
+				} else {
+					sheetNames.add(sheetName);
+					sheet = workbook.createSheet(sheetName);
+
+					header = Arrays.asList("Value", "CodeSystem", "Usage", "Label");
+					rows = new ArrayList<List<String>>();
+					this.addCodes(rows, t);
+					rows.add(0, header);
+					this.writeToSheet(rows, header, sheet, headerStyle);
 				}
 			}
 
@@ -195,10 +278,50 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			return FileUtils.openInputStream(tmpXlsxFile);
 
 		} catch (Exception e) {
+			logger.debug("Error creating workbook");
 			e.printStackTrace();
 			return new NullInputStream(1L);
 		}
 	}
+
+	private void addGroupInfoXlsx(List<List<String>> rows, Group g, Integer depth,
+			Segments segments, Datatypes datatypes) {
+		String indent = StringUtils.repeat(" ", 4 * depth);
+
+		List<String> row = Arrays.asList(
+				indent + "BEGIN " + g.getName() + " GROUP",
+				g.getUsage().value(),
+				"",
+				"[" + String.valueOf(g.getMin()) + ".."
+						+ String.valueOf(g.getMax()) + "]", "", "");
+		rows.add(row);
+		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
+		Collections.sort(segsOrGroups);
+		for (SegmentRefOrGroup srog : segsOrGroups) {
+			if (srog instanceof SegmentRef) {
+				this.addSegmentInfoXlsx(rows, (SegmentRef) srog, depth + 1,
+						segments);
+			} else if (srog instanceof Group) {
+				this.addGroupInfoXlsx(rows, (Group) srog, depth + 1, segments,
+						datatypes);
+			}
+		}
+		row = Arrays.asList(indent + "END " + g.getName() + " GROUP", "", "",
+				"");
+		rows.add(row);
+	}
+
+	private void addSegmentInfoXlsx(List<List<String>> rows, SegmentRef s,
+			Integer depth, Segments segments) {
+		String indent = StringUtils.repeat(" ", 4 * depth);
+		Segment segment = segments.findOneSegmentById(s.getRef());
+		List<String> row = Arrays.asList(indent + segment.getName(), s
+				.getUsage().value(), "", "[" + String.valueOf(s.getMin())
+				+ ".." + String.valueOf(s.getMax()) + "]", "", segment
+				.getComment() == null ? "" : segment.getComment());
+		rows.add(row);
+	}
+
 
 	private void writeToSheet(List<List<String>> rows, List<String> header,
 			XSSFSheet sheet, XSSFCellStyle headerStyle) {
@@ -241,11 +364,9 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		// Note: inlineConstraint can be true or false
 		try {
 			// Generate xml file containing profile
-//			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//			File tmpXmlFile = new File("ProfileTemp_" + timeStamp + ".xml");
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
 			String stringProfile = new ProfileSerialization4ExportImpl()
-					.serializeProfileToXML(p);
+			.serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
 					Charset.forName("UTF-8"));
 
@@ -263,8 +384,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 			// Convert html document to pdf
 			Document document = new Document();
-//			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//			File tmpPdfFile = new File("Profile_" + timeStamp + ".pdf");
 			File tmpPdfFile = File.createTempFile("Profile", ".pdf");
 			PdfWriter writer = PdfWriter.getInstance(document,
 					FileUtils.openOutputStream(tmpPdfFile));
@@ -298,7 +417,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
 		Font coverH1Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24, Font.UNDERLINE
-						| Font.BOLD, BaseColor.BLUE);
+				| Font.BOLD, BaseColor.BLUE);
 		Font coverH2Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL,
 				BaseColor.BLUE);
@@ -307,7 +426,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				BaseColor.BLACK);
 		Font titleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE
-						| Font.BOLD | Font.ITALIC, BaseColor.BLACK);
+				| Font.BOLD | Font.ITALIC, BaseColor.BLACK);
 		Font headerFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL,
 				BaseColor.WHITE);
@@ -364,7 +483,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			Document tocDocument = new Document(PageSize.A4);
 			@SuppressWarnings("unused")
 			PdfWriter tocWriter = PdfWriter
-					.getInstance(tocDocument, tocTmpBaos);
+			.getInstance(tocDocument, tocTmpBaos);
 			tocDocument.open();
 			tocDocument.add(new Paragraph("Table of contents", tocTitleFont));
 			tocDocument.add(Chunk.NEWLINE);
@@ -433,7 +552,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 				tocDocument.add(Chunk.NEWLINE);
 				tocDocument
-						.add(new Paragraph("Segments definition " + m.getStructID(), titleFont));
+				.add(new Paragraph("Segments definition " + m.getStructID(), titleFont));
 				tocDocument.add(Chunk.NEWLINE);
 
 				igDocument.add(new Paragraph("Segments definition", titleFont));
@@ -480,25 +599,25 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 2f, 2f, 6f };
 
 			for (Datatype d : p.getDatatypes().getChildren()) {
-//				if ((d.getLabel() != null && d.getLabel().contains("_"))) {
+				//				if ((d.getLabel() != null && d.getLabel().contains("_"))) {
 
-					this.addTocContent(tocDocument, igWriter, d.getLabel() != null ?  d.getLabel() : d.getName()
-							+ " - " + d.getDescription());
+				this.addTocContent(tocDocument, igWriter, d.getLabel() != null ?  d.getLabel() : d.getName()
+						+ " - " + d.getDescription());
 
-					igDocument.add(new Paragraph( d.getLabel() != null ?  d.getLabel() : d.getName() + " - "
-							+ d.getDescription() + " Datatype"));
-					igDocument.add(new Paragraph(d.getComment()));
+				igDocument.add(new Paragraph( d.getLabel() != null ?  d.getLabel() : d.getName() + " - "
+						+ d.getDescription() + " Datatype"));
+				igDocument.add(new Paragraph(d.getComment()));
 
-					table = this.addHeaderPdfTable(header, columnWidths,
-							headerFont, headerColor);
-					rows = new ArrayList<List<String>>();
-					this.addComponentPdf2(rows, d, p.getDatatypes(),
-							p.getTables());
-					this.addCellsPdfTable(table, rows, cellFont, cpColor);
-					igDocument.add(Chunk.NEWLINE);
-					igDocument.add(table);
-					igDocument.add(Chunk.NEWLINE);
-//				}
+				table = this.addHeaderPdfTable(header, columnWidths,
+						headerFont, headerColor);
+				rows = new ArrayList<List<String>>();
+				this.addComponents(rows, d, p.getDatatypes(),
+						p.getTables());
+				this.addCellsPdfTable(table, rows, cellFont, cpColor);
+				igDocument.add(Chunk.NEWLINE);
+				igDocument.add(table);
+				igDocument.add(Chunk.NEWLINE);
+				//				}
 			}
 
 			/*
@@ -538,7 +657,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerColor);
 				rows = new ArrayList<List<String>>();
-				this.addCodesPdf2(rows, t);
+				this.addCodes(rows, t);
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
 				igDocument.add(Chunk.NEWLINE);
 				igDocument.add(table);
@@ -955,7 +1074,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			baseFont = BaseFont.createFont();
 			template.setFontAndSize(baseFont, 11);
 			template.setTextMatrix(
-					20 - baseFont.getWidthPoint(
+					30 - baseFont.getWidthPoint(
 							String.valueOf(igWriter.getPageNumber()), 12), 0);
 			template.showText(String.valueOf(igWriter.getPageNumber()));
 			template.endText();
@@ -1038,7 +1157,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				"",
 				"[" + String.valueOf(g.getMin()) + ".."
 						+ String.valueOf(g.getMax()) + "]", "",
-				"BEGIN " + g.getName() + " GROUP");
+						"BEGIN " + g.getName() + " GROUP");
 		rows.add(row);
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
@@ -1080,61 +1199,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		}
 	}
 
-	private void addGroupXlsx2(List<String> header, Group g,
-			XSSFWorkbook workbook, XSSFCellStyle headerStyle,
-			Segments segments, Datatypes datatypes, Tables tables)
-			throws DocumentException {
-
-		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
-		Collections.sort(segsOrGroups);
-		for (SegmentRefOrGroup srog : segsOrGroups) {
-			if (srog instanceof SegmentRef) {
-				this.addSegmentXlsx2(
-						segments.findOneSegmentById(((SegmentRef) srog).getRef()), header,
-						workbook, headerStyle, datatypes, tables);
-			} else if (srog instanceof Group) {
-				this.addGroupXlsx2(header, (Group) srog, workbook, headerStyle,
-						segments, datatypes, tables);
-			}
-		}
-	}
-
-	private void addSegmentXlsx2(Segment s, List<String> header,
-			XSSFWorkbook workbook, XSSFCellStyle headerStyle,
-			Datatypes datatypes, Tables tables) {
-		List<List<String>> rows = new ArrayList<List<String>>();
-		XSSFSheet sheet = workbook.createSheet(s.getName());
-		rows.add(header);
-		this.addFieldPdf2(rows, s, Boolean.FALSE, datatypes, tables);
-		this.writeToSheet(rows, header, sheet, headerStyle);
-	}
-
-	private void addGroupXlsx(List<List<String>> rows, Group g, Integer depth,
-			Segments segments, Datatypes datatypes) {
-		String indent = StringUtils.repeat(" ", 4 * depth);
-
-		List<String> row = Arrays.asList(
-				indent + "BEGIN " + g.getName() + " GROUP",
-				g.getUsage().value(),
-				"",
-				"[" + String.valueOf(g.getMin()) + ".."
-						+ String.valueOf(g.getMax()) + "]", "", "");
-		rows.add(row);
-		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
-		Collections.sort(segsOrGroups);
-		for (SegmentRefOrGroup srog : segsOrGroups) {
-			if (srog instanceof SegmentRef) {
-				this.addSegmentXlsx(rows, (SegmentRef) srog, depth + 1,
-						segments);
-			} else if (srog instanceof Group) {
-				this.addGroupXlsx(rows, (Group) srog, depth + 1, segments,
-						datatypes);
-			}
-		}
-		row = Arrays.asList(indent + "END " + g.getName() + " GROUP", "", "",
-				"");
-		rows.add(row);
-	}
 
 	private void addSegmentPdf1(List<List<String>> rows, SegmentRef s,
 			Integer depth, Segments segments) {
@@ -1166,7 +1230,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				+ " Segment"));
 		igDocument.add(Chunk.NEWLINE);
 		igDocument.add(new Paragraph(s.getText1()));
-		this.addFieldPdf2(rows, s, Boolean.TRUE, datatypes, tables);
+		this.addFields(rows, s, Boolean.TRUE, datatypes, tables);
 		this.addCellsPdfTable(table, rows, cellFont, cpColor);
 		igDocument.add(table);
 		igDocument.add(Chunk.NEWLINE);
@@ -1191,17 +1255,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 	}
 
-	private void addSegmentXlsx(List<List<String>> rows, SegmentRef s,
-			Integer depth, Segments segments) {
-		String indent = StringUtils.repeat(" ", 4 * depth);
-		Segment segment = segments.findOneSegmentById(s.getRef());
-		List<String> row = Arrays.asList(indent + segment.getName(), s
-				.getUsage().value(), "", "[" + String.valueOf(s.getMin())
-				+ ".." + String.valueOf(s.getMax()) + "]", "", segment
-				.getComment() == null ? "" : segment.getComment());
-		rows.add(row);
-	}
-
 	private List<Constraint> findConstraints(Integer target,
 			List<Predicate> predicates,
 			List<ConformanceStatement> conformanceStatements) {
@@ -1224,7 +1277,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		return constraints;
 	}
 
-	private void addComponentPdf2(List<List<String>> rows, Datatype d,
+	private void addComponents(List<List<String>> rows, Datatype d,
 			Datatypes datatypes, Tables tables) {
 		List<String> row;
 		List<Predicate> predicates = d.getPredicates();
@@ -1247,11 +1300,10 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 						c.getUsage().value(),
 						"[" + String.valueOf(c.getMinLength()) + ","
 								+ String.valueOf(c.getMaxLength()) + "]",
-						(c.getTable() == null | c.getTable().equals("") | tables.findOneTableById(
-								c.getTable()) == null) ? "" : tables.findOneTableById(
-								c.getTable()).getBindingIdentifier(), c.getComment());
+								(c.getTable() == null | c.getTable().equals("") | tables.findOneTableById(
+										c.getTable()) == null) ? "" : tables.findOneTableById(
+												c.getTable()).getBindingIdentifier(), c.getComment());
 				rows.add(row);
-
 				List<Constraint> constraints = this.findConstraints(
 						componentsList.indexOf(c) + 1, predicates,
 						conformanceStatements);
@@ -1273,7 +1325,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		}
 	}
 
-	private void addFieldPdf2(List<List<String>> rows, Segment s,
+	private void addFields(List<List<String>> rows, Segment s,
 			Boolean inlineConstraints, Datatypes datatypes, Tables tables) {
 		List<String> row;
 		List<Predicate> predicates = s.getPredicates();
@@ -1288,16 +1340,16 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					String.valueOf(f.getPosition()),
 					f.getName(),
 					f.getDatatype() == null ? "NULL":f.getDatatype(), //datatypes.findOne(f.getDatatype()).getLabel(),
-					f.getUsage().value(),
-					"",
-					"[" + String.valueOf(f.getMin()) + ".."
-							+ String.valueOf(f.getMax()) + "]",
-					"",
-					"[" + String.valueOf(f.getMinLength()) + ".."
-							+ String.valueOf(f.getMaxLength()) + "]",
-					(tables.findOneTableByName(f.getTable()) == null) ?
-							"NULL" : tables.findOneTableByName(f.getTable()).getBindingIdentifier(), 
-					f.getComment() == null ? "" : f.getComment());
+							f.getUsage().value(),
+							"",
+							"[" + String.valueOf(f.getMin()) + ".."
+									+ String.valueOf(f.getMax()) + "]",
+									"",
+									"[" + String.valueOf(f.getMinLength()) + ".."
+											+ String.valueOf(f.getMaxLength()) + "]",
+											(tables.findOneTableByName(f.getTable()) == null) ?
+													"" : tables.findOneTableById(f.getTable()).getBindingIdentifier(), 
+													f.getComment() == null ? "" : f.getComment());
 			rows.add(row);
 
 			if (inlineConstraints) {
@@ -1335,24 +1387,21 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		}
 	}
 
-	private void addCodesPdf2(List<List<String>> rows, Table t) {
+	private void addCodes(List<List<String>> rows, Table t) {
 		List<String> row = new ArrayList<String>();
 		List<Code> codes = t.getCodes();
 
 		for (Code c : codes) {
 			row = Arrays.asList(c.getValue(), c.getCodeSystem(), c.getCodeUsage(), c.getLabel());
- 			rows.add(row);
+			rows.add(row);
 		}
 		Collections.sort(rows, codeComparator);
 	}
-	
+
 	public static Comparator<List<String>> codeComparator = new Comparator<List<String>>() {
 		public int compare(List<String> o1, List<String> o2) {
 			return o1.get(0).compareTo(o2.get(0));
 		}
-		
 	};
-
-
 
 }

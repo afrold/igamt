@@ -3,8 +3,9 @@
  */
 
 angular.module('igl')
-    .controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, HL7VersionSvc, ngTreetableParams, ColumnSettings) {
-        $scope.loading = false;
+.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, DeleteMessageSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
+		$scope.loading = false;
+    	$scope.uiGrid = {};
         $rootScope.igs = [];
         $scope.igContext = {
             type: 'USER'
@@ -181,7 +182,6 @@ angular.module('igl')
                 $scope.loadProfiles();
             });
 
-
             $rootScope.$on('event:openProfileRequest', function (event, profile) {
                 $scope.openProfile(profile);
             });
@@ -219,7 +219,7 @@ angular.module('igl')
                 $scope.loading = true;
                 if ($scope.igContext.igType.type === 'PRELOADED') {
                     $http.get('api/profiles', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs = angular.fromJson(response.data);
+                        $rootScope.igs.push(angular.fromJson(response.data));
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -228,7 +228,7 @@ angular.module('igl')
                     });
                 } else if ($scope.igContext.igType.type === 'USER') {
                     $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs = angular.fromJson(response.data);
+                        $rootScope.igs.push(angular.fromJson(response.data));
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -352,7 +352,7 @@ angular.module('igl')
                 $rootScope.segments = [];
                 $rootScope.tables = $rootScope.profile.tables.children;
                 $rootScope.datatypes = $rootScope.profile.datatypes.children;
-
+                
                 angular.forEach($rootScope.profile.messages.children, function (child) {
                     this[child.id] = child;
                     angular.forEach(child.children, function (segmentRefOrGroup) {
@@ -433,7 +433,6 @@ angular.module('igl')
             });
         };
 
-
         $scope.confirmClose = function () {
             var modalInstance = $modal.open({
                 templateUrl: 'ConfirmProfileCloseCtrl.html',
@@ -443,7 +442,6 @@ angular.module('igl')
             }, function () {
             });
         };
-
 
         $scope.confirmOpen = function (profile) {
             var modalInstance = $modal.open({
@@ -645,13 +643,13 @@ angular.module('igl')
             return $scope.subview;
         };
 
-        $scope.getHL7Version = function () {
-            return HL7VersionSvc.hl7Version;
-        };
-
-        $scope.setHL7Version = function (hl7Version) {
-            HL7VersionSvc.hl7Version = hl7Version;
-        };
+//        $scope.getHL7Version = function () {
+//            return HL7VersionSvc.hl7Version;
+//        };
+//
+//        $scope.setHL7Version = function (hl7Version) {
+//            HL7VersionSvc.hl7Version = hl7Version;
+//        };
 
         $scope.showSelected = function (node) {
             $scope.selectedNode = node;
@@ -684,9 +682,8 @@ angular.module('igl')
 //				}
                     break;
                 case "Delete":
-                    // not to be implemented at this time.
-                    // var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
-                    break;
+                	ProfileAccessSvc.
+                	break;
                 default:
                     console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
             }
@@ -698,7 +695,6 @@ angular.module('igl')
                 case "Add":
                 {
                     // not to be implemented at this time.
-
                 }
                 case "Clone":
                 {
@@ -719,9 +715,8 @@ angular.module('igl')
                     break;
                 }
                 case "Delete":
-                    // not to be implemented at this time.
-                    // var nodeInQuestion = $scope.node.messages.children.splice(index, 1);
-                    break;
+                	DeleteMessageSvc.delete($rootScope.profile, node);
+                	break;
                 default:
                     console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
             }

@@ -51,7 +51,6 @@ import com.mongodb.ServerAddress;
 @ComponentScan(basePackages = "gov.nist.healthcare.tools.hl7.v2.igamt.lite")
 public class PersistenceContextUnit extends AbstractMongoConfiguration {
 
-//	@Autowired
 	@Resource
 	private Environment env;
 

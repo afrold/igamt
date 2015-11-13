@@ -1,23 +1,17 @@
-angular.module('igl').factory('DeleteMessageSvc', function () {
+angular.module('igl').factory('DeleteMessageSvc', function (ProfileAccessSvc) {
+
+	var del = this;
+
+	del.deleteMessage = function(profile, message) {
+		var segmentRefs = ProfileAccessSvc.Messages(profile).getSegmentRefsSansOne(message);
+		ProfileAccessSvc.Segments(profile).removeDead(segmentRefs);
+		var id = message.id;
+		var messages = profile.messages.children;
+		var idx = _.findIndex(messages, function(child){
+			return child.id === id;
+		})
+		messages.splice(idx, 1);
+	}
 	
-//	state = {};
-//	
-//	state.contains = function(node) {
-//		var type = node.type;
-//		var id = node.id;
-//		switch (type) {
-//		case "datatype": {
-//			
-//		}
-//		case "message": {
-//			
-//		}
-//		case "segment": {
-//			
-//		}
-//		case "tableLibrary": {
-//			
-//		}
-//		}
-//	}
+	return del;
 });
