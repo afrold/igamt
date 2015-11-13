@@ -117,27 +117,6 @@ describe("profile access service", function () {
 		names.push(ProfileAccessSvc.Datatypes(profile).datatypes[85].name);
 		expect(ProfileAccessSvc.Datatypes(profile).removeDead(names).length).toBe(3);
 	});
-
-	it("Can we find fields from segmentRefs?", function () {
-		var segs =  [];
-		var segments = ProfileAccessSvc.Segments(profile).segments();
-		expect(segments.length).toBe(166);
-		segs.push(segments[0]);
-		segs.push(segments[122]);
-		segs.push(segments[165]);
-		expect(segs[0]).toBeDefined();
-		expect(segs[0].fields).toBeDefined();
-		var flds = ProfileAccessSvc.Segments(profile).findFields(segs[0]).length;
-		expect(flds).toBe(33);
-		expect(segs[1]).toBeDefined();
-		expect(segs[1].fields).toBeDefined();
-		flds = ProfileAccessSvc.Segments(profile).findFields(segs[1]).length;
-		expect(flds).toBe(12);
-		expect(segs[2]).toBeDefined();
-		expect(segs[2].fields).toBeDefined();
-		flds = ProfileAccessSvc.Segments(profile).findFields(segs[2]).length;
-		expect(flds).toBe(14);
-	});	
 	
 	it("Do our message counts balance?", function () {
 		var msg = profile.messages.children[4];

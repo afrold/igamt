@@ -42,9 +42,9 @@ describe("delete message service", function () {
 				datatypes.push(field.datatype);				
 			});
 		});
-		DeleteMessageSvc().deleteMessage(profile, msg);
-		expect(profile.messages.children.length).toBe(profile.messages.children.length -1);
-		expect(segRefs.length).toBe(profile.messages.children.length -1);
+		var msglength = profile.messages.children.length;
+		DeleteMessageSvc.deleteMessage(profile, msg);
+		expect(profile.messages.children.length).toBe(msglength -1);
 	});
 
 });

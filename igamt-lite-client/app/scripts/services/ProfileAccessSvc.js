@@ -1,14 +1,14 @@
 angular.module('igl').factory ('ProfileAccessSvc', function() {
 
-					var pac = this;
+	var pac = this;
 
-					var sortById = function(a, b) {
-						if (a.id < b.id)
-							return -1;
-						if (a.id > b.id)
-							return 1;
-						return 0;
-					}
+	var sortById = function(a, b) {
+		if (a.id < b.id)
+			return -1;
+		if (a.id > b.id)
+			return 1;
+		return 0;
+	}
 
 	pac.Version = function(profile) {
 		return profile.metaData.hl7Version;
