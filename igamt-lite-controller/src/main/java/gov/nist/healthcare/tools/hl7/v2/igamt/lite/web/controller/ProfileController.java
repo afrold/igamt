@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +29,7 @@ import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageByListCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileConfiguration;
@@ -339,10 +341,10 @@ public class ProfileController extends CommonController {
 	}
 
 	// TODO Change to query as is but with $nin a list of messages that can be empty. 
-	@RequestMapping(value = "/hl7/messageListByVersion/{hl7Version:.*}/{messageIds}", method = RequestMethod.GET, produces = "application/json")
-	public List<String[]> getMessageListByVersion(@PathVariable("hl7Version") String hl7Version, @PathVariable("messageIds") List<String> messageIds) {
+	@RequestMapping(value = "/hl7/messageListByVersion/{hl7Version:.*}", method = RequestMethod.POST, produces = "application/json")
+	public List<String[]> getMessageListByVersion(@PathVariable("hl7Version") String hl7Version, MessageByListCommand command) {
 		log.info("Fetching messages of version hl7Version=" + hl7Version);
-		List<String[]> messages = profileCreation.summary(hl7Version, messageIds);
+		List<String[]> messages = profileCreation.summary(hl7Version,  command.getMessageIds());
 		log.debug("messages=" + messages.size());
 		return messages;
 	}

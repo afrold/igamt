@@ -129,7 +129,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     $httpProvider.interceptors.push(function ($q) {
         return {
             request: function (config) {
-            	console.log(config.url);
+//            	console.log(config.url);
 //                return "http://localhost:8080/igamt"+ value;
 //                if(config.url.startsWith("api")){
 //                   config.url = "http://localhost:8080/igamt/"+  config.url;

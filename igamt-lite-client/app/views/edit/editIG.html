@@ -19,12 +19,31 @@
                 </span>
 
                 <div class="pull-right"  >
+
+
                     <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                             ng-hide="options.readonly"
                             ng-show="igContext.igType.type === 'USER'"
                             ng-click="save()">
                         <span><i class="fa fa-check fa-fw"></i> Apply</span>
                     </button>
+
+                    <button ng-show="options.readonly && igContext.igType.type === 'USER'"
+                            title="Edit"
+                            type="button" class="btn btn-xs btn-primary"
+                            ng-click="edit(profile)">
+                                        <span><i
+                                                class="fa fa-pencil fa-fw"></i>Edit</span>
+                    </button>
+
+                    <button
+                            title="Clone"
+                            type="button" class="btn btn-xs btn-info"
+                            ng-click="clone(profile)">
+                                        <span><i
+                                                class="fa fa-plus fa-fw"></i>Clone</span>
+                    </button>
+
 
                     <div class="btn-group">
                         <button ng-disabled="hasChanges()" type="button"

@@ -516,6 +516,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				this.addTocContent(tocDocument, igWriter, m.getStructID()
 						+ " - " + m.getDescription());
 
+				igDocument.add(Chunk.NEWLINE);
 				igDocument.add(new Paragraph("Message definition: "));
 				igDocument.add(new Paragraph(m.getStructID() + " - "
 						+ m.getDescription()));
@@ -601,10 +602,11 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			for (Datatype d : p.getDatatypes().getChildren()) {
 				//				if ((d.getLabel() != null && d.getLabel().contains("_"))) {
 
-				this.addTocContent(tocDocument, igWriter, d.getLabel() != null ?  d.getLabel() : d.getName()
+				this.addTocContent(tocDocument, igWriter, d.getLabel() != null ?  d.getLabel()+ " - " + d.getDescription() : d.getName()
 						+ " - " + d.getDescription());
 
-				igDocument.add(new Paragraph( d.getLabel() != null ?  d.getLabel() : d.getName() + " - "
+				igDocument.add(new Paragraph( d.getLabel() != null ?  d.getLabel() + " - "
+						+ d.getDescription() + " Datatype" : d.getName() + " - "
 						+ d.getDescription() + " Datatype"));
 				igDocument.add(new Paragraph(d.getComment()));
 
@@ -641,11 +643,13 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			for (Table t : tables) {
 
 				this.addTocContent(tocDocument, igWriter, t.getBindingIdentifier()
-						+ " : " + t.getName());
+						+ " : " + t.getDescription());
 
 				igDocument.add(new Paragraph("Value set " + t.getBindingIdentifier()
-						+ " : " + t.getName()));
+						+ " : " + t.getDescription()));
 				StringBuilder sb = new StringBuilder();
+				sb.append("\nOid: ");
+				sb.append(t.getOid()==null ? "UNSPECIFIED":t.getOid());
 				sb.append("\nStability: ");
 				sb.append(t.getStability()==null ? "Static":t.getStability());
 				sb.append("\nExtensibility: ");
@@ -1300,9 +1304,10 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 						c.getUsage().value(),
 						"[" + String.valueOf(c.getMinLength()) + ","
 								+ String.valueOf(c.getMaxLength()) + "]",
-								(c.getTable() == null | c.getTable().equals("") | tables.findOneTableById(
-										c.getTable()) == null) ? "" : tables.findOneTableById(
-												c.getTable()).getBindingIdentifier(), c.getComment());
+								(c.getTable() == null | tables.findOneTableById(c.getTable()) == null ?
+										"" : tables.findOneTableById(c.getTable()).getName()),
+								
+												c.getComment());
 				rows.add(row);
 				List<Constraint> constraints = this.findConstraints(
 						componentsList.indexOf(c) + 1, predicates,
@@ -1347,8 +1352,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 									"",
 									"[" + String.valueOf(f.getMinLength()) + ".."
 											+ String.valueOf(f.getMaxLength()) + "]",
-											(tables.findOneTableByName(f.getTable()) == null) ?
-													"" : tables.findOneTableById(f.getTable()).getBindingIdentifier(), 
+											(f.getTable() == null || tables.findOneTableById(f.getTable()) == null ?
+													"" : tables.findOneTableById(f.getTable()).getName()), 
 													f.getComment() == null ? "" : f.getComment());
 			rows.add(row);
 
