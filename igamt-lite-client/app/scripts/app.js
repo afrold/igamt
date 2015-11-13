@@ -30,8 +30,8 @@ var app = angular
 //        ,
 //        'ui.grid',
 //        'ui.grid.treeView'
-//        ,
-//        'ngMockE2E'
+        ,
+        'ngMockE2E'
     ]);
 
 var
