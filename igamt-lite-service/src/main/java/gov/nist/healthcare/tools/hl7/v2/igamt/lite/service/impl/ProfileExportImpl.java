@@ -1304,8 +1304,10 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 						c.getUsage().value(),
 						"[" + String.valueOf(c.getMinLength()) + ","
 								+ String.valueOf(c.getMaxLength()) + "]",
-								(c.getTable() != null ? c.getTable() : "") 
-												, c.getComment());
+								(c.getTable() == null | tables.findOneTableById(c.getTable()) == null ?
+										"" : tables.findOneTableById(c.getTable()).getName()),
+								
+												c.getComment());
 				rows.add(row);
 				List<Constraint> constraints = this.findConstraints(
 						componentsList.indexOf(c) + 1, predicates,
