@@ -516,6 +516,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				this.addTocContent(tocDocument, igWriter, m.getStructID()
 						+ " - " + m.getDescription());
 
+				igDocument.add(Chunk.NEWLINE);
 				igDocument.add(new Paragraph("Message definition: "));
 				igDocument.add(new Paragraph(m.getStructID() + " - "
 						+ m.getDescription()));
@@ -601,7 +602,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			for (Datatype d : p.getDatatypes().getChildren()) {
 				//				if ((d.getLabel() != null && d.getLabel().contains("_"))) {
 
-				this.addTocContent(tocDocument, igWriter, d.getLabel() != null ?  d.getLabel() : d.getName()
+				this.addTocContent(tocDocument, igWriter, d.getLabel() != null ?  d.getLabel()+ " - " + d.getDescription() : d.getName()
 						+ " - " + d.getDescription());
 
 				igDocument.add(new Paragraph( d.getLabel() != null ?  d.getLabel() : d.getName() + " - "
@@ -641,11 +642,13 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			for (Table t : tables) {
 
 				this.addTocContent(tocDocument, igWriter, t.getBindingIdentifier()
-						+ " : " + t.getName());
+						+ " : " + t.getDescription());
 
 				igDocument.add(new Paragraph("Value set " + t.getBindingIdentifier()
-						+ " : " + t.getName()));
+						+ " : " + t.getDescription()));
 				StringBuilder sb = new StringBuilder();
+				sb.append("\nOid: ");
+				sb.append(t.getOid()==null ? "UNSPECIFIED":t.getOid());
 				sb.append("\nStability: ");
 				sb.append(t.getStability()==null ? "Static":t.getStability());
 				sb.append("\nExtensibility: ");
