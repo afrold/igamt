@@ -62,7 +62,7 @@
 
 
                                 <button ng-show="igContext.igType.type === 'USER'"
-                                        title="Edit"
+                                        title="Edit" ng-disabled="profile != null && profile.id === row.id"
                                         type="button" class="btn btn-xs btn-primary"
                                         ng-click="edit(row)">
                                         <span><i
@@ -70,7 +70,7 @@
                                 </button>
 
                                 <button
-                                        title="View Readonly"
+                                        title="View Readonly" ng-disabled="profile != null && profile.id === row.id"
                                         type="button" class="btn btn-xs btn-warning"
                                         ng-click="view(row)">
                                     <span><i class="fa fa-eye"></i></span>
