@@ -1167,7 +1167,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		message.setComment("Message comment");
 
 		field.setComment("wawa");
-		field.setText("This field is used to decide whether to process the message as defined in HL7 Application (level 7) Processing rules. <b>This is a required field.</b> Use ���P��� for Production and ���T��� for Testing, all other valuesText regarding a field");
+		field.setText("This field is used to decide whether to process the message as defined in HL7 Application (level 7) Processing rules. <b>This is a required field.</b> Use 'P' for Production and 'T' for Testing, all other valuesText regarding a field");
 		group.setMax("*");
 		group.setComment("new group comment");
 
