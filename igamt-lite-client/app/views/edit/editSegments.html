@@ -128,7 +128,6 @@
     <!--</div>-->
 </script>
 
-
 <script type="text/ng-template" id="SegmentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
@@ -212,7 +211,6 @@
         </td>
     </tr>
 </script>
-
 
 <script type="text/ng-template" id="SegmentFieldEditTree.html">
     <tr tt-node is-branch="hasChildren(node)">
@@ -367,7 +365,6 @@
     </tr>
 </script>
 
-
 <script type="text/ng-template" id="SegmentFieldReadTree.html">
     <tr tt-node is-branch="hasChildren(node)">
 
@@ -382,10 +379,12 @@
         </td>
 
         <td class="col-xs-1 col-fixed-80">
-                                             <span ng-if="!node.predicates || node.predicates == null || node.predicates.length == 0">
-                                                 {{::node.usage}}
-                                            </span>
-            <span ng-if="node.predicates != null && node.predicates.length > 0">C({{::node.predicates[0].trueUsage}}/{{::node.predicates[0].falseUsage}})</span>
+			<div>
+				<span>{{node.usage}}</span>
+				<span ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
+            </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
             [{{::node.min}}, {{::node.max}}]
@@ -443,7 +442,6 @@
     </tr>
 </script>
 
-
 <script type="text/ng-template" id="SegmentComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
@@ -461,10 +459,10 @@
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>
-                            <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0"
-                                  ng-bind="node.usage">
-                            </span>
-                <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
+				<span>{{node.usage}}</span>
+				<span ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
@@ -535,7 +533,6 @@
     </tr>
 </script>
 
-
 <script type="text/ng-template" id="SegmentComponentReadTree.html">
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
@@ -552,11 +549,11 @@
                                  </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <div>
-                            <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0"
-                                  ng-bind="node.usage">
-                            </span>
-                <span ng-show="node.predicates != null && node.predicates.length > 0">C({{::node.predicates[0].trueUsage}}/{{::node.predicates[0].falseUsage}})</span>
+			<div>
+				<span>{{node.usage}}</span>
+				<span ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
@@ -620,7 +617,6 @@
         </td>
     </tr>
 </script>
-
 
 <script type="text/ng-template" id="ConformanceStatementSegmentCtrl.html">
 <div class="modal-header">
@@ -859,7 +855,6 @@
     </button>
 </div>
 </script>
-
 
 <script type="text/ng-template" id="PredicateSegmentCtrl.html">
 <div class="modal-header">
@@ -1104,7 +1099,6 @@
     </button>
 </div>
 </script>
-
 
 <script type="text/ng-template" id="TableMappingSegmentCtrl.html">
     <div class="modal-header">
