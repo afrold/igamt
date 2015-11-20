@@ -340,7 +340,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			throw new ProfileConversionException("Datatype "
 					+ ((String) source.get("datatype")) + " not found");
 		}
-		p.setDatatype(d);
+		p.setDatatype(d.getId());
 		return p;
 	}
 

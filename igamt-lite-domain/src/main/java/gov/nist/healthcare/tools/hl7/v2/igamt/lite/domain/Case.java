@@ -61,6 +61,7 @@ public class Case implements Serializable, Cloneable {
 	public void setDatatype(String datatype) {
 		this.datatype = datatype;
 	}
+	
 
 	@Override
 	public Case clone() throws CloneNotSupportedException {

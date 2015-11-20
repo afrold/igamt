@@ -40,7 +40,6 @@ public class DynamicMapping implements Serializable, Cloneable {
 	}
 
 	public void addMapping(Mapping m) {
-		m.setPosition(mappings.size() + 1);
 		mappings.add(m);
 	}
 

@@ -648,15 +648,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			Mapping mappingObj = new Mapping();
 			mappingObj.setPosition(Integer.parseInt(mappingElm.getAttribute("Position")));
 			mappingObj.setReference(Integer.parseInt(mappingElm.getAttribute("Reference")));
-			
 			NodeList cases = mappingElm.getElementsByTagName("Case");
 			
 			for(int j = 0; j < cases.getLength(); j++) {
 				Element caseElm = (Element)cases.item(j);
 				Case caseObj = new Case();
 				caseObj.setValue(caseElm.getAttribute("Value"));
-				
 				caseObj.setDatatype(this.findDatatype(caseElm.getAttribute("Datatype"), profile).getId());
+				
+				mappingObj.addCase(caseObj);
 				
 			}
 			
@@ -665,6 +665,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			
 		}
 		
+		if(dynamicMappingObj != null) segmentObj.addDynamicMapping(dynamicMappingObj);
 		
 		NodeList fields = segmentElm.getElementsByTagName("Field");
 		for (int i = 0; i < fields.getLength(); i++) {

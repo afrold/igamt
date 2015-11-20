@@ -65,6 +65,10 @@ public class Mapping implements Serializable, Cloneable {
 	public void setReference(Integer reference) {
 		this.reference = reference;
 	}
+	
+	public void addCase(Case c) {
+		cases.add(c);
+	}
 
 	@Override
 	public Mapping clone() throws CloneNotSupportedException {
