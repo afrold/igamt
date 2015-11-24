@@ -181,7 +181,6 @@
     </div>
 </script>
 
-
 <script type="text/ng-template" id="DatatypeEditTree.html">
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
@@ -226,7 +225,6 @@
     </tr>
 </script>
 
-
 <script type="text/ng-template" id="DatatypeReadTree.html">
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
@@ -270,7 +268,6 @@
         </td>
     </tr>
 </script>
-
 
 <script type="text/ng-template" id="DatatypeComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)">
@@ -428,7 +425,6 @@
     </tr>
 </script>
 
-
 <script type="text/ng-template" id="DatatypeComponentReadTree.html">
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
@@ -443,9 +439,12 @@
                      ></span>
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="columnSettings.isVisibleColumn('usage')">
-            <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0"
-                  ng-bind="::node.usage"></span>
-            <span ng-show="node.predicates != null && node.predicates.length > 0">C({{::node.predicates[0].trueUsage}}/{{::node.predicates[0].falseUsage}})</span>
+			<div>
+				<span>{{node.usage}}</span>
+				<span ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
+            </div>
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="columnSettings.isVisibleColumn('length')">
             [{{::node.minLength}},{{::node.maxLength}}]
@@ -504,7 +503,6 @@
         </td>
     </tr>
 </script>
-
 
 <script type="text/ng-template" id="DatatypeSubComponentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)">
@@ -608,10 +606,10 @@
         </td>
         <td class="col-xs-1 col-fixed-80" ng-show="columnSettings.isVisibleColumn('usage')">
             <div>
-                                <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
-                                                {{::node.usage}}
-                                            </span>
-                <span ng-show="node.predicates != null && node.predicates.length > 0">C({{::node.predicates[0].trueUsage}}/{{::node.predicates[0].falseUsage}})</span>
+				<span>{{node.usage}}</span>
+				<span ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="columnSettings.isVisibleColumn('length')">
@@ -714,7 +712,6 @@
         </button>
     </div>
 </script>
-
 
 <script type="text/ng-template" id="PredicateDatatypeCtrl.html">
 <div class="modal-header">

@@ -9,16 +9,22 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+
 ////@Entity
 ////@Table(name = "CASE")
 public class Case implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	// //@Column(name = "ID")
-	// @Id
-	// //@GeneratedValue(strategy = GenerationType.AUTO)
-	protected String id;
+	public Case() {
+		super();
+		this.id = ObjectId.get().toString();
+	}
+
+	@Id
+	private String id;
 
 	// //@NotNull
 	// //@Column(nullable = false, name = "VALUE")
@@ -26,7 +32,7 @@ public class Case implements Serializable, Cloneable {
 
 	// //@OneToOne
 	// //@JoinColumn(nullable = false)
-	protected Datatype datatype;
+	protected String datatype;
 
 	public String getValue() {
 		return value;
@@ -48,13 +54,14 @@ public class Case implements Serializable, Cloneable {
 		this.id = id;
 	}
 
-	public Datatype getDatatype() {
+	public String getDatatype() {
 		return datatype;
 	}
 
-	public void setDatatype(Datatype datatype) {
+	public void setDatatype(String datatype) {
 		this.datatype = datatype;
 	}
+	
 
 	@Override
 	public Case clone() throws CloneNotSupportedException {

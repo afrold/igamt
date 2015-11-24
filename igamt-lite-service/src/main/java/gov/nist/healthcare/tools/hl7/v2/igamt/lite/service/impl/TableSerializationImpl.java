@@ -12,6 +12,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
@@ -94,11 +97,11 @@ public class TableSerializationImpl implements TableSerialization {
                         if(t.getOid() != null && !t.getOid().equals(""))
                         	elmValueSetDefinition.addAttribute(new Attribute("Oid",ExportUtil.str(t.getOid())));
                         if(t.getStability() != null && !t.getStability().equals(""))
-                        	elmValueSetDefinition.addAttribute(new Attribute("Stability", ExportUtil.str(t.getStability())));
+                        	elmValueSetDefinition.addAttribute(new Attribute("Stability", ExportUtil.str(t.getStability().value())));
                         if(t.getExtensibility() != null && !t.getExtensibility().equals(""))
-                        	elmValueSetDefinition.addAttribute(new Attribute("Extensibility", ExportUtil.str(t.getExtensibility())));
+                        	elmValueSetDefinition.addAttribute(new Attribute("Extensibility", ExportUtil.str(t.getExtensibility().value())));
                         if(t.getContentDefinition() != null && !t.getContentDefinition().equals(""))
-                        	elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition", ExportUtil.str(t.getContentDefinition())));
+                        	elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition", ExportUtil.str(t.getContentDefinition().value())));
                         
 
                         elmValueSetDefinitions.appendChild(elmValueSetDefinition);
@@ -151,21 +154,21 @@ public class TableSerializationImpl implements TableSerialization {
                             if (elmTable.getAttribute("Oid") != null && !elmTable.getAttribute("Oid").equals("")) tableObj.setOid(elmTable.getAttribute("Oid"));
 
                             if (elmTable.getAttribute("Extensibility") != null && !elmTable.getAttribute("Extensibility").equals("")) {
-                                    tableObj.setExtensibility(elmTable.getAttribute("Extensibility"));
+                                    tableObj.setExtensibility(Extensibility.fromValue(elmTable.getAttribute("Extensibility")));
                             } else {
-                                    tableObj.setStability("Open");
+                                    tableObj.setExtensibility(Extensibility.fromValue("Open"));
                             }
 
                             if (elmTable.getAttribute("Stability") != null && !elmTable.getAttribute("Stability").equals("")) {
-                                    tableObj.setStability(elmTable.getAttribute("Stability"));
+                                    tableObj.setStability(Stability.fromValue(elmTable.getAttribute("Stability")));
                             } else {
-                                    tableObj.setStability("Static");
+                                    tableObj.setStability(Stability.fromValue("Static"));
                             }
 
                             if (elmTable.getAttribute("ContentDefinition") != null && !elmTable.getAttribute("ContentDefinition").equals("")) {
-                                    tableObj.setContentDefinition(elmTable.getAttribute("ContentDefinition"));
+                                    tableObj.setContentDefinition(ContentDefinition.fromValue(elmTable.getAttribute("ContentDefinition")));
                             } else {
-                                    tableObj.setContentDefinition("Extensional");
+                                    tableObj.setContentDefinition(ContentDefinition.fromValue("Extensional"));
                             }
 
                             this.deserializeXMLToCode(elmTable, tableObj);

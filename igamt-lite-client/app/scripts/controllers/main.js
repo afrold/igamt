@@ -700,7 +700,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
 //                    $rootScope.tables.push(table);
 //                }
 //            }
-//                $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+                $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
             } else if (element.type === "component") {
                 $rootScope.parentsMap[element.id] = parent;
 //              element["datatype"] = $rootScope.datatypesMap[element.datatype.id];

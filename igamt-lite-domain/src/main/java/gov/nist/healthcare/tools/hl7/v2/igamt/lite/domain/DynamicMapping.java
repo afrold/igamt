@@ -4,22 +4,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+
 ////@Entity
 ////@Table(name = "DYNAMIC_MAPPING")
 public class DynamicMapping implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	// @Id
-	// //@Column(name = "ID")
-	// //@GeneratedValue(strategy = GenerationType.AUTO)
-	protected String id;
+	public DynamicMapping() {
+		super();
+		this.id = ObjectId.get().toString();
+	}
 
-	// //@OneToMany(cascade = CascadeType.ALL)
-	// //@JoinTable(name = "DYNAMIC_MAPPING_MAPPING", joinColumns =
-	// //@JoinColumn(name = "DYNAMIC_MAPPING"), inverseJoinColumns =
-	// //@JoinColumn(name = "MAPPING"))
-	// @OrderBy(value = "position")
+	@Id
+	private String id;
+	
 	protected List<Mapping> mappings = new ArrayList<Mapping>();
 
 	public String getId() {
@@ -39,7 +40,6 @@ public class DynamicMapping implements Serializable, Cloneable {
 	}
 
 	public void addMapping(Mapping m) {
-		m.setPosition(mappings.size() + 1);
 		mappings.add(m);
 	}
 

@@ -43,11 +43,27 @@ public class WebBeanConfig {
 				"SDO" }));
 		config.setTableStabilities(toSet(new String[] { "Static", "Dynamic" }));
 		config.setTableExtensibilities(toSet(new String[] { "Open", "Close" }));
-		config.setConstraintVerbs(toSet(new String[] { "SHALL be",
-				"SHALL NOT be", "is", "is not" }));
-		config.setConstraintTypes(toSet(new String[] { "valued",
-				"a literal value", "one of list values", "formatted value",
-				"identical to the another node" }));
+		config.setConstraintVerbs(toSet(new String[] { "SHALL be", "SHALL NOT be", "is", "is not" }));
+		config.setConstraintTypes(toSet(new String[] { 
+				"valued",
+				"a literal value", 
+				"one of list values", 
+				"one of a ValueSet",
+				"formatted value",
+				"identical to the another node",
+				"equal to the another node",
+				"not-equal to the another node",
+				"greater than the another node",
+				"equal to or greater than the another node",
+				"less than the another node",
+				"equal to or less than the another node",
+				"equal to",
+				"not-equal to",
+				"greater than",
+				"equal to or greater than",
+				"less than",
+				"equal to or less than"
+		}));
 		config.setPredefinedFormats(toSet(new String[] { "ISO-compliant OID",
 				"Alphanumeric", "YYYY", "YYYYMM", "YYYYMMDD", "YYYYMMDDhh",
 				"YYYYMMDDhhmm", "YYYYMMDDhhmmss", "YYYYMMDDhhmmss.sss",

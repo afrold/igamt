@@ -374,8 +374,9 @@
         <td class="col-xs-1 col-fixed-80">
            	<div>
 				<span>{{node.usage}}</span>
-            	<!--<span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0" ng-bind="node.usage"></span>
-                	<span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>-->
+				<span ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
@@ -443,8 +444,9 @@
         <td class="col-xs-1 col-fixed-80">
             <div>
 				<span>{{node.usage}}</span>
-                <!--<span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0" ng-bind="node.usage"></span>
-                	<span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>-->
+				<span ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">

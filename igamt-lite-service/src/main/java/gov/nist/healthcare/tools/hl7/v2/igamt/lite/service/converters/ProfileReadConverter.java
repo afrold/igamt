@@ -14,9 +14,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
@@ -29,6 +31,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
@@ -336,7 +339,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			throw new ProfileConversionException("Datatype "
 					+ ((String) source.get("datatype")) + " not found");
 		}
-		p.setDatatype(d);
+		p.setDatatype(d.getId());
 		return p;
 	}
 
@@ -411,9 +414,9 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				table.setGroup(((String) tableObject.get("group")));
 				table.setVersion(((String) tableObject.get("version")));
 				table.setOid(((String) tableObject.get("oid")));
-				table.setStability(((String) tableObject.get("stability")));
-				table.setExtensibility(((String) tableObject.get("extensibility")));
-				table.setContentDefinition(((String) tableObject.get("contentDefinition")));
+				table.setStability(Stability.fromValue((String) tableObject.get("stability")));
+				table.setExtensibility(Extensibility.fromValue((String) tableObject.get("extensibility")));
+				table.setContentDefinition(ContentDefinition.fromValue((String) tableObject.get("contentDefinition")));
 				BasicDBList codesDBObjects = (BasicDBList) tableObject
 						.get("codes");
 				if (codesDBObjects != null)
