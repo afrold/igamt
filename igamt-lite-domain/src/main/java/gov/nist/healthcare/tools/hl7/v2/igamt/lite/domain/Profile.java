@@ -56,8 +56,6 @@ public class Profile extends DataModel implements java.io.Serializable,
 
 	private String constraintId;
 	
-	private String hl7Version = "";
-	
 	private String sourceId;
 
 	public String getBaseId() {
@@ -178,14 +176,6 @@ public class Profile extends DataModel implements java.io.Serializable,
 		this.sourceId = sourceId;
 	}
 
-	public String getHl7Version() {
-		return hl7Version;
-	}
-
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
-	}
-	
 	@Override
 	public String toString() {
 		// return "Profile [id=" + id + ", metaData=" + metaData + ", messages="
@@ -437,7 +427,6 @@ public class Profile extends DataModel implements java.io.Serializable,
 		clonedProfile.setScope(scope);
 		clonedProfile.setBaseId(baseId != null ? baseId : id);
 		clonedProfile.setSourceId(id);
-		clonedProfile.setHl7Version(hl7Version);
 
 		return clonedProfile;
 	}
