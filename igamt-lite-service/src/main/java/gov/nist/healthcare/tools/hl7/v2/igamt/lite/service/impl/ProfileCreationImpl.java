@@ -26,6 +26,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -39,6 +40,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileCreationService;
@@ -90,9 +92,9 @@ public class ProfileCreationImpl implements ProfileCreationService {
 		Date date = new Date();
 		metaData.setDate(dateFormat.format(date));
 		metaData.setVersion("1.0");
-		// metaData.setName("");
-		// metaData.setOrgName("");
-		// metaData.setSubTitle("");
+		metaData.setName("Default name");
+		metaData.setOrgName("Default org name");
+		metaData.setSubTitle("Subtitle");
 
 		metaData.setHl7Version(hl7Version);
 		metaData.setStatus("Draft");
@@ -101,6 +103,9 @@ public class ProfileCreationImpl implements ProfileCreationService {
 		// Setting profile info
 		pTarget.setScope(ProfileScope.USER);
 		pTarget.setComment("Created " + date.toString());
+		pTarget.setSourceId(pSource.getId());
+		pTarget.setBaseId(pSource.getId());
+
 
 		// Filling libraries--was
 		Messages msgsTarget = new Messages();
@@ -143,12 +148,13 @@ public class ProfileCreationImpl implements ProfileCreationService {
 
 	private void addSegment(SegmentRef sref, Profile pSource, Profile pTarget) {
 		Segments sgtsTarget = pTarget.getSegments();
-		Datatypes dtsTarget = pTarget.getDatatypes();
 		Segment sgt = pSource.getSegments().findOneSegmentById(sref.getRef());
 		sgtsTarget.addSegment(sgt);
 		for (Field f : sgt.getFields()) {
 			Datatype dt = pSource.getDatatypes().findOne(f.getDatatype());
-			dtsTarget.addDatatype(dt);
+			Table vsd = pSource.getTables().findOneTableById(f.getTable());
+			addDatatype(dt, pSource, pTarget);
+			addTable(vsd, pSource, pTarget);
 		}
 	}
 
@@ -159,6 +165,25 @@ public class ProfileCreationImpl implements ProfileCreationService {
 			} else if (sg instanceof Group) {
 				addGroup((Group) sg, pSource, pTarget);
 			}
+		}
+	}
+
+	private void addDatatype(Datatype dt, Profile pSource, Profile pTarget) {
+		Datatypes dtsTarget = pTarget.getDatatypes();
+		Tables vsdTarget = pTarget.getTables();
+		if (dt != null && !dtsTarget.getChildren().contains(dt)){
+			dtsTarget.addDatatype(dt);
+			for (Component cpt: dt.getComponents()){
+				addDatatype(dtsTarget.findOne(cpt.getDatatype()), pSource, pTarget);
+				addTable(vsdTarget.findOneTableById(cpt.getTable()), pSource, pTarget);
+			}
+		}
+	}
+
+	private void addTable(Table vsd, Profile pSource, Profile pTarget) {
+		Tables vsdTarget = pTarget.getTables();
+		if (vsd != null && !vsdTarget.getChildren().contains(vsd)){
+			vsdTarget.addTable(vsd);
 		}
 	}
 
