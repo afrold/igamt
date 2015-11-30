@@ -45,7 +45,6 @@ angular.module('igl').controller(
                     for (var i = 0; i < len; i++) {
                         hl7Versions.push(response.data[i]);
                     }
-                    $rootScope.hl7Version = hl7Versions[len - 1];
                 });
             return hl7Versions;
         };
@@ -113,7 +112,9 @@ angular.module('igl').controller('HL7VersionsInstanceDlgCtrl',
         var profileVersions = [];
 
         $scope.loadProfilesByVersion = function () {
-            $http.post('api/profiles/hl7/messageListByVersion/' + $scope.hl7Version, angular.fromJson({"messageIds":$scope.profileVersions})).then(function (response) {
+// FIXME gcr: Not right; hence the comment. We are getting the message list here not passing it in.  
+//        	$http.post('api/profiles/hl7/messageListByVersion/' + $scope.hl7Version, angular.fromJson({"messageIds":$scope.profileVersions})).then(function (response) {
+            $http.get('api/profiles/hl7/messageListByVersion/' + $scope.hl7Version).then(function (response) {
                 $scope.messagesByVersion = angular.fromJson(response.data);
             });
         };

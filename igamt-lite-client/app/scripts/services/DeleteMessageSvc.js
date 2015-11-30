@@ -1,8 +1,8 @@
 angular.module('igl').factory('DeleteMessageSvc', function (ProfileAccessSvc) {
 
-	var del = this;
+	var svc = this;
 
-	del.deleteMessage = function(profile, message) {
+	svc.deleteMessage = function(profile, message) {
 		var segmentRefs = ProfileAccessSvc.Messages(profile).getSegmentRefsSansOne(message);
 		ProfileAccessSvc.Segments(profile).removeDead(segmentRefs);
 		var id = message.id;
@@ -13,5 +13,5 @@ angular.module('igl').factory('DeleteMessageSvc', function (ProfileAccessSvc) {
 		messages.splice(idx, 1);
 	}
 	
-	return del;
+	return svc;
 });

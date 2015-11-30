@@ -178,7 +178,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [200, ["2.3","2.31","2.4","2.5","2.51","2.6","2.7"], {}];
     });
     
-    $httpBackend.whenGET('api/profiles/hl7/messageListByVersion/2.7/').respond(function (method, url, data, headers) {
+    $httpBackend.whenGET('api/profiles/hl7/messageListByVersion/2.7').respond(function (method, url, data, headers) {
         var msgList = [["P11", "P11", "", "DFT", "Detail financial transactions"], 
          ["O07", "O07", "", "OMN", "Non-stock requisition order message"], 
          ["I08", "I08", "", "RQA", "Request patient authorization"]]
@@ -189,7 +189,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     	console.log('api/profiles/hl7/createIntegrationProfile start');
         var profile = null;
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profiles.3/profile-2.7.json', false);
+        request.open('GET', '../../resources/profiles/profile-2.7.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         console.log('api/profiles/hl7/createIntegrationProfile end');
@@ -210,6 +210,15 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     $httpBackend.whenGET('api/profiles/config').respond(function (method, url, data, headers) {
          var request = new XMLHttpRequest();
         request.open('GET', '../../resources/config.json', false);
+        request.send(null);
+        var d = angular.fromJson(request.response);
+        console.log('api/profiles/config end');
+        return [request.status, d, {}];
+    });
+
+    $httpBackend.whenGET('api/profiles/toc').respond(function (method, url, data, headers) {
+         var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/profiles/profile-2.7.json', false);
         request.send(null);
         var d = angular.fromJson(request.response);
         console.log('api/profiles/config end');

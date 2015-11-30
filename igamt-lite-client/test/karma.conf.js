@@ -50,9 +50,10 @@ module.exports = function(config) {
       'app/lib/table-settings/table-settings.js',
       'app/scripts/app.js',
       'app/scripts/**/*.js',
-      'test/spec/services/**/ProfileAccessSvcTest.js',
-      'test/spec/services/**/DeleteMessageSvcTest.js',
-      { pattern:  'test/fixtures/profiles/*.json',
+//      'test/spec/services/**/ProfileAccessSvcTest.js',
+//      'test/spec/services/**/DeleteMessageSvcTest.js',
+      'test/spec/services/**/ToCSvcTest.js',
+     { pattern:  'test/fixtures/profiles/*.json',
           watched:  true,
           served:   true,
           included: false }
