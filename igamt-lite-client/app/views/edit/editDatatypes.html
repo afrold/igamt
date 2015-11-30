@@ -860,12 +860,12 @@
                         ng-model="newConstraint.component_1"
                         ng-options="component as component.position for component in datatype.components">
                 </select>
-        				<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
-        					<select name="subComponent" class="igl-input"
-                                    ng-model="newConstraint.subComponent_1"
-                                    ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
-                            </select>
-    					</span>
+        		<span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
+        			<select name="subComponent" class="igl-input"
+                    	ng-model="newConstraint.subComponent_1"
+                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components">
+                    </select>
+    			</span>
             </td>
             <td class="col-md-2" colspan="1">
                 <select name="verb" class="igl-input"
@@ -903,10 +903,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -917,10 +917,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -931,10 +931,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -945,10 +945,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -959,10 +959,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -973,10 +973,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -987,10 +987,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -1210,12 +1210,12 @@
                         ng-model="newConstraint.component_1"
                         ng-options="component as component.position for component in datatype.components">
                 </select>
-        				<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
-        					<select name="subComponent" class="igl-input"
-                                    ng-model="newConstraint.subComponent_1"
-                                    ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_1.datatype.components">
-                            </select>
-    					</span>
+        		<span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
+        			<select name="subComponent" class="igl-input"
+                    	ng-model="newConstraint.subComponent_1"
+                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components">
+                    </select>
+    			</span>
             </td>
             <td class="col-md-2" colspan="1">
                 <select name="verb" class="igl-input"
@@ -1253,10 +1253,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -1267,10 +1267,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -1281,10 +1281,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -1295,10 +1295,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -1309,10 +1309,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -1323,10 +1323,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>
@@ -1337,10 +1337,10 @@
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
                             </select>
-        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
         						<select name="subComponent" class="igl-input"
                                         ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
     						</span>
                 		</span>

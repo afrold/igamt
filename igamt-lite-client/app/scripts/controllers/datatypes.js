@@ -1017,7 +1017,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                 	$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
                 }else if ($scope.constraintType === 'Complex'){
                 	var cp = {
                             id: new ObjectId().toString(),
@@ -1044,7 +1044,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1071,7 +1071,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1098,7 +1098,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1125,7 +1125,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1152,7 +1152,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1180,7 +1180,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1208,7 +1208,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1236,7 +1236,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1264,7 +1264,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1292,7 +1292,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1320,7 +1320,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1348,7 +1348,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1376,7 +1376,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1404,7 +1404,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1432,7 +1432,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1460,7 +1460,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1488,7 +1488,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             		$rootScope.datatype.predicates.push(cp);
                     $rootScope.datatypePredicates.push(cp);
                     var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
