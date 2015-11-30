@@ -896,9 +896,9 @@
                                     ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats">
                             </select>
                 		</span>
-                		<span ng-show="newConstraint.contraintType == 'identical to the another node'">
+						<span ng-show="newConstraint.contraintType == 'identical to the another node'">
                 			<span>{{newConstraint.datatype}}.</span>
-        					<select name="component" class="igl-input"
+                			<select name="component" class="igl-input"
                                     ng-change="updateComponent_2()"
                                     ng-model="newConstraint.component_2"
                                     ng-options="component as component.position for component in datatype.components">
@@ -909,6 +909,124 @@
                                         ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
                                 </select>
     						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'not-equal to the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'greater than the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to or greater than the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'less than the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to or less than the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'not-equal to'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'greater than'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to or greater than'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'less than'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to or less than'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
+                			<span>ValueSet ID: </span>
+							<select name="valueSetId" class="igl-input" ng-model="newConstraint.valueSetId">
+								<option ng-repeat="table in tables" value="{{table.bindingIdentifier}}">{{table.bindingIdentifier}}</option>
+                            </select>
+							<br/>
+							<span>BindingStrength: </span>
+							<select name="bindingStrength" class="igl-input" ng-model="newConstraint.bindingStrength">
+                            	<option value="R">R</option>
+      							<option value="S">S</option>
+								<option value="U">U</option>
+							</select>
+							<br/>
+							<span>BindingLocation: </span>
+							<input class="igl-input" ng-model="newConstraint.bindingLocation" type="text"/>
                 		</span>
             </td>
             <td class="col-md-1" colspan="1">
@@ -1142,6 +1260,125 @@
                                 </select>
     						</span>
                 		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'not-equal to the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'greater than the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to or greater than the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'less than the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to or less than the another node'">
+                			<span>{{newConstraint.datatype}}.</span>
+                			<select name="component" class="igl-input"
+                                    ng-change="updateComponent_2()"
+                                    ng-model="newConstraint.component_2"
+                                    ng-options="component as component.position for component in datatype.components">
+                            </select>
+        					<span ng-show="newConstraint.component_1.datatype.components.length > 0">.
+        						<select name="subComponent" class="igl-input"
+                                        ng-model="newConstraint.subComponent_2"
+                                        ng-options="subComponent as subComponent.position for subComponent in newConstraint.component_2.datatype.components">
+                                </select>
+    						</span>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'not-equal to'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'greater than'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to or greater than'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'less than'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'equal to or less than'">
+                			<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                		</span>
+						<span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
+                			<span>ValueSet ID: </span>
+							<select name="valueSetId" class="igl-input" ng-model="newConstraint.valueSetId">
+								<option ng-repeat="table in tables" value="{{table.bindingIdentifier}}">{{table.bindingIdentifier}}</option>
+                            </select>
+							<br/>
+							<span>BindingStrength: </span>
+							<select name="bindingStrength" class="igl-input" ng-model="newConstraint.bindingStrength">
+                            	<option value="R">R</option>
+      							<option value="S">S</option>
+								<option value="U">U</option>
+							</select>
+							<br/>
+							<span>BindingLocation: </span>
+							<input class="igl-input" ng-model="newConstraint.bindingLocation" type="text"/>
+                		</span>
+
             </td>
             <td class="col-md-1" colspan="1">
                 <button title="Add Conformance Statement" type="button" class="btn btn-xs btn-success"
