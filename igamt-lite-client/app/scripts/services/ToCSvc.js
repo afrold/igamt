@@ -7,7 +7,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 		toc.push(svc.getTopEntry("Datatypes", profile.datatypes));
 		toc.push(svc.getTopEntry("Segments", profile.segments));
 		toc.push(svc.getTopEntry("Messages", profile.messages));
-		toc.push(svc.getTopEntry("Value Sets", profile.tables));
+		toc.push(svc.getTopEntry("ValueSets", profile.tables));
 		return toc;
 	}
 	
@@ -40,6 +40,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 		var segments = {
 			"label" : label,
 			"drop" : label,
+			"reference" : fromProfile,
 			"children" : children
 		}
 		return segments;
@@ -49,24 +50,27 @@ angular.module('igl').factory ('ToCSvc', function() {
 	// where one of these entries can be dropped.  
 	svc.createEntries = function(drag, children) {
 		var rval = [];
-		var labels = _.pluck(children, "label");
-		if (drag === "Messages") {
-			labels = _.pluck(children, "messageType");
-		}
-		if (drag === "Value Sets") {
-			labels = _.pluck(children, "name");
-		}
-		_.each(labels, function(label){
-			var entry = svc.createEntry(label, drag);
+		var entry = {};
+		_.each(children, function(child){
+			if (drag === "Messages") {
+				entry = svc.createEntry(child, child.messageType, drag);
+			} else if (drag === "ValueSets") {
+				entry = svc.createEntry(child, child.name, drag);
+			} else {
+				entry = svc.createEntry(child, child.label, drag);
+			}
 			rval.push(entry);
 		});
 		return rval;
 	}
 	
-	svc.createEntry = function(label, drag, drop, children) {
+	svc.createEntry = function(reference, label, drag, drop, children) {
 		var rval = {
 			"label": label,
 		};
+		if (reference !== undefined) {
+			rval["reference"] = reference;
+		}
 		if (drag !== undefined) {
 			rval["drag"] = drag;
 		}

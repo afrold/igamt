@@ -1,5 +1,5 @@
 angular.module('igl')
-  .controller('ToCCtl', ['$scope', '$q', 'ToCSvc', 'ContextMenuSvc', function ($scope, $q, ToCSvc, ContextMenuSvc) {
+  .controller('ToCCtl', ['$scope', '$rootScope', '$q', 'ToCSvc', 'ContextMenuSvc', function ($scope, $rootScope, $q, ToCSvc, ContextMenuSvc) {
 	console.log("ToCCtl");
 	var ctl = this;
 	var drag = {};
@@ -39,17 +39,56 @@ angular.module('igl')
 		$scope.noDrop = false;
       	console.log("onDrop=" + JSON.stringify(member));
       };
+// FIXME gcr: Moving to expression on element.       
+//      $scope.toggleToCContents = function (node) {
+//          console.log("b collapsed[" + node + "]=" + $scope.collapsed[node]);
+//          $scope.collapsed[node] = !$scope.collapsed[node];
+//          console.log("a collapse[" + node + "]=" + $scope.collapsed[node]);
+//      };
       
-      $scope.toggleToCContents = function (node) {
-          console.log("b collapsed[" + node + "]=" + $scope.collapsed[node]);
-          $scope.collapsed[node] = !$scope.collapsed[node];
-          console.log("a collapse[" + node + "]=" + $scope.collapsed[node]);
-      };
-      
-      $scope.closedCtxMenu = function (node, $index) {
+    $scope.tocSelection = function (leaf) {
+		// TODO gcr: See about refactoring this to eliminate the switch.
+		// One could use leaf.reference.type to assemble the $emit string.
+    	// Doing so would require maintaining a sync with the ProfileListController.
+	    switch (leaf.drag) {
+	        case "Metadata":
+	        {
+	            $scope.selectMetaData();
+	            break;
+	        }
+	        case "Datatypes":
+	        {
+	        	$scope.$emit('event:openDatatype', leaf.reference);
+	            break;
+	        }
+	        case "Segments":
+	        {
+	        	$scope.$emit('event:openSegment', leaf.reference);
+	            break;
+	        }
+	        case "Messages":
+	        {
+	        	$scope.$emit('event:openMessage', leaf.reference);
+	            break;
+	        }
+	        case "ValueSets":
+	        {
+	        	$scope.$emit('event:openTable', leaf.reference);
+	            break;
+	        }
+	        default:
+	        {
+	            $scope.subview = "nts.html";
+	        }
+	    }
+	    return $scope.subview;
+    };      
+
+	$scope.closedCtxMenu = function (node, $index) {
           var item = ContextMenuSvc.get();
           switch (item) {
               case "Add":
+               	  console.log("Add==>");
 //				if (node === "Messages") {
 //					var hl7VersionsInstance;
 //					hl7VersionsInstance = $modal.open({
@@ -71,43 +110,48 @@ angular.module('igl')
 //				}
                   break;
               case "Delete":
-              	ProfileAccessSvc.
+            	  console.log("Delete==>");
               	break;
               default:
                   console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
           }
       };
 
-      $scope.closedCtxSubMenu = function (node, $index) {
-          var item = ContextMenuSvc.get();
-          switch (item) {
+      $scope.closedCtxSubMenu = function (leaf, $index) {
+          var ctxMenuSelection = ContextMenuSvc.get();
+          switch (ctxMenuSelection) {
               case "Add":
               {
-                  // not to be implemented at this time.
+               	  console.log("Add==> node=" + leaf);
+                 // not to be implemented at this time.
               }
               case "Clone":
               {
-                  var newNode = (JSON.parse(JSON.stringify(node)));
-                  newNode.id = null;
-
-                  // Nodes must have unique names so we timestamp when we duplicate.
-                  if (newNode.type === 'message') {
-                      newNode.messageType = newNode.messageType + "-" + $rootScope.profile.metaData.ext + "-" + timeStamp();
-                  }
-                  for (var i in $rootScope.profile.messages.children) {
-                      console.log($rootScope.profile.messages.children[i].messageType);
-                  }
-                  $rootScope.profile.messages.children.splice(2, 0, newNode);
-                  for (var i in $rootScope.profile.messages.children) {
-                      console.log($rootScope.profile.messages.children[i].messageType);
-                  }
+               	  console.log("Clone==> node=" + leaf);
+               	  CloneDeleteMessageSvc.cloneMessage(leaf, $index);
+// FIXME gcr: Moving to CloneDeleteMessageSvc.          	  
+//               	var newNode = (JSON.parse(JSON.stringify(node)));
+//                  newNode.id = null;
+//
+//                  // Nodes must have unique names so we timestamp when we duplicate.
+//                  if (newNode.type === 'message') {
+//                      newNode.messageType = newNode.messageType + "-" + $rootScope.profile.metaData.ext + "-" + timeStamp();
+//                  }
+//                  for (var i in $rootScope.profile.messages.children) {
+//                      console.log($rootScope.profile.messages.children[i].messageType);
+//                  }
+//                  $rootScope.profile.messages.children.splice(2, 0, newNode);
+//                  for (var i in $rootScope.profile.messages.children) {
+//                      console.log($rootScope.profile.messages.children[i].messageType);
+//                  }
                   break;
               }
               case "Delete":
-              	DeleteMessageSvc.deleteMessage($rootScope.profile, node);
+            	  console.log("Delete==> node=" + leaf);
+              	CloneDeleteMessageSvc.deleteMessage(leaf, $index);
               	break;
               default:
-                  console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
+            	  console.log("Context menu defaulted with " + ctxMenuSelection + " Should be Add, clone, or Delete.");
           }
       };
 

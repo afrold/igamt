@@ -4,7 +4,7 @@ angular.module('igl')
 // gcr: Parked temporarily.
 // template: "<ul><branch ng-repeat='branch in trunk' branch='branch'></branch></ul>",
 
-	  var template = "<div><branch ng-repeat='branch in trunk' branch='branch'></branch></div>";
+	  var template = "<div><branch ng-repeat='branch in trunk track by $index' branch='branch'></branch></div>";
 
   return {
       restrict: "E",
@@ -22,7 +22,7 @@ angular.module('igl')
 //	  var branchTemplate ="<div ng-class=\"{'yesyes':yesDrop, 'nono':noDrop}\"><li drop-container accepts='{{branch.drop}}' on-drag-enter='onEnter(branch)' on-drag-leave='onLeave(branch)' on-drop='onDrop(branch)'>{{branch.label}}</li></div>";
 //	  var leafTemplate = "<li drag-container accepts='{{branch.drop}}' on-drag-start='onStart(branch)' on-drag-stop='onStop(branch)' on-drag-enter='onEnter(branch)' on-drop='onDrop(branch)' mime-type='{{branch.drag}}'>{{branch.label}}</li>";
 	  var branchTemplate = "<div class='txt' ng-class=\"{'yesyes':yesDrop, 'nono':noDrop}\"" + 
-	  						"context-menu context-menu-close='closedCtxMenu(branch.label, $index)' data-target='headContextDiv.html'" + 
+	  							"context-menu context-menu-close='closedCtxMenu(branch.label, $index)' data-target='headContextDiv.html'" + 
 								"drop-container accepts='{{branch.drop}}'" + 
 								"on-drag-enter='onEnter(branch)' on-drag-leave='onLeave(branch)' on-drop='onDrop(branch)'>" +
 								"<a class='point' ng-show='branch.children && branch.children.length > 0'" +
@@ -30,7 +30,7 @@ angular.module('igl')
 								"<i class='fa' ng-class=\"{'fa-caret-right': collapsed[branch.label],'fa-caret-down': !collapsed[branch.label]}\"></i>" +
 								"<b>{{branch.label}}</b>" + 
 								"</a>" +
-								"<div collapse='collapsed[branch.label]' ng-show='!collapsed[branch.label]' class='panel-body'><leaf ng-repeat='leaf in branch.children' leaf='leaf'></leaf></div>" +
+								"<div collapse='collapsed[branch.label]' ng-show='!collapsed[branch.label]' class='panel-body'><leaf ng-repeat='leaf in branch.children track by $index' leaf='leaf'></leaf></div>" +
 								"</div>";
 //	  var leafMetadata = "<li drag-container accepts='{{branch.drop}}' on-drag-start='onStart(branch)' on-drag-stop='onStop(branch)' on-drag-enter='onEnter(branch)' on-drop='onDrop(branch)' mime-type='{{branch.drag}}'>{{branch.label}}</li>";
 //
@@ -81,7 +81,8 @@ angular.module('igl')
 	  var leafMessage = "<div class='sub-txt'" +
 	  						"context-menu context-menu-close='closedCtxSubMenu(leaf, $index)' data-target='messageContextDiv.html'" + 
 	  						"drag-container mime-type='{{leaf.drag}}'" + 
-	  						"on-drag-start='onStart(branch)' on-drag-stop='onStop(branch)' on-drag-enter='onEnter(branch)' on-drop='onDrop(branch)'>" +
+	  						"on-drag-start='onStart(leaf)' on-drag-stop='onStop(leaf)' on-drag-enter='onEnter(leaf)' on-drop='onDrop(leaf)'" + 
+	  						" ng-click='tocSelection(leaf)'>" +
 						    "<a class='point txt'>" +
 							"<span class='fa' ng-class=\"{'': !collapsed[leaf.label]}\">{{leaf.label}}</span>" +
 	      				    "</a>" +
@@ -89,7 +90,8 @@ angular.module('igl')
  
 	  var leafDefault = "<div class='sub-txt'" + 
 	  						"drag-container mime-type='{{leaf.drag}}'" + 
-	  						"on-drag-start='onStart(branch)' on-drag-stop='onStop(branch)' on-drag-enter='onEnter(branch)' on-drop='onDrop(branch)'>" +
+	  						"on-drag-start='onStart(leaf)' on-drag-stop='onStop(leaf)' on-drag-enter='onEnter(leaf)' on-drop='onDrop(leaf)'" + 
+	  						" ng-click='tocSelection(leaf)'>" +
 						    "<a class='point txt'>" +
 							"<span class='fa' ng-class=\"{'': !collapsed[leaf.label]}\">{{leaf.label}}</span>" +
 	      				    "</a>" +

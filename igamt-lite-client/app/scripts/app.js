@@ -26,7 +26,8 @@ var app = angular
         'textAngular',
         'ng-context-menu',
         'table-settings',
-        'angularjs-dropdown-multiselect'
+        'angularjs-dropdown-multiselect',
+        'filearts.dragDrop'
         ,
         'ngMockE2E'
     ]);

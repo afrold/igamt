@@ -2,17 +2,19 @@
 
 describe("delete message service", function () {
 	
-	var DeleteMessageSvc;
+	var CloneDeleteMessageSvc;
 	var ProfileAccessSvc;
+	var ToCSvc;
 	var $httpBackend;
 	var profileAsString;
 	var profile;
 	
 	beforeEach(function() {
 		module('igl');
-		inject(function (_DeleteMessageSvc_, _ProfileAccessSvc_, $injector, $rootScope, $controller) {
-			DeleteMessageSvc = _DeleteMessageSvc_;
+		inject(function (_CloneDeleteMessageSvc_, _ProfileAccessSvc_, _ToCSvc_, $injector, $rootScope, $controller) {
+			CloneDeleteMessageSvc = _CloneDeleteMessageSvc_;
 			ProfileAccessSvc = _ProfileAccessSvc_;
+			ToCSvc = _ToCSvc_;
 			$httpBackend = $injector.get('$httpBackend');
 			 
 // Don't ask me why, but the following fixtures path MUST have "base/" prepended or it won't work.
@@ -30,6 +32,11 @@ describe("delete message service", function () {
 		// We want a pristine profile for each test so state changes from one test don't pollute
 		// the others.
 		profile = JSON.parse(profileAsString);
+	});
+	
+	it("Can we clone a message?", function() {
+		var toc = ToCSvc.getToC(profile);
+		CloneDeleteMessageSvc.cloneMessage(profile);
 	});
 	
 	it("Can we delete a message?", function () {
