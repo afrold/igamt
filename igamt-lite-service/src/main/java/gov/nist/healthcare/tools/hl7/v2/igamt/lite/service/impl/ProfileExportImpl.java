@@ -42,6 +42,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +55,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 
 import nu.xom.Builder;
 import nu.xom.Nodes;
@@ -70,11 +75,37 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.docx4j.jaxb.Context;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.openpackaging.exceptions.InvalidFormatException;
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.relationships.Namespaces;
+import org.docx4j.wml.BooleanDefaultTrue;
+import org.docx4j.wml.Br;
+import org.docx4j.wml.CTBorder;
+import org.docx4j.wml.CTTblLayoutType;
+import org.docx4j.wml.FldChar;
+import org.docx4j.wml.ObjectFactory;
+import org.docx4j.wml.P;
+import org.docx4j.wml.R;
+import org.docx4j.wml.STBorder;
+import org.docx4j.wml.STBrType;
+import org.docx4j.wml.STFldCharType;
+import org.docx4j.wml.STTblLayoutType;
+import org.docx4j.wml.Tbl;
+import org.docx4j.wml.TblBorders;
+import org.docx4j.wml.TblPr;
+import org.docx4j.wml.TblWidth;
+import org.docx4j.wml.Tc;
+import org.docx4j.wml.TcPr;
+import org.docx4j.wml.Text;
+import org.docx4j.wml.Tr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -85,7 +116,9 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.Section;
 import com.itextpdf.text.html.WebColors;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfImportedPage;
@@ -221,8 +254,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			// Adding segments 
 			for (Segment s: p.getSegments().getChildren()) {
 				rows = new ArrayList<List<String>>();
-				header = Arrays.asList("Segment", "Name", "DT", "STD\nUsage",
-						"Local\nUsage", "STD\nCard.", "Local\nCard.", "Len",
+				header = Arrays.asList("Segment", "Name", "DT", "Usage",
+						"Card.", "Len",
 						"Value set", "Comment");
 				sheetName = "SGT_"+s.getLabel();
 				if (sheetNames.contains(sheetName)){
@@ -503,28 +536,39 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			igDocument.setMargins(36f, 36f, 46f, 46f); // 72pt = 1 inch
 			igDocument.open();
 
+			Paragraph title = null;
+			Chapter chapter = null;
+			Section section = null;
+
 			/*
 			 * Adding messages definition
 			 */
-			tocDocument.add(new Paragraph("Messages definition", titleFont));
+			tocDocument.add(new Paragraph("Messages infrastructure", titleFont));
 			tocDocument.add(Chunk.NEWLINE);
 
-			igDocument.add(new Paragraph("Messages definition", titleFont));
+			chapter = new Chapter(new Paragraph("Messages infrastructure", titleFont), 1);
+			igDocument.add(chapter);
 			igDocument.add(Chunk.NEWLINE);
-			for (Message m : p.getMessages().getChildren()) {
 
-				this.addTocContent(tocDocument, igWriter, m.getStructID()
-						+ " - " + m.getDescription());
 
-				igDocument.add(Chunk.NEWLINE);
-				igDocument.add(new Paragraph("Message definition: "));
-				igDocument.add(new Paragraph(m.getStructID() + " - "
-						+ m.getDescription()));
-				igDocument.add(Chunk.NEWLINE);
+			List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
+			Collections.sort(messagesList);
 
-				header = Arrays.asList("Segment", "STD\nUsage", "Local\nUsage",
-						"STD\nCard.", "Local\nCard.", "Comment");
-				columnWidths = new float[] { 4f, 3f, 3f, 2f, 2f, 8f };
+			for (Message m : messagesList) {
+				String messageInfo = m.getMessageType() + "^"
+						+ m.getEvent() + "^" + m.getStructID() + " - " + m.getDescription();
+
+				this.addTocContent(tocDocument, igWriter, messageInfo);
+
+				title = new Paragraph("Message definition: "+ messageInfo, titleFont);
+				section = chapter.addSection(title);
+				section.setIndentationLeft(30);
+				section.setTriggerNewPage(true);
+
+				section.add(Chunk.NEWLINE);
+
+				header = Arrays.asList("Segment", "Usage", "Card.", "Comment");
+				columnWidths = new float[] { 4f, 3f, 2f, 8f };
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerColor);
 
@@ -534,56 +578,68 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 				for (SegmentRefOrGroup srog : segRefOrGroups) {
 					if (srog instanceof SegmentRef) {
-						this.addSegmentPdf1(rows, (SegmentRef) srog, 0,
+						this.addSegmentPdfMsgInfra(rows, (SegmentRef) srog, 0,
 								p.getSegments());
 					} else if (srog instanceof Group) {
-						this.addGroupPdf1(rows, (Group) srog, 0,
+						this.addGroupPdfMsgInfra(rows, (Group) srog, 0,
 								p.getSegments(), p.getDatatypes());
 					}
 				}
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
-				igDocument.add(table);
+				section.add(table);
+				igDocument.add(section);
 			}
 
 			/*
 			 * Adding segments details
 			 */
-			for (Message m : p.getMessages().getChildren()) {
-				igDocument.newPage();
+			tocDocument.add(Chunk.NEWLINE);
+			tocDocument.add(new Paragraph("Segments definitions", titleFont));
+			tocDocument.add(Chunk.NEWLINE);
 
-				tocDocument.add(Chunk.NEWLINE);
-				tocDocument
-				.add(new Paragraph("Segments definition " + m.getStructID(), titleFont));
-				tocDocument.add(Chunk.NEWLINE);
+			title = new Paragraph("Segments definitions", titleFont);
+			chapter = new Chapter(title, 2);
 
-				igDocument.add(new Paragraph("Segments definition", titleFont));
-				igDocument.add(Chunk.NEWLINE);
+			for (Message m : messagesList) {
+				//				igDocument.newPage();
+				//				igDocument.add(new Paragraph("Segments definitions", titleFont));
+				//				igDocument.add(Chunk.NEWLINE);
+
+				String messageInfo = m.getMessageType() + "^"
+						+ m.getEvent() + "^" + m.getStructID() + " - " + m.getDescription();
+				this.addTocContent(tocDocument, igWriter, messageInfo);
+				Section section1 = chapter.addSection(new Paragraph(messageInfo, titleFont));
+
+				//				igDocument.add(new Paragraph(messageInfo + " segments details", titleFont));
+
 				header = Arrays.asList("Seq", "Element Name", "DT",
-						"STD\nUsage", "Local\nUsage", "Std\nCard.",
-						"Local\nCard.", "Len", "Value\nSet", "Comment");
-				columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 1.5f,
+						"Usage", "Card.", "Len", "Value\nSet", "Comment");
+				columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 
 						1.5f, 1.5f, 2f, 6f };
 
 				for (SegmentRefOrGroup srog : m.getChildren()) {
 					table = this.addHeaderPdfTable(header, columnWidths,
 							headerFont, headerColor);
-					rows = new ArrayList<List<String>>();
+					//					rows = new ArrayList<List<String>>();
 					if (srog instanceof SegmentRef) {
-						this.addSegmentPdf2(igDocument, igWriter, tocDocument,
+						this.addSegmentPdfMsgDetails(igDocument, igWriter, tocDocument,
 								header, columnWidths, (SegmentRef) srog,
 								headerFont, headerColor, cellFont, cpColor,
 								p.getSegments(), p.getDatatypes(),
-								p.getTables());
+								p.getTables(), section1);
 
 					} else if (srog instanceof Group) {
-						this.addGroupPdf2(igDocument, igWriter, tocDocument,
+						this.addGroupPdfMsgDetails(igDocument, igWriter, tocDocument,
 								header, columnWidths, (Group) srog, headerFont,
 								headerColor, cellFont, cpColor,
 								p.getSegments(), p.getDatatypes(),
-								p.getTables());
+								p.getTables(), section1);
 					}
 				}
 			}
+			igDocument.add(chapter);
+			igDocument.add(Chunk.NEWLINE);
+
 
 			/*
 			 * Adding datatypes
@@ -720,284 +776,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			dict.get(key).add(value);
 		}
 	}
-
-	// public Map<String, List<String>> compareMetadata(ProfileMetaData m1,
-	// ProfileMetaData m2){
-	// Map<String, List<String>> rst = new HashMap<String, List<String>>();
-	//
-	// m1.getHl7Version()
-	// m1.getIdentifier()
-	// m1.getName()
-	// m1.getOrgName();
-	// m1.getSchemaVersion();
-	// m1.getStatus();
-	// m1.getTopics();
-	// m1.getType();
-	// m1.getDate();
-	// m1.getSubTitle();
-	// m1.getVersion();
-	//
-	//
-	// return rst;
-	// }
-	//
-	// @Override
-	// public InputStream compare(Profile p, Profile p2) {
-	//
-	// List<String> header;
-	// PdfPTable table;
-	// float columnWidths[];
-	// List<List<String>> rows;
-	//
-	//
-	// try {
-	// paragraph = new Paragraph(p.getMetaData().getSubTitle(),
-	// coverH2Font);
-	// paragraph.setAlignment(Element.ALIGN_CENTER);
-	// coverDocument.add(paragraph);
-	// paragraph = new Paragraph(
-	// "HL7 v" + p.getMetaData().getHl7Version(), coverH2Font);
-	// paragraph.setAlignment(Element.ALIGN_CENTER);
-	// paragraph.setSpacingAfter(250);
-	// coverDocument.add(paragraph);
-	//
-	// paragraph = new Paragraph();
-	// paragraph.add(new Chunk(p.getMetaData().getOrgName(), coverH2Font));
-	// paragraph.add(Chunk.NEWLINE);
-	// paragraph.add(new Phrase("Document Version "
-	// + p.getMetaData().getVersion(), coverH2Font));
-	// paragraph.add(Chunk.NEWLINE);
-	// paragraph.add(new Phrase("Status : " + p.getMetaData().getStatus(),
-	// coverH2Font));
-	// paragraph.add(Chunk.NEWLINE);
-	// paragraph.add(new Chunk(p.getMetaData().getDate(), coverH2Font));
-	// paragraph.setAlignment(Element.ALIGN_CENTER);
-	// coverDocument.add(paragraph);
-	//
-	// coverDocument.close();
-	//
-	// /*
-	// * Initiate table of content
-	// */
-	// ByteArrayOutputStream tocTmpBaos = new ByteArrayOutputStream();
-	// Document tocDocument = new Document(PageSize.A4);
-	// @SuppressWarnings("unused")
-	// PdfWriter tocWriter = PdfWriter
-	// .getInstance(tocDocument, tocTmpBaos);
-	// tocDocument.open();
-	// tocDocument.add(new Paragraph("Table of contents", tocTitleFont));
-	// tocDocument.add(Chunk.NEWLINE);
-	//
-	// tocPlaceholder = new HashMap<>();
-	// pageByTitle = new HashMap<>();
-	//
-	// /*
-	// * Initiate implementation guide
-	// */
-	// ByteArrayOutputStream igTmpBaos = new ByteArrayOutputStream();
-	// Document igDocument = new Document();
-	// PdfWriter igWriter = PdfWriter.getInstance(igDocument, igTmpBaos);
-	// igWriter.setPageEvent(this);
-	//
-	// igDocument.setPageSize(PageSize.A4);
-	// igDocument.setMargins(36f, 36f, 36f, 36f); // 72pt = 1 inch
-	// igDocument.open();
-	//
-	// /*
-	// * Adding messages definition
-	// */
-	// tocDocument.add(new Paragraph("Messages definition", titleFont));
-	// tocDocument.add(Chunk.NEWLINE);
-	//
-	// igDocument.add(new Paragraph("Messages definition", titleFont));
-	// igDocument.add(Chunk.NEWLINE);
-	// for (Message m : p.getMessages().getChildren()) {
-	//
-	// this.addTocContent(tocDocument, igWriter, m.getStructID()
-	// + " - " + m.getDescription());
-	//
-	// igDocument.add(new Paragraph("Message definition: "));
-	// igDocument.add(new Paragraph(m.getStructID() + " - "
-	// + m.getDescription()));
-	// igDocument.add(Chunk.NEWLINE);
-	//
-	// header = Arrays.asList("Segment", "STD\nUsage", "Local\nUsage",
-	// "STD\nCard.", "Local\nCard.", "Comment");
-	// columnWidths = new float[] { 4f, 3f, 3f, 2f, 2f, 8f };
-	// table = this.addHeaderPdfTable(header, columnWidths,
-	// headerFont, headerColor);
-	//
-	// rows = new ArrayList<List<String>>();
-	//
-	// List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
-	//
-	// for (SegmentRefOrGroup srog : segRefOrGroups) {
-	// if (srog instanceof SegmentRef) {
-	// this.addSegmentPdf1(rows, (SegmentRef) srog, 0,
-	// p.getSegments());
-	// } else if (srog instanceof Group) {
-	// this.addGroupPdf1(rows, (Group) srog, 0,
-	// p.getSegments(), p.getDatatypes());
-	// }
-	// }
-	// this.addCellsPdfTable(table, rows, cellFont, cpColor);
-	// igDocument.add(table);
-	// }
-	//
-	// /*
-	// * Adding segments details
-	// */
-	// for (Message m : p.getMessages().getChildren()) {
-	// igDocument.newPage();
-	//
-	// tocDocument.add(Chunk.NEWLINE);
-	// tocDocument
-	// .add(new Paragraph("Segments definition", titleFont));
-	// tocDocument.add(Chunk.NEWLINE);
-	//
-	// igDocument.add(new Paragraph("Segments definition", titleFont));
-	// igDocument.add(Chunk.NEWLINE);
-	// header = Arrays.asList("Seq", "Element Name", "DT",
-	// "STD\nUsage", "Local\nUsage", "Std\nCard.",
-	// "Local\nCard.", "Len", "Value\nSet", "Comment");
-	// columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 1.5f,
-	// 1.5f, 1.5f, 2f, 6f };
-	//
-	// for (SegmentRefOrGroup srog : m.getChildren()) {
-	// table = this.addHeaderPdfTable(header, columnWidths,
-	// headerFont, headerColor);
-	// rows = new ArrayList<List<String>>();
-	// if (srog instanceof SegmentRef) {
-	// this.addSegmentPdf2(igDocument, igWriter, tocDocument,
-	// header, columnWidths, (SegmentRef) srog,
-	// headerFont, headerColor, cellFont, cpColor,
-	// p.getSegments(), p.getDatatypes(),
-	// p.getTables());
-	//
-	// } else if (srog instanceof Group) {
-	// this.addGroupPdf2(igDocument, igWriter, tocDocument,
-	// header, columnWidths, (Group) srog, headerFont,
-	// headerColor, cellFont, cpColor,
-	// p.getSegments(), p.getDatatypes(),
-	// p.getTables());
-	// }
-	// }
-	// }
-	//
-	// /*
-	// * Adding datatypes
-	// */
-	// igDocument.add(new Paragraph("Datatypes", titleFont));
-	// igDocument.add(Chunk.NEWLINE);
-	//
-	// tocDocument.add(Chunk.NEWLINE);
-	// tocDocument.add(new Paragraph("Datatypes", titleFont));
-	// tocDocument.add(Chunk.NEWLINE);
-	//
-	// header = Arrays.asList("Seq", "Element Name", "Conf length", "DT",
-	// "Usage", "Len", "Table", "Comment");
-	// columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 2f, 2f, 6f };
-	//
-	// for (Datatype d : p.getDatatypes().getChildren()) {
-	// if (d.getLabel().contains("_")) {
-	//
-	// this.addTocContent(tocDocument, igWriter, d.getLabel()
-	// + " - " + d.getDescription());
-	//
-	// igDocument.add(new Paragraph(d.getLabel() + " - "
-	// + d.getDescription() + " Datatype"));
-	// igDocument.add(new Paragraph(d.getComment()));
-	//
-	// table = this.addHeaderPdfTable(header, columnWidths,
-	// headerFont, headerColor);
-	// rows = new ArrayList<List<String>>();
-	// this.addComponentPdf2(rows, d, p.getDatatypes(),
-	// p.getTables());
-	// this.addCellsPdfTable(table, rows, cellFont, cpColor);
-	// igDocument.add(Chunk.NEWLINE);
-	// igDocument.add(table);
-	// igDocument.add(Chunk.NEWLINE);
-	// }
-	// }
-	//
-	// /*
-	// * Adding value sets
-	// */
-	// igDocument.add(new Paragraph("Value Sets", titleFont));
-	// igDocument.add(Chunk.NEWLINE);
-	//
-	// tocDocument.add(Chunk.NEWLINE);
-	// tocDocument.add(new Paragraph("Value Sets", titleFont));
-	// tocDocument.add(Chunk.NEWLINE);
-	//
-	// header = Arrays.asList("Value", "Description");
-	//
-	// columnWidths = new float[] { 2f, 6f };
-	//
-	// List<Table> tables = new ArrayList<Table>(p.getTables()
-	// .getChildren());
-	// Collections.sort(tables);
-	//
-	// for (Table t : tables) {
-	//
-	// this.addTocContent(tocDocument, igWriter, t.getMappingId()
-	// + " : " + t.getName());
-	//
-	// igDocument.add(new Paragraph("Table " + t.getMappingId()
-	// + " : " + t.getName()));
-	//
-	// table = this.addHeaderPdfTable(header, columnWidths,
-	// headerFont, headerColor);
-	// rows = new ArrayList<List<String>>();
-	// this.addCodesPdf2(rows, t);
-	// this.addCellsPdfTable(table, rows, cellFont, cpColor);
-	// igDocument.add(Chunk.NEWLINE);
-	// igDocument.add(table);
-	// igDocument.add(Chunk.NEWLINE);
-	// }
-	//
-	// igDocument.close();
-	// tocDocument.close();
-	//
-	// /*
-	// * Second pass: Add footers
-	// */
-	// ByteArrayOutputStream igBaos = this.addPageNumber(igTmpBaos, "ig",
-	// p.getMetaData().getName());
-	// ByteArrayOutputStream tocBaos = this.addPageNumber(tocTmpBaos,
-	// "toc", p.getMetaData().getName());
-	//
-	// /*
-	// * Third pass: Merge
-	// */
-	// List<byte[]> list = new ArrayList<byte[]>();
-	// list.add(coverBaos.toByteArray());
-	// list.add(tocBaos.toByteArray());
-	// list.add(igBaos.toByteArray());
-	//
-	// ByteArrayOutputStream igFinalBaos = new ByteArrayOutputStream();
-	// Document igFinalDocument = new Document();
-	// PdfWriter igFinalWriter = PdfWriter.getInstance(igFinalDocument,
-	// igFinalBaos);
-	// igFinalDocument.open();
-	// PdfContentByte cb = igFinalWriter.getDirectContent();
-	// for (byte[] in : list) {
-	// PdfReader readerf = new PdfReader(in);
-	// for (int i = 1; i <= readerf.getNumberOfPages(); i++) {
-	// igFinalDocument.newPage();
-	// PdfImportedPage page = igFinalWriter.getImportedPage(
-	// readerf, i);
-	// cb.addTemplate(page, 0, 0);
-	// }
-	// }
-	// igFinalDocument.close();
-	//
-	// return new ByteArrayInputStream(igFinalBaos.toByteArray());
-	// } catch (DocumentException | IOException e) {
-	// e.printStackTrace();
-	// return new NullInputStream(1L);
-	// }
-	// }
 
 	@Override
 	public void onChapter(PdfWriter writer, Document document,
@@ -1151,16 +929,15 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		}
 	}
 
-	private void addGroupPdf1(List<List<String>> rows, Group g, Integer depth,
+	private void addGroupPdfMsgInfra(List<List<String>> rows, Group g, Integer depth,
 			Segments segments, Datatypes datatypes) {
 		String indent = StringUtils.repeat(" ", 2 * depth);
 
 		List<String> row = Arrays.asList(
 				indent + "[",
 				g.getUsage().value(),
-				"",
 				"[" + String.valueOf(g.getMin()) + ".."
-						+ String.valueOf(g.getMax()) + "]", "",
+						+ String.valueOf(g.getMax()) + "]", 
 						"BEGIN " + g.getName() + " GROUP");
 		rows.add(row);
 
@@ -1168,58 +945,61 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		Collections.sort(segsOrGroups);
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
-				this.addSegmentPdf1(rows, (SegmentRef) srog, depth + 1,
+				this.addSegmentPdfMsgInfra(rows, (SegmentRef) srog, depth + 1,
 						segments);
 			} else if (srog instanceof Group) {
-				this.addGroupPdf1(rows, (Group) srog, depth + 1, segments,
+				this.addGroupPdfMsgInfra(rows, (Group) srog, depth + 1, segments,
 						datatypes);
 			}
 		}
 
-		row = Arrays.asList(indent + "]", "", "", "", "", "END " + g.getName()
+		row = Arrays.asList(indent + "]", 
+				"", 
+				"", 
+				"END " + g.getName()
 				+ " GROUP");
 		rows.add(row);
 	}
 
-	private void addGroupPdf2(Document igDocument, PdfWriter igWriter,
+	private void addSegmentPdfMsgInfra(List<List<String>> rows, SegmentRef s,
+			Integer depth, Segments segments) {
+		String indent = StringUtils.repeat(" ", 4 * depth);
+		Segment segment = segments.findOneSegmentById(s.getRef());
+		List<String> row = Arrays.asList(indent + segment.getName(), 
+				s.getUsage().value(), 
+				"[" + String.valueOf(s.getMin())
+				+ ".." + String.valueOf(s.getMax()) + "]", 
+				segment.getComment() == null ? "" : segment.getComment());
+		rows.add(row);
+	}
+
+	private void addGroupPdfMsgDetails(Document igDocument, PdfWriter igWriter,
 			Document tocDocument, List<String> header, float[] columnWidths,
 			Group g, Font headerFont, BaseColor headerColor, Font cellFont,
 			BaseColor cpColor, Segments segments, Datatypes datatypes,
-			Tables tables) throws DocumentException {
+			Tables tables, Section section) throws DocumentException {
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
 		Collections.sort(segsOrGroups);
 		for (SegmentRefOrGroup srog : segsOrGroups) {
 			if (srog instanceof SegmentRef) {
-				this.addSegmentPdf2(igDocument, igWriter, tocDocument, header,
+				this.addSegmentPdfMsgDetails(igDocument, igWriter, tocDocument, header,
 						columnWidths, (SegmentRef) srog, headerFont,
 						headerColor, cellFont, cpColor, segments, datatypes,
-						tables);
+						tables, section);
 			} else if (srog instanceof Group) {
-				this.addGroupPdf2(igDocument, igWriter, tocDocument, header,
+				this.addGroupPdfMsgDetails(igDocument, igWriter, tocDocument, header,
 						columnWidths, (Group) srog, headerFont, headerColor,
-						cellFont, cpColor, segments, datatypes, tables);
+						cellFont, cpColor, segments, datatypes, tables, section);
 			}
 		}
 	}
 
-
-	private void addSegmentPdf1(List<List<String>> rows, SegmentRef s,
-			Integer depth, Segments segments) {
-		String indent = StringUtils.repeat(" ", 4 * depth);
-		Segment segment = segments.findOneSegmentById(s.getRef());
-		List<String> row = Arrays.asList(indent + segment.getName(), s
-				.getUsage().value(), "", "[" + String.valueOf(s.getMin())
-				+ ".." + String.valueOf(s.getMax()) + "]", "", segment
-				.getComment() == null ? "" : segment.getComment());
-		rows.add(row);
-	}
-
-	private void addSegmentPdf2(Document igDocument, PdfWriter igWriter,
+	private void addSegmentPdfMsgDetails(Document igDocument, PdfWriter igWriter,
 			Document tocDocument, List<String> header, float[] columnWidths,
 			SegmentRef segRef, Font headerFont, BaseColor headerColor,
 			Font cellFont, BaseColor cpColor, Segments segments,
-			Datatypes datatypes, Tables tables) throws DocumentException {
+			Datatypes datatypes, Tables tables, Section section) throws DocumentException {
 
 		PdfPTable table = this.addHeaderPdfTable(header, columnWidths,
 				headerFont, headerColor);
@@ -1228,18 +1008,18 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		Segment s = segments.findOneSegmentById(segRef.getRef());
 
 		this.addTocContent(tocDocument, igWriter,
-				s.getName() + " - " + s.getDescription());
+				"   + " + s.getName() + " - " + s.getDescription() + " Segment");
 
-		igDocument.add(new Paragraph(s.getName() + ": " + s.getDescription()
+		Section section1 = section.addSection(new Paragraph(s.getName() + ": " + s.getDescription()
 				+ " Segment"));
-		igDocument.add(Chunk.NEWLINE);
-		igDocument.add(new Paragraph(s.getText1()));
+		section1.add(Chunk.NEWLINE);
+		section1.add(new Paragraph(s.getText1()));
 		this.addFields(rows, s, Boolean.TRUE, datatypes, tables);
 		this.addCellsPdfTable(table, rows, cellFont, cpColor);
-		igDocument.add(table);
-		igDocument.add(Chunk.NEWLINE);
-		igDocument.add(new Paragraph(s.getText2()));
-		igDocument.add(Chunk.NEWLINE);
+		section1.add(table);
+		section1.add(Chunk.NEWLINE);
+		section1.add(new Paragraph(s.getText2()));
+		section1.add(Chunk.NEWLINE);
 
 		List<Field> fieldsList = s.getFields();
 		Collections.sort(fieldsList);
@@ -1247,18 +1027,65 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			if (f.getText() != null && f.getText().length() != 0) {
 				Font fontbold = FontFactory.getFont("Times-Roman", 12,
 						Font.BOLD);
-				igDocument.add(new Paragraph(s.getName() + "-"
+				section1.add(new Paragraph(s.getName() + "-"
 						+ f.getItemNo().replaceFirst("^0+(?!$)", "") + " "
 						+ f.getName() + " ("
 						+ datatypes.findOne(f.getDatatype()).getLabel() + ")",
 						fontbold));
-				igDocument.add(new Paragraph(f.getText()));
+				section1.add(new Paragraph(f.getText()));
 			}
 		}
-		igDocument.newPage();
-
+		section1.add(Chunk.NEWLINE);
+		section1.newPage();
 	}
 
+	private void addSegmentMsgInfra(List<List<String>> rows, SegmentRef s,
+			Integer depth, Segments segments) {
+		String indent = StringUtils.repeat(".", 4 * depth);
+		Segment segment = segments.findOneSegmentById(s.getRef());
+		List<String> row = Arrays.asList(indent + segment.getName(), 
+				segment.getLabel().equals(segment.getName())?"":segment.getLabel(), 
+						s.getUsage().value(), 
+						//						"", 
+						"[" + String.valueOf(s.getMin())
+						+ ".." + String.valueOf(s.getMax()) + "]", 
+						//						"", 
+						segment.getComment() == null ? "" : segment.getComment());
+		rows.add(row);
+	}
+
+
+	private void addGroupMsgInfra(List<List<String>> rows, Group g, Integer depth,
+			Segments segments, Datatypes datatypes) {
+		String indent = StringUtils.repeat(".", 2 * depth);
+
+		List<String> row = Arrays.asList(
+				indent + "[", "",
+				g.getUsage().value(),
+				"[" + String.valueOf(g.getMin()) + ".."
+				+ String.valueOf(g.getMax()) + "]", 
+				"BEGIN " + g.getName() + " GROUP");
+		rows.add(row);
+
+		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
+		Collections.sort(segsOrGroups);
+		for (SegmentRefOrGroup srog : segsOrGroups) {
+			if (srog instanceof SegmentRef) {
+				this.addSegmentMsgInfra(rows, (SegmentRef) srog, depth + 1,
+						segments);
+			} else if (srog instanceof Group) {
+				this.addGroupMsgInfra(rows, (Group) srog, depth + 1, segments,
+						datatypes);
+			}
+		}
+		row = Arrays.asList(indent + "]",
+				"", 
+				"", 
+				"", 
+				"END " + g.getName()
+				+ " GROUP");
+		rows.add(row);
+	}
 	private List<Constraint> findConstraints(Integer target,
 			List<Predicate> predicates,
 			List<ConformanceStatement> conformanceStatements) {
@@ -1300,14 +1127,14 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 						c.getPosition().toString(),
 						c.getName(),
 						c.getConfLength(),
-						datatypes.findOne(c.getDatatype()).getLabel(),
+						c.getDatatype() == null || datatypes.findOne(c.getDatatype()).getLabel() == null ? 
+								"" : datatypes.findOne(c.getDatatype()).getLabel(),
 						c.getUsage().value(),
-						"[" + String.valueOf(c.getMinLength()) + ","
+						"[" + String.valueOf(c.getMinLength()) + ".."
 								+ String.valueOf(c.getMaxLength()) + "]",
-								(c.getTable() == null | tables.findOneTableById(c.getTable()) == null ?
-										"" : tables.findOneTableById(c.getTable()).getName()),
-								
-												c.getComment());
+								(c.getTable() == null || tables.findOneTableById(c.getTable()) == null ?
+										"" : tables.findOneTableById(c.getTable()).getBindingIdentifier()),
+										c.getComment());
 				rows.add(row);
 				List<Constraint> constraints = this.findConstraints(
 						componentsList.indexOf(c) + 1, predicates,
@@ -1344,16 +1171,14 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					// f.getItemNo().replaceFirst("^0+(?!$)", ""),
 					String.valueOf(f.getPosition()),
 					f.getName(),
-					f.getDatatype() == null ? "NULL":f.getDatatype(), //datatypes.findOne(f.getDatatype()).getLabel(),
+					f.getDatatype() == null ? "":datatypes.findOne(f.getDatatype()).getLabel(),
 							f.getUsage().value(),
-							"",
 							"[" + String.valueOf(f.getMin()) + ".."
 									+ String.valueOf(f.getMax()) + "]",
-									"",
 									"[" + String.valueOf(f.getMinLength()) + ".."
 											+ String.valueOf(f.getMaxLength()) + "]",
 											(f.getTable() == null || tables.findOneTableById(f.getTable()) == null ?
-													"" : tables.findOneTableById(f.getTable()).getName()), 
+													"" : tables.findOneTableById(f.getTable()).getBindingIdentifier()), 
 													f.getComment() == null ? "" : f.getComment());
 			rows.add(row);
 
@@ -1408,5 +1233,306 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			return o1.get(0).compareTo(o2.get(0));
 		}
 	};
+
+	@SuppressWarnings("deprecation")
+	public Paragraph richTextToParagraph(String htmlString){
+		List<Element> p = new ArrayList<Element>();
+		StringReader strReader = new StringReader(htmlString);
+		try {
+			p = HTMLWorker.parseToList(strReader, null);
+			Paragraph paragraph=new Paragraph();
+			for (int k = 0; k < p.size(); ++k){
+				paragraph.add((Element) p.get(k));
+			}
+			return paragraph;
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+
+	public InputStream exportAsDocx(Profile p, String inlineConstraints) {
+		// Note: inlineConstraint can be true or false
+		
+		WordprocessingMLPackage wordMLPackage;
+		try {
+			wordMLPackage = WordprocessingMLPackage.createPackage();
+		} catch (InvalidFormatException e1) {
+			e1.printStackTrace();
+			return new NullInputStream(1L);
+		}
+
+		ObjectFactory factory = Context.getWmlObjectFactory();   
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title", p.getMetaData().getName());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Subtitle " + p.getMetaData().getSubTitle());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Organization name " + p.getMetaData().getOrgName());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "HL7 Version " + p.getMetaData().getHl7Version());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Document Version "
+				+ p.getMetaData().getVersion());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Status : " + p.getMetaData().getStatus());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", p.getMetaData().getDate());
+
+		addPageBreak(wordMLPackage, factory);
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Index");
+		P paragraphForTOC = factory.createP();		       
+		R r = factory.createR();
+
+		FldChar fldchar = factory.createFldChar();
+		fldchar.setFldCharType(STFldCharType.BEGIN);
+		fldchar.setDirty(true);
+		r.getContent().add(getWrappedFldChar(fldchar));
+		paragraphForTOC.getContent().add(r);
+
+		R r1 = factory.createR();
+		Text txt = new Text();
+		txt.setSpace("preserve");
+		txt.setValue("TOC \\o \"1-3\" \\h \\z \\u \\h");
+		r.getContent().add(factory.createRInstrText(txt) );
+		paragraphForTOC.getContent().add(r1);
+
+		FldChar fldcharend = factory.createFldChar();
+		fldcharend.setFldCharType(STFldCharType.END);
+		R r2 = factory.createR();
+		r2.getContent().add(getWrappedFldChar(fldcharend));
+		paragraphForTOC.getContent().add(r2);
+
+		wordMLPackage.getMainDocumentPart().getContent().add(paragraphForTOC);
+		addPageBreak(wordMLPackage, factory);
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Messages");
+
+		List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
+		Collections.sort(messagesList);
+		for (Message m : messagesList) {
+			String messageInfo = m.getMessageType() + "^"
+					+ m.getEvent() + "^" + m.getStructID() + " - " + m.getDescription();
+
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+					messageInfo);
+
+			List<String> header = Arrays.asList("Segment", "Flavor", "Usage",
+					"Card.", "Comment");
+			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 3000);
+
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+
+			List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
+
+			for (SegmentRefOrGroup srog : segRefOrGroups) {
+				if (srog instanceof SegmentRef) {
+					this.addSegmentMsgInfra(rows, (SegmentRef) srog, 0,
+							p.getSegments());
+				} else if (srog instanceof Group) {
+					this.addGroupMsgInfra(rows, (Group) srog, 0,
+							p.getSegments(), p.getDatatypes());
+				}
+			}
+
+			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			addPageBreak(wordMLPackage, factory);
+		}
+
+		List<Segment> segmentsList = new ArrayList<Segment>(p.getSegments().getChildren());
+		Collections.sort(segmentsList);
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Segments library");
+
+		for (Segment s: segmentsList){
+			String segmentInfo = s.getLabel() + " - " + s.getDescription();
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+					segmentInfo);
+
+			List<String> header = Arrays.asList("Seq", "Element Name", "DT",
+					"Usage", "Card.", "Len", "Value\nSet", "Comment");
+
+			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 1000, 1000, 1000, 3000);
+
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+
+			// Add segment info
+			wordMLPackage.getMainDocumentPart().addParagraphOfText(s.getText1());
+			this.addFields(rows, s, Boolean.TRUE, p.getDatatypes(), p.getTables());
+			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			wordMLPackage.getMainDocumentPart().addParagraphOfText(s.getText2());
+
+			// Add field texts
+			List<Field> fieldsList = s.getFields();
+			Collections.sort(fieldsList);
+			for (Field f : fieldsList) {
+				if (f.getText() != null && f.getText().length() != 0) {
+					wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", s.getName() + "-"
+							+ f.getItemNo().replaceFirst("^0+(?!$)", "") + " "
+							+ f.getName() + " ("
+							+ p.getDatatypes().findOne(f.getDatatype()).getLabel() + ")");
+					wordMLPackage.getMainDocumentPart().addParagraphOfText(f.getText());
+				}
+			}
+			addPageBreak(wordMLPackage, factory);
+		}
+
+		List<Datatype> datatypeList = new ArrayList<Datatype>(p.getDatatypes().getChildren());
+		Collections.sort(datatypeList);
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Datatype library");
+		for (Datatype d: datatypeList){
+			String dtInfo = d.getLabel() + " - " + d.getDescription();
+
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+					dtInfo);
+
+			List<String> header = Arrays.asList("Seq", "Element Name", "Conf\nlength", "DT",
+					"Usage", "Len", "Table", "Comment");
+			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 1000, 1000, 1000, 3000);
+
+			wordMLPackage.getMainDocumentPart().addParagraphOfText(d.getComment());
+
+			List<List<String>> rows = new ArrayList<List<String>>();
+			this.addComponents(rows, d, p.getDatatypes(), p.getTables());
+			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Value sets library");
+		List<Table> tables = new ArrayList<Table>(p.getTables()
+				.getChildren());
+		Collections.sort(tables);
+
+		for (Table t : tables) {
+			String valuesetInfo = t.getBindingIdentifier()
+					+ " - " + t.getDescription();
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+					valuesetInfo);
+
+			List<String> header = Arrays.asList("Value", "Code system", "Usage", "Description");
+
+			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 3000);
+
+			//				StringBuilder sb;
+			//				sb = new StringBuilder();
+			//				sb.append("\nOid: ");
+			//				sb.append(t.getOid()==null ? "UNSPECIFIED":t.getOid());
+			//				wordMLPackage.getMainDocumentPart().addParagraphOfText(sb.toString());
+			//				sb = new StringBuilder();
+			//				sb.append("\nStability: ");
+			//				sb.append(t.getStability()==null ? "Static":t.getStability());
+			//				wordMLPackage.getMainDocumentPart().addParagraphOfText(sb.toString());
+			//				sb = new StringBuilder();
+			//				sb.append("\nExtensibility: ");
+			//				sb.append(t.getExtensibility() == null ? "Closed":t.getExtensibility());
+			//				wordMLPackage.getMainDocumentPart().addParagraphOfText(sb.toString());
+			//				sb = new StringBuilder();
+			//				sb.append("\nContent definition: ");
+			//				sb.append(t.getContentDefinition() == null ? "Extensional":t.getContentDefinition());
+			//				wordMLPackage.getMainDocumentPart().addParagraphOfText(sb.toString());
+
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			this.addCodes(rows, t);
+			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+		}
+		File tmpFile;
+		try {
+			tmpFile = File.createTempFile("Profile", ".docx");
+			wordMLPackage.save(tmpFile);
+			return FileUtils.openInputStream(tmpFile);
+		} catch (IOException | Docx4JException e) {
+			e.printStackTrace();
+			return new NullInputStream(1L);
+		}
+	}
+
+
+	private static Tbl createTableDocx(List<String> header, List<Integer> widths, List<List<String>> rows, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+		Tbl table = factory.createTbl();
+		Tr tableRow;
+
+		tableRow = factory.createTr();
+		Integer width = null;
+		for (String cell: header){				
+			if (widths != null && header.size() != widths.size()) {
+				widths.get(header.indexOf(cell));
+			}
+			addTableCell(tableRow, cell, width, wordMLPackage, factory);
+		}
+
+		table.getContent().add(tableRow);
+
+		for (List<String> row: rows){
+			tableRow = factory.createTr();
+			for (String cell: row){
+				addTableCell(tableRow, cell, null, wordMLPackage, factory);
+			} 
+			table.getContent().add(tableRow);
+		}
+		addBorders(table);
+		return table;
+	}
+
+	private static void addBorders(Tbl table) {
+		TblPr tableProps = new TblPr();
+		CTTblLayoutType tblLayoutType = new CTTblLayoutType();
+		STTblLayoutType stTblLayoutType = STTblLayoutType.AUTOFIT;
+		tableProps.setTblLayout(tblLayoutType);
+		tblLayoutType.setType(stTblLayoutType);
+		table.setTblPr(tableProps);
+
+		//		table.setTblPr(new TblPr());
+
+		CTBorder border = new CTBorder();
+		border.setColor("auto");
+		border.setSz(new BigInteger("4"));
+		border.setSpace(new BigInteger("0"));
+		border.setVal(STBorder.SINGLE);
+
+		TblBorders borders = new TblBorders();
+		borders.setBottom(border);
+		borders.setLeft(border);
+		borders.setRight(border);
+		borders.setTop(border);
+		borders.setInsideH(border);
+		borders.setInsideV(border);
+		table.getTblPr().setTblBorders(borders);
+	}
+
+	private static void addTableCell(Tr tableRow, String content, Integer width, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+		Tc tableCell = factory.createTc();
+		tableCell.getContent().add(
+				wordMLPackage.getMainDocumentPart().
+				createParagraphOfText(content));
+		if (width != null){
+			setCellWidth(tableCell, width);
+		}
+		tableRow.getContent().add(tableCell);
+	}
+
+	private static void setCellWidth(Tc tableCell, int width) {
+		TcPr tableCellProperties = new TcPr();
+		TblWidth tableWidth = new TblWidth();
+		tableWidth.setW(BigInteger.valueOf(width));
+		tableCellProperties.setTcW(tableWidth);
+
+		BooleanDefaultTrue b = new BooleanDefaultTrue();
+		b.setVal(false);
+		tableCellProperties.setNoWrap(b);
+
+		tableCell.setTcPr(tableCellProperties);
+	}
+
+	private void addPageBreak(WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+		Br breakObj = new Br();
+		breakObj.setType(STBrType.PAGE);
+
+		P paragraph = factory.createP();
+		paragraph.getContent().add(breakObj);
+		wordMLPackage.getMainDocumentPart().getContent().add(paragraph);
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public static JAXBElement getWrappedFldChar(FldChar fldchar) {
+		return new JAXBElement( new QName(Namespaces.NS_WORD12, "fldChar"), 
+				FldChar.class, fldchar);
+	}
+
+
 
 }

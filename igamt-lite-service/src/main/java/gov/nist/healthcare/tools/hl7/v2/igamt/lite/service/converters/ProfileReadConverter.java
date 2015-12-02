@@ -67,9 +67,9 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	public Profile convert(DBObject source) {
 		Profile profile = new Profile();
 		profile.setId(readMongoId(source));
-		profile.setComment(((String) source.get("comment")));
+		profile.setComment(readString(source, "comment"));
 		profile.setType(((String) source.get("type")));
-		profile.setUsageNote(((String) source.get("usageNote")));
+		profile.setUsageNote(readString(source, "usageNote"));
 		profile.setScope(ProfileScope.valueOf(((String) source.get("scope"))));
 		profile.setChanges(((String) source.get("changes")));
 		profile.setAccountId(readLong(source, "accountId"));
@@ -138,9 +138,9 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		seg.setLabel((String) source.get("label"));
 		seg.setName(((String) source.get("name")));
 		seg.setDescription((String) source.get("description"));
-		seg.setComment((String) source.get("comment"));
-		seg.setText1((String) source.get("text1"));
-		seg.setText2((String) source.get("text2"));
+		seg.setComment(readString(source, "comment"));
+		seg.setText1(readString(source, "text1"));
+		seg.setText2(readString(source, "text2"));
 
 		BasicDBList fieldObjects = (BasicDBList) source.get("fields");
 		if (fieldObjects != null) {
@@ -191,7 +191,6 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 
 	private Datatypes datatypes(DBObject source, Profile profile) {
 		Datatypes datatypes = new Datatypes();
-		//		datatypes.setId(((ObjectId) source.get("_id")).toString());
 		datatypes.setId(readMongoId(source));
 		BasicDBList datatypesDBObjects = (BasicDBList) source.get("children");
 		datatypes.setChildren(new HashSet<Datatype>());
@@ -218,8 +217,8 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		segRef.setName(((String) source.get("name")));
 		segRef.setHl7Version(((String) source.get("hl7Version")));
 		segRef.setDescription((String) source.get("description"));
-		segRef.setComment((String) source.get("comment"));
-		segRef.setUsageNote((String) source.get("usageNote"));
+		segRef.setComment(readString(source, "comment"));
+		segRef.setUsageNote(readString(source, "usageNote"));
 		segRef.setComponents(new ArrayList<Component>());
 		BasicDBList componentObjects = (BasicDBList) source.get("components");
 		if (componentObjects != null) {
@@ -349,7 +348,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		f.setId(readMongoId(source));
 		f.setType(((String) source.get("type")));
 		f.setName(((String) source.get("name")));
-		f.setComment((String) source.get("comment"));
+		f.setComment(readString(source, "comment"));
 		f.setMinLength(((Integer) source.get("minLength")));
 		f.setMaxLength((String) source.get("maxLength"));
 		f.setConfLength((String) source.get("confLength"));
@@ -373,7 +372,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		c.setId(readMongoId(source));
 		c.setType(((String) source.get("type")));
 		c.setName(((String) source.get("name")));
-		c.setComment((String) source.get("comment"));
+		c.setComment(readString(source, "comment"));
 		c.setMinLength(((Integer) source.get("minLength")));
 		c.setMaxLength((String) source.get("maxLength"));
 		c.setConfLength((String) source.get("confLength"));
@@ -431,7 +430,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 						code.setCodeUsage(((String) codeObject.get("codeUsage")));
 						code.setType(((String) codeObject.get("type")));
 						code.setLabel(((String) codeObject.get("label")));
-						code.setComments(((String) codeObject.get("comments")));
+						code.setComments(readString(codeObject, "comments"));
 						table.addCode(code);
 					}
 
@@ -452,8 +451,9 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			Message message = new Message();
 			DBObject child = (DBObject) childObj;
 			message.setId(readMongoId(child));
+			message.setName((String) child.get("name"));
 			message.setMessageType((String) child.get("messageType"));
-			message.setComment((String) child.get("comment"));
+			message.setComment(readString(child, "comment"));
 			message.setDescription((String) child.get("description"));
 			message.setEvent((String) child.get("event"));
 			message.setIdentifier((String) child.get("identifier"));
@@ -490,7 +490,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		segRef.setId(readMongoId(source));
 		segRef.setType(((String) source.get("type")));
 		segRef.setUsage(Usage.valueOf(((String) source.get("usage"))));
-		segRef.setComment(((String) source.get("comment")));
+		segRef.setComment(readString(source, "comment"));
 		segRef.setPosition((Integer) source.get("position"));
 		segRef.setMin((Integer) source.get("min"));
 		segRef.setMax((String) source.get("max"));
@@ -503,7 +503,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		group.setId(readMongoId(source));
 		group.setType(((String) source.get("type")));
 		group.setUsage(Usage.valueOf(((String) source.get("usage"))));
-		group.setComment(((String) source.get("comment")));
+		group.setComment(readString(source, "comment"));
 		group.setPosition((Integer) source.get("position"));
 		group.setMin((Integer) source.get("min"));
 		group.setMax((String) source.get("max"));
@@ -579,6 +579,13 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			}
 		}
 		return Long.valueOf(0);
+	}
+
+	private String readString(DBObject source, String tag){
+		if ( source.get(tag) != null){
+				return String.valueOf((String) source.get(tag));
+			}
+		return "";
 	}
 
 	// private DBObject findDatatypeById(String id, BasicDBList datatypes)
