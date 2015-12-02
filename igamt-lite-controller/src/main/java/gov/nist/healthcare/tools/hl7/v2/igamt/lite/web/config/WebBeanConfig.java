@@ -48,7 +48,7 @@ public class WebBeanConfig {
 				"valued",
 				"a literal value", 
 				"one of list values", 
-				"one of a ValueSet",
+				"one of codes in ValueSet",
 				"formatted value",
 				"identical to the another node",
 				"equal to the another node",
