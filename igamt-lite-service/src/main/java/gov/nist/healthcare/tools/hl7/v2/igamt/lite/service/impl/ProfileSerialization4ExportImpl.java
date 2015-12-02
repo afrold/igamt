@@ -246,9 +246,13 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		elmTableDefinition.addAttribute(new Attribute("Description",(t.getDescription() == null) ? "" : t.getDescription()));
 		elmTableDefinition.addAttribute(new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
 		elmTableDefinition.addAttribute(new Attribute("Oid",(t.getOid() == null) ? "" : t.getOid()));
-		elmTableDefinition.addAttribute(new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability()));
-		elmTableDefinition.addAttribute(new Attribute("Extensibility", (t.getExtensibility() == null) ? "" : t.getExtensibility()));
-		elmTableDefinition.addAttribute(new Attribute("ContentDefinition", (t.getContentDefinition() == null) ? "" : t.getContentDefinition()));
+		elmTableDefinition.addAttribute(new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
+		elmTableDefinition.addAttribute(new Attribute("Extensibility", (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
+		elmTableDefinition.addAttribute(new Attribute("ContentDefinition", (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
+		
+		
+		
+		
 
 		if (t.getCodes() != null) {
 			for (Code c : t.getCodes()) {

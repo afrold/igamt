@@ -34,9 +34,9 @@ public class Table extends DataModel implements Serializable,
 	private String description;
 	private String version;
 	private String oid;
-	private String stability;
-	private String extensibility;
-	private String contentDefinition;
+	private Stability stability;
+	private Extensibility extensibility;
+	private ContentDefinition contentDefinition;
 	private String group;
 	private int order;
 
@@ -82,13 +82,6 @@ public class Table extends DataModel implements Serializable,
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getContentDefinition() {
-		return contentDefinition;
-	}
-
-	public void setContentDefinition(String contentDefinition) {
-		this.contentDefinition = contentDefinition;
-	}
 
 	public String getVersion() {
 		return version;
@@ -122,22 +115,6 @@ public class Table extends DataModel implements Serializable,
 		return codes.remove(c);
 	}
 
-	public String getStability() {
-		return stability;
-	}
-
-	public void setStability(String stability) {
-		this.stability = stability;
-	}
-
-	public String getExtensibility() {
-		return extensibility;
-	}
-
-	public void setExtensibility(String extensibility) {
-		this.extensibility = extensibility;
-	}
-	
 	public String getGroup() {
 		return group;
 	}
@@ -152,6 +129,30 @@ public class Table extends DataModel implements Serializable,
 
 	public void setOrder(int order) {
 		this.order = order;
+	}
+	
+	public Stability getStability() {
+		return stability;
+	}
+
+	public void setStability(Stability stability) {
+		this.stability = stability;
+	}
+
+	public Extensibility getExtensibility() {
+		return extensibility;
+	}
+
+	public void setExtensibility(Extensibility extensibility) {
+		this.extensibility = extensibility;
+	}
+
+	public ContentDefinition getContentDefinition() {
+		return contentDefinition;
+	}
+
+	public void setContentDefinition(ContentDefinition contentDefinition) {
+		this.contentDefinition = contentDefinition;
 	}
 
 	public Code findOneCodeById(String id) {

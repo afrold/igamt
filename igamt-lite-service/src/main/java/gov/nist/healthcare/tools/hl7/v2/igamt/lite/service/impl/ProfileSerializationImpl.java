@@ -226,7 +226,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			Datatype datatypeObj = new Datatype();
 			datatypeObj.setDescription(elmDatatype.getAttribute("Description"));
 			// [Woo] I assumed the default name could be base name.
-			datatypeObj.setLabel(elmDatatype.getAttribute("ID"));
+			
+			if(elmDatatype.getAttribute("Label") != null &&  !elmDatatype.getAttribute("Label").equals("")){
+				datatypeObj.setLabel(elmDatatype.getAttribute("Label"));
+			}else{
+				datatypeObj.setLabel(elmDatatype.getAttribute("Name"));
+			}
 			datatypeObj.setName(elmDatatype.getAttribute("Name"));
 			datatypeObj.setPredicates(this.findPredicates(this.predicates.getDatatypes(), elmDatatype.getAttribute("ID"), elmDatatype.getAttribute("Name")));
 			datatypeObj.setConformanceStatements(this.findConformanceStatement(this.conformanceStatement.getDatatypes(), elmDatatype.getAttribute("ID"), elmDatatype.getAttribute("Name")));
@@ -485,7 +490,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					for (Case c : m.getCases()){
 						nu.xom.Element elmCase = new nu.xom.Element("Case");
 						elmCase.addAttribute(new Attribute("Value", c.getValue()));
-						elmCase.addAttribute(new Attribute("Datatype", c.getDatatype().getId())); //TODO Used getId instead of getLabel or getName since profileReadConverter uses it
+						elmCase.addAttribute(new Attribute("Datatype", c.getDatatype())); 
 						elmMapping.appendChild(elmCase);
 					}
 					elmDynamicMappings.appendChild(elmMapping);
@@ -622,12 +627,46 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private Segment deserializeSegment(Element segmentElm, Profile profile) {
 		Segment segmentObj = new Segment();
 		segmentObj.setDescription(segmentElm.getAttribute("Description"));
-		// [Woo] I assumed the default name could be base name.
-		segmentObj.setLabel(segmentElm.getAttribute("ID"));
+		if(segmentElm.getAttribute("Label") != null && !segmentElm.getAttribute("Label").equals("")){
+			segmentObj.setLabel(segmentElm.getAttribute("Label"));
+		}else{
+			segmentObj.setLabel(segmentElm.getAttribute("Name"));
+		}
 		segmentObj.setName(segmentElm.getAttribute("Name"));
 		segmentObj.setPredicates(this.findPredicates(this.predicates.getSegments(), segmentElm.getAttribute("ID"), segmentElm.getAttribute("Name")));
 		segmentObj.setConformanceStatements(this.findConformanceStatement(this.conformanceStatement.getSegments(), segmentElm.getAttribute("ID"), segmentElm.getAttribute("Name")));
 
+		
+		NodeList dynamicMapping = segmentElm.getElementsByTagName("Mapping");
+		DynamicMapping dynamicMappingObj = null;
+		if(dynamicMapping.getLength() > 0){
+			dynamicMappingObj = new DynamicMapping();
+		}
+		
+		for (int i = 0; i < dynamicMapping.getLength(); i++) {
+			Element mappingElm = (Element)dynamicMapping.item(i);
+			Mapping mappingObj = new Mapping();
+			mappingObj.setPosition(Integer.parseInt(mappingElm.getAttribute("Position")));
+			mappingObj.setReference(Integer.parseInt(mappingElm.getAttribute("Reference")));
+			NodeList cases = mappingElm.getElementsByTagName("Case");
+			
+			for(int j = 0; j < cases.getLength(); j++) {
+				Element caseElm = (Element)cases.item(j);
+				Case caseObj = new Case();
+				caseObj.setValue(caseElm.getAttribute("Value"));
+				caseObj.setDatatype(this.findDatatype(caseElm.getAttribute("Datatype"), profile).getId());
+				
+				mappingObj.addCase(caseObj);
+				
+			}
+			
+			
+			dynamicMappingObj.addMapping(mappingObj);
+			
+		}
+		
+		if(dynamicMappingObj != null) segmentObj.addDynamicMapping(dynamicMappingObj);
+		
 		NodeList fields = segmentElm.getElementsByTagName("Field");
 		for (int i = 0; i < fields.getLength(); i++) {
 			Element fieldElm = (Element) fields.item(i);

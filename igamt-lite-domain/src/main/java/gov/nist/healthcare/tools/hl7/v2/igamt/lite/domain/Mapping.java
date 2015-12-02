@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
 //@Entity
@@ -12,9 +13,13 @@ public class Mapping implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
+	public Mapping() {
+		super();
+		this.id = ObjectId.get().toString();
+	}
+
 	@Id
-	// @GeneratedValue(strategy = GenerationType.AUTO)
-	protected String id;
+	private String id;
 
 	// @OneToMany(cascade = CascadeType.ALL)
 	// @JoinTable(name = "MAPPING_CASE", joinColumns = //@JoinColumn(name =
@@ -23,7 +28,7 @@ public class Mapping implements Serializable, Cloneable {
 
 	// @NotNull
 	// @Column(name = "MAPPING_POSITION")
-	protected Integer position = 0;
+	protected Integer position;
 
 	// @NotNull
 	// @Column(name = "REFERENCE")
@@ -59,6 +64,10 @@ public class Mapping implements Serializable, Cloneable {
 
 	public void setReference(Integer reference) {
 		this.reference = reference;
+	}
+	
+	public void addCase(Case c) {
+		cases.add(c);
 	}
 
 	@Override
