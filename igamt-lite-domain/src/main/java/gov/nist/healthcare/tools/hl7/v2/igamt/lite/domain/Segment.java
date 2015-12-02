@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "segment")
 public class Segment extends DataModelWithConstraints implements java.io.Serializable,
-		Cloneable {
+Cloneable, Comparable<Segment> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,7 +41,7 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 	private String name;
 
 	private String description;
-	
+
 	private String hl7Version;
 
 	protected String comment = "";
@@ -81,7 +81,7 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public String getHl7Version() {
 		return hl7Version;
 	}
@@ -186,11 +186,11 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 
 	public Segment clone(HashMap<String, Datatype> dtRecords,
 			HashMap<String, Table> tableRecords)
-			throws CloneNotSupportedException {
+					throws CloneNotSupportedException {
 		Segment clonedSegment = new Segment();
 		clonedSegment.setComment(comment);
 		clonedSegment
-				.setConformanceStatements(new ArrayList<ConformanceStatement>());
+		.setConformanceStatements(new ArrayList<ConformanceStatement>());
 		for (ConformanceStatement cs : this.conformanceStatements) {
 			clonedSegment.addConformanceStatement(cs.clone());
 		}
@@ -215,4 +215,13 @@ public class Segment extends DataModelWithConstraints implements java.io.Seriali
 		return clonedSegment;
 	}
 
+	@Override
+	public int compareTo(Segment o) {
+		int x = String.CASE_INSENSITIVE_ORDER.compare(this.getName() != null && this.label != null ? this.getName() + this.getLabel() : "",
+				o.getName() != null && this.getLabel() != null ? o.getName() + this.getLabel() : "");
+		if (x == 0) {
+			x = (this.getName() != null  && this.getLabel() != null ? this.getName() + this.getLabel() : "").compareTo(o.getName() != null && this.getLabel() != null ? o.getName()+o.getLabel(): "");
+		}
+		return x;
+	}
 }

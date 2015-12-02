@@ -22,6 +22,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.openpackaging.exceptions.InvalidFormatException;
+
 public interface ProfileExportService {
 	
 	InputStream exportAsPdf(Profile p) throws IOException;
@@ -33,5 +36,7 @@ public interface ProfileExportService {
 	InputStream exportAsXml(Profile p) throws IOException;
 	
 	InputStream exportAsZip(Profile p) throws IOException;
+	
+	InputStream exportAsDocx(Profile p, String inlineConstraints)  throws IOException, InvalidFormatException, Docx4JException; 
 	
 }
