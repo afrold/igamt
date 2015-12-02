@@ -120,7 +120,7 @@ angular.module("filearts.dragDrop", [
     link: function ($scope, $element, $attrs, dropContainer) {
       var bindTo = function (event) {
         return function (e) {
-          return $scope.$apply(function() {
+          return $scope.safeApply(function() {
             return dropContainer['handle' + event](e);
           });
         };
@@ -152,6 +152,17 @@ angular.module("filearts.dragDrop", [
       $scope.$on("$destroy", function () {
         $document.off("dragend", dragEnd);
       });
+      
+      $scope.safeApply = function(fn) {
+    	  var phase = this.$root.$$phase;
+    	  if(phase == '$apply' || phase == '$digest') {
+    	    if(fn && (typeof(fn) === 'function')) {
+    	      fn();
+    	    }
+    	  } else {
+    	    this.$apply(fn);
+    	  }
+    	};
     }
   };
 }])
@@ -160,7 +171,7 @@ angular.module("filearts.dragDrop", [
   var dropContainer = this;
   var targets = {};
   var validAnchors = "center top top-right right bottom-right bottom bottom-left left top-left".split(" ");
-  
+
   dropContainer.init = function (el, scope, callbacks) {
     dropContainer.el = el;
     dropContainer.scope = scope;

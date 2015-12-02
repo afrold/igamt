@@ -1,8 +1,12 @@
 angular.module('igl').factory('CloneDeleteMessageSvc', function (ProfileAccessSvc) {
 
 	var svc = this;
+	
+	svc.addEntry = function(profile, toc, entry) {
+		console.log("Add entry.");
+	}
 
-	svc.cloneMessage = function(profile, message) {
+	svc.cloneMessage = function(profile, toc, message) {
 	// TODO gcr: Need to include the user identifier in the new label. 
 	// $rootScope.profile.metaData.ext should be just that, but is currently 
 	// unpopulated in the profile.
@@ -10,28 +14,37 @@ angular.module('igl').factory('CloneDeleteMessageSvc', function (ProfileAccessSv
 	newMessage.reference.id = null;
 		
 		// Nodes must have unique names so we timestamp when we duplicate.
-		if (newNode.type === 'message') {
-			newNode.reference.messageType = newNode.reference.messageType + "-" + $rootScope.profile.metaData.ext + "-" + timeStamp();
-			newNode.label = newNode.reference.messageType;
+		if (newMessage.reference.type === 'message') {
+			newMessage.reference.messageType = newMessage.reference.messageType + "-" + profile.metaData.ext + "-" + timeStamp();
+			newMessage.label = newMessage.reference.messageType;
 		}
-		for (var i in $rootScope.profile.messages.children) {
-			console.log($rootScope.profile.messages.children[i].messageType);
-		}
-		$rootScope.profile.messages.children.splice(2, 0, newNode);
-		for (var i in $rootScope.profile.messages.children) {
-			console.log($rootScope.profile.messages.children[i].messageType);
-		}		
+
+		profile.messages.children.splice(0, 0, newMessage.reference);
+     	  var messages = _.find(toc, function(child){
+       		  return child.label === "Messages";
+       	  }); 
+  		var id = message.reference.id;
+  		var idx = _.findIndex(messages.children, function(child){
+			return child.reference.id === id;
+		})
+		messages.children.splice(idx, 0, newMessage);
 	}
 	
-	svc.deleteMessage = function(message) {
-		var segmentRefs = ProfileAccessSvc.Messages($rootScope.profile).getSegmentRefsSansOne(message);
-		ProfileAccessSvc.Segments($rootScope.profile).removeDead(segmentRefs);
-		var id = message.id;
-		var messages = $rootScope.profile.messages.children;
-		var idx = _.findIndex(messages, function(child){
+	svc.deleteMessage = function(profile, toc, message) {
+		var segmentRefs = ProfileAccessSvc.Messages(profile).getSegmentRefsSansOne(message.reference);
+		ProfileAccessSvc.Segments(profile).removeDead(segmentRefs);
+		var id = message.reference.id;
+		var idxP = _.findIndex(profile.messages.children, function(child){
 			return child.id === id;
 		})
-		messages.splice(idx, 1);
+		profile.messages.children.splice(idxP, 1);
+	   	  var tocMessages = _.find(toc, function(child){
+	   		  return child.label === "Messages";
+	   	  }); 
+		var idxT = _.findIndex(tocMessages.children, function(child){
+			return child.reference.id === id;
+		})
+		tocMessages.children.splice(idxT, 1);
 	}
 	
   function timeStamp() {

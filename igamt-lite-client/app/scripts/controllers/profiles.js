@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, DeleteMessageSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
+.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, CloneDeleteMessageSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
 		$scope.loading = false;
     	$scope.uiGrid = {};
         $rootScope.igs = [];
@@ -323,7 +323,7 @@ angular.module('igl')
                     $rootScope.profile.datatypes.children = $filter('orderBy')($rootScope.profile.datatypes.children, 'label');
                     $rootScope.profile.tables.children = $filter('orderBy')($rootScope.profile.tables.children, 'label');
 // FIXME gcr:  refactored out                    $scope.getLeveledProfile($rootScope.profile);
-                    $scope.tocData = ToCSvc.getToC($scope.profile);
+                    $rootScope.tocData = ToCSvc.getToC($scope.profile);
                     $rootScope.initMaps();
                     $rootScope.messages = $rootScope.profile.messages.children;
                     angular.forEach($rootScope.profile.datatypes.children, function (child) {

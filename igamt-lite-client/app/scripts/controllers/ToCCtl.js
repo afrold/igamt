@@ -1,8 +1,7 @@
 angular.module('igl')
-  .controller('ToCCtl', ['$scope', '$rootScope', '$q', 'ToCSvc', 'ContextMenuSvc', function ($scope, $rootScope, $q, ToCSvc, ContextMenuSvc) {
+  .controller('ToCCtl', ['$scope', '$rootScope', '$q', 'ToCSvc', 'ContextMenuSvc', 'DnDSvc', 'CloneDeleteMessageSvc', function ($scope, $rootScope, $q, ToCSvc, ContextMenuSvc, DnDSvc, CloneDeleteMessageSvc) {
 	console.log("ToCCtl");
 	var ctl = this;
-	var drag = {};
     $scope.collapsed = [];
     $scope.$watch('tocData', function(newValue, oldValue) {
     	if (!oldValue && newValue) {
@@ -11,33 +10,59 @@ angular.module('igl')
       	  });
     	}
     });
-    var accept = function() {
-		
-	};
+    
+// FIXME gcr: dead code.    
+//    var accept = function() {
+//		
+//	};
 	$scope.yesDrop = false;
 	$scope.noDrop = false;
-	$scope.onStart = function(member) {
-		drag = member.drag;
-      	console.log("onStart=" + JSON.stringify(member));
+	$scope.onBranchStart = function(tocEntry) {
+		DnDSvc.drag = tocEntry.drag;
+      	console.log("onBranchStart=" + tocEntry.label);
       };
-  	$scope.onStop = function(member) {
-      	console.log("onStop=" + JSON.stringify(member));
+  	$scope.onBranchStop = function(tocEntry) {
+      	console.log("onBranchStop=" + tocEntry.label);
       };
-	$scope.onEnter = function(member) {
-		$scope.yesDrop = _.contains(member.drop, drag);
-		$scope.noDrop = !noDrop
-      	console.log("onEnter=" + "member=" + JSON.stringify(member) + " noDrop=" + $scope.noDrop);
+	$scope.onBranchEnter = function(tocEntry) {
+		$scope.yesDrop = _.contains(tocEntry.drop, DnDSvc.drag);
+		$scope.noDrop = !$scope.noDrop
+      	console.log("onBranchEnter=" + "member=" + tocEntry.label + " drag=" + DnDSvc.drag  + " yesDrop=" + $scope.yesDrop + " noDrop=" + $scope.noDrop);
       };
-  	$scope.onLeave = function(member) {
+  	$scope.onBranchLeave = function(tocEntry) {
   		$scope.yesDrop = false;
 		$scope.noDrop = false;
-      	console.log("onLeave" + JSON.stringify(member) + " noDrop=" + $scope.noDrop);
+      	console.log("onBranchLeave=" + tocEntry.label + " noDrop=" + $scope.noDrop);
       };
-	$scope.onDrop = function(member) {
-		drag = {};
+	$scope.onBranchDrop = function(tocEntry) {
+		DnDSvc.drag = {};
 		$scope.yesDrop = false;
 		$scope.noDrop = false;
-      	console.log("onDrop=" + JSON.stringify(member));
+      	console.log("onBranchDrop=" + tocEntry.label);
+      };
+
+	$scope.onLeafStart = function(tocEntry) {
+		DnDSvc.drag = tocEntry.drag;
+      	console.log("onLeafStart=" + tocEntry.label + " drag=" + DnDSvc.drag);
+      };
+  	$scope.onLeafStop = function(tocEntry) {
+      	console.log("onLeafStop=" + tocEntry.label);
+      };
+	$scope.onLeafEnter = function(tocEntry) {
+		$scope.yesDrop = _.contains(tocEntry.drop, drag);
+		$scope.noDrop = !noDrop
+      	console.log("onLeafEnter=" + "member=" + tocEntry.label + " noDrop=" + $scope.noDrop);
+      };
+  	$scope.onLeafLeave = function(tocEntry) {
+  		$scope.yesDrop = false;
+		$scope.noDrop = false;
+      	console.log("onLeafLeave=" + tocEntry.label + " noDrop=" + $scope.noDrop);
+      };
+	$scope.onLeafDrop = function(tocEntry) {
+		DnDSvc.drag = undefined;
+		$scope.yesDrop = false;
+		$scope.noDrop = false;
+      	console.log("onLeafDrop=" + tocEntry.label);
       };
 // FIXME gcr: Moving to expression on element.       
 //      $scope.toggleToCContents = function (node) {
@@ -123,12 +148,12 @@ angular.module('igl')
               case "Add":
               {
                	  console.log("Add==> node=" + leaf);
-                 // not to be implemented at this time.
+               	CloneDeleteMessageSvc.addEntry(leaf);
               }
               case "Clone":
               {
                	  console.log("Clone==> node=" + leaf);
-               	  CloneDeleteMessageSvc.cloneMessage(leaf, $index);
+               	  CloneDeleteMessageSvc.cloneMessage($rootScope.profile, $rootScope.tocData, leaf);
 // FIXME gcr: Moving to CloneDeleteMessageSvc.          	  
 //               	var newNode = (JSON.parse(JSON.stringify(node)));
 //                  newNode.id = null;
@@ -148,7 +173,7 @@ angular.module('igl')
               }
               case "Delete":
             	  console.log("Delete==> node=" + leaf);
-              	CloneDeleteMessageSvc.deleteMessage(leaf, $index);
+              	CloneDeleteMessageSvc.deleteMessage($rootScope.profile, $rootScope.tocData, leaf);
               	break;
               default:
             	  console.log("Context menu defaulted with " + ctxMenuSelection + " Should be Add, clone, or Delete.");

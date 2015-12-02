@@ -341,7 +341,7 @@ public class ProfileController extends CommonController {
 	}
 
 	// TODO Change to query as is but with $nin a list of messages that can be empty. 
-	@RequestMapping(value = "/hl7/messageListByVersion/{hl7Version:.*}", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/hl7/messageListByVersion/{hl7Version:.*}", method = RequestMethod.GET, produces = "application/json")
 	public List<String[]> getMessageListByVersion(@PathVariable("hl7Version") String hl7Version, MessageByListCommand command) {
 		log.info("Fetching messages of version hl7Version=" + hl7Version);
 		List<String[]> messages = profileCreation.summary(hl7Version,  command.getMessageIds());

@@ -39,7 +39,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 		var children = svc.createEntries(label, fromProfile.children);
 		var segments = {
 			"label" : label,
-			"drop" : label,
+			"drop" : [label],
 			"reference" : fromProfile,
 			"children" : children
 		}
