@@ -1,7 +1,7 @@
 {
   "type" : "profile",
   "scope" : "HL7STANDARD",
-  "id" : "56572d55d4c6b574d4240b5b",
+  "id" : "565f3094d4c64df77ab981ec",
   "metaData" : {
     "name" : "Default Name",
     "identifier" : "Default Identifier",
@@ -18,16 +18,16 @@
     "encodings" : [ ]
   },
   "segments" : {
-    "id" : "56572d55d4c6b574d4240b58",
+    "id" : "565f3094d4c64df77ab981e9",
     "children" : [ ]
   },
   "datatypes" : {
-    "id" : "56572d55d4c6b574d4240b57",
+    "id" : "565f3094d4c64df77ab981e8",
     "children" : [ {
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b40",
+      "id" : "565f3094d4c64df77ab981d1",
       "label" : "CM",
       "components" : [ ],
       "name" : "CM",
@@ -39,7 +39,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b3f",
+      "id" : "565f3094d4c64df77ab981d0",
       "label" : "CK",
       "components" : [ ],
       "name" : "CK",
@@ -51,7 +51,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b49",
+      "id" : "565f3094d4c64df77ab981da",
       "label" : "SI",
       "components" : [ ],
       "name" : "SI",
@@ -63,7 +63,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b4c",
+      "id" : "565f3094d4c64df77ab981dd",
       "label" : "CM_UNDEFINED",
       "components" : [ ],
       "name" : "CM_UNDEFINED",
@@ -75,7 +75,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b4a",
+      "id" : "565f3094d4c64df77ab981db",
       "label" : "TM",
       "components" : [ ],
       "name" : "TM",
@@ -87,7 +87,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b3c",
+      "id" : "565f3094d4c64df77ab981cd",
       "label" : "CE",
       "components" : [ {
         "type" : "component",
@@ -99,12 +99,12 @@
         "table" : "",
         "bindingStrength" : "",
         "bindingLocation" : "",
-        "datatype" : "56572d55d4c6b574d4240b4d",
+        "datatype" : "565f3094d4c64df77ab981de",
         "position" : 1,
         "comment" : "",
         "text" : "",
         "hide" : false,
-        "id" : "56572d55d4c6b574d4240b51"
+        "id" : "565f3094d4c64df77ab981e2"
       }, {
         "type" : "component",
         "name" : "text",
@@ -115,12 +115,12 @@
         "table" : "",
         "bindingStrength" : "",
         "bindingLocation" : "",
-        "datatype" : "56572d55d4c6b574d4240b3b",
+        "datatype" : "565f3094d4c64df77ab981cc",
         "position" : 2,
         "comment" : "",
         "text" : "",
         "hide" : false,
-        "id" : "56572d55d4c6b574d4240b52"
+        "id" : "565f3094d4c64df77ab981e3"
       }, {
         "type" : "component",
         "name" : "name of coding system",
@@ -131,12 +131,12 @@
         "table" : "",
         "bindingStrength" : "",
         "bindingLocation" : "",
-        "datatype" : "56572d55d4c6b574d4240b3b",
+        "datatype" : "565f3094d4c64df77ab981cc",
         "position" : 3,
         "comment" : "",
         "text" : "",
         "hide" : false,
-        "id" : "56572d55d4c6b574d4240b53"
+        "id" : "565f3094d4c64df77ab981e4"
       }, {
         "type" : "component",
         "name" : "alternate identifier",
@@ -147,12 +147,12 @@
         "table" : "",
         "bindingStrength" : "",
         "bindingLocation" : "",
-        "datatype" : "56572d55d4c6b574d4240b3b",
+        "datatype" : "565f3094d4c64df77ab981cc",
         "position" : 4,
         "comment" : "",
         "text" : "",
         "hide" : false,
-        "id" : "56572d55d4c6b574d4240b54"
+        "id" : "565f3094d4c64df77ab981e5"
       }, {
         "type" : "component",
         "name" : "alternate text",
@@ -163,12 +163,12 @@
         "table" : "",
         "bindingStrength" : "",
         "bindingLocation" : "",
-        "datatype" : "56572d55d4c6b574d4240b3b",
+        "datatype" : "565f3094d4c64df77ab981cc",
         "position" : 5,
         "comment" : "",
         "text" : "",
         "hide" : false,
-        "id" : "56572d55d4c6b574d4240b55"
+        "id" : "565f3094d4c64df77ab981e6"
       }, {
         "type" : "component",
         "name" : "name of alternate coding system",
@@ -179,12 +179,12 @@
         "table" : "",
         "bindingStrength" : "",
         "bindingLocation" : "",
-        "datatype" : "56572d55d4c6b574d4240b3b",
+        "datatype" : "565f3094d4c64df77ab981cc",
         "position" : 6,
         "comment" : "",
         "text" : "",
         "hide" : false,
-        "id" : "56572d55d4c6b574d4240b56"
+        "id" : "565f3094d4c64df77ab981e7"
       } ],
       "name" : "CE",
       "description" : "coded element",
@@ -195,7 +195,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b41",
+      "id" : "565f3094d4c64df77ab981d2",
       "label" : "CN",
       "components" : [ ],
       "name" : "CN",
@@ -207,7 +207,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b45",
+      "id" : "565f3094d4c64df77ab981d6",
       "label" : "FT",
       "components" : [ ],
       "name" : "FT",
@@ -219,7 +219,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b3d",
+      "id" : "565f3094d4c64df77ab981ce",
       "label" : "AD",
       "components" : [ ],
       "name" : "AD",
@@ -231,7 +231,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b4d",
+      "id" : "565f3094d4c64df77ab981de",
       "label" : "ID",
       "components" : [ ],
       "name" : "ID",
@@ -243,7 +243,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b4f",
+      "id" : "565f3094d4c64df77ab981e0",
       "label" : "NM",
       "components" : [ ],
       "name" : "NM",
@@ -255,7 +255,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b3e",
+      "id" : "565f3094d4c64df77ab981cf",
       "label" : "TX",
       "components" : [ ],
       "name" : "TX",
@@ -267,7 +267,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b4b",
+      "id" : "565f3094d4c64df77ab981dc",
       "label" : "TN",
       "components" : [ ],
       "name" : "TN",
@@ -279,7 +279,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b42",
+      "id" : "565f3094d4c64df77ab981d3",
       "label" : "CE_0057",
       "components" : [ ],
       "name" : "CE_0057",
@@ -291,7 +291,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b46",
+      "id" : "565f3094d4c64df77ab981d7",
       "label" : "SET_ID",
       "components" : [ ],
       "name" : "SET_ID",
@@ -303,7 +303,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b3b",
+      "id" : "565f3094d4c64df77ab981cc",
       "label" : "ST",
       "components" : [ ],
       "name" : "ST",
@@ -315,7 +315,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b3a",
+      "id" : "565f3094d4c64df77ab981cb",
       "label" : "COMP_ID_DIGIT",
       "components" : [ ],
       "name" : "COMP_ID_DIGIT",
@@ -327,7 +327,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b4e",
+      "id" : "565f3094d4c64df77ab981df",
       "label" : "PN",
       "components" : [ ],
       "name" : "PN",
@@ -339,7 +339,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b47",
+      "id" : "565f3094d4c64df77ab981d8",
       "label" : "DT",
       "components" : [ ],
       "name" : "DT",
@@ -351,7 +351,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b50",
+      "id" : "565f3094d4c64df77ab981e1",
       "label" : "TS",
       "components" : [ ],
       "name" : "TS",
@@ -363,7 +363,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b44",
+      "id" : "565f3094d4c64df77ab981d5",
       "label" : "CQ",
       "components" : [ ],
       "name" : "CQ",
@@ -375,7 +375,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b48",
+      "id" : "565f3094d4c64df77ab981d9",
       "label" : "COMP_ID_NAME",
       "components" : [ ],
       "name" : "COMP_ID_NAME",
@@ -387,7 +387,7 @@
       "type" : "datatype",
       "predicates" : [ ],
       "conformanceStatements" : [ ],
-      "id" : "56572d55d4c6b574d4240b43",
+      "id" : "565f3094d4c64df77ab981d4",
       "label" : "COMP_QUANT",
       "components" : [ ],
       "name" : "COMP_QUANT",
@@ -398,10 +398,10 @@
     } ]
   },
   "messages" : {
-    "id" : "56572d55d4c6b574d4240b59",
+    "id" : "565f3094d4c64df77ab981ea",
     "children" : [ {
       "type" : "message",
-      "id" : "56572d55d4c6b574d4240b5a",
+      "id" : "565f3094d4c64df77ab981eb",
       "name" : null,
       "identifier" : "DefaultIdentifier",
       "messageType" : "ACK",
@@ -409,7 +409,7 @@
       "structID" : "ACK_",
       "description" : "General acknowledgment message",
       "version" : null,
-      "date" : "11/26/2015",
+      "date" : "12/02/2015",
       "oid" : null,
       "children" : [ ],
       "position" : 1,
@@ -421,7 +421,7 @@
   },
   "tables" : {
     "type" : "tablelibrary",
-    "id" : "56572d55d4c6b574d4240954",
+    "id" : "565f3094d4c64df77ab97fe5",
     "valueSetLibraryIdentifier" : null,
     "status" : null,
     "valueSetLibraryVersion" : null,
@@ -432,7 +432,7 @@
     "profileName" : "",
     "children" : [ {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a0f",
+      "id" : "565f3094d4c64df77ab980a0",
       "bindingIdentifier" : "0042",
       "name" : "INS. COMPANY PLAN CODE",
       "description" : "INS. COMPANY PLAN CODE",
@@ -446,7 +446,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b0a",
+      "id" : "565f3094d4c64df77ab9819b",
       "bindingIdentifier" : "0077",
       "name" : "UNUSED TABLE",
       "description" : "UNUSED TABLE",
@@ -460,7 +460,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240aee",
+      "id" : "565f3094d4c64df77ab9817f",
       "bindingIdentifier" : "0086",
       "name" : "INS. PLAN TYPE",
       "description" : "INS. PLAN TYPE",
@@ -474,7 +474,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a00",
+      "id" : "565f3094d4c64df77ab98091",
       "bindingIdentifier" : "0031",
       "name" : "BLOOD BANK - COMPONENT TYPE",
       "description" : "BLOOD BANK - COMPONENT TYPE",
@@ -488,7 +488,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b09",
+      "id" : "565f3094d4c64df77ab9819a",
       "bindingIdentifier" : "0113",
       "name" : "DISCHARGED TO LOCATION",
       "description" : "DISCHARGED TO LOCATION",
@@ -502,7 +502,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240957",
+      "id" : "565f3094d4c64df77ab97fe8",
       "bindingIdentifier" : "0010",
       "name" : "PHYSICIAN ID",
       "description" : "PHYSICIAN ID",
@@ -516,7 +516,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b1d",
+      "id" : "565f3094d4c64df77ab981ae",
       "bindingIdentifier" : "0119",
       "name" : "ORDER CONTROL",
       "description" : "ORDER CONTROL",
@@ -529,7 +529,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b1e",
+        "id" : "565f3094d4c64df77ab981af",
         "value" : "CA",
         "label" : "Cancel order request       T            A",
         "codeSystem" : "HL70119",
@@ -538,7 +538,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b1f",
+        "id" : "565f3094d4c64df77ab981b0",
         "value" : "CH",
         "label" : "Child order                   F         E,F",
         "codeSystem" : "HL70119",
@@ -547,7 +547,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b20",
+        "id" : "565f3094d4c64df77ab981b1",
         "value" : "CN",
         "label" : "Combined result               F         J",
         "codeSystem" : "HL70119",
@@ -556,7 +556,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b21",
+        "id" : "565f3094d4c64df77ab981b2",
         "value" : "DC",
         "label" : "Discontinue order request  T            A",
         "codeSystem" : "HL70119",
@@ -565,7 +565,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b22",
+        "id" : "565f3094d4c64df77ab981b3",
         "value" : "DE",
         "label" : "Data errors                T  F",
         "codeSystem" : "HL70119",
@@ -574,7 +574,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b23",
+        "id" : "565f3094d4c64df77ab981b4",
         "value" : "DR",
         "label" : "Discontinued as request       F",
         "codeSystem" : "HL70119",
@@ -583,7 +583,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b24",
+        "id" : "565f3094d4c64df77ab981b5",
         "value" : "HD",
         "label" : "Hold order request         T",
         "codeSystem" : "HL70119",
@@ -592,7 +592,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b25",
+        "id" : "565f3094d4c64df77ab981b6",
         "value" : "HR",
         "label" : "On hold as requested          F         E",
         "codeSystem" : "HL70119",
@@ -601,7 +601,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b26",
+        "id" : "565f3094d4c64df77ab981b7",
         "value" : "NA",
         "label" : "Number assigned            T",
         "codeSystem" : "HL70119",
@@ -610,7 +610,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b27",
+        "id" : "565f3094d4c64df77ab981b8",
         "value" : "NW",
         "label" : "New order                  T",
         "codeSystem" : "HL70119",
@@ -619,7 +619,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b28",
+        "id" : "565f3094d4c64df77ab981b9",
         "value" : "OD",
         "label" : "Order discontinued            F",
         "codeSystem" : "HL70119",
@@ -628,7 +628,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b29",
+        "id" : "565f3094d4c64df77ab981ba",
         "value" : "OK",
         "label" : "Order accepted & OK           F",
         "codeSystem" : "HL70119",
@@ -637,7 +637,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b2a",
+        "id" : "565f3094d4c64df77ab981bb",
         "value" : "OR",
         "label" : "Released as requested         F         E",
         "codeSystem" : "HL70119",
@@ -646,7 +646,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b2b",
+        "id" : "565f3094d4c64df77ab981bc",
         "value" : "PA",
         "label" : "Parent order                  F         F",
         "codeSystem" : "HL70119",
@@ -655,7 +655,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b2c",
+        "id" : "565f3094d4c64df77ab981bd",
         "value" : "RE",
         "label" : "Observations to follow     T  F         D,E",
         "codeSystem" : "HL70119",
@@ -664,7 +664,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b2d",
+        "id" : "565f3094d4c64df77ab981be",
         "value" : "RO",
         "label" : "Replacement order          T  F",
         "codeSystem" : "HL70119",
@@ -673,7 +673,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b2e",
+        "id" : "565f3094d4c64df77ab981bf",
         "value" : "RP",
         "label" : "Order replace request      T            C",
         "codeSystem" : "HL70119",
@@ -682,7 +682,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b2f",
+        "id" : "565f3094d4c64df77ab981c0",
         "value" : "RR",
         "label" : "Request received           T  F         G",
         "codeSystem" : "HL70119",
@@ -691,7 +691,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b30",
+        "id" : "565f3094d4c64df77ab981c1",
         "value" : "RU",
         "label" : "Replacement unsolicited       F         C",
         "codeSystem" : "HL70119",
@@ -700,7 +700,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b31",
+        "id" : "565f3094d4c64df77ab981c2",
         "value" : "SN",
         "label" : "Send filler number            F         I",
         "codeSystem" : "HL70119",
@@ -709,7 +709,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b32",
+        "id" : "565f3094d4c64df77ab981c3",
         "value" : "SS",
         "label" : "Send order status          T",
         "codeSystem" : "HL70119",
@@ -718,7 +718,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b33",
+        "id" : "565f3094d4c64df77ab981c4",
         "value" : "UD",
         "label" : "Unable to Discontinue         F",
         "codeSystem" : "HL70119",
@@ -727,7 +727,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b34",
+        "id" : "565f3094d4c64df77ab981c5",
         "value" : "UH",
         "label" : "Unable to put on hold         F",
         "codeSystem" : "HL70119",
@@ -736,7 +736,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b35",
+        "id" : "565f3094d4c64df77ab981c6",
         "value" : "UR",
         "label" : "Unable to release             F",
         "codeSystem" : "HL70119",
@@ -745,7 +745,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b36",
+        "id" : "565f3094d4c64df77ab981c7",
         "value" : "UX",
         "label" : "Unable to change              F",
         "codeSystem" : "HL70119",
@@ -754,7 +754,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b37",
+        "id" : "565f3094d4c64df77ab981c8",
         "value" : "XR",
         "label" : "Changed as requested          F",
         "codeSystem" : "HL70119",
@@ -763,7 +763,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b38",
+        "id" : "565f3094d4c64df77ab981c9",
         "value" : "XX",
         "label" : "Order changed, unsol.         F",
         "codeSystem" : "HL70119",
@@ -773,7 +773,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d424095d",
+      "id" : "565f3094d4c64df77ab97fee",
       "bindingIdentifier" : "0091",
       "name" : "QUERY PRIORITY",
       "description" : "QUERY PRIORITY",
@@ -786,7 +786,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424095e",
+        "id" : "565f3094d4c64df77ab97fef",
         "value" : "D",
         "label" : "Deferred",
         "codeSystem" : "HL70091",
@@ -795,7 +795,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424095f",
+        "id" : "565f3094d4c64df77ab97ff0",
         "value" : "I",
         "label" : "Immediate",
         "codeSystem" : "HL70091",
@@ -805,7 +805,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409ba",
+      "id" : "565f3094d4c64df77ab9804b",
       "bindingIdentifier" : "0088",
       "name" : "PROCEDURE CODE",
       "description" : "PROCEDURE CODE",
@@ -819,7 +819,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a7e",
+      "id" : "565f3094d4c64df77ab9810f",
       "bindingIdentifier" : "0057",
       "name" : "DRUG CODE",
       "description" : "DRUG CODE",
@@ -833,7 +833,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a7a",
+      "id" : "565f3094d4c64df77ab9810b",
       "bindingIdentifier" : "0060",
       "name" : "ERROR CODE",
       "description" : "ERROR CODE",
@@ -847,7 +847,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a12",
+      "id" : "565f3094d4c64df77ab980a3",
       "bindingIdentifier" : "0041",
       "name" : "VOLUME UNIT OF MEASURE",
       "description" : "VOLUME UNIT OF MEASURE",
@@ -861,7 +861,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409fd",
+      "id" : "565f3094d4c64df77ab9808e",
       "bindingIdentifier" : "0012",
       "name" : "STOCK LOCATION",
       "description" : "STOCK LOCATION",
@@ -874,7 +874,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409fe",
+        "id" : "565f3094d4c64df77ab9808f",
         "value" : "FL",
         "label" : "Filled from floor stock",
         "codeSystem" : "HL70012",
@@ -884,7 +884,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409d1",
+      "id" : "565f3094d4c64df77ab98062",
       "bindingIdentifier" : "0009",
       "name" : "AMBULATORY STATUS",
       "description" : "AMBULATORY STATUS",
@@ -897,7 +897,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409d2",
+        "id" : "565f3094d4c64df77ab98063",
         "value" : "A0",
         "label" : "No functional limitations",
         "codeSystem" : "HL70009",
@@ -906,7 +906,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409d3",
+        "id" : "565f3094d4c64df77ab98064",
         "value" : "A2",
         "label" : "Wheelchair/stretcher bound",
         "codeSystem" : "HL70009",
@@ -915,7 +915,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409d4",
+        "id" : "565f3094d4c64df77ab98065",
         "value" : "A3",
         "label" : "Comatose; non-responsive",
         "codeSystem" : "HL70009",
@@ -924,7 +924,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409d5",
+        "id" : "565f3094d4c64df77ab98066",
         "value" : "A4",
         "label" : "Disoriented",
         "codeSystem" : "HL70009",
@@ -933,7 +933,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409d6",
+        "id" : "565f3094d4c64df77ab98067",
         "value" : "A5",
         "label" : "Vision impaired",
         "codeSystem" : "HL70009",
@@ -942,7 +942,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409d7",
+        "id" : "565f3094d4c64df77ab98068",
         "value" : "A7",
         "label" : "Speech impaired",
         "codeSystem" : "HL70009",
@@ -951,7 +951,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409d8",
+        "id" : "565f3094d4c64df77ab98069",
         "value" : "A8",
         "label" : "Non-English Speaking",
         "codeSystem" : "HL70009",
@@ -960,7 +960,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409d9",
+        "id" : "565f3094d4c64df77ab9806a",
         "value" : "A9",
         "label" : "Functional level unknown",
         "codeSystem" : "HL70009",
@@ -969,7 +969,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409da",
+        "id" : "565f3094d4c64df77ab9806b",
         "value" : "B2",
         "label" : "Special Equipment (tunes, IV's, Catheters)",
         "codeSystem" : "HL70009",
@@ -978,7 +978,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409db",
+        "id" : "565f3094d4c64df77ab9806c",
         "value" : "B3",
         "label" : "Amputee",
         "codeSystem" : "HL70009",
@@ -987,7 +987,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409dc",
+        "id" : "565f3094d4c64df77ab9806d",
         "value" : "B4",
         "label" : "Mastectomy",
         "codeSystem" : "HL70009",
@@ -996,7 +996,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409dd",
+        "id" : "565f3094d4c64df77ab9806e",
         "value" : "B5",
         "label" : "Paraplegic",
         "codeSystem" : "HL70009",
@@ -1005,7 +1005,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409de",
+        "id" : "565f3094d4c64df77ab9806f",
         "value" : "B6",
         "label" : "Pregnant",
         "codeSystem" : "HL70009",
@@ -1015,7 +1015,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a1d",
+      "id" : "565f3094d4c64df77ab980ae",
       "bindingIdentifier" : "0035",
       "name" : "UNIT OF MEASURE FOR THE SOLUTION RATE",
       "description" : "UNIT OF MEASURE FOR THE SOLUTION RATE",
@@ -1029,7 +1029,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240aea",
+      "id" : "565f3094d4c64df77ab9817b",
       "bindingIdentifier" : "0108",
       "name" : "QUERY RESULTS LEVEL",
       "description" : "QUERY RESULTS LEVEL",
@@ -1042,7 +1042,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aeb",
+        "id" : "565f3094d4c64df77ab9817c",
         "value" : "O",
         "label" : "Order plus order status",
         "codeSystem" : "HL70108",
@@ -1051,7 +1051,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aec",
+        "id" : "565f3094d4c64df77ab9817d",
         "value" : "S",
         "label" : "Status only",
         "codeSystem" : "HL70108",
@@ -1060,7 +1060,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aed",
+        "id" : "565f3094d4c64df77ab9817e",
         "value" : "T",
         "label" : "Full Results",
         "codeSystem" : "HL70108",
@@ -1070,7 +1070,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409ce",
+      "id" : "565f3094d4c64df77ab9805f",
       "bindingIdentifier" : "0008",
       "name" : "ACKNOWLEDGMENT CODE",
       "description" : "ACKNOWLEDGMENT CODE",
@@ -1083,7 +1083,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409cf",
+        "id" : "565f3094d4c64df77ab98060",
         "value" : "AA",
         "label" : "Application Accept",
         "codeSystem" : "HL70008",
@@ -1092,7 +1092,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409d0",
+        "id" : "565f3094d4c64df77ab98061",
         "value" : "AR",
         "label" : "Application Reject",
         "codeSystem" : "HL70008",
@@ -1102,7 +1102,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a69",
+      "id" : "565f3094d4c64df77ab980fa",
       "bindingIdentifier" : "0046",
       "name" : "CREDIT RATING",
       "description" : "CREDIT RATING",
@@ -1116,7 +1116,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a4b",
+      "id" : "565f3094d4c64df77ab980dc",
       "bindingIdentifier" : "0051",
       "name" : "DIAGNOSIS CODE",
       "description" : "DIAGNOSIS CODE",
@@ -1130,7 +1130,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a0d",
+      "id" : "565f3094d4c64df77ab9809e",
       "bindingIdentifier" : "0022",
       "name" : "BILLING STATUS",
       "description" : "BILLING STATUS",
@@ -1144,7 +1144,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240997",
+      "id" : "565f3094d4c64df77ab98028",
       "bindingIdentifier" : "0003",
       "name" : "EVENT TYPE CODE",
       "description" : "EVENT TYPE CODE",
@@ -1157,7 +1157,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240998",
+        "id" : "565f3094d4c64df77ab98029",
         "value" : "A01",
         "label" : "Admit a patient",
         "codeSystem" : "HL70003",
@@ -1166,7 +1166,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240999",
+        "id" : "565f3094d4c64df77ab9802a",
         "value" : "A02",
         "label" : "Transfer a Patient",
         "codeSystem" : "HL70003",
@@ -1175,7 +1175,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424099a",
+        "id" : "565f3094d4c64df77ab9802b",
         "value" : "A03",
         "label" : "Discharge a Patient",
         "codeSystem" : "HL70003",
@@ -1184,7 +1184,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424099b",
+        "id" : "565f3094d4c64df77ab9802c",
         "value" : "A04",
         "label" : "Register a Patient",
         "codeSystem" : "HL70003",
@@ -1193,7 +1193,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424099c",
+        "id" : "565f3094d4c64df77ab9802d",
         "value" : "A05",
         "label" : "Pre-admit a Patient",
         "codeSystem" : "HL70003",
@@ -1202,7 +1202,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424099d",
+        "id" : "565f3094d4c64df77ab9802e",
         "value" : "A06",
         "label" : "Transfer an outpatient to inpatient",
         "codeSystem" : "HL70003",
@@ -1211,7 +1211,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424099e",
+        "id" : "565f3094d4c64df77ab9802f",
         "value" : "A07",
         "label" : "Transfer an Inpatient to Outpatient",
         "codeSystem" : "HL70003",
@@ -1220,7 +1220,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424099f",
+        "id" : "565f3094d4c64df77ab98030",
         "value" : "A08",
         "label" : "Update patient information",
         "codeSystem" : "HL70003",
@@ -1229,7 +1229,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409a0",
+        "id" : "565f3094d4c64df77ab98031",
         "value" : "A09",
         "label" : "Patient departing",
         "codeSystem" : "HL70003",
@@ -1238,7 +1238,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409a1",
+        "id" : "565f3094d4c64df77ab98032",
         "value" : "A10",
         "label" : "Patient arriving",
         "codeSystem" : "HL70003",
@@ -1247,7 +1247,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409a2",
+        "id" : "565f3094d4c64df77ab98033",
         "value" : "A11",
         "label" : "Cancel admit",
         "codeSystem" : "HL70003",
@@ -1256,7 +1256,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409a3",
+        "id" : "565f3094d4c64df77ab98034",
         "value" : "A12",
         "label" : "Cancel transfer",
         "codeSystem" : "HL70003",
@@ -1265,7 +1265,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409a4",
+        "id" : "565f3094d4c64df77ab98035",
         "value" : "A13",
         "label" : "Cancel discharge",
         "codeSystem" : "HL70003",
@@ -1274,7 +1274,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409a5",
+        "id" : "565f3094d4c64df77ab98036",
         "value" : "A14",
         "label" : "Pending admit",
         "codeSystem" : "HL70003",
@@ -1283,7 +1283,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409a6",
+        "id" : "565f3094d4c64df77ab98037",
         "value" : "A15",
         "label" : "Pending transfer",
         "codeSystem" : "HL70003",
@@ -1292,7 +1292,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409a7",
+        "id" : "565f3094d4c64df77ab98038",
         "value" : "A16",
         "label" : "Pending discharge",
         "codeSystem" : "HL70003",
@@ -1301,7 +1301,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409a8",
+        "id" : "565f3094d4c64df77ab98039",
         "value" : "A17",
         "label" : "Swap Patients",
         "codeSystem" : "HL70003",
@@ -1310,7 +1310,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409a9",
+        "id" : "565f3094d4c64df77ab9803a",
         "value" : "A18",
         "label" : "Merge patient information",
         "codeSystem" : "HL70003",
@@ -1319,7 +1319,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409aa",
+        "id" : "565f3094d4c64df77ab9803b",
         "value" : "A20",
         "label" : "Bed status updates",
         "codeSystem" : "HL70003",
@@ -1328,7 +1328,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409ab",
+        "id" : "565f3094d4c64df77ab9803c",
         "value" : "A21",
         "label" : "Leave of Absence - Out (leaving)",
         "codeSystem" : "HL70003",
@@ -1337,7 +1337,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409ac",
+        "id" : "565f3094d4c64df77ab9803d",
         "value" : "A22",
         "label" : "Leave of Absence - In (returning)",
         "codeSystem" : "HL70003",
@@ -1346,7 +1346,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409ad",
+        "id" : "565f3094d4c64df77ab9803e",
         "value" : "A23",
         "label" : "Delete a Patient Record",
         "codeSystem" : "HL70003",
@@ -1355,7 +1355,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409ae",
+        "id" : "565f3094d4c64df77ab9803f",
         "value" : "A24",
         "label" : "Link Patient Records",
         "codeSystem" : "HL70003",
@@ -1364,7 +1364,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409af",
+        "id" : "565f3094d4c64df77ab98040",
         "value" : "O02",
         "label" : "Order response",
         "codeSystem" : "HL70003",
@@ -1373,7 +1373,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409b0",
+        "id" : "565f3094d4c64df77ab98041",
         "value" : "P01",
         "label" : "Add and update patient account",
         "codeSystem" : "HL70003",
@@ -1382,7 +1382,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409b1",
+        "id" : "565f3094d4c64df77ab98042",
         "value" : "P03",
         "label" : "Post detail financial transaction",
         "codeSystem" : "HL70003",
@@ -1391,7 +1391,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409b2",
+        "id" : "565f3094d4c64df77ab98043",
         "value" : "P04",
         "label" : "Generate bills and A/R statements",
         "codeSystem" : "HL70003",
@@ -1400,7 +1400,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409b3",
+        "id" : "565f3094d4c64df77ab98044",
         "value" : "Q02",
         "label" : "Deferred Access",
         "codeSystem" : "HL70003",
@@ -1409,7 +1409,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409b4",
+        "id" : "565f3094d4c64df77ab98045",
         "value" : "R01",
         "label" : "Unsolicited transmission of requested Observ.",
         "codeSystem" : "HL70003",
@@ -1418,7 +1418,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409b5",
+        "id" : "565f3094d4c64df77ab98046",
         "value" : "R03",
         "label" : "Display oriented results, query/unsol. update",
         "codeSystem" : "HL70003",
@@ -1428,7 +1428,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a81",
+      "id" : "565f3094d4c64df77ab98112",
       "bindingIdentifier" : "0056",
       "name" : "DRG GROUPER REVIEW CODE",
       "description" : "DRG GROUPER REVIEW CODE",
@@ -1442,7 +1442,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a29",
+      "id" : "565f3094d4c64df77ab980ba",
       "bindingIdentifier" : "0033",
       "name" : "ROUTE",
       "description" : "ROUTE",
@@ -1455,7 +1455,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a2a",
+        "id" : "565f3094d4c64df77ab980bb",
         "value" : "AP",
         "label" : "Apply externally",
         "codeSystem" : "HL70033",
@@ -1464,7 +1464,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a2b",
+        "id" : "565f3094d4c64df77ab980bc",
         "value" : "CH",
         "label" : "Chew",
         "codeSystem" : "HL70033",
@@ -1473,7 +1473,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a2c",
+        "id" : "565f3094d4c64df77ab980bd",
         "value" : "DU",
         "label" : "Dust",
         "codeSystem" : "HL70033",
@@ -1482,7 +1482,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a2d",
+        "id" : "565f3094d4c64df77ab980be",
         "value" : "EA",
         "label" : "Ear",
         "codeSystem" : "HL70033",
@@ -1491,7 +1491,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a2e",
+        "id" : "565f3094d4c64df77ab980bf",
         "value" : "EY",
         "label" : "Eye",
         "codeSystem" : "HL70033",
@@ -1500,7 +1500,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a2f",
+        "id" : "565f3094d4c64df77ab980c0",
         "value" : "IA",
         "label" : "Intro-arterial",
         "codeSystem" : "HL70033",
@@ -1509,7 +1509,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a30",
+        "id" : "565f3094d4c64df77ab980c1",
         "value" : "ID",
         "label" : "Intra-dermal",
         "codeSystem" : "HL70033",
@@ -1518,7 +1518,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a31",
+        "id" : "565f3094d4c64df77ab980c2",
         "value" : "IF",
         "label" : "Infiltrate",
         "codeSystem" : "HL70033",
@@ -1527,7 +1527,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a32",
+        "id" : "565f3094d4c64df77ab980c3",
         "value" : "IH",
         "label" : "Inhalation",
         "codeSystem" : "HL70033",
@@ -1536,7 +1536,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a33",
+        "id" : "565f3094d4c64df77ab980c4",
         "value" : "IM",
         "label" : "Intra-muscular",
         "codeSystem" : "HL70033",
@@ -1545,7 +1545,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a34",
+        "id" : "565f3094d4c64df77ab980c5",
         "value" : "IN",
         "label" : "Intra-nasal",
         "codeSystem" : "HL70033",
@@ -1554,7 +1554,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a35",
+        "id" : "565f3094d4c64df77ab980c6",
         "value" : "IR",
         "label" : "Irrigate",
         "codeSystem" : "HL70033",
@@ -1563,7 +1563,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a36",
+        "id" : "565f3094d4c64df77ab980c7",
         "value" : "IS",
         "label" : "Inserted",
         "codeSystem" : "HL70033",
@@ -1572,7 +1572,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a37",
+        "id" : "565f3094d4c64df77ab980c8",
         "value" : "IT",
         "label" : "Intrathecal",
         "codeSystem" : "HL70033",
@@ -1581,7 +1581,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a38",
+        "id" : "565f3094d4c64df77ab980c9",
         "value" : "IV",
         "label" : "Intravenous",
         "codeSystem" : "HL70033",
@@ -1590,7 +1590,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a39",
+        "id" : "565f3094d4c64df77ab980ca",
         "value" : "NB",
         "label" : "Nebulized",
         "codeSystem" : "HL70033",
@@ -1599,7 +1599,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a3a",
+        "id" : "565f3094d4c64df77ab980cb",
         "value" : "NG",
         "label" : "Nathogasic",
         "codeSystem" : "HL70033",
@@ -1608,7 +1608,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a3b",
+        "id" : "565f3094d4c64df77ab980cc",
         "value" : "PA",
         "label" : "Peri-anally",
         "codeSystem" : "HL70033",
@@ -1617,7 +1617,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a3c",
+        "id" : "565f3094d4c64df77ab980cd",
         "value" : "PT",
         "label" : "Paint",
         "codeSystem" : "HL70033",
@@ -1626,7 +1626,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a3d",
+        "id" : "565f3094d4c64df77ab980ce",
         "value" : "PU",
         "label" : "IV push",
         "codeSystem" : "HL70033",
@@ -1635,7 +1635,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a3e",
+        "id" : "565f3094d4c64df77ab980cf",
         "value" : "RC",
         "label" : "Rectally",
         "codeSystem" : "HL70033",
@@ -1644,7 +1644,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a3f",
+        "id" : "565f3094d4c64df77ab980d0",
         "value" : "SH",
         "label" : "Shampoo",
         "codeSystem" : "HL70033",
@@ -1653,7 +1653,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a40",
+        "id" : "565f3094d4c64df77ab980d1",
         "value" : "SL",
         "label" : "Sublingual",
         "codeSystem" : "HL70033",
@@ -1662,7 +1662,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a41",
+        "id" : "565f3094d4c64df77ab980d2",
         "value" : "SO",
         "label" : "Soak",
         "codeSystem" : "HL70033",
@@ -1671,7 +1671,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a42",
+        "id" : "565f3094d4c64df77ab980d3",
         "value" : "SS",
         "label" : "IV soluset",
         "codeSystem" : "HL70033",
@@ -1680,7 +1680,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a43",
+        "id" : "565f3094d4c64df77ab980d4",
         "value" : "TP",
         "label" : "Topically",
         "codeSystem" : "HL70033",
@@ -1689,7 +1689,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a44",
+        "id" : "565f3094d4c64df77ab980d5",
         "value" : "WA",
         "label" : "Wash",
         "codeSystem" : "HL70033",
@@ -1698,7 +1698,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a45",
+        "id" : "565f3094d4c64df77ab980d6",
         "value" : "WI",
         "label" : "Wipe",
         "codeSystem" : "HL70033",
@@ -1708,7 +1708,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240960",
+      "id" : "565f3094d4c64df77ab97ff1",
       "bindingIdentifier" : "0092",
       "name" : "RE-ADMISSION INDICATOR",
       "description" : "RE-ADMISSION INDICATOR",
@@ -1722,7 +1722,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d424098e",
+      "id" : "565f3094d4c64df77ab9801f",
       "bindingIdentifier" : "0123",
       "name" : "RESULT STATUS - OBR",
       "description" : "RESULT STATUS - OBR",
@@ -1735,7 +1735,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424098f",
+        "id" : "565f3094d4c64df77ab98020",
         "value" : "C",
         "label" : "Correction of previously transmitted results",
         "codeSystem" : "HL70123",
@@ -1744,7 +1744,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240990",
+        "id" : "565f3094d4c64df77ab98021",
         "value" : "F",
         "label" : "Final results - results stored & verified",
         "codeSystem" : "HL70123",
@@ -1753,7 +1753,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240991",
+        "id" : "565f3094d4c64df77ab98022",
         "value" : "I",
         "label" : "Specimen in lab, not yet processed.",
         "codeSystem" : "HL70123",
@@ -1762,7 +1762,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240992",
+        "id" : "565f3094d4c64df77ab98023",
         "value" : "P",
         "label" : "Preliminary results",
         "codeSystem" : "HL70123",
@@ -1771,7 +1771,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240993",
+        "id" : "565f3094d4c64df77ab98024",
         "value" : "R",
         "label" : "Results stored - not yet verified",
         "codeSystem" : "HL70123",
@@ -1780,7 +1780,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240994",
+        "id" : "565f3094d4c64df77ab98025",
         "value" : "S",
         "label" : "Procedure scheduled, not done",
         "codeSystem" : "HL70123",
@@ -1789,7 +1789,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240995",
+        "id" : "565f3094d4c64df77ab98026",
         "value" : "Y",
         "label" : "No order on record for this test",
         "codeSystem" : "HL70123",
@@ -1798,7 +1798,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240996",
+        "id" : "565f3094d4c64df77ab98027",
         "value" : "Z",
         "label" : "No record of this patient",
         "codeSystem" : "HL70123",
@@ -1808,7 +1808,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240aac",
+      "id" : "565f3094d4c64df77ab9813d",
       "bindingIdentifier" : "0071",
       "name" : "UNUSED TABLE",
       "description" : "UNUSED TABLE",
@@ -1822,7 +1822,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409bb",
+      "id" : "565f3094d4c64df77ab9804c",
       "bindingIdentifier" : "0121",
       "name" : "RESPONSE FLAG",
       "description" : "RESPONSE FLAG",
@@ -1835,7 +1835,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409bc",
+        "id" : "565f3094d4c64df77ab9804d",
         "value" : "E",
         "label" : "Report exceptions only.",
         "codeSystem" : "HL70121",
@@ -1844,7 +1844,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409bd",
+        "id" : "565f3094d4c64df77ab9804e",
         "value" : "F",
         "label" : "Same as D, plus confirmations explicitly.",
         "codeSystem" : "HL70121",
@@ -1853,7 +1853,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409be",
+        "id" : "565f3094d4c64df77ab9804f",
         "value" : "N",
         "label" : "Only the MSA segment is returned.",
         "codeSystem" : "HL70121",
@@ -1863,7 +1863,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240adc",
+      "id" : "565f3094d4c64df77ab9816d",
       "bindingIdentifier" : "0102",
       "name" : "DELAYED ACKNOWLEDGMENT TYPE",
       "description" : "DELAYED ACKNOWLEDGMENT TYPE",
@@ -1876,7 +1876,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240add",
+        "id" : "565f3094d4c64df77ab9816e",
         "value" : "D",
         "label" : "Message Received, stored for later processing",
         "codeSystem" : "HL70102",
@@ -1886,7 +1886,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a04",
+      "id" : "565f3094d4c64df77ab98095",
       "bindingIdentifier" : "0029",
       "name" : "UNIT OF MEASURE",
       "description" : "UNIT OF MEASURE",
@@ -1900,7 +1900,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240ae0",
+      "id" : "565f3094d4c64df77ab98171",
       "bindingIdentifier" : "0100",
       "name" : "WHEN TO CHARGE",
       "description" : "WHEN TO CHARGE",
@@ -1913,7 +1913,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ae1",
+        "id" : "565f3094d4c64df77ab98172",
         "value" : "D",
         "label" : "On discharge",
         "codeSystem" : "HL70100",
@@ -1922,7 +1922,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ae2",
+        "id" : "565f3094d4c64df77ab98173",
         "value" : "O",
         "label" : "On receipt of order",
         "codeSystem" : "HL70100",
@@ -1931,7 +1931,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ae3",
+        "id" : "565f3094d4c64df77ab98174",
         "value" : "R",
         "label" : "At time service is completed",
         "codeSystem" : "HL70100",
@@ -1940,7 +1940,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ae4",
+        "id" : "565f3094d4c64df77ab98175",
         "value" : "S",
         "label" : "At time service is started",
         "codeSystem" : "HL70100",
@@ -1950,7 +1950,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a68",
+      "id" : "565f3094d4c64df77ab980f9",
       "bindingIdentifier" : "0049",
       "name" : "DEPARTMENT CODE",
       "description" : "DEPARTMENT CODE",
@@ -1964,7 +1964,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b08",
+      "id" : "565f3094d4c64df77ab98199",
       "bindingIdentifier" : "0112",
       "name" : "DISCHARGED DISPOSITION",
       "description" : "DISCHARGED DISPOSITION",
@@ -1978,7 +1978,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240970",
+      "id" : "565f3094d4c64df77ab98001",
       "bindingIdentifier" : "0004",
       "name" : "PATIENT CLASS",
       "description" : "PATIENT CLASS",
@@ -1991,7 +1991,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240971",
+        "id" : "565f3094d4c64df77ab98002",
         "value" : "E",
         "label" : "Emergency",
         "codeSystem" : "HL70004",
@@ -2000,7 +2000,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240972",
+        "id" : "565f3094d4c64df77ab98003",
         "value" : "I",
         "label" : "Inpatient",
         "codeSystem" : "HL70004",
@@ -2009,7 +2009,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240973",
+        "id" : "565f3094d4c64df77ab98004",
         "value" : "O",
         "label" : "Outpatient",
         "codeSystem" : "HL70004",
@@ -2018,7 +2018,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240974",
+        "id" : "565f3094d4c64df77ab98005",
         "value" : "P",
         "label" : "Preadmit",
         "codeSystem" : "HL70004",
@@ -2028,7 +2028,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240961",
+      "id" : "565f3094d4c64df77ab97ff2",
       "bindingIdentifier" : "0006",
       "name" : "RELIGION",
       "description" : "RELIGION",
@@ -2041,7 +2041,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240962",
+        "id" : "565f3094d4c64df77ab97ff3",
         "value" : "A",
         "label" : "Atheist",
         "codeSystem" : "HL70006",
@@ -2050,7 +2050,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240963",
+        "id" : "565f3094d4c64df77ab97ff4",
         "value" : "B",
         "label" : "Baptist",
         "codeSystem" : "HL70006",
@@ -2059,7 +2059,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240964",
+        "id" : "565f3094d4c64df77ab97ff5",
         "value" : "C",
         "label" : "Catholic",
         "codeSystem" : "HL70006",
@@ -2068,7 +2068,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240965",
+        "id" : "565f3094d4c64df77ab97ff6",
         "value" : "E",
         "label" : "Episcopalian",
         "codeSystem" : "HL70006",
@@ -2077,7 +2077,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240966",
+        "id" : "565f3094d4c64df77ab97ff7",
         "value" : "J",
         "label" : "Judaism",
         "codeSystem" : "HL70006",
@@ -2086,7 +2086,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240967",
+        "id" : "565f3094d4c64df77ab97ff8",
         "value" : "L",
         "label" : "Lutheran",
         "codeSystem" : "HL70006",
@@ -2095,7 +2095,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240968",
+        "id" : "565f3094d4c64df77ab97ff9",
         "value" : "M",
         "label" : "Church of Latter Day Saints (Mormon)",
         "codeSystem" : "HL70006",
@@ -2104,7 +2104,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240969",
+        "id" : "565f3094d4c64df77ab97ffa",
         "value" : "N",
         "label" : "Hindu",
         "codeSystem" : "HL70006",
@@ -2113,7 +2113,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424096a",
+        "id" : "565f3094d4c64df77ab97ffb",
         "value" : "P",
         "label" : "Protestant",
         "codeSystem" : "HL70006",
@@ -2123,7 +2123,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a6b",
+      "id" : "565f3094d4c64df77ab980fc",
       "bindingIdentifier" : "0044",
       "name" : "CONTRACT CODE",
       "description" : "CONTRACT CODE",
@@ -2137,7 +2137,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a05",
+      "id" : "565f3094d4c64df77ab98096",
       "bindingIdentifier" : "0026",
       "name" : "ORDER EVENT TYPE",
       "description" : "ORDER EVENT TYPE",
@@ -2151,7 +2151,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a90",
+      "id" : "565f3094d4c64df77ab98121",
       "bindingIdentifier" : "0074",
       "name" : "DIAGNOSTIC SERVICE SECTION ID",
       "description" : "DIAGNOSTIC SERVICE SECTION ID",
@@ -2164,7 +2164,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a91",
+        "id" : "565f3094d4c64df77ab98122",
         "value" : "BG",
         "label" : "Blood Gases",
         "codeSystem" : "HL70074",
@@ -2173,7 +2173,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a92",
+        "id" : "565f3094d4c64df77ab98123",
         "value" : "CH",
         "label" : "Chemistry",
         "codeSystem" : "HL70074",
@@ -2182,7 +2182,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a93",
+        "id" : "565f3094d4c64df77ab98124",
         "value" : "CP",
         "label" : "Cytopathology",
         "codeSystem" : "HL70074",
@@ -2191,7 +2191,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a94",
+        "id" : "565f3094d4c64df77ab98125",
         "value" : "CT",
         "label" : "CAT scan",
         "codeSystem" : "HL70074",
@@ -2200,7 +2200,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a95",
+        "id" : "565f3094d4c64df77ab98126",
         "value" : "CUS",
         "label" : "Cardiac Ultrasound",
         "codeSystem" : "HL70074",
@@ -2209,7 +2209,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a96",
+        "id" : "565f3094d4c64df77ab98127",
         "value" : "EC",
         "label" : "Electrocardiac (e.g., EKG, EEC, Holter)",
         "codeSystem" : "HL70074",
@@ -2218,7 +2218,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a97",
+        "id" : "565f3094d4c64df77ab98128",
         "value" : "HM",
         "label" : "Hematology",
         "codeSystem" : "HL70074",
@@ -2227,7 +2227,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a98",
+        "id" : "565f3094d4c64df77ab98129",
         "value" : "IMM",
         "label" : "Immunology",
         "codeSystem" : "HL70074",
@@ -2236,7 +2236,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a99",
+        "id" : "565f3094d4c64df77ab9812a",
         "value" : "MB",
         "label" : "Microbiology",
         "codeSystem" : "HL70074",
@@ -2245,7 +2245,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a9a",
+        "id" : "565f3094d4c64df77ab9812b",
         "value" : "MCB",
         "label" : "Mycobacteriology",
         "codeSystem" : "HL70074",
@@ -2254,7 +2254,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a9b",
+        "id" : "565f3094d4c64df77ab9812c",
         "value" : "MYC",
         "label" : "Mycology",
         "codeSystem" : "HL70074",
@@ -2263,7 +2263,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a9c",
+        "id" : "565f3094d4c64df77ab9812d",
         "value" : "NMR",
         "label" : "Nuclear magnetic resonance",
         "codeSystem" : "HL70074",
@@ -2272,7 +2272,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a9d",
+        "id" : "565f3094d4c64df77ab9812e",
         "value" : "NMS",
         "label" : "Nuclear medicine scan",
         "codeSystem" : "HL70074",
@@ -2281,7 +2281,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a9e",
+        "id" : "565f3094d4c64df77ab9812f",
         "value" : "NRS",
         "label" : "Nursing service measures",
         "codeSystem" : "HL70074",
@@ -2290,7 +2290,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a9f",
+        "id" : "565f3094d4c64df77ab98130",
         "value" : "OT",
         "label" : "Occupational Therapy",
         "codeSystem" : "HL70074",
@@ -2299,7 +2299,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aa0",
+        "id" : "565f3094d4c64df77ab98131",
         "value" : "OTH",
         "label" : "Other",
         "codeSystem" : "HL70074",
@@ -2308,7 +2308,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aa1",
+        "id" : "565f3094d4c64df77ab98132",
         "value" : "OUS",
         "label" : "OB Ultrasound",
         "codeSystem" : "HL70074",
@@ -2317,7 +2317,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aa2",
+        "id" : "565f3094d4c64df77ab98133",
         "value" : "PHR",
         "label" : "Pharmacy",
         "codeSystem" : "HL70074",
@@ -2326,7 +2326,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aa3",
+        "id" : "565f3094d4c64df77ab98134",
         "value" : "PT",
         "label" : "Physical Therapy",
         "codeSystem" : "HL70074",
@@ -2335,7 +2335,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aa4",
+        "id" : "565f3094d4c64df77ab98135",
         "value" : "RC",
         "label" : "Respiratory Care",
         "codeSystem" : "HL70074",
@@ -2344,7 +2344,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aa5",
+        "id" : "565f3094d4c64df77ab98136",
         "value" : "RT",
         "label" : "Radiation Therapy",
         "codeSystem" : "HL70074",
@@ -2353,7 +2353,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aa6",
+        "id" : "565f3094d4c64df77ab98137",
         "value" : "RUS",
         "label" : "Radiology ultrasound",
         "codeSystem" : "HL70074",
@@ -2362,7 +2362,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aa7",
+        "id" : "565f3094d4c64df77ab98138",
         "value" : "SP",
         "label" : "Surgical Pathology",
         "codeSystem" : "HL70074",
@@ -2371,7 +2371,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aa8",
+        "id" : "565f3094d4c64df77ab98139",
         "value" : "SR",
         "label" : "Serology",
         "codeSystem" : "HL70074",
@@ -2380,7 +2380,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aa9",
+        "id" : "565f3094d4c64df77ab9813a",
         "value" : "TX",
         "label" : "Toxicology",
         "codeSystem" : "HL70074",
@@ -2389,7 +2389,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aaa",
+        "id" : "565f3094d4c64df77ab9813b",
         "value" : "VUS",
         "label" : "Vascular Ultrasound",
         "codeSystem" : "HL70074",
@@ -2398,7 +2398,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aab",
+        "id" : "565f3094d4c64df77ab9813c",
         "value" : "XRC",
         "label" : "Cineradiography",
         "codeSystem" : "HL70074",
@@ -2408,7 +2408,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240aad",
+      "id" : "565f3094d4c64df77ab9813e",
       "bindingIdentifier" : "0072",
       "name" : "INS. PLAN ID",
       "description" : "INS. PLAN ID",
@@ -2422,7 +2422,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b0c",
+      "id" : "565f3094d4c64df77ab9819d",
       "bindingIdentifier" : "0078",
       "name" : "ABNORMAL FLAGS",
       "description" : "ABNORMAL FLAGS",
@@ -2435,7 +2435,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b0d",
+        "id" : "565f3094d4c64df77ab9819e",
         "value" : "<",
         "label" : "Below absolute low-off instrument scale",
         "codeSystem" : "HL70078",
@@ -2444,7 +2444,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b0e",
+        "id" : "565f3094d4c64df77ab9819f",
         "value" : "A",
         "label" : "Abnormal (applies to non-numeric results)",
         "codeSystem" : "HL70078",
@@ -2453,7 +2453,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b0f",
+        "id" : "565f3094d4c64df77ab981a0",
         "value" : "AA",
         "label" : "Very abnormal",
         "codeSystem" : "HL70078",
@@ -2462,7 +2462,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b10",
+        "id" : "565f3094d4c64df77ab981a1",
         "value" : "D",
         "label" : "Significant change down",
         "codeSystem" : "HL70078",
@@ -2471,7 +2471,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b11",
+        "id" : "565f3094d4c64df77ab981a2",
         "value" : "H",
         "label" : "Above high normal",
         "codeSystem" : "HL70078",
@@ -2480,7 +2480,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b12",
+        "id" : "565f3094d4c64df77ab981a3",
         "value" : "HH",
         "label" : "Above upper panic limits",
         "codeSystem" : "HL70078",
@@ -2489,7 +2489,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b13",
+        "id" : "565f3094d4c64df77ab981a4",
         "value" : "I",
         "label" : "Interval",
         "codeSystem" : "HL70078",
@@ -2498,7 +2498,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b14",
+        "id" : "565f3094d4c64df77ab981a5",
         "value" : "LL",
         "label" : "Below lower panic limits",
         "codeSystem" : "HL70078",
@@ -2507,7 +2507,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b15",
+        "id" : "565f3094d4c64df77ab981a6",
         "value" : "MS",
         "label" : "Moderately sensitive",
         "codeSystem" : "HL70078",
@@ -2516,7 +2516,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b16",
+        "id" : "565f3094d4c64df77ab981a7",
         "value" : "null",
         "label" : "No range defined,or normal ranges don't apply",
         "codeSystem" : "HL70078",
@@ -2525,7 +2525,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b17",
+        "id" : "565f3094d4c64df77ab981a8",
         "value" : "R",
         "label" : "Resists",
         "codeSystem" : "HL70078",
@@ -2534,7 +2534,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b18",
+        "id" : "565f3094d4c64df77ab981a9",
         "value" : "S",
         "label" : "Sensitive",
         "codeSystem" : "HL70078",
@@ -2543,7 +2543,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b19",
+        "id" : "565f3094d4c64df77ab981aa",
         "value" : "U",
         "label" : "Significant change up",
         "codeSystem" : "HL70078",
@@ -2552,7 +2552,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b1a",
+        "id" : "565f3094d4c64df77ab981ab",
         "value" : "VS",
         "label" : "Very sensitive",
         "codeSystem" : "HL70078",
@@ -2562,7 +2562,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a0c",
+      "id" : "565f3094d4c64df77ab9809d",
       "bindingIdentifier" : "0025",
       "name" : "CONFIRMATION CODE",
       "description" : "CONFIRMATION CODE",
@@ -2576,7 +2576,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240988",
+      "id" : "565f3094d4c64df77ab98019",
       "bindingIdentifier" : "0002",
       "name" : "MARITAL STATUS",
       "description" : "MARITAL STATUS",
@@ -2589,7 +2589,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240989",
+        "id" : "565f3094d4c64df77ab9801a",
         "value" : "A",
         "label" : "Separated",
         "codeSystem" : "HL70002",
@@ -2598,7 +2598,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424098a",
+        "id" : "565f3094d4c64df77ab9801b",
         "value" : "D",
         "label" : "Divorced",
         "codeSystem" : "HL70002",
@@ -2607,7 +2607,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424098b",
+        "id" : "565f3094d4c64df77ab9801c",
         "value" : "M",
         "label" : "Married",
         "codeSystem" : "HL70002",
@@ -2616,7 +2616,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424098c",
+        "id" : "565f3094d4c64df77ab9801d",
         "value" : "S",
         "label" : "Single",
         "codeSystem" : "HL70002",
@@ -2625,7 +2625,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424098d",
+        "id" : "565f3094d4c64df77ab9801e",
         "value" : "W",
         "label" : "Widowed",
         "codeSystem" : "HL70002",
@@ -2635,7 +2635,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b05",
+      "id" : "565f3094d4c64df77ab98196",
       "bindingIdentifier" : "0114",
       "name" : "DIET TYPE",
       "description" : "DIET TYPE",
@@ -2649,7 +2649,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a79",
+      "id" : "565f3094d4c64df77ab9810a",
       "bindingIdentifier" : "0063",
       "name" : "RELATIONSHIP",
       "description" : "RELATIONSHIP",
@@ -2663,7 +2663,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409e2",
+      "id" : "565f3094d4c64df77ab98073",
       "bindingIdentifier" : "0021",
       "name" : "BAD DEBT AGENCY CODE",
       "description" : "BAD DEBT AGENCY CODE",
@@ -2677,7 +2677,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240ae5",
+      "id" : "565f3094d4c64df77ab98176",
       "bindingIdentifier" : "0109",
       "name" : "REPORT PRIORITY",
       "description" : "REPORT PRIORITY",
@@ -2690,7 +2690,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ae6",
+        "id" : "565f3094d4c64df77ab98177",
         "value" : "R",
         "label" : "Routine",
         "codeSystem" : "HL70109",
@@ -2699,7 +2699,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ae7",
+        "id" : "565f3094d4c64df77ab98178",
         "value" : "S",
         "label" : "Stat",
         "codeSystem" : "HL70109",
@@ -2709,7 +2709,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a6c",
+      "id" : "565f3094d4c64df77ab980fd",
       "bindingIdentifier" : "0045",
       "name" : "COURTESY CODE",
       "description" : "COURTESY CODE",
@@ -2723,7 +2723,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a83",
+      "id" : "565f3094d4c64df77ab98114",
       "bindingIdentifier" : "0076",
       "name" : "MESSAGE TYPE",
       "description" : "MESSAGE TYPE",
@@ -2736,7 +2736,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a84",
+        "id" : "565f3094d4c64df77ab98115",
         "value" : "ACK",
         "label" : "General Acknowledgment       CNT       II",
         "codeSystem" : "HL70076",
@@ -2745,7 +2745,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a85",
+        "id" : "565f3094d4c64df77ab98116",
         "value" : "ARD",
         "label" : "Ancillary RPT (display)      ANR       VII",
         "codeSystem" : "HL70076",
@@ -2754,7 +2754,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a86",
+        "id" : "565f3094d4c64df77ab98117",
         "value" : "BAR",
         "label" : "Add/change billing account   BLN       VI",
         "codeSystem" : "HL70076",
@@ -2763,7 +2763,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a87",
+        "id" : "565f3094d4c64df77ab98118",
         "value" : "DSR",
         "label" : "Display response             QRY       V",
         "codeSystem" : "HL70076",
@@ -2772,7 +2772,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a88",
+        "id" : "565f3094d4c64df77ab98119",
         "value" : "MCF",
         "label" : "Delayed acknowledgment       CNT       II",
         "codeSystem" : "HL70076",
@@ -2781,7 +2781,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a89",
+        "id" : "565f3094d4c64df77ab9811a",
         "value" : "ORF",
         "label" : "Observ. Result/record resp.  ANR       VII",
         "codeSystem" : "HL70076",
@@ -2790,7 +2790,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a8a",
+        "id" : "565f3094d4c64df77ab9811b",
         "value" : "ORM",
         "label" : "Order                        ORD       IV",
         "codeSystem" : "HL70076",
@@ -2799,7 +2799,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a8b",
+        "id" : "565f3094d4c64df77ab9811c",
         "value" : "ORR",
         "label" : "Order response message       ORD       IV",
         "codeSystem" : "HL70076",
@@ -2808,7 +2808,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a8c",
+        "id" : "565f3094d4c64df77ab9811d",
         "value" : "ORU",
         "label" : "Observ. result/unsolicited   ANR       VII",
         "codeSystem" : "HL70076",
@@ -2817,7 +2817,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a8d",
+        "id" : "565f3094d4c64df77ab9811e",
         "value" : "OSQ",
         "label" : "Order status query           ORD       IV",
         "codeSystem" : "HL70076",
@@ -2826,7 +2826,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a8e",
+        "id" : "565f3094d4c64df77ab9811f",
         "value" : "UDM",
         "label" : "Unsolicited display          QRY       V",
         "codeSystem" : "HL70076",
@@ -2836,7 +2836,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a7d",
+      "id" : "565f3094d4c64df77ab9810e",
       "bindingIdentifier" : "0059",
       "name" : "CONSENT CODE",
       "description" : "CONSENT CODE",
@@ -2850,7 +2850,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240af9",
+      "id" : "565f3094d4c64df77ab9818a",
       "bindingIdentifier" : "0083",
       "name" : "OUTLIER TYPE",
       "description" : "OUTLIER TYPE",
@@ -2864,7 +2864,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a82",
+      "id" : "565f3094d4c64df77ab98113",
       "bindingIdentifier" : "0075",
       "name" : "REPORT TYPES",
       "description" : "REPORT TYPES",
@@ -2878,7 +2878,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240959",
+      "id" : "565f3094d4c64df77ab97fea",
       "bindingIdentifier" : "0095",
       "name" : "UNUSED TABLE",
       "description" : "UNUSED TABLE",
@@ -2892,7 +2892,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240956",
+      "id" : "565f3094d4c64df77ab97fe7",
       "bindingIdentifier" : "0097",
       "name" : "UNUSED TABLE",
       "description" : "UNUSED TABLE",
@@ -2906,7 +2906,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240975",
+      "id" : "565f3094d4c64df77ab98006",
       "bindingIdentifier" : "0125",
       "name" : "VALUE TYPE",
       "description" : "VALUE TYPE",
@@ -2919,7 +2919,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240976",
+        "id" : "565f3094d4c64df77ab98007",
         "value" : "AD",
         "label" : "Address",
         "codeSystem" : "HL70125",
@@ -2928,7 +2928,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240977",
+        "id" : "565f3094d4c64df77ab98008",
         "value" : "CK",
         "label" : "Composite ID with check digit",
         "codeSystem" : "HL70125",
@@ -2937,7 +2937,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240978",
+        "id" : "565f3094d4c64df77ab98009",
         "value" : "FT",
         "label" : "Formatted Text",
         "codeSystem" : "HL70125",
@@ -2946,7 +2946,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240979",
+        "id" : "565f3094d4c64df77ab9800a",
         "value" : "PN",
         "label" : "Person name",
         "codeSystem" : "HL70125",
@@ -2955,7 +2955,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424097a",
+        "id" : "565f3094d4c64df77ab9800b",
         "value" : "ST",
         "label" : "String data. Used to transmit numerics.",
         "codeSystem" : "HL70125",
@@ -2964,7 +2964,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424097b",
+        "id" : "565f3094d4c64df77ab9800c",
         "value" : "TM",
         "label" : "Time",
         "codeSystem" : "HL70125",
@@ -2973,7 +2973,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424097c",
+        "id" : "565f3094d4c64df77ab9800d",
         "value" : "TS",
         "label" : "Time stamp",
         "codeSystem" : "HL70125",
@@ -2982,7 +2982,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424097d",
+        "id" : "565f3094d4c64df77ab9800e",
         "value" : "TX",
         "label" : "Text",
         "codeSystem" : "HL70125",
@@ -2992,7 +2992,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a0a",
+      "id" : "565f3094d4c64df77ab9809b",
       "bindingIdentifier" : "0024",
       "name" : "FEE SCHEDULE",
       "description" : "FEE SCHEDULE",
@@ -3006,7 +3006,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a76",
+      "id" : "565f3094d4c64df77ab98107",
       "bindingIdentifier" : "0062",
       "name" : "EVENT REASON",
       "description" : "EVENT REASON",
@@ -3019,7 +3019,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a77",
+        "id" : "565f3094d4c64df77ab98108",
         "value" : "01",
         "label" : "Patient Request",
         "codeSystem" : "HL70062",
@@ -3028,7 +3028,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a78",
+        "id" : "565f3094d4c64df77ab98109",
         "value" : "02",
         "label" : "Physician Order",
         "codeSystem" : "HL70062",
@@ -3038,7 +3038,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a14",
+      "id" : "565f3094d4c64df77ab980a5",
       "bindingIdentifier" : "0037",
       "name" : "DRUG DOSE UNIT OF MEASURE",
       "description" : "DRUG DOSE UNIT OF MEASURE",
@@ -3052,7 +3052,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409f8",
+      "id" : "565f3094d4c64df77ab98089",
       "bindingIdentifier" : "0014",
       "name" : "HEIGHT UNIT OF MEASURE",
       "description" : "HEIGHT UNIT OF MEASURE",
@@ -3066,7 +3066,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240983",
+      "id" : "565f3094d4c64df77ab98014",
       "bindingIdentifier" : "0126",
       "name" : "QUANTITY LIMITED REQUEST",
       "description" : "QUANTITY LIMITED REQUEST",
@@ -3079,7 +3079,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240984",
+        "id" : "565f3094d4c64df77ab98015",
         "value" : "CH",
         "label" : "Characters",
         "codeSystem" : "HL70126",
@@ -3088,7 +3088,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240985",
+        "id" : "565f3094d4c64df77ab98016",
         "value" : "LI",
         "label" : "Lines",
         "codeSystem" : "HL70126",
@@ -3097,7 +3097,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240986",
+        "id" : "565f3094d4c64df77ab98017",
         "value" : "PG",
         "label" : "Pages",
         "codeSystem" : "HL70126",
@@ -3106,7 +3106,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240987",
+        "id" : "565f3094d4c64df77ab98018",
         "value" : "ZO",
         "label" : "Locally defined",
         "codeSystem" : "HL70126",
@@ -3116,7 +3116,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240ad9",
+      "id" : "565f3094d4c64df77ab9816a",
       "bindingIdentifier" : "0068",
       "name" : "GUARANTOR TYPE",
       "description" : "GUARANTOR TYPE",
@@ -3130,7 +3130,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a8f",
+      "id" : "565f3094d4c64df77ab98120",
       "bindingIdentifier" : "0073",
       "name" : "INTEREST RATE CODE",
       "description" : "INTEREST RATE CODE",
@@ -3144,7 +3144,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409f7",
+      "id" : "565f3094d4c64df77ab98088",
       "bindingIdentifier" : "0013",
       "name" : "CHARGEABLE OR NON-CHARGEABLE",
       "description" : "CHARGEABLE OR NON-CHARGEABLE",
@@ -3158,7 +3158,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240af1",
+      "id" : "565f3094d4c64df77ab98182",
       "bindingIdentifier" : "0084",
       "name" : "PERFORMED BY CODE",
       "description" : "PERFORMED BY CODE",
@@ -3172,7 +3172,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b1b",
+      "id" : "565f3094d4c64df77ab981ac",
       "bindingIdentifier" : "0111",
       "name" : "DELETE ACCOUNT CODE",
       "description" : "DELETE ACCOUNT CODE",
@@ -3186,7 +3186,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a6a",
+      "id" : "565f3094d4c64df77ab980fb",
       "bindingIdentifier" : "0047",
       "name" : "DANGER CODE",
       "description" : "DANGER CODE",
@@ -3200,7 +3200,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d424095a",
+      "id" : "565f3094d4c64df77ab97feb",
       "bindingIdentifier" : "0096",
       "name" : "FINANCIAL TRANSACTION CODE",
       "description" : "FINANCIAL TRANSACTION CODE",
@@ -3214,7 +3214,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a4c",
+      "id" : "565f3094d4c64df77ab980dd",
       "bindingIdentifier" : "0052",
       "name" : "DIAGNOSIS TYPE",
       "description" : "DIAGNOSIS TYPE",
@@ -3227,7 +3227,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a4d",
+        "id" : "565f3094d4c64df77ab980de",
         "value" : "H1",
         "label" : "Einweisungsdiagnose",
         "codeSystem" : "HL70052",
@@ -3236,7 +3236,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a4e",
+        "id" : "565f3094d4c64df77ab980df",
         "value" : "H2",
         "label" : "Aufnahmediagnose",
         "codeSystem" : "HL70052",
@@ -3245,7 +3245,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a4f",
+        "id" : "565f3094d4c64df77ab980e0",
         "value" : "H3",
         "label" : "Verlegungsdiagnose",
         "codeSystem" : "HL70052",
@@ -3254,7 +3254,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a50",
+        "id" : "565f3094d4c64df77ab980e1",
         "value" : "H4",
         "label" : "Entlassungsdiagnose",
         "codeSystem" : "HL70052",
@@ -3263,7 +3263,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a51",
+        "id" : "565f3094d4c64df77ab980e2",
         "value" : "H5",
         "label" : "Arbeitsunfähigkeitsdiagnose",
         "codeSystem" : "HL70052",
@@ -3272,7 +3272,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a52",
+        "id" : "565f3094d4c64df77ab980e3",
         "value" : "H6",
         "label" : "Leiden",
         "codeSystem" : "HL70052",
@@ -3281,7 +3281,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a53",
+        "id" : "565f3094d4c64df77ab980e4",
         "value" : "N1",
         "label" : "Nebeneinweisungsdiagnose",
         "codeSystem" : "HL70052",
@@ -3290,7 +3290,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a54",
+        "id" : "565f3094d4c64df77ab980e5",
         "value" : "N2",
         "label" : "Nebenaufnahmediagnose",
         "codeSystem" : "HL70052",
@@ -3299,7 +3299,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a55",
+        "id" : "565f3094d4c64df77ab980e6",
         "value" : "N3",
         "label" : "Nebenverlegungsdiagnose",
         "codeSystem" : "HL70052",
@@ -3308,7 +3308,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a56",
+        "id" : "565f3094d4c64df77ab980e7",
         "value" : "N4",
         "label" : "Nebenentlassungsdiagnose",
         "codeSystem" : "HL70052",
@@ -3317,7 +3317,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a57",
+        "id" : "565f3094d4c64df77ab980e8",
         "value" : "N5",
         "label" : "Nebenarbeitsunfähigkeitsdiagnose",
         "codeSystem" : "HL70052",
@@ -3326,7 +3326,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a58",
+        "id" : "565f3094d4c64df77ab980e9",
         "value" : "N6",
         "label" : "Nebenleiden",
         "codeSystem" : "HL70052",
@@ -3336,7 +3336,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a11",
+      "id" : "565f3094d4c64df77ab980a2",
       "bindingIdentifier" : "0040",
       "name" : "UNUSED TABLE",
       "description" : "UNUSED TABLE",
@@ -3350,7 +3350,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b07",
+      "id" : "565f3094d4c64df77ab98198",
       "bindingIdentifier" : "0079",
       "name" : "LOCATION",
       "description" : "LOCATION",
@@ -3364,7 +3364,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409fc",
+      "id" : "565f3094d4c64df77ab9808d",
       "bindingIdentifier" : "0099",
       "name" : "VIP INDICATOR",
       "description" : "VIP INDICATOR",
@@ -3378,7 +3378,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a49",
+      "id" : "565f3094d4c64df77ab980da",
       "bindingIdentifier" : "0053",
       "name" : "DIAGNOSIS CODING METHOD",
       "description" : "DIAGNOSIS CODING METHOD",
@@ -3391,7 +3391,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a4a",
+        "id" : "565f3094d4c64df77ab980db",
         "value" : "I9",
         "label" : "ICD9",
         "codeSystem" : "HL70053",
@@ -3401,7 +3401,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240af2",
+      "id" : "565f3094d4c64df77ab98183",
       "bindingIdentifier" : "0085",
       "name" : "OBSERVATION RESULT STATUS",
       "description" : "OBSERVATION RESULT STATUS",
@@ -3414,7 +3414,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240af3",
+        "id" : "565f3094d4c64df77ab98184",
         "value" : "D",
         "label" : "Delete previously transmitted observation",
         "codeSystem" : "HL70085",
@@ -3423,7 +3423,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240af4",
+        "id" : "565f3094d4c64df77ab98185",
         "value" : "F",
         "label" : "Complete/final results (entered and verified)",
         "codeSystem" : "HL70085",
@@ -3432,7 +3432,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240af5",
+        "id" : "565f3094d4c64df77ab98186",
         "value" : "I",
         "label" : "Specimen in lab--results pending",
         "codeSystem" : "HL70085",
@@ -3441,7 +3441,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240af6",
+        "id" : "565f3094d4c64df77ab98187",
         "value" : "R",
         "label" : "Results entered - not verified",
         "codeSystem" : "HL70085",
@@ -3450,7 +3450,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240af7",
+        "id" : "565f3094d4c64df77ab98188",
         "value" : "S",
         "label" : "Partial results",
         "codeSystem" : "HL70085",
@@ -3460,7 +3460,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a7f",
+      "id" : "565f3094d4c64df77ab98110",
       "bindingIdentifier" : "0058",
       "name" : "UNUSED TABLE",
       "description" : "UNUSED TABLE",
@@ -3474,7 +3474,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a02",
+      "id" : "565f3094d4c64df77ab98093",
       "bindingIdentifier" : "0030",
       "name" : "FREQUENCY CODE",
       "description" : "FREQUENCY CODE",
@@ -3488,7 +3488,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a7b",
+      "id" : "565f3094d4c64df77ab9810c",
       "bindingIdentifier" : "0061",
       "name" : "CHECK DIGIT SCHEME",
       "description" : "CHECK DIGIT SCHEME",
@@ -3501,7 +3501,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a7c",
+        "id" : "565f3094d4c64df77ab9810d",
         "value" : "M11",
         "label" : "Mod 11 check digit scheme",
         "codeSystem" : "HL70061",
@@ -3511,7 +3511,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d424095c",
+      "id" : "565f3094d4c64df77ab97fed",
       "bindingIdentifier" : "0094",
       "name" : "REPORT OF ELIGIBILITY",
       "description" : "REPORT OF ELIGIBILITY",
@@ -3525,7 +3525,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240ad5",
+      "id" : "565f3094d4c64df77ab98166",
       "bindingIdentifier" : "0104",
       "name" : "VERSION CONTROL TABLE",
       "description" : "VERSION CONTROL TABLE",
@@ -3538,7 +3538,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ad6",
+        "id" : "565f3094d4c64df77ab98167",
         "value" : "2.0",
         "label" : "Release 2.0  September 1988",
         "codeSystem" : "HL70104",
@@ -3547,7 +3547,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ad7",
+        "id" : "565f3094d4c64df77ab98168",
         "value" : "2.0D",
         "label" : "Demo    2.0  October 1988",
         "codeSystem" : "HL70104",
@@ -3556,7 +3556,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ad8",
+        "id" : "565f3094d4c64df77ab98169",
         "value" : "2.1",
         "label" : "Release 2.1  March 1990",
         "codeSystem" : "HL70104",
@@ -3566,7 +3566,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a06",
+      "id" : "565f3094d4c64df77ab98097",
       "bindingIdentifier" : "0027",
       "name" : "PRIORITY (COMPONENT 6 QTY/TIMING[735])",
       "description" : "PRIORITY (COMPONENT 6 QTY/TIMING[735])",
@@ -3579,7 +3579,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a07",
+        "id" : "565f3094d4c64df77ab98098",
         "value" : "A",
         "label" : "ASAP. Fill after STAT orders.",
         "codeSystem" : "HL70027",
@@ -3588,7 +3588,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a08",
+        "id" : "565f3094d4c64df77ab98099",
         "value" : "S",
         "label" : "Stat. Required immediately.",
         "codeSystem" : "HL70027",
@@ -3597,7 +3597,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a09",
+        "id" : "565f3094d4c64df77ab9809a",
         "value" : "T",
         "label" : "Timed collection",
         "codeSystem" : "HL70027",
@@ -3607,7 +3607,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409e3",
+      "id" : "565f3094d4c64df77ab98074",
       "bindingIdentifier" : "0017",
       "name" : "TRANSACTION TYPE",
       "description" : "TRANSACTION TYPE",
@@ -3620,7 +3620,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409e4",
+        "id" : "565f3094d4c64df77ab98075",
         "value" : "1",
         "label" : "Zwischenrechnung",
         "codeSystem" : "HL70017",
@@ -3629,7 +3629,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409e5",
+        "id" : "565f3094d4c64df77ab98076",
         "value" : "2",
         "label" : "Schlußrechnung",
         "codeSystem" : "HL70017",
@@ -3638,7 +3638,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409e6",
+        "id" : "565f3094d4c64df77ab98077",
         "value" : "3",
         "label" : "Nachtragsrechnung",
         "codeSystem" : "HL70017",
@@ -3647,7 +3647,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409e7",
+        "id" : "565f3094d4c64df77ab98078",
         "value" : "4",
         "label" : "Gutschrift",
         "codeSystem" : "HL70017",
@@ -3656,7 +3656,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409e8",
+        "id" : "565f3094d4c64df77ab98079",
         "value" : "5",
         "label" : "Stornierung",
         "codeSystem" : "HL70017",
@@ -3665,7 +3665,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409e9",
+        "id" : "565f3094d4c64df77ab9807a",
         "value" : "6",
         "label" : "Zahlungserinnerung",
         "codeSystem" : "HL70017",
@@ -3674,7 +3674,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409ea",
+        "id" : "565f3094d4c64df77ab9807b",
         "value" : "7",
         "label" : "1. Mahnung",
         "codeSystem" : "HL70017",
@@ -3683,7 +3683,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409eb",
+        "id" : "565f3094d4c64df77ab9807c",
         "value" : "8",
         "label" : "2. Mahnung",
         "codeSystem" : "HL70017",
@@ -3693,7 +3693,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240af8",
+      "id" : "565f3094d4c64df77ab98189",
       "bindingIdentifier" : "0082",
       "name" : "UNUSED TABLE",
       "description" : "UNUSED TABLE",
@@ -3707,7 +3707,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409ec",
+      "id" : "565f3094d4c64df77ab9807d",
       "bindingIdentifier" : "0018",
       "name" : "PATIENT TYPE",
       "description" : "PATIENT TYPE",
@@ -3721,7 +3721,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b06",
+      "id" : "565f3094d4c64df77ab98197",
       "bindingIdentifier" : "0115",
       "name" : "SERVICING FACILITY",
       "description" : "SERVICING FACILITY",
@@ -3735,7 +3735,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240af0",
+      "id" : "565f3094d4c64df77ab98181",
       "bindingIdentifier" : "0120",
       "name" : "APPLICATION ID",
       "description" : "APPLICATION ID",
@@ -3749,7 +3749,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240ad1",
+      "id" : "565f3094d4c64df77ab98162",
       "bindingIdentifier" : "0103",
       "name" : "PROCESSING ID",
       "description" : "PROCESSING ID",
@@ -3762,7 +3762,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ad2",
+        "id" : "565f3094d4c64df77ab98163",
         "value" : "D",
         "label" : "Debugging",
         "codeSystem" : "HL70103",
@@ -3771,7 +3771,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ad3",
+        "id" : "565f3094d4c64df77ab98164",
         "value" : "P",
         "label" : "Production",
         "codeSystem" : "HL70103",
@@ -3780,7 +3780,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ad4",
+        "id" : "565f3094d4c64df77ab98165",
         "value" : "T",
         "label" : "Training",
         "codeSystem" : "HL70103",
@@ -3790,7 +3790,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409ef",
+      "id" : "565f3094d4c64df77ab98080",
       "bindingIdentifier" : "0016",
       "name" : "ISOLATION",
       "description" : "ISOLATION",
@@ -3803,7 +3803,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409f0",
+        "id" : "565f3094d4c64df77ab98081",
         "value" : "0",
         "label" : "Antibiotic Resistance Precautions",
         "codeSystem" : "HL70016",
@@ -3812,7 +3812,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409f1",
+        "id" : "565f3094d4c64df77ab98082",
         "value" : "1",
         "label" : "Blood and Needle Precautions",
         "codeSystem" : "HL70016",
@@ -3821,7 +3821,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409f2",
+        "id" : "565f3094d4c64df77ab98083",
         "value" : "3",
         "label" : "Neutropenic Precautions",
         "codeSystem" : "HL70016",
@@ -3830,7 +3830,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409f3",
+        "id" : "565f3094d4c64df77ab98084",
         "value" : "5",
         "label" : "Respiratory Isolation",
         "codeSystem" : "HL70016",
@@ -3839,7 +3839,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409f4",
+        "id" : "565f3094d4c64df77ab98085",
         "value" : "6",
         "label" : "Secretion/Excretion Precautions",
         "codeSystem" : "HL70016",
@@ -3848,7 +3848,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409f5",
+        "id" : "565f3094d4c64df77ab98086",
         "value" : "8",
         "label" : "Wound and skin Precautions",
         "codeSystem" : "HL70016",
@@ -3857,7 +3857,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409f6",
+        "id" : "565f3094d4c64df77ab98087",
         "value" : "9",
         "label" : "Precautions",
         "codeSystem" : "HL70016",
@@ -3867,7 +3867,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a10",
+      "id" : "565f3094d4c64df77ab980a1",
       "bindingIdentifier" : "0043",
       "name" : "CONDITION",
       "description" : "CONDITION",
@@ -3881,7 +3881,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a80",
+      "id" : "565f3094d4c64df77ab98111",
       "bindingIdentifier" : "0055",
       "name" : "DRG CODE",
       "description" : "DRG CODE",
@@ -3895,7 +3895,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a5a",
+      "id" : "565f3094d4c64df77ab980eb",
       "bindingIdentifier" : "0171",
       "name" : "Country Code",
       "description" : "Country Code",
@@ -3908,7 +3908,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a5b",
+        "id" : "565f3094d4c64df77ab980ec",
         "value" : "D",
         "label" : "Deutschland",
         "codeSystem" : "HL70171",
@@ -3918,7 +3918,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b1c",
+      "id" : "565f3094d4c64df77ab981ad",
       "bindingIdentifier" : "0118",
       "name" : "MAJOR DIAGNOSTIC CATEGORY",
       "description" : "MAJOR DIAGNOSTIC CATEGORY",
@@ -3932,7 +3932,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409ff",
+      "id" : "565f3094d4c64df77ab98090",
       "bindingIdentifier" : "0019",
       "name" : "ANESTHESIA CODE",
       "description" : "ANESTHESIA CODE",
@@ -3946,7 +3946,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a03",
+      "id" : "565f3094d4c64df77ab98094",
       "bindingIdentifier" : "0028",
       "name" : "UNUSED TABLE",
       "description" : "UNUSED TABLE",
@@ -3960,7 +3960,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d424097e",
+      "id" : "565f3094d4c64df77ab9800f",
       "bindingIdentifier" : "0005",
       "name" : "ETHNIC GROUP",
       "description" : "ETHNIC GROUP",
@@ -3973,7 +3973,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424097f",
+        "id" : "565f3094d4c64df77ab98010",
         "value" : "B",
         "label" : "Black",
         "codeSystem" : "HL70005",
@@ -3982,7 +3982,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240980",
+        "id" : "565f3094d4c64df77ab98011",
         "value" : "C",
         "label" : "Caucasian",
         "codeSystem" : "HL70005",
@@ -3991,7 +3991,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240981",
+        "id" : "565f3094d4c64df77ab98012",
         "value" : "H",
         "label" : "Hispanic",
         "codeSystem" : "HL70005",
@@ -4000,7 +4000,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240982",
+        "id" : "565f3094d4c64df77ab98013",
         "value" : "R",
         "label" : "Oriental",
         "codeSystem" : "HL70005",
@@ -4010,7 +4010,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240aef",
+      "id" : "565f3094d4c64df77ab98180",
       "bindingIdentifier" : "0087",
       "name" : "PRE-ADMIT TESTING",
       "description" : "PRE-ADMIT TESTING",
@@ -4024,7 +4024,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409ee",
+      "id" : "565f3094d4c64df77ab9807f",
       "bindingIdentifier" : "0136",
       "name" : "Y/N Indicator",
       "description" : "Y/N Indicator",
@@ -4038,7 +4038,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409df",
+      "id" : "565f3094d4c64df77ab98070",
       "bindingIdentifier" : "0020",
       "name" : "UNUSED TABLE",
       "description" : "UNUSED TABLE",
@@ -4051,7 +4051,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409e0",
+        "id" : "565f3094d4c64df77ab98071",
         "value" : "2",
         "label" : "Moderate Manifestation",
         "codeSystem" : "HL70020",
@@ -4060,7 +4060,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409e1",
+        "id" : "565f3094d4c64df77ab98072",
         "value" : "3",
         "label" : "Major Manifestation",
         "codeSystem" : "HL70020",
@@ -4070,7 +4070,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240958",
+      "id" : "565f3094d4c64df77ab97fe9",
       "bindingIdentifier" : "0098",
       "name" : "TYPE OF AGREEMENT CODE",
       "description" : "TYPE OF AGREEMENT CODE",
@@ -4084,7 +4084,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409c5",
+      "id" : "565f3094d4c64df77ab98056",
       "bindingIdentifier" : "0122",
       "name" : "CHARGE TYPE",
       "description" : "CHARGE TYPE",
@@ -4097,7 +4097,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409c6",
+        "id" : "565f3094d4c64df77ab98057",
         "value" : "CH",
         "label" : "Charge",
         "codeSystem" : "HL70122",
@@ -4106,7 +4106,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409c7",
+        "id" : "565f3094d4c64df77ab98058",
         "value" : "CO",
         "label" : "Contract",
         "codeSystem" : "HL70122",
@@ -4115,7 +4115,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409c8",
+        "id" : "565f3094d4c64df77ab98059",
         "value" : "CR",
         "label" : "Credit",
         "codeSystem" : "HL70122",
@@ -4124,7 +4124,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409c9",
+        "id" : "565f3094d4c64df77ab9805a",
         "value" : "DP",
         "label" : "Department",
         "codeSystem" : "HL70122",
@@ -4133,7 +4133,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409ca",
+        "id" : "565f3094d4c64df77ab9805b",
         "value" : "GR",
         "label" : "Grant",
         "codeSystem" : "HL70122",
@@ -4142,7 +4142,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409cb",
+        "id" : "565f3094d4c64df77ab9805c",
         "value" : "NC",
         "label" : "No Charge",
         "codeSystem" : "HL70122",
@@ -4151,7 +4151,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409cc",
+        "id" : "565f3094d4c64df77ab9805d",
         "value" : "PC",
         "label" : "Professional",
         "codeSystem" : "HL70122",
@@ -4160,7 +4160,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409cd",
+        "id" : "565f3094d4c64df77ab9805e",
         "value" : "RS",
         "label" : "Research",
         "codeSystem" : "HL70122",
@@ -4170,7 +4170,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240afa",
+      "id" : "565f3094d4c64df77ab9818b",
       "bindingIdentifier" : "0080",
       "name" : "NATURE OF ABNORMAL TESTING",
       "description" : "NATURE OF ABNORMAL TESTING",
@@ -4183,7 +4183,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240afb",
+        "id" : "565f3094d4c64df77ab9818c",
         "value" : "A",
         "label" : "An aged based population",
         "codeSystem" : "HL70080",
@@ -4192,7 +4192,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240afc",
+        "id" : "565f3094d4c64df77ab9818d",
         "value" : "N",
         "label" : "None - generic normal range",
         "codeSystem" : "HL70080",
@@ -4201,7 +4201,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240afd",
+        "id" : "565f3094d4c64df77ab9818e",
         "value" : "R",
         "label" : "A race based population",
         "codeSystem" : "HL70080",
@@ -4210,7 +4210,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240afe",
+        "id" : "565f3094d4c64df77ab9818f",
         "value" : "S",
         "label" : "A sexed based population",
         "codeSystem" : "HL70080",
@@ -4220,7 +4220,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409f9",
+      "id" : "565f3094d4c64df77ab9808a",
       "bindingIdentifier" : "0011",
       "name" : "CHARGING SYSTEM",
       "description" : "CHARGING SYSTEM",
@@ -4233,7 +4233,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409fa",
+        "id" : "565f3094d4c64df77ab9808b",
         "value" : "R",
         "label" : "System that received and processed the order",
         "codeSystem" : "HL70011",
@@ -4242,7 +4242,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409fb",
+        "id" : "565f3094d4c64df77ab9808c",
         "value" : "S",
         "label" : "System that sent the order",
         "codeSystem" : "HL70011",
@@ -4252,7 +4252,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240ada",
+      "id" : "565f3094d4c64df77ab9816b",
       "bindingIdentifier" : "0101",
       "name" : "DISPLAY LEVEL",
       "description" : "DISPLAY LEVEL",
@@ -4266,7 +4266,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d424095b",
+      "id" : "565f3094d4c64df77ab97fec",
       "bindingIdentifier" : "0093",
       "name" : "RELEASE OF INFORMATION",
       "description" : "RELEASE OF INFORMATION",
@@ -4280,7 +4280,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a0e",
+      "id" : "565f3094d4c64df77ab9809f",
       "bindingIdentifier" : "0023",
       "name" : "ADMIT SOURCE",
       "description" : "ADMIT SOURCE",
@@ -4294,7 +4294,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240aff",
+      "id" : "565f3094d4c64df77ab98190",
       "bindingIdentifier" : "0081",
       "name" : "NOTICE OF ADMISSION",
       "description" : "NOTICE OF ADMISSION",
@@ -4308,7 +4308,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240adb",
+      "id" : "565f3094d4c64df77ab9816c",
       "bindingIdentifier" : "0069",
       "name" : "HOSPITAL SERVICE",
       "description" : "HOSPITAL SERVICE",
@@ -4322,7 +4322,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409bf",
+      "id" : "565f3094d4c64df77ab98050",
       "bindingIdentifier" : "0001",
       "name" : "SEX",
       "description" : "SEX",
@@ -4335,7 +4335,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409c0",
+        "id" : "565f3094d4c64df77ab98051",
         "value" : "F",
         "label" : "Female",
         "codeSystem" : "HL70001",
@@ -4344,7 +4344,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409c1",
+        "id" : "565f3094d4c64df77ab98052",
         "value" : "M",
         "label" : "Male",
         "codeSystem" : "HL70001",
@@ -4353,7 +4353,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409c2",
+        "id" : "565f3094d4c64df77ab98053",
         "value" : "O",
         "label" : "Other",
         "codeSystem" : "HL70001",
@@ -4362,7 +4362,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409c3",
+        "id" : "565f3094d4c64df77ab98054",
         "value" : "U",
         "label" : "Unknown",
         "codeSystem" : "HL70001",
@@ -4372,7 +4372,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d424096b",
+      "id" : "565f3094d4c64df77ab97ffc",
       "bindingIdentifier" : "0007",
       "name" : "ADMISSION TYPE",
       "description" : "ADMISSION TYPE",
@@ -4385,7 +4385,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424096c",
+        "id" : "565f3094d4c64df77ab97ffd",
         "value" : "A",
         "label" : "Accident",
         "codeSystem" : "HL70007",
@@ -4394,7 +4394,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424096d",
+        "id" : "565f3094d4c64df77ab97ffe",
         "value" : "E",
         "label" : "Emergency",
         "codeSystem" : "HL70007",
@@ -4403,7 +4403,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424096e",
+        "id" : "565f3094d4c64df77ab97fff",
         "value" : "L",
         "label" : "Labor and Delivery",
         "codeSystem" : "HL70007",
@@ -4412,7 +4412,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d424096f",
+        "id" : "565f3094d4c64df77ab98000",
         "value" : "R",
         "label" : "Routine",
         "codeSystem" : "HL70007",
@@ -4422,7 +4422,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b0b",
+      "id" : "565f3094d4c64df77ab9819c",
       "bindingIdentifier" : "0110",
       "name" : "TRANSFER TO BAD DEBT CODE",
       "description" : "TRANSFER TO BAD DEBT CODE",
@@ -4436,7 +4436,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a6d",
+      "id" : "565f3094d4c64df77ab980fe",
       "bindingIdentifier" : "0064",
       "name" : "FINANCIAL CLASS",
       "description" : "FINANCIAL CLASS",
@@ -4450,7 +4450,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409ed",
+      "id" : "565f3094d4c64df77ab9807e",
       "bindingIdentifier" : "0015",
       "name" : "WEIGHT UNIT OF MEASURE",
       "description" : "WEIGHT UNIT OF MEASURE",
@@ -4464,7 +4464,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a59",
+      "id" : "565f3094d4c64df77ab980ea",
       "bindingIdentifier" : "0050",
       "name" : "ACCIDENT CODE",
       "description" : "ACCIDENT CODE",
@@ -4478,7 +4478,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240acf",
+      "id" : "565f3094d4c64df77ab98160",
       "bindingIdentifier" : "0106",
       "name" : "QUERY FORMAT CODE",
       "description" : "QUERY FORMAT CODE",
@@ -4491,7 +4491,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ad0",
+        "id" : "565f3094d4c64df77ab98161",
         "value" : "R",
         "label" : "Response in Record-oriented format",
         "codeSystem" : "HL70106",
@@ -4501,7 +4501,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a13",
+      "id" : "565f3094d4c64df77ab980a4",
       "bindingIdentifier" : "0039",
       "name" : "UNUSED TABLE",
       "description" : "UNUSED TABLE",
@@ -4515,7 +4515,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a01",
+      "id" : "565f3094d4c64df77ab98092",
       "bindingIdentifier" : "0032",
       "name" : "CHARGE/PRICE INDICATOR",
       "description" : "CHARGE/PRICE INDICATOR",
@@ -4529,7 +4529,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240adf",
+      "id" : "565f3094d4c64df77ab98170",
       "bindingIdentifier" : "0067",
       "name" : "UNUSED TABLE",
       "description" : "UNUSED TABLE",
@@ -4543,7 +4543,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409b6",
+      "id" : "565f3094d4c64df77ab98047",
       "bindingIdentifier" : "0124",
       "name" : "TRANSPORTATION MODE",
       "description" : "TRANSPORTATION MODE",
@@ -4556,7 +4556,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409b7",
+        "id" : "565f3094d4c64df77ab98048",
         "value" : "PORT",
         "label" : "The examining device goes to Patient's Loc.",
         "codeSystem" : "HL70124",
@@ -4565,7 +4565,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409b8",
+        "id" : "565f3094d4c64df77ab98049",
         "value" : "WALK",
         "label" : "Patient walks to diagnostic service",
         "codeSystem" : "HL70124",
@@ -4574,7 +4574,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d42409b9",
+        "id" : "565f3094d4c64df77ab9804a",
         "value" : "WHLC",
         "label" : "Wheelchair",
         "codeSystem" : "HL70124",
@@ -4584,7 +4584,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240acc",
+      "id" : "565f3094d4c64df77ab9815d",
       "bindingIdentifier" : "0105",
       "name" : "SOURCE OF COMMENT",
       "description" : "SOURCE OF COMMENT",
@@ -4597,7 +4597,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240acd",
+        "id" : "565f3094d4c64df77ab9815e",
         "value" : "L",
         "label" : "Ancillary department is source of comment",
         "codeSystem" : "HL70105",
@@ -4606,7 +4606,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ace",
+        "id" : "565f3094d4c64df77ab9815f",
         "value" : "P",
         "label" : "Orderer is source of comment",
         "codeSystem" : "HL70105",
@@ -4616,7 +4616,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240aae",
+      "id" : "565f3094d4c64df77ab9813f",
       "bindingIdentifier" : "0070",
       "name" : "SOURCE OF SPECIMEN",
       "description" : "SOURCE OF SPECIMEN",
@@ -4629,7 +4629,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aaf",
+        "id" : "565f3094d4c64df77ab98140",
         "value" : "BLD",
         "label" : "Blood",
         "codeSystem" : "HL70070",
@@ -4638,7 +4638,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ab0",
+        "id" : "565f3094d4c64df77ab98141",
         "value" : "BON",
         "label" : "Bone",
         "codeSystem" : "HL70070",
@@ -4647,7 +4647,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ab1",
+        "id" : "565f3094d4c64df77ab98142",
         "value" : "BRN",
         "label" : "Burn",
         "codeSystem" : "HL70070",
@@ -4656,7 +4656,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ab2",
+        "id" : "565f3094d4c64df77ab98143",
         "value" : "CNJT",
         "label" : "Conjunctiva",
         "codeSystem" : "HL70070",
@@ -4665,7 +4665,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ab3",
+        "id" : "565f3094d4c64df77ab98144",
         "value" : "CSF",
         "label" : "Cerebral-Spinal Fluid",
         "codeSystem" : "HL70070",
@@ -4674,7 +4674,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ab4",
+        "id" : "565f3094d4c64df77ab98145",
         "value" : "CVX",
         "label" : "Cervix",
         "codeSystem" : "HL70070",
@@ -4683,7 +4683,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ab5",
+        "id" : "565f3094d4c64df77ab98146",
         "value" : "EAR",
         "label" : "Ear",
         "codeSystem" : "HL70070",
@@ -4692,7 +4692,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ab6",
+        "id" : "565f3094d4c64df77ab98147",
         "value" : "FIB",
         "label" : "Fibroblood",
         "codeSystem" : "HL70070",
@@ -4701,7 +4701,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ab7",
+        "id" : "565f3094d4c64df77ab98148",
         "value" : "HAR",
         "label" : "Hair",
         "codeSystem" : "HL70070",
@@ -4710,7 +4710,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ab8",
+        "id" : "565f3094d4c64df77ab98149",
         "value" : "MN",
         "label" : "Amniotic Fluid",
         "codeSystem" : "HL70070",
@@ -4719,7 +4719,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ab9",
+        "id" : "565f3094d4c64df77ab9814a",
         "value" : "NOS",
         "label" : "Nose",
         "codeSystem" : "HL70070",
@@ -4728,7 +4728,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aba",
+        "id" : "565f3094d4c64df77ab9814b",
         "value" : "OTH",
         "label" : "Other",
         "codeSystem" : "HL70070",
@@ -4737,7 +4737,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240abb",
+        "id" : "565f3094d4c64df77ab9814c",
         "value" : "PLAS",
         "label" : "Plasma",
         "codeSystem" : "HL70070",
@@ -4746,7 +4746,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240abc",
+        "id" : "565f3094d4c64df77ab9814d",
         "value" : "PRT",
         "label" : "Peritoneal Fluid",
         "codeSystem" : "HL70070",
@@ -4755,7 +4755,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240abd",
+        "id" : "565f3094d4c64df77ab9814e",
         "value" : "RBC",
         "label" : "Erythrocytes",
         "codeSystem" : "HL70070",
@@ -4764,7 +4764,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240abe",
+        "id" : "565f3094d4c64df77ab9814f",
         "value" : "SAL",
         "label" : "Saliva",
         "codeSystem" : "HL70070",
@@ -4773,7 +4773,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240abf",
+        "id" : "565f3094d4c64df77ab98150",
         "value" : "SEM",
         "label" : "Seminal Fluid",
         "codeSystem" : "HL70070",
@@ -4782,7 +4782,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ac0",
+        "id" : "565f3094d4c64df77ab98151",
         "value" : "SER",
         "label" : "Serum",
         "codeSystem" : "HL70070",
@@ -4791,7 +4791,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ac1",
+        "id" : "565f3094d4c64df77ab98152",
         "value" : "SKN",
         "label" : "Skin",
         "codeSystem" : "HL70070",
@@ -4800,7 +4800,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ac2",
+        "id" : "565f3094d4c64df77ab98153",
         "value" : "SNV",
         "label" : "Synovial Fluid",
         "codeSystem" : "HL70070",
@@ -4809,7 +4809,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ac3",
+        "id" : "565f3094d4c64df77ab98154",
         "value" : "STL",
         "label" : "Stool",
         "codeSystem" : "HL70070",
@@ -4818,7 +4818,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ac4",
+        "id" : "565f3094d4c64df77ab98155",
         "value" : "SWT",
         "label" : "Sweat",
         "codeSystem" : "HL70070",
@@ -4827,7 +4827,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ac5",
+        "id" : "565f3094d4c64df77ab98156",
         "value" : "THRT",
         "label" : "Throat",
         "codeSystem" : "HL70070",
@@ -4836,7 +4836,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ac6",
+        "id" : "565f3094d4c64df77ab98157",
         "value" : "TIS",
         "label" : "Tissue",
         "codeSystem" : "HL70070",
@@ -4845,7 +4845,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ac7",
+        "id" : "565f3094d4c64df77ab98158",
         "value" : "UMB",
         "label" : "Umbilical Blood",
         "codeSystem" : "HL70070",
@@ -4854,7 +4854,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ac8",
+        "id" : "565f3094d4c64df77ab98159",
         "value" : "UR",
         "label" : "Urine",
         "codeSystem" : "HL70070",
@@ -4863,7 +4863,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ac9",
+        "id" : "565f3094d4c64df77ab9815a",
         "value" : "URTH",
         "label" : "Urethra",
         "codeSystem" : "HL70070",
@@ -4872,7 +4872,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240aca",
+        "id" : "565f3094d4c64df77ab9815b",
         "value" : "WBC",
         "label" : "Leukocytes",
         "codeSystem" : "HL70070",
@@ -4881,7 +4881,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240acb",
+        "id" : "565f3094d4c64df77ab9815c",
         "value" : "WND",
         "label" : "Wound",
         "codeSystem" : "HL70070",
@@ -4891,7 +4891,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a15",
+      "id" : "565f3094d4c64df77ab980a6",
       "bindingIdentifier" : "0038",
       "name" : "ORDER STATUS",
       "description" : "ORDER STATUS",
@@ -4904,7 +4904,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a16",
+        "id" : "565f3094d4c64df77ab980a7",
         "value" : "CA",
         "label" : "Order was canceled",
         "codeSystem" : "HL70038",
@@ -4913,7 +4913,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a17",
+        "id" : "565f3094d4c64df77ab980a8",
         "value" : "CM",
         "label" : "Order is completed",
         "codeSystem" : "HL70038",
@@ -4922,7 +4922,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a18",
+        "id" : "565f3094d4c64df77ab980a9",
         "value" : "DC",
         "label" : "Order was discontinued",
         "codeSystem" : "HL70038",
@@ -4931,7 +4931,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a19",
+        "id" : "565f3094d4c64df77ab980aa",
         "value" : "ER",
         "label" : "Error, order not found",
         "codeSystem" : "HL70038",
@@ -4940,7 +4940,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a1a",
+        "id" : "565f3094d4c64df77ab980ab",
         "value" : "HD",
         "label" : "Order is on hold",
         "codeSystem" : "HL70038",
@@ -4949,7 +4949,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a1b",
+        "id" : "565f3094d4c64df77ab980ac",
         "value" : "IP",
         "label" : "In process, unspecified",
         "codeSystem" : "HL70038",
@@ -4958,7 +4958,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a1c",
+        "id" : "565f3094d4c64df77ab980ad",
         "value" : "SC",
         "label" : "In process, scheduled",
         "codeSystem" : "HL70038",
@@ -4968,7 +4968,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d42409c4",
+      "id" : "565f3094d4c64df77ab98055",
       "bindingIdentifier" : "0089",
       "name" : "PROCEDURE CODING METHOD",
       "description" : "PROCEDURE CODING METHOD",
@@ -4982,7 +4982,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b04",
+      "id" : "565f3094d4c64df77ab98195",
       "bindingIdentifier" : "0117",
       "name" : "ACCOUNT STATUS",
       "description" : "ACCOUNT STATUS",
@@ -4996,7 +4996,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240955",
+      "id" : "565f3094d4c64df77ab97fe6",
       "bindingIdentifier" : "0090",
       "name" : "PROCEDURE TYPE",
       "description" : "PROCEDURE TYPE",
@@ -5010,7 +5010,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240ae8",
+      "id" : "565f3094d4c64df77ab98179",
       "bindingIdentifier" : "0107",
       "name" : "DEFERRED RESPONSE TYPE",
       "description" : "DEFERRED RESPONSE TYPE",
@@ -5023,7 +5023,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240ae9",
+        "id" : "565f3094d4c64df77ab9817a",
         "value" : "L",
         "label" : "Later than the DATE/TIME specified",
         "codeSystem" : "HL70107",
@@ -5033,7 +5033,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240b00",
+      "id" : "565f3094d4c64df77ab98191",
       "bindingIdentifier" : "0116",
       "name" : "BED STATUS",
       "description" : "BED STATUS",
@@ -5046,7 +5046,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b01",
+        "id" : "565f3094d4c64df77ab98192",
         "value" : "C",
         "label" : "Closed",
         "codeSystem" : "HL70116",
@@ -5055,7 +5055,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b02",
+        "id" : "565f3094d4c64df77ab98193",
         "value" : "H",
         "label" : "Housekeeping",
         "codeSystem" : "HL70116",
@@ -5064,7 +5064,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240b03",
+        "id" : "565f3094d4c64df77ab98194",
         "value" : "O",
         "label" : "Occupied",
         "codeSystem" : "HL70116",
@@ -5074,7 +5074,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a46",
+      "id" : "565f3094d4c64df77ab980d7",
       "bindingIdentifier" : "0034",
       "name" : "SITE ADMINISTERED",
       "description" : "SITE ADMINISTERED",
@@ -5087,7 +5087,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a47",
+        "id" : "565f3094d4c64df77ab980d8",
         "value" : "B",
         "label" : "Buttock",
         "codeSystem" : "HL70034",
@@ -5096,7 +5096,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a48",
+        "id" : "565f3094d4c64df77ab980d9",
         "value" : "L",
         "label" : "Left arm",
         "codeSystem" : "HL70034",
@@ -5106,7 +5106,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a5c",
+      "id" : "565f3094d4c64df77ab980ed",
       "bindingIdentifier" : "0048",
       "name" : "WHAT SUBJECT FILTER",
       "description" : "WHAT SUBJECT FILTER",
@@ -5119,7 +5119,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a5d",
+        "id" : "565f3094d4c64df77ab980ee",
         "value" : "ADV",
         "label" : "Advice/Diagnosis",
         "codeSystem" : "HL70048",
@@ -5128,7 +5128,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a5e",
+        "id" : "565f3094d4c64df77ab980ef",
         "value" : "ANU",
         "label" : "Nursing Unit Look up",
         "codeSystem" : "HL70048",
@@ -5137,7 +5137,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a5f",
+        "id" : "565f3094d4c64df77ab980f0",
         "value" : "APN",
         "label" : "Patient name look up",
         "codeSystem" : "HL70048",
@@ -5146,7 +5146,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a60",
+        "id" : "565f3094d4c64df77ab980f1",
         "value" : "CAN",
         "label" : "Cancel. Used to cancel a query",
         "codeSystem" : "HL70048",
@@ -5155,7 +5155,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a61",
+        "id" : "565f3094d4c64df77ab980f2",
         "value" : "DEM",
         "label" : "Demographics",
         "codeSystem" : "HL70048",
@@ -5164,7 +5164,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a62",
+        "id" : "565f3094d4c64df77ab980f3",
         "value" : "MRI",
         "label" : "Most recent inpatient",
         "codeSystem" : "HL70048",
@@ -5173,7 +5173,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a63",
+        "id" : "565f3094d4c64df77ab980f4",
         "value" : "MRO",
         "label" : "Most recent outpatient",
         "codeSystem" : "HL70048",
@@ -5182,7 +5182,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a64",
+        "id" : "565f3094d4c64df77ab980f5",
         "value" : "OTH",
         "label" : "Other",
         "codeSystem" : "HL70048",
@@ -5191,7 +5191,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a65",
+        "id" : "565f3094d4c64df77ab980f6",
         "value" : "PRO",
         "label" : "Procedure",
         "codeSystem" : "HL70048",
@@ -5200,7 +5200,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a66",
+        "id" : "565f3094d4c64df77ab980f7",
         "value" : "RES",
         "label" : "Result",
         "codeSystem" : "HL70048",
@@ -5209,7 +5209,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a67",
+        "id" : "565f3094d4c64df77ab980f8",
         "value" : "STA",
         "label" : "Status",
         "codeSystem" : "HL70048",
@@ -5219,7 +5219,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a1e",
+      "id" : "565f3094d4c64df77ab980af",
       "bindingIdentifier" : "0036",
       "name" : "UNITS OF MEASURE - ISO528,1977",
       "description" : "UNITS OF MEASURE - ISO528,1977",
@@ -5232,7 +5232,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a1f",
+        "id" : "565f3094d4c64df77ab980b0",
         "value" : "BT",
         "label" : "Bottle",
         "codeSystem" : "HL70036",
@@ -5241,7 +5241,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a20",
+        "id" : "565f3094d4c64df77ab980b1",
         "value" : "EA",
         "label" : "Each",
         "codeSystem" : "HL70036",
@@ -5250,7 +5250,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a21",
+        "id" : "565f3094d4c64df77ab980b2",
         "value" : "GM",
         "label" : "Grams",
         "codeSystem" : "HL70036",
@@ -5259,7 +5259,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a22",
+        "id" : "565f3094d4c64df77ab980b3",
         "value" : "KG",
         "label" : "Kilograms",
         "codeSystem" : "HL70036",
@@ -5268,7 +5268,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a23",
+        "id" : "565f3094d4c64df77ab980b4",
         "value" : "MEQ",
         "label" : "Milliequivalent",
         "codeSystem" : "HL70036",
@@ -5277,7 +5277,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a24",
+        "id" : "565f3094d4c64df77ab980b5",
         "value" : "MG",
         "label" : "Milligrams",
         "codeSystem" : "HL70036",
@@ -5286,7 +5286,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a25",
+        "id" : "565f3094d4c64df77ab980b6",
         "value" : "OZ",
         "label" : "Ounces",
         "codeSystem" : "HL70036",
@@ -5295,7 +5295,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a26",
+        "id" : "565f3094d4c64df77ab980b7",
         "value" : "SC",
         "label" : "Square centimeters",
         "codeSystem" : "HL70036",
@@ -5304,7 +5304,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a27",
+        "id" : "565f3094d4c64df77ab980b8",
         "value" : "TB",
         "label" : "Tablet",
         "codeSystem" : "HL70036",
@@ -5313,7 +5313,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a28",
+        "id" : "565f3094d4c64df77ab980b9",
         "value" : "VL",
         "label" : "Vial",
         "codeSystem" : "HL70036",
@@ -5323,7 +5323,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240ade",
+      "id" : "565f3094d4c64df77ab9816f",
       "bindingIdentifier" : "0066",
       "name" : "EMPLOYMENT STATUS",
       "description" : "EMPLOYMENT STATUS",
@@ -5337,7 +5337,7 @@
       "codes" : [ ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a6e",
+      "id" : "565f3094d4c64df77ab980ff",
       "bindingIdentifier" : "0065",
       "name" : "ACTION CODE",
       "description" : "ACTION CODE",
@@ -5350,7 +5350,7 @@
       "order" : 0,
       "codes" : [ {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a6f",
+        "id" : "565f3094d4c64df77ab98100",
         "value" : "A",
         "label" : "Add ordered tests to the existing specimen",
         "codeSystem" : "HL70065",
@@ -5359,7 +5359,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a70",
+        "id" : "565f3094d4c64df77ab98101",
         "value" : "C",
         "label" : "Cancel order for battery or tests named",
         "codeSystem" : "HL70065",
@@ -5368,7 +5368,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a71",
+        "id" : "565f3094d4c64df77ab98102",
         "value" : "G",
         "label" : "Generated order",
         "codeSystem" : "HL70065",
@@ -5377,7 +5377,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a72",
+        "id" : "565f3094d4c64df77ab98103",
         "value" : "L",
         "label" : "Lab to obtain specimen from patient.",
         "codeSystem" : "HL70065",
@@ -5386,7 +5386,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a73",
+        "id" : "565f3094d4c64df77ab98104",
         "value" : "O",
         "label" : "Specimen obtained by service other than Lab",
         "codeSystem" : "HL70065",
@@ -5395,7 +5395,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a74",
+        "id" : "565f3094d4c64df77ab98105",
         "value" : "P",
         "label" : "Pending specimen-Order sent prior to delivery",
         "codeSystem" : "HL70065",
@@ -5404,7 +5404,7 @@
         "comments" : ""
       }, {
         "type" : "code",
-        "id" : "56572d55d4c6b574d4240a75",
+        "id" : "565f3094d4c64df77ab98106",
         "value" : "S",
         "label" : "Schedule the tests specified below",
         "codeSystem" : "HL70065",
@@ -5414,7 +5414,7 @@
       } ]
     }, {
       "type" : "table",
-      "id" : "56572d55d4c6b574d4240a0b",
+      "id" : "565f3094d4c64df77ab9809c",
       "bindingIdentifier" : "0145",
       "name" : "Room Type",
       "description" : "Room Type",
