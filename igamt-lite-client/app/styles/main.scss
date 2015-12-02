@@ -2011,3 +2011,7 @@ ul.dropdown-menu, ul.dropdown-menu > li {
   background: #f9f9f9;
   cursor: pointer;
 }
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
