@@ -633,10 +633,12 @@
                         </td>
 
                         <td class="col-xs-1" colspan="1">
-                            <button title="Add Predicate" type="button" class="btn btn-xs btn-success"
-                                    ng-click="addPredicate()">
-                                <span><i class="fa fa-plus-circle fa-fw"></i></span>
-                            </button>
+							<a ng-click="initPredicate()" class="point">
+                        		<span><i class="fa fa-times fa-fw"></i></span>
+                    		</a>
+							<a ng-click="addPredicate()" class="point">
+                        		<span><i class="fa fa-plus fa-fw"></i></span>
+                    		</a>
                         </td>
                     </tr>
                     </tbody>
@@ -767,10 +769,12 @@
                         </td>
 
                         <td class="col-xs-1" colspan="1">
-                            <button title="Add Conformance Statement" type="button" class="btn btn-xs btn-success"
-                                    ng-click="addConformanceStatement()">
-                                <span><i class="fa fa-plus-circle fa-fw"></i></span>
-                            </button>
+							<a ng-click="initConformanceStatement()" class="point">
+                        		<span><i class="fa fa-times fa-fw"></i></span>
+                    		</a>
+							<a ng-click="addConformanceStatement()" class="point">
+                        		<span><i class="fa fa-plus fa-fw"></i></span>
+                    		</a>
                         </td>
                     </tr>
                     </tbody>

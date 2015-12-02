@@ -198,6 +198,55 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
             $scope.newConstraint.childNodes_2.push(segmentModel);
         }
     }
+    
+    $scope.initPredicate = function(){
+    	$scope.newConstraint = angular.fromJson({
+            position_T: null,
+            position_1: null,
+            position_2: null,
+            location_T: null,
+            location_1: null,
+            location_2: null,
+            currentNode_T: null,
+            currentNode_1: null,
+            currentNode_2: null,
+            childNodes_T: [],
+            childNodes_1: [],
+            childNodes_2: [],
+            verb: null,
+            contraintType: null,
+            value: null,
+            trueUsage: null,
+            falseUsage: null
+        });
+        $scope.newConstraint.location_T = $scope.selectedNode.name;
+        $scope.newConstraint.location_1 = $scope.selectedNode.name;
+        $scope.newConstraint.location_2 = $scope.selectedNode.name;
+
+        for (var i = 0, len1 = $scope.selectedNode.children.length; i < len1; i++) {
+            if ($scope.selectedNode.children[i].type === 'group') {
+                var groupModel = {
+                    name: $scope.selectedNode.children[i].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'group',
+                    node: $scope.selectedNode.children[i]
+                };
+                $scope.newConstraint.childNodes_T.push(groupModel);
+                $scope.newConstraint.childNodes_1.push(groupModel);
+                $scope.newConstraint.childNodes_2.push(groupModel);
+            } else if ($scope.selectedNode.children[i].type === 'segmentRef') {
+                var segmentModel = {
+                    name: $scope.selectedNode.name + '.' + $rootScope.segmentsMap[$scope.selectedNode.children[i].ref].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'segment',
+                    node: $rootScope.segmentsMap[$scope.selectedNode.children[i].ref]
+                };
+                $scope.newConstraint.childNodes_T.push(segmentModel);
+                $scope.newConstraint.childNodes_1.push(segmentModel);
+                $scope.newConstraint.childNodes_2.push(segmentModel);
+            }
+        }
+    }
 
     $scope.deletePredicate = function (predicate) {
         $scope.selectedNode.predicates.splice($scope.selectedNode.predicates.indexOf(predicate), 1);
@@ -513,7 +562,14 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
 
 angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.selectedNode = selectedNode;
-
+    $scope.constraintType = 'Plain';
+    $scope.firstConstraint = null;
+    $scope.secondConstraint = null;
+    $scope.compositeType = null;
+    $scope.complexConstraint = null;
+    $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraint = [];
+    
     $scope.newConstraint = angular.fromJson({
         position_1: null,
         position_2: null,
@@ -550,6 +606,48 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             };
             $scope.newConstraint.childNodes_1.push(segmentModel);
             $scope.newConstraint.childNodes_2.push(segmentModel);
+        }
+    }
+    
+    
+    $scope.initConformanceStatement = function (){
+    	$scope.newConstraint = angular.fromJson({
+            position_1: null,
+            position_2: null,
+            location_1: null,
+            location_2: null,
+            currentNode_1: null,
+            currentNode_2: null,
+            childNodes_1: [],
+            childNodes_2: [],
+            verb: null,
+            constraintId: null,
+            contraintType: null,
+            value: null
+        });
+        $scope.newConstraint.location_1 = $scope.selectedNode.name;
+        $scope.newConstraint.location_2 = $scope.selectedNode.name;
+
+        for (var i = 0, len1 = $scope.selectedNode.children.length; i < len1; i++) {
+            if ($scope.selectedNode.children[i].type === 'group') {
+                var groupModel = {
+                    name: $scope.selectedNode.children[i].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'group',
+                    node: $scope.selectedNode.children[i]
+                };
+                $scope.newConstraint.childNodes_1.push(groupModel);
+                $scope.newConstraint.childNodes_2.push(groupModel);
+            } else if ($scope.selectedNode.children[i].type === 'segmentRef') {
+                var segmentModel = {
+                    name: $scope.selectedNode.name + '.' + $rootScope.segmentsMap[$scope.selectedNode.children[i].ref].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'segment',
+                    node: $rootScope.segmentsMap[$scope.selectedNode.children[i].ref]
+                };
+                $scope.newConstraint.childNodes_1.push(segmentModel);
+                $scope.newConstraint.childNodes_2.push(segmentModel);
+            }
         }
     }
 
@@ -691,6 +789,10 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             $rootScope.recordChangeForEdit2('conformanceStatement', "delete", conformanceStatement.id, 'id', conformanceStatement.id);
         }
     };
+    
+    $scope.deleteConformanceStatementForComplex = function (conformanceStatement) {
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(conformanceStatement), 1);
+    };
 
 
     $scope.isNewCS = function (id) {
@@ -716,6 +818,95 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
         }
         return false;
     };
+    
+    $scope.changeConstraintType = function () {
+    	$scope.newConstraint = angular.fromJson({
+            position_1: null,
+            position_2: null,
+            location_1: null,
+            location_2: null,
+            currentNode_1: null,
+            currentNode_2: null,
+            childNodes_1: [],
+            childNodes_2: [],
+            verb: null,
+            constraintId: null,
+            contraintType: null,
+            value: null
+        });
+        $scope.newConstraint.location_1 = $scope.selectedNode.name;
+        $scope.newConstraint.location_2 = $scope.selectedNode.name;
+
+        for (var i = 0, len1 = $scope.selectedNode.children.length; i < len1; i++) {
+            if ($scope.selectedNode.children[i].type === 'group') {
+                var groupModel = {
+                    name: $scope.selectedNode.children[i].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'group',
+                    node: $scope.selectedNode.children[i]
+                };
+                $scope.newConstraint.childNodes_1.push(groupModel);
+                $scope.newConstraint.childNodes_2.push(groupModel);
+            } else if ($scope.selectedNode.children[i].type === 'segmentRef') {
+                var segmentModel = {
+                    name: $scope.selectedNode.name + '.' + $rootScope.segmentsMap[$scope.selectedNode.children[i].ref].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'segment',
+                    node: $rootScope.segmentsMap[$scope.selectedNode.children[i].ref]
+                };
+                $scope.newConstraint.childNodes_1.push(segmentModel);
+                $scope.newConstraint.childNodes_2.push(segmentModel);
+            }
+        }
+		
+    	if($scope.constraintType === 'Complex'){
+    		$scope.newComplexConstraint = [];
+    		$scope.newComplexConstraintId = '';
+    	}
+    }
+    
+    $scope.addComplexConformanceStatement = function(){
+    	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+    	
+    	$scope.selectedNode.conformanceStatements.push($scope.complexConstraint);
+        var newCSBlock = {targetType: 'group', targetId: $rootScope.segment.id, obj: $scope.complexConstraint};
+        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+    };
+    
+    $scope.compositeConformanceStatements = function(){
+    	if($scope.compositeType === 'AND'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'AND(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: '['+ $scope.firstConstraint.description + '] ' + 'AND' + ' [' + $scope.secondConstraint.description + ']',
+                    assertion: '<AND>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</AND>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if($scope.compositeType === 'OR'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'OR(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: '['+ $scope.firstConstraint.description + '] ' + 'OR' + ' [' + $scope.secondConstraint.description + ']',
+                    assertion: '<OR>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</OR>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if($scope.compositeType === 'IFTHEN'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'IFTHEN(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    description: 'IF ['+ $scope.firstConstraint.description + '] ' + 'THEN ' + ' [' + $scope.secondConstraint.description + ']',
+                    assertion: '<IMPLY>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</IMPLY>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}
+    	
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
+    };
+    
 
     $scope.addConformanceStatement = function () {
         $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
