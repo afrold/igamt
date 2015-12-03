@@ -247,7 +247,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			row = new ArrayList<String>();
 			List<Table> tableList = new ArrayList<Table>(p.getTables().getChildren());
 			Collections.sort(tableList);
-			for (Table t: p.getTables().getChildren()) {
+			for (Table t: tableList) {
 				row = Arrays.asList(t.getBindingIdentifier()+" - "+ t.getName());
 				rows.add(row);
 			}
