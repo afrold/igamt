@@ -79,11 +79,13 @@ import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.WordprocessingML.AltChunkType;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
 import org.docx4j.wml.BooleanDefaultTrue;
 import org.docx4j.wml.Br;
 import org.docx4j.wml.CTBorder;
 import org.docx4j.wml.CTTblLayoutType;
+import org.docx4j.wml.CTVerticalJc;
 import org.docx4j.wml.FldChar;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
@@ -92,17 +94,20 @@ import org.docx4j.wml.STBorder;
 import org.docx4j.wml.STBrType;
 import org.docx4j.wml.STFldCharType;
 import org.docx4j.wml.STTblLayoutType;
+import org.docx4j.wml.STVerticalJc;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.TblBorders;
 import org.docx4j.wml.TblPr;
 import org.docx4j.wml.TblWidth;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.TcPr;
+import org.docx4j.wml.TcPrInner.GridSpan;
 import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.w3c.tidy.Tidy;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
@@ -132,6 +137,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
+
 @Service
 public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExportService{
 	Logger logger = LoggerFactory.getLogger( ProfileExportImpl.class ); 
@@ -146,10 +152,25 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		}
 	}
 
-	@Override
 	public InputStream exportAsZip(Profile p) throws IOException {
 		if (p != null) {
 			return new ProfileSerializationImpl().serializeProfileToZip(p);
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream exportAsDocx(Profile p) {
+		if (p != null) {
+			return exportAsDocxWithDocx4J(p);
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream exportAsPdf(Profile p) {
+		if (p != null) {
+			return exportAsPdfWithIText(p);
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -184,8 +205,11 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			rows = new ArrayList<List<String>>();
 			rows.add(header);
 			row = new ArrayList<String>();
-			for (Message m : p.getMessages().getChildren()) {
-				row = Arrays.asList(m.getMessageType()+ "_"+ m.getStructID());
+
+			List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
+			Collections.sort(messagesList);
+			for (Message m : messagesList) {
+				row = Arrays.asList(m.getName() +" - "+  m.getDescription());
 				rows.add(row);
 			}
 			this.writeToSheet(rows, header, sheet, headerStyle);
@@ -195,8 +219,10 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			rows = new ArrayList<List<String>>();
 			rows.add(header);
 			row = new ArrayList<String>();
-			for (Segment s: p.getSegments().getChildren()) {
-				row = Arrays.asList(s.getLabel());
+			List<Segment> segmentList = new ArrayList<Segment>(p.getSegments().getChildren());
+			Collections.sort(segmentList);
+			for (Segment s: segmentList) {
+				row = Arrays.asList(s.getLabel() + " - " +  s.getDescription());
 				rows.add(row);
 			}
 			this.writeToSheet(rows, header, sheet, headerStyle);
@@ -206,8 +232,10 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			rows = new ArrayList<List<String>>();
 			rows.add(header);
 			row = new ArrayList<String>();
-			for (Datatype dt: p.getDatatypes().getChildren()) {
-				row = Arrays.asList(dt.getLabel());
+			List<Datatype> datatypeList = new ArrayList<Datatype>(p.getDatatypes().getChildren());
+			Collections.sort(datatypeList);
+			for (Datatype dt: datatypeList) {
+				row = Arrays.asList(dt.getLabel() +" - "+ dt.getDescription());
 				rows.add(row);
 			}
 			this.writeToSheet(rows, header, sheet, headerStyle);
@@ -217,14 +245,16 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			rows = new ArrayList<List<String>>();
 			rows.add(header);
 			row = new ArrayList<String>();
+			List<Table> tableList = new ArrayList<Table>(p.getTables().getChildren());
+			Collections.sort(tableList);
 			for (Table t: p.getTables().getChildren()) {
-				row = Arrays.asList(t.getName());
+				row = Arrays.asList(t.getBindingIdentifier()+" - "+ t.getName());
 				rows.add(row);
 			}
 			this.writeToSheet(rows, header, sheet, headerStyle);
 
 			// Adding messages
-			for (Message m : p.getMessages().getChildren()) {
+			for (Message m : messagesList) {
 				sheetName = "MSG_"+m.getMessageType()+ "_"+ m.getStructID();
 				if (sheetNames.contains(sheetName)){
 					logger.debug(sheetName + " already added!!");
@@ -252,7 +282,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			}
 
 			// Adding segments 
-			for (Segment s: p.getSegments().getChildren()) {
+			for (Segment s: segmentList) {
 				rows = new ArrayList<List<String>>();
 				header = Arrays.asList("Segment", "Name", "DT", "Usage",
 						"Card.", "Len",
@@ -270,7 +300,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			}
 
 			// Adding datatypes
-			for (Datatype dt : p.getDatatypes().getChildren()){
+			for (Datatype dt : datatypeList){
 				rows = new ArrayList<List<String>>();
 				header = Arrays.asList("Component", "Name", "Len.", "DT", "Usage",
 						"Card.", "Value set", "Comment");
@@ -287,7 +317,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			}
 
 			// Adding value sets
-			for (Table t: p.getTables().getChildren()){
+			for (Table t: tableList){
 				sheetName = "VS_"+t.getBindingIdentifier();
 				if (sheetNames.contains(sheetName)){
 					logger.debug(sheetName + " already added!!");
@@ -405,6 +435,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 			// Apply XSL transformation on xml file to generate html
 			File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
+			//			File tmpHtmlFile = new File("ProfileTemp.html");
 			Builder builder = new Builder();
 			nu.xom.Document input = builder.build(tmpXmlFile);
 			nu.xom.Document stylesheet = builder.build(this.getClass()
@@ -413,7 +444,16 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			transform.setParameter("inlineConstraints", inlineConstraints);
 			Nodes output = transform.transform(input);
 			nu.xom.Document result = XSLTransform.toDocument(output);
-			FileUtils.writeStringToFile(tmpHtmlFile, result.toXML());
+
+			Tidy tidy = new Tidy();
+			tidy.setWraplen(Integer.MAX_VALUE);
+			tidy.setXHTML(true);
+			tidy.setShowWarnings(false); //to hide errors
+			tidy.setQuiet(true); //to hide warning
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(result.toXML().getBytes("UTF-8"));
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			tidy.parseDOM(inputStream, outputStream);
+			FileUtils.writeStringToFile(tmpHtmlFile, outputStream.toString("UTF-8"));
 
 			// Convert html document to pdf
 			Document document = new Document();
@@ -437,8 +477,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	// store the chapters and sections with their title here.
 	private Map<String, Integer> pageByTitle;
 
-	@Override
-	public InputStream exportAsPdf(Profile p) {
+	
+	private InputStream exportAsPdfWithIText(Profile p) {
 
 		List<String> header;
 		PdfPTable table;
@@ -543,35 +583,36 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			/*
 			 * Adding messages definition
 			 */
-			tocDocument.add(new Paragraph("Messages infrastructure", titleFont));
+			tocDocument.add(new Paragraph("Messages", titleFont));
 			tocDocument.add(Chunk.NEWLINE);
 
-			chapter = new Chapter(new Paragraph("Messages infrastructure", titleFont), 1);
+			chapter = new Chapter(new Paragraph("Messages", titleFont), 1);
 			igDocument.add(chapter);
 			igDocument.add(Chunk.NEWLINE);
-
 
 			List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
 			Collections.sort(messagesList);
 
 			for (Message m : messagesList) {
-				String messageInfo = m.getMessageType() + "^"
-						+ m.getEvent() + "^" + m.getStructID() + " - " + m.getDescription();
+				//				String messageInfo = m.getMessageType() + "^"
+				//						+ m.getEvent() + "^" + m.getStructID() + " - " + m.getDescription();
+				//				this.addTocContent(tocDocument, igWriter, messageInfo);
+				//				title = new Paragraph("Message definition: "+ messageInfo, titleFont);
 
-				this.addTocContent(tocDocument, igWriter, messageInfo);
-
-				title = new Paragraph("Message definition: "+ messageInfo, titleFont);
+				this.addTocContent(tocDocument, igWriter, m.getName());
+				title = new Paragraph("Messages", titleFont);
 				section = chapter.addSection(title);
 				section.setIndentationLeft(30);
 				section.setTriggerNewPage(true);
 
+				section.add(Chunk.NEWLINE);
+				section.add(richTextToParagraph(m.getComment()));
 				section.add(Chunk.NEWLINE);
 
 				header = Arrays.asList("Segment", "Usage", "Card.", "Comment");
 				columnWidths = new float[] { 4f, 3f, 2f, 8f };
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerColor);
-
 				rows = new ArrayList<List<String>>();
 
 				List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
@@ -587,6 +628,11 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				}
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
 				section.add(table);
+
+				section.add(Chunk.NEWLINE);
+				section.add(richTextToParagraph(m.getUsageNote()));
+				section.add(Chunk.NEWLINE);
+
 				igDocument.add(section);
 			}
 
@@ -594,49 +640,34 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			 * Adding segments details
 			 */
 			tocDocument.add(Chunk.NEWLINE);
-			tocDocument.add(new Paragraph("Segments definitions", titleFont));
+			tocDocument.add(new Paragraph("Segments and fields descriptions", titleFont));
 			tocDocument.add(Chunk.NEWLINE);
 
-			title = new Paragraph("Segments definitions", titleFont);
+			title = new Paragraph("Segments and fields descriptions", titleFont);
 			chapter = new Chapter(title, 2);
 
-			for (Message m : messagesList) {
-				//				igDocument.newPage();
-				//				igDocument.add(new Paragraph("Segments definitions", titleFont));
-				//				igDocument.add(Chunk.NEWLINE);
+			igDocument.add(title);
+			igDocument.add(Chunk.NEWLINE);
 
-				String messageInfo = m.getMessageType() + "^"
-						+ m.getEvent() + "^" + m.getStructID() + " - " + m.getDescription();
-				this.addTocContent(tocDocument, igWriter, messageInfo);
-				Section section1 = chapter.addSection(new Paragraph(messageInfo, titleFont));
+			List<Segment> segmentsList = new ArrayList<Segment>(p.getSegments().getChildren());
+			Collections.sort(segmentsList);
 
-				//				igDocument.add(new Paragraph(messageInfo + " segments details", titleFont));
+			for (Segment s: segmentsList){
+				String segmentInfo = s.getLabel() + " - " + s.getDescription();
+				this.addTocContent(tocDocument, igWriter, segmentInfo);
+				Section section1 = chapter.addSection(new Paragraph(segmentInfo, titleFont));
 
 				header = Arrays.asList("Seq", "Element Name", "DT",
 						"Usage", "Card.", "Len", "Value\nSet", "Comment");
 				columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 
 						1.5f, 1.5f, 2f, 6f };
+				table = this.addHeaderPdfTable(header, columnWidths,
+						headerFont, headerColor);
+				this.addSegmentPdf(igDocument, igWriter, tocDocument, header, columnWidths, s, headerFont, headerColor, cellFont, cpColor, p.getSegments(), p.getDatatypes(), p.getTables(), section1);
 
-				for (SegmentRefOrGroup srog : m.getChildren()) {
-					table = this.addHeaderPdfTable(header, columnWidths,
-							headerFont, headerColor);
-					//					rows = new ArrayList<List<String>>();
-					if (srog instanceof SegmentRef) {
-						this.addSegmentPdfMsgDetails(igDocument, igWriter, tocDocument,
-								header, columnWidths, (SegmentRef) srog,
-								headerFont, headerColor, cellFont, cpColor,
-								p.getSegments(), p.getDatatypes(),
-								p.getTables(), section1);
-
-					} else if (srog instanceof Group) {
-						this.addGroupPdfMsgDetails(igDocument, igWriter, tocDocument,
-								header, columnWidths, (Group) srog, headerFont,
-								headerColor, cellFont, cpColor,
-								p.getSegments(), p.getDatatypes(),
-								p.getTables(), section1);
-					}
-				}
+				igDocument.add(section1);
 			}
+
 			igDocument.add(chapter);
 			igDocument.add(Chunk.NEWLINE);
 
@@ -655,8 +686,9 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					"Usage", "Len", "Table", "Comment");
 			columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 2f, 2f, 6f };
 
-			for (Datatype d : p.getDatatypes().getChildren()) {
-				//				if ((d.getLabel() != null && d.getLabel().contains("_"))) {
+			List<Datatype> datatypeList = new ArrayList<Datatype>(p.getDatatypes().getChildren());
+			Collections.sort(datatypeList);
+			for (Datatype d: datatypeList) {
 
 				this.addTocContent(tocDocument, igWriter, d.getLabel() != null ?  d.getLabel()+ " - " + d.getDescription() : d.getName()
 						+ " - " + d.getDescription());
@@ -675,7 +707,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				igDocument.add(Chunk.NEWLINE);
 				igDocument.add(table);
 				igDocument.add(Chunk.NEWLINE);
-				//				}
 			}
 
 			/*
@@ -706,12 +737,12 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				StringBuilder sb = new StringBuilder();
 				sb.append("\nOid: ");
 				sb.append(t.getOid()==null ? "UNSPECIFIED":t.getOid());
-				sb.append("\nStability: ");
-				sb.append(t.getStability()==null ? "Static":t.getStability());
-				sb.append("\nExtensibility: ");
-				sb.append(t.getExtensibility() == null ? "Closed":t.getExtensibility());
-				sb.append("\nContent: ");
-				sb.append(t.getContentDefinition() == null ? "Extensional":t.getContentDefinition());
+				//				sb.append("\nStability: ");
+				//				sb.append(t.getStability()==null ? "Static":t.getStability().value());
+				//				sb.append("\nExtensibility: ");
+				//				sb.append(t.getExtensibility() == null ? "Closed":t.getExtensibility().value());
+				//				sb.append("\nContent: ");
+				//				sb.append(t.getContentDefinition() == null ? "Extensional":t.getContentDefinition().value());
 				igDocument.add(new Chunk(sb.toString(), cellFont));
 
 				table = this.addHeaderPdfTable(header, columnWidths,
@@ -973,52 +1004,26 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		rows.add(row);
 	}
 
-	private void addGroupPdfMsgDetails(Document igDocument, PdfWriter igWriter,
+	private void addSegmentPdf(Document igDocument, PdfWriter igWriter,
 			Document tocDocument, List<String> header, float[] columnWidths,
-			Group g, Font headerFont, BaseColor headerColor, Font cellFont,
-			BaseColor cpColor, Segments segments, Datatypes datatypes,
-			Tables tables, Section section) throws DocumentException {
-
-		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
-		Collections.sort(segsOrGroups);
-		for (SegmentRefOrGroup srog : segsOrGroups) {
-			if (srog instanceof SegmentRef) {
-				this.addSegmentPdfMsgDetails(igDocument, igWriter, tocDocument, header,
-						columnWidths, (SegmentRef) srog, headerFont,
-						headerColor, cellFont, cpColor, segments, datatypes,
-						tables, section);
-			} else if (srog instanceof Group) {
-				this.addGroupPdfMsgDetails(igDocument, igWriter, tocDocument, header,
-						columnWidths, (Group) srog, headerFont, headerColor,
-						cellFont, cpColor, segments, datatypes, tables, section);
-			}
-		}
-	}
-
-	private void addSegmentPdfMsgDetails(Document igDocument, PdfWriter igWriter,
-			Document tocDocument, List<String> header, float[] columnWidths,
-			SegmentRef segRef, Font headerFont, BaseColor headerColor,
+			Segment s, Font headerFont, BaseColor headerColor,
 			Font cellFont, BaseColor cpColor, Segments segments,
-			Datatypes datatypes, Tables tables, Section section) throws DocumentException {
+			Datatypes datatypes, Tables tables, Section section1) throws DocumentException {
 
 		PdfPTable table = this.addHeaderPdfTable(header, columnWidths,
 				headerFont, headerColor);
 		ArrayList<List<String>> rows = new ArrayList<List<String>>();
 
-		Segment s = segments.findOneSegmentById(segRef.getRef());
-
-		this.addTocContent(tocDocument, igWriter,
-				"   + " + s.getName() + " - " + s.getDescription() + " Segment");
-
-		Section section1 = section.addSection(new Paragraph(s.getName() + ": " + s.getDescription()
-				+ " Segment"));
 		section1.add(Chunk.NEWLINE);
-		section1.add(new Paragraph(s.getText1()));
+		section1.add(richTextToParagraph(s.getText1()));
+		section1.add(Chunk.NEWLINE);
+
 		this.addFields(rows, s, Boolean.TRUE, datatypes, tables);
 		this.addCellsPdfTable(table, rows, cellFont, cpColor);
 		section1.add(table);
+		
 		section1.add(Chunk.NEWLINE);
-		section1.add(new Paragraph(s.getText2()));
+		section1.add(richTextToParagraph(s.getText2()));
 		section1.add(Chunk.NEWLINE);
 
 		List<Field> fieldsList = s.getFields();
@@ -1044,7 +1049,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		String indent = StringUtils.repeat(".", 4 * depth);
 		Segment segment = segments.findOneSegmentById(s.getRef());
 		List<String> row = Arrays.asList(indent + segment.getName(), 
-				segment.getLabel().equals(segment.getName())?"":segment.getLabel(), 
+				segment.getLabel().equals(segment.getName()) ? "" : segment.getLabel(),
+						segment.getDescription(),
 						s.getUsage().value(), 
 						//						"", 
 						"[" + String.valueOf(s.getMin())
@@ -1061,10 +1067,11 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 		List<String> row = Arrays.asList(
 				indent + "[", "",
+				g.getName() + " GROUP BEGIN",
 				g.getUsage().value(),
 				"[" + String.valueOf(g.getMin()) + ".."
-				+ String.valueOf(g.getMax()) + "]", 
-				"BEGIN " + g.getName() + " GROUP");
+						+ String.valueOf(g.getMax()) + "]", 
+				"");
 		rows.add(row);
 
 		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
@@ -1079,11 +1086,11 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			}
 		}
 		row = Arrays.asList(indent + "]",
+				"",
+				g.getName() + " GROUP END",
 				"", 
 				"", 
-				"", 
-				"END " + g.getName()
-				+ " GROUP");
+				"");
 		rows.add(row);
 	}
 	private List<Constraint> findConstraints(Integer target,
@@ -1108,6 +1115,20 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		return constraints;
 	}
 
+	private void addSegRefOrGroups(List<List<String>> rows, Message m, Profile p){
+		List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
+
+		for (SegmentRefOrGroup srog : segRefOrGroups) {
+			if (srog instanceof SegmentRef) {
+				this.addSegmentMsgInfra(rows, (SegmentRef) srog, 0,
+						p.getSegments());
+			} else if (srog instanceof Group) {
+				this.addGroupMsgInfra(rows, (Group) srog, 0,
+						p.getSegments(), p.getDatatypes());
+			}
+		}
+	}
+
 	private void addComponents(List<List<String>> rows, Datatype d,
 			Datatypes datatypes, Tables tables) {
 		List<String> row;
@@ -1127,14 +1148,15 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 						c.getPosition().toString(),
 						c.getName(),
 						c.getConfLength(),
-						c.getDatatype() == null || datatypes.findOne(c.getDatatype()).getLabel() == null ? 
-								"" : datatypes.findOne(c.getDatatype()).getLabel(),
-						c.getUsage().value(),
-						"[" + String.valueOf(c.getMinLength()) + ".."
-								+ String.valueOf(c.getMaxLength()) + "]",
-								(c.getTable() == null || tables.findOneTableById(c.getTable()) == null ?
-										"" : tables.findOneTableById(c.getTable()).getBindingIdentifier()),
-										c.getComment());
+						(c.getDatatype() == null || c.getDatatype().isEmpty() ?
+								"" : (datatypes.findOne(c.getDatatype()) == null ? 
+										c.getDatatype() : datatypes.findOne(c.getDatatype()).getLabel())),
+										c.getUsage().value(),
+										"[" + String.valueOf(c.getMinLength()) + ".."
+												+ String.valueOf(c.getMaxLength()) + "]",
+												(c.getTable() == null || c.getTable().isEmpty() ? 
+														"" : (tables.findOneTableById(c.getTable()) == null ? c.getTable() : tables.findOneTableById(c.getTable()).getBindingIdentifier())),
+														c.getComment());
 				rows.add(row);
 				List<Constraint> constraints = this.findConstraints(
 						componentsList.indexOf(c) + 1, predicates,
@@ -1171,15 +1193,17 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					// f.getItemNo().replaceFirst("^0+(?!$)", ""),
 					String.valueOf(f.getPosition()),
 					f.getName(),
-					f.getDatatype() == null ? "":datatypes.findOne(f.getDatatype()).getLabel(),
-							f.getUsage().value(),
-							"[" + String.valueOf(f.getMin()) + ".."
-									+ String.valueOf(f.getMax()) + "]",
-									"[" + String.valueOf(f.getMinLength()) + ".."
-											+ String.valueOf(f.getMaxLength()) + "]",
-											(f.getTable() == null || tables.findOneTableById(f.getTable()) == null ?
-													"" : tables.findOneTableById(f.getTable()).getBindingIdentifier()), 
-													f.getComment() == null ? "" : f.getComment());
+					(f.getDatatype() == null || f.getDatatype().isEmpty() ?
+							"" : (datatypes.findOne(f.getDatatype()) == null ? 
+									f.getDatatype() : datatypes.findOne(f.getDatatype()).getLabel())),
+									f.getUsage().value(),
+									"[" + String.valueOf(f.getMin()) + ".."
+											+ String.valueOf(f.getMax()) + "]",
+											"[" + String.valueOf(f.getMinLength()) + ".."
+													+ String.valueOf(f.getMaxLength()) + "]",
+													(f.getTable() == null || f.getTable().isEmpty() ? 
+															"" : (tables.findOneTableById(f.getTable()) == null ? f.getTable() : tables.findOneTableById(f.getTable()).getBindingIdentifier())),
+															f.getComment() == null ? "" : f.getComment());
 			rows.add(row);
 
 			if (inlineConstraints) {
@@ -1235,7 +1259,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	};
 
 	@SuppressWarnings("deprecation")
-	public Paragraph richTextToParagraph(String htmlString){
+	private Paragraph richTextToParagraph(String htmlString){
 		List<Element> p = new ArrayList<Element>();
 		StringReader strReader = new StringReader(htmlString);
 		try {
@@ -1253,9 +1277,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	}
 
 
-	public InputStream exportAsDocx(Profile p, String inlineConstraints) {
-		// Note: inlineConstraint can be true or false
-		
+	private InputStream exportAsDocxWithDocx4J(Profile p) {
 		WordprocessingMLPackage wordMLPackage;
 		try {
 			wordMLPackage = WordprocessingMLPackage.createPackage();
@@ -1277,7 +1299,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 		addPageBreak(wordMLPackage, factory);
 
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Index");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "TABLE OF CONTENTS");
 		P paragraphForTOC = factory.createP();		       
 		R r = factory.createR();
 
@@ -1303,60 +1325,78 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		wordMLPackage.getMainDocumentPart().getContent().add(paragraphForTOC);
 		addPageBreak(wordMLPackage, factory);
 
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Messages");
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "INTRODUCTION");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Purpose");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Audience");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Organisation of this guide");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Referenced profiles - antecedents");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Scope");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "In scope");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Out of scope");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Key technical decisions [conventions]");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "USE CASE");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Actors");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "User story");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Use case assumptions");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Pre-conditions");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Post-conditions");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Functional requirements");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Sequence diagram");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Acknowledgements");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Error handling");
+
+		addPageBreak(wordMLPackage, factory);
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "MESSAGE INFRASTRUCTURE");
+
+		// Including information regarding messages
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Messages");
 
 		List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
 		Collections.sort(messagesList);
 		for (Message m : messagesList) {
-			String messageInfo = m.getMessageType() + "^"
-					+ m.getEvent() + "^" + m.getStructID() + " - " + m.getDescription();
+			//			String messageInfo = m.getMessageType() + "^"
+			//					+ m.getEvent() + "^" + m.getStructID() + " - " + m.getDescription();
+			//			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3",
+			//					messageInfo);
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3",
+					m.getName());
 
-			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
-					messageInfo);
+			addRichTextToDocx(wordMLPackage, m.getComment());
 
-			List<String> header = Arrays.asList("Segment", "Flavor", "Usage",
-					"Card.", "Comment");
-			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 3000);
+			List<String> header = Arrays.asList("Segment", "Flavor", "Element Name", "Usage",
+					"Cardinality", "Description/Comments");
+			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 1000, 3000);
 
 			ArrayList<List<String>> rows = new ArrayList<List<String>>();
-
-			List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
-
-			for (SegmentRefOrGroup srog : segRefOrGroups) {
-				if (srog instanceof SegmentRef) {
-					this.addSegmentMsgInfra(rows, (SegmentRef) srog, 0,
-							p.getSegments());
-				} else if (srog instanceof Group) {
-					this.addGroupMsgInfra(rows, (Group) srog, 0,
-							p.getSegments(), p.getDatatypes());
-				}
-			}
-
+			addSegRefOrGroups(rows, m, p);
 			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+
+			addRichTextToDocx(wordMLPackage, m.getUsageNote());
 			addPageBreak(wordMLPackage, factory);
 		}
 
+		// Including information regarding segments 
 		List<Segment> segmentsList = new ArrayList<Segment>(p.getSegments().getChildren());
 		Collections.sort(segmentsList);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Segments library");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Segments and fields descriptions[usage notes]");
 
 		for (Segment s: segmentsList){
 			String segmentInfo = s.getLabel() + " - " + s.getDescription();
-			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3",
 					segmentInfo);
 
+			// Add segment details
+			addRichTextToDocx(wordMLPackage, s.getText1());
+
 			List<String> header = Arrays.asList("Seq", "Element Name", "DT",
-					"Usage", "Card.", "Len", "Value\nSet", "Comment");
-
+					"Usage", "Cardinality", "Length", "Value Set", "Description/Comments");
 			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 1000, 1000, 1000, 3000);
-
 			ArrayList<List<String>> rows = new ArrayList<List<String>>();
-
-			// Add segment info
-			wordMLPackage.getMainDocumentPart().addParagraphOfText(s.getText1());
 			this.addFields(rows, s, Boolean.TRUE, p.getDatatypes(), p.getTables());
-			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
-			wordMLPackage.getMainDocumentPart().addParagraphOfText(s.getText2());
+			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocxWithConstraints(header, widths, rows, wordMLPackage, factory));
+
+			addRichTextToDocx(wordMLPackage, s.getText2());
 
 			// Add field texts
 			List<Field> fieldsList = s.getFields();
@@ -1373,46 +1413,42 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			addPageBreak(wordMLPackage, factory);
 		}
 
+		// Including information regarding data types
 		List<Datatype> datatypeList = new ArrayList<Datatype>(p.getDatatypes().getChildren());
 		Collections.sort(datatypeList);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Datatype library");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Data types");
+
 		for (Datatype d: datatypeList){
 			String dtInfo = d.getLabel() + " - " + d.getDescription();
-
-			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3",
 					dtInfo);
+
+			wordMLPackage.getMainDocumentPart().addParagraphOfText(d.getComment());
 
 			List<String> header = Arrays.asList("Seq", "Element Name", "Conf\nlength", "DT",
 					"Usage", "Len", "Table", "Comment");
 			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 1000, 1000, 1000, 3000);
-
-			wordMLPackage.getMainDocumentPart().addParagraphOfText(d.getComment());
-
 			List<List<String>> rows = new ArrayList<List<String>>();
 			this.addComponents(rows, d, p.getDatatypes(), p.getTables());
-			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocxWithConstraints(header, widths, rows, wordMLPackage, factory));
 		}
 
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Value sets library");
-		List<Table> tables = new ArrayList<Table>(p.getTables()
-				.getChildren());
+		// Including information regarding value sets 
+		List<Table> tables = new ArrayList<Table>(p.getTables().getChildren());
 		Collections.sort(tables);
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Value sets");
 
 		for (Table t : tables) {
 			String valuesetInfo = t.getBindingIdentifier()
 					+ " - " + t.getDescription();
-			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2",
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3",
 					valuesetInfo);
 
-			List<String> header = Arrays.asList("Value", "Code system", "Usage", "Description");
-
-			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 3000);
-
-			//				StringBuilder sb;
-			//				sb = new StringBuilder();
-			//				sb.append("\nOid: ");
-			//				sb.append(t.getOid()==null ? "UNSPECIFIED":t.getOid());
-			//				wordMLPackage.getMainDocumentPart().addParagraphOfText(sb.toString());
+							StringBuilder sb;
+							sb = new StringBuilder();
+							sb.append("\nOid: ");
+							sb.append(t.getOid()==null ? "UNSPECIFIED":t.getOid());
+							wordMLPackage.getMainDocumentPart().addParagraphOfText(sb.toString());
 			//				sb = new StringBuilder();
 			//				sb.append("\nStability: ");
 			//				sb.append(t.getStability()==null ? "Static":t.getStability());
@@ -1426,21 +1462,45 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			//				sb.append(t.getContentDefinition() == null ? "Extensional":t.getContentDefinition());
 			//				wordMLPackage.getMainDocumentPart().addParagraphOfText(sb.toString());
 
+			List<String> header = Arrays.asList("Value", "Code system", "Usage", "Description");
+			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 3000);
 			ArrayList<List<String>> rows = new ArrayList<List<String>>();
 			this.addCodes(rows, t);
 			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+
 		}
+
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Code systems");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "LOINC");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "SNOMED");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Conformance information");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Conformance statements");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Message Level");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Group Level");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Segment Level");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Datatype Level");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Conditional predicates");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Message Level");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Group Level");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Segment Level");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Datatype Level");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Glossary");
+
 		File tmpFile;
 		try {
 			tmpFile = File.createTempFile("Profile", ".docx");
 			wordMLPackage.save(tmpFile);
+
 			return FileUtils.openInputStream(tmpFile);
 		} catch (IOException | Docx4JException e) {
 			e.printStackTrace();
 			return new NullInputStream(1L);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new NullInputStream(1L);
 		}
 	}
-
 
 	private static Tbl createTableDocx(List<String> header, List<Integer> widths, List<List<String>> rows, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
 		Tbl table = factory.createTbl();
@@ -1463,6 +1523,43 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				addTableCell(tableRow, cell, null, wordMLPackage, factory);
 			} 
 			table.getContent().add(tableRow);
+		}
+		addBorders(table);
+		return table;
+	}
+
+	private static Tbl createTableDocxWithConstraints(List<String> header, List<Integer> widths, List<List<String>> rows, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+		Tbl table = factory.createTbl();
+		Tr tableRow;
+
+		tableRow = factory.createTr();
+		Integer width = null;
+		for (String cell: header){				
+			if (widths != null && header.size() != widths.size()) {
+				widths.get(header.indexOf(cell));
+			}
+			addTableCell(tableRow, cell, width, wordMLPackage, factory);
+		}
+
+		table.getContent().add(tableRow);
+
+		if (!rows.isEmpty()){ 
+			int nbOfColumns = rows.get(0).size(); 
+			for (List<String> row: rows){
+				if (row.size() == nbOfColumns){ 
+					//case "normal" row
+					tableRow = factory.createTr();
+					for (String cell: row){
+						addTableCell(tableRow, cell, null, wordMLPackage, factory);
+					}
+				} else { 
+					//case "constraints" row
+					tableRow.getContent().add(createTableCell(row.get(0), null, wordMLPackage, factory));
+					tableRow.getContent().add(createTableCell(row.get(1), null, wordMLPackage, factory));
+					tableRow.getContent().add(createTableCellGspan(row.get(2), nbOfColumns - 2, wordMLPackage, factory));
+				}
+				table.getContent().add(tableRow);
+			}
 		}
 		addBorders(table);
 		return table;
@@ -1505,6 +1602,33 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		tableRow.getContent().add(tableCell);
 	}
 
+	private static Tc createTableCell(String content, Integer width, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+		Tc tableCell = factory.createTc();
+		tableCell.getContent().add(
+				wordMLPackage.getMainDocumentPart().
+				createParagraphOfText(content));
+		if (width != null){
+			setCellWidth(tableCell, width);
+		}
+		return tableCell;
+	}
+
+	@SuppressWarnings("deprecation")
+	private static Tc createTableCellGspan(String content, int gridspan, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+		Tc tc = factory.createTc();
+		TcPr tcpr = factory.createTcPr();
+		tc.setTcPr(tcpr);
+		CTVerticalJc valign = factory.createCTVerticalJc();
+		valign.setVal(STVerticalJc.TOP);
+		tcpr.setVAlign(valign);
+		GridSpan gspan = factory.createTcPrInnerGridSpan();
+		gspan.setVal(new BigInteger("" + gridspan));
+		tcpr.setGridSpan(gspan);
+		tc.getEGBlockLevelElts().add(wordMLPackage.getMainDocumentPart().
+				createParagraphOfText(content));
+		return tc;
+	}
+
 	private static void setCellWidth(Tc tableCell, int width) {
 		TcPr tableCellProperties = new TcPr();
 		TblWidth tableWidth = new TblWidth();
@@ -1533,6 +1657,20 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				FldChar.class, fldchar);
 	}
 
+	private String wrapRichText(String htmlString){
+		//Adds html tags so that string can be decoded in docx export
+		StringBuilder rst = new StringBuilder("<html><head></head><body></body>");
+		return rst.insert(25, htmlString).toString();
+	}
 
+	private void addRichTextToDocx(WordprocessingMLPackage wordMLPackage, String htmlString){
+		try {
+			wordMLPackage.getMainDocumentPart().addAltChunk(AltChunkType.Xhtml,
+					wrapRichText(htmlString).getBytes());
+		} catch (Docx4JException e1) {
+			e1.printStackTrace();
+			wordMLPackage.getMainDocumentPart().addParagraphOfText("Error in rich text");
+		}
+	}
 
 }
