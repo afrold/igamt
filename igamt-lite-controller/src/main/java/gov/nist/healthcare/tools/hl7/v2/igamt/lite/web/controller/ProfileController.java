@@ -247,11 +247,24 @@ public class ProfileController extends CommonController {
 		log.info("Exporting as pdf file profile with id=" + id);
 		Profile p = findProfile(id);
 		InputStream content = null;
-//		content = profileExport.exportAsPdfFromXsl(p, inlineConstraints);
 		content = profileExport.exportAsPdf(p);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition",
 				"attachment;filename=" +  p.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+
+	@RequestMapping(value = "/{id}/export/docx", method = RequestMethod.POST, produces = "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+	public void exportDocx(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ProfileNotFoundException {
+		log.info("Exporting as docx file profile with id=" + id);
+		Profile p = findProfile(id);
+		InputStream content = null;
+		content = profileExport.exportAsDocx(p);
+		response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+		response.setHeader("Content-disposition",
+				"attachment;filename=" +  p.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
