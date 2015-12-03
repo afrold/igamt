@@ -91,7 +91,7 @@ angular.module('igl')
 	        	$scope.$emit('event:openSegment', leaf.reference);
 	            break;
 	        }
-	        case "Messages":
+	        case "ConformanceProfile":
 	        {
 	        	$scope.$emit('event:openMessage', leaf.reference);
 	            break;

@@ -451,6 +451,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			Message message = new Message();
 			DBObject child = (DBObject) childObj;
 			message.setId(readMongoId(child));
+			message.setName((String) child.get("name"));
 			message.setMessageType((String) child.get("messageType"));
 			message.setComment(readString(child, "comment"));
 			message.setDescription((String) child.get("description"));

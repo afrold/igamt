@@ -18,7 +18,7 @@
                 <span>Current version: {{profile.metaData.hl7Version}}
                 </span>
 
-                <div class="pull-right"  >
+                <div class="pull-right">
 
 
                     <button title="Save Changes" type="button" class="btn btn-xs btn-success"
@@ -101,7 +101,7 @@
                              </a>
                         </div>
                     </div>
-                    <div class="panel-body" ng-show="showToC">
+                    <div class="panel-body" ng-show="showToC" style="max-width: 100%; overflow-x: scroll; max-height: 800px; overflow-y: scroll;white-space:nowrap;">
                         <div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
                         </div>
                     </div>

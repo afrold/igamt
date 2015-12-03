@@ -4,11 +4,26 @@ angular.module('igl').factory ('ToCSvc', function() {
 	
 	svc.getToC = function(profile) {
 		toc = [];
+		toc.push(svc.getTopEntry("Introduction"));
+		toc.push(svc.getTopEntry("UseCase"));
+		toc.push(svc.getTopEntry("ConformanceToThisGuide"));
+		
 		toc.push(svc.getTopEntry("Datatypes", profile.datatypes));
+		toc.push(svc.getTopEntry("ConformanceProfile", profile.messages));
+		toc.push(svc.getTopEntry("CodeSystems"));
+		toc.push(svc.getTopEntry("LaboratoryResultMessageDevelopmentResources"));
+		toc.push(svc.getTopEntry("AdditionalImplementationGuidance"));
+		toc.push(svc.getTopEntry("ComponentAndProfileOIDS"));
+
 		toc.push(svc.getTopEntry("Segments", profile.segments));
-		toc.push(svc.getTopEntry("Messages", profile.messages));
 		toc.push(svc.getTopEntry("ValueSets", profile.tables));
 		return toc;
+	}
+	
+	svc.getIntroduction = function() {
+		var rval = {
+				
+		}
 	}
 	
 	svc.getMetadata = function(metaData) {
@@ -36,14 +51,16 @@ angular.module('igl').factory ('ToCSvc', function() {
 	// Returns a top level entry. It can be dropped on, but cannot be dragged.
 	// It will accept a drop where the drag value matches its label.
 	svc.getTopEntry = function(label, fromProfile) {
-		var children = svc.createEntries(label, fromProfile.children);
-		var segments = {
+		var children = [];
+		var rval = {
 			"label" : label,
 			"drop" : [label],
-			"reference" : fromProfile,
-			"children" : children
 		}
-		return segments;
+		if (fromProfile !== undefined) {
+			rval["reference"] = fromProfile;
+			rval["children"] = svc.createEntries(label, fromProfile.children);
+		}
+		return rval;
 	}
 	
 	// Returns a second level set entries, These are draggable.  "drag" indicates
@@ -52,16 +69,20 @@ angular.module('igl').factory ('ToCSvc', function() {
 		var rval = [];
 		var entry = {};
 		_.each(children, function(child){
-			if (drag === "Messages") {
-				entry = svc.createEntry(child, child.messageType, drag);
+			if (drag === "Datatypes") {
+				entry = svc.createEntry(child, child.name + " - " + child.description, drag);
 			} else if (drag === "ValueSets") {
-				entry = svc.createEntry(child, child.name, drag);
+				entry = svc.createEntry(child, child.name + " - " + child.description, drag);
 			} else {
 				entry = svc.createEntry(child, child.label, drag);
 			}
 			rval.push(entry);
 		});
 		return rval;
+	}
+	
+	var assembleDatatypeLabel = function(child) {
+		return child.name + " - " + child.description;
 	}
 	
 	svc.createEntry = function(reference, label, drag, drop, children) {
