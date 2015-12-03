@@ -152,6 +152,13 @@ angular.module('igl')
 
 angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.selectedNode = selectedNode;
+    $scope.constraintType = 'Plain';
+    $scope.firstConstraint = null;
+    $scope.secondConstraint = null;
+    $scope.compositeType = null;
+    $scope.complexConstraint = null;
+    $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraint = [];
     $scope.newConstraint = angular.fromJson({
         position_T: null,
         position_1: null,
@@ -169,7 +176,10 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         contraintType: null,
         value: null,
         trueUsage: null,
-        falseUsage: null
+        falseUsage: null,
+        valueSetId: null,
+        bindingStrength: 'R',
+        bindingLocation: '1'
     });
     $scope.newConstraint.location_T = $scope.selectedNode.name;
     $scope.newConstraint.location_1 = $scope.selectedNode.name;
@@ -198,12 +208,68 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
             $scope.newConstraint.childNodes_2.push(segmentModel);
         }
     }
+    
+    $scope.initPredicate = function(){
+    	$scope.newConstraint = angular.fromJson({
+            position_T: null,
+            position_1: null,
+            position_2: null,
+            location_T: null,
+            location_1: null,
+            location_2: null,
+            currentNode_T: null,
+            currentNode_1: null,
+            currentNode_2: null,
+            childNodes_T: [],
+            childNodes_1: [],
+            childNodes_2: [],
+            verb: null,
+            contraintType: null,
+            value: null,
+            trueUsage: null,
+            falseUsage: null,
+            valueSetId: null,
+            bindingStrength: 'R',
+            bindingLocation: '1'
+        });
+        $scope.newConstraint.location_T = $scope.selectedNode.name;
+        $scope.newConstraint.location_1 = $scope.selectedNode.name;
+        $scope.newConstraint.location_2 = $scope.selectedNode.name;
+
+        for (var i = 0, len1 = $scope.selectedNode.children.length; i < len1; i++) {
+            if ($scope.selectedNode.children[i].type === 'group') {
+                var groupModel = {
+                    name: $scope.selectedNode.children[i].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'group',
+                    node: $scope.selectedNode.children[i]
+                };
+                $scope.newConstraint.childNodes_T.push(groupModel);
+                $scope.newConstraint.childNodes_1.push(groupModel);
+                $scope.newConstraint.childNodes_2.push(groupModel);
+            } else if ($scope.selectedNode.children[i].type === 'segmentRef') {
+                var segmentModel = {
+                    name: $scope.selectedNode.name + '.' + $rootScope.segmentsMap[$scope.selectedNode.children[i].ref].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'segment',
+                    node: $rootScope.segmentsMap[$scope.selectedNode.children[i].ref]
+                };
+                $scope.newConstraint.childNodes_T.push(segmentModel);
+                $scope.newConstraint.childNodes_1.push(segmentModel);
+                $scope.newConstraint.childNodes_2.push(segmentModel);
+            }
+        }
+    }
 
     $scope.deletePredicate = function (predicate) {
         $scope.selectedNode.predicates.splice($scope.selectedNode.predicates.indexOf(predicate), 1);
         if (!$scope.isNewCP(predicate.id)) {
             $rootScope.recordChangeForEdit2('predicate', "delete", predicate.id, 'id', predicate.id);
         }
+    };
+    
+    $scope.deletePredicateForComplex = function (predicate) {
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(predicate), 1);
     };
 
     $scope.isNewCP = function (id) {
@@ -429,77 +495,602 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         $scope.newConstraint.currentNode_2 = null;
 
     };
+    
+    $scope.changeConstraintType = function () {
+    	$scope.newConstraint = angular.fromJson({
+            position_T: null,
+            position_1: null,
+            position_2: null,
+            location_T: null,
+            location_1: null,
+            location_2: null,
+            currentNode_T: null,
+            currentNode_1: null,
+            currentNode_2: null,
+            childNodes_T: [],
+            childNodes_1: [],
+            childNodes_2: [],
+            verb: null,
+            contraintType: null,
+            value: null,
+            trueUsage: null,
+            falseUsage: null,
+            valueSetId: null,
+            bindingStrength: 'R',
+            bindingLocation: '1'
+        });
+        $scope.newConstraint.location_T = $scope.selectedNode.name;
+        $scope.newConstraint.location_1 = $scope.selectedNode.name;
+        $scope.newConstraint.location_2 = $scope.selectedNode.name;
+
+        for (var i = 0, len1 = $scope.selectedNode.children.length; i < len1; i++) {
+            if ($scope.selectedNode.children[i].type === 'group') {
+                var groupModel = {
+                    name: $scope.selectedNode.children[i].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'group',
+                    node: $scope.selectedNode.children[i]
+                };
+                $scope.newConstraint.childNodes_T.push(groupModel);
+                $scope.newConstraint.childNodes_1.push(groupModel);
+                $scope.newConstraint.childNodes_2.push(groupModel);
+            } else if ($scope.selectedNode.children[i].type === 'segmentRef') {
+                var segmentModel = {
+                    name: $scope.selectedNode.name + '.' + $rootScope.segmentsMap[$scope.selectedNode.children[i].ref].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'segment',
+                    node: $rootScope.segmentsMap[$scope.selectedNode.children[i].ref]
+                };
+                $scope.newConstraint.childNodes_T.push(segmentModel);
+                $scope.newConstraint.childNodes_1.push(segmentModel);
+                $scope.newConstraint.childNodes_2.push(segmentModel);
+            }
+        }
+        
+    	if($scope.constraintType === 'Complex'){
+    		$scope.newComplexConstraint = [];
+    		$scope.newComplexConstraintId = '';
+    	}
+    }
+    
+    $scope.addComplexConformanceStatement = function(){
+        $scope.complexConstraint.constraintId = $scope.newConstraint.segment + '-' + $scope.selectedNode.position;
+        $scope.selectedNode.predicates.push($scope.complexConstraint);
+        var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: $scope.complexConstraint};
+        $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+    };
+    
+    $scope.compositeConformanceStatements = function(){
+    	if($scope.compositeType === 'AND'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'AND(' + $scope.firstConstraint.constraintId,
+                    constraintTarget: $scope.firstConstraint.constraintTarget,
+                    description: '['+ $scope.firstConstraint.description + '] ' + 'AND' + ' [' + $scope.secondConstraint.description + ']',
+                    trueUsage: $scope.firstConstraint.trueUsage,
+                    falseUsage: $scope.firstConstraint.falseUsage,
+                    assertion: '<AND>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</AND>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if($scope.compositeType === 'OR'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'OR(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: $scope.firstConstraint.constraintTarget,
+                    description: '['+ $scope.firstConstraint.description + '] ' + 'OR' + ' [' + $scope.secondConstraint.description + ']',
+                    trueUsage: $scope.firstConstraint.trueUsage,
+                    falseUsage: $scope.firstConstraint.falseUsage,
+                    assertion: '<OR>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</OR>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if($scope.compositeType === 'IFTHEN'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'IFTHEN(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: $scope.firstConstraint.constraintTarget,
+                    description: 'IF ['+ $scope.firstConstraint.description + '] ' + 'THEN ' + ' [' + $scope.secondConstraint.description + ']',
+                    trueUsage: $scope.firstConstraint.trueUsage,
+                    falseUsage: $scope.firstConstraint.falseUsage,
+                    assertion: '<IMPLY>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</IMPLY>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}
+    	
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
+    };
+    
 
     $scope.addPredicate = function () {
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
 
         if ($scope.newConstraint.position_1 != null) {
             if ($scope.newConstraint.contraintType === 'valued') {
-                var cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.location_T,
-                    constraintTarget: $scope.newConstraint.position_T,
-                    description: 'If ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType,
-                    trueUsage: $scope.newConstraint.trueUsage,
-                    falseUsage: $scope.newConstraint.falseUsage,
-                    assertion: '<Presence Path=\"' + $scope.newConstraint.position_1 + '\"/>'
-                };
-                $scope.selectedNode.predicates.push(cp);
-                var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType,
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<Presence Path=\"' + $scope.newConstraint.position_1 + '\"/>'
+                    };
+                    $scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType,
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<Presence Path=\"' + $scope.newConstraint.position_1 + '\"/>'
+                    };
+                	$scope.newComplexConstraint.push(cp);
+            	}
 
             } else if ($scope.newConstraint.contraintType === 'a literal value') {
-                var cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.location_T,
-                    constraintTarget: $scope.newConstraint.position_T,
-                    description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
-                    trueUsage: $scope.newConstraint.trueUsage,
-                    falseUsage: $scope.newConstraint.falseUsage,
-                    assertion: '<PlainText Path=\"' + $scope.newConstraint.position_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
-                };
-                $scope.selectedNode.predicates.push(cp);
-                var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PlainText Path=\"' + $scope.newConstraint.position_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
+                    };
+                    $scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PlainText Path=\"' + $scope.newConstraint.position_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
+                    };
+            		$scope.newComplexConstraint.push(cp);
+            	}
             } else if ($scope.newConstraint.contraintType === 'one of list values') {
-                var cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.location_T,
-                    constraintTarget: $scope.newConstraint.position_T,
-                    description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
-                    trueUsage: $scope.newConstraint.trueUsage,
-                    falseUsage: $scope.newConstraint.falseUsage,
-                    assertion: '<StringList Path=\"' + $scope.newConstraint.position_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
-                };
-                $scope.selectedNode.predicates.push(cp);
-                var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<StringList Path=\"' + $scope.newConstraint.position_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+                    $scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<StringList Path=\"' + $scope.newConstraint.position_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'one of codes in ValueSet') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.valueSetId + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<ValueSet Path=\"' + $scope.newConstraint.position_1 + '\" ValueSetID=\"' + $scope.newConstraint.valueSetId + '\" BindingStrength=\"' + $scope.newConstraint.bindingStrength + '\" BindingLocation=\"' + $scope.newConstraint.bindingLocation +'\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.valueSetId + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<ValueSet Path=\"' + $scope.newConstraint.position_1 + '\" ValueSetID=\"' + $scope.newConstraint.valueSetId + '\" BindingStrength=\"' + $scope.newConstraint.bindingStrength + '\" BindingLocation=\"' + $scope.newConstraint.bindingLocation +'\"/>'
+                        };
+            		$scope.newComplexConstraint.push(cp);
+            	}
             } else if ($scope.newConstraint.contraintType === 'formatted value') {
-                var cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.location_T,
-                    constraintTarget: $scope.newConstraint.position_T,
-                    description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
-                    trueUsage: $scope.newConstraint.trueUsage,
-                    falseUsage: $scope.newConstraint.falseUsage,
-                    assertion: '<Format Path=\"' + $scope.newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
-                };
-                $scope.selectedNode.predicates.push(cp);
-                var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<Format Path=\"' + $scope.newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
+                        };
+                    $scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<Format Path=\"' + $scope.newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
+                        };
+            		$scope.newComplexConstraint.push(cp);
+            	}
             } else if ($scope.newConstraint.contraintType === 'identical to the another node') {
-                var cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.location_T,
-                    constraintTarget: $scope.newConstraint.position_T,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + $scope.newConstraint.location_2 + '.',
-                    trueUsage: $scope.newConstraint.trueUsage,
-                    falseUsage: $scope.newConstraint.falseUsage,
-                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
-                };
-                $scope.selectedNode.predicates.push(cp);
-                var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + $scope.newConstraint.location_2 + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+                        $scope.selectedNode.predicates.push(cp);
+                        var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                        $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + $scope.newConstraint.location_2 + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            }
+            
+            
+            
+            else if ($scope.newConstraint.contraintType === 'equal to the another node') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'not-equal to the another node') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' different with the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="NE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' different with the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="NE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'greater than the another node') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' greater than the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="GT" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' greater than the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="GT" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'equal to or greater than the another node') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="GE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="GE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'less than the another node') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' less than the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="LT" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' less than the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="LT" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'equal to or less than the another node') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="LE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than the value of ' + $scope.newConstraint.location_2  + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="LE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'equal to') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'not-equal to') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' different with ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="NE" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' different with ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="NE" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'greater than') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' greater than ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="GT" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' greater than ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="GT" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'equal to or greater than') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="GE" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="GE" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'less than') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' less than ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="LT" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' less than ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="LT" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
+            } else if ($scope.newConstraint.contraintType === 'equal to or less than') {
+            	if($scope.constraintType === 'Plain'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: $scope.newConstraint.location_T,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="LE" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		$scope.selectedNode.predicates.push(cp);
+                    var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
+                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+            	}else if ($scope.constraintType === 'Complex'){
+            		var cp = {
+            				id: new ObjectId().toString(),
+                            constraintId: 'CP' + $rootScope.newPredicateFakeId,
+                            constraintTarget: $scope.newConstraint.position_T,
+                            description: 'If the value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than ' + $scope.newConstraint.value + '.',
+                            trueUsage: $scope.newConstraint.trueUsage,
+                            falseUsage: $scope.newConstraint.falseUsage,
+                            assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="LE" Value=\"' + $scope.newConstraint.value + '\"/>'
+                        };
+            		
+            		$scope.newComplexConstraint.push(cp);
+            	}
             }
         }
     };
@@ -513,7 +1104,14 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
 
 angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
     $scope.selectedNode = selectedNode;
-
+    $scope.constraintType = 'Plain';
+    $scope.firstConstraint = null;
+    $scope.secondConstraint = null;
+    $scope.compositeType = null;
+    $scope.complexConstraint = null;
+    $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraint = [];
+    
     $scope.newConstraint = angular.fromJson({
         position_1: null,
         position_2: null,
@@ -526,7 +1124,10 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
         verb: null,
         constraintId: null,
         contraintType: null,
-        value: null
+        value: null,
+        valueSetId: null,
+        bindingStrength: 'R',
+        bindingLocation: '1'
     });
     $scope.newConstraint.location_1 = $scope.selectedNode.name;
     $scope.newConstraint.location_2 = $scope.selectedNode.name;
@@ -550,6 +1151,51 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             };
             $scope.newConstraint.childNodes_1.push(segmentModel);
             $scope.newConstraint.childNodes_2.push(segmentModel);
+        }
+    }
+    
+    
+    $scope.initConformanceStatement = function (){
+    	$scope.newConstraint = angular.fromJson({
+            position_1: null,
+            position_2: null,
+            location_1: null,
+            location_2: null,
+            currentNode_1: null,
+            currentNode_2: null,
+            childNodes_1: [],
+            childNodes_2: [],
+            verb: null,
+            constraintId: null,
+            contraintType: null,
+            value: null,
+	        valueSetId: null,
+	        bindingStrength: 'R',
+	        bindingLocation: '1'
+        });
+        $scope.newConstraint.location_1 = $scope.selectedNode.name;
+        $scope.newConstraint.location_2 = $scope.selectedNode.name;
+
+        for (var i = 0, len1 = $scope.selectedNode.children.length; i < len1; i++) {
+            if ($scope.selectedNode.children[i].type === 'group') {
+                var groupModel = {
+                    name: $scope.selectedNode.children[i].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'group',
+                    node: $scope.selectedNode.children[i]
+                };
+                $scope.newConstraint.childNodes_1.push(groupModel);
+                $scope.newConstraint.childNodes_2.push(groupModel);
+            } else if ($scope.selectedNode.children[i].type === 'segmentRef') {
+                var segmentModel = {
+                    name: $scope.selectedNode.name + '.' + $rootScope.segmentsMap[$scope.selectedNode.children[i].ref].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'segment',
+                    node: $rootScope.segmentsMap[$scope.selectedNode.children[i].ref]
+                };
+                $scope.newConstraint.childNodes_1.push(segmentModel);
+                $scope.newConstraint.childNodes_2.push(segmentModel);
+            }
         }
     }
 
@@ -691,6 +1337,10 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             $rootScope.recordChangeForEdit2('conformanceStatement', "delete", conformanceStatement.id, 'id', conformanceStatement.id);
         }
     };
+    
+    $scope.deleteConformanceStatementForComplex = function (conformanceStatement) {
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(conformanceStatement), 1);
+    };
 
 
     $scope.isNewCS = function (id) {
@@ -716,6 +1366,98 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
         }
         return false;
     };
+    
+    $scope.changeConstraintType = function () {
+    	$scope.newConstraint = angular.fromJson({
+            position_1: null,
+            position_2: null,
+            location_1: null,
+            location_2: null,
+            currentNode_1: null,
+            currentNode_2: null,
+            childNodes_1: [],
+            childNodes_2: [],
+            verb: null,
+            constraintId: null,
+            contraintType: null,
+            value: null,
+	        valueSetId: null,
+	        bindingStrength: 'R',
+	        bindingLocation: '1'
+        });
+        $scope.newConstraint.location_1 = $scope.selectedNode.name;
+        $scope.newConstraint.location_2 = $scope.selectedNode.name;
+
+        for (var i = 0, len1 = $scope.selectedNode.children.length; i < len1; i++) {
+            if ($scope.selectedNode.children[i].type === 'group') {
+                var groupModel = {
+                    name: $scope.selectedNode.children[i].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'group',
+                    node: $scope.selectedNode.children[i]
+                };
+                $scope.newConstraint.childNodes_1.push(groupModel);
+                $scope.newConstraint.childNodes_2.push(groupModel);
+            } else if ($scope.selectedNode.children[i].type === 'segmentRef') {
+                var segmentModel = {
+                    name: $scope.selectedNode.name + '.' + $rootScope.segmentsMap[$scope.selectedNode.children[i].ref].name,
+                    position: $scope.selectedNode.children[i].position,
+                    type: 'segment',
+                    node: $rootScope.segmentsMap[$scope.selectedNode.children[i].ref]
+                };
+                $scope.newConstraint.childNodes_1.push(segmentModel);
+                $scope.newConstraint.childNodes_2.push(segmentModel);
+            }
+        }
+		
+    	if($scope.constraintType === 'Complex'){
+    		$scope.newComplexConstraint = [];
+    		$scope.newComplexConstraintId = '';
+    	}
+    }
+    
+    $scope.addComplexConformanceStatement = function(){
+    	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+    	
+    	$scope.selectedNode.conformanceStatements.push($scope.complexConstraint);
+        var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: $scope.complexConstraint};
+        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+    };
+    
+    $scope.compositeConformanceStatements = function(){
+    	if($scope.compositeType === 'AND'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'AND(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: '.',
+                    description: '['+ $scope.firstConstraint.description + '] ' + 'AND' + ' [' + $scope.secondConstraint.description + ']',
+                    assertion: '<AND>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</AND>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if($scope.compositeType === 'OR'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'OR(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: '.',
+                    description: '['+ $scope.firstConstraint.description + '] ' + 'OR' + ' [' + $scope.secondConstraint.description + ']',
+                    assertion: '<OR>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</OR>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}else if($scope.compositeType === 'IFTHEN'){
+    		var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'IFTHEN(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
+                    constraintTarget: '.',
+                    description: 'IF ['+ $scope.firstConstraint.description + '] ' + 'THEN ' + ' [' + $scope.secondConstraint.description + ']',
+                    assertion: '<IMPLY>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</IMPLY>'
+            };
+    		$scope.newComplexConstraint.push(cs);
+    	}
+    	
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
+    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
+    };
+    
 
     $scope.addConformanceStatement = function () {
         $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
@@ -729,10 +1471,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                     description: $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + '.',
                     assertion: '<Presence Path=\"' + $scope.newConstraint.position_1 + '\"/>'
                 };
-
-                $scope.selectedNode.conformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             } else if ($scope.newConstraint.contraintType === 'a literal value') {
                 var cs = {
                     id: new ObjectId().toString(),
@@ -741,42 +1487,253 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
                     assertion: '<PlainText Path=\"' + $scope.newConstraint.position_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
                 };
-                $scope.selectedNode.conformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             } else if ($scope.newConstraint.contraintType === 'one of list values') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintTarget: '.',
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
                     assertion: '<StringList Path=\"' + $scope.newConstraint.position_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
                 };
-                $scope.selectedNode.conformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
-            } else if ($scope.newConstraint.contraintType === 'formatted value') {
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'one of codes in ValueSet') {
+                var cs = {
+                        id: new ObjectId().toString(),
+                        constraintId: $scope.newConstraint.constraintId,
+                        constraintTarget: '.',
+                        description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.valueSetId + '.',
+                        assertion: '<ValueSet Path=\"' + $scope.newConstraint.position_1 + '\" ValueSetID=\"' + $scope.newConstraint.valueSetId + '\" BindingStrength=\"' + $scope.newConstraint.bindingStrength + '\" BindingLocation=\"' + $scope.newConstraint.bindingLocation +'\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            }  else if ($scope.newConstraint.contraintType === 'formatted value') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintTarget: '.',
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
                     assertion: '<Format Path=\"' + $scope.newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
                 };
-                $scope.selectedNode.conformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             } else if ($scope.newConstraint.contraintType === 'identical to the another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintTarget: '.',
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + $scope.newConstraint.location_2 + '.',
                     assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
                 };
-                $scope.selectedNode.conformanceStatements.push(cs);
-                var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'equal to the another node') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to the value of ' + $scope.newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'not-equal to the another node') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' different with the value of ' + $scope.newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="NE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'greater than the another node') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' greater than the value of ' + $scope.newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="GT" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'equal to or greater than the another node') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than the value of ' + $scope.newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="GE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'less than the another node') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' less than the value of ' + $scope.newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="LT" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'equal to or less than the another node') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than the value of ' + $scope.newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="LE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'equal to') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to ' + $scope.newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Value=\"' + $scope.newConstraint.value + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'not-equal to') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' different with ' + $scope.newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="NE" Value=\"' + $scope.newConstraint.value + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'greater than') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' greater than ' + $scope.newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="GT" Value=\"' + $scope.newConstraint.value + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'equal to or greater than') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than ' + $scope.newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="GE" Value=\"' + $scope.newConstraint.value + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'less than') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' less than ' + $scope.newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="LT" Value=\"' + $scope.newConstraint.value + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
+            } else if ($scope.newConstraint.contraintType === 'equal to or less than') {
+                var cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: $scope.newConstraint.constraintId,
+                    constraintTarget: '.',
+                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than ' + $scope.newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="LE" Value=\"' + $scope.newConstraint.value + '\"/>'
+                };
+                if($scope.constraintType === 'Plain'){
+                	$scope.selectedNode.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                }else if ($scope.constraintType === 'Complex'){
+                	$scope.newComplexConstraint.push(cs);
+                }
             }
         }
     };
