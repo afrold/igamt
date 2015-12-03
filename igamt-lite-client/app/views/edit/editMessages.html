@@ -333,8 +333,8 @@
                 </div>
                 <p ng-repeat="c in node.conformanceStatements">
                     <a ng-click="manageConformanceStatement(node)"
-                       tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
-                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
+                       tooltip-html="getConstraintAsString(c)" tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(c)" tooltip-trigger
                        tooltip-animation="false" tooltip-placement="left"
                             ></a>
                 </p>
@@ -524,7 +524,7 @@
                     <tbody>
                     <tr ng-repeat="p in selectedNode.predicates">
                         <td class="col-xs-7">{{p.description}}</td>
-                        <td class="col-xs-2">{{p.constraintId}}</td>
+                        <td class="col-xs-2">{{p.constraintTarget}}</td>
                         <td class="col-xs-1">{{p.trueUsage}}</td>
                         <td class="col-xs-1">{{p.falseUsage}}</td>
                         <td class="col-xs-1">
@@ -538,6 +538,94 @@
             </div>
 
             <h5>Define New Predicate of {{selectedNode.name}}</h5>
+
+			<label for="constraintTypeSelect">Constraint Type: </label>
+			<select name="constraintTypeSelect" ng-model="constraintType">
+    			<option value="Complex">Complex</option>
+   	 			<option value="Plain">Plain</option>
+			</select>
+
+			<div class="table-responsive">
+    			<table ng-show="constraintType == 'Complex'" class="table table-striped table-bordered">
+        			<thead>
+        				<tr class="tbl-header">
+            				<th class="col-md-7">Desciption</th>
+							<th class="col-md-2">Target Location</th>
+            				<th class="col-md-1">True Usage</th>
+            				<th class="col-md-1">False Usage</th>
+            				<th class="col-md-1"></th>
+        				</tr>
+        			</thead>
+        			<tbody>
+        				<tr ng-repeat="p in newComplexConstraint">
+            				<td class="col-md-7">{{p.description}}</td>
+							<td class="col-md-2">{{p.constraintTarget}}</td>
+            				<td class="col-md-1">{{p.trueUsage}}</td>
+            				<td class="col-md-1">{{p.falseUsage}}</td>
+            				<td class="col-md-1">
+                				<button type="button" ng-click="deletePredicateForComplex(p)" class="btn btn-xs btn-danger">
+                    				<span><i class="fa fa-minus-circle fa-fw"></i></span>
+                				</button>
+            				</td>
+        				</tr>
+        			</tbody>
+    			</table>
+			</div>
+
+			<div class="table-responsive">
+    			<table ng-show="constraintType == 'Complex'" class="table table-striped table-bordered">
+        			<tbody>
+        				<tr>
+            				<td class="col-md-2">Merge Two Constraints:</td>
+            				<td class="col-md-9">
+                				<span>First Constraint: </span>
+                				<select ng-show="constraintType == 'Complex'"
+                        			name="firstConstraintSelect"
+                        			ng-model="firstConstraint"
+                        			ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
+                				</select>
+
+                				<span>Second Constraint: </span>
+                				<select name="secondConstraintSelect"
+                        			ng-model="secondConstraint"
+                        			ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
+                				</select>
+
+                				<span>Composite Type: </span>
+                				<select name="compositeTypeSelect" ng-model="compositeType">
+                    				<option value="AND">AND</option>
+                    				<option value="OR">OR</option>
+                    				<option value="IFTHEN">IFTHEN</option>
+                				</select>
+            				</td>
+            				<td class="col-md-1">
+                				<button title="Composite Two Constraints" type="button" class="btn btn-xs btn-success"
+                        			ng-click="compositeConformanceStatements()">
+                    				<span><i class="fa fa-link fa-fw"></i></span>
+                				</button>
+            				</td>
+        				</tr>
+        				<tr>
+            				<td class="col-md-2">Add Complex Constraint:</td>
+            				<td class="col-md-9">
+                				<span>Complex Constraint: </span>
+                				<select name="complexConstraintSelect"
+                        			ng-model="complexConstraint"
+                        			ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
+                				</select>
+            				</td>
+            				<td class="col-md-1">
+                				<button title="Add Complex Constraint" type="button" class="btn btn-xs btn-success"
+                        			ng-click="addComplexConformanceStatement()">
+                    				<span><i class="fa fa-plus-circle fa-fw"></i></span>
+                				</button>
+            				</td>
+        				</tr>
+        			</tbody>
+    			</table>
+			</div>
+
+			<h5>Define Plain Constratint</h5>
 
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
@@ -603,10 +691,14 @@
                         </td>
 
                         <td class="col-xs-2" colspan="1">
-                								<span ng-show="newConstraint.contraintType == 'a literal value'">
-                									<input style="width:100%" class="igl-input"
-                                                           ng-model="newConstraint.value" placeholder="Literal Value"
-                                                           type="text"/>
+                								<span ng-show="newConstraint.contraintType == 'a literal value' || 
+															   newConstraint.contraintType == 'equal to' ||
+															   newConstraint.contraintType == 'not-equal to' ||
+															   newConstraint.contraintType == 'greater than' ||
+															   newConstraint.contraintType == 'equal to or greater than' ||
+															   newConstraint.contraintType == 'less than' ||
+															   newConstraint.contraintType == 'equal to or less than'">
+                									<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
                 								</span>
 
 												<span ng-show="newConstraint.contraintType == 'one of list values'">
@@ -621,7 +713,13 @@
                                                             ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats"/>
                 								</span>
 
-												<span ng-show="newConstraint.contraintType == 'identical to the another node'">
+												<span ng-show="newConstraint.contraintType == 'identical to the another node' ||
+															   newConstraint.contraintType == 'equal to the another node' ||
+															   newConstraint.contraintType == 'not-equal to the another node' ||
+															   newConstraint.contraintType == 'greater than the another node' ||
+															   newConstraint.contraintType == 'equal to or greater than the another node' ||
+															   newConstraint.contraintType == 'less than the another node' ||
+															   newConstraint.contraintType == 'equal to or less than the another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
 														<select name="child" class="igl-input"
@@ -630,7 +728,23 @@
                                                                 ng-options="child as child.name for child in newConstraint.childNodes_2"/>
 													</span>
                 								</span>
-                        </td>
+												<span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
+                									<span>ValueSet ID: </span>
+													<select name="valueSetId" class="igl-input" ng-model="newConstraint.valueSetId">
+														<option ng-repeat="table in tables" value="{{table.bindingIdentifier}}">{{table.bindingIdentifier}}</option>
+                            						</select>
+													<br/>
+													<span>BindingStrength: </span>
+													<select name="bindingStrength" class="igl-input" ng-model="newConstraint.bindingStrength">
+                            							<option value="R">R</option>
+      													<option value="S">S</option>
+														<option value="U">U</option>
+													</select>
+													<br/>
+													<span>BindingLocation: </span>
+													<input class="igl-input" ng-model="newConstraint.bindingLocation" type="text"/>
+                								</span>
+                       	</td>
 
                         <td class="col-xs-1" colspan="1">
 							<a ng-click="initPredicate()" class="point">
@@ -689,6 +803,87 @@
             </div>
 
             <h5>Define New Conformance Statement of {{selectedNode.name}}</h5>
+
+
+			<label for="constraintTypeSelect">Constraint Type: </label>
+			<select name="constraintTypeSelect" ng-model="constraintType">
+    			<option value="Complex">Complex</option>
+    			<option value="Plain">Plain</option>
+			</select>
+
+			<div class="table-responsive">
+    			<table ng-show="constraintType == 'Complex'" class="table table-striped table-bordered">
+        			<thead>
+        				<tr class="tbl-header">
+            				<th class="col-md-2">Plain Constraint ID</th>
+            				<th class="col-md-9">Desciption</th>
+            				<th class="col-md-1"></th>
+        				</tr>
+        			</thead>
+        			<tbody>
+       	 				<tr ng-repeat="c in newComplexConstraint">
+            				<td class="col-md-2">{{c.constraintId}}</td>
+            				<td class="col-md-9">{{c.description}}</td>
+            				<td class="col-md-1">
+                				<button type="button" ng-click="deleteConformanceStatementForComplex(c)" class="btn btn-xs btn-danger">
+                    				<span><i class="fa fa-minus-circle fa-fw"></i></span>
+                				</button>
+            				</td>
+        				</tr>
+        			</tbody>
+    			</table>
+			</div>
+
+			<div class="table-responsive">
+    			<table ng-show="constraintType == 'Complex'" class="table table-striped table-bordered">
+        			<tbody>
+        				<tr>
+            				<td class="col-md-2">Merge Two Constraints:</td>
+            				<td class="col-md-9">
+                				<span>First Constraint: </span>
+                				<select ng-show="constraintType == 'Complex'"
+                        			name="firstConstraintSelect"
+                        			ng-model="firstConstraint"
+                        			ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
+                				</select>
+
+                				<span>Second Constraint: </span>
+                				<select name="secondConstraintSelect"
+                        			ng-model="secondConstraint"
+                        			ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
+                				</select>
+
+                				<span>Composite Type: </span>
+                				<select name="compositeTypeSelect" ng-model="compositeType">
+                    				<option value="AND">AND</option>
+                    				<option value="OR">OR</option>
+                    				<option value="IFTHEN">IFTHEN</option>
+                				</select>
+            				</td>
+            				<td class="col-md-1">
+                				<button title="Composite Two Constraints" type="button" class="btn btn-xs btn-success" ng-click="compositeConformanceStatements()">
+                    				<span><i class="fa fa-link fa-fw"></i></span>
+                				</button>
+            				</td>
+        				</tr>
+        				<tr>
+            				<td class="col-md-2">Add Complex Constraint:</td>
+            				<td class="col-md-9">
+                				<span>Complex Constraint ID: </span>
+                				<input class="igl-input" ng-model="newComplexConstraintId" type="text"/>
+                				<span>Complex Constraint: </span>
+                				<select name="complexConstraintSelect" ng-model="complexConstraint" ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
+                				</select>
+            				</td>
+            				<td class="col-md-1">
+                				<button title="Add Complex Constraint" type="button" class="btn btn-xs btn-success" ng-click="addComplexConformanceStatement()">
+                    				<span><i class="fa fa-plus-circle fa-fw"></i></span>
+                				</button>
+            				</td>
+        				</tr>
+        			</tbody>
+    			</table>
+			</div>
 
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">
@@ -766,6 +961,107 @@
                                                                 ng-options="child as child.name for child in newConstraint.childNodes_2"/>
 													</span>
                 								</span>
+
+												<span ng-show="newConstraint.contraintType == 'equal to the another node'">
+													<span>{{newConstraint.location_2}}</span>
+													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
+														<select name="child" class="igl-input"
+                                                                ng-change="updateLocation2()"
+                                                                ng-model="newConstraint.currentNode_2"
+                                                                ng-options="child as child.name for child in newConstraint.childNodes_2"/>
+													</span>
+                								</span>
+										
+												<span ng-show="newConstraint.contraintType == 'not-equal to the another node'">
+													<span>{{newConstraint.location_2}}</span>
+													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
+														<select name="child" class="igl-input"
+                                                                ng-change="updateLocation2()"
+                                                                ng-model="newConstraint.currentNode_2"
+                                                                ng-options="child as child.name for child in newConstraint.childNodes_2"/>
+													</span>
+                								</span>
+	
+												<span ng-show="newConstraint.contraintType == 'greater than the another node'">
+													<span>{{newConstraint.location_2}}</span>
+													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
+														<select name="child" class="igl-input"
+                                                                ng-change="updateLocation2()"
+                                                                ng-model="newConstraint.currentNode_2"
+                                                                ng-options="child as child.name for child in newConstraint.childNodes_2"/>
+													</span>
+                								</span>
+
+												<span ng-show="newConstraint.contraintType == 'equal to or greater than the another node'">
+													<span>{{newConstraint.location_2}}</span>
+													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
+														<select name="child" class="igl-input"
+                                                                ng-change="updateLocation2()"
+                                                                ng-model="newConstraint.currentNode_2"
+                                                                ng-options="child as child.name for child in newConstraint.childNodes_2"/>
+													</span>
+                								</span>
+
+												<span ng-show="newConstraint.contraintType == 'less than the another node'">
+													<span>{{newConstraint.location_2}}</span>
+													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
+														<select name="child" class="igl-input"
+                                                                ng-change="updateLocation2()"
+                                                                ng-model="newConstraint.currentNode_2"
+                                                                ng-options="child as child.name for child in newConstraint.childNodes_2"/>
+													</span>
+                								</span>
+
+												<span ng-show="newConstraint.contraintType == 'equal to or less than the another node'">
+													<span>{{newConstraint.location_2}}</span>
+													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
+														<select name="child" class="igl-input"
+                                                                ng-change="updateLocation2()"
+                                                                ng-model="newConstraint.currentNode_2"
+                                                                ng-options="child as child.name for child in newConstraint.childNodes_2"/>
+													</span>
+                								</span>
+												
+												<span ng-show="newConstraint.contraintType == 'equal to'">
+                									<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                								</span>
+
+												<span ng-show="newConstraint.contraintType == 'not-equal to'">
+                									<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                								</span>
+
+												<span ng-show="newConstraint.contraintType == 'greater than'">
+                									<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                								</span>
+
+												<span ng-show="newConstraint.contraintType == 'equal to or greater than'">
+                									<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                								</span>
+											
+												<span ng-show="newConstraint.contraintType == 'less than'">
+                									<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                								</span>
+
+												<span ng-show="newConstraint.contraintType == 'equal to or less than'">
+                									<input style="width:100%" class="igl-input" ng-model="newConstraint.value" type="text"/>
+                								</span>
+						
+												<span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
+                									<span>ValueSet ID: </span>
+													<select name="valueSetId" class="igl-input" ng-model="newConstraint.valueSetId">
+														<option ng-repeat="table in tables" value="{{table.bindingIdentifier}}">{{table.bindingIdentifier}}</option>
+                            						</select>
+													<br/>
+													<span>BindingStrength: </span>
+													<select name="bindingStrength" class="igl-input" ng-model="newConstraint.bindingStrength">
+                            							<option value="R">R</option>
+      													<option value="S">S</option>
+														<option value="U">U</option>
+													</select>
+													<br/>
+													<span>BindingLocation: </span>
+														<input class="igl-input" ng-model="newConstraint.bindingLocation" type="text"/>
+                									</span>
                         </td>
 
                         <td class="col-xs-1" colspan="1">
