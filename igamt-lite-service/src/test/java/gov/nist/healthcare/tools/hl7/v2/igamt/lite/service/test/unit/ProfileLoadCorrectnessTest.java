@@ -14,32 +14,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.PropertyConfigurator;
-import org.bson.types.ObjectId;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -61,6 +46,23 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.util.JSON;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContextUnit.class})
@@ -88,45 +90,51 @@ public class ProfileLoadCorrectnessTest {
 
 	@Before
 	public void setUp() throws Exception {
-		try {
-			Properties p = new Properties();
-			InputStream log4jFile = ProfileLoadCorrectnessTest.class
-					.getResourceAsStream("/igl-test-log4j.properties");
-			p.load(log4jFile);
-			PropertyConfigurator.configure(p);
+	try {
+	Properties p = new Properties();
+	InputStream log4jFile = ProfileLoadCorrectnessTest.class
+	.getResourceAsStream("/igl-test-log4j.properties");
+	p.load(log4jFile);
+	PropertyConfigurator.configure(p);
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	} catch (IOException e) {
+	e.printStackTrace();
+	}
 
-		//Load all the standard profiles
-		MongoClient mongo = (MongoClient)ctx.getBean("mongo");
-		DB db = mongo.getDB(env.getProperty("mongo.dbname"));
-		DBCollection collection = db.getCollection("profile");
+	//Load all the standard profiles
+	MongoClient mongo = (MongoClient)ctx.getBean("mongo");
+	DB db = mongo.getDB(env.getProperty("mongo.dbname"));
+	DBCollection collection = db.getCollection("profile");
 
-		for (String hl7version : Arrays.asList("2.1", "2.2", "2.3", "2.3.1", "2.4", "2.5", "2.5.1", "2.6", "2.7")){
-			if (profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7version).isEmpty()){
-				{
-					logger.debug("Profile " + hl7version + " not found");
-					try {
-						String profileJson = IOUtils.toString(this.getClass().getClassLoader().getResource("profilesStandardJson/profile-"+hl7version+".json"));
-						logger.debug("%%% "+this.getClass().getClassLoader().getResource("profilesStandardJson/profile-"+hl7version+".json").getPath());
-						DBObject dbObject = (DBObject) JSON.parse(profileJson);
-						collection.save(dbObject);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
+	for (String hl7version : Arrays.asList("2.1", "2.2", "2.3", "2.3.1", "2.4", "2.5", "2.5.1", "2.6", "2.7")){
+	if (profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7version).isEmpty()){
+	{
+	logger.debug("Profile " + hl7version + " not found");
+	try {
+	// String profileJson = IOUtils.toString(this.getClass().getClassLoader().getResource("profilesStandardJson/profile-"+hl7version+".json"));
+	// logger.debug("%%% "+this.getClass().getClassLoader().getResource("profilesStandardJson/profile-"+hl7version+".json").getPath());
+	String profilePath = System.getProperty("user.dir") + "/../igamt-lite-resource/src/main/resources/profiles/profile-"+hl7version+".json";
+	logger.debug("%%% "+profilePath);
+	String profileJson = IOUtils.toString(FileUtils.openInputStream(new File(profilePath)));
+	DBObject dbObject = (DBObject) JSON.parse(profileJson);
+	collection.save(dbObject);
+	} catch (Exception e) {
+	e.printStackTrace();
+	}
+	}
+	}
+	}
 
-		//Retrieve profile version 2.5.1
-		String hl7version = "2.5.1";
-		p = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7version).get(0);
+	//Retrieve profile version 2.5.1
+	String hl7version = "2.5.1";
+	p = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7version).get(0);
 
-		String profileJson = IOUtils.toString(this.getClass().getClassLoader().getResource("profilesStandardJson/profile-"+hl7version+".json"));
-		logger.debug("%%% "+this.getClass().getClassLoader().getResource("profilesStandardJson/profile-"+hl7version+".json").getPath());
-		jsonObject = (DBObject) JSON.parse(profileJson);
+	// String profileJson = IOUtils.toString(this.getClass().getClassLoader().getResource("profilesStandardJson/profile-"+hl7version+".json"));
+	// logger.debug("%%% "+this.getClass().getClassLoader().getResource("profilesStandardJson/profile-"+hl7version+".json").getPath());
+	String profilePath = System.getProperty("user.dir") + "/../igamt-lite-resource/src/main/resources/profiles/profile-"+hl7version+".json";
+	logger.debug("%%% "+profilePath);
+	String profileJson = IOUtils.toString(FileUtils.openInputStream(new File(profilePath)));
+	jsonObject = (DBObject) JSON.parse(profileJson);
 	}
 
 	@After

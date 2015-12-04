@@ -120,14 +120,17 @@
     <script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
     <script src="lib/jquery.i18n.properties-1.0.9.js"></script>
     <script src="lib/jquery-file-download.js"></script>
-     <script src="lib/table-settings/table-settings.js"></script>
     <script src="lib/table-settings/table-settings.js"></script>
-    <script src="lib/lodash/lodash.js"></script>
-    <!-- endbuild -->
+<!--     
+	gcr: Commented out because it was causing an error with underscore.
+	_.pluck was not a function.
+	<script src="lib/lodash/lodash.js"></script>
+ -->    
+ 	<!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
-     <script src="scripts/services/profiles.js"></script>
+    <script src="scripts/services/profiles.js"></script>
     <script src="scripts/services/i18n.js"></script>
     <script src="scripts/services/base64.js"></script>
     <script src="scripts/services/userInfoService.js"></script>
@@ -136,7 +139,9 @@
     <script src="scripts/services/ContextMenuSvc.js"></script>
     <script src="scripts/services/MessageSelectionSvc.js"></script>
     <script src="scripts/services/ProfileAccessSvc.js"></script>
-    <script src="scripts/services/DeleteMessageSvc.js"></script>
+    <script src="scripts/services/CloneDeleteMessageSvc.js"></script>
+    <script src="scripts/services/ToCSvc.js"></script>
+    <script src="scripts/services/DnDSvc.js"></script>
 
     <script src="scripts/filters/yesno.js"></script>
     <script src="scripts/filters/bytes.js"></script>
@@ -157,7 +162,8 @@
     <script src="scripts/directives/validTrustDocument.js"></script>
     <script src="scripts/directives/igbold.js"></script>
     <script src="scripts/directives/stRatio.js"></script>
-
+    <script src="scripts/directives/stRatio.js"></script>
+    <script src="scripts/directives/ToCDir.js"></script>
 
     <script src="scripts/controllers/forgotten.js"></script>
     <script src="scripts/controllers/issue.js"></script>
@@ -168,6 +174,7 @@
     <script src="scripts/controllers/manageAccounts.js"></script>
     <script src="scripts/controllers/manageCEHRTs.js"></script>
 
+    <script src="scripts/controllers/angular-drag-drop.js"></script>
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/controllers/about.js"></script>
     <script src="scripts/controllers/profiles.js"></script>
@@ -177,6 +184,8 @@
     <script src="scripts/controllers/tables.js"></script>
     <script src="scripts/controllers/constraints.js"></script>
     <script src="scripts/controllers/hl7VersionsMessages.js"></script>
+    <script src="scripts/controllers/ContextMenuCtl.js"></script>
+    <script src="scripts/controllers/ToCCtl.js"></script>
 
     <!-- endbuild -->
 

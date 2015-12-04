@@ -6,8 +6,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ ProfileChangeServiceTest.class, ProfileCloneTest.class,
-		ProfileExportTest.class, ProfileLoadStandardTest.class, ProfileLoadCorrectnessTest.class,
-		ProfileValidationTest.class, ProfileVerificationTest.class, SerializationTest.class })
+//		ProfileExportTest.class, ProfileLoadStandardTest.class, ProfileLoadCorrectnessTest.class,
+//		ProfileValidationTest.class, ProfileVerificationTest.class, SerializationTest.class 
+	})
 
 public class AllTests {
 
