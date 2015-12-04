@@ -30,15 +30,112 @@ describe("toc service", function () {
 		profile = JSON.parse(profileAsString);
 	});
 
-	it("Do we have well formed entries?", function () {
-		var entries = ToCSvc.getEntries(profile);
-		expect(entries).toBeDefined();
-		console.log(entries);
-		expect(entries.length).toBe(4);
-//		var segs = _.find(entries, function(entry){
+	it("Do we have metadata?", function () {
+		expect(ToCSvc).toBeDefined();
+		var rval = ToCSvc.getMetadata(profile.metaData);
+		expect(rval).toBeDefined();
+//		console.log(rval);
+//		expect(_.contains(rval.children, "hl7Version")).toBeTruthy();
+//		console.log(entries);
+//		var rval = _.find(entries, function(entry){
 //			entry.title == "Segments";
 //		});
-//		console.log(JSON.stringify(segs));
-//		expect(segs.children.length).toBe(166);
+//		console.log(JSON.stringify(rval));
+//		expect(rval.children.length).toBe(166);
+	});
+	
+	it("Do we get a valid entry?", function() {
+		var entry = ToCSvc.createEntry("AUT", "AUT");
+		expect(entry).toBeDefined();
+		expect(_.has(entry, 'label')).toBeTruthy();
+		expect(_.property('label')(entry)).toBe("AUT");
+		expect(_.has(entry, 'drag')).toBeTruthy();
+		expect(_.property('drag')(entry)).toBe("AUT");
+		expect(_.has(entry, 'drop')).toBeFalsy();
+		expect(_.has(entry, 'children')).toBeFalsy();
+	});
+	
+	it("Do we get valid entries?", function() {
+		var entries = ToCSvc.createEntries("Messages", profile.messages.children);
+		expect(entries).toBeDefined();
+//		console.log("entries=" + JSON.stringify(entries));
+	});
+	
+	it("Do we have valid datatypes?", function() {
+		var label = "Datatypes";
+		var rval = ToCSvc.getTopEntry(label, profile.datatypes);
+//		console.log(JSON.stringify(rval));
+		expect(_.has(rval, "label")).toBeTruthy();
+		expect(_.property("label")(rval)).toBe(label);
+		expect(_.has(rval, "drag")).toBeFalsy();
+		expect(_.has(rval, "drop")).toBeTruthy();
+		var drops = _.property("drop")(rval);
+		expect(drops).toBe(label);
+		expect(_.has(rval, "children")).toBeTruthy();
+		var children  = _.property("children")(rval);
+		expect(children.length).toBeGreaterThan(0);
+//		console.log(JSON.stringify(children));
+//		console.log(JSON.stringify(rval));
+		expect(rval.children.length).toBeGreaterThan(0);
+	});
+	
+	it("Do we have valid segments?", function() {
+		var label = "Segments";
+		var rval = ToCSvc.getTopEntry(label, profile.segments);
+//		console.log(JSON.stringify(rval));
+		expect(_.has(rval, "label")).toBeTruthy();
+		expect(_.property("label")(rval)).toBe(label);
+		expect(_.has(rval, "drag")).toBeFalsy();
+		expect(_.has(rval, "drop")).toBeTruthy();
+		var drops = _.property("drop")(rval);
+		expect(drops).toBe(label);
+		expect(_.has(rval, "children")).toBeTruthy();
+		var children  = _.property("children")(rval);
+		expect(children.length).toBeGreaterThan(0);
+//		console.log(JSON.stringify(children));
+//		console.log(JSON.stringify(rval));
+		expect(rval.children.length).toBeGreaterThan(0);
+	});
+	
+	it("Do we have valid messages?", function() {
+		var label = "Messages";
+		var rval = ToCSvc.getTopEntry(label, profile.messages);
+
+		expect(_.has(rval, "label")).toBeTruthy();
+		expect(_.property("label")(rval)).toBe(label);
+		expect(_.has(rval, "drag")).toBeFalsy();
+		expect(_.has(rval, "drop")).toBeTruthy();
+		var drops = _.property("drop")(rval);
+		expect(drops).toBe(label);
+		expect(_.has(rval, "children")).toBeTruthy();
+		var children  = _.property("children")(rval);
+		expect(children.length).toBeGreaterThan(0);
+//		console.log(JSON.stringify(children));
+//		console.log(JSON.stringify(rval));
+		expect(rval.children.length).toBeGreaterThan(0);
+	});
+	
+	it("Do we have valid valuesets?", function() {
+		var label = "Value Sets";
+		var rval = ToCSvc.getTopEntry(label, profile.tables);
+//		console.log(JSON.stringify(rval));
+		expect(_.has(rval, "label")).toBeTruthy();
+		expect(_.property("label")(rval)).toBe(label);
+		expect(_.has(rval, "drag")).toBeFalsy();
+		expect(_.has(rval, "drop")).toBeTruthy();
+		var drops = _.property("drop")(rval);
+		expect(drops).toBe(label);
+		expect(_.has(rval, "children")).toBeTruthy();
+		var children  = _.property("children")(rval);
+		expect(children.length).toBeGreaterThan(0);
+//		console.log(JSON.stringify(children));
+//		console.log(JSON.stringify(rval));
+		expect(rval.children.length).toBeGreaterThan(0);
+	});
+	
+	it("Do we have a ToC?", function() {
+		var rval = ToCSvc.getToC(profile);
+		expect(rval).toBeDefined();
+		console.log("ToC=" + JSON.stringify(rval));
 	});
 });

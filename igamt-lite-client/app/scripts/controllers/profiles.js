@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ContextMenuSvc, DeleteMessageSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
+.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, CloneDeleteMessageSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
 		$scope.loading = false;
     	$scope.uiGrid = {};
         $rootScope.igs = [];
@@ -14,7 +14,6 @@ angular.module('igl')
         $scope.tmpIgs = [].concat($rootScope.igs);
         $scope.error = null;
         $scope.loading = false;
-        $scope.collapsed = [];
         $scope.columnSettings = ColumnSettings;
 //        $scope.visibleColumns = angular.copy(ColumnSettings.visibleColumns);
 
@@ -221,7 +220,7 @@ angular.module('igl')
                 $scope.loading = true;
                 if ($scope.igContext.igType.type === 'PRELOADED') {
                     $http.get('api/profiles', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs = angular.fromJson(response.data);
+                        $rootScope.igs.concat(angular.fromJson(response.data));
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -230,7 +229,7 @@ angular.module('igl')
                     });
                 } else if ($scope.igContext.igType.type === 'USER') {
                     $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs = angular.fromJson(response.data);
+                        $rootScope.igs.concat(angular.fromJson(response.data));
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -248,7 +247,7 @@ angular.module('igl')
             $http.post('api/profiles/' + profile.id + '/clone', {timeout: 60000}).then(function (response) {
                 $scope.toEditProfileId = null;
                 if ($scope.igContext.igType.type === 'USER') {
-                    $rootScope.igs.push(angular.fromJson(response.data));
+                    $rootScope.igs.concat(angular.fromJson(response.data));
                 } else {
                     $scope.igContext.igType = $scope.igTypes[1];
                     $scope.loadProfiles();
@@ -299,16 +298,6 @@ angular.module('igl')
             $scope.show(profile);
         };
 
-        $scope.getLeveledProfile = function (profile) {
-            $rootScope.leveledProfile = [
-                {title: "Metadata", children: []},
-                {title: "Datatypes", children: profile.datatypes.children},
-                {title: "Segments", children: profile.segments.children},
-                {title: "Messages", children: profile.messages.children},
-                {title: "ValueSets", children: profile.tables.children}
-            ];
-        };
-
         $scope.openProfile = function (profile) {
             $timeout(function() {
                 if (profile != null) {
@@ -321,10 +310,12 @@ angular.module('igl')
                     $rootScope.profile.segments.children = $filter('orderBy')($rootScope.profile.segments.children, 'label');
                     $rootScope.profile.datatypes.children = $filter('orderBy')($rootScope.profile.datatypes.children, 'label');
                     $rootScope.profile.tables.children = $filter('orderBy')($rootScope.profile.tables.children, 'label');
-                    $scope.getLeveledProfile($rootScope.profile);
+                    $rootScope.tocData = ToCSvc.getToC($scope.profile);
                     $rootScope.initMaps();
                     $rootScope.messages = $rootScope.profile.messages.children;
+                    var found = _.where($rootScope.profile.datatypes.children, '{id : "565f3ab4d4c6e52cfd43841b"}');
                     angular.forEach($rootScope.profile.datatypes.children, function (child) {
+                   
                         this[child.id] = child;
                         if (child.displayName) { // TODO: Change displayName to label
                             child.label = child.displayName;
@@ -355,8 +346,10 @@ angular.module('igl')
 
                     angular.forEach($rootScope.profile.messages.children, function (child) {
                         this[child.id] = child;
+                        var cnt = 0;
                         angular.forEach(child.children, function (segmentRefOrGroup) {
-                            $rootScope.processElement(segmentRefOrGroup);
+                        	console.log("cnt=" + cnt++ + " segOg=" + segmentRefOrGroup);
+                        	$rootScope.processElement(segmentRefOrGroup);
                         });
                     }, $rootScope.messagesMap);
 
@@ -599,160 +592,11 @@ angular.module('igl')
                 });
             return hl7Versions;
         };
-
-        $scope.toggleToCContents = function (node) {
-            if ($scope.collapsed[node] === undefined) {
-                $scope.collapsed.push(node);
-                $scope.collapsed[node] = true;
-            } else {
-                $scope.collapsed[node] = !$scope.collapsed[node];
-            }
-        };
-
-        $scope.tocSelection = function (node, nnode) {
-            switch (node) {
-                case "Metadata":
-                {
-                    $scope.selectMetaData();
-                    break;
-                }
-                case "Datatypes":
-                {
-                    $scope.selectDatatype(nnode);
-                    break;
-                }
-                case "Segments":
-                {
-                    $scope.selectSegment(nnode);
-                    break;
-                }
-                case "Messages":
-                {
-                    $scope.selectMessage(nnode);
-                    break;
-                }
-                case "ValueSets":
-                {
-                    $scope.selectTable(nnode);
-                    break;
-                }
-                default:
-                {
-                    $scope.subview = "nts.html";
-                }
-            }
-            return $scope.subview;
-        };
-
-//        $scope.getHL7Version = function () {
-//            return HL7VersionSvc.hl7Version;
-//        };
-//
-//        $scope.setHL7Version = function (hl7Version) {
-//            HL7VersionSvc.hl7Version = hl7Version;
-//        };
+        
 
         $scope.showSelected = function (node) {
             $scope.selectedNode = node;
         };
-        $scope.loadProfilesByVersion = function () {
-            console.log("I ran");
-        };
-        $scope.closedCtxMenu = function (node, $index) {
-            var item = ContextMenuSvc.get();
-            switch (item) {
-                case "Add":
-//				if (node === "Messages") {
-//					var hl7VersionsInstance;
-//					hl7VersionsInstance = $modal.open({
-//						templateUrl : 'hl7MessagesDlg.html',
-//						controller : 'HL7VersionsInstanceDlgCtrl',
-//						resolve : {
-//							hl7Versions : function() {
-//								return $scope.listHL7Versions();
-//							}
-//						}
-//					});
-//					
-//					hl7VersionsInstance.result.then(function(result) {
-//						console.log(result);
-//						$scope.updateProfile(result);
-//					});
-//				} else {
-//					alert("Was not Messages. Was:" + node);
-//				}
-                    break;
-                case "Delete":
-                	ProfileAccessSvc.
-                	break;
-                default:
-                    console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
-            }
-        };
-
-        $scope.closedCtxSubMenu = function (node, $index) {
-            var item = ContextMenuSvc.get();
-            switch (item) {
-                case "Add":
-                {
-                    // not to be implemented at this time.
-                }
-                case "Clone":
-                {
-                    var newNode = (JSON.parse(JSON.stringify(node)));
-                    newNode.id = null;
-
-                    // Nodes must have unique names so we timestamp when we duplicate.
-                    if (newNode.type === 'message') {
-                        newNode.messageType = newNode.messageType + "-" + $rootScope.profile.metaData.ext + "-" + timeStamp();
-                    }
-                    for (var i in $rootScope.profile.messages.children) {
-                        console.log($rootScope.profile.messages.children[i].messageType);
-                    }
-                    $rootScope.profile.messages.children.splice(2, 0, newNode);
-                    for (var i in $rootScope.profile.messages.children) {
-                        console.log($rootScope.profile.messages.children[i].messageType);
-                    }
-                    break;
-                }
-                case "Delete":
-                	DeleteMessageSvc.deleteMessage($rootScope.profile, node);
-                	break;
-                default:
-                    console.log("Context menu defaulted with " + item + " Should be Add or Delete.");
-            }
-        };
-
-        function timeStamp() {
-            // Create a date object with the current time
-            var now = new Date();
-
-            // Create an array with the current month, day and time
-            var date = [ now.getMonth() + 1, now.getDate(), now.getFullYear() ];
-
-            // Create an array with the current hour, minute and second
-            var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
-
-            // Determine AM or PM suffix based on the hour
-            var suffix = ( time[0] < 12 ) ? "AM" : "PM";
-
-            // Convert hour from military time
-            time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
-
-            // If hour is 0, set it to 12
-            time[0] = time[0] || 12;
-
-            // If seconds and minutes are less than 10, add a zero
-            for (var i = 1; i < 3; i++) {
-                if (time[i] < 10) {
-                    time[i] = "0" + time[i];
-                }
-            }
-
-            // Return the formatted string
-            return date.join("/") + " " + time.join(":") + " " + suffix;
-        };
-
 
         $scope.selectSegment = function (segment) {
             $scope.subview = "EditSegments.html";
@@ -938,14 +782,6 @@ angular.module('igl')
 
 
     });
-
-angular.module('igl').controller('ContextMenuCtrl', function ($scope, $rootScope, ContextMenuSvc) {
-
-    $scope.clicked = function (item) {
-        ContextMenuSvc.put(item);
-    };
-});
-
 
 angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes, $rootScope, $http) {
     $scope.changes = changes;

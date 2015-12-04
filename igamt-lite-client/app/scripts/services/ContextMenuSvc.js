@@ -10,23 +10,23 @@
 
 angular.module('igl').factory('ContextMenuSvc', function () {
 	
-	var state = {};
+	var svc = {};
     
-    state.item = null;
+    svc.item = null;
     
-    state.ext = null;
+    svc.ext = null;
     
-    state.get = function() {
-    	var tmp = state.item;
-    	state.item = null;
+    svc.get = function() {
+    	var tmp = svc.item;
+    	svc.item = null;
     	return tmp;
     };
     
-    state.put = function(item) {
-    	state.item = item;
+    svc.put = function(item) {
+    	svc.item = item;
     };
     
-    return state;
+    return svc;
 });
 
 
