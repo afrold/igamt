@@ -91,12 +91,12 @@ angular.module('igl')
 	        	$scope.$emit('event:openSegment', leaf.reference);
 	            break;
 	        }
-	        case "ConformanceProfile":
+	        case "Messages":
 	        {
 	        	$scope.$emit('event:openMessage', leaf.reference);
 	            break;
 	        }
-	        case "ValueSets":
+	        case "Value Sets":
 	        {
 	        	$scope.$emit('event:openTable', leaf.reference);
 	            break;
@@ -154,21 +154,6 @@ angular.module('igl')
               {
                	  console.log("Clone==> node=" + leaf);
                	  CloneDeleteMessageSvc.cloneMessage($rootScope.profile, $rootScope.tocData, leaf);
-// FIXME gcr: Moving to CloneDeleteMessageSvc.          	  
-//               	var newNode = (JSON.parse(JSON.stringify(node)));
-//                  newNode.id = null;
-//
-//                  // Nodes must have unique names so we timestamp when we duplicate.
-//                  if (newNode.type === 'message') {
-//                      newNode.messageType = newNode.messageType + "-" + $rootScope.profile.metaData.ext + "-" + timeStamp();
-//                  }
-//                  for (var i in $rootScope.profile.messages.children) {
-//                      console.log($rootScope.profile.messages.children[i].messageType);
-//                  }
-//                  $rootScope.profile.messages.children.splice(2, 0, newNode);
-//                  for (var i in $rootScope.profile.messages.children) {
-//                      console.log($rootScope.profile.messages.children[i].messageType);
-//                  }
                   break;
               }
               case "Delete":

@@ -34,32 +34,39 @@ describe("delete message service", function () {
 		profile = JSON.parse(profileAsString);
 	});
 	
-	it("Can we clone a message?", function() {
-		var toc = ToCSvc.getToC(profile);
-		var pCount = profile.messages.children.length;
-		var tCount = toc[2].children.length;
-		var msg = toc[2].children[4];
-		CloneDeleteMessageSvc.cloneMessage(profile, toc, msg);
-		expect(profile.messages.children.length).toBe(pCount +1);
-		expect(toc[2].children.length).toBe(tCount +1);
-	});
-	
-	it("Can we delete a message?", function () {
-//		var segRefs = ProfileAccessSvc.Messages(profile).getSegmentRefs(msg);
-//		var segments = ProfileAccessSvc.Segments(profile).findByIds(segRefs);
-//		var datatypes = [];
-//		_.each(segments, function(segment) {
-//				_.each(ProfileAccessSvc.Segments(profile).findFields(segment), function(field) {
-//				datatypes.push(field.datatype);				
-//			});
-//		});
-		var toc = ToCSvc.getToC(profile);
-		var pCount = profile.messages.children.length;
-		var tCount = toc[2].children.length;
-		var msg = toc[2].children[4];
-		CloneDeleteMessageSvc.deleteMessage(profile, toc, msg);
-		expect(profile.messages.children.length).toBe(pCount -1);
-		expect(toc[2].children.length).toBe(tCount -1);
-	});
+//	it("Can we clone a message?", function() {
+//		var toc = ToCSvc.getToC(profile);
+//		var pCount = profile.messages.children.length;
+//		var tCount = toc[2].children.length;
+//		var msg = toc[2].children[4];
+//		var newMsg = CloneDeleteMessageSvc.cloneMessage(profile, toc, msg);
+//		expect(profile.messages.children.length).toBe(pCount +1);
+//		expect(toc[2].children.length).toBe(tCount +1);
+//		expect(newMsg).toBeDefined();
+//		expect(newMsg.reference.id).toBeDefined();
+//		expect(msg.id).not.toBe(newMsg.reference.id)
+//	});
+//	
+//	it("Can we delete a message?", function () {
+//		var toc = ToCSvc.getToC(profile);
+//		var pCount = profile.messages.children.length;
+//		var tCount = toc[2].children.length;
+//		var msg = toc[2].children[4];
+//		CloneDeleteMessageSvc.deleteMessage(profile, toc, msg);
+//		expect(profile.messages.children.length).toBe(pCount -1);
+//		expect(toc[2].children.length).toBe(tCount -1);
+//	});
+//	
+//	it("Can we create an mongoId?", function(){
+//		var mongoId = new ObjectId();
+//		expect(mongoId).toBeDefined();
+//		console.log("mongoId=" + mongoId.toString())
+//	});
 
+	it("Can we generate a 3 digit random integer?", function() {
+		for (var i = 1; i <= 9; i++ ) {
+		var rand = Math.floor(Math.random()*100);
+		console.log("rand=" + rand);
+		}
+	})
 });

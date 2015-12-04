@@ -98,7 +98,7 @@ public class ProfileCreationServiceTest {
 		assertEquals(9, profileCreation.findProfilesByHl7Versions().size());
 	}
 	
-//	@Test
+	@Test
 	public void testSummary() {
 		String[] ss = {"ACK", "RCI", "QRY"};
 		List<String[]> msgDesc = profileCreation.summary("2.7", new ArrayList<String>());
@@ -114,7 +114,9 @@ public class ProfileCreationServiceTest {
 		// Collect standard messages and message descriptions
 		//There should be only one HL7STANDARD profile for each version
 		for (String hl7Version : Arrays.asList("2.5.1", "2.7")){
-			assertEquals(1, profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size());
+			int found = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size();
+			assertEquals(1, found);
+//			assertEquals(1, profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size());
 		}
 		Profile profileSource = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, "2.7").get(0);
 		assertEquals(193, profileSource.getMessages().getChildren().size());
@@ -144,7 +146,8 @@ public class ProfileCreationServiceTest {
 		// Collect standard messages and message descriptions
 		//There should be only one HL7STANDARD profile for each version
 		for (String hl7Version : Arrays.asList("2.5.1", "2.7")){
-			assertEquals(1, profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size());
+			int found = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size();
+			assertEquals(1, found);
 		}
 		Profile profileSource = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, "2.7").get(0);
 		assertEquals(193, profileSource.getMessages().getChildren().size());

@@ -18,7 +18,6 @@ angular.module('igl')
 	  
 	  var trunkTemplate = "<trunk trunk='branch.children'></trunk>";
 	  var branchTemplate = "<div ng-class=\"{'yesyes':yesDrop, 'nono':noDrop}\"" + 
-	  							" context-menu context-menu-close='closedCtxMenu(branch)' data-target='headContextDiv.html'" + 
 								" drop-container accepts='{{branch.drop}}'" + 
 								" on-drag-enter='onBranchEnter(branch)' on-drag-leave='onBranchLeave(branch)' on-drop='onBranchDrop(branch)'>" +
 								"<a class='point'" +
@@ -28,11 +27,27 @@ angular.module('igl')
 								"</a>" +
 								"<div collapse='collapsed[branch.label]' ng-show='!collapsed[branch.label]' class='panel-body'><leaf ng-repeat='leaf in branch.children track by $index' leaf='leaf'></leaf></div>" +
 								"</div>";
+	  var branchMessageTemplate = "<div ng-class=\"{'yesyes':yesDrop, 'nono':noDrop}\"" + 
+		" context-menu context-menu-close='closedCtxMenu(branch)' data-target='messageHeadContextDiv.html'" + 
+		" drop-container accepts='{{branch.drop}}'" + 
+		" on-drag-enter='onBranchEnter(branch)' on-drag-leave='onBranchLeave(branch)' on-drop='onBranchDrop(branch)'>" +
+		"<a class='point'" +
+		"ng-click='collapsed[branch.label] = !collapsed[branch.label]'>" +
+		"<span class='fa' ng-class=\"{'fa-caret-right': collapsed[branch.label],'fa-caret-down': !collapsed[branch.label]}\">" +
+		"<b>{{branch.label}}</b></span>" + 
+		"</a>" +
+		"<div collapse='collapsed[branch.label]' ng-show='!collapsed[branch.label]' class='panel-body'><leaf ng-repeat='leaf in branch.children track by $index' leaf='leaf'></leaf></div>" +
+		"</div>";
 // ng-show='branch.children && branch.children.length > 0'
 	  var linker = function(scope, element, attrs) {
 		  if (angular.isArray(scope.branch.children)) {
               // We must add the branchTemplate before we add the trunkTemplate.
-              element.append(branchTemplate).show();
+			  if (scope.branch.label === "Messages") {
+		             element.append(branchMessageTemplate).show();
+				  
+			  } else {
+				  element.append(branchTemplate).show();
+			  }
               $compile(element.contents())(scope);
               
               element.append(trunkTemplate);
@@ -73,7 +88,7 @@ angular.module('igl')
 	  					"</div>";
 	  
 	  var linker = function(scope, element, attrs) {
-	        if (scope.leaf.drag === "ConformanceProfile") {
+	        if (scope.leaf.drag === "Messages") {
 		        element.html(leafMessage).show();	        	
 	        } else {
 		        element.html(leafDefault).show();

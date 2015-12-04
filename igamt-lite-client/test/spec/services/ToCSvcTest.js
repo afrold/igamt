@@ -136,6 +136,6 @@ describe("toc service", function () {
 	it("Do we have a ToC?", function() {
 		var rval = ToCSvc.getToC(profile);
 		expect(rval).toBeDefined();
-//		console.log("ToC=" + JSON.stringify(rval));
+		console.log("ToC=" + JSON.stringify(rval));
 	});
 });

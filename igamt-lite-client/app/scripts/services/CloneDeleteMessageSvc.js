@@ -11,12 +11,12 @@ angular.module('igl').factory('CloneDeleteMessageSvc', function (ProfileAccessSv
 	// $rootScope.profile.metaData.ext should be just that, but is currently 
 	// unpopulated in the profile.
 	var newMessage = (JSON.parse(JSON.stringify(message)));
-	newMessage.reference.id = null;
+	newMessage.reference.id = new ObjectId();
 		
 		// Nodes must have unique names so we timestamp when we duplicate.
 		if (newMessage.reference.type === 'message') {
-			newMessage.reference.messageType = newMessage.reference.messageType + "-" + profile.metaData.ext + "-" + timeStamp();
-			newMessage.label = newMessage.reference.messageType;
+			newMessage.reference.name = newMessage.reference.name + "-" + profile.metaData.ext + "-" + Math.floor(Math.random()*100);
+			newMessage.label = newMessage.reference.name;
 		}
 
 		profile.messages.children.splice(0, 0, newMessage.reference);
@@ -28,6 +28,7 @@ angular.module('igl').factory('CloneDeleteMessageSvc', function (ProfileAccessSv
 			return child.reference.id === id;
 		})
 		messages.children.splice(idx, 0, newMessage);
+  		return newMessage;
 	}
 	
 	svc.deleteMessage = function(profile, toc, message) {

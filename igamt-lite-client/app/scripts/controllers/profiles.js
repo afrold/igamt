@@ -313,7 +313,9 @@ angular.module('igl')
                     $rootScope.tocData = ToCSvc.getToC($scope.profile);
                     $rootScope.initMaps();
                     $rootScope.messages = $rootScope.profile.messages.children;
+                    var found = _.where($rootScope.profile.datatypes.children, '{id : "565f3ab4d4c6e52cfd43841b"}');
                     angular.forEach($rootScope.profile.datatypes.children, function (child) {
+                   
                         this[child.id] = child;
                         if (child.displayName) { // TODO: Change displayName to label
                             child.label = child.displayName;
@@ -344,9 +346,10 @@ angular.module('igl')
 
                     angular.forEach($rootScope.profile.messages.children, function (child) {
                         this[child.id] = child;
+                        var cnt = 0;
                         angular.forEach(child.children, function (segmentRefOrGroup) {
- // FIXME gcr: Commented because an error is being thrown.  
-//                        	$rootScope.processElement(segmentRefOrGroup);
+                        	console.log("cnt=" + cnt++ + " segOg=" + segmentRefOrGroup);
+                        	$rootScope.processElement(segmentRefOrGroup);
                         });
                     }, $rootScope.messagesMap);
 

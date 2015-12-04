@@ -4,48 +4,71 @@ angular.module('igl').factory ('ToCSvc', function() {
 	
 	svc.getToC = function(profile) {
 		toc = [];
-		toc.push(svc.getTopEntry("Introduction"));
-		toc.push(svc.getTopEntry("UseCase"));
-		toc.push(svc.getTopEntry("ConformanceToThisGuide"));
-		
+		toc.push(svc.getTopEntry("Introduction", svc.getIntroduction()));
+		toc.push(svc.getTopEntry("Use Case", svc.getUseCase()));
+		toc.push(svc.getTopEntry("Messages", profile.messages));
+		toc.push(svc.getTopEntry("Segments", profile.segments));		
 		toc.push(svc.getTopEntry("Datatypes", profile.datatypes));
-		toc.push(svc.getTopEntry("ConformanceProfile", profile.messages));
-		toc.push(svc.getTopEntry("CodeSystems"));
-		toc.push(svc.getTopEntry("LaboratoryResultMessageDevelopmentResources"));
-		toc.push(svc.getTopEntry("AdditionalImplementationGuidance"));
-		toc.push(svc.getTopEntry("ComponentAndProfileOIDS"));
-
-		toc.push(svc.getTopEntry("Segments", profile.segments));
-		toc.push(svc.getTopEntry("ValueSets", profile.tables));
+		toc.push(svc.getTopEntry("Value Sets", profile.tables));
 		return toc;
 	}
 	
 	svc.getIntroduction = function() {
 		var rval = {
-				
-		}
+			"children" : [
+			{
+				"label" : "Purpose",
+				"drag" : "Introduction",
+				"reference" : ""
+			}, {
+				"label" : "Audience",
+				"drag" : "Introduction",
+				"reference" : ""
+			}, {
+				"label" : "Organisation of this guide",
+				"drag" : "Introduction",
+				"reference" : ""
+			}, {
+				"label" : "Referenced profiles - antecedents",
+				"drag" : "Introduction",
+				"reference" : ""
+			}, {
+				"label" : "Scope",
+				"drag" : "Introduction",
+				"reference" : ""
+			}, {
+				"label" : "Key technical decisions [conventions]",
+				"drag" : "Introduction",
+				"reference" : ""
+			}
+			]
+		};
+		return rval;
 	}
 	
-	svc.getMetadata = function(metaData) {
-		var rval = {};
-		var label = "Metadata";
-		var keys = _.keys(metaData);
-//		var children = [];
-//		_.each(keys, function(key) {
-//			child = {};
-//			child["label"] = 
-//			children.push("label" : key);
-//		});
-//		
-//		return {
-//			"label" : label,
-//			"drop" : label,
-//			"children" : children
-//		};
-//		
-//		
-//		rval["Metadata"] = metaData;
-		return keys;
+	svc.getUseCase = function() {
+		return {
+			"children" : [
+			{
+				"label" : "Actors",
+				"drag" : "Use Case",
+				"reference" : ""
+			}, {
+				"label" : "Actors",
+				"drag" : "Use case assumptions",
+				"reference" : ""
+			}, {
+				"label" : "User story",
+				"drag" : "Use Case",
+				"reference" : ""
+			}, {
+				"label" : "Sequence diagram",
+				"drag" : "Use Case",
+				"reference" : ""
+			}
+			]
+		};
+		return rval;
 	}
 	
 	// Returns a top level entry. It can be dropped on, but cannot be dragged.
@@ -69,10 +92,12 @@ angular.module('igl').factory ('ToCSvc', function() {
 		var rval = [];
 		var entry = {};
 		_.each(children, function(child){
-			if (drag === "Datatypes") {
+			if (drag === "Messages") {
 				entry = svc.createEntry(child, child.name + " - " + child.description, drag);
-			} else if (drag === "ValueSets") {
+			} else if (drag === "Datatypes") {
 				entry = svc.createEntry(child, child.name + " - " + child.description, drag);
+			} else if (drag === "Value Sets") {
+				entry = svc.createEntry(child, child.bindingIdentifier + " - " + child.description, drag);
 			} else {
 				entry = svc.createEntry(child, child.label, drag);
 			}
