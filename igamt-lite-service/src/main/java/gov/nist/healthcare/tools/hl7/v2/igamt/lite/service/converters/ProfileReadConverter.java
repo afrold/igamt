@@ -408,15 +408,24 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				table.setCodes(new ArrayList<Code>());
 				table.setId(readMongoId(tableObject));
 				table.setBindingIdentifier(((String) tableObject.get("bindingIdentifier")));
+				//Nullity tests added for retro compatibility
+				if (tableObject.get("bindingIdentifier") == null){
+					table.setBindingIdentifier(((String) tableObject.get("mappingId")));
+				}
 				table.setName(((String) tableObject.get("name")));
 				table.setDescription(((String) tableObject.get("description")));
+				//Nullity tests added for retro compatibility
+				if (tableObject.get("description") == null){
+					table.setDescription((String) tableObject.get("name"));
+				}
 				table.setOrder(tableObject.get("order") != null ? ((Integer) tableObject.get("order")): 0);
 				table.setGroup(((String) tableObject.get("group")));
 				table.setVersion(((String) tableObject.get("version")));
 				table.setOid(((String) tableObject.get("oid")));
-				table.setStability(Stability.fromValue((String) tableObject.get("stability")));
-				table.setExtensibility(Extensibility.fromValue((String) tableObject.get("extensibility")));
-				table.setContentDefinition(ContentDefinition.fromValue((String) tableObject.get("contentDefinition")));
+				//Nullity tests added for retro compatibility
+				table.setStability(tableObject.get("stability") == null ? Stability.Dynamic : Stability.fromValue((String) tableObject.get("stability")));
+				table.setExtensibility(tableObject.get("extensibility") == null ? Extensibility.Open : Extensibility.fromValue((String) tableObject.get("extensibility")));
+				table.setContentDefinition(tableObject.get("contentDefinition") == null ? ContentDefinition.Intensional : ContentDefinition.fromValue((String) tableObject.get("contentDefinition")));
 				BasicDBList codesDBObjects = (BasicDBList) tableObject
 						.get("codes");
 				if (codesDBObjects != null)
@@ -431,6 +440,13 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 						code.setType(((String) codeObject.get("type")));
 						code.setLabel(((String) codeObject.get("label")));
 						code.setComments(readString(codeObject, "comments"));
+						//Added for retro compatibility
+						if (codeObject.get("value") == null){
+							code.setValue(((String) codeObject.get("code")));
+						}
+						if (codeObject.get("codeSystem") == null){
+							code.setCodeSystem((String) codeObject.get("codesys"));
+						}
 						table.addCode(code);
 					}
 
@@ -452,6 +468,9 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			DBObject child = (DBObject) childObj;
 			message.setId(readMongoId(child));
 			message.setName((String) child.get("name"));
+			if (child.get("name") == null){
+				message.setName((String) child.get("messageType") + "_" + (String) child.get("event"));
+			}
 			message.setMessageType((String) child.get("messageType"));
 			message.setComment(readString(child, "comment"));
 			message.setDescription((String) child.get("description"));
