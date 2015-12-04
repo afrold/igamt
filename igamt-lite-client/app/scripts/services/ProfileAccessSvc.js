@@ -1,6 +1,6 @@
 angular.module('igl').factory ('ProfileAccessSvc', function() {
 
-	var pac = this;
+	var svc = this;
 
 	var sortById = function(a, b) {
 		if (a.id < b.id)
@@ -10,12 +10,12 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return 0;
 	}
 
-	pac.Version = function(profile) {
+	svc.Version = function(profile) {
 		return profile.metaData.hl7Version;
 	}
 
 
-	pac.Datatypes = function(profile) {
+	svc.Datatypes = function(profile) {
 	
 		var dts = this;
 	
@@ -62,7 +62,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return dts;
 	}
 
-	pac.Segments = function(profile) {
+	svc.Segments = function(profile) {
 	
 		var segs = this;
 	
@@ -135,7 +135,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return segs;
 	}
 
-	pac.Messages = function(profile) {
+	svc.Messages = function(profile) {
 	
 		var msgs = this;
 	
@@ -203,5 +203,5 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return msgs;
 	}
 	
-	return pac;
+	return svc;
 });

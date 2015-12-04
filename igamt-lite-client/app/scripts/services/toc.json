@@ -1,0 +1,62 @@
+[
+{
+	"label" : "Introduction",
+	"drop" : "Introduction",
+	"children" : [
+	{
+		"label" : "Purpose",
+		"drag" : "Introduction",
+		"reference" : ""
+	},
+	{
+		"label" : "Audience",
+		"drag" : "Introduction",
+		"reference" : ""
+	},
+	{
+		"label" : "Organisation of this guide",
+		"drag" : "Introduction",
+		"reference" : ""
+	},
+	{
+		"label" : "Referenced profiles - antecedents",
+		"drag" : "Introduction",
+		"reference" : ""
+	},
+	{
+		"label" : "Scope",
+		"drag" : "Introduction",
+		"reference" : ""
+	},
+	{
+		"label" : "Key technical decisions [conventions]",
+		"drag" : "Introduction",
+		"reference" : ""
+	}
+	]
+},
+{
+	"label" : "Use Case",
+	"drop" : "Use Case",
+	"children" : [
+	{
+		"label" : "Actors",
+		"drag" : "Use Case",
+		"reference" : ""
+	},
+	{
+		"label" : "Actors",
+		"drag" : "Use case assumptions",
+		"reference" : ""
+	},	{
+		"label" : "User story",
+		"drag" : "Use Case",
+		"reference" : ""
+	},	{
+		"label" : "Sequence diagram",
+		"drag" : "Use Case",
+		"reference" : ""
+	}
+	]
+}
+]

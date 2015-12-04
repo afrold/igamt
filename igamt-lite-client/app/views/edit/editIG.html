@@ -18,7 +18,7 @@
                 <span>Current version: {{profile.metaData.hl7Version}}
                 </span>
 
-                <div class="pull-right"  >
+                <div class="pull-right">
 
 
                     <button title="Save Changes" type="button" class="btn btn-xs btn-success"
@@ -59,7 +59,7 @@
                         <ul class="dropdown-menu igl-menu" role="menu">
                             <li><a class="point" ng-click="exportAs(profile.id, 'zip')">As ZIP</a></li>
                             <li><a class="point" ng-click="exportAs(profile.id,'pdf')">As PDF</a></li>
-                            <!--<li><a ng-click="exportAs(profile.id,'xslx')">As XSLX</a></li>-->
+                            <li><a class="point" ng-click="exportAs(profile.id,'docx')">As WORD</a></li>
                             <!--<li><a ng-click="exportDelta(profile.id,'pdf')">Delta</a></li>-->
                         </ul>
                     </div>
@@ -98,11 +98,10 @@
 							        'fa-caret-right': !showToC
 								      }">
 								    </span>
-                                <!-- <<<<<<< Updated upstream -->
-                            </a>
+                             </a>
                         </div>
                     </div>
-                    <div class="panel-body" ng-show="showToC">
+                    <div class="panel-body" ng-show="showToC" style="max-width: 100%; overflow-x: scroll; max-height: 800px; overflow-y: scroll;white-space:nowrap;">
                         <div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
                         </div>
                     </div>
@@ -120,31 +119,6 @@
             </div>
         </div>
     </div>
-    <!-- ======= This was done in a pinch.
-                                      </a>
-                            </div>
-                        </div>
-                        <div class="panel-body" ng-show="showToC">
-                            <div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                    <div ng-class="showToC ? 'col-md-8' : 'col-md-11'">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">Edit Area</div>
-                        <div class="panel-body">
-                            <div id="edit" ng-show="subview !== undefined">{{subview}}
-                                <ng-include src="subview"></ng-include>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                     </div>
-                </div>
-            </div>
-        </div>
-    >>>>>>> Stashed changes -->
 </div>
 <div ng-show="loadingProfile"
      style="text-align: center;">
