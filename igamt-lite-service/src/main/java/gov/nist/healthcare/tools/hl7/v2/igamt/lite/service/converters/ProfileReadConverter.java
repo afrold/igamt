@@ -360,7 +360,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		f.setItemNo((String) source.get("itemNo"));
 		f.setMin((Integer) source.get("min"));
 		f.setMax((String) source.get("max"));
-		f.setText((String) source.get("text"));
+		f.setText(readString(source, "text"));
 		f.setDatatype(((String) source.get("datatype")));
 		return f;
 	}
