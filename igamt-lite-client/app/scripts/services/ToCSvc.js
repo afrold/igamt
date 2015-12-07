@@ -6,7 +6,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 		toc = [];
 		toc.push(svc.getTopEntry("Introduction", svc.getIntroduction()));
 		toc.push(svc.getTopEntry("Use Case", svc.getUseCase()));
-		toc.push(svc.getTopEntry("Messages", profile.messages));
+		toc.push(svc.getTopEntry("Conformance Profiles", profile.messages));
 		toc.push(svc.getTopEntry("Segments", profile.segments));		
 		toc.push(svc.getTopEntry("Datatypes", profile.datatypes));
 		toc.push(svc.getTopEntry("Value Sets", profile.tables));
@@ -92,7 +92,9 @@ angular.module('igl').factory ('ToCSvc', function() {
 		var rval = [];
 		var entry = {};
 		_.each(children, function(child){
-			if (drag === "Messages") {
+			if (drag === "Conformance Profiles") {
+				entry = svc.createEntry(child, child.name + " - " + child.description, drag);
+			} else if (drag === "Segments") {
 				entry = svc.createEntry(child, child.name + " - " + child.description, drag);
 			} else if (drag === "Datatypes") {
 				entry = svc.createEntry(child, child.name + " - " + child.description, drag);
