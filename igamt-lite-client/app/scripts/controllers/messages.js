@@ -557,7 +557,10 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         $scope.complexConstraint.constraintId = $scope.newConstraint.segment + '-' + $scope.selectedNode.position;
         $scope.selectedNode.predicates.push($scope.complexConstraint);
         var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: $scope.complexConstraint};
-        $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+        $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+        $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
+        
+        $scope.complexConstraint = null;
     };
     
     $scope.compositeConformanceStatements = function(){
@@ -598,6 +601,10 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     	
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
+    	
+    	$scope.firstConstraint = null;
+        $scope.secondConstraint = null;
+        $scope.compositeType = null;
     };
     
 
@@ -1093,6 +1100,8 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
             	}
             }
         }
+        
+        $scope.initPredicate();
     };
 
     $scope.ok = function () {
@@ -1422,6 +1431,11 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     	$scope.selectedNode.conformanceStatements.push($scope.complexConstraint);
         var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: $scope.complexConstraint};
         $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+        
+        $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
+        
+        $scope.complexConstraint = null;
+        $scope.newComplexConstraintId = '';
     };
     
     $scope.compositeConformanceStatements = function(){
@@ -1456,6 +1470,10 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     	
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
+    	
+    	$scope.firstConstraint = null;
+        $scope.secondConstraint = null;
+        $scope.compositeType = null;
     };
     
 
@@ -1736,6 +1754,8 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 }
             }
         }
+        
+        $scope.initConformanceStatement();
     };
 
     $scope.ok = function () {
