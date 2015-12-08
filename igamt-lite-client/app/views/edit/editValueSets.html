@@ -89,8 +89,13 @@
 										<div>
 											<span ng-repeat="cs in codeSystems">{{cs}} </span>
 											<div class="pull-right" ng-hide="options.readonly">
-												<input type="text" ng-model="newCodeSystem" />
-												<a ng-click="addCodeSystem(newCodeSystem)" class="point">
+
+												<a ng-click="makeCodeSystemEditable()" ng-hide="codeSysEditMode" class="point">
+                    								<span><i class="fa fa-pencil fa-fw"></i></span>
+                								</a>
+
+												<input type="text" class="igl-input" ng-show="codeSysEditMode" ng-model="newCodeSystemStr" />
+												<a ng-click="addCodeSystem()" ng-show="codeSysEditMode" class="point">
                     								<span><i class="fa fa-plus-circle fa-fw"></i></span>
                 								</a>
 											</div>

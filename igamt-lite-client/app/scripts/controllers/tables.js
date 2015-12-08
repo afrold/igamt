@@ -4,6 +4,7 @@
 
 angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout) {
     $scope.readonly = false;
+    $scope.codeSysEditMode = false;
     $scope.saved = false;
     $scope.message = false;
     $scope.params = null;
@@ -31,12 +32,22 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
     };
     
-    $scope.addCodeSystem = function (codeSystem) {
-    	if($rootScope.codeSystems.indexOf(codeSystem) < 0){
-    		if(codeSystem && codeSystem !== ''){
-    			$rootScope.codeSystems.push(codeSystem);
+    
+    $scope.makeCodeSystemEditable = function () {
+    	$scope.codeSysEditMode = true;
+    	$rootScope.newCodeSystemStr = "AAA";
+    }
+    
+    
+    $scope.addCodeSystem = function () {
+    	console.log($rootScope.newCodeSystemStr);
+    	if($rootScope.codeSystems.indexOf(newCodeSystemStr) < 0){
+    		if(newCodeSystemStr && newCodeSystemStr !== ''){
+    			$rootScope.codeSystems.push(newCodeSystemStr);
     		}
 		}
+    	newCodeSystemStr = '';
+    	$scope.codeSysEditMode = false;
     };
     
     $scope.updateCodeSystem = function (table,codeSystem) {
@@ -164,6 +175,18 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.tables.push(newTable);
         $rootScope.table = newTable;
         $rootScope.tablesMap[newTable.id] = newTable;
+        
+        $rootScope.codeSystems = [];
+        
+        for (var i = 0; i < $rootScope.table.codes.length; i++) {
+        	if($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0){
+        		if($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== ''){
+        			$rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+        		}
+			}
+    	}
+        
+        
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
     };
 
