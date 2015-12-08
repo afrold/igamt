@@ -224,10 +224,9 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-	@RequestMapping(value = "/{id}/export/zip/{inlineConstraints}", method = RequestMethod.POST, produces = "application/zip")
+	@RequestMapping(value = "/{id}/export/zip", method = RequestMethod.POST, produces = "application/zip")
 	public void exportZip(@PathVariable("id") String id,
-			@PathVariable("inlineConstraints") String inlineConstraints,
-			HttpServletRequest request, HttpServletResponse response)
+ 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
 		log.info("Exporting as xml file profile with id=" + id);
 		Profile p = findProfile(id);
@@ -239,10 +238,9 @@ public class ProfileController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-	@RequestMapping(value = "/{id}/export/pdf/{inlineConstraints}", method = RequestMethod.POST, produces = "application/pdf")
+	@RequestMapping(value = "/{id}/export/pdf", method = RequestMethod.POST, produces = "application/pdf")
 	public void exportPdfFromXsl(@PathVariable("id") String id,
-			@PathVariable("inlineConstraints") String inlineConstraints,
-			HttpServletRequest request, HttpServletResponse response)
+ 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ProfileNotFoundException {
 		log.info("Exporting as pdf file profile with id=" + id);
 		Profile p = findProfile(id);

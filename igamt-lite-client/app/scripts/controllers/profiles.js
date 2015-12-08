@@ -454,7 +454,7 @@ angular.module('igl')
 
         $scope.exportAs = function (id, format) {
             var form = document.createElement("form");
-            form.action = $rootScope.api('api/profiles/' + id + '/export/' + format + format.toUpperCase() !== 'DOCX' ? '/true' : '');
+            form.action = $rootScope.api('api/profiles/' + id + '/export/' + format);
             form.method = "POST";
             form.target = "_target";
             var csrfInput = document.createElement("input");
