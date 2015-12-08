@@ -34,7 +34,7 @@
                                 MetaData
                             </accordion-heading>
 
-                            <form name="segmentMetaDataForm" novalidate>
+                            <form name="valueSetMetaDataForm" novalidate>
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <label>Mapping Identifier</label>
@@ -57,12 +57,23 @@
                                                 ng-model="table.stability"
                                                 ng-options="stability for stability in config.tableStabilities">
                                         </select>
+										<label>Content Definition</label>
+                                        <select class="form-control" ng-disabled="options.readonly"
+                                                name="contentDefinition"
+                                                ng-change="recordChangeTable(table,'contentDefinition', table.contentDefinition)"
+                                                ng-model="table.contentDefinition"
+                                                ng-options="contentDefinition for contentDefinition in config.tableContentDefinitions">
+                                        </select>
                                     </div>
                                     <div class="col-md-6">
                                         <label>Name</label>
                                         <input type="text" name="name" ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'name', table.name)"
                                                class="form-control" ng-model="table.name" required>
+										<label>Description</label>
+                                        <input type="text" name="description" ng-disabled="options.readonly"
+                                               ng-change="recordChangeTable(table,'description', table.description)"
+                                               class="form-control" ng-model="table.description" required>
                                         <label>Type</label>
                                         <input type="text" name="type" ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'tableType', table.tableType)"
