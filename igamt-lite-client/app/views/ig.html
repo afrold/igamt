@@ -79,6 +79,7 @@
 			</span>
         </div>
 		<form>
+		<div style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
 		<table class="profile-list table table-striped table-bordered">
 			<tr class="tbl-header"><th>&nbsp;</th><th>Struct Id</th><th>Version</th><th>Type</th><th>Event</th><th>Description</th></tr>
 			<tbody ng-repeat="m in messagesByVersion | orderBy: m[1]">
@@ -86,45 +87,13 @@
 					<td>{{m[1]}}</td><td>{{m[2]}}</td><td>{{m[3]}}</td><td>{{m[4]}}</td><td>{{m[5]}}</td></tr>
 			</tbody>
 		</table>
-        <div class="modal-footer">
+        </div>
+       <div class="modal-footer">
             <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
             <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-        </div>
+		</div>
 		</form>
 	</script>
-<!--  This is unfamiliar; I don't think it's being used.	
-	<script type="text/ng-template" id="hl7MessagesDlg.html">
-        <div ig-modals class="modal-header">
-            <h4 class="modal-title">HL7 Messages for version: {{hl7Version}}</h4>
-        </div>
-        <form>
-            <table class="profile-list table table-striped table-bordered">
-                <tr class="tbl-header">
-                    <th>&nbsp;</th>
-                    <th>Struct Id</th>
-                    <th>Version</th>
-                    <th>Type</th>
-                    <th>Event</th>
-                    <th>Description</th>
-                </tr>
-                <tbody ng-repeat="m in messagesByVersion | orderBy: m[1]">
-                <tr>
-                    <td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
-                    <td>{{m[1]}}</td>
-                    <td>{{m[2]}}</td>
-                    <td>{{m[3]}}</td>
-                    <td>{{m[4]}}</td>
-                    <td>{{m[5]}}</td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="modal-footer">
-                <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
-                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-            </div>
-        </form>
-	</script>    
--->	
     <script type="text/ng-template" id="ConfirmProfileDeleteCtrl.html">
         <div class="modal-header">
             <h3 class="modal-title">Delete Confirmation

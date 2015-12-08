@@ -106,7 +106,6 @@ public class ProfileCreationImpl implements ProfileCreationService {
 		pTarget.setSourceId(pSource.getId());
 		pTarget.setBaseId(pSource.getId());
 
-
 		// Filling libraries--was
 		Messages msgsTarget = new Messages();
 		Segments sgtsTarget = new Segments();
@@ -169,12 +168,13 @@ public class ProfileCreationImpl implements ProfileCreationService {
 	}
 
 	private void addDatatype(Datatype dt, Profile pSource, Profile pTarget) {
+		Datatypes dtsSource= pSource.getDatatypes();
 		Datatypes dtsTarget = pTarget.getDatatypes();
 		Tables vsdTarget = pTarget.getTables();
 		if (dt != null && !dtsTarget.getChildren().contains(dt)){
 			dtsTarget.addDatatype(dt);
 			for (Component cpt: dt.getComponents()){
-				addDatatype(dtsTarget.findOne(cpt.getDatatype()), pSource, pTarget);
+				addDatatype(dtsSource.findOne(cpt.getDatatype()), pSource, pTarget);
 				addTable(vsdTarget.findOneTableById(cpt.getTable()), pSource, pTarget);
 			}
 		}

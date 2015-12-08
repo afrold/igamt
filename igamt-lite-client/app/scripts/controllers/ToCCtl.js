@@ -91,7 +91,7 @@ angular.module('igl')
 	        	$scope.$emit('event:openSegment', leaf.reference);
 	            break;
 	        }
-	        case "Messages":
+	        case "Conformance Profiles":
 	        {
 	        	$scope.$emit('event:openMessage', leaf.reference);
 	            break;
@@ -114,7 +114,7 @@ angular.module('igl')
           switch (item) {
               case "Add":
                	  console.log("Add==>");
-//				if (node === "Messages") {
+//				if (node === "Conformance Profiles") {
 //					var hl7VersionsInstance;
 //					hl7VersionsInstance = $modal.open({
 //						templateUrl : 'hl7MessagesDlg.html',
