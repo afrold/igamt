@@ -130,8 +130,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 //            	console.log(config.url);
 //                return "http://localhost:8080/igamt"+ value;
                 if(config.url.startsWith("api")){
-                   config.url = "http://localhost:8080/igamt/"+  config.url;
-                   console.log("config.url=" + config.url);
+//                   config.url = "http://localhost:8080/igamt/"+  config.url;
+//                   console.log("config.url=" + config.url);
                 }
                 return config || $q.when(config);
             }
