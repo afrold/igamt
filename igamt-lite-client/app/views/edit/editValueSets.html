@@ -38,7 +38,7 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <label>Mapping Identifier</label>
-										<span style="color:red" ng-show="table && isDuplicated(table,'bindingIdentifier', tables)">Existing mapping Identifier</span>
+										<span style="color:red" ng-show="isDuplicated(table,'bindingIdentifier', tables)">Existing mapping Identifier</span>
                                         <input type="text" name="tableIndentifier"  ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'bindingIdentifier', table.bindingIdentifier)"
                                                class="form-control" ng-model="table.bindingIdentifier" required>

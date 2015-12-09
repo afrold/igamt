@@ -126,12 +126,6 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         return false;
     };
     
-    $scope.isDuplicated = function (obj, context, list) {
-    	return _.find(_.without(list, obj), function(item) {
-            return item[context] == obj[context];
-        });
-    }
-    
     $scope.isNewValue = function (id) {
         return $scope.isNewObject('value', 'add', id);
     };
