@@ -48,11 +48,11 @@ public class Bootstrap implements InitializingBean {
 	
 	private void init()throws Exception {
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/igs/VXU_V04/VXU-Z22_Profile.xml"));
+				"/profiles/VXU-Z22_Profile.xml"));
 		String v = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/igs/VXU_V04/VXU-Z22_ValueSetLibrary.xml"));
+				"/profiles/VXU-Z22_ValueSetLibrary.xml"));
 		String c = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/igs/VXU_V04/VXU-Z22_Constraints.xml"));
+				"/profiles/VXU-Z22_Constraints.xml"));
 		Profile profile = new ProfileSerializationImpl()
 		.deserializeXMLToProfile(p, v, c);
 		profile.getMetaData().setName("VXU V04 Implementation Guide");

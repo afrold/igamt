@@ -5,6 +5,7 @@
 angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout) {
     $scope.readonly = false;
     $scope.codeSysEditMode = false;
+    $scope.codeSysForm = {};;
     $scope.saved = false;
     $scope.message = false;
     $scope.params = null;
@@ -35,20 +36,22 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     
     $scope.makeCodeSystemEditable = function () {
     	$scope.codeSysEditMode = true;
-    	$rootScope.newCodeSystemStr = "AAA";
-    }
+    };
     
     
     $scope.addCodeSystem = function () {
-    	console.log($rootScope.newCodeSystemStr);
-    	if($rootScope.codeSystems.indexOf(newCodeSystemStr) < 0){
-    		if(newCodeSystemStr && newCodeSystemStr !== ''){
-    			$rootScope.codeSystems.push(newCodeSystemStr);
+    	if($rootScope.codeSystems.indexOf($scope.codeSysForm.str) < 0){
+    		if($scope.codeSysForm.str && $scope.codeSysForm.str !== ''){
+    			$rootScope.codeSystems.push($scope.codeSysForm.str);
     		}
 		}
-    	newCodeSystemStr = '';
+    	$scope.codeSysForm.str = '';
     	$scope.codeSysEditMode = false;
     };
+    
+    $scope.delCodeSystem = function (value) {
+    	$rootScope.codeSystems.splice($rootScope.codeSystems.indexOf(value), 1);
+    }
     
     $scope.updateCodeSystem = function (table,codeSystem) {
     	for (var i = 0; i < $rootScope.table.codes.length; i++) {

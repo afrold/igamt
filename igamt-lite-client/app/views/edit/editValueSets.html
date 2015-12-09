@@ -87,14 +87,20 @@
                                         </select>
 										<label>Code Systems</label>
 										<div>
-											<span ng-repeat="cs in codeSystems">{{cs}} </span>
+											<span ng-repeat="cs in codeSystems">
+												{{cs}} 
+												<a ng-click="delCodeSystem(cs)" ng-show="codeSysEditMode" class="point">
+                    								<span><i class="fa fa-times-circle fa-fw"></i></span>
+                								</a>
+											</span>
 											<div class="pull-right" ng-hide="options.readonly">
 
 												<a ng-click="makeCodeSystemEditable()" ng-hide="codeSysEditMode" class="point">
                     								<span><i class="fa fa-pencil fa-fw"></i></span>
                 								</a>
+	
 
-												<input type="text" class="igl-input" ng-show="codeSysEditMode" ng-model="newCodeSystemStr" />
+												<input class="igl-input" ng-model="codeSysForm.str" type="text" ng-show="codeSysEditMode"/>
 												<a ng-click="addCodeSystem()" ng-show="codeSysEditMode" class="point">
                     								<span><i class="fa fa-plus-circle fa-fw"></i></span>
                 								</a>
