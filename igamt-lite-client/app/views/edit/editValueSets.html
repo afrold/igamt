@@ -128,7 +128,12 @@
                                         	<table class="table table-striped table-bordered">
                                             	<thead>
                                             	<tr class="tbl-header">
-                                                	<th class="col-md-3">Value</th>
+                                                	<th class="col-md-3">Value
+      													<div class="input-group">
+        													<div class="input-group-addon"><i class="fa fa-search"></i></div>
+    	    												<input type="text" class="form-control" placeholder="Search Value" ng-model="searchValue" />
+														</div>      
+													</th>
                                                 	<th class="col-md-4">Description</th>
                                                 	<th class="col-md-2">CodeSystem
 														<select class="form-control" ng-hide="options.readonly" 
@@ -149,7 +154,7 @@
                                             	</tr>
                                             </thead>
                                             <tbody>
-                                            	<tr ng-repeat="c in table.codes">
+                                            	<tr ng-repeat="c in table.codes | orderBy:'+value' | filter:searchValue">
                                                 	<td class="col-md-3">
 														<span ng-show="options.readonly">{{c.value}}</span>
                                                     	<input type="text" style="width: 100%" name="Value" ng-hide="options.readonly"

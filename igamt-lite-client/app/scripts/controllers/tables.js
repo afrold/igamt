@@ -65,9 +65,9 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         var newValue = {
             id: new ObjectId().toString(),
             type: 'value',
-            value: 'newValue' + $rootScope.newValueFakeId,
-            label: 'newDescription',
-            codeSystem: 'NA',
+            value: '',
+            label: '',
+            codeSystem: null,
             codeUsage: 'E'
         };
 
