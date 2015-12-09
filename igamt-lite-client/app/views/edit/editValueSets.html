@@ -150,6 +150,7 @@
                                                            	class="igl-input"
                                                            	ng-model="c.value"
                                                            	ng-change="recordChangeValue(c,'value',c.value ,table.id)" />
+														<span ng-show="isDuplicatedValue(c,'value', table.codes)">Duplicated</span>
                                               		</td>
                                                 	<td class="col-md-4">
 														<span ng-show="options.readonly">{{c.label}}</span>
