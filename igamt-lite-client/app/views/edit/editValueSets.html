@@ -38,6 +38,7 @@
                                 <div class="col-md-12">
                                     <div class="col-md-6">
                                         <label>Mapping Identifier</label>
+										<span style="color:red" ng-show="table && isDuplicated(table,'bindingIdentifier', tables)">Existing mapping Identifier</span>
                                         <input type="text" name="tableIndentifier"  ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'bindingIdentifier', table.bindingIdentifier)"
                                                class="form-control" ng-model="table.bindingIdentifier" required>
@@ -73,11 +74,11 @@
 										<label>Description</label>
                                         <input type="text" name="description" ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'description', table.description)"
-                                               class="form-control" ng-model="table.description" required>
+                                               class="form-control" ng-model="table.description">
                                         <label>Type</label>
                                         <input type="text" name="type" ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'tableType', table.tableType)"
-                                               class="form-control" ng-model="table.tableType" required>
+                                               class="form-control" ng-model="table.tableType">
                                         <label>Extensibility</label>
                                         <select class="form-control" ng-disabled="options.readonly"
                                                 name="Extensibility"
@@ -154,14 +155,14 @@
                                             	</tr>
                                             </thead>
                                             <tbody>
-                                            	<tr ng-repeat="c in table.codes | orderBy:'+value' | filter:searchValue">
+                                            	<tr ng-repeat="c in table.codes | filter:searchValue">
                                                 	<td class="col-md-3">
 														<span ng-show="options.readonly">{{c.value}}</span>
                                                     	<input type="text" style="width: 100%" name="Value" ng-hide="options.readonly"
                                                            	class="igl-input"
                                                            	ng-model="c.value"
                                                            	ng-change="recordChangeValue(c,'value',c.value ,table.id)" />
-														<span ng-show="isDuplicatedValue(c,'value', table.codes)">Duplicated</span>
+														<span style="color:red" ng-show="isDuplicated(c,'value', table.codes)">Duplicated</span>
                                               		</td>
                                                 	<td class="col-md-4">
 														<span ng-show="options.readonly">{{c.label}}</span>
