@@ -2,43 +2,96 @@ angular.module('igl').factory ('ToCSvc', function() {
 	
 	var svc = this;
 	
+	svc.currentLeaf = { selectd : false };
+	
 	svc.getToC = function(profile) {
 		toc = [];
-		toc.push(svc.getTopEntry("Introduction", svc.getIntroduction()));
-		toc.push(svc.getTopEntry("Use Case", svc.getUseCase()));
-		toc.push(svc.getTopEntry("Conformance Profiles", profile.messages));
-		toc.push(svc.getTopEntry("Segments", profile.segments));		
-		toc.push(svc.getTopEntry("Datatypes", profile.datatypes));
-		toc.push(svc.getTopEntry("Value Sets", profile.tables));
+		toc.push(svc.getIntroduction());
+		toc.push(svc.getUseCase());
+		toc.push(svc.getTopEntry("3", "Conformance Profiles", profile.messages));
+		toc.push(svc.getTopEntry("4", "Segments", profile.segments));		
+		toc.push(svc.getTopEntry("5", "Datatypes", profile.datatypes));
+		toc.push(svc.getTopEntry("6", "Value Sets", profile.tables));
+		svc.setLevels(toc);
 		return toc;
 	}
 	
+	svc.levels = [];
+	svc.cnt = 0;
+	svc.setLevels = function(entries) {
+		
+		svc.levels.push(svc.cnt++);
+		_.each(entries, function(entry){
+			entry.level = svc.cnt;
+			svc.setLevels(entry.children);
+		});
+		svc.cnt = svc.levels.pop();
+	} 
+	
 	svc.getIntroduction = function() {
 		var rval = {
+			"id" : "1",
+			"label" : "Introduction",
+			"selected" : false,
+			"parent" : "0",
+			"drop" : [],
+			"reference" : "",
 			"children" : [
 			{
+				"id" : "1.1",
 				"label" : "Purpose",
-				"drag" : "Introduction",
+				"selected" : false,
+				"parent" : "1",
+				"drop" : [],
 				"reference" : ""
 			}, {
+				"id" : "1.2",
 				"label" : "Audience",
-				"drag" : "Introduction",
+				"selected" : false,
+				"parent" : "1",
+				"drop" : [],
 				"reference" : ""
 			}, {
-				"label" : "Organisation of this guide",
-				"drag" : "Introduction",
+				"id" : "1.3",
+				"label" : "Organization of this guide",
+				"selected" : false,
+				"parent" : "1",
+				"drop" : [],
 				"reference" : ""
 			}, {
+				"id" : "1.4",
 				"label" : "Referenced profiles - antecedents",
-				"drag" : "Introduction",
+				"selected" : false,
+				"parent" : "1",
+				"drop" : [],
 				"reference" : ""
 			}, {
+				"id" : "1.5",
 				"label" : "Scope",
-				"drag" : "Introduction",
-				"reference" : ""
+				"selected" : false,
+				"parent" : "1",
+				"drop" : "Scope",
+				"reference" : "",
+				"children" : [
+					{"label" : "In Scope",
+					"selected" : false,
+					"parent" : "1.5",
+					"drop" : [],
+					"reference" : ""
+					}, {
+					"label" : "Out of Scope",
+					"selected" : false,
+					"parent" : "1.5",
+					"drop" : [],
+					"reference" : ""
+					}
+				 ]
 			}, {
 				"label" : "Key technical decisions [conventions]",
-				"drag" : "Introduction",
+				"id" : "1.6",
+				"selected" : false,
+				"parent" : "1",
+				"drop" : [],
 				"reference" : ""
 			}
 			]
@@ -48,22 +101,40 @@ angular.module('igl').factory ('ToCSvc', function() {
 	
 	svc.getUseCase = function() {
 		return {
+			"id" : "2",
+			"label" : "Use Case",
+			"selected" : false,
+			"parent" : "0",
+			"drop" : [],
+			"reference" : "",
 			"children" : [
 			{
+				"id" : "2.1",
 				"label" : "Actors",
-				"drag" : "Use Case",
+				"selected" : false,
+				"parent" : "2",
+				"drop" : [],
 				"reference" : ""
 			}, {
-				"label" : "Actors",
-				"drag" : "Use case assumptions",
+				"id" : "2.2",
+				"label" : "Use case assumptions",
+				"selected" : false,
+				"parent" : "2",
+				"drop" : [],
 				"reference" : ""
 			}, {
+				"id" : "2.3",
 				"label" : "User story",
-				"drag" : "Use Case",
+				"selected" : false,
+				"parent" : "2",
+				"drop" : [],
 				"reference" : ""
 			}, {
+				"id" : "2.4",
 				"label" : "Sequence diagram",
-				"drag" : "Use Case",
+				"selected" : false,
+				"parent" : "2",
+				"drop" : [],
 				"reference" : ""
 			}
 			]
@@ -73,35 +144,39 @@ angular.module('igl').factory ('ToCSvc', function() {
 	
 	// Returns a top level entry. It can be dropped on, but cannot be dragged.
 	// It will accept a drop where the drag value matches its label.
-	svc.getTopEntry = function(label, fromProfile) {
+	svc.getTopEntry = function(id, label, fromProfile) {
 		var children = [];
 		var rval = {
+			"id" : id,
 			"label" : label,
-			"drop" : [label],
+			"selected" : false,
+			"parent" : "0",
+			"drop" : [],
+			"selected" : false,
 		}
 		if (fromProfile !== undefined) {
 			rval["reference"] = fromProfile;
-			rval["children"] = svc.createEntries(label, fromProfile.children);
+			rval["children"] = svc.createEntries(id, fromProfile.children);
 		}
 		return rval;
 	}
 	
 	// Returns a second level set entries, These are draggable.  "drag" indicates
 	// where one of these entries can be dropped.  
-	svc.createEntries = function(drag, children) {
+	svc.createEntries = function(parent, children) {
 		var rval = [];
 		var entry = {};
 		_.each(children, function(child){
-			if (drag === "Conformance Profiles") {
-				entry = svc.createEntry(child, child.name + " - " + child.description, drag);
-			} else if (drag === "Segments") {
-				entry = svc.createEntry(child, child.name + " - " + child.description, drag);
-			} else if (drag === "Datatypes") {
-				entry = svc.createEntry(child, child.name + " - " + child.description, drag);
-			} else if (drag === "Value Sets") {
-				entry = svc.createEntry(child, child.bindingIdentifier + " - " + child.description, drag);
+			if (parent === "3") {
+				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, child.drop, child.children);
+			} else if (parent === "4") {
+				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, child.drop, child.children);
+			} else if (parent === "5") {
+				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, child.drop, child.children);
+			} else if (parent === "6") {
+				entry = svc.createEntry(child, child.id, child.bindingIdentifier + " - " + child.description, parent, child.drop, child.children);
 			} else {
-				entry = svc.createEntry(child, child.label, drag);
+				entry = svc.createEntry(child, child.id, child.label, parent, child.drop, child.children);
 			}
 			rval.push(entry);
 		});
@@ -112,15 +187,17 @@ angular.module('igl').factory ('ToCSvc', function() {
 		return child.name + " - " + child.description;
 	}
 	
-	svc.createEntry = function(reference, label, drag, drop, children) {
+	svc.createEntry = function(reference, id, label, parent, drop, children) {
 		var rval = {
+			"id" : id,
 			"label": label,
+			"selected" : false,
 		};
 		if (reference !== undefined) {
 			rval["reference"] = reference;
 		}
-		if (drag !== undefined) {
-			rval["drag"] = drag;
+		if (parent !== undefined) {
+			rval["parent"] = parent;
 		}
 		if (drop !== undefined) {
 			rval["drop"] = drop;

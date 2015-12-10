@@ -11,7 +11,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,6 +75,8 @@ public class ProfileCreationServiceTest {
 
 	@Autowired
 	MessageRepository messageRepository;
+	
+	static ProfileCreationReferentialIntegrityTest refIneteg;
 
 	@BeforeClass
 	public static void setup() {
@@ -85,7 +86,7 @@ public class ProfileCreationServiceTest {
 					.getResourceAsStream("/igl-test-log4j.properties");
 			p.load(log4jFile);
 			PropertyConfigurator.configure(p);
-
+			refIneteg = new ProfileCreationReferentialIntegrityTest();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -132,10 +133,10 @@ public class ProfileCreationServiceTest {
 		msgIds.add(msgDesc.get(2)[0]);
 		Profile pNew = profileCreation.createIntegratedProfile(msgIds, "2.7");
 		assertEquals(3, pNew.getMessages().getChildren().size());
-		File OUTPUT_DIR = new File(System.getenv("IGAMT") + "/profiles");
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.writerWithDefaultPrettyPrinter().writeValue(new File(OUTPUT_DIR + ".3", "profile-" + "2.7" + ".json"),
-				pNew);
+
+		refIneteg.testMessagesVsSegments(pNew);
+		refIneteg.testFieldDatatypes(pNew);
+		refIneteg.testComponentDataypes(pNew);
 	}
 	
 	@Test
@@ -169,10 +170,10 @@ public class ProfileCreationServiceTest {
 		msgIds1.add(msgDesc.get(5)[0]);
 		Profile pExNew = profileCreation.updateIntegratedProfile(msgIds, pNew);
 		assertEquals(6, pNew.getMessages().getChildren().size());
-		File OUTPUT_DIR = new File(System.getenv("IGAMT") + "/profiles");
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.writerWithDefaultPrettyPrinter().writeValue(new File(OUTPUT_DIR + ".3.3", "profile-" + "2.7" + ".json"),
-				pNew);
+
+		refIneteg.testMessagesVsSegments(pExNew);
+		refIneteg.testFieldDatatypes(pExNew);
+		refIneteg.testComponentDataypes(pExNew);
 	}
 	
 	@Configuration

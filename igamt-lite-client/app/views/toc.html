@@ -9,10 +9,16 @@
 b {
 	padding: 0 0 0 5px;
 }
+.toc-selected {
+	background-color : yellow;
+}
+.top-level {
+	font-weight: bold;
+}
 </style>
 
 <div class="vid container" ng-controller="ToCCtl">
-	<trunk trunk="tocData"></trunk>
+	<branches branches="tocData"></branches>
 </div>
 
 <!--

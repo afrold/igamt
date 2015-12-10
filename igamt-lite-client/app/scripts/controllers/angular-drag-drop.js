@@ -200,7 +200,7 @@ angular.module("filearts.dragDrop", [
     if (!mimeTypes) mimeTypes = ["text/x-drag-data"];
     if (!angular.isArray(mimeTypes)) mimeTypes = [mimeTypes];
     
-    console.log("dropContainer.updateMimeTypes", mimeTypes);
+//    console.log("dropContainer.updateMimeTypes", mimeTypes);
     
     dropContainer.accepts = mimeTypes;
   };

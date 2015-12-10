@@ -346,9 +346,7 @@ angular.module('igl')
 
                     angular.forEach($rootScope.profile.messages.children, function (child) {
                         this[child.id] = child;
-                        var cnt = 0;
-                        angular.forEach(child.children, function (segmentRefOrGroup) {
-                        	console.log("cnt=" + cnt++ + " segOg=" + segmentRefOrGroup);
+                         angular.forEach(child.children, function (segmentRefOrGroup) {
                         	$rootScope.processElement(segmentRefOrGroup);
                         });
                     }, $rootScope.messagesMap);

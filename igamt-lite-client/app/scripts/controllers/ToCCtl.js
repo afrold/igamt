@@ -1,6 +1,5 @@
 angular.module('igl')
   .controller('ToCCtl', ['$scope', '$rootScope', '$q', 'ToCSvc', 'ContextMenuSvc', 'DnDSvc', 'CloneDeleteMessageSvc', function ($scope, $rootScope, $q, ToCSvc, ContextMenuSvc, DnDSvc, CloneDeleteMessageSvc) {
-	console.log("ToCCtl");
 	var ctl = this;
     $scope.collapsed = [];
     $scope.$watch('tocData', function(newValue, oldValue) {
@@ -11,10 +10,6 @@ angular.module('igl')
     	}
     });
     
-// FIXME gcr: dead code.    
-//    var accept = function() {
-//		
-//	};
 	$scope.yesDrop = false;
 	$scope.noDrop = false;
 	$scope.onBranchStart = function(tocEntry) {
@@ -64,39 +59,35 @@ angular.module('igl')
 		$scope.noDrop = false;
       	console.log("onLeafDrop=" + tocEntry.label);
       };
-// FIXME gcr: Moving to expression on element.       
-//      $scope.toggleToCContents = function (node) {
-//          console.log("b collapsed[" + node + "]=" + $scope.collapsed[node]);
-//          $scope.collapsed[node] = !$scope.collapsed[node];
-//          console.log("a collapse[" + node + "]=" + $scope.collapsed[node]);
-//      };
       
+      $scope.calcOffset = function(level) {
+		return "margin-left : " + level + "em"; 
+      }
+
     $scope.tocSelection = function (leaf) {
 		// TODO gcr: See about refactoring this to eliminate the switch.
 		// One could use leaf.reference.type to assemble the $emit string.
     	// Doing so would require maintaining a sync with the ProfileListController.
+    	leaf.selected = true;
+    	ToCSvc.currentLeaf.selected = false;
+    	ToCSvc.currentLeaf = leaf;
 	    switch (leaf.drag) {
-	        case "Metadata":
-	        {
-	            $scope.selectMetaData();
-	            break;
-	        }
-	        case "Datatypes":
+	        case "5":
 	        {
 	        	$scope.$emit('event:openDatatype', leaf.reference);
 	            break;
 	        }
-	        case "Segments":
+	        case "4":
 	        {
 	        	$scope.$emit('event:openSegment', leaf.reference);
 	            break;
 	        }
-	        case "Conformance Profiles":
+	        case "3":
 	        {
 	        	$scope.$emit('event:openMessage', leaf.reference);
 	            break;
 	        }
-	        case "Value Sets":
+	        case "6":
 	        {
 	        	$scope.$emit('event:openTable', leaf.reference);
 	            break;

@@ -28,8 +28,8 @@ var app = angular
         'table-settings',
         'angularjs-dropdown-multiselect',
         'filearts.dragDrop'
-//        ,
-//        'ngMockE2E'
+        ,
+        'ngMockE2E'
     ]);
 
 var
@@ -129,10 +129,10 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             request: function (config) {
 //            	console.log(config.url);
 //                return "http://localhost:8080/igamt"+ value;
-                if(config.url.startsWith("api")){
-                   config.url = "http://localhost:8080/igamt/"+  config.url;
-                   console.log("config.url=" + config.url);
-                }
+//                if(config.url.startsWith("api")){
+//                   config.url = "http://localhost:8080/igamt/"+  config.url;
+//                   console.log("config.url=" + config.url);
+//                }
                 return config || $q.when(config);
             }
         }
