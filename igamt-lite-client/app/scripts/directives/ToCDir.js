@@ -25,8 +25,8 @@ angular.module('igl')
 	  	"</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>" +
 	  	"<trunk trunk='branch.children'></trunk>" +
 		"</li>";
-	  var branchMessageTemplate = "<li class='branch'>" +
-	  	"<label class='fa' ng-class=\"{'fa-caret-right': toc.branch.id,'fa-caret-down': !toc.branch.id for='branch.id'>{{branch.label}}</label> <input type='checkbox' id='branch.id' />" 
+	  var branchMessageTemplate = "<li class='branch' context-menu context-menu-close='closedCtxMenu(branch)' data-target='messageHeadContextDiv.html'>" +
+	  	"<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \">" +
 		"<span>" +
 	  	"{{branch.label}}" +
 		"</span>" +
@@ -37,11 +37,14 @@ angular.module('igl')
 		  
 	  var linker = function(scope, element, attrs) {
 		  if (angular.isArray(scope.branch.children)) {
-			  console.log("branch=" + scope.branch.label + " chidren=" + scope.branch.children.length);
-			  element.append(branchTemplate);
+			  console.log("branch id=" + scope.branch.id + " label=" + scope.branch.label + " chidren=" + scope.branch.children.length);
+			  if (scope.branch.parent === "mi") {
+				  element.append(branchMessageTemplate);
+			  } else {				  
+				  element.append(branchTemplate);
+			  }
               $compile(element.contents())(scope); 
-//			  element.append(trunkTemplate);
-//              $compile(element.contents())(scope); 
+
 		  } else {
 			  console.log("leaf=" + scope.branch.label);
 			  element.append(leafTemplate).show();
@@ -71,12 +74,12 @@ angular.module('igl')
 })
 .directive("leaf", function($compile) {
 
-	  var leafMessage = "<li class='branch'><a class='point'>{{leaf.label}}</a></li>";
+	  var leafMessage = "<li class='point branch' ng-class=\" {'toc-selected' : leaf.selected} \" context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='messageContextDiv.html' ng-click='tocSelection(leaf)'>{{leaf.label}}</li>";
  
-	  var leafDefault = "<li class='branch'><a class='point'>{{leaf.label}}</a></li>";
+	  var leafDefault = "<li class='point branch' ng-class=\" {'toc-selected' : leaf.selected} \" ng-click='tocSelection(leaf)'>{{leaf.label}}</li>";
 	  
 	  var linker = function(scope, element, attrs) {
-	        if (scope.leaf.parent === "3") {
+	        if (scope.leaf.parent === "3.1") {
 		        element.html(leafMessage).show();	        	
 	        } else {
 		        element.html(leafDefault).show();

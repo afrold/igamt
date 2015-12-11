@@ -71,24 +71,20 @@ angular.module('igl')
     	leaf.selected = true;
     	ToCSvc.currentLeaf.selected = false;
     	ToCSvc.currentLeaf = leaf;
-	    switch (leaf.drag) {
-	        case "5":
-	        {
-	        	$scope.$emit('event:openDatatype', leaf.reference);
-	            break;
-	        }
-	        case "4":
-	        {
-	        	$scope.$emit('event:openSegment', leaf.reference);
-	            break;
-	        }
-	        case "3":
-	        {
+	    switch (leaf.parent) {
+	        case "3.1": {
 	        	$scope.$emit('event:openMessage', leaf.reference);
 	            break;
 	        }
-	        case "6":
-	        {
+	        case "3.2": {
+	        	$scope.$emit('event:openSegment', leaf.reference);
+	            break;
+	        }
+	        case "3.3": {
+	        	$scope.$emit('event:openDatatype', leaf.reference);
+	            break;
+	        }
+	        case "3.4": {
 	        	$scope.$emit('event:openTable', leaf.reference);
 	            break;
 	        }

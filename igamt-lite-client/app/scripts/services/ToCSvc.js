@@ -118,7 +118,31 @@ angular.module('igl').factory ('ToCSvc', function() {
 				"selected" : false,
 				"parent" : "2",
 				"drop" : [],
-				"reference" : ""
+				"reference" : "",
+				"children" : [
+					{
+						"id" : "2.3.1",
+						"label" : "Pre Conditions",
+						"selected" : false,
+						"parent" : "2",
+						"drop" : [],
+						"reference" : ""
+					},{
+						"id" : "2.3.2",
+						"label" : "Post Condition",
+						"selected" : false,
+						"parent" : "2",
+						"drop" : [],
+						"reference" : ""
+					},{
+						"id" : "2.3.3",
+						"label" : "Functional Requirements",
+						"selected" : false,
+						"parent" : "2",
+						"drop" : [],
+						"reference" : ""
+					}
+				 ]
 			}, {
 				"id" : "2.3",
 				"label" : "User story",
@@ -132,7 +156,24 @@ angular.module('igl').factory ('ToCSvc', function() {
 				"selected" : false,
 				"parent" : "2",
 				"drop" : [],
-				"reference" : ""
+				"reference" : "",
+				"children" : [
+					{
+						"id" : "2.4.1",
+						"label" : "Acknolegements",
+						"selected" : false,
+						"parent" : "2",
+						"drop" : [],
+						"reference" : ""
+					},{
+						"id" : "2.4.2",
+						"label" : "Error Handling",
+						"selected" : false,
+						"parent" : "2",
+						"drop" : [],
+						"reference" : ""
+					}
+				]
 			}
 			]
 		};
@@ -150,7 +191,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 				"children" : []
 		}
 		rval.children.push(svc.getTopEntry("3.1", "Conformance Profiles", profile.messages));
-		rval.children.push(svc.getTopEntry("3.2", "Segments", profile.segments));		
+		rval.children.push(svc.getTopEntry("3.2", "Segments and Field Descriptions", profile.segments));		
 		rval.children.push(svc.getTopEntry("3.3", "Datatypes", profile.datatypes));
 		rval.children.push(svc.getTopEntry("3.4", "Value Sets", profile.tables));
 		return rval;
@@ -164,7 +205,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 			"id" : id,
 			"label" : label,
 			"selected" : false,
-			"parent" : "0",
+			"parent" : "mi",
 			"drop" : [],
 			"selected" : false,
 		}
