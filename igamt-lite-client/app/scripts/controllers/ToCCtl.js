@@ -132,18 +132,15 @@ angular.module('igl')
       $scope.closedCtxSubMenu = function (leaf, $index) {
           var ctxMenuSelection = ContextMenuSvc.get();
           switch (ctxMenuSelection) {
-              case "Add":
-              {
+              case "Add": 
                	  console.log("Add==> node=" + leaf);
-               	CloneDeleteMessageSvc.addEntry(leaf);
-              }
-              case "Clone":
-              {
+ //              	CloneDeleteMessageSvc.addEntry(leaf);
+                  break;
+              case "Clone": 
                	  console.log("Clone==> node=" + leaf);
                	  CloneDeleteMessageSvc.cloneMessage($rootScope.profile, $rootScope.tocData, leaf);
                   break;
-              }
-              case "Delete":
+              case "Delete": 
             	  console.log("Delete==> node=" + leaf);
               	CloneDeleteMessageSvc.deleteMessage($rootScope.profile, $rootScope.tocData, leaf);
               	break;

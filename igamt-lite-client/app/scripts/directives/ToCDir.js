@@ -1,4 +1,3 @@
-		"<span class='fa' ng-class=\"{'fa-caret-right': collapsed[branch.label],'fa-caret-down': !collapsed[branch.label]}\">" +
 angular.module('igl')
  .directive('trunk', function () {
 	  console.log("trunk");
@@ -23,7 +22,7 @@ angular.module('igl')
 	  	"</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>" +
 	  	"<trunk trunk='branch.children'></trunk>" +
 		"</li>";
-	  var branchMessageTemplate = "<li class='branch' context-menu context-menu-close='closedCtxMenu(branch)' data-target='messageHeadContextDiv.html'>" +
+	  var branchMessageTemplate = "<li class='branch' context-menu context-menu-close='closedCtxSubMenu(branch)' data-target='messageHeadContextDiv.html'>" +
 	  	"<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \">" +
 	  	"{{branch.label}}" +
 	  	"</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>" +
@@ -33,8 +32,8 @@ angular.module('igl')
 		  
 	  var linker = function(scope, element, attrs) {
 		  if (angular.isArray(scope.branch.children)) {
-			  console.log("branch id=" + scope.branch.id + " label=" + scope.branch.label + " chidren=" + scope.branch.children.length);
-			  if (scope.branch.parent === "mi") {
+//			  console.log("branch id=" + scope.branch.id + " label=" + scope.branch.label + " chidren=" + scope.branch.children.length);
+			  if (scope.branch.parent === "3") {
 				  element.append(branchMessageTemplate);
 			  } else {				  
 				  element.append(branchTemplate);
@@ -42,21 +41,11 @@ angular.module('igl')
               $compile(element.contents())(scope); 
 
 		  } else {
-			  console.log("leaf=" + scope.branch.label);
+//			  console.log("leaf=" + scope.branch.label);
 			  element.append(leafTemplate).show();
               $compile(element.contents())(scope);
 		  }
 	    }
-	  
-	  var branchSwitch = function(scope, element, attrs) {
-		  var rval;
-		  if (scope.branch.id === "mi") {
-			  rval =  branchMessageTemplate;  
-		  } else {
-			  rval = branchTemplate;
-		  }
-		 return rval;
-	  }
 	  
   return {
       restrict: "E",

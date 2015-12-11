@@ -182,7 +182,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 	
 	svc.getMessageInfrastructure = function(profile) {
 		var rval = {
-				"id" : "mi",
+				"id" : "3",
 				"label" : "Message Infrastructure",
 				"selected" : false,
 				"parent" : "0",
@@ -205,7 +205,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 			"id" : id,
 			"label" : label,
 			"selected" : false,
-			"parent" : "mi",
+			"parent" : "3",
 			"drop" : [],
 			"selected" : false,
 		}
