@@ -150,6 +150,15 @@ describe("toc service", function () {
 		expect(rval.children.length).toBeGreaterThan(0);
 	});
 	
+	it("Do we have MessageInfrstucture with the right nestings in the right order?", function() {
+		var rval = ToCSvc.getMessageInfrastructure(profile);
+		expect(rval.children.length).toBe(4);
+		expect(rval.children[0].id).toBe("3.1");
+		expect(rval.children[1].id).toBe("3.2");
+		expect(rval.children[2].id).toBe("3.3");
+		expect(rval.children[3].id).toBe("3.4");
+	});
+	
 	it("Do we have a ToC?", function() {
 		var rval = ToCSvc.getToC(profile);
 		expect(rval).toBeDefined();

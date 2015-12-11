@@ -1,62 +1,63 @@
+		"<span class='fa' ng-class=\"{'fa-caret-right': collapsed[branch.label],'fa-caret-down': !collapsed[branch.label]}\">" +
 angular.module('igl')
- .directive('branches', function () {
-	  console.log("branches");
+ .directive('trunk', function () {
+	  console.log("trunk");
 
-	  var template = "<div ng-class\"calcOffset(branch.level)\"><branch ng-repeat='branch in branches track by $index' branch='branch'></branch></div>";
+	  var template = "<ol class='trunk'><branch ng-repeat='branch in trunk track by $index' branch='branch'></branch></ol>";
 
   return {
       restrict: "E",
       replace: true,
       scope: {
-    	  branches: '='
+    	  trunk: '='
       },
       template: template,
   }
 })
 .directive("branch", function ($compile) {
-	  console.log("branch");
-	  
-	  var branchesTemplate = "<branches branches='branch.children'></branches>";
-	  var branchTemplate = "<div ng-class=\"{'yesyes':yesDrop, 'nono':noDrop}\"" + 
-		" drop-container accepts='{{branch.drop}}'" + 
-		" on-drag-enter='onBranchEnter(branch)' on-drag-leave='onBranchLeave(branch)' on-drop='onBranchDrop(branch)'>" +
-		"<a class='point'" +
-		"ng-click='collapsed[branch.label] = !collapsed[branch.label]'>" +
-		"<span class='fa' ng-class=\"{'fa-caret-right': collapsed[branch.label],'fa-caret-down': !collapsed[branch.label]}\">" +
-		"<span ng-class=\" {'top-level': branch.level === 1} \">{{branch.label}}</span></span>" + 
-		"</a>" +
-		"</div>";
-	  var branchMessageTemplate = "<div ng-class=\"{'yesyes':yesDrop, 'nono':noDrop}\"" + 
-		" context-menu context-menu-close='closedCtxMenu(branch)' data-target='messageHeadContextDiv.html'" + 
-		" drop-container accepts='{{branch.drop}}'" + 
-		" on-drag-enter='onBranchEnter(branch)' on-drag-leave='onBranchLeave(branch)' on-drop='onBranchDrop(branch)'>" +
-		"<a class='point'" +
-		"ng-click='collapsed[branch.label] = !collapsed[branch.label]'>" +
-		"<span class='fa' ng-class=\"{'fa-caret-right': collapsed[branch.label],'fa-caret-down': !collapsed[branch.label]}\">" +
-		"<b>{{branch.label}}</b></span>" + 
-		"</a>" +
-		"</div>";
 
+	  var trunkTemplate = "<trunk trunk='branch.children'></trunk>";
+	  var branchTemplate = "<li class='branch'>" +
+	  	"<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \">" +
+		"<span>" +
+	  	"{{branch.label}}" +
+		"</span>" +
+	  	"</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>" +
+	  	"<trunk trunk='branch.children'></trunk>" +
+		"</li>";
+	  var branchMessageTemplate = "<li class='branch'>" +
+	  	"<label class='fa' ng-class=\"{'fa-caret-right': toc.branch.id,'fa-caret-down': !toc.branch.id for='branch.id'>{{branch.label}}</label> <input type='checkbox' id='branch.id' />" 
+		"<span>" +
+	  	"{{branch.label}}" +
+		"</span>" +
+	  	"</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>" +
+		"<trunk trunk='branch.children'></trunk>" +
+		"</li>";
 	  var leafTemplate = "<leaf leaf='branch'></leaf>";
 		  
 	  var linker = function(scope, element, attrs) {
 		  if (angular.isArray(scope.branch.children)) {
-			  console.log("branch=" + scope.branch.children.length);
-            // We must add the branchTemplate before we add the branchesTemplate.
-			  if (scope.branch.id === "3") {
-		          element.append(branchMessageTemplate).show();		  
-			  } else {
-				  element.append(branchTemplate).show();
-			  }
-              $compile(element.contents())(scope);
-              
-              element.append(branchesTemplate);
+			  console.log("branch=" + scope.branch.label + " chidren=" + scope.branch.children.length);
+			  element.append(branchTemplate);
               $compile(element.contents())(scope); 
+//			  element.append(trunkTemplate);
+//              $compile(element.contents())(scope); 
 		  } else {
+			  console.log("leaf=" + scope.branch.label);
 			  element.append(leafTemplate).show();
               $compile(element.contents())(scope);
 		  }
 	    }
+	  
+	  var branchSwitch = function(scope, element, attrs) {
+		  var rval;
+		  if (scope.branch.id === "mi") {
+			  rval =  branchMessageTemplate;  
+		  } else {
+			  rval = branchTemplate;
+		  }
+		 return rval;
+	  }
 	  
   return {
       restrict: "E",
@@ -66,31 +67,16 @@ angular.module('igl')
           branch: '='
       	},
       link: linker
-      }
+    }
 })
 .directive("leaf", function($compile) {
 
-	  var leafMessage = "<div" +
-	  						" context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='messageContextDiv.html'" + 
-	  						" drag-container mime-type='{{leaf.drag}}'" + 
-	  						" on-drag-start='onLeafStart(leaf)' on-drag-stop='onLeafStop(leaf)' on-drag-enter='onLeafEnter(leaf)' on-drop='onLeafDrop(leaf)'" + 
-	  						" ng-click='tocSelection(leaf)'>" +
-						    "<a class='point txt'>" +
-							"<span class='fa' ng-class=\" {'': !collapsed[leaf.label], 'toc-selected' : leaf.selected} \">{{leaf.label}}</span>" +
-	      				    "</a>" +
-	  					"</div>";
+	  var leafMessage = "<li class='branch'><a class='point'>{{leaf.label}}</a></li>";
  
-	  var leafDefault = "<div" + 
-	  						" drag-container mime-type='{{leaf.drag}}'" + 
-	  						" on-drag-start='onLeafStart(leaf)' on-drag-stop='onLeafStop(leaf)' on-drag-enter='onLeafEnter(leaf)' on-drop='onLeafDrop(leaf)'" + 
-	  						" ng-click='tocSelection(leaf)'>" +
-						    "<a class='point txt'>" +
-							"<span class='fa' ng-class=\" {'': !collapsed[leaf.label], 'toc-selected' : leaf.selected} \">{{leaf.label}}</span>" +
-	      				    "</a>" +
-	  					"</div>";
+	  var leafDefault = "<li class='branch'><a class='point'>{{leaf.label}}</a></li>";
 	  
 	  var linker = function(scope, element, attrs) {
-	        if (scope.leaf.drag === "3") {
+	        if (scope.leaf.parent === "3") {
 		        element.html(leafMessage).show();	        	
 	        } else {
 		        element.html(leafDefault).show();

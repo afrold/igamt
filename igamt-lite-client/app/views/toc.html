@@ -6,9 +6,6 @@
 	cursor: not-allowed;
 	border-bottom: thick dotted red;
 }
-b {
-	padding: 0 0 0 5px;
-}
 .toc-selected {
 	background-color : yellow;
 }
@@ -17,8 +14,8 @@ b {
 }
 </style>
 
-<div class="vid container" ng-controller="ToCCtl">
-	<branches branches="tocData"></branches>
+<div class="container" style="margin-left: -3em;" ng-controller="ToCCtl">
+	<trunk trunk="tocData"></trunk>
 </div>
 
 <!--

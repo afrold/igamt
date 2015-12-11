@@ -8,11 +8,8 @@ angular.module('igl').factory ('ToCSvc', function() {
 		toc = [];
 		toc.push(svc.getIntroduction());
 		toc.push(svc.getUseCase());
-		toc.push(svc.getTopEntry("3", "Conformance Profiles", profile.messages));
-		toc.push(svc.getTopEntry("4", "Segments", profile.segments));		
-		toc.push(svc.getTopEntry("5", "Datatypes", profile.datatypes));
-		toc.push(svc.getTopEntry("6", "Value Sets", profile.tables));
-		svc.setLevels(toc);
+		toc.push(svc.getMessageInfrastructure(profile));
+//		svc.setLevels(toc);
 		return toc;
 	}
 	
@@ -142,6 +139,23 @@ angular.module('igl').factory ('ToCSvc', function() {
 		return rval;
 	}
 	
+	svc.getMessageInfrastructure = function(profile) {
+		var rval = {
+				"id" : "mi",
+				"label" : "Message Infrastructure",
+				"selected" : false,
+				"parent" : "0",
+				"drop" : [],
+				"reference" : "",
+				"children" : []
+		}
+		rval.children.push(svc.getTopEntry("3.1", "Conformance Profiles", profile.messages));
+		rval.children.push(svc.getTopEntry("3.2", "Segments", profile.segments));		
+		rval.children.push(svc.getTopEntry("3.3", "Datatypes", profile.datatypes));
+		rval.children.push(svc.getTopEntry("3.4", "Value Sets", profile.tables));
+		return rval;
+	}
+	
 	// Returns a top level entry. It can be dropped on, but cannot be dragged.
 	// It will accept a drop where the drag value matches its label.
 	svc.getTopEntry = function(id, label, fromProfile) {
@@ -167,14 +181,14 @@ angular.module('igl').factory ('ToCSvc', function() {
 		var rval = [];
 		var entry = {};
 		_.each(children, function(child){
-			if (parent === "3") {
-				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, child.drop, child.children);
-			} else if (parent === "4") {
-				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, child.drop, child.children);
-			} else if (parent === "5") {
-				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, child.drop, child.children);
-			} else if (parent === "6") {
-				entry = svc.createEntry(child, child.id, child.bindingIdentifier + " - " + child.description, parent, child.drop, child.children);
+			if (parent === "3.1") {
+				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, child.drop);
+			} else if (parent === "3.2") {
+				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, child.drop);
+			} else if (parent === "3.3") {
+				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, child.drop);
+			} else if (parent === "3.4") {
+				entry = svc.createEntry(child, child.id, child.bindingIdentifier + " - " + child.description, parent, child.drop);
 			} else {
 				entry = svc.createEntry(child, child.id, child.label, parent, child.drop, child.children);
 			}
