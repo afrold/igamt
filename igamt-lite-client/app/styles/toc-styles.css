@@ -21,11 +21,9 @@ ol.trunk
 }
 	li 
 	{ 
+		color: #00bcd4;
 		position: relative; 
 		list-style: none;
-	}
-	li.branch
-	{
 	}
 		li.branch input
 		{
@@ -33,7 +31,6 @@ ol.trunk
 			display: block;
 		}
 li input {
-	background-color : pink;
     position: absolute;
     left: 0;
     margin-left: 0;
@@ -45,13 +42,9 @@ li input {
     top: 0;
 }
 li label {
-	color: #00bcd4;
     cursor: pointer;
     display: block;
 }
-	li label span {
-		margin-left : 1.5em;
-	}
 	li input:checked + ol
 	{
 		background-position: 15px;

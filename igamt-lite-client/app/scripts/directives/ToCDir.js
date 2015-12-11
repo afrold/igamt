@@ -19,17 +19,13 @@ angular.module('igl')
 	  var trunkTemplate = "<trunk trunk='branch.children'></trunk>";
 	  var branchTemplate = "<li class='branch'>" +
 	  	"<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \">" +
-		"<span>" +
 	  	"{{branch.label}}" +
-		"</span>" +
 	  	"</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>" +
 	  	"<trunk trunk='branch.children'></trunk>" +
 		"</li>";
 	  var branchMessageTemplate = "<li class='branch' context-menu context-menu-close='closedCtxMenu(branch)' data-target='messageHeadContextDiv.html'>" +
 	  	"<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \">" +
-		"<span>" +
 	  	"{{branch.label}}" +
-		"</span>" +
 	  	"</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>" +
 		"<trunk trunk='branch.children'></trunk>" +
 		"</li>";
