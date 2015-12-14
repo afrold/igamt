@@ -17,7 +17,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Document(collection = "profile")
-public class Profile extends DataModel implements java.io.Serializable,
+public class Profile extends DocumentModel implements java.io.Serializable,
 		Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -427,6 +427,13 @@ public class Profile extends DataModel implements java.io.Serializable,
 		clonedProfile.setScope(scope);
 		clonedProfile.setBaseId(baseId != null ? baseId : id);
 		clonedProfile.setSourceId(id);
+		
+		clonedProfile.setDocumentMetaData(documentMetaData.clone());
+		
+		clonedProfile.setChildSections(new HashSet<Section>());
+		for(Section section:this.childSections){
+			clonedProfile.addSection(section.clone());
+		}
 
 		return clonedProfile;
 	}

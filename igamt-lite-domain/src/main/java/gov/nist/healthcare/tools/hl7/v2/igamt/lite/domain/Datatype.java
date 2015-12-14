@@ -12,7 +12,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "datatype")
-public class Datatype extends DataModelWithConstraints implements java.io.Serializable,
+public class Datatype extends SectionModelWithConstraints implements java.io.Serializable,
 		Cloneable, Comparable<Datatype> {
 
 	private static final long serialVersionUID = 1L;

@@ -16,7 +16,7 @@ import java.util.List;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
-public abstract class DataModelWithConstraints extends DataModel{
+public abstract class SectionModelWithConstraints extends SectionModel{
 	protected List<Predicate> predicates = new ArrayList<Predicate>();
 
 	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
