@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -101,10 +102,11 @@ public class ProfileCreationServiceTest {
 	
 	@Test
 	public void testSummary() {
-		String[] ss = {"ACK", "RCI", "QRY"};
-		List<String[]> msgDesc = profileCreation.summary("2.7", new ArrayList<String>());
-		List<String[]> msgDesc1 = profileCreation.summary("2.7", Arrays.asList(ss));
-		assertEquals(msgDesc.size(), msgDesc1.size() + ss.length);
+		String[] arr = {"ADT", "ACK", "RCI", "QRY", "OML"};
+		List<String[]> msgsAll = profileCreation.summary("2.7", new ArrayList<String>());
+		List<String[]> msgsSansArr = profileCreation.summary("2.7", Arrays.asList(arr));
+		
+		assertTrue(msgsAll.size() > msgsSansArr.size());
 	}
 	
 	@Test
@@ -114,7 +116,7 @@ public class ProfileCreationServiceTest {
 
 		// Collect standard messages and message descriptions
 		//There should be only one HL7STANDARD profile for each version
-		for (String hl7Version : Arrays.asList("2.5.1", "2.7")){
+		for (String hl7Version : Arrays.asList("2.5.1", "2.7")) {
 			int found = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size();
 			assertEquals(1, found);
 //			assertEquals(1, profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size());
@@ -128,15 +130,29 @@ public class ProfileCreationServiceTest {
 		
 		// Creation of a profile with three message ids
 		List<String> msgIds = new ArrayList<String>();
-		msgIds.add(msgDesc.get(0)[0]);
-		msgIds.add(msgDesc.get(1)[0]);
-		msgIds.add(msgDesc.get(2)[0]);
+//		msgIds.add(msgDesc.get(0)[0]);
+//		msgIds.add(msgDesc.get(1)[0]);
+//		msgIds.add(msgDesc.get(2)[0]);
+//		msgIds.add(msgDesc.get(3)[0]);
+//		msgIds.add(msgDesc.get(4)[0]);
+		msgIds.add("5665cee2d4c613e7b531be55");
+		msgIds.add("5665cee2d4c613e7b531b7ba");
+		msgIds.add("5665cee2d4c613e7b531be18");
+		msgIds.add("5665cee2d4c613e7b531be4e");
+		msgIds.add("5665cee2d4c613e7b531bbbb");
 		Profile pNew = profileCreation.createIntegratedProfile(msgIds, "2.7");
-		assertEquals(3, pNew.getMessages().getChildren().size());
+		assertEquals(5, pNew.getMessages().getChildren().size());
 
 		refIneteg.testMessagesVsSegments(pNew);
 		refIneteg.testFieldDatatypes(pNew);
 		refIneteg.testComponentDataypes(pNew);
+		
+		// Captures the newly created profile.
+		ObjectMapper mapper = new ObjectMapper();
+		File OUTPUT_DIR = new File(System.getenv("IGAMT") + "/profiles");
+		File outfile = new File(OUTPUT_DIR, "profile-" + "2.7.5" + ".json");
+		mapper.writerWithDefaultPrettyPrinter().writeValue(outfile, pNew);
+
 	}
 	
 	@Test
@@ -159,21 +175,35 @@ public class ProfileCreationServiceTest {
 		
 		// Creation of a profile with three message ids
 		List<String> msgIds = new ArrayList<String>();
-		msgIds.add(msgDesc.get(0)[0]);
-		msgIds.add(msgDesc.get(1)[0]);
-		msgIds.add(msgDesc.get(2)[0]);
+//		msgIds.add(msgDesc.get(0)[0]);
+//		msgIds.add(msgDesc.get(1)[0]);
+//		msgIds.add(msgDesc.get(2)[0]);
+//		msgIds.add(msgDesc.get(3)[0]);
+//		msgIds.add(msgDesc.get(4)[0]);
+		msgIds.add("5665cee2d4c613e7b531be55");
+		msgIds.add("5665cee2d4c613e7b531b7ba");
+		msgIds.add("5665cee2d4c613e7b531be18");
+		msgIds.add("5665cee2d4c613e7b531be4e");
+		msgIds.add("5665cee2d4c613e7b531bbbb");
 		Profile pNew = profileCreation.createIntegratedProfile(msgIds, "2.7");
-		assertEquals(3, pNew.getMessages().getChildren().size());
+		assertEquals(5, pNew.getMessages().getChildren().size());
 		List<String> msgIds1 = new ArrayList<String>();
-		msgIds1.add(msgDesc.get(3)[0]);
-		msgIds1.add(msgDesc.get(4)[0]);
 		msgIds1.add(msgDesc.get(5)[0]);
-		Profile pExNew = profileCreation.updateIntegratedProfile(msgIds, pNew);
-		assertEquals(6, pNew.getMessages().getChildren().size());
+		msgIds1.add(msgDesc.get(6)[0]);
+		msgIds1.add(msgDesc.get(7)[0]);
+		Profile pExNew = profileCreation.updateIntegratedProfile(msgIds1, pNew);
+		assertEquals(8, pExNew.getMessages().getChildren().size());
 
 		refIneteg.testMessagesVsSegments(pExNew);
 		refIneteg.testFieldDatatypes(pExNew);
 		refIneteg.testComponentDataypes(pExNew);
+		
+		// Captures the newly updated profile.
+		ObjectMapper mapper = new ObjectMapper();
+		File OUTPUT_DIR = new File(System.getenv("IGAMT") + "/profiles");
+		File outfile = new File(OUTPUT_DIR, "profile-" + "2.7.8" + ".json");
+		mapper.writerWithDefaultPrettyPrinter().writeValue(outfile, pNew);
+
 	}
 	
 	@Configuration

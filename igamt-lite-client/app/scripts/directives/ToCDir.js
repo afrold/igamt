@@ -32,8 +32,8 @@ angular.module('igl')
 		  
 	  var linker = function(scope, element, attrs) {
 		  if (angular.isArray(scope.branch.children)) {
-//			  console.log("branch id=" + scope.branch.id + " label=" + scope.branch.label + " chidren=" + scope.branch.children.length);
-			  if (scope.branch.parent === "3") {
+			  console.log("branch id=" + scope.branch.id + " label=" + scope.branch.label + " chidren=" + scope.branch.children.length);
+			  if (scope.branch.id === "3.1") {
 				  element.append(branchMessageTemplate);
 			  } else {				  
 				  element.append(branchTemplate);

@@ -190,22 +190,22 @@ angular.module('igl').factory ('ToCSvc', function() {
 				"reference" : "",
 				"children" : []
 		}
-		rval.children.push(svc.getTopEntry("3.1", "Conformance Profiles", profile.messages));
-		rval.children.push(svc.getTopEntry("3.2", "Segments and Field Descriptions", profile.segments));		
-		rval.children.push(svc.getTopEntry("3.3", "Datatypes", profile.datatypes));
-		rval.children.push(svc.getTopEntry("3.4", "Value Sets", profile.tables));
+		rval.children.push(svc.getTopEntry("3.1", "3", "Conformance Profiles", profile.messages));
+		rval.children.push(svc.getTopEntry("3.2", "3", "Segments and Field Descriptions", profile.segments));		
+		rval.children.push(svc.getTopEntry("3.3", "3", "Datatypes", profile.datatypes));
+		rval.children.push(svc.getTopEntry("3.4", "3", "Value Sets", profile.tables));
 		return rval;
 	}
 	
 	// Returns a top level entry. It can be dropped on, but cannot be dragged.
 	// It will accept a drop where the drag value matches its label.
-	svc.getTopEntry = function(id, label, fromProfile) {
+	svc.getTopEntry = function(id, parent, label, fromProfile) {
 		var children = [];
 		var rval = {
 			"id" : id,
 			"label" : label,
 			"selected" : false,
-			"parent" : "3",
+			"parent" : parent,
 			"drop" : [],
 			"selected" : false,
 		}
@@ -236,10 +236,6 @@ angular.module('igl').factory ('ToCSvc', function() {
 			rval.push(entry);
 		});
 		return rval;
-	}
-	
-	var assembleDatatypeLabel = function(child) {
-		return child.name + " - " + child.description;
 	}
 	
 	svc.createEntry = function(reference, id, label, parent, drop, children) {

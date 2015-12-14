@@ -127,7 +127,7 @@ public class ProfileCreationImpl implements ProfileCreationService {
 		Profile pSource = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version)
 				.get(0);
 		addMessages(msgIds, pSource, pTarget);
-		return pSource;
+		return pTarget;
 	}
 
 	private void addMessages(List<String> msgIds, Profile pSource, Profile pTarget) {

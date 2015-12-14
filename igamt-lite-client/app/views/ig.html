@@ -84,7 +84,7 @@
 			<tr class="tbl-header"><th>&nbsp;</th><th>Struct Id</th><th>Version</th><th>Type</th><th>Event</th><th>Description</th></tr>
 			<tbody ng-repeat="m in messagesByVersion | orderBy: m[1]">
 				<tr><td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
-					<td>{{m[1]}}</td><td>{{m[2]}}</td><td>{{m[3]}}</td><td>{{m[4]}}</td><td>{{m[5]}}</td></tr>
+					<td>{{m[2]}}</td><td></td><td></td><td>{{m[1]}}</td><td>{{m[3]}}</td></tr>
 			</tbody>
 		</table>
         </div>
