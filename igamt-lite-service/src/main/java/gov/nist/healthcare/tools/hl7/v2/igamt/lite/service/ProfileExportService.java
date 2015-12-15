@@ -36,4 +36,6 @@ public interface ProfileExportService {
 	
 	InputStream exportAsDocx(Profile p)  throws IOException; 
 	
+	InputStream exportAsHtml(Profile p) throws IOException;
+	
 }

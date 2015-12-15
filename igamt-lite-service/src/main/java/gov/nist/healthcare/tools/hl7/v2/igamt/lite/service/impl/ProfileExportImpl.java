@@ -44,11 +44,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +58,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 
 import nu.xom.Builder;
@@ -75,15 +77,23 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.docx4j.XmlUtils;
 import org.docx4j.jaxb.Context;
+import org.docx4j.openpackaging.contenttype.CTOverride;
+import org.docx4j.openpackaging.contenttype.ContentTypeManager;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.AltChunkType;
+import org.docx4j.openpackaging.parts.WordprocessingML.DocumentSettingsPart;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
+import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
 import org.docx4j.wml.BooleanDefaultTrue;
 import org.docx4j.wml.Br;
 import org.docx4j.wml.CTBorder;
+import org.docx4j.wml.CTRel;
+import org.docx4j.wml.CTSettings;
+import org.docx4j.wml.CTShd;
 import org.docx4j.wml.CTTblLayoutType;
 import org.docx4j.wml.CTVerticalJc;
 import org.docx4j.wml.FldChar;
@@ -104,6 +114,7 @@ import org.docx4j.wml.TcPr;
 import org.docx4j.wml.TcPrInner.GridSpan;
 import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
+import org.docx4j.wml.TrPr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -141,6 +152,12 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 @Service
 public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExportService{
 	Logger logger = LoggerFactory.getLogger( ProfileExportImpl.class ); 
+	
+	static String constraintBackground = "EDEDED";
+	static String headerBackground = "D3D3D3";
+	static String tableHSeparator = "91182C";
+	static String tableVSeparator = "D3D3D3";
+	
 
 	@Override
 	public InputStream exportAsXml(Profile p) {
@@ -176,8 +193,343 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		}
 	}
 
-	@Override
 	public InputStream exportAsXlsx(Profile p) {
+		if (p != null) {
+			return exportAsXslxWithApachePOI(p);
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream exportAsHtml(Profile p) {
+		if (p != null) {
+			return exportAsHtmlFromXsl(p, "true");
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+
+	//	Functions to collect info
+	//Messages
+	private void addMessage(List<List<String>> rows, Message m, Profile p){
+		List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
+
+		for (SegmentRefOrGroup srog : segRefOrGroups) {
+			if (srog instanceof SegmentRef) {
+				this.addSegmentMsgInfra(rows, (SegmentRef) srog, 0,
+						p.getSegments());
+			} else if (srog instanceof Group) {
+				this.addGroupMsgInfra(rows, (Group) srog, 0,
+						p.getSegments(), p.getDatatypes());
+			}
+		}
+
+		List<Constraint> constraints = new ArrayList<>();
+		for (ConformanceStatement cs: m.getConformanceStatements()){
+			constraints.add(cs);
+		}
+		for (Predicate pre: m.getPredicates()){
+			constraints.add(pre);
+		}
+		this.addConstraints(rows, constraints);
+	}
+
+	private void addSegmentMsgInfra(List<List<String>> rows, SegmentRef s,
+			Integer depth, Segments segments) {
+		String indent = StringUtils.repeat(".", 4 * depth);
+		Segment segment = segments.findOneSegmentById(s.getRef());
+		List<String> row = Arrays.asList(indent + segment.getName(), 
+				segment.getLabel().equals(segment.getName()) ? "" : segment.getLabel(),
+						segment.getDescription(),
+						s.getUsage().value(), 
+						"[" + String.valueOf(s.getMin())
+						+ ".." + String.valueOf(s.getMax()) + "]", 
+						segment.getComment() == null ? "" : segment.getComment());
+		rows.add(row);
+	}
+
+	private void addGroupMsgInfra(List<List<String>> rows, Group g, Integer depth,
+			Segments segments, Datatypes datatypes) {
+		String indent = StringUtils.repeat(".", 2 * depth);
+
+		List<String> row = Arrays.asList(
+				indent + "[", "",
+				g.getName() + " GROUP BEGIN",
+				g.getUsage().value(),
+				"[" + String.valueOf(g.getMin()) + ".."
+						+ String.valueOf(g.getMax()) + "]", 
+				"");
+		rows.add(row);
+
+		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
+		Collections.sort(segsOrGroups);
+		for (SegmentRefOrGroup srog : segsOrGroups) {
+			if (srog instanceof SegmentRef) {
+				this.addSegmentMsgInfra(rows, (SegmentRef) srog, depth + 1,
+						segments);
+			} else if (srog instanceof Group) {
+				this.addGroupMsgInfra(rows, (Group) srog, depth + 1, segments,
+						datatypes);
+			}
+		}
+		row = Arrays.asList(indent + "]",
+				"",
+				g.getName() + " GROUP END",
+				"", 
+				"", 
+				"");
+		rows.add(row);
+	}
+
+	//Segments
+	private void addSegment(List<List<String>> rows, Segment s,
+			Boolean inlineConstraints, Datatypes datatypes, Tables tables) {
+		List<String> row;
+		List<Predicate> predicates = s.getPredicates();
+		List<ConformanceStatement> conformanceStatements = s
+				.getConformanceStatements();
+
+		List<Field> fieldsList = s.getFields();
+		Collections.sort(fieldsList);
+		for (Field f : fieldsList) {
+			row = Arrays.asList(
+					// f.getItemNo().replaceFirst("^0+(?!$)", ""),
+					String.valueOf(f.getPosition()),
+					f.getName(),
+					(f.getDatatype() == null || f.getDatatype().isEmpty() ?
+							"" : (datatypes.findOne(f.getDatatype()) == null ? 
+									f.getDatatype() : datatypes.findOne(f.getDatatype()).getLabel())),
+									f.getUsage().value(),
+									"[" + String.valueOf(f.getMin()) + ".."
+											+ String.valueOf(f.getMax()) + "]",
+											"[" + String.valueOf(f.getMinLength()) + ".."
+													+ String.valueOf(f.getMaxLength()) + "]",
+													(f.getTable() == null || f.getTable().isEmpty() ? 
+															"" : (tables.findOneTableById(f.getTable()) == null ? f.getTable() : tables.findOneTableById(f.getTable()).getBindingIdentifier())),
+															f.getComment() == null ? "" : f.getComment());
+			rows.add(row);
+
+			if (inlineConstraints) {
+				List<Constraint> constraints = this.findConstraints(
+						f.getPosition(), predicates,
+						conformanceStatements);
+				this.addConstraints(rows, constraints);
+			}
+		}
+		if (!inlineConstraints) {
+			for (Field f : fieldsList) {
+				List<Constraint> constraints = this.findConstraints(
+						f.getPosition(), predicates,
+						conformanceStatements);
+				this.addConstraints(rows, constraints);
+			}
+		}
+	}
+
+	private void addDatatype(List<List<String>> rows, Datatype d,
+			Datatypes datatypes, Tables tables) {
+		List<String> row;
+		List<Predicate> predicates = d.getPredicates();
+		List<ConformanceStatement> conformanceStatements = d
+				.getConformanceStatements();
+
+		List<Component> componentsList = new ArrayList<>(d.getComponents());
+		Collections.sort(componentsList);
+		if (componentsList.size() == 0) {
+			row = Arrays.asList("1", d.getName(), "", "", "", "", "",
+					d.getComment());
+			rows.add(row);
+		} else {
+			for (Component c : componentsList) {
+				row = Arrays.asList(
+						c.getPosition().toString(),
+						c.getName(),
+						c.getConfLength(),
+						(c.getDatatype() == null || c.getDatatype().isEmpty() ?
+								"" : (datatypes.findOne(c.getDatatype()) == null ? 
+										c.getDatatype() : datatypes.findOne(c.getDatatype()).getLabel())),
+										c.getUsage().value(),
+										"[" + String.valueOf(c.getMinLength()) + ".."
+												+ String.valueOf(c.getMaxLength()) + "]",
+												(c.getTable() == null || c.getTable().isEmpty() ? 
+														"" : (tables.findOneTableById(c.getTable()) == null ? c.getTable() : tables.findOneTableById(c.getTable()).getBindingIdentifier())),
+														c.getComment());
+				rows.add(row);
+				List<Constraint> constraints = this.findConstraints(
+						c.getPosition(), predicates,
+						conformanceStatements);
+				if (!constraints.isEmpty()) {
+					for (Constraint constraint : constraints) {
+						String constraintType = new String();
+						if (constraint instanceof Predicate) {
+							constraintType = "Condition Predicate";
+						} else if (constraint instanceof ConformanceStatement) {
+							constraintType = "Conformance Statement";
+						}
+						row = Arrays.asList("", constraintType,
+								constraint.getDescription());
+						rows.add(row);
+					}
+				}
+			}
+		}
+	}
+
+	private void addValueSet(List<List<String>> rows, Table t) {
+		List<String> row = new ArrayList<String>();
+		List<Code> codes = t.getCodes();
+
+		Collections.sort(codes);
+		for (Code c : codes) {
+			row = Arrays.asList(c.getValue(), c.getCodeSystem(), c.getCodeUsage(), c.getLabel());
+			rows.add(row);
+		}
+	}
+
+	private List<Constraint> findConstraints(Integer target,
+			List<Predicate> predicates,
+			List<ConformanceStatement> conformanceStatements) {
+		List<Constraint> constraints = new ArrayList<>();
+		for (Predicate pre : predicates) {
+			if (target == Integer.parseInt(pre.getConstraintTarget().substring(
+					0, pre.getConstraintTarget().indexOf('[')))) {
+				constraints.add(pre);
+			}
+		}
+		for (ConformanceStatement conformanceStatement : conformanceStatements) {
+			if (target == Integer.parseInt(conformanceStatement
+					.getConstraintTarget().substring(
+							0,
+							conformanceStatement.getConstraintTarget().indexOf(
+									'[')))) {
+				constraints.add(conformanceStatement);
+			}
+		}
+		return constraints;
+	}
+
+
+	private void addConstraints(List<List<String>> rows,
+			List<Constraint> constraints) {
+		if (!constraints.isEmpty()) {
+			List<String> row;
+			for (Constraint constraint : constraints) {
+				String constraintType = new String();
+				if (constraint instanceof Predicate) {
+					constraintType = "Condition Predicate";
+				} else if (constraint instanceof ConformanceStatement) {
+					constraintType = "Conformance Statement";
+				}
+				row = Arrays.asList("", constraintType,
+						constraint.getDescription());
+				rows.add(row);
+			}
+		}
+	}
+
+	private void addCsMessage(List<List<String>> rows, Message m){
+		List<Constraint> constraints = new ArrayList<>();
+		for (ConformanceStatement cs: m.getConformanceStatements()){
+			constraints.add(cs);
+		}
+		this.addConstraints(rows, constraints);
+	}
+
+	private void addPreMessage(List<List<String>> rows, Message m){		
+		List<Constraint> constraints = new ArrayList<>();
+		for (Predicate pre: m.getPredicates()){
+			constraints.add(pre);
+		}
+		this.addConstraints(rows, constraints);
+	}
+
+	private void addCsGroup(List<List<String>> rows, Message m){
+		List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
+		List<Constraint> constraints = new ArrayList<>();
+
+		for (SegmentRefOrGroup srog : segRefOrGroups) {
+			if (srog instanceof Group) {
+				for (ConformanceStatement cs: ((Group) srog).getConformanceStatements()){
+					constraints.add(cs);
+				}
+				this.addCsGroupList(constraints, (Group) srog);
+			}
+		}
+		this.addConstraints(rows, constraints);
+	}
+
+	private void addCsGroupList(List<Constraint> constraints, Group group){
+		for (SegmentRefOrGroup srog : group.getChildren()) {
+			if (srog instanceof Group) {
+				for (ConformanceStatement cs: ((Group) srog).getConformanceStatements()){
+					constraints.add(cs);
+				}
+				this.addCsGroupList(constraints, (Group) srog);
+			}
+		}
+	}
+
+	private void addPreGroup(List<List<String>> rows, Message m){
+		List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
+		List<Constraint> constraints = new ArrayList<>();
+
+		for (SegmentRefOrGroup srog : segRefOrGroups) {
+			if (srog instanceof Group) {
+				for (Predicate pre: ((Group) srog).getPredicates()){
+					constraints.add(pre);
+				}
+				this.addPreGroupList(constraints, (Group) srog);
+			}
+		}
+		this.addConstraints(rows, constraints);
+	}
+
+	private void addPreGroupList(List<Constraint> constraints, Group group){
+		for (SegmentRefOrGroup srog : group.getChildren()) {
+			if (srog instanceof Group) {
+				for (Predicate pre: ((Group) srog).getPredicates()){
+					constraints.add(pre);
+				}
+				this.addCsGroupList(constraints, (Group) srog);
+			}
+		}
+	}
+
+	private void addCsSegment(List<List<String>> rows, Segment s){
+		List<Constraint> constraints = new ArrayList<>();
+		for (ConformanceStatement cs: s.getConformanceStatements()){
+			constraints.add(cs);
+		}
+		this.addConstraints(rows, constraints);
+	}
+
+	private void addPreSegment(List<List<String>> rows, Segment s){		
+		List<Constraint> constraints = new ArrayList<>();
+		for (Predicate pre: s.getPredicates()){
+			constraints.add(pre);
+		}
+		this.addConstraints(rows, constraints);
+	}
+
+
+	private void addCsDatatype(List<List<String>> rows, Datatype dt){
+		List<Constraint> constraints = new ArrayList<>();
+		for (ConformanceStatement cs: dt.getConformanceStatements()){
+			constraints.add(cs);
+		}
+		this.addConstraints(rows, constraints);
+	}
+
+	private void addPreDatatype(List<List<String>> rows, Datatype dt){		
+		List<Constraint> constraints = new ArrayList<>();
+		for (Predicate pre: dt.getPredicates()){
+			constraints.add(pre);
+		}
+		this.addConstraints(rows, constraints);
+	}
+
+	private InputStream exportAsXslxWithApachePOI(Profile p) {
 		logger.debug("Export profile id: " + p.getId() + " as xslx");
 		try {
 			File tmpXlsxFile = File.createTempFile("ProfileTmp", ".xslx");
@@ -294,7 +646,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					sheetNames.add(sheetName);
 					sheet = workbook.createSheet(sheetName);
 					rows.add(header);
-					this.addFields(rows, s, Boolean.FALSE, p.getDatatypes(), p.getTables());
+					this.addSegment(rows, s, Boolean.FALSE, p.getDatatypes(), p.getTables());
 					this.writeToSheet(rows, header, sheet, headerStyle);
 				}
 			}
@@ -311,7 +663,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					sheetNames.add(sheetName);
 					sheet = workbook.createSheet(sheetName);
 					rows.add(header);
-					this.addComponents(rows, dt, p.getDatatypes(), p.getTables());
+					this.addDatatype(rows, dt, p.getDatatypes(), p.getTables());
 					this.writeToSheet(rows, header, sheet, headerStyle);
 				}
 			}
@@ -327,7 +679,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 					header = Arrays.asList("Value", "CodeSystem", "Usage", "Label");
 					rows = new ArrayList<List<String>>();
-					this.addCodes(rows, t);
+					this.addValueSet(rows, t);
 					rows.add(0, header);
 					this.writeToSheet(rows, header, sheet, headerStyle);
 				}
@@ -346,7 +698,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			return new NullInputStream(1L);
 		}
 	}
-
 	private void addGroupInfoXlsx(List<List<String>> rows, Group g, Integer depth,
 			Segments segments, Datatypes datatypes) {
 		String indent = StringUtils.repeat(" ", 4 * depth);
@@ -422,7 +773,45 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		sheet.autoSizeColumn(8);
 	}
 
-	@Override
+	public InputStream exportAsHtmlFromXsl(Profile p, String inlineConstraints) {
+		// Note: inlineConstraint can be true or false
+		try {
+			// Generate xml file containing profile
+			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
+			String stringProfile = new ProfileSerialization4ExportImpl()
+			.serializeProfileToXML(p);
+			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
+					Charset.forName("UTF-8"));
+
+			// Apply XSL transformation on xml file to generate html
+			File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
+			//			File tmpHtmlFile = new File("ProfileTemp.html");
+			Builder builder = new Builder();
+			nu.xom.Document input = builder.build(tmpXmlFile);
+			nu.xom.Document stylesheet = builder.build(this.getClass()
+					.getResourceAsStream("/rendering/profile2a.xsl"));
+			XSLTransform transform = new XSLTransform(stylesheet);
+			transform.setParameter("inlineConstraints", inlineConstraints);
+			Nodes output = transform.transform(input);
+			nu.xom.Document result = XSLTransform.toDocument(output);
+
+			Tidy tidy = new Tidy();
+			tidy.setWraplen(Integer.MAX_VALUE);
+			tidy.setXHTML(true);
+			tidy.setShowWarnings(false); //to hide errors
+			tidy.setQuiet(true); //to hide warning
+			ByteArrayInputStream inputStream = new ByteArrayInputStream(result.toXML().getBytes("UTF-8"));
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			tidy.parseDOM(inputStream, outputStream);
+			FileUtils.writeStringToFile(tmpHtmlFile, outputStream.toString("UTF-8"));
+
+			return FileUtils.openInputStream(tmpHtmlFile);
+		} catch (IOException | ParsingException
+				| XSLException e) {
+			return new NullInputStream(1L);
+		}
+	}
+
 	public InputStream exportAsPdfFromXsl(Profile p, String inlineConstraints) {
 		// Note: inlineConstraint can be true or false
 		try {
@@ -477,7 +866,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 	// store the chapters and sections with their title here.
 	private Map<String, Integer> pageByTitle;
 
-	
+
 	private InputStream exportAsPdfWithIText(Profile p) {
 
 		List<String> header;
@@ -486,14 +875,14 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		List<List<String>> rows;
 
 		// Create fonts and colors to be used in generated pdf
-		BaseColor headerColor = WebColors.getRGBColor("#0033CC");
-		BaseColor cpColor = WebColors.getRGBColor("#C0C0C0");
+		BaseColor headerColor = WebColors.getRGBColor("#"+headerBackground);
+		BaseColor cpColor = WebColors.getRGBColor("#"+constraintBackground);
 		Font coverH1Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24, Font.UNDERLINE
-				| Font.BOLD, BaseColor.BLUE);
+				| Font.BOLD, BaseColor.RED);
 		Font coverH2Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL,
-				BaseColor.BLUE);
+				BaseColor.RED);
 		Font tocTitleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.BOLD,
 				BaseColor.BLACK);
@@ -609,24 +998,15 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				section.add(richTextToParagraph(m.getComment()));
 				section.add(Chunk.NEWLINE);
 
-				header = Arrays.asList("Segment", "Usage", "Card.", "Comment");
-				columnWidths = new float[] { 4f, 3f, 2f, 8f };
+				header = Arrays.asList("Segment", "Flavor", "Element name", "Usage", "Cardinality", "Description/Comment");
+				columnWidths = new float[] { 2f, 3f, 4f, 2f, 2f, 8f };
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerColor);
+
 				rows = new ArrayList<List<String>>();
-
-				List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
-
-				for (SegmentRefOrGroup srog : segRefOrGroups) {
-					if (srog instanceof SegmentRef) {
-						this.addSegmentPdfMsgInfra(rows, (SegmentRef) srog, 0,
-								p.getSegments());
-					} else if (srog instanceof Group) {
-						this.addGroupPdfMsgInfra(rows, (Group) srog, 0,
-								p.getSegments(), p.getDatatypes());
-					}
-				}
+				this.addMessage(rows, m, p);
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
+
 				section.add(table);
 
 				section.add(Chunk.NEWLINE);
@@ -657,13 +1037,42 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				this.addTocContent(tocDocument, igWriter, segmentInfo);
 				Section section1 = chapter.addSection(new Paragraph(segmentInfo, titleFont));
 
-				header = Arrays.asList("Seq", "Element Name", "DT",
-						"Usage", "Card.", "Len", "Value\nSet", "Comment");
+				section1.add(Chunk.NEWLINE);
+				section1.add(richTextToParagraph(s.getText1()));
+				section1.add(Chunk.NEWLINE);
+
+				header = Arrays.asList("Seq", "Field Name", "DT",
+						"Usage", "Card.", "Length", "Value Set", "Comment");
 				columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 
 						1.5f, 1.5f, 2f, 6f };
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerColor);
-				this.addSegmentPdf(igDocument, igWriter, tocDocument, header, columnWidths, s, headerFont, headerColor, cellFont, cpColor, p.getSegments(), p.getDatatypes(), p.getTables(), section1);
+
+				rows = new ArrayList<List<String>>();
+				this.addSegment(rows, s, Boolean.TRUE, p.getDatatypes(), p.getTables());
+				this.addCellsPdfTable(table, rows, cellFont, cpColor);
+				section1.add(table);
+
+				section1.add(Chunk.NEWLINE);
+				section1.add(richTextToParagraph(s.getText2()));
+				section1.add(Chunk.NEWLINE);
+
+				List<Field> fieldsList = s.getFields();
+				Collections.sort(fieldsList);
+				for (Field f : fieldsList) {
+					if (f.getText() != null && f.getText().length() != 0) {
+						Font fontbold = FontFactory.getFont("Times-Roman", 12,
+								Font.BOLD);
+						section1.add(new Paragraph(s.getName() + "-"
+								+ f.getItemNo().replaceFirst("^0+(?!$)", "") + " "
+								+ f.getName() + " ("
+								+ p.getDatatypes().findOne(f.getDatatype()).getLabel() + ")",
+								fontbold));
+						section1.add(new Paragraph(f.getText()));
+					}
+				}
+				section1.add(Chunk.NEWLINE);
+				section1.newPage();
 
 				igDocument.add(section1);
 			}
@@ -701,7 +1110,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerColor);
 				rows = new ArrayList<List<String>>();
-				this.addComponents(rows, d, p.getDatatypes(),
+				this.addDatatype(rows, d, p.getDatatypes(),
 						p.getTables());
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
 				igDocument.add(Chunk.NEWLINE);
@@ -748,7 +1157,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerColor);
 				rows = new ArrayList<List<String>>();
-				this.addCodes(rows, t);
+				this.addValueSet(rows, t);
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
 				igDocument.add(Chunk.NEWLINE);
 				igDocument.add(table);
@@ -960,304 +1369,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		}
 	}
 
-	private void addGroupPdfMsgInfra(List<List<String>> rows, Group g, Integer depth,
-			Segments segments, Datatypes datatypes) {
-		String indent = StringUtils.repeat(" ", 2 * depth);
-
-		List<String> row = Arrays.asList(
-				indent + "[",
-				g.getUsage().value(),
-				"[" + String.valueOf(g.getMin()) + ".."
-						+ String.valueOf(g.getMax()) + "]", 
-						"BEGIN " + g.getName() + " GROUP");
-		rows.add(row);
-
-		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
-		Collections.sort(segsOrGroups);
-		for (SegmentRefOrGroup srog : segsOrGroups) {
-			if (srog instanceof SegmentRef) {
-				this.addSegmentPdfMsgInfra(rows, (SegmentRef) srog, depth + 1,
-						segments);
-			} else if (srog instanceof Group) {
-				this.addGroupPdfMsgInfra(rows, (Group) srog, depth + 1, segments,
-						datatypes);
-			}
-		}
-
-		row = Arrays.asList(indent + "]", 
-				"", 
-				"", 
-				"END " + g.getName()
-				+ " GROUP");
-		rows.add(row);
-	}
-
-	private void addSegmentPdfMsgInfra(List<List<String>> rows, SegmentRef s,
-			Integer depth, Segments segments) {
-		String indent = StringUtils.repeat(" ", 4 * depth);
-		Segment segment = segments.findOneSegmentById(s.getRef());
-		List<String> row = Arrays.asList(indent + segment.getName(), 
-				s.getUsage().value(), 
-				"[" + String.valueOf(s.getMin())
-				+ ".." + String.valueOf(s.getMax()) + "]", 
-				segment.getComment() == null ? "" : segment.getComment());
-		rows.add(row);
-	}
-
-	private void addSegmentPdf(Document igDocument, PdfWriter igWriter,
-			Document tocDocument, List<String> header, float[] columnWidths,
-			Segment s, Font headerFont, BaseColor headerColor,
-			Font cellFont, BaseColor cpColor, Segments segments,
-			Datatypes datatypes, Tables tables, Section section1) throws DocumentException {
-
-		PdfPTable table = this.addHeaderPdfTable(header, columnWidths,
-				headerFont, headerColor);
-		ArrayList<List<String>> rows = new ArrayList<List<String>>();
-
-		section1.add(Chunk.NEWLINE);
-		section1.add(richTextToParagraph(s.getText1()));
-		section1.add(Chunk.NEWLINE);
-
-		this.addFields(rows, s, Boolean.TRUE, datatypes, tables);
-		this.addCellsPdfTable(table, rows, cellFont, cpColor);
-		section1.add(table);
-		
-		section1.add(Chunk.NEWLINE);
-		section1.add(richTextToParagraph(s.getText2()));
-		section1.add(Chunk.NEWLINE);
-
-		List<Field> fieldsList = s.getFields();
-		Collections.sort(fieldsList);
-		for (Field f : fieldsList) {
-			if (f.getText() != null && f.getText().length() != 0) {
-				Font fontbold = FontFactory.getFont("Times-Roman", 12,
-						Font.BOLD);
-				section1.add(new Paragraph(s.getName() + "-"
-						+ f.getItemNo().replaceFirst("^0+(?!$)", "") + " "
-						+ f.getName() + " ("
-						+ datatypes.findOne(f.getDatatype()).getLabel() + ")",
-						fontbold));
-				section1.add(new Paragraph(f.getText()));
-			}
-		}
-		section1.add(Chunk.NEWLINE);
-		section1.newPage();
-	}
-
-	private void addSegmentMsgInfra(List<List<String>> rows, SegmentRef s,
-			Integer depth, Segments segments) {
-		String indent = StringUtils.repeat(".", 4 * depth);
-		Segment segment = segments.findOneSegmentById(s.getRef());
-		List<String> row = Arrays.asList(indent + segment.getName(), 
-				segment.getLabel().equals(segment.getName()) ? "" : segment.getLabel(),
-						segment.getDescription(),
-						s.getUsage().value(), 
-						//						"", 
-						"[" + String.valueOf(s.getMin())
-						+ ".." + String.valueOf(s.getMax()) + "]", 
-						//						"", 
-						segment.getComment() == null ? "" : segment.getComment());
-		rows.add(row);
-	}
-
-
-	private void addGroupMsgInfra(List<List<String>> rows, Group g, Integer depth,
-			Segments segments, Datatypes datatypes) {
-		String indent = StringUtils.repeat(".", 2 * depth);
-
-		List<String> row = Arrays.asList(
-				indent + "[", "",
-				g.getName() + " GROUP BEGIN",
-				g.getUsage().value(),
-				"[" + String.valueOf(g.getMin()) + ".."
-						+ String.valueOf(g.getMax()) + "]", 
-				"");
-		rows.add(row);
-
-		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
-		Collections.sort(segsOrGroups);
-		for (SegmentRefOrGroup srog : segsOrGroups) {
-			if (srog instanceof SegmentRef) {
-				this.addSegmentMsgInfra(rows, (SegmentRef) srog, depth + 1,
-						segments);
-			} else if (srog instanceof Group) {
-				this.addGroupMsgInfra(rows, (Group) srog, depth + 1, segments,
-						datatypes);
-			}
-		}
-		row = Arrays.asList(indent + "]",
-				"",
-				g.getName() + " GROUP END",
-				"", 
-				"", 
-				"");
-		rows.add(row);
-	}
-	private List<Constraint> findConstraints(Integer target,
-			List<Predicate> predicates,
-			List<ConformanceStatement> conformanceStatements) {
-		List<Constraint> constraints = new ArrayList<>();
-		for (Predicate pre : predicates) {
-			if (target == Integer.parseInt(pre.getConstraintTarget().substring(
-					0, pre.getConstraintTarget().indexOf('[')))) {
-				constraints.add(pre);
-			}
-		}
-		for (ConformanceStatement conformanceStatement : conformanceStatements) {
-			if (target == Integer.parseInt(conformanceStatement
-					.getConstraintTarget().substring(
-							0,
-							conformanceStatement.getConstraintTarget().indexOf(
-									'[')))) {
-				constraints.add(conformanceStatement);
-			}
-		}
-		return constraints;
-	}
-
-	private void addSegRefOrGroups(List<List<String>> rows, Message m, Profile p){
-		List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
-
-		for (SegmentRefOrGroup srog : segRefOrGroups) {
-			if (srog instanceof SegmentRef) {
-				this.addSegmentMsgInfra(rows, (SegmentRef) srog, 0,
-						p.getSegments());
-			} else if (srog instanceof Group) {
-				this.addGroupMsgInfra(rows, (Group) srog, 0,
-						p.getSegments(), p.getDatatypes());
-			}
-		}
-	}
-
-	private void addComponents(List<List<String>> rows, Datatype d,
-			Datatypes datatypes, Tables tables) {
-		List<String> row;
-		List<Predicate> predicates = d.getPredicates();
-		List<ConformanceStatement> conformanceStatements = d
-				.getConformanceStatements();
-
-		List<Component> componentsList = new ArrayList<>(d.getComponents());
-		Collections.sort(componentsList);
-		if (componentsList.size() == 0) {
-			row = Arrays.asList("1", d.getName(), "", "", "", "", "",
-					d.getComment());
-			rows.add(row);
-		} else {
-			for (Component c : componentsList) {
-				row = Arrays.asList(
-						c.getPosition().toString(),
-						c.getName(),
-						c.getConfLength(),
-						(c.getDatatype() == null || c.getDatatype().isEmpty() ?
-								"" : (datatypes.findOne(c.getDatatype()) == null ? 
-										c.getDatatype() : datatypes.findOne(c.getDatatype()).getLabel())),
-										c.getUsage().value(),
-										"[" + String.valueOf(c.getMinLength()) + ".."
-												+ String.valueOf(c.getMaxLength()) + "]",
-												(c.getTable() == null || c.getTable().isEmpty() ? 
-														"" : (tables.findOneTableById(c.getTable()) == null ? c.getTable() : tables.findOneTableById(c.getTable()).getBindingIdentifier())),
-														c.getComment());
-				rows.add(row);
-				List<Constraint> constraints = this.findConstraints(
-						componentsList.indexOf(c) + 1, predicates,
-						conformanceStatements);
-				if (!constraints.isEmpty()) {
-
-					for (Constraint constraint : constraints) {
-						String constraintType = new String();
-						if (constraint instanceof Predicate) {
-							constraintType = "Condition Predicate";
-						} else if (constraint instanceof ConformanceStatement) {
-							constraintType = "Conformance Statement";
-						}
-						row = Arrays.asList("", constraintType,
-								constraint.getDescription());
-						rows.add(row);
-					}
-				}
-			}
-		}
-	}
-
-	private void addFields(List<List<String>> rows, Segment s,
-			Boolean inlineConstraints, Datatypes datatypes, Tables tables) {
-		List<String> row;
-		List<Predicate> predicates = s.getPredicates();
-		List<ConformanceStatement> conformanceStatements = s
-				.getConformanceStatements();
-
-		List<Field> fieldsList = s.getFields();
-		Collections.sort(fieldsList);
-		for (Field f : fieldsList) {
-			row = Arrays.asList(
-					// f.getItemNo().replaceFirst("^0+(?!$)", ""),
-					String.valueOf(f.getPosition()),
-					f.getName(),
-					(f.getDatatype() == null || f.getDatatype().isEmpty() ?
-							"" : (datatypes.findOne(f.getDatatype()) == null ? 
-									f.getDatatype() : datatypes.findOne(f.getDatatype()).getLabel())),
-									f.getUsage().value(),
-									"[" + String.valueOf(f.getMin()) + ".."
-											+ String.valueOf(f.getMax()) + "]",
-											"[" + String.valueOf(f.getMinLength()) + ".."
-													+ String.valueOf(f.getMaxLength()) + "]",
-													(f.getTable() == null || f.getTable().isEmpty() ? 
-															"" : (tables.findOneTableById(f.getTable()) == null ? f.getTable() : tables.findOneTableById(f.getTable()).getBindingIdentifier())),
-															f.getComment() == null ? "" : f.getComment());
-			rows.add(row);
-
-			if (inlineConstraints) {
-				List<Constraint> constraints = this.findConstraints(
-						fieldsList.indexOf(f) + 1, predicates,
-						conformanceStatements);
-				this.addConstraints(rows, constraints);
-			}
-		}
-		if (!inlineConstraints) {
-			for (Field f : fieldsList) {
-				List<Constraint> constraints = this.findConstraints(
-						fieldsList.indexOf(f) + 1, predicates,
-						conformanceStatements);
-				this.addConstraints(rows, constraints);
-			}
-		}
-	}
-
-	private void addConstraints(List<List<String>> rows,
-			List<Constraint> constraints) {
-		if (!constraints.isEmpty()) {
-			List<String> row;
-			for (Constraint constraint : constraints) {
-				String constraintType = new String();
-				if (constraint instanceof Predicate) {
-					constraintType = "Condition Predicate";
-				} else if (constraint instanceof ConformanceStatement) {
-					constraintType = "Conformance Statement";
-				}
-				row = Arrays.asList("", constraintType,
-						constraint.getDescription());
-				rows.add(row);
-			}
-		}
-	}
-
-	private void addCodes(List<List<String>> rows, Table t) {
-		List<String> row = new ArrayList<String>();
-		List<Code> codes = t.getCodes();
-
-		for (Code c : codes) {
-			row = Arrays.asList(c.getValue(), c.getCodeSystem(), c.getCodeUsage(), c.getLabel());
-			rows.add(row);
-		}
-		Collections.sort(rows, codeComparator);
-	}
-
-	public static Comparator<List<String>> codeComparator = new Comparator<List<String>>() {
-		public int compare(List<String> o1, List<String> o2) {
-			return o1.get(0).compareTo(o2.get(0));
-		}
-	};
-
 	@SuppressWarnings("deprecation")
 	private Paragraph richTextToParagraph(String htmlString){
 		List<Element> p = new ArrayList<Element>();
@@ -1276,15 +1387,58 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		return null;
 	}
 
-
 	private InputStream exportAsDocxWithDocx4J(Profile p) {
 		WordprocessingMLPackage wordMLPackage;
+		//		try {
+		//			wordMLPackage = WordprocessingMLPackage.createPackage();
+		//		} catch (InvalidFormatException e1) {
+		//			e1.printStackTrace();
+		//			return new NullInputStream(1L);
+		//		}
+
 		try {
-			wordMLPackage = WordprocessingMLPackage.createPackage();
-		} catch (InvalidFormatException e1) {
+			wordMLPackage = WordprocessingMLPackage.load(this.getClass()
+					.getResourceAsStream("/rendering/lri_template.dotx"));
+		} catch (Docx4JException e1) {
 			e1.printStackTrace();
 			return new NullInputStream(1L);
 		}
+
+		//		wordMLPackage.clone(); TODO
+
+		// Replace dotx content type with docx
+		ContentTypeManager ctm = wordMLPackage.getContentTypeManager();
+
+		// Get <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml"/>
+		CTOverride override;
+		try {
+			override = ctm.getOverrideContentType().get(new URI("/word/document.xml"));
+
+			override.setContentType(org.docx4j.openpackaging.contenttype.ContentTypes.WORDPROCESSINGML_DOCUMENT);
+
+			// Create settings part, and init content
+			DocumentSettingsPart dsp = new DocumentSettingsPart();
+			CTSettings settings = Context.getWmlObjectFactory().createCTSettings();
+			dsp.setJaxbElement(settings);
+			wordMLPackage.getMainDocumentPart().addTargetPart(dsp);
+
+			// Create external rel
+			RelationshipsPart rp = RelationshipsPart.createRelationshipsPartForPart(dsp); 		
+			org.docx4j.relationships.Relationship rel = new org.docx4j.relationships.ObjectFactory().createRelationship();
+			rel.setType( Namespaces.ATTACHED_TEMPLATE  );
+			String templatePath = "/rendering/lri_template.dotx";
+			rel.setTarget(templatePath);
+			rel.setTargetMode("External");  		
+			rp.addRelationship(rel); // addRelationship sets the rel's @Id
+
+			settings.setAttachedTemplate(
+					(CTRel)XmlUtils.unmarshalString("<w:attachedTemplate xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\"" + rel.getId() + "\"/>", Context.jc, CTRel.class)
+					);
+
+		} catch (URISyntaxException | InvalidFormatException | JAXBException e1) {
+			e1.printStackTrace();
+		} // note this assumption
+
 
 		ObjectFactory factory = Context.getWmlObjectFactory();   
 
@@ -1325,7 +1479,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		wordMLPackage.getMainDocumentPart().getContent().add(paragraphForTOC);
 		addPageBreak(wordMLPackage, factory);
 
-
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "INTRODUCTION");
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Purpose");
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Audience");
@@ -1347,7 +1500,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Error handling");
 
 		addPageBreak(wordMLPackage, factory);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "MESSAGE INFRASTRUCTURE");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Conformance profiles");
 
 		// Including information regarding messages
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Messages");
@@ -1369,7 +1522,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 1000, 3000);
 
 			ArrayList<List<String>> rows = new ArrayList<List<String>>();
-			addSegRefOrGroups(rows, m, p);
+			addMessage(rows, m, p);
 			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
 
 			addRichTextToDocx(wordMLPackage, m.getUsageNote());
@@ -1393,7 +1546,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					"Usage", "Cardinality", "Length", "Value Set", "Description/Comments");
 			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 1000, 1000, 1000, 3000);
 			ArrayList<List<String>> rows = new ArrayList<List<String>>();
-			this.addFields(rows, s, Boolean.TRUE, p.getDatatypes(), p.getTables());
+			this.addSegment(rows, s, Boolean.TRUE, p.getDatatypes(), p.getTables());
 			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocxWithConstraints(header, widths, rows, wordMLPackage, factory));
 
 			addRichTextToDocx(wordMLPackage, s.getText2());
@@ -1429,7 +1582,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					"Usage", "Len", "Table", "Comment");
 			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 1000, 1000, 1000, 3000);
 			List<List<String>> rows = new ArrayList<List<String>>();
-			this.addComponents(rows, d, p.getDatatypes(), p.getTables());
+			this.addDatatype(rows, d, p.getDatatypes(), p.getTables());
 			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocxWithConstraints(header, widths, rows, wordMLPackage, factory));
 		}
 
@@ -1444,11 +1597,11 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3",
 					valuesetInfo);
 
-							StringBuilder sb;
-							sb = new StringBuilder();
-							sb.append("\nOid: ");
-							sb.append(t.getOid()==null ? "UNSPECIFIED":t.getOid());
-							wordMLPackage.getMainDocumentPart().addParagraphOfText(sb.toString());
+			StringBuilder sb;
+			sb = new StringBuilder();
+			sb.append("\nOid: ");
+			sb.append(t.getOid()==null ? "UNSPECIFIED":t.getOid());
+			wordMLPackage.getMainDocumentPart().addParagraphOfText(sb.toString());
 			//				sb = new StringBuilder();
 			//				sb.append("\nStability: ");
 			//				sb.append(t.getStability()==null ? "Static":t.getStability());
@@ -1465,7 +1618,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			List<String> header = Arrays.asList("Value", "Code system", "Usage", "Description");
 			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 3000);
 			ArrayList<List<String>> rows = new ArrayList<List<String>>();
-			this.addCodes(rows, t);
+			this.addValueSet(rows, t);
 			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
 
 		}
@@ -1508,11 +1661,12 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 		tableRow = factory.createTr();
 		Integer width = null;
+
 		for (String cell: header){				
 			if (widths != null && header.size() != widths.size()) {
 				widths.get(header.indexOf(cell));
 			}
-			addTableCell(tableRow, cell, width, wordMLPackage, factory);
+			addTableCell(tableRow, cell, width, "D3D3D3", wordMLPackage, factory);
 		}
 
 		table.getContent().add(tableRow);
@@ -1520,11 +1674,12 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		for (List<String> row: rows){
 			tableRow = factory.createTr();
 			for (String cell: row){
-				addTableCell(tableRow, cell, null, wordMLPackage, factory);
+				addTableCell(tableRow, cell, null, null, wordMLPackage, factory);
 			} 
 			table.getContent().add(tableRow);
 		}
 		addBorders(table);
+
 		return table;
 	}
 
@@ -1538,7 +1693,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			if (widths != null && header.size() != widths.size()) {
 				widths.get(header.indexOf(cell));
 			}
-			addTableCell(tableRow, cell, width, wordMLPackage, factory);
+			addTableCell(tableRow, cell, width, headerBackground, wordMLPackage, factory);
 		}
 
 		table.getContent().add(tableRow);
@@ -1546,17 +1701,17 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		if (!rows.isEmpty()){ 
 			int nbOfColumns = rows.get(0).size(); 
 			for (List<String> row: rows){
+				tableRow = factory.createTr();
 				if (row.size() == nbOfColumns){ 
 					//case "normal" row
-					tableRow = factory.createTr();
 					for (String cell: row){
-						addTableCell(tableRow, cell, null, wordMLPackage, factory);
+						addTableCell(tableRow, cell, null, null, wordMLPackage, factory);
 					}
 				} else { 
 					//case "constraints" row
-					tableRow.getContent().add(createTableCell(row.get(0), null, wordMLPackage, factory));
-					tableRow.getContent().add(createTableCell(row.get(1), null, wordMLPackage, factory));
-					tableRow.getContent().add(createTableCellGspan(row.get(2), nbOfColumns - 2, wordMLPackage, factory));
+					tableRow.getContent().add(createTableCell(row.get(0), null, constraintBackground, wordMLPackage, factory));
+					tableRow.getContent().add(createTableCell(row.get(1), null, constraintBackground, wordMLPackage, factory));
+					tableRow.getContent().add(createTableCellGspan(row.get(2), nbOfColumns - 2, constraintBackground, wordMLPackage, factory));
 				}
 				table.getContent().add(tableRow);
 			}
@@ -1573,64 +1728,76 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		tblLayoutType.setType(stTblLayoutType);
 		table.setTblPr(tableProps);
 
-		//		table.setTblPr(new TblPr());
-
-		CTBorder border = new CTBorder();
-		border.setColor("auto");
-		border.setSz(new BigInteger("4"));
-		border.setSpace(new BigInteger("0"));
-		border.setVal(STBorder.SINGLE);
+		CTBorder border1 = new CTBorder();
+		border1.setColor(tableVSeparator);
+		border1.setSz(new BigInteger("4"));
+		border1.setSpace(new BigInteger("0"));
+		border1.setVal(STBorder.SINGLE);
+		CTBorder border2 = new CTBorder();
+		border2.setColor(tableHSeparator);
+		border2.setSz(new BigInteger("4"));
+		border2.setSpace(new BigInteger("0"));
+		border2.setVal(STBorder.SINGLE);
 
 		TblBorders borders = new TblBorders();
-		borders.setBottom(border);
-		borders.setLeft(border);
-		borders.setRight(border);
-		borders.setTop(border);
-		borders.setInsideH(border);
-		borders.setInsideV(border);
+		borders.setBottom(border1);
+		borders.setLeft(border1);
+		borders.setRight(border1);
+		borders.setTop(border1);
+		borders.setInsideH(border2);
+		borders.setInsideV(border1);
 		table.getTblPr().setTblBorders(borders);
 	}
 
-	private static void addTableCell(Tr tableRow, String content, Integer width, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+	private static void addTableCell(Tr tableRow, String content, Integer width, String color, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
 		Tc tableCell = factory.createTc();
 		tableCell.getContent().add(
 				wordMLPackage.getMainDocumentPart().
 				createParagraphOfText(content));
 		if (width != null){
-			setCellWidth(tableCell, width);
+			setCellWidth(tableCell, width, factory);
+		}
+		if (color != null){
+			setCellShading(tableCell, color, factory);
 		}
 		tableRow.getContent().add(tableCell);
 	}
 
-	private static Tc createTableCell(String content, Integer width, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+	private static Tc createTableCell(String content, Integer width, String color, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
 		Tc tableCell = factory.createTc();
-		tableCell.getContent().add(
-				wordMLPackage.getMainDocumentPart().
-				createParagraphOfText(content));
+		tableCell.getContent().add(wordMLPackage.getMainDocumentPart().
+				createParagraphOfText(content)
+				);
 		if (width != null){
-			setCellWidth(tableCell, width);
+			setCellWidth(tableCell, width, factory);
+		}
+		if (color != null){
+			setCellShading(tableCell, color, factory);
 		}
 		return tableCell;
 	}
 
-	@SuppressWarnings("deprecation")
-	private static Tc createTableCellGspan(String content, int gridspan, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+	private static Tc createTableCellGspan(String content, int gridspan, String color, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
 		Tc tc = factory.createTc();
 		TcPr tcpr = factory.createTcPr();
 		tc.setTcPr(tcpr);
 		CTVerticalJc valign = factory.createCTVerticalJc();
 		valign.setVal(STVerticalJc.TOP);
 		tcpr.setVAlign(valign);
+		if (color != null){
+			setCellShading(tc, color, factory);
+		}
 		GridSpan gspan = factory.createTcPrInnerGridSpan();
 		gspan.setVal(new BigInteger("" + gridspan));
 		tcpr.setGridSpan(gspan);
-		tc.getEGBlockLevelElts().add(wordMLPackage.getMainDocumentPart().
+		tc.getContent().add(wordMLPackage.getMainDocumentPart().
 				createParagraphOfText(content));
 		return tc;
 	}
 
-	private static void setCellWidth(Tc tableCell, int width) {
-		TcPr tableCellProperties = new TcPr();
+	private static void setCellWidth(Tc tableCell, int width, ObjectFactory factory) {
+		TcPr tableCellProperties = tableCell.getTcPr() == null ? factory.createTcPr() : tableCell.getTcPr();
+		tableCell.setTcPr(tableCellProperties);
 		TblWidth tableWidth = new TblWidth();
 		tableWidth.setW(BigInteger.valueOf(width));
 		tableCellProperties.setTcW(tableWidth);
@@ -1640,6 +1807,17 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		tableCellProperties.setNoWrap(b);
 
 		tableCell.setTcPr(tableCellProperties);
+	}
+
+	private static void setCellShading(Tc tableCell, String color, ObjectFactory factory){
+		TcPr tcpr = tableCell.getTcPr() == null ? factory.createTcPr() : tableCell.getTcPr();
+		tableCell.setTcPr(tcpr);
+		//		TcPr tcpr = tableCell.getTcPr();
+		CTShd shading=factory.createCTShd();
+		tcpr.setShd(shading);
+		//		shading.setColor("Red");
+		shading.setVal(org.docx4j.wml.STShd.CLEAR);
+		shading.setFill(color); 
 	}
 
 	private void addPageBreak(WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
