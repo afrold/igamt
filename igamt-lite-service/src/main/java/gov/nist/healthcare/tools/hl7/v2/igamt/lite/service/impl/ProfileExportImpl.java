@@ -79,6 +79,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.docx4j.XmlUtils;
 import org.docx4j.jaxb.Context;
+import org.docx4j.model.fields.FieldUpdater;
 import org.docx4j.openpackaging.contenttype.CTOverride;
 import org.docx4j.openpackaging.contenttype.ContentTypeManager;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
@@ -88,6 +89,7 @@ import org.docx4j.openpackaging.parts.WordprocessingML.AltChunkType;
 import org.docx4j.openpackaging.parts.WordprocessingML.DocumentSettingsPart;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
 import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
+import org.docx4j.wml.BooleanDefaultFalse;
 import org.docx4j.wml.BooleanDefaultTrue;
 import org.docx4j.wml.Br;
 import org.docx4j.wml.CTBorder;
@@ -152,12 +154,13 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 @Service
 public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExportService{
 	Logger logger = LoggerFactory.getLogger( ProfileExportImpl.class ); 
-	
+
 	static String constraintBackground = "EDEDED";
-	static String headerBackground = "D3D3D3";
-	static String tableHSeparator = "91182C";
+	static String headerBackground = "F0F0F0";
+	static String headerFontColor = "B21A1C";
+	static String tableHSeparator = "F01D1D";
 	static String tableVSeparator = "D3D3D3";
-	
+
 
 	@Override
 	public InputStream exportAsXml(Profile p) {
@@ -1518,8 +1521,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			addRichTextToDocx(wordMLPackage, m.getComment());
 
 			List<String> header = Arrays.asList("Segment", "Flavor", "Element Name", "Usage",
-					"Cardinality", "Description/Comments");
-			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 1000, 3000);
+					"Card.", "Description/Comments");
+			List<Integer> widths = Arrays.asList(1200, 1000, 2000, 800, 900, 3000);
 
 			ArrayList<List<String>> rows = new ArrayList<List<String>>();
 			addMessage(rows, m, p);
@@ -1532,7 +1535,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		// Including information regarding segments 
 		List<Segment> segmentsList = new ArrayList<Segment>(p.getSegments().getChildren());
 		Collections.sort(segmentsList);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Segments and fields descriptions[usage notes]");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Segments and fields descriptions");
 
 		for (Segment s: segmentsList){
 			String segmentInfo = s.getLabel() + " - " + s.getDescription();
@@ -1543,8 +1546,8 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			addRichTextToDocx(wordMLPackage, s.getText1());
 
 			List<String> header = Arrays.asList("Seq", "Element Name", "DT",
-					"Usage", "Cardinality", "Length", "Value Set", "Description/Comments");
-			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 1000, 1000, 1000, 3000);
+					"Usage", "Card.", "Length", "Value Set", "Description/Comments");
+			List<Integer> widths = Arrays.asList(600, 2000, 900, 800, 800, 1000, 1000, 3000);
 			ArrayList<List<String>> rows = new ArrayList<List<String>>();
 			this.addSegment(rows, s, Boolean.TRUE, p.getDatatypes(), p.getTables());
 			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocxWithConstraints(header, widths, rows, wordMLPackage, factory));
@@ -1579,12 +1582,13 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			wordMLPackage.getMainDocumentPart().addParagraphOfText(d.getComment());
 
 			List<String> header = Arrays.asList("Seq", "Element Name", "Conf\nlength", "DT",
-					"Usage", "Len", "Table", "Comment");
-			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 1000, 1000, 1000, 1000, 3000);
+					"Usage", "Length", "Value\nSet", "Comment");
+			List<Integer> widths = Arrays.asList(600, 2000, 900, 750, 900, 900, 1000, 3000);
 			List<List<String>> rows = new ArrayList<List<String>>();
 			this.addDatatype(rows, d, p.getDatatypes(), p.getTables());
 			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocxWithConstraints(header, widths, rows, wordMLPackage, factory));
 		}
+		addPageBreak(wordMLPackage, factory);
 
 		// Including information regarding value sets 
 		List<Table> tables = new ArrayList<Table>(p.getTables().getChildren());
@@ -1616,7 +1620,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			//				wordMLPackage.getMainDocumentPart().addParagraphOfText(sb.toString());
 
 			List<String> header = Arrays.asList("Value", "Code system", "Usage", "Description");
-			List<Integer> widths = Arrays.asList(1000, 1000, 1000, 3000);
+			List<Integer> widths = Arrays.asList(1500, 1500, 1000, 5000);
 			ArrayList<List<String>> rows = new ArrayList<List<String>>();
 			this.addValueSet(rows, t);
 			wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
@@ -1640,6 +1644,14 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Datatype Level");
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Glossary");
 
+		FieldUpdater updater = new FieldUpdater(wordMLPackage);
+		try {
+			updater.update(true);
+		} catch (Docx4JException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		File tmpFile;
 		try {
 			tmpFile = File.createTempFile("Profile", ".docx");
@@ -1662,23 +1674,36 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		tableRow = factory.createTr();
 		Integer width = null;
 
-		for (String cell: header){				
-			if (widths != null && header.size() != widths.size()) {
-				widths.get(header.indexOf(cell));
+		if (widths != null && header != null && header.size() == widths.size()) {
+			for (String cell: header){				
+				width = widths.get(header.indexOf(cell));
+				addTableCell(tableRow, cell, width, headerBackground, wordMLPackage, factory);
 			}
-			addTableCell(tableRow, cell, width, "D3D3D3", wordMLPackage, factory);
-		}
-
-		table.getContent().add(tableRow);
-
-		for (List<String> row: rows){
-			tableRow = factory.createTr();
-			for (String cell: row){
-				addTableCell(tableRow, cell, null, null, wordMLPackage, factory);
-			} 
 			table.getContent().add(tableRow);
+			for (List<String> row: rows){
+				tableRow = factory.createTr();
+				for (String cell: row){
+					width = widths.get(row.indexOf(cell));
+					addTableCell(tableRow, cell, width, null, wordMLPackage, factory);
+				} 
+				table.getContent().add(tableRow);
+			}
+			addBorders(table);
 		}
-		addBorders(table);
+//		} else {
+//			for (String cell: header){
+//				addTableCell(tableRow, cell, null, headerBackground, wordMLPackage, factory);
+//			}
+//			table.getContent().add(tableRow);
+//			for (List<String> row: rows){
+//				tableRow = factory.createTr();
+//				for (String cell: row){
+//					addTableCell(tableRow, cell, null, null, wordMLPackage, factory);
+//				} 
+//				table.getContent().add(tableRow);
+//			}
+//			addBorders(table);
+//		}
 
 		return table;
 	}
@@ -1689,44 +1714,44 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 		tableRow = factory.createTr();
 		Integer width = null;
-		for (String cell: header){				
-			if (widths != null && header.size() != widths.size()) {
-				widths.get(header.indexOf(cell));
+		if (widths != null && header != null && header.size() == widths.size()) {
+			for (String cell: header){				
+				width = widths.get(header.indexOf(cell));
+				addTableCell(tableRow, cell, width, headerBackground, wordMLPackage, factory);
 			}
-			addTableCell(tableRow, cell, width, headerBackground, wordMLPackage, factory);
-		}
+			table.getContent().add(tableRow);
 
-		table.getContent().add(tableRow);
-
-		if (!rows.isEmpty()){ 
-			int nbOfColumns = rows.get(0).size(); 
-			for (List<String> row: rows){
-				tableRow = factory.createTr();
-				if (row.size() == nbOfColumns){ 
-					//case "normal" row
-					for (String cell: row){
-						addTableCell(tableRow, cell, null, null, wordMLPackage, factory);
+			if (!rows.isEmpty()){ 
+				int nbOfColumns = rows.get(0).size(); 
+				for (List<String> row: rows){
+					tableRow = factory.createTr();
+					if (row.size() == nbOfColumns){ 
+						//case "normal" row
+						for (String cell: row){
+							addTableCell(tableRow, cell, null, null, wordMLPackage, factory);
+						}
+					} else { 
+						//case "constraints" row
+						tableRow.getContent().add(createTableCell(row.get(0), null, null, wordMLPackage, factory));
+						tableRow.getContent().add(createTableCell(row.get(1), null, constraintBackground, wordMLPackage, factory));
+						tableRow.getContent().add(createTableCellGspan(row.get(2), nbOfColumns - 2, constraintBackground, wordMLPackage, factory));
 					}
-				} else { 
-					//case "constraints" row
-					tableRow.getContent().add(createTableCell(row.get(0), null, constraintBackground, wordMLPackage, factory));
-					tableRow.getContent().add(createTableCell(row.get(1), null, constraintBackground, wordMLPackage, factory));
-					tableRow.getContent().add(createTableCellGspan(row.get(2), nbOfColumns - 2, constraintBackground, wordMLPackage, factory));
+					table.getContent().add(tableRow);
 				}
-				table.getContent().add(tableRow);
 			}
+			addBorders(table);
 		}
-		addBorders(table);
 		return table;
 	}
 
 	private static void addBorders(Tbl table) {
 		TblPr tableProps = new TblPr();
 		CTTblLayoutType tblLayoutType = new CTTblLayoutType();
-		STTblLayoutType stTblLayoutType = STTblLayoutType.AUTOFIT;
 		tableProps.setTblLayout(tblLayoutType);
-		tblLayoutType.setType(stTblLayoutType);
 		table.setTblPr(tableProps);
+		//		STTblLayoutType stTblLayoutType = STTblLayoutType.AUTOFIT;
+		STTblLayoutType stTblLayoutType = STTblLayoutType.FIXED;
+		tblLayoutType.setType(stTblLayoutType);
 
 		CTBorder border1 = new CTBorder();
 		border1.setColor(tableVSeparator);
@@ -1749,43 +1774,48 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		table.getTblPr().setTblBorders(borders);
 	}
 
-	private static void addTableCell(Tr tableRow, String content, Integer width, String color, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+	private static void addTableCell(Tr tableRow, String content, Integer width, String backgroundColor, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
 		Tc tableCell = factory.createTc();
+		TcPr tcpr = factory.createTcPr();
+		tableCell.setTcPr(tcpr);
+		if (width != null){
+			setCellWidth(tcpr, width, factory);
+		}
+		if (backgroundColor != null){
+			setCellShading(tcpr, backgroundColor, factory);
+		}
+		setCellNoWrap(tcpr, true);
 		tableCell.getContent().add(
 				wordMLPackage.getMainDocumentPart().
 				createParagraphOfText(content));
-		if (width != null){
-			setCellWidth(tableCell, width, factory);
-		}
-		if (color != null){
-			setCellShading(tableCell, color, factory);
-		}
 		tableRow.getContent().add(tableCell);
 	}
 
-	private static Tc createTableCell(String content, Integer width, String color, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+	private static Tc createTableCell(String content, Integer width, String backgroundColor, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
 		Tc tableCell = factory.createTc();
+		TcPr tcpr = factory.createTcPr();
+		tableCell.setTcPr(tcpr);
 		tableCell.getContent().add(wordMLPackage.getMainDocumentPart().
 				createParagraphOfText(content)
 				);
 		if (width != null){
-			setCellWidth(tableCell, width, factory);
+			setCellWidth(tcpr, width, factory);
 		}
-		if (color != null){
-			setCellShading(tableCell, color, factory);
+		if (backgroundColor != null){
+			setCellShading(tcpr, backgroundColor, factory);
 		}
 		return tableCell;
 	}
 
-	private static Tc createTableCellGspan(String content, int gridspan, String color, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+	private static Tc createTableCellGspan(String content, int gridspan, String backgroundColor, WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
 		Tc tc = factory.createTc();
 		TcPr tcpr = factory.createTcPr();
 		tc.setTcPr(tcpr);
 		CTVerticalJc valign = factory.createCTVerticalJc();
 		valign.setVal(STVerticalJc.TOP);
 		tcpr.setVAlign(valign);
-		if (color != null){
-			setCellShading(tc, color, factory);
+		if (backgroundColor != null){
+			setCellShading(tcpr, backgroundColor, factory);
 		}
 		GridSpan gspan = factory.createTcPrInnerGridSpan();
 		gspan.setVal(new BigInteger("" + gridspan));
@@ -1795,24 +1825,19 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		return tc;
 	}
 
-	private static void setCellWidth(Tc tableCell, int width, ObjectFactory factory) {
-		TcPr tableCellProperties = tableCell.getTcPr() == null ? factory.createTcPr() : tableCell.getTcPr();
-		tableCell.setTcPr(tableCellProperties);
+	private static void setCellWidth(TcPr tableCellProperties, int width, ObjectFactory factory) {
 		TblWidth tableWidth = new TblWidth();
 		tableWidth.setW(BigInteger.valueOf(width));
 		tableCellProperties.setTcW(tableWidth);
-
-		BooleanDefaultTrue b = new BooleanDefaultTrue();
-		b.setVal(false);
-		tableCellProperties.setNoWrap(b);
-
-		tableCell.setTcPr(tableCellProperties);
 	}
 
-	private static void setCellShading(Tc tableCell, String color, ObjectFactory factory){
-		TcPr tcpr = tableCell.getTcPr() == null ? factory.createTcPr() : tableCell.getTcPr();
-		tableCell.setTcPr(tcpr);
-		//		TcPr tcpr = tableCell.getTcPr();
+	private static void setCellNoWrap(TcPr tableCellProperties, Boolean value) {
+		BooleanDefaultTrue b = new BooleanDefaultTrue();
+		b.setVal(value);
+		tableCellProperties.setNoWrap(b);
+	}
+
+	private static void setCellShading(TcPr tcpr, String color, ObjectFactory factory){
 		CTShd shading=factory.createCTShd();
 		tcpr.setShd(shading);
 		//		shading.setColor("Red");
