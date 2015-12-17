@@ -28,6 +28,13 @@ describe("profile access service", function () {
 		// We want a pristine profile for each test so state changes from one test don't pollute
 		// the others.
 		profile = JSON.parse(profileAsString);
+		expect(profile).toBeDefined();
+	});
+	
+	it("Do we get all message ids?", function() {
+		var cntMessages = profile.messages.children.length;
+		var cntIds = ProfileAccessSvc.Messages(profile).getMessageIds().length;
+		expect(cntMessages).toBe(cntIds);
 	});
 
 	it("Check version", function () {
@@ -116,16 +123,5 @@ describe("profile access service", function () {
 		names.push(ProfileAccessSvc.Datatypes(profile).datatypes[31].name);
 		names.push(ProfileAccessSvc.Datatypes(profile).datatypes[85].name);
 		expect(ProfileAccessSvc.Datatypes(profile).removeDead(names).length).toBe(3);
-	});
-	
-	it("Do our message counts balance?", function () {
-		var msg = profile.messages.children[4];
-		var msgSegRefs = ProfileAccessSvc.Messages(profile).getSegmentRefs(msg);
-		var sansSegRefs = ProfileAccessSvc.Messages(profile).getSegmentRefsSansOne(msg);
-		var allSegRefs = ProfileAccessSvc.Messages(profile).getAllSegmentRefs();
-		expect(msgSegRefs.length).toBe(33);
-		expect(sansSegRefs.length).toBe(3474);
-		expect(allSegRefs.length).toBe(3507);
-		expect(sansSegRefs.length).toBe(allSegRefs.length - msgSegRefs.length);
 	});
 });

@@ -145,6 +145,15 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 			});
 		}
 		
+		msgs.getMessageIds = function() {
+			var rval = [];
+			_.each(profile.messages.children, function(message) {
+				rval.push(message.id);
+			});
+			console.log("rval=" + rval.length);
+			return rval;
+		}
+		
 		msgs.getAllSegmentRefs = function() {
 
 			var segmentRefs = [];

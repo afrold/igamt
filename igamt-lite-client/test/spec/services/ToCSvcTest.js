@@ -72,10 +72,10 @@ describe("toc service", function () {
 		
 	it("Do we have valid messages?", function() {
 		var label = "Conformance Profiles";
-		var rval = ToCSvc.getTopEntry("3", label, profile.messages);
+		var rval = ToCSvc.getTopEntry("3.1", "3", label, profile.segments);		
 
 		expect(_.has(rval, 'id')).toBeTruthy();
-		expect(_.property('id')(rval)).toBe("3");
+		expect(_.property('id')(rval)).toBe("3.1");
 		expect(_.has(rval, "label")).toBeTruthy();
 		expect(_.property("label")(rval)).toBe(label);
 		expect(_.has(rval, "parent")).toBeTruthy();
@@ -91,11 +91,11 @@ describe("toc service", function () {
 	});	
 	
 	it("Do we have valid segments?", function() {
-		var label = "Segments";
-		var rval = ToCSvc.getTopEntry("4", label, profile.segments);
+		var label = "Segments and Field Descriptions";
+		var rval = ToCSvc.getTopEntry("3.2", "3", label, profile.segments);		
 //		console.log(JSON.stringify(rval));
 		expect(_.has(rval, 'id')).toBeTruthy();
-		expect(_.property('id')(rval)).toBe("4");
+		expect(_.property('id')(rval)).toBe("3.2");
 		expect(_.has(rval, "label")).toBeTruthy();
 		expect(_.property("label")(rval)).toBe(label);
 		expect(_.has(rval, "parent")).toBeTruthy();
@@ -113,9 +113,10 @@ describe("toc service", function () {
 	it("Do we have valid datatypes?", function() {
 		var label = "Datatypes";
 		var rval = ToCSvc.getTopEntry("5", label, profile.datatypes);
+		var rval = ToCSvc.getTopEntry("3.3", "3", label, profile.datatypes);
 //		console.log(JSON.stringify(rval));
 		expect(_.has(rval, 'id')).toBeTruthy();
-		expect(_.property('id')(rval)).toBe("5");
+		expect(_.property('id')(rval)).toBe("3.3");
 		expect(_.has(rval, "label")).toBeTruthy();
 		expect(_.property("label")(rval)).toBe(label);
 		expect(_.has(rval, "parent")).toBeTruthy();
@@ -132,10 +133,10 @@ describe("toc service", function () {
 	
 	it("Do we have valid valuesets?", function() {
 		var label = "Value Sets";
-		var rval = ToCSvc.getTopEntry("6", label, profile.tables);
+		var rval = ToCSvc.getTopEntry("3.4", "3", label, profile.tables);
 //		console.log(JSON.stringify(rval));
 		expect(_.has(rval, 'id')).toBeTruthy();
-		expect(_.property('id')(rval)).toBe("6");
+		expect(_.property('id')(rval)).toBe("3.4");
 		expect(_.has(rval, "label")).toBeTruthy();
 		expect(_.property("label")(rval)).toBe(label);
 		expect(_.has(rval, "parent")).toBeTruthy();

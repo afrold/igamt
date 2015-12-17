@@ -5,7 +5,17 @@ import java.util.List;
 
 public class MessageByListCommand {
 	
+	private String hl7Version;
+	
 	private List<String> messageIds = new ArrayList<String>();
+
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
 
 	public List<String> getMessageIds() {
 		return messageIds;
@@ -14,6 +24,4 @@ public class MessageByListCommand {
 	public void setMessageIds(List<String> messageIds) {
 		this.messageIds = messageIds;
 	}
-	
-	
  }

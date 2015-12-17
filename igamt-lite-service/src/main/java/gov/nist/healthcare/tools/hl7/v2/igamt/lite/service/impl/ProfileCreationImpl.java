@@ -69,7 +69,7 @@ public class ProfileCreationImpl implements ProfileCreationService {
 		List<Profile> pl = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version);
 		for (Profile p : pl) {
 			for (Message m : p.getMessages().getChildren()) {
-				if (!messageIds.contains(m.getMessageType())) {
+				if (!messageIds.contains(m.getId())) {
 					String[] msgDesc = new String[] { m.getId(), m.getEvent(), m.getStructID(), m.getDescription() };
 					rst.add(msgDesc);
 				}

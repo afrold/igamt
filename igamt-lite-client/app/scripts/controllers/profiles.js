@@ -15,7 +15,7 @@ angular.module('igl')
         $scope.error = null;
         $scope.loading = false;
         $scope.columnSettings = ColumnSettings;
-//        $scope.visibleColumns = angular.copy(ColumnSettings.visibleColumns);
+// $scope.visibleColumns = angular.copy(ColumnSettings.visibleColumns);
 
         $scope.options = {
             'readonly': false
@@ -102,8 +102,6 @@ angular.module('igl')
             return true;
         };
 
-
-
         $rootScope.closeProfile = function(){
             $rootScope.profile = null;
             $rootScope.isEditing = false;
@@ -161,21 +159,21 @@ angular.module('igl')
                     }
                 }
             }
-//            options: {
-//                initialState: 'expanded'
-//            }
+// options: {
+// initialState: 'expanded'
+// }
         });
 
         /**
-         * init the controller
-         */
+		 * init the controller
+		 */
         $scope.init = function () {
             $scope.igContext.igType = $scope.igTypes[1];
             $scope.loadProfiles();
             $scope.getScrollbarWidth();
             /**
-             * On 'event:loginConfirmed', resend all the 401 requests.
-             */
+			 * On 'event:loginConfirmed', resend all the 401 requests.
+			 */
             $scope.$on('event:loginConfirmed', function (event) {
                 $scope.igContext.igType = $scope.igTypes[1];
                 $scope.loadProfiles();
@@ -186,7 +184,8 @@ angular.module('igl')
             });
 
             $scope.$on('event:openDatatype', function (event, datatype) {
-                $scope.selectDatatype(datatype); // Shoudl we open in a dialog ??
+                $scope.selectDatatype(datatype); // Shoudl we open in a
+													// dialog ??
             });
 
             $scope.$on('event:openSegment', function (event, segment) {
@@ -213,14 +212,14 @@ angular.module('igl')
         });
 
         $scope.loadProfiles = function () {
-            $scope.error = null;
-//            $rootScope.igs = [];
-//            $scope.tmpIgs = [].concat($rootScope.igs);
+           $scope.error = null;
+// $rootScope.igs = [];
+// $scope.tmpIgs = [].concat($rootScope.igs);
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
                 $scope.loading = true;
                 if ($scope.igContext.igType.type === 'PRELOADED') {
                     $http.get('api/profiles', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs.concat(angular.fromJson(response.data));
+                    	$rootScope.igs = angular.fromJson(response.data);
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -228,8 +227,9 @@ angular.module('igl')
                         $scope.error = "Failed to load the profiles";
                     });
                 } else if ($scope.igContext.igType.type === 'USER') {
-                    $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs.concat(angular.fromJson(response.data));
+                     $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
+                    	$rootScope.igs = angular.fromJson(response.data);
+                    	console.log("response.data=" + response.data);
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -247,7 +247,7 @@ angular.module('igl')
             $http.post('api/profiles/' + profile.id + '/clone', {timeout: 60000}).then(function (response) {
                 $scope.toEditProfileId = null;
                 if ($scope.igContext.igType.type === 'USER') {
-                    $rootScope.igs.concat(angular.fromJson(response.data));
+                	$rootScope.igs.push(angular.fromJson(response.data));
                 } else {
                     $scope.igContext.igType = $scope.igTypes[1];
                     $scope.loadProfiles();
@@ -313,28 +313,31 @@ angular.module('igl')
                     $rootScope.tocData = ToCSvc.getToC($scope.profile);
                     $rootScope.initMaps();
                     $rootScope.messages = $rootScope.profile.messages.children;
-                    var found = _.where($rootScope.profile.datatypes.children, '{id : "565f3ab4d4c6e52cfd43841b"}');
-                    angular.forEach($rootScope.profile.datatypes.children, function (child) {
+                     angular.forEach($rootScope.profile.datatypes.children, function (child) {
                    
                         this[child.id] = child;
-                        if (child.displayName) { // TODO: Change displayName to label
+                        if (child.displayName) { // TODO: Change displayName
+													// to label
                             child.label = child.displayName;
                         }
                     }, $rootScope.datatypesMap);
                     angular.forEach($rootScope.profile.segments.children, function (child) {
                         this[child.id] = child;
-                        if (child.displayName) { // TODO: Change displayName to label
+                        if (child.displayName) { // TODO: Change displayName
+													// to label
                             child.label = child.displayName;
                         }
                     }, $rootScope.segmentsMap);
 
                     angular.forEach($rootScope.profile.tables.children, function (child) {
                         this[child.id] = child;
-                        if (child.displayName) { // TODO: Change displayName to label
+                        if (child.displayName) { // TODO: Change displayName
+													// to label
                             child.label = child.displayName;
                         }
                         angular.forEach(child.codes, function (code) {
-                            if (code.displayName) { // TODO: Change displayName to label
+                            if (code.displayName) { // TODO: Change displayName
+													// to label
                                 code.label = code.displayName;
                             }
                         });

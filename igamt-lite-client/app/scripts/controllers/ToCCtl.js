@@ -125,43 +125,23 @@ angular
 								}
 								return $scope.subview;
 							};
-
-							$scope.closedCtxMenu = function(node, $index) {
-								var item = ContextMenuSvc.get();
-								switch (item) {
-								case "Add":
-									console.log("Add==>");
-									// if (node === "Conformance Profiles") {
-									// var hl7VersionsInstance;
-									// hl7VersionsInstance = $modal.open({
-									// templateUrl : 'hl7MessagesDlg.html',
-									// controller :
-									// 'HL7VersionsInstanceDlgCtrl',
-									// resolve : {
-									// hl7Versions : function() {
-									// return $scope.listHL7Versions();
-									// }
-									// }
-									// });
-									//					
-									// hl7VersionsInstance.result.then(function(result)
-									// {
-									// console.log(result);
-									// $scope.updateProfile(result);
-									// });
-									// } else {
-									// alert("Was not Messages. Was:" + node);
-									// }
-									break;
-								case "Delete":
-									console.log("Delete==>");
-									break;
-								default:
-									console.log("Context menu defaulted with "
-											+ item
-											+ " Should be Add or Delete.");
-								}
-							};
+// TODO gcr Either refactor this out or find a use for it.
+//							$scope.closedCtxMenu = function(node, $index) {
+//								var item = ContextMenuSvc.get();
+//								console.log("closedCtxMenu.item=" + item);
+//								switch (item) {
+//								case "Add":
+//									console.log("Add==>");
+//									break;
+//								case "Delete":
+//									console.log("Delete==>");
+//									break;
+//								default:
+//									console.log("Context menu defaulted with "
+//											+ item
+//											+ " Should be Add or Delete.");
+//								}
+//							};
 
 							$scope.closedCtxSubMenu = function(leaf, $index) {
 								var ctxMenuSelection = ContextMenuSvc.get();

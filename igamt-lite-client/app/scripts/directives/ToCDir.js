@@ -2,7 +2,7 @@ angular.module('igl')
  .directive('trunk', function () {
 	  console.log("trunk");
 
-	  var template = "<ol class='trunk'><branch ng-repeat='branch in trunk track by $index' branch='branch'></branch></ol>";
+	  var template = "<ul class='trunk'><branch ng-repeat='branch in trunk track by $index' branch='branch'></branch></ul>";
 
   return {
       restrict: "E",
@@ -32,7 +32,7 @@ angular.module('igl')
 		  
 	  var linker = function(scope, element, attrs) {
 		  if (angular.isArray(scope.branch.children)) {
-			  console.log("branch id=" + scope.branch.id + " label=" + scope.branch.label + " chidren=" + scope.branch.children.length);
+//			  console.log("branch id=" + scope.branch.id + " label=" + scope.branch.label + " chidren=" + scope.branch.children.length);
 			  if (scope.branch.id === "3.1") {
 				  element.append(branchMessageTemplate);
 			  } else {				  

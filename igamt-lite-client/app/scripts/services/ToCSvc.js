@@ -5,7 +5,8 @@ angular.module('igl').factory ('ToCSvc', function() {
 	svc.currentLeaf = { selectd : false };
 	
 	svc.getToC = function(profile) {
-		toc = [];
+		console.log("Getting toc...");
+		var toc = [];
 		toc.push(svc.getIntroduction());
 		toc.push(svc.getUseCase());
 		toc.push(svc.getMessageInfrastructure(profile));
@@ -235,7 +236,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 			}
 			rval.push(entry);
 		});
-		return rval;
+		return _.sortBy(rval, 'label');
 	}
 	
 	svc.createEntry = function(reference, id, label, parent, drop, children) {

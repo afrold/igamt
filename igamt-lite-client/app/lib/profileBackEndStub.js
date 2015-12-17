@@ -94,7 +94,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         request.open('GET', '../../resources/profile4.json', false);
         request.send(null);
         var profiles = angular.fromJson(request.response);
-        return [request.status, profiles, {}];
+        return [request.status, [profiles], {}];
     });
 
     $httpBackend.whenGET('api/profiles/2').respond(function (method, url, data, headers) {

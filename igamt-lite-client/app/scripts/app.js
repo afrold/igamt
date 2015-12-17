@@ -28,8 +28,8 @@ var app = angular
         'table-settings',
         'angularjs-dropdown-multiselect',
         'filearts.dragDrop'
-        ,
-        'ngMockE2E'
+//        ,
+//        'ngMockE2E'
     ]);
 
 var
@@ -371,6 +371,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             //Let's get user info now
             httpHeaders.common['Authorization'] = null;
             $http.get('api/accounts/cuser').success(function (data) {
+            	console.log("setCurrentUser=" + data);
                 userInfoService.setCurrentUser(data);
                 $rootScope.$broadcast('event:loginConfirmed');
             });
