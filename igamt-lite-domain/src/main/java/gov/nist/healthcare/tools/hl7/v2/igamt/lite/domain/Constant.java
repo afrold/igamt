@@ -32,5 +32,6 @@ public class Constant {
 	public final static String CODE = "code";
 	
 	public final static String SECTION = "section";
+	public final static String Document = "document";
 
 }
