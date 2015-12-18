@@ -44,7 +44,7 @@ li label {
     cursor: pointer;
     display: block;
 }
-	li input:checked + ol
+	li input:checked + ul
 	{
 		background-position: 15px;
 		background-size: 1px;
@@ -52,8 +52,8 @@ li label {
 		padding: 1.563em 0 0 80px;
 		height: auto;
 	}
-		li input:checked + ol > branch {display: none; margin: 0 0 0.125em;}
-		li input:checked + ol > branch:last-child { margin: 0 0 0.063em;}
+		li input:checked + ul > branch {display: none; margin: 0 0 0.125em;}
+		li input:checked + ul > branch:last-child { margin: 0 0 0.063em;}
 </style>
 <div class="container" style="margin-left: -3em;" ng-controller="ToCCtl">
 	<trunk trunk="tocData"></trunk>
