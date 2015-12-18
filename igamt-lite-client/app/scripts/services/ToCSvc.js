@@ -2,7 +2,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 	
 	var svc = this;
 	
-	svc.currentLeaf = { selectd : false };
+	svc.currentLeaf = { selected : false };
 	
 	svc.getToC = function(profile) {
 		console.log("Getting toc...");

@@ -178,7 +178,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [200, ["2.3","2.31","2.4","2.5","2.51","2.6","2.7"], {}];
     });
     
-    $httpBackend.whenPOST('api/profiles/hl7/messageListByVersion/2.7').respond(function (method, url, data, headers) {
+    $httpBackend.whenPOST('api/profiles/hl7/messageListByVersion').respond(function (method, url, data, headers) {
         var msgList = [["5665cee2d4c613e7b531be55", "P11", "DFT_P11", "Detail financial transactions"], 
          ["5665cee2d4c613e7b531b7ba", "A24", "ADT_A24", "ADT messagee"], 
          ["5665cee2d4c613e7b531be18", "I08", "RPA_I08", "Request patient authorization"],

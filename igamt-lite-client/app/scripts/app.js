@@ -28,8 +28,8 @@ var app = angular
         'table-settings',
         'angularjs-dropdown-multiselect',
         'filearts.dragDrop'
-//        ,
-//        'ngMockE2E'
+        ,
+        'ngMockE2E'
     ]);
 
 var

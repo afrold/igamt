@@ -125,6 +125,7 @@ angular
 								}
 								return $scope.subview;
 							};
+							
 // TODO gcr Either refactor this out or find a use for it.
 //							$scope.closedCtxMenu = function(node, $index) {
 //								var item = ContextMenuSvc.get();

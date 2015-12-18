@@ -22,7 +22,7 @@ angular.module('igl').controller(
 					switch ($rootScope.clickSource) {
 					case "btn": {
 						$scope.createProfile(hl7Version, result);
-						$rootScope.hl7Version = null;
+						$rootScope.hl7Version = {};
 						break;
 					}
 					case "ctx": {
@@ -126,7 +126,6 @@ angular.module('igl').controller(
 							"messageIds" : $scope.profileVersions
 						})).then(function(response) {
 					$scope.messagesByVersion = angular.fromJson(response.data);
-					console.log("loadProfilesByVersion.messagesByVersion=" + $scope.messagesByVersion);
 					});
 				};
 
