@@ -214,13 +214,13 @@ angular.module('igl')
 
         $scope.loadProfiles = function () {
             $scope.error = null;
-//            $rootScope.igs = [];
-//            $scope.tmpIgs = [].concat($rootScope.igs);
+            $rootScope.igs = [];
+            $scope.tmpIgs = [].concat($rootScope.igs);
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
                 $scope.loading = true;
                 if ($scope.igContext.igType.type === 'PRELOADED') {
                     $http.get('api/profiles', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs.concat(angular.fromJson(response.data));
+                        $rootScope.igs = angular.fromJson(response.data);
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -229,7 +229,7 @@ angular.module('igl')
                     });
                 } else if ($scope.igContext.igType.type === 'USER') {
                     $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs.concat(angular.fromJson(response.data));
+                        $rootScope.igs = angular.fromJson(response.data);
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -247,7 +247,7 @@ angular.module('igl')
             $http.post('api/profiles/' + profile.id + '/clone', {timeout: 60000}).then(function (response) {
                 $scope.toEditProfileId = null;
                 if ($scope.igContext.igType.type === 'USER') {
-                    $rootScope.igs.concat(angular.fromJson(response.data));
+                    $rootScope.igs.push(angular.fromJson(response.data));
                 } else {
                     $scope.igContext.igType = $scope.igTypes[1];
                     $scope.loadProfiles();
@@ -310,12 +310,10 @@ angular.module('igl')
                     $rootScope.profile.segments.children = $filter('orderBy')($rootScope.profile.segments.children, 'label');
                     $rootScope.profile.datatypes.children = $filter('orderBy')($rootScope.profile.datatypes.children, 'label');
                     $rootScope.profile.tables.children = $filter('orderBy')($rootScope.profile.tables.children, 'label');
-                    $rootScope.tocData = ToCSvc.getToC($scope.profile);
+                    $rootScope.tocData = ToCSvc.getToC($rootScope.profile);
                     $rootScope.initMaps();
                     $rootScope.messages = $rootScope.profile.messages.children;
-                    var found = _.where($rootScope.profile.datatypes.children, '{id : "565f3ab4d4c6e52cfd43841b"}');
                     angular.forEach($rootScope.profile.datatypes.children, function (child) {
-                   
                         this[child.id] = child;
                         if (child.displayName) { // TODO: Change displayName to label
                             child.label = child.displayName;
@@ -456,7 +454,7 @@ angular.module('igl')
 
         $scope.exportAs = function (id, format) {
             var form = document.createElement("form");
-            form.action = $rootScope.api('api/profiles/' + id + '/export/' + format + '/true');
+            form.action = $rootScope.api('api/profiles/' + id + '/export/' + format);
             form.method = "POST";
             form.target = "_target";
             var csrfInput = document.createElement("input");

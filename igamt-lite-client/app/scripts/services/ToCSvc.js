@@ -3,7 +3,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 	var svc = this;
 	
 	svc.getToC = function(profile) {
-		toc = [];
+		var toc = [];
 		toc.push(svc.getTopEntry("Introduction", svc.getIntroduction()));
 		toc.push(svc.getTopEntry("Use Case", svc.getUseCase()));
 		toc.push(svc.getTopEntry("Conformance Profiles", profile.messages));
@@ -77,7 +77,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 		var children = [];
 		var rval = {
 			"label" : label,
-			"drop" : [label],
+			"drop" : [label]
 		}
 		if (fromProfile !== undefined) {
 			rval["reference"] = fromProfile;
@@ -99,7 +99,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 			} else if (drag === "Datatypes") {
 				entry = svc.createEntry(child, child.name + " - " + child.description, drag);
 			} else if (drag === "Value Sets") {
-				entry = svc.createEntry(child, child.bindingIdentifier + " - " + child.description, drag);
+				entry = svc.createEntry(child, child.bindingIdentifier + " - " + child.name, drag);
 			} else {
 				entry = svc.createEntry(child, child.label, drag);
 			}
