@@ -59,7 +59,7 @@
                         <ul class="dropdown-menu igl-menu" role="menu">
                             <li><a class="point" ng-click="exportAs(profile.id, 'zip')">As ZIP</a></li>
                             <li><a class="point" ng-click="exportAs(profile.id,'pdf')">As PDF</a></li>
-                            <li><a class="point" ng-click="exportAs(profile.id,'docx')">As WORD</a></li>
+                            <li><a class="point" ng-click="exportAs(profile.id,'docx')">As WORD <span style="color:red">( In progress)</span></a></li>
                             <!--<li><a ng-click="exportDelta(profile.id,'pdf')">Delta</a></li>-->
                         </ul>
                     </div>
@@ -101,7 +101,7 @@
                              </a>
                         </div>
                     </div>
-                    <div class="panel-body" ng-show="showToC" style="max-width: 100%; overflow-x: scroll; max-height: 500px; overflow-y: scroll;white-space:nowrap;">
+                    <div class="panel-body" ng-show="showToC" style="max-width: 100%; overflow-x: auto; max-height: 900px; overflow-y: auto;white-space:nowrap;">
                         <div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
                         </div>
                     </div>

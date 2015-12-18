@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, CloneDeleteMessageSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
+.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, CloneDeleteMessageSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
 		$scope.loading = false;
     	$scope.uiGrid = {};
         $rootScope.igs = [];
@@ -15,7 +15,7 @@ angular.module('igl')
         $scope.error = null;
         $scope.loading = false;
         $scope.columnSettings = ColumnSettings;
-// $scope.visibleColumns = angular.copy(ColumnSettings.visibleColumns);
+//        $scope.visibleColumns = angular.copy(ColumnSettings.visibleColumns);
 
         $scope.options = {
             'readonly': false
@@ -102,6 +102,8 @@ angular.module('igl')
             return true;
         };
 
+
+
         $rootScope.closeProfile = function(){
             $rootScope.profile = null;
             $rootScope.isEditing = false;
@@ -159,21 +161,21 @@ angular.module('igl')
                     }
                 }
             }
-// options: {
-// initialState: 'expanded'
-// }
+//            options: {
+//                initialState: 'expanded'
+//            }
         });
 
         /**
-		 * init the controller
-		 */
+         * init the controller
+         */
         $scope.init = function () {
             $scope.igContext.igType = $scope.igTypes[1];
             $scope.loadProfiles();
             $scope.getScrollbarWidth();
             /**
-			 * On 'event:loginConfirmed', resend all the 401 requests.
-			 */
+             * On 'event:loginConfirmed', resend all the 401 requests.
+             */
             $scope.$on('event:loginConfirmed', function (event) {
                 $scope.igContext.igType = $scope.igTypes[1];
                 $scope.loadProfiles();
@@ -184,8 +186,7 @@ angular.module('igl')
             });
 
             $scope.$on('event:openDatatype', function (event, datatype) {
-                $scope.selectDatatype(datatype); // Shoudl we open in a
-													// dialog ??
+                $scope.selectDatatype(datatype); // Shoudl we open in a dialog ??
             });
 
             $scope.$on('event:openSegment', function (event, segment) {
@@ -212,14 +213,14 @@ angular.module('igl')
         });
 
         $scope.loadProfiles = function () {
-           $scope.error = null;
-// $rootScope.igs = [];
-// $scope.tmpIgs = [].concat($rootScope.igs);
+            $scope.error = null;
+            $rootScope.igs = [];
+            $scope.tmpIgs = [].concat($rootScope.igs);
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
                 $scope.loading = true;
                 if ($scope.igContext.igType.type === 'PRELOADED') {
                     $http.get('api/profiles', {timeout: 60000}).then(function (response) {
-                    	$rootScope.igs = angular.fromJson(response.data);
+                        $rootScope.igs = angular.fromJson(response.data);
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -227,9 +228,8 @@ angular.module('igl')
                         $scope.error = "Failed to load the profiles";
                     });
                 } else if ($scope.igContext.igType.type === 'USER') {
-                     $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
-                    	$rootScope.igs = angular.fromJson(response.data);
-                    	console.log("response.data=" + response.data);
+                    $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
+                        $rootScope.igs = angular.fromJson(response.data);
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -247,7 +247,7 @@ angular.module('igl')
             $http.post('api/profiles/' + profile.id + '/clone', {timeout: 60000}).then(function (response) {
                 $scope.toEditProfileId = null;
                 if ($scope.igContext.igType.type === 'USER') {
-                	$rootScope.igs.push(angular.fromJson(response.data));
+                    $rootScope.igs.push(angular.fromJson(response.data));
                 } else {
                     $scope.igContext.igType = $scope.igTypes[1];
                     $scope.loadProfiles();
@@ -310,34 +310,29 @@ angular.module('igl')
                     $rootScope.profile.segments.children = $filter('orderBy')($rootScope.profile.segments.children, 'label');
                     $rootScope.profile.datatypes.children = $filter('orderBy')($rootScope.profile.datatypes.children, 'label');
                     $rootScope.profile.tables.children = $filter('orderBy')($rootScope.profile.tables.children, 'label');
-                    $rootScope.tocData = ToCSvc.getToC($scope.profile);
+                    $rootScope.tocData = ToCSvc.getToC($rootScope.profile);
                     $rootScope.initMaps();
                     $rootScope.messages = $rootScope.profile.messages.children;
-                     angular.forEach($rootScope.profile.datatypes.children, function (child) {
-                   
+                    angular.forEach($rootScope.profile.datatypes.children, function (child) {
                         this[child.id] = child;
-                        if (child.displayName) { // TODO: Change displayName
-													// to label
+                        if (child.displayName) { // TODO: Change displayName to label
                             child.label = child.displayName;
                         }
                     }, $rootScope.datatypesMap);
                     angular.forEach($rootScope.profile.segments.children, function (child) {
                         this[child.id] = child;
-                        if (child.displayName) { // TODO: Change displayName
-													// to label
+                        if (child.displayName) { // TODO: Change displayName to label
                             child.label = child.displayName;
                         }
                     }, $rootScope.segmentsMap);
 
                     angular.forEach($rootScope.profile.tables.children, function (child) {
                         this[child.id] = child;
-                        if (child.displayName) { // TODO: Change displayName
-													// to label
+                        if (child.displayName) { // TODO: Change displayName to label
                             child.label = child.displayName;
                         }
                         angular.forEach(child.codes, function (code) {
-                            if (code.displayName) { // TODO: Change displayName
-													// to label
+                            if (code.displayName) { // TODO: Change displayName to label
                                 code.label = code.displayName;
                             }
                         });
@@ -349,7 +344,9 @@ angular.module('igl')
 
                     angular.forEach($rootScope.profile.messages.children, function (child) {
                         this[child.id] = child;
-                         angular.forEach(child.children, function (segmentRefOrGroup) {
+                        var cnt = 0;
+                        angular.forEach(child.children, function (segmentRefOrGroup) {
+                        	console.log("cnt=" + cnt++ + " segOg=" + segmentRefOrGroup);
                         	$rootScope.processElement(segmentRefOrGroup);
                         });
                     }, $rootScope.messagesMap);
@@ -457,7 +454,7 @@ angular.module('igl')
 
         $scope.exportAs = function (id, format) {
             var form = document.createElement("form");
-            form.action = $rootScope.api('api/profiles/' + id + '/export/' + format + '/true');
+            form.action = $rootScope.api('api/profiles/' + id + '/export/' + format);
             form.method = "POST";
             form.target = "_target";
             var csrfInput = document.createElement("input");
