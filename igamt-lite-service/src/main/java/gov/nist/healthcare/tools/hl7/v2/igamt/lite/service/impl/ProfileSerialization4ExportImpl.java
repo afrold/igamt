@@ -480,6 +480,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 	private nu.xom.Element serializeMessageDisplay(Message m, Segments segments) {
 		nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
 		elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
+		elmMessage.addAttribute(new Attribute("Name", m.getName() + ""));
 		elmMessage.addAttribute(new Attribute("Type", m.getMessageType()));
 		elmMessage.addAttribute(new Attribute("Event", m.getEvent()));
 		elmMessage.addAttribute(new Attribute("StructID", m.getStructID()));
@@ -518,11 +519,12 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		nu.xom.Element elmGroup = new nu.xom.Element("Elt");
 		elmGroup.addAttribute(new Attribute("IdGpe", group.getId()));
 		elmGroup.addAttribute(new Attribute("Name", group.getName()));
+		elmGroup.addAttribute(new Attribute("Description", "BEGIN " + group.getName() + " GROUP"));
 		elmGroup.addAttribute(new Attribute("Usage", group.getUsage().value()));
 		elmGroup.addAttribute(new Attribute("Min", group.getMin() + ""));
 		elmGroup.addAttribute(new Attribute("Max", group.getMax()));
 		elmGroup.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + "["));
-		elmGroup.addAttribute(new Attribute("Comment", "BEGIN " + group.getName() + " GROUP"));
+		elmGroup.addAttribute(new Attribute("Comment", group.getComment()));
 		elmGroup.addAttribute(new Attribute("Position", group.getPosition().toString()));
 		elmDisplay.appendChild(elmGroup);
 
@@ -535,13 +537,13 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		}
 		nu.xom.Element elmGroup2 = new nu.xom.Element("Elt");
 		elmGroup2.addAttribute(new Attribute("IdGpe", group.getId()));
-		elmGroup2.addAttribute(new Attribute("Name", group.getName()));
+		elmGroup2.addAttribute(new Attribute("Name", "END " + group.getName() + " GROUP"));
+		elmGroup2.addAttribute(new Attribute("Description", "END " + group.getName() + " GROUP"));
 		elmGroup2.addAttribute(new Attribute("Usage", group.getUsage().value()));
 		elmGroup2.addAttribute(new Attribute("Min", group.getMin() + ""));
 		elmGroup2.addAttribute(new Attribute("Max", group.getMax()));
 		elmGroup2.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + "]"));
 		elmGroup2.addAttribute(new Attribute("Depth", String.valueOf(depth)));
-		elmGroup2.addAttribute(new Attribute("Comment", "END " + group.getName() + " GROUP"));
 		elmGroup2.addAttribute(new Attribute("Position", group.getPosition().toString()));
 		elmDisplay.appendChild(elmGroup2);
 
@@ -552,6 +554,8 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		elmSegment.addAttribute(new Attribute("IDRef", segmentRef.getId()));
 		elmSegment.addAttribute(new Attribute("IDSeg", segmentRef.getRef()));
 		elmSegment.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getName()));
+		elmSegment.addAttribute(new Attribute("Label", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getLabel()));
+		elmSegment.addAttribute(new Attribute("Description", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getDescription()));
 		elmSegment.addAttribute(new Attribute("Depth", String.valueOf(depth)));
 		elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage()
 				.value()));
