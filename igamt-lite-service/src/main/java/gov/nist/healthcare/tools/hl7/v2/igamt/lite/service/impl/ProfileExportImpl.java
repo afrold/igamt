@@ -98,10 +98,17 @@ import org.docx4j.wml.CTSettings;
 import org.docx4j.wml.CTShd;
 import org.docx4j.wml.CTTblLayoutType;
 import org.docx4j.wml.CTVerticalJc;
+import org.docx4j.wml.Color;
 import org.docx4j.wml.FldChar;
+import org.docx4j.wml.HpsMeasure;
+import org.docx4j.wml.Jc;
+import org.docx4j.wml.JcEnumeration;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
+import org.docx4j.wml.PPr;
 import org.docx4j.wml.R;
+import org.docx4j.wml.RFonts;
+import org.docx4j.wml.RPr;
 import org.docx4j.wml.STBorder;
 import org.docx4j.wml.STBrType;
 import org.docx4j.wml.STFldCharType;
@@ -117,11 +124,14 @@ import org.docx4j.wml.TcPrInner.GridSpan;
 import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 import org.docx4j.wml.TrPr;
+import org.docx4j.wml.U;
+import org.docx4j.wml.UnderlineEnumeration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.w3c.tidy.Tidy;
 
+import com.itextpdf.text.Anchor;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chapter;
 import com.itextpdf.text.Chunk;
@@ -421,115 +431,135 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				String constraintType = new String();
 				if (constraint instanceof Predicate) {
 					constraintType = "Condition Predicate";
+					row = Arrays.asList("", constraintType,
+							"Usage : C(" + ((Predicate)constraint).getTrueUsage() + "/" + ((Predicate)constraint).getFalseUsage() + ") \n Predicate: " + constraint.getDescription());
+					rows.add(row);
 				} else if (constraint instanceof ConformanceStatement) {
 					constraintType = "Conformance Statement";
+					row = Arrays.asList("", constraintType, constraint.getDescription());
+					rows.add(row);
 				}
-				row = Arrays.asList("", constraintType,
-						constraint.getDescription());
-				rows.add(row);
+
 			}
 		}
 	}
 
 	private void addCsMessage(List<List<String>> rows, Message m){
-		List<Constraint> constraints = new ArrayList<>();
+		List<String> row;
 		for (ConformanceStatement cs: m.getConformanceStatements()){
-			constraints.add(cs);
+			row = Arrays.asList(
+					cs.getConstraintTarget(), cs.getDescription());
+			rows.add(row);
 		}
-		this.addConstraints(rows, constraints);
 	}
 
-	private void addPreMessage(List<List<String>> rows, Message m){		
-		List<Constraint> constraints = new ArrayList<>();
+	private void addPreMessage(List<List<String>> rows, Message m){	
+		List<String> row;
 		for (Predicate pre: m.getPredicates()){
-			constraints.add(pre);
+			row = Arrays.asList(
+					pre.getConstraintTarget(), "C(" + pre.getTrueUsage() + "/" + pre.getFalseUsage() + ")", pre.getDescription());
+			rows.add(row);
 		}
-		this.addConstraints(rows, constraints);
 	}
 
 	private void addCsGroup(List<List<String>> rows, Message m){
 		List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
 		List<Constraint> constraints = new ArrayList<>();
+		List<String> row;
 
 		for (SegmentRefOrGroup srog : segRefOrGroups) {
 			if (srog instanceof Group) {
 				for (ConformanceStatement cs: ((Group) srog).getConformanceStatements()){
-					constraints.add(cs);
+					row = Arrays.asList(
+							cs.getConstraintTarget(), cs.getDescription());
+					rows.add(row);
 				}
-				this.addCsGroupList(constraints, (Group) srog);
+				this.addCsGroupList(rows, (Group) srog);
 			}
 		}
 		this.addConstraints(rows, constraints);
 	}
 
-	private void addCsGroupList(List<Constraint> constraints, Group group){
+	private void addCsGroupList(List<List<String>> rows, Group group){
+		List<String> row;
 		for (SegmentRefOrGroup srog : group.getChildren()) {
 			if (srog instanceof Group) {
 				for (ConformanceStatement cs: ((Group) srog).getConformanceStatements()){
-					constraints.add(cs);
+					row = Arrays.asList(
+							cs.getConstraintTarget(), cs.getDescription());
+					rows.add(row);
 				}
-				this.addCsGroupList(constraints, (Group) srog);
+				this.addCsGroupList(rows, (Group) srog);
 			}
 		}
 	}
 
 	private void addPreGroup(List<List<String>> rows, Message m){
 		List<SegmentRefOrGroup> segRefOrGroups = m.getChildren();
-		List<Constraint> constraints = new ArrayList<>();
+		List<String> row;
 
 		for (SegmentRefOrGroup srog : segRefOrGroups) {
 			if (srog instanceof Group) {
 				for (Predicate pre: ((Group) srog).getPredicates()){
-					constraints.add(pre);
+					row = Arrays.asList(
+							pre.getConstraintTarget(), "C(" + pre.getTrueUsage() + "/" + pre.getFalseUsage() + ")", pre.getDescription());
+					rows.add(row);
 				}
-				this.addPreGroupList(constraints, (Group) srog);
+				this.addPreGroupList(rows, (Group) srog);
 			}
 		}
-		this.addConstraints(rows, constraints);
+
 	}
 
-	private void addPreGroupList(List<Constraint> constraints, Group group){
+	private void addPreGroupList(List<List<String>> rows, Group group){
+		List<String> row;
 		for (SegmentRefOrGroup srog : group.getChildren()) {
 			if (srog instanceof Group) {
 				for (Predicate pre: ((Group) srog).getPredicates()){
-					constraints.add(pre);
+					row = Arrays.asList(
+							pre.getConstraintTarget(), "C(" + pre.getTrueUsage() + "/" + pre.getFalseUsage() + ")", pre.getDescription());
+					rows.add(row);
 				}
-				this.addCsGroupList(constraints, (Group) srog);
+				this.addPreGroupList(rows, (Group) srog);
 			}
 		}
 	}
 
 	private void addCsSegment(List<List<String>> rows, Segment s){
-		List<Constraint> constraints = new ArrayList<>();
+		List<String> row;
 		for (ConformanceStatement cs: s.getConformanceStatements()){
-			constraints.add(cs);
+			row = Arrays.asList(
+					cs.getConstraintTarget(), cs.getDescription());
+			rows.add(row);
 		}
-		this.addConstraints(rows, constraints);
 	}
 
 	private void addPreSegment(List<List<String>> rows, Segment s){		
-		List<Constraint> constraints = new ArrayList<>();
+		List<String> row;
 		for (Predicate pre: s.getPredicates()){
-			constraints.add(pre);
+			row = Arrays.asList(
+					pre.getConstraintTarget(), "C(" + pre.getTrueUsage() + "/" + pre.getFalseUsage() + ")", pre.getDescription());
+			rows.add(row);
 		}
-		this.addConstraints(rows, constraints);
 	}
 
 
 	private void addCsDatatype(List<List<String>> rows, Datatype dt){
-		List<Constraint> constraints = new ArrayList<>();
+		List<String> row;
 		for (ConformanceStatement cs: dt.getConformanceStatements()){
-			constraints.add(cs);
+			row = Arrays.asList(
+					cs.getConstraintTarget(), cs.getDescription());
+			rows.add(row);
 		}
-		this.addConstraints(rows, constraints);
 	}
 
 	private void addPreDatatype(List<List<String>> rows, Datatype dt){		
-		List<Constraint> constraints = new ArrayList<>();
+		List<String> row;
 		for (Predicate pre: dt.getPredicates()){
-			constraints.add(pre);
+			row = Arrays.asList(
+					pre.getConstraintTarget(), "C(" + pre.getTrueUsage() + "/" + pre.getFalseUsage() + ")", pre.getDescription());
+			rows.add(row);
 		}
-		this.addConstraints(rows, constraints);
 	}
 
 	private InputStream exportAsXslxWithApachePOI(Profile p) {
@@ -878,25 +908,26 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		List<List<String>> rows;
 
 		// Create fonts and colors to be used in generated pdf
-		BaseColor headerColor = WebColors.getRGBColor("#"+headerBackground);
-		BaseColor cpColor = WebColors.getRGBColor("#"+constraintBackground);
+		BaseColor headerBackgroundColor = WebColors.getRGBColor(headerBackground);
+		BaseColor headerFontItxtColor = WebColors.getRGBColor(headerFontColor);
+		BaseColor cpColor = WebColors.getRGBColor(constraintBackground);
 		Font coverH1Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24, Font.UNDERLINE
-				| Font.BOLD, BaseColor.RED);
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24, Font.BOLD,
+				BaseColor.RED);
 		Font coverH2Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.NORMAL,
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 16, Font.NORMAL,
 				BaseColor.RED);
 		Font tocTitleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.BOLD,
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 16, Font.BOLD,
 				BaseColor.BLACK);
 		Font titleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 13, Font.UNDERLINE
-				| Font.BOLD | Font.ITALIC, BaseColor.BLACK);
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 14, Font.BOLD, 
+				BaseColor.BLACK);
 		Font headerFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL,
-				BaseColor.WHITE);
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.NORMAL,
+				headerFontItxtColor);
 		Font cellFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 11, Font.NORMAL,
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.NORMAL,
 				BaseColor.BLACK);
 
 		try {
@@ -913,16 +944,16 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			Paragraph paragraph = new Paragraph(p.getMetaData().getName(),
 					coverH1Font);
 			paragraph.setSpacingBefore(250);
-			paragraph.setAlignment(Element.ALIGN_CENTER);
+			paragraph.setAlignment(Element.ALIGN_RIGHT);
 
 			coverDocument.add(paragraph);
 			paragraph = new Paragraph(p.getMetaData().getSubTitle(),
 					coverH2Font);
-			paragraph.setAlignment(Element.ALIGN_CENTER);
+			paragraph.setAlignment(Element.ALIGN_RIGHT);
 			coverDocument.add(paragraph);
 			paragraph = new Paragraph(
 					"HL7 v" + p.getMetaData().getHl7Version(), coverH2Font);
-			paragraph.setAlignment(Element.ALIGN_CENTER);
+			paragraph.setAlignment(Element.ALIGN_RIGHT);
 			paragraph.setSpacingAfter(250);
 			coverDocument.add(paragraph);
 
@@ -936,7 +967,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 					coverH2Font));
 			paragraph.add(Chunk.NEWLINE);
 			paragraph.add(new Chunk(p.getMetaData().getDate(), coverH2Font));
-			paragraph.setAlignment(Element.ALIGN_CENTER);
+			paragraph.setAlignment(Element.ALIGN_RIGHT);
 			coverDocument.add(paragraph);
 
 			coverDocument.close();
@@ -975,10 +1006,11 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			/*
 			 * Adding messages definition
 			 */
-			tocDocument.add(new Paragraph("Messages", titleFont));
+			tocDocument.add(new Paragraph("MESSAGES", titleFont));
 			tocDocument.add(Chunk.NEWLINE);
 
-			chapter = new Chapter(new Paragraph("Messages", titleFont), 1);
+			Paragraph par = new Paragraph("Messages", titleFont);
+			chapter = new Chapter(par, 1);
 			igDocument.add(chapter);
 			igDocument.add(Chunk.NEWLINE);
 
@@ -986,13 +1018,9 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			Collections.sort(messagesList);
 
 			for (Message m : messagesList) {
-				//				String messageInfo = m.getMessageType() + "^"
-				//						+ m.getEvent() + "^" + m.getStructID() + " - " + m.getDescription();
-				//				this.addTocContent(tocDocument, igWriter, messageInfo);
-				//				title = new Paragraph("Message definition: "+ messageInfo, titleFont);
 
 				this.addTocContent(tocDocument, igWriter, m.getName());
-				title = new Paragraph("Messages", titleFont);
+				title = new Paragraph(m.getName(), titleFont);
 				section = chapter.addSection(title);
 				section.setIndentationLeft(30);
 				section.setTriggerNewPage(true);
@@ -1001,10 +1029,10 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				section.add(richTextToParagraph(m.getComment()));
 				section.add(Chunk.NEWLINE);
 
-				header = Arrays.asList("Segment", "Flavor", "Element name", "Usage", "Cardinality", "Description/Comment");
-				columnWidths = new float[] { 2f, 3f, 4f, 2f, 2f, 8f };
+				header = Arrays.asList("Segment", "Flavor", "Element name", "Usage", "Card.", "Description/Comments");
+				columnWidths = new float[] { 12f, 10f, 20f, 8f, 9f, 30f };
 				table = this.addHeaderPdfTable(header, columnWidths,
-						headerFont, headerColor);
+						headerFont, headerBackgroundColor);
 
 				rows = new ArrayList<List<String>>();
 				this.addMessage(rows, m, p);
@@ -1023,7 +1051,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			 * Adding segments details
 			 */
 			tocDocument.add(Chunk.NEWLINE);
-			tocDocument.add(new Paragraph("Segments and fields descriptions", titleFont));
+			tocDocument.add(new Paragraph("SEGMENTS AND FIELDS DESCRIPTIONS", titleFont));
 			tocDocument.add(Chunk.NEWLINE);
 
 			title = new Paragraph("Segments and fields descriptions", titleFont);
@@ -1044,12 +1072,11 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				section1.add(richTextToParagraph(s.getText1()));
 				section1.add(Chunk.NEWLINE);
 
-				header = Arrays.asList("Seq", "Field Name", "DT",
-						"Usage", "Card.", "Length", "Value Set", "Comment");
-				columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 
-						1.5f, 1.5f, 2f, 6f };
+				header = Arrays.asList("Seq", "Element Name", "DT",
+						"Usage", "Card.", "Length", "Value\nSet", "Description/Comments");
+				columnWidths = new float[] { 6f, 20f, 9f, 7.5f, 9f, 9f, 10f, 30f };
 				table = this.addHeaderPdfTable(header, columnWidths,
-						headerFont, headerColor);
+						headerFont, headerBackgroundColor);
 
 				rows = new ArrayList<List<String>>();
 				this.addSegment(rows, s, Boolean.TRUE, p.getDatatypes(), p.getTables());
@@ -1064,7 +1091,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				Collections.sort(fieldsList);
 				for (Field f : fieldsList) {
 					if (f.getText() != null && f.getText().length() != 0) {
-						Font fontbold = FontFactory.getFont("Times-Roman", 12,
+						Font fontbold = FontFactory.getFont("Arial", 12,
 								Font.BOLD);
 						section1.add(new Paragraph(s.getName() + "-"
 								+ f.getItemNo().replaceFirst("^0+(?!$)", "") + " "
@@ -1087,16 +1114,16 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			/*
 			 * Adding datatypes
 			 */
-			igDocument.add(new Paragraph("Datatypes", titleFont));
+			igDocument.add(new Paragraph("DATA TYPES", titleFont));
 			igDocument.add(Chunk.NEWLINE);
 
 			tocDocument.add(Chunk.NEWLINE);
-			tocDocument.add(new Paragraph("Datatypes", titleFont));
+			tocDocument.add(new Paragraph("Data types", titleFont));
 			tocDocument.add(Chunk.NEWLINE);
 
-			header = Arrays.asList("Seq", "Element Name", "Conf length", "DT",
-					"Usage", "Len", "Table", "Comment");
-			columnWidths = new float[] { 2f, 3f, 2f, 1.5f, 1.5f, 2f, 2f, 6f };
+			header = Arrays.asList("Seq", "Element Name", "Conf\nlength", "DT",
+					"Usage", "Length", "Value\nSet", "Comment");
+			columnWidths = new float[] {6f, 20f, 9f, 7.5f, 9f, 9f, 10f, 30f};
 
 			List<Datatype> datatypeList = new ArrayList<Datatype>(p.getDatatypes().getChildren());
 			Collections.sort(datatypeList);
@@ -1106,12 +1133,11 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 						+ " - " + d.getDescription());
 
 				igDocument.add(new Paragraph( d.getLabel() != null ?  d.getLabel() + " - "
-						+ d.getDescription() + " Datatype" : d.getName() + " - "
-						+ d.getDescription() + " Datatype"));
+						+ d.getDescription() : d.getName() + " - " + d.getDescription()));
 				igDocument.add(new Paragraph(d.getComment()));
 
 				table = this.addHeaderPdfTable(header, columnWidths,
-						headerFont, headerColor);
+						headerFont, headerBackgroundColor);
 				rows = new ArrayList<List<String>>();
 				this.addDatatype(rows, d, p.getDatatypes(),
 						p.getTables());
@@ -1124,7 +1150,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			/*
 			 * Adding value sets
 			 */
-			igDocument.add(new Paragraph("Value Sets", titleFont));
+			igDocument.add(new Paragraph("VALUE SETS", titleFont));
 			igDocument.add(Chunk.NEWLINE);
 
 			tocDocument.add(Chunk.NEWLINE);
@@ -1133,7 +1159,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 			header = Arrays.asList("Value", "Code system", "Usage", "Description");
 
-			columnWidths = new float[] { 2f, 1f, 1f, 6f };
+			columnWidths = new float[] { 15f, 15f, 10f, 50f };
 
 			List<Table> tables = new ArrayList<Table>(p.getTables()
 					.getChildren());
@@ -1142,13 +1168,12 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			for (Table t : tables) {
 
 				this.addTocContent(tocDocument, igWriter, t.getBindingIdentifier()
-						+ " : " + t.getDescription());
+						+ " - " + t.getDescription());
 
-				igDocument.add(new Paragraph("Value set " + t.getBindingIdentifier()
-						+ " : " + t.getDescription()));
+				igDocument.add(new Paragraph(t.getBindingIdentifier() + " - " + t.getDescription()));
 				StringBuilder sb = new StringBuilder();
 				sb.append("\nOid: ");
-				sb.append(t.getOid()==null ? "UNSPECIFIED":t.getOid());
+				sb.append(t.getOid()==null||t.getOid().isEmpty() ? "UNSPECIFIED" : t.getOid());
 				//				sb.append("\nStability: ");
 				//				sb.append(t.getStability()==null ? "Static":t.getStability().value());
 				//				sb.append("\nExtensibility: ");
@@ -1158,7 +1183,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				igDocument.add(new Chunk(sb.toString(), cellFont));
 
 				table = this.addHeaderPdfTable(header, columnWidths,
-						headerFont, headerColor);
+						headerFont, headerBackgroundColor);
 				rows = new ArrayList<List<String>>();
 				this.addValueSet(rows, t);
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
@@ -1167,6 +1192,172 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 				igDocument.add(Chunk.NEWLINE);
 			}
 
+			/*
+			 * Adding conformance information
+			 */
+			igDocument.add(new Paragraph("CONFORMANCE INFORMATION", titleFont));
+			igDocument.add(Chunk.NEWLINE);
+
+			tocDocument.add(Chunk.NEWLINE);
+			tocDocument.add(new Paragraph("Conformance information", titleFont));
+			tocDocument.add(Chunk.NEWLINE);
+			
+			this.addTocContent(tocDocument, igWriter, "Conditional predicates");
+			igDocument.add(new Paragraph("Conditional predicates"));
+
+			header = Arrays.asList("Location", "Usage", "Description");
+			columnWidths = new float[] { 15f, 15f, 75f };
+
+			this.addTocContent(tocDocument, igWriter, "Message level");
+			igDocument.add(new Paragraph("Message level"));
+
+			for (Message m: messagesList){
+				table = this.addHeaderPdfTable(header, columnWidths,
+						headerFont, headerBackgroundColor);
+				rows = new ArrayList<List<String>>();
+				this.addPreMessage(rows, m);
+				if (!rows.isEmpty()){
+					this.addTocContent(tocDocument, igWriter, m.getName());
+					igDocument.add(new Paragraph(m.getName()));
+					this.addAllCellsPdfTable(table, rows, cellFont, cpColor);
+					igDocument.add(Chunk.NEWLINE);
+					igDocument.add(table);
+					igDocument.add(Chunk.NEWLINE);
+				}
+			}
+
+			this.addTocContent(tocDocument, igWriter, "Group level");
+			igDocument.add(new Paragraph("Group level"));
+
+			for (Message m: messagesList){
+				table = this.addHeaderPdfTable(header, columnWidths,
+						headerFont, headerBackgroundColor);
+				rows = new ArrayList<List<String>>();
+				this.addPreGroup(rows, m);
+				if (!rows.isEmpty()){
+					this.addTocContent(tocDocument, igWriter, m.getName());
+					igDocument.add(new Paragraph(m.getName()));
+					this.addAllCellsPdfTable(table, rows, cellFont, cpColor);
+					igDocument.add(Chunk.NEWLINE);
+					igDocument.add(table);
+					igDocument.add(Chunk.NEWLINE);
+				}
+			}
+
+			this.addTocContent(tocDocument, igWriter, "Segment level");
+			igDocument.add(new Paragraph("Segment level"));
+
+			for (Segment s: segmentsList){
+				table = this.addHeaderPdfTable(header, columnWidths,
+						headerFont, headerBackgroundColor);
+				rows = new ArrayList<List<String>>();
+				this.addPreSegment(rows, s);
+				if (!rows.isEmpty()){
+					this.addTocContent(tocDocument, igWriter, s.getName());
+					igDocument.add(new Paragraph(s.getName()));
+					this.addAllCellsPdfTable(table, rows, cellFont, cpColor);
+					igDocument.add(Chunk.NEWLINE);
+					igDocument.add(table);
+					igDocument.add(Chunk.NEWLINE);
+				}
+			}
+
+			this.addTocContent(tocDocument, igWriter, "Datatype level");
+			igDocument.add(new Paragraph("Datatype level"));
+
+			for (Datatype dt: datatypeList){
+				table = this.addHeaderPdfTable(header, columnWidths,
+						headerFont, headerBackgroundColor);
+				rows = new ArrayList<List<String>>();
+				this.addPreDatatype(rows, dt);
+				if (!rows.isEmpty()){
+					this.addTocContent(tocDocument, igWriter, dt.getName());
+					igDocument.add(new Paragraph(dt.getName()));
+					this.addAllCellsPdfTable(table, rows, cellFont, cpColor);
+					igDocument.add(Chunk.NEWLINE);
+					igDocument.add(table);
+					igDocument.add(Chunk.NEWLINE);
+				}
+			}
+			
+			this.addTocContent(tocDocument, igWriter, "Conformance statements");
+			igDocument.add(new Paragraph("Conformance statements"));
+
+			header = Arrays.asList("Location", "Description");
+			columnWidths = new float[] { 15f, 75f };
+
+			this.addTocContent(tocDocument, igWriter, "Message level");
+			igDocument.add(new Paragraph("Message level"));
+
+			for (Message m: messagesList){
+				table = this.addHeaderPdfTable(header, columnWidths,
+						headerFont, headerBackgroundColor);
+				rows = new ArrayList<List<String>>();
+				this.addCsMessage(rows, m);
+				if (!rows.isEmpty()){
+					this.addTocContent(tocDocument, igWriter, m.getName());
+					igDocument.add(new Paragraph(m.getName()));
+					this.addCellsPdfTable(table, rows, cellFont, cpColor);
+					igDocument.add(Chunk.NEWLINE);
+					igDocument.add(table);
+					igDocument.add(Chunk.NEWLINE);
+				}
+			}
+
+			this.addTocContent(tocDocument, igWriter, "Group level");
+			igDocument.add(new Paragraph("Group level"));
+
+			for (Message m: messagesList){
+				table = this.addHeaderPdfTable(header, columnWidths,
+						headerFont, headerBackgroundColor);
+				rows = new ArrayList<List<String>>();
+				this.addCsGroup(rows, m);
+				if (!rows.isEmpty()){
+					this.addTocContent(tocDocument, igWriter, m.getName());
+					igDocument.add(new Paragraph(m.getName()));
+					this.addCellsPdfTable(table, rows, cellFont, cpColor);
+					igDocument.add(Chunk.NEWLINE);
+					igDocument.add(table);
+					igDocument.add(Chunk.NEWLINE);
+				}
+			}
+
+			this.addTocContent(tocDocument, igWriter, "Segment level");
+			igDocument.add(new Paragraph("Segment level"));
+
+			for (Segment s: segmentsList){
+				table = this.addHeaderPdfTable(header, columnWidths,
+						headerFont, headerBackgroundColor);
+				rows = new ArrayList<List<String>>();
+				this.addCsSegment(rows, s);
+				if (!rows.isEmpty()){
+					this.addTocContent(tocDocument, igWriter, s.getName());
+					igDocument.add(new Paragraph(s.getName()));
+					this.addCellsPdfTable(table, rows, cellFont, cpColor);
+					igDocument.add(Chunk.NEWLINE);
+					igDocument.add(table);
+					igDocument.add(Chunk.NEWLINE);
+				}
+			}
+
+			this.addTocContent(tocDocument, igWriter, "Datatype level");
+			igDocument.add(new Paragraph("Datatype level"));
+
+			for (Datatype dt: datatypeList){
+				table = this.addHeaderPdfTable(header, columnWidths,
+						headerFont, headerBackgroundColor);
+				rows = new ArrayList<List<String>>();
+				this.addCsDatatype(rows, dt);
+				if (!rows.isEmpty()){
+					this.addTocContent(tocDocument, igWriter, dt.getName());
+					igDocument.add(new Paragraph(dt.getName()));
+					this.addCellsPdfTable(table, rows, cellFont, cpColor);
+					igDocument.add(Chunk.NEWLINE);
+					igDocument.add(table);
+					igDocument.add(Chunk.NEWLINE);
+				}
+			}
+			
 			igDocument.close();
 			tocDocument.close();
 
@@ -1337,6 +1528,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			c1 = new PdfPCell(new Phrase(cellName, headerFont));
 			c1.setHorizontalAlignment(Element.ALIGN_LEFT);
 			c1.setBackgroundColor(headerColor);
+			setCellBorders(c1);
 			table.addCell(c1);
 		}
 		try {
@@ -1355,21 +1547,45 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		for (List<String> cells : rows) {
 			if (cells.size() != 3) {
 				for (String cell : cells) {
-					table.addCell(new Phrase(cell, cellFont));
+					PdfPCell tcell;
+					tcell = new PdfPCell(new Phrase(cell, cellFont));
+					setCellBorders(tcell);
+					table.addCell(tcell);
 				}
 			} else {
 				PdfPCell cell;
 				cell = new PdfPCell(new Phrase(cells.get(0), cellFont));
+				setCellBorders(cell);
 				table.addCell(cell);
 				cell = new PdfPCell(new Phrase(cells.get(1), cellFont));
 				cell.setColspan(2);
 				cell.setBackgroundColor(cpColor);
+				setCellBorders(cell);
 				table.addCell(cell);
 				cell = new PdfPCell(new Phrase(cells.get(2), cellFont));
 				cell.setColspan(7);
+				setCellBorders(cell);
 				table.addCell(cell);
 			}
 		}
+	}
+
+	private void addAllCellsPdfTable(PdfPTable table, List<List<String>> rows,
+			Font cellFont, BaseColor cpColor) {
+		for (List<String> cells : rows) {
+				for (String cell : cells) {
+					PdfPCell tcell;
+					tcell = new PdfPCell(new Phrase(cell, cellFont));
+					setCellBorders(tcell);
+					table.addCell(tcell);
+			}
+		}
+	}
+	private void setCellBorders(PdfPCell tcell){
+		tcell.setBorderColorRight(WebColors.getRGBColor(tableVSeparator));
+		tcell.setBorderColorLeft(WebColors.getRGBColor(tableVSeparator));
+		tcell.setBorderColorTop(WebColors.getRGBColor(tableHSeparator));
+		tcell.setBorderColorBottom(WebColors.getRGBColor(tableHSeparator));
 	}
 
 	@SuppressWarnings("deprecation")
@@ -1406,8 +1622,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			e1.printStackTrace();
 			return new NullInputStream(1L);
 		}
-
-		//		wordMLPackage.clone(); TODO
 
 		// Replace dotx content type with docx
 		ContentTypeManager ctm = wordMLPackage.getContentTypeManager();
@@ -1479,6 +1693,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		r2.getContent().add(getWrappedFldChar(fldcharend));
 		paragraphForTOC.getContent().add(r2);
 
+		//To uncomment
 		wordMLPackage.getMainDocumentPart().getContent().add(paragraphForTOC);
 		addPageBreak(wordMLPackage, factory);
 
@@ -1604,7 +1819,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			StringBuilder sb;
 			sb = new StringBuilder();
 			sb.append("\nOid: ");
-			sb.append(t.getOid()==null ? "UNSPECIFIED":t.getOid());
+			sb.append(t.getOid()==null||t.getOid().isEmpty() ? "UNSPECIFIED":t.getOid());
 			wordMLPackage.getMainDocumentPart().addParagraphOfText(sb.toString());
 			//				sb = new StringBuilder();
 			//				sb.append("\nStability: ");
@@ -1627,22 +1842,120 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 
 		}
 
-
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Code systems");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "LOINC");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "SNOMED");
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Conformance information");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Conformance statements");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Message Level");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Group Level");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Segment Level");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Datatype Level");
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Conditional predicates");
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Message Level");
+		for (Message m : messagesList) { 
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addPreMessage(rows, m);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(m.getName(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Usage", "Description");
+				List<Integer> widths = Arrays.asList(1500, 1500, 6000);
+				wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Group Level");
+		for (Message m : messagesList) { 
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addPreGroup(rows, m);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(m.getName(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Usage", "Description");
+				List<Integer> widths = Arrays.asList(1500, 1500, 6000);
+				wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Segment Level");
+		for (Segment s: segmentsList){
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addPreSegment(rows, s);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(s.getLabel(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Usage", "Description");
+				List<Integer> widths = Arrays.asList(1500, 1500, 6000);
+				wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Datatype Level");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Glossary");
+		for (Datatype dt:datatypeList){
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addPreDatatype(rows, dt);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(dt.getLabel(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Usage", "Description");
+				List<Integer> widths = Arrays.asList(1500, 1500, 6000);
+				wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Conformance statements");
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Message Level");
+		for (Message m : messagesList) { 
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addCsMessage(rows, m);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(m.getName(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Description");
+				List<Integer> widths = Arrays.asList(1500, 7500);
+				wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Group Level");
+		for (Message m : messagesList) { 
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addCsGroup(rows, m);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(m.getName(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Description");
+				List<Integer> widths = Arrays.asList(1500, 7500);
+				wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Segment Level");
+		for (Segment s: segmentsList){
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addCsSegment(rows, s);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(s.getLabel(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Description");
+				List<Integer> widths = Arrays.asList(1500, 7500);
+				wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Datatype Level");
+		for (Datatype dt:datatypeList){
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addCsDatatype(rows, dt);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(dt.getLabel(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Description");
+				List<Integer> widths = Arrays.asList(1500, 7500);
+				wordMLPackage.getMainDocumentPart().addObject(ProfileExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
 
 		FieldUpdater updater = new FieldUpdater(wordMLPackage);
 		try {
@@ -1690,21 +2003,6 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 			}
 			addBorders(table);
 		}
-//		} else {
-//			for (String cell: header){
-//				addTableCell(tableRow, cell, null, headerBackground, wordMLPackage, factory);
-//			}
-//			table.getContent().add(tableRow);
-//			for (List<String> row: rows){
-//				tableRow = factory.createTr();
-//				for (String cell: row){
-//					addTableCell(tableRow, cell, null, null, wordMLPackage, factory);
-//				} 
-//				table.getContent().add(tableRow);
-//			}
-//			addBorders(table);
-//		}
-
 		return table;
 	}
 
@@ -1845,6 +2143,72 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		shading.setFill(color); 
 	}
 
+
+	private void setFontSize(RPr runProperties, String fontSize) {
+		if (fontSize != null && !fontSize.isEmpty()) {
+			HpsMeasure size = new HpsMeasure();
+			size.setVal(new BigInteger(fontSize));
+			runProperties.setSz(size);
+			runProperties.setSzCs(size);
+		}
+	}
+
+	private void setFontFamily(RPr runProperties, String fontFamily) {
+		if (fontFamily != null) {
+			RFonts rf = runProperties.getRFonts();
+			if (rf == null) {
+				rf = new RFonts();
+				runProperties.setRFonts(rf);
+			}
+			rf.setAscii(fontFamily);
+		}
+	}
+
+	private void setFontColor(RPr runProperties, String color) {
+		if (color != null) {
+			Color c = new Color();
+			c.setVal(color);
+			runProperties.setColor(c);
+		} 
+	}
+
+	private void setHorizontalAlignment(P paragraph, JcEnumeration hAlign) {
+		if (hAlign != null) {
+			PPr pprop = new PPr();
+			Jc align = new Jc();
+			align.setVal(hAlign);
+			pprop.setJc(align);
+			paragraph.setPPr(pprop);
+		}
+	}
+
+	private void addBoldStyle(RPr runProperties) {
+		BooleanDefaultTrue b = new BooleanDefaultTrue();
+		b.setVal(true);
+		runProperties.setB(b);
+	}
+
+	private void addItalicStyle(RPr runProperties) {
+		BooleanDefaultTrue b = new BooleanDefaultTrue();
+		b.setVal(true);
+		runProperties.setI(b);
+	}
+
+	private void addUnderlineStyle(RPr runProperties) {
+		U val = new U();
+		val.setVal(UnderlineEnumeration.SINGLE);
+		runProperties.setU(val);
+	}
+
+	private void addLineBreak(WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
+		Br breakObj = new Br();
+		breakObj.setType(STBrType.TEXT_WRAPPING);
+
+		P paragraph = factory.createP();
+		paragraph.getContent().add(breakObj);
+		wordMLPackage.getMainDocumentPart().getContent().add(paragraph);
+	}
+
 	private void addPageBreak(WordprocessingMLPackage wordMLPackage, ObjectFactory factory) {
 		Br breakObj = new Br();
 		breakObj.setType(STBrType.PAGE);
@@ -1852,6 +2216,29 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		P paragraph = factory.createP();
 		paragraph.getContent().add(breakObj);
 		wordMLPackage.getMainDocumentPart().getContent().add(paragraph);
+	}
+
+	private void addParagraph(String content, WordprocessingMLPackage wordMLPackage, ObjectFactory factory){
+		P paragraph = factory.createP();
+		R run = factory.createR();
+
+		Text text = factory.createText();
+		text.setValue(content);
+		run.getContent().add(text);
+
+		paragraph.getContent().add(run);
+		setHorizontalAlignment(paragraph, JcEnumeration.LEFT);
+
+		RPr runProperties = factory.createRPr();
+		addBoldStyle(runProperties);
+		setFontColor(runProperties, headerFontColor);                
+		//		addItalicStyle(runProperties);
+		//		addUnderlineStyle(runProperties);
+		//		setFontFamily(runProperties, "Arial");
+		//		setFontSize(runProperties, "14");                
+		run.setRPr(runProperties);
+		wordMLPackage.getMainDocumentPart().addObject(paragraph);
+
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
