@@ -27,9 +27,9 @@ var app = angular
         'ng-context-menu',
         'table-settings',
         'angularjs-dropdown-multiselect',
-        'filearts.dragDrop'
-//        ,
-//        'ngMockE2E'
+        'dndLists'
+        ,
+        'ngMockE2E'
     ]);
 
 var

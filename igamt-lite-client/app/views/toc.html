@@ -1,21 +1,50 @@
 <style>
 
 /* CSS Tree menu styles */
+.yesul {
+	border: thin solid green;
+	background-color: green;
+	opacity: 5;
+}
 .yesyes {
-	border-bottom: thick dotted green;
+	border-bottom: thin dotted green;
 }
 .nono {
-	cursor: not-allowed;
-	border-bottom: thick dotted red;
+	border: thin solid red;
+	background-color: red;
+	opacity: .2;
 }
 .toc-selected {
 	background-color : yellow;
 }
 .top-level {
 	font-weight: bold;
-}ul.trunk
+}
+ul.trunk
 {
 	margin-left: -.75em;
+	width: 300px;
+}
+	li 
+	{ 
+		color: #00bcd4;
+		position: relative; 
+		list-style: none;
+	}
+		li.branch input
+		{
+ 			text-decoration: none;
+			display: block;
+		}
+		li.leaf input
+		{
+ 			text-decoration: none;
+			display: block;
+		}
+ul.drop
+{
+	margin-left: -.75em;
+	position: relative; 
 	width: 300px;
 }
 	li 

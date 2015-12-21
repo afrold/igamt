@@ -207,7 +207,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 			"label" : label,
 			"selected" : false,
 			"parent" : parent,
-			"drop" : [],
+			"drop" : [id],
 			"selected" : false,
 		}
 		if (fromProfile !== undefined) {
@@ -224,7 +224,7 @@ angular.module('igl').factory ('ToCSvc', function() {
 		var entry = {};
 		_.each(children, function(child){
 			if (parent === "3.1") {
-				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, child.drop);
+				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, parent);
 			} else if (parent === "3.2") {
 				entry = svc.createEntry(child, child.id, child.name + " - " + child.description, parent, child.drop);
 			} else if (parent === "3.3") {
@@ -236,7 +236,8 @@ angular.module('igl').factory ('ToCSvc', function() {
 			}
 			rval.push(entry);
 		});
-		return _.sortBy(rval, 'label');
+//		return _.sortBy(rval, 'label');
+		return rval;
 	}
 	
 	svc.createEntry = function(reference, id, label, parent, drop, children) {

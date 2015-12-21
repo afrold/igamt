@@ -14,6 +14,8 @@ angular
 								ContextMenuSvc, DnDSvc, CloneDeleteMessageSvc) {
 							var ctl = this;
 							$scope.collapsed = [];
+							$scope.yesDrop = false;
+							$scope.noDrop = true;
 							$scope.$watch('tocData', function(newValue,
 									oldValue) {
 								if (!oldValue && newValue) {
@@ -22,68 +24,17 @@ angular
 									});
 								}
 							});
-
-							$scope.yesDrop = false;
-							$scope.noDrop = false;
-							$scope.onBranchStart = function(tocEntry) {
-								DnDSvc.drag = tocEntry.drag;
-								console.log("onBranchStart=" + tocEntry.label);
-							};
-							$scope.onBranchStop = function(tocEntry) {
-								console.log("onBranchStop=" + tocEntry.label);
-							};
-							$scope.onBranchEnter = function(tocEntry) {
-								$scope.yesDrop = _.contains(tocEntry.drop,
-										DnDSvc.drag);
-								$scope.noDrop = !$scope.noDrop
-								console.log("onBranchEnter=" + "member="
-										+ tocEntry.label + " drag="
-										+ DnDSvc.drag + " yesDrop="
-										+ $scope.yesDrop + " noDrop="
-										+ $scope.noDrop);
-							};
-							$scope.onBranchLeave = function(tocEntry) {
-								$scope.yesDrop = false;
-								$scope.noDrop = false;
-								console.log("onBranchLeave=" + tocEntry.label
-										+ " noDrop=" + $scope.noDrop);
-							};
-							$scope.onBranchDrop = function(tocEntry) {
-								DnDSvc.drag = {};
-								$scope.yesDrop = false;
-								$scope.noDrop = false;
-								console.log("onBranchDrop=" + tocEntry.label);
-							};
-
-							$scope.onLeafStart = function(tocEntry) {
-								DnDSvc.drag = tocEntry.drag;
-								console.log("onLeafStart=" + tocEntry.label
-										+ " drag=" + DnDSvc.drag);
-							};
-							$scope.onLeafStop = function(tocEntry) {
-								console.log("onLeafStop=" + tocEntry.label);
-							};
-							$scope.onLeafEnter = function(tocEntry) {
-								$scope.yesDrop = _
-										.contains(tocEntry.drop, drag);
-								$scope.noDrop = !noDrop
-								console.log("onLeafEnter=" + "member="
-										+ tocEntry.label + " noDrop="
-										+ $scope.noDrop);
-							};
-							$scope.onLeafLeave = function(tocEntry) {
-								$scope.yesDrop = false;
-								$scope.noDrop = false;
-								console.log("onLeafLeave=" + tocEntry.label
-										+ " noDrop=" + $scope.noDrop);
-							};
-							$scope.onLeafDrop = function(tocEntry) {
-								DnDSvc.drag = undefined;
-								$scope.yesDrop = false;
-								$scope.noDrop = false;
-								console.log("onLeafDrop=" + tocEntry.label);
-							};
-
+							$scope.moved = function (index, leaf, branch) {
+								var idx = _.findLastIndex(branch, function(leaf1) {
+									return leaf.id === leaf1.id;
+								});
+							
+								if (index === idx) {
+									branch.splice(index + 1, 1);
+								} else {
+									branch.splice(index, 1);
+								}
+							}
 							$scope.calcOffset = function(level) {
 								return "margin-left : " + level + "em";
 							}
