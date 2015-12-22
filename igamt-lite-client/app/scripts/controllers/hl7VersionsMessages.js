@@ -4,9 +4,14 @@ angular.module('igl').controller(
 				ProfileAccessSvc) {
 
 			$rootScope.clickSource = {};
+			$scope.hl7Version = {};
 
 			$scope.hl7Versions = function(clickSource) {
 				$rootScope.clickSource = clickSource;
+				if (clickSource === "btn") {
+					$rootScope.hl7Version = {};
+					$rootScope.profile = false;
+				}
 				var hl7VersionsInstance = $modal.open({
 					templateUrl : 'hl7VersionsDlg.html',
 					controller : 'HL7VersionsInstanceDlgCtrl',
@@ -22,7 +27,6 @@ angular.module('igl').controller(
 					switch ($rootScope.clickSource) {
 					case "btn": {
 						$scope.createProfile(hl7Version, result);
-						$rootScope.hl7Version = {};
 						break;
 					}
 					case "ctx": {
@@ -122,7 +126,7 @@ angular.module('igl').controller(
 				console.log("loadProfilesByVersion.profileVersions=" + $scope.profileVersions);
 				$http.post(
 						'api/profiles/hl7/messageListByVersion', angular.fromJson({
-							"hl7Version" : "2.7",
+							"hl7Version" : $scope.hl7Version,
 							"messageIds" : $scope.profileVersions
 						})).then(function(response) {
 					$scope.messagesByVersion = angular.fromJson(response.data);
@@ -147,9 +151,6 @@ angular.module('igl').controller(
 			}, function(newValue, oldValue) {
 				if ($rootScope.clickSource === "ctx") {
 					$scope.hl7Version = newValue.metaData.hl7Version;
-					// TODO gcr move this pluck capability to ProfileAccessSvc.
-//					$scope.profileVersions = _.pluck(
-//							$rootScope.profile.messages.children, 'id');
 					$scope.profileVersions = ProfileAccessSvc.Messages($rootScope.profile).getMessageIds();
 					console.log("$watch.profileVersions=" + $scope.profileVersions);
 					$scope.loadProfilesByVersion();

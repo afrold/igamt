@@ -28,8 +28,8 @@ var app = angular
         'table-settings',
         'angularjs-dropdown-multiselect',
         'dndLists'
-        ,
-        'ngMockE2E'
+//        ,
+//        'ngMockE2E'
     ]);
 
 var

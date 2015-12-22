@@ -71,7 +71,11 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		}
 		
 		segs.getAllSegmentIds = function() {
-			return _.pluck(segs, "id");
+			var rval = [];
+			_.each(segs.segments(), function(seg){
+				rval.push(seg.id);
+			});
+			return rval;
 		}
 		
 		segs.findByIds = function(ids) {
@@ -93,17 +97,19 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 			return segment;
 		}
 	
-		// We pass in segRefs as a collection of ids for segments that are alive.
+		// We pass in segRefs as a collection of ids for segments that are
+		// alive.
 		// All the rest are dead.
 		segs.findDead = function(segRefs) {
-			segIds = _.pluck(segs.segments(), "id");
+			var segIds = segs.getAllSegmentIds();
 			return _.difference(segIds, segRefs);
 		}
 	
-		// We pass in segRefs as a collection of ids for segments that are alive.
+		// We pass in segRefs as a collection of ids for segments that are
+		// alive.
 		// All the rest are dead.
 		segs.removeDead = function(segRefs) {
-			segIds = segs.findDead(segRefs);
+			var segIds = segs.findDead(segRefs);
 			var segments = segs.segments();
 			var i = 0;
 			_.each(segIds, function(id) {

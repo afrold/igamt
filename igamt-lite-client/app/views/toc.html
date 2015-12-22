@@ -1,88 +1,85 @@
 <style>
 
 /* CSS Tree menu styles */
-.yesul {
-	border: thin solid green;
-	background-color: green;
-	opacity: 5;
-}
-.yesyes {
-	border-bottom: thin dotted green;
-}
-.nono {
-	border: thin solid red;
-	background-color: red;
-	opacity: .2;
-}
 .toc-selected {
-	background-color : yellow;
+	background-color: yellow;
 }
+
 .top-level {
 	font-weight: bold;
 }
-ul.trunk
-{
+
+ul.trunk {
 	margin-left: -.75em;
 	width: 300px;
 }
-	li 
-	{ 
-		color: #00bcd4;
-		position: relative; 
-		list-style: none;
-	}
-		li.branch input
-		{
- 			text-decoration: none;
-			display: block;
-		}
-		li.leaf input
-		{
- 			text-decoration: none;
-			display: block;
-		}
-ul.drop
-{
+
+ul.trunk li {
+	color: #00bcd4;
+	position: relative;
+	list-style: none;
+}
+
+ul.trunk li.branch input {
+	text-decoration: none;
+	display: block;
+}
+
+ul.trunk li.leaf input {
+	text-decoration: none;
+	display: block;
+}
+
+ul.drop {
 	margin-left: -.75em;
-	position: relative; 
+	position: relative;
 	width: 300px;
 }
-	li 
-	{ 
-		color: #00bcd4;
-		position: relative; 
-		list-style: none;
-	}
-		li.branch input
-		{
- 			text-decoration: none;
-			display: block;
-		}
+
+li.leaf {
+	color: #00bcd4;
+	position: relative;
+	list-style: none;
+}
+
+ul.drop li.branch input {
+	text-decoration: none;
+	display: block;
+}
+
 li input {
-    position: absolute;
-    left: 0;
-    margin-left: 0;
-    opacity: 0;
-    z-index: 2;
-    cursor: pointer;
-    height: 1em;
-    width: 1em;
-    top: 0;
+	position: absolute;
+	left: 0;
+	margin-left: 0;
+	opacity: 0;
+	z-index: 2;
+	cursor: pointer;
+	height: 1em;
+	width: 1em;
+	top: 0;
 }
+
 li label {
-    cursor: pointer;
-    display: block;
+	cursor: pointer;
+	display: block;
 }
-	li input:checked + ul
-	{
-		background-position: 15px;
-		background-size: 1px;
-		margin: -1.25em 0 0 -44px; /* 20px */
-		padding: 1.563em 0 0 80px;
-		height: auto;
-	}
-		li input:checked + ul > branch {display: none; margin: 0 0 0.125em;}
-		li input:checked + ul > branch:last-child { margin: 0 0 0.063em;}
+
+li input:checked+ul {
+	background-position: 15px;
+	background-size: 1px;
+	margin: -1.25em 0 0 -44px; /* 20px */
+	padding: 1.563em 0 0 80px;
+	height: auto;
+}
+
+li input:checked+ul>branch {
+	display: none;
+	margin: 0 0 0.125em;
+}
+
+li input:checked+ul>branch:last-child {
+	margin: 0 0 0.063em;
+}
 </style>
 <div class="container" style="margin-left: -3em;" ng-controller="ToCCtl">
 	<trunk trunk="tocData"></trunk>
@@ -91,31 +88,30 @@ li label {
 <!--
 	Context menu partials.
 -->
-<div class="dropdown position-fixed" id="headContextDiv.html" ng-controller="ContextMenuCtl">
-    <ul class="dropdown-menu" role="menu">
-        <li>
-            <a class="pointer" role="menuitem" tabindex="1" ng-click="clicked('Add')">Add</a>
-        </li>
-    </ul>
+<div class="dropdown position-fixed" id="headContextDiv.html"
+	ng-controller="ContextMenuCtl">
+	<ul class="dropdown-menu" role="menu">
+		<li><a class="pointer" role="menuitem" tabindex="1"
+			ng-click="clicked('Add')">Add</a></li>
+	</ul>
 </div>
 
-<div class="dropdown position-fixed" id="messageHeadContextDiv.html" ng-controller="HL7VersionsDlgCtrl">
-    <ul class="dropdown-menu" role="menu">
-        <li>
-            <a class="pointer" role="menuitem" tabindex="1" ng-click="hl7Versions('ctx')">Add</a>
-        </li>
-    </ul>
+<div class="dropdown position-fixed" id="messageHeadContextDiv.html"
+	ng-controller="HL7VersionsDlgCtrl">
+	<ul class="dropdown-menu" role="menu">
+		<li><a class="pointer" role="menuitem" tabindex="1"
+			ng-click="hl7Versions('ctx')">Add</a></li>
+	</ul>
 </div>
 
-<div class="dropdown position-fixed" id="messageContextDiv.html" ng-controller="ContextMenuCtl">
-    <ul class="dropdown-menu" role="menu">
-        <li>
-            <a class="pointer" role="menuitem" tabindex="1" ng-click="clicked('Clone')">Clone</a>
-        </li>
-        <li>
-            <a class="pointer" role="menuitem" tabindex="2" ng-click="clicked('Delete')">Delete</a>
-        </li>
-    </ul>
+<div class="dropdown position-fixed" id="messageContextDiv.html"
+	ng-controller="ContextMenuCtl">
+	<ul class="dropdown-menu" role="menu">
+		<li><a class="pointer" role="menuitem" tabindex="1"
+			ng-click="clicked('Clone')">Clone</a></li>
+		<li><a class="pointer" role="menuitem" tabindex="2"
+			ng-click="clicked('Delete')">Delete</a></li>
+	</ul>
 </div>
 
 <script type="text/ng-template" id="Metadata.html">

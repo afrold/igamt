@@ -40,8 +40,9 @@ module.exports = function(config) {
       'bower_components/ng-context-menu/dist/ng-context-menu.js',
       'bower_components/angular-local-storage/dist/angular-local-storage.js',
       'bower_components/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect.js',
-
-// gcr: Jasmine inject() will not execute if this file is included. 'app/lib/angular-mocks/angular-mocks.js',
+      "bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js",
+ 
+      // gcr: Jasmine inject() will not execute if this file is included. 'app/lib/angular-mocks/angular-mocks.js',
       'app/lib/utils.js',
       'app/lib/Objectid.js',
       'app/lib/angular-treetable/js/jquery.treetable.js',
@@ -51,9 +52,9 @@ module.exports = function(config) {
       'app/scripts/app.js',
       'app/scripts/**/*.js',
       'test/spec/services/**/ProfileAccessSvcTest.js',
-//      'test/spec/services/**/DeleteMessageSvcTest.js',
+      'test/spec/services/**/DeleteMessageSvcTest.js',
       'test/spec/services/**/ToCSvcTest.js',
-//      'test/spec/services/**/CloneDeleteMessageSvcTest.js',
+      'test/spec/services/**/CloneDeleteMessageSvcTest.js',
      { pattern:  'test/fixtures/profiles/*.json',
           watched:  true,
           served:   true,

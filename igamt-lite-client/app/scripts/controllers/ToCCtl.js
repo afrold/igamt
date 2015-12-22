@@ -8,10 +8,9 @@ angular
 						'$q',
 						'ToCSvc',
 						'ContextMenuSvc',
-						'DnDSvc',
 						'CloneDeleteMessageSvc',
 						function($scope, $rootScope, $q, ToCSvc,
-								ContextMenuSvc, DnDSvc, CloneDeleteMessageSvc) {
+								ContextMenuSvc, CloneDeleteMessageSvc) {
 							var ctl = this;
 							$scope.collapsed = [];
 							$scope.yesDrop = false;
@@ -77,24 +76,6 @@ angular
 								return $scope.subview;
 							};
 							
-// TODO gcr Either refactor this out or find a use for it.
-//							$scope.closedCtxMenu = function(node, $index) {
-//								var item = ContextMenuSvc.get();
-//								console.log("closedCtxMenu.item=" + item);
-//								switch (item) {
-//								case "Add":
-//									console.log("Add==>");
-//									break;
-//								case "Delete":
-//									console.log("Delete==>");
-//									break;
-//								default:
-//									console.log("Context menu defaulted with "
-//											+ item
-//											+ " Should be Add or Delete.");
-//								}
-//							};
-
 							$scope.closedCtxSubMenu = function(leaf, $index) {
 								var ctxMenuSelection = ContextMenuSvc.get();
 								switch (ctxMenuSelection) {
