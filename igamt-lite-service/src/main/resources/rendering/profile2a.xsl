@@ -16,15 +16,39 @@
 
 			<body style="font-family:Arial Narrow, Arial, sans-serif;">
 				<a name="top"></a>
+				<h1>
+					<a href="#messages">Messages</a>
+				</h1>
+				<xsl:apply-templates select="ConformanceProfile/MessagesDisplay"
+					mode="toc">
+					<xsl:sort select="@Position"></xsl:sort>
+				</xsl:apply-templates>
 				<br></br>
-				<a href="#messages">Messages</a>
+				<h1>
+					<a href="#segments">Segments and fields descriptions</a>
+				</h1>
+				<xsl:apply-templates select="ConformanceProfile/Segments"
+					mode="toc">
+					<xsl:sort select="@Label" data-type="text"></xsl:sort>
+				</xsl:apply-templates>
 				<br></br>
-				<a href="#segments">Segments and fields descriptions</a>
+				<h1>
+					<a href="#datatypes">Datatypes</a>
+				</h1>
+				<xsl:apply-templates select="ConformanceProfile/Datatypes"
+					mode="toc">
+					<xsl:sort select="@Label" data-type="text"></xsl:sort>
+				</xsl:apply-templates>
 				<br></br>
-				<a href="#datatypes">Datatypes</a>
+				<h1>
+					<a href="#valuesets">Value sets</a>
+				</h1>
+				<xsl:apply-templates select="ConformanceProfile/ValueSets"
+					mode="toc">
+					<xsl:sort select="@BindingIdentifier"></xsl:sort>
+				</xsl:apply-templates>
 				<br></br>
-				<a href="#valuesets">Value sets</a>
-				<br></br>
+				<hr></hr>
 
 				<!-- <xsl:value-of select="$inlineConstraints" /> -->
 
@@ -37,18 +61,20 @@
 				<a name="segments"></a>
 
 				<h2>
-					<u>Segments and fields description</u>
+					<u>Segments and fields descriptions</u>
 				</h2>
 				<xsl:apply-templates select="ConformanceProfile/Segments">
+					<xsl:sort select="@Name"></xsl:sort>
 				</xsl:apply-templates>
 				<a name="datatypes"></a>
 				<h2>
 					<u>Datatypes</u>
 				</h2>
 				<xsl:apply-templates select="ConformanceProfile/Datatypes">
+					<xsl:sort select="@ID"></xsl:sort>
 				</xsl:apply-templates>
 				<h2>
-					<u>Value sets definition</u>
+					<u>Value sets</u>
 				</h2>
 				<a name="valuesets"></a>
 				<xsl:apply-templates select="ConformanceProfile/ValueSets">
@@ -58,15 +84,26 @@
 		</html>
 	</xsl:template>
 
+	<xsl:template match="MessageDisplay" mode="toc">
+		<a href="#{@ID}">
+			<br></br>
+			<xsl:value-of select="@Name" />
+			-
+			<xsl:value-of select="@Description" />
+		</a>
+	</xsl:template>
+
+
 	<xsl:template match="MessageDisplay">
 		<h3 style="page-break-before: always">
+			<a id="{@ID}" name="{@ID}"></a>
 			<b>
 				<xsl:value-of select="@StructID" />
 				-
 				<xsl:value-of select="@Description" />
 			</b>
 		</h3>
-		<xsl:text>Comment:</xsl:text>
+		<!-- <xsl:text>Comment:</xsl:text> -->
 		<xsl:value-of select="Comment" />
 		<table width="1000" border="1" cellspacing="0" cellpadding="1">
 			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
@@ -136,8 +173,18 @@
 	</xsl:template>
 
 
+	<xsl:template match="Segment" mode="toc">
+		<a href="#{@ID}">
+			<br></br>
+			<xsl:value-of select="@Name" />
+			-
+			<xsl:value-of select="@Description" />
+		</a>
+	</xsl:template>
+
 	<xsl:template match="Segment">
 		<h3 style="page-break-before: always">
+			<a id="{@ID}" name="{@ID}"></a>
 			<xsl:value-of select="@Name" />
 			-
 			<xsl:value-of select="@Description" />
@@ -277,7 +324,7 @@
 				]
 			</td>
 			<td>
-				<xsl:value-of select="@Table" />
+				<xsl:value-of select="@Binding" />
 			</td>
 			<td>
 				<xsl:value-of select="@Comment" />
@@ -299,10 +346,19 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="Datatype">
 
-		<a name="datatypes"></a>
+	<xsl:template match="Datatype" mode="toc">
+		<a href="#{@ID}">
+			<br></br>
+			<xsl:value-of select="@Label" />
+			-
+			<xsl:value-of select="@Description" />
+		</a>
+	</xsl:template>
+
+	<xsl:template match="Datatype">
 		<h3 style="page-break-before: always">
+		<a id="{@ID}" name="{@ID}"></a>
 			<xsl:value-of select="@Label" />
 			-
 			<xsl:value-of select="@Description" />
@@ -416,7 +472,7 @@
 				]
 			</td>
 			<td>
-				<xsl:value-of select="@Table" />
+				<xsl:value-of select="@Binding" />
 			</td>
 			<td>
 				<xsl:value-of select="@Comment" />
@@ -425,7 +481,7 @@
 
 		<xsl:if test="normalize-space($inlineConstraints) = 'true'">
 
-		<xsl:if test="count(Constraint) &gt; 0">
+			<xsl:if test="count(Constraint) &gt; 0">
 				<tr>
 					<td></td>
 					<td style="background:#C0C0C0">
@@ -437,39 +493,30 @@
 				</tr>
 			</xsl:if>
 		</xsl:if>
- <!--	
- 		<xsl:if test="node()">
-			<xsl:choose>
-				<xsl:when test="normalize-space($inlineConstraints) = 'true'">
-					<tr>
-						<td></td>
-						<td style="background:#C0C0C0">
-							<xsl:value-of select="./Constraint/@Type" />
-						</td>
-						<td colspan="6" style="background:#C0C0C0">
-							<xsl:value-of select="./Constraint" />
-						</td>
-					</tr>
-				</xsl:when>
-				<xsl:otherwise>
-					<tr>
-						<td colspan="8" style="background:#C0C0C0" />
-					</tr>
-				</xsl:otherwise>
-			</xsl:choose>
-		</xsl:if>
---> 
+		<!-- <xsl:if test="node()"> <xsl:choose> <xsl:when test="normalize-space($inlineConstraints) 
+			= 'true'"> <tr> <td></td> <td style="background:#C0C0C0"> <xsl:value-of select="./Constraint/@Type" 
+			/> </td> <td colspan="6" style="background:#C0C0C0"> <xsl:value-of select="./Constraint" 
+			/> </td> </tr> </xsl:when> <xsl:otherwise> <tr> <td colspan="8" style="background:#C0C0C0" 
+			/> </tr> </xsl:otherwise> </xsl:choose> </xsl:if> -->
+	</xsl:template>
+
+	<xsl:template match="ValueSetDefinition" mode="toc">
+		<a href="#{@Id}">
+			<br></br>
+			<xsl:value-of select="@BindingIdentifier" />
+			-
+			<xsl:value-of select="@Description" />
+		</a>
 	</xsl:template>
 
 	<xsl:template match="ValueSetDefinition">
-
-		<a name="valuesets"></a>
-		<br></br>
 		<h3 style="page-break-before:auto">
+		<a id="{@Id}" name="{@Id}"></a>
 			<xsl:value-of select="@BindingIdentifier" />
-			:
+			-
 			<xsl:value-of select="@Name" />
 		</h3>
+		<xsl:text>Oid: </xsl:text><xsl:value-of select="@Oid"></xsl:value-of>
 		<table width="100%" border="1" cellspacing="0" cellpadding="0">
 			<col style="width:15%"></col>
 			<col style="width:15%"></col>
@@ -518,7 +565,7 @@
 				<xsl:value-of select="@Usage" />
 			</td>
 			<td>
-				<xsl:value-of select="@DisplayName" />
+				<xsl:value-of select="@Label" />
 			</td>
 		</tr>
 	</xsl:template>
