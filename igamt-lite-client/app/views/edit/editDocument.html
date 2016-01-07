@@ -13,9 +13,9 @@
                             <label>IGAMT Project Identifier</label>
                             <input type="text" ng-disabled="options.readonly"
                                    ng-class="{'has-error' : igMetaDataForm.identifier.$invalid && !igMetaDataForm.identifier.$pristine }"
-                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'identifier', profile.identifier)"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'identifier', profile.metaData.identifier)"
                                    name="profileIndentifier" class="form-control"
-                                   ng-model="profile.identifier"
+                                   ng-model="profile.metaData.identifier"
                                    required>
                         </div>
 
@@ -24,17 +24,17 @@
                             <label>IG Title</label>
                             <input type="text" ng-disabled="options.readonly"
                                    ng-class="{'has-error' : igMetaDataForm.name.$invalid && !igMetaDataForm.name.$pristine }"
-                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'name', profile.name)"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'name', profile.metaData.name)"
 
-                                   name="name" class="form-control" ng-model="profile.name"
+                                   name="name" class="form-control" ng-model="profile.metaData.name"
                                    required>
                         </div>
 
                         <div class="form-group left-content">
                             <label>IG Sub-Title</label>
                             <input type="text" name="subTitle" ng-disabled="options.readonly"
-                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'subTitle', profile.subTitle)"
-                                   class="form-control" ng-model="profile.subTitle"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'subTitle', profile.metaData.subTitle)"
+                                   class="form-control" ng-model="profile.metaData.subTitle"
                                    required>
                         </div>
                         <!--<div class="form-group"-->
