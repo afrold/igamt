@@ -105,7 +105,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 			ser.write(this.serializeProfileToDoc(profile));
 			return out;
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			logger.warn("IO Exception");
 			e1.printStackTrace();
 			return null;
 		}
@@ -187,39 +187,33 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		}
 
 		nu.xom.Element msd = new nu.xom.Element("MessagesDisplay");
-		for (Message m : profile.getMessages().getChildren()) {
+		List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
+		Collections.sort(msgList);
+
+		for (Message m : msgList) {
 			msd.appendChild(this.serializeMessageDisplay(m, profile.getSegments()));
 		}
 		e.appendChild(msd);
 
-		nu.xom.Element ms = new nu.xom.Element("Messages");
-		for (Message m : profile.getMessages().getChildren()) {
-			ms.appendChild(this.serializeMessage(m, profile.getSegments()));
-		}
-		e.appendChild(ms);
-
 		nu.xom.Element ss = new nu.xom.Element("Segments");
-		//              Not iterating with getSegments in order to retrieve positions; using getMessages().getChildren instead
-		//              for (Segment s : profile.getSegments().getChildren()) {
-		//                      ss.appendChild(this.serializeSegment(s, profile.getTables(), profile.getDatatypes()));
-		//              }
-		for (Message m : profile.getMessages().getChildren()) {
-			for (SegmentRefOrGroup srog: m.getChildren()){
-				if (srog instanceof SegmentRef) {
-					this.serializeSegment(ss, (SegmentRef) srog, profile.getSegments(), profile.getTables(), profile.getDatatypes());
-				} else if (srog instanceof Group) {
-					this.serializeGroup(ss, (Group) srog, profile.getSegments(), profile.getTables(), profile.getDatatypes());
-
-				}
-			}
+		List<Segment> sgtList = new ArrayList<>(profile.getSegments().getChildren());
+		Collections.sort(sgtList);
+		for (Segment s : sgtList) {
+			this.serializeSegment(ss, s, profile.getTables(), profile.getDatatypes());
 		}
 		e.appendChild(ss);
 
+
 		nu.xom.Element ds = new nu.xom.Element("Datatypes");
-		for (Datatype d : profile.getDatatypes().getChildren()) {
-			if (d.getLabel().contains("_")) {
-				ds.appendChild(this.serializeDatatype(d, profile.getTables(), profile.getDatatypes()));
-			}
+		List<Datatype> dtList = new ArrayList<>(profile.getDatatypes().getChildren());
+		Collections.sort(dtList);
+		for (Datatype d : dtList) {
+			//Old condition to serialize only flavoured datatypes
+			//			if (d.getLabel().contains("_")) {
+			//				ds.appendChild(this.serializeDatatype(d, profile.getTables(), profile.getDatatypes()));
+			//			}
+			ds.appendChild(this.serializeDatatype(d, profile.getTables(), profile.getDatatypes()));
+
 		}
 		e.appendChild(ds);
 
@@ -249,10 +243,10 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		elmTableDefinition.addAttribute(new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
 		elmTableDefinition.addAttribute(new Attribute("Extensibility", (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
 		elmTableDefinition.addAttribute(new Attribute("ContentDefinition", (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
-		
-		
-		
-		
+
+
+
+
 
 		if (t.getCodes() != null) {
 			for (Code c : t.getCodes()) {
@@ -260,7 +254,6 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 				elmTableElement.addAttribute(new Attribute("Value", (c.getValue() == null) ? "" : c.getValue()));
 				elmTableElement.addAttribute(new Attribute("Label",(c.getLabel() == null) ? "" : c.getLabel()));
 				elmTableElement.addAttribute(new Attribute("CodeSystem", (c.getCodeSystem() == null) ? "" : c.getCodeSystem()));
-				elmTableElement.addAttribute(new Attribute("CodeSystemVersion", (c.getCodeSystemVersion() == null) ? "" : c.getCodeSystemVersion()));
 				elmTableElement.addAttribute(new Attribute("Usage", (c.getCodeUsage() == null) ? "" : c.getCodeUsage()));
 				elmTableElement.addAttribute(new Attribute("Comments",(c.getComments() == null) ? "" : c.getComments()));
 				elmTableDefinition.appendChild(elmTableElement);
@@ -269,20 +262,20 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		return elmTableDefinition;
 	}
 
-	private void serializeGroup(nu.xom.Element ss, Group g, Segments segments, Tables tables, Datatypes datatypes
-			) {
-
-		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
-		Collections.sort(segsOrGroups);
-		for (SegmentRefOrGroup srog : segsOrGroups) {
-			if (srog instanceof SegmentRef) {
-				this.serializeSegment(ss, (SegmentRef) srog, segments, tables, datatypes);
-			} else if (srog instanceof Group) {
-				this.serializeGroup(ss, (Group) srog, segments, tables, datatypes);
-
-			}
-		}
-	}
+	//	private void serializeGroup(nu.xom.Element ss, Group g, Segments segments, Tables tables, Datatypes datatypes
+	//			) {
+	//
+	//		List<SegmentRefOrGroup> segsOrGroups = g.getChildren();
+	//		Collections.sort(segsOrGroups);
+	//		for (SegmentRefOrGroup srog : segsOrGroups) {
+	//			if (srog instanceof SegmentRef) {
+	//				this.serializeSegment(ss, (SegmentRef) srog, segments, tables, datatypes);
+	//			} else if (srog instanceof Group) {
+	//				this.serializeGroup(ss, (Group) srog, segments, tables, datatypes);
+	//
+	//			}
+	//		}
+	//	}
 
 
 	private void constructDatatypesMap(Element elmDatatypes, Profile profile) {
@@ -436,13 +429,13 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 	}
 
 	// private Datatype findDatatype(String key, Profile profile,
-			// Element elmDatatypes) {
-		// if (datatypesMap.containsKey(key)) {
-			// return datatypesMap.get(key);
-			// }
-		// NodeList datatypes = elmDatatypes.getElementsByTagName("Datatype");
-		// for (int i = 0; i < datatypes.getLength(); i++) {
-			// Element elmDatatype = (Element) datatypes.item(i);
+	// Element elmDatatypes) {
+	// if (datatypesMap.containsKey(key)) {
+	// return datatypesMap.get(key);
+	// }
+	// NodeList datatypes = elmDatatypes.getElementsByTagName("Datatype");
+	// for (int i = 0; i < datatypes.getLength(); i++) {
+	// Element elmDatatype = (Element) datatypes.item(i);
 	// if (elmDatatype.getAttribute("ID").equals(key)) {
 	// Datatype dt = this.deserializeDatatype(elmDatatype, profile,
 	// elmDatatypes);
@@ -480,6 +473,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 	private nu.xom.Element serializeMessageDisplay(Message m, Segments segments) {
 		nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
 		elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
+		elmMessage.addAttribute(new Attribute("Name", m.getName() + ""));
 		elmMessage.addAttribute(new Attribute("Type", m.getMessageType()));
 		elmMessage.addAttribute(new Attribute("Event", m.getEvent()));
 		elmMessage.addAttribute(new Attribute("StructID", m.getStructID()));
@@ -518,11 +512,12 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		nu.xom.Element elmGroup = new nu.xom.Element("Elt");
 		elmGroup.addAttribute(new Attribute("IdGpe", group.getId()));
 		elmGroup.addAttribute(new Attribute("Name", group.getName()));
+		elmGroup.addAttribute(new Attribute("Description", "BEGIN " + group.getName() + " GROUP"));
 		elmGroup.addAttribute(new Attribute("Usage", group.getUsage().value()));
 		elmGroup.addAttribute(new Attribute("Min", group.getMin() + ""));
 		elmGroup.addAttribute(new Attribute("Max", group.getMax()));
 		elmGroup.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + "["));
-		elmGroup.addAttribute(new Attribute("Comment", "BEGIN " + group.getName() + " GROUP"));
+		elmGroup.addAttribute(new Attribute("Comment", group.getComment()));
 		elmGroup.addAttribute(new Attribute("Position", group.getPosition().toString()));
 		elmDisplay.appendChild(elmGroup);
 
@@ -535,13 +530,13 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		}
 		nu.xom.Element elmGroup2 = new nu.xom.Element("Elt");
 		elmGroup2.addAttribute(new Attribute("IdGpe", group.getId()));
-		elmGroup2.addAttribute(new Attribute("Name", group.getName()));
+		elmGroup2.addAttribute(new Attribute("Name", "END " + group.getName() + " GROUP"));
+		elmGroup2.addAttribute(new Attribute("Description", "END " + group.getName() + " GROUP"));
 		elmGroup2.addAttribute(new Attribute("Usage", group.getUsage().value()));
 		elmGroup2.addAttribute(new Attribute("Min", group.getMin() + ""));
 		elmGroup2.addAttribute(new Attribute("Max", group.getMax()));
 		elmGroup2.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + "]"));
 		elmGroup2.addAttribute(new Attribute("Depth", String.valueOf(depth)));
-		elmGroup2.addAttribute(new Attribute("Comment", "END " + group.getName() + " GROUP"));
 		elmGroup2.addAttribute(new Attribute("Position", group.getPosition().toString()));
 		elmDisplay.appendChild(elmGroup2);
 
@@ -552,6 +547,8 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		elmSegment.addAttribute(new Attribute("IDRef", segmentRef.getId()));
 		elmSegment.addAttribute(new Attribute("IDSeg", segmentRef.getRef()));
 		elmSegment.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getName()));
+		elmSegment.addAttribute(new Attribute("Label", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getLabel()));
+		elmSegment.addAttribute(new Attribute("Description", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getDescription()));
 		elmSegment.addAttribute(new Attribute("Depth", String.valueOf(depth)));
 		elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage()
 				.value()));
@@ -563,83 +560,6 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		elmDisplay.appendChild(elmSegment);
 	}
 
-
-	private nu.xom.Element serializeMessage(Message m, Segments segments) {
-		nu.xom.Element elmMessage = new nu.xom.Element("Message");
-		elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
-		elmMessage.addAttribute(new Attribute("Type", m.getMessageType()));
-		elmMessage.addAttribute(new Attribute("Event", m.getEvent()));
-		elmMessage.addAttribute(new Attribute("StructID", m.getStructID()));
-		if (m.getDescription() != null && !m.getDescription().equals(""))
-			elmMessage.addAttribute(new Attribute("Description", m
-					.getDescription()));
-		if (m.getComment() != null && !m.getComment().equals("")) {
-			elmMessage.addAttribute(new Attribute("Comment", m.getComment()));
-		}
-		elmMessage.addAttribute(new Attribute("Position", m.getPosition().toString()));
-		//              if (m.getUsageNote() != null && !m.getUsageNote().equals("")) {
-		if (m.getUsageNote() != null) {
-			elmMessage.appendChild(this.serializeRichtext("UsageNote",m.getUsageNote()));
-		}
-
-
-		Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
-
-		for (SegmentRefOrGroup segmentRefOrGroup : m.getChildren()) {
-			segmentRefOrGroups.put(segmentRefOrGroup.getPosition(),
-					segmentRefOrGroup);
-		}
-
-		for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
-			SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
-			if (segmentRefOrGroup instanceof SegmentRef) {
-				elmMessage
-				.appendChild(serializeSegmentRef((SegmentRef) segmentRefOrGroup, segments));
-			} else if (segmentRefOrGroup instanceof Group) {
-				elmMessage
-				.appendChild(serializeGroup((Group) segmentRefOrGroup, segments));
-			}
-		}
-
-		return elmMessage;
-	}
-
-	private nu.xom.Element serializeGroup(Group group, Segments segments) {
-		nu.xom.Element elmGroup = new nu.xom.Element("Group");
-		elmGroup.addAttribute(new Attribute("IdGpe", group.getId()));
-		elmGroup.addAttribute(new Attribute("Name", group.getName()));
-		elmGroup.addAttribute(new Attribute("Usage", group.getUsage().value()));
-		elmGroup.addAttribute(new Attribute("Min", group.getMin() + ""));
-		elmGroup.addAttribute(new Attribute("Max", group.getMax()));
-		if (group.getComment() != null)
-			elmGroup.addAttribute(new Attribute("Comment", group.getComment()));
-		elmGroup.addAttribute(new Attribute("Position", group.getPosition().toString()));
-
-		for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
-			if (segmentRefOrGroup instanceof SegmentRef) {
-				elmGroup.appendChild(serializeSegmentRef((SegmentRef) segmentRefOrGroup, segments));
-			} else if (segmentRefOrGroup instanceof Group) {
-				elmGroup.appendChild(serializeGroup((Group) segmentRefOrGroup, segments));
-			}
-		}
-
-		return elmGroup;
-	}
-
-	private nu.xom.Element serializeSegmentRef(SegmentRef segmentRef, Segments segments) {
-		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
-		elmSegment.addAttribute(new Attribute("IDRef", segmentRef.getId()));
-		elmSegment.addAttribute(new Attribute("IDSeg", segmentRef.getRef()));
-		elmSegment.addAttribute(new Attribute("Ref", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getName()));
-		elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage()
-				.value()));
-		elmSegment.addAttribute(new Attribute("Min", segmentRef.getMin() + ""));
-		elmSegment.addAttribute(new Attribute("Max", segmentRef.getMax()));
-		if (segmentRef.getComment() != null)
-			elmSegment.addAttribute(new Attribute("Comment", segmentRef.getComment()));
-		elmSegment.addAttribute(new Attribute("Position", segmentRef.getPosition().toString()));
-		return elmSegment;
-	}
 
 	private nu.xom.Element serializeRichtext(String attribute, String richtext){
 		nu.xom.Element elmText1 = new nu.xom.Element("Text");
@@ -659,11 +579,12 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		return elmText1;
 	}
 
-	private void serializeSegment(nu.xom.Element ss, SegmentRef sr, Segments segments, Tables tables, Datatypes datatypes) {
-		Segment s = segments.findOneSegmentById(((SegmentRef) sr).getRef());
+
+	private void serializeSegment(nu.xom.Element ss, Segment s, Tables tables, Datatypes datatypes) {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 		elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
 		elmSegment.addAttribute(new Attribute("Name", s.getName()));
+		elmSegment.addAttribute(new Attribute("Label", s.getLabel()));
 		elmSegment
 		.addAttribute(new Attribute("Description", s.getDescription()));
 		if (s.getComment() != null){
@@ -710,7 +631,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 						.getConfLength()));
 			if (f.getTable() != null && !f.getTable().equals(""))
 				elmField.addAttribute(new Attribute("Binding", tables.findOneTableById(
-						f.getTable()).getBindingIdentifier()));
+						f.getTable()).getBindingIdentifier()+""));
 			if (f.getItemNo() != null && !f.getItemNo().equals(""))
 				elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
 			if (f.getComment() != null && !f.getText().equals(""))
@@ -811,12 +732,12 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 					elmComponent.appendChild(this.serializeRichtext("Text", c.getText()));
 				}
 
-				if (c.getTable() != null && !c.getTable().equals(""))
+				if (c.getTable() != null && !c.getTable().isEmpty())
 					if (tables.findOneTableById(c.getTable()) != null){
 						elmComponent.addAttribute(new Attribute("Binding", tables
 								.findOneTableById(c.getTable()).getBindingIdentifier() + ""));
 					} else {
-						logger.warn("Value set not found in library");
+						logger.warn("Value set not found in library " + c.getTable());
 						elmComponent.addAttribute(new Attribute("Binding", c.getTable()));
 					}
 

@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 
 //@Entity
 //@javax.persistence.Table(name = "CODE")
-public class Code extends DataModel implements Serializable, Cloneable {
+public class Code extends DataModel implements Serializable, Cloneable,Comparable<Code> {
 	/**
 	 * 
 	 */
@@ -114,6 +114,15 @@ public class Code extends DataModel implements Serializable, Cloneable {
 		clonedCode.setCodeSystem(codeSystem);
 
 		return clonedCode;
+	}
+
+	public int compareTo(Code o) {
+		int x = String.CASE_INSENSITIVE_ORDER.compare(this.getValue() != null && this.getLabel() != null ? this.getValue() + this.getLabel() : "",
+				o.getValue() != null && this.getLabel() != null ? o.getValue() + this.getLabel() : "");
+		if (x == 0) {
+			x = (this.getValue() != null  && this.getLabel() != null ? this.getValue() + this.getLabel() : "").compareTo(o.getValue() != null && this.getLabel() != null ? o.getValue()+o.getLabel(): "");
+		}
+		return x;
 	}
 
 }
