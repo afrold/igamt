@@ -7,8 +7,6 @@
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
-// gcr: Enables grunt server to access tomcat.
-var proxySnippet = require('grunt-connect-proxy/lib/utils').proxyRequest;
 
 module.exports = function (grunt) {
 
@@ -74,12 +72,6 @@ module.exports = function (grunt) {
                 hostname: 'localhost',
                 livereload: 35729
             },
-            proxies: [
-                      {
-                      context: '/igamt',
-                      host: 'localhost:8080'                   
-                     }
-                  ],
             livereload: {
                 options: {
                     open: false,
@@ -90,8 +82,7 @@ module.exports = function (grunt) {
                                 '/bower_components',
                                 connect.static('./bower_components')
                             ),
-                            connect.static(appConfig.app),
-                            proxySnippet
+                            connect.static(appConfig.app)
                         ];
                     }
                 }
