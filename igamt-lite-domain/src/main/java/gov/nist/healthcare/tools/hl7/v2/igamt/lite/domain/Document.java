@@ -1,6 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -132,6 +131,10 @@ public class Document extends DataModel implements java.io.Serializable,
 
 	public void setChildSections(Set<Section> childSections) {
 		this.childSections = childSections;
+	}
+	
+	public void makeDefaultDocument(){
+		//TODO
 	}
 	
 	
