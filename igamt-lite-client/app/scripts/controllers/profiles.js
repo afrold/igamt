@@ -500,7 +500,7 @@ angular.module('igl')
             var changes = angular.toJson($rootScope.changes);
             $rootScope.profile.accountId = userInfoService.getAccountID();
             var data = {"changes": changes, "profile": $rootScope.profile};
-            $http.post('api/profiles/' + $rootScope.profile.id + '/save', data, {timeout: 60000}).then(function (response) {
+            $http.post('api/profiles/save', data, {timeout: 60000}).then(function (response) {
                 var saveResponse = angular.fromJson(response.data);
                  $rootScope.profile.metaData.date = saveResponse.date;
                 $rootScope.profile.metaData.version = saveResponse.version;
