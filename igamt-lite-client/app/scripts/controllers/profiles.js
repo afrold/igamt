@@ -230,6 +230,7 @@ angular.module('igl')
                 } else if ($scope.igContext.igType.type === 'USER') {
                     $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
                         $rootScope.igs = angular.fromJson(response.data);
+                        console.log("igs=" + $rootScope.igs);
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
@@ -497,10 +498,11 @@ angular.module('igl')
         $scope.save = function () {
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
+            $rootScope.profile.accountId = userInfoService.getAccountID();
             var data = {"changes": changes, "profile": $rootScope.profile};
             $http.post('api/profiles/' + $rootScope.profile.id + '/save', data, {timeout: 60000}).then(function (response) {
                 var saveResponse = angular.fromJson(response.data);
-                $rootScope.profile.metaData.date = saveResponse.date;
+                 $rootScope.profile.metaData.date = saveResponse.date;
                 $rootScope.profile.metaData.version = saveResponse.version;
                 var found = $scope.findOne($rootScope.profile.id);
                 if (found != null) {
