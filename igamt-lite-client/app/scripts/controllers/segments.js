@@ -205,6 +205,27 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     });
     $scope.newConstraint.segment = $rootScope.segment.name;
     
+    $scope.initPredicate = function () {
+    	$scope.newConstraint = angular.fromJson({
+        	segment: '',
+            field_1: null,
+            component_1: null,
+            subComponent_1: null,
+            field_2: null,
+            component_2: null,
+            subComponent_2: null,
+            verb: null,
+            contraintType: null,
+            value: null,
+            trueUsage: null,
+            falseUsage: null,
+            valueSetId: null,
+            bindingStrength: 'R',
+            bindingLocation: '1'
+        });
+        $scope.newConstraint.segment = $rootScope.segment.name;
+    }
+    
     $scope.deletePredicate = function (predicate) {
         $rootScope.segment.predicates.splice($rootScope.segment.predicates.indexOf(predicate), 1);
         $rootScope.segmentPredicates.splice($rootScope.segmentPredicates.indexOf(predicate), 1);
@@ -304,7 +325,11 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         $rootScope.segment.predicates.push($scope.complexConstraint);
         $rootScope.segmentPredicates.push($scope.complexConstraint);
         var newCPBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: $scope.complexConstraint};
-        $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+        $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+        
+        $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
+        
+        $scope.complexConstraint = null;
     };
     
     $scope.compositeConformanceStatements = function(){
@@ -345,11 +370,17 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
     	
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
+    	
+    	$scope.firstConstraint = null;
+        $scope.secondConstraint = null;
+        $scope.compositeType = null;
     };
 
     $scope.updatePredicate = function () {
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
-        $scope.deletePredicateByTarget();
+        if($scope.constraintType === 'Plain'){
+        	$scope.deletePredicateByTarget();
+        }
 
         var position_1 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
         var position_2 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
@@ -860,6 +891,8 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
             	}
             }
         }
+        
+        $scope.initPredicate();
     };
 
     $scope.genPosition = function (segment, field, component, subComponent) {
@@ -921,6 +954,27 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         bindingLocation: '1'
     });
     $scope.newConstraint.segment = $rootScope.segment.name;
+    
+    $scope.initConformanceStatement = function () {
+    	$scope.newConstraint = angular.fromJson({
+            segment: '',
+            field_1: null,
+            component_1: null,
+            subComponent_1: null,
+            field_2: null,
+            component_2: null,
+            subComponent_2: null,
+            verb: null,
+            constraintId: null,
+            contraintType: null,
+            value: null,
+            valueSetId: null,
+            bindingStrength: 'R',
+            bindingLocation: '1'
+        });
+        $scope.newConstraint.segment = $rootScope.segment.name;
+    }
+    
 
     $scope.deleteConformanceStatement = function (conformanceStatement) {
         $rootScope.segment.conformanceStatements.splice($rootScope.segment.conformanceStatements.indexOf(conformanceStatement), 1);
@@ -1035,6 +1089,10 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         $rootScope.segmentConformanceStatements.push($scope.complexConstraint);
         var newCSBlock = {targetType: 'segment', targetId: $rootScope.segment.id, obj: $scope.complexConstraint};
         $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+        
+        $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
+        $scope.complexConstraint = null;
+        $scope.newComplexConstraintId = '';
     };
     
     $scope.compositeConformanceStatements = function(){
@@ -1069,6 +1127,10 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     	
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
+    	
+    	$scope.firstConstraint = null;
+        $scope.secondConstraint = null;
+        $scope.compositeType = null;
     };
 
     $scope.addConformanceStatement = function () {
@@ -1373,6 +1435,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                 }
             }
         }
+        $scope.initConformanceStatement();
     };
 
     $scope.ok = function () {

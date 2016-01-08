@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "messages")
-public class Messages implements java.io.Serializable, Cloneable {
+public class Messages extends SectionModel implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 

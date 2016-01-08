@@ -58,6 +58,7 @@
                                     <div class="form-group"
                                          ng-class="{'has-error' : datatypeMetaDataForm.label.$invalid && !datatypeMetaDataForm.label.$pristine }">
                                         <label>Label</label>
+										<span style="color:red" ng-show="isDuplicated(datatype,'label', datatypes)">Existing label (flavor name)</span>
                                         <input type="text" ng-disabled="options.readonly"
                                                ng-change="recordDatatypeChange('datatype','edit',datatype.id,'label', datatype.label)"
                                                name="label" class="form-control" ng-model="datatype.label"
@@ -757,7 +758,8 @@
     <table ng-show="constraintType == 'Complex'" class="table table-striped table-bordered">
         <thead>
         <tr class="tbl-header">
-            <th class="col-md-9">Desciption</th>
+			<th class="col-md-1">ID</th>
+            <th class="col-md-8">Desciption</th>
             <th class="col-md-1">True Usage</th>
             <th class="col-md-1">False Usage</th>
             <th class="col-md-1"></th>
@@ -765,7 +767,8 @@
         </thead>
         <tbody>
         <tr ng-repeat="p in newComplexConstraint">
-            <td class="col-md-9">{{p.description}}</td>
+			<td class="col-md-1">{{p.constraintId}}</td>
+            <td class="col-md-8">{{p.description}}</td>
             <td class="col-md-1">{{p.trueUsage}}</td>
             <td class="col-md-1">{{p.falseUsage}}</td>
             <td class="col-md-1">
@@ -801,21 +804,17 @@
                         ng-model="compositeType">
                     <option value="AND">AND</option>
                     <option value="OR">OR</option>
-                    <option value="IFTHEN">IFTHEN</option>
                 </select>
             </td>
             <td class="col-md-1">
-                <button title="Composite Two Constraints" type="button" class="btn btn-xs btn-success"
-                        ng-click="compositeConformanceStatements()">
+				<a ng-click="compositeConformanceStatements()" class="point">
                     <span><i class="fa fa-link fa-fw"></i></span>
-                </button>
+                </a>
             </td>
         </tr>
         <tr>
             <td class="col-md-2">Add Complex Constraint:</td>
             <td class="col-md-9">
-                <span>Complex Constraint ID: </span>
-                <input class="igl-input" ng-model="newComplexConstraintId" type="text"/>
                 <span>Complex Constraint: </span>
                 <select name="complexConstraintSelect"
                         ng-model="complexConstraint"
@@ -823,10 +822,9 @@
                 </select>
             </td>
             <td class="col-md-1">
-                <button title="Add Complex Constraint" type="button" class="btn btn-xs btn-success"
-                        ng-click="addComplexConformanceStatement()">
-                    <span><i class="fa fa-plus-circle fa-fw"></i></span>
-                </button>
+				<a ng-click="addComplexConformanceStatement()" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
             </td>
         </tr>
         </tbody>
@@ -1044,10 +1042,13 @@
             </td>
 
             <td class="col-md-1" colspan="1">
-                <button title="Update Predicate" type="button" class="btn btn-xs btn-success"
-                        ng-click="updatePredicate()">
-                    <span><i class="fa fa-plus-circle fa-fw"></i></span>
-                </button>
+				<a ng-click="initPredicate()" class="point">
+                	<span><i class="fa fa-times fa-fw"></i></span>
+                </a>
+							
+				<a ng-click="updatePredicate()" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
             </td>
         </tr>
         </tbody>
@@ -1152,10 +1153,9 @@
                 </select>
             </td>
             <td class="col-md-1">
-                <button title="Composite Two Constraints" type="button" class="btn btn-xs btn-success"
-                        ng-click="compositeConformanceStatements()">
+				<a ng-click="compositeConformanceStatements()" class="point">
                     <span><i class="fa fa-link fa-fw"></i></span>
-                </button>
+                </a>
             </td>
         </tr>
         <tr>
@@ -1170,10 +1170,9 @@
                 </select>
             </td>
             <td class="col-md-1">
-                <button title="Add Complex Constraint" type="button" class="btn btn-xs btn-success"
-                        ng-click="addComplexConformanceStatement()">
-                    <span><i class="fa fa-plus-circle fa-fw"></i></span>
-                </button>
+				<a ng-click="addComplexConformanceStatement()" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
             </td>
         </tr>
         </tbody>
@@ -1381,10 +1380,13 @@
 
             </td>
             <td class="col-md-1" colspan="1">
-                <button title="Add Conformance Statement" type="button" class="btn btn-xs btn-success"
-                        ng-click="addConformanceStatement()">
-                    <span><i class="fa fa-plus-circle fa-fw"></i></span>
-                </button>
+				<a ng-click="initConformanceStatement()" class="point">
+                	<span><i class="fa fa-times fa-fw"></i></span>
+                </a>
+							
+				<a ng-click="addConformanceStatement()" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
             </td>
         </tr>
         </tbody>

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 @JsonSubTypes({
 		@JsonSubTypes.Type(value = Group.class, name = Constant.GROUP),
 		@JsonSubTypes.Type(value = SegmentRef.class, name = Constant.SEGMENTREF) })
-public abstract class SegmentRefOrGroup extends DataModelWithConstraints implements
+public abstract class SegmentRefOrGroup extends SectionModelWithConstraints implements
 		java.io.Serializable, Comparable<SegmentRefOrGroup> {
 
 	private static final long serialVersionUID = 1L;
