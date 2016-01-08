@@ -135,7 +135,6 @@ public class ProfileController extends CommonController {
 				.getUsername());
 		if(account == null){
 			throw new UserAccountNotFoundException();
-
 		}
 		return profileService.findByAccountId(account.getId());
  	}
@@ -203,8 +202,9 @@ public class ProfileController extends CommonController {
 				.getUsername());
 		if (account == null)
 			throw new UserAccountNotFoundException();
-		log.info("Applying changes to profile=" + id);
-		Profile p = findProfile(id);
+		log.info("Applying changes to profile=" + id + " for account=" + command.getProfile().getAccountId());
+// gcr Profile p is not being used; causes an error when id = null.		
+//		Profile p = findProfile(id);
 		Profile saved = profileService.apply(command.getProfile());
 		return new ProfileSaveResponse(saved.getMetaData().getDate(), saved
 				.getMetaData().getVersion());
