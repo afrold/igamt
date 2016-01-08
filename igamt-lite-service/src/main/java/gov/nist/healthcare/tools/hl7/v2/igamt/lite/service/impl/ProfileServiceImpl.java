@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.input.NullInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -43,6 +45,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
+
+	Logger log = LoggerFactory.getLogger(ProfileServiceImpl.class);
 
 	@Autowired
 	private ProfileRepository profileRepository;
@@ -136,6 +140,7 @@ public class ProfileServiceImpl implements ProfileService {
 		// processChildren(profile);
 		// }
 		// }
+		log.debug("User profiles found=" + profiles.size());
 		return profiles;
 	}
 
