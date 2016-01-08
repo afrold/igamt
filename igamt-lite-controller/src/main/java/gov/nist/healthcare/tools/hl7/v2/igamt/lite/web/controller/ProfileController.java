@@ -193,16 +193,15 @@ public class ProfileController extends CommonController {
 		}
 	}
 
-	@RequestMapping(value = "/{id}/save", method = RequestMethod.POST)
-	public ProfileSaveResponse save(@RequestBody ProfileChangeCommand command,
-			@PathVariable("id") String id) throws ProfileNotFoundException,
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public ProfileSaveResponse save(@RequestBody ProfileChangeCommand command) throws ProfileNotFoundException,
 			UserAccountNotFoundException, ProfileSaveException {
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u
 				.getUsername());
 		if (account == null)
 			throw new UserAccountNotFoundException();
-		log.info("Applying changes to profile=" + id + " for account=" + command.getProfile().getAccountId());
+		log.info("Applying changes to profile=" + command.getProfile().getId() + " for account=" + command.getProfile().getAccountId());
 // gcr Profile p is not being used; causes an error when id = null.		
 //		Profile p = findProfile(id);
 		Profile saved = profileService.apply(command.getProfile());
