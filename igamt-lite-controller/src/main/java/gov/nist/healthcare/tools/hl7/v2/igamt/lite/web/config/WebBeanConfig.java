@@ -42,6 +42,7 @@ public class WebBeanConfig {
 		config.setCodeSources(toSet(new String[] { "HL7", "Local", "Redefined",
 				"SDO" }));
 		config.setTableStabilities(toSet(new String[] { "Static", "Dynamic" }));
+		config.setTableContentDefinitions(toSet(new String[] { "Extensional", "Intensional" }));
 		config.setTableExtensibilities(toSet(new String[] { "Open", "Close" }));
 		config.setConstraintVerbs(toSet(new String[] { "SHALL be", "SHALL NOT be", "is", "is not" }));
 		config.setConstraintTypes(toSet(new String[] { 

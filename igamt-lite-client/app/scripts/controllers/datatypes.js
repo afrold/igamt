@@ -373,6 +373,27 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
         bindingLocation: '1'
     });
     $scope.newConstraint.datatype = $rootScope.datatype.name;
+    
+    
+    $scope.initConformanceStatement = function () {
+    	$scope.newConstraint = angular.fromJson({
+            datatype: '',
+            component_1: null,
+            subComponent_1: null,
+            component_2: null,
+            subComponent_2: null,
+            verb: null,
+            constraintId: null,
+            contraintType: null,
+            value: null,
+            valueSetId: null,
+            bindingStrength: 'R',
+            bindingLocation: '1'
+        });
+        $scope.newConstraint.datatype = $rootScope.datatype.name;
+    }
+    
+    
 
     $scope.deleteConformanceStatement = function (conformanceStatement) {
         $rootScope.datatype.conformanceStatements.splice($rootScope.datatype.conformanceStatements.indexOf(conformanceStatement), 1);
@@ -471,6 +492,11 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
     	$rootScope.datatypeConformanceStatements.push($scope.complexConstraint);
         var newCSBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: $scope.complexConstraint};
         $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+        
+        $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
+        
+        $scope.complexConstraint = null;
+        $scope.newComplexConstraintId = '';
     };
     
     $scope.compositeConformanceStatements = function(){
@@ -505,6 +531,10 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
     	
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
+    	
+    	$scope.firstConstraint = null;
+        $scope.secondConstraint = null;
+        $scope.compositeType = null;
     };
 
     $scope.addConformanceStatement = function () {
@@ -806,6 +836,8 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                 }
             }
         }
+        
+        $scope.initConformanceStatement();
     };
 
     $scope.ok = function () {
@@ -840,6 +872,26 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
         bindingLocation: '1'
     });
     $scope.newConstraint.datatype = $rootScope.datatype.name;
+    
+    $scope.initPredicate = function () {
+    	$scope.newConstraint = angular.fromJson({
+            datatype: '',
+            component_1: null,
+            subComponent_1: null,
+            component_2: null,
+            subComponent_2: null,
+            verb: null,
+            contraintType: null,
+            value: null,
+            trueUsage: null,
+            falseUsage: null,
+            valueSetId: null,
+            bindingStrength: 'R',
+            bindingLocation: '1'
+        });
+        $scope.newConstraint.datatype = $rootScope.datatype.name;
+    }
+    
     
     $scope.deletePredicateForComplex = function (predicate) {
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(predicate), 1);
@@ -948,7 +1000,11 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
         $rootScope.datatype.predicates.push($scope.complexConstraint);
         $rootScope.datatypePredicates.push($scope.complexConstraint);
         var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: $scope.complexConstraint};
-        $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock)
+        $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+        $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
+        
+        $scope.complexConstraint = null;
+        
     };
     
     $scope.compositeConformanceStatements = function(){
@@ -989,13 +1045,19 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
     	
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
+    	
+    	$scope.firstConstraint = null;
+        $scope.secondConstraint = null;
+        $scope.compositeType = null;
     };
     
 
     $scope.updatePredicate = function () {
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
-        $scope.deletePredicateByTarget();
-
+        if ($scope.constraintType === 'Plain'){
+        	$scope.deletePredicateByTarget();
+        }
+        
         var position_1 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
         var position_2 = $scope.genPosition($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
         var location_1 = $scope.genLocation($scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
@@ -1504,6 +1566,8 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             	}
             }
         }
+        
+        $scope.initPredicate();
     };
 
     $scope.ok = function () {

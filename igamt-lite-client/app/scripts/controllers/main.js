@@ -906,6 +906,15 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
             }
         });
     };
+    
+    
+    $rootScope.isDuplicated = function (obj, context, list) {
+    	if(obj == null || obj == undefined) return false;
+    	
+    	return _.find(_.without(list, obj), function(item) {
+            return item[context] == obj[context];
+        });
+    };
 
     $scope.init = function(){
 //        $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {

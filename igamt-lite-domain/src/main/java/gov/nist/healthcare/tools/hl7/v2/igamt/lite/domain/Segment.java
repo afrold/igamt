@@ -13,7 +13,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "segment")
-public class Segment extends DataModelWithConstraints implements java.io.Serializable,
+public class Segment extends SectionModelWithConstraints implements java.io.Serializable,
 Cloneable, Comparable<Segment> {
 
 	private static final long serialVersionUID = 1L;

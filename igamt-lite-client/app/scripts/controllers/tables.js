@@ -4,6 +4,8 @@
 
 angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout) {
     $scope.readonly = false;
+    $scope.codeSysEditMode = false;
+    $scope.codeSysForm = {};;
     $scope.saved = false;
     $scope.message = false;
     $scope.params = null;
@@ -31,13 +33,25 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
     };
     
-    $scope.addCodeSystem = function (codeSystem) {
-    	if($rootScope.codeSystems.indexOf(codeSystem) < 0){
-    		if(codeSystem && codeSystem !== ''){
-    			$rootScope.codeSystems.push(codeSystem);
+    
+    $scope.makeCodeSystemEditable = function () {
+    	$scope.codeSysEditMode = true;
+    };
+    
+    
+    $scope.addCodeSystem = function () {
+    	if($rootScope.codeSystems.indexOf($scope.codeSysForm.str) < 0){
+    		if($scope.codeSysForm.str && $scope.codeSysForm.str !== ''){
+    			$rootScope.codeSystems.push($scope.codeSysForm.str);
     		}
 		}
+    	$scope.codeSysForm.str = '';
+    	$scope.codeSysEditMode = false;
     };
+    
+    $scope.delCodeSystem = function (value) {
+    	$rootScope.codeSystems.splice($rootScope.codeSystems.indexOf(value), 1);
+    }
     
     $scope.updateCodeSystem = function (table,codeSystem) {
     	for (var i = 0; i < $rootScope.table.codes.length; i++) {
@@ -51,9 +65,9 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         var newValue = {
             id: new ObjectId().toString(),
             type: 'value',
-            value: 'newValue' + $rootScope.newValueFakeId,
-            label: 'newDescription',
-            codeSystem: 'NA',
+            value: '',
+            label: '',
+            codeSystem: null,
             codeUsage: 'E'
         };
 
@@ -111,7 +125,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     	}
         return false;
     };
-
+    
     $scope.isNewValue = function (id) {
         return $scope.isNewObject('value', 'add', id);
     };
@@ -164,6 +178,18 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.tables.push(newTable);
         $rootScope.table = newTable;
         $rootScope.tablesMap[newTable.id] = newTable;
+        
+        $rootScope.codeSystems = [];
+        
+        for (var i = 0; i < $rootScope.table.codes.length; i++) {
+        	if($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0){
+        		if($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== ''){
+        			$rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+        		}
+			}
+    	}
+        
+        
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
     };
 
