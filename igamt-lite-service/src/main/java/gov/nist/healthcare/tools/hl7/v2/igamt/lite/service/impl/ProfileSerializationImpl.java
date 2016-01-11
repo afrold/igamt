@@ -337,12 +337,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					for (Predicate p : byID.getPredicates()) {
 						result.add(p);
 					}
-				}else if (byNameOrByID instanceof ByName) {
-					ByName byName = (ByName) byNameOrByID;
-					if (byName.getByName().equals(name)) {
-						for (Predicate p : byName.getPredicates()) {
-							result.add(p);
-						}
+				}
+			} else if (byNameOrByID instanceof ByName) {
+				ByName byName = (ByName) byNameOrByID;
+				if (byName.getByName().equals(name)) {
+					for (Predicate p : byName.getPredicates()) {
+						result.add(p);
 					}
 				}
 			}

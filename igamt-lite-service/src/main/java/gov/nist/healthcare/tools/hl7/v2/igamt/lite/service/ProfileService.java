@@ -17,16 +17,18 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Document;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 public interface ProfileService {
+	
+	public Document save(Document d) throws Exception;
 
 	public Profile save(Profile p) throws ProfileException;
 

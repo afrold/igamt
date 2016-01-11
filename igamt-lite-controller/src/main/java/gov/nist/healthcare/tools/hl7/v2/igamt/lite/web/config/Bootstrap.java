@@ -15,6 +15,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Document;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
@@ -44,6 +45,17 @@ public class Bootstrap implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 //		init();
+		
+		
+		Profile p = profileService.findOne("5668a21c3004b6719c64af1f");
+		Document d = new Document();
+		d.addProfile(p);
+		
+		System.out.println("WOORION-WOO");
+		System.out.println(d);
+		
+		profileService.save(d);
+		
 	} 
 	
 	private void init()throws Exception {
