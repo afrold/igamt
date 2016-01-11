@@ -317,24 +317,27 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 	}
 
 	private void deserializeXMLToContext(Element elmContext, Context contextObj) {
-		NodeList nodes = elmContext.getChildNodes();
+		if(elmContext != null){
+			NodeList nodes = elmContext.getChildNodes();
 
-		for (int i = 0; i < nodes.getLength(); i++) {
-			if (nodes.item(i).getNodeName().equals("ByName")) {
-				ByName byNameObj = new ByName();
-				Element elmByName = (Element) nodes.item(i);
-				byNameObj.setByName(elmByName.getAttribute("Name"));
-				deserializeXMLToConstraints(elmByName, byNameObj);
-				contextObj.getByNameOrByIDs().add(byNameObj);
-			} else if (nodes.item(i).getNodeName().equals("ByID")) {
-				ByID byIDObj = new ByID();
-				Element elmByID = (Element) nodes.item(i);
-				byIDObj.setByID(elmByID.getAttribute("ID"));
-				deserializeXMLToConstraints(elmByID, byIDObj);
-				contextObj.getByNameOrByIDs().add(byIDObj);
+			for (int i = 0; i < nodes.getLength(); i++) {
+				if (nodes.item(i).getNodeName().equals("ByName")) {
+					ByName byNameObj = new ByName();
+					Element elmByName = (Element) nodes.item(i);
+					byNameObj.setByName(elmByName.getAttribute("Name"));
+					deserializeXMLToConstraints(elmByName, byNameObj);
+					contextObj.getByNameOrByIDs().add(byNameObj);
+				} else if (nodes.item(i).getNodeName().equals("ByID")) {
+					ByID byIDObj = new ByID();
+					Element elmByID = (Element) nodes.item(i);
+					byIDObj.setByID(elmByID.getAttribute("ID"));
+					deserializeXMLToConstraints(elmByID, byIDObj);
+					contextObj.getByNameOrByIDs().add(byIDObj);
+				}
+
 			}
-
 		}
+		
 	}
 
 	private void deserializeXMLToConstraints(Element elmByNameOrByID,
