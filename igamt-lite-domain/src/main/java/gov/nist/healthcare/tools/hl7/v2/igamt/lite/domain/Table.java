@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * 
  */
 @Document(collection = "table")
-public class Table extends DataModel implements Serializable,
+public class Table extends SectionModel implements Serializable,
 		Comparable<Table>, Cloneable {
 
 	/**

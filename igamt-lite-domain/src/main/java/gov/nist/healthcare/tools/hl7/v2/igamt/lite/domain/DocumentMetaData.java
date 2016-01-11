@@ -12,6 +12,7 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 	private String title;
 	private String version;
 	private String date;
+	private String ext = "";
 	
 	
 	public String getName() {
@@ -39,6 +40,13 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 		this.date = date;
 	}
 	
+	public String getExt() {
+		return ext;
+	}
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
+	
 	@Override
 	public DocumentMetaData clone() throws CloneNotSupportedException {
 		DocumentMetaData clonedDocumentMetaData = new DocumentMetaData();
@@ -47,9 +55,8 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 		clonedDocumentMetaData.setTitle(title);
 		clonedDocumentMetaData.setVersion(version);
 		clonedDocumentMetaData.setDate(date);
+		clonedDocumentMetaData.setExt(ext);
 
 		return clonedDocumentMetaData;
 	}
-	
-	
 }

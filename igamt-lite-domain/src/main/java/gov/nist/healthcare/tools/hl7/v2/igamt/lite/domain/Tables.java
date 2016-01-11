@@ -9,7 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "tables")
-public class Tables extends DataModel implements Serializable, Cloneable {
+public class Tables extends SectionModel implements Serializable, Cloneable {
 
 	/**
 	 * 

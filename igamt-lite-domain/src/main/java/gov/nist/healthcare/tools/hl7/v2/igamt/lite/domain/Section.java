@@ -19,6 +19,13 @@ public class Section extends SectionModel implements java.io.Serializable,Clonea
 		this.id = ObjectId.get().toString();
 	}
 	
+	public Section(String title) {
+		super();
+		this.type = Constant.SECTION;
+		this.id = ObjectId.get().toString();
+		this.sectionTitle = title;
+	}
+	
 	@Id
 	private String id;
 	
