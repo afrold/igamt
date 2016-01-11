@@ -47,14 +47,14 @@ public class Bootstrap implements InitializingBean {
 //		init();
 		
 		
-		Profile p = profileService.findOne("5668a21c3004b6719c64af1f");
-		Document d = new Document();
-		d.addProfile(p);
-		
-		System.out.println("WOORION-WOO");
-		System.out.println(d);
-		
-		profileService.save(d);
+//		Profile p = profileService.findOne("5668a21c3004b6719c64af1f");
+//		Document d = new Document();
+//		d.addProfile(p);
+//		
+//		System.out.println("WOORION-WOO");
+//		System.out.println(d);
+//		
+//		profileService.save(d);
 		
 	} 
 	
