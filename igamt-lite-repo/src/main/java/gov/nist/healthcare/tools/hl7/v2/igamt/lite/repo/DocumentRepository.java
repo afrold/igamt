@@ -17,9 +17,9 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Document;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
- public interface DocumentRepository  extends MongoRepository<Document, String>   {
+ public interface DocumentRepository  extends MongoRepository<IGDocument, String>   {
 }

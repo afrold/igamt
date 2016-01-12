@@ -33,7 +33,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageByListCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileConfiguration;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
@@ -151,7 +151,7 @@ public class ProfileController extends CommonController {
 			throw new UserAccountNotFoundException();
 		Profile p = findProfile(id);
 		p.setId(null);
-		p.setScope(ProfileScope.USER);
+		p.setScope(IGDocumentScope.USER);
 		p.setAccountId(account.getId());
 		p.setBaseId(p.getBaseId() != null ? p.getBaseId() : id);
 		p.setSourceId(id);

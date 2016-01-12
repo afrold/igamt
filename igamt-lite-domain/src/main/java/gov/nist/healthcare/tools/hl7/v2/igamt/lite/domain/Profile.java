@@ -16,7 +16,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Document(collection = "profile")
 public class Profile extends SectionModel implements java.io.Serializable,
 		Cloneable {
 
@@ -25,10 +24,10 @@ public class Profile extends SectionModel implements java.io.Serializable,
 	public Profile() {
 		super();
 		this.type = Constant.PROFILE;
-		scope = ProfileScope.PRELOADED;
+		scope = IGDocumentScope.PRELOADED;
 	}
 
-	private ProfileScope scope;
+	private IGDocumentScope scope;
 
 	@Id
 	private String id;
@@ -152,11 +151,11 @@ public class Profile extends SectionModel implements java.io.Serializable,
 		this.tables = tables;
 	}
 
-	public ProfileScope getScope() {
+	public IGDocumentScope getScope() {
 		return scope;
 	}
 
-	public void setScope(ProfileScope scope) {
+	public void setScope(IGDocumentScope scope) {
 		this.scope = scope;
 	}
 

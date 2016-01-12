@@ -6,7 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.ProfileController;
@@ -92,7 +92,7 @@ public class ProfileControllerIntegrationTest {
 			p.getMetaData().setSubTitle("Test NIST");
 			p.getMetaData().setVersion("1.0");
 			p.getMetaData().setDate("April 16th 2015");
-			p.setScope(ProfileScope.PRELOADED);
+			p.setScope(IGDocumentScope.PRELOADED);
 
 			Profile clone = p.clone();
 			return clone;

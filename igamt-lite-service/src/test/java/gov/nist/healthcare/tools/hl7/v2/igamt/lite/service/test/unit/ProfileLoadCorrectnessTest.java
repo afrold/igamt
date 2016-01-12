@@ -55,7 +55,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
@@ -107,7 +107,7 @@ public class ProfileLoadCorrectnessTest {
 	DBCollection collection = db.getCollection("profile");
 
 	for (String hl7version : Arrays.asList("2.1", "2.2", "2.3", "2.3.1", "2.4", "2.5", "2.5.1", "2.6", "2.7")){
-	if (profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7version).isEmpty()){
+	if (profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7version).isEmpty()){
 	{
 	logger.debug("Profile " + hl7version + " not found");
 	try {
@@ -127,7 +127,7 @@ public class ProfileLoadCorrectnessTest {
 
 	//Retrieve profile version 2.5.1
 	String hl7version = "2.5.1";
-	p = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7version).get(0);
+	p = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7version).get(0);
 
 	// String profileJson = IOUtils.toString(this.getClass().getClassLoader().getResource("profilesStandardJson/profile-"+hl7version+".json"));
 	// logger.debug("%%% "+this.getClass().getClassLoader().getResource("profilesStandardJson/profile-"+hl7version+".json").getPath());
@@ -156,7 +156,7 @@ public class ProfileLoadCorrectnessTest {
 		assertEquals((String) jsonObject.get("comment"), p.getComment());
 		assertEquals((String) jsonObject.get("type"), p.getType());
 		assertEquals((String) jsonObject.get("usageNote"), p.getUsageNote());
-		assertEquals(ProfileScope.valueOf((String) jsonObject.get("scope")), p.getScope());
+		assertEquals(IGDocumentScope.valueOf((String) jsonObject.get("scope")), p.getScope());
 		assertEquals((String) jsonObject.get("changes"), p.getChanges());
 		assertEquals(readLong(jsonObject, "accountId"), p.getAccountId());
 		assertEquals(jsonObject.get("baseId"), p.getBaseId());

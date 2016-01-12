@@ -18,7 +18,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 	
 	 List<Profile> findByAccountId(Long accountId);
 
-	 List<Profile> findByScope(ProfileScope scope);
+	 List<Profile> findByScope(IGDocumentScope scope);
 	 
-	 List<Profile> findByScopeAndMetaData_Hl7Version(ProfileScope scope, String hl7version);
+	 List<Profile> findByScopeAndMetaData_Hl7Version(IGDocumentScope scope, String hl7version);
 }

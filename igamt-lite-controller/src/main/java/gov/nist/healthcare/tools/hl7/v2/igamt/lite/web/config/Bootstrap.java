@@ -11,15 +11,16 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Document;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -45,18 +46,24 @@ public class Bootstrap implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 //		init();
+		init2();
 		
-		
-//		Profile p = profileService.findOne("5668a21c3004b6719c64af1f");
-//		Document d = new Document();
-//		d.addProfile(p);
-//		
-//		System.out.println("WOORION-WOO");
-//		System.out.println(d);
-//		
-//		profileService.save(d);
 		
 	} 
+	
+	private void init2() throws Exception {
+		
+		List<Profile> profiles = profileService.findAllUserProfiles();
+		
+		for(Profile p:profiles){
+			if(p.getScope().equals(IGDocumentScope.USER)){
+				IGDocument d = new IGDocument();
+				d.addProfile(p);
+				profileService.save(d);
+			}
+			
+		}
+	}
 	
 	private void init()throws Exception {
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
@@ -75,7 +82,7 @@ public class Bootstrap implements InitializingBean {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		profile.getMetaData().setDate(
 				dateFormat.format(Calendar.getInstance().getTime()));
-		profile.setScope(ProfileScope.PRELOADED);
+		profile.setScope(IGDocumentScope.PRELOADED);
 		profile.getMetaData().setHl7Version("2.5.1");
 		profileService.save(profile);
 

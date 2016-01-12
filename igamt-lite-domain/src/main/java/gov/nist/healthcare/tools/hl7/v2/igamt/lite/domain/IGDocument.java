@@ -4,13 +4,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class Document extends DataModel implements java.io.Serializable,
+@Document(collection = "igdocument")
+public class IGDocument extends DataModel implements java.io.Serializable,
 		Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	public Document() {
+	public IGDocument() {
 		super();
 		this.type = Constant.Document;
 	}
@@ -24,18 +26,18 @@ public class Document extends DataModel implements java.io.Serializable,
 
 	private String usageNote = "";
 
-	private String changes = "";
-
 	private DocumentMetaData documentMetaData;
 	
 	private Profile profile;
+	
+	private IGDocumentScope scope;
 
 	private Set<Section> childSections = new HashSet<Section>();
 	
 	
 	@Override
-	public Document clone() throws CloneNotSupportedException {
-		Document clonedDocument = new Document();
+	public IGDocument clone() throws CloneNotSupportedException {
+		IGDocument clonedDocument = new IGDocument();
 		clonedDocument.setDocumentMetaData(documentMetaData.clone());
 		clonedDocument.setProfile(profile.clone());
 		clonedDocument.setChildSections(new HashSet<Section>());
@@ -190,17 +192,6 @@ public class Document extends DataModel implements java.io.Serializable,
 		this.usageNote = usageNote;
 	}
 
-
-	public String getChanges() {
-		return changes;
-	}
-
-
-	public void setChanges(String changes) {
-		this.changes = changes;
-	}
-
-
 	public DocumentMetaData getDocumentMetaData() {
 		return documentMetaData;
 	}
@@ -233,6 +224,17 @@ public class Document extends DataModel implements java.io.Serializable,
 	public void makeDefaultDocument(){
 		//TODO
 	}
+
+
+	public IGDocumentScope getScope() {
+		return scope;
+	}
+
+
+	public void setScope(IGDocumentScope scope) {
+		this.scope = scope;
+	}
+	
 	
 	
 }

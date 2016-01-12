@@ -17,7 +17,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Document;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -28,7 +28,7 @@ import java.util.Map;
 
 public interface ProfileService {
 	
-	public Document save(Document d) throws Exception;
+	public IGDocument save(IGDocument d) throws Exception;
 
 	public Profile save(Profile p) throws ProfileException;
 
@@ -37,6 +37,8 @@ public interface ProfileService {
 	public Profile findOne(String id);
 
 	public List<Profile> findAllPreloaded();
+	
+	public List<Profile> findAllUserProfiles();
 
 	public List<Profile> findByAccountId(Long accountId);
 

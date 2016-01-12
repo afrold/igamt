@@ -43,7 +43,7 @@ import com.github.fakemongo.Fongo;
 import com.mongodb.Mongo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessagesRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
@@ -117,11 +117,11 @@ public class ProfileCreationServiceTest {
 		// Collect standard messages and message descriptions
 		//There should be only one HL7STANDARD profile for each version
 		for (String hl7Version : Arrays.asList("2.5.1", "2.7")) {
-			int found = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size();
+			int found = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version).size();
 			assertEquals(1, found);
 //			assertEquals(1, profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size());
 		}
-		Profile profileSource = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, "2.7").get(0);
+		Profile profileSource = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.7").get(0);
 		assertEquals(193, profileSource.getMessages().getChildren().size());
 
 		// Each description has 4 items: id, event, strucId, description
@@ -163,10 +163,10 @@ public class ProfileCreationServiceTest {
 		// Collect standard messages and message descriptions
 		//There should be only one HL7STANDARD profile for each version
 		for (String hl7Version : Arrays.asList("2.5.1", "2.7")){
-			int found = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size();
+			int found = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version).size();
 			assertEquals(1, found);
 		}
-		Profile profileSource = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, "2.7").get(0);
+		Profile profileSource = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.7").get(0);
 		assertEquals(193, profileSource.getMessages().getChildren().size());
 
 		// Each description has 4 items: id, event, strucId, description

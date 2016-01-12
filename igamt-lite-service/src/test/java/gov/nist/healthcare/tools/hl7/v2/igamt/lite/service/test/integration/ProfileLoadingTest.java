@@ -12,7 +12,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertEquals;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
@@ -81,7 +81,7 @@ public class ProfileLoadingTest {
 	@Test
 	public void testStandardProfilesLoaded() {
 		for (String hl7Version : Arrays.asList("2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7")){
-			assertEquals(1, profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size());
+			assertEquals(1, profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version).size());
 		}
 	}
 
@@ -91,7 +91,7 @@ public class ProfileLoadingTest {
 		Profile profileSaved;
 
 		for (String hl7Version : Arrays.asList("2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7")){
-			profileSaved = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).get(0);
+			profileSaved = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version).get(0);
 
 			profileJson = IOUtils.toString(this.getClass().getClassLoader().getResource("profiles/profile-" + hl7Version + ".json"));
 

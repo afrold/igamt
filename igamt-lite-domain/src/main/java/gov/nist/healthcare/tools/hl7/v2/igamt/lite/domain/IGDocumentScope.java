@@ -13,7 +13,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 10, 2015
  */
-public enum ProfileScope {
+public enum IGDocumentScope {
 
 	USER, PRELOADED, HL7STANDARD;
 

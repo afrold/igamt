@@ -29,7 +29,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 
 public class ProfileRepositoryImpl implements ProfileOperations   {
 
@@ -44,20 +44,20 @@ public class ProfileRepositoryImpl implements ProfileOperations   {
 	 */
 	@Override
 	public List<Profile> findPreloaded() {
- 	    Criteria where = Criteria.where("scope").is(ProfileScope.PRELOADED);
+ 	    Criteria where = Criteria.where("scope").is(IGDocumentScope.PRELOADED);
 	    Query query = Query.query(where);
 	    return mongo.find(query, Profile.class);
  	}
 	
 	public List<Profile> findStandard() {
- 	    Criteria where = Criteria.where("scope").is(ProfileScope.HL7STANDARD);
+ 	    Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD);
 	    Query query = Query.query(where);
 	    return mongo.find(query, Profile.class);
  	}
 	
 	public List<Profile> findStandardByVersion(String hl7version) {
 		log.debug("findStandardByVersion");
-		Criteria where = Criteria.where("scope").is(ProfileScope.HL7STANDARD).andOperator(Criteria.where("metaData.hl7Version").is(hl7version));
+		Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD).andOperator(Criteria.where("metaData.hl7Version").is(hl7version));
 		Query query = Query.query(where);
 		List<Profile> list =  mongo.find(query, Profile.class);
 		log.debug("findStandardByVersion list.size()=" + list.size());

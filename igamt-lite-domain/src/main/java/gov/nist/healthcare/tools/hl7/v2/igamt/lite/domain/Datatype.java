@@ -11,7 +11,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "datatype")
 public class Datatype extends SectionModelWithConstraints implements java.io.Serializable,
 		Cloneable, Comparable<Datatype> {
 
