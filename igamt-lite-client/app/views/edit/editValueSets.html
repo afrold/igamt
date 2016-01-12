@@ -118,6 +118,14 @@
                             </accordion-heading>
                             <form class="form-horizontal" name="editTableForm">
                                 <div class="col-md-12">
+										<span class="pull-left">
+											<div class="input-group">
+        										<div class="input-group-addon">
+													<i class="fa fa-search"></i>
+												</div>
+    	    									<input type="text" class="form-control" placeholder="Search Value" ng-model="searchValue.value" />
+											</div> 
+										</span>
  										<span class="pull-right">
 											<button title="Add new Value" type="button" ng-hide="options.readonly" class="btn btn-sm btn-primary" ng-click="addValue()">
                                     			<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Add Value</span>
@@ -129,12 +137,7 @@
                                         	<table class="table table-striped table-bordered">
                                             	<thead>
                                             	<tr class="tbl-header">
-                                                	<th class="col-md-3">Value
-      													<div class="input-group">
-        													<div class="input-group-addon"><i class="fa fa-search"></i></div>
-    	    												<input type="text" class="form-control" placeholder="Search Value" ng-model="searchValue" />
-														</div>      
-													</th>
+                                                	<th class="col-md-3">Value</th>
                                                 	<th class="col-md-4">Description</th>
                                                 	<th class="col-md-2">CodeSystem
 														<select class="form-control" ng-hide="options.readonly" 
