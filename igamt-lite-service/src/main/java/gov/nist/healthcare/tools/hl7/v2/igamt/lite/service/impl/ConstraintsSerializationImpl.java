@@ -350,10 +350,14 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			Element elmConstraint = (Element) constraintNodes.item(i);
 
 			constraintObj.setConstraintId(elmConstraint.getAttribute("ID"));
-			constraintObj.setConstraintTarget(elmConstraint
-					.getAttribute("Target"));
-			NodeList descriptionNodes = elmConstraint
-					.getElementsByTagName("Description");
+			constraintObj.setConstraintTarget(elmConstraint.getAttribute("Target"));
+			String constraintClassification = elmConstraint.getAttribute("Classification");
+			if(constraintClassification == null || constraintClassification.equals("")){
+				constraintObj.setConstraintClassification("E");
+			}else {
+				constraintObj.setConstraintClassification(constraintClassification);
+			}
+			NodeList descriptionNodes = elmConstraint.getElementsByTagName("Description");
 			if (descriptionNodes != null && descriptionNodes.getLength() == 1) {
 				constraintObj.setDescription(descriptionNodes.item(0)
 						.getTextContent());

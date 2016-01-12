@@ -633,19 +633,20 @@
         <thead>
         <tr class="tbl-header">
             <th class="col-md-2">ID</th>
-            <th class="col-md-9">Desciption</th>
+            <th class="col-md-7">Desciption</th>
+			<th class="col-md-2">Classification</th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="c in segment.conformanceStatements | filter:{constraintTarget:selectedNode.position + '[1]'}:true">
             <td class="col-md-2">{{c.constraintId}}</td>
-            <td class="col-md-9">{{c.description}}</td>
+            <td class="col-md-7">{{c.description}}</td>
+			<td class="col-md-2">{{c.constraintClassification}}</td>
             <td class="col-md-1">
-                <button type="button" ng-click="deleteConformanceStatement(c)"
-                        class="btn btn-xs btn-danger">
-                    <span><i class="fa fa-minus-circle fa-fw"></i></span>
-                </button>
+				<a ng-click="deleteConformanceStatement(c)" class="point">
+                    <span><i class="fa fa-minus fa-fw"></i></span>
+                </a>
             </td>
         </tr>
         </tbody>
@@ -674,10 +675,9 @@
             <td class="col-md-2">{{c.constraintId}}</td>
             <td class="col-md-9">{{c.description}}</td>
             <td class="col-md-1">
-                <button type="button" ng-click="deleteConformanceStatementForComplex(c)"
-                        class="btn btn-xs btn-danger">
-                    <span><i class="fa fa-minus-circle fa-fw"></i></span>
-                </button>
+				<a ng-click="deleteConformanceStatementForComplex(c)" class="point">
+                    <span><i class="fa fa-minus fa-fw"></i></span>
+                </a>
             </td>
         </tr>
         </tbody>
@@ -726,6 +726,12 @@
                         ng-model="complexConstraint"
                         ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
                 </select>
+				<span>Constraint Classification: </span>
+                <select ng-model="newComplexConstraintClassification">
+                    <option value="E">Error</option>
+                    <option value="W">Warning</option>
+                    <option value="A">Alert</option>
+                </select>
             </td>
             <td class="col-md-1">
 				<a ng-click="addComplexConformanceStatement()" class="point">
@@ -744,14 +750,15 @@
         <thead>
         <tr class="tbl-header">
             <th class="col-md-2" colspan="1" rowspan="2">ID</th>
-            <th class="col-md-10" colspan="4">Desciption</th>
+            <th class="col-md-8" colspan="4">Desciption</th>
+			<th class="col-md-1" colspan="1" rowspan="2">Classification</th>
             <th class="col-md-1" colspan="1" rowspan="2"></th>
         </tr>
         <tr class="tbl-header">
-            <th class="col-md-3" colspan="1">Node</th>
+            <th class="col-md-2" colspan="1">Node</th>
             <th class="col-md-2" colspan="1">Verb</th>
             <th class="col-md-2" colspan="1">Constraint</th>
-            <th class="col-md-3" colspan="1">Value</th>
+            <th class="col-md-2" colspan="1">Value</th>
         </tr>
         </thead>
         <tbody>
@@ -760,7 +767,7 @@
                 <input style="width:100%" class="igl-input" ng-model="newConstraint.constraintId"
                        placeholder="Type ID" type="text"/>
             </td>
-            <td class="col-md-3" colspan="1">
+            <td class="col-md-2" colspan="1">
                 <span>{{newConstraint.segment}}-</span>
                 <select name="field" class="igl-input"
                         ng-change="updateField_1()"
@@ -798,7 +805,7 @@
                         ng-options="contraintType for contraintType in config.constraintTypes">
                 </select>
             </td>
-            <td class="col-md-3" colspan="1">
+            <td class="col-md-2" colspan="1">
                 		<span ng-show="newConstraint.contraintType == 'a literal value'">
                 			<input style="width:100%" class="igl-input" ng-model="newConstraint.value"
                                    placeholder="Literal Value" type="text"/>
@@ -995,6 +1002,13 @@
 							<input class="igl-input" ng-model="newConstraint.bindingLocation" type="text"/>
                 		</span>
             </td>
+			<td class="col-md-1" colspan="1">
+				<select ng-model="newConstraint.constraintClassification">
+                    <option value="E">Error</option>
+                    <option value="W">Warning</option>
+                    <option value="A">Alert</option>
+                </select>
+			</td>
             <td class="col-md-1" colspan="1">
 				<a ng-click="initConformanceStatement()" class="point">
                 	<span><i class="fa fa-times fa-fw"></i></span>
@@ -1028,21 +1042,23 @@
     <table class="table table-striped table-bordered">
         <thead>
         <tr class="tbl-header">
-            <th class="col-md-9">Desciption</th>
+            <th class="col-md-7">Desciption</th>
             <th class="col-md-1">True Usage</th>
             <th class="col-md-1">False Usage</th>
+			<th class="col-md-2">Classification</th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="p in segment.predicates | filter:{constraintTarget:selectedNode.position + '[1]'}:true">
-            <td class="col-md-9">{{p.description}}</td>
+            <td class="col-md-7">{{p.description}}</td>
             <td class="col-md-1">{{p.trueUsage}}</td>
             <td class="col-md-1">{{p.falseUsage}}</td>
+			<td class="col-md-2">{{p.constraintClassification}}</td>
             <td class="col-md-1">
-                <button type="button" ng-click="deletePredicate(p)" class="btn btn-xs btn-danger">
-                    <span><i class="fa fa-minus-circle fa-fw"></i></span>
-                </button>
+				<a ng-click="deletePredicate(p)" class="point">
+                    <span><i class="fa fa-minus fa-fw"></i></span>
+                </a>
             </td>
         </tr>
         </tbody>
@@ -1074,9 +1090,9 @@
             <td class="col-md-1">{{p.trueUsage}}</td>
             <td class="col-md-1">{{p.falseUsage}}</td>
             <td class="col-md-1">
-                <button type="button" ng-click="deletePredicateForComplex(p)" class="btn btn-xs btn-danger">
-                    <span><i class="fa fa-minus-circle fa-fw"></i></span>
-                </button>
+				<a ng-click="deletePredicateForComplex(p)" class="point">
+                    <span><i class="fa fa-minus fa-fw"></i></span>
+                </a>
             </td>
         </tr>
         </tbody>
@@ -1122,6 +1138,12 @@
                         ng-model="complexConstraint"
                         ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
                 </select>
+				<span>Constraint Classification: </span>
+                <select ng-model="newComplexConstraintClassification">
+                    <option value="E">Error</option>
+                    <option value="W">Warning</option>
+                    <option value="A">Alert</option>
+                </select>
             </td>
             <td class="col-md-1">
 				<a ng-click="addComplexConformanceStatement()" class="point">
@@ -1139,21 +1161,22 @@
     <table class="table table-striped table-bordered">
         <thead>
         <tr class="tbl-header">
-            <th class="col-md-10" colspan="4">Desciption</th>
+            <th class="col-md-8" colspan="4">Desciption</th>
             <th class="col-md-1" colspan="1" rowspan="2">True Usage</th>
             <th class="col-md-1" colspan="1" rowspan="2">False Usage</th>
+			<th class="col-md-1" colspan="1" rowspan="2">Classification</th>
             <th class="col-md-1" colspan="1" rowspan="2"></th>
         </tr>
         <tr class="tbl-header">
-            <th class="col-md-3" colspan="1">Node</th>
+            <th class="col-md-2" colspan="1">Node</th>
             <th class="col-md-2" colspan="1">Verb</th>
             <th class="col-md-2" colspan="1">Constraint</th>
-            <th class="col-md-3" colspan="1">Value</th>
+            <th class="col-md-2" colspan="1">Value</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td class="col-md-3" colspan="1">
+            <td class="col-md-2" colspan="1">
                 <span>{{newConstraint.segment}}-</span>
                 <select name="field" class="igl-input"
                         ng-change="updateField_1()"
@@ -1188,7 +1211,7 @@
                         ng-options="contraintType for contraintType in config.constraintTypes">
                 </select>
             </td>
-            <td class="col-md-3" colspan="1">
+            <td class="col-md-2" colspan="1">
                 		<span ng-show="newConstraint.contraintType == 'a literal value'">
                 			<input style="width:100%" class="igl-input" ng-model="newConstraint.value"
                                    placeholder="Literal Value" type="text"/>
@@ -1398,6 +1421,14 @@
                         ng-options="usage for usage in config.usages">
                 </select>
             </td>
+
+			<td class="col-md-1" colspan="1">
+				<select ng-model="newConstraint.constraintClassification">
+                    <option value="E">Error</option>
+                    <option value="W">Warning</option>
+                    <option value="A">Alert</option>
+                </select>
+			</td>
 
             <td class="col-md-1" colspan="1">
 				<a ng-click="initPredicate()" class="point">

@@ -513,24 +513,26 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr class="tbl-header">
-                        <th class="col-xs-7">Condition</th>
+                        <th class="col-xs-6">Condition</th>
                         <th class="col-xs-2">Target Location</th>
                         <th class="col-xs-1">True Usage</th>
                         <th class="col-xs-1">False Usage</th>
+						<th class="col-xs-1">Classification</th>
                         <th class="col-xs-1"></th>
                     </tr>
                     </thead>
 
                     <tbody>
                     <tr ng-repeat="p in selectedNode.predicates">
-                        <td class="col-xs-7">{{p.description}}</td>
+                        <td class="col-xs-6">{{p.description}}</td>
                         <td class="col-xs-2">{{p.constraintTarget}}</td>
                         <td class="col-xs-1">{{p.trueUsage}}</td>
                         <td class="col-xs-1">{{p.falseUsage}}</td>
+						<td class="col-xs-1">{{p.constraintClassification}}</td>
                         <td class="col-xs-1">
-                            <button type="button" ng-click="deletePredicate(p)" class="btn btn-xs btn-danger">
-                                <span><i class="fa fa-minus-circle fa-fw"></i></span>
-                            </button>
+							<a ng-click="deletePredicate(p)" class="point">
+                    			<span><i class="fa fa-minus fa-fw"></i></span>
+                			</a>
                         </td>
                     </tr>
                     </tbody>
@@ -565,9 +567,9 @@
             				<td class="col-md-1">{{p.trueUsage}}</td>
             				<td class="col-md-1">{{p.falseUsage}}</td>
             				<td class="col-md-1">
-                				<button type="button" ng-click="deletePredicateForComplex(p)" class="btn btn-xs btn-danger">
-                    				<span><i class="fa fa-minus-circle fa-fw"></i></span>
-                				</button>
+								<a ng-click="deletePredicateForComplex(p)" class="point">
+                    				<span><i class="fa fa-minus fa-fw"></i></span>
+                				</a>
             				</td>
         				</tr>
         			</tbody>
@@ -613,6 +615,12 @@
                         			ng-model="complexConstraint"
                         			ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
                 				</select>
+								<span>Constraint Classification: </span>
+                				<select ng-model="newComplexConstraintClassification">
+                    				<option value="E">Error</option>
+                    				<option value="W">Warning</option>
+                    				<option value="A">Alert</option>
+                				</select>
             				</td>
             				<td class="col-md-1">
 								<a ng-click="addComplexConformanceStatement()" class="point">
@@ -630,22 +638,23 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr class="tbl-header">
-                        <th class="col-xs-2" colspan="1" rowspan="2">Target Node</th>
+                        <th class="col-xs-1" colspan="1" rowspan="2">Target Node</th>
                         <th class="col-xs-1" colspan="1" rowspan="2">True Usage</th>
                         <th class="col-xs-1" colspan="1" rowspan="2">False Usage</th>
-                        <th class="col-xs-8" colspan="4">Condition</th>
+                        <th class="col-xs-7" colspan="4">Condition</th>
+						<th class="col-xs-1" colspan="1" rowspan="2">Classification</th>
                         <th class="col-xs-1" colspan="1" rowspan="2"></th>
                     </tr>
                     <tr class="tbl-header">
                         <th class="col-xs-2" colspan="1">Node</th>
-                        <th class="col-xs-2" colspan="1">Verb</th>
+                        <th class="col-xs-1" colspan="1">Verb</th>
                         <th class="col-xs-2" colspan="1">Constraint</th>
                         <th class="col-xs-2" colspan="1">Value</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td class="col-xs-2" colspan="1">
+                        <td class="col-xs-1" colspan="1">
                             <span>{{newConstraint.location_T}}</span>
 												<span ng-show="newConstraint.childNodes_T != null && newConstraint.childNodes_T.length > 0">
 													<select name="child" class="igl-input" ng-change="updateLocationT()"
@@ -673,7 +682,7 @@
 												</span>
                         </td>
 
-                        <td class="col-xs-2" colspan="1">
+                        <td class="col-xs-1" colspan="1">
                             <select name="verb" class="igl-input"
                                     ng-change=""
                                     ng-model="newConstraint.verb"
@@ -745,6 +754,14 @@
                 								</span>
                        	</td>
 
+						<td class="col-md-1" colspan="1">
+							<select ng-model="newConstraint.constraintClassification">
+                    			<option value="E">Error</option>
+                    			<option value="W">Warning</option>
+                    			<option value="A">Alert</option>
+                			/select>
+						</td>
+
                         <td class="col-xs-1" colspan="1">
 							<a ng-click="initPredicate()" class="point">
                         		<span><i class="fa fa-times fa-fw"></i></span>
@@ -781,7 +798,8 @@
                     <thead>
                     <tr class="tbl-header">
                         <th class="col-xs-2">ID</th>
-                        <th class="col-xs-9">Desciption</th>
+                        <th class="col-xs-7">Desciption</th>
+						<th class="col-xs-2">Classification</th>
                         <th class="col-xs-1"></th>
                     </tr>
                     </thead>
@@ -789,12 +807,12 @@
                     <tbody>
                     <tr ng-repeat="c in selectedNode.conformanceStatements">
                         <td class="col-xs-2">{{c.constraintId}}</td>
-                        <td class="col-xs-9">{{c.description}}</td>
+                        <td class="col-xs-7">{{c.description}}</td>
+						<td class="col-md-2">{{c.constraintClassification}}</td>
                         <td class="col-xs-1">
-                            <button type="button" ng-click="deleteConformanceStatement(c)"
-                                    class="btn btn-xs btn-danger">
-                                <span><i class="fa fa-minus-circle fa-fw"></i></span>
-                            </button>
+							<a ng-click="deleteConformanceStatement(c)" class="point">
+                    			<span><i class="fa fa-minus fa-fw"></i></span>
+                			</a>
                         </td>
                     </tr>
                     </tbody>
@@ -824,9 +842,9 @@
             				<td class="col-md-2">{{c.constraintId}}</td>
             				<td class="col-md-9">{{c.description}}</td>
             				<td class="col-md-1">
-                				<button type="button" ng-click="deleteConformanceStatementForComplex(c)" class="btn btn-xs btn-danger">
-                    				<span><i class="fa fa-minus-circle fa-fw"></i></span>
-                				</button>
+								<a ng-click="deleteConformanceStatementForComplex(c)" class="point">
+                    				<span><i class="fa fa-minus fa-fw"></i></span>
+                				</a>
             				</td>
         				</tr>
         			</tbody>
@@ -873,6 +891,12 @@
                 				<span>Complex Constraint: </span>
                 				<select name="complexConstraintSelect" ng-model="complexConstraint" ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
                 				</select>
+								<span>Constraint Classification: </span>
+                				<select ng-model="newComplexConstraintClassification">
+                    				<option value="E">Error</option>
+                    				<option value="W">Warning</option>
+                   					<option value="A">Alert</option>
+                				</select>
             				</td>
             				<td class="col-md-1">
 								<a ng-click="addComplexConformanceStatement()" class="point">
@@ -889,14 +913,15 @@
                     <thead>
                     <tr class="tbl-header">
                         <th class="col-xs-2" colspan="1" rowspan="2">ID</th>
-                        <th class="col-xs-10" colspan="4">Desciption</th>
+                        <th class="col-xs-8" colspan="4">Desciption</th>
+						<th class="col-xs-1" colspan="1" rowspan="2">Classification</th>
                         <th class="col-xs-1" colspan="1" rowspan="2"></th>
                     </tr>
                     <tr class="tbl-header">
-                        <th class="col-xs-3" colspan="1">Node</th>
+                        <th class="col-xs-2" colspan="1">Node</th>
                         <th class="col-xs-2" colspan="1">Verb</th>
                         <th class="col-xs-2" colspan="1">Constraint</th>
-                        <th class="col-xs-3" colspan="1">Value</th>
+                        <th class="col-xs-2" colspan="1">Value</th>
                     </tr>
                     </thead>
 
@@ -907,7 +932,7 @@
                                    placeholder="Type ID" type="text"/>
                         </td>
 
-                        <td class="col-xs-3" colspan="1">
+                        <td class="col-xs-2" colspan="1">
                             <span>{{newConstraint.location_1}}</span>
 												<span ng-show="newConstraint.childNodes_1 != null && newConstraint.childNodes_1.length > 0">
 													<select name="child" class="igl-input" ng-change="updateLocation1()"
@@ -932,7 +957,7 @@
                             </select>
                         </td>
 
-                        <td class="col-xs-3" colspan="1">
+                        <td class="col-xs-2" colspan="1">
                 								<span ng-show="newConstraint.contraintType == 'a literal value'">
                 									<input style="width:100%" class="igl-input"
                                                            ng-model="newConstraint.value" placeholder="Literal Value"
@@ -1062,6 +1087,14 @@
 														<input class="igl-input" ng-model="newConstraint.bindingLocation" type="text"/>
                 									</span>
                         </td>
+
+						<td class="col-md-1" colspan="1">
+							<select ng-model="newConstraint.constraintClassification">
+                    			<option value="E">Error</option>
+                    			<option value="W">Warning</option>
+                    			<option value="A">Alert</option>
+                			</select>
+						</td>
 
                         <td class="col-xs-1" colspan="1">
 							<a ng-click="initConformanceStatement()" class="point">

@@ -356,6 +356,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
     $scope.compositeType = null;
     $scope.complexConstraint = null;
     $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraintClassification = 'E';
     $scope.newComplexConstraint = [];
 
     $scope.newConstraint = angular.fromJson({
@@ -370,7 +371,8 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
         value: null,
         valueSetId: null,
         bindingStrength: 'R',
-        bindingLocation: '1'
+        bindingLocation: '1',
+        constraintClassification: 'E'
     });
     $scope.newConstraint.datatype = $rootScope.datatype.name;
     
@@ -388,7 +390,8 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
             value: null,
             valueSetId: null,
             bindingStrength: 'R',
-            bindingLocation: '1'
+            bindingLocation: '1',
+            constraintClassification: 'E'
         });
         $scope.newConstraint.datatype = $rootScope.datatype.name;
     }
@@ -444,7 +447,8 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
             value: null,
             valueSetId: null,
             bindingStrength: 'R',
-            bindingLocation: '1'
+            bindingLocation: '1',
+            constraintClassification: 'E'
             
 	    });
 		$scope.newConstraint.datatype = $rootScope.datatype.name;
@@ -452,6 +456,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
     	if($scope.constraintType === 'Complex'){
     		$scope.newComplexConstraint = [];
     		$scope.newComplexConstraintId = '';
+    		$scope.newComplexConstraintClassification = 'E';
     	}
     }
 
@@ -487,6 +492,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
     
     $scope.addComplexConformanceStatement = function(){
     	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+    	$scope.complexConstraint.constraintClassification = $scope.newComplexConstraintClassification;
     	
     	$rootScope.datatype.conformanceStatements.push($scope.complexConstraint);
     	$rootScope.datatypeConformanceStatements.push($scope.complexConstraint);
@@ -497,6 +503,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
         
         $scope.complexConstraint = null;
         $scope.newComplexConstraintId = '';
+        $scope.newComplexConstraintClassification = 'E';
     };
     
     $scope.compositeConformanceStatements = function(){
@@ -551,6 +558,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType,
                     assertion: '<Presence Path=\"' + location_1 + '\"/>'
                 };
@@ -567,6 +575,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
                     assertion: '<PlainText Path=\"' + location_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
                 };
@@ -583,6 +592,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
                     assertion: '<StringList Path=\"' + location_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
                 };
@@ -599,6 +609,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                         id: new ObjectId().toString(),
                         constraintId: $scope.newConstraint.constraintId,
                         constraintTarget: $scope.selectedNode.position + '[1]',
+                        constraintClassification: $scope.newConstraint.constraintClassification,
                         description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.valueSetId + '.',
                         assertion: '<ValueSet Path=\"' + location_1 + '\" ValueSetID=\"' + $scope.newConstraint.valueSetId + '\" BindingStrength=\"' + $scope.newConstraint.bindingStrength + '\" BindingLocation=\"' + $scope.newConstraint.bindingLocation +'\"/>'
                 };
@@ -615,6 +626,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
                     assertion: '<Format Path=\"' + location_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
                 };
@@ -631,6 +643,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
                     assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
                 };
@@ -647,6 +660,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to the value of ' + position_2 + '.',
                     assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="EQ" Path2=\"' + location_2 + '\"/>'
                 };
@@ -663,6 +677,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' different with the value of ' + position_2 + '.',
                     assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="NE" Path2=\"' + location_2 + '\"/>'
                 };
@@ -679,6 +694,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' greater than the value of ' + position_2 + '.',
                     assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="GT" Path2=\"' + location_2 + '\"/>'
                 };
@@ -695,6 +711,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than the value of ' + position_2 + '.',
                     assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="GE" Path2=\"' + location_2 + '\"/>'
                 };
@@ -711,6 +728,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' less than the value of ' + position_2 + '.',
                     assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="LT" Path2=\"' + location_2 + '\"/>'
                 };
@@ -727,6 +745,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than the value of ' + position_2 + '.',
                     assertion: '<PathValue Path1=\"' + location_1 + '\" Operator="LE" Path2=\"' + location_2 + '\"/>'
                 };
@@ -743,6 +762,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + location_1 + '\" Operator="EQ" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
@@ -759,6 +779,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' different with ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + location_1 + '\" Operator="NE" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
@@ -775,6 +796,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' greater than ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + location_1 + '\" Operator="GT" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
@@ -791,6 +813,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + location_1 + '\" Operator="GE" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
@@ -807,6 +830,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' less than ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + location_1 + '\" Operator="LT" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
@@ -823,6 +847,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
                     constraintTarget: $scope.selectedNode.position + '[1]',
+                    constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + location_1 + '\" Operator="LE" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
@@ -854,6 +879,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
     $scope.compositeType = null;
     $scope.complexConstraint = null;
     $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraintClassification = 'E';
     $scope.newComplexConstraint = [];
 
     $scope.newConstraint = angular.fromJson({
@@ -869,7 +895,8 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
         falseUsage: null,
         valueSetId: null,
         bindingStrength: 'R',
-        bindingLocation: '1'
+        bindingLocation: '1',
+        constraintClassification: 'E'
     });
     $scope.newConstraint.datatype = $rootScope.datatype.name;
     
@@ -887,7 +914,8 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             falseUsage: null,
             valueSetId: null,
             bindingStrength: 'R',
-            bindingLocation: '1'
+            bindingLocation: '1',
+            constraintClassification: 'E'
         });
         $scope.newConstraint.datatype = $rootScope.datatype.name;
     }
@@ -944,13 +972,15 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             falseUsage: null,
             valueSetId: null,
             bindingStrength: 'R',
-            bindingLocation: '1'
+            bindingLocation: '1',
+            constraintClassification: 'E'
 	    });
 		$scope.newConstraint.datatype = $rootScope.datatype.name;
 		
     	if($scope.constraintType === 'Complex'){
     		$scope.newComplexConstraint = [];
     		$scope.newComplexConstraintId = '';
+    		$scope.newComplexConstraintClassification = 'E';
     	}
     }
 
@@ -997,6 +1027,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
     $scope.addComplexConformanceStatement = function(){
         $scope.deletePredicateByTarget();
         $scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
+        $scope.complexConstraint.constraintClassification = $scope.newComplexConstraintClassification;
         $rootScope.datatype.predicates.push($scope.complexConstraint);
         $rootScope.datatypePredicates.push($scope.complexConstraint);
         var newCPBlock = {targetType: 'datatype', targetId: $rootScope.datatype.id, obj: $scope.complexConstraint};
@@ -1004,6 +1035,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
         $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
         
         $scope.complexConstraint = null;
+        $scope.newComplexConstraintClassification = 'E';
         
     };
     
@@ -1070,6 +1102,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType,
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1085,6 +1118,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType,
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1098,6 +1132,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1112,6 +1147,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1125,6 +1161,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1139,6 +1176,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1152,6 +1190,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.valueSetId + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1166,6 +1205,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.valueSetId + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1179,6 +1219,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1193,6 +1234,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1206,6 +1248,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1220,6 +1263,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1234,6 +1278,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1248,6 +1293,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1262,6 +1308,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' different with the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1276,6 +1323,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' different with the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1290,6 +1338,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' greater than the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1304,6 +1353,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' greater than the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1318,6 +1368,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1332,6 +1383,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1346,6 +1398,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' less than the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1360,6 +1413,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' less than the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1374,6 +1428,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1388,6 +1443,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than the value of ' + position_2 + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1402,6 +1458,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1416,6 +1473,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1430,6 +1488,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' different with ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1444,6 +1503,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' different with ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1458,6 +1518,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' greater than ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1472,6 +1533,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' greater than ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1486,6 +1548,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1500,6 +1563,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1514,6 +1578,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' less than ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1528,6 +1593,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' less than ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1542,6 +1608,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: $scope.newConstraint.datatype + '-' + $scope.selectedNode.position,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
@@ -1556,6 +1623,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
                             id: new ObjectId().toString(),
                             constraintId: 'CP' + $rootScope.newPredicateFakeId,
                             constraintTarget: $scope.selectedNode.position + '[1]',
+                            constraintClassification: $scope.newConstraint.constraintClassification,
                             description: 'If the value of ' + position_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than ' + $scope.newConstraint.value + '.',
                             trueUsage: $scope.newConstraint.trueUsage,
                             falseUsage: $scope.newConstraint.falseUsage,
