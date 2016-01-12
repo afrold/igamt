@@ -11,9 +11,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Profile extends SectionModel implements java.io.Serializable,
@@ -29,7 +26,6 @@ public class Profile extends SectionModel implements java.io.Serializable,
 
 	private IGDocumentScope scope;
 
-	@Id
 	private String id;
 
 	private ProfileMetaData metaData;

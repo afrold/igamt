@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import org.springframework.data.annotation.Id;
-
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
@@ -15,7 +13,6 @@ public abstract class SegmentRefOrGroup extends SectionModelWithConstraints impl
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
 	protected String id;
 
 	// //@NotNull

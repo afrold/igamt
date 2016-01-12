@@ -9,10 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "segment")
 public class Segment extends SectionModelWithConstraints implements java.io.Serializable,
 Cloneable, Comparable<Segment> {
 
@@ -24,7 +21,6 @@ Cloneable, Comparable<Segment> {
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id
 	private String id;
 	//
 	// @DBRef

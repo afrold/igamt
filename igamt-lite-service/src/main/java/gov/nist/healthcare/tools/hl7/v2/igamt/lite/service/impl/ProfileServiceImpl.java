@@ -17,11 +17,9 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
@@ -52,19 +50,6 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Autowired
 	private ProfileRepository profileRepository;
-	
-	@Autowired
-	private DocumentRepository documentRepository;
-
-	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public IGDocument save(IGDocument d) throws Exception {
-		try {
-			return documentRepository.save(d);
-		} catch (MongoException e) {
-			throw new ProfileException(e);
-		}
-	}
 	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -142,7 +127,7 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 	
 	@Override
-	public List<Profile> findAllUserProfiles() {
+	public List<Profile> findAllProfiles() {
 		List<Profile> profiles = profileRepository.findAll();
 		return profiles;
 	}

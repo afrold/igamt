@@ -12,8 +12,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 
@@ -37,6 +38,8 @@ public class Bootstrap implements InitializingBean {
 	@Autowired
 	ProfileService profileService;
 
+	@Autowired
+	IGDocumentService documentService;
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -46,22 +49,18 @@ public class Bootstrap implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 //		init();
-		init2();
+//		init2();
 		
 		
 	} 
 	
 	private void init2() throws Exception {
-		
-		List<Profile> profiles = profileService.findAllUserProfiles();
+		List<Profile> profiles = profileService.findAllProfiles();
 		
 		for(Profile p:profiles){
-			if(p.getScope().equals(IGDocumentScope.USER)){
-				IGDocument d = new IGDocument();
-				d.addProfile(p);
-				profileService.save(d);
-			}
-			
+			IGDocument d = new IGDocument();
+			d.addProfile(p);
+			documentService.save(d);
 		}
 	}
 	

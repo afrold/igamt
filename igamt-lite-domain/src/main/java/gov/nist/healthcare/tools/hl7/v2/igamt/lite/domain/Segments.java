@@ -8,8 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 public class Segments extends SectionModel implements java.io.Serializable, Cloneable {
 

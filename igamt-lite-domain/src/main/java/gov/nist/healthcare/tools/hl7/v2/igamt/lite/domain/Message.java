@@ -8,10 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "message")
 public class Message extends SectionModel implements java.io.Serializable,
 		Cloneable, Comparable<Message> {
 
@@ -23,7 +20,6 @@ public class Message extends SectionModel implements java.io.Serializable,
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id
 	private String id;
 	
 	private String name;

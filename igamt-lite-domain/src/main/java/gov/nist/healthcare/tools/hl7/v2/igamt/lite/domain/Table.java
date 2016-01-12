@@ -5,15 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 
  * @author Harold Affo (harold.affo@nist.gov) Feb 26, 2015
  * 
  */
-@Document(collection = "table")
 public class Table extends SectionModel implements Serializable,
 		Comparable<Table>, Cloneable {
 
@@ -22,7 +19,6 @@ public class Table extends SectionModel implements Serializable,
 	 */
 	private static final long serialVersionUID = 734059059225906039L;
 
-	@Id
 	private String id;
 
 	// @NotNull

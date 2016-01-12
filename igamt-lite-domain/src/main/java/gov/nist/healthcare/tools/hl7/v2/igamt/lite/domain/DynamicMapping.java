@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 
 ////@Entity
 ////@Table(name = "DYNAMIC_MAPPING")
@@ -18,7 +17,6 @@ public class DynamicMapping implements Serializable, Cloneable {
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id
 	private String id;
 	
 	protected List<Mapping> mappings = new ArrayList<Mapping>();

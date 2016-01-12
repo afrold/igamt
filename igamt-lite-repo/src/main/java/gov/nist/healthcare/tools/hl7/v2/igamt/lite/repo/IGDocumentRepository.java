@@ -18,8 +18,16 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+
+import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
- public interface DocumentRepository  extends MongoRepository<IGDocument, String>   {
+ public interface IGDocumentRepository  extends MongoRepository<IGDocument, String> , IGDocumentOperations   {
+	 
+	 List<IGDocument> findByAccountId(Long accountId);
+
+	 List<IGDocument> findByScope(IGDocumentScope scope);
+	 
 }

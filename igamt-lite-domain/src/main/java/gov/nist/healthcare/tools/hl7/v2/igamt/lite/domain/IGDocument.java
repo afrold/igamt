@@ -57,6 +57,19 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 	
 	public void addProfile(Profile p) {
 		this.setAccountId(p.getAccountId());
+		this.setComment(p.getComment());
+		this.setScope(p.getScope());
+		this.setUsageNote(p.getUsageNote());
+		
+		DocumentMetaData documentMetaData = new DocumentMetaData();
+		documentMetaData.setDate(p.getMetaData().getDate());
+		documentMetaData.setExt(p.getMetaData().getExt());
+		documentMetaData.setName(p.getMetaData().getName());
+		documentMetaData.setTitle(p.getMetaData().getSubTitle());
+		documentMetaData.setType(p.getMetaData().getType());
+		documentMetaData.setVersion(p.getMetaData().getVersion());
+		this.setDocumentMetaData(documentMetaData);
+		
 		
 		if(this.childSections == null || this.childSections.size() == 0){
 			Section section1 = new Section("Introduction");

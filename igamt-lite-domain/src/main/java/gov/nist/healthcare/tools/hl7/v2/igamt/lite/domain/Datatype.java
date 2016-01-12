@@ -8,8 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 public class Datatype extends SectionModelWithConstraints implements java.io.Serializable,
 		Cloneable, Comparable<Datatype> {
@@ -22,7 +20,6 @@ public class Datatype extends SectionModelWithConstraints implements java.io.Ser
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id
 	private String id;
 
 	// //@NotNull
