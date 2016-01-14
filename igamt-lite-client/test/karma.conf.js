@@ -31,7 +31,7 @@ module.exports = function(config) {
       'bower_components/angular-route/angular-route.js',
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
-      'bower_components/lodash/dist/lodash.compat.js',
+      'bower_components/lodash/lodash.js',
       'bower_components/restangular/dist/restangular.js',
       'bower_components/rangy/rangy-core.js',
       'bower_components/rangy/rangy-selectionsaverestore.js',
@@ -43,17 +43,18 @@ module.exports = function(config) {
       "bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js",
  
       // gcr: Jasmine inject() will not execute if this file is included. 'app/lib/angular-mocks/angular-mocks.js',
+      'app/dev/**/*.js',
       'app/lib/utils.js',
       'app/lib/Objectid.js',
       'app/lib/angular-treetable/js/jquery.treetable.js',
       'app/lib/angular-treetable/js/angular-treetable.min.js',
       'app/lib/jquery.i18n.properties-1.0.9.js',
       'app/lib/table-settings/table-settings.js',
-      'app/scripts/app.js',
       'app/scripts/**/*.js',
+//      'test/spec/controllers/**/hl7VersionsMessagesTest.js',
       'test/spec/services/**/ProfileAccessSvcTest.js',
-      'test/spec/services/**/DeleteMessageSvcTest.js',
-      'test/spec/services/**/ToCSvcTest.js',
+//      'test/spec/services/**/DeleteMessageSvcTest.js',
+//      'test/spec/services/**/ToCSvcTest.js',
       'test/spec/services/**/CloneDeleteMessageSvcTest.js',
      { pattern:  'test/fixtures/profiles/*.json',
           watched:  true,
@@ -78,7 +79,7 @@ module.exports = function(config) {
     // - IE (only Windows)
     browsers: [
       'PhantomJS',
-      'Chrome'
+//      'Chrome'
     ],
 
     // Which plugins to enable

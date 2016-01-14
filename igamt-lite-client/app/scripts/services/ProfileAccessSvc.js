@@ -23,40 +23,55 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 			return _.sortBy(profile.datatypes.children, "id");
 		})();
 	
+		dts.getAllDatatypeIds = function() {
+			
+			var dtIds = [];
+			
+			_.each(dts.datatypes, function(datatype) {
+				dtIds.push(datatype.id);
+			});
+			
+			return dtIds;
+		}
+		
 		dts.findById = function(id) {
 			return _.find(dts.datatypes, function(datatype) {
 				return datatype.id === id;
 			});
 		}						
 		
-		dts.findByNames = function(names) {
-			var datatypes = [];
-			_.each(names, function(name){
-				datatypes.push(dts.findByName(name));
-			});
-			return datatypes;
-		}	
-		
-		dts.findByName = function(name) {
-			return _.find(dts.datatypes, function(datatype) {
-				return datatype.name === name;
-			});
-		}	
-		
-		dts.findDead = function(names) {
-			dtNames = _.pluck(dts.datatypes, "name");
-			return _.difference(dtNames, names);
-		}
-	
-		dts.removeDead = function(names) {
-			dtNames = dts.findDead(names);
+		dts.removeDead = function(idsDead, idsLive) {
+			var dtIds = _.difference(idsDead, idsLive);
 			var i = 0;
-			_.each(dtNames, function(id) {
+			_.each(dtIds, function(id) {
 				i = _.indexOf(dts.datatypes, id, i);
 				dts.datatypes.splice(i, 1);
 			});
 			
 			return dts.datatypes;
+		}
+		
+		dts.findValueSetsFromDatatypeIds = function(dtIds) {
+			vsIds = [];
+			_.each(dtIds, function(dtId) {
+				var datatype = dts.findById(dtId);
+				if (datatype) {
+					var rval = dts.findValueSetsFromDatatype(datatype);
+					vsIds.push(rval);
+				}
+			});
+			console.log("vsIds=" + vsIds.length + " dtIds=" + dtIds.length)
+			return _.uniq(_.flatten(vsIds));
+		}
+		
+		dts.findValueSetsFromDatatype = function(datatype) {
+			vsIds = [];
+			_.each(datatype.components, function(component) {
+				if (component.table.trim()) {
+					vsIds.push(component.table);
+				}
+			});
+			return _.uniq(vsIds);
 		}
 		
 		return dts;
@@ -96,39 +111,44 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 			
 			return segment;
 		}
-	
-		// We pass in segRefs as a collection of ids for segments that are
-		// alive.
-		// All the rest are dead.
-		segs.findDead = function(segRefs) {
-			var segIds = segs.getAllSegmentIds();
-			return _.difference(segIds, segRefs);
-		}
-	
-		// We pass in segRefs as a collection of ids for segments that are
-		// alive.
-		// All the rest are dead.
-		segs.removeDead = function(segRefs) {
-			var segIds = segs.findDead(segRefs);
+		
+		segs.removeDead = function(idsDead, idsLive) {
+			var segIds = _.difference(idsDead, idsLive);
 			var segments = segs.segments();
 			var i = 0;
 			_.each(segIds, function(id) {
-				i = _.indexOf(segments, id, i);
-				segments.splice(i, 1);
+				i = _.indexOf(svc.Datatypes(profile).datatypes, id, i);
+				if (i > -1) {
+					segments.splice(i, 1);
+				}
 			});
 			
 			return segments;
 		}
 		
-		segs.findFields = function(segment) {
-			var fields = [];
-			_.each(segment.fields, function(field) {
-				fields.push(field);					
+		segs.findDatatypesFromSegmentRefs  = function(segRefs) {
+			var dtIds = [];
+			_.each(segRefs, function(segRef) {
+				var segment = segs.findById(segRef);
+				if (segment) {
+					dtIds.push(segs.findDatatypesFromSegment(segment));
+				} else {
+//					console.log("segment=" + segment);
+				}
 			});
 			
-			return fields;
+			return _.uniq(_.flatten(dtIds));
 		}
 		
+		segs.findDatatypesFromSegment = function(segment) {
+			var dtIds = [];
+			_.each(segment.fields, function(field) {
+				dtIds.push(field.datatype);
+			});
+			
+			return _.uniq(dtIds);
+		}
+	
 		segs.findDatatypeNames = function(fields) {
 			var datatypeNames = [];
 			_.each(fields, function(field){
@@ -156,66 +176,96 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 			_.each(profile.messages.children, function(message) {
 				rval.push(message.id);
 			});
-			console.log("rval=" + rval.length);
+//			console.log("rval=" + rval.length);
 			return rval;
 		}
 		
-		msgs.getAllSegmentRefs = function() {
+		msgs.findOtherMessages = function(message) {
+			var msgIds = _.pluck
+		}
+		
+		msgs.getAllSegmentRefs = function(messages) {
 
-			var segmentRefs = [];
+			var segRefs = [];
 			
-			_.each(profile.messages.children, function(message) {
+			_.each(messages, function(message) {
 				var refs = msgs.getSegmentRefs(message);
-				_.each(refs, function(ref) {
-					segmentRefs.push(ref);
-				});
+				segRefs.push(refs);
 			});
 			
-			return segmentRefs;
+			return _.uniq(_.flatten(segRefs));
 		}
 	
-		msgs.getSegmentRefsSansOne = function(message) {
-
-			var segmentRefs = [];
-			var messageId = message.id;
-			
-			_.each(profile.messages.children, function(message) {
-				if (message.id !== messageId) {
-					var refs = msgs.getSegmentRefs(message);
-					_.each(refs, function(ref) {
-						segmentRefs.push(ref);
-					});
-				}
-			});
-			
-			return segmentRefs;
-		}
-		
 		msgs.getSegmentRefs = function(message) {
 			
-			var segmentRefs = [];
+			var segRefs = [];
 			
 			_.each(message.children, function(groupORsegment) {
-				msgs.fetchSegments(groupORsegment, segmentRefs);
+				segRefs.push(msgs.fetchSegmentRefs(groupORsegment, segRefs));					
 			});
-		  return segmentRefs;
+		  return _.flatten(segRefs);
 		}
 		
-		msgs.fetchSegments = function(groupORsegment, segmentRefs) {
+		msgs.fetchSegmentRefs = function(groupORsegment) {
 
+			var segRefs = [];
+			
 			if (groupORsegment.type === "group") {
 				_.each(groupORsegment.children, function(groupORsegment1) {
-					msgs.fetchSegments(groupORsegment1, segmentRefs);					
+					segRefs.push(msgs.fetchSegmentRefs(groupORsegment1, segRefs));					
 				});
 			} else if (groupORsegment.type === "segmentRef") {
-				segmentRefs.push(groupORsegment.ref);
+				segRefs.push(groupORsegment.id);
 			} else {
 				console.log("Was neither group nor segmetnRef groupORsegment.type="
 								+ groupORsegment.type);
 			}
+			return _.flatten(segRefs);
 		}
 	
 		return msgs;
+	}
+	
+	svc.ValueSets = function(profile) {
+		
+		var vss = this;
+		
+		vss.valueSets = (function() {
+			return _.sortBy(profile.tables.children, "id");
+		})();
+		
+		vss.getAllValueSetIds = function() {
+			
+			var vsIds = [];
+			
+			var i = 0;
+			_.each(vss.valueSets, function(valueSet) {
+				if (valueSet) {
+					vsIds.push(valueSet.id);
+				}
+			});
+			
+			return vsIds;
+		}
+		
+		vss.findById = function(id) {
+			return _.find(vss.valueSets, function(vs) {
+				return vs.id === id;
+			});
+		}
+		
+		vss.removeDead = function(idsDead, idsLive) {
+			var vsIds = _.difference(idsDead, idsLive);
+			var i = 0;
+			_.each(vsIds, function(id) {
+				i = _.indexOf(vss.valueSets, id, i);
+				vss.valueSets.splice(i, 1);
+			});
+			
+			return vss.valueSets;
+		}
+		
+		return vss;
 	}
 	
 	return svc;

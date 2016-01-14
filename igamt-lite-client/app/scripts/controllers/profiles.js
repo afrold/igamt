@@ -211,6 +211,10 @@ angular.module('igl')
                 profile = $scope.findOne(profile.id);
             }
         });
+        
+        $rootScope.$on('event:SetToC', function(event) {
+            $rootScope.tocData = ToCSvc.getToC($rootScope.profile);
+         });
 
         $scope.loadProfiles = function () {
             $scope.error = null;
@@ -310,10 +314,10 @@ angular.module('igl')
                     $rootScope.profile.messages.children = $filter('orderBy')($rootScope.profile.messages.children, 'label');
                     $rootScope.profile.segments.children = $filter('orderBy')($rootScope.profile.segments.children, 'label');
                     $rootScope.profile.datatypes.children = $filter('orderBy')($rootScope.profile.datatypes.children, 'label');
-                    $rootScope.profile.tables.children = $filter('orderBy')($rootScope.profile.tables.children, 'label');
-                    $rootScope.tocData = ToCSvc.getToC($rootScope.profile);
+                    $rootScope.profile.tables.children = $filter('orderBy')($rootScope.profile.tables.children, 'label');            
                     $rootScope.initMaps();
                     $rootScope.messages = $rootScope.profile.messages.children;
+					$rootScope.$broadcast('event:SetToC');
                     angular.forEach($rootScope.profile.datatypes.children, function (child) {
                         this[child.id] = child;
                         if (child.displayName) { // TODO: Change displayName to label
@@ -498,7 +502,6 @@ angular.module('igl')
         $scope.save = function () {
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
-            $rootScope.profile.accountId = userInfoService.getAccountID();
             var data = {"changes": changes, "profile": $rootScope.profile};
             $http.post('api/profiles/' + $rootScope.profile.id + '/save', data, {timeout: 60000}).then(function (response) {
                 var saveResponse = angular.fromJson(response.data);

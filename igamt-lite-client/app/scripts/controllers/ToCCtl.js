@@ -82,8 +82,8 @@ angular
 								case "Clone":
 									console.log("Clone==> node=" + leaf);
 									CloneDeleteMessageSvc.cloneMessage(
-											$rootScope.profile,
-											$rootScope.tocData, leaf);
+											$rootScope.profile, leaf);
+									$rootScope.$broadcast('event:SetToC');
 									break;
 								case "Delete":
 									console.log("Delete==> node=" + leaf);

@@ -16,6 +16,15 @@ public class IntegrationProfileRequestWrapper implements Serializable {
 		String hl7Version;
 		List<String> msgIds;
 		Profile profile;
+		Long accountId;
+
+		public Long getAccountId() {
+			return accountId;
+		}
+
+		public void setAccountId(Long accountId) {
+			this.accountId = accountId;
+		}
 
 		public String getHl7Version() {
 			return hl7Version;

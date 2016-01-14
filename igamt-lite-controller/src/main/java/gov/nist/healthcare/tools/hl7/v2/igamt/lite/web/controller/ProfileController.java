@@ -203,8 +203,6 @@ public class ProfileController extends CommonController {
 		if (account == null)
 			throw new UserAccountNotFoundException();
 		log.info("Applying changes to profile=" + id + " for account=" + command.getProfile().getAccountId());
-// gcr Profile p is not being used; causes an error when id = null.		
-//		Profile p = findProfile(id);
 		Profile saved = profileService.apply(command.getProfile());
 		return new ProfileSaveResponse(saved.getMetaData().getDate(), saved
 				.getMetaData().getVersion());
@@ -365,7 +363,12 @@ public class ProfileController extends CommonController {
 	@RequestMapping(value = "/hl7/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public Profile createIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws ProfileException {
 		log.info("Creation of profile.");
-		return profileCreation.createIntegratedProfile(iprw.getMsgIds(), iprw.getHl7Version());
+		log.debug("profileCreation=" + profileCreation);
+		Profile profile = profileCreation.createIntegratedProfile(iprw.getMsgIds(), iprw.getHl7Version(), iprw.getAccountId());
+		profileService.save(profile);
+		assert(profile.getId() != null);
+		assert(profile.getAccountId() != null);
+		return profile;
 	}
 
 	@RequestMapping(value = "/hl7/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")

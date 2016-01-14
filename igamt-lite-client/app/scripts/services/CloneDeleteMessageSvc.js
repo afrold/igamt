@@ -4,7 +4,7 @@ angular.module('igl').factory(
 
 			var svc = this;
 
-			svc.cloneMessage = function(profile, toc, message) {
+			svc.cloneMessage = function(profile, message) {
 				// TODO gcr: Need to include the user identifier in the
 				// new label.
 				// $rootScope.profile.metaData.ext should be just that,
@@ -24,36 +24,51 @@ angular.module('igl').factory(
 				}
 
 				profile.messages.children.splice(0, 0, newMessage.reference);
-				var ConformanceProfile = _.find(toc, function(child) {
-					return child.id === "3";
-				});
-
-				var messages = _.find(ConformanceProfile.children, function(
-						child) {
-					return child.id === "3.1";
-				});
-
-				var id = message.reference.id;
-				var idx = _.findIndex(messages.children, function(child) {
-					return child.reference.id === id;
-				})
-				messages.children.splice(idx, 0, newMessage);
 				return newMessage;
 			}
 
-			svc.deleteMessage = function(profile, toc, message) {
-				var segmentRefs = ProfileAccessSvc.Messages(profile)
-						.getSegmentRefsSansOne(message.reference);
-				ProfileAccessSvc.Segments(profile).removeDead(segmentRefs);
-				var id = message.reference.id;
-				var idxP = _.findIndex(profile.messages.children, function(
+			svc.deleteMessage = function(profile, message) {
+				console.log("start==>");
+				// We do the delete in pairs: dead and live.  dead = things we are deleting and live = things we are keeping. 
+				
+				// We are deleting the message so it's dead.
+				// The message there is from the ToC so what we need is its reference,
+				// and it must be an array of one.
+				var msgDead = [message];
+				// We are keeping the children so their live.
+				var msgLive = profile.messages.children;
+				
+				// First we remove the dead message from the living.
+				var idxP = _.findIndex(msgLive, function(
 						child) {
-					return child.id === id;
+					return child.id === msgDead[0].id;
 				})
-				profile.messages.children.splice(idxP, 1);
-				var messages = svc.getMessages(toc);
-				var idxT = svc.findMessageIndex(messages);
-				messages.children.splice(idxT, 1);
+				msgLive.splice(idxP, 1);
+				
+				// Second we get all segment refs that are contained in the dead message.
+				var segmentRefsDead = ProfileAccessSvc.Messages(profile)
+						.getAllSegmentRefs(msgDead);
+				// then all segment refs that are contained in the live messages.
+				var segmentRefsLive = ProfileAccessSvc.Messages(profile)
+				.getAllSegmentRefs(msgLive);
+				
+				// Third we
+				// get all datatypes that are contained in the dead segments.
+				var dtIdsDead = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segmentRefsDead);
+				// then all datatypes that are contained in the live segments.				
+				var dtIdsLive = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segmentRefsLive);
+				
+				// Fourth we 
+				// get all value sets that are contained in the dead datatypes.
+				var vsIdsDead = ProfileAccessSvc.Datatypes(profile).findValueSetsFromDatatypeIds(dtIdsDead);
+				// then all value sets that are contained in the live datatypes.
+				var vsIdsLive = ProfileAccessSvc.Datatypes(profile).findValueSetsFromDatatypeIds(dtIdsLive);
+
+				// Until now, dead meant mearly dead.  We now remove those that really are sincerely dead.
+				ProfileAccessSvc.ValueSets(profile).removeDead(vsIdsDead, vsIdsLive);
+				ProfileAccessSvc.Datatypes(profile).removeDead(dtIdsDead, dtIdsLive);
+				ProfileAccessSvc.Segments(profile).removeDead(segmentRefsDead, segmentRefsLive);
+				console.log("<==end");
 			}
 
 			svc.getMessages = function(toc) {

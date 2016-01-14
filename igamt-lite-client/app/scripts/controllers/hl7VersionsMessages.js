@@ -1,7 +1,7 @@
 angular.module('igl').controller(
 		'HL7VersionsDlgCtrl',
 		function($scope, $rootScope, $modal, $log, $http, $httpBackend,
-				ProfileAccessSvc) {
+				ProfileAccessSvc, userInfoService) {
 
 			$rootScope.clickSource = {};
 			$scope.hl7Version = {};
@@ -60,6 +60,7 @@ angular.module('igl').controller(
 				var iprw = {
 					"hl7Version" : hl7Version,
 					"msgIds" : msgIds,
+					"accountID" : userInfoService.getAccountID(), 
 					"timeout" : 60000
 				};
 				$http.post('api/profiles/hl7/createIntegrationProfile', iprw)
@@ -74,6 +75,8 @@ angular.module('igl').controller(
 									$rootScope.$broadcast('event:IgsPushed',
 											profile);
 								});
+				console.log("_id=" + $scope.profile.id);
+				console.log("accountId=" + $scope.profile.accountId);
 				return $scope.profile;
 			};
 

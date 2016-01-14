@@ -89,7 +89,6 @@ public class ProfileCreationServiceTest {
 			PropertyConfigurator.configure(p);
 			refIneteg = new ProfileCreationReferentialIntegrityTest();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -115,7 +114,7 @@ public class ProfileCreationServiceTest {
 		assertEquals(7, profileCreation.findHl7Versions().size());
 
 		// Collect standard messages and message descriptions
-		//There should be only one HL7STANDARD profile for each version
+		// There should be only one HL7STANDARD profile for each version
 		for (String hl7Version : Arrays.asList("2.5.1", "2.7")) {
 			int found = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version).size();
 			assertEquals(1, found);
@@ -140,7 +139,7 @@ public class ProfileCreationServiceTest {
 		msgIds.add("5665cee2d4c613e7b531be18");
 		msgIds.add("5665cee2d4c613e7b531be4e");
 		msgIds.add("5665cee2d4c613e7b531bbbb");
-		Profile pNew = profileCreation.createIntegratedProfile(msgIds, "2.7");
+		Profile pNew = profileCreation.createIntegratedProfile(msgIds, "2.7", 45L);
 		assertEquals(5, pNew.getMessages().getChildren().size());
 
 		refIneteg.testMessagesVsSegments(pNew);
@@ -185,7 +184,7 @@ public class ProfileCreationServiceTest {
 		msgIds.add("5665cee2d4c613e7b531be18");
 		msgIds.add("5665cee2d4c613e7b531be4e");
 		msgIds.add("5665cee2d4c613e7b531bbbb");
-		Profile pNew = profileCreation.createIntegratedProfile(msgIds, "2.7");
+		Profile pNew = profileCreation.createIntegratedProfile(msgIds, "2.7", 45L);
 		assertEquals(5, pNew.getMessages().getChildren().size());
 		List<String> msgIds1 = new ArrayList<String>();
 		msgIds1.add(msgDesc.get(5)[0]);
@@ -228,13 +227,6 @@ public class ProfileCreationServiceTest {
 			return new CustomConversions(converterList);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.springframework.data.mongodb.config.AbstractMongoConfiguration#
-		 * getDatabaseName()
-		 */
 		@Override
 		protected String getDatabaseName() {
 			return "igl";

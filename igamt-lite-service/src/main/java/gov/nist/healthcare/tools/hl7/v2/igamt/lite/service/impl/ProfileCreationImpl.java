@@ -79,7 +79,7 @@ public class ProfileCreationImpl implements ProfileCreationService {
 	}
 
 	@Override
-	public Profile createIntegratedProfile(List<String> msgIds, String hl7Version) throws ProfileException {
+	public Profile createIntegratedProfile(List<String> msgIds, String hl7Version, Long accountId) throws ProfileException {
 		// Creation of profile
 		Profile pSource = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version)
 				.get(0);
@@ -87,6 +87,7 @@ public class ProfileCreationImpl implements ProfileCreationService {
 
 		// Setting metaData
 		ProfileMetaData metaData = new ProfileMetaData();
+		pTarget.setAccountId(accountId);
 		pTarget.setMetaData(metaData);
 		DateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
 		Date date = new Date();

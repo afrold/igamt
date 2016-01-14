@@ -217,12 +217,12 @@ angular.module('igl').factory(
 								+ " - " + child.description, parent, parent);
 					} else if (parent === "3.2") {
 						entry = svc
-								.createEntry(child, child.id, child.name
+								.createEntry(child, child.id, child.label
 										+ " - " + child.description, parent,
 										child.drop);
 					} else if (parent === "3.3") {
 						entry = svc
-								.createEntry(child, child.id, child.name
+								.createEntry(child, child.id, child.label
 										+ " - " + child.description, parent,
 										child.drop);
 					} else if (parent === "3.4") {

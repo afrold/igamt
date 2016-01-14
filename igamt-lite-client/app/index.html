@@ -94,7 +94,7 @@
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/json3/lib/json3.js"></script>
     <script src="bower_components/ng-idle/angular-idle.js"></script>
-    <script src="bower_components/lodash/dist/lodash.compat.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
     <script src="bower_components/restangular/dist/restangular.js"></script>
     <script src="bower_components/sass-bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/rangy/rangy-core.js"></script>
@@ -115,75 +115,78 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js scripts/modules.js -->
-    <script src="lib/utils.js"></script>
-    <script src="lib/Objectid.js"></script>
-    <script src="lib/angular-treetable/js/jquery.treetable.js"></script>
-    <script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
-    <script src="lib/jquery.i18n.properties-1.0.9.js"></script>
-    <script src="lib/jquery-file-download.js"></script>
-    <script src="lib/table-settings/table-settings.js"></script>
-<!--    
-	<script src="lib/lodash/lodash.js"></script>
--->    
  	<!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
-    <script src="scripts/services/profiles.js"></script>
-    <script src="scripts/services/i18n.js"></script>
-    <script src="scripts/services/base64.js"></script>
-    <script src="scripts/services/userInfoService.js"></script>
-    <script src="scripts/services/AccountLoader.js"></script>
-    <script src="scripts/services/MultiAccountLoader.js"></script>
-    <script src="scripts/services/ContextMenuSvc.js"></script>
-    <script src="scripts/services/MessageSelectionSvc.js"></script>
-    <script src="scripts/services/ProfileAccessSvc.js"></script>
-    <script src="scripts/services/CloneDeleteMessageSvc.js"></script>
-    <script src="scripts/services/ToCSvc.js"></script>
-
-    <script src="scripts/filters/yesno.js"></script>
-    <script src="scripts/filters/bytes.js"></script>
-
-    <script src="scripts/directives/msg.js"></script>
-    <script src="scripts/directives/csSelect.js"></script>
-    <script src="scripts/directives/clickGo.js"></script>
-    <script src="scripts/directives/focus.js"></script>
-    <script src="scripts/directives/igPasswordValidate.js"></script>
-    <script src="scripts/directives/igCheckPassword.js"></script>
-    <script src="scripts/directives/igCheckPoaDate.js"></script>
-    <script src="scripts/directives/igCheckTimerange.js"></script>
-    <script src="scripts/directives/igCheckUsername.js"></script>
-    <script src="scripts/directives/igCheckEmail.js"></script>
-    <script src="scripts/directives/igCheckEmployer.js"></script>
-    <!--<script src="scripts/directives/igCheckTitle.js"></script>-->
-    <!--<script src="scripts/directives/igCheckJuridiction.js"></script>-->
-    <script src="scripts/directives/validTrustDocument.js"></script>
-    <script src="scripts/directives/igbold.js"></script>
-    <script src="scripts/directives/stRatio.js"></script>
-    <script src="scripts/directives/stRatio.js"></script>
-    <script src="scripts/directives/ToCDir.js"></script>
-
-    <script src="scripts/controllers/forgotten.js"></script>
-    <script src="scripts/controllers/issue.js"></script>
-    <script src="scripts/controllers/registration.js"></script>
-    <script src="scripts/controllers/account.js"></script>
-    <script src="scripts/controllers/registerUser.js"></script>
-    <script src="scripts/controllers/registerResetPassword.js"></script>
-    <script src="scripts/controllers/manageAccounts.js"></script>
-    <script src="scripts/controllers/manageCEHRTs.js"></script>
-
-    <script src="scripts/controllers/main.js"></script>
-    <script src="scripts/controllers/about.js"></script>
-    <script src="scripts/controllers/profiles.js"></script>
-    <script src="scripts/controllers/messages.js"></script>
-    <script src="scripts/controllers/datatypes.js"></script>
-    <script src="scripts/controllers/segments.js"></script>
-    <script src="scripts/controllers/tables.js"></script>
-    <script src="scripts/controllers/constraints.js"></script>
-    <script src="scripts/controllers/hl7VersionsMessages.js"></script>
-    <script src="scripts/controllers/ContextMenuCtl.js"></script>
-    <script src="scripts/controllers/ToCCtl.js"></script>
-
+	<script src="prod/app.js"></script>
+	<script src="prod/userInfoService.js"></script> 	
+	<script src="lib/FileSaver.min.js"></script>
+	<script src="lib/Objectid.js"></script>
+	<script src="lib/angular-mocks/angular-mocks.js"></script>
+	<script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
+	<script src="lib/angular-treetable/js/jquery.treetable.js"></script>
+	<script src="lib/bootstrap-fileupload.js"></script>
+	<script src="lib/bootstrap-fileupload.min.js"></script>
+	<script src="lib/jquery-file-download.js"></script>
+	<script src="lib/jquery.i18n.properties-1.0.9.js"></script>
+	<script src="lib/jquery.i18n.properties-min-1.0.9.js"></script>
+	<script src="lib/lodash/lodash.js"></script>
+	<script src="lib/ng-grid-csv-export-custom.js"></script>
+	<script src="lib/table-settings/table-settings.js"></script>
+	<script src="lib/utils.js"></script> 	
+	<script src="scripts/controllers/ContextMenuCtl.js"></script>
+	<script src="scripts/controllers/ToCCtl.js"></script>
+	<script src="scripts/controllers/about.js"></script>
+	<script src="scripts/controllers/account.js"></script>
+	<script src="scripts/controllers/constraints.js"></script>
+	<script src="scripts/controllers/datatypes.js"></script>
+	<script src="scripts/controllers/doc.js"></script>
+	<script src="scripts/controllers/forgotten.js"></script>
+	<script src="scripts/controllers/hl7VersionsMessages.js"></script>
+	<script src="scripts/controllers/idle.js"></script>
+	<script src="scripts/controllers/issue.js"></script>
+	<script src="scripts/controllers/main.js"></script>
+	<script src="scripts/controllers/manageAccounts.js"></script>
+	<script src="scripts/controllers/manageCEHRTs.js"></script>
+	<script src="scripts/controllers/messages.js"></script>
+	<script src="scripts/controllers/profiles.js"></script>
+	<script src="scripts/controllers/registerResetPassword.js"></script>
+	<script src="scripts/controllers/registerUser.js"></script>
+	<script src="scripts/controllers/registration.js"></script>
+	<script src="scripts/controllers/segments.js"></script>
+	<script src="scripts/controllers/tables.js"></script>
+	<script src="scripts/directives/ToCDir.js"></script>
+	<script src="scripts/directives/clickGo.js"></script>
+	<script src="scripts/directives/compile.js"></script>
+	<script src="scripts/directives/csSelect.js"></script>
+	<script src="scripts/directives/focus.js"></script>
+	<script src="scripts/directives/igCheckEmail.js"></script>
+	<script src="scripts/directives/igCheckEmployer.js"></script>
+	<script src="scripts/directives/igCheckPassword.js"></script>
+	<script src="scripts/directives/igCheckPhone.js"></script>
+	<script src="scripts/directives/igCheckPoaDate.js"></script>
+	<script src="scripts/directives/igCheckTimerange.js"></script>
+	<script src="scripts/directives/igCheckUsername.js"></script>
+	<script src="scripts/directives/igPasswordValidate.js"></script>
+	<script src="scripts/directives/igbold.js"></script>
+	<script src="scripts/directives/msg.js"></script>
+	<script src="scripts/directives/stRatio.js"></script>
+	<script src="scripts/directives/validTrustDocument.js"></script>
+	<script src="scripts/filters/bytes.js"></script>
+	<script src="scripts/filters/yesno.js"></script>
+	<script src="scripts/services/AccountLoader.js"></script>
+	<script src="scripts/services/CloneDeleteMessageSvc.js"></script>
+	<script src="scripts/services/ContextMenuSvc.js"></script>
+	<script src="scripts/services/MessageSelectionSvc.js"></script>
+	<script src="scripts/services/MultiAccountLoader.js"></script>
+	<script src="scripts/services/ProfileAccessSvc.js"></script>
+	<script src="scripts/services/ToCSvc.js"></script>
+	<script src="scripts/services/about.js"></script>
+	<script src="scripts/services/base64.js"></script>
+	<script src="scripts/services/i18n.js"></script>
+	<script src="scripts/services/main.js"></script>
+	<script src="scripts/services/profiles.js"></script>
+	<script src="scripts/services/user.js"></script> 	
     <!-- endbuild -->
 
     <script>

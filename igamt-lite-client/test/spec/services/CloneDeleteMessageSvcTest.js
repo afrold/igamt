@@ -39,61 +39,73 @@ describe("delete message service", function () {
 		// Here were going to compare the lengths of these arrays before and after.
 		
 		// First we take the profile and record the length of its messages.
-		var pCount = profile.messages.children.length;
+		var bCount = profile.messages.children.length;
 		
 		// Second we extract the toc and record the length of its messages.
 		var toc = ToCSvc.getToC(profile);
 		var msgs = CloneDeleteMessageSvc.getMessages(toc);
-		var tCount = msgs.children.length;
 		
 		// Third we do the clone.
-		var newMsg = CloneDeleteMessageSvc.cloneMessage(profile, toc, msgs.children[4]);
+		var newMsg = CloneDeleteMessageSvc.cloneMessage(profile, msgs.children[4]);
 		
 		// Fourth we check our counts and undefineds
-		expect(profile.messages.children.length).toBe(pCount +1);
-		expect(msgs.children.length).toBe(tCount +1);
+		expect(profile.messages.children.length).toBe(bCount +1);
 		expect(newMsg).toBeDefined();
 		expect(newMsg.reference.id).toBeDefined();
 		expect(msg.id).not.toBe(newMsg.reference.id)
 	});
 	
-	it("Can we get messages?", function () {
-		var toc = ToCSvc.getToC(profile);
-		var msgs = CloneDeleteMessageSvc.getMessages(toc);
-		expect(msgs).toBeDefined();
- 		expect(msgs.children.length).toBe(193);
- 		var msg = msgs.children[0];
-		expect(msg).toBeDefined();
-		expect(msg.reference.type).toBe("message");
-	});
+//	it("Can we get messages?", function () {
+//		var toc = ToCSvc.getToC(profile);
+//		var msgs = CloneDeleteMessageSvc.getMessages(toc);
+//		expect(msgs).toBeDefined();
+// 		expect(msgs.children.length).toBe(193);
+// 		var msg = msgs.children[0];
+//		expect(msg).toBeDefined();
+//		expect(msg.reference.type).toBe("message");
+//	});
 	
 	it("Can we delete a message?", function () {
-		// A delegte removes a message by splicing it out of two arrays: (1) profile and (2) toc.
+		// A delete removes a message by splicing it out of two arrays: (1) profile and (2) toc.
 		// Here were going to compare the lengths of these arrays before and after.
 		
 		// First we take the profile and record the length of its messages.
-		var pCount = profile.messages.children.length;
+		var bMsgCount = profile.messages.children.length;
+		var bSegCount = ProfileAccessSvc.Messages(profile).getAllSegmentRefs(profile.messages.children);
 
-		// Second we extract the toc and record the length of its messages.
-		var toc = ToCSvc.getToC(profile);
-		var msgs = CloneDeleteMessageSvc.getMessages(toc);
-		var tCount = msgs.children.length;
-
-		// Third we do the delete.
-		CloneDeleteMessageSvc.deleteMessage(profile, toc, msgs.children[4]);
+		// Second we do the delete.
+		CloneDeleteMessageSvc.deleteMessage(profile, profile.messages.children[6]);
+		
+		// Third we re-take the profile and record the length of its messages.
+		var aMsgCount = profile.messages.children.length;
+		var aSegCount = ProfileAccessSvc.Messages(profile).getAllSegmentRefs(profile.messages.children);
 		
 		// Fourth we check our counts.
-		expect(profile.messages.children.length).toBe(pCount -1);
-		expect(msgs.children.length).toBe(tCount -1);
+		expect(bMsgCount).toBe(aMsgCount +1);
 	});
 	
-	it("Can we find an index?", function() {
-		var toc = ToCSvc.getToC(profile);
-		var msgs = CloneDeleteMessageSvc.getMessages(toc);
+	it("If we delete all messages will we also delete all segments?", function() {
+		var bMsgCount = profile.messages.children.length;
+		var bSegCount = ProfileAccessSvc.Messages(profile).getAllSegmentRefs(profile.messages.children);
+		var bSegIds = ProfileAccessSvc.Segments(profile).getAllSegmentIds();
 		
-		// if this index cannot be found, it might be because the test data got regenerated resulting in fresh ids.
-		var id = "5665cee2d4c613e7b531be4e";
-		var idx = CloneDeleteMessageSvc.findMessageIndex(msgs, id);		
-		expect(idx).toBeDefined();
+//		_.eachRight(profile.messages.children, function(message) {
+//			CloneDeleteMessageSvc.deleteMessage(profile, message);
+//		});
+
+		var aMsgCount = profile.messages.children.length;
+		var aSegCount = ProfileAccessSvc.Messages(profile).getAllSegmentRefs(profile.messages.children);
+		expect(aMsgCount).toBe(0);
+		expect(aSegCount).toBe(0);
 	});
+	
+//	it("Can we find an index?", function() {
+//		var toc = ToCSvc.getToC(profile);
+//		var msgs = CloneDeleteMessageSvc.getMessages(toc);
+//		
+//		// if this index cannot be found, it might be because the test data got regenerated resulting in fresh ids.
+//		var id = "5665cee2d4c613e7b531be4e";
+//		var idx = CloneDeleteMessageSvc.findMessageIndex(msgs, id);		
+//		expect(idx).toBeDefined();
+//	});
 });
