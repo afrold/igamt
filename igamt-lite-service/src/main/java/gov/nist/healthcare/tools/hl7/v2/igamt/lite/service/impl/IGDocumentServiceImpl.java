@@ -93,7 +93,7 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 	@Override
 	public IGDocument apply(IGDocument ig) throws IGDocumentSaveException {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		ig.getDocumentMetaData().setDate(dateFormat.format(Calendar.getInstance().getTime()));
+		ig.getMetaData().setDate(dateFormat.format(Calendar.getInstance().getTime()));
 		documentRepository.save(ig);
 		return ig;
 	}
