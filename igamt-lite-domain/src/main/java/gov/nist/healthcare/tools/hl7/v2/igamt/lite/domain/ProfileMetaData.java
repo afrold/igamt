@@ -12,29 +12,36 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 		this.type = "profileMetaData";
 	}
 
-	// //@NotNull
+	/* XSD Attributes */
+	
+	private String type = "";
+	
+	private String hl7Version = "";
+	
+	private String schemaVersion = "";
+	
 	private String name;
-
+	
+	private String orgName = "";
+	
+	private String version = "";
+	
+	private String status = "";
+	
+	private String topics = "";
+	
+	private String date = "";
+	
+	private String specificationName = "";
+	
 	private String identifier = "";
+	
+	/* XSD Attributes END */
+	
+	
+
 
 	private String subTitle = "";
-
-	private String version = "";
-
-	// //@NotNull
-	private String orgName = "";
-
-	private String status = "";
-
-	private String topics = "";
-
-	private String type = "";
-
-	private String hl7Version = "";
-
-	private String schemaVersion = "";
-
-	private String date = "";
 
 	private String ext = "";
 
@@ -175,6 +182,14 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 				+ topics + ", type=" + type + ", hl7Version=" + hl7Version
 				+ ", schemaVersion=" + schemaVersion + ", date=" + date
 				+ ", ext=" + ext + ", encodings=" + encodings + "]";
+	}
+
+	public String getSpecificationName() {
+		return specificationName;
+	}
+
+	public void setSpecificationName(String specificationName) {
+		this.specificationName = specificationName;
 	}
 
 }

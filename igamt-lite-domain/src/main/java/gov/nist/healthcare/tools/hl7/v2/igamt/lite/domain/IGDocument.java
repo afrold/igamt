@@ -26,7 +26,7 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 
 	private String usageNote = "";
 
-	private DocumentMetaData documentMetaData;
+	private DocumentMetaData metaData;
 	
 	private Profile profile;
 	
@@ -38,7 +38,7 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 	@Override
 	public IGDocument clone() throws CloneNotSupportedException {
 		IGDocument clonedDocument = new IGDocument();
-		clonedDocument.setDocumentMetaData(documentMetaData.clone());
+		clonedDocument.setMetaData(metaData.clone());
 		clonedDocument.setProfile(profile.clone());
 		clonedDocument.setChildSections(new HashSet<Section>());
 		for(Section section:this.childSections){
@@ -68,8 +68,11 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		documentMetaData.setTitle(p.getMetaData().getSubTitle());
 		documentMetaData.setType(p.getMetaData().getType());
 		documentMetaData.setVersion(p.getMetaData().getVersion());
-		this.setDocumentMetaData(documentMetaData);
+		this.setMetaData(documentMetaData);
 		
+		
+		p.getMetaData().setExt(null);
+		p.getMetaData().setSubTitle(null);
 		
 		if(this.childSections == null || this.childSections.size() == 0){
 			Section section1 = new Section("Introduction");
@@ -205,13 +208,13 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		this.usageNote = usageNote;
 	}
 
-	public DocumentMetaData getDocumentMetaData() {
-		return documentMetaData;
+	public DocumentMetaData getMetaData() {
+		return metaData;
 	}
 
 
-	public void setDocumentMetaData(DocumentMetaData documentMetaData) {
-		this.documentMetaData = documentMetaData;
+	public void setMetaData(DocumentMetaData metaData) {
+		this.metaData = metaData;
 	}
 
 
