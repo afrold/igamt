@@ -28,7 +28,6 @@ angular.module('igl').factory(
 			}
 
 			svc.deleteMessage = function(profile, message) {
-				console.log("start==>");
 				// We do the delete in pairs: dead and live.  dead = things we are deleting and live = things we are keeping. 
 				
 				// We are deleting the message so it's dead.
@@ -36,39 +35,62 @@ angular.module('igl').factory(
 				// and it must be an array of one.
 				var msgDead = [message];
 				// We are keeping the children so their live.
-				var msgLive = profile.messages.children;
+				var msgLive = ProfileAccessSvc.Messages(profile).messages();
 				
 				// First we remove the dead message from the living.
-				var idxP = _.findIndex(msgLive, function(
+				var idxP = _.findIndex(msgLive, function (
 						child) {
 					return child.id === msgDead[0].id;
-				})
+				});
 				msgLive.splice(idxP, 1);
 				
 				// Second we get all segment refs that are contained in the dead message.
-				var segmentRefsDead = ProfileAccessSvc.Messages(profile)
+				var segmentRefsMerelyDead = ProfileAccessSvc.Messages(profile)
 						.getAllSegmentRefs(msgDead);
-				// then all segment refs that are contained in the live messages.
+				// then we get all segment refs that are contained in the live messages.
 				var segmentRefsLive = ProfileAccessSvc.Messages(profile)
 				.getAllSegmentRefs(msgLive);
+				// Until now, dead meant mearly dead.  We now remove those that really are sincerely dead.
+				var segmentRefsSincerelyDead = ProfileAccessSvc.Segments(profile).findDead(segmentRefsMerelyDead, segmentRefsLive);
+				if (segmentRefsSincerelyDead.length === 0) {
+					return;
+				}
 				
 				// Third we
-				// get all datatypes that are contained in the dead segments.
-				var dtIdsDead = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segmentRefsDead);
+				// get all datatypes that are contained in the sincerely dead segments.
+				var dtIdsMerelyDead = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segmentRefsSincerelyDead);
+
 				// then all datatypes that are contained in the live segments.				
 				var dtIdsLive = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segmentRefsLive);
-				
-				// Fourth we 
-				// get all value sets that are contained in the dead datatypes.
-				var vsIdsDead = ProfileAccessSvc.Datatypes(profile).findValueSetsFromDatatypeIds(dtIdsDead);
-				// then all value sets that are contained in the live datatypes.
-				var vsIdsLive = ProfileAccessSvc.Datatypes(profile).findValueSetsFromDatatypeIds(dtIdsLive);
+				var dtsIdsSincerelyDead = ProfileAccessSvc.Datatypes(profile).findDead(dtIdsMerelyDead, dtIdsLive);
 
-				// Until now, dead meant mearly dead.  We now remove those that really are sincerely dead.
-				ProfileAccessSvc.ValueSets(profile).removeDead(vsIdsDead, vsIdsLive);
-				ProfileAccessSvc.Datatypes(profile).removeDead(dtIdsDead, dtIdsLive);
-				ProfileAccessSvc.Segments(profile).removeDead(segmentRefsDead, segmentRefsLive);
-				console.log("<==end");
+				// Fourth we 
+				// get all value sets that are contained in the sincerely dead datatypes.
+				var vssIdsMerelyDead = ProfileAccessSvc.Datatypes(profile).findValueSetsFromDatatypeIds(dtsIdsSincerelyDead);
+				// then all value sets that are contained in the live datatypes.
+				var vssIdsLive = ProfileAccessSvc.Datatypes(profile).findValueSetsFromDatatypeIds(dtIdsLive);
+				var vssIdsSincerelyDead = ProfileAccessSvc.ValueSets(profile).findDead(vssIdsMerelyDead, vssIdsLive);		
+
+				ProfileAccessSvc.ValueSets(profile).removeDead(vssIdsSincerelyDead);		
+				ProfileAccessSvc.Datatypes(profile).removeDead(dtsIdsSincerelyDead);
+				ProfileAccessSvc.Segments(profile).removeDead(segmentRefsSincerelyDead);
+				
+				console.log("svc.deleteMessage: segmentRefsMerelyDead=" + segmentRefsMerelyDead.length);
+				console.log("svc.deleteMessage: segmentRefsLive=" + segmentRefsLive.length);
+				console.log("svc.deleteMessage: segmentRefsSincerelyDead=" + segmentRefsSincerelyDead.length);
+
+				console.log("svc.deleteMessage: dtIdsMerelyDead=" + dtIdsMerelyDead.length);
+				console.log("svc.deleteMessage: dtIdsLive=" + dtIdsLive.length);
+				console.log("svc.deleteMessage: dtsIdsSincerelyDead=" + dtsIdsSincerelyDead.length);
+
+				console.log("svc.deleteMessage: vssIdsMerelyDead=" + vssIdsMerelyDead.length);
+				console.log("svc.deleteMessage: vssIdsLive=" + vssIdsLive.length);
+				console.log("svc.deleteMessage: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
+
+				console.log("svc.deleteMessage: aMsgs=" + ProfileAccessSvc.Messages(profile).getMessageIds().length);
+				console.log("svc.deleteMessage: aSegs=" + ProfileAccessSvc.Segments(profile).segments().length);
+				console.log("svc.deleteMessage: aDts=" + ProfileAccessSvc.Datatypes(profile).datatypes().length);
+				console.log("svc.deleteMessage: aVss=" + ProfileAccessSvc.ValueSets(profile).valueSets().length);
 			}
 
 			svc.getMessages = function(toc) {

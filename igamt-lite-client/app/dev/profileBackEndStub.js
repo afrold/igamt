@@ -191,7 +191,8 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     	console.log('api/profiles/hl7/createIntegrationProfile start' + ' data=' + data);
         var profile = null;
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profiles/profile-2.7.5.json', false);
+        request.open('GET', '../../resources/profiles/profile-2.7-HL7STANDARD-.json', false);
+//        request.open('GET', '../../resources/profiles/profile-2.7.5.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         console.log('api/profiles/hl7/createIntegrationProfile end');
@@ -220,7 +221,8 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenGET('api/profiles/toc').respond(function (method, url, data, headers) {
          var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/profiles/profile-2.7.json', false);
+//       request.open('GET', '../../resources/profiles/profile-2.7-HL7STANDARD-.json', false);
+         request.open('GET', '../../resources/profiles/profile-2.7.5.json', false);
         request.send(null);
         var d = angular.fromJson(request.response);
         console.log('api/profiles/config end');

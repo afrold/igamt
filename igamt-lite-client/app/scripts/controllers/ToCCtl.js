@@ -88,8 +88,8 @@ angular
 								case "Delete":
 									console.log("Delete==> node=" + leaf);
 									CloneDeleteMessageSvc.deleteMessage(
-											$rootScope.profile,
-											$rootScope.tocData, leaf);
+											$rootScope.profile, leaf.reference);
+									$rootScope.$broadcast('event:SetToC');
 									break;
 								default:
 									console

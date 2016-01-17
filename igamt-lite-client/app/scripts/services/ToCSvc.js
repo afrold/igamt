@@ -238,7 +238,8 @@ angular.module('igl').factory(
 					rval.push(entry);
 				});
 				if (parent === "3.1") {
-					return rval;
+	//				return rval;
+					return _.sortBy(rval, 'name');
 				} else {
 					return _.sortBy(rval, 'label');
 				}

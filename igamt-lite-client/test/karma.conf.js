@@ -52,7 +52,7 @@ module.exports = function(config) {
       'app/lib/table-settings/table-settings.js',
       'app/scripts/**/*.js',
 //      'test/spec/controllers/**/hl7VersionsMessagesTest.js',
-      'test/spec/services/**/ProfileAccessSvcTest.js',
+//      'test/spec/services/**/ProfileAccessSvcTest.js',
 //      'test/spec/services/**/DeleteMessageSvcTest.js',
 //      'test/spec/services/**/ToCSvcTest.js',
       'test/spec/services/**/CloneDeleteMessageSvcTest.js',
@@ -78,8 +78,8 @@ module.exports = function(config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: [
-      'PhantomJS',
-//      'Chrome'
+//      'PhantomJS',
+      'Chrome'
     ],
 
     // Which plugins to enable

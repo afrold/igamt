@@ -21,7 +21,7 @@ describe("toc service", function () {
 			 	// We test here with version 2.7.
 			 	// The following only loads our file once and not before each test.
 			    $httpBackend.whenGET().respond(
-			    	profileAsString = JSON.stringify(getJSONFixture('profile-2.7.json'))
+			    	profileAsString = JSON.stringify(getJSONFixture('profile-2.7-HL7STANDARD-.json'))
 			    );
 			    expect(profileAsString).toBeDefined();
 		});
