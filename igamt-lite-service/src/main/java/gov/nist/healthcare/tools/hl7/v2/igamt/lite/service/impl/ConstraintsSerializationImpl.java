@@ -73,18 +73,17 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			Context datatypeContextObj = new Context();
 			Context segmentContextObj = new Context();
 			Context groupContextObj = new Context();
+			Context messageContextObj = new Context();
 
-			this.deserializeXMLToContext((Element) elmConstraints
-					.getElementsByTagName("Datatype").item(0),
-					datatypeContextObj);
-			this.deserializeXMLToContext((Element) elmConstraints
-					.getElementsByTagName("Segment").item(0), segmentContextObj);
-			this.deserializeXMLToContext((Element) elmConstraints
-					.getElementsByTagName("Group").item(0), groupContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Datatype").item(0), datatypeContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Segment").item(0), segmentContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Group").item(0), groupContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Message").item(0), messageContextObj);
 
 			constraints.setDatatypes(datatypeContextObj);
 			constraints.setSegments(segmentContextObj);
 			constraints.setGroups(groupContextObj);
+			constraints.setMessages(messageContextObj);
 
 			return constraints;
 		}
@@ -102,18 +101,17 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			Context datatypeContextObj = new Context();
 			Context segmentContextObj = new Context();
 			Context groupContextObj = new Context();
+			Context messageContextObj = new Context();
 
-			this.deserializeXMLToContext((Element) elmConstraints
-					.getElementsByTagName("Datatype").item(0),
-					datatypeContextObj);
-			this.deserializeXMLToContext((Element) elmConstraints
-					.getElementsByTagName("Segment").item(0), segmentContextObj);
-			this.deserializeXMLToContext((Element) elmConstraints
-					.getElementsByTagName("Group").item(0), groupContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Datatype").item(0), datatypeContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Segment").item(0), segmentContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Group").item(0), groupContextObj);
+			this.deserializeXMLToContext((Element) elmConstraints.getElementsByTagName("Message").item(0), messageContextObj);
 
 			constraints.setDatatypes(datatypeContextObj);
 			constraints.setSegments(segmentContextObj);
 			constraints.setGroups(groupContextObj);
+			constraints.setMessages(messageContextObj);
 
 			return constraints;
 		}
@@ -319,24 +317,27 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 	}
 
 	private void deserializeXMLToContext(Element elmContext, Context contextObj) {
-		NodeList nodes = elmContext.getChildNodes();
+		if(elmContext != null){
+			NodeList nodes = elmContext.getChildNodes();
 
-		for (int i = 0; i < nodes.getLength(); i++) {
-			if (nodes.item(i).getNodeName().equals("ByName")) {
-				ByName byNameObj = new ByName();
-				Element elmByName = (Element) nodes.item(i);
-				byNameObj.setByName(elmByName.getAttribute("Name"));
-				deserializeXMLToConstraints(elmByName, byNameObj);
-				contextObj.getByNameOrByIDs().add(byNameObj);
-			} else if (nodes.item(i).getNodeName().equals("ByID")) {
-				ByID byIDObj = new ByID();
-				Element elmByID = (Element) nodes.item(i);
-				byIDObj.setByID(elmByID.getAttribute("ID"));
-				deserializeXMLToConstraints(elmByID, byIDObj);
-				contextObj.getByNameOrByIDs().add(byIDObj);
+			for (int i = 0; i < nodes.getLength(); i++) {
+				if (nodes.item(i).getNodeName().equals("ByName")) {
+					ByName byNameObj = new ByName();
+					Element elmByName = (Element) nodes.item(i);
+					byNameObj.setByName(elmByName.getAttribute("Name"));
+					deserializeXMLToConstraints(elmByName, byNameObj);
+					contextObj.getByNameOrByIDs().add(byNameObj);
+				} else if (nodes.item(i).getNodeName().equals("ByID")) {
+					ByID byIDObj = new ByID();
+					Element elmByID = (Element) nodes.item(i);
+					byIDObj.setByID(elmByID.getAttribute("ID"));
+					deserializeXMLToConstraints(elmByID, byIDObj);
+					contextObj.getByNameOrByIDs().add(byIDObj);
+				}
+
 			}
-
 		}
+		
 	}
 
 	private void deserializeXMLToConstraints(Element elmByNameOrByID,
@@ -349,10 +350,14 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			Element elmConstraint = (Element) constraintNodes.item(i);
 
 			constraintObj.setConstraintId(elmConstraint.getAttribute("ID"));
-			constraintObj.setConstraintTarget(elmConstraint
-					.getAttribute("Target"));
-			NodeList descriptionNodes = elmConstraint
-					.getElementsByTagName("Description");
+			constraintObj.setConstraintTarget(elmConstraint.getAttribute("Target"));
+			String constraintClassification = elmConstraint.getAttribute("Classification");
+			if(constraintClassification == null || constraintClassification.equals("")){
+				constraintObj.setConstraintClassification("E");
+			}else {
+				constraintObj.setConstraintClassification(constraintClassification);
+			}
+			NodeList descriptionNodes = elmConstraint.getElementsByTagName("Description");
 			if (descriptionNodes != null && descriptionNodes.getLength() == 1) {
 				constraintObj.setDescription(descriptionNodes.item(0)
 						.getTextContent());

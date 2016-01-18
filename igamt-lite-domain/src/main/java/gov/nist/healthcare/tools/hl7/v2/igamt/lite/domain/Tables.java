@@ -5,18 +5,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "tables")
-public class Tables extends DataModel implements Serializable, Cloneable {
+public class Tables extends SectionModel implements Serializable, Cloneable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2904036105687742572L;
 
-	@Id
 	private String id;
 
 	private String valueSetLibraryIdentifier;

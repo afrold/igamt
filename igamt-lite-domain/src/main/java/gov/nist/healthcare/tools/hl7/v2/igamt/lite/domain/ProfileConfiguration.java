@@ -22,6 +22,7 @@ public class ProfileConfiguration {
 	private Set<String> codeUsages = new HashSet<String>();
 	private Set<String> codeSources = new HashSet<String>();
 	private Set<String> tableStabilities = new HashSet<String>();
+	private Set<String> tableContentDefinitions = new HashSet<String>();
 	private Set<String> tableExtensibilities = new HashSet<String>();
 	private Set<String> constraintVerbs = new HashSet<String>();
 	private Set<String> constraintTypes = new HashSet<String>();
@@ -116,6 +117,14 @@ public class ProfileConfiguration {
 
 	public void setCodeSources(Set<String> codeSources) {
 		this.codeSources = codeSources;
+	}
+
+	public Set<String> getTableContentDefinitions() {
+		return tableContentDefinitions;
+	}
+
+	public void setTableContentDefinitions(Set<String> tableContentDefinitions) {
+		this.tableContentDefinitions = tableContentDefinitions;
 	}
 
 }

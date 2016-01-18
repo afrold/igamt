@@ -26,7 +26,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -70,7 +70,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		profile.setComment(readString(source, "comment"));
 		profile.setType(((String) source.get("type")));
 		profile.setUsageNote(readString(source, "usageNote"));
-		profile.setScope(ProfileScope.valueOf(((String) source.get("scope"))));
+		profile.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
 		profile.setChanges(((String) source.get("changes")));
 		profile.setAccountId(readLong(source, "accountId"));
 		profile.setMetaData(metaData((DBObject) source.get("metaData")));

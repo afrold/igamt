@@ -13,7 +13,7 @@
                             <label>IGAMT Project Identifier</label>
                             <input type="text" ng-disabled="options.readonly"
                                    ng-class="{'has-error' : igMetaDataForm.identifier.$invalid && !igMetaDataForm.identifier.$pristine }"
-                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'identifier', profile.metadata.identifier)"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'identifier', profile.metaData.identifier)"
                                    name="profileIndentifier" class="form-control"
                                    ng-model="profile.metaData.identifier"
                                    required>
@@ -24,7 +24,7 @@
                             <label>IG Title</label>
                             <input type="text" ng-disabled="options.readonly"
                                    ng-class="{'has-error' : igMetaDataForm.name.$invalid && !igMetaDataForm.name.$pristine }"
-                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'name', profile.metadata.name)"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'name', profile.metaData.name)"
 
                                    name="name" class="form-control" ng-model="profile.metaData.name"
                                    required>

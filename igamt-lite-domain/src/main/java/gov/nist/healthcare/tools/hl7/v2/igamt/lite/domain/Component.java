@@ -1,13 +1,11 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 
 public class Component extends DataElement implements Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
 	private String id;
 
 	public Component() {

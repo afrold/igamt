@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 
 //@Entity
 //@Table(name = "MAPPING")
@@ -18,7 +17,6 @@ public class Mapping implements Serializable, Cloneable {
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id
 	private String id;
 
 	// @OneToMany(cascade = CascadeType.ALL)

@@ -10,7 +10,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.io.Serializable;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 
 ////@Entity
 ////@Table(name = "CASE")
@@ -23,7 +22,6 @@ public class Case implements Serializable, Cloneable {
 		this.id = ObjectId.get().toString();
 	}
 
-	@Id
 	private String id;
 
 	// //@NotNull

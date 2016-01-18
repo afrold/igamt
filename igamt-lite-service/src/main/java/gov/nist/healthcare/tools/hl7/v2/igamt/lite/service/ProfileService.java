@@ -21,13 +21,12 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
 public interface ProfileService {
-
+	
 	public Profile save(Profile p) throws ProfileException;
 
 	public void delete(String id);
@@ -35,6 +34,8 @@ public interface ProfileService {
 	public Profile findOne(String id);
 
 	public List<Profile> findAllPreloaded();
+	
+	public List<Profile> findAllProfiles();
 
 	public List<Profile> findByAccountId(Long accountId);
 

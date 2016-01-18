@@ -17,6 +17,15 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -34,15 +43,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mongodb.MongoException;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileClone;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-
 @Service
 public class ProfileServiceImpl implements ProfileService {
 
@@ -50,7 +50,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Autowired
 	private ProfileRepository profileRepository;
-
+	
 	@Override
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Profile save(Profile p) throws ProfileException {
@@ -123,6 +123,12 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public List<Profile> findAllPreloaded() {
 		List<Profile> profiles = profileRepository.findPreloaded();
+		return profiles;
+	}
+	
+	@Override
+	public List<Profile> findAllProfiles() {
+		List<Profile> profiles = profileRepository.findAll();
 		return profiles;
 	}
 

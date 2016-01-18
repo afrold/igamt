@@ -3,7 +3,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.HashMap;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 
 /**
  * 
@@ -16,7 +15,6 @@ public class Field extends DataElement implements java.io.Serializable,
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
 	protected String id;
 
 	public Field() {

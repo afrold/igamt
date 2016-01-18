@@ -35,7 +35,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -66,7 +66,7 @@ public class ProfileCreationImpl implements ProfileCreationService {
 	public List<String[]> summary(String hl7Version, List<String> messageIds) {
 		// Fetching messages of version hl7Version
 		List<String[]> rst = new ArrayList<String[]>();
-		List<Profile> pl = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version);
+		List<Profile> pl = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version);
 		for (Profile p : pl) {
 			for (Message m : p.getMessages().getChildren()) {
 				if (!messageIds.contains(m.getId())) {
@@ -81,7 +81,7 @@ public class ProfileCreationImpl implements ProfileCreationService {
 	@Override
 	public Profile createIntegratedProfile(List<String> msgIds, String hl7Version, Long accountId) throws ProfileException {
 		// Creation of profile
-		Profile pSource = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version)
+		Profile pSource = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version)
 				.get(0);
 		Profile pTarget = new Profile();
 
@@ -102,7 +102,7 @@ public class ProfileCreationImpl implements ProfileCreationService {
 		// metaData.setSchemaVersion(SchemaVersion.V1_0.value());
 
 		// Setting profile info
-		pTarget.setScope(ProfileScope.USER);
+		pTarget.setScope(IGDocumentScope.USER);
 		pTarget.setComment("Created " + date.toString());
 		pTarget.setSourceId(pSource.getId());
 		pTarget.setBaseId(pSource.getId());
@@ -125,7 +125,7 @@ public class ProfileCreationImpl implements ProfileCreationService {
 	public Profile updateIntegratedProfile(List<String> msgIds, Profile pTarget) throws ProfileException {
 		// Update profile with additional messages.
 		String hl7Version = pTarget.getMetaData().getHl7Version();
-		Profile pSource = profileRepository.findByScopeAndMetaData_Hl7Version(ProfileScope.HL7STANDARD, hl7Version)
+		Profile pSource = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version)
 				.get(0);
 		addMessages(msgIds, pSource, pTarget);
 		return pTarget;
@@ -191,7 +191,7 @@ public class ProfileCreationImpl implements ProfileCreationService {
 	@Override
 	public List<Profile> findProfilesByHl7Versions() {
 		// Fetching all HL7Standard profiles
-		return profileRepository.findByScope(ProfileScope.HL7STANDARD);
+		return profileRepository.findByScope(IGDocumentScope.HL7STANDARD);
 	}
 
 }

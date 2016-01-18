@@ -11,14 +11,17 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -35,6 +38,8 @@ public class Bootstrap implements InitializingBean {
 	@Autowired
 	ProfileService profileService;
 
+	@Autowired
+	IGDocumentService documentService;
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -44,15 +49,28 @@ public class Bootstrap implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 //		init();
+//		init2();
+		
+		
 	} 
+	
+	private void init2() throws Exception {
+		List<Profile> profiles = profileService.findAllProfiles();
+		
+		for(Profile p:profiles){
+			IGDocument d = new IGDocument();
+			d.addProfile(p);
+			documentService.save(d);
+		}
+	}
 	
 	private void init()throws Exception {
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/igs/VXU_V04/VXU-Z22_Profile.xml"));
+				"/profiles/VXU-Z22_Profile.xml"));
 		String v = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/igs/VXU_V04/VXU-Z22_ValueSetLibrary.xml"));
+				"/profiles/VXU-Z22_ValueSetLibrary.xml"));
 		String c = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/igs/VXU_V04/VXU-Z22_Constraints.xml"));
+				"/profiles/VXU-Z22_Constraints.xml"));
 		Profile profile = new ProfileSerializationImpl()
 		.deserializeXMLToProfile(p, v, c);
 		profile.getMetaData().setName("VXU V04 Implementation Guide");
@@ -63,7 +81,7 @@ public class Bootstrap implements InitializingBean {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		profile.getMetaData().setDate(
 				dateFormat.format(Calendar.getInstance().getTime()));
-		profile.setScope(ProfileScope.PRELOADED);
+		profile.setScope(IGDocumentScope.PRELOADED);
 		profile.getMetaData().setHl7Version("2.5.1");
 		profileService.save(profile);
 

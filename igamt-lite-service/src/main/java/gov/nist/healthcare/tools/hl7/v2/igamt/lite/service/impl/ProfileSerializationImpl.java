@@ -337,12 +337,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 					for (Predicate p : byID.getPredicates()) {
 						result.add(p);
 					}
-				}else if (byNameOrByID instanceof ByName) {
-					ByName byName = (ByName) byNameOrByID;
-					if (byName.getByName().equals(name)) {
-						for (Predicate p : byName.getPredicates()) {
-							result.add(p);
-						}
+				}
+			} else if (byNameOrByID instanceof ByName) {
+				ByName byName = (ByName) byNameOrByID;
+				if (byName.getByName().equals(name)) {
+					for (Predicate p : byName.getPredicates()) {
+						result.add(p);
 					}
 				}
 			}
@@ -583,6 +583,9 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 				messageObj.setStructID(elmMessage.getAttribute("StructID"));
 				messageObj.setMessageType(elmMessage.getAttribute("Type"));
 				messageObj.setIdentifier(elmMessage.getAttribute("ID"));
+				
+				messageObj.setPredicates(this.findPredicates(this.predicates.getMessages(), elmMessage.getAttribute("ID"), elmMessage.getAttribute("StructID")));
+				messageObj.setConformanceStatements(this.findConformanceStatement(this.conformanceStatement.getMessages(), elmMessage.getAttribute("ID"), elmMessage.getAttribute("StructID")));
 
 				this.deserializeSegmentRefOrGroups(elmConformanceProfile, messageObj, elmMessage, profile.getSegments(), profile.getDatatypes());
 				messagesObj.addMessage(messageObj);

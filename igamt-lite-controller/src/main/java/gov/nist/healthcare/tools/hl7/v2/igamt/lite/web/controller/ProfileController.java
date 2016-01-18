@@ -33,7 +33,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageByListCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileConfiguration;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
@@ -151,7 +151,7 @@ public class ProfileController extends CommonController {
 			throw new UserAccountNotFoundException();
 		Profile p = findProfile(id);
 		p.setId(null);
-		p.setScope(ProfileScope.USER);
+		p.setScope(IGDocumentScope.USER);
 		p.setAccountId(account.getId());
 		p.setBaseId(p.getBaseId() != null ? p.getBaseId() : id);
 		p.setSourceId(id);
@@ -193,16 +193,17 @@ public class ProfileController extends CommonController {
 		}
 	}
 
-	@RequestMapping(value = "/{id}/save", method = RequestMethod.POST)
-	public ProfileSaveResponse save(@RequestBody ProfileChangeCommand command,
-			@PathVariable("id") String id) throws ProfileNotFoundException,
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public ProfileSaveResponse save(@RequestBody ProfileChangeCommand command) throws ProfileNotFoundException,
 			UserAccountNotFoundException, ProfileSaveException {
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u
 				.getUsername());
 		if (account == null)
 			throw new UserAccountNotFoundException();
-		log.info("Applying changes to profile=" + id + " for account=" + command.getProfile().getAccountId());
+		log.info("Applying changes to profile=" + command.getProfile().getId() + " for account=" + command.getProfile().getAccountId());
+// gcr Profile p is not being used; causes an error when id = null.		
+//		Profile p = findProfile(id);
 		Profile saved = profileService.apply(command.getProfile());
 		return new ProfileSaveResponse(saved.getMetaData().getDate(), saved
 				.getMetaData().getVersion());
@@ -363,12 +364,7 @@ public class ProfileController extends CommonController {
 	@RequestMapping(value = "/hl7/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public Profile createIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws ProfileException {
 		log.info("Creation of profile.");
-		log.debug("profileCreation=" + profileCreation);
-		Profile profile = profileCreation.createIntegratedProfile(iprw.getMsgIds(), iprw.getHl7Version(), iprw.getAccountId());
-		profileService.save(profile);
-		assert(profile.getId() != null);
-		assert(profile.getAccountId() != null);
-		return profile;
+		return profileCreation.createIntegratedProfile(iprw.getMsgIds(), iprw.getHl7Version());
 	}
 
 	@RequestMapping(value = "/hl7/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")

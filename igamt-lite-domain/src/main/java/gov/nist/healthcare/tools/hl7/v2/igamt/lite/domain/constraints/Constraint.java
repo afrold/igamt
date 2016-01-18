@@ -29,6 +29,8 @@ public abstract class Constraint implements Serializable, Cloneable {
 
 	// @Column(name = "CONSTRAINT_TARGET")
 	protected String constraintTarget;
+	
+	protected String constraintClassification;
 
 	protected Reference reference;
 
@@ -88,6 +90,14 @@ public abstract class Constraint implements Serializable, Cloneable {
 
 	public void setAssertion(String assertion) {
 		this.assertion = assertion;
+	}
+
+	public String getConstraintClassification() {
+		return constraintClassification;
+	}
+
+	public void setConstraintClassification(String constraintClassification) {
+		this.constraintClassification = constraintClassification;
 	}
 
 	@Override

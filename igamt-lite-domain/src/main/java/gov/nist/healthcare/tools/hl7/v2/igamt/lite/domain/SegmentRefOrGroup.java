@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import org.springframework.data.annotation.Id;
-
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
@@ -10,12 +8,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 @JsonSubTypes({
 		@JsonSubTypes.Type(value = Group.class, name = Constant.GROUP),
 		@JsonSubTypes.Type(value = SegmentRef.class, name = Constant.SEGMENTREF) })
-public abstract class SegmentRefOrGroup extends DataModelWithConstraints implements
+public abstract class SegmentRefOrGroup extends SectionModelWithConstraints implements
 		java.io.Serializable, Comparable<SegmentRefOrGroup> {
 
 	private static final long serialVersionUID = 1L;
 
-	@Id
 	protected String id;
 
 	// //@NotNull

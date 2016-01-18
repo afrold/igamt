@@ -11,13 +11,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Document(collection = "profile")
-public class Profile extends DataModel implements java.io.Serializable,
+public class Profile extends SectionModel implements java.io.Serializable,
 		Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -25,12 +21,11 @@ public class Profile extends DataModel implements java.io.Serializable,
 	public Profile() {
 		super();
 		this.type = Constant.PROFILE;
-		scope = ProfileScope.PRELOADED;
+		scope = IGDocumentScope.PRELOADED;
 	}
 
-	private ProfileScope scope;
+	private IGDocumentScope scope;
 
-	@Id
 	private String id;
 
 	private ProfileMetaData metaData;
@@ -152,11 +147,11 @@ public class Profile extends DataModel implements java.io.Serializable,
 		this.tables = tables;
 	}
 
-	public ProfileScope getScope() {
+	public IGDocumentScope getScope() {
 		return scope;
 	}
 
-	public void setScope(ProfileScope scope) {
+	public void setScope(IGDocumentScope scope) {
 		this.scope = scope;
 	}
 
