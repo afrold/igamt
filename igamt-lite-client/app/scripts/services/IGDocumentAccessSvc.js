@@ -1,4 +1,4 @@
-angular.module('igl').factory ('ProfileAccessSvc', function() {
+angular.module('igl').factory ('IGDocumentAccessSvc', function() {
 
 	var svc = this;
 
@@ -10,17 +10,17 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return 0;
 	}
 
-	svc.Version = function(profile) {
-		return profile.metaData.hl7Version;
+	svc.Version = function(igdocument) {
+		return igdocument.metaData.hl7Version;
 	}
 
 
-	svc.Datatypes = function(profile) {
+	svc.Datatypes = function(igdocument) {
 	
 		var dts = this;
 	
 		dts.datatypes = (function() {
-			return _.sortBy(profile.datatypes.children, "id");
+			return _.sortBy(igdocument.profile.datatypes.children, "id");
 		})();
 	
 		dts.findById = function(id) {
@@ -62,12 +62,12 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return dts;
 	}
 
-	svc.Segments = function(profile) {
+	svc.Segments = function(igdocument) {
 	
 		var segs = this;
 	
 		segs.segments = function() {
-			return profile.segments.children;
+			return igdocument.profile.segments.children;
 		}
 		
 		segs.getAllSegmentIds = function() {
@@ -141,7 +141,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return segs;
 	}
 
-	svc.Messages = function(profile) {
+	svc.Messages = function(igdocument) {
 	
 		var msgs = this;
 	
@@ -153,7 +153,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		
 		msgs.getMessageIds = function() {
 			var rval = [];
-			_.each(profile.messages.children, function(message) {
+			_.each(igdocument.profile.messages.children, function(message) {
 				rval.push(message.id);
 			});
 			console.log("rval=" + rval.length);
@@ -164,7 +164,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 
 			var segmentRefs = [];
 			
-			_.each(profile.messages.children, function(message) {
+			_.each(igdocument.profile.messages.children, function(message) {
 				var refs = msgs.getSegmentRefs(message);
 				_.each(refs, function(ref) {
 					segmentRefs.push(ref);
@@ -179,7 +179,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 			var segmentRefs = [];
 			var messageId = message.id;
 			
-			_.each(profile.messages.children, function(message) {
+			_.each(igdocument.profile.messages.children, function(message) {
 				if (message.id !== messageId) {
 					var refs = msgs.getSegmentRefs(message);
 					_.each(refs, function(ref) {

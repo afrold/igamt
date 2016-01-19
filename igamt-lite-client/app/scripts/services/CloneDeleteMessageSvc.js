@@ -1,15 +1,15 @@
 angular.module('igl').factory(
 		'CloneDeleteMessageSvc',
-		function(ProfileAccessSvc) {
+		function(IGDocumentAccessSvc) {
 
 			var svc = this;
 
-			svc.cloneMessage = function(profile, toc, message) {
+			svc.cloneMessage = function(igdocument, toc, message) {
 				// TODO gcr: Need to include the user identifier in the
 				// new label.
-				// $rootScope.profile.metaData.ext should be just that,
+				// $rootScope.igdocument.metaData.ext should be just that,
 				// but is currently
-				// unpopulated in the profile.
+				// unpopulated in the igdocument.
 				var newMessage = (JSON.parse(JSON.stringify(message)));
 				newMessage.reference.id = new ObjectId();
 
@@ -17,13 +17,13 @@ angular.module('igl').factory(
 				// duplicate.
 				if (newMessage.reference.type === 'message') {
 					newMessage.reference.name = newMessage.reference.name + "-"
-							+ profile.metaData.ext + "-"
+							+ igdocument.metaData.ext + "-"
 							+ Math.floor(Math.random() * 100) + "-"
 							+ newMessage.reference.description;
 					newMessage.label = newMessage.reference.name;
 				}
 
-				profile.messages.children.splice(0, 0, newMessage.reference);
+				igdocument.profile.messages.children.splice(0, 0, newMessage.reference);
 				var ConformanceProfile = _.find(toc, function(child) {
 					return child.id === "3";
 				});
@@ -41,16 +41,16 @@ angular.module('igl').factory(
 				return newMessage;
 			}
 
-			svc.deleteMessage = function(profile, toc, message) {
-				var segmentRefs = ProfileAccessSvc.Messages(profile)
+			svc.deleteMessage = function(igdocument, toc, message) {
+				var segmentRefs = IGDocumentAccessSvc.Messages(igdocument)
 						.getSegmentRefsSansOne(message.reference);
-				ProfileAccessSvc.Segments(profile).removeDead(segmentRefs);
+				IGDocumentAccessSvc.Segments(igdocument).removeDead(segmentRefs);
 				var id = message.reference.id;
-				var idxP = _.findIndex(profile.messages.children, function(
+				var idxP = _.findIndex(igdocument.profile.messages.children, function(
 						child) {
 					return child.id === id;
 				})
-				profile.messages.children.splice(idxP, 1);
+				igdocument.profile.messages.children.splice(idxP, 1);
 				var messages = svc.getMessages(toc);
 				var idxT = svc.findMessageIndex(messages);
 				messages.children.splice(idxT, 1);

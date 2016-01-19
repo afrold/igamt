@@ -13,9 +13,9 @@
                             <label>IGAMT Project Identifier</label>
                             <input type="text" ng-disabled="options.readonly"
                                    ng-class="{'has-error' : igMetaDataForm.identifier.$invalid && !igMetaDataForm.identifier.$pristine }"
-                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'identifier', profile.metaData.identifier)"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'identifier', igdocument.profile.metaData.identifier)"
                                    name="profileIndentifier" class="form-control"
-                                   ng-model="profile.metaData.identifier"
+                                   ng-model="igdocument.profile.metaData.identifier"
                                    required>
                         </div>
 
@@ -24,17 +24,17 @@
                             <label>IG Title</label>
                             <input type="text" ng-disabled="options.readonly"
                                    ng-class="{'has-error' : igMetaDataForm.name.$invalid && !igMetaDataForm.name.$pristine }"
-                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'name', profile.metaData.name)"
+                                   ng-change="recordChangeForEdit2('igdocument','edit',igdocument.id,'name', igdocument.metaData.name)"
 
-                                   name="name" class="form-control" ng-model="profile.metaData.name"
+                                   name="name" class="form-control" ng-model="igdocument.metaData.name"
                                    required>
                         </div>
 
                         <div class="form-group left-content">
                             <label>IG Sub-Title</label>
                             <input type="text" name="subTitle" ng-disabled="options.readonly"
-                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'subTitle', profile.metaData.subTitle)"
-                                   class="form-control" ng-model="profile.metaData.subTitle"
+                                   ng-change="recordChangeForEdit2('igdocument','edit',igdocument.id,'subTitle', igdocument.metaData.subTitle)"
+                                   class="form-control" ng-model="igdocument.metaData.subTitle"
                                    required>
                         </div>
                         <!--<div class="form-group"-->
@@ -42,8 +42,8 @@
                         <!--<label>Status</label>-->
                         <!--<select class="form-control"-->
                         <!--name="status"-->
-                        <!--ng-change="recordChange2('profile',profile.id,'status', profile.status)"-->
-                        <!--ng-model="profile.metaData.status"-->
+                        <!--ng-change="recordChange2('igdocument',igdocument.id,'status', igdocument.status)"-->
+                        <!--ng-model="igdocument.metaData.status"-->
                         <!--ng-options="status for status in statuses">-->
                         <!--</select>-->
                         <!--</div>-->
@@ -51,8 +51,8 @@
                         <div class="form-group left-content">
                             <label>Extension</label>
                             <input type="text" name="version" ng-disabled="options.readonly"
-                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'ext', profile.metaData.ext)"
-                                   class="form-control" ng-model="profile.metaData.ext">
+                                   ng-change="recordChangeForEdit2('igdocument','edit',igdocument.id,'ext', igdocument.metaData.ext)"
+                                   class="form-control" ng-model="igdocument.metaData.ext">
                         </div>
 
                     </div>
@@ -60,16 +60,16 @@
                         <div class="form-group left-content">
                             <label>Organization Name</label>
                             <input type="text" name="orgName" ng-disabled="options.readonly"
-                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'orgName', profile.metaData.orgName)"
-                                   class="form-control" ng-model="profile.metaData.orgName"
+                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'orgName', igdocument.profile.metaData.orgName)"
+                                   class="form-control" ng-model="igdocument.profile.metaData.orgName"
                                    required>
                         </div>
 
                         <!--<div class="form-group">-->
                         <!--<label>Type</label>-->
                         <!--<input type="text"-->
-                        <!--ng-change="recordChange2('profile',profile.id,'type', profile.metaData.type)"-->
-                        <!--name="type" class="form-control" ng-model="profile.metaData.type"-->
+                        <!--ng-change="recordChange2('profile',profile.id,'type', igdocument.profile.metaData.type)"-->
+                        <!--name="type" class="form-control" ng-model="igdocument.profile.metaData.type"-->
                         <!--required>-->
                         <!--</div>-->
 
@@ -77,8 +77,8 @@
                              ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.version.$pristine }">
                             <label>Version</label>
                             <input type="text" name="version" ng-disabled="options.readonly"
-                                   ng-change="recordChangeForEdit2('profile','edit',profile.id,'version', profile.metaData.version)"
-                                   class="form-control" ng-model="profile.metaData.version"
+                                   ng-change="recordChangeForEdit2('igdocument','edit',igdocument.id,'version', igdocument.metaData.version)"
+                                   class="form-control" ng-model="igdocument.metaData.version"
                                    required>
                         </div>
 
@@ -86,7 +86,7 @@
                              ng-class="{'has-error' : igMetaDataForm.hl7Version.$invalid && !igMetaDataForm.hl7Version.$pristine }">
                             <label>HL7 Version</label>
                             <input type="text" name="hl7Version" disabled
-                                   class="form-control" ng-model="profile.metaData.hl7Version"
+                                   class="form-control" ng-model="igdocument.profile.metaData.hl7Version"
                                    required>
                         </div>
 
@@ -94,7 +94,7 @@
                              ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.date.$pristine }">
                             <label>Date</label>
                             <input type="text" name="date" disabled
-                                   class="form-control" ng-model="profile.metaData.date"
+                                   class="form-control" ng-model="igdocument.metaData.date"
                                    required>
                         </div>
 

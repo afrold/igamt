@@ -595,6 +595,8 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				return Long.valueOf((Integer) source.get(tag));
 			} else if (source.get(tag) instanceof String) {
 				return Long.valueOf((String)source.get(tag));
+			} else if (source.get(tag) instanceof Long) {
+				return Long.valueOf((Long)source.get(tag));
 			}
 		}
 		return Long.valueOf(0);

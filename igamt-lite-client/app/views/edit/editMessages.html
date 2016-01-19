@@ -10,7 +10,7 @@
                     <div
                             ng-show="message !== null" id="executionPanel">
                         <div class="page-header">
-                            <span class="header4">Conformance Profile: {{message.identifier}}</span>
+                            <span class="header4">Message: {{message.identifier}}</span>
                         </div>
 
                         <accordion close-others="false">
@@ -24,7 +24,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group"
                                                  ng-class="{'has-error' : messageMetaDataForm.identifier.$invalid && !messageMetaDataForm.identifier.$pristine }">
-                                                <label>Profile Identifier</label> <input type="text"
+                                                <label>Message Identifier</label> <input type="text"
                                                                                          ng-change="recordChangeForEdit2('message','edit',message.id,'identifier', message.identifier)"
                                                                                          name="identifier"
                                                                                          class="form-control"
@@ -34,7 +34,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label>Profile OID</label> <input type="text"
+                                                <label>Message OID</label> <input type="text"
                                                                                   ng-change="recordChangeForEdit2('message','edit',message.id,'oid', message.oid)"
                                                                                   name="oid"
                                                                                   class="form-control"
@@ -52,7 +52,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label>Profile Version</label> <input style="width: 100%"
+                                                <label>Message Version</label> <input style="width: 100%"
                                                                                       class="igl-input"
                                                                                       type="text"
                                                                                       disabled name="version"
@@ -64,7 +64,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label>Profile Date</label> <input style="width: 100%"
+                                                <label>Message Date</label> <input style="width: 100%"
                                                                                    class="igl-input" type="text"
                                                                                    name="date" disabled
                                                                                    ng-change="recordChangeForEdit2('message','edit',message.id,'date', message.date)"
