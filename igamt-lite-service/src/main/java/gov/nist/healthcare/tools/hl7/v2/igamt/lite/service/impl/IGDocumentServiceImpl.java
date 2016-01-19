@@ -17,6 +17,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentClone;
@@ -24,6 +25,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -96,6 +98,33 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 		ig.getMetaData().setDate(dateFormat.format(Calendar.getInstance().getTime()));
 		documentRepository.save(ig);
 		return ig;
+	}
+
+	@Override
+	public InputStream diffToPdf(IGDocument d) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ElementVerification verifySegment(IGDocument d, String id,
+			String type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ElementVerification verifyDatatype(IGDocument d, String id,
+			String type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ElementVerification verifyValueSet(IGDocument p, String id,
+			String type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

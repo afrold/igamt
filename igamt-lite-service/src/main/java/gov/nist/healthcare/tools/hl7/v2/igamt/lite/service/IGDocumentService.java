@@ -17,8 +17,10 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 
+import java.io.InputStream;
 import java.util.List;
 
 public interface IGDocumentService {
@@ -37,7 +39,7 @@ public interface IGDocumentService {
 
 	public IGDocument apply(IGDocument ig) throws IGDocumentSaveException;
 
-//	public InputStream diffToPdf(Profile p);
+	public InputStream diffToPdf(IGDocument d);
 //
 //	public InputStream diffToJson(Profile p);
 //
@@ -51,19 +53,19 @@ public interface IGDocumentService {
 //
 //	public ElementVerification verifySegments(Profile p, String id, String type);
 //
-//	public ElementVerification verifySegment(Profile p, String id, String type);
+	public ElementVerification verifySegment(IGDocument d, String id, String type);
 //
 //	public ElementVerification verifyField(Profile p, String id, String type);
 //
 //	public ElementVerification verifyDatatypes(Profile p, String id, String type);
 //
-//	public ElementVerification verifyDatatype(Profile p, String id, String type);
+	public ElementVerification verifyDatatype(IGDocument d, String id, String type);
 //
 //	public ElementVerification verifyComponent(Profile p, String id, String type);
 //
 //	public ElementVerification verifyValueSetLibrary(Profile p, String id, String type);
 //
-//	public ElementVerification verifyValueSet(Profile p, String id, String type);
+	public ElementVerification verifyValueSet(IGDocument p, String id, String type);
 //
 //	public ElementVerification verifyUsage(Profile p, String id, String type, String eltName, String eltValue);
 //
