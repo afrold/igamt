@@ -38,6 +38,8 @@ public interface IGDocumentService {
 	public IGDocument clone(IGDocument ig) throws CloneNotSupportedException;
 
 	public IGDocument apply(IGDocument ig) throws IGDocumentSaveException;
+	
+	//TODO NEED TO REVIEW
 
 	public InputStream diffToPdf(IGDocument d);
 //
@@ -73,4 +75,6 @@ public interface IGDocumentService {
 //	
 //	public ElementVerification verifyLength(Profile p, String id, String type, String eltName, String eltValue);
 	
+	
+	//TODO NEED TO REVIEW
 }
