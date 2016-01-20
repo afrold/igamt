@@ -71,6 +71,7 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 	@Override
 	public List<IGDocument> findAllPreloaded() {
 		List<IGDocument> igDocuments = documentRepository.findPreloaded();
+		log.info("igDocuments=" + igDocuments.size());
 		return igDocuments;
 	}
 	

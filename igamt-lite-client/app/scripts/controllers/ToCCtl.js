@@ -79,6 +79,12 @@ angular
 							$scope.closedCtxSubMenu = function(leaf, $index) {
 								var ctxMenuSelection = ContextMenuSvc.get();
 								switch (ctxMenuSelection) {
+								case "Add flavor":
+									console.log("Add flavor==> node=" + leaf);
+									CloneDeleteMessageSvc.cloneMessage(
+											$rootScope.profile, leaf);
+									$rootScope.$broadcast('event:SetToC');
+									break;
 								case "Clone":
 									console.log("Clone==> node=" + leaf);
 									CloneDeleteMessageSvc.cloneMessage(

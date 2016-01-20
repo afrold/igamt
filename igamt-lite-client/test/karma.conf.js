@@ -54,9 +54,9 @@ module.exports = function(config) {
 //      'test/spec/controllers/**/hl7VersionsMessagesTest.js',
 //      'test/spec/services/**/ProfileAccessSvcTest.js',
 //      'test/spec/services/**/DeleteMessageSvcTest.js',
-//      'test/spec/services/**/ToCSvcTest.js',
-      'test/spec/services/**/CloneDeleteMessageSvcTest.js',
-     { pattern:  'test/fixtures/profiles/*.json',
+      'test/spec/services/**/ToCSvcTest.js',
+//      'test/spec/services/**/CloneDeleteMessageSvcTest.js',
+     { pattern:  'test/fixtures/document/*.json',
           watched:  true,
           served:   true,
           included: false }

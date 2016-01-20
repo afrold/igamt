@@ -364,7 +364,11 @@ public class ProfileController extends CommonController {
 	@RequestMapping(value = "/hl7/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public Profile createIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws ProfileException {
 		log.info("Creation of profile.");
-		return profileCreation.createIntegratedProfile(iprw.getMsgIds(), iprw.getHl7Version());
+		Profile profile = profileCreation.createIntegratedProfile(iprw.getMsgIds(), iprw.getHl7Version(), iprw.getAccountId());
+		profileService.save(profile);
+		assert(profile.getId() != null);
+		assert(profile.getAccountId() != null);
+		return profile;
 	}
 
 	@RequestMapping(value = "/hl7/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")

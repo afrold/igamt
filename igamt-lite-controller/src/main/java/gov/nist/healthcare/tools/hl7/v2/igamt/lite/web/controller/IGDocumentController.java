@@ -123,6 +123,7 @@ public class IGDocumentController extends CommonController {
 	public List<IGDocument> preloaded() {
 		log.info("Fetching all preloaded IGDocuments...");
 		List<IGDocument> result = igDocumentService.findAllPreloaded();
+		log.info("result=" + result.size());
 		return result;
 	}
 
@@ -335,7 +336,7 @@ public class IGDocumentController extends CommonController {
 
 	@RequestMapping(value = "/hl7/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public IGDocument createIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws IGDocumentException {
-		log.info("Creation of profile.");
+		log.info("Creation of profile...");
 		IGDocument igDocument = igDocumentCreation.createIntegratedProfile(iprw.getMsgIds(), iprw.getHl7Version(), iprw.getAccountId());
 		igDocumentService.save(igDocument);
 		assert(igDocument.getId() != null);
@@ -345,7 +346,7 @@ public class IGDocumentController extends CommonController {
 
 	@RequestMapping(value = "/hl7/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public IGDocument updateIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws IGDocumentException {
-		log.info("Update profile with additional messages.");
+		log.info("Update profile with additional messages...");
 		return igDocumentCreation.updateIntegratedProfile(iprw.getMsgIds(), iprw.getProfile());
 	}
 }

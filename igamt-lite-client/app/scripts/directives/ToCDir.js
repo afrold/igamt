@@ -37,7 +37,7 @@ angular
 		.directive(
 				"branch",
 				function($compile) {
-					var branchTemplate = "<li class='branch'>"
+					var branchTemplate = "<li class='branch'"
 							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \">"
 							+ "{{branch.label}}"
 							+ "</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
@@ -54,9 +54,9 @@ angular
 
 					var linker = function(scope, element, attrs) {
 						if (angular.isArray(scope.branch.children)) {
-							// console.log("branch id=" + scope.branch.id + "
-							// label=" + scope.branch.label + " chidren=" +
-							// scope.branch.children.length);
+							 console.log("branch id=" + scope.branch.id +
+							 " label=" + scope.branch.label + " chidren=" +
+							 scope.branch.children.length);
 							if (scope.branch.id === "3.1") {
 								element.append(branchMessageTemplate);
 							} else {
@@ -92,11 +92,14 @@ angular
 			            + " dnd-effect-allowed='move'"
 			            + " dnd-moved='moved(index, leaf, drop)'"
 			            + " dnd-selected='models.selected = leaf'"
-						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='messageContextDiv.html' ng-click='tocSelection(leaf)'>"
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='messageContextDiv.html' ng-click='tocSelection(leaf)'> "
 						+ "{{leaf.label}}" 
 						+ "</li>";
 
-					var leafDefault = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected} \" ng-click='tocSelection(leaf)'>{{leaf.label}}</li>";
+					var leafDefault = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='headContextDiv.html' ng-click='tocSelection(leaf)'> "
+						+ "{{leaf.label}}"
+						+ "</li>";
 
 					var linker = function(scope, element, attrs) {
 						if (scope.leaf.parent === "3.1") {

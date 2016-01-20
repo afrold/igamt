@@ -181,8 +181,9 @@ angular.module('igl')
                 $scope.loadProfiles();
             });
 
-            $rootScope.$on('event:openProfileRequest', function (event, profile) {
-                $scope.openProfile(profile);
+            $rootScope.$on('event:openIGDocumentRequest', function (event, igdocument) {
+            		$rootScope.igdocument = igdocument;
+                $scope.openProfile(igdocument.profile);
             });
 
             $scope.$on('event:openDatatype', function (event, datatype) {
@@ -213,7 +214,7 @@ angular.module('igl')
         });
         
         $rootScope.$on('event:SetToC', function(event) {
-            $rootScope.tocData = ToCSvc.getToC($rootScope.profile);
+            $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);
          });
 
         $scope.loadProfiles = function () {

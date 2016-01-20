@@ -4,27 +4,30 @@ angular.module('igl').factory(
 
 			var svc = this;
 
-			svc.cloneMessage = function(profile, message) {
+			svc.cloneMessage = function(profile, entry) {
 				// TODO gcr: Need to include the user identifier in the
 				// new label.
 				// $rootScope.profile.metaData.ext should be just that,
 				// but is currently
 				// unpopulated in the profile.
-				var newMessage = (JSON.parse(JSON.stringify(message)));
-				newMessage.reference.id = new ObjectId();
+				var newEntry = (JSON.parse(JSON.stringify(entry)));
+				newEntry.reference.id = new ObjectId();
 
 				// Nodes must have unique names so we append a random number when we
 				// duplicate.
-				if (newMessage.reference.type === 'message') {
-					newMessage.reference.name = newMessage.reference.name + "-"
+				if (newEntry.reference.type === 'message') {
+					newEntry.reference.name = newEntry.reference.name + "-"
 							+ profile.metaData.ext + "-"
 							+ Math.floor(Math.random() * 100) + "-"
-							+ newMessage.reference.description;
-					newMessage.label = newMessage.reference.name;
+							+ newEntry.reference.description;
+				} else if (newEntry.reference.type === 'datatype' || newEntry.reference.type === 'table') {
+					newEntry.reference.name = newEntry.reference.name + "-"
+					+ Math.floor(Math.random() * 100) + "- flavor"
+					newEntry.label = newEntry.reference.name;
 				}
 
-				profile.messages.children.splice(0, 0, newMessage.reference);
-				return newMessage;
+				profile.messages.children.splice(0, 0, newEntry.reference);
+				return newEntry;
 			}
 
 			svc.deleteMessage = function(profile, message) {

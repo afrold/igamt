@@ -66,18 +66,16 @@ angular.module('igl').controller(
 				$http.post('api/profiles/hl7/createIntegrationProfile', iprw)
 						.then(
 								function(response) {
-									var profile = angular
+									var igdocument = angular
 											.fromJson(response.data);
 									$rootScope
 											.$broadcast(
-													'event:openProfileRequest',
-													profile);
+													'event:openIGDocumentRequest',
+													igdocument);
 									$rootScope.$broadcast('event:IgsPushed',
-											profile);
+											igdocument.profile);
 								});
-				console.log("_id=" + $scope.profile.id);
-				console.log("accountId=" + $scope.profile.accountId);
-				return $scope.profile;
+				return $rootScope.igdocument;
 			};
 
 			/**
@@ -95,12 +93,12 @@ angular.module('igl').controller(
 				$http.post('api/profiles/hl7/updateIntegrationProfile', iprw)
 						.then(
 								function(response) {
-									var profile = angular
+									var igdocument = angular
 											.fromJson(response.data);
 									$rootScope
 											.$broadcast(
-													'event:openProfileRequest',
-													profile);
+													'event:openIGDocumentRequest',
+													igdocument);
 								});
 			};
 
