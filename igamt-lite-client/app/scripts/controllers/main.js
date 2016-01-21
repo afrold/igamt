@@ -56,7 +56,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
         $scope.username = $scope.password = null;
         $scope.$emit('event:logoutRequest');
         $rootScope.initMaps();
-        $rootScope.profile = null;
+        $rootScope.igdocument = null;
         $location.url('/home');
     };
 
@@ -321,7 +321,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
 
 
     $rootScope.readonly = false;
-    $rootScope.profile = null; // current profile
+    $rootScope.igdocument = null; // current igdocument
     $rootScope.message = null; // current message
     $rootScope.datatype = null; // current datatype
 
@@ -360,14 +360,14 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
 
 
     // TODO: remove
-    $rootScope.selectProfileTab = function (value) {
-//        $rootScope.profileTabs[0] = false;
-//        $rootScope.profileTabs[1] = false;
-//        $rootScope.profileTabs[2] = false;
-//        $rootScope.profileTabs[3] = false;
-//        $rootScope.profileTabs[4] = false;
-//        $rootScope.profileTabs[5] = false;
-//        $rootScope.profileTabs[value] = true;
+    $rootScope.selectIGDocumentTab = function (value) {
+//        $rootScope.igdocumentTabs[0] = false;
+//        $rootScope.igdocumentTabs[1] = false;
+//        $rootScope.igdocumentTabs[2] = false;
+//        $rootScope.igdocumentTabs[3] = false;
+//        $rootScope.igdocumentTabs[4] = false;
+//        $rootScope.igdocumentTabs[5] = false;
+//        $rootScope.igdocumentTabs[value] = true;
     };
 
     $scope.getScrollbarWidth = function() {
@@ -743,8 +743,8 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
 
 
     $rootScope.createNewFlavorName = function(label){
-        if( $rootScope.profile != null) {
-            return label + "_" + $rootScope.profile.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
+        if( $rootScope.igdocument != null) {
+            return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
         }else{
             return null;
         }
@@ -917,7 +917,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     };
 
     $scope.init = function(){
-//        $http.get('api/profiles/config', {timeout: 60000}).then(function (response) {
+//        $http.get('api/igdocuments/config', {timeout: 60000}).then(function (response) {
 //            $rootScope.config = angular.fromJson(response.data);
 //        }, function (error) {
 //        });

@@ -1,14 +1,19 @@
 angular.module('igl').factory(
 		'CloneDeleteMessageSvc',
-		function(ProfileAccessSvc) {
+		function(IGDocumentAccessSvc) {
 
 			var svc = this;
 
+<<<<<<< ours
 			svc.cloneMessage = function(profile, entry) {
+=======
+			svc.cloneMessage = function(igdocument, toc, message) {
+>>>>>>> theirs
 				// TODO gcr: Need to include the user identifier in the
 				// new label.
-				// $rootScope.profile.metaData.ext should be just that,
+				// $rootScope.igdocument.metaData.ext should be just that,
 				// but is currently
+<<<<<<< ours
 				// unpopulated in the profile.
 				var newEntry = (JSON.parse(JSON.stringify(entry)));
 				newEntry.reference.id = new ObjectId();
@@ -41,6 +46,26 @@ angular.module('igl').factory(
 
 				return newEntry;
 			}
+=======
+				// unpopulated in the igdocument.
+				var newMessage = (JSON.parse(JSON.stringify(message)));
+				newMessage.reference.id = new ObjectId();
+
+				// Nodes must have unique names so we append a random number when we
+				// duplicate.
+				if (newMessage.reference.type === 'message') {
+					newMessage.reference.name = newMessage.reference.name + "-"
+							+ igdocument.metaData.ext + "-"
+							+ Math.floor(Math.random() * 100) + "-"
+							+ newMessage.reference.description;
+					newMessage.label = newMessage.reference.name;
+				}
+
+				igdocument.profile.messages.children.splice(0, 0, newMessage.reference);
+				var ConformanceProfile = _.find(toc, function(child) {
+					return child.id === "3";
+				});
+>>>>>>> theirs
 
 			svc.deleteMessage = function(profile, message) {
 				// We do the delete in pairs: dead and live.  dead = things we are deleting and live = things we are keeping. 
@@ -79,6 +104,7 @@ angular.module('igl').factory(
 				var dtIdsLive = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segmentRefsLive);
 				var dtsIdsSincerelyDead = ProfileAccessSvc.Datatypes(profile).findDead(dtIdsMerelyDead, dtIdsLive);
 
+<<<<<<< ours
 				// Fourth we 
 				// get all value sets that are contained in the sincerely dead datatypes.
 				var vssIdsMerelyDead = ProfileAccessSvc.Datatypes(profile).findValueSetsFromDatatypeIds(dtsIdsSincerelyDead);
@@ -106,6 +132,21 @@ angular.module('igl').factory(
 				console.log("svc.deleteMessage: aSegs=" + ProfileAccessSvc.Segments(profile).segments().length);
 				console.log("svc.deleteMessage: aDts=" + ProfileAccessSvc.Datatypes(profile).datatypes().length);
 				console.log("svc.deleteMessage: aVss=" + ProfileAccessSvc.ValueSets(profile).valueSets().length);
+=======
+			svc.deleteMessage = function(igdocument, toc, message) {
+				var segmentRefs = IGDocumentAccessSvc.Messages(igdocument)
+						.getSegmentRefsSansOne(message.reference);
+				IGDocumentAccessSvc.Segments(igdocument).removeDead(segmentRefs);
+				var id = message.reference.id;
+				var idxP = _.findIndex(igdocument.profile.messages.children, function(
+						child) {
+					return child.id === id;
+				})
+				igdocument.profile.messages.children.splice(idxP, 1);
+				var messages = svc.getMessages(toc);
+				var idxT = svc.findMessageIndex(messages);
+				messages.children.splice(idxT, 1);
+>>>>>>> theirs
 			}
 
 			svc.getMessages = function(toc) {

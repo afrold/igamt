@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-.controller('ProfileListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, CloneDeleteMessageSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
+.controller('IGDocumentListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, CloneDeleteMessageSvc, IGDocumentAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
 		$scope.loading = false;
     	$scope.uiGrid = {};
         $rootScope.igs = [];
@@ -29,8 +29,8 @@ angular.module('igl')
                 name: "User Implementation Guides", type: 'USER'
             }
         ];
-        $scope.loadingProfile = false;
-        $scope.toEditProfileId = null;
+        $scope.loadingIGDocument = false;
+        $scope.toEditIGDocumentId = null;
         $scope.verificationResult = null;
         $scope.verificationError = null;
         $scope.csWidth = null;
@@ -104,8 +104,8 @@ angular.module('igl')
 
 
 
-        $rootScope.closeProfile = function(){
-            $rootScope.profile = null;
+        $rootScope.closeIGDocument = function(){
+            $rootScope.igdocument = null;
             $rootScope.isEditing = false;
             $scope.selectIgTab(0);
             $rootScope.initMaps();
@@ -171,19 +171,23 @@ angular.module('igl')
          */
         $scope.init = function () {
             $scope.igContext.igType = $scope.igTypes[1];
-            $scope.loadProfiles();
+            $scope.loadIGDocuments();
             $scope.getScrollbarWidth();
             /**
              * On 'event:loginConfirmed', resend all the 401 requests.
              */
             $scope.$on('event:loginConfirmed', function (event) {
                 $scope.igContext.igType = $scope.igTypes[1];
-                $scope.loadProfiles();
+                $scope.loadIGDocuments();
             });
 
             $rootScope.$on('event:openIGDocumentRequest', function (event, igdocument) {
+<<<<<<< ours
             		$rootScope.igdocument = igdocument;
                 $scope.openProfile(igdocument.profile);
+=======
+                $scope.openIGDocument(igdocument);
+>>>>>>> theirs
             });
 
             $scope.$on('event:openDatatype', function (event, datatype) {
@@ -203,13 +207,13 @@ angular.module('igl')
             });
         };
 
-        $rootScope.$on('event:IgsPushed', function (event, profile) {
+        $rootScope.$on('event:IgsPushed', function (event, igdocument) {
             if ($scope.igContext.igType.type === 'USER') {
-                $rootScope.igs.push(profile);
+                $rootScope.igs.push(igdocument);
             } else {
                 $scope.igContext.igType = $scope.igTypes[1];
-                $scope.loadProfiles();
-                profile = $scope.findOne(profile.id);
+                $scope.loadIGDocuments();
+                igdocument = $scope.findOne(igdocument.id);
             }
         });
         
@@ -217,50 +221,50 @@ angular.module('igl')
             $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);
          });
 
-        $scope.loadProfiles = function () {
+        $scope.loadIGDocuments = function () {
             $scope.error = null;
             $rootScope.igs = [];
             $scope.tmpIgs = [].concat($rootScope.igs);
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
                 $scope.loading = true;
                 if ($scope.igContext.igType.type === 'PRELOADED') {
-                    $http.get('api/profiles', {timeout: 60000}).then(function (response) {
+                    $http.get('api/igdocuments', {timeout: 60000}).then(function (response) {
                         $rootScope.igs = angular.fromJson(response.data);
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
                         $scope.loading = false;
-                        $scope.error = "Failed to load the profiles";
+                        $scope.error = "Failed to load the igdocuments";
                     });
                 } else if ($scope.igContext.igType.type === 'USER') {
-                    $http.get('api/profiles/cuser', {timeout: 60000}).then(function (response) {
+                    $http.get('api/igdocuments/cuser', {timeout: 60000}).then(function (response) {
                         $rootScope.igs = angular.fromJson(response.data);
                         console.log("igs=" + $rootScope.igs);
                         $scope.tmpIgs = [].concat($rootScope.igs);
                         $scope.loading = false;
                     }, function (error) {
                         $scope.loading = false;
-                        $scope.error = "Failed to load the profiles";
+                        $scope.error = "Failed to load the igdocuments";
                     });
                 }
 
             }
         };
 
-        $scope.clone = function (profile) {
-            $scope.toEditProfileId = profile.id;
-            waitingDialog.show('Cloning profile...', {dialogSize: 'sm', progressType: 'info'});
-            $http.post('api/profiles/' + profile.id + '/clone', {timeout: 60000}).then(function (response) {
-                $scope.toEditProfileId = null;
+        $scope.clone = function (igdocument) {
+            $scope.toEditIGDocumentId = igdocument.id;
+            waitingDialog.show('Cloning igdocument...', {dialogSize: 'sm', progressType: 'info'});
+            $http.post('api/igdocuments/' + igdocument.id + '/clone', {timeout: 60000}).then(function (response) {
+                $scope.toEditIGDocumentId = null;
                 if ($scope.igContext.igType.type === 'USER') {
                     $rootScope.igs.push(angular.fromJson(response.data));
                 } else {
                     $scope.igContext.igType = $scope.igTypes[1];
-                    $scope.loadProfiles();
+                    $scope.loadIGDocuments();
                 }
                 waitingDialog.hide();
             }, function (error) {
-                $scope.toEditProfileId = null;
+                $scope.toEditIGDocumentId = null;
                 waitingDialog.hide();
             });
         };
@@ -274,43 +278,44 @@ angular.module('igl')
             return null;
         };
 
-        $scope.show = function (profile) {
-            $scope.toEditProfileId = profile.id;
+        $scope.show = function (igdocument) {
+            $scope.toEditIGDocumentId = igdocument.id;
             try {
-                if ($rootScope.profile != null && $rootScope.profile === profile) {
-                    $scope.openProfile(profile);
-                } else if ($rootScope.profile && $rootScope.profile != null && $rootScope.hasChanges()) {
-                    $scope.confirmOpen(profile);
-                    $scope.toEditProfileId = null;
+                if ($rootScope.igdocument != null && $rootScope.igdocument === igdocument) {
+                    $scope.openIGDocument(igdocument);
+                } else if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.hasChanges()) {
+                    $scope.confirmOpen(igdocument);
+                    $scope.toEditIGDocumentId = null;
                 } else {
-                    $scope.openProfile(profile);
+                    $scope.openIGDocument(igdocument);
                 }
             } catch (e) {
                 $rootScope.msg().text = "igInitFailed";
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
-                $scope.loadingProfile = false;
-                $scope.toEditProfileId = null;
+                $scope.loadingIGDocument = false;
+                $scope.toEditIGDocumentId = null;
             }
         };
 
-        $scope.edit = function (profile) {
+        $scope.edit = function (igdocument) {
             $scope.options.readonly = false;
-            $scope.show(profile);
+            $scope.show(igdocument);
         };
 
-        $scope.view = function (profile) {
+        $scope.view = function (igdocument) {
             $scope.options.readonly = true;
-            $scope.show(profile);
+            $scope.show(igdocument);
         };
 
-        $scope.openProfile = function (profile) {
+        $scope.openIGDocument = function (igdocument) {
             $timeout(function() {
-                if (profile != null) {
+                if (igdocument != null) {
                     $scope.selectIgTab(1);
-                    $scope.loadingProfile = true;
+                    $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $scope.selectIgTab(1);
+<<<<<<< ours
                     $rootScope.profile = profile;
                     $rootScope.profile.messages.children = $filter('orderBy')($rootScope.profile.messages.children, 'label');
                     $rootScope.profile.segments.children = $filter('orderBy')($rootScope.profile.segments.children, 'label');
@@ -320,19 +325,30 @@ angular.module('igl')
                     $rootScope.messages = $rootScope.profile.messages.children;
 					$rootScope.$broadcast('event:SetToC');
                     angular.forEach($rootScope.profile.datatypes.children, function (child) {
+=======
+                    $rootScope.igdocument = igdocument;
+                    $rootScope.igdocument.profile.messages.children = $filter('orderBy')($rootScope.igdocument.profile.messages.children, 'label');
+                    $rootScope.igdocument.profile.segments.children = $filter('orderBy')($rootScope.igdocument.profile.segments.children, 'label');
+                    $rootScope.igdocument.profile.datatypes.children = $filter('orderBy')($rootScope.igdocument.profile.datatypes.children, 'label');
+                    $rootScope.igdocument.profile.tables.children = $filter('orderBy')($rootScope.igdocument.profile.tables.children, 'label');
+                    $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);
+                    $rootScope.initMaps();
+                    $rootScope.messages = $rootScope.igdocument.profile.messages.children;
+                    angular.forEach($rootScope.igdocument.profile.datatypes.children, function (child) {
+>>>>>>> theirs
                         this[child.id] = child;
                         if (child.displayName) { // TODO: Change displayName to label
                             child.label = child.displayName;
                         }
                     }, $rootScope.datatypesMap);
-                    angular.forEach($rootScope.profile.segments.children, function (child) {
+                    angular.forEach($rootScope.igdocument.profile.segments.children, function (child) {
                         this[child.id] = child;
                         if (child.displayName) { // TODO: Change displayName to label
                             child.label = child.displayName;
                         }
                     }, $rootScope.segmentsMap);
 
-                    angular.forEach($rootScope.profile.tables.children, function (child) {
+                    angular.forEach($rootScope.igdocument.profile.tables.children, function (child) {
                         this[child.id] = child;
                         if (child.displayName) { // TODO: Change displayName to label
                             child.label = child.displayName;
@@ -345,10 +361,10 @@ angular.module('igl')
                     }, $rootScope.tablesMap);
 
                     $rootScope.segments = [];
-                    $rootScope.tables = $rootScope.profile.tables.children;
-                    $rootScope.datatypes = $rootScope.profile.datatypes.children;
+                    $rootScope.tables = $rootScope.igdocument.profile.tables.children;
+                    $rootScope.datatypes = $rootScope.igdocument.profile.datatypes.children;
 
-                    angular.forEach($rootScope.profile.messages.children, function (child) {
+                    angular.forEach($rootScope.igdocument.profile.messages.children, function (child) {
                         this[child.id] = child;
                         var cnt = 0;
                         angular.forEach(child.children, function (segmentRefOrGroup) {
@@ -357,18 +373,18 @@ angular.module('igl')
                     }, $rootScope.messagesMap);
 
                     if (!$rootScope.config || $rootScope.config === null) {
-                        $http.get('api/profiles/config').then(function (response) {
+                        $http.get('api/igdocuments/config').then(function (response) {
                             $rootScope.config = angular.fromJson(response.data);
-                            $scope.loadingProfile = false;
-                            $scope.toEditProfileId = null;
+                            $scope.loadingIGDocument = false;
+                            $scope.toEditIGDocumentId = null;
                             $scope.selectMetaData();
                         }, function (error) {
-                            $scope.loadingProfile = false;
-                            $scope.toEditProfileId = null;
+                            $scope.loadingIGDocument = false;
+                            $scope.toEditIGDocumentId = null;
                         });
                     } else {
-                        $scope.loadingProfile = false;
-                        $scope.toEditProfileId = null;
+                        $scope.loadingIGDocument = false;
+                        $scope.toEditIGDocumentId = null;
                         $scope.selectMetaData();
                     }
                 }
@@ -414,44 +430,44 @@ angular.module('igl')
             }
         };
 
-        $scope.confirmDelete = function (profile) {
+        $scope.confirmDelete = function (igdocument) {
             var modalInstance = $modal.open({
-                templateUrl: 'ConfirmProfileDeleteCtrl.html',
-                controller: 'ConfirmProfileDeleteCtrl',
+                templateUrl: 'ConfirmIGDocumentDeleteCtrl.html',
+                controller: 'ConfirmIGDocumentDeleteCtrl',
                 resolve: {
-                    profileToDelete: function () {
-                        return profile;
+                    igdocumentToDelete: function () {
+                        return igdocument;
                     }
                 }
             });
-            modalInstance.result.then(function (profile) {
-                $scope.profileToDelete = profile;
+            modalInstance.result.then(function (igdocument) {
+                $scope.igdocumentToDelete = igdocument;
             }, function () {
             });
         };
 
         $scope.confirmClose = function () {
             var modalInstance = $modal.open({
-                templateUrl: 'ConfirmProfileCloseCtrl.html',
-                controller: 'ConfirmProfileCloseCtrl'
+                templateUrl: 'ConfirmIGDocumentCloseCtrl.html',
+                controller: 'ConfirmIGDocumentCloseCtrl'
             });
             modalInstance.result.then(function () {
             }, function () {
             });
         };
 
-        $scope.confirmOpen = function (profile) {
+        $scope.confirmOpen = function (igdocument) {
             var modalInstance = $modal.open({
-                templateUrl: 'ConfirmProfileOpenCtrl.html',
-                controller: 'ConfirmProfileOpenCtrl',
+                templateUrl: 'ConfirmIGDocumentOpenCtrl.html',
+                controller: 'ConfirmIGDocumentOpenCtrl',
                 resolve: {
-                    profileToOpen: function () {
-                        return profile;
+                    igdocumentToOpen: function () {
+                        return igdocument;
                     }
                 }
             });
-            modalInstance.result.then(function (profile) {
-                $scope.openProfile(profile);
+            modalInstance.result.then(function (igdocument) {
+                $scope.openIGDocument(igdocument);
             }, function () {
             });
         };
@@ -459,7 +475,7 @@ angular.module('igl')
 
         $scope.exportAs = function (id, format) {
             var form = document.createElement("form");
-            form.action = $rootScope.api('api/profiles/' + id + '/export/' + format);
+            form.action = $rootScope.api('api/igdocuments/' + id + '/export/' + format);
             form.method = "POST";
             form.target = "_target";
             var csrfInput = document.createElement("input");
@@ -473,7 +489,7 @@ angular.module('igl')
 
         $scope.exportDelta = function (id, format) {
             var form = document.createElement("form");
-            form.action = $rootScope.api('api/profiles/' + id + '/delta/' + format);
+            form.action = $rootScope.api('api/igdocuments/' + id + '/delta/' + format);
             form.method = "POST";
             form.target = "_target";
             var csrfInput = document.createElement("input");
@@ -489,8 +505,8 @@ angular.module('igl')
             if ($rootScope.hasChanges()) {
                 $scope.confirmClose();
             } else {
-                waitingDialog.show('Closing profile...', {dialogSize: 'sm', progressType: 'info'});
-                $rootScope.closeProfile();
+                waitingDialog.show('Closing igdocument...', {dialogSize: 'sm', progressType: 'info'});
+                $rootScope.closeIGDocument();
                 waitingDialog.hide();
             }
         };
@@ -503,16 +519,22 @@ angular.module('igl')
         $scope.save = function () {
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
+<<<<<<< ours
             var data = {"changes": changes, "profile": $rootScope.profile};
             $http.post('api/profiles/save', data, {timeout: 60000}).then(function (response) {
+=======
+            $rootScope.igdocument.accountId = userInfoService.getAccountID();
+            var data = {"changes": changes, "igdocument": $rootScope.igdocument};
+            $http.post('api/igdocuments/save', data, {timeout: 60000}).then(function (response) {
+>>>>>>> theirs
                 var saveResponse = angular.fromJson(response.data);
-                 $rootScope.profile.metaData.date = saveResponse.date;
-                $rootScope.profile.metaData.version = saveResponse.version;
-                var found = $scope.findOne($rootScope.profile.id);
+                 $rootScope.igdocument.metaData.date = saveResponse.date;
+                $rootScope.igdocument.metaData.version = saveResponse.version;
+                var found = $scope.findOne($rootScope.igdocument.id);
                 if (found != null) {
                     var index = $rootScope.igs.indexOf(found);
                     if (index > 0) {
-                        $rootScope.igs [index] = $rootScope.profile;
+                        $rootScope.igs [index] = $rootScope.igdocument;
                     }
                 }
                 $rootScope.msg().text = "igSaveSuccess";
@@ -531,7 +553,7 @@ angular.module('igl')
 
         $scope.exportChanges = function () {
             var form = document.createElement("form");
-            form.action = 'api/profiles/export/changes';
+            form.action = 'api/igdocuments/export/changes';
             form.method = "POST";
             form.target = "_target";
             var input = document.createElement("textarea");
@@ -566,14 +588,14 @@ angular.module('igl')
 
         $scope.reset = function () {
              $rootScope.changes = {};
-             $rootScope.closeProfile();
+             $rootScope.closeIGDocument();
         };
 
 
-        $scope.initProfile = function () {
+        $scope.initIGDocument = function () {
             $scope.loading = true;
-            if ($rootScope.profile != null && $rootScope.profile != undefined)
-                $scope.gotoSection($rootScope.profile.metaData, 'metaData');
+            if ($rootScope.igdocument != null && $rootScope.igdocument != undefined)
+                $scope.gotoSection($rootScope.igdocument.metaData, 'metaData');
             $scope.loading = false;
 
         };
@@ -584,7 +606,7 @@ angular.module('igl')
 
         $scope.listHL7Versions = function () {
             var hl7Versions = [];
-            $http.get('api/profiles/hl7/findVersions', {
+            $http.get('api/igdocuments/hl7/findVersions', {
                 timeout: 60000
             }).then(
                 function (response) {
@@ -793,7 +815,7 @@ angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalIn
         $scope.loading = true;
         waitingDialog.show('Exporting changes...', {dialogSize: 'sm', progressType: 'success'});
         var form = document.createElement("form");
-        form.action = 'api/profiles/export/changes';
+        form.action = 'api/igdocuments/export/changes';
         form.method = "POST";
         form.target = "_target";
         form.style.display = 'none';
@@ -808,31 +830,31 @@ angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalIn
 });
 
 
-angular.module('igl').controller( 'ConfirmProfileDeleteCtrl', function ($scope, $modalInstance, profileToDelete, $rootScope, $http) {
-    $scope.profileToDelete = profileToDelete;
+angular.module('igl').controller( 'ConfirmIGDocumentDeleteCtrl', function ($scope, $modalInstance, igdocumentToDelete, $rootScope, $http) {
+    $scope.igdocumentToDelete = igdocumentToDelete;
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
-        $http.post($rootScope.api('api/profiles/' + $scope.profileToDelete.id + '/delete'), {timeout: 60000}).then(function (response) {
-            var index = $rootScope.igs.indexOf($scope.profileToDelete);
+        $http.post($rootScope.api('api/igdocuments/' + $scope.igdocumentToDelete.id + '/delete'), {timeout: 60000}).then(function (response) {
+            var index = $rootScope.igs.indexOf($scope.igdocumentToDelete);
             if (index > -1) $rootScope.igs.splice(index, 1);
             $rootScope.backUp = null;
-            if ($scope.profileToDelete === $rootScope.profile) {
-                $rootScope.closeProfile();
+            if ($scope.igdocumentToDelete === $rootScope.igdocument) {
+                $rootScope.closeIGDocument();
              }
             $rootScope.msg().text = "igDeleteSuccess";
             $rootScope.msg().type = "success";
             $rootScope.msg().show = true;
             $rootScope.manualHandle = true;
-            $scope.profileToDelete = null;
+            $scope.igdocumentToDelete = null;
             $scope.loading = false;
 
-            $modalInstance.close($scope.profileToDelete);
+            $modalInstance.close($scope.igdocumentToDelete);
 
         }, function (error) {
             $scope.error = error;
             $scope.loading = false;
-            $modalInstance.close($scope.profileToDelete);
+            $modalInstance.close($scope.igdocumentToDelete);
             $rootScope.msg().text = "igDeleteFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
@@ -847,12 +869,12 @@ angular.module('igl').controller( 'ConfirmProfileDeleteCtrl', function ($scope, 
 });
 
 
-angular.module('igl').controller('ConfirmProfileCloseCtrl', function ($scope, $modalInstance, $rootScope, $http) {
+angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope, $modalInstance, $rootScope, $http) {
     $scope.loading = false;
     $scope.discardChangesAndClose = function () {
         $scope.loading = true;
-        $http.get('api/profiles/' + $rootScope.profile.id, {timeout: 60000}).then(function (response) {
-            var index = $rootScope.igs.indexOf($rootScope.profile);
+        $http.get('api/igdocuments/' + $rootScope.igdocument.id, {timeout: 60000}).then(function (response) {
+            var index = $rootScope.igs.indexOf($rootScope.igdocument);
             $rootScope.igs[index] = angular.fromJson(response.data);
             $scope.loading = false;
             $scope.clear();
@@ -866,18 +888,18 @@ angular.module('igl').controller('ConfirmProfileCloseCtrl', function ($scope, $m
     };
 
     $scope.clear = function () {
-        $rootScope.closeProfile();
+        $rootScope.closeIGDocument();
         $modalInstance.close();
     };
 
     $scope.saveChangesAndClose = function () {
         $scope.loading = true;
         var changes = angular.toJson($rootScope.changes);
-        var data = {"changes": changes, "profile": $rootScope.profile};
-        $http.post('api/profiles/' + $rootScope.profile.id + '/save', data, {timeout: 60000}).then(function (response) {
+        var data = {"changes": changes, "igdocument": $rootScope.igdocument};
+        $http.post('api/igdocuments/' + $rootScope.igdocument.id + '/save', data, {timeout: 60000}).then(function (response) {
             var saveResponse = angular.fromJson(response.data);
-            $rootScope.profile.metaData.date = saveResponse.date;
-            $rootScope.profile.metaData.version = saveResponse.version;
+            $rootScope.igdocument.metaData.date = saveResponse.date;
+            $rootScope.igdocument.metaData.version = saveResponse.version;
             $scope.loading = false;
             $scope.clear();
         }, function (error) {
@@ -894,16 +916,16 @@ angular.module('igl').controller('ConfirmProfileCloseCtrl', function ($scope, $m
 });
 
 
-angular.module('igl').controller('ConfirmProfileOpenCtrl', function ($scope, $modalInstance, profileToOpen, $rootScope, $http) {
-    $scope.profileToOpen = profileToOpen;
+angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, $modalInstance, igdocumentToOpen, $rootScope, $http) {
+    $scope.igdocumentToOpen = igdocumentToOpen;
     $scope.loading = false;
     $scope.discardChangesAndOpen = function () {
         $scope.loading = true;
-        $http.get('api/profiles/' + $rootScope.profile.id, {timeout: 60000}).then(function (response) {
-            var index = $rootScope.igs.indexOf($rootScope.profile);
+        $http.get('api/igdocuments/' + $rootScope.igdocument.id, {timeout: 60000}).then(function (response) {
+            var index = $rootScope.igs.indexOf($rootScope.igdocument);
             $rootScope.igs[index] = angular.fromJson(response.data);
             $scope.loading = false;
-            $modalInstance.close($scope.profileToOpen);
+            $modalInstance.close($scope.igdocumentToOpen);
         }, function (error) {
             $scope.loading = false;
             $rootScope.msg().text = "igResetFailed";
@@ -916,13 +938,13 @@ angular.module('igl').controller('ConfirmProfileOpenCtrl', function ($scope, $mo
     $scope.saveChangesAndOpen = function () {
         $scope.loading = true;
         var changes = angular.toJson($rootScope.changes);
-        var data = {"changes": changes, "profile": $rootScope.profile};
-        $http.post('api/profiles/' + $rootScope.profile.id + '/save', data, {timeout: 60000}).then(function (response) {
+        var data = {"changes": changes, "igdocument": $rootScope.igdocument};
+        $http.post('api/igdocuments/' + $rootScope.igdocument.id + '/save', data, {timeout: 60000}).then(function (response) {
             var saveResponse = angular.fromJson(response.data);
-            $rootScope.profile.metaData.date = saveResponse.date;
-            $rootScope.profile.metaData.version = saveResponse.version;
+            $rootScope.igdocument.metaData.date = saveResponse.date;
+            $rootScope.igdocument.metaData.version = saveResponse.version;
             $scope.loading = false;
-            $modalInstance.close($scope.profileToOpen);
+            $modalInstance.close($scope.igdocumentToOpen);
         }, function (error) {
             $rootScope.msg().text = "igSaveFailed";
             $rootScope.msg().type = "danger";

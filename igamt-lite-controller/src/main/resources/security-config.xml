@@ -27,14 +27,14 @@
 	<sec:http pattern="/views/**" security="none" />
     <sec:http pattern="/fonts/**" security="none" />
 	<sec:http pattern="/lib/**" security="none" />
-	<sec:http pattern="/api/profiles/config" security="none" />
+	<sec:http pattern="/api/igdocuments/config" security="none" />
 	
 	<sec:http create-session="ifRequired" use-expressions="true">
 		<sec:http-basic entry-point-ref="restAuthenticationEntryPoint" />
 <!--    	 	    <sec:intercept-url pattern="/api/accounts/login/**" method="OPTIONS" access="isAnonymous()" />
  -->                 <sec:intercept-url pattern="/api/sooa/accounts/**" access="isAnonymous()" />
                 <sec:intercept-url pattern="/api/sooa/usernames/**" access="isAnonymous()" />
-                <sec:intercept-url pattern="/api/profiles/config" access="isAnonymous()" />
+                <sec:intercept-url pattern="/api/igdocuments/config" access="isAnonymous()" />
                 <sec:intercept-url pattern="/api/sooa/emails/**" access="isAnonymous()" />
                 <sec:intercept-url pattern="/api/sooa/issues/**" access="isFullyAuthenticated() and hasRole('admin')" />
                 <sec:intercept-url pattern="/api/accounts/cuser" access="isAnonymous() or isFullyAuthenticated()" />

@@ -9,7 +9,7 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 	private static final long serialVersionUID = 1L;
 
 	private String name;
-	private String title;
+	private String subTitle;
 	private String version;
 	private String date;
 	private String ext = "";
@@ -21,12 +21,8 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
+
+	
 	public String getVersion() {
 		return version;
 	}
@@ -47,12 +43,19 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 		this.ext = ext;
 	}
 	
+	public String getSubTitle() {
+		return subTitle;
+	}
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
+	}
+	
 	@Override
 	public DocumentMetaData clone() throws CloneNotSupportedException {
 		DocumentMetaData clonedDocumentMetaData = new DocumentMetaData();
 
 		clonedDocumentMetaData.setName(name);
-		clonedDocumentMetaData.setTitle(title);
+		clonedDocumentMetaData.setSubTitle(subTitle);
 		clonedDocumentMetaData.setVersion(version);
 		clonedDocumentMetaData.setDate(date);
 		clonedDocumentMetaData.setExt(ext);

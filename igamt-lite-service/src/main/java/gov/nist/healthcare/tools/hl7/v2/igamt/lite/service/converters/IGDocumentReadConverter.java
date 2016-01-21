@@ -17,16 +17,19 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -57,14 +60,28 @@ import com.mongodb.DBObject;
  * @author Harold Affo (harold.affo@nist.gov) Mar 31, 2015
  */
 @ReadingConverter
-public class ProfileReadConverter implements Converter<DBObject, Profile> {
+public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> {
 
-	public ProfileReadConverter() {
-		System.out.println("Profile Read Converter Created");
+	public IGDocumentReadConverter() {
+		System.out.println("IGDocument Read Converter Created");
 	}
 
 	@Override
-	public Profile convert(DBObject source) {
+	public IGDocument convert(DBObject source) {
+		IGDocument igd = new IGDocument();
+		igd.setAccountId(readLong(source, "accountId"));
+		igd.setChildSections(sections((DBObject) source.get("childSections")));
+		igd.setComment(readString(source, "comment"));
+		igd.setId(readMongoId(source));
+		igd.setMetaData(documentMetaData((DBObject) source.get("metaData")));
+		igd.setProfile(profile((DBObject) source.get("profile")));
+		igd.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
+		igd.setType(((String) source.get("type")));
+		igd.setUsageNote(readString(source, "usageNote"));
+		return igd;
+	}
+	
+	private Profile profile(DBObject source) {
 		Profile profile = new Profile();
 		profile.setId(readMongoId(source));
 		profile.setComment(readString(source, "comment"));
@@ -73,12 +90,16 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		profile.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
 		profile.setChanges(((String) source.get("changes")));
 		profile.setAccountId(readLong(source, "accountId"));
-		profile.setMetaData(metaData((DBObject) source.get("metaData")));
+		profile.setMetaData(profileMetaData((DBObject) source.get("metaData")));
 		profile.setTables(tables((DBObject) source.get("tables")));
-		profile.setDatatypes(datatypes((DBObject) source.get("datatypes"),
-				profile));
+		profile.setDatatypes(datatypes((DBObject) source.get("datatypes"), profile));
 		profile.setSegments(segments((DBObject) source.get("segments"), profile));
 		profile.setMessages(messages((DBObject) source.get("messages"), profile));
+		
+		profile.setSectionContents((String) source.get("sectionContents"));
+		profile.setSectionDescription((String) source.get("sectionDescription"));
+		profile.setSectionPosition((Integer) source.get("sectionPosition"));
+		profile.setSectionTitle((String) source.get("sectionTitle"));
 
 		Object baseId = source.get("baseId");
 		profile.setBaseId(baseId != null ? (String) baseId : null);
@@ -87,10 +108,39 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		profile.setSourceId(sourceId != null ? (String) sourceId : null);
 
 		return profile;
-
 	}
 
-	private ProfileMetaData metaData(DBObject source) {
+	private DocumentMetaData documentMetaData(DBObject source) {
+		DocumentMetaData metaData = new DocumentMetaData();
+		metaData.setName(((String) source.get("name")));
+		metaData.setType(((String) source.get("type")));
+		metaData.setSubTitle(((String) source.get("subTitle")));
+		metaData.setVersion(((String) source.get("version")));
+		metaData.setDate(((String) source.get("date")));
+		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext")) : null);
+		return metaData;
+	}
+	
+	private Set<Section> sections(DBObject source) {
+		Set<Section> sections = new HashSet<Section>();
+		BasicDBList sectionsDBObjects = (BasicDBList) source;
+		Iterator<Object> it = sectionsDBObjects.iterator();
+		while (it.hasNext()) {
+			DBObject childSource = (DBObject) it.next();
+			Section targetSection = new Section();
+			targetSection.setChildSections(sections((DBObject) childSource.get("childSections")));
+			targetSection.setId(readMongoId(childSource));
+			targetSection.setSectionContents((String) childSource.get("sectionContents"));
+			targetSection.setSectionDescription((String) childSource.get("sectionDescription"));
+			targetSection.setSectionPosition((Integer) childSource.get("sectionPosition"));
+			targetSection.setSectionTitle((String) childSource.get("sectionTitle"));
+			targetSection.setType((String) childSource.get("type"));
+			sections.add(targetSection);
+		}
+		return sections;
+	}
+	
+	private ProfileMetaData profileMetaData(DBObject source) {
 		ProfileMetaData metaData = new ProfileMetaData();
 		metaData.setName(((String) source.get("name")));
 		metaData.setIdentifier(((String) source.get("identifier")));
@@ -119,6 +169,12 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private Segments segments(DBObject source, Profile profile) {
 		Segments segments = new Segments();
 		segments.setId(readMongoId(source));
+		segments.setType("segments");
+		segments.setSectionContents((String) source.get("sectionContents"));
+		segments.setSectionDescription((String) source.get("sectionDescription"));
+		segments.setSectionPosition((Integer) source.get("sectionPosition"));
+		segments.setSectionTitle((String) source.get("sectionTitle"));
+		
 		BasicDBList segmentsDBObjects = (BasicDBList) source.get("children");
 		if (segmentsDBObjects != null) {
 			Set<Segment> children = new HashSet<Segment>();
@@ -141,6 +197,10 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		seg.setComment(readString(source, "comment"));
 		seg.setText1(readString(source, "text1"));
 		seg.setText2(readString(source, "text2"));
+		seg.setSectionContents((String) source.get("sectionContents"));
+		seg.setSectionDescription((String) source.get("sectionDescription"));
+		seg.setSectionPosition((Integer) source.get("sectionPosition"));
+		seg.setSectionTitle((String) source.get("sectionTitle"));
 
 		BasicDBList fieldObjects = (BasicDBList) source.get("fields");
 		if (fieldObjects != null) {
@@ -192,8 +252,17 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private Datatypes datatypes(DBObject source, Profile profile) {
 		Datatypes datatypes = new Datatypes();
 		datatypes.setId(readMongoId(source));
+		datatypes.setType("datatypes");
+		
+		datatypes.setSectionContents((String) source.get("sectionContents"));
+		datatypes.setSectionDescription((String) source.get("sectionDescription"));
+		datatypes.setSectionPosition((Integer) source.get("sectionPosition"));
+		datatypes.setSectionTitle((String) source.get("sectionTitle"));
+		
 		BasicDBList datatypesDBObjects = (BasicDBList) source.get("children");
 		datatypes.setChildren(new HashSet<Datatype>());
+		
+		
 		if (datatypesDBObjects != null) {
 			for (Object childObj : datatypesDBObjects) {
 				DBObject child = (DBObject) childObj;
@@ -210,16 +279,22 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private Datatype datatype(DBObject source, Datatypes datatypes,
 			Tables tables, BasicDBList datatypesDBObjects)
 					throws ProfileConversionException {
-		Datatype segRef = new Datatype();
-		segRef.setId(readMongoId(source));
-		segRef.setType(((String) source.get("type")));
-		segRef.setLabel((String) source.get("label"));
-		segRef.setName(((String) source.get("name")));
-		segRef.setHl7Version(((String) source.get("hl7Version")));
-		segRef.setDescription((String) source.get("description"));
-		segRef.setComment(readString(source, "comment"));
-		segRef.setUsageNote(readString(source, "usageNote"));
-		segRef.setComponents(new ArrayList<Component>());
+		Datatype dt = new Datatype();
+		dt.setId(readMongoId(source));
+		dt.setType(((String) source.get("type")));
+		dt.setLabel((String) source.get("label"));
+		dt.setName(((String) source.get("name")));
+		dt.setHl7Version(((String) source.get("hl7Version")));
+		dt.setDescription((String) source.get("description"));
+		dt.setComment(readString(source, "comment"));
+		dt.setUsageNote(readString(source, "usageNote"));
+		dt.setComponents(new ArrayList<Component>());
+		
+		dt.setSectionContents((String) source.get("sectionContents"));
+		dt.setSectionDescription((String) source.get("sectionDescription"));
+		dt.setSectionPosition((Integer) source.get("sectionPosition"));
+		dt.setSectionTitle((String) source.get("sectionTitle"));
+		
 		BasicDBList componentObjects = (BasicDBList) source.get("components");
 		if (componentObjects != null) {
 			List<Component> components = new ArrayList<Component>();
@@ -229,7 +304,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 						datatypesDBObjects);
 				components.add(c);
 			}
-			segRef.setComponents(components);
+			dt.setComponents(components);
 		}
 
 		BasicDBList confStsObjects = (BasicDBList) source
@@ -241,7 +316,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				ConformanceStatement cs = conformanceStatement(confStObject);
 				confStatements.add(cs);
 			}
-			segRef.setConformanceStatements(confStatements);
+			dt.setConformanceStatements(confStatements);
 		}
 
 		BasicDBList predDBObjects = (BasicDBList) source.get("predicates");
@@ -252,10 +327,10 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				Predicate pred = predicate(predObject);
 				predicates.add(pred);
 			}
-			segRef.setPredicates(predicates);
+			dt.setPredicates(predicates);
 		}
 
-		return segRef;
+		return dt;
 	}
 
 	private Reference reference(DBObject source) {
@@ -388,15 +463,19 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private Tables tables(DBObject source) {
 		Tables tables = new Tables();
 		tables.setId(readMongoId(source));
-		tables.setValueSetLibraryIdentifier(((String) source
-				.get("valueSetLibraryIdentifier")));
+		tables.setType("tables");
+		tables.setValueSetLibraryIdentifier(((String) source.get("valueSetLibraryIdentifier")));
 		tables.setStatus(((String) source.get("status")));
-		tables.setValueSetLibraryVersion(((String) source
-				.get("valueSetLibraryVersion")));
+		tables.setValueSetLibraryVersion(((String) source.get("valueSetLibraryVersion")));
 		tables.setOrganizationName(((String) source.get("organizationName")));
 		tables.setName(((String) source.get("name")));
 		tables.setDescription(((String) source.get("description")));
 		tables.setDateCreated(((String) source.get("dateCreated")));
+		
+		tables.setSectionContents((String) source.get("sectionContents"));
+		tables.setSectionDescription((String) source.get("sectionDescription"));
+		tables.setSectionPosition((Integer) source.get("sectionPosition"));
+		tables.setSectionTitle((String) source.get("sectionTitle"));
 
 		tables.setChildren(new HashSet<Table>());
 
@@ -405,6 +484,12 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			for (Object tableObj : childrenDBObjects) {
 				DBObject tableObject = (DBObject) tableObj;
 				Table table = new Table();
+				table.setType("table");
+				table.setSectionContents((String) tableObject.get("sectionContents"));
+				table.setSectionDescription((String) tableObject.get("sectionDescription"));
+				table.setSectionPosition((Integer) tableObject.get("sectionPosition"));
+				table.setSectionTitle((String) tableObject.get("sectionTitle"));
+				
 				table.setCodes(new ArrayList<Code>());
 				table.setId(readMongoId(tableObject));
 				table.setBindingIdentifier(((String) tableObject.get("bindingIdentifier")));
@@ -461,6 +546,13 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private Messages messages(DBObject source, Profile profile) {
 		Messages messages = new Messages();
 		messages.setId(readMongoId(source));
+		messages.setType("messages");
+		messages.setSectionContents((String) source.get("sectionContents"));
+		messages.setSectionDescription((String) source.get("sectionDescription"));
+		messages.setSectionPosition((Integer) source.get("sectionPosition"));
+		messages.setSectionTitle((String) source.get("sectionTitle"));
+		
+		
 		BasicDBList messagesDBObjects = (BasicDBList) source.get("children");
 		messages.setChildren(new HashSet<Message>());
 		for (Object childObj : messagesDBObjects) {
@@ -482,6 +574,10 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			message.setVersion((String) child.get("version"));
 			message.setDate((String) child.get("date"));
 			message.setOid((String) child.get("oid"));
+			message.setSectionContents((String) child.get("sectionContents"));
+			message.setSectionDescription((String) child.get("sectionDescription"));
+			message.setSectionPosition((Integer) child.get("sectionPosition"));
+			message.setSectionTitle((String) child.get("sectionTitle"));
 
 			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child
 					.get("children");

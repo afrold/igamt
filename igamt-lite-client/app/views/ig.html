@@ -1,4 +1,4 @@
-<div class="container" ng-controller="ProfileListCtrl" ng-init="init()">
+<div class="container" ng-controller="IGDocumentListCtrl" ng-init="init()">
 
 <div class="row" ng-show="isAuthenticated()">
     <!--<div class="row">-->
@@ -73,14 +73,14 @@
         </div>
         <div class="modal-body">
         	<label for="versionSelect"> Select HL7 Version: </label>
-       		<select ng-show="!profile" id="versionSelect" class="form-control input-sm" name="versionSelect" ng-options="option for option in hl7Versions" ng-model="hl7Version" ng-change="loadProfilesByVersion()">
+       		<select ng-show="!igdocument" id="versionSelect" class="form-control input-sm" name="versionSelect" ng-options="option for option in hl7Versions" ng-model="hl7Version" ng-change="loadIGDocumentsByVersion()">
 			</select>
-       		<span ng-show="profile" name="versionSelect" >{{profile.metaData.hl7Version}}
+       		<span ng-show="igdocument" name="versionSelect" >{{igdocument.metaData.hl7Version}}
 			</span>
         </div>
 		<form>
 		<div style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
-		<table class="profile-list table table-striped table-bordered">
+		<table class="igdocument-list table table-striped table-bordered">
 			<tr class="tbl-header"><th>&nbsp;</th><th>Struct Id</th><th>Version</th><th>Type</th><th>Event</th><th>Description</th></tr>
 			<tbody ng-repeat="m in messagesByVersion | orderBy: 'this[2]'">
 				<tr><td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
@@ -94,13 +94,13 @@
 		</div>
 		</form>
 	</script>
-    <script type="text/ng-template" id="ConfirmProfileDeleteCtrl.html">
+    <script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html">
         <div class="modal-header">
             <h3 class="modal-title">Delete Confirmation
             </h3>
         </div>
         <div class="modal-body">
-            <p>Are you sure you want to delete the profile ? This operation is irreversible</p>
+            <p>Are you sure you want to delete the igdocument ? This operation is irreversible</p>
         </div>
         </div>
         <div class="modal-footer">
@@ -118,13 +118,13 @@
 </script>
 
 
-<script type="text/ng-template" id="ConfirmProfileCloseCtrl.html">
+<script type="text/ng-template" id="ConfirmIGDocumentCloseCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Close Confirmation
         </h3>
     </div>
     <div class="modal-body">
-        <p>You currently have unsaved changes. Are you sure you want to close the profile ? All unsaved changes will
+        <p>You currently have unsaved changes. Are you sure you want to close the igdocument ? All unsaved changes will
             be lost</p>
 
 
@@ -148,13 +148,13 @@
 </script>
 
 
-<script type="text/ng-template" id="ConfirmProfileOpenCtrl.html">
+<script type="text/ng-template" id="ConfirmIGDocumentOpenCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Open Confirmation
         </h3>
     </div>
     <div class="modal-body">
-        <p>You currently have an open profile with unsaved changes. Are you sure you want to open the profile ? All
+        <p>You currently have an open igdocument with unsaved changes. Are you sure you want to open the igdocument ? All
             unsaved changes will be lost</p>
     </div>
      <div class="modal-footer">

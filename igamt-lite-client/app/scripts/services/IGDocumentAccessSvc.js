@@ -1,4 +1,4 @@
-angular.module('igl').factory ('ProfileAccessSvc', function() {
+angular.module('igl').factory ('IGDocumentAccessSvc', function() {
 
 	var svc = this;
 
@@ -10,18 +10,24 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return 0;
 	}
 
-	svc.Version = function(profile) {
-		return profile.metaData.hl7Version;
+	svc.Version = function(igdocument) {
+		return igdocument.metaData.hl7Version;
 	}
 
 
-	svc.Datatypes = function(profile) {
+	svc.Datatypes = function(igdocument) {
 	
 		var dts = this;
 	
+<<<<<<< ours
 		dts.datatypes = function() {
 			return profile.datatypes.children;
 		};
+=======
+		dts.datatypes = (function() {
+			return _.sortBy(igdocument.profile.datatypes.children, "id");
+		})();
+>>>>>>> theirs
 	
 		dts.getAllDatatypeIds = function() {
 			
@@ -100,12 +106,12 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return dts;
 	}
 
-	svc.Segments = function(profile) {
+	svc.Segments = function(igdocument) {
 	
 		var segs = this;
 	
 		segs.segments = function() {
-			return profile.segments.children;
+			return igdocument.profile.segments.children;
 		}
 		
 		segs.getAllSegmentIds = function() {
@@ -199,7 +205,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return segs;
 	}
 
-	svc.Messages = function(profile) {
+	svc.Messages = function(igdocument) {
 	
 		var msgs = this;
 	
@@ -216,8 +222,12 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		msgs.getMessageIds = function() {
 
 			var rval = [];
+<<<<<<< ours
 
 			_.each(profile.messages.children, function(message) {
+=======
+			_.each(igdocument.profile.messages.children, function(message) {
+>>>>>>> theirs
 				rval.push(message.id);
 			});
 
@@ -228,7 +238,11 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 
 			var segRefs = [];
 			
+<<<<<<< ours
 			_.each(messages, function(message) {
+=======
+			_.each(igdocument.profile.messages.children, function(message) {
+>>>>>>> theirs
 				var refs = msgs.getSegmentRefs(message);
 				_.each(refs, function(ref){
 					segRefs.push(ref);
@@ -238,6 +252,26 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 			return _.uniq(segRefs);
 		}
 	
+<<<<<<< ours
+=======
+		msgs.getSegmentRefsSansOne = function(message) {
+
+			var segmentRefs = [];
+			var messageId = message.id;
+			
+			_.each(igdocument.profile.messages.children, function(message) {
+				if (message.id !== messageId) {
+					var refs = msgs.getSegmentRefs(message);
+					_.each(refs, function(ref) {
+						segmentRefs.push(ref);
+					});
+				}
+			});
+			
+			return segmentRefs;
+		}
+		
+>>>>>>> theirs
 		msgs.getSegmentRefs = function(message) {
 			
 			var segRefs = [];

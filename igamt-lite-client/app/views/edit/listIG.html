@@ -12,7 +12,7 @@
             <form id="selectIgTypeForm">
                 <div class="form-group">
                     <select class="form-control input-sm"
-                            ng-change="loadProfiles()"
+                            ng-change="loadIGDocuments()"
                             name="igType"
                             id="igType"
                             required
@@ -83,11 +83,11 @@
                                     <span><i class="fa fa-plus fa-fw"></i></span>
                                 </button>
                                 <!--<div class="btn-group">-->
-                                    <!--<button ng-disabled="row === profile && hasChanges()" type="button"-->
+                                    <!--<button ng-disabled="row === igdocument && hasChanges()" type="button"-->
                                             <!--class="btn btn-warning btn-xs"><span><i-->
                                             <!--class="fa fa-download fa-fw"></i></span>-->
                                     <!--</button>-->
-                                    <!--<button ng-disabled="row === profile && hasChanges()" type="button"-->
+                                    <!--<button ng-disabled="row === igdocument && hasChanges()" type="button"-->
                                             <!--class="btn btn-warning btn-xs dropdown-toggle"-->
                                             <!--data-toggle="dropdown" aria-expanded="false">-->
                                         <!--<span class="caret"></span>-->
@@ -120,7 +120,7 @@
                                     <span><i class="fa fa-trash-o fa-fw"></i></span>
                                 </button>
 
-                                <!--<span ng-show="toEditProfileId != null && toEditProfileId === row.id"><i-->
+                                <!--<span ng-show="toEditIGDocumentId != null && toEditIGDocumentId === row.id"><i-->
                                 <!--class="fa fa-spinner fa-pulse fa-2x"></i></span>-->
                             </td>
                         </tr>
