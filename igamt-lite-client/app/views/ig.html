@@ -75,7 +75,7 @@
         	<label for="versionSelect"> Select HL7 Version: </label>
        		<select ng-show="!igdocument" id="versionSelect" class="form-control input-sm" name="versionSelect" ng-options="option for option in hl7Versions" ng-model="hl7Version" ng-change="loadIGDocumentsByVersion()">
 			</select>
-       		<span ng-show="igdocument" name="versionSelect" >{{igdocument.metaData.hl7Version}}
+       		<span ng-show="igdocument" name="versionSelect" >{{igdocument.profile.metaData.hl7Version}}
 			</span>
         </div>
 		<form>
