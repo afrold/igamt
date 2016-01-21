@@ -14,7 +14,7 @@ angular.module('igl').factory(
 				newEntry.reference.id = new ObjectId();
 				var rand = Math.floor(Math.random() * 100);
 				if (!profile.metaData.ext) {
-					profile.metaData.ext = "":
+					profile.metaData.ext = "";
 				}
 				// Nodes must have unique names so we append a random number when we
 				// duplicate.
