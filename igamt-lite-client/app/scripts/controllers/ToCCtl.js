@@ -82,19 +82,19 @@ angular
 								case "Add flavor":
 									console.log("Add flavor==> node=" + leaf);
 									CloneDeleteMessageSvc.cloneMessage(
-											$rootScope.profile, leaf);
+											$rootScope.igdocument, leaf);
 									$rootScope.$broadcast('event:SetToC');
 									break;
 								case "Clone":
 									console.log("Clone==> node=" + leaf);
 									CloneDeleteMessageSvc.cloneMessage(
-											$rootScope.profile, leaf);
+											$rootScope.igdocument, leaf);
 									$rootScope.$broadcast('event:SetToC');
 									break;
 								case "Delete":
 									console.log("Delete==> node=" + leaf);
 									CloneDeleteMessageSvc.deleteMessage(
-											$rootScope.profile, leaf.reference);
+											$rootScope.igdocument, leaf.reference);
 									$rootScope.$broadcast('event:SetToC');
 									break;
 								default:

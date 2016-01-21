@@ -1,73 +1,48 @@
 angular.module('igl').factory(
 		'CloneDeleteMessageSvc',
-		function(IGDocumentAccessSvc) {
+		function(ProfileAccessSvc) {
 
 			var svc = this;
 
-<<<<<<< ours
-			svc.cloneMessage = function(profile, entry) {
-=======
-			svc.cloneMessage = function(igdocument, toc, message) {
->>>>>>> theirs
+			svc.cloneMessage = function(igdocument, entry) {
 				// TODO gcr: Need to include the user identifier in the
 				// new label.
 				// $rootScope.igdocument.metaData.ext should be just that,
 				// but is currently
-<<<<<<< ours
 				// unpopulated in the profile.
 				var newEntry = (JSON.parse(JSON.stringify(entry)));
 				newEntry.reference.id = new ObjectId();
 				var rand = Math.floor(Math.random() * 100);
-				if (!profile.metaData.ext) {
-					profile.metaData.ext = "";
+				if (!igdocument.profile.metaData.ext) {
+					igdocument.profile.metaData.ext = "";
 				}
 				// Nodes must have unique names so we append a random number when we
 				// duplicate.
 				if (newEntry.reference.type === 'message') {
 					newEntry.reference.name = newEntry.reference.name + "-"
-							+ profile.metaData.ext + "-"
+							+ igdocument.profile.metaData.ext + "-"
 							+ rand + "-"
 							+ newEntry.reference.description;
 					newEntry.label = newEntry.reference.name;
-					profile.messages.children.splice(0, 0, newEntry.reference);
+					igdocument.profile.messages.children.splice(0, 0, newEntry.reference);
 				} else if (newEntry.reference.type === 'datatype') {
 					newEntry.reference.label = newEntry.reference.label + "-"
-					+ profile.metaData.ext + "-"
+					+ igdocument.profile.metaData.ext + "-"
 					+ rand + "- flavor";
 					newEntry.label = newEntry.reference.label;
-					profile.datatypes.children.splice(0, 0, newEntry.reference);
+					igdocument.profile.datatypes.children.splice(0, 0, newEntry.reference);
 				} else if (newEntry.reference.type === 'table') {
 					newEntry.reference.bindingIdentifier = newEntry.reference.bindingIdentifier + "-"
-					+ profile.metaData.ext + "-"
+					+ igdocument.profile.metaData.ext + "-"
 					+ rand + "- flavor";
 					newEntry.label = newEntry.reference.bindingIdentifier;
-					profile.tables.children.splice(0, 0, newEntry.reference);
+					igdocument.profile.tables.children.splice(0, 0, newEntry.reference);
 				}
 
 				return newEntry;
 			}
-=======
-				// unpopulated in the igdocument.
-				var newMessage = (JSON.parse(JSON.stringify(message)));
-				newMessage.reference.id = new ObjectId();
 
-				// Nodes must have unique names so we append a random number when we
-				// duplicate.
-				if (newMessage.reference.type === 'message') {
-					newMessage.reference.name = newMessage.reference.name + "-"
-							+ igdocument.metaData.ext + "-"
-							+ Math.floor(Math.random() * 100) + "-"
-							+ newMessage.reference.description;
-					newMessage.label = newMessage.reference.name;
-				}
-
-				igdocument.profile.messages.children.splice(0, 0, newMessage.reference);
-				var ConformanceProfile = _.find(toc, function(child) {
-					return child.id === "3";
-				});
->>>>>>> theirs
-
-			svc.deleteMessage = function(profile, message) {
+			svc.deleteMessage = function(igdocument, message) {
 				// We do the delete in pairs: dead and live.  dead = things we are deleting and live = things we are keeping. 
 				
 				// We are deleting the message so it's dead.
@@ -75,7 +50,7 @@ angular.module('igl').factory(
 				// and it must be an array of one.
 				var msgDead = [message];
 				// We are keeping the children so their live.
-				var msgLive = ProfileAccessSvc.Messages(profile).messages();
+				var msgLive = ProfileAccessSvc.Messages(igdocument.profile).messages();
 				
 				// First we remove the dead message from the living.
 				var idxP = _.findIndex(msgLive, function (
@@ -85,36 +60,35 @@ angular.module('igl').factory(
 				msgLive.splice(idxP, 1);
 				
 				// Second we get all segment refs that are contained in the dead message.
-				var segmentRefsMerelyDead = ProfileAccessSvc.Messages(profile)
+				var segmentRefsMerelyDead = ProfileAccessSvc.Messages(igdocument.profile)
 						.getAllSegmentRefs(msgDead);
 				// then we get all segment refs that are contained in the live messages.
-				var segmentRefsLive = ProfileAccessSvc.Messages(profile)
+				var segmentRefsLive = ProfileAccessSvc.Messages(igdocument.profile)
 				.getAllSegmentRefs(msgLive);
 				// Until now, dead meant mearly dead.  We now remove those that really are sincerely dead.
-				var segmentRefsSincerelyDead = ProfileAccessSvc.Segments(profile).findDead(segmentRefsMerelyDead, segmentRefsLive);
+				var segmentRefsSincerelyDead = ProfileAccessSvc.Segments(igdocument.profile).findDead(segmentRefsMerelyDead, segmentRefsLive);
 				if (segmentRefsSincerelyDead.length === 0) {
 					return;
 				}
 				
 				// Third we
 				// get all datatypes that are contained in the sincerely dead segments.
-				var dtIdsMerelyDead = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segmentRefsSincerelyDead);
+				var dtIdsMerelyDead = ProfileAccessSvc.Segments(igdocument.profile).findDatatypesFromSegmentRefs(segmentRefsSincerelyDead);
 
 				// then all datatypes that are contained in the live segments.				
-				var dtIdsLive = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segmentRefsLive);
-				var dtsIdsSincerelyDead = ProfileAccessSvc.Datatypes(profile).findDead(dtIdsMerelyDead, dtIdsLive);
+				var dtIdsLive = ProfileAccessSvc.Segments(igdocument.profile).findDatatypesFromSegmentRefs(segmentRefsLive);
+				var dtsIdsSincerelyDead = ProfileAccessSvc.Datatypes(igdocument.profile).findDead(dtIdsMerelyDead, dtIdsLive);
 
-<<<<<<< ours
 				// Fourth we 
 				// get all value sets that are contained in the sincerely dead datatypes.
-				var vssIdsMerelyDead = ProfileAccessSvc.Datatypes(profile).findValueSetsFromDatatypeIds(dtsIdsSincerelyDead);
+				var vssIdsMerelyDead = ProfileAccessSvc.Datatypes(igdocument.profile).findValueSetsFromDatatypeIds(dtsIdsSincerelyDead);
 				// then all value sets that are contained in the live datatypes.
-				var vssIdsLive = ProfileAccessSvc.Datatypes(profile).findValueSetsFromDatatypeIds(dtIdsLive);
-				var vssIdsSincerelyDead = ProfileAccessSvc.ValueSets(profile).findDead(vssIdsMerelyDead, vssIdsLive);		
+				var vssIdsLive = ProfileAccessSvc.Datatypes(igdocument.profile).findValueSetsFromDatatypeIds(dtIdsLive);
+				var vssIdsSincerelyDead = ProfileAccessSvc.ValueSets(igdocument.profile).findDead(vssIdsMerelyDead, vssIdsLive);		
 
-				ProfileAccessSvc.ValueSets(profile).removeDead(vssIdsSincerelyDead);		
-				ProfileAccessSvc.Datatypes(profile).removeDead(dtsIdsSincerelyDead);
-				ProfileAccessSvc.Segments(profile).removeDead(segmentRefsSincerelyDead);
+				ProfileAccessSvc.ValueSets(igdocument.profile).removeDead(vssIdsSincerelyDead);		
+				ProfileAccessSvc.Datatypes(igdocument.profile).removeDead(dtsIdsSincerelyDead);
+				ProfileAccessSvc.Segments(igdocument.profile).removeDead(segmentRefsSincerelyDead);
 				
 				console.log("svc.deleteMessage: segmentRefsMerelyDead=" + segmentRefsMerelyDead.length);
 				console.log("svc.deleteMessage: segmentRefsLive=" + segmentRefsLive.length);
@@ -128,25 +102,10 @@ angular.module('igl').factory(
 				console.log("svc.deleteMessage: vssIdsLive=" + vssIdsLive.length);
 				console.log("svc.deleteMessage: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
 
-				console.log("svc.deleteMessage: aMsgs=" + ProfileAccessSvc.Messages(profile).getMessageIds().length);
-				console.log("svc.deleteMessage: aSegs=" + ProfileAccessSvc.Segments(profile).segments().length);
-				console.log("svc.deleteMessage: aDts=" + ProfileAccessSvc.Datatypes(profile).datatypes().length);
-				console.log("svc.deleteMessage: aVss=" + ProfileAccessSvc.ValueSets(profile).valueSets().length);
-=======
-			svc.deleteMessage = function(igdocument, toc, message) {
-				var segmentRefs = IGDocumentAccessSvc.Messages(igdocument)
-						.getSegmentRefsSansOne(message.reference);
-				IGDocumentAccessSvc.Segments(igdocument).removeDead(segmentRefs);
-				var id = message.reference.id;
-				var idxP = _.findIndex(igdocument.profile.messages.children, function(
-						child) {
-					return child.id === id;
-				})
-				igdocument.profile.messages.children.splice(idxP, 1);
-				var messages = svc.getMessages(toc);
-				var idxT = svc.findMessageIndex(messages);
-				messages.children.splice(idxT, 1);
->>>>>>> theirs
+				console.log("svc.deleteMessage: aMsgs=" + ProfileAccessSvc.Messages(igdocument.profile).getMessageIds().length);
+				console.log("svc.deleteMessage: aSegs=" + ProfileAccessSvc.Segments(igdocument.profile).segments().length);
+				console.log("svc.deleteMessage: aDts=" + ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length);
+				console.log("svc.deleteMessage: aVss=" + ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length);
 			}
 
 			svc.getMessages = function(toc) {

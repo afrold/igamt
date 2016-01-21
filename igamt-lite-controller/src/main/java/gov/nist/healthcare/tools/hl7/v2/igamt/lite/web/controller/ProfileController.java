@@ -374,6 +374,7 @@ public class ProfileController extends CommonController {
 	@RequestMapping(value = "/hl7/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public Profile updateIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws ProfileException {
 		log.info("Update profile with additional messages.");
-		return profileCreation.updateIntegratedProfile(iprw.getMsgIds(), iprw.getProfile());
+//		return profileCreation.updateIntegratedProfile(iprw.getMsgIds(), iprw.getProfile());
+		return null;
 	}
 }

@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-.controller('IGDocumentListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, CloneDeleteMessageSvc, IGDocumentAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
+.controller('IGDocumentListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, CloneDeleteMessageSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
 		$scope.loading = false;
     	$scope.uiGrid = {};
         $rootScope.igs = [];
@@ -102,8 +102,6 @@ angular.module('igl')
             return true;
         };
 
-
-
         $rootScope.closeIGDocument = function(){
             $rootScope.igdocument = null;
             $rootScope.isEditing = false;
@@ -182,12 +180,8 @@ angular.module('igl')
             });
 
             $rootScope.$on('event:openIGDocumentRequest', function (event, igdocument) {
-<<<<<<< ours
-            		$rootScope.igdocument = igdocument;
-                $scope.openProfile(igdocument.profile);
-=======
-                $scope.openIGDocument(igdocument);
->>>>>>> theirs
+        		$rootScope.igdocument = igdocument;
+            $scope.openIGDocument(igdocument);
             });
 
             $scope.$on('event:openDatatype', function (event, datatype) {
@@ -315,17 +309,6 @@ angular.module('igl')
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $scope.selectIgTab(1);
-<<<<<<< ours
-                    $rootScope.profile = profile;
-                    $rootScope.profile.messages.children = $filter('orderBy')($rootScope.profile.messages.children, 'label');
-                    $rootScope.profile.segments.children = $filter('orderBy')($rootScope.profile.segments.children, 'label');
-                    $rootScope.profile.datatypes.children = $filter('orderBy')($rootScope.profile.datatypes.children, 'label');
-                    $rootScope.profile.tables.children = $filter('orderBy')($rootScope.profile.tables.children, 'label');            
-                    $rootScope.initMaps();
-                    $rootScope.messages = $rootScope.profile.messages.children;
-					$rootScope.$broadcast('event:SetToC');
-                    angular.forEach($rootScope.profile.datatypes.children, function (child) {
-=======
                     $rootScope.igdocument = igdocument;
                     $rootScope.igdocument.profile.messages.children = $filter('orderBy')($rootScope.igdocument.profile.messages.children, 'label');
                     $rootScope.igdocument.profile.segments.children = $filter('orderBy')($rootScope.igdocument.profile.segments.children, 'label');
@@ -335,7 +318,6 @@ angular.module('igl')
                     $rootScope.initMaps();
                     $rootScope.messages = $rootScope.igdocument.profile.messages.children;
                     angular.forEach($rootScope.igdocument.profile.datatypes.children, function (child) {
->>>>>>> theirs
                         this[child.id] = child;
                         if (child.displayName) { // TODO: Change displayName to label
                             child.label = child.displayName;
@@ -519,14 +501,9 @@ angular.module('igl')
         $scope.save = function () {
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
-<<<<<<< ours
-            var data = {"changes": changes, "profile": $rootScope.profile};
-            $http.post('api/profiles/save', data, {timeout: 60000}).then(function (response) {
-=======
             $rootScope.igdocument.accountId = userInfoService.getAccountID();
             var data = {"changes": changes, "igdocument": $rootScope.igdocument};
             $http.post('api/igdocuments/save', data, {timeout: 60000}).then(function (response) {
->>>>>>> theirs
                 var saveResponse = angular.fromJson(response.data);
                  $rootScope.igdocument.metaData.date = saveResponse.date;
                 $rootScope.igdocument.metaData.version = saveResponse.version;

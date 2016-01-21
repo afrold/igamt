@@ -3,7 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers;
 import java.io.Serializable;
 import java.util.List;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 
 public class IntegrationProfileRequestWrapper implements Serializable {
  
@@ -15,7 +15,7 @@ public class IntegrationProfileRequestWrapper implements Serializable {
 		
 		String hl7Version;
 		List<String> msgIds;
-		Profile profile;
+		IGDocument igdocument;
 		Long accountId;
 
 		public Long getAccountId() {
@@ -42,11 +42,11 @@ public class IntegrationProfileRequestWrapper implements Serializable {
 			this.msgIds = msgIds;
 		}
 
-		public Profile getProfile() {
-			return profile;
+		public IGDocument getIGDocument() {
+			return igdocument;
 		}
 
-		public void setProfile(Profile profile) {
-			this.profile = profile;
+		public void setIGDocument(IGDocument igdocument) {
+			this.igdocument = igdocument;
 		}	
 	}

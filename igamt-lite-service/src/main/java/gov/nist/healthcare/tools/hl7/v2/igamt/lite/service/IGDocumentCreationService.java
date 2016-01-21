@@ -26,12 +26,12 @@ public interface IGDocumentCreationService {
 	
 	List<String> findHl7Versions();
 	
-	List<Profile> findProfilesByHl7Versions();
+	List<IGDocument> findProfilesByHl7Versions();
 	
 	List<String[]> summary(String hl7Version, List<String> messageIds);
 	
 	IGDocument createIntegratedProfile(List<String> msgIds, String hl7Version, Long accountId) throws IGDocumentException;
 
-	IGDocument updateIntegratedProfile(List<String> msgIds, Profile pTarget) throws IGDocumentException;
+	IGDocument updateIntegratedProfile(List<String> msgIds, IGDocument pTarget) throws IGDocumentException;
 	
 }

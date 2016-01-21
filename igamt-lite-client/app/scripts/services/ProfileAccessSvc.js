@@ -1,4 +1,4 @@
-angular.module('igl').factory ('IGDocumentAccessSvc', function() {
+angular.module('igl').factory ('ProfileAccessSvc', function() {
 
 	var svc = this;
 
@@ -10,24 +10,18 @@ angular.module('igl').factory ('IGDocumentAccessSvc', function() {
 		return 0;
 	}
 
-	svc.Version = function(igdocument) {
-		return igdocument.metaData.hl7Version;
+	svc.Version = function(profile) {
+		return profile.metaData.hl7Version;
 	}
 
 
-	svc.Datatypes = function(igdocument) {
+	svc.Datatypes = function(profile) {
 	
 		var dts = this;
 	
-<<<<<<< ours
 		dts.datatypes = function() {
 			return profile.datatypes.children;
 		};
-=======
-		dts.datatypes = (function() {
-			return _.sortBy(igdocument.profile.datatypes.children, "id");
-		})();
->>>>>>> theirs
 	
 		dts.getAllDatatypeIds = function() {
 			
@@ -63,8 +57,6 @@ angular.module('igl').factory ('IGDocumentAccessSvc', function() {
 				i = _.findIndex(datatypes, { 'id' : id });
 				if (i > -1) {
 					datatypes.splice(i, 1);
-				} else {
-					console.log("dts.removeDead: datatype not found id=" + id);
 				}
 			});
 			
@@ -106,12 +98,12 @@ angular.module('igl').factory ('IGDocumentAccessSvc', function() {
 		return dts;
 	}
 
-	svc.Segments = function(igdocument) {
+	svc.Segments = function(profile) {
 	
 		var segs = this;
 	
 		segs.segments = function() {
-			return igdocument.profile.segments.children;
+			return profile.segments.children;
 		}
 		
 		segs.getAllSegmentIds = function() {
@@ -156,8 +148,6 @@ angular.module('igl').factory ('IGDocumentAccessSvc', function() {
 				i = _.findIndex(segments, { 'id' : id });
 				if (i > -1) {
 					segments.splice(i, 1);
-				} else {
-					console.log("segs.removeDead: segment not found id=" + id);
 				}
 			});
 			
@@ -205,7 +195,7 @@ angular.module('igl').factory ('IGDocumentAccessSvc', function() {
 		return segs;
 	}
 
-	svc.Messages = function(igdocument) {
+	svc.Messages = function(profile) {
 	
 		var msgs = this;
 	
@@ -222,12 +212,8 @@ angular.module('igl').factory ('IGDocumentAccessSvc', function() {
 		msgs.getMessageIds = function() {
 
 			var rval = [];
-<<<<<<< ours
 
 			_.each(profile.messages.children, function(message) {
-=======
-			_.each(igdocument.profile.messages.children, function(message) {
->>>>>>> theirs
 				rval.push(message.id);
 			});
 
@@ -238,11 +224,7 @@ angular.module('igl').factory ('IGDocumentAccessSvc', function() {
 
 			var segRefs = [];
 			
-<<<<<<< ours
 			_.each(messages, function(message) {
-=======
-			_.each(igdocument.profile.messages.children, function(message) {
->>>>>>> theirs
 				var refs = msgs.getSegmentRefs(message);
 				_.each(refs, function(ref){
 					segRefs.push(ref);
@@ -252,26 +234,6 @@ angular.module('igl').factory ('IGDocumentAccessSvc', function() {
 			return _.uniq(segRefs);
 		}
 	
-<<<<<<< ours
-=======
-		msgs.getSegmentRefsSansOne = function(message) {
-
-			var segmentRefs = [];
-			var messageId = message.id;
-			
-			_.each(igdocument.profile.messages.children, function(message) {
-				if (message.id !== messageId) {
-					var refs = msgs.getSegmentRefs(message);
-					_.each(refs, function(ref) {
-						segmentRefs.push(ref);
-					});
-				}
-			});
-			
-			return segmentRefs;
-		}
-		
->>>>>>> theirs
 		msgs.getSegmentRefs = function(message) {
 			
 			var segRefs = [];
@@ -356,8 +318,6 @@ angular.module('igl').factory ('IGDocumentAccessSvc', function() {
 				i = _.findIndex(valueSets, { 'id' : id });
 				if (i > -1) {
 					valueSets.splice(i, 1);
-				} else {
-					console.log("vss.removeDead: valueSet not found id=" + id);
 				}
 			});
 			return vsIds;

@@ -17,6 +17,15 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
@@ -34,42 +43,33 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 
 @Service
 public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	@Autowired
-	private ProfileRepository profileRepository;
+	private IGDocumentRepository igDocumentRepository;
 
 	@Autowired
-	private ProfileService profileService;
+	private IGDocumentService igDocumentService;
 
 	@Override
 	public List<String> findHl7Versions() {
 		// fetching messages of version hl7Version
-		return profileRepository.findHl7Versions();
+		return igDocumentRepository.findHl7Versions();
 	}
 
 	@Override
 	public List<String[]> summary(String hl7Version, List<String> messageIds) {
 		// Fetching messages of version hl7Version
 		List<String[]> rst = new ArrayList<String[]>();
-		List<Profile> pl = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version);
-		for (Profile p : pl) {
-			for (Message m : p.getMessages().getChildren()) {
+		List<IGDocument> igs = igDocumentRepository.findStandardByVersion(hl7Version);
+		for (IGDocument ig : igs) {
+			for (Message m : ig.getProfile().getMessages().getChildren()) {
 				if (!messageIds.contains(m.getId())) {
 					String[] msgDesc = new String[] { m.getId(), m.getEvent(), m.getStructID(), m.getDescription() };
 					rst.add(msgDesc);
@@ -82,8 +82,9 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	@Override
 	public IGDocument createIntegratedProfile(List<String> msgIds, String hl7Version, Long accountId) throws IGDocumentException {
 		// Creation of profile
-		Profile pSource = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version)
+		IGDocument igSource = igDocumentRepository.findStandardByVersion(hl7Version)
 				.get(0);
+		Profile pSource = igSource.getProfile();
 		Profile pTarget = new Profile();
 		pTarget.setAccountId(accountId);
 
@@ -126,15 +127,15 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	@Override
-	public IGDocument updateIntegratedProfile(List<String> msgIds, Profile pTarget) throws IGDocumentException {
+	public IGDocument updateIntegratedProfile(List<String> msgIds, IGDocument igTarget) throws IGDocumentException {
 		// Update profile with additional messages.
-		String hl7Version = pTarget.getMetaData().getHl7Version();
-		Profile pSource = profileRepository.findByScopeAndMetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version)
+		String hl7Version = igTarget.getProfile().getMetaData().getHl7Version();
+		IGDocument igSource = igDocumentRepository.findStandardByVersion(hl7Version)
 				.get(0);
+		Profile pSource = igSource.getProfile();
+		Profile pTarget = igTarget.getProfile();
 		addMessages(msgIds, pSource, pTarget);
-		IGDocument d = new IGDocument();
-		d.addProfile(pTarget);
-		return d;
+		return igTarget;
 	}
 
 	private void addMessages(List<String> msgIds, Profile pSource, Profile pTarget) {
@@ -195,9 +196,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	@Override
-	public List<Profile> findProfilesByHl7Versions() {
+	public List<IGDocument> findProfilesByHl7Versions() {
 		// Fetching all HL7Standard profiles
-		return profileRepository.findByScope(IGDocumentScope.HL7STANDARD);
+		return igDocumentRepository.findByScope(IGDocumentScope.HL7STANDARD);
 	}
-
 }
