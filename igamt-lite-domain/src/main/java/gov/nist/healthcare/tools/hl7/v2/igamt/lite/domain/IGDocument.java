@@ -93,7 +93,7 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 			Section section2_2_3 = new Section("Functional Requirements");
 			Section section2_3 = new Section("User story");
 			Section section2_4 = new Section("Sequence diagram");
-			Section section2_4_1 = new Section("Acknolegements");
+			Section section2_4_1 = new Section("Acknowledgement");
 			Section section2_4_2 = new Section("Error Handling");
 			
 			section1_5.addSection(section1_5_1);
