@@ -12,21 +12,33 @@ angular.module('igl').factory(
 				// unpopulated in the profile.
 				var newEntry = (JSON.parse(JSON.stringify(entry)));
 				newEntry.reference.id = new ObjectId();
-
+				var rand = Math.floor(Math.random() * 100);
+				if (!profile.metaData.ext) {
+					profile.metaData.ext = "":
+				}
 				// Nodes must have unique names so we append a random number when we
 				// duplicate.
 				if (newEntry.reference.type === 'message') {
 					newEntry.reference.name = newEntry.reference.name + "-"
 							+ profile.metaData.ext + "-"
-							+ Math.floor(Math.random() * 100) + "-"
+							+ rand + "-"
 							+ newEntry.reference.description;
-				} else if (newEntry.reference.type === 'datatype' || newEntry.reference.type === 'table') {
-					newEntry.reference.name = newEntry.reference.name + "-"
-					+ Math.floor(Math.random() * 100) + "- flavor"
 					newEntry.label = newEntry.reference.name;
+					profile.messages.children.splice(0, 0, newEntry.reference);
+				} else if (newEntry.reference.type === 'datatype') {
+					newEntry.reference.label = newEntry.reference.label + "-"
+					+ profile.metaData.ext + "-"
+					+ rand + "- flavor";
+					newEntry.label = newEntry.reference.label;
+					profile.datatypes.children.splice(0, 0, newEntry.reference);
+				} else if (newEntry.reference.type === 'table') {
+					newEntry.reference.bindingIdentifier = newEntry.reference.bindingIdentifier + "-"
+					+ profile.metaData.ext + "-"
+					+ rand + "- flavor";
+					newEntry.label = newEntry.reference.bindingIdentifier;
+					profile.tables.children.splice(0, 0, newEntry.reference);
 				}
 
-				profile.messages.children.splice(0, 0, newEntry.reference);
 				return newEntry;
 			}
 
