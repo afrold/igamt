@@ -80,21 +80,10 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 			Section section1_2 = new Section("Audience");
 			Section section1_3 = new Section("Organization of this guide");
 			Section section1_4 = new Section("Referenced profiles - antecedents");
-			
 			Section section1_5 = new Section("Scope");
 			Section section1_5_1 = new Section("In Scope");
 			Section section1_5_2 = new Section("Out of Scope");
-			section1_5.addSection(section1_5_1);
-			section1_5.addSection(section1_5_2);
-			
 			Section section1_6 = new Section("Key technical decisions [conventions]");
-			
-			section1.addSection(section1_1);
-			section1.addSection(section1_2);
-			section1.addSection(section1_3);
-			section1.addSection(section1_4);
-			section1.addSection(section1_5);
-			section1.addSection(section1_6);
 			
 			Section section2 = new Section("Use Case");
 			Section section2_1 = new Section("Actors");
@@ -102,23 +91,29 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 			Section section2_2_1 = new Section("Pre Conditions");
 			Section section2_2_2 = new Section("Post Condition");
 			Section section2_2_3 = new Section("Functional Requirements");
+			Section section2_3 = new Section("User story");
+			Section section2_4 = new Section("Sequence diagram");
+			Section section2_4_1 = new Section("Acknowledgement");
+			Section section2_4_2 = new Section("Error Handling");
+			
+			section1_5.addSection(section1_5_1);
+			section1_5.addSection(section1_5_2);
+			section1.addSection(section1_1);
+			section1.addSection(section1_2);
+			section1.addSection(section1_3);
+			section1.addSection(section1_4);
+			section1.addSection(section1_5);
+			section1.addSection(section1_6);
 			
 			section2_2.addSection(section2_2_1);
 			section2_2.addSection(section2_2_2);
 			section2_2.addSection(section2_2_3);
-			
-			Section section2_3 = new Section("User story");
-			Section section2_4 = new Section("Sequence diagram");
-			Section section2_4_1 = new Section("Acknolegements");
-			Section section2_4_2 = new Section("Error Handling");
 			section2_4.addSection(section2_4_1);
 			section2_4.addSection(section2_4_2);
-			
 			section2.addSection(section2_1);
 			section2.addSection(section2_2);
 			section2.addSection(section2_3);
-			
-			
+			section2.addSection(section2_4);
 			this.addSection(section1);
 			this.addSection(section2);
 		}
