@@ -213,7 +213,8 @@ module.exports = function(grunt) {
 									'app/scripts/services/**/*.js',
 									'app/scripts/filters/**/*.js',
 									'app/scripts/directives/**/*.js',
-									'app/scripts/controllers/**/*.js' ]
+									'app/scripts/controllers/**/*.js'
+									]
 					}
 				},
 				
@@ -452,7 +453,6 @@ module.exports = function(grunt) {
 								'karma' ]);
 
 	grunt.registerTask('build', [ 'clean:dist', 
-	                              'includeSource:prod', 
 	                              'wiredep:prod',
 								'useminPrepare', 
 								'concurrent:dist', 
