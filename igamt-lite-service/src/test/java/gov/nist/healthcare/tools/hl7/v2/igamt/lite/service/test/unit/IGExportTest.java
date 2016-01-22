@@ -41,8 +41,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContextUnit.class})
-public class IGLoadCorrectnessTest {  
-	Logger logger = LoggerFactory.getLogger( IGLoadCorrectnessTest.class ); 
+public class IGExportTest {  
+	Logger logger = LoggerFactory.getLogger( IGExportTest.class ); 
 
 	@Autowired
 	IGDocumentServiceImpl igService;
@@ -61,7 +61,7 @@ public class IGLoadCorrectnessTest {
 	public void setUp() throws Exception {
 		try {
 			Properties p = new Properties();
-			InputStream log4jFile = IGLoadCorrectnessTest.class
+			InputStream log4jFile = IGExportTest.class
 					.getResourceAsStream("/igl-test-log4j.properties");
 			p.load(log4jFile);
 			PropertyConfigurator.configure(p);
