@@ -1012,7 +1012,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			igDocument.open();
 
 			Paragraph title = null;
-			//			Chapter chapter = null;
 			com.itextpdf.text.Section section = null;
 
 			/*
@@ -1029,8 +1028,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			tocDocument.add(Chunk.NEWLINE);
 
 			Chapter chapterMsgInfra = new Chapter(new Paragraph("Messages infrastructure", titleFont), positionMessageInfrastructure + 1);
-			//			igDocument.add(chapterMsgInfra);
-			//			igDocument.add(Chunk.NEWLINE);
 
 			/*
 			 * Adding conformance profiles(messages) definitions
@@ -1040,16 +1037,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			Paragraph titleCp = new Paragraph("Conformance profiles", titleFont);
 			com.itextpdf.text.Section sectionCp = chapterMsgInfra.addSection(titleCp);
 
-			//			tocDocument.add(new Paragraph("Conformance profiles", titleFont));
-			//			tocDocument.add(Chunk.NEWLINE);
-			//
-			//			par = new Paragraph("Conformance profiles", titleFont);
-			//			chapter = new Chapter(par, 5);
-			//			igDocument.add(chapter);
-			//			igDocument.add(Chunk.NEWLINE);
-
 			List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
 			Collections.sort(messagesList);
+	
 
 			for (Message m : messagesList) {
 
@@ -1094,8 +1084,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 				String segmentInfo = s.getLabel() + " - " + s.getDescription();
 				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getSegments().getSectionPosition()+1) + "." + String.valueOf(s.getSectionPosition()+1) + " " + segmentInfo);
 				com.itextpdf.text.Section section1 = sectionSgt.addSection(new Paragraph(segmentInfo, titleFont));
-				//				this.addTocContent(tocDocument, igWriter, segmentInfo);
-				//				com.itextpdf.text.Section section1 = chapter.addSection(new Paragraph(segmentInfo, titleFont));
 
 				section1.add(Chunk.NEWLINE);
 				section1.add(richTextToParagraph(s.getText1()));
@@ -1131,8 +1119,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 					}
 				}
 				section1.add(Chunk.NEWLINE);
-				//				section1.newPage();
-				//				igDocument.add(section1);
 			}
 
 
@@ -1142,13 +1128,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*1) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getDatatypes().getSectionPosition()+1) + " Datatypes");
 			Paragraph titleDts = new Paragraph("Datatypes", titleFont);
 			com.itextpdf.text.Section sectionDts = chapterMsgInfra.addSection(titleDts);
-
-			//			igDocument.add(new Paragraph("DATA TYPES", titleFont));
-			//			igDocument.add(Chunk.NEWLINE);
-			//
-			//			tocDocument.add(Chunk.NEWLINE);
-			//			tocDocument.add(new Paragraph("Data types", titleFont));
-			//			tocDocument.add(Chunk.NEWLINE);
 
 			header = Arrays.asList("Seq", "Element Name", "Conf\nlength", "DT",
 					"Usage", "Length", "Value\nSet", "Comment");
@@ -1183,13 +1162,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			Paragraph titleVsd = new Paragraph("Value sets", titleFont);
 			com.itextpdf.text.Section sectionVsd = chapterMsgInfra.addSection(titleVsd);
 
-			//			igDocument.add(new Paragraph("Value sets", titleFont));
-			//			igDocument.add(Chunk.NEWLINE);
-			//
-			//			tocDocument.add(Chunk.NEWLINE);
-			//			tocDocument.add(new Paragraph("Value Sets", titleFont));
-			//			tocDocument.add(Chunk.NEWLINE);
-			//
 			header = Arrays.asList("Value", "Code system", "Usage", "Description");
 
 			columnWidths = new float[] { 15f, 15f, 10f, 50f };
