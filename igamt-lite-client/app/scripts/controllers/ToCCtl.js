@@ -92,7 +92,7 @@ angular
 									$rootScope.$broadcast('event:SetToC');
 									break;
 								case "Delete":
-									console.log("Delete==> node=" + leaf);
+									console.log("Delete==> node=" + leaf.label);
 									CloneDeleteMessageSvc.deleteMessage(
 											$rootScope.igdocument, leaf.reference);
 									$rootScope.$broadcast('event:SetToC');

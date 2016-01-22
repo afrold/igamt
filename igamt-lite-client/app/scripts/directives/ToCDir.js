@@ -37,8 +37,9 @@ angular
 		.directive(
 				"branch",
 				function($compile) {
+					// class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \"
 					var branchTemplate = "<li class='branch'"
-							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \">"
+							+ "<label for='{{branch.id}}'>"
 							+ "{{branch.label}}"
 							+ "</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
 							+ "<trunk trunk='branch.children'></trunk>"
@@ -57,7 +58,7 @@ angular
 							 console.log("branch id=" + scope.branch.id +
 							 " label=" + scope.branch.label + " chidren=" +
 							 scope.branch.children.length);
-							if (scope.branch.id === "3.1") {
+							if (_.indexOf(["3.1","3.2","3.3","3.4"], scope.branch.id) === -1) {
 								element.append(branchMessageTemplate);
 							} else {
 								element.append(branchTemplate);
