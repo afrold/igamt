@@ -181,11 +181,7 @@ public class Table extends SectionModel implements Serializable,
 
 	@Override
 	public int compareTo(Table o) {
-		int x = String.CASE_INSENSITIVE_ORDER.compare(this.bindingIdentifier != null ? this.bindingIdentifier: "",
-				o.bindingIdentifier != null ? o.bindingIdentifier: "");
-		if (x == 0) {
-			x = (this.bindingIdentifier != null ? this.bindingIdentifier: "").compareTo(o.bindingIdentifier != null ? o.bindingIdentifier: "");
-		}
+		int x = this.getSectionPosition() - o.getSectionPosition();	
 		return x;
 	}
 
