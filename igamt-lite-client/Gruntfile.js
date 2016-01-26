@@ -374,6 +374,18 @@ module.exports = function(grunt) {
 
 				// Copies remaining files to places other tasks can use
 				copy : {
+					dev : {
+						files : [
+								{
+									expand : true,
+									dot : true,
+									cwd : '<%= yeoman.app %>',
+									dest : '<%= yeoman.dist %>',
+									src : [ 'app/**/*', 
+									        'bower_components/**/*'
+									      ]
+								}]
+					},
 					dist : {
 						files : [
 								{
@@ -381,15 +393,20 @@ module.exports = function(grunt) {
 									dot : true,
 									cwd : '<%= yeoman.app %>',
 									dest : '<%= yeoman.dist %>',
-									src : [ '*.{ico,png,txt}', '.htaccess',
-											'*.html', 'views/**/*.html',
+									src : [ '*.{ico,png,txt}', 
+									        '.htaccess',
+											'*.html', 
+											'views/**/*.html',
 											'images/{,*/}*.{webp}',
-											'fonts/**/*', 'assets/**/*',
-											'lib/**/*', 'resources/**/*',
+											'fonts/**/*', 
+											'assets/**/*',
+											'lib/**/*', 
+											'resources/**/*',
 											'images/**/*',
 											'styles/fonts/{,*/}*.*',
 											'styles/font-awesome*.css',
-											'lang/*', 'documents/*' ]
+											'lang/*', 
+											'documents/*' ]
 								},
 								{
 									expand : true,
@@ -439,33 +456,41 @@ module.exports = function(grunt) {
 				grunt.task.run([ 'clean:server', 
 				                 'includeSource:dev',
 				                 'wiredep:dev', 
-								'concurrent:server', 
-								'autoprefixer',
-								'connect:livereload', 
-								'watch' ]);
+				                 'concurrent:server', 
+				                 'autoprefixer',
+				                 'connect:livereload', 
+				                 'watch' ]);
 			});
 
 	grunt.registerTask('test', [ 'clean:server', 
 				                 'includeSource:dev',
 	                             'concurrent:test',
-								'autoprefixer', 
-								'connect:test', 
-								'karma' ]);
+	                             'autoprefixer', 
+	                             'connect:test', 
+	                             'karma' ]);
+	
+	grunt.registerTask('half-build', [ 'clean:dist', 
+					              'includeSource:prod',
+	                              'wiredep:prod',
+	                              'concurrent:server', 
+	                              'copy:dev', 
+								]);
 
 	grunt.registerTask('build', [ 'clean:dist', 
+					              'includeSource:prod',
 	                              'wiredep:prod',
-								'useminPrepare', 
-								'concurrent:dist', 
-								'autoprefixer', 
-								'concat',
-								'ngAnnotate', 
-								'copy:dist', 
-								'cdnify', 
-								'cssmin', 
-								'uglify', 
-								'filerev',
-								'usemin', 
-								'htmlmin' ]);
+	                              'useminPrepare', 
+	                              'concurrent:dist', 
+	                              'autoprefixer', 
+	                              'concat',
+	                              'ngAnnotate', 
+	                              'copy:dist', 
+	                              'cdnify', 
+	                              'cssmin', 
+	                              'uglify', 
+	                              'filerev',
+	                              'usemin', 
+	                              'htmlmin' ]);
 
 	grunt.registerTask('default', [ 'newer:jshint', 
 	                                'test', 

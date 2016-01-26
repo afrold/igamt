@@ -4,40 +4,16 @@
 
 
 angular.module('igl')
-    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout) {
+    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
         $scope.datatypeCopy = null;
         $scope.init = function () {
-        };
+       };
 
-        $scope.flavor = function (datatype) {
-            var flavor = angular.copy(datatype);
-            flavor.id = new ObjectId().toString();
-            flavor.label = $rootScope.createNewFlavorName(datatype.label);
-            if (flavor.components != undefined && flavor.components != null && flavor.components.length != 0) {
-                for (var i = 0; i < flavor.components.length; i++) {
-                    flavor.components[i].id = new ObjectId().toString();
-                }
-            }
-            var predicates = flavor['predicates'];
-            if (predicates != undefined && predicates != null && predicates.length != 0) {
-                angular.forEach(predicates, function (predicate) {
-                    predicate.id = new ObjectId().toString();
-                });
-            }
-            var conformanceStatements = flavor['conformanceStatements'];
-            if (conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0) {
-                angular.forEach(conformanceStatements, function (conformanceStatement) {
-                    conformanceStatement.id = new ObjectId().toString();
-                });
-            }
-            $rootScope.datatypes.splice(0, 0, flavor);
-            $rootScope.datatype = flavor;
-            $rootScope.datatypesMap[flavor.id] = flavor;
-            $rootScope.recordChangeForEdit2('datatype', "add", flavor.id, 'datatype', flavor);
-            $scope.selectDatatype(flavor);
+        $scope.cloneDatatypeFlavor = function (datatype) {
+        		CloneDeleteSvc.cloneDatatypeFlavor(datatype);
         };
 
         $scope.recordDatatypeChange = function (type, command, id, valueType, value) {

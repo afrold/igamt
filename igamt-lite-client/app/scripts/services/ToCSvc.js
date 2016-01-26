@@ -29,9 +29,13 @@ angular.module('igl').factory(
 					"selected" : false,
 					"position" : childSection.sectionPosition,
 					"parent" : parent,
-					"children" : []};
+					"reference" : childSection
+					}
 					var sections1 = svc.getSections(childSection.childSections, childSection._id);
-					_.each(sections1, function(section1){
+					_.each(sections1, function(section1) {
+						if (!section.children) {
+							section.children = [];
+						}
 						section.children.push(section1);						
 					})
 					rval.push(section);
@@ -90,20 +94,20 @@ angular.module('igl').factory(
 				_.each(children, function(child) {
 					if (parent === "3.1") {
 						entry = svc.createEntry(child, child.id, child.name
-								+ " - " + child.description, parent, parent);
+								+ " - " + child.contents, parent, parent);
 					} else if (parent === "3.2") {
 						entry = svc
 								.createEntry(child, child.id, child.label
-										+ " - " + child.description, parent);
+										+ " - " + child.contents, parent);
 					} else if (parent === "3.3") {
 						entry = svc
 								.createEntry(child, child.id, child.label
-										+ " - " + child.description, parent);
+										+ " - " + child.contents, parent);
 					} else if (parent === "3.4") {
 						entry = svc
 								.createEntry(child, child.id,
 										child.bindingIdentifier + " - "
-												+ child.description, parent);
+												+ child.contents, parent);
 					} else {
 						entry = svc.createEntry(child, child.id, child.label,
 								parent, child.children);
@@ -131,7 +135,9 @@ angular.module('igl').factory(
 					rval["parent"] = parent;
 				}
 				if (children !== undefined) {
-					rval["children"] = children;
+					if (children.length > 0) {
+						rval["children"] = children;
+					}
 				}
 				return rval;
 			}

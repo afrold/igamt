@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-.controller('IGDocumentListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, CloneDeleteMessageSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
+.controller('IGDocumentListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
 		$scope.loading = false;
     	$scope.uiGrid = {};
         $rootScope.igs = [];
@@ -185,19 +185,23 @@ angular.module('igl')
             });
 
             $scope.$on('event:openDatatype', function (event, datatype) {
-                $scope.selectDatatype(datatype); // Shoudl we open in a dialog ??
+                $scope.selectDatatype(datatype); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openSegment', function (event, segment) {
-                $scope.selectSegment(segment); // Shoudl we open in a dialog ??
+                $scope.selectSegment(segment); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openMessage', function (event, message) {
-                $scope.selectMessage(message); // Shoudl we open in a dialog ??
+                $scope.selectMessage(message); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openTable', function (event, table) {
-                $scope.selectTable(table); // Shoudl we open in a dialog ??
+                $scope.selectTable(table); // Should we open in a dialog ??
+            });
+
+            $scope.$on('event:openSection', function (event, section) {
+                $scope.selectSection(section); // Should we open in a dialog ??
             });
         };
 
@@ -594,7 +598,6 @@ angular.module('igl')
                 });
             return hl7Versions;
         };
-        
 
         $scope.showSelected = function (node) {
             $scope.selectedNode = node;
@@ -681,6 +684,16 @@ angular.module('igl')
                     		}
             			}
                 	}
+                    $scope.loadingSelection = false;
+                }, 100);
+        };
+
+        $scope.selectSection = function (section) {
+            $scope.subview = "EditSections.html";
+            $scope.loadingSelection = true;
+            $timeout(
+                function () {
+                    $rootScope.section = section;
                     $scope.loadingSelection = false;
                 }, 100);
         };

@@ -85,9 +85,12 @@
  	<!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
-	<!-- include: "type": "js", "files": "prod/**/*.js" --> 	
 	<!-- include: "type": "js", "files": "lib/**/*.js" --> 	
-	<!-- include: "type": "js", "files": "scripts/**/*.js" --> 	
+	<!-- include: "type": "js", "files": "prod/**/*.js" --> 	
+	<!-- include: "type": "js", "files": "scripts/services**/*.js" --> 	
+	<!-- include: "type": "js", "files": "scripts/filters/**/*.js" --> 	
+	<!-- include: "type": "js", "files": "scripts/directives/**/*.js" --> 	
+	<!-- include: "type": "js", "files": "scripts/controllers/**/*.js" --> 	
     <!-- endbuild -->
 
     <script>

@@ -39,7 +39,7 @@ angular
 				function($compile) {
 					// class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \"
 					var branchTemplate = "<li class='branch'"
-							+ "<label for='{{branch.id}}'>"
+							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \">"
 							+ "{{branch.label}}"
 							+ "</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
 							+ "<trunk trunk='branch.children'></trunk>"
@@ -51,14 +51,14 @@ angular
 							+ "</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
 							+ "<drop drop='branch.children'></drop>"
 							+ "</li>";
-					var leafTemplate = "<leaf leaf='branch' drop='drop' index='index'></leaf>";
+					var leafTemplate = "<leaf leaf='branch' index='index'></leaf>";
 
 					var linker = function(scope, element, attrs) {
 						if (angular.isArray(scope.branch.children)) {
 							 console.log("branch id=" + scope.branch.id +
 							 " label=" + scope.branch.label + " chidren=" +
 							 scope.branch.children.length);
-							if (_.indexOf(["3.1","3.2","3.3","3.4"], scope.branch.id) === -1) {
+							if (scope.branch.id === "3.1") {
 								element.append(branchMessageTemplate);
 							} else {
 								element.append(branchTemplate);
@@ -66,7 +66,7 @@ angular
 							$compile(element.contents())(scope);
 
 						} else {
-							// console.log("leaf=" + scope.branch.label);
+							console.log("leaf0=" + scope.branch.label + " parent=" + scope.branch.parent);
 							element.append(leafTemplate).show();
 							$compile(element.contents())(scope);
 						}
@@ -105,8 +105,10 @@ angular
 					var linker = function(scope, element, attrs) {
 						if (scope.leaf.parent === "3.1") {
 							element.html(leafMessage).show();
+							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else {
 							element.html(leafDefault).show();
+							console.log("leaf2=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						}
 						$compile(element.contents())(scope);
 					}

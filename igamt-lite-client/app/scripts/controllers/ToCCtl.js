@@ -8,9 +8,9 @@ angular
 						'$q',
 						'ToCSvc',
 						'ContextMenuSvc',
-						'CloneDeleteMessageSvc',
+						'CloneDeleteSvc',
 						function($scope, $rootScope, $q, ToCSvc,
-								ContextMenuSvc, CloneDeleteMessageSvc) {
+								ContextMenuSvc, CloneDeleteSvc) {
 							var ctl = this;
 							$scope.collapsed = [];
 							$scope.yesDrop = false;
@@ -70,7 +70,9 @@ angular
 									break;
 								}
 								default: {
-									$scope.subview = "nts.html";
+									$scope.$emit('event:openSection',
+											leaf.reference);
+									break;
 								}
 								}
 								return $scope.subview;
@@ -81,19 +83,21 @@ angular
 								switch (ctxMenuSelection) {
 								case "Add flavor":
 									console.log("Add flavor==> node=" + leaf);
-									CloneDeleteMessageSvc.cloneMessage(
-											$rootScope.igdocument, leaf);
-									$rootScope.$broadcast('event:SetToC');
+									if (newEntry.reference.type === 'datatype') {
+						        			CloneDeleteSvc.cloneDatatypeFlavor(leaf);
+									} else if (newEntry.reference.type === 'table') {
+										CloneDeleteSvc.cloneTableFlavor(leaf);
+									}
 									break;
 								case "Clone":
 									console.log("Clone==> node=" + leaf);
-									CloneDeleteMessageSvc.cloneMessage(
+									CloneDeleteSvc.cloneMessage(
 											$rootScope.igdocument, leaf);
 									$rootScope.$broadcast('event:SetToC');
 									break;
 								case "Delete":
 									console.log("Delete==> node=" + leaf.label);
-									CloneDeleteMessageSvc.deleteMessage(
+									CloneDeleteSvc.deleteMessage(
 											$rootScope.igdocument, leaf.reference);
 									$rootScope.$broadcast('event:SetToC');
 									break;

@@ -2,7 +2,7 @@
  * Created by Jungyub on 4/01/15.
  */
 
-angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout) {
+angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
     $scope.readonly = false;
     $scope.codeSysEditMode = false;
     $scope.codeSysForm = {};;
@@ -10,6 +10,9 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     $scope.message = false;
     $scope.params = null;
     $scope.init = function () {
+        $rootScope.$on('event:cloneTableFlavor', function(event, table) {
+        	$scope.cloneTableFlavor(table);         
+      });
     };
 
     $scope.addTable = function () {
@@ -30,7 +33,6 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.tablesMap[newTable.id] = newTable;
         $rootScope.table = newTable;
         $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
-
     };
     
     
@@ -138,59 +140,8 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.table = null;
     };
 
-    $scope.cloneTable = function (table) {
-        $rootScope.newTableFakeId = $rootScope.newTableFakeId - 1;
-        var newTable = angular.fromJson({
-            id:new ObjectId().toString(),
-            type: '',
-            bindingIdentifier: '',
-            name: '',
-            version: '',
-            oid: '',
-            tableType: '',
-            stability: '',
-            extensibility: '',
-            codes: []
-        });
-        newTable.type = 'table';
-        newTable.bindingIdentifier = table.bindingIdentifier + '_' + $rootScope.postfixCloneTable + $rootScope.newTableFakeId;
-        newTable.name = table.name + '_' + $rootScope.postfixCloneTable + $rootScope.newTableFakeId;
-        newTable.version = table.version;
-        newTable.oid = table.oid;
-        newTable.tableType = table.tableType;
-        newTable.stability = table.stability;
-        newTable.extensibility = table.extensibility;
-
-        for (var i = 0, len1 = table.codes.length; i < len1; i++) {
-            $rootScope.newValueFakeId = $rootScope.newValueFakeId - 1;
-            var newValue = {
-                    id: new ObjectId().toString(),
-                    type: 'value',
-                    value: table.codes[i].value,
-                    label: table.codes[i].label,
-                    codeSystem: table.codes[i].codeSystem,
-                    codeUsage: table.codes[i].codeUsage
-                };
-            
-            newTable.codes.push(newValue);
-        }
-
-        $rootScope.tables.push(newTable);
-        $rootScope.table = newTable;
-        $rootScope.tablesMap[newTable.id] = newTable;
-        
-        $rootScope.codeSystems = [];
-        
-        for (var i = 0; i < $rootScope.table.codes.length; i++) {
-        	if($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0){
-        		if($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== ''){
-        			$rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
-        		}
-			}
-    	}
-        
-        
-        $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
+    $scope.cloneTableFlavor = function (table) {
+		CloneDeleteSvc.cloneTableFlavor(table);
     };
 
     $scope.recordChangeValue = function (value, valueType, tableId) {
