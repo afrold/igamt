@@ -39,7 +39,7 @@ angular.module('igl').controller(
 
 			$scope.listHL7Versions = function() {
 				var hl7Versions = [];
-				$http.get('api/igdocuments/findVersions', {
+				$http.get('api/igdocuments/hl7/findVersions', {
 					timeout : 60000
 				}).then(function(response) {
 					var len = response.data.length;
@@ -63,7 +63,7 @@ angular.module('igl').controller(
 					"accountID" : userInfoService.getAccountID(), 
 					"timeout" : 60000
 				};
-				$http.post('api/igdocuments/createIntegrationProfile', iprw)
+				$http.post('api/igdocuments/hl7/createIntegrationProfile', iprw)
 						.then(
 								function(response) {
 									var igdocument = angular
@@ -90,7 +90,7 @@ angular.module('igl').controller(
 					"msgIds" : msgIds,
 					"timeout" : 60000
 				};
-				$http.post('api/igdocuments/createIntegrationProfile', iprw)
+				$http.post('api/igdocuments/hl7/updateIntegrationProfile', iprw)
 						.then(
 								function(response) {
 									var igdocument = angular
@@ -126,7 +126,7 @@ angular.module('igl').controller(
 				console.log("loadIGDocumentsByVersion.hl7Version=" + $scope.hl7Version);
 				console.log("loadIGDocumentsByVersion.igdocumentVersions=" + $scope.igdocumentVersions);
 				$http.post(
-						'api/igdocuments/messageListByVersion', angular.fromJson({
+						'api/igdocuments/hl7/messageListByVersion', angular.fromJson({
 							"hl7Version" : $scope.hl7Version,
 							"messageIds" : $scope.igdocumentVersions
 						})).then(function(response) {

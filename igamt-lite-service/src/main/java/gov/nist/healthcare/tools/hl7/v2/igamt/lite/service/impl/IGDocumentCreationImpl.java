@@ -17,18 +17,10 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -48,28 +40,37 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationSer
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 @Service
 public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	@Autowired
-	private IGDocumentRepository igDocumentRepository;
+	private IGDocumentRepository igdocumentRepository;
 
 	@Autowired
-	private IGDocumentService igDocumentService;
+	private IGDocumentService igdocumentService;
 
 	@Override
 	public List<String> findHl7Versions() {
 		// fetching messages of version hl7Version
-		return igDocumentRepository.findHl7Versions();
+		return igdocumentRepository.findHl7Versions();
 	}
 
 	@Override
 	public List<String[]> summary(String hl7Version, List<String> messageIds) {
 		// Fetching messages of version hl7Version
 		List<String[]> rst = new ArrayList<String[]>();
-		List<IGDocument> igs = igDocumentRepository.findStandardByVersion(hl7Version);
-		for (IGDocument ig : igs) {
-			for (Message m : ig.getProfile().getMessages().getChildren()) {
+		List<IGDocument> docs = igdocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version);
+		for (IGDocument d : docs) {
+			for (Message m : d.getProfile().getMessages().getChildren()) {
 				if (!messageIds.contains(m.getId())) {
 					String[] msgDesc = new String[] { m.getId(), m.getEvent(), m.getStructID(), m.getDescription() };
 					rst.add(msgDesc);
@@ -80,34 +81,44 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	@Override
-	public IGDocument createIntegratedProfile(List<String> msgIds, String hl7Version, Long accountId) throws IGDocumentException {
+	public IGDocument createIntegratedIGDocument(List<String> msgIds, String hl7Version, Long accountId) throws IGDocumentException {
 		// Creation of profile
-		IGDocument igSource = igDocumentRepository.findStandardByVersion(hl7Version)
-				.get(0);
-		Profile pSource = igSource.getProfile();
+		IGDocument dSource = igdocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version).get(0);
+		IGDocument dTarget = new IGDocument();
 		Profile pTarget = new Profile();
 		pTarget.setAccountId(accountId);
 
-		// Setting metaData
-		ProfileMetaData metaData = new ProfileMetaData();
-		pTarget.setMetaData(metaData);
+		// Setting igDocument metaData
+		DocumentMetaData metaData = new DocumentMetaData();
+		dTarget.setMetaData(metaData);
 		DateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
 		Date date = new Date();
 		metaData.setDate(dateFormat.format(date));
 		metaData.setVersion("1.0");
 		metaData.setName("Default name");
-		metaData.setOrgName("Default org name");
 		metaData.setSubTitle("Subtitle");
+		
+		// Setting profile metaData
+		ProfileMetaData profileMetaData = new ProfileMetaData();
+		pTarget.setMetaData(profileMetaData);
+		profileMetaData.setDate(dateFormat.format(date));
+		profileMetaData.setVersion("1.0");
+		profileMetaData.setName("Default name");
+		profileMetaData.setOrgName("Default org name");
+		profileMetaData.setSubTitle("Subtitle");
 
-		metaData.setHl7Version(hl7Version);
-		metaData.setStatus("Draft");
-		// metaData.setSchemaVersion(SchemaVersion.V1_0.value());
-
+		profileMetaData.setHl7Version(hl7Version);
+		profileMetaData.setStatus("Draft");
+		
 		// Setting profile info
 		pTarget.setScope(IGDocumentScope.USER);
 		pTarget.setComment("Created " + date.toString());
-		pTarget.setSourceId(pSource.getId());
-		pTarget.setBaseId(pSource.getId());
+		pTarget.setSourceId(dSource.getProfile().getId());
+		pTarget.setBaseId(dSource.getProfile().getId());
+		
+		// Setting IGDocument info
+		dTarget.setScope(IGDocumentScope.USER);
+		dTarget.setComment("Created " + date.toString());
 
 		// Filling libraries--was
 		Messages msgsTarget = new Messages();
@@ -119,23 +130,20 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		pTarget.setDatatypes(dtsTarget);
 		pTarget.setTables(tabTarget);
 
-		addMessages(msgIds, pSource, pTarget);
+		addMessages(msgIds, dSource.getProfile(), pTarget);
 		
-		IGDocument d = new IGDocument();
-		d.addProfile(pTarget);
-		return d;
+		dTarget.setProfile(pTarget);
+		
+		return dTarget;
 	}
 
 	@Override
-	public IGDocument updateIntegratedProfile(List<String> msgIds, IGDocument igTarget) throws IGDocumentException {
+	public IGDocument updateIntegratedIGDocument(List<String> msgIds, IGDocument dTarget) throws IGDocumentException {
 		// Update profile with additional messages.
-		String hl7Version = igTarget.getProfile().getMetaData().getHl7Version();
-		IGDocument igSource = igDocumentRepository.findStandardByVersion(hl7Version)
-				.get(0);
-		Profile pSource = igSource.getProfile();
-		Profile pTarget = igTarget.getProfile();
-		addMessages(msgIds, pSource, pTarget);
-		return igTarget;
+		String hl7Version = dTarget.getProfile().getMetaData().getHl7Version();
+		IGDocument dSource = igdocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version).get(0);
+		addMessages(msgIds, dSource.getProfile(), dTarget.getProfile());
+		return dTarget;
 	}
 
 	private void addMessages(List<String> msgIds, Profile pSource, Profile pTarget) {
@@ -196,8 +204,9 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	@Override
-	public List<IGDocument> findProfilesByHl7Versions() {
+	public List<IGDocument> findIGDocuemntsByHl7Versions() {
 		// Fetching all HL7Standard profiles
-		return igDocumentRepository.findByScope(IGDocumentScope.HL7STANDARD);
+		return igdocumentRepository.findByScope(IGDocumentScope.HL7STANDARD);
 	}
+
 }

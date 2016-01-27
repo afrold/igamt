@@ -116,7 +116,7 @@ public class ProfileCreateTestData {
 		
 		IGDocument pNew = null;
 		try {
-			pNew = igDocumentCreation.createIntegratedProfile(msgIds, "2.7", 45L);
+			pNew = igDocumentCreation.createIntegratedIGDocument(msgIds, "2.7", 45L);
 		} catch (IGDocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

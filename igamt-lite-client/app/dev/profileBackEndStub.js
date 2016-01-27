@@ -173,12 +173,12 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenGET(/resources\//).passThrough();
 
-    $httpBackend.whenGET('api/igdocuments/findVersions').respond(function (method, url, data, headers) {
-    	console.log('api/igdocuments/findVersions');
+    $httpBackend.whenGET('api/igdocuments/hl7/findVersions').respond(function (method, url, data, headers) {
+    	console.log('api/igdocuments/hl7/findVersions');
         return [200, ["2.3","2.31","2.4","2.5","2.51","2.6","2.7"], {}];
     });
     
-    $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
+    $httpBackend.whenPOST('api/igdocuments/hl7/messageListByVersion').respond(function (method, url, data, headers) {
         var msgList = [["5665cee2d4c613e7b531be55", "P11", "DFT_P11", "Detail financial transactions"], 
          ["5665cee2d4c613e7b531b7ba", "A24", "ADT_A24", "ADT messagee"], 
          ["5665cee2d4c613e7b531be18", "I08", "RPA_I08", "Request patient authorization"],
@@ -187,7 +187,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [200, msgList, {}];
     });
     
-    $httpBackend.whenPOST('api/igdocuments/createIntegrationProfile').respond(function (method, url, data, headers) {
+    $httpBackend.whenPOST('api/igdocuments/hl7/createIntegrationProfile').respond(function (method, url, data, headers) {
     	console.log('api/igdocuments/hl7/createIntegrationProfile start' + ' data=' + data);
         var profile = null;
         var request = new XMLHttpRequest();
@@ -195,12 +195,12 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 //        request.open('GET', '../../resources/igdocument/profile-2.7.5.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
-        console.log('api/igdocuments/createIntegrationProfile end');
+        console.log('api/igdocuments/hl7/createIntegrationProfile end');
         return [request.status, profile, {}];
     });
 
-    $httpBackend.whenPOST('api/igdocuments/updateIntegrationProfile').respond(function (method, url, data, headers) {
-    	console.log('api/igdocuments/updateIntegrationProfile start');
+    $httpBackend.whenPOST('api/igdocuments/hl7/updateIntegrationProfile').respond(function (method, url, data, headers) {
+    	console.log('api/igdocuments/hl7/updateIntegrationProfile start');
         var profile = null;
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/igdocument/igdocument-2.7.8.json', false);

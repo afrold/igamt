@@ -19,7 +19,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundExcept
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationProfileRequestWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
@@ -123,7 +123,6 @@ public class IGDocumentController extends CommonController {
 	public List<IGDocument> preloaded() {
 		log.info("Fetching all preloaded IGDocuments...");
 		List<IGDocument> result = igDocumentService.findAllPreloaded();
-		log.info("result=" + result.size());
 		return result;
 	}
 
@@ -316,7 +315,7 @@ public class IGDocumentController extends CommonController {
 		return igDocumentService.verifyValueSet(d, vsId, "valueset");
 		}
 	
-	@RequestMapping(value = "/findVersions", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/hl7/findVersions", method = RequestMethod.GET, produces = "application/json")
 	public List<String> findHl7Versions() {
 		log.info("Fetching all HL7 versions");
 		List<String> result = igDocumentCreation.findHl7Versions();
@@ -326,7 +325,7 @@ public class IGDocumentController extends CommonController {
 	// TODO Change to query as is but with $nin a list of messages that can be empty. 
 //	@RequestMapping(value = "/hl7/messageListByVersion/{hl7Version:.*}", method = RequestMethod.POST, produces = "application/json")
 //	public List<String[]> getMessageListByVersion(@PathVariable("hl7Version") String hl7Version, MessageByListCommand command) {
-	@RequestMapping(value = "/messageListByVersion", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/hl7/messageListByVersion", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public List<String[]> getMessageListByVersion(@RequestBody MessageByListCommand command) {
 		log.info("Fetching messages of version hl7Version=" + command.getHl7Version() + " command=" + command.getMessageIds() + " size=" + command.getMessageIds().size());
 		List<String[]> messages = igDocumentCreation.summary(command.getHl7Version(),  command.getMessageIds());
@@ -334,19 +333,15 @@ public class IGDocumentController extends CommonController {
 		return messages;
 	}
 
-	@RequestMapping(value = "/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public IGDocument createIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws IGDocumentException {
-		log.info("Creation of profile...");
-		IGDocument igDocument = igDocumentCreation.createIntegratedProfile(iprw.getMsgIds(), iprw.getHl7Version(), iprw.getAccountId());
-		igDocumentService.save(igDocument);
-		assert(igDocument.getId() != null);
-		assert(igDocument.getAccountId() != null);
-		return igDocument;
+	@RequestMapping(value = "/hl7/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public IGDocument createIG(@RequestBody IntegrationIGDocumentRequestWrapper idrw) throws IGDocumentException {
+		log.info("Creation of profile.");
+		return igDocumentCreation.createIntegratedIGDocument(idrw.getMsgIds(), idrw.getHl7Version());
 	}
 
-	@RequestMapping(value = "/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public IGDocument updateIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws IGDocumentException {
-		log.info("Update profile with additional messages...");
-		return igDocumentCreation.updateIntegratedProfile(iprw.getMsgIds(), iprw.getIGDocument());
+	@RequestMapping(value = "/hl7/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public IGDocument updateIG(@RequestBody IntegrationIGDocumentRequestWrapper idrw) throws IGDocumentException {
+		log.info("Update profile with additional messages.");
+		return igDocumentCreation.updateIntegratedIGDocument(idrw.getMsgIds(), idrw.getIgdocument());
 	}
 }
