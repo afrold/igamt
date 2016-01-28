@@ -839,7 +839,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("IGDocTemp", ".xml");
-			String stringIgDoc = new ProfileSerialization4ExportImpl()
+			String stringIgDoc = new IGDocumentSerialization4ExportImpl()
 			.serializeIGDocumentToXML(igdoc);
 			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
 					Charset.forName("UTF-8"));
@@ -897,7 +897,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			// Generate xml file containing profile
 			//			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
 			File tmpXmlFile = new File("IGDocTemp.xml");
-			String stringProfile = new ProfileSerialization4ExportImpl()
+			String stringProfile = new IGDocumentSerialization4ExportImpl()
 			.serializeProfileToXML(d.getProfile());
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
 					Charset.forName("UTF-8"));
@@ -908,7 +908,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			Builder builder = new Builder();
 			//			nu.xom.Document input = builder.build(tmpXmlFile);
 
-			nu.xom.Document input = new ProfileSerialization4ExportImpl()
+			nu.xom.Document input = new IGDocumentSerialization4ExportImpl()
 			.serializeIGDocumentToDoc(d);
 			nu.xom.Document stylesheet = builder.build(this.getClass()
 					.getResourceAsStream("/rendering/igdocument.xsl"));

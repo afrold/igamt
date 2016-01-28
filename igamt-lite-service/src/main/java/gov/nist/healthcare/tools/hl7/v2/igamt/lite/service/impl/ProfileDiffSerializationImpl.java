@@ -452,7 +452,7 @@ public class ProfileDiffSerializationImpl {
 	public static void main(String[] args) throws IOException, ValidityException, ParsingException, TransformerConfigurationException {
 		try {
 
-			ProfileSerialization4ExportImpl test1 = new ProfileSerialization4ExportImpl();
+			IGDocumentSerialization4ExportImpl test1 = new IGDocumentSerialization4ExportImpl();
 
 			Profile p1 = test1.deserializeXMLToProfile(
 					new String(Files.readAllBytes(Paths

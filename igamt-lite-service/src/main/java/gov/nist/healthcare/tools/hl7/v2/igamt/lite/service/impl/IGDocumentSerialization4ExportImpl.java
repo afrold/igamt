@@ -88,9 +88,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class ProfileSerialization4ExportImpl implements ProfileSerialization {
+public class IGDocumentSerialization4ExportImpl implements ProfileSerialization {
 
-	Logger logger = LoggerFactory.getLogger( ProfileSerialization4ExportImpl.class );
+	Logger logger = LoggerFactory.getLogger( IGDocumentSerialization4ExportImpl.class );
 
 	private HashMap<String, Datatype> datatypesMap;
 	private HashMap<String, Segment> segmentsMap;
@@ -1114,7 +1114,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 	}
 
 	public static void main(String[] args) throws IOException, ValidityException, ParsingException, TransformerConfigurationException {
-		ProfileSerialization4ExportImpl test1 = new ProfileSerialization4ExportImpl();
+		IGDocumentSerialization4ExportImpl test1 = new IGDocumentSerialization4ExportImpl();
 
 		Profile p1 = test1.deserializeXMLToProfile(
 				new String(Files.readAllBytes(Paths
