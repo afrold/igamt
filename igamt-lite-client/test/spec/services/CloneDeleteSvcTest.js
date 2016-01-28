@@ -81,6 +81,16 @@ describe("delete message service", function () {
 		var aCount = igdocument.profile.datatypes.children.length;
 		expect(bCount).toBe(aCount -1);
     });
+    	
+    it('Can we clone a value set', function () {
+	 	expect(igdocument).toBeDefined();
+    		var valueSets = igdocument.profile.tables.children;
+    		var bCount = igdocument.profile.tables.children.length;
+    		var SUT = valueSets[4];
+        CloneDeleteSvc.cloneTableFlavor(SUT);
+		var aCount = igdocument.profile.tables.children.length;
+		expect(bCount).toBe(aCount -1);
+    });
     
 	it("Can we clone a message?", function() {
 		// A clone duplicates a message then splices it into two arrays: (1) profile and (2) toc.
@@ -123,14 +133,12 @@ describe("delete message service", function () {
 	});
 	
 	it("If we delete all messages will we also delete all segs, dts, and vss?", function() {
-		var bMsgCount = ProfileAccessSvc.Messages(igdocument.profile).messages().length;
-		var bSegCount = ProfileAccessSvc.Segments(igdocument.profile).segments().length;
 		var bDtCount =  ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length;
 		var bVsCount =  ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length;
 		
 		var i = 0;
 		_.eachRight(igdocument.profile.messages.children, function(message) {
-			console.log("If we delete all messages will we also delete all segs, dts, and vss? = " + (i++) + " msgId=" + message.id + " name=" + message.name + " - " + message.description);
+//			console.log("If we delete all messages will we also delete all segs, dts, and vss? = " + (i++) + " msgId=" + message.id + " name=" + message.name + " - " + message.description);
 			CloneDeleteSvc.deleteMessage(igdocument, message);
 		});
 
@@ -141,18 +149,8 @@ describe("delete message service", function () {
 		
 		expect(aMsgCount).toBe(0);
 		expect(aSegCount).toBe(0);
-		expect(aDtCount).toBe(0);
-		expect(aVsCount).toBe(0);
-
-//		var msgCount = profile.messages.children.length;
-//		var segCount = ProfileAccessSvc.Messages(igdocument.profile).getAllSegmentRefs(igdocument.profile.messages.children).length;
-//		var dtCount = ProfileAccessSvc.Datatypes(igdocument.profile).getAllDatatypeIds().length;
-//		var vsCount = ProfileAccessSvc.ValueSets(igdocument.profile).getAllValueSetIds().length;
-//		
-//		expect(msgCount).toBe(0);
-//		expect(segCount).toBe(0);
-//		expect(dtCount).toBe(0);
-//		expect(vsCount).toBe(0);
+		expect(aDtCount < bDtCount).toBe(true);
+		expect(aVsCount < bVsCount).toBe(true);
 	});
 
 });

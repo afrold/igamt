@@ -38,7 +38,7 @@ angular
 				"branch",
 				function($compile) {
 					// class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \"
-					var branchTemplate = "<li class='branch'"
+					var branchTemplate = "<li class='branch'>"
 							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \">"
 							+ "{{branch.label}}"
 							+ "</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"

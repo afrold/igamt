@@ -204,7 +204,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	@Override
-	public List<IGDocument> findIGDocuemntsByHl7Versions() {
+	public List<IGDocument> findIGDocumentsByHl7Versions() {
 		// Fetching all HL7Standard profiles
 		return igdocumentRepository.findByScope(IGDocumentScope.HL7STANDARD);
 	}

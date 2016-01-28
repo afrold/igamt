@@ -1,50 +1,49 @@
 'use strict';
 
 describe("toc service", function () {
-	
+	// gcr This test is not ready for IGDocument.
 	var ToCSvc;
-	var $httpBackend;
-	var documentAsString;
+	var igdocumentAsString;
 	var document;
 	
 	beforeEach(function() {
 		module('igl');
 		inject(function (_ToCSvc_, $injector, $rootScope, $controller) {
 			ToCSvc = _ToCSvc_;
-			$httpBackend = $injector.get('$httpBackend');
 			 
 // Don't ask me why, but the following fixtures path MUST have "base/" prepended or it won't work.
 // Also, see the "pattern" thing, which is the last element of the files array in test/karma.conf.js.			 
-			 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/document/';
-
-			 	// Apparently, the URL that whenGet normally requires is not needed at this time.
-			 	// We test here with version 2.7.
-			 	// The following only loads our file once and not before each test.
-			    $httpBackend.whenGET().respond(
-//			    	documentAsString = JSON.stringify(getJSONFixture('profile-2.7-HL7STANDARD-.json'))
-			    	documentAsString = JSON.stringify(getJSONFixture('document.json'))
-			    );
-			    expect(documentAsString).toBeDefined();
+		 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/igdocument/';
+		 	var jsonFixture = getJSONFixture('igdocument-2.7.json');
+    			igdocumentAsString = JSON.stringify(jsonFixture);
+		 	expect($rootScope).toBeDefined();
+		 	expect(igdocumentAsString).toBeDefined();
 		});
 		// We want a pristine document for each test so state changes from one test don't pollute
 		// the others.
-		document = JSON.parse(documentAsString);
+		document = JSON.parse(igdocumentAsString);
 	});
 
 	it("Do we have an Introduction?", function () {
 		expect(ToCSvc).toBeDefined();
-		var rval = ToCSvc.getIntroduction();
+		var rval = ToCSvc.getSections();
 		expect(rval).toBeDefined();
-		expect(rval.children.length).toBe(6);
+		var hasIt = _.find(rval, function(section){
+			return section.lable === "Introduction";
+		});
+		expect(hasIt).toBe(true);
 		
 //		console.log(JSON.stringify(rval, null, 2));
 	});
 	
 	it("Do we have a Use Case?", function () {
 		expect(ToCSvc).toBeDefined();
-		var rval = ToCSvc.getUseCase();
+		var rval = ToCSvc.getSections();
 		expect(rval).toBeDefined();
-		expect(rval.children.length).toBe(4);
+		var hasIt = _.find(rval, function(section){
+			return section.lable === "Use Case";
+		});
+		expect(hasIt).toBe(true);
 		
 //		console.log(JSON.stringify(rval, null, 2));
 	});

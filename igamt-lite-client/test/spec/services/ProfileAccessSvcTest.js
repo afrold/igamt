@@ -3,32 +3,26 @@
 describe("profile access service", function () {
 	
 	var ProfileAccessSvc;
-	var $httpBackend;
-	var profileAsString;
+	var igdocumentAsString;
 	var profile;
 	
 	beforeEach(function() {
 		module('igl');
 		inject(function (_ProfileAccessSvc_, $injector, $rootScope, $controller) {
 			ProfileAccessSvc = _ProfileAccessSvc_;
-			 $httpBackend = $injector.get('$httpBackend');
 			 
 // Don't ask me why, but the following fixtures path MUST have "base/" prepended or it won't work.
 // Also, see the "pattern" thing, which is the last element of the files array in test/karma.conf.js.			 
-			 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/profiles/';
-
-			 	// Apparently, the URL that whenGet normally requires is not needed at this time.
-			 	// We test here with version 2.7.
-			 	// The following only loads our file once and not before each test.
-			    $httpBackend.whenGET().respond(
-			    	profileAsString = JSON.stringify(getJSONFixture('profile-2.7-HL7STANDARD-.json'))
-//			    	profileAsString = JSON.stringify(getJSONFixture('profile-2.7.5.json'))
-			    );
-			    expect(profileAsString).toBeDefined();
+			 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/igdocument/';
+			 	var jsonFixture = getJSONFixture('igdocument-2.7.json');
+	    			igdocumentAsString = JSON.stringify(jsonFixture);
+			 	expect($rootScope).toBeDefined();
+			 	expect(igdocumentAsString).toBeDefined();
 		});
 		// We want a pristine profile for each test so state changes from one test don't pollute
 		// the others.
-		profile = JSON.parse(profileAsString);
+		var igdocument = JSON.parse(igdocumentAsString);
+		profile = igdocument.profile;
 		expect(profile).toBeDefined();
 	});
 	
@@ -54,16 +48,6 @@ describe("profile access service", function () {
 			expect(seg).toBeDefined();
 			expect(seg.id).toBe(segment.id);
 		})
-		console.log("The two ids==>");
-		var ids = ["5665cee2d4c613e7b531a811", "5665cee2d4c613e7b531a85e"];
-		_.each(ids, function(id){
-			var seg = ProfileAccessSvc.Segments(profile).findById(id);
-			expect(seg).toBeDefined();
-			expect(seg.id).toBe(id);
-		})
-		console.log("<==The two ids");
-		var dtIds = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(ids);
-		expect(dtIds).toBeDefined();
 	});
 	
 	it("Can we find a datatype given its id?", function(){
@@ -155,10 +139,10 @@ describe("profile access service", function () {
 //		expect(_.difference(vssDead, vssLive).length).toBe(0);
 //		expect(_.intersection(vssLive, vssReallyDead).length).toBe(0);
 		
-		console.log("Can we find the living and the dead?segmentRefsLive=" + segmentRefsLive.length);
-		console.log("Can we find the living and the dead?segmentRefsMerelyDead=" + segmentRefsMerelyDead.length);
-		console.log("Can we find the living and the dead?segmentRefsSincerelyDead=" + segmentRefsSincerelyDead.length);
-		console.log("Can we find the living and the dead?segmentRefsLeft=" + segmentRefsLeft.length);
+//		console.log("Can we find the living and the dead?segmentRefsLive=" + segmentRefsLive.length);
+//		console.log("Can we find the living and the dead?segmentRefsMerelyDead=" + segmentRefsMerelyDead.length);
+//		console.log("Can we find the living and the dead?segmentRefsSincerelyDead=" + segmentRefsSincerelyDead.length);
+//		console.log("Can we find the living and the dead?segmentRefsLeft=" + segmentRefsLeft.length);
 //		console.log("Can we find the living and the dead?dtsLive=" + dtsLive.length);
 //		console.log("Can we find the living and the dead?dtsDead=" + dtsDead.length);
 //		console.log("Can we find the living and the dead?dtsReallyDead=" + dtsReallyDead.length);
@@ -172,15 +156,14 @@ describe("profile access service", function () {
 		expect(segments.length).toBe(166);
 		
 		var dts0 = ProfileAccessSvc.Segments(profile).findDatatypesFromSegment(segments[0]);
-		expect(dts0.length).toBe(1);
+		expect(dts0.length).toBe(7);
 		
 		var dts3 = ProfileAccessSvc.Segments(profile).findDatatypesFromSegment(segments[3]);
 		expect(dts3.length).toBe(3);
-		expect(_.intersection(dts0, dts3).length).toBe(dts0.length);
 		
 		var segRefs = [segments[0].id, segments[3].id];
 		var dts03 = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segRefs);
-		expect(dts03.length).toBe(3);
+		expect(dts03.length).toBe(8);
 		
 		var segRefs = ProfileAccessSvc.Segments(profile).getAllSegmentIds();
 		var dtsAll = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segRefs);

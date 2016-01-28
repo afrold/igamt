@@ -14,7 +14,6 @@ angular.module('igl').factory(
 				var sections = svc.getSections(igdocument.childSections);
 				var conformanceProfile = svc.getMessageInfrastructure(igdocument.profile);
 				toc.push(sections);
-				toc;
 				toc.push(conformanceProfile);
 				return _.flatten(toc);
 			}

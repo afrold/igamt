@@ -25,7 +25,7 @@ public interface IGDocumentCreationService {
 	
 	List<String> findHl7Versions();
 	
-	List<IGDocument> findIGDocuemntsByHl7Versions();
+	List<IGDocument> findIGDocumentsByHl7Versions();
 	
 	List<String[]> summary(String hl7Version, List<String> messageIds);
 	

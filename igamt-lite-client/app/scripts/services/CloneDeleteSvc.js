@@ -27,7 +27,6 @@ angular.module('igl').factory(
 		                });
 		            }
 		            $rootScope.datatypes.splice(0, 0, flavor);
-		            $rootScope.igdocument.profile.datatypes.children.splice(0, 0, flavor);
 		            $rootScope.datatype = flavor;
 		            $rootScope.datatypesMap[flavor.id] = flavor;
 		            $rootScope.recordChangeForEdit2('datatype', "add", flavor.id, 'datatype', flavor);

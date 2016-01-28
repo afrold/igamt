@@ -101,7 +101,7 @@ public class IGDocumentCreationServiceTest {
 //	@Test
 	public void testProfileStandardProfilePreloaded() {
 		//FIXME for now mongo db is loaded with 2 profiles; ultimately version 2.5 until 2.8 should be preloaded
-		assertEquals(9, igDocumentCreation.findProfilesByHl7Versions().size());
+		assertEquals(9, igDocumentCreation.findIGDocumentsByHl7Versions().size());
 	}
 	
 	@Test
@@ -117,14 +117,17 @@ public class IGDocumentCreationServiceTest {
 	public void testigDocumentCreation() throws IOException, ProfileException {
 		// Collect version numbers
 		assertEquals(7, igDocumentCreation.findHl7Versions().size());
-
+		
+		String[] hl7Versions = {"2.5.1", "2.7"};
+		Long accountId = 45L;
+		
 		// Collect standard messages and message descriptions
 		// There should be only one HL7STANDARD profile for each version
-		for (String hl7Version : Arrays.asList("2.5.1", "2.7")) {
+		for (String hl7Version : Arrays.asList(hl7Versions)) {
 			int found = igDocumentRepository.findStandardByVersion(hl7Version).size();
 			assertEquals(1, found);
 		}
-		IGDocument igDocumentSource = igDocumentRepository.findStandardByVersion("2.7").get(0);
+		IGDocument igDocumentSource = igDocumentRepository.findStandardByVersion(hl7Versions[1]).get(0);
 		assertEquals(193, igDocumentSource.getProfile().getMessages().getChildren().size());
 
 		// Each description has 4 items: id, event, strucId, description
@@ -137,7 +140,7 @@ public class IGDocumentCreationServiceTest {
 		
 		IGDocument pNew = null;
 		try {
-			pNew = igDocumentCreation.createIntegratedProfile(msgIds, "2.7", 45L);
+			pNew = igDocumentCreation.createIntegratedIGDocument(msgIds, hl7Versions[1], accountId);
 		} catch (IGDocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -160,17 +163,20 @@ public class IGDocumentCreationServiceTest {
 		// Collect version numbers
 		assertEquals(7, igDocumentCreation.findHl7Versions().size());
 
+		String[] hl7Versions = {"2.5.1", "2.7"};
+		Long accountId = 45L;
+		
 		// Collect standard messages and message descriptions
 		//There should be only one HL7STANDARD profile for each version
-		for (String hl7Version : Arrays.asList("2.5.1", "2.7")){
+		for (String hl7Version : Arrays.asList(hl7Versions)){
 			int found = igDocumentRepository.findStandardByVersion(hl7Version).size();
 			assertEquals(1, found);
 		}
-		IGDocument igDocumentSource = igDocumentRepository.findStandardByVersion("2.7").get(0);
+		IGDocument igDocumentSource = igDocumentRepository.findStandardByVersion(hl7Versions[1]).get(0);
 		assertEquals(193, igDocumentSource.getProfile().getMessages().getChildren().size());
 
 		// Each description has 4 items: id, event, strucId, description
-		List<String[]> msgDesc = igDocumentCreation.summary("2.7", new ArrayList<String>());
+		List<String[]> msgDesc = igDocumentCreation.summary(hl7Versions[1], new ArrayList<String>());
 		assertEquals(4, msgDesc.get(0).length);
 		
 		// We're selecting our messages randomly here so we take care not to make two random calls 
@@ -181,10 +187,10 @@ public class IGDocumentCreationServiceTest {
 		String[] ss5 = Arrays.copyOfRange(ss, 0, 5);
 		String[] ss3 = Arrays.copyOfRange(ss, 5, 8);
 		
-		IGDocument pNew = igDocumentCreation.createIntegratedProfile(Arrays.asList(ss5), "2.7", 45L);
+		IGDocument pNew = igDocumentCreation.createIntegratedIGDocument(Arrays.asList(ss5), hl7Versions[1], accountId);
 		assertEquals(5, pNew.getProfile().getMessages().getChildren().size());
 
-		IGDocument pExNew = igDocumentCreation.updateIntegratedProfile(Arrays.asList(ss3), pNew);
+		IGDocument pExNew = igDocumentCreation.updateIntegratedIGDocument(Arrays.asList(ss3), pNew);
 		assertEquals(8, pExNew.getProfile().getMessages().getChildren().size());
 
 		refIneteg.testMessagesVsSegments(pExNew.getProfile());
