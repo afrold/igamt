@@ -47,10 +47,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,10 +71,19 @@ import java.util.TreeSet;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
+import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Nodes;
 import nu.xom.ParsingException;
+import nu.xom.Serializer;
 import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
 
@@ -221,7 +232,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	public InputStream exportAsHtml(IGDocument d) {
 		if (d != null) {
-			return exportAsHtmlFromXsl(d.getProfile(), "true");
+			return exportAsHtmlFromXsl(d, "true");
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -230,7 +241,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	public InputStream exportAsSectionsHtml(IGDocument d) {
 		if (d != null) {
 			return new NullInputStream(1L);
-//			return exportAsHtmlFromXsl(d, "true");
+			//			return exportAsHtmlFromXsl(d, "true");
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -820,50 +831,72 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		sheet.autoSizeColumn(8);
 	}
 
-	public InputStream exportAsHtmlFromXsl(Profile p, String inlineConstraints) {
+	public InputStream exportAsHtmlFromXsl(IGDocument igdoc, String inlineConstraints) {
 		// Note: inlineConstraint can be true or false
+
 		try {
+			File tmpHtmlFile = File.createTempFile("IGDocTemp", ".html");
+
 			// Generate xml file containing profile
-			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
-			String stringProfile = new ProfileSerialization4ExportImpl()
-			.serializeProfileToXML(p);
-			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
+			File tmpXmlFile = File.createTempFile("IGDocTemp", ".xml");
+			String stringIgDoc = new ProfileSerialization4ExportImpl()
+			.serializeIGDocumentToXML(igdoc);
+			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
 					Charset.forName("UTF-8"));
 
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Source xslt = new StreamSource(this.getClass()
+					.getResourceAsStream("/rendering/igdocument.xsl"));
+			Transformer transformer;
+
 			// Apply XSL transformation on xml file to generate html
-			File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
-			//			File tmpHtmlFile = new File("ProfileTemp.html");
-			Builder builder = new Builder();
-			nu.xom.Document input = builder.build(tmpXmlFile);
-			nu.xom.Document stylesheet = builder.build(this.getClass()
-					.getResourceAsStream("/rendering/profile2a.xsl"));
-			XSLTransform transform = new XSLTransform(stylesheet);
-			transform.setParameter("inlineConstraints", inlineConstraints);
-			Nodes output = transform.transform(input);
-			nu.xom.Document result = XSLTransform.toDocument(output);
-
-			Tidy tidy = new Tidy();
-			tidy.setWraplen(Integer.MAX_VALUE);
-			tidy.setXHTML(true);
-			tidy.setShowWarnings(false); //to hide errors
-			tidy.setQuiet(true); //to hide warning
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(result.toXML().getBytes("UTF-8"));
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			tidy.parseDOM(inputStream, outputStream);
-			FileUtils.writeStringToFile(tmpHtmlFile, outputStream.toString("UTF-8"));
-
+			transformer = factory.newTransformer(xslt);
+			transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
 			return FileUtils.openInputStream(tmpHtmlFile);
-		} catch (IOException | ParsingException
-				| XSLException e) {
+
+		} catch (TransformerException | IOException e) {
+			e.printStackTrace();
 			return new NullInputStream(1L);
 		}
+
+
+		//			// Apply XSL transformation on xml file to generate html
+		//			File tmpHtmlFile = File.createTempFile("IGDocTemp", ".html");
+		//			//			File tmpHtmlFile = new File("ProfileTemp.html");
+		//			Builder builder = new Builder();
+		//			//			nu.xom.Document input = builder.build(tmpXmlFile);
+		//			nu.xom.Document input = new ProfileSerialization4ExportImpl()
+		//			.serializeIGDocumentToDoc(igdoc);
+		//			nu.xom.Document stylesheet = builder.build(this.getClass()
+		//					.getResourceAsStream("/rendering/igdocument.xsl"));
+		//			XSLTransform transform = new XSLTransform(stylesheet);
+		//			transform.setParameter("inlineConstraints", inlineConstraints);
+		//			Nodes output = transform.transform(input);
+		//			nu.xom.Document result = XSLTransform.toDocument(output);
+		//
+		//			Tidy tidy = new Tidy();
+		//			tidy.setWraplen(Integer.MAX_VALUE);
+		//			tidy.setXHTML(true);
+		//			tidy.setShowWarnings(false); //to hide errors
+		//			tidy.setQuiet(true); //to hide warning
+		//			ByteArrayInputStream inputStream = new ByteArrayInputStream(result.toXML().getBytes("UTF-8"));
+		//			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		//			tidy.parseDOM(inputStream, outputStream);
+		//			FileUtils.writeStringToFile(tmpHtmlFile, outputStream.toString("UTF-8"));
+		//
+		//			return FileUtils.openInputStream(tmpHtmlFile);
+		//		} catch (IOException | ParsingException
+		//				| XSLException e) {
+		//			return new NullInputStream(1L);
+		//		}
 	}
 
 	public InputStream exportAsPdfFromXsl(IGDocument d, String inlineConstraints) {
 		// Note: inlineConstraint can be true or false
 		try {
 			// Generate xml file containing profile
-			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
+			//			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
+			File tmpXmlFile = new File("IGDocTemp.xml");
 			String stringProfile = new ProfileSerialization4ExportImpl()
 			.serializeProfileToXML(d.getProfile());
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
@@ -873,9 +906,12 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
 			//			File tmpHtmlFile = new File("ProfileTemp.html");
 			Builder builder = new Builder();
-			nu.xom.Document input = builder.build(tmpXmlFile);
+			//			nu.xom.Document input = builder.build(tmpXmlFile);
+
+			nu.xom.Document input = new ProfileSerialization4ExportImpl()
+			.serializeIGDocumentToDoc(d);
 			nu.xom.Document stylesheet = builder.build(this.getClass()
-					.getResourceAsStream("/rendering/profile2a.xsl"));
+					.getResourceAsStream("/rendering/igdocument.xsl"));
 			XSLTransform transform = new XSLTransform(stylesheet);
 			transform.setParameter("inlineConstraints", inlineConstraints);
 			Nodes output = transform.transform(input);
@@ -961,20 +997,20 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			paragraph.setSpacingBefore(250);
 			paragraph.setAlignment(Element.ALIGN_CENTER);
 			coverDocument.add(paragraph);
-			
+
 			paragraph = new Paragraph("Subtitle " + p.getMetaData().getSubTitle(),
 					coverH2Font);
 			paragraph.setAlignment(Element.ALIGN_LEFT);
 			coverDocument.add(paragraph);
-			
+
 			paragraph = new Paragraph("Organization name " + p.getMetaData().getOrgName(), coverH2Font);
 			coverDocument.add(paragraph);
-			
+
 			paragraph = new Paragraph(
 					"HL7 version " + p.getMetaData().getHl7Version(), coverH2Font);
 			paragraph.add(Chunk.NEWLINE);
 			paragraph.setAlignment(Element.ALIGN_LEFT);
-//			paragraph.setSpacingAfter(250);
+			//			paragraph.setSpacingAfter(250);
 			coverDocument.add(paragraph);
 
 			paragraph = new Paragraph("Document Version "
@@ -1039,7 +1075,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
 			Collections.sort(messagesList);
-	
+
 
 			for (Message m : messagesList) {
 
@@ -2313,7 +2349,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 					chapter.add(Chunk.NEWLINE);
 
 					addContents4Pdf(s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, tocDocument, igDocument, chapter, titleFont, igWriter);
-					
+
 					igDocument.add(chapter); //Note: leave call after addContents4Pdf 
 				} catch (DocumentException e) {
 					e.printStackTrace();
@@ -2332,61 +2368,24 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 				addContents4Pdf(s.getChildSections(), prefix + "." + String.valueOf(s.getSectionPosition()), depth + 1, tocDocument, igDocument, section, titleFont, igWriter);
 			}
 		}
-
-
-
-		//		this.addTocContent(tocDocument, igWriter, m.getName());
-		//		title = new Paragraph(m.getName(), titleFont);
-		//		section = chapter.addSection(title);
-		//		section.setIndentationLeft(30);
-		//		section.setTriggerNewPage(true);
-		//
-		//		section.add(Chunk.NEWLINE);
-		//		section.add(richTextToParagraph(m.getComment()));
-		//		section.add(Chunk.NEWLINE);
-		//		
-		//		
-
-
-		//		if (depth == 0){
-		//			for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section s: sortedSections){
-		//					writer.write("h"+String.valueOf(depth) + " " + String.valueOf(s.getSectionPosition()+1) + " " + s.getSectionTitle()+"\n");
-		//					writer.write(s.getSectionContents()+"\n");
-		//					printDetails(s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, wordMLPackage);
-		//	
-		//			}
-		//		} else {
-		//
-		//			for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section s: sortedSections){
-		//				try {
-		//					writer.write("h"+String.valueOf(depth) + " " +prefix +"."+ String.valueOf(s.getSectionPosition()) + " " + s.getSectionTitle()+"\n");
-		//					writer.write(s.getSectionContents()+"\n");
-		//					printDetails(s.getChildSections(), prefix+"."+String.valueOf(s.getSectionPosition()), depth + 1, wordMLPackage);
-		//
-		//				} catch (IOException e) {
-		//					e.printStackTrace();
-		//				}
-		//			}
-		//		}
-
 	}
 
 	private SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortSections(Set<Section> s){
-		SortedSet<Section> sss = new TreeSet<Section>(new SectionComparator());
+		SortedSet<Section> sortedSet = new TreeSet<Section>();
 		Iterator<Section> setIt = s.iterator();
 		while (setIt.hasNext()) {
-			sss.add((Section) setIt.next());
+			sortedSet.add((Section) setIt.next());
 		}
-		return sss;
+		return sortedSet;
 	}
 
 }
 
-class SectionComparator implements Comparator<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>{
-
-	@Override
-	public int compare(Section o1, Section o2) {
-		return  ((Section) o1).getSectionPosition() - ((Section) o2).getSectionPosition();
-	}
-
-}
+//class SectionComparator implements Comparator<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>{
+//
+//	@Override
+//	public int compare(Section o1, Section o2) {
+//		return  ((Section) o1).getSectionPosition() - ((Section) o2).getSectionPosition();
+//	}
+//
+//}

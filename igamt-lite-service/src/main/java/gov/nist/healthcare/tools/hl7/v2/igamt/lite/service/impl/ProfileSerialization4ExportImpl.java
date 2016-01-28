@@ -18,11 +18,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.HL7Version;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -55,9 +57,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -73,6 +78,7 @@ import nu.xom.Serializer;
 import nu.xom.ValidityException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,6 +122,78 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 	public String serializeProfileToXML(Profile profile) {
 		return this.serializeProfileToDoc(profile).toXML();
 	}
+	
+
+	public File serializeSectionsToFile(IGDocument igdoc) throws UnsupportedEncodingException {
+		File out;
+		try {
+			out = File.createTempFile("SectionsTemp", ".xml");
+			FileOutputStream outputStream = new FileOutputStream(out);
+			Serializer ser;
+			ser = new Serializer(outputStream, "UTF-8");
+			ser.setIndent(4);
+			ser.write(new nu.xom.Document(this.serializeIGDocumentSectionsToDoc(igdoc)));
+			outputStream.close();
+			return out;
+		} catch (IOException e1) {
+			logger.warn("IO Exception");
+			e1.printStackTrace();
+			return null;
+		}
+	}
+	
+	public String serializeIGDocumentToXML(IGDocument igdoc) {
+		return serializeIGDocumentToDoc(igdoc).toXML();
+	}
+	
+	public nu.xom.Document serializeIGDocumentToDoc(IGDocument igdoc) {
+		nu.xom.Document doc = this.serializeProfileToDoc(igdoc.getProfile());
+		nu.xom.Element rootSections = serializeIGDocumentSectionsToDoc(igdoc);
+		doc.getRootElement().appendChild(rootSections);
+		return doc;
+	}
+	
+	public nu.xom.Element serializeIGDocumentSectionsToDoc(IGDocument igdoc) {
+		nu.xom.Element rootSections = new nu.xom.Element("Sections");
+		addContents4Html(igdoc.getChildSections(), "", 1, rootSections);
+		return rootSections;
+	}
+	
+	private void addContents4Html(Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sect, String prefix, Integer depth, nu.xom.Element elt) {
+		SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortedSections = sortSections(sect);
+		for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section s: sortedSections){
+			nu.xom.Element xsect = new nu.xom.Element("Section");
+			xsect.addAttribute(new Attribute("id", s.getId()));
+			xsect.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition())));
+			xsect.addAttribute(new Attribute("h", String.valueOf(depth)));
+			xsect.addAttribute(new Attribute("title", s.getSectionTitle()));
+
+			if (s.getSectionContents()!= null && !s.getSectionContents().isEmpty()){
+				nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
+				sectCont.appendChild(s.getSectionContents());
+				xsect.appendChild(sectCont);
+			}
+
+			if (depth == 1){
+				xsect.addAttribute(new Attribute("prefix", String.valueOf(s.getSectionPosition()+1)));
+				addContents4Html(s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, xsect);
+			} else {
+				xsect.addAttribute(new Attribute("prefix", prefix+"."+String.valueOf(s.getSectionPosition())));
+				addContents4Html(s.getChildSections(), prefix+"."+String.valueOf(s.getSectionPosition()), depth + 1, xsect);
+			}
+			elt.appendChild(xsect); 
+		} 
+	}
+
+	private SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortSections(Set<Section> s){
+		SortedSet<Section> sortedSet = new TreeSet<Section>();
+		Iterator<Section> setIt = s.iterator();
+		while (setIt.hasNext()) {
+			sortedSet.add((Section) setIt.next());
+		}
+		return sortedSet;
+	}
+
 
 	@Override
 	public nu.xom.Document serializeProfileToDoc(Profile profile) {
@@ -243,6 +321,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		elmTableDefinition.addAttribute(new Attribute("Stability", (t.getStability() == null) ? "" : t.getStability().value()));
 		elmTableDefinition.addAttribute(new Attribute("Extensibility", (t.getExtensibility() == null) ? "" : t.getExtensibility().value()));
 		elmTableDefinition.addAttribute(new Attribute("ContentDefinition", (t.getContentDefinition() == null) ? "" : t.getContentDefinition().value()));
+		elmTableDefinition.addAttribute(new Attribute("Position", String.valueOf(t.getSectionPosition()+1)));
 
 
 
@@ -483,7 +562,8 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		if (m.getComment() != null && !m.getComment().equals("")) {
 			elmMessage.addAttribute(new Attribute("Comment", m.getComment()));
 		}
-		elmMessage.addAttribute(new Attribute("Position", m.getPosition().toString()));
+//		elmMessage.addAttribute(new Attribute("Position", m.getPosition().toString()));
+		elmMessage.addAttribute(new Attribute("Position", String.valueOf(m.getSectionPosition()+1)));
 		if (m.getUsageNote() != null && !m.getUsageNote().equals("")) {
 			elmMessage.appendChild(this.serializeRichtext("UsageNote", m.getUsageNote()));
 		}
@@ -585,6 +665,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
 		elmSegment.addAttribute(new Attribute("Name", s.getName()));
 		elmSegment.addAttribute(new Attribute("Label", s.getLabel()));
+		elmSegment.addAttribute(new Attribute("Position", String.valueOf(s.getSectionPosition()+1)));
 		elmSegment
 		.addAttribute(new Attribute("Description", s.getDescription()));
 		if (s.getComment() != null){
@@ -695,6 +776,7 @@ public class ProfileSerialization4ExportImpl implements ProfileSerialization {
 		elmDatatype.addAttribute(new Attribute("Description", d
 				.getDescription()));
 		elmDatatype.addAttribute(new Attribute("Comment", d.getComment()));
+		elmDatatype.addAttribute(new Attribute("Position", String.valueOf(d.getSectionPosition()+1)));
 		nu.xom.Element elmText = new nu.xom.Element("Texts");
 		elmText.addAttribute(new Attribute("Type", "UsageNote"));
 		elmText.appendChild(d.getUsageNote());
