@@ -18,7 +18,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 
 import java.util.List;
 
@@ -26,12 +25,12 @@ public interface IGDocumentCreationService {
 	
 	List<String> findHl7Versions();
 	
-	List<Profile> findProfilesByHl7Versions();
+	List<IGDocument> findIGDocuemntsByHl7Versions();
 	
 	List<String[]> summary(String hl7Version, List<String> messageIds);
 	
-	IGDocument createIntegratedProfile(List<String> msgIds, String hl7Version) throws IGDocumentException;
+	IGDocument createIntegratedIGDocument(List<String> msgIds, String hl7Version) throws IGDocumentException;
 
-	IGDocument updateIntegratedProfile(List<String> msgIds, Profile pTarget) throws IGDocumentException;
+	IGDocument updateIntegratedIGDocument(List<String> msgIds, IGDocument dTarget) throws IGDocumentException;
 	
 }

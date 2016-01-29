@@ -19,7 +19,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundExcept
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationProfileRequestWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
@@ -334,14 +334,14 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/hl7/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public IGDocument createIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws IGDocumentException {
+	public IGDocument createIG(@RequestBody IntegrationIGDocumentRequestWrapper idrw) throws IGDocumentException {
 		log.info("Creation of profile.");
-		return igDocumentCreation.createIntegratedProfile(iprw.getMsgIds(), iprw.getHl7Version());
+		return igDocumentCreation.createIntegratedIGDocument(idrw.getMsgIds(), idrw.getHl7Version());
 	}
 
 	@RequestMapping(value = "/hl7/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public IGDocument updateIG(@RequestBody IntegrationProfileRequestWrapper iprw) throws IGDocumentException {
+	public IGDocument updateIG(@RequestBody IntegrationIGDocumentRequestWrapper idrw) throws IGDocumentException {
 		log.info("Update profile with additional messages.");
-		return igDocumentCreation.updateIntegratedProfile(iprw.getMsgIds(), iprw.getProfile());
+		return igDocumentCreation.updateIntegratedIGDocument(idrw.getMsgIds(), idrw.getIgdocument());
 	}
 }
