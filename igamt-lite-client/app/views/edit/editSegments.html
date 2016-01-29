@@ -9,9 +9,26 @@
         <div ng-show="!loadingSelection">
             <div ng-show="segment !== null" id="executionPanel">
                 <div class="page-header">
-									<span class="header4 col-sm-10">Segment {{segment.name}}:
+									<span class="header4">Segment {{segment.name}}:
 										{{segment.label}}</span>
-                </div>
+     <span class="pull-right">
+
+        <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
+                ng-click="cloneSegmentFlavor(segment)" ng-hide="options.readonly"
+                >
+            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
+        </button>
+        <button title="Close" type="button" class="btn btn-xs btn-warning"
+                ng-click="close()">
+            <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
+        </button>
+        <button title="Delete" type="button" ng-hide="options.readonly"
+                class="btn btn-xs btn-danger"
+                ng-click="delete(datatype)">
+            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+    </span>
+               </div>
                 <accordion close-others="false">
                     <accordion-group is-open="accordi.metaData" panel-class="panel-info">
                         <accordion-heading>

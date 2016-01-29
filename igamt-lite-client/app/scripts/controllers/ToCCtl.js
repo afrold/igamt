@@ -83,7 +83,9 @@ angular
 								switch (ctxMenuSelection) {
 								case "Add flavor":
 									console.log("Add flavor==> node=" + leaf);
-									if (leaf.reference.type === 'datatype') {
+									if (leaf.reference.type === 'section') {
+					        				CloneDeleteSvc.cloneSectionFlavor(leaf.reference);
+									} else if (leaf.reference.type === 'datatype') {
 						        			CloneDeleteSvc.cloneDatatypeFlavor(leaf.reference);
 									} else if (leaf.reference.type === 'table') {
 										CloneDeleteSvc.cloneTableFlavor(leaf.reference);

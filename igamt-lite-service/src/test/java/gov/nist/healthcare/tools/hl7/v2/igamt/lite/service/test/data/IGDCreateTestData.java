@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
@@ -48,7 +49,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessagesRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
@@ -108,34 +108,34 @@ public class IGDCreateTestData {
 	@Test
 	public void testProfileCreation() throws IOException, ProfileException {
 		// Collect version numbers
-//		String hl7Version = "2.7";
-//		log.info("preload=" + igDocumentRepository.findPreloaded().size());
-//		log.info("standard=" + igDocumentRepository.findStandard().size());
-//		IGDocument igDocumentSource = igDocumentRepository.findStandardByVersion("2.7").get(0);
-//		Set<Message> msgs = igDocumentSource.getProfile().getMessages().getChildren();
-//		int limit = msgs.size();
-//		Message[] msgsArr = msgs.toArray(new Message[limit]);
-//		List<String> msgIds = new ArrayList<String>();
-//		for (int i = 0; i < limit; i++) {
-//			msgIds.add(msgsArr[randInt(0, limit)].getId());
-//		}
-		ObjectMapper mapper = new ObjectMapper();
-		URL url = IGDCreateTestData.class.getResource("/igdocument/igdocument-2.7.json");
-		IGDocument pOld = new IGDocument();
-		InputStream is = url.openStream();
-		pOld = mapper.readValue(is, IGDocument.class);
+		String hl7Version = "2.7";
+		log.info("preload=" + igDocumentRepository.findPreloaded().size());
+		log.info("standard=" + igDocumentRepository.findStandard().size());
+		IGDocument igDocumentSource = igDocumentRepository.findStandardByVersion("2.7").get(0);
+		Set<Message> msgs = igDocumentSource.getProfile().getMessages().getChildren();
+		int limit = msgs.size();
+		Message[] msgsArr = msgs.toArray(new Message[limit]);
 		List<String> msgIds = new ArrayList<String>();
-		Message[] msgs = pOld.getProfile().getMessages().getChildren().toArray(new Message[0]);
-		msgIds.add(msgs[4].getId());
-		msgIds.add(msgs[14].getId());
-		msgIds.add(msgs[24].getId());
-		IGDocument pNew = null;
-		try {
-			pNew = igDocumentCreation.createIntegratedIGDocument(pOld, msgIds, "2.7", 45L);
-		} catch (IGDocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for (int i = 0; i < limit; i++) {
+			msgIds.add(msgsArr[randInt(0, limit)].getId());
 		}
+		ObjectMapper mapper = new ObjectMapper();
+//		URL url = IGDCreateTestData.class.getResource("/igdocument/igdocument-2.7.json");
+//		IGDocument pOld = new IGDocument();
+//		InputStream is = url.openStream();
+//		pOld = mapper.readValue(is, IGDocument.class);
+//		List<String> msgIds = new ArrayList<String>();
+//		Message[] msgs = pOld.getProfile().getMessages().getChildren().toArray(new Message[0]);
+//		msgIds.add(msgs[4].getId());
+//		msgIds.add(msgs[14].getId());
+//		msgIds.add(msgs[24].getId());
+		IGDocument pNew = null;
+//		try {
+//			pNew = igDocumentCreation.createIntegratedIGDocument(pOld, msgIds, "2.7", 45L);
+//		} catch (IGDocumentException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		// Captures the newly created igdocument.
 		File OUTPUT_DIR = new File("/Users/gcr1/Documents/nistWorkplace");

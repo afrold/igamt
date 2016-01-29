@@ -2,9 +2,6 @@
  * Created by haffo on 2/13/15.
  */
 
-
-
-
 angular.module('igl')
     .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout) {
         $scope.init = function () {

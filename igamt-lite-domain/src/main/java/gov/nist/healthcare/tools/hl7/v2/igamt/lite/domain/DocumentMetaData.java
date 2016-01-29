@@ -9,7 +9,7 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 	private static final long serialVersionUID = 1L;
 
 	private String name;
-	private String subTitle;
+	private String title;
 	private String version;
 	private String date;
 	private String ext = "";
@@ -43,11 +43,11 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 		this.ext = ext;
 	}
 	
-	public String getSubTitle() {
-		return subTitle;
+	public String getTitle() {
+		return title;
 	}
-	public void setSubTitle(String subTitle) {
-		this.subTitle = subTitle;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 		DocumentMetaData clonedDocumentMetaData = new DocumentMetaData();
 
 		clonedDocumentMetaData.setName(name);
-		clonedDocumentMetaData.setSubTitle(subTitle);
+		clonedDocumentMetaData.setTitle(title);
 		clonedDocumentMetaData.setVersion(version);
 		clonedDocumentMetaData.setDate(date);
 		clonedDocumentMetaData.setExt(ext);

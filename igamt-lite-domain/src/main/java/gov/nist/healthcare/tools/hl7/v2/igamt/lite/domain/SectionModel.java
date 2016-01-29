@@ -9,7 +9,7 @@ public abstract class SectionModel extends DataModel{
 	
 	protected int sectionPosition;
 	
-
+	protected String contents = "";
 
 	public String getSectionTitle() {
 		return sectionTitle;
@@ -42,5 +42,12 @@ public abstract class SectionModel extends DataModel{
 	public void setSectionPosition(int sectionPosition) {
 		this.sectionPosition = sectionPosition;
 	}
+	
+	public String getContents() {
+		return contents;
+	}
 
+	public void setContents(String contents) {
+		this.contents = contents;
+	}
 }

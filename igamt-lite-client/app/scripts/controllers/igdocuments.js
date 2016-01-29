@@ -428,6 +428,11 @@ angular.module('igl')
             });
             modalInstance.result.then(function (igdocument) {
                 $scope.igdocumentToDelete = igdocument;
+//				var idxP = _.findIndex($scope.igs, function (
+//						child) {
+//					return child.id === igdocument.id;
+//				});
+//				$scope.igs.splice(idxP, 1);
             }, function () {
             });
         };
