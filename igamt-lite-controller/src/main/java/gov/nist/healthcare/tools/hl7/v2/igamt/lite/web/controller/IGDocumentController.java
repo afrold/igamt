@@ -336,7 +336,7 @@ public class IGDocumentController extends CommonController {
 	@RequestMapping(value = "/hl7/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public IGDocument createIG(@RequestBody IntegrationIGDocumentRequestWrapper idrw) throws IGDocumentException {
 		log.info("Creation of profile.");
-		return igDocumentCreation.createIntegratedIGDocument(idrw.getMsgIds(), idrw.getHl7Version());
+		return igDocumentCreation.createIntegratedIGDocument(idrw.getMsgIds(), idrw.getHl7Version(), idrw.getAccountId());
 	}
 
 	@RequestMapping(value = "/hl7/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")

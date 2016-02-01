@@ -11,6 +11,7 @@ angular.module('igl').factory(
 			svc.getToC = function(igdocument) {
 				console.log("Getting toc...");
 				toc = [];
+				console.log("childSections=" + igdocument.childSections.length);
 				var sections = svc.getSections(igdocument.childSections);
 				var conformanceProfile = svc.getMessageInfrastructure(igdocument.profile);
 				toc.push(sections);
@@ -93,20 +94,20 @@ angular.module('igl').factory(
 				_.each(children, function(child) {
 					if (parent === "3.1") {
 						entry = svc.createEntry(child, child.id, child.name
-								+ " - " + child.contents, parent, parent);
+								+ " - " + child.sectionTitle, parent, parent);
 					} else if (parent === "3.2") {
 						entry = svc
 								.createEntry(child, child.id, child.label
-										+ " - " + child.contents, parent);
+										+ " - " + child.sectionTitle, parent);
 					} else if (parent === "3.3") {
 						entry = svc
 								.createEntry(child, child.id, child.label
-										+ " - " + child.contents, parent);
+										+ " - " + child.sectionTitle, parent);
 					} else if (parent === "3.4") {
 						entry = svc
 								.createEntry(child, child.id,
 										child.bindingIdentifier + " - "
-												+ child.contents, parent);
+												+ child.sectionTitle, parent);
 					} else {
 						entry = svc.createEntry(child, child.id, child.label,
 								parent, child.children);

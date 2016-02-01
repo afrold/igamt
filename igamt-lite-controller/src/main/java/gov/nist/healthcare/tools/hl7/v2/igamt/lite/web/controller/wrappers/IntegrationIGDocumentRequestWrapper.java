@@ -16,6 +16,7 @@ public class IntegrationIGDocumentRequestWrapper implements Serializable {
 		String hl7Version;
 		List<String> msgIds;
 		IGDocument igdocument;
+		Long accountId;
 
 		public String getHl7Version() {
 			return hl7Version;
@@ -41,5 +42,11 @@ public class IntegrationIGDocumentRequestWrapper implements Serializable {
 			this.igdocument = igdocument;
 		}
 
-		
+		public Long getAccountId() {
+			return accountId;
+		}
+
+		public void setAccountId(Long accountId) {
+			this.accountId = accountId;
+		}
 	}
