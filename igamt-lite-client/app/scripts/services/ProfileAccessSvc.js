@@ -99,6 +99,10 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 			return profile.segments.children;
 		}
 		
+		segs.truncate = function() {
+			segs.segments.length = 0;
+		}
+		
 		segs.getAllSegmentIds = function() {
 			var rval = [];
 			_.each(segs.segments(), function(seg){
@@ -173,17 +177,6 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 			
 			return _.uniq(dtIds);
 		}
-	
-//		segs.findDatatypeNames = function(fields) {
-//			
-//			var datatypeNames = [];
-//			
-//			_.each(fields, function(field){
-//				datatypeNames.push(field.datatype);
-//			});
-//			
-//			return datatypeNames;
-//		}
 
 		return segs;
 	}
@@ -194,8 +187,12 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 	
 		dts.datatypes = function() {
 			return profile.datatypes.children;
-		};
-	
+		}
+		
+		dts.truncate = function() {
+			dts.datatypes().length = 0;
+		}
+		
 		dts.getAllDatatypeIds = function() {
 			
 			var dtIds = [];
@@ -276,8 +273,11 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		var vss = this;
 		
 		vss.valueSets = function() {
-//			return _.sortBy(profile.tables.children, "id");
 			return profile.tables.children;
+		};
+				
+		vss.truncate = function() {
+			vss.valueSets().length = 0;
 		};
 		
 		vss.getAllValueSetIds = function() {

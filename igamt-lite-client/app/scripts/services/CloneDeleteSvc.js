@@ -252,6 +252,11 @@ angular.module('igl').factory(
 					return child.id === msgDead[0].id;
 				});
 				msgLive.splice(idxP, 1);
+				if (0 === ProfileAccessSvc.Messages(igdocument.profile).messages().length) {
+					ProfileAccessSvc.ValueSets(igdocument.profile).truncate();
+					ProfileAccessSvc.Datatypes(igdocument.profile).truncate();
+					ProfileAccessSvc.Segments(igdocument.profile).truncate();
+				}
 				// We get all segment refs that are contained in the dead message.
 				var segmentRefsMerelyDead = ProfileAccessSvc.Messages(igdocument.profile)
 						.getAllSegmentRefs(msgDead);
