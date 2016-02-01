@@ -169,7 +169,7 @@ angular.module('igl').factory(
 			}
 			
 			function deleteValueSets(igdocument, vssIdsSincerelyDead) {
-				console.log("deleteValueSets: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
+//				console.log("deleteValueSets: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
 				return ProfileAccessSvc.ValueSets(igdocument.profile).removeDead(vssIdsSincerelyDead);		
 			}
 						
@@ -195,9 +195,9 @@ angular.module('igl').factory(
 				
 				var rval = ProfileAccessSvc.Datatypes(igdocument.profile).removeDead(dtsIdsSincerelyDead);		
 
-				console.log("deleteDatatypes: vssIdsMerelyDead=" + vssIdsMerelyDead.length);
-				console.log("deleteDatatypes: vssIdsLive=" + vssIdsLive.length);
-				console.log("deleteDatatypes: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
+//				console.log("deleteDatatypes: vssIdsMerelyDead=" + vssIdsMerelyDead.length);
+//				console.log("deleteDatatypes: vssIdsLive=" + vssIdsLive.length);
+//				console.log("deleteDatatypes: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
 				
 				return rval;
 			}
@@ -229,9 +229,9 @@ angular.module('igl').factory(
 				
 				var rval = ProfileAccessSvc.Segments(igdocument.profile).removeDead(segmentRefsSincerelyDead);				
 
-				console.log("deleteSegments: dtIdsMerelyDead=" + dtIdsMerelyDead.length);
-				console.log("deleteSegments: dtIdsLive=" + dtIdsLive.length);
-				console.log("deleteSegments: dtsIdsSincerelyDead=" + dtsIdsSincerelyDead.length);
+//				console.log("deleteSegments: dtIdsMerelyDead=" + dtIdsMerelyDead.length);
+//				console.log("deleteSegments: dtIdsLive=" + dtIdsLive.length);
+//				console.log("deleteSegments: dtsIdsSincerelyDead=" + dtsIdsSincerelyDead.length);
 
 				return rval;
 			}
@@ -256,6 +256,7 @@ angular.module('igl').factory(
 					ProfileAccessSvc.ValueSets(igdocument.profile).truncate();
 					ProfileAccessSvc.Datatypes(igdocument.profile).truncate();
 					ProfileAccessSvc.Segments(igdocument.profile).truncate();
+					return;
 				}
 				// We get all segment refs that are contained in the dead message.
 				var segmentRefsMerelyDead = ProfileAccessSvc.Messages(igdocument.profile)
@@ -266,20 +267,20 @@ angular.module('igl').factory(
 				// Until now, dead meant mearly dead.  We now remove those that are most sincerely dead.
 				var segmentRefsSincerelyDead = ProfileAccessSvc.Segments(igdocument.profile).findDead(segmentRefsMerelyDead, segmentRefsLive);
 				if (segmentRefsSincerelyDead.length === 0) {
-					console.log("Zero dead==>");			
+//					console.log("Zero dead==>");			
 					return;
 				}
 				
 				var rval = deleteSegments(igdocument, segmentRefsLive, segmentRefsSincerelyDead);
 				
-				console.log("svc.deleteMessage: segmentRefsMerelyDead=" + segmentRefsMerelyDead.length);
-				console.log("svc.deleteMessage: segmentRefsLive=" + segmentRefsLive.length);
-				console.log("svc.deleteMessage: segmentRefsSincerelyDead=" + segmentRefsSincerelyDead.length);
-
-				console.log("svc.deleteMessage: aMsgs=" + ProfileAccessSvc.Messages(igdocument.profile).messages().length);
-				console.log("svc.deleteMessage: aSegs=" + ProfileAccessSvc.Segments(igdocument.profile).segments().length);
-				console.log("svc.deleteMessage: aDts=" + ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length);
-				console.log("svc.deleteMessage: aVss=" + ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length);
+//				console.log("svc.deleteMessage: segmentRefsMerelyDead=" + segmentRefsMerelyDead.length);
+//				console.log("svc.deleteMessage: segmentRefsLive=" + segmentRefsLive.length);
+//				console.log("svc.deleteMessage: segmentRefsSincerelyDead=" + segmentRefsSincerelyDead.length);
+//
+//				console.log("svc.deleteMessage: aMsgs=" + ProfileAccessSvc.Messages(igdocument.profile).messages().length);
+//				console.log("svc.deleteMessage: aSegs=" + ProfileAccessSvc.Segments(igdocument.profile).segments().length);
+//				console.log("svc.deleteMessage: aDts=" + ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length);
+//				console.log("svc.deleteMessage: aVss=" + ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length);
 				
 				return rval;
 			}

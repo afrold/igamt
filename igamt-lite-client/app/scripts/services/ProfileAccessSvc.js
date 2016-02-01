@@ -2,14 +2,6 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 
 	var svc = this;
 
-	var sortById = function(a, b) {
-		if (a.id < b.id)
-			return -1;
-		if (a.id > b.id)
-			return 1;
-		return 0;
-	}
-
 	svc.Version = function(profile) {
 		return profile.metaData.hl7Version;
 	}
@@ -100,7 +92,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		}
 		
 		segs.truncate = function() {
-			segs.segments.length = 0;
+			segs.segments().length = 0;
 		}
 		
 		segs.getAllSegmentIds = function() {
@@ -311,28 +303,18 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		
 		vss.removeDead = function(vsIds) {			
 			var valueSets = vss.valueSets();
-			console.log("b vss.removeDead=" + valueSets.length);
+//			console.log("b vss.removeDead=" + valueSets.length);
 			
 			_.each(ensureArray(vsIds), function(vsId) {
 				var i = 0;
 				_.each(valueSets, function(valueSet) {
-					if (valueSet.id === vsId) {
+					i = _.findIndex(valueSets, { 'id' : vsId });
+					if (i > -1) {
 						valueSets.splice(i, 1);
-						console.log("vss.removeDead: removed i=" + i + " vsId=" + vsId);
-						return false;
-					} else {
-						i++;
 					}
 				});
-
-//				i = _.findIndex(valueSets, { 'id' : vsId });
-//				if (i > -1) {
-//				} else {
-//					console.log("vss.removeDead: not found vsid=" + vsId);
-//				}
 			});
 			
-			console.log("a vss.removeDead=" + valueSets.length);
 			return valueSets.length;
 		}
 		

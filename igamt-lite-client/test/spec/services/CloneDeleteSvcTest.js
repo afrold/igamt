@@ -138,13 +138,13 @@ describe("delete message service", function () {
 		var bDtCount =  ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length;
 		var bVsCount =  ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length;
 		
-		console.log("svc.deleteMessage: bMsgs=" + ProfileAccessSvc.Messages(igdocument.profile).messages().length);
-		console.log("svc.deleteMessage: bSegs=" + ProfileAccessSvc.Segments(igdocument.profile).segments().length);
-		console.log("svc.deleteMessage: bDts=" + ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length);
-		console.log("svc.deleteMessage: bVss=" + ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length);
+//		console.log("svc.deleteMessage: bMsgs=" + ProfileAccessSvc.Messages(igdocument.profile).messages().length);
+//		console.log("svc.deleteMessage: bSegs=" + ProfileAccessSvc.Segments(igdocument.profile).segments().length);
+//		console.log("svc.deleteMessage: bDts=" + ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length);
+//		console.log("svc.deleteMessage: bVss=" + ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length);
 		var i = 0;
 		_.eachRight(igdocument.profile.messages.children, function(message) {
-			console.log("If we delete all messages will we also delete all segs, dts, and vss? = " + (i++) + " msgId=" + message.id + " name=" + message.name + " - " + message.description);
+//			console.log("If we delete all messages will we also delete all segs, dts, and vss? = " + (i++) + " msgId=" + message.id + " name=" + message.name + " - " + message.description);
 			CloneDeleteSvc.deleteMessage(igdocument, message);
 		});
 
