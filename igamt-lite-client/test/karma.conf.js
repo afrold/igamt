@@ -55,7 +55,7 @@ module.exports = function(config) {
       'test/spec/services/**/DeleteMessageSvcTest.js',
       'test/spec/services/**/ToCSvcTest.js',
       'test/spec/services/**/CloneDeleteMessageSvcTest.js',
-     { pattern:  'test/fixtures/profiles/*.json',
+     { pattern:  'test/fixtures/igdocument/*.json',
           watched:  true,
           served:   true,
           included: false }
