@@ -114,7 +114,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		DocumentMetaData metaData = new DocumentMetaData();
 		metaData.setName(((String) source.get("name")));
 		metaData.setType(((String) source.get("type")));
-		metaData.setSubTitle(((String) source.get("subTitle")));
+		metaData.setTitle(((String) source.get("subTitle")));
 		metaData.setVersion(((String) source.get("version")));
 		metaData.setDate(((String) source.get("date")));
 		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext")) : null);

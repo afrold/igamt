@@ -137,14 +137,14 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 			var segments = segs.segments();
 			var i = -1;
 		
-			_.each(svc.ensureArray(segIds), function(id) {
+			_.each(ensureArray(segIds), function(id) {
 				i = _.findIndex(segments, { 'id' : id });
 				if (i > -1) {
 					segments.splice(i, 1);
 				}
 			});
 			
-			return segIds;
+			return segments.length;
 		}
 		
 		segs.findDatatypesFromSegmentRefs  = function(segRefs) {
@@ -224,16 +224,16 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 				
 		dts.removeDead = function(dtIds) {
 			var datatypes = dts.datatypes();
-			var i = -1;
+			var i = 0;
 			
-			_.each(svc.ensureArray(dtIds), function(id) {
+			_.each(ensureArray(dtIds), function(id) {
 				i = _.findIndex(datatypes, { 'id' : id });
 				if (i > -1) {
 					datatypes.splice(i, 1);
 				}
 			});
 			
-			return dtIds;
+			return datatypes.length;
 		}
 		
 		dts.findValueSetsFromDatatypeIds = function(dtIds) {
@@ -299,7 +299,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 				return vs.id === id;
 			});
 			if (!valueSet) {
-				console.log("vss.findById: valueSet not found id=" + id);
+				console.log("vss.findById:: Did not find vs for vsId=" + dtId);
 			}
 			return valueSet;
 		}
@@ -311,24 +311,39 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		
 		vss.removeDead = function(vsIds) {			
 			var valueSets = vss.valueSets();
-			var i = -1;
+			console.log("b vss.removeDead=" + valueSets.length);
 			
-			_.each(svc.ensureArray(vsIds), function(id) {
-				i = _.findIndex(valueSets, { 'id' : id });
-				if (i > -1) {
-					valueSets.splice(i, 1);
-				}
+			_.each(ensureArray(vsIds), function(vsId) {
+				var i = 0;
+				_.each(valueSets, function(valueSet) {
+					if (valueSet.id === vsId) {
+						valueSets.splice(i, 1);
+						console.log("vss.removeDead: removed i=" + i + " vsId=" + vsId);
+						return false;
+					} else {
+						i++;
+					}
+				});
+
+//				i = _.findIndex(valueSets, { 'id' : vsId });
+//				if (i > -1) {
+//				} else {
+//					console.log("vss.removeDead: not found vsid=" + vsId);
+//				}
 			});
-			return vsIds;
+			
+			console.log("a vss.removeDead=" + valueSets.length);
+			return valueSets.length;
 		}
 		
 		return vss;
 	}
 	
-	svc.ensureArray = function(possibleArray) {
+	function ensureArray(possibleArray) {
 		if(angular.isArray(possibleArray)) {
 			return possibleArray;
 		} else {
+			console.log("Array ensured.");
 			return [possibleArray];
 		}
 	}

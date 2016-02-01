@@ -46,8 +46,8 @@ describe("delete message service", function () {
 // Don't ask me why, but the following fixtures path MUST have "base/" prepended or it won't work.
 // Also, see the "pattern" thing, which is the last element of the files array in test/karma.conf.js.			 
 			 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/igdocument/';
-			 	var jsonFixture = getJSONFixture('igdocument-2.7.json');
-//			 	var jsonFixture = getJSONFixture('igdocument-2.7.5.json');
+//			 	var jsonFixture = getJSONFixture('igdocument-2.7.json');
+			 	var jsonFixture = getJSONFixture('igdocument-2.7.5-USER-1.0.json');
 	    			igdocumentAsString = JSON.stringify(jsonFixture);
 			 	expect($rootScope).toBeDefined();
 			 	expect(igdocumentAsString).toBeDefined();
@@ -138,9 +138,13 @@ describe("delete message service", function () {
 		var bDtCount =  ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length;
 		var bVsCount =  ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length;
 		
+		console.log("svc.deleteMessage: bMsgs=" + ProfileAccessSvc.Messages(igdocument.profile).messages().length);
+		console.log("svc.deleteMessage: bSegs=" + ProfileAccessSvc.Segments(igdocument.profile).segments().length);
+		console.log("svc.deleteMessage: bDts=" + ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length);
+		console.log("svc.deleteMessage: bVss=" + ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length);
 		var i = 0;
 		_.eachRight(igdocument.profile.messages.children, function(message) {
-//			console.log("If we delete all messages will we also delete all segs, dts, and vss? = " + (i++) + " msgId=" + message.id + " name=" + message.name + " - " + message.description);
+			console.log("If we delete all messages will we also delete all segs, dts, and vss? = " + (i++) + " msgId=" + message.id + " name=" + message.name + " - " + message.description);
 			CloneDeleteSvc.deleteMessage(igdocument, message);
 		});
 
@@ -151,8 +155,8 @@ describe("delete message service", function () {
 		
 		expect(aMsgCount).toBe(0);
 		expect(aSegCount).toBe(0);
-		expect(aDtCount < bDtCount).toBe(true);
-		expect(aVsCount < bVsCount).toBe(true);
+		expect(aDtCount).toBe(0);
+		expect(aVsCount).toBe(0);
 	});
 
 	it("Can we delete a segment?", function() {

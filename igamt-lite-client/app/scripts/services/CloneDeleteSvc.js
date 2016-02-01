@@ -165,11 +165,12 @@ angular.module('igl').factory(
 			}
 						
 			svc.deleteValueSet = function(igdocument, valueSet) {
-				deleteValueSets(igdocument, [valueSet.id]);
+				return deleteValueSets(igdocument, [valueSet.id]);
 			}
 			
 			function deleteValueSets(igdocument, vssIdsSincerelyDead) {
-				ProfileAccessSvc.ValueSets(igdocument.profile).removeDead(vssIdsSincerelyDead);		
+				console.log("deleteValueSets: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
+				return ProfileAccessSvc.ValueSets(igdocument.profile).removeDead(vssIdsSincerelyDead);		
 			}
 						
 			svc.deleteDatatype = function(igdocument, datatype) {
@@ -180,7 +181,7 @@ angular.module('igl').factory(
 				});
 				dtIdsLive.splice(idxP, 1);
 				
-				deleteDatatypes(igdocument, dtIdsLive, [datatype.id])
+				return deleteDatatypes(igdocument, dtIdsLive, [datatype.id])
 			}
 			
 			function deleteDatatypes(igdocument, dtIdsLive, dtsIdsSincerelyDead) {
@@ -192,11 +193,13 @@ angular.module('igl').factory(
 				var vssIdsSincerelyDead = ProfileAccessSvc.ValueSets(igdocument.profile).findDead(vssIdsMerelyDead, vssIdsLive);		
 				deleteValueSets(igdocument, vssIdsSincerelyDead);
 				
-				ProfileAccessSvc.Datatypes(igdocument.profile).removeDead(dtsIdsSincerelyDead);		
+				var rval = ProfileAccessSvc.Datatypes(igdocument.profile).removeDead(dtsIdsSincerelyDead);		
 
-//				console.log("svc.deleteDatatype: vssIdsMerelyDead=" + vssIdsMerelyDead.length);
-//				console.log("svc.deleteDatatype: vssIdsLive=" + vssIdsLive.length);
-//				console.log("svc.deleteDatatype: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
+				console.log("deleteDatatypes: vssIdsMerelyDead=" + vssIdsMerelyDead.length);
+				console.log("deleteDatatypes: vssIdsLive=" + vssIdsLive.length);
+				console.log("deleteDatatypes: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
+				
+				return rval;
 			}
 
 			svc.deleteSegment = function(igdocument, segment) {
@@ -209,11 +212,9 @@ angular.module('igl').factory(
 				});
 				segmentRefsLive.splice(idxP, 1);
 
-				deleteSegments(igdocument, segmentRefsLive, [segment.id])
-
-//				console.log("svc.deleteSegment: dtIdsMerelyDead=" + dtIdsMerelyDead.length);
-//				console.log("svc.deleteSegment: dtIdsLive=" + dtIdsLive.length);
-//				console.log("svc.deleteSegment: dtsIdsSincerelyDead=" + dtsIdsSincerelyDead.length);
+				var rval = deleteSegments(igdocument, segmentRefsLive, [segment.id])
+				
+				return rval;
 			}
 			
 			function deleteSegments(igdocument, segmentRefsLive, segmentRefsSincerelyDead) {
@@ -226,12 +227,13 @@ angular.module('igl').factory(
 				var dtsIdsSincerelyDead = ProfileAccessSvc.Datatypes(igdocument.profile).findDead(dtIdsMerelyDead, dtIdsLive);
 				deleteDatatypes(igdocument, dtIdsLive, dtsIdsSincerelyDead);
 				
-				ProfileAccessSvc.Segments(igdocument.profile).removeDead(segmentRefsSincerelyDead);				
+				var rval = ProfileAccessSvc.Segments(igdocument.profile).removeDead(segmentRefsSincerelyDead);				
 
-//				console.log("svc.deleteSegment: dtIdsMerelyDead=" + dtIdsMerelyDead.length);
-//				console.log("svc.deleteSegment: dtIdsLive=" + dtIdsLive.length);
-//				console.log("svc.deleteSegment: dtsIdsSincerelyDead=" + dtsIdsSincerelyDead.length);
-				return dtsIdsSincerelyDead;
+				console.log("deleteSegments: dtIdsMerelyDead=" + dtIdsMerelyDead.length);
+				console.log("deleteSegments: dtIdsLive=" + dtIdsLive.length);
+				console.log("deleteSegments: dtsIdsSincerelyDead=" + dtsIdsSincerelyDead.length);
+
+				return rval;
 			}
 
 			svc.deleteMessage = function(igdocument, message) {
@@ -250,7 +252,6 @@ angular.module('igl').factory(
 					return child.id === msgDead[0].id;
 				});
 				msgLive.splice(idxP, 1);
-				
 				// We get all segment refs that are contained in the dead message.
 				var segmentRefsMerelyDead = ProfileAccessSvc.Messages(igdocument.profile)
 						.getAllSegmentRefs(msgDead);
@@ -260,19 +261,22 @@ angular.module('igl').factory(
 				// Until now, dead meant mearly dead.  We now remove those that are most sincerely dead.
 				var segmentRefsSincerelyDead = ProfileAccessSvc.Segments(igdocument.profile).findDead(segmentRefsMerelyDead, segmentRefsLive);
 				if (segmentRefsSincerelyDead.length === 0) {
+					console.log("Zero dead==>");			
 					return;
 				}
 				
-				deleteSegments(igdocument, segmentRefsLive, segmentRefsSincerelyDead);
+				var rval = deleteSegments(igdocument, segmentRefsLive, segmentRefsSincerelyDead);
 				
-//				console.log("svc.deleteMessage: segmentRefsMerelyDead=" + segmentRefsMerelyDead.length);
-//				console.log("svc.deleteMessage: segmentRefsLive=" + segmentRefsLive.length);
-//				console.log("svc.deleteMessage: segmentRefsSincerelyDead=" + segmentRefsSincerelyDead.length);
-//
-//				console.log("svc.deleteMessage: aMsgs=" + ProfileAccessSvc.Messages(igdocument.profile).getMessageIds().length);
-//				console.log("svc.deleteMessage: aSegs=" + ProfileAccessSvc.Segments(igdocument.profile).segments().length);
-//				console.log("svc.deleteMessage: aDts=" + ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length);
-//				console.log("svc.deleteMessage: aVss=" + ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length);
+				console.log("svc.deleteMessage: segmentRefsMerelyDead=" + segmentRefsMerelyDead.length);
+				console.log("svc.deleteMessage: segmentRefsLive=" + segmentRefsLive.length);
+				console.log("svc.deleteMessage: segmentRefsSincerelyDead=" + segmentRefsSincerelyDead.length);
+
+				console.log("svc.deleteMessage: aMsgs=" + ProfileAccessSvc.Messages(igdocument.profile).messages().length);
+				console.log("svc.deleteMessage: aSegs=" + ProfileAccessSvc.Segments(igdocument.profile).segments().length);
+				console.log("svc.deleteMessage: aDts=" + ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length);
+				console.log("svc.deleteMessage: aVss=" + ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length);
+				
+				return rval;
 			}
 			
 			svc.deleteSection = function(igdocument, secDead) {
