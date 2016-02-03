@@ -52,7 +52,7 @@ public class Bootstrap implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 //		init();
-//		init2();
+		//init2();
 	} 
 	
 	private void init2() throws Exception {

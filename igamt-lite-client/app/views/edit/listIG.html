@@ -4,33 +4,38 @@
 <!--</div>-->
 <!--<div class="panel-body">-->
 <div class="row">
+
+    <div class="col-md-12">
+        <form id="selectIgTypeForm" class="form-inline">
+            <div class="form-group">
+                <label msg key='ig.selectIgType'></label>
+                <label class="radio-inline" ng-repeat="tt in igDocumentTypes | uppercase" >
+                    <input ng-disabled="loading" type="radio" ng-value="tt.type" ng-click="selectIGDocumentType(tt.type)" ng-model="igDocumentConfig.selectedType">{{tt.name}}
+                </label>
+                <!--<select class="form-control input-sm"-->
+                <!--ng-change="loadIGDocuments()"-->
+                <!--name="igType"-->
+                <!--id="igType"-->
+                <!--required-->
+                <!--ng-model="igContext.igType"-->
+                <!--ng-options="tt.name for tt in igTypes | uppercase">-->
+                <!--</select>-->
+            </div>
+        </form>
+    </div>
+
     <div ng-hide="loading">
-        <div class="col-md-12">
-            <h4 msg key='ig.selectIgType'></h4>
-        </div>
-        <div class="col-md-12">
-            <form id="selectIgTypeForm">
-                <div class="form-group">
-                    <select class="form-control input-sm"
-                            ng-change="loadIGDocuments()"
-                            name="igType"
-                            id="igType"
-                            required
-                            ng-model="igContext.igType"
-                            ng-options="tt.name for tt in igTypes | uppercase">
-                    </select>
-                </div>
-            </form>
-        </div>
+        <!--<div class="col-md-12">-->
+            <!--<h4 msg key='ig.selectIgType'></h4>-->
+        <!--</div>-->
         <div class="col-md-12" style="margin-left:8px; margin-top: 5px">
             <div ng-show="error === null">
-                <div class="">
-                   <h5><b>{{igContext.igType.name}}</b>, Total#: {{igs.length}}</h5>
+                <!--<div class="">-->
+                   <!--<h5><b>{{igContext.igType.name}}</b>, Total#: {{igs.length}}</h5>-->
                     <hr/>
-                    
                     <button type="button" class="btn btn-info btn-sm"
                             ng-click="hl7Versions('btn')" ng-controller="HL7VersionsDlgCtrl"><i class="fa fa-plus"></i>
-                        Create Guide
+                        Create New IG Document
                     </button>
                     
                     <table st-table="tmpIgs" st-safe-src="igs"
@@ -43,44 +48,40 @@
                         </tr>
                         <tr style="margin-right: {{scrollbarWidth}}px;">
                             <th st-ratio="5">#</th>
-                            <th st-ratio="20" st-sort="metaData.identifier">IG Identifier</th>
-                            <th st-ratio="20" st-sort="metaData.name">IG Title</th>
-                            <th st-ratio="15" st-sort="metaData.orgName">Organization Name</th>
-                            <th st-ratio="10" st-sort="metaData.version">Version</th>
-                            <th st-ratio="10" st-sort="metaData.date">Date</th>
+                            <th st-ratio="20" st-sort="metaData.identifier">Document Identifier</th>
+                            <th st-ratio="20" st-sort="metaData.name">Document Title</th>
+                            <th st-ratio="10" st-sort="metaData.version">Document Version</th>
+                            <th st-ratio="10" st-sort="metaData.date">Document Date</th>
                             <th st-ratio="20">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="row in tmpIgs">
+                        <tr ng-repeat="row in tmpIgs" ng-class="{'current': igdocument != null && row.id === igdocument.id}">
                             <td st-ratio="5">{{$index + 1}}</td>
                             <td st-ratio="20" ng-bind="row.metaData.identifier"></td>
                             <td st-ratio="20" ng-bind="row.metaData.name"></td>
-                            <td st-ratio="15" ng-bind="row.metaData.orgName"></td>
                             <td st-ratio="10" ng-bind="row.metaData.version"></td>
                             <td st-ratio="10" ng-bind="row.metaData.date"></td>
                             <td st-ratio="20">
-
-
-                                <button ng-show="igContext.igType.type === 'USER'"
+                                <button ng-show="igDocumentConfig.selectedType === 'USER'"
                                         title="Edit"
                                         type="button" class="btn btn-xs btn-primary"
                                         ng-click="edit(row)">
                                         <span><i
-                                                class="fa fa-pencil fa-fw"></i></span>
+                                                class="fa fa-pencil fa-fw"></i> Edit</span>
                                 </button>
 
                                 <button
                                         title="View Readonly"
                                         type="button" class="btn btn-xs btn-warning"
                                         ng-click="view(row)">
-                                    <span><i class="fa fa-eye"></i></span>
+                                    <span><i class="fa fa-eye"></i> Read</span>
                                 </button>
 
                                 <button
                                         title="Create Copy" type="button" class="btn btn-xs btn-info"
                                         ng-click="clone(row)">
-                                    <span><i class="fa fa-plus fa-fw"></i></span>
+                                    <span><i class="fa fa-plus fa-fw"></i> Clone</span>
                                 </button>
                                 <!--<div class="btn-group">-->
                                     <!--<button ng-disabled="row === igdocument && hasChanges()" type="button"-->
@@ -115,9 +116,9 @@
                                 <!--</div>-->
 
                                 <button title="Delete" type="button" class="btn btn-xs btn-danger"
-                                        ng-show="igContext.igType.type === 'USER'"
+                                        ng-show="igDocumentConfig.selectedType === 'USER'"
                                         ng-click="confirmDelete(row)">
-                                    <span><i class="fa fa-trash-o fa-fw"></i></span>
+                                    <span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
                                 </button>
 
                                 <!--<span ng-show="toEditIGDocumentId != null && toEditIGDocumentId === row.id"><i-->
@@ -134,9 +135,9 @@
                         </tfoot>
                     </table>
                 </div>
-            </div>
-            <div ng-show="error !== null">
-                <div class="alert alert-danger" role="alert" ng-bind="error"></div>
+             <div ng-show="error !== null" ng-class="'alert alert-danger'">
+                    <button type="button" class="close" ng-click="error = null">×</button>
+                    <div msg key-expr="error"></div>
             </div>
         </div>
     </div>

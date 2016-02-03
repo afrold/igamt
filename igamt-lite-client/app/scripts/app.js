@@ -236,36 +236,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         };
     });
 
-
-    $httpProvider.interceptors.push(function ($rootScope, $q) {
-        return {
-            response: function (response) {
-                return response   || $q.when(response);
-            },
-            responseError: function (response) {
-                if (response.status === 401) {
-                    //We catch everything but this one. So public users are not bothered
-                    //with a login windows when browsing home.
-                    if ( response.config.url !== 'api/accounts/cuser') {
-                        //We don't intercept this request
-                        var deferred = $q.defer(),
-                            req = {
-                                config: response.config,
-                                deferred: deferred
-                            };
-                        $rootScope.requests401.push(req);
-                        $rootScope.$broadcast('event:loginRequired');
-                        return  $q.when(response);
-                    }
-                }else  if (response.status === 503) {
-
-                }
-                return $q.reject(response);
-            }
-        };
-    });
-
-
     //intercepts ALL angular ajax http calls
     $httpProvider.interceptors.push(function ($q) {
         return {
@@ -370,10 +340,11 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             //If we are here in this callback, login was successfull
             //Let's get user info now
             httpHeaders.common['Authorization'] = null;
-            $http.get('api/accounts/cuser').success(function (data) {
-            	console.log("setCurrentUser=" + data);
-                userInfoService.setCurrentUser(data);
+            $http.get('api/accounts/cuser').then(function (result) {
+                userInfoService.setCurrentUser(angular.fromJson(result.data));
                 $rootScope.$broadcast('event:loginConfirmed');
+            },function(){
+                userInfoService.setCurrentUser(null);
             });
         });
     });
@@ -414,6 +385,12 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         }
     };
 
+    $rootScope.getFullName = function () {
+        if (userInfoService.isAuthenticated() === true) {
+            return userInfoService.getFullName();
+        }
+        return '';
+    };
 
 
     $rootScope.isSubActive = function (path) {

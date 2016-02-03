@@ -43,6 +43,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -78,56 +79,39 @@ public class IGDocumentController extends CommonController {
 		this.igDocumentService = igDocumentService;
 	}
 
-	@ExceptionHandler(UserAccountNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ResponseMessage igDocumentNotFound(UserAccountNotFoundException ex) {
-		log.debug(ex.getMessage());
-		return new ResponseMessage(ResponseMessage.Type.danger,
-				"accountNotFound", null);
-	}
-
-	@ExceptionHandler(IGDocumentNotFoundException.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public ResponseMessage igDocumentNotFound(IGDocumentException ex) {
-		log.debug(ex.getMessage());
-		return new ResponseMessage(ResponseMessage.Type.danger,
-				"IGDocumentNotFound", null);
-	}
-
-	@ExceptionHandler(IGDocumentSaveException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public IGDocumentSaveResponse igDocumentSaveFailed(IGDocumentSaveException ex) {
-		log.debug(ex.getMessage());
-		if (ex.getErrors() != null) {
-			return new IGDocumentSaveResponse(ResponseMessage.Type.danger,
-					"IGDocumentNotSaved", null, ex.getErrors());
-		}
-		return new IGDocumentSaveResponse(ResponseMessage.Type.danger,
-				"IGDocumentNotSaved", null);
-	}
-
-	@ExceptionHandler(OperationNotAllowException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseMessage OperationNotAllowException(IGDocumentException ex) {
-		log.debug(ex.getMessage());
-		return new ResponseMessage(ResponseMessage.Type.danger,
-				"operationNotAllow", ex.getMessage());
-	}
-
 	/**
-	 * Return the list of pre-loaded profiles
 	 * 
+	 * @param type
 	 * @return
+	 * @throws UserAccountNotFoundException
+	 * @throws IGDocumentException
 	 */
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public List<IGDocument> preloaded() {
+	public List<IGDocument> preloaded(@RequestParam("type") String type) throws UserAccountNotFoundException, IGDocumentException { 
+		if("PRELOADED".equalsIgnoreCase(type)){
+			return preloaded();
+		}else if("USER".equalsIgnoreCase(type)){
+			return userIGDocuments();
+		} 
+		throw new IGDocumentException("Unknown ig document type");
+	}
+	
+	
+	/**
+	 * Return the list of pre-loaded profiles
+	 * @return
+	 */
+	private List<IGDocument> preloaded() {
 		log.info("Fetching all preloaded IGDocuments...");
 		List<IGDocument> result = igDocumentService.findAllPreloaded();
 		return result;
 	}
 
-	@RequestMapping(value = "/cuser", method = RequestMethod.GET)
-	public List<IGDocument> userIGDocuments() throws UserAccountNotFoundException {
+	/**
+	 * @return
+	 * @throws UserAccountNotFoundException
+	 */
+	private List<IGDocument> userIGDocuments() throws UserAccountNotFoundException {
 		log.info("Fetching all custom IGDocuments...");
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u

@@ -3,25 +3,27 @@
  */
 
 angular.module('igl')
-.controller('IGDocumentListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, CloneDeleteMessageSvc, IGDocumentAccessSvc, ngTreetableParams, $interval, ColumnSettings) {
+.controller('IGDocumentListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, CloneDeleteMessageSvc, IGDocumentAccessSvc, ngTreetableParams, $interval, ColumnSettings,StorageService) {
 		$scope.loading = false;
     	$scope.uiGrid = {};
         $rootScope.igs = [];
-        $scope.igContext = {
-            type: 'USER'
-        };
-
         $scope.tmpIgs = [].concat($rootScope.igs);
         $scope.error = null;
         $scope.loading = false;
         $scope.columnSettings = ColumnSettings;
 //        $scope.visibleColumns = angular.copy(ColumnSettings.visibleColumns);
 
+
+        $scope.igDocumentConfig = {
+            selectedType : null
+        };
+
+
         $scope.options = {
             'readonly': false
         };
 
-        $scope.igTypes = [
+        $scope.igDocumentTypes = [
             {
                 name: "Predefined Implementation Guides", type: 'PRELOADED'
             },
@@ -170,14 +172,14 @@ angular.module('igl')
          * init the controller
          */
         $scope.init = function () {
-            $scope.igContext.igType = $scope.igTypes[1];
+            $scope.igDocumentConfig.selectedType = StorageService.get("SelectedIgDocumentType") != null ? StorageService.get("SelectedIgDocumentType"): 'USER';
             $scope.loadIGDocuments();
             $scope.getScrollbarWidth();
             /**
              * On 'event:loginConfirmed', resend all the 401 requests.
              */
             $scope.$on('event:loginConfirmed', function (event) {
-                $scope.igContext.igType = $scope.igTypes[1];
+                $scope.igDocumentConfig.selectedType = StorageService.get("SelectedIgDocumentType") != null ? StorageService.get("SelectedIgDocumentType"): 'USER';
                 $scope.loadIGDocuments();
             });
 
@@ -200,17 +202,24 @@ angular.module('igl')
             $scope.$on('event:openTable', function (event, table) {
                 $scope.selectTable(table); // Shoudl we open in a dialog ??
             });
+
+            $rootScope.$on('event:IgsPushed', function (event, igdocument) {
+                if ($scope.igDocumentConfig.selectedType === 'USER') {
+                    $rootScope.igs.push(igdocument);
+                } else {
+                    $scope.igDocumentConfig.selectedType = 'USER';
+                    $scope.loadIGDocuments();
+                }
+            });
         };
 
-        $rootScope.$on('event:IgsPushed', function (event, igdocument) {
-            if ($scope.igContext.igType.type === 'USER') {
-                $rootScope.igs.push(igdocument);
-            } else {
-                $scope.igContext.igType = $scope.igTypes[1];
-                $scope.loadIGDocuments();
-                igdocument = $scope.findOne(igdocument.id);
-            }
-        });
+
+        $scope.selectIGDocumentType = function (selectedType) {
+            $scope.igDocumentConfig.selectedType = selectedType;
+            StorageService.set("SelectedIgDocumentType",$scope.igDocumentConfig.selectedType);
+            $scope.loadIGDocuments();
+        };
+
 
         $scope.loadIGDocuments = function () {
             $scope.error = null;
@@ -218,39 +227,27 @@ angular.module('igl')
             $scope.tmpIgs = [].concat($rootScope.igs);
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
                 $scope.loading = true;
-                if ($scope.igContext.igType.type === 'PRELOADED') {
-                    $http.get('api/igdocuments', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs = angular.fromJson(response.data);
-                        $scope.tmpIgs = [].concat($rootScope.igs);
-                        $scope.loading = false;
-                    }, function (error) {
-                        $scope.loading = false;
-                        $scope.error = "Failed to load the igdocuments";
-                    });
-                } else if ($scope.igContext.igType.type === 'USER') {
-                    $http.get('api/igdocuments/cuser', {timeout: 60000}).then(function (response) {
-                        $rootScope.igs = angular.fromJson(response.data);
-                        console.log("igs=" + $rootScope.igs);
-                        $scope.tmpIgs = [].concat($rootScope.igs);
-                        $scope.loading = false;
-                    }, function (error) {
-                        $scope.loading = false;
-                        $scope.error = "Failed to load the igdocuments";
-                    });
-                }
-
+                StorageService.set("SelectedIgDocumentType",$scope.igDocumentConfig.selectedType);
+                $http.get('api/igdocuments', {params:{"type":$scope.igDocumentConfig.selectedType}}).then(function (response) {
+                    $rootScope.igs = angular.fromJson(response.data);
+                    $scope.tmpIgs = [].concat($rootScope.igs);
+                    $scope.loading = false;
+                }, function (error) {
+                    $scope.loading = false;
+                    $scope.error = error.data;
+                });
             }
         };
 
         $scope.clone = function (igdocument) {
             $scope.toEditIGDocumentId = igdocument.id;
-            waitingDialog.show('Cloning igdocument...', {dialogSize: 'sm', progressType: 'info'});
-            $http.post('api/igdocuments/' + igdocument.id + '/clone', {timeout: 60000}).then(function (response) {
+            waitingDialog.show('Cloning IG Document...', {dialogSize: 'sm', progressType: 'info'});
+            $http.post('api/igdocuments/' + igdocument.id + '/clone').then(function (response) {
                 $scope.toEditIGDocumentId = null;
-                if ($scope.igContext.igType.type === 'USER') {
+                if ($scope.igDocumentConfig.selectedType === 'USER') {
                     $rootScope.igs.push(angular.fromJson(response.data));
                 } else {
-                    $scope.igContext.igType = $scope.igTypes[1];
+                    $scope.igDocumentConfig.selectedType = 'USER';
                     $scope.loadIGDocuments();
                 }
                 waitingDialog.hide();
@@ -777,7 +774,12 @@ angular.module('igl')
            $scope.columnSettings.save();
         };
 
-
+        $scope.getFullName = function () {
+            if (userInfoService.isAuthenticated() === true) {
+                return userInfoService.getFullName();
+            }
+            return '';
+        };
 
 
     });
