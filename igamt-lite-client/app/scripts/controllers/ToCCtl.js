@@ -49,22 +49,22 @@ angular
 								ToCSvc.currentLeaf.selected = false;
 								ToCSvc.currentLeaf = entry;
 								switch (entry.parent) {
-								case "3.1": {
+								case "messages": {
 									$scope.$emit('event:openMessage',
 											entry.reference);
 									break;
 								}
-								case "3.2": {
+								case "segments": {
 									$scope.$emit('event:openSegment',
 											entry.reference);
 									break;
 								}
-								case "3.3": {
+								case "datatypes": {
 									$scope.$emit('event:openDatatype',
 											entry.reference);
 									break;
 								}
-								case "3.4": {
+								case "tables": {
 									$scope.$emit('event:openTable',
 											entry.reference);
 									break;

@@ -69,14 +69,10 @@ angular.module('igl').factory(
 					"children" : []
 				}
 				rval.children.push(getProfileMetadata(profile));
-				rval.children.push(getTopEntry("3.1", "3",
-						profile.messages.sectionTitle, profile.messages));
-				rval.children.push(getTopEntry("3.2", "3",
-						profile.segments.sectionTitle, profile.segments));
-				rval.children.push(getTopEntry("3.3", "3", profile.datatypes.sectionTitle,
-						profile.datatypes));
-				rval.children.push(getTopEntry("3.4", "3", profile.tables.sectionTitle,
-						profile.tables));
+				rval.children.push(getTopEntry(profile.messages));
+				rval.children.push(getTopEntry(profile.segments));
+				rval.children.push(getTopEntry(profile.datatypes));
+				rval.children.push(getTopEntry(profile.tables));
 				return rval;
 			}
 			
@@ -85,7 +81,6 @@ angular.module('igl').factory(
 				"label" : "Metadata",
 				"selected" : false,
 				"position" : 0,
-				"parent" : parent,
 				"reference" : profile.metaData
 				}				
 				return metaData;
@@ -94,68 +89,61 @@ angular.module('igl').factory(
 			// Returns a top level entry. It can be dropped on, but cannot be
 			// dragged.
 			// It will accept a drop where the drag value matches its label.
-			function getTopEntry(id, parent, label, fromProfile) {
+			function getTopEntry(fromProfile) {
 				var children = [];
 				var rval = {
-					"id" : id,
-					"label" : label,
-					"selected" : false,
-					"parent" : parent,
+					"id" : fromProfile.type,
+					"label" : fromProfile.sectionTitle,
+					"position" : fromProfile.sectionPosition,
 					"selected" : false,
 				}
-				if (fromProfile !== undefined) {
+				if (fromProfile) {
 					rval["reference"] = fromProfile;
-					rval["children"] = createEntries(id,
-							fromProfile.children);
+					if(angular.isArray(fromProfile.children)) {
+						rval["children"] = createEntries(fromProfile.type, fromProfile.children);
+					}
 				}
 				return rval;
 			}
 
 			// Returns a second level set entries, These are draggable. "drag"
-			// indicates
-			// where one of these entries can be dropped.
 			function createEntries(parent, children) {
 				var rval = [];
 				var entry = {};
 				_.each(children, function(child) {
-					if (parent === "3.1") {
-						entry = createEntry(child, parent);
-					} else if (parent === "3.2") {
-						entry = createEntry(child, parent);
-					} else if (parent === "3.3") {
-						entry = createEntry(child, parent);
-					} else if (parent === "3.4") {
-						entry = createEntry(child, parent);
+					if(parent === "messages") {
+						entry = createEntry(child, child.name, parent);
+					} else if (parent === "tables") {
+						entry = createEntry(child, child.bindingIdentifier, parent);
 					} else {
-						entry = createEntry(child, parent);
+						entry = createEntry(child, child.label, parent);
 					}
 					rval.push(entry);
 				});
-				if (parent === "3.1") {
+				if (parent === "messages") {
 					return rval;
 				} else {
-					return _.sortBy(rval, 'label');
+					return _.sortBy(rval, "label");
 				}
 			}
 
-			function createEntry(child, parent) {
+			function createEntry(child, label, parent) {
 				var rval = {
-					"id" : id,
-					"label" : child.label,
+					"id" : child.type,
+					"label" : label,
 					"description" : child.description,
+					"position" : child.sectionPosition,
 					"selected" : false,
 				};
-				if (reference !== undefined) {
+				if (child) {
 					rval["reference"] = child;
 				}
-				if (parent !== undefined) {
+				if (parent) {
 					rval["parent"] = parent;
 				}
-				if (child.children !== undefined) {
-					if (child.children.length > 0) {
-						rval["children"] = child.children;
-					}
-				}
+//				if (angular.isArray(child.children)) {
+//					rval["children"] = child.children;					}
+//				}
 				return rval;
 			}
 

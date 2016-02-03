@@ -39,7 +39,7 @@ angular
 				function($compile) {
 					var branchTemplate = "<li class='branch'>"
 							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \" ng-click='tocSelection(branch)'>"
-							+ "{{branch.label}} - {{branch.description}}"
+							+ "{{branch.label}}"
 							+ "</label>"
 							+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
 							+ "<trunk trunk='branch.children'></trunk>"
@@ -95,18 +95,26 @@ angular
 			            + " dnd-moved='moved(index, leaf, drop)'"
 			            + " dnd-selected='models.selected = leaf'"
 						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='messageContextDiv.html' ng-click='tocSelection(leaf)'> "
-						+ "{{leaf.label}}" 
+						+ "{{leaf.reference.name}} - {{leaf.reference.description}}" 
+						+ "</li>";
+
+					var leafValueSet = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='headContextDiv.html' ng-click='tocSelection(leaf)'> "
+						+ "{{leaf.reference.bindingIdentifier}} - {{leaf.reference.description}}" 
 						+ "</li>";
 
 					var leafDefault = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
 						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='headContextDiv.html' ng-click='tocSelection(leaf)'> "
-						+ "{{leaf.label}}"
+						+ "{{leaf.reference.label}} - {{leaf.reference.description}}" 
 						+ "</li>";
 
 					var linker = function(scope, element, attrs) {
-						if (scope.leaf.parent === "3.1") {
+						if (scope.leaf.parent === "messages") {
 							element.html(leafMessage).show();
 //							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
+						} else if (scope.leaf.parent === "tables") {
+								element.html(leafValueSet).show();
+//								console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else {
 							element.html(leafDefault).show();
 //							console.log("leaf2=" + scope.leaf.label + " parent=" + scope.leaf.parent);

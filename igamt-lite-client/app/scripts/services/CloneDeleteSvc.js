@@ -46,7 +46,7 @@ angular.module('igl').factory(
 					igdocument.profile.segments.children.splice(0, 0, newSegment);
 		            $rootScope.segment = newSegment;
 		            $rootScope.segment[newSegment.id] = newSegment;
-		            $rootScope.recordChangeForEdit2('segment', "add", newSegment.id, 'segment', newSegment);
+		            $rootScope.recordChanged();
 					$rootScope.$broadcast('event:SetToC');	
 					$rootScope.$broadcast('event:openSegment', newSegment);	
 			}
@@ -77,7 +77,7 @@ angular.module('igl').factory(
 					igdocument.profile.datatypes.children.splice(0, 0, newDatatype);
 		            $rootScope.datatype = newDatatype;
 		            $rootScope.datatypesMap[newDatatype.id] = newDatatype;
-		            $rootScope.recordChangeForEdit2('datatype', "add", newDatatype.id, 'datatype', newDatatype);
+		            $rootScope.recordChanged();
 					$rootScope.$broadcast('event:SetToC');	
 					$rootScope.$broadcast('event:openDatatype', newDatatype);	
 			}
@@ -135,7 +135,7 @@ angular.module('igl').factory(
 		    		}
 		     
 		        $rootScope.igdocument.profile.tables.children.splice(0, 0, newTable);
-		        $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
+	            $rootScope.recordChanged();
 				$rootScope.$broadcast('event:SetToC');	
 				$rootScope.$broadcast('event:openTable', newTable);	
 			}

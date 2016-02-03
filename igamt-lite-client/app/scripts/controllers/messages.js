@@ -264,7 +264,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     $scope.deletePredicate = function (predicate) {
         $scope.selectedNode.predicates.splice($scope.selectedNode.predicates.indexOf(predicate), 1);
         if (!$scope.isNewCP(predicate.id)) {
-            $rootScope.recordChangeForEdit2('predicate', "delete", predicate.id, 'id', predicate.id);
+            $rootScope.recordChanged();
         }
     };
     
@@ -560,7 +560,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         $scope.complexConstraint.constraintClassification = $scope.newComplexConstraintClassification;
         $scope.selectedNode.predicates.push($scope.complexConstraint);
         var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: $scope.complexConstraint};
-        $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+        $rootScope.recordChanged();
         $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
         
         $scope.complexConstraint = null;
@@ -630,7 +630,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                     };
                     $scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -659,7 +659,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                     };
                     $scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -687,7 +687,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
                     $scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -715,7 +715,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -743,7 +743,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
                     $scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -771,7 +771,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
                         $scope.selectedNode.predicates.push(cp);
                         var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                        $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                        $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -803,7 +803,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -832,7 +832,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -861,7 +861,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -890,7 +890,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -919,7 +919,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -948,7 +948,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -977,8 +977,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -1007,7 +1006,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -1036,7 +1035,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -1065,7 +1064,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -1094,7 +1093,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -1123,7 +1122,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.selectedNode.predicates.push(cp);
                     var newCPBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cp};
-                    $rootScope.recordChangeForEdit2('predicate', "add", null, 'predicate', newCPBlock);
+                    $rootScope.recordChanged();
             	}else if ($scope.constraintType === 'Complex'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -1386,7 +1385,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     $scope.deleteConformanceStatement = function (conformanceStatement) {
         $scope.selectedNode.conformanceStatements.splice($scope.selectedNode.conformanceStatements.indexOf(conformanceStatement), 1);
         if (!$scope.isNewCS(conformanceStatement.id)) {
-            $rootScope.recordChangeForEdit2('conformanceStatement', "delete", conformanceStatement.id, 'id', conformanceStatement.id);
+            $rootScope.recordChanged();
         }
     };
     
@@ -1476,7 +1475,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     	
     	$scope.selectedNode.conformanceStatements.push($scope.complexConstraint);
         var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: $scope.complexConstraint};
-        $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+        $rootScope.recordChanged();
         
         $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
         
@@ -1541,7 +1540,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1557,7 +1556,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1573,7 +1572,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1589,7 +1588,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1605,7 +1604,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1621,7 +1620,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1637,7 +1636,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1653,7 +1652,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1669,7 +1668,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1685,8 +1684,8 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
-                }else if ($scope.constraintType === 'Complex'){
+                    $rootScope.recordChanged();
+               }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
             } else if ($scope.newConstraint.contraintType === 'less than the another node') {
@@ -1701,7 +1700,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1717,7 +1716,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1733,7 +1732,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1749,7 +1748,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1765,7 +1764,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1781,7 +1780,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1797,7 +1796,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
@@ -1813,7 +1812,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 if($scope.constraintType === 'Plain'){
                 	$scope.selectedNode.conformanceStatements.push(cs);
                     var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
-                    $rootScope.recordChangeForEdit2('conformanceStatement', "add", null, 'conformanceStatement', newCSBlock);
+                    $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }

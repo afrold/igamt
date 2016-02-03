@@ -43,12 +43,12 @@
                                                                    name="identifier"
                                                                    class="form-control"
                                                                    ng-model="segment.name"
-                                                                   ng-change="recordChangeForEdit2('segment','edit',segment.id,'name', segment.name)"
+                                                                   ng-change="recordChanged('segment','edit',segment.id,'name', segment.name)"
                                                                    required>
                                     </div>
                                     <div class="form-group">
                                         <label>Description</label> <input type="text" ng-disabled="options.readonly"
-                                                                          ng-change="recordChangeForEdit2('segment','edit',segment.id,'description', segment.description)"
+                                                                          ng-change="recordChanged('segment','edit',segment.id,'description', segment.description)"
                                                                           name="description"
                                                                           class="form-control"
                                                                           ng-model="segment.description"
