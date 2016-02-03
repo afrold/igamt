@@ -204,7 +204,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsXml(d);
 		response.setContentType("text/xml");
 		response.setHeader("Content-disposition",
-				"attachment;filename=" +  d.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
+				"attachment;filename=" +  d.getMetaData().getTitle() + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -215,7 +215,7 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsZip(d);
 		response.setContentType("application/zip");
-		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) +  ".zip");
+		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle()   + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) +  ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -226,7 +226,7 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsPdf(d);
 		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
+		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle()   + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -237,7 +237,7 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsDocx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
+		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle()   + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -250,7 +250,7 @@ public class IGDocumentController extends CommonController {
 		//TODO need to implement igDocumentService.diffToPdf
 		content = igDocumentService.diffToPdf(d);
 		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getName()  + "-Delta-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
+		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle()   + "-Delta-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -270,7 +270,7 @@ public class IGDocumentController extends CommonController {
 		IGDocument d = findIGDocument(id);
 		content = igDocumentExport.exportAsXlsx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
+		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle()   + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
