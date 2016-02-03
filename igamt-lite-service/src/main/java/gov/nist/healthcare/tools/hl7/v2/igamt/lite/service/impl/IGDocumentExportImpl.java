@@ -963,10 +963,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		BaseColor headerFontItxtColor = WebColors.getRGBColor(headerFontColor);
 		BaseColor cpColor = WebColors.getRGBColor(constraintBackground);
 		Font coverH1Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 16, Font.BOLD,
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.BOLD,
 				BaseColor.BLACK);
 		Font coverH2Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 14, Font.NORMAL,
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 16, Font.BOLD,
 				BaseColor.BLACK);
 		Font tocTitleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 16, Font.BOLD,
@@ -992,30 +992,36 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 					coverBaos);
 			coverDocument.open();
 
-			Paragraph paragraph = new Paragraph(p.getMetaData().getName(),
+			Paragraph paragraph = new Paragraph(igdoc.getMetaData().getName(),
 					coverH1Font);
 			paragraph.setSpacingBefore(250);
 			paragraph.setAlignment(Element.ALIGN_CENTER);
 			coverDocument.add(paragraph);
 
-			paragraph = new Paragraph("Subtitle " + p.getMetaData().getSubTitle(),
+			paragraph = new Paragraph(igdoc.getMetaData().getSubTitle(),
 					coverH2Font);
-			paragraph.setAlignment(Element.ALIGN_LEFT);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
 			coverDocument.add(paragraph);
 
-			paragraph = new Paragraph("Organization name " + p.getMetaData().getOrgName(), coverH2Font);
+			paragraph = new Paragraph(igdoc.getMetaData().getDate(),
+					coverH2Font);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
 			coverDocument.add(paragraph);
 
 			paragraph = new Paragraph(
-					"HL7 version " + p.getMetaData().getHl7Version(), coverH2Font);
+					"HL7 version: " + p.getMetaData().getHl7Version(), coverH2Font);
 			paragraph.add(Chunk.NEWLINE);
-			paragraph.setAlignment(Element.ALIGN_LEFT);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
 			//			paragraph.setSpacingAfter(250);
 			coverDocument.add(paragraph);
 
-			paragraph = new Paragraph("Document Version "
+			paragraph = new Paragraph("Document version: "
 					+ p.getMetaData().getVersion(), coverH2Font);
-			paragraph.setAlignment(Element.ALIGN_LEFT);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
+			coverDocument.add(paragraph);
+
+			paragraph = new Paragraph("Principal author: " + p.getMetaData().getOrgName(), coverH2Font);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
 			coverDocument.add(paragraph);
 
 			coverDocument.close();

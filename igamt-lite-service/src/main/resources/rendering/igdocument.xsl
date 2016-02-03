@@ -65,11 +65,11 @@
 			<br></br>
 			<h3 align="center"><xsl:value-of select="@Date"></xsl:value-of></h3>
 			<br></br>
-			<h4 align="right"><xsl:text>Document version: </xsl:text><xsl:value-of select="@DocumentVersion"></xsl:value-of></h4>
+			<h4 align="center"><xsl:text>Document version: </xsl:text><xsl:value-of select="@DocumentVersion"></xsl:value-of></h4>
 			<br></br>
-			<h4 align="right"><xsl:text>HL7 version: </xsl:text><xsl:value-of select="@HL7Version"></xsl:value-of></h4>
+			<h4 align="center"><xsl:text>HL7 version: </xsl:text><xsl:value-of select="@HL7Version"></xsl:value-of></h4>
 			<br></br>
-			<h4 align="right"><xsl:text>Principal Author: </xsl:text><xsl:value-of select="@OrgName"></xsl:value-of></h4>
+			<h4 align="center"><xsl:text>Principal Author: </xsl:text><xsl:value-of select="@OrgName"></xsl:value-of></h4>
 <!-- 			<br></br>
 			<xsl:value-of select="@Ext"></xsl:value-of>
 			<br></br>
