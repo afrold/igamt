@@ -15,39 +15,20 @@
 			</head>
 
 			<body style="font-family:Arial Narrow, Arial, sans-serif;">
-				<a name="top"></a>
 
+				<xsl:apply-templates select="ConformanceProfile/MetaData"/>
+
+				<hr></hr>
+				<a name="top"><h1>TABLE OF CONTENT</h1></a>
 				<xsl:call-template name="tocSect" />
 
-				<!-- <h1> <a href="#msgInfra">Messages infrastructure</a> </h1> <h2> 
-					<a href="#messages">Conformance Profiles</a> </h2> <xsl:apply-templates select="ConformanceProfile/MessagesDisplay" 
-					mode="toc"> <xsl:sort select="@Position"></xsl:sort> </xsl:apply-templates> 
-					<br></br> <h2> <a href="#segments">Segments and fields descriptions</a> </h2> 
-					<xsl:apply-templates select="ConformanceProfile/Segments" mode="toc"> <xsl:sort 
-					select="@Label" data-type="text"></xsl:sort> </xsl:apply-templates> <br></br> 
-					<h2> <a href="#datatypes">Datatypes</a> </h2> <xsl:apply-templates select="ConformanceProfile/Datatypes" 
-					mode="toc"> <xsl:sort select="@Label" data-type="text"></xsl:sort> </xsl:apply-templates> 
-					<br></br> <h2> <a href="#valuesets">Value sets</a> </h2> <xsl:apply-templates 
-					select="ConformanceProfile/ValueSets" mode="toc"> <xsl:sort select="@BindingIdentifier"></xsl:sort> 
-					</xsl:apply-templates> <br></br> -->
 				<hr></hr>
-
 				<!-- <xsl:value-of select="$inlineConstraints" /> -->
-
 				<xsl:call-template name="dispSect" />
-
-				<!-- <h2> <u>Messages infrastructure</u> </h2> <a name="msgInfra"></a> 
-					<h3> <u>Conformance Profiles</u> </h3> <a name="messages"></a> <xsl:apply-templates 
-					select="ConformanceProfile/MessagesDisplay"> </xsl:apply-templates> <a name="segments"></a> 
-					<h3> <u>Segments and fields descriptions</u> </h3> <xsl:apply-templates select="ConformanceProfile/Segments"> 
-					<xsl:sort select="@Name"></xsl:sort> </xsl:apply-templates> <a name="datatypes"></a> 
-					<h3> <u>Datatypes</u> </h3> <xsl:apply-templates select="ConformanceProfile/Datatypes"> 
-					<xsl:sort select="@ID"></xsl:sort> </xsl:apply-templates> <h3> <u>Value sets</u> 
-					</h3> <a name="valuesets"></a> <xsl:apply-templates select="ConformanceProfile/ValueSets"> 
-					<xsl:sort select="@BindingIdentifier"></xsl:sort> </xsl:apply-templates> -->
 			</body>
 		</html>
 	</xsl:template>
+
 	<xsl:template name="dispInfoSect" mode="disp">
 		<xsl:if test="name() = 'Section'">
 			<a id="{@id}" name="{@id}">
@@ -73,8 +54,30 @@
 			<br />
 			<xsl:call-template name="dispSectContent" />
 			<xsl:call-template name="dispProfileContent" />
-			<a href="#top">Link to top</a>
+			<a href="#top">Link to table of content</a>
 		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="MetaData">
+			<h1 align="center"><xsl:value-of select="@Name"></xsl:value-of></h1>
+			<br></br>
+			<h2 align="center"><xsl:value-of select="@Subtitle"></xsl:value-of></h2>
+			<br></br>
+			<h3 align="center"><xsl:value-of select="@Date"></xsl:value-of></h3>
+			<br></br>
+			<h4 align="right"><xsl:text>Document version: </xsl:text><xsl:value-of select="@DocumentVersion"></xsl:value-of></h4>
+			<br></br>
+			<h4 align="right"><xsl:text>HL7 version: </xsl:text><xsl:value-of select="@HL7Version"></xsl:value-of></h4>
+			<br></br>
+			<h4 align="right"><xsl:text>Principal Author: </xsl:text><xsl:value-of select="@OrgName"></xsl:value-of></h4>
+<!-- 			<br></br>
+			<xsl:value-of select="@Ext"></xsl:value-of>
+			<br></br>
+			<xsl:value-of select="@Status"></xsl:value-of>
+			<br></br>
+			<xsl:value-of select="@Topics"></xsl:value-of>
+			<br></br> -->
+
 	</xsl:template>
 
 	<xsl:template name="dispSectContent">
@@ -112,7 +115,7 @@
 	<xsl:template name="dispSect">
 		<xsl:call-template name="dispInfoSect" />
 		<xsl:for-each select="*">
-			<xsl:sort select="@position"></xsl:sort>
+			<xsl:sort select="@position" data-type="number"></xsl:sort>
 			<xsl:call-template name="dispSect" />
 		</xsl:for-each>
 	</xsl:template>
@@ -143,7 +146,7 @@
 	<xsl:template name="tocSect">
 		<xsl:call-template name="tocInfoSect" />
 		<xsl:for-each select="*">
-			<xsl:sort select="@position"></xsl:sort>
+			<xsl:sort select="@position" data-type="number"></xsl:sort>
 			<xsl:call-template name="tocSect" />
 		</xsl:for-each>
 	</xsl:template>
@@ -161,17 +164,6 @@
 
 
 	<xsl:template match="MessageDisplay">
-		<h4 style="page-break-before: always">
-			<a id="{@id}" name="{@id}"></a>
-			<b>
-				<xsl:value-of select="@prefix" />
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="@Name" />
-				-
-				<xsl:value-of select="@Description" />
-			</b>
-		</h4>
-		<!-- <xsl:text>Comment:</xsl:text> -->
 		<xsl:value-of select="Comment" />
 		<table width="1000" border="1" cellspacing="0" cellpadding="1">
 			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
@@ -209,7 +201,6 @@
 		</table>
 		<xsl:value-of select="Text[@Type='UsageNote']" />
 		<br></br>
-		<a href="#top">Link to top</a>
 	</xsl:template>
 
 	<xsl:template name="elt">
@@ -253,15 +244,6 @@
 	</xsl:template>
 
 	<xsl:template match="Segment">
-		<h4 style="page-break-before: always">
-			<a id="{@id}" name="{@id}"></a>
-			<xsl:value-of select="@prefix" />
-			<xsl:text> </xsl:text>
-			<xsl:value-of select="@Name" />
-			-
-			<xsl:value-of select="@Description" />
-		</h4>
-
 		<xsl:value-of select="./Text[@Type='Text1']" />
 
 		<table width="1000" border="1" cellspacing="0" cellpadding="1">
@@ -363,7 +345,6 @@
 			</xsl:if>
 		</xsl:for-each>
 		<br></br>
-		<a href="#top">Link to top</a>
 	</xsl:template>
 
 	<xsl:template name="field">
@@ -431,18 +412,6 @@
 	</xsl:template>
 
 	<xsl:template match="Datatype">
-		<h4 style="page-break-before: always">
-			<a id="{@id}" name="{@id}">
-				<u>
-					<xsl:value-of select="@prefix" />
-					<xsl:text> </xsl:text>
-					<xsl:value-of select="@Label" />
-					-
-					<xsl:value-of select="@Description" />
-				</u>
-			</a>
-		</h4>
-
 		<table width="1000" border="1" cellspacing="0" cellpadding="0">
 			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
 				<tr>
@@ -521,7 +490,6 @@
 		<br></br>
 		<xsl:value-of select="Text[@Type='UsageNote']" />
 		<br></br>
-		<a href="#top">Link to top</a>
 	</xsl:template>
 
 	<xsl:template name="component">
@@ -591,14 +559,6 @@
 	</xsl:template>
 
 	<xsl:template match="ValueSetDefinition">
-		<h4 style="page-break-before:auto">
-			<a id="{@id}" name="{@id}"></a>
-			<xsl:value-of select="@prefix" />
-			<xsl:text> </xsl:text>
-			<xsl:value-of select="@BindingIdentifier" />
-			-
-			<xsl:value-of select="@Name" />
-		</h4>
 		<xsl:text>Oid: </xsl:text>
 		<xsl:value-of select="@Oid"></xsl:value-of>
 		<table width="100%" border="1" cellspacing="0" cellpadding="0">
@@ -632,8 +592,7 @@
 				</xsl:for-each>
 			</tbody>
 		</table>
-		<br></br>
-		<a href="#top">Link to top</a>
+		<!-- <br></br> <a href="#top">Link to table of content</a> -->
 	</xsl:template>
 
 	<xsl:template name="ValueElement">
