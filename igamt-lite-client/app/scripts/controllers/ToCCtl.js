@@ -38,40 +38,40 @@ angular
 								return "margin-left : " + level + "em";
 							}
 
-							$scope.tocSelection = function(leaf) {
+							$scope.tocSelection = function(entry) {
 								// TODO gcr: See about refactoring this to
 								// eliminate the switch.
-								// One could use leaf.reference.type to assemble
+								// One could use entry.reference.type to assemble
 								// the $emit string.
 								// Doing so would require maintaining a sync
 								// with the ProfileListController.
-								leaf.selected = true;
+								entry.selected = true;
 								ToCSvc.currentLeaf.selected = false;
-								ToCSvc.currentLeaf = leaf;
-								switch (leaf.parent) {
+								ToCSvc.currentLeaf = entry;
+								switch (entry.parent) {
 								case "3.1": {
 									$scope.$emit('event:openMessage',
-											leaf.reference);
+											entry.reference);
 									break;
 								}
 								case "3.2": {
 									$scope.$emit('event:openSegment',
-											leaf.reference);
+											entry.reference);
 									break;
 								}
 								case "3.3": {
 									$scope.$emit('event:openDatatype',
-											leaf.reference);
+											entry.reference);
 									break;
 								}
 								case "3.4": {
 									$scope.$emit('event:openTable',
-											leaf.reference);
+											entry.reference);
 									break;
 								}
 								default: {
 									$scope.$emit('event:openSection',
-											leaf.reference);
+											entry.reference);
 									break;
 								}
 								}
@@ -85,7 +85,9 @@ angular
 									console.log("Add flavor==> node=" + leaf);
 									if (leaf.reference.type === 'section') {
 					        				CloneDeleteSvc.cloneSectionFlavor(leaf.reference);
-									} else if (leaf.reference.type === 'datatype') {
+									} else if (leaf.reference.type === 'segment') {
+						        			CloneDeleteSvc.cloneSegmentFlavor(leaf.reference);
+									}  else if (leaf.reference.type === 'datatype') {
 						        			CloneDeleteSvc.cloneDatatypeFlavor(leaf.reference);
 									} else if (leaf.reference.type === 'table') {
 										CloneDeleteSvc.cloneTableFlavor(leaf.reference);
@@ -94,7 +96,7 @@ angular
 								case "Clone":
 									console.log("Clone==> node=" + leaf);
 									CloneDeleteSvc.cloneMessage(
-											$rootScope.igdocument, leaf);
+											$rootScope.igdocument, leaf.reference);
 									$rootScope.$broadcast('event:SetToC');
 									break;
 								case "Delete":

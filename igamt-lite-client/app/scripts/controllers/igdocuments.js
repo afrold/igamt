@@ -508,9 +508,9 @@ angular.module('igl')
 
         $scope.save = function () {
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
-            var changes = angular.toJson($rootScope.changes);
             $rootScope.igdocument.accountId = userInfoService.getAccountID();
-            var data = {"changes": changes, "igdocument": $rootScope.igdocument};
+            var data = angular.fromJson($rootScope.igdocument);
+            console.log("data=" + JSON.stringify(data, null, 2));
             $http.post('api/igdocuments/save', data, {timeout: 60000}).then(function (response) {
                 var saveResponse = angular.fromJson(response.data);
                  $rootScope.igdocument.metaData.date = saveResponse.date;

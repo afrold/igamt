@@ -6,7 +6,7 @@
 	</div>
 	<div ng-show="!loadingSelection">
 		<div class="page-header">
-			<span class="header4">Section {{section.sectionTitle}}</span>
+			<span class="header4">{{section.sectionTitle}}</span>
      <span class="pull-right">
 
         <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
@@ -45,12 +45,11 @@
                   Description
               </accordion-heading>
 			<div class="form-group">
-			    <label>Description</label>
-			    <div text-angular style="width: 100%" name="sectionDescription"
-		             ta-disabled="options.readonly"
+				<textarea style="width: 100%" name="sectionDescription"
 		             ng-change="recordChanged()"
 		             ng-model="section.sectionDescription">
-		        </div>
+				{{section.sectionDescription}}
+				</textarea>
 			</div>
 		</accordion-group>
 		<accordion-group is-open="accordi.Contents" panel-class="panel-info">
@@ -60,7 +59,6 @@
 			    Contents
 			</accordion-heading>
 			<div class="form-group">
-			    <label>Contents</label>
 			    <div text-angular style="width: 100%" name="sectionContents"
 		             ta-disabled="options.readonly"
 		             ng-change="recordChanged()"

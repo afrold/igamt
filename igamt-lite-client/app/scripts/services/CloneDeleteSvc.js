@@ -4,34 +4,33 @@ angular.module('igl').factory(
 
 			var svc = this;
 			
-			svc.cloneSectionFlavor = function(igdocument, entry) {
-				var newEntry = angular.copy(entry);
-				newEntry.reference.id = new ObjectId();
+			svc.cloneSectionFlavor = function(section) {
+				var newSection = angular.copy(section);
+				newSection.id = new ObjectId();
 				var rand = Math.floor(Math.random() * 100);
-				if (!igdocument.profile.metaData.ext) {
-					igdocument.profile.metaData.ext = "";
+				if (!$rootScope.igdocument.profile.metaData.ext) {
+					$rootScope.igdocument.profile.metaData.ext = "";
 				}
-				newEntry.reference.name = newEntry.reference.name + "-"
-				+ igdocument.profile.metaData.ext + "-"
-				+ rand + "-"
-				+ newEntry.reference.description;
-				newEntry.label = newEntry.reference.name;
-				igdocument.childSections.splice(0, 0, newEntry.reference);
+				newSection.sectionTitle = section.sectionTitle + "-"
+				+ $rootScope.igdocument.profile.metaData.ext + "-"
+				+ rand;
+				newSection.label = newSection.sectionTitle;
+				$rootScope.igdocument.childSections.splice(0, 0, newSection);
 				$rootScope.$broadcast('event:SetToC');	
-				$rootScope.$broadcast('event:openSection', newEntry);	
+				$rootScope.$broadcast('event:openSection', newSection);	
 			}
 			
 			svc.cloneSegmentFlavor = function(segment) {
 
-		          var flavor = angular.copy(segment);
-		            flavor.id = new ObjectId().toString();
-		            flavor.label = $rootScope.createNewFlavorName(segment.label);
-		            if (flavor.fields != undefined && flavor.fields != null && flavor.fields.length != 0) {
-		                for (var i = 0; i < flavor.fields.length; i++) {
-		                    flavor.fields[i].id = new ObjectId().toString();
+		          var newSegment = angular.copy(segment);
+		            newSegment.id = new ObjectId().toString();
+		            newSegment.sectionTitle = $rootScope.createNewSegmentName(segment.sectionTitle);
+		            if (newSegment.fields != undefined && newSegment.fields != null && newSegment.fields.length != 0) {
+		                for (var i = 0; i < newSegment.fields.length; i++) {
+		                    newSegment.fields[i].id = new ObjectId().toString();
 		                }
 		            }
-		            var dynamicMappings = flavor['dynamicMappings'];
+		            var dynamicMappings = newSegment['dynamicMappings'];
 		            if (dynamicMappings != undefined && dynamicMappings != null && dynamicMappings.length != 0) {
 		                angular.forEach(dynamicMappings, function (dynamicMapping) {
 		                	dynamicMapping.id = new ObjectId().toString();
@@ -43,42 +42,44 @@ angular.module('igl').factory(
 		                		});
 		                });
 		            }
-		            $rootScope.segments.splice(0, 0, flavor);
-		            $rootScope.segment = flavor;
-		            $rootScope.segment[flavor.id] = flavor;
-		            $rootScope.recordChangeForEdit2('segment', "add", flavor.id, 'segment', flavor);
+//		            $rootScope.segments.splice(0, 0, newSegment);
+					igdocument.profile.segments.children.splice(0, 0, newSegment);
+		            $rootScope.segment = newSegment;
+		            $rootScope.segment[newSegment.id] = newSegment;
+		            $rootScope.recordChangeForEdit2('segment', "add", newSegment.id, 'segment', newSegment);
 					$rootScope.$broadcast('event:SetToC');	
-					$rootScope.$broadcast('event:openSegment', flavor);	
+					$rootScope.$broadcast('event:openSegment', newSegment);	
 			}
 			
 			svc.cloneDatatypeFlavor = function(datatype) {
 
-		          var flavor = angular.copy(datatype);
-		            flavor.id = new ObjectId().toString();
-		            flavor.label = $rootScope.createNewFlavorName(datatype.label);
-		            if (flavor.components != undefined && flavor.components != null && flavor.components.length != 0) {
-		                for (var i = 0; i < flavor.components.length; i++) {
-		                    flavor.components[i].id = new ObjectId().toString();
+		          var newDatatype = angular.copy(datatype);
+		            newDatatype.id = new ObjectId().toString();
+		            newDatatype.sectionTitle = $rootScope.createNewDatatypeName(datatype.sectionTitle);
+		            if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
+		                for (var i = 0; i < newDatatype.components.length; i++) {
+		                    newDatatype.components[i].id = new ObjectId().toString();
 		                }
 		            }
-		            var predicates = flavor['predicates'];
+		            var predicates = newDatatype['predicates'];
 		            if (predicates != undefined && predicates != null && predicates.length != 0) {
 		                angular.forEach(predicates, function (predicate) {
 		                    predicate.id = new ObjectId().toString();
 		                });
 		            }
-		            var conformanceStatements = flavor['conformanceStatements'];
+		            var conformanceStatements = newDatatype['conformanceStatements'];
 		            if (conformanceStatements != undefined && conformanceStatements != null && conformanceStatements.length != 0) {
 		                angular.forEach(conformanceStatements, function (conformanceStatement) {
 		                    conformanceStatement.id = new ObjectId().toString();
 		                });
 		            }
-		            $rootScope.datatypes.splice(0, 0, flavor);
-		            $rootScope.datatype = flavor;
-		            $rootScope.datatypesMap[flavor.id] = flavor;
-		            $rootScope.recordChangeForEdit2('datatype', "add", flavor.id, 'datatype', flavor);
+//		            $rootScope.datatypes.splice(0, 0, newDatatype);
+					igdocument.profile.datatypes.children.splice(0, 0, newDatatype);
+		            $rootScope.datatype = newDatatype;
+		            $rootScope.datatypesMap[newDatatype.id] = newDatatype;
+		            $rootScope.recordChangeForEdit2('datatype', "add", newDatatype.id, 'datatype', newDatatype);
 					$rootScope.$broadcast('event:SetToC');	
-					$rootScope.$broadcast('event:openDatatype', flavor);	
+					$rootScope.$broadcast('event:openDatatype', newDatatype);	
 			}
 
 			svc.cloneTableFlavor = function(table) {
@@ -126,42 +127,43 @@ angular.module('igl').factory(
 		        $rootScope.codeSystems = [];
 		        
 		        for (var i = 0; i < $rootScope.table.codes.length; i++) {
-		        	if($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0){
+		        	if($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
 		        		if($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== ''){
 		        			$rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
 		        		}
 					}
-		    	}
+		    		}
 		     
+		        $rootScope.igdocument.profile.tables.children.splice(0, 0, newTable);
 		        $rootScope.recordChangeForEdit2('table', "add", newTable.id,'table', newTable);
 				$rootScope.$broadcast('event:SetToC');	
 				$rootScope.$broadcast('event:openTable', newTable);	
 			}
 			
-			svc.cloneMessage = function(igdocument, entry) {
+			svc.cloneMessage = function(igdocument, message) {
 				// TODO gcr: Need to include the user identifier in the
 				// new label.
 				// $rootScope.igdocument.metaData.ext should be just that,
 				// but is currently
 				// unpopulated in the profile.
-				var newEntry = angular.copy(entry);
-				newEntry.reference.id = new ObjectId();
+				var newMessage = angular.copy(message);
+				newMessage.reference.id = new ObjectId();
 				var rand = Math.floor(Math.random() * 100);
 				if (!igdocument.profile.metaData.ext) {
 					igdocument.profile.metaData.ext = "";
 				}
 				// Nodes must have unique names so we append a random number when we
 				// duplicate.
-				if (newEntry.reference.type === 'message') {
-					newEntry.reference.name = newEntry.reference.name + "-"
+				if (newMessage.type === 'message') {
+					newMessage.name = newMessage.name + "-"
 							+ igdocument.profile.metaData.ext + "-"
 							+ rand + "-"
-							+ newEntry.reference.description;
-					newEntry.label = newEntry.reference.name;
-					igdocument.profile.messages.children.splice(0, 0, newEntry.reference);
+							+ newMessage.description;
+					newMessage.label = newMessage.name;
+					igdocument.profile.messages.children.splice(0, 0, newMessage);
 				}
 
-				return newEntry;
+				return newMessage;
 			}
 						
 			svc.deleteValueSet = function(igdocument, valueSet) {

@@ -3,7 +3,7 @@ angular
 		.directive(
 				'trunk',
 				function() {
-					console.log("trunk");
+//					console.log("trunk");
 
 					var template = "<ul class='trunk'><branch ng-repeat='branch in trunk track by $index' branch='branch'></branch></ul>";
 
@@ -19,7 +19,7 @@ angular
 		.directive(
 				'drop',
 				function() {
-					console.log("drop");
+//					console.log("drop");
 
 					var template = "<ul dnd-list='drop'>"
 							+ "<branch ng-repeat='branch in drop track by $index' index='$index' branch='branch' drop='drop'></branch>"
@@ -37,27 +37,28 @@ angular
 		.directive(
 				"branch",
 				function($compile) {
-					// class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \"
 					var branchTemplate = "<li class='branch'>"
-							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \">"
-							+ "{{branch.label}}"
-							+ "</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
+							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \" ng-click='tocSelection(branch)'>"
+							+ "{{branch.label}} - {{branch.description}}"
+							+ "</label>"
+							+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
 							+ "<trunk trunk='branch.children'></trunk>"
 							+ "</li>";
 					var branchMessageTemplate = "<li class='branch'"
 							+ " context-menu context-menu-close='closedCtxSubMenu(branch)' data-target='messageHeadContextDiv.html'>"
 							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \">"
 							+ "{{branch.label}}"
-							+ "</label><input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
+							+ "</label>"
+							+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
 							+ "<drop drop='branch.children'></drop>"
 							+ "</li>";
 					var leafTemplate = "<leaf leaf='branch' index='index'></leaf>";
 
 					var linker = function(scope, element, attrs) {
 						if (angular.isArray(scope.branch.children)) {
-							 console.log("branch id=" + scope.branch.id +
-							 " label=" + scope.branch.label + " chidren=" +
-							 scope.branch.children.length);
+//							 console.log("branch id=" + scope.branch.id +
+//							 " label=" + scope.branch.label + " chidren=" +
+//							 scope.branch.children.length);
 							if (scope.branch.id === "3.1") {
 								element.append(branchMessageTemplate);
 							} else {
@@ -66,7 +67,7 @@ angular
 							$compile(element.contents())(scope);
 
 						} else {
-							console.log("leaf0=" + scope.branch.label + " parent=" + scope.branch.parent);
+//							console.log("leaf0=" + scope.branch.label + " parent=" + scope.branch.parent);
 							element.append(leafTemplate).show();
 							$compile(element.contents())(scope);
 						}
@@ -105,10 +106,10 @@ angular
 					var linker = function(scope, element, attrs) {
 						if (scope.leaf.parent === "3.1") {
 							element.html(leafMessage).show();
-							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
+//							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else {
 							element.html(leafDefault).show();
-							console.log("leaf2=" + scope.leaf.label + " parent=" + scope.leaf.parent);
+//							console.log("leaf2=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						}
 						$compile(element.contents())(scope);
 					}

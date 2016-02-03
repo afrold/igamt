@@ -39,7 +39,7 @@ angular.module('igl').controller(
 
 			$scope.listHL7Versions = function() {
 				var hl7Versions = [];
-				$http.get('api/igdocuments/hl7/findVersions', {
+				$http.get('api/igdocuments/findVersions', {
 					timeout : 60000
 				}).then(function(response) {
 					var len = response.data.length;
@@ -63,7 +63,7 @@ angular.module('igl').controller(
 					"accountID" : userInfoService.getAccountID(), 
 					"timeout" : 60000
 				};
-				$http.post('api/igdocuments/hl7/createIntegrationProfile', iprw)
+				$http.post('api/igdocuments/createIntegrationProfile', iprw)
 						.then(
 								function(response) {
 									var igdocument = angular
@@ -73,7 +73,7 @@ angular.module('igl').controller(
 													'event:openIGDocumentRequest',
 													igdocument);
 									$rootScope.$broadcast('event:IgsPushed',
-											igdocument.profile);
+											igdocument);
 								});
 				return $rootScope.igdocument;
 			};
@@ -90,7 +90,7 @@ angular.module('igl').controller(
 					"msgIds" : msgIds,
 					"timeout" : 60000
 				};
-				$http.post('api/igdocuments/hl7/updateIntegrationProfile', iprw)
+				$http.post('api/igdocuments/updateIntegrationProfile', iprw)
 						.then(
 								function(response) {
 									var igdocument = angular
@@ -117,16 +117,13 @@ angular.module('igl').controller(
 				item : hl7Versions[0]
 			};
 
-			console.log("$scope.igdocumentVersions init");
 			$scope.igdocumentVersions = [];
 			var igdocumentVersions = [];
 
 			$scope.loadIGDocumentsByVersion = function() {
 				$rootScope.hl7Version = $scope.hl7Version;
-				console.log("loadIGDocumentsByVersion.hl7Version=" + $scope.hl7Version);
-				console.log("loadIGDocumentsByVersion.igdocumentVersions=" + $scope.igdocumentVersions);
 				$http.post(
-						'api/igdocuments/hl7/messageListByVersion', angular.fromJson({
+						'api/igdocuments/messageListByVersion', angular.fromJson({
 							"hl7Version" : $scope.hl7Version,
 							"messageIds" : $scope.igdocumentVersions
 						})).then(function(response) {
@@ -135,7 +132,6 @@ angular.module('igl').controller(
 				};
 
 			$scope.trackSelections = function(bool, id) {
-				console.log("trackSelections=" + id);
 				if (bool) {
 					igdocumentVersions.push(id);
 				} else {
@@ -153,7 +149,6 @@ angular.module('igl').controller(
 				if ($rootScope.clickSource === "ctx") {
 					$scope.hl7Version = newValue.metaData.hl7Version;
 					$scope.igdocumentVersions = ProfileAccessSvc.Messages($rootScope.igdocument).getMessageIds();
-					console.log("$watch.igdocumentVersions=" + $scope.igdocumentVersions);
 					$scope.loadIGDocumentsByVersion();
 				}
 			});
@@ -164,7 +159,6 @@ angular.module('igl').controller(
 
 			$scope.hl7Versions = hl7Versions;
 			$scope.ok = function() {
-				console.log("ok-igdocumentVersions=" + igdocumentVersions);
 				$scope.igdocumentVersions = igdocumentVersions;
 				$modalInstance.close(igdocumentVersions);
 			};

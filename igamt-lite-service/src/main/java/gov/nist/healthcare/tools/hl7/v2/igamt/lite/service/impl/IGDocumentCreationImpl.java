@@ -85,6 +85,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// Creation of profile
 		IGDocument dSource = igdocumentRepository.findStandardByVersion(hl7Version).get(0);
 		IGDocument dTarget = new IGDocument();
+		dTarget.setAccountId(accountId);
 		Profile pTarget = new Profile();
 		pTarget.setAccountId(accountId);
 

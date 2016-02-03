@@ -12,14 +12,27 @@ angular.module('igl').factory(
 				console.log("Getting toc...");
 				toc = [];
 				console.log("childSections=" + igdocument.childSections.length);
-				var sections = svc.getSections(igdocument.childSections);
-				var conformanceProfile = svc.getMessageInfrastructure(igdocument.profile);
+				var documentMetadata = getDocumentMetadata(igdocument);
+				toc.push(documentMetadata);
+				var sections = getSections(igdocument.childSections);
 				toc.push(sections);
+				var conformanceProfile = getMessageInfrastructure(igdocument.profile);
 				toc.push(conformanceProfile);
 				return _.flatten(toc);
 			}
 			
-			svc.getSections = function(childSections, parent) {
+			function getDocumentMetadata(igdocument) {
+				var metaData = {
+				"label" : "Metadata",
+				"selected" : false,
+				"position" : 0,
+				"parent" : parent,
+				"reference" : igdocument.metaData
+			}				
+				return metaData;
+			}
+			
+			function getSections(childSections, parent) {
 				
 				var rval = [];
 
@@ -31,20 +44,21 @@ angular.module('igl').factory(
 					"parent" : parent,
 					"reference" : childSection
 					}
-					var sections1 = svc.getSections(childSection.childSections, childSection._id);
+					var sections1 = getSections(childSection.childSections, childSection._id);
 					_.each(sections1, function(section1) {
 						if (!section.children) {
 							section.children = [];
 						}
 						section.children.push(section1);						
 					})
-					rval.push(section);
+					var section2 = _.sortBy(sections1, function(section1) { return section1.position; });
+					rval.push(section2);
 				});
 
 				return rval;
 			}
 			
-			svc.getMessageInfrastructure = function(profile) {
+			function getMessageInfrastructure(profile) {
 				var rval = {
 					"id" : "3",
 					"label" : profile.sectionTitle,
@@ -54,21 +68,33 @@ angular.module('igl').factory(
 					"reference" : "",
 					"children" : []
 				}
-				rval.children.push(svc.getTopEntry("3.1", "3",
+				rval.children.push(getProfileMetadata(profile));
+				rval.children.push(getTopEntry("3.1", "3",
 						profile.messages.sectionTitle, profile.messages));
-				rval.children.push(svc.getTopEntry("3.2", "3",
+				rval.children.push(getTopEntry("3.2", "3",
 						profile.segments.sectionTitle, profile.segments));
-				rval.children.push(svc.getTopEntry("3.3", "3", profile.datatypes.sectionTitle,
+				rval.children.push(getTopEntry("3.3", "3", profile.datatypes.sectionTitle,
 						profile.datatypes));
-				rval.children.push(svc.getTopEntry("3.4", "3", profile.tables.sectionTitle,
+				rval.children.push(getTopEntry("3.4", "3", profile.tables.sectionTitle,
 						profile.tables));
 				return rval;
 			}
-
+			
+			function getProfileMetadata(profile) {
+				var metaData = {
+				"label" : "Metadata",
+				"selected" : false,
+				"position" : 0,
+				"parent" : parent,
+				"reference" : profile.metaData
+				}				
+				return metaData;
+			}
+			
 			// Returns a top level entry. It can be dropped on, but cannot be
 			// dragged.
 			// It will accept a drop where the drag value matches its label.
-			svc.getTopEntry = function(id, parent, label, fromProfile) {
+			function getTopEntry(id, parent, label, fromProfile) {
 				var children = [];
 				var rval = {
 					"id" : id,
@@ -79,7 +105,7 @@ angular.module('igl').factory(
 				}
 				if (fromProfile !== undefined) {
 					rval["reference"] = fromProfile;
-					rval["children"] = svc.createEntries(id,
+					rval["children"] = createEntries(id,
 							fromProfile.children);
 				}
 				return rval;
@@ -88,29 +114,20 @@ angular.module('igl').factory(
 			// Returns a second level set entries, These are draggable. "drag"
 			// indicates
 			// where one of these entries can be dropped.
-			svc.createEntries = function(parent, children) {
+			function createEntries(parent, children) {
 				var rval = [];
 				var entry = {};
 				_.each(children, function(child) {
 					if (parent === "3.1") {
-						entry = svc.createEntry(child, child.id, child.name
-								+ " - " + child.sectionTitle, parent, parent);
+						entry = createEntry(child, parent);
 					} else if (parent === "3.2") {
-						entry = svc
-								.createEntry(child, child.id, child.label
-										+ " - " + child.sectionTitle, parent);
+						entry = createEntry(child, parent);
 					} else if (parent === "3.3") {
-						entry = svc
-								.createEntry(child, child.id, child.label
-										+ " - " + child.sectionTitle, parent);
+						entry = createEntry(child, parent);
 					} else if (parent === "3.4") {
-						entry = svc
-								.createEntry(child, child.id,
-										child.bindingIdentifier + " - "
-												+ child.sectionTitle, parent);
+						entry = createEntry(child, parent);
 					} else {
-						entry = svc.createEntry(child, child.id, child.label,
-								parent, child.children);
+						entry = createEntry(child, parent);
 					}
 					rval.push(entry);
 				});
@@ -121,22 +138,22 @@ angular.module('igl').factory(
 				}
 			}
 
-			svc.createEntry = function(reference, id, label, parent,
-					children) {
+			function createEntry(child, parent) {
 				var rval = {
 					"id" : id,
-					"label" : label,
+					"label" : child.label,
+					"description" : child.description,
 					"selected" : false,
 				};
 				if (reference !== undefined) {
-					rval["reference"] = reference;
+					rval["reference"] = child;
 				}
 				if (parent !== undefined) {
 					rval["parent"] = parent;
 				}
-				if (children !== undefined) {
-					if (children.length > 0) {
-						rval["children"] = children;
+				if (child.children !== undefined) {
+					if (child.children.length > 0) {
+						rval["children"] = child.children;
 					}
 				}
 				return rval;
