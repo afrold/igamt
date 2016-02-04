@@ -16,10 +16,12 @@
 
 			<body style="font-family:Arial Narrow, Arial, sans-serif;">
 
-				<xsl:apply-templates select="ConformanceProfile/MetaData"/>
+				<xsl:apply-templates select="ConformanceProfile/MetaData" />
 
 				<hr></hr>
-				<a name="top"><h1>TABLE OF CONTENT</h1></a>
+				<a name="top">
+					<h1>TABLE OF CONTENT</h1>
+				</a>
 				<xsl:call-template name="tocSect" />
 
 				<hr></hr>
@@ -59,23 +61,38 @@
 	</xsl:template>
 
 	<xsl:template match="MetaData">
-			<h1 align="center"><xsl:value-of select="@Name"></xsl:value-of></h1>
-			<br></br>
-			<h2 align="center"><xsl:value-of select="@Subtitle"></xsl:value-of></h2>
-			<br></br>
-			<h3 align="center"><xsl:value-of select="@Date"></xsl:value-of></h3>
-			<br></br>
-			<h4 align="center"><xsl:text>Document version: </xsl:text><xsl:value-of select="@DocumentVersion"></xsl:value-of></h4>
-			<br></br>
-			<h4 align="center"><xsl:text>HL7 version: </xsl:text><xsl:value-of select="@HL7Version"></xsl:value-of></h4>
-			<br></br>
-			<h4 align="center"><xsl:text>Principal Author: </xsl:text><xsl:value-of select="@OrgName"></xsl:value-of></h4>
-<!-- 			<br></br>
-			<xsl:value-of select="@Ext"></xsl:value-of>
-			<br></br>
-			<xsl:value-of select="@Status"></xsl:value-of>
-			<br></br>
-			<xsl:value-of select="@Topics"></xsl:value-of>
+		<h1 align="center">
+			<xsl:element name="img">
+				<xsl:attribute name="src">
+					<xsl:text>http://hit-2015.nist.gov/docs/hl7Logo.png</xsl:text>
+			</xsl:attribute>
+			</xsl:element>
+		</h1>
+		<h1 align="center">
+			<xsl:value-of select="@Name"></xsl:value-of>
+		</h1>
+		<br></br>
+		<h2 align="center">
+			<xsl:value-of select="@Subtitle"></xsl:value-of>
+		</h2>
+		<br></br>
+		<h3 align="center">
+			<xsl:value-of select="@Date"></xsl:value-of>
+		</h3>
+		<br></br>
+		<h4 align="center">
+			<xsl:text>Document version </xsl:text>
+			<xsl:value-of select="@DocumentVersion"></xsl:value-of>
+		</h4>
+		<br></br>
+		<!-- <h4 align="center"> <xsl:text>HL7 version </xsl:text> <xsl:value-of 
+			select="@HL7Version"></xsl:value-of> </h4> <br></br> -->
+		<h4 align="center">
+			<xsl:text>Organisation name </xsl:text>
+			<xsl:value-of select="@OrgName"></xsl:value-of>
+		</h4>
+		<!-- <br></br> <xsl:value-of select="@Ext"></xsl:value-of> <br></br> <xsl:value-of 
+			select="@Status"></xsl:value-of> <br></br> <xsl:value-of select="@Topics"></xsl:value-of> 
 			<br></br> -->
 
 	</xsl:template>
