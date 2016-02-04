@@ -12,8 +12,8 @@ angular.module('igl').factory(
 				console.log("Getting toc...");
 				toc = [];
 				console.log("childSections=" + igdocument.childSections.length);
-				var documentMetadata = getDocumentMetadata(igdocument);
-				toc.push(documentMetadata);
+				var documentMetadata = getMetadata(igdocument.metaData);
+				toc.push(documentMetadata, "documentMetdata");
 				var sections = getSections(igdocument.childSections);
 				toc.push(sections);
 				var conformanceProfile = getMessageInfrastructure(igdocument.profile);
@@ -21,15 +21,15 @@ angular.module('igl').factory(
 				return _.flatten(toc);
 			}
 			
-			function getDocumentMetadata(igdocument) {
-				var metaData = {
+			function getMetadata(metaData, parent) {
+				var metaData1 = {
 				"label" : "Metadata",
 				"selected" : false,
 				"position" : 0,
 				"parent" : parent,
-				"reference" : igdocument.metaData
+				"reference" : metaData
 			}				
-				return metaData;
+				return metaData1;
 			}
 			
 			function getSections(childSections, parent) {
@@ -51,8 +51,8 @@ angular.module('igl').factory(
 						}
 						section.children.push(section1);						
 					})
-					var section2 = _.sortBy(sections1, function(section1) { return section1.position; });
-					rval.push(section2);
+//					var section2 = _.sortBy(sections1, function(section1) { return section1.position; });
+					rval.push(sections1);
 				});
 
 				return rval;
@@ -60,7 +60,7 @@ angular.module('igl').factory(
 			
 			function getMessageInfrastructure(profile) {
 				var rval = {
-					"id" : "3",
+					"id" : profile.type,
 					"label" : profile.sectionTitle,
 					"selected" : false,
 					"position" : profile.sectionPosition,
@@ -68,7 +68,7 @@ angular.module('igl').factory(
 					"reference" : "",
 					"children" : []
 				}
-				rval.children.push(getProfileMetadata(profile));
+				rval.children.push(getMetadata(profile.metaData, "profileMetdata"));
 				rval.children.push(getTopEntry(profile.messages));
 				rval.children.push(getTopEntry(profile.segments));
 				rval.children.push(getTopEntry(profile.datatypes));
@@ -76,15 +76,15 @@ angular.module('igl').factory(
 				return rval;
 			}
 			
-			function getProfileMetadata(profile) {
-				var metaData = {
-				"label" : "Metadata",
-				"selected" : false,
-				"position" : 0,
-				"reference" : profile.metaData
-				}				
-				return metaData;
-			}
+//			function getProfileMetadata(profile) {
+//				var metaData = {
+//				"label" : "Metadata",
+//				"selected" : false,
+//				"position" : 0,
+//				"reference" : profile.metaData
+//				}				
+//				return metaData;
+//			}
 			
 			// Returns a top level entry. It can be dropped on, but cannot be
 			// dragged.

@@ -49,6 +49,16 @@ angular
 								ToCSvc.currentLeaf.selected = false;
 								ToCSvc.currentLeaf = entry;
 								switch (entry.parent) {
+								case "documentMetdata": {
+									$scope.$emit('event:openDocumentMetadata',
+											entry.reference);
+									break;
+								}
+								case "profileMetdata": {
+									$scope.$emit('event:openProfileMetadata',
+											entry.reference);
+									break;
+								}
 								case "messages": {
 									$scope.$emit('event:openMessage',
 											entry.reference);

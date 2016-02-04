@@ -145,7 +145,7 @@ angular.module('igl')
                     }else {
                         return 'MessageReadTree.html';
                     }
-                 }else {
+                 } else {
                     if (node.type === 'segmentRef') {
                         return 'MessageSegmentRefEditTree.html';
                     } else if (node.type === 'group') {
@@ -203,7 +203,15 @@ angular.module('igl')
             $scope.$on('event:openSection', function (event, section) {
                 $scope.selectSection(section); // Should we open in a dialog ??
             });
-        };
+
+            $scope.$on('event:openDocumentMetadata', function (event, metaData) {
+                $scope.selectDocumentMetaData(metaData); // Should we open in a dialog ??
+            });
+
+            $scope.$on('event:openProfileMetadata', function (event, metaData) {
+                $scope.selectProfileMetaData(metaData); // Should we open in a dialog ??
+            });
+       };
 
         $rootScope.$on('event:IgsPushed', function (event, igdocument) {
             if ($scope.igContext.igType.type === 'USER') {
@@ -363,7 +371,7 @@ angular.module('igl')
                             $rootScope.config = angular.fromJson(response.data);
                             $scope.loadingIGDocument = false;
                             $scope.toEditIGDocumentId = null;
-                            $scope.selectMetaData();
+                            $scope.selectDocumentMetaData();
                         }, function (error) {
                             $scope.loadingIGDocument = false;
                             $scope.toEditIGDocumentId = null;
@@ -371,7 +379,7 @@ angular.module('igl')
                     } else {
                         $scope.loadingIGDocument = false;
                         $scope.toEditIGDocumentId = null;
-                        $scope.selectMetaData();
+                        $scope.selectDocumentMetaData();
                     }
                 }
             },100);
@@ -627,8 +635,17 @@ angular.module('igl')
             }
         };
 
-        $scope.selectMetaData = function () {
-            $scope.subview = "EditMetadata.html";
+        $scope.selectDocumentMetaData = function () {
+            $scope.subview = "EditDocumentMetadata.html";
+                 $scope.loadingSelection = true;
+                $timeout(
+                    function () {
+                        $scope.loadingSelection = false;
+                    }, 100);
+        };
+
+        $scope.selectProfileMetaData = function () {
+            $scope.subview = "EditProfileMetadata.html";
                  $scope.loadingSelection = true;
                 $timeout(
                     function () {
@@ -796,10 +813,6 @@ angular.module('igl')
         $scope.onColumnToggle = function (item) {
            $scope.columnSettings.save();
         };
-
-
-
-
     });
 
 angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes, $rootScope, $http) {
