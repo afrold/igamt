@@ -46,7 +46,7 @@ describe("delete message service", function () {
 // Don't ask me why, but the following fixtures path MUST have "base/" prepended or it won't work.
 // Also, see the "pattern" thing, which is the last element of the files array in test/karma.conf.js.			 
 			 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/igdocument/';
-//			 	var jsonFixture = getJSONFixture('igdocument-2.7.json');
+//			 	var jsonFixture = getJSONFixture('igdocument-2.7-HL7STANDARD-.json');
 			 	var jsonFixture = getJSONFixture('igdocument-2.7.5-USER-1.0.json');
 	    			igdocumentAsString = JSON.stringify(jsonFixture);
 			 	expect($rootScope).toBeDefined();
@@ -98,21 +98,18 @@ describe("delete message service", function () {
 		// A clone duplicates a message then splices it into two arrays: (1) profile and (2) toc.
 		// Here were going to compare the lengths of these arrays before and after.
 		
-		// First we take the profile and record the length of its messages.
+		// We take the profile and record the length of its messages.
 		var bCount = igdocument.profile.messages.children.length;
 		
-		// Second we extract the toc and record the length of its messages.
-		var toc = ToCSvc.getToC(igdocument);
-		var msgs = CloneDeleteSvc.getMessages(toc);
+		// We do the clone.
+		var msg = igdocument.profile.messages.children[4];
+		var newMsg = CloneDeleteSvc.cloneMessage(igdocument, msg);
 		
-		// Third we do the clone.
-		var newMsg = CloneDeleteSvc.cloneMessage(igdocument, msgs.children[4]);
-		
-		// Fourth we check our counts and undefineds
+		// We check our counts and undefineds
 		expect(igdocument.profile.messages.children.length).toBe(bCount +1);
 		expect(newMsg).toBeDefined();
-		expect(newMsg.reference.id).toBeDefined();
-		expect(msg.id).not.toBe(newMsg.reference.id)
+		expect(newMsg.id).toBeDefined();
+		expect(msg.id).not.toBe(newMsg.id)
 	});
 	
 	it("Can we delete a message?", function () {

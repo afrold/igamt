@@ -50,7 +50,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 			var segRefs = [];
 			
 			_.each(message.children, function(groupORsegment) {
-				var refs = msgs.fetchSegmentRefs(groupORsegment);
+				var refs = fetchSegmentRefs(groupORsegment);
 				_.each(refs, function(ref){
 					segRefs.push(ref);
 				});
@@ -59,13 +59,47 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		  return _.uniq(segRefs);
 		}
 		
-		msgs.fetchSegmentRefs = function(groupORsegment) {
+		msgs.getGroups = function(message) {
+			
+			var groups = [];
+			
+			_.each(message.children, function(groupORsegment) {
+				var grps = fetchGroups(groupORsegment);
+				_.each(grps, function(grp){
+					groups.push(grp);
+				});
+			});
+			
+		  return groups;
+		}
+		
+		function fetchGroups(groupORsegment) {
+
+			var groups = [];
+			
+			if (groupORsegment.type === "group") {
+				groups.push(groupORsegment);
+				_.each(groupORsegment.children, function(groupORsegment1) {
+					var grps = fetchGroups(groupORsegment1);
+					_.each(grps, function(grp){
+						groups.push(grp);
+					});
+				});
+			} else {
+//				console.log("Was a segmentRef groupORsegment.type="
+//								+ groupORsegment.type);
+			}
+			
+			return groups;
+		}
+	
+		function fetchSegmentRefs(groupORsegment) {
 
 			var segRefs = [];
 			
 			if (groupORsegment.type === "group") {
 				_.each(groupORsegment.children, function(groupORsegment1) {
-					var refs = msgs.fetchSegmentRefs(groupORsegment1);
+					var refs = fetchSegmentRefs(groupORsegment1);
 					_.each(refs, function(ref){
 						segRefs.push(ref);
 					});

@@ -24,7 +24,7 @@ angular.module('igl').factory(
 
 		          var newSegment = angular.copy(segment);
 		            newSegment.id = new ObjectId().toString();
-		            newSegment.sectionTitle = $rootScope.createNewSegmentName(segment.sectionTitle);
+		            newSegment.label = $rootScope.createNewFlavorName(segment.label);
 		            if (newSegment.fields != undefined && newSegment.fields != null && newSegment.fields.length != 0) {
 		                for (var i = 0; i < newSegment.fields.length; i++) {
 		                    newSegment.fields[i].id = new ObjectId().toString();
@@ -43,7 +43,7 @@ angular.module('igl').factory(
 		                });
 		            }
 //		            $rootScope.segments.splice(0, 0, newSegment);
-					igdocument.profile.segments.children.splice(0, 0, newSegment);
+		            $rootScope.igdocument.profile.segments.children.splice(0, 0, newSegment);
 		            $rootScope.segment = newSegment;
 		            $rootScope.segment[newSegment.id] = newSegment;
 		            $rootScope.recordChanged();
@@ -55,7 +55,7 @@ angular.module('igl').factory(
 
 		          var newDatatype = angular.copy(datatype);
 		            newDatatype.id = new ObjectId().toString();
-		            newDatatype.sectionTitle = $rootScope.createNewDatatypeName(datatype.sectionTitle);
+		            newDatatype.label = $rootScope.createNewFlavorName(datatype.label);
 		            if (newDatatype.components != undefined && newDatatype.components != null && newDatatype.components.length != 0) {
 		                for (var i = 0; i < newDatatype.components.length; i++) {
 		                    newDatatype.components[i].id = new ObjectId().toString();
@@ -74,7 +74,7 @@ angular.module('igl').factory(
 		                });
 		            }
 //		            $rootScope.datatypes.splice(0, 0, newDatatype);
-					igdocument.profile.datatypes.children.splice(0, 0, newDatatype);
+		            $rootScope.igdocument.profile.datatypes.children.splice(0, 0, newDatatype);
 		            $rootScope.datatype = newDatatype;
 		            $rootScope.datatypesMap[newDatatype.id] = newDatatype;
 		            $rootScope.recordChanged();
@@ -84,27 +84,30 @@ angular.module('igl').factory(
 
 			svc.cloneTableFlavor = function(table) {
 
-		        $rootScope.newTableFakeId = $rootScope.newTableFakeId - 1;
-		        var newTable = angular.fromJson({
-		            id:new ObjectId().toString(),
-		            type: '',
-		            bindingIdentifier: '',
-		            name: '',
-		            version: '',
-		            oid: '',
-		            tableType: '',
-		            stability: '',
-		            extensibility: '',
-		            codes: []
-		        });
-		        newTable.type = 'table';
-		        newTable.bindingIdentifier = table.bindingIdentifier + '_' + $rootScope.postfixCloneTable + $rootScope.newTableFakeId;
-		        newTable.name = table.name + '_' + $rootScope.postfixCloneTable + $rootScope.newTableFakeId;
-		        newTable.version = table.version;
-		        newTable.oid = table.oid;
-		        newTable.tableType = table.tableType;
-		        newTable.stability = table.stability;
-		        newTable.extensibility = table.extensibility;
+	          var newTable = angular.copy(table);
+	          newTable.id = new ObjectId().toString();
+		        newTable.bindingIdentifier = table.bindingIdentifier + $rootScope.createNewFlavorName(table.bindingIdentifier);
+//		        $rootScope.newTableFakeId = $rootScope.newTableFakeId - 1;
+//		        var newTable = angular.fromJson({
+//		            id:new ObjectId().toString(),
+//		            type: '',
+//		            bindingIdentifier: '',
+//		            name: '',
+//		            version: '',
+//		            oid: '',
+//		            tableType: '',
+//		            stability: '',
+//		            extensibility: '',
+//		            codes: []
+//		        });
+//		        newTable.type = 'table';
+//		        newTable.bindingIdentifier = table.bindingIdentifier + $rootScope.createNewFlavorName(table.bindingIdentifier);
+//		        newTable.name = table.name + '_' + $rootScope.postfixCloneTable + $rootScope.newTableFakeId;
+//		        newTable.version = table.version;
+//		        newTable.oid = table.oid;
+//		        newTable.tableType = table.tableType;
+//		        newTable.stability = table.stability;
+//		        newTable.extensibility = table.extensibility;
 
 		        for (var i = 0, len1 = table.codes.length; i < len1; i++) {
 		            $rootScope.newValueFakeId = $rootScope.newValueFakeId - 1;
@@ -120,7 +123,7 @@ angular.module('igl').factory(
 		            newTable.codes.push(newValue);
 		        }
 
-		        $rootScope.tables.push(newTable);
+//		        $rootScope.tables.push(newTable);
 		        $rootScope.table = newTable;
 		        $rootScope.tablesMap[newTable.id] = newTable;
 		        
@@ -147,22 +150,14 @@ angular.module('igl').factory(
 				// but is currently
 				// unpopulated in the profile.
 				var newMessage = angular.copy(message);
-				newMessage.reference.id = new ObjectId();
-				var rand = Math.floor(Math.random() * 100);
-				if (!igdocument.profile.metaData.ext) {
-					igdocument.profile.metaData.ext = "";
-				}
-				// Nodes must have unique names so we append a random number when we
-				// duplicate.
-				if (newMessage.type === 'message') {
-					newMessage.name = newMessage.name + "-"
-							+ igdocument.profile.metaData.ext + "-"
-							+ rand + "-"
-							+ newMessage.description;
-					newMessage.label = newMessage.name;
-					igdocument.profile.messages.children.splice(0, 0, newMessage);
-				}
-
+				newMessage.id = new ObjectId().toString();
+				var groups = ProfileAccessSvc.Messages(igdocument.profile).getGroups(newMessage);
+				angular.forEach(groups, function(group) {
+					group.id = new ObjectId().toString();
+				});
+				newMessage.name = message.name + $rootScope.createNewFlavorName(message.name);
+				igdocument.profile.messages.children.splice(0, 0, newMessage);
+				
 				return newMessage;
 			}
 						
@@ -300,17 +295,17 @@ angular.module('igl').factory(
 				secLive.splice(idxP, 1);
 			}
 
-			svc.getMessages = function(toc) {
-				var ConformanceProfile = _.find(toc, function(child) {
-					return child.id === "3";
-				});
-			
-				var messages = _.find(ConformanceProfile.children, function(
-						child) {
-					return child.id === "3.1";
-				});
-				return messages;
-			}
+//			svc.getMessages = function(toc) {
+//				var ConformanceProfile = _.find(toc, function(child) {
+//					return child.id === "3";
+//				});
+//			
+//				var messages = _.find(ConformanceProfile.children, function(
+//						child) {
+//					return child.id === "3.1";
+//				});
+//				return messages;
+//			}
 
 			svc.findMessageIndex = function(messages, id) {
 				var idxT = _.findIndex(messages.children, function(child) {
