@@ -13,7 +13,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class Profile extends SectionModel implements java.io.Serializable,
+public class Profile extends TextbasedSectionModel implements java.io.Serializable,
 		Cloneable {
 
 	private static final long serialVersionUID = 1L;

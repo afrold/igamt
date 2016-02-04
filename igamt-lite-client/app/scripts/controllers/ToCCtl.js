@@ -8,9 +8,9 @@ angular
 						'$q',
 						'ToCSvc',
 						'ContextMenuSvc',
-						'CloneDeleteMessageSvc',
+						'CloneDeleteSvc',
 						function($scope, $rootScope, $q, ToCSvc,
-								ContextMenuSvc, CloneDeleteMessageSvc) {
+								ContextMenuSvc, CloneDeleteSvc) {
 							var ctl = this;
 							$scope.collapsed = [];
 							$scope.yesDrop = false;
@@ -38,39 +38,51 @@ angular
 								return "margin-left : " + level + "em";
 							}
 
-							$scope.tocSelection = function(leaf) {
+							$scope.tocSelection = function(entry) {
 								// TODO gcr: See about refactoring this to
 								// eliminate the switch.
-								// One could use leaf.reference.type to assemble
+								// One could use entry.reference.type to assemble
 								// the $emit string.
 								// Doing so would require maintaining a sync
 								// with the ProfileListController.
-								leaf.selected = true;
+								entry.selected = true;
 								ToCSvc.currentLeaf.selected = false;
-								ToCSvc.currentLeaf = leaf;
-								switch (leaf.parent) {
-								case "3.1": {
+								ToCSvc.currentLeaf = entry;
+								switch (entry.parent) {
+								case "documentMetdata": {
+									$scope.$emit('event:openDocumentMetadata',
+											entry.reference);
+									break;
+								}
+								case "profileMetdata": {
+									$scope.$emit('event:openProfileMetadata',
+											entry.reference);
+									break;
+								}
+								case "messages": {
 									$scope.$emit('event:openMessage',
-											leaf.reference);
+											entry.reference);
 									break;
 								}
-								case "3.2": {
+								case "segments": {
 									$scope.$emit('event:openSegment',
-											leaf.reference);
+											entry.reference);
 									break;
 								}
-								case "3.3": {
+								case "datatypes": {
 									$scope.$emit('event:openDatatype',
-											leaf.reference);
+											entry.reference);
 									break;
 								}
-								case "3.4": {
+								case "tables": {
 									$scope.$emit('event:openTable',
-											leaf.reference);
+											entry.reference);
 									break;
 								}
 								default: {
-									$scope.subview = "nts.html";
+									$scope.$emit('event:openSection',
+											entry.reference);
+									break;
 								}
 								}
 								return $scope.subview;
@@ -79,17 +91,29 @@ angular
 							$scope.closedCtxSubMenu = function(leaf, $index) {
 								var ctxMenuSelection = ContextMenuSvc.get();
 								switch (ctxMenuSelection) {
+								case "Add flavor":
+									console.log("Add flavor==> node=" + leaf);
+									if (leaf.reference.type === 'section') {
+					        				CloneDeleteSvc.cloneSectionFlavor(leaf.reference);
+									} else if (leaf.reference.type === 'segment') {
+						        			CloneDeleteSvc.cloneSegmentFlavor(leaf.reference);
+									}  else if (leaf.reference.type === 'datatype') {
+						        			CloneDeleteSvc.cloneDatatypeFlavor(leaf.reference);
+									} else if (leaf.reference.type === 'table') {
+										CloneDeleteSvc.cloneTableFlavor(leaf.reference);
+									}
+									break;
 								case "Clone":
 									console.log("Clone==> node=" + leaf);
-									CloneDeleteMessageSvc.cloneMessage(
-											$rootScope.profile,
-											$rootScope.tocData, leaf);
+									CloneDeleteSvc.cloneMessage(
+											$rootScope.igdocument, leaf.reference);
+									$rootScope.$broadcast('event:SetToC');
 									break;
 								case "Delete":
-									console.log("Delete==> node=" + leaf);
-									CloneDeleteMessageSvc.deleteMessage(
-											$rootScope.profile,
-											$rootScope.tocData, leaf);
+									console.log("Delete==> node=" + leaf.label);
+									CloneDeleteSvc.deleteMessage(
+											$rootScope.igdocument, leaf.reference);
+									$rootScope.$broadcast('event:SetToC');
 									break;
 								default:
 									console

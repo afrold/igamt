@@ -1,7 +1,5 @@
 <script type="text/ng-template" id="EditMessages.html">
     <div ng-controller="MessageListCtrl" ng-init="init()">
-        <!--<div class="panel panel-info">-->
-            <!--<div class="panel-body">-->
                 <div ng-show="loadingSelection"
                      style="text-align: center;">
                     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
@@ -24,7 +22,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group"
                                                  ng-class="{'has-error' : messageMetaDataForm.identifier.$invalid && !messageMetaDataForm.identifier.$pristine }">
-                                                <label>Message Identifier</label> <input type="text"
+                                                <label>Identifier</label> <input type="text"
                                                                                          ng-change="recordChangeForEdit2('message','edit',message.id,'identifier', message.identifier)"
                                                                                          name="identifier"
                                                                                          class="form-control"
@@ -34,7 +32,7 @@
                                             </div>
 
                                             <div class="form-group">
-                                                <label>Message OID</label> <input type="text"
+                                                <label>OID</label> <input type="text"
                                                                                   ng-change="recordChangeForEdit2('message','edit',message.id,'oid', message.oid)"
                                                                                   name="oid"
                                                                                   class="form-control"
@@ -52,32 +50,49 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <label>Message Version</label> <input style="width: 100%"
+                                                <label>Name</label> <input style="width: 100%"
+                                                                                      class="igl-input"
+                                                                                      type="text"
+                                                                                      disabled name="name"
+                                                                                      ng-change="recordChanged()"
+                                                                                      ng-model="message.name"
+                                                                                      ng-disabled="options.readonly">
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Description</label> <input style="width: 100%"
+                                                                                      class="igl-input"
+                                                                                      type="text"
+                                                                                      disabled name="name"
+                                                                                      ng-change="recordChanged()"
+                                                                                      ng-model="message.description"
+                                                                                      ng-disabled="options.readonly">
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Version</label> <input style="width: 100%"
                                                                                       class="igl-input"
                                                                                       type="text"
                                                                                       disabled name="version"
-                                                                                      ng-change="recordChangeForEdit2('message','edit',message.id,'version', message.version)"
+                                                                                      ng-change="recordChanged()"
                                                                                       ng-model="message.version"
-                                                                                      ng-disabled="options.readonly"
-                                                    >
+                                                                                      ng-disabled="options.readonly">
 
                                             </div>
-
                                             <div class="form-group">
-                                                <label>Message Date</label> <input style="width: 100%"
+                                                <label>Date</label> <input style="width: 100%"
                                                                                    class="igl-input" type="text"
                                                                                    name="date" disabled
-                                                                                   ng-change="recordChangeForEdit2('message','edit',message.id,'date', message.date)"
+                                                                                   ng-change="recordChanged()"
                                                                                    ng-disabled="options.readonly"
                                                                                    ng-model="message.date">
 
                                             </div>
-
                                             <div class="form-group">
                                                 <label>Comment</label> <input style="width: 100%"
                                                                               class="igl-input" type="text"
                                                                               name="comment"
-                                                                              ng-change="recordChangeForEdit2('message','edit',message.id,'comment', message.comment)"
+                                                                              ng-change="recordChanged()"
                                                                               ng-disabled="options.readonly"
                                                                               ng-model="message.comment">
                                             </div>
@@ -113,8 +128,6 @@
                     </div>
                 </div>
             </div>
-        <!--</div>-->
-    <!--</div>-->
 </script>
 
 <script type="text/ng-template" id="MessageEditTree.html">
@@ -213,15 +226,6 @@
 		<td class="col-xs-1 col-fixed-130">
 			<div>-</div>
 		</td>
-        <!--<td class="col-xs-1">-->
-        <!--<span ng-show="node.type === 'segmentRef'">-->
-        <!--<a class="point"-->
-        <!--ng-click="goToSegment(node.ref)"-->
-        <!--ng-bind="node.ref.label"></a>-->
-        <!--</span>-->
-
-        <!--<div ng-show="node.type !== 'segmentRef'">-</div>-->
-        <!--</td>-->
         <td class="col-xs-1" ng-style="predWidth">
             <div>-</div>
         </td>

@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout) {
+    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout) {
 //        $scope.loading = false;
         $scope.readonly = false;
         $scope.saved = false;
@@ -22,7 +22,15 @@ angular.module('igl')
             $scope.refreshTree();
             $scope.loadingSelection = false;
         };
+        
+        $scope.cloneSegmentFlavor = function(segment) {
+        		CloneDeleteSvc.cloneSegmentFlavor(segment);
+        }
 
+        $scope.delete = function (segment) {
+        		CloneDeleteSvc.deleteSegment(segment.id);
+        };
+        
         $scope.hasChildren = function (node) {
             return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype) && $rootScope.getDatatype(node.datatype).components && $rootScope.getDatatype(node.datatype).components.length > 0));
         };

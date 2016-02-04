@@ -34,7 +34,8 @@ import org.springframework.test.web.servlet.MvcResult;
 @ContextConfiguration(classes = { TestWebAppConfig.class })
 public class ProfileControllerIntegrationTest {
 
-	@InjectMocks
+//	@InjectMocks
+	@Autowired
 	ProfileController controller;
 
 	@Autowired
@@ -53,13 +54,12 @@ public class ProfileControllerIntegrationTest {
 
 	}
 
-	// @Test
+	@Test
 	public void testGetAllPreloaded() throws Exception {
-		Profile profile = profile();
-		assertNotNull("Profile is null.", profile);
-		profileService.save(profile);
+//		Profile profile = profile();
+//		assertNotNull("Profile is null.", profile);
+//		profileService.save(profile);
 		mockMvc.perform(get("/profiles")).andExpect(status().isOk());
-
 	}
 
 	// @Test
@@ -104,7 +104,7 @@ public class ProfileControllerIntegrationTest {
 		return null;
 	}
 
-	@Test
+//	@Test
 	public void testApplyMessageChanges() throws Exception {
 
 		Profile profile = profile();
@@ -121,33 +121,5 @@ public class ProfileControllerIntegrationTest {
 		String content = result.getResponse().getContentAsString();
 
 		System.out.println("DONE");
-
-		// Profile p1 = profileService.findOne("553101bfd728d1a1382f9c2c");
-		// if (p1 != null) {
-		// Message message = p1.getMessages().getChildren()
-		// .toArray(new Message[] {})[0];
-		// SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
-		// Group group = (Group) message.getChildren().get(5);
-		// Segment segment = segmentRef.getRef();
-		// Field field = segment.getFields().get(0);
-		// Datatype datatype = p1.getDatatypes().getChildren()
-		// .toArray(new Datatype[] {})[0];
-		// try {
-		// p1 = profileService.apply(jsonChanges, p1);
-		//
-		// Field f = p1.getSegments().findOneField(
-		// "5530963d30040340c9cb5315");
-		// assertEquals("HD_IZ_2", f.getDatatype().getLabel());
-		//
-		// } catch (ProfileSaveException e) {
-		// if (e.getErrors() != null && !e.getErrors().isEmpty()) {
-		// for (ProfilePropertySaveError error : e.getErrors()) {
-		// System.out.println(error);
-		// }
-		// }
-		// }
-		// }
-
-		//
 	}
 }

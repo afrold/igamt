@@ -8,261 +8,142 @@ angular.module('igl').factory(
 				selected : false
 			};
 
-			svc.getToC = function(profile) {
+			svc.getToC = function(igdocument) {
 				console.log("Getting toc...");
-				var toc = [];
-				toc.push(svc.getIntroduction());
-				toc.push(svc.getUseCase());
-				toc.push(svc.getMessageInfrastructure(profile));
-				return toc;
+				toc = [];
+				console.log("childSections=" + igdocument.childSections.length);
+				var documentMetadata = getMetadata(igdocument.metaData);
+				toc.push(documentMetadata, "documentMetdata");
+				var sections = getSections(igdocument.childSections);
+				toc.push(sections);
+				var conformanceProfile = getMessageInfrastructure(igdocument.profile);
+				toc.push(conformanceProfile);
+				return _.flatten(toc);
 			}
+			
+			function getMetadata(metaData, parent) {
+				var metaData1 = {
+				"label" : "Metadata",
+				"selected" : false,
+				"position" : 0,
+				"parent" : parent,
+				"reference" : metaData
+			}				
+				return metaData1;
+			}
+			
+			function getSections(childSections, parent) {
+				
+				var rval = [];
 
-			svc.getIntroduction = function() {
-				var rval = {
-					"id" : "1",
-					"label" : "Introduction",
+ 				_.each(childSections, function(childSection) {
+					var section = { "id" : childSection.id,
+					"label" : childSection.sectionTitle,
 					"selected" : false,
-					"parent" : "0",
-					"drop" : [],
-					"reference" : "",
-					"children" : [ {
-						"id" : "1.1",
-						"label" : "Purpose",
-						"selected" : false,
-						"parent" : "1",
-						"drop" : [],
-						"reference" : ""
-					}, {
-						"id" : "1.2",
-						"label" : "Audience",
-						"selected" : false,
-						"parent" : "1",
-						"drop" : [],
-						"reference" : ""
-					}, {
-						"id" : "1.3",
-						"label" : "Organization of this guide",
-						"selected" : false,
-						"parent" : "1",
-						"drop" : [],
-						"reference" : ""
-					}, {
-						"id" : "1.4",
-						"label" : "Referenced profiles - antecedents",
-						"selected" : false,
-						"parent" : "1",
-						"drop" : [],
-						"reference" : ""
-					}, {
-						"id" : "1.5",
-						"label" : "Scope",
-						"selected" : false,
-						"parent" : "1",
-						"drop" : "Scope",
-						"reference" : "",
-						"children" : [ {
-							"label" : "In Scope",
-							"selected" : false,
-							"parent" : "1.5",
-							"drop" : [],
-							"reference" : ""
-						}, {
-							"label" : "Out of Scope",
-							"selected" : false,
-							"parent" : "1.5",
-							"drop" : [],
-							"reference" : ""
-						} ]
-					}, {
-						"label" : "Key technical decisions [conventions]",
-						"id" : "1.6",
-						"selected" : false,
-						"parent" : "1",
-						"drop" : [],
-						"reference" : ""
-					} ]
-				};
+					"position" : childSection.sectionPosition,
+					"parent" : parent,
+					"reference" : childSection
+					}
+					var sections1 = getSections(childSection.childSections, childSection._id);
+					_.each(sections1, function(section1) {
+						if (!section.children) {
+							section.children = [];
+						}
+						section.children.push(section1);						
+					})
+//					var section2 = _.sortBy(sections1, function(section1) { return section1.position; });
+					rval.push(sections1);
+				});
+
 				return rval;
 			}
-
-			svc.getUseCase = function() {
-				return {
-					"id" : "2",
-					"label" : "Use Case",
-					"selected" : false,
-					"parent" : "0",
-					"drop" : [],
-					"reference" : "",
-					"children" : [ {
-						"id" : "2.1",
-						"label" : "Actors",
-						"selected" : false,
-						"parent" : "2",
-						"drop" : [],
-						"reference" : ""
-					}, {
-						"id" : "2.2",
-						"label" : "Use case assumptions",
-						"selected" : false,
-						"parent" : "2",
-						"drop" : [],
-						"reference" : "",
-						"children" : [ {
-							"id" : "2.3.1",
-							"label" : "Pre Conditions",
-							"selected" : false,
-							"parent" : "2",
-							"drop" : [],
-							"reference" : ""
-						}, {
-							"id" : "2.3.2",
-							"label" : "Post Condition",
-							"selected" : false,
-							"parent" : "2",
-							"drop" : [],
-							"reference" : ""
-						}, {
-							"id" : "2.3.3",
-							"label" : "Functional Requirements",
-							"selected" : false,
-							"parent" : "2",
-							"drop" : [],
-							"reference" : ""
-						} ]
-					}, {
-						"id" : "2.3",
-						"label" : "User story",
-						"selected" : false,
-						"parent" : "2",
-						"drop" : [],
-						"reference" : ""
-					}, {
-						"id" : "2.4",
-						"label" : "Sequence diagram",
-						"selected" : false,
-						"parent" : "2",
-						"drop" : [],
-						"reference" : "",
-						"children" : [ {
-							"id" : "2.4.1",
-							"label" : "Acknolegements",
-							"selected" : false,
-							"parent" : "2",
-							"drop" : [],
-							"reference" : ""
-						}, {
-							"id" : "2.4.2",
-							"label" : "Error Handling",
-							"selected" : false,
-							"parent" : "2",
-							"drop" : [],
-							"reference" : ""
-						} ]
-					} ]
-				};
-				return rval;
-			}
-
-			svc.getMessageInfrastructure = function(profile) {
+			
+			function getMessageInfrastructure(profile) {
 				var rval = {
-					"id" : "3",
-					"label" : "Message Infrastructure",
+					"id" : profile.type,
+					"label" : profile.sectionTitle,
 					"selected" : false,
+					"position" : profile.sectionPosition,
 					"parent" : "0",
-					"drop" : [],
 					"reference" : "",
 					"children" : []
 				}
-				rval.children.push(svc.getTopEntry("3.1", "3",
-						"Conformance Profiles", profile.messages));
-				rval.children.push(svc.getTopEntry("3.2", "3",
-						"Segments and Field Descriptions", profile.segments));
-				rval.children.push(svc.getTopEntry("3.3", "3", "Datatypes",
-						profile.datatypes));
-				rval.children.push(svc.getTopEntry("3.4", "3", "Value Sets",
-						profile.tables));
+				rval.children.push(getMetadata(profile.metaData, "profileMetdata"));
+				rval.children.push(getTopEntry(profile.messages));
+				rval.children.push(getTopEntry(profile.segments));
+				rval.children.push(getTopEntry(profile.datatypes));
+				rval.children.push(getTopEntry(profile.tables));
 				return rval;
 			}
-
+			
+//			function getProfileMetadata(profile) {
+//				var metaData = {
+//				"label" : "Metadata",
+//				"selected" : false,
+//				"position" : 0,
+//				"reference" : profile.metaData
+//				}				
+//				return metaData;
+//			}
+			
 			// Returns a top level entry. It can be dropped on, but cannot be
 			// dragged.
 			// It will accept a drop where the drag value matches its label.
-			svc.getTopEntry = function(id, parent, label, fromProfile) {
+			function getTopEntry(fromProfile) {
 				var children = [];
 				var rval = {
-					"id" : id,
-					"label" : label,
-					"selected" : false,
-					"parent" : parent,
-					"drop" : [ id ],
+					"id" : fromProfile.type,
+					"label" : fromProfile.sectionTitle,
+					"position" : fromProfile.sectionPosition,
 					"selected" : false,
 				}
-				if (fromProfile !== undefined) {
+				if (fromProfile) {
 					rval["reference"] = fromProfile;
-					rval["children"] = svc.createEntries(id,
-							fromProfile.children);
+					if(angular.isArray(fromProfile.children)) {
+						rval["children"] = createEntries(fromProfile.type, fromProfile.children);
+					}
 				}
 				return rval;
 			}
 
 			// Returns a second level set entries, These are draggable. "drag"
-			// indicates
-			// where one of these entries can be dropped.
-			svc.createEntries = function(parent, children) {
+			function createEntries(parent, children) {
 				var rval = [];
 				var entry = {};
 				_.each(children, function(child) {
-					if (parent === "3.1") {
-						entry = svc.createEntry(child, child.id, child.name
-								+ " - " + child.description, parent, parent);
-					} else if (parent === "3.2") {
-						entry = svc
-								.createEntry(child, child.id, child.name
-										+ " - " + child.description, parent,
-										child.drop);
-					} else if (parent === "3.3") {
-						entry = svc
-								.createEntry(child, child.id, child.name
-										+ " - " + child.description, parent,
-										child.drop);
-					} else if (parent === "3.4") {
-						entry = svc
-								.createEntry(child, child.id,
-										child.bindingIdentifier + " - "
-												+ child.description, parent,
-										child.drop);
+					if(parent === "messages") {
+						entry = createEntry(child, child.name, parent);
+					} else if (parent === "tables") {
+						entry = createEntry(child, child.bindingIdentifier, parent);
 					} else {
-						entry = svc.createEntry(child, child.id, child.label,
-								parent, child.drop, child.children);
+						entry = createEntry(child, child.label, parent);
 					}
 					rval.push(entry);
 				});
-				if (parent === "3.1") {
+				if (parent === "messages") {
 					return rval;
 				} else {
-					return _.sortBy(rval, 'label');
+					return _.sortBy(rval, "label");
 				}
 			}
 
-			svc.createEntry = function(reference, id, label, parent, drop,
-					children) {
+			function createEntry(child, label, parent) {
 				var rval = {
-					"id" : id,
+					"id" : child.type,
 					"label" : label,
+					"description" : child.description,
+					"position" : child.sectionPosition,
 					"selected" : false,
 				};
-				if (reference !== undefined) {
-					rval["reference"] = reference;
+				if (child) {
+					rval["reference"] = child;
 				}
-				if (parent !== undefined) {
+				if (parent) {
 					rval["parent"] = parent;
 				}
-				if (drop !== undefined) {
-					rval["drop"] = drop;
-				}
-				if (children !== undefined) {
-					rval["children"] = children;
-				}
+//				if (angular.isArray(child.children)) {
+//					rval["children"] = child.children;					}
+//				}
 				return rval;
 			}
 

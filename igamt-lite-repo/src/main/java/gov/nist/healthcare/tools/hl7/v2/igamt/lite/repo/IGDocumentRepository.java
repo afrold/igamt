@@ -30,6 +30,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 	 List<IGDocument> findByScope(IGDocumentScope scope);
 	 
-	 List<IGDocument> findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope scope, String hl7version);
+	 List<IGDocument> findStandardByVersion(String hl7version);
 	 
 }

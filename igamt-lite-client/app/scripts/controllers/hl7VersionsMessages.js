@@ -1,7 +1,7 @@
 angular.module('igl').controller(
 		'HL7VersionsDlgCtrl',
 		function($scope, $rootScope, $modal, $log, $http, $httpBackend,
-				IGDocumentAccessSvc) {
+				userInfoService) {
 
 			$rootScope.clickSource = {};
 			$scope.hl7Version = {};
@@ -39,7 +39,7 @@ angular.module('igl').controller(
 
 			$scope.listHL7Versions = function() {
 				var hl7Versions = [];
-				$http.get('api/igdocuments/hl7/findVersions', {
+				$http.get('api/igdocuments/findVersions', {
 					timeout : 60000
 				}).then(function(response) {
 					var len = response.data.length;
@@ -60,9 +60,10 @@ angular.module('igl').controller(
 				var iprw = {
 					"hl7Version" : hl7Version,
 					"msgIds" : msgIds,
+					"accountID" : userInfoService.getAccountID(), 
 					"timeout" : 60000
 				};
-				$http.post('api/igdocuments/hl7/createIntegrationIGDocument', iprw)
+				$http.post('api/igdocuments/createIntegrationProfile', iprw)
 						.then(
 								function(response) {
 									var igdocument = angular
@@ -74,7 +75,7 @@ angular.module('igl').controller(
 									$rootScope.$broadcast('event:IgsPushed',
 											igdocument);
 								});
-				return $scope.igdocument;
+				return $rootScope.igdocument;
 			};
 
 			/**
@@ -89,7 +90,7 @@ angular.module('igl').controller(
 					"msgIds" : msgIds,
 					"timeout" : 60000
 				};
-				$http.post('api/igdocuments/hl7/updateIntegrationIGDocument', iprw)
+				$http.post('api/igdocuments/updateIntegrationProfile', iprw)
 						.then(
 								function(response) {
 									var igdocument = angular
@@ -110,22 +111,19 @@ angular.module('igl').controller(
 angular.module('igl').controller(
 		'HL7VersionsInstanceDlgCtrl',
 		function($scope, $rootScope, $modalInstance, $http, hl7Versions,
-				IGDocumentAccessSvc) {
+				ProfileAccessSvc) {
 
 			$scope.selected = {
 				item : hl7Versions[0]
 			};
 
-			console.log("$scope.igdocumentVersions init");
 			$scope.igdocumentVersions = [];
 			var igdocumentVersions = [];
 
 			$scope.loadIGDocumentsByVersion = function() {
 				$rootScope.hl7Version = $scope.hl7Version;
-				console.log("loadIGDocumentsByVersion.hl7Version=" + $scope.hl7Version);
-				console.log("loadIGDocumentsByVersion.igdocumentVersions=" + $scope.igdocumentVersions);
 				$http.post(
-						'api/igdocuments/hl7/messageListByVersion', angular.fromJson({
+						'api/igdocuments/messageListByVersion', angular.fromJson({
 							"hl7Version" : $scope.hl7Version,
 							"messageIds" : $scope.igdocumentVersions
 						})).then(function(response) {
@@ -134,7 +132,6 @@ angular.module('igl').controller(
 				};
 
 			$scope.trackSelections = function(bool, id) {
-				console.log("trackSelections=" + id);
 				if (bool) {
 					igdocumentVersions.push(id);
 				} else {
@@ -151,19 +148,17 @@ angular.module('igl').controller(
 			}, function(newValue, oldValue) {
 				if ($rootScope.clickSource === "ctx") {
 					$scope.hl7Version = newValue.metaData.hl7Version;
-					$scope.igdocumentVersions = IGDocumentAccessSvc.Messages($rootScope.igdocument).getMessageIds();
-					console.log("$watch.igdocumentVersions=" + $scope.igdocumentVersions);
+					$scope.igdocumentVersions = ProfileAccessSvc.Messages().getMessageIds();
 					$scope.loadIGDocumentsByVersion();
 				}
 			});
 
-			$scope.getHL7Version = function() {
-				return IGDocumentAccessSvc.getVersion($rootScope.igdocument);
-			};
+//			$scope.getHL7Version = function() {
+//				return ProfileAccessSvc.Version();
+//			};
 
 			$scope.hl7Versions = hl7Versions;
 			$scope.ok = function() {
-				console.log("ok-igdocumentVersions=" + igdocumentVersions);
 				$scope.igdocumentVersions = igdocumentVersions;
 				$modalInstance.close(igdocumentVersions);
 			};

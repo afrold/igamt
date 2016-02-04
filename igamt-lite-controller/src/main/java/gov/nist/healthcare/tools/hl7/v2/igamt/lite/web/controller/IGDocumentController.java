@@ -1,28 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
-import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageByListCommand;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -46,6 +23,28 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageByListCommand;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 @RestController
 @RequestMapping("/igdocuments")
@@ -168,15 +167,16 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public IGDocumentSaveResponse save(@RequestBody IGDocumentChangeCommand command) throws IGDocumentNotFoundException,
+	public IGDocumentSaveResponse save(@RequestBody IGDocument igdocument) throws IGDocumentNotFoundException,
 			UserAccountNotFoundException, IGDocumentSaveException {
+		
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u
 				.getUsername());
 		if (account == null)
 			throw new UserAccountNotFoundException();
-		log.info("Applying changes to IGDocument=" + command.getIgDocument().getId() + " for account=" + command.getIgDocument().getAccountId());
-		IGDocument saved = igDocumentService.apply(command.getIgDocument());
+		log.info("Applying changes to IGDocument=" + igdocument.getId() + " for account=" + igdocument.getAccountId());
+		IGDocument saved = igDocumentService.apply(igdocument);
 		return new IGDocumentSaveResponse(saved.getMetaData().getDate(), saved.getMetaData().getVersion());
 	}
 
@@ -188,7 +188,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsXml(d);
 		response.setContentType("text/xml");
 		response.setHeader("Content-disposition",
-				"attachment;filename=" +  d.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
+				"attachment;filename=" +  d.getMetaData().getTitle() + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -199,7 +199,7 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsZip(d);
 		response.setContentType("application/zip");
-		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) +  ".zip");
+		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle()   + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) +  ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -210,7 +210,7 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsPdf(d);
 		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
+		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle()   + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -221,7 +221,7 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsDocx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
+		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle()   + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -234,7 +234,7 @@ public class IGDocumentController extends CommonController {
 		//TODO need to implement igDocumentService.diffToPdf
 		content = igDocumentService.diffToPdf(d);
 		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getName()  + "-Delta-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
+		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle()   + "-Delta-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -254,7 +254,7 @@ public class IGDocumentController extends CommonController {
 		IGDocument d = findIGDocument(id);
 		content = igDocumentExport.exportAsXlsx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getName()  + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
+		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle()   + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -299,17 +299,17 @@ public class IGDocumentController extends CommonController {
 		return igDocumentService.verifyValueSet(d, vsId, "valueset");
 		}
 	
-	@RequestMapping(value = "/hl7/findVersions", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/findVersions", method = RequestMethod.GET, produces = "application/json")
 	public List<String> findHl7Versions() {
 		log.info("Fetching all HL7 versions");
 		List<String> result = igDocumentCreation.findHl7Versions();
 		return result;
 	}
 
-	// TODO Change to query as is but with $nin a list of messages that can be empty. 
+// TODO Change to query as is but with $nin a list of messages that can be empty. 
 //	@RequestMapping(value = "/hl7/messageListByVersion/{hl7Version:.*}", method = RequestMethod.POST, produces = "application/json")
 //	public List<String[]> getMessageListByVersion(@PathVariable("hl7Version") String hl7Version, MessageByListCommand command) {
-	@RequestMapping(value = "/hl7/messageListByVersion", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/messageListByVersion", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public List<String[]> getMessageListByVersion(@RequestBody MessageByListCommand command) {
 		log.info("Fetching messages of version hl7Version=" + command.getHl7Version() + " command=" + command.getMessageIds() + " size=" + command.getMessageIds().size());
 		List<String[]> messages = igDocumentCreation.summary(command.getHl7Version(),  command.getMessageIds());
@@ -317,15 +317,21 @@ public class IGDocumentController extends CommonController {
 		return messages;
 	}
 
-	@RequestMapping(value = "/hl7/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public IGDocument createIG(@RequestBody IntegrationIGDocumentRequestWrapper idrw) throws IGDocumentException {
 		log.info("Creation of profile.");
-		return igDocumentCreation.createIntegratedIGDocument(idrw.getMsgIds(), idrw.getHl7Version());
+		IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgIds(), idrw.getHl7Version(), idrw.getAccountId());
+		igDocumentService.save(igDocument);
+		assert(igDocument.getId() != null);
+		assert(igDocument.getAccountId() != null);
+		return igDocument;
 	}
 
-	@RequestMapping(value = "/hl7/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public IGDocument updateIG(@RequestBody IntegrationIGDocumentRequestWrapper idrw) throws IGDocumentException {
 		log.info("Update profile with additional messages.");
-		return igDocumentCreation.updateIntegratedIGDocument(idrw.getMsgIds(), idrw.getIgdocument());
+		IGDocument igDocument = igDocumentCreation.updateIntegratedIGDocument(idrw.getMsgIds(), idrw.getIgdocument());
+		igDocumentService.save(igDocument);
+		return igDocument;
 	}
 }

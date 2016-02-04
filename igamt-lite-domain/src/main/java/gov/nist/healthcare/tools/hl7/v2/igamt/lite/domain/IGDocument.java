@@ -22,9 +22,9 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 
 	private Long accountId;
 
-	private String comment = "";
+	private String comment;
 
-	private String usageNote = "";
+	private String usageNote;
 
 	private DocumentMetaData metaData;
 	
@@ -64,10 +64,16 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		DocumentMetaData documentMetaData = new DocumentMetaData();
 		documentMetaData.setDate(p.getMetaData().getDate());
 		documentMetaData.setExt(p.getMetaData().getExt());
-		documentMetaData.setName(p.getMetaData().getName());
 		documentMetaData.setSubTitle(p.getMetaData().getSubTitle());
+		documentMetaData.setTitle(p.getMetaData().getName());
 		documentMetaData.setType(p.getMetaData().getType());
 		documentMetaData.setVersion(p.getMetaData().getVersion());
+		documentMetaData.setIdentifier(p.getMetaData().getIdentifier());
+		documentMetaData.setOrgName(p.getMetaData().getOrgName());
+		documentMetaData.setSpecificationName(p.getMetaData().getSpecificationName());
+		documentMetaData.setStatus(p.getMetaData().getStatus());
+		documentMetaData.setTopics(p.getMetaData().getTopics());
+		
 		this.setMetaData(documentMetaData);
 		
 		
@@ -129,7 +135,6 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		int messagePositionNum = 0;
 		for(Message m:p.getMessages().getChildren()){
 			m.setSectionPosition(messagePositionNum);
-			m.setSectionTitle(m.getStructID() + "-" + m.getDescription());
 			messagePositionNum = messagePositionNum + 1;
 		}
 		
@@ -138,7 +143,6 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		int segmentPositionNum = 0;
 		for(Segment s:p.getSegments().getChildren()){
 			s.setSectionPosition(segmentPositionNum);
-			s.setSectionTitle(s.getName() + "-" + s.getDescription());
 			segmentPositionNum = segmentPositionNum + 1;
 		}
 		
@@ -147,7 +151,6 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		int datatypePositionNum = 0;
 		for(Datatype d:p.getDatatypes().getChildren()){
 			d.setSectionPosition(datatypePositionNum);
-			d.setSectionTitle(d.getName() + "-" + d.getDescription());
 			datatypePositionNum = datatypePositionNum + 1;
 		}
 		
@@ -156,7 +159,6 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		int tablePositionNum = 0;
 		for(Table t:p.getTables().getChildren()){
 			t.setSectionPosition(tablePositionNum);
-			t.setSectionTitle(t.getBindingIdentifier() + "-" + t.getName());
 			tablePositionNum = tablePositionNum + 1;
 		}
 		
