@@ -85,8 +85,8 @@
 			<xsl:value-of select="@DocumentVersion"></xsl:value-of>
 		</h4>
 		<br></br>
-		<!-- <h4 align="center"> <xsl:text>HL7 version </xsl:text> <xsl:value-of 
-			select="@HL7Version"></xsl:value-of> </h4> <br></br> -->
+		<h4 align="center"> <xsl:text>HL7 version </xsl:text> <xsl:value-of 
+			select="@HL7Version"></xsl:value-of> </h4> <br></br>
 		<h4 align="center">
 			<xsl:text>Organisation name </xsl:text>
 			<xsl:value-of select="@OrgName"></xsl:value-of>
