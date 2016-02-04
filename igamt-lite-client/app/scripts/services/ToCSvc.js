@@ -24,11 +24,13 @@ angular.module('igl').factory(
 				console.log("childSections=" + igdocument.childSections.length);
 				var documentMetadata = getMetadata(igdocument.metaData, "documentMetadata");
 				toc.push(documentMetadata);
-//				var sections = getSections(igdocument.childSections);
-//				toc.push(sections);
+				var sections = getSections(igdocument.childSections, igdocument.type);
+				_.each(sections, function(section){
+					toc.push(section);
+				});
 				var conformanceProfile = getMessageInfrastructure(igdocument.profile);
 				toc.push(conformanceProfile);
-				return _.flatten(toc);
+				return toc;
 			}
 			
 			function getMetadata(metaData, parent) {
@@ -36,34 +38,23 @@ angular.module('igl').factory(
 				return rval;
 			}
 			
-			function getRootSections(igdocument, toc) {
-				
-				var sections = getSubSections(igdocument.childSections, igdocument.type);
-				_.each(sections, function(section) {
-					toc.push(section);
-				});
- 				
- 				return toc;
-			}
-			
-			function getSubSections(childSections, parent) {
+			function getSections(childSections, parent) {
 
-				var rval = new entry;
+				var rval = [];
 				
  				_.each(childSections, function(childSection) {
-	 					rval.id = childSection.id;
-	 					rval.label = childSection.sectionTitle;
-	 					rval.selected = false;
-	 					rval.position = childSection.sectionPosition;
-	 					rval.reference = childSection;
- 					
-					var sections1 = getSubSections(childSection.childSections, childSection._id);
+ 					var section = new entry(parent, childSection.sectionTitle, childSection.sectionPosition, childSection.type, childSection);
+ 					rval.push(section);	
+					var sections1 = getSections(childSection.childSections, childSection.type);
 					_.each(sections1, function(section1) {
-						rval.childSections.push(section1);						
+						if (!section.childSections) {
+							section.children = [];
+						}
+						section.children.push(section1);						
 					});
 				});
-				var section2 = _.sortBy(rval.childSections, function(childSection1) { return childSection1.position; });
-				rval.childSections = section2;
+				var section2 = _.sortBy(rval, function(childSection1) { return childSection1.position; });
+				rval = section2;
 				return rval;
 			}
 			
@@ -85,16 +76,6 @@ angular.module('igl').factory(
 				return rval;
 			}
 			
-//			function getProfileMetadata(profile) {
-//				var metaData = {
-//				"label" : "Metadata",
-//				"selected" : false,
-//				"position" : 0,
-//				"reference" : profile.metaData
-//				}				
-//				return metaData;
-//			}
-			
 			// Returns a top level entry. It can be dropped on, but cannot be
 			// dragged.
 			// It will accept a drop where the drag value matches its label.
@@ -109,7 +90,7 @@ angular.module('igl').factory(
 				if (fromProfile) {
 					rval["reference"] = fromProfile;
 					if(angular.isArray(fromProfile.children)) {
-						rval["children"] = createEntries(fromProfile.type, fromProfile.children);
+						rval["children"] = createEntries(fromProfile.children[0].type, fromProfile.children);
 					}
 				}
 				return rval;
@@ -120,16 +101,17 @@ angular.module('igl').factory(
 				var rval = [];
 				var entry = {};
 				_.each(children, function(child) {
-					if(parent === "messages") {
+					if(parent === "message") {
 						entry = createEntry(child, child.name, parent);
-					} else if (parent === "tables") {
+						console.log("createEntries entry.reference.name=" + entry.reference.name + " entry.parent=" + rval.parent);
+					} else if (parent === "table") {
 						entry = createEntry(child, child.bindingIdentifier, parent);
 					} else {
 						entry = createEntry(child, child.label, parent);
 					}
 					rval.push(entry);
 				});
-				if (parent === "messages") {
+				if (parent === "message") {
 					return rval;
 				} else {
 					return _.sortBy(rval, "label");
@@ -137,19 +119,15 @@ angular.module('igl').factory(
 			}
 
 			function createEntry(child, label, parent) {
-				var rval = {
-					"id" : child.type,
-					"label" : label,
-					"description" : child.description,
-					"position" : child.sectionPosition,
-					"selected" : false,
-				};
-				if (child) {
-					rval["reference"] = child;
-				}
-				if (parent) {
-					rval["parent"] = parent;
-				}
+				
+				var rval = new entry(child.id, label, child.sectionPosition, child.type, child);
+//				};
+//				if (child) {
+//					rval["reference"] = child;
+//				}
+//				if (parent) {
+//					rval["parent"] = parent;
+//				}
 //				if (angular.isArray(child.children)) {
 //					rval["children"] = child.children;					}
 //				}
