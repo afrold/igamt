@@ -85,10 +85,13 @@
 			<xsl:value-of select="@DocumentVersion"></xsl:value-of>
 		</h4>
 		<br></br>
-		<h4 align="center"> <xsl:text>HL7 version </xsl:text> <xsl:value-of 
-			select="@HL7Version"></xsl:value-of> </h4> <br></br>
 		<h4 align="center">
-			<xsl:text>Organisation name </xsl:text>
+			<xsl:text>HL7 version </xsl:text>
+			<xsl:value-of select="@HL7Version"></xsl:value-of>
+		</h4>
+		<br></br>
+		<h4 align="center">
+			<xsl:text>Organization name </xsl:text>
 			<xsl:value-of select="@OrgName"></xsl:value-of>
 		</h4>
 		<!-- <br></br> <xsl:value-of select="@Ext"></xsl:value-of> <br></br> <xsl:value-of 
@@ -129,7 +132,20 @@
 		</xsl:choose>
 	</xsl:template>
 
+	<xsl:template name="pad">
+		<xsl:param name="padChar" select="'#'" />
+		<xsl:param name="padCount" select="0" />
+		<xsl:value-of select="$padChar" />
+		<xsl:if test="$padCount&gt;1">
+			<xsl:call-template name="pad">
+				<xsl:with-param name="padCount" select="number($padCount) - 1" />
+				<xsl:with-param name="padChar" select="$padChar" />
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
 	<xsl:template name="dispSect">
+		<!-- &#xA0; -->
 		<xsl:call-template name="dispInfoSect" />
 		<xsl:for-each select="*">
 			<xsl:sort select="@position" data-type="number"></xsl:sort>
@@ -139,24 +155,25 @@
 
 	<xsl:template name="tocInfoSect">
 		<xsl:if test="name() = 'Section'">
-			<a href="#{@id}">
-				<xsl:choose>
-					<xsl:when test="@h &lt; 7">
-						<xsl:element name="{concat('h', @h)}">
-							<xsl:value-of select="@prefix" />
-							-
-							<xsl:value-of select="@title" />
-						</xsl:element>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:element name="h6">
-							<xsl:value-of select="@prefix" />
-							-
-							<xsl:value-of select="@title" />
-						</xsl:element>
-					</xsl:otherwise>
-				</xsl:choose>
-			</a>
+							<xsl:variable name="pad.tmp">
+					<xsl:call-template name="pad">
+					<xsl:with-param name="padChar" select="'#'" />
+						<xsl:with-param name="padCount" select="@h"/>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:variable name="pad" select="translate($pad.tmp,'#','    ')" />
+					<xsl:choose>
+						<xsl:when test="@h &lt; 7">
+							<xsl:element name="{concat('h', @h)}">
+								<a href="#{@id}"><pre><xsl:value-of select="$pad" /><xsl:value-of select="@prefix" />-<xsl:value-of select="@title" /></pre></a>
+							</xsl:element>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:element name="h6">
+								<a href="#{@id}"><pre><xsl:value-of select="$pad" /><xsl:value-of select="@prefix" />-<xsl:value-of select="@title" /></pre></a>
+							</xsl:element>
+						</xsl:otherwise>
+					</xsl:choose>
 		</xsl:if>
 	</xsl:template>
 
