@@ -114,7 +114,7 @@ angular
 						+ "</li>";
 
 					var linker = function(scope, element, attrs) {
-						if (scope.leaf.parent === "documentMetdata") {
+						if (scope.leaf.parent === "documentMetadata" || scope.leaf.parent === "profileMetadata") {
 							element.html(leafMetadata).show();
 //							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else if (scope.leaf.parent === "messages") {

@@ -5,8 +5,7 @@
                     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
                 </div>
                 <div ng-show="!loadingSelection">
-                    <div
-                            ng-show="message !== null" id="executionPanel">
+                    <div ng-show="message !== null" id="executionPanel">
                         <div class="page-header">
                             <span class="header4">Message: {{message.identifier}}</span>
                         </div>
@@ -23,7 +22,7 @@
                                             <div class="form-group"
                                                  ng-class="{'has-error' : messageMetaDataForm.identifier.$invalid && !messageMetaDataForm.identifier.$pristine }">
                                                 <label>Identifier</label> <input type="text"
-                                                                                         ng-change="recordChangeForEdit2('message','edit',message.id,'identifier', message.identifier)"
+                                                                                         ng-change="recordChanged()"
                                                                                          name="identifier"
                                                                                          class="form-control"
                                                                                          ng-model="message.identifier"
@@ -33,7 +32,7 @@
 
                                             <div class="form-group">
                                                 <label>OID</label> <input type="text"
-                                                                                  ng-change="recordChangeForEdit2('message','edit',message.id,'oid', message.oid)"
+                                                                                  ng-change="recordChanged()"
                                                                                   name="oid"
                                                                                   class="form-control"
                                                                                   ng-model="message.oid"
@@ -185,7 +184,7 @@
 											<span>
                                                 <select class="form-control input-sm"
                                                         name="usage"
-                                                        ng-change="recordChangeForEdit2(node.type,'edit',node.id,'usage', node.usage)"
+                                                        ng-change="recordChanged()"
                                                         required
                                                         ng-model="node.usage"
                                                         ng-options="usage for usage in config.usages">
@@ -201,13 +200,13 @@
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="min"
-                                                       ng-change="recordChangeForEdit2(node.type, 'edit',node.id,'min', node.min)"
+                                                       ng-change="recordChanged()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
                                                        ng-model="node.min" required ng-minlength="1">
                                                 <input style="width:45%" class="igl-input" type="text"
                                                        name="max"
-                                                       ng-change="recordChangeForEdit2(node.type,'edit',node.id,'max', node.max)"
+                                                       ng-change="recordChanged()"
                                                        ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.max" required>
@@ -270,7 +269,7 @@
  											<span>
                                                 <select class="form-control input-sm"
                                                         name="usage"
-                                                        ng-change="recordChangeForEdit2(node.type,'edit',node.id,'usage', node.usage)"
+                                                        ng-change="recordChanged()"
                                                         required
                                                         ng-model="node.usage"
                                                         ng-options="usage for usage in config.usages">
@@ -285,13 +284,13 @@
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="igl-input"
                                                        name="min"
-                                                       ng-change="recordChangeForEdit2(node.type, 'edit',node.id,'min', node.min)"
+                                                       ng-change="recordChanged()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
                                                        ng-model="node.min" required ng-minlength="1">
                                                 <input style="width:45%" class="igl-input" type="text"
                                                        name="max"
-                                                       ng-change="recordChangeForEdit2(node.type,'edit',node.id,'max', node.max)"
+                                                       ng-change="recordChanged()"
                                                        ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.max" required>

@@ -3,6 +3,15 @@ angular.module('igl').factory(
 		function() {
 
 			var svc = this;
+			
+			function entry(id, label, position, parent, reference) { 
+				this.id = id;
+				this.label = label;
+				this.selected = false;
+				this.position = position;
+				this.parent = parent;
+				this.reference = reference;
+			};
 
 			svc.currentLeaf = {
 				selected : false
@@ -11,50 +20,50 @@ angular.module('igl').factory(
 			svc.getToC = function(igdocument) {
 				console.log("Getting toc...");
 				toc = [];
+				
 				console.log("childSections=" + igdocument.childSections.length);
-				var documentMetadata = getMetadata(igdocument.metaData);
-				toc.push(documentMetadata, "documentMetdata");
-				var sections = getSections(igdocument.childSections);
-				toc.push(sections);
+				var documentMetadata = getMetadata(igdocument.metaData, "documentMetadata");
+				toc.push(documentMetadata);
+//				var sections = getSections(igdocument.childSections);
+//				toc.push(sections);
 				var conformanceProfile = getMessageInfrastructure(igdocument.profile);
 				toc.push(conformanceProfile);
 				return _.flatten(toc);
 			}
 			
 			function getMetadata(metaData, parent) {
-				var metaData1 = {
-				"label" : "Metadata",
-				"selected" : false,
-				"position" : 0,
-				"parent" : parent,
-				"reference" : metaData
-			}				
-				return metaData1;
+				var rval = new entry(parent, "Metadata", 0, parent, metaData);
+				return rval;
 			}
 			
-			function getSections(childSections, parent) {
+			function getRootSections(igdocument, toc) {
 				
-				var rval = [];
-
- 				_.each(childSections, function(childSection) {
-					var section = { "id" : childSection.id,
-					"label" : childSection.sectionTitle,
-					"selected" : false,
-					"position" : childSection.sectionPosition,
-					"parent" : parent,
-					"reference" : childSection
-					}
-					var sections1 = getSections(childSection.childSections, childSection._id);
-					_.each(sections1, function(section1) {
-						if (!section.children) {
-							section.children = [];
-						}
-						section.children.push(section1);						
-					})
-//					var section2 = _.sortBy(sections1, function(section1) { return section1.position; });
-					rval.push(sections1);
+				var sections = getSubSections(igdocument.childSections, igdocument.type);
+				_.each(sections, function(section) {
+					toc.push(section);
 				});
+ 				
+ 				return toc;
+			}
+			
+			function getSubSections(childSections, parent) {
 
+				var rval = new entry;
+				
+ 				_.each(childSections, function(childSection) {
+	 					rval.id = childSection.id;
+	 					rval.label = childSection.sectionTitle;
+	 					rval.selected = false;
+	 					rval.position = childSection.sectionPosition;
+	 					rval.reference = childSection;
+ 					
+					var sections1 = getSubSections(childSection.childSections, childSection._id);
+					_.each(sections1, function(section1) {
+						rval.childSections.push(section1);						
+					});
+				});
+				var section2 = _.sortBy(rval.childSections, function(childSection1) { return childSection1.position; });
+				rval.childSections = section2;
 				return rval;
 			}
 			
@@ -68,7 +77,7 @@ angular.module('igl').factory(
 					"reference" : "",
 					"children" : []
 				}
-				rval.children.push(getMetadata(profile.metaData, "profileMetdata"));
+				rval.children.push(getMetadata(profile.metaData, "profileMetadata"));
 				rval.children.push(getTopEntry(profile.messages));
 				rval.children.push(getTopEntry(profile.segments));
 				rval.children.push(getTopEntry(profile.datatypes));
