@@ -1,7 +1,7 @@
 angular.module('igl').controller(
 		'HL7VersionsDlgCtrl',
 		function($scope, $rootScope, $modal, $log, $http, $httpBackend,
-				ProfileAccessSvc, userInfoService) {
+				userInfoService) {
 
 			$rootScope.clickSource = {};
 			$scope.hl7Version = {};
@@ -148,14 +148,14 @@ angular.module('igl').controller(
 			}, function(newValue, oldValue) {
 				if ($rootScope.clickSource === "ctx") {
 					$scope.hl7Version = newValue.metaData.hl7Version;
-					$scope.igdocumentVersions = ProfileAccessSvc.Messages($rootScope.igdocument).getMessageIds();
+					$scope.igdocumentVersions = ProfileAccessSvc.Messages().getMessageIds();
 					$scope.loadIGDocumentsByVersion();
 				}
 			});
 
-			$scope.getHL7Version = function() {
-				return ProfileAccessSvc.getVersion($rootScope.igdocument);
-			};
+//			$scope.getHL7Version = function() {
+//				return ProfileAccessSvc.Version();
+//			};
 
 			$scope.hl7Versions = hl7Versions;
 			$scope.ok = function() {

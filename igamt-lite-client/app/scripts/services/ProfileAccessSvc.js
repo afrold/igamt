@@ -1,17 +1,17 @@
-angular.module('igl').factory ('ProfileAccessSvc', function() {
+angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 
 	var svc = this;
 
-	svc.Version = function(profile) {
-		return profile.metaData.hl7Version;
+	svc.Version = function() {
+		return $rootScope.igdocument.profile.metaData.hl7Version;
 	}
 
-	svc.Messages = function(profile) {
+	svc.Messages = function() {
 	
 		var msgs = this;
 	
 		msgs.messages = function() {
-			return profile.messages.children;
+			return $rootScope.igdocument.profile.messages.children;
 		};
 		
 		msgs.findById = function(id) {
@@ -24,7 +24,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 
 			var rval = [];
 
-			_.each(profile.messages.children, function(message) {
+			_.each($rootScope.igdocument.profile.messages.children, function(message) {
 				rval.push(message.id);
 			});
 
@@ -117,12 +117,12 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return msgs;
 	}
 
-	svc.Segments = function(profile) {
+	svc.Segments = function() {
 	
 		var segs = this;
 	
 		segs.segments = function() {
-			return profile.segments.children;
+			return $rootScope.igdocument.profile.segments.children;
 		}
 		
 		segs.truncate = function() {
@@ -207,12 +207,12 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return segs;
 	}
 
-	svc.Datatypes = function(profile) {
+	svc.Datatypes = function() {
 	
 		var dts = this;
 	
 		dts.datatypes = function() {
-			return profile.datatypes.children;
+			return $rootScope.igdocument.profile.datatypes.children;
 		}
 		
 		dts.truncate = function() {
@@ -294,12 +294,12 @@ angular.module('igl').factory ('ProfileAccessSvc', function() {
 		return dts;
 	}
 	
-	svc.ValueSets = function(profile) {
+	svc.ValueSets = function() {
 		
 		var vss = this;
 		
 		vss.valueSets = function() {
-			return profile.tables.children;
+			return $rootScope.igdocument.profile.tables.children;
 		};
 				
 		vss.truncate = function() {

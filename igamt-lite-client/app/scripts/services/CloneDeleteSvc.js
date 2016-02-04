@@ -151,7 +151,7 @@ angular.module('igl').factory(
 				// unpopulated in the profile.
 				var newMessage = angular.copy(message);
 				newMessage.id = new ObjectId().toString();
-				var groups = ProfileAccessSvc.Messages(igdocument.profile).getGroups(newMessage);
+				var groups = ProfileAccessSvc.Messages().getGroups(newMessage);
 				angular.forEach(groups, function(group) {
 					group.id = new ObjectId().toString();
 				});
@@ -167,11 +167,11 @@ angular.module('igl').factory(
 			
 			function deleteValueSets(igdocument, vssIdsSincerelyDead) {
 //				console.log("deleteValueSets: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
-				return ProfileAccessSvc.ValueSets(igdocument.profile).removeDead(vssIdsSincerelyDead);		
+				return ProfileAccessSvc.ValueSets().removeDead(vssIdsSincerelyDead);		
 			}
 						
 			svc.deleteDatatype = function(igdocument, datatype) {
-				var dtIdsLive = ProfileAccessSvc.Datatypes(igdocument.profile).getAllDatatypeIds();
+				var dtIdsLive = ProfileAccessSvc.Datatypes().getAllDatatypeIds();
 				var idxP = _.findIndex(dtIdsLive, function (
 						child) {
 					return child.id === datatype.id;
@@ -184,13 +184,13 @@ angular.module('igl').factory(
 			function deleteDatatypes(igdocument, dtIdsLive, dtsIdsSincerelyDead) {
 
 				// Get all value sets that are contained in the sincerely dead datatypes.
-				var vssIdsMerelyDead = ProfileAccessSvc.Datatypes(igdocument.profile).findValueSetsFromDatatypeIds(dtsIdsSincerelyDead);
+				var vssIdsMerelyDead = ProfileAccessSvc.Datatypes().findValueSetsFromDatatypeIds(dtsIdsSincerelyDead);
 				// then all value sets that are contained in the live datatypes.
-				var vssIdsLive = ProfileAccessSvc.Datatypes(igdocument.profile).findValueSetsFromDatatypeIds(dtIdsLive);
-				var vssIdsSincerelyDead = ProfileAccessSvc.ValueSets(igdocument.profile).findDead(vssIdsMerelyDead, vssIdsLive);		
+				var vssIdsLive = ProfileAccessSvc.Datatypes().findValueSetsFromDatatypeIds(dtIdsLive);
+				var vssIdsSincerelyDead = ProfileAccessSvc.ValueSets().findDead(vssIdsMerelyDead, vssIdsLive);		
 				deleteValueSets(igdocument, vssIdsSincerelyDead);
 				
-				var rval = ProfileAccessSvc.Datatypes(igdocument.profile).removeDead(dtsIdsSincerelyDead);		
+				var rval = ProfileAccessSvc.Datatypes().removeDead(dtsIdsSincerelyDead);		
 
 //				console.log("deleteDatatypes: vssIdsMerelyDead=" + vssIdsMerelyDead.length);
 //				console.log("deleteDatatypes: vssIdsLive=" + vssIdsLive.length);
@@ -202,7 +202,7 @@ angular.module('igl').factory(
 			svc.deleteSegment = function(igdocument, segment) {
 
 				// Get all datatypes that are contained in the sincerely dead segments.
-				var segmentRefsLive = ProfileAccessSvc.Segments(igdocument.profile).getAllSegmentIds();
+				var segmentRefsLive = ProfileAccessSvc.Segments().getAllSegmentIds();
 				var idxP = _.findIndex(segmentRefsLive, function (
 						child) {
 					return child.id === segment.id;
@@ -217,14 +217,14 @@ angular.module('igl').factory(
 			function deleteSegments(igdocument, segmentRefsLive, segmentRefsSincerelyDead) {
 
 				// Get all datatypes that are contained in the sincerely dead segments.
-				var dtIdsMerelyDead = ProfileAccessSvc.Segments(igdocument.profile).findDatatypesFromSegmentRefs(segmentRefsSincerelyDead);
+				var dtIdsMerelyDead = ProfileAccessSvc.Segments().findDatatypesFromSegmentRefs(segmentRefsSincerelyDead);
 
 				// then all datatypes that are contained in the live segments.				
-				var dtIdsLive = ProfileAccessSvc.Segments(igdocument.profile).findDatatypesFromSegmentRefs(segmentRefsLive);
-				var dtsIdsSincerelyDead = ProfileAccessSvc.Datatypes(igdocument.profile).findDead(dtIdsMerelyDead, dtIdsLive);
+				var dtIdsLive = ProfileAccessSvc.Segments().findDatatypesFromSegmentRefs(segmentRefsLive);
+				var dtsIdsSincerelyDead = ProfileAccessSvc.Datatypes().findDead(dtIdsMerelyDead, dtIdsLive);
 				deleteDatatypes(igdocument, dtIdsLive, dtsIdsSincerelyDead);
 				
-				var rval = ProfileAccessSvc.Segments(igdocument.profile).removeDead(segmentRefsSincerelyDead);				
+				var rval = ProfileAccessSvc.Segments().removeDead(segmentRefsSincerelyDead);				
 
 //				console.log("deleteSegments: dtIdsMerelyDead=" + dtIdsMerelyDead.length);
 //				console.log("deleteSegments: dtIdsLive=" + dtIdsLive.length);
@@ -241,7 +241,7 @@ angular.module('igl').factory(
 				// and it must be an array of one.
 				var msgDead = [message];
 				// We are keeping the children so their live.
-				var msgLive = ProfileAccessSvc.Messages(igdocument.profile).messages();
+				var msgLive = ProfileAccessSvc.Messages().messages();
 				
 				// We remove the dead message from the living.
 				var idxP = _.findIndex(msgLive, function (
@@ -249,20 +249,20 @@ angular.module('igl').factory(
 					return child.id === msgDead[0].id;
 				});
 				msgLive.splice(idxP, 1);
-				if (0 === ProfileAccessSvc.Messages(igdocument.profile).messages().length) {
-					ProfileAccessSvc.ValueSets(igdocument.profile).truncate();
-					ProfileAccessSvc.Datatypes(igdocument.profile).truncate();
-					ProfileAccessSvc.Segments(igdocument.profile).truncate();
+				if (0 === ProfileAccessSvc.Messages().messages().length) {
+					ProfileAccessSvc.ValueSets().truncate();
+					ProfileAccessSvc.Datatypes().truncate();
+					ProfileAccessSvc.Segments().truncate();
 					return;
 				}
 				// We get all segment refs that are contained in the dead message.
-				var segmentRefsMerelyDead = ProfileAccessSvc.Messages(igdocument.profile)
+				var segmentRefsMerelyDead = ProfileAccessSvc.Messages()
 						.getAllSegmentRefs(msgDead);
 				// We get all segment refs that are contained in the live messages.
-				var segmentRefsLive = ProfileAccessSvc.Messages(igdocument.profile)
+				var segmentRefsLive = ProfileAccessSvc.Messages()
 				.getAllSegmentRefs(msgLive);
 				// Until now, dead meant mearly dead.  We now remove those that are most sincerely dead.
-				var segmentRefsSincerelyDead = ProfileAccessSvc.Segments(igdocument.profile).findDead(segmentRefsMerelyDead, segmentRefsLive);
+				var segmentRefsSincerelyDead = ProfileAccessSvc.Segments().findDead(segmentRefsMerelyDead, segmentRefsLive);
 				if (segmentRefsSincerelyDead.length === 0) {
 //					console.log("Zero dead==>");			
 					return;
@@ -274,10 +274,10 @@ angular.module('igl').factory(
 //				console.log("svc.deleteMessage: segmentRefsLive=" + segmentRefsLive.length);
 //				console.log("svc.deleteMessage: segmentRefsSincerelyDead=" + segmentRefsSincerelyDead.length);
 //
-//				console.log("svc.deleteMessage: aMsgs=" + ProfileAccessSvc.Messages(igdocument.profile).messages().length);
-//				console.log("svc.deleteMessage: aSegs=" + ProfileAccessSvc.Segments(igdocument.profile).segments().length);
-//				console.log("svc.deleteMessage: aDts=" + ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length);
-//				console.log("svc.deleteMessage: aVss=" + ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length);
+//				console.log("svc.deleteMessage: aMsgs=" + ProfileAccessSvc.Messages().messages().length);
+//				console.log("svc.deleteMessage: aSegs=" + ProfileAccessSvc.Segments().segments().length);
+//				console.log("svc.deleteMessage: aDts=" + ProfileAccessSvc.Datatypes().datatypes().length);
+//				console.log("svc.deleteMessage: aVss=" + ProfileAccessSvc.ValueSets().valueSets().length);
 				
 				return rval;
 			}

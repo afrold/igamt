@@ -5,10 +5,11 @@ describe("profile access service", function () {
 	var ProfileAccessSvc;
 	var igdocumentAsString;
 	var profile;
+	var $rootScope;
 	
 	beforeEach(function() {
 		module('igl');
-		inject(function (_ProfileAccessSvc_, $injector, $rootScope, $controller) {
+		inject(function (_ProfileAccessSvc_, $injector, _$rootScope_, $controller) {
 			ProfileAccessSvc = _ProfileAccessSvc_;
 			 
 // Don't ask me why, but the following fixtures path MUST have "base/" prepended or it won't work.
@@ -16,47 +17,49 @@ describe("profile access service", function () {
 			 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/igdocument/';
 			 	var jsonFixture = getJSONFixture('igdocument-2.7-HL7STANDARD-.json');
 	    			igdocumentAsString = JSON.stringify(jsonFixture);
+	    			$rootScope = _$rootScope_;
 			 	expect($rootScope).toBeDefined();
 			 	expect(igdocumentAsString).toBeDefined();
 		});
 		// We want a pristine profile for each test so state changes from one test don't pollute
 		// the others.
 		var igdocument = JSON.parse(igdocumentAsString);
+		$rootScope.igdocument = igdocument;
 		profile = igdocument.profile;
 		expect(profile).toBeDefined();
 	});
 	
 	it("Do we get a collection of groups?", function() {
 		var message = profile.messages.children[6];
-		var groups = ProfileAccessSvc.Messages(profile).getGroups(message);
+		var groups = ProfileAccessSvc.Messages().getGroups(message);
 		expect(groups).toBeDefined();
 		expect(groups.length).toBe(1);
-		var message1 = ProfileAccessSvc.Messages(profile).findById("565f3ab4d4c6e52cfd439ac4");
+		var message1 = ProfileAccessSvc.Messages().findById("565f3ab4d4c6e52cfd439ac4");
 		expect(message1).toBeDefined();
-		var groups = ProfileAccessSvc.Messages(profile).getGroups(message1);
+		var groups = ProfileAccessSvc.Messages().getGroups(message1);
 		expect(groups).toBeDefined();
 		expect(groups.length > 0).toBe(true);
 	});
 	
 	it("Do we get all message ids?", function() {
 		var cntMessages = profile.messages.children.length;
-		var cntIds = ProfileAccessSvc.Messages(profile).getMessageIds().length;
+		var cntIds = ProfileAccessSvc.Messages().getMessageIds().length;
 		expect(cntMessages).toBe(cntIds);
 	});
 	
 	it("Can we find a message given its id?", function(){
-		var messages = ProfileAccessSvc.Messages(profile).messages();
+		var messages = ProfileAccessSvc.Messages().messages();
 		_.each(messages, function(message){
-			var msg = ProfileAccessSvc.Messages(profile).findById(message.id);
+			var msg = ProfileAccessSvc.Messages().findById(message.id);
 			expect(msg).toBeDefined();
 			expect(msg.id).toBe(message.id);
 		})
 	});
 	
 	it("Can we find a segment given its id?", function(){
-		var segments = ProfileAccessSvc.Segments(profile).segments();
+		var segments = ProfileAccessSvc.Segments().segments();
 		_.each(segments, function(segment){
-			var seg = ProfileAccessSvc.Segments(profile).findById(segment.id);
+			var seg = ProfileAccessSvc.Segments().findById(segment.id);
 			expect(seg).toBeDefined();
 			expect(seg.id).toBe(segment.id);
 		})
@@ -87,14 +90,14 @@ describe("profile access service", function () {
 	
 	it("Are the segmentRefs fetched valid?", function () {
 
-		var messages = ProfileAccessSvc.Messages(profile).messages();
+		var messages = ProfileAccessSvc.Messages().messages();
 		
-		var msgSegRefs = ProfileAccessSvc.Messages(profile).getAllSegmentRefs(messages);
+		var msgSegRefs = ProfileAccessSvc.Messages().getAllSegmentRefs(messages);
 		expect(msgSegRefs).toBeDefined();
 		expect(_.isArray(msgSegRefs)).toBe(true);
 		expect(msgSegRefs.length).toBe(166);
 
-		var segments = ProfileAccessSvc.Segments(profile).findByIds(msgSegRefs);
+		var segments = ProfileAccessSvc.Segments().findByIds(msgSegRefs);
 		expect(segments).toBeDefined();
 		expect(_.isArray(segments)).toBe(true);
 		expect(segments.length).toBe(166);
@@ -102,9 +105,9 @@ describe("profile access service", function () {
 	});
 	
 	it("Can we find the living and the dead?", function() {
-		var msgLive = ProfileAccessSvc.Messages(profile).messages();
+		var msgLive = ProfileAccessSvc.Messages().messages();
 		var msgDead = [];
-		msgDead.push(ProfileAccessSvc.Messages(profile).messages()[6]);
+		msgDead.push(ProfileAccessSvc.Messages().messages()[6]);
 		
 		var bLiveSize = msgLive.length;
 		var idxP = _.findIndex(msgLive, {'id': msgDead[0].id});
@@ -119,28 +122,28 @@ describe("profile access service", function () {
 		expect(_.indexOf(msgLiveIds, msgDeadIds[0])).toBe(-1)
 		expect(_.intersection(msgLiveIds, msgDeadIds).length).toBe(0);
 
-		var segmentRefsLive = ProfileAccessSvc.Messages(profile).getAllSegmentRefs(msgLive);
+		var segmentRefsLive = ProfileAccessSvc.Messages().getAllSegmentRefs(msgLive);
 		_.each(segmentRefsLive, function(segmentRefLive){
-			var seg = ProfileAccessSvc.Segments(profile).findById(segmentRefLive);
+			var seg = ProfileAccessSvc.Segments().findById(segmentRefLive);
 			expect(seg).toBeDefined();
 			expect(seg.id).toBe(segmentRefLive);
 		})
-		var segmentRefsMerelyDead = ProfileAccessSvc.Messages(profile).getAllSegmentRefs(msgDead);
+		var segmentRefsMerelyDead = ProfileAccessSvc.Messages().getAllSegmentRefs(msgDead);
 		_.each(segmentRefsMerelyDead, function(segmentRefMerelyDead){
-			var seg = ProfileAccessSvc.Segments(profile).findById(segmentRefMerelyDead);
+			var seg = ProfileAccessSvc.Segments().findById(segmentRefMerelyDead);
 			expect(seg).toBeDefined();
 			expect(seg.id).toBe(segmentRefMerelyDead);
 		})
 		
-		var segmentRefsSincerelyDead = ProfileAccessSvc.Segments(profile).findDead(segmentRefsMerelyDead, segmentRefsLive);
-		segmentRefsSincerelyDead = ProfileAccessSvc.Segments(profile).removeDead(segmentRefsSincerelyDead);
-		var segmentRefsLeft = ProfileAccessSvc.Messages(profile).getAllSegmentRefs(msgLive);
+		var segmentRefsSincerelyDead = ProfileAccessSvc.Segments().findDead(segmentRefsMerelyDead, segmentRefsLive);
+		segmentRefsSincerelyDead = ProfileAccessSvc.Segments().removeDead(segmentRefsSincerelyDead);
+		var segmentRefsLeft = ProfileAccessSvc.Messages().getAllSegmentRefs(msgLive);
 		expect(_.difference(segmentRefsMerelyDead, segmentRefsLeft).length).toBe(0);
 //		expect(segmentRefsSincerelyDead.length).toBe(0);		
 //		expect(_.intersection(segmentRefsLive, segmentRefsSincerelyDead).length).toBe(0);
 		
-//		var dtsLive =  ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segmentRefsLive);
-//		var dtsDead =  ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segmentRefsReallyDead);
+//		var dtsLive =  ProfileAccessSvc.Segments().findDatatypesFromSegmentRefs(segmentRefsLive);
+//		var dtsDead =  ProfileAccessSvc.Segments().findDatatypesFromSegmentRefs(segmentRefsReallyDead);
 //		var dtsReallyDead = ProfileAccessSvc.Datatypes(profile).removeDead(dtsDead, dtsLive);
 //		expect(_.difference(dtsDead, dtsLive).length).toBe(0);
 //		expect(_.intersection(dtsLive, dtsReallyDead).length).toBe(0);
@@ -164,21 +167,21 @@ describe("profile access service", function () {
 	});
 	
 	it("Can we find all datatypes in a segment(s)?", function() {
-		var segments = ProfileAccessSvc.Segments(profile).segments();
+		var segments = ProfileAccessSvc.Segments().segments();
 		expect(segments.length).toBe(166);
 		
-		var dts0 = ProfileAccessSvc.Segments(profile).findDatatypesFromSegment(segments[0]);
+		var dts0 = ProfileAccessSvc.Segments().findDatatypesFromSegment(segments[0]);
 		expect(dts0.length > 0).toBe(true);
 		
-		var dts3 = ProfileAccessSvc.Segments(profile).findDatatypesFromSegment(segments[3]);
+		var dts3 = ProfileAccessSvc.Segments().findDatatypesFromSegment(segments[3]);
 		expect(dts3.length > 0).toBe(true);
 		
 		var segRefs = [segments[0].id, segments[3].id];
-		var dts03 = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segRefs);
+		var dts03 = ProfileAccessSvc.Segments().findDatatypesFromSegmentRefs(segRefs);
 		expect(dts03.length > 0).toBe(true);
 		
-		var segRefs = ProfileAccessSvc.Segments(profile).getAllSegmentIds();
-		var dtsAll = ProfileAccessSvc.Segments(profile).findDatatypesFromSegmentRefs(segRefs);
+		var segRefs = ProfileAccessSvc.Segments().getAllSegmentIds();
+		var dtsAll = ProfileAccessSvc.Segments().findDatatypesFromSegmentRefs(segRefs);
 		var dtsAll1 = ProfileAccessSvc.Datatypes(profile).getAllDatatypeIds();
 
 		expect(_.difference(dtsAll, dtsAll1).length).toBe(0);
@@ -233,8 +236,8 @@ describe("profile access service", function () {
 	});
 	
 	it("Can we find a segment using its id?", function() {
-		var segRefs = ProfileAccessSvc.Messages(profile).getAllSegmentRefs(profile.messages.children);
-		var segIds = ProfileAccessSvc.Segments(profile).getAllSegmentIds();
+		var segRefs = ProfileAccessSvc.Messages().getAllSegmentRefs(profile.messages.children);
+		var segIds = ProfileAccessSvc.Segments().getAllSegmentIds();
 		_.each(segRefs, function(segRef){
 			expect(_.indexOf(segIds, segRef) > -1).toBe(true);
 		});

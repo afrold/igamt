@@ -50,6 +50,7 @@ describe("delete message service", function () {
 			 	var jsonFixture = getJSONFixture('igdocument-2.7.5-USER-1.0.json');
 	    			igdocumentAsString = JSON.stringify(jsonFixture);
 			 	expect($rootScope).toBeDefined();
+				$rootScope.jsonFixture = jsonFixture;
 			 	expect(igdocumentAsString).toBeDefined();
 		});
 		ctrl = controller('MainCtrl', {
@@ -110,6 +111,13 @@ describe("delete message service", function () {
 		expect(newMsg).toBeDefined();
 		expect(newMsg.id).toBeDefined();
 		expect(msg.id).not.toBe(newMsg.id)
+		var grps = ProfileAccessSvc.Messages().getGroups(msg);
+		var newGrps = ProfileAccessSvc.Messages().getGroups(newMsg);
+		var found = false;
+		_.each(newGrps, function(newGrp){
+			found = (found || _includes(grps, newGrp.id));
+		});
+		expect(found).toBe(false);
 	});
 	
 	it("Can we delete a message?", function () {
@@ -118,37 +126,37 @@ describe("delete message service", function () {
 		
 		// First we take the profile and record the length of its messages.
 		var bMsgCount = igdocument.profile.messages.children.length;
-		var bSegCount = ProfileAccessSvc.Messages(igdocument.profile).getAllSegmentRefs(igdocument.profile.messages.children);
+		var bSegCount = ProfileAccessSvc.Messages().getAllSegmentRefs(igdocument.profile.messages.children);
 
 		// Second we do the delete.
 		CloneDeleteSvc.deleteMessage(igdocument, igdocument.profile.messages.children[4]);
 		
 		// Third we re-take the profile and record the length of its messages.
 		var aMsgCount = igdocument.profile.messages.children.length;
-		var aSegCount = ProfileAccessSvc.Messages(igdocument.profile).getAllSegmentRefs(igdocument.profile.messages.children);
+		var aSegCount = ProfileAccessSvc.Messages().getAllSegmentRefs(igdocument.profile.messages.children);
 		
 		// Fourth we check our counts.
 		expect(bMsgCount).toBe(aMsgCount +1);
 	});
 	
 	it("If we delete all messages will we also delete all segs, dts, and vss?", function() {
-		var bDtCount =  ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length;
-		var bVsCount =  ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length;
+		var bDtCount =  ProfileAccessSvc.Datatypes().datatypes().length;
+		var bVsCount =  ProfileAccessSvc.ValueSets().valueSets().length;
 		
-//		console.log("svc.deleteMessage: bMsgs=" + ProfileAccessSvc.Messages(igdocument.profile).messages().length);
-//		console.log("svc.deleteMessage: bSegs=" + ProfileAccessSvc.Segments(igdocument.profile).segments().length);
-//		console.log("svc.deleteMessage: bDts=" + ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length);
-//		console.log("svc.deleteMessage: bVss=" + ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length);
+//		console.log("svc.deleteMessage: bMsgs=" + ProfileAccessSvc.Messages().messages().length);
+//		console.log("svc.deleteMessage: bSegs=" + ProfileAccessSvc.Segments().segments().length);
+//		console.log("svc.deleteMessage: bDts=" + ProfileAccessSvc.Datatypes().datatypes().length);
+//		console.log("svc.deleteMessage: bVss=" + ProfileAccessSvc.ValueSets().valueSets().length);
 		var i = 0;
 		_.eachRight(igdocument.profile.messages.children, function(message) {
 //			console.log("If we delete all messages will we also delete all segs, dts, and vss? = " + (i++) + " msgId=" + message.id + " name=" + message.name + " - " + message.description);
 			CloneDeleteSvc.deleteMessage(igdocument, message);
 		});
 
-		var aMsgCount =  ProfileAccessSvc.Messages(igdocument.profile).messages().length;
-		var aSegCount =  ProfileAccessSvc.Segments(igdocument.profile).segments().length;
-		var aDtCount =  ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length;
-		var aVsCount =  ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length;
+		var aMsgCount =  ProfileAccessSvc.Messages().messages().length;
+		var aSegCount =  ProfileAccessSvc.Segments().segments().length;
+		var aDtCount =  ProfileAccessSvc.Datatypes().datatypes().length;
+		var aVsCount =  ProfileAccessSvc.ValueSets().valueSets().length;
 		
 		expect(aMsgCount).toBe(0);
 		expect(aSegCount).toBe(0);
@@ -157,32 +165,32 @@ describe("delete message service", function () {
 	});
 
 	it("Can we delete a segment?", function() {
-		var segments = ProfileAccessSvc.Segments(igdocument.profile).segments();
+		var segments = ProfileAccessSvc.Segments().segments();
 		expect(segments).toBeDefined();
 		var segment = segments[4];
-		var bCount = ProfileAccessSvc.Segments(igdocument.profile).segments().length;
+		var bCount = ProfileAccessSvc.Segments().segments().length;
 		CloneDeleteSvc.deleteSegment(igdocument, segment);
-		var aCount = ProfileAccessSvc.Segments(igdocument.profile).segments().length;
+		var aCount = ProfileAccessSvc.Segments().segments().length;
 		expect(bCount).toBe(aCount +1);
 	});
 
 	it("Can we delete a datatype?", function() {
-		var datatypes = ProfileAccessSvc.Datatypes(igdocument.profile).datatypes();
+		var datatypes = ProfileAccessSvc.Datatypes().datatypes();
 		expect(datatypes).toBeDefined();
 		var datatype = datatypes[4];
-		var bCount = ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length;
+		var bCount = ProfileAccessSvc.Datatypes().datatypes().length;
 		CloneDeleteSvc.deleteDatatype(igdocument, datatype);
-		var aCount = ProfileAccessSvc.Datatypes(igdocument.profile).datatypes().length;
+		var aCount = ProfileAccessSvc.Datatypes().datatypes().length;
 		expect(bCount).toBe(aCount +1);
 	});
 
 	it("Can we delete a valueSet?", function() {
-		var valueSets = ProfileAccessSvc.ValueSets(igdocument.profile).valueSets();
+		var valueSets = ProfileAccessSvc.ValueSets().valueSets();
 		expect(valueSets).toBeDefined();
 		var valueSet = valueSets[4];
-		var bCount = ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length;
+		var bCount = ProfileAccessSvc.ValueSets().valueSets().length;
 		CloneDeleteSvc.deleteValueSet(igdocument, valueSet);
-		var aCount = ProfileAccessSvc.ValueSets(igdocument.profile).valueSets().length;
+		var aCount = ProfileAccessSvc.ValueSets().valueSets().length;
 		expect(bCount).toBe(aCount +1);
 	});
 });
