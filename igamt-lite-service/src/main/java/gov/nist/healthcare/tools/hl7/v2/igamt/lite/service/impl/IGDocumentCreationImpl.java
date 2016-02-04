@@ -96,8 +96,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		Date date = new Date();
 		metaData.setDate(dateFormat.format(date));
 		metaData.setVersion("1.0");
-		metaData.setName("Default name");
-		metaData.setTitle("Subtitle");
+		metaData.setSubTitle("Default Sub Title");
+		metaData.setTitle("Default Title");
 		
 		// Setting profile metaData
 		ProfileMetaData profileMetaData = new ProfileMetaData();

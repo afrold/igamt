@@ -112,9 +112,9 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 
 	private DocumentMetaData documentMetaData(DBObject source) {
 		DocumentMetaData metaData = new DocumentMetaData();
-		metaData.setName(((String) source.get("name")));
+		metaData.setSubTitle(((String) source.get("subTitle")));
 		metaData.setType(((String) source.get("type")));
-		metaData.setTitle(((String) source.get("subTitle")));
+		metaData.setTitle(((String) source.get("title")));
 		metaData.setVersion(((String) source.get("version")));
 		metaData.setDate(((String) source.get("date")));
 		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext")) : null);
@@ -197,10 +197,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		seg.setComment(readString(source, "comment"));
 		seg.setText1(readString(source, "text1"));
 		seg.setText2(readString(source, "text2"));
-		seg.setSectionContents((String) source.get("sectionContents"));
-		seg.setSectionDescription((String) source.get("sectionDescription"));
 		seg.setSectionPosition((Integer) source.get("sectionPosition"));
-		seg.setSectionTitle((String) source.get("sectionTitle"));
 
 		BasicDBList fieldObjects = (BasicDBList) source.get("fields");
 		if (fieldObjects != null) {
@@ -289,11 +286,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		dt.setComment(readString(source, "comment"));
 		dt.setUsageNote(readString(source, "usageNote"));
 		dt.setComponents(new ArrayList<Component>());
-		
-		dt.setSectionContents((String) source.get("sectionContents"));
-		dt.setSectionDescription((String) source.get("sectionDescription"));
 		dt.setSectionPosition((Integer) source.get("sectionPosition"));
-		dt.setSectionTitle((String) source.get("sectionTitle"));
 		
 		BasicDBList componentObjects = (BasicDBList) source.get("components");
 		if (componentObjects != null) {
@@ -485,10 +478,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 				DBObject tableObject = (DBObject) tableObj;
 				Table table = new Table();
 				table.setType("table");
-				table.setSectionContents((String) tableObject.get("sectionContents"));
-				table.setSectionDescription((String) tableObject.get("sectionDescription"));
 				table.setSectionPosition((Integer) tableObject.get("sectionPosition"));
-				table.setSectionTitle((String) tableObject.get("sectionTitle"));
 				
 				table.setCodes(new ArrayList<Code>());
 				table.setId(readMongoId(tableObject));
@@ -574,10 +564,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 			message.setVersion((String) child.get("version"));
 			message.setDate((String) child.get("date"));
 			message.setOid((String) child.get("oid"));
-			message.setSectionContents((String) child.get("sectionContents"));
-			message.setSectionDescription((String) child.get("sectionDescription"));
 			message.setSectionPosition((Integer) child.get("sectionPosition"));
-			message.setSectionTitle((String) child.get("sectionTitle"));
 
 			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child
 					.get("children");

@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.bson.types.ObjectId;
 
-public class Messages extends SectionModel implements java.io.Serializable, Cloneable {
+public class Messages extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 
+
 public class DocumentMetaData extends DataModel implements java.io.Serializable, Cloneable {
 
 	/**
@@ -8,20 +9,18 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String name;
+	private String subTitle;
 	private String title;
 	private String version;
 	private String date;
-	private String ext = "";
+	private String ext;
+	private String orgName;
+	private String status;
+	private String topics;
+	private String specificationName;
+	private String identifier;
 	
 	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	
 	public String getVersion() {
 		return version;
@@ -49,17 +48,58 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+	public String getOrgName() {
+		return orgName;
+	}
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getTopics() {
+		return topics;
+	}
+	public void setTopics(String topics) {
+		this.topics = topics;
+	}
+	public String getSpecificationName() {
+		return specificationName;
+	}
+	public void setSpecificationName(String specificationName) {
+		this.specificationName = specificationName;
+	}
+	public String getIdentifier() {
+		return identifier;
+	}
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
 	@Override
 	public DocumentMetaData clone() throws CloneNotSupportedException {
 		DocumentMetaData clonedDocumentMetaData = new DocumentMetaData();
-
-		clonedDocumentMetaData.setName(name);
+		
+		clonedDocumentMetaData.setSubTitle(subTitle);
 		clonedDocumentMetaData.setTitle(title);
 		clonedDocumentMetaData.setVersion(version);
 		clonedDocumentMetaData.setDate(date);
 		clonedDocumentMetaData.setExt(ext);
+		clonedDocumentMetaData.setIdentifier(identifier);
+		clonedDocumentMetaData.setOrgName(orgName);
+		clonedDocumentMetaData.setSpecificationName(specificationName);
+		clonedDocumentMetaData.setStatus(status);
+		clonedDocumentMetaData.setTopics(topics);
+		clonedDocumentMetaData.setType(date);
 
 		return clonedDocumentMetaData;
+	}
+	public String getSubTitle() {
+		return subTitle;
+	}
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
 	}
 }

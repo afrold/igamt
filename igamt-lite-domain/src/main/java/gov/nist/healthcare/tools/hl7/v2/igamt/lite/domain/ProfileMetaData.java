@@ -3,6 +3,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ProfileMetaData implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -20,29 +22,38 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 	
 	private String schemaVersion = "";
 	
+	@JsonIgnore
 	private String name;
 	
+	@JsonIgnore
 	private String orgName = "";
 	
+	@JsonIgnore
 	private String version = "";
 	
+	@JsonIgnore
 	private String status = "";
 	
+	@JsonIgnore
 	private String topics = "";
 	
+	@JsonIgnore
 	private String date = "";
 	
+	@JsonIgnore
 	private String specificationName = "";
 	
+	@JsonIgnore
 	private String identifier = "";
 	
 	/* XSD Attributes END */
 	
 	
 
-
+	@JsonIgnore
 	private String subTitle = "";
 
+	@JsonIgnore
 	private String ext = "";
 
 	private Set<String> encodings = new HashSet<String>();
