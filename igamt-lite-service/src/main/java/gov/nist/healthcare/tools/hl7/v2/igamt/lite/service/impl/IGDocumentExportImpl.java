@@ -39,6 +39,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -52,6 +53,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
@@ -69,6 +71,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javax.imageio.ImageIO;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
@@ -99,6 +102,7 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.docx4j.XmlUtils;
+import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
 import org.docx4j.model.fields.FieldUpdater;
 import org.docx4j.openpackaging.contenttype.CTOverride;
@@ -107,6 +111,7 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.AltChunkType;
+import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.openpackaging.parts.WordprocessingML.DocumentSettingsPart;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
 import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
@@ -119,6 +124,7 @@ import org.docx4j.wml.CTShd;
 import org.docx4j.wml.CTTblLayoutType;
 import org.docx4j.wml.CTVerticalJc;
 import org.docx4j.wml.Color;
+import org.docx4j.wml.Drawing;
 import org.docx4j.wml.FldChar;
 import org.docx4j.wml.HpsMeasure;
 import org.docx4j.wml.Jc;
@@ -183,9 +189,9 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 @Service
 public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocumentExportService{
 	Logger logger = LoggerFactory.getLogger( IGDocumentExportImpl.class ); 
-	
-//	@Autowired
-//	private UserService userService;
+
+	//	@Autowired
+	//	private UserService userService;
 
 	static String constraintBackground = "EDEDED";
 	static String headerBackground = "F0F0F0";
@@ -1000,7 +1006,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			PdfWriter coverWriter = PdfWriter.getInstance(coverDocument,
 					coverBaos);
 			coverDocument.open();
-			
+
 			Image img1 = Image.getInstance(this.getClass().getResource("/rendering/hl7Logo.tiff"));
 			img1.setAlignment(Element.ALIGN_CENTER);
 			coverDocument.add(img1);
@@ -1037,9 +1043,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			paragraph.setAlignment(Element.ALIGN_CENTER);
 			coverDocument.add(paragraph);
 
-//			paragraph = new Paragraph("Principal author: " + userService.getAccountById(p.getAccountId()).getFullName(), coverH2Font);
-//			paragraph.setAlignment(Element.ALIGN_CENTER);
-//			coverDocument.add(paragraph);
+			//			paragraph = new Paragraph("Principal author: " + userService.getAccountById(p.getAccountId()).getFullName(), coverH2Font);
+			//			paragraph.setAlignment(Element.ALIGN_CENTER);
+			//			coverDocument.add(paragraph);
 
 			coverDocument.close();
 
@@ -1095,8 +1101,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*1) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getMessages().getSectionPosition()+1) + p.getMessages().getSectionTitle(), p.getMessages().getId());
 			Chunk cp = new Chunk(p.getMessages().getSectionTitle(), titleFont).setLocalDestination(p.getMessages().getId());
 			Paragraph titleCp = new Paragraph(cp);
-//			Paragraph titleCp = new Paragraph(p.getMessages().getSectionTitle(), titleFont);
-		
+			//			Paragraph titleCp = new Paragraph(p.getMessages().getSectionTitle(), titleFont);
+
 			com.itextpdf.text.Section sectionCp = chapterMsgInfra.addSection(titleCp);
 
 			List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
@@ -1746,14 +1752,32 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 		ObjectFactory factory = Context.getWmlObjectFactory();   
 
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title", p.getMetaData().getName());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Subtitle " + p.getMetaData().getSubTitle());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Organization name " + p.getMetaData().getOrgName());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "HL7 Version " + p.getMetaData().getHl7Version());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Document Version "
-				+ p.getMetaData().getVersion());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Status : " + p.getMetaData().getStatus());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", p.getMetaData().getDate());
+		BufferedImage image = null;
+		try {
+			URL url = new URL("http://hit-2015.nist.gov/docs/hl7Logo.png");
+			image = ImageIO.read(url);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(image, "png", baos );
+			baos.flush();
+			byte[] imageInByte = baos.toByteArray();
+			baos.close();
+
+			addImageToPackage(wordMLPackage, imageInByte);
+		} catch (Exception e) {
+			logger.warn("Unable to add image");
+			e.printStackTrace();
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title", igdoc.getMetaData().getName());
+		addLineBreak(wordMLPackage, factory);
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle", "Subtitle " + igdoc.getMetaData().getSubTitle());
+		addLineBreak(wordMLPackage, factory);
+		addLineBreak(wordMLPackage, factory);
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", "HL7 Version " + p.getMetaData().getHl7Version());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", "Document Version "
+				+ igdoc.getMetaData().getVersion());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", "Organization name " + p.getMetaData().getOrgName());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", igdoc.getMetaData().getDate());
 
 		addPageBreak(wordMLPackage, factory);
 
@@ -2240,7 +2264,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		} 
 	}
 
-	private void setHorizontalAlignment(P paragraph, JcEnumeration hAlign) {
+	private static void setHorizontalAlignment(P paragraph, JcEnumeration hAlign) {
 		if (hAlign != null) {
 			PPr pprop = new PPr();
 			Jc align = new Jc();
@@ -2364,11 +2388,11 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 					tocDocument.add(Chunk.NEWLINE);
 					Chunk link = new Chunk(String.valueOf(s.getSectionPosition()+1) + " " + s.getSectionTitle(), titleFont).setLocalGoto(s.getId());
 					tocDocument.add(new Paragraph(link));
-//					tocDocument.add(new Paragraph(String.valueOf(s.getSectionPosition()+1) + " " + s.getSectionTitle(), titleFont));
+					//					tocDocument.add(new Paragraph(String.valueOf(s.getSectionPosition()+1) + " " + s.getSectionTitle(), titleFont));
 					tocDocument.add(Chunk.NEWLINE);
 
 					Chunk target = new Chunk(s.getSectionTitle(), titleFont).setLocalDestination(s.getId());
-//					Paragraph par = new Paragraph(s.getSectionTitle(), titleFont);
+					//					Paragraph par = new Paragraph(s.getSectionTitle(), titleFont);
 					Chapter chapter = new Chapter(new Paragraph(target), s.getSectionPosition()+1);
 					chapter.add(Chunk.NEWLINE);
 					if (s.getSectionContents() != null){
@@ -2384,7 +2408,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 				}
 			} else {
 				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*depth) + prefix + "." + String.valueOf(s.getSectionPosition()) + " " + s.getSectionTitle(), s.getId());
-//				Paragraph title = new Paragraph(s.getSectionTitle(), titleFont);
+				//				Paragraph title = new Paragraph(s.getSectionTitle(), titleFont);
 				Chunk target = new Chunk(s.getSectionTitle(), titleFont).setLocalDestination(s.getId());
 
 				com.itextpdf.text.Section section = chapt.addSection(new Paragraph(target));
@@ -2408,6 +2432,36 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		}
 		return sortedSet;
 	}
+
+
+	private static void addImageToPackage(WordprocessingMLPackage wordMLPackage,
+			byte[] bytes) throws Exception {
+		BinaryPartAbstractImage imagePart =
+				BinaryPartAbstractImage.createImagePart(wordMLPackage, bytes);
+
+		int docPrId = 1;
+		int cNvPrId = 2;
+		Inline inline = imagePart.createImageInline("Filename hint",
+				"Alternative text", docPrId, cNvPrId, false);
+
+		P paragraph = addInlineImageToParagraph(inline);
+		setHorizontalAlignment(paragraph, JcEnumeration.CENTER);
+
+		wordMLPackage.getMainDocumentPart().addObject(paragraph);
+	}
+
+	private static P addInlineImageToParagraph(Inline inline) {
+		// Now add the in-line image to a paragraph
+		ObjectFactory factory = new ObjectFactory();
+		P paragraph = factory.createP();
+		R run = factory.createR();
+		paragraph.getContent().add(run);
+		Drawing drawing = factory.createDrawing();
+		run.getContent().add(drawing);
+		drawing.getAnchorOrInline().add(inline);
+		return paragraph;
+	}
+
 
 }
 
