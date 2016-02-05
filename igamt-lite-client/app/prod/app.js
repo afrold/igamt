@@ -370,7 +370,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             //If we are here in this callback, login was successfull
             //Let's get user info now
             httpHeaders.common['Authorization'] = null;
-            http.get('api/accounts/cuser').then(function (result) {
+            $http.get('api/accounts/cuser').then(function (result) {
                 if(result.data && result.data != null) {
                     var rs = angular.fromJson(result.data);
                     userInfoService.setCurrentUser(rs);

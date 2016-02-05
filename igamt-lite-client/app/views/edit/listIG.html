@@ -44,22 +44,20 @@
                         <tr style="margin-right: {{scrollbarWidth}}px;">
                             <th st-ratio="5">#</th>
                             <th st-ratio="20" st-sort="metaData.identifier">Document Identifier</th>
-                            <th st-ratio="20" st-sort="metaData.title">Document Title</th>
-                            <th st-ratio="15" st-sort="metaData.orgName">Organization</th>
-                            <th st-ratio="10" st-sort="metaData.version">Document Version</th>
+                            <th st-ratio="25" st-sort="metaData.title">Document Title</th>
+                             <th st-ratio="10" st-sort="metaData.version">Document Version</th>
                             <th st-ratio="10" st-sort="metaData.date">Document Date</th>
-                            <th st-ratio="20">Actions</th>
+                            <th st-ratio="30">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="row in tmpIgs" ng-class="{'current': igdocument != null && row.id === igdocument.id}">
                             <td st-ratio="5">{{$index + 1}}</td>
                             <td st-ratio="20" ng-bind="row.metaData.identifier"></td>
-                            <td st-ratio="20" ng-bind="row.metaData.title"></td>
-                            <td st-ratio="15" ng-bind="row.metaData.orgName"></td>
+                            <td st-ratio="25" ng-bind="row.metaData.title"></td>
                             <td st-ratio="10" ng-bind="row.metaData.version"></td>
                             <td st-ratio="10" ng-bind="row.metaData.date"></td>
-                            <td st-ratio="20">
+                            <td st-ratio="30">
                                 <button ng-show="igDocumentConfig.selectedType === 'USER'"
                                         title="Edit"
                                         type="button" class="btn btn-xs btn-primary"

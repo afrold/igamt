@@ -236,6 +236,7 @@ angular.module('igl')
         };
 
         $scope.loadIGDocuments = function () {
+            waitingDialog.show('Loading IG Documents...', {dialogSize: 'sm', progressType: 'info'});
             $scope.error = null;
             $rootScope.igs = [];
             $scope.tmpIgs = [].concat($rootScope.igs);
@@ -246,16 +247,20 @@ angular.module('igl')
                     $rootScope.igs = angular.fromJson(response.data);
                     $scope.tmpIgs = [].concat($rootScope.igs);
                     $scope.loading = false;
+                    waitingDialog.hide();
                 }, function (error) {
                     $scope.loading = false;
                     $scope.error = error.data;
+                    waitingDialog.hide();
                 });
+            }else{
+                waitingDialog.hide();
             }
         };
 
         $scope.clone = function (igdocument) {
             $scope.toEditIGDocumentId = igdocument.id;
-            waitingDialog.show('Cloning IG Document...', {dialogSize: 'sm', progressType: 'info'});
+            waitingDialog.show('Copying IG Document...', {dialogSize: 'sm', progressType: 'info'});
             $http.post('api/igdocuments/' + igdocument.id + '/clone').then(function (response) {
                 $scope.toEditIGDocumentId = null;
                 if ($scope.igDocumentConfig.selectedType === 'USER') {
@@ -313,10 +318,10 @@ angular.module('igl')
         $scope.openIGDocument = function (igdocument) {
             $timeout(function () {
                 if (igdocument != null) {
+                    waitingDialog.show('Opening IG Document...', {dialogSize: 'sm', progressType: 'info'});
                     $scope.selectIgTab(1);
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
-                    $scope.selectIgTab(1);
                     $rootScope.igdocument = igdocument;
                     $rootScope.igdocument.profile.messages.children = $filter('orderBy')($rootScope.igdocument.profile.messages.children, 'label');
                     $rootScope.igdocument.profile.segments.children = $filter('orderBy')($rootScope.igdocument.profile.segments.children, 'label');
@@ -377,6 +382,7 @@ angular.module('igl')
                         $scope.toEditIGDocumentId = null;
                         $scope.selectDocumentMetaData();
                     }
+                    waitingDialog.hide();
                 }
             }, 100);
         };

@@ -13,7 +13,7 @@
 
             <div class="col-md-12" ng-show="igDocumentMsg !== null">
                 <div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">
-                    <button type="button" class="close" ng-click="igDocumentMsg = null">×</button>
+                    <button type="button" class="close" ng-click="igDocumentMsg.show = false">×</button>
                     <div msg key-expr="igDocumentMsg.text"></div>
                 </div>
             </div>
