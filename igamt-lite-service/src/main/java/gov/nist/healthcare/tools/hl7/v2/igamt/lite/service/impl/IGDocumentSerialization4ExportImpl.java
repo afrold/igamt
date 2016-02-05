@@ -170,9 +170,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 		if (igdoc.getMetaData() != null) {
 			DocumentMetaData metaDataObj = igdoc.getMetaData();
-			if (metaDataObj.getName() != null)
+			if (metaDataObj.getTitle() != null)
 				elmMetaData.addAttribute(new Attribute("Name", metaDataObj
-						.getName()));
+						.getTitle()));
 			if (metaDataObj.getSubTitle() != null)
 				elmMetaData.addAttribute(new Attribute("Subtitle", metaDataObj
 						.getSubTitle()));
@@ -254,8 +254,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		xsect.addAttribute(new Attribute("position", String.valueOf(profile.getSectionPosition())));
 		xsect.addAttribute(new Attribute("prefix", String.valueOf(profile.getSectionPosition()+1)));
 		xsect.addAttribute(new Attribute("h", String.valueOf(1)));
-		if (profile.getSectionTitle() != null)
+		if (profile.getSectionTitle() != null){
 			xsect.addAttribute(new Attribute("title", profile.getSectionTitle()));
+		} else {
+			xsect.addAttribute(new Attribute("title", ""));
+		}
 
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
 		e.addAttribute(new Attribute("ID", profile.getId()));
@@ -334,8 +337,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(profile.getMessages().getSectionPosition()+1);
 		msd.addAttribute(new Attribute("prefix", prefix));
 		msd.addAttribute(new Attribute("h", String.valueOf(2)));
-		if (profile.getMessages().getSectionTitle() != null)
+		if (profile.getMessages().getSectionTitle() != null){
 			msd.addAttribute(new Attribute("title", profile.getMessages().getSectionTitle()));
+		} else {
+			msd.addAttribute(new Attribute("title", ""));
+		}
 
 		List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
 		Collections.sort(msgList);
@@ -352,7 +358,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(profile.getSegments().getSectionPosition()+1);
 		ss.addAttribute(new Attribute("prefix", prefix));
 		ss.addAttribute(new Attribute("h", String.valueOf(2)));
-		ss.addAttribute(new Attribute("title", profile.getSegments().getSectionTitle()));
+		if (profile.getSegments().getSectionTitle() != null) {
+			ss.addAttribute(new Attribute("title", profile.getSegments().getSectionTitle()));
+		} else {
+			ss.addAttribute(new Attribute("title", ""));
+		}
 
 		List<Segment> sgtList = new ArrayList<>(profile.getSegments().getChildren());
 		Collections.sort(sgtList);
@@ -369,7 +379,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(profile.getDatatypes().getSectionPosition()+1);
 		ds.addAttribute(new Attribute("prefix", prefix));
 		ds.addAttribute(new Attribute("h", String.valueOf(2)));
-		ds.addAttribute(new Attribute("title", profile.getDatatypes().getSectionTitle()));
+		if (profile.getDatatypes().getSectionTitle() != null){
+			ds.addAttribute(new Attribute("title", profile.getDatatypes().getSectionTitle()));
+		} else {
+			ds.addAttribute(new Attribute("title", ""));
+		}
 
 		List<Datatype> dtList = new ArrayList<>(profile.getDatatypes().getChildren());
 		Collections.sort(dtList);
@@ -389,7 +403,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(profile.getTables().getSectionPosition()+1);
 		ts.addAttribute(new Attribute("prefix", prefix));
 		ts.addAttribute(new Attribute("h", String.valueOf(2)));
-		ts.addAttribute(new Attribute("title", profile.getTables().getSectionTitle()));
+		if (profile.getTables().getSectionTitle() != null) {
+			ts.addAttribute(new Attribute("title", profile.getTables().getSectionTitle()));
+		} else {
+			ts.addAttribute(new Attribute("title", ""));
+		}
 
 		List<Table> tables = new ArrayList<Table>(profile.getTables()
 				.getChildren());
