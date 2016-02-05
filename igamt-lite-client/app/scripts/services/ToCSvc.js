@@ -65,7 +65,7 @@ angular.module('igl').factory(
 					"selected" : false,
 					"position" : profile.sectionPosition,
 					"parent" : "0",
-					"reference" : "",
+					"reference" : profile,
 					"children" : []
 				}
 				rval.children.push(getMetadata(profile.metaData, "profileMetadata"));
