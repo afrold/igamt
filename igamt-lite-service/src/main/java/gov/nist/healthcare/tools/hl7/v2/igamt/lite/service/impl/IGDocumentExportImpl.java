@@ -1811,10 +1811,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		traverseIGDocument4Docx(igdoc, wordMLPackage); 
 
 		addPageBreak(wordMLPackage, factory);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Conformance profiles");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", p.getSectionTitle());
 
 		// Including information regarding messages
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Messages");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", p.getMessages().getSectionTitle());
 
 		List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
 		Collections.sort(messagesList);
@@ -1843,7 +1843,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		// Including information regarding segments 
 		List<Segment> segmentsList = new ArrayList<Segment>(p.getSegments().getChildren());
 		Collections.sort(segmentsList);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Segments and fields descriptions");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", p.getSectionTitle());
 
 		for (Segment s: segmentsList){
 			String segmentInfo = s.getLabel() + " - " + s.getDescription();
@@ -1880,7 +1880,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		// Including information regarding data types
 		List<Datatype> datatypeList = new ArrayList<Datatype>(p.getDatatypes().getChildren());
 		Collections.sort(datatypeList);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Data types");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", p.getDatatypes().getSectionTitle());
 
 		for (Datatype d: datatypeList){
 			String dtInfo = d.getLabel() + " - " + d.getDescription();
@@ -1901,7 +1901,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		// Including information regarding value sets 
 		List<Table> tables = new ArrayList<Table>(p.getTables().getChildren());
 		Collections.sort(tables);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Value sets");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", p.getTables().getSectionTitle());
 
 		for (Table t : tables) {
 			String valuesetInfo = t.getBindingIdentifier()
