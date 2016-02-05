@@ -524,7 +524,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(t.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("position", String.valueOf(t.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("h", String.valueOf(3)));
-		sect.addAttribute(new Attribute("title", t.getSectionTitle()));
+		sect.addAttribute(new Attribute("title", t.getName()));
 
 		nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
 		elmTableDefinition.addAttribute(new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
@@ -769,7 +769,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(m.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("position", String.valueOf(m.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("h", String.valueOf(3)));
-		sect.addAttribute(new Attribute("title", m.getSectionTitle()));
+		sect.addAttribute(new Attribute("title", m.getName()));
 
 		nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
 		elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
@@ -890,7 +890,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(s.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("h", String.valueOf(3)));
-		sect.addAttribute(new Attribute("title", s.getSectionTitle()));
+		sect.addAttribute(new Attribute("title", s.getLabel()));
 
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 		elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
@@ -1010,7 +1010,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(d.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("h", String.valueOf(3)));
-		sect.addAttribute(new Attribute("title", d.getSectionTitle()));
+		sect.addAttribute(new Attribute("title", d.getLabel()));
 
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
 		elmDatatype.addAttribute(new Attribute("ID", d.getId() + ""));
