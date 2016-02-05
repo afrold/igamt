@@ -3,15 +3,12 @@
 <ng-include src="'views/edit/editSegments.html'"></ng-include>
 <ng-include src="'views/edit/editMessages.html'"></ng-include>
 <ng-include src="'views/edit/editValueSets.html'"></ng-include>
+<ng-include src="'views/edit/editSections.html'"></ng-include>
 <div ng-show="!loadingIGDocument">
     <div class="row" ng-show="!isEditing">
         <p>No Implementation Guide Selected.</p>
     </div>
     <div ng-show="isEditing">
-
-
-
-
         <div class="row">
 
             <div class="col-md-12" ng-show="igDocumentMsg !== null">
@@ -20,14 +17,14 @@
                     <div msg key-expr="igDocumentMsg.text"></div>
                 </div>
             </div>
-
+            
             <div class="col-md-12">
                 <div class="page-header">
-                    <h3>{{igdocument.profile.metaData.identifier}}</h3>
+                    <h3>{{igdocument.metaData.identifier}}</h3>
                 </div>
             </div>
             <div class="col-md-12">
-                <span>Current version: {{igdocument.profile.metaData.hl7Version}}
+                <span>Current version: {{igdocument.metaData.version}}
                 </span>
 
                 <div class="pull-right">
@@ -71,13 +68,12 @@
                         <ul class="dropdown-menu igl-menu" role="menu">
                             <li><a class="point" ng-click="exportAs(igdocument.id, 'zip')">As ZIP</a></li>
                             <li><a class="point" ng-click="exportAs(igdocument.id,'pdf')">As PDF</a></li>
-                            <li><a class="point" ng-click="exportAs(igdocument.id,'docx')">As WORD <span
-                                    style="color:red">( In progress)</span></a></li>
-                            <!--<li><a ng-click="exportDelta(igdocument.id,'pdf')">Delta</a></li>-->
+                            <li><a class="point" ng-click="exportAs(igdocument.id,'docx')">As WORD</a></li>
+                            <li><a class="point" ng-click="exportAs(igdocument.id,'html')">As HTML</a></li>
                         </ul>
                     </div>
 
-                    <button title="Close the igdocument" type="button" class="btn btn-xs btn-warning"
+                    <button title="Close the IG Document" type="button" class="btn btn-xs btn-warning"
                             ng-click="close()">
                         <span><i class="fa fa-close fa-fw"></i>Close</span>
                     </button>
@@ -111,11 +107,10 @@
 							        'fa-caret-right': !showToC
 								      }">
 								    </span>
-                            </a>
+                             </a>
                         </div>
                     </div>
-                    <div class="panel-body" ng-show="showToC"
-                         style="max-width: 100%; overflow-x: auto; max-height: 900px; overflow-y: auto;white-space:nowrap;">
+                    <div class="panel-body" ng-show="showToC" style="max-width: 100%; overflow-x: auto; max-height: 900px; overflow-y: auto;white-space:nowrap;">
                         <div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
                         </div>
                     </div>
@@ -139,16 +134,3 @@
     <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
 </div>
 
-<!--<script type="text/ng-template" id="nts.html">-->
-<!--<div>-->
-<!--Nothing to see.-->
-<!--</div>-->
-<!--</script>-->
-<!--<script type="text/ng-template" id="editDocument.html">-->
-<!--</script>-->
-<!--<script type="text/ng-template" id="editSegments.html">-->
-<!--</script>-->
-<!--<script type="text/ng-template" id="editMessages.html">-->
-<!--</script>-->
-<!--<script type="text/ng-template" id="editValueSets.html">-->
-<!--</script>-->

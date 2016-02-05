@@ -9,7 +9,7 @@ import java.util.Set;
 
 import org.bson.types.ObjectId;
 
-public class Segments extends SectionModel implements java.io.Serializable, Cloneable {
+public class Segments extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 

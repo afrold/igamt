@@ -112,12 +112,17 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 
 	private DocumentMetaData documentMetaData(DBObject source) {
 		DocumentMetaData metaData = new DocumentMetaData();
-		metaData.setName(((String) source.get("name")));
-		metaData.setType(((String) source.get("type")));
-		metaData.setSubTitle(((String) source.get("subTitle")));
-		metaData.setVersion(((String) source.get("version")));
-		metaData.setDate(((String) source.get("date")));
+		metaData.setDate(source.get("date") != null ? ((String) source.get("date")) : null);
 		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext")) : null);
+		metaData.setIdentifier(source.get("identifier") != null ? ((String) source.get("identifier")) : null);
+		metaData.setOrgName(source.get("orgName") != null ? ((String) source.get("orgName")) : null);
+		metaData.setSpecificationName(source.get("specificationName") != null ? ((String) source.get("specificationName")) : null);
+		metaData.setStatus(source.get("status") != null ? ((String) source.get("status")) : null);
+		metaData.setSubTitle(source.get("subTitle") != null ? ((String) source.get("subTitle")) : null);
+		metaData.setTitle(source.get("title") != null ? ((String) source.get("title")) : null);
+		metaData.setTopics(source.get("topics") != null ? ((String) source.get("topics")) : null);
+		metaData.setType(source.get("type") != null ? ((String) source.get("type")) : null);
+		metaData.setVersion(source.get("version") != null ? ((String) source.get("version")) : null);
 		return metaData;
 	}
 	
@@ -197,10 +202,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		seg.setComment(readString(source, "comment"));
 		seg.setText1(readString(source, "text1"));
 		seg.setText2(readString(source, "text2"));
-		seg.setSectionContents((String) source.get("sectionContents"));
-		seg.setSectionDescription((String) source.get("sectionDescription"));
 		seg.setSectionPosition((Integer) source.get("sectionPosition"));
-		seg.setSectionTitle((String) source.get("sectionTitle"));
 
 		BasicDBList fieldObjects = (BasicDBList) source.get("fields");
 		if (fieldObjects != null) {
@@ -289,11 +291,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		dt.setComment(readString(source, "comment"));
 		dt.setUsageNote(readString(source, "usageNote"));
 		dt.setComponents(new ArrayList<Component>());
-		
-		dt.setSectionContents((String) source.get("sectionContents"));
-		dt.setSectionDescription((String) source.get("sectionDescription"));
 		dt.setSectionPosition((Integer) source.get("sectionPosition"));
-		dt.setSectionTitle((String) source.get("sectionTitle"));
 		
 		BasicDBList componentObjects = (BasicDBList) source.get("components");
 		if (componentObjects != null) {
@@ -485,10 +483,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 				DBObject tableObject = (DBObject) tableObj;
 				Table table = new Table();
 				table.setType("table");
-				table.setSectionContents((String) tableObject.get("sectionContents"));
-				table.setSectionDescription((String) tableObject.get("sectionDescription"));
 				table.setSectionPosition((Integer) tableObject.get("sectionPosition"));
-				table.setSectionTitle((String) tableObject.get("sectionTitle"));
 				
 				table.setCodes(new ArrayList<Code>());
 				table.setId(readMongoId(tableObject));
@@ -574,10 +569,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 			message.setVersion((String) child.get("version"));
 			message.setDate((String) child.get("date"));
 			message.setOid((String) child.get("oid"));
-			message.setSectionContents((String) child.get("sectionContents"));
-			message.setSectionDescription((String) child.get("sectionDescription"));
 			message.setSectionPosition((Integer) child.get("sectionPosition"));
-			message.setSectionTitle((String) child.get("sectionTitle"));
 
 			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child
 					.get("children");

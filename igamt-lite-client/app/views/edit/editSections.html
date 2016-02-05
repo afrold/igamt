@@ -1,0 +1,73 @@
+<script type="text/ng-template" id="EditSections.html">
+<div ng-controller="SectionsListCtrl" ng-init="init()" class="container">
+	<div ng-show="loadingSelection"
+	     style="text-align: center;">
+	    <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+	</div>
+	<div ng-show="!loadingSelection">
+		<div class="page-header">
+			<span class="header4">{{section.sectionTitle}}</span>
+     <span class="pull-right">
+
+        <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
+                ng-click="cloneSection(section)" ng-hide="options.readonly"
+                >
+            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
+        </button>
+        <button title="Close" type="button" class="btn btn-xs btn-warning"
+                ng-click="close()">
+            <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
+        </button>
+        <button title="Delete" type="button" ng-hide="options.readonly"
+                class="btn btn-xs btn-danger"
+                ng-click="delete(section)">
+            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+    </span>
+	</div>
+	<form name="sectionForm" id="sectionForm" novalidate>
+		<div class="col-sm-12">
+		    <div class="form-group"
+		         ng-class="{'has-error' : sectionForm.label.$invalid && !sectionForm.label.$pristine }">
+		        <label>Title</label> 
+			<span style="color:red" ng-show="isDuplicated(section,'title', sections)">Existing label (flavor name)</span>
+			<input type="text" ng-disabled="options.readonly"
+	              ng-change="recordChanged()"
+	              name="title" class="form-control"
+	              ng-model="section.sectionTitle"
+	              required>
+	    </div>
+      <accordion close-others="false">
+           <accordion-group is-open="accordi.Description" panel-class="panel-info">
+              <accordion-heading>
+                  <i class="fa"
+                     ng-class="{'fa-caret-down': accordi.Description, 'fa-caret-right': !accordi.Description}"></i>
+                  Description
+              </accordion-heading>
+			<div class="form-group">
+				<textarea style="width: 100%" name="sectionDescription"
+		             ng-change="recordChanged()"
+		             ng-model="section.sectionDescription">
+				{{section.sectionDescription}}
+				</textarea>
+			</div>
+		</accordion-group>
+		<accordion-group is-open="accordi.Contents" panel-class="panel-info">
+			<accordion-heading>
+			    <i class="fa"
+			       ng-class="{'fa-caret-down': accordi.Contents, 'fa-caret-right': !accordi.Contents}"></i>
+			    Contents
+			</accordion-heading>
+			<div class="form-group">
+			    <div text-angular style="width: 100%" name="sectionContents"
+		             ta-disabled="options.readonly"
+		             ng-change="recordChanged()"
+		             ng-model="section.sectionContents">
+		        </div>
+			</div>
+		</accordion-group>
+	</accordion>
+	</form>
+	</div>
+</div>
+</script>

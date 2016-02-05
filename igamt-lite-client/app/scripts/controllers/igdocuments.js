@@ -3,9 +3,9 @@
  */
 
 angular.module('igl')
-.controller('IGDocumentListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, CloneDeleteMessageSvc, IGDocumentAccessSvc, ngTreetableParams, $interval, ColumnSettings,StorageService) {
-		$scope.loading = false;
-    	$scope.uiGrid = {};
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings, StorageService) {
+        $scope.loading = false;
+        $scope.uiGrid = {};
         $rootScope.igs = [];
         $scope.tmpIgs = [].concat($rootScope.igs);
         $scope.error = null;
@@ -13,9 +13,9 @@ angular.module('igl')
         $scope.columnSettings = ColumnSettings;
 //        $scope.visibleColumns = angular.copy(ColumnSettings.visibleColumns);
 
-
+        $scope.igDocumentMsg = {};
         $scope.igDocumentConfig = {
-            selectedType : null
+            selectedType: null
         };
 
 
@@ -57,9 +57,9 @@ angular.module('igl')
                 return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];
             },
             getTemplate: function (node) {
-                if($scope.options.readonly) {
+                if ($scope.options.readonly) {
                     return node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
-                }else{
+                } else {
                     return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
                 }
             }
@@ -85,9 +85,9 @@ angular.module('igl')
                 }
             },
             getTemplate: function (node) {
-                if($scope.options.readonly){
+                if ($scope.options.readonly) {
                     return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentReadTree.html' : '';
-                }else {
+                } else {
                     return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentEditTree.html' : '';
                 }
             }
@@ -104,9 +104,7 @@ angular.module('igl')
             return true;
         };
 
-
-
-        $rootScope.closeIGDocument = function(){
+        $rootScope.closeIGDocument = function () {
             $rootScope.igdocument = null;
             $rootScope.isEditing = false;
             $scope.selectIgTab(0);
@@ -116,40 +114,40 @@ angular.module('igl')
 
         $scope.messagesParams = new ngTreetableParams({
             getNodes: function (parent) {
-            	if(!parent || parent == null) {
-            		if($rootScope.message != null) {
-            			return $rootScope.message.children;
-            		}else {
-            			return [];
-            		}
-            	}else if(parent.type === 'segmentRef'){
-            		return $rootScope.segmentsMap[parent.ref].fields;
-            	}else if(parent.type === 'field'){
-            		return $rootScope.datatypesMap[parent.datatype].components;
-            	}else if(parent.type === 'component'){
-            		return $rootScope.datatypesMap[parent.datatype].components;
-            	}else if(parent.type === 'group'){
-            		return parent.children;
-            	}else {
-            		return [];
-            	}
-            	
+                if (!parent || parent == null) {
+                    if ($rootScope.message != null) {
+                        return $rootScope.message.children;
+                    } else {
+                        return [];
+                    }
+                } else if (parent.type === 'segmentRef') {
+                    return $rootScope.segmentsMap[parent.ref].fields;
+                } else if (parent.type === 'field') {
+                    return $rootScope.datatypesMap[parent.datatype].components;
+                } else if (parent.type === 'component') {
+                    return $rootScope.datatypesMap[parent.datatype].components;
+                } else if (parent.type === 'group') {
+                    return parent.children;
+                } else {
+                    return [];
+                }
+
             },
             getTemplate: function (node) {
-                if($scope.options.readonly){
+                if ($scope.options.readonly) {
 
-                    if(node.type === 'segmentRef'){
+                    if (node.type === 'segmentRef') {
                         return 'MessageSegmentRefReadTree.html';
-                    }else if(node.type === 'group'){
+                    } else if (node.type === 'group') {
                         return 'MessageGroupReadTree.html';
-                    }else if(node.type === 'field'){
+                    } else if (node.type === 'field') {
                         return 'MessageFieldViewTree.html';
-                    }else if(node.type === 'component'){
+                    } else if (node.type === 'component') {
                         return 'MessageComponentViewTree.html';
-                    }else {
+                    } else {
                         return 'MessageReadTree.html';
                     }
-                 }else {
+                } else {
                     if (node.type === 'segmentRef') {
                         return 'MessageSegmentRefEditTree.html';
                     } else if (node.type === 'group') {
@@ -172,35 +170,53 @@ angular.module('igl')
          * init the controller
          */
         $scope.initIGDocuments = function () {
-            $scope.igDocumentConfig.selectedType = StorageService.get("SelectedIgDocumentType") != null ? StorageService.get("SelectedIgDocumentType"): 'USER';
+            $scope.igDocumentConfig.selectedType = StorageService.get("SelectedIgDocumentType") != null ? StorageService.get("SelectedIgDocumentType") : 'USER';
             $scope.loadIGDocuments();
             $scope.getScrollbarWidth();
             /**
              * On 'event:loginConfirmed', resend all the 401 requests.
              */
             $scope.$on('event:loginConfirmed', function (event) {
-                $scope.igDocumentConfig.selectedType = StorageService.get("SelectedIgDocumentType") != null ? StorageService.get("SelectedIgDocumentType"): 'USER';
+                $scope.igDocumentConfig.selectedType = StorageService.get("SelectedIgDocumentType") != null ? StorageService.get("SelectedIgDocumentType") : 'USER';
                 $scope.loadIGDocuments();
             });
 
             $rootScope.$on('event:openIGDocumentRequest', function (event, igdocument) {
+                $rootScope.igdocument = igdocument;
                 $scope.openIGDocument(igdocument);
             });
 
             $scope.$on('event:openDatatype', function (event, datatype) {
-                $scope.selectDatatype(datatype); // Shoudl we open in a dialog ??
+                $scope.selectDatatype(datatype); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openSegment', function (event, segment) {
-                $scope.selectSegment(segment); // Shoudl we open in a dialog ??
+                $scope.selectSegment(segment); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openMessage', function (event, message) {
-                $scope.selectMessage(message); // Shoudl we open in a dialog ??
+                console.log("event:openMessage=" + message);
+                $scope.selectMessage(message); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openTable', function (event, table) {
-                $scope.selectTable(table); // Shoudl we open in a dialog ??
+                $scope.selectTable(table); // Should we open in a dialog ??
+            });
+
+            $scope.$on('event:openSection', function (event, section) {
+                $scope.selectSection(section); // Should we open in a dialog ??
+            });
+
+            $scope.$on('event:openDocumentMetadata', function (event, metaData) {
+                $scope.selectDocumentMetaData(metaData); // Should we open in a dialog ??
+            });
+
+            $scope.$on('event:openProfileMetadata', function (event, metaData) {
+                $scope.selectProfileMetaData(metaData); // Should we open in a dialog ??
+            });
+
+            $rootScope.$on('event:SetToC', function (event) {
+                $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);
             });
 
             $rootScope.$on('event:IgsPushed', function (event, igdocument) {
@@ -213,13 +229,11 @@ angular.module('igl')
             });
         };
 
-
         $scope.selectIGDocumentType = function (selectedType) {
             $scope.igDocumentConfig.selectedType = selectedType;
-            StorageService.set("SelectedIgDocumentType",$scope.igDocumentConfig.selectedType);
+            StorageService.set("SelectedIgDocumentType", selectedType);
             $scope.loadIGDocuments();
         };
-
 
         $scope.loadIGDocuments = function () {
             $scope.error = null;
@@ -227,8 +241,8 @@ angular.module('igl')
             $scope.tmpIgs = [].concat($rootScope.igs);
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
                 $scope.loading = true;
-                StorageService.set("SelectedIgDocumentType",$scope.igDocumentConfig.selectedType);
-                $http.get('api/igdocuments', {params:{"type":$scope.igDocumentConfig.selectedType}}).then(function (response) {
+                StorageService.set("SelectedIgDocumentType", $scope.igDocumentConfig.selectedType);
+                $http.get('api/igdocuments', {params: {"type": $scope.igDocumentConfig.selectedType}}).then(function (response) {
                     $rootScope.igs = angular.fromJson(response.data);
                     $scope.tmpIgs = [].concat($rootScope.igs);
                     $scope.loading = false;
@@ -297,7 +311,7 @@ angular.module('igl')
         };
 
         $scope.openIGDocument = function (igdocument) {
-            $timeout(function() {
+            $timeout(function () {
                 if (igdocument != null) {
                     $scope.selectIgTab(1);
                     $scope.loadingIGDocument = true;
@@ -344,7 +358,7 @@ angular.module('igl')
                         this[child.id] = child;
                         var cnt = 0;
                         angular.forEach(child.children, function (segmentRefOrGroup) {
-                        	$rootScope.processElement(segmentRefOrGroup);
+                            $rootScope.processElement(segmentRefOrGroup);
                         });
                     }, $rootScope.messagesMap);
 
@@ -353,7 +367,7 @@ angular.module('igl')
                             $rootScope.config = angular.fromJson(response.data);
                             $scope.loadingIGDocument = false;
                             $scope.toEditIGDocumentId = null;
-                            $scope.selectMetaData();
+                            $scope.selectDocumentMetaData();
                         }, function (error) {
                             $scope.loadingIGDocument = false;
                             $scope.toEditIGDocumentId = null;
@@ -361,10 +375,10 @@ angular.module('igl')
                     } else {
                         $scope.loadingIGDocument = false;
                         $scope.toEditIGDocumentId = null;
-                        $scope.selectMetaData();
+                        $scope.selectDocumentMetaData();
                     }
                 }
-            },100);
+            }, 100);
         };
 
         $scope.collectData = function (node, segRefOrGroups, segments, datatypes) {
@@ -418,7 +432,10 @@ angular.module('igl')
             });
             modalInstance.result.then(function (igdocument) {
                 $scope.igdocumentToDelete = igdocument;
-            }, function () {
+                var idxP = _.findIndex($scope.igs, function (child) {
+                    return child.id === igdocument.id;
+                });
+                $scope.igs.splice(idxP, 1);
             });
         };
 
@@ -516,7 +533,7 @@ angular.module('igl')
                 waitingDialog.hide();
             }, function (error) {
                 $scope.igDocumentMsg.text = error.data.text;
-                $scope.igDocumentMsg.type =  error.data.type;
+                $scope.igDocumentMsg.type = error.data.type;
                 $scope.igDocumentMsg.show = true;
                 waitingDialog.hide();
             });
@@ -558,8 +575,8 @@ angular.module('igl')
 
 
         $scope.reset = function () {
-             $rootScope.changes = {};
-             $rootScope.closeIGDocument();
+            $rootScope.changes = {};
+            $rootScope.closeIGDocument();
         };
 
 
@@ -588,7 +605,6 @@ angular.module('igl')
                 });
             return hl7Versions;
         };
-        
 
         $scope.showSelected = function (node) {
             $scope.selectedNode = node;
@@ -614,13 +630,22 @@ angular.module('igl')
             }
         };
 
-        $scope.selectMetaData = function () {
-            $scope.subview = "EditMetadata.html";
-                 $scope.loadingSelection = true;
-                $timeout(
-                    function () {
-                        $scope.loadingSelection = false;
-                    }, 100);
+        $scope.selectDocumentMetaData = function () {
+            $scope.subview = "EditDocumentMetadata.html";
+            $scope.loadingSelection = true;
+            $timeout(
+                function () {
+                    $scope.loadingSelection = false;
+                }, 100);
+        };
+
+        $scope.selectProfileMetaData = function () {
+            $scope.subview = "EditProfileMetadata.html";
+            $scope.loadingSelection = true;
+            $timeout(
+                function () {
+                    $scope.loadingSelection = false;
+                }, 100);
         };
 
         $scope.selectDatatype = function (datatype) {
@@ -667,14 +692,24 @@ angular.module('igl')
                 function () {
                     $rootScope.table = table;
                     $rootScope.codeSystems = [];
-                    
+
                     for (var i = 0; i < $rootScope.table.codes.length; i++) {
-                    	if($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0){
-                    		if($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== ''){
-                    			$rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
-                    		}
-            			}
-                	}
+                        if ($rootScope.codeSystems.indexOf($rootScope.table.codes[i].codeSystem) < 0) {
+                            if ($rootScope.table.codes[i].codeSystem && $rootScope.table.codes[i].codeSystem !== '') {
+                                $rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
+                            }
+                        }
+                    }
+                    $scope.loadingSelection = false;
+                }, 100);
+        };
+
+        $scope.selectSection = function (section) {
+            $scope.subview = "EditSections.html";
+            $scope.loadingSelection = true;
+            $timeout(
+                function () {
+                    $rootScope.section = section;
                     $scope.loadingSelection = false;
                 }, 100);
         };
@@ -700,11 +735,11 @@ angular.module('igl')
         $scope.getConstraintAsString = function (constraint) {
             return constraint.constraintId + " - " + constraint.description;
         };
-        
+
         $scope.getConformanceStatementAsString = function (constraint) {
             return "[" + constraint.constraintId + "]" + constraint.description;
         };
-        
+
         $scope.getPredicateAsString = function (constraint) {
             return constraint.description;
         };
@@ -751,7 +786,7 @@ angular.module('igl')
         };
 
         $scope.getSegmentRefNodeName = function (node) {
-          return node.position + "." + $rootScope.segmentsMap[node.ref].name + ":" + $rootScope.segmentsMap[node.ref].description;
+            return node.position + "." + $rootScope.segmentsMap[node.ref].name + ":" + $rootScope.segmentsMap[node.ref].description;
         };
 
         $scope.getGroupNodeName = function (node) {
@@ -771,9 +806,15 @@ angular.module('igl')
         };
 
         $scope.onColumnToggle = function (item) {
-           $scope.columnSettings.save();
+            $scope.columnSettings.save();
         };
 
+        $scope.getFullName = function () {
+            if (userInfoService.isAuthenticated() === true) {
+                return userInfoService.getFullName();
+            }
+            return '';
+        };
     });
 
 angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes, $rootScope, $http) {
@@ -798,7 +839,7 @@ angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalIn
 });
 
 
-angular.module('igl').controller( 'ConfirmIGDocumentDeleteCtrl', function ($scope, $modalInstance, igdocumentToDelete, $rootScope, $http) {
+angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function ($scope, $modalInstance, igdocumentToDelete, $rootScope, $http) {
     $scope.igdocumentToDelete = igdocumentToDelete;
     $scope.loading = false;
     $scope.delete = function () {
@@ -807,16 +848,26 @@ angular.module('igl').controller( 'ConfirmIGDocumentDeleteCtrl', function ($scop
             var index = $rootScope.igs.indexOf($scope.igdocumentToDelete);
             if (index > -1) $rootScope.igs.splice(index, 1);
             $rootScope.backUp = null;
-            if ($scope.igdocumentToDelete.id === $rootScope.igdocument.id) {
+            if ($scope.igdocumentToDelete === $rootScope.igdocument) {
                 $rootScope.closeIGDocument();
             }
+            $rootScope.msg().text = "igDeleteSuccess";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+            $rootScope.manualHandle = true;
             $scope.igdocumentToDelete = null;
             $scope.loading = false;
+
             $modalInstance.close($scope.igdocumentToDelete);
+
         }, function (error) {
             $scope.error = error;
             $scope.loading = false;
             $modalInstance.close($scope.igdocumentToDelete);
+            $rootScope.msg().text = "igDeleteFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+
 // waitingDialog.hide();
         });
     };
@@ -838,7 +889,7 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
             $scope.clear();
         }, function (error) {
             $scope.loading = false;
-            $rootScope.msg().text = "igDocumentResetFailed";
+            $rootScope.msg().text = "igResetFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
             $modalInstance.dismiss('cancel');
@@ -861,6 +912,9 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
             $scope.loading = false;
             $scope.clear();
         }, function (error) {
+            $rootScope.msg().text = "igSaveFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
             $scope.loading = false;
             $modalInstance.dismiss('cancel');
         });
@@ -883,7 +937,7 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
             $modalInstance.close($scope.igdocumentToOpen);
         }, function (error) {
             $scope.loading = false;
-            $rootScope.msg().text = "igDocumentResetFailed";
+            $rootScope.msg().text = "igResetFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
             $modalInstance.dismiss('cancel');
@@ -901,6 +955,9 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
             $scope.loading = false;
             $modalInstance.close($scope.igdocumentToOpen);
         }, function (error) {
+            $rootScope.msg().text = "igSaveFailed";
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
             $scope.loading = false;
             $modalInstance.dismiss('cancel');
         });

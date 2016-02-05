@@ -30,7 +30,7 @@ public interface ProfileCreationService {
 	
 	List<String[]> summary(String hl7Version, List<String> messageIds);
 	
-	Profile createIntegratedProfile(List<String> msgIds, String hl7Version) throws ProfileException;
+	Profile createIntegratedProfile(List<String> msgIds, String hl7Version, Long accountId) throws ProfileException;
 
 	Profile updateIntegratedProfile(List<String> msgIds, Profile pTarget) throws ProfileException;
 	

@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.bson.types.ObjectId;
 
-public class Tables extends SectionModel implements Serializable, Cloneable {
+public class Tables extends TextbasedSectionModel implements Serializable, Cloneable {
 
 	/**
 	 * 

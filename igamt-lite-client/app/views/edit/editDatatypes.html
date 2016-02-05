@@ -11,7 +11,7 @@
     <span class="pull-right">
 
         <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
-                ng-click="flavor(datatype)" ng-hide="options.readonly"
+                ng-click="cloneDatatypeFlavor(datatype)" ng-hide="options.readonly"
                 >
             <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
         </button>
@@ -50,8 +50,7 @@
                                         <label>Comment</label>
                                         <input type="text" ng-disabled="options.readonly"
                                                ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)"
-                                               name="label" class="form-control" ng-model="datatype.comment"
-                                                >
+                                               name="label" class="form-control" ng-model="datatype.comment">
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
@@ -60,17 +59,25 @@
                                         <label>Label</label>
 										<span style="color:red" ng-show="isDuplicated(datatype,'label', datatypes)">Existing label (flavor name)</span>
                                         <input type="text" ng-disabled="options.readonly"
-                                               ng-change="recordDatatypeChange('datatype','edit',datatype.id,'label', datatype.label)"
+                                               ng-change="recordChanged()"
                                                name="label" class="form-control" ng-model="datatype.label"
                                                required>
                                     </div>
-
+                                    <div class="form-group"
+                                         ng-class="{'has-error' : datatypeMetaDataForm.label.$invalid && !datatypeMetaDataForm.label.$pristine }">
+                                        <label>Description</label>
+										<span style="color:red" ng-show="isDuplicated(datatype,'label', datatypes)">Existing label (flavor name)</span>
+                                        <input type="text" ng-disabled="options.readonly"
+                                               ng-change="recordChanged()"
+                                               name="label" class="form-control" ng-model="datatype.description"
+                                               required>
+                                    </div>
                                     <div class="form-group">
                                         <label>Definition Text</label>
                                          <!--<div ng-show="!options.readonly">-->
                                         <div text-angular style="width:100%"  ta-disabled="options.readonly"
                                              name="text"
-                                             ng-change="recordDatatypeChange('datatype','edit',datatype.id,'text', datatype.text)"
+                                             ng-change="recordChanged()"
                                              ng-model="datatype.text"></div>
                                         <!--</div>-->
                                         <!--<div ng-show="options.readonly">-->
@@ -100,38 +107,6 @@
                             </div>
                             <div>
                                 <div class="table-responsive">
-
-                                    <!--<div class="btn-group pull-right">-->
-                                        <!--<a title="Settings"-->
-                                           <!--class="btn btn-xs btn-info"-->
-                                           <!--data-toggle="dropdown">-->
-                                            <!--<i class="fa fa-cog"></i>Columns-->
-                                            <!--<span class="caret"></span>-->
-                                        <!--</a>-->
-                                        <!--<ul class="dropdown-menu point igl-menu" role="menu" >-->
-                                            <!--<li>  <input ng-model="columnSettings.options.name" ng-disabled="true"-->
-                                                       <!--type="checkbox">  Name</li>-->
-                                            <!--<li>  <input ng-model="columnSettings.options.usage"-->
-                                                       <!--type="checkbox">  Usage</li>-->
-                                            <!--<li>  <input ng-model="columnSettings.options.length"-->
-                                                       <!--type="checkbox">  Length</li>-->
-                                            <!--<li>  <input ng-model="columnSettings.options.confLength"-->
-                                                       <!--type="checkbox">  Conf. Length</li>-->
-                                            <!--<li>  <input ng-model="columnSettings.options.datatype"-->
-                                                       <!--type="checkbox">  Datatype</li>-->
-                                            <!--<li>  <input ng-model="columnSettings.options.valueSet"-->
-                                                       <!--type="checkbox">  Value Set</li>-->
-                                            <!--<li>  <input ng-model="columnSettings.options.predicate"-->
-                                                       <!--type="checkbox">  Predicate</li>-->
-                                            <!--<li>  <input ng-model="columnSettings.options.confStatement"-->
-                                                       <!--type="checkbox">  Conf. Statement</li>-->
-                                            <!--<li>  <input ng-model="columnSettings.options.defText"-->
-                                                       <!--type="checkbox">  Def Text</li>-->
-                                            <!--<li>  <input ng-model="columnSettings.options.comment"-->
-                                                       <!--type="checkbox">  Comment</li>-->
-                                        <!--</ul>-->
-                                    <!--</div>-->
-
                                     <table tt-table tt-params="datatypesParams"
                                            class="table table-striped table-bordered table-fix-header table-condensed profile-table">
                                         <thead>
@@ -153,7 +128,6 @@
                                         </thead>
                                         <tbody></tbody>
                                     </table>
-
                                 </div>
                             </div>
                         </form>
@@ -417,10 +391,6 @@
                    tooltip-class="constraints-tooltip"
                    tooltip-trigger tooltip-animation="false" tooltip-placement="left"
                    ng-show="node.comment !== '' && node.comment !== null" ng-bind="node.comment"></a>
-                <!--<input style="width:100%" class="igl-input" type="text"-->
-                <!--name="comment"-->
-                <!--ng-change="recordDatatypeChange('component','edit',node.id,'comment', node.comment)"-->
-                <!--ng-model="node.comment">-->
             </div>
         </td>
     </tr>

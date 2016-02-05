@@ -22,9 +22,9 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 
 	private Long accountId;
 
-	private String comment = "";
+	private String comment;
 
-	private String usageNote = "";
+	private String usageNote;
 
 	private DocumentMetaData metaData;
 	
@@ -64,10 +64,16 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		DocumentMetaData documentMetaData = new DocumentMetaData();
 		documentMetaData.setDate(p.getMetaData().getDate());
 		documentMetaData.setExt(p.getMetaData().getExt());
-		documentMetaData.setName(p.getMetaData().getName());
 		documentMetaData.setSubTitle(p.getMetaData().getSubTitle());
+		documentMetaData.setTitle(p.getMetaData().getName());
 		documentMetaData.setType(p.getMetaData().getType());
 		documentMetaData.setVersion(p.getMetaData().getVersion());
+		documentMetaData.setIdentifier(p.getMetaData().getIdentifier());
+		documentMetaData.setOrgName(p.getMetaData().getOrgName());
+		documentMetaData.setSpecificationName(p.getMetaData().getSpecificationName());
+		documentMetaData.setStatus(p.getMetaData().getStatus());
+		documentMetaData.setTopics(p.getMetaData().getTopics());
+		
 		this.setMetaData(documentMetaData);
 		
 		
@@ -125,39 +131,67 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		
 		p.getMessages().setSectionPosition(0);
 		p.getMessages().setSectionTitle("Conformance Profiles");
+		p.getMessages().setType("messages");
 		
 		int messagePositionNum = 0;
 		for(Message m:p.getMessages().getChildren()){
 			m.setSectionPosition(messagePositionNum);
-			m.setSectionTitle(m.getStructID() + "-" + m.getDescription());
 			messagePositionNum = messagePositionNum + 1;
 		}
 		
 		p.getSegments().setSectionPosition(1);
 		p.getSegments().setSectionTitle("Segments and Field Descriptions");
+		p.getSegments().setType("segments");
 		int segmentPositionNum = 0;
 		for(Segment s:p.getSegments().getChildren()){
 			s.setSectionPosition(segmentPositionNum);
-			s.setSectionTitle(s.getName() + "-" + s.getDescription());
 			segmentPositionNum = segmentPositionNum + 1;
+			
+			
+			for(Field f:s.getFields()){
+				if(f.getConfLength().equals("-1")){
+					f.setConfLength("");
+				}
+				
+				if(f.getMinLength().equals(-1)){
+					f.setMinLength(0);
+				}
+			}
 		}
 		
 		p.getDatatypes().setSectionPosition(2);
 		p.getDatatypes().setSectionTitle("Datatypes");
+		p.getDatatypes().setType("datatypes");
 		int datatypePositionNum = 0;
 		for(Datatype d:p.getDatatypes().getChildren()){
 			d.setSectionPosition(datatypePositionNum);
-			d.setSectionTitle(d.getName() + "-" + d.getDescription());
 			datatypePositionNum = datatypePositionNum + 1;
+			
+			for(Component c:d.getComponents()){
+				if(c.getConfLength().equals("-1")){
+					c.setConfLength("");
+				}
+				
+				if(c.getMinLength().equals(-1)){
+					c.setMinLength(0);
+				}
+			}
 		}
 		
 		p.getTables().setSectionPosition(3);
 		p.getTables().setSectionTitle("Value Sets");
+		p.getTables().setType("tables");
 		int tablePositionNum = 0;
 		for(Table t:p.getTables().getChildren()){
 			t.setSectionPosition(tablePositionNum);
-			t.setSectionTitle(t.getBindingIdentifier() + "-" + t.getName());
 			tablePositionNum = tablePositionNum + 1;
+			
+			
+			String desc = t.getDescription();
+			String name = t.getName();
+			
+			t.setName(desc);
+			t.setDescription(name);
 		}
 		
 		this.setProfile(p);

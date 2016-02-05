@@ -68,7 +68,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	public List<String[]> summary(String hl7Version, List<String> messageIds) {
 		// Fetching messages of version hl7Version
 		List<String[]> rst = new ArrayList<String[]>();
-		List<IGDocument> docs = igdocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version);
+		List<IGDocument> docs = igdocumentRepository.findStandardByVersion(hl7Version);
 		for (IGDocument d : docs) {
 			for (Message m : d.getProfile().getMessages().getChildren()) {
 				if (!messageIds.contains(m.getId())) {
@@ -81,11 +81,13 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	@Override
-	public IGDocument createIntegratedIGDocument(List<String> msgIds, String hl7Version) throws IGDocumentException {
+	public IGDocument createIntegratedIGDocument(List<String> msgIds, String hl7Version, Long accountId) throws IGDocumentException {
 		// Creation of profile
-		IGDocument dSource = igdocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version).get(0);
+		IGDocument dSource = igdocumentRepository.findStandardByVersion(hl7Version).get(0);
 		IGDocument dTarget = new IGDocument();
+		dTarget.setAccountId(accountId);
 		Profile pTarget = new Profile();
+		pTarget.setAccountId(accountId);
 
 		// Setting igDocument metaData
 		DocumentMetaData metaData = new DocumentMetaData();
@@ -94,8 +96,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		Date date = new Date();
 		metaData.setDate(dateFormat.format(date));
 		metaData.setVersion("1.0");
-		metaData.setName("Default name");
-		metaData.setSubTitle("Subtitle");
+		metaData.setSubTitle("Default Sub Title");
+		metaData.setTitle("Default Title");
 		
 		// Setting profile metaData
 		ProfileMetaData profileMetaData = new ProfileMetaData();
@@ -114,21 +116,41 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		pTarget.setComment("Created " + date.toString());
 		pTarget.setSourceId(dSource.getProfile().getId());
 		pTarget.setBaseId(dSource.getProfile().getId());
-		
+		pTarget.setSectionTitle(dSource.getProfile().getSectionTitle());
+		pTarget.setSectionContents(dSource.getProfile().getSectionContents());
+		pTarget.setSectionDescription(dSource.getProfile().getSectionDescription());
+		pTarget.setSectionPosition(dSource.getProfile().getSectionPosition());
 		// Setting IGDocument info
 		dTarget.setScope(IGDocumentScope.USER);
 		dTarget.setComment("Created " + date.toString());
 
 		// Filling libraries--was
 		Messages msgsTarget = new Messages();
+		msgsTarget.setSectionTitle(dSource.getProfile().getMessages().getSectionTitle());
+		msgsTarget.setSectionContents(dSource.getProfile().getMessages().getSectionContents());
+		msgsTarget.setSectionDescription(dSource.getProfile().getMessages().getSectionDescription());
+		msgsTarget.setSectionPosition(dSource.getProfile().getMessages().getSectionPosition());
 		Segments sgtsTarget = new Segments();
+		sgtsTarget.setSectionTitle(dSource.getProfile().getSegments().getSectionTitle());
+		sgtsTarget.setSectionContents(dSource.getProfile().getSegments().getSectionContents());
+		sgtsTarget.setSectionDescription(dSource.getProfile().getSegments().getSectionDescription());
+		sgtsTarget.setSectionPosition(dSource.getProfile().getSegments().getSectionPosition());
 		Datatypes dtsTarget = new Datatypes();
+		dtsTarget.setSectionTitle(dSource.getProfile().getDatatypes().getSectionTitle());
+		dtsTarget.setSectionContents(dSource.getProfile().getDatatypes().getSectionContents());
+		dtsTarget.setSectionDescription(dSource.getProfile().getDatatypes().getSectionDescription());
+		dtsTarget.setSectionPosition(dSource.getProfile().getDatatypes().getSectionPosition());
 		Tables tabTarget = new Tables();
+		tabTarget.setSectionTitle(dSource.getProfile().getTables().getSectionTitle());
+		tabTarget.setSectionContents(dSource.getProfile().getTables().getSectionContents());
+		tabTarget.setSectionDescription(dSource.getProfile().getTables().getSectionDescription());
+		tabTarget.setSectionPosition(dSource.getProfile().getTables().getSectionPosition());
 		pTarget.setMessages(msgsTarget);
 		pTarget.setSegments(sgtsTarget);
 		pTarget.setDatatypes(dtsTarget);
 		pTarget.setTables(tabTarget);
 
+		addSections(dSource, dTarget);
 		addMessages(msgIds, dSource.getProfile(), pTarget);
 		
 		dTarget.setProfile(pTarget);
@@ -140,9 +162,13 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	public IGDocument updateIntegratedIGDocument(List<String> msgIds, IGDocument dTarget) throws IGDocumentException {
 		// Update profile with additional messages.
 		String hl7Version = dTarget.getProfile().getMetaData().getHl7Version();
-		IGDocument dSource = igdocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version).get(0);
+		IGDocument dSource = igdocumentRepository.findStandardByVersion(hl7Version).get(0);
 		addMessages(msgIds, dSource.getProfile(), dTarget.getProfile());
 		return dTarget;
+	}
+	
+	private void addSections(IGDocument dSource, IGDocument dTarget) {
+		dTarget.setChildSections(dSource.getChildSections());
 	}
 
 	private void addMessages(List<String> msgIds, Profile pSource, Profile pTarget) {
@@ -203,7 +229,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	@Override
-	public List<IGDocument> findIGDocuemntsByHl7Versions() {
+	public List<IGDocument> findIGDocumentsByHl7Versions() {
 		// Fetching all HL7Standard profiles
 		return igdocumentRepository.findByScope(IGDocumentScope.HL7STANDARD);
 	}

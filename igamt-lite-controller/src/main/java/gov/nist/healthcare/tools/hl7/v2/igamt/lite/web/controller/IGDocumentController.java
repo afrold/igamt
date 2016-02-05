@@ -86,7 +86,8 @@ public class IGDocumentController extends CommonController {
 	 * @throws IGDocumentException
 	 */
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public List<IGDocument> preloaded(@RequestParam("type") String type)
+	public List<IGDocument> getIGDocumentListByType(
+			@RequestParam("type") String type)
 			throws UserAccountNotFoundException, IGDocumentListException {
 		try {
 			if ("PRELOADED".equalsIgnoreCase(type)) {
@@ -232,7 +233,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsXml(d);
 		response.setContentType("text/xml");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ d.getMetaData().getName() + "-"
+				+ d.getMetaData().getTitle() + "-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".xml");
 		FileCopyUtils.copy(content, response.getOutputStream());
@@ -248,7 +249,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsZip(d);
 		response.setContentType("application/zip");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ d.getMetaData().getName() + "-"
+				+ d.getMetaData().getTitle() + "-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
@@ -264,7 +265,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsPdf(d);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ d.getMetaData().getName() + "-"
+				+ d.getMetaData().getTitle() + "-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
@@ -280,7 +281,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsDocx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ d.getMetaData().getName() + "-"
+				+ d.getMetaData().getTitle() + "-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".docx");
 		FileCopyUtils.copy(content, response.getOutputStream());
@@ -298,7 +299,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentService.diffToPdf(d);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ d.getMetaData().getName() + "-Delta-"
+				+ d.getMetaData().getTitle() + "-Delta-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
@@ -323,7 +324,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsXlsx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ d.getMetaData().getName() + "-"
+				+ d.getMetaData().getTitle() + "-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".xlsx");
 		FileCopyUtils.copy(content, response.getOutputStream());
@@ -373,7 +374,7 @@ public class IGDocumentController extends CommonController {
 		return igDocumentService.verifyValueSet(d, vsId, "valueset");
 	}
 
-	@RequestMapping(value = "/hl7/findVersions", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/findVersions", method = RequestMethod.GET, produces = "application/json")
 	public List<String> findHl7Versions() {
 		log.info("Fetching all HL7 versions");
 		List<String> result = igDocumentCreation.findHl7Versions();
@@ -386,7 +387,7 @@ public class IGDocumentController extends CommonController {
 	// method = RequestMethod.POST, produces = "application/json")
 	// public List<String[]> getMessageListByVersion(@PathVariable("hl7Version")
 	// String hl7Version, MessageByListCommand command) {
-	@RequestMapping(value = "/hl7/messageListByVersion", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/messageListByVersion", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public List<String[]> getMessageListByVersion(
 			@RequestBody MessageByListCommand command) {
 		log.info("Fetching messages of version hl7Version="
@@ -399,21 +400,27 @@ public class IGDocumentController extends CommonController {
 		return messages;
 	}
 
-	@RequestMapping(value = "/hl7/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public IGDocument createIG(
 			@RequestBody IntegrationIGDocumentRequestWrapper idrw)
 			throws IGDocumentException {
 		log.info("Creation of profile.");
-		return igDocumentCreation.createIntegratedIGDocument(idrw.getMsgIds(),
-				idrw.getHl7Version());
+		IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(
+				idrw.getMsgIds(), idrw.getHl7Version(), idrw.getAccountId());
+		igDocumentService.save(igDocument);
+		assert (igDocument.getId() != null);
+		assert (igDocument.getAccountId() != null);
+		return igDocument;
 	}
 
-	@RequestMapping(value = "/hl7/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@RequestMapping(value = "/updateIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public IGDocument updateIG(
 			@RequestBody IntegrationIGDocumentRequestWrapper idrw)
 			throws IGDocumentException {
 		log.info("Update profile with additional messages.");
-		return igDocumentCreation.updateIntegratedIGDocument(idrw.getMsgIds(),
-				idrw.getIgdocument());
+		IGDocument igDocument = igDocumentCreation.updateIntegratedIGDocument(
+				idrw.getMsgIds(), idrw.getIgdocument());
+		igDocumentService.save(igDocument);
+		return igDocument;
 	}
 }

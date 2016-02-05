@@ -1,7 +1,5 @@
 <script type="text/ng-template" id="EditSegments.html">
     <div ng-controller="SegmentListCtrl" ng-init="init()" class="container">
-        <!--<div class="panel panel-info">-->
-        <!--<div class="panel-body">-->
         <div ng-show="loadingSelection"
              style="text-align: center;">
             <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
@@ -11,7 +9,24 @@
                 <div class="page-header">
 									<span class="header4">Segment {{segment.name}}:
 										{{segment.label}}</span>
-                </div>
+     <span class="pull-right">
+
+        <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
+                ng-click="cloneSegmentFlavor(segment)" ng-hide="options.readonly"
+                >
+            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
+        </button>
+        <button title="Close" type="button" class="btn btn-xs btn-warning"
+                ng-click="close()">
+            <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
+        </button>
+        <button title="Delete" type="button" ng-hide="options.readonly"
+                class="btn btn-xs btn-danger"
+                ng-click="delete(datatype)">
+            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+    </span>
+               </div>
                 <accordion close-others="false">
                     <accordion-group is-open="accordi.metaData" panel-class="panel-info">
                         <accordion-heading>
@@ -20,7 +35,6 @@
                             MetaData
                         </accordion-heading>
                         <form name="segmentMetaDataForm" id="segmentMetaDataForm" novalidate>
-                            <div class="">
                                 <div class="col-sm-6">
                                     <div class="form-group"
                                          ng-class="{'has-error' : segmentMetaDataForm.name.$invalid && !segmentMetaDataForm.name.$pristine }">
@@ -28,12 +42,12 @@
                                                                    name="identifier"
                                                                    class="form-control"
                                                                    ng-model="segment.name"
-                                                                   ng-change="recordChangeForEdit2('segment','edit',segment.id,'name', segment.name)"
+                                                                   ng-change="recordChanged('segment','edit',segment.id,'name', segment.name)"
                                                                    required>
                                     </div>
                                     <div class="form-group">
                                         <label>Description</label> <input type="text" ng-disabled="options.readonly"
-                                                                          ng-change="recordChangeForEdit2('segment','edit',segment.id,'description', segment.description)"
+                                                                          ng-change="recordChanged('segment','edit',segment.id,'description', segment.description)"
                                                                           name="description"
                                                                           class="form-control"
                                                                           ng-model="segment.description"
@@ -85,7 +99,6 @@
                                     </div>
 
                                 </div>
-                            </div>
                         </form>
                     </accordion-group>
                     <accordion-group is-open="accordi.definition" panel-class="panel-info">
@@ -126,8 +139,6 @@
             </div>
         </div>
     </div>
-    <!--</div>-->
-    <!--</div>-->
 </script>
 
 <script type="text/ng-template" id="SegmentEditTree.html">

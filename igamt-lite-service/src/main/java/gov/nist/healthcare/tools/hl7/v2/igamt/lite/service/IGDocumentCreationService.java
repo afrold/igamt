@@ -25,11 +25,11 @@ public interface IGDocumentCreationService {
 	
 	List<String> findHl7Versions();
 	
-	List<IGDocument> findIGDocuemntsByHl7Versions();
+	List<IGDocument> findIGDocumentsByHl7Versions();
 	
 	List<String[]> summary(String hl7Version, List<String> messageIds);
 	
-	IGDocument createIntegratedIGDocument(List<String> msgIds, String hl7Version) throws IGDocumentException;
+	IGDocument createIntegratedIGDocument(List<String> msgIds, String hl7Version, Long accountId) throws IGDocumentException;
 
 	IGDocument updateIntegratedIGDocument(List<String> msgIds, IGDocument dTarget) throws IGDocumentException;
 	
