@@ -67,7 +67,7 @@
                                          ng-class="{'has-error' : datatypeMetaDataForm.label.$invalid && !datatypeMetaDataForm.label.$pristine }">
                                         <label>Description</label>
 										<span style="color:red" ng-show="isDuplicated(datatype,'label', datatypes)">Existing label (flavor name)</span>
-                                        <input type="text" ng-disabled="options.readonly"
+                                        <input type="text" disabled
                                                ng-change="recordChanged()"
                                                name="label" class="form-control" ng-model="datatype.description"
                                                required>
