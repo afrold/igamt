@@ -59,7 +59,7 @@ angular
 							 console.log("branch id=" + scope.branch.id +
 							 " label=" + scope.branch.label + " chidren=" +
 							 scope.branch.children.length);
-							if (scope.branch.id === "messages") {
+							if (scope.branch.id === "message") {
 								element.append(branchMessageTemplate);
 							} else {
 								element.append(branchTemplate);
@@ -99,21 +99,21 @@ angular
 			            + " dnd-effect-allowed='move'"
 			            + " dnd-moved='moved(index, leaf, drop)'"
 			            + " dnd-selected='models.selected = leaf'"
-						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='messageContextDiv.html' ng-click='tocSelection(leaf)'> "
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='leafContextDiv.html' ng-click='tocSelection(leaf)'> "
 						+ "{{leaf.reference.name}} - {{leaf.reference.description}}" 
 						+ "</li>";
 
 					var leafValueSet = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
-						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='headContextDiv.html' ng-click='tocSelection(leaf)'> "
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='leafContextDiv.html' ng-click='tocSelection(leaf)'> "
 						+ "{{leaf.reference.bindingIdentifier}} - {{leaf.reference.description}}" 
 						+ "</li>";
 
 					var leafSection = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
-						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='headContextDiv.html' ng-click='tocSelection(leaf)'> "
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='leafContextDiv.html' ng-click='tocSelection(leaf)'> "
 						+ "{{leaf.reference.sectionTitle}}"
 
 					var leafDefault = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
-						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='headContextDiv.html' ng-click='tocSelection(leaf)'> "
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='leafContextDiv.html' ng-click='tocSelection(leaf)'> "
 						+ "{{leaf.reference.label}} - {{leaf.reference.description}}"
 						+ "</li>";
 

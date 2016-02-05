@@ -191,7 +191,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     	console.log('api/igdocuments/hl7/createIntegrationProfile start' + ' data=' + data);
         var profile = null;
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/igdocument/igdocument-2.7-HL7STANDARD-.json', false);
+        request.open('GET', '../../resources/igDocuments/igdocument-2.7-HL7STANDARD-.json', false);
 //        request.open('GET', '../../resources/igdocument/igdocument-2.7.5-USER-1.0.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
@@ -203,7 +203,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     	console.log('api/igdocuments/hl7/updateIntegrationProfile start');
         var profile = null;
         var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/igdocument/igdocument-2.7.8.json', false);
+        request.open('GET', '../../igDocuments/igdocument-2.7-HL7STANDARD-.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
         console.log('api/igdocuments/createIntegrationProfile end');
@@ -221,7 +221,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenGET('api/igdocuments/toc').respond(function (method, url, data, headers) {
          var request = new XMLHttpRequest();
-         request.open('GET', '../../resources/igdocument/igdocument-2.7.5.json', false);
+         request.open('GET', '../../resources/igDocuments/igdocument-2.7-HL7STANDARD-.json', false);
         request.send(null);
         var d = angular.fromJson(request.response);
         console.log('api/igdocuments/config end');

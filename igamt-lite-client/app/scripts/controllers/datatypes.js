@@ -41,7 +41,8 @@ angular.module('igl')
             } else {
                 $scope.confirmDelete(datatype);
             }
-        };
+			$rootScope.$broadcast('event:SetToC');
+       };
 
         $scope.abortDelete = function (datatype) {
             var modalInstance = $modal.open({
