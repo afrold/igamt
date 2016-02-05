@@ -295,19 +295,39 @@ angular.module('igl').factory(
 				secLive.splice(idxP, 1);
 			}
 
-//			svc.getMessages = function(toc) {
-//				var ConformanceProfile = _.find(toc, function(child) {
-//					return child.id === "3";
-//				});
-//			
-//				var messages = _.find(ConformanceProfile.children, function(
-//						child) {
-//					return child.id === "3.1";
-//				});
-//				return messages;
-//			}
+	         function abortDatatypeDelete(datatype) {
+	            var modalInstance = $modal.open({
+	                templateUrl: 'DatatypeReferencesCtrl.html',
+	                controller: 'DatatypeReferencesCtrl',
+	                resolve: {
+	                    dtToDelete: function () {
+	                        return datatype;
+	                    }
+	                }
+	            });
+	            modalInstance.result.then(function (datatype) {
+	                $scope.dtToDelete = datatype;
+	            }, function () {
+	            });
+	        };
 
-			svc.findMessageIndex = function(messages, id) {
+	        function confirmDatatypeDelete(datatype) {
+	            var modalInstance = $modal.open({
+	                templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
+	                controller: 'ConfirmDatatypeDeleteCtrl',
+	                resolve: {
+	                    dtToDelete: function () {
+	                        return datatype;
+	                    }
+	                }
+	            });
+	            modalInstance.result.then(function (datatype) {
+	                $scope.dtToDelete = datatype;
+	            }, function () {
+	            });
+	        };
+	        
+	        svc.findMessageIndex = function(messages, id) {
 				var idxT = _.findIndex(messages.children, function(child) {
 					return child.reference.id === id;
 				})
