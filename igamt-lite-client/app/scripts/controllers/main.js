@@ -46,9 +46,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $scope.loginReq = function () {
 //        console.log("in loginReq");
-            if ($rootScope.loginMessage()) {
-                $rootScope.loginMessage().text = "";
-                $rootScope.loginMessage().show = false;
+            if ($rootScope.loginMessage) {
+                $rootScope.loginMessage.text = "";
+                $rootScope.loginMessage.show = false;
             }
             $scope.$emit('event:loginRequired');
         };

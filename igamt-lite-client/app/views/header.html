@@ -7,13 +7,13 @@
         </a>
         <div id="userInfo" ng-show="isAuthenticated()">
             <div>
-                <span>Logged as:</span>
-                <span class="userInfoValue" ng-bind="getUsername()"></span>
+                <span>Welcome, </span>
+                <span class="userInfoValue" ng-bind="getFullName()"></span>
             </div>
-            <div>
-                <span>Role: </span>
-                <span class="userInfoValue" ng-bind="getRoleAsString()"></span>
-            </div>
+            <!--<div>-->
+                <!--<span>Role: </span>-->
+                <!--<span class="userInfoValue" ng-bind="getRoleAsString()"></span>-->
+            <!--</div>-->
         </div>
     </div>
     <div class="navbar-collapse collapse">

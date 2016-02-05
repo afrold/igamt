@@ -187,7 +187,9 @@ angular.module('igl').factory('userInfoService', ['StorageService', 'userLoaderS
             isSupervisor: isSupervisor,
             setCurrentUser: setCurrentUser,
             loadFromServer: loadFromServer,
-            getUsername: getUsername
+            getUsername: getUsername,
+            getFullName: getFullName
+
         };
     }
 ]);

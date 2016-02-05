@@ -171,7 +171,7 @@ angular.module('igl')
         /**
          * init the controller
          */
-        $scope.init = function () {
+        $scope.initIGDocuments = function () {
             $scope.igDocumentConfig.selectedType = StorageService.get("SelectedIgDocumentType") != null ? StorageService.get("SelectedIgDocumentType"): 'USER';
             $scope.loadIGDocuments();
             $scope.getScrollbarWidth();
@@ -493,13 +493,14 @@ angular.module('igl')
         };
 
         $scope.save = function () {
+            $scope.igDocumentMsg = {};
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
             $rootScope.igdocument.accountId = userInfoService.getAccountID();
             var data = {"changes": changes, "igdocument": $rootScope.igdocument};
-            $http.post('api/igdocuments/save', data, {timeout: 60000}).then(function (response) {
+            $http.post('api/igdocuments/save', data).then(function (response) {
                 var saveResponse = angular.fromJson(response.data);
-                 $rootScope.igdocument.metaData.date = saveResponse.date;
+                $rootScope.igdocument.metaData.date = saveResponse.date;
                 $rootScope.igdocument.metaData.version = saveResponse.version;
                 var found = $scope.findOne($rootScope.igdocument.id);
                 if (found != null) {
@@ -508,16 +509,15 @@ angular.module('igl')
                         $rootScope.igs [index] = $rootScope.igdocument;
                     }
                 }
-                $rootScope.msg().text = "igSaveSuccess";
-                $rootScope.msg().type = "success";
-                $rootScope.msg().show = true;
+                $scope.igDocumentMsg.text = saveResponse.text;
+                $scope.igDocumentMsg.type = saveResponse.type;
+                $scope.igDocumentMsg.show = true;
                 $rootScope.clearChanges();
                 waitingDialog.hide();
             }, function (error) {
-                $scope.error = error;
-                $rootScope.msg().text = "igSaveFailed";
-                $rootScope.msg().type = "danger";
-                $rootScope.msg().show = true;
+                $scope.igDocumentMsg.text = error.data.text;
+                $scope.igDocumentMsg.type =  error.data.type;
+                $scope.igDocumentMsg.show = true;
                 waitingDialog.hide();
             });
         };
@@ -774,14 +774,6 @@ angular.module('igl')
            $scope.columnSettings.save();
         };
 
-        $scope.getFullName = function () {
-            if (userInfoService.isAuthenticated() === true) {
-                return userInfoService.getFullName();
-            }
-            return '';
-        };
-
-
     });
 
 angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes, $rootScope, $http) {
@@ -815,26 +807,16 @@ angular.module('igl').controller( 'ConfirmIGDocumentDeleteCtrl', function ($scop
             var index = $rootScope.igs.indexOf($scope.igdocumentToDelete);
             if (index > -1) $rootScope.igs.splice(index, 1);
             $rootScope.backUp = null;
-            if ($scope.igdocumentToDelete === $rootScope.igdocument) {
+            if ($scope.igdocumentToDelete.id === $rootScope.igdocument.id) {
                 $rootScope.closeIGDocument();
-             }
-            $rootScope.msg().text = "igDeleteSuccess";
-            $rootScope.msg().type = "success";
-            $rootScope.msg().show = true;
-            $rootScope.manualHandle = true;
+            }
             $scope.igdocumentToDelete = null;
             $scope.loading = false;
-
             $modalInstance.close($scope.igdocumentToDelete);
-
         }, function (error) {
             $scope.error = error;
             $scope.loading = false;
             $modalInstance.close($scope.igdocumentToDelete);
-            $rootScope.msg().text = "igDeleteFailed";
-            $rootScope.msg().type = "danger";
-            $rootScope.msg().show = true;
-
 // waitingDialog.hide();
         });
     };
@@ -856,7 +838,7 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
             $scope.clear();
         }, function (error) {
             $scope.loading = false;
-            $rootScope.msg().text = "igResetFailed";
+            $rootScope.msg().text = "igDocumentResetFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
             $modalInstance.dismiss('cancel');
@@ -879,9 +861,6 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
             $scope.loading = false;
             $scope.clear();
         }, function (error) {
-            $rootScope.msg().text = "igSaveFailed";
-            $rootScope.msg().type = "danger";
-            $rootScope.msg().show = true;
             $scope.loading = false;
             $modalInstance.dismiss('cancel');
         });
@@ -904,7 +883,7 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
             $modalInstance.close($scope.igdocumentToOpen);
         }, function (error) {
             $scope.loading = false;
-            $rootScope.msg().text = "igResetFailed";
+            $rootScope.msg().text = "igDocumentResetFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
             $modalInstance.dismiss('cancel');
@@ -922,9 +901,6 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
             $scope.loading = false;
             $modalInstance.close($scope.igdocumentToOpen);
         }, function (error) {
-            $rootScope.msg().text = "igSaveFailed";
-            $rootScope.msg().type = "danger";
-            $rootScope.msg().show = true;
             $scope.loading = false;
             $modalInstance.dismiss('cancel');
         });

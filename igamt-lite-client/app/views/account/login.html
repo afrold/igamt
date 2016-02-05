@@ -41,7 +41,7 @@
         <!--<div class="form-group">-->
             <div clas="col-sm-offset-2 col-sm-10">
                 <button ng-click="login()" class="btn btn-primary" type="submit"
-                        ng-disabled='(!loginForm.$valid)'>
+                        ng-disabled='(!loginForm.$valid || loginForm.$pristine)'>
                     <div msg key="login.button.login"></div>
                 </button>
                 <button class="btn btn-warning" ng-click="cancel()">

@@ -4,21 +4,21 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.IGDocumentProper
 
 import java.util.List;
 
-public class IGDocumentSaveException extends Exception {
+public class IGDocumentDeleteException extends Exception {
 	private static final long serialVersionUID = 1L;
 
 	private List<IGDocumentPropertySaveError> errors = null;
 
-	public IGDocumentSaveException(String error) {
+	public IGDocumentDeleteException(String error) {
 		super(error);
 	} 
 	
-	public IGDocumentSaveException(Exception error) {
+	public IGDocumentDeleteException(Exception error) {
 		super(error);
 	}
 	
 
-	public IGDocumentSaveException(List<IGDocumentPropertySaveError> errors) {
+	public IGDocumentDeleteException(List<IGDocumentPropertySaveError> errors) {
 		super();
 		this.errors = errors;
 	}
