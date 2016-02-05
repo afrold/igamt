@@ -21,21 +21,21 @@
 	              required>
 	    </div>
       <accordion close-others="false">
-           <accordion-group is-open="accordi.Description" panel-class="panel-info">
+           <accordion-group is-open="true" panel-class="panel-info">
               <accordion-heading>
                   <i class="fa"
                      ng-class="{'fa-caret-down': accordi.Description, 'fa-caret-right': !accordi.Description}"></i>
                   Description
               </accordion-heading>
 			<div class="form-group">
-				<textarea style="width: 100%" name="sectionDescription"
+				<textarea disabled style="width: 100%" name="sectionDescription"
 		             ng-change="recordChanged()"
 		             ng-model="section.sectionDescription">
 				{{section.sectionDescription}}
 				</textarea>
 			</div>
 		</accordion-group>
-		<accordion-group is-open="accordi.Contents" panel-class="panel-info">
+		<accordion-group is-open="true" panel-class="panel-info">
 			<accordion-heading>
 			    <i class="fa"
 			       ng-class="{'fa-caret-down': accordi.Contents, 'fa-caret-right': !accordi.Contents}"></i>
