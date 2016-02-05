@@ -7,23 +7,6 @@
 	<div ng-show="!loadingSelection">
 		<div class="page-header">
 			<span class="header4">{{section.sectionTitle}}</span>
-     <span class="pull-right">
-
-        <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
-                ng-click="cloneSection(section)" ng-hide="options.readonly"
-                >
-            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
-        </button>
-        <button title="Close" type="button" class="btn btn-xs btn-warning"
-                ng-click="close()">
-            <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
-        </button>
-        <button title="Delete" type="button" ng-hide="options.readonly"
-                class="btn btn-xs btn-danger"
-                ng-click="delete(section)">
-            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-    </span>
 	</div>
 	<form name="sectionForm" id="sectionForm" novalidate>
 		<div class="col-sm-12">
@@ -31,7 +14,7 @@
 		         ng-class="{'has-error' : sectionForm.label.$invalid && !sectionForm.label.$pristine }">
 		        <label>Title</label> 
 			<span style="color:red" ng-show="isDuplicated(section,'title', sections)">Existing label (flavor name)</span>
-			<input type="text" ng-disabled="options.readonly"
+			<input type="text" disabled
 	              ng-change="recordChanged()"
 	              name="title" class="form-control"
 	              ng-model="section.sectionTitle"
