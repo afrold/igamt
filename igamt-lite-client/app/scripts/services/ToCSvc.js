@@ -114,7 +114,7 @@ angular.module('igl').factory(
 				if (parent === "message") {
 					return rval;
 				} else {
-					return _.sortBy(rval, "position");
+					return _.sortBy(rval, "label");
 				}
 			}
 
