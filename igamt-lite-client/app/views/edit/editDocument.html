@@ -12,7 +12,7 @@
                         <div class="form-group">
                             <label>IGAMT Project Identifier</label>
                             <input  class="form-control"  type="text" ng-disabled="options.readonly"
-                                   ng-class="{'has-error' : igMetaDataForm.identifier.$invalid && !igMetaDataForm.identifier.$pristine }"
+                                   ng-class="{'has-error' : igMetaDataForm.projectIndentifier.$invalid && !igMetaDataForm.projectIndentifier.$pristine }"
                                    ng-change="recordChanged()"
                                    name="projectIndentifier" class="igl-input"
                                    ng-model="igdocument.metaData.identifier"
@@ -22,7 +22,7 @@
                         <div class="form-group">
                             <label>Title</label>
                             <input  class="form-control"  type="text" ng-disabled="options.readonly"
-                                   ng-class="{'has-error' : igMetaDataForm.name.$invalid && !igMetaDataForm.name.$pristine }"
+                                   ng-class="{'has-error' : igMetaDataForm.title.$invalid && !igMetaDataForm.name.$pristine }"
                                    ng-change="recordChanged()"
                                    name="title" 
  									ng-model="igdocument.metaData.title"
