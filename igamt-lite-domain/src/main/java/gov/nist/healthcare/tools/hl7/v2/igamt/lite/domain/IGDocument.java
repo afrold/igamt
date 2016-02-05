@@ -144,6 +144,17 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		for(Segment s:p.getSegments().getChildren()){
 			s.setSectionPosition(segmentPositionNum);
 			segmentPositionNum = segmentPositionNum + 1;
+			
+			
+			for(Field f:s.getFields()){
+				if(f.getConfLength().equals("-1")){
+					f.setConfLength("");
+				}
+				
+				if(f.getMinLength().equals(-1)){
+					f.setMinLength(0);
+				}
+			}
 		}
 		
 		p.getDatatypes().setSectionPosition(2);
@@ -152,6 +163,16 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		for(Datatype d:p.getDatatypes().getChildren()){
 			d.setSectionPosition(datatypePositionNum);
 			datatypePositionNum = datatypePositionNum + 1;
+			
+			for(Component c:d.getComponents()){
+				if(c.getConfLength().equals("-1")){
+					c.setConfLength("");
+				}
+				
+				if(c.getMinLength().equals(-1)){
+					c.setMinLength(0);
+				}
+			}
 		}
 		
 		p.getTables().setSectionPosition(3);
@@ -160,6 +181,13 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		for(Table t:p.getTables().getChildren()){
 			t.setSectionPosition(tablePositionNum);
 			tablePositionNum = tablePositionNum + 1;
+			
+			
+			String desc = t.getDescription();
+			String name = t.getName();
+			
+			t.setName(desc);
+			t.setDescription(name);
 		}
 		
 		this.setProfile(p);

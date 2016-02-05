@@ -86,7 +86,7 @@ angular.module('igl').factory(
 
 	          var newTable = angular.copy(table);
 	          newTable.id = new ObjectId().toString();
-		        newTable.bindingIdentifier = table.bindingIdentifier + $rootScope.createNewFlavorName(table.bindingIdentifier);
+		        newTable.bindingIdentifier = $rootScope.createNewFlavorName(table.bindingIdentifier);
 //		        $rootScope.newTableFakeId = $rootScope.newTableFakeId - 1;
 //		        var newTable = angular.fromJson({
 //		            id:new ObjectId().toString(),
@@ -109,8 +109,8 @@ angular.module('igl').factory(
 //		        newTable.stability = table.stability;
 //		        newTable.extensibility = table.extensibility;
 
+		        newTable.codes = [];
 		        for (var i = 0, len1 = table.codes.length; i < len1; i++) {
-		            $rootScope.newValueFakeId = $rootScope.newValueFakeId - 1;
 		            var newValue = {
 		                    id: new ObjectId().toString(),
 		                    type: 'value',
