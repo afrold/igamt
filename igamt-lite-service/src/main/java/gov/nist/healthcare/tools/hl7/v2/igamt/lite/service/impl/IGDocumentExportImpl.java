@@ -1013,7 +1013,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			Paragraph paragraph = new Paragraph(igdoc.getMetaData().getName(),
 					coverH1Font);
-			paragraph.setSpacingBefore(75);
+			paragraph.setSpacingBefore(55);
 			paragraph.setAlignment(Element.ALIGN_CENTER);
 			coverDocument.add(paragraph);
 
@@ -1025,7 +1025,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			paragraph = new Paragraph(igdoc.getMetaData().getDate(),
 					coverH2Font);
 			paragraph.setAlignment(Element.ALIGN_CENTER);
-			paragraph.setSpacingAfter(100);
+			paragraph.setSpacingAfter(20);
 			coverDocument.add(paragraph);
 
 			paragraph = new Paragraph(
@@ -1771,13 +1771,13 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title", igdoc.getMetaData().getName());
 		addLineBreak(wordMLPackage, factory);
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle", "Subtitle " + igdoc.getMetaData().getSubTitle());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", igdoc.getMetaData().getDate());
 		addLineBreak(wordMLPackage, factory);
 		addLineBreak(wordMLPackage, factory);
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", "HL7 Version " + p.getMetaData().getHl7Version());
 		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", "Document Version "
 				+ igdoc.getMetaData().getVersion());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", "Organization name " + p.getMetaData().getOrgName());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", igdoc.getMetaData().getDate());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", p.getMetaData().getOrgName());
 
 		addPageBreak(wordMLPackage, factory);
 

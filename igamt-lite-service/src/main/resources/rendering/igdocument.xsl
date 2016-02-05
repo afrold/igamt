@@ -80,10 +80,6 @@
 			<xsl:value-of select="@Date"></xsl:value-of>
 		</h3>
 		<br></br>
-		<h4 align="center">
-			<xsl:text>Document version </xsl:text>
-			<xsl:value-of select="@DocumentVersion"></xsl:value-of>
-		</h4>
 		<br></br>
 		<h4 align="center">
 			<xsl:text>HL7 version </xsl:text>
@@ -91,7 +87,11 @@
 		</h4>
 		<br></br>
 		<h4 align="center">
-			<xsl:text>Organization name </xsl:text>
+			<xsl:text>Document version </xsl:text>
+			<xsl:value-of select="@DocumentVersion"></xsl:value-of>
+		</h4>
+		<br></br>
+		<h4 align="center">
 			<xsl:value-of select="@OrgName"></xsl:value-of>
 		</h4>
 		<!-- <br></br> <xsl:value-of select="@Ext"></xsl:value-of> <br></br> <xsl:value-of 
