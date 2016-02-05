@@ -43,7 +43,7 @@ var
     spinner,
 
 //The list of messages we don't want to displat
-    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded'];
+    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded', 'igDocumentNotSaved','igDocumentSaved'];
 
 //the message to be shown to the user
 var msg = {};
@@ -141,6 +141,9 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 
     $httpProvider.interceptors.push(function ($rootScope, $q) {
         var setMessage = function (response) {
+
+            console.log("inside interceptor 1");
+
             //if the response has a text and a type property, it is a message to be shown
             if (response.data && response.data.text && response.data.type) {
                 if (response.status === 401 ) {
@@ -161,6 +164,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                         manualHandle: true
                     };
                 } else {
+                    console.log("inside interceptor 2");
+
                     msg = {
                         text: response.data.text,
                         type: response.data.type,
@@ -219,12 +224,14 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                     //with a login windows when browsing home.
                     if ( response.config.url !== 'api/accounts/cuser') {
                         //We don't intercept this request
-                        var deferred = $q.defer(),
-                            req = {
-                                config: response.config,
-                                deferred: deferred
-                            };
-                        $rootScope.requests401.push(req);
+                        if(response.config.url !== 'api/accounts/login') {
+                            var deferred = $q.defer(),
+                                req = {
+                                    config: response.config,
+                                    deferred: deferred
+                                };
+                            $rootScope.requests401.push(req);
+                        }
                         $rootScope.$broadcast('event:loginRequired');
 //                        return deferred.promise;
 
@@ -235,36 +242,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             }
         };
     });
-
-
-    $httpProvider.interceptors.push(function ($rootScope, $q) {
-        return {
-            response: function (response) {
-                return response   || $q.when(response);
-            },
-            responseError: function (response) {
-                if (response.status === 401) {
-                    //We catch everything but this one. So public users are not bothered
-                    //with a login windows when browsing home.
-                    if ( response.config.url !== 'api/accounts/cuser') {
-                        //We don't intercept this request
-                        var deferred = $q.defer(),
-                            req = {
-                                config: response.config,
-                                deferred: deferred
-                            };
-                        $rootScope.requests401.push(req);
-                        $rootScope.$broadcast('event:loginRequired');
-                        return  $q.when(response);
-                    }
-                }else  if (response.status === 503) {
-
-                }
-                return $q.reject(response);
-            }
-        };
-    });
-
 
     //intercepts ALL angular ajax http calls
     $httpProvider.interceptors.push(function ($q) {
@@ -370,10 +347,16 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             //If we are here in this callback, login was successfull
             //Let's get user info now
             httpHeaders.common['Authorization'] = null;
-            $http.get('api/accounts/cuser').success(function (data) {
-            	console.log("setCurrentUser=" + data);
-                userInfoService.setCurrentUser(data);
-                $rootScope.$broadcast('event:loginConfirmed');
+            $http.get('api/accounts/cuser').then(function (result) {
+                if(result.data && result.data != null) {
+                    var rs = angular.fromJson(result.data);
+                    userInfoService.setCurrentUser(rs);
+                    $rootScope.$broadcast('event:loginConfirmed');
+                }else{
+                    userInfoService.setCurrentUser(null);
+                }
+            },function(){
+                userInfoService.setCurrentUser(null);
             });
         });
     });
@@ -414,6 +397,12 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         }
     };
 
+    $rootScope.getFullName = function () {
+        if (userInfoService.isAuthenticated() === true) {
+            return userInfoService.getFullName();
+        }
+        return '';
+    };
 
 
     $rootScope.isSubActive = function (path) {

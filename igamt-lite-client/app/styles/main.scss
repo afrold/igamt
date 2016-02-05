@@ -1998,3 +1998,8 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
 }
+
+.current {
+  text-decoration: none;
+  background-color:#EEC10C;
+}

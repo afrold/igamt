@@ -10,6 +10,14 @@
     </div>
     <div ng-show="isEditing">
         <div class="row">
+
+            <div class="col-md-12" ng-show="igDocumentMsg !== null">
+                <div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">
+                    <button type="button" class="close" ng-click="igDocumentMsg.show = false">×</button>
+                    <div msg key-expr="igDocumentMsg.text"></div>
+                </div>
+            </div>
+            
             <div class="col-md-12">
                 <div class="page-header">
                     <h3>{{igdocument.metaData.identifier}}</h3>
@@ -24,12 +32,12 @@
 
                     <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                             ng-hide="options.readonly"
-                            ng-show="igContext.igType.type === 'USER'"
+                            ng-show="igDocumentConfig.selectedType === 'USER'"
                             ng-click="save()">
                         <span><i class="fa fa-check fa-fw"></i> Apply</span>
                     </button>
 
-                    <button ng-show="options.readonly && igContext.igType.type === 'USER'"
+                    <button ng-show="options.readonly && igDocumentConfig.selectedType === 'USER'"
                             title="Edit"
                             type="button" class="btn btn-xs btn-primary"
                             ng-click="edit(igdocument)">
@@ -42,7 +50,7 @@
                             type="button" class="btn btn-xs btn-info"
                             ng-click="clone(igdocument)">
                                         <span><i
-                                                class="fa fa-plus fa-fw"></i>Clone</span>
+                                                class="fa fa-plus fa-fw"></i>Copy</span>
                     </button>
 
 
@@ -60,17 +68,18 @@
                         <ul class="dropdown-menu igl-menu" role="menu">
                             <li><a class="point" ng-click="exportAs(igdocument.id, 'zip')">As ZIP</a></li>
                             <li><a class="point" ng-click="exportAs(igdocument.id,'pdf')">As PDF</a></li>
-                            <li><a class="point" ng-click="exportAs(igdocument.id,'docx')">As WORD <span style="color:red">( In progress)</span></a></li>
+                            <li><a class="point" ng-click="exportAs(igdocument.id,'docx')"><span style='color:red'>In progress</span> As WORD</a></li>
+                            <li><a class="point" ng-click="exportAs(igdocument.id,'html')">As HTML</a></li>
                         </ul>
                     </div>
 
-                    <button title="Close the igdocument" type="button" class="btn btn-xs btn-warning"
+                    <button title="Close the IG Document" type="button" class="btn btn-xs btn-warning"
                             ng-click="close()">
                         <span><i class="fa fa-close fa-fw"></i>Close</span>
                     </button>
 
                     <button title="Delete permanently" type="button" class="btn btn-xs btn-danger"
-                            ng-show="igContext.igType.type === 'USER'" ng-hide="options.readonly"
+                            ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="options.readonly"
                             ng-click="confirmDelete(igdocument)">
                         <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
                     </button>

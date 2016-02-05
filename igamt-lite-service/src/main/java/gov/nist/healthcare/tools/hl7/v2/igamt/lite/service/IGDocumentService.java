@@ -23,6 +23,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import java.io.InputStream;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public interface IGDocumentService {
 	
 	public IGDocument save(IGDocument ig) throws IGDocumentException;
@@ -31,6 +34,8 @@ public interface IGDocumentService {
 
 	public IGDocument findOne(String id);
 
+	public List<IGDocument> findAll();
+	
 	public List<IGDocument> findAllPreloaded();
 
 	public List<IGDocument> findByAccountId(Long accountId);
