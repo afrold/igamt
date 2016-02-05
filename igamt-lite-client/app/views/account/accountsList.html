@@ -1,4 +1,4 @@
-<div class="container" ng-controller="ManageAccountsCtrl" ng-init="init()">
+<div class="container" ng-controller="AccountsListCtrl" ng-init="initManageAccounts()">
     <!--<div class="">-->
         <!--<form class="form-horizontal">-->
             <!--<select class="form-control input-sm"-->
@@ -49,7 +49,7 @@
                     <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
                         <th st-ratio="5"></th>
                         <th st-sort="fullName" st-ratio="20">
-                            <div msg key='account.fullname'></div>
+                            <div msg key='account.fullName'></div>
                         </th>
                         <th st-sort="email" st-ratio="20">
                             <div msg key='account.email'></div>
@@ -100,6 +100,13 @@
                         <!--</th>-->
                     </tr>
                     </tbody>
+                    <tfoot ng-show="tmpAccountList.length >= 20">
+                    <tr style="margin-right: {{scrollbarWidth}}px;">
+                        <td colspan="8">
+                            <div st-pagination="" st-items-by-page="20" st-displayed-pages="7"></div>
+                        </td>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
 
