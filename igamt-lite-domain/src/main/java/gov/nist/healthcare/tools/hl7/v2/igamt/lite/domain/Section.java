@@ -6,7 +6,8 @@ import java.util.Set;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 
-public class Section extends TextbasedSectionModel implements java.io.Serializable,Cloneable {
+
+public class Section extends TextbasedSectionModel implements java.io.Serializable,Cloneable, Comparable<Section> {
 
 	/**
 	 * 
@@ -68,6 +69,11 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 		}
 		
 		return clonedSection;
+	}
+	
+	@Override
+	public int compareTo(Section o) {
+		return this.getSectionPosition() - o.getSectionPosition();
 	}
 	
 }

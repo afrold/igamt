@@ -811,7 +811,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		try {
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
-			String stringProfile = new ProfileSerialization4ExportImpl()
+			String stringProfile = new IGDocumentSerialization4ExportImpl()
 			.serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
 					Charset.forName("UTF-8"));
@@ -850,7 +850,7 @@ public class ProfileExportImpl extends PdfPageEventHelper implements ProfileExpo
 		try {
 			// Generate xml file containing profile
 			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
-			String stringProfile = new ProfileSerialization4ExportImpl()
+			String stringProfile = new IGDocumentSerialization4ExportImpl()
 			.serializeProfileToXML(p);
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
 					Charset.forName("UTF-8"));

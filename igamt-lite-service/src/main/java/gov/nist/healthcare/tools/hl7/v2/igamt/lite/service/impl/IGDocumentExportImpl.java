@@ -17,6 +17,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -26,6 +27,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
@@ -37,34 +39,55 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import javax.imageio.ImageIO;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
+import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Nodes;
 import nu.xom.ParsingException;
+import nu.xom.Serializer;
 import nu.xom.xslt.XSLException;
 import nu.xom.xslt.XSLTransform;
 
@@ -79,6 +102,7 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.docx4j.XmlUtils;
+import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
 import org.docx4j.model.fields.FieldUpdater;
 import org.docx4j.openpackaging.contenttype.CTOverride;
@@ -87,6 +111,7 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.AltChunkType;
+import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.openpackaging.parts.WordprocessingML.DocumentSettingsPart;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
 import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
@@ -99,6 +124,7 @@ import org.docx4j.wml.CTShd;
 import org.docx4j.wml.CTTblLayoutType;
 import org.docx4j.wml.CTVerticalJc;
 import org.docx4j.wml.Color;
+import org.docx4j.wml.Drawing;
 import org.docx4j.wml.FldChar;
 import org.docx4j.wml.HpsMeasure;
 import org.docx4j.wml.Jc;
@@ -127,6 +153,7 @@ import org.docx4j.wml.U;
 import org.docx4j.wml.UnderlineEnumeration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.w3c.tidy.Tidy;
 
@@ -138,11 +165,11 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.Section;
 import com.itextpdf.text.html.WebColors;
 import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.BaseFont;
@@ -162,6 +189,9 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 @Service
 public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocumentExportService{
 	Logger logger = LoggerFactory.getLogger( IGDocumentExportImpl.class ); 
+
+	//	@Autowired
+	//	private UserService userService;
 
 	static String constraintBackground = "EDEDED";
 	static String headerBackground = "F0F0F0";
@@ -190,7 +220,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	public InputStream exportAsDocx(IGDocument d) {
 		if (d != null) {
-			return exportAsDocxWithDocx4J(d.getProfile());
+			return exportAsDocxWithDocx4J(d); 
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -198,7 +228,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	public InputStream exportAsPdf(IGDocument d) {
 		if (d != null) {
-			return exportAsPdfWithIText(d.getProfile());
+			return exportAsPdfWithIText(d);
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -214,7 +244,16 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	public InputStream exportAsHtml(IGDocument d) {
 		if (d != null) {
-			return exportAsHtmlFromXsl(d.getProfile(), "true");
+			return exportAsHtmlFromXsl(d, "true");
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	public InputStream exportAsSectionsHtml(IGDocument d) {
+		if (d != null) {
+			return new NullInputStream(1L);
+			//			return exportAsHtmlFromXsl(d, "true");
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -804,51 +843,73 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		sheet.autoSizeColumn(8);
 	}
 
-	public InputStream exportAsHtmlFromXsl(Profile p, String inlineConstraints) {
+	public InputStream exportAsHtmlFromXsl(IGDocument igdoc, String inlineConstraints) {
 		// Note: inlineConstraint can be true or false
+
 		try {
+			File tmpHtmlFile = File.createTempFile("IGDocTemp", ".html");
+
 			// Generate xml file containing profile
-			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
-			String stringProfile = new ProfileSerialization4ExportImpl()
-			.serializeProfileToXML(p);
-			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
+			File tmpXmlFile = File.createTempFile("IGDocTemp", ".xml");
+			String stringIgDoc = new IGDocumentSerialization4ExportImpl()
+			.serializeIGDocumentToXML(igdoc);
+			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
 					Charset.forName("UTF-8"));
 
+			TransformerFactory factory = TransformerFactory.newInstance();
+			Source xslt = new StreamSource(this.getClass()
+					.getResourceAsStream("/rendering/igdocument.xsl"));
+			Transformer transformer;
+
 			// Apply XSL transformation on xml file to generate html
-			File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
-			//			File tmpHtmlFile = new File("ProfileTemp.html");
-			Builder builder = new Builder();
-			nu.xom.Document input = builder.build(tmpXmlFile);
-			nu.xom.Document stylesheet = builder.build(this.getClass()
-					.getResourceAsStream("/rendering/profile2a.xsl"));
-			XSLTransform transform = new XSLTransform(stylesheet);
-			transform.setParameter("inlineConstraints", inlineConstraints);
-			Nodes output = transform.transform(input);
-			nu.xom.Document result = XSLTransform.toDocument(output);
-
-			Tidy tidy = new Tidy();
-			tidy.setWraplen(Integer.MAX_VALUE);
-			tidy.setXHTML(true);
-			tidy.setShowWarnings(false); //to hide errors
-			tidy.setQuiet(true); //to hide warning
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(result.toXML().getBytes("UTF-8"));
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			tidy.parseDOM(inputStream, outputStream);
-			FileUtils.writeStringToFile(tmpHtmlFile, outputStream.toString("UTF-8"));
-
+			transformer = factory.newTransformer(xslt);
+			transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
 			return FileUtils.openInputStream(tmpHtmlFile);
-		} catch (IOException | ParsingException
-				| XSLException e) {
+
+		} catch (TransformerException | IOException e) {
+			e.printStackTrace();
 			return new NullInputStream(1L);
 		}
+
+
+		//			// Apply XSL transformation on xml file to generate html
+		//			File tmpHtmlFile = File.createTempFile("IGDocTemp", ".html");
+		//			//			File tmpHtmlFile = new File("ProfileTemp.html");
+		//			Builder builder = new Builder();
+		//			//			nu.xom.Document input = builder.build(tmpXmlFile);
+		//			nu.xom.Document input = new ProfileSerialization4ExportImpl()
+		//			.serializeIGDocumentToDoc(igdoc);
+		//			nu.xom.Document stylesheet = builder.build(this.getClass()
+		//					.getResourceAsStream("/rendering/igdocument.xsl"));
+		//			XSLTransform transform = new XSLTransform(stylesheet);
+		//			transform.setParameter("inlineConstraints", inlineConstraints);
+		//			Nodes output = transform.transform(input);
+		//			nu.xom.Document result = XSLTransform.toDocument(output);
+		//
+		//			Tidy tidy = new Tidy();
+		//			tidy.setWraplen(Integer.MAX_VALUE);
+		//			tidy.setXHTML(true);
+		//			tidy.setShowWarnings(false); //to hide errors
+		//			tidy.setQuiet(true); //to hide warning
+		//			ByteArrayInputStream inputStream = new ByteArrayInputStream(result.toXML().getBytes("UTF-8"));
+		//			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		//			tidy.parseDOM(inputStream, outputStream);
+		//			FileUtils.writeStringToFile(tmpHtmlFile, outputStream.toString("UTF-8"));
+		//
+		//			return FileUtils.openInputStream(tmpHtmlFile);
+		//		} catch (IOException | ParsingException
+		//				| XSLException e) {
+		//			return new NullInputStream(1L);
+		//		}
 	}
 
 	public InputStream exportAsPdfFromXsl(IGDocument d, String inlineConstraints) {
 		// Note: inlineConstraint can be true or false
 		try {
 			// Generate xml file containing profile
-			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
-			String stringProfile = new ProfileSerialization4ExportImpl()
+			//			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
+			File tmpXmlFile = new File("IGDocTemp.xml");
+			String stringProfile = new IGDocumentSerialization4ExportImpl()
 			.serializeProfileToXML(d.getProfile());
 			FileUtils.writeStringToFile(tmpXmlFile, stringProfile,
 					Charset.forName("UTF-8"));
@@ -857,9 +918,12 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			File tmpHtmlFile = File.createTempFile("ProfileTemp", ".html");
 			//			File tmpHtmlFile = new File("ProfileTemp.html");
 			Builder builder = new Builder();
-			nu.xom.Document input = builder.build(tmpXmlFile);
+			//			nu.xom.Document input = builder.build(tmpXmlFile);
+
+			nu.xom.Document input = new IGDocumentSerialization4ExportImpl()
+			.serializeIGDocumentToDoc(d);
 			nu.xom.Document stylesheet = builder.build(this.getClass()
-					.getResourceAsStream("/rendering/profile2a.xsl"));
+					.getResourceAsStream("/rendering/igdocument.xsl"));
 			XSLTransform transform = new XSLTransform(stylesheet);
 			transform.setParameter("inlineConstraints", inlineConstraints);
 			Nodes output = transform.transform(input);
@@ -898,7 +962,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	private Map<String, Integer> pageByTitle;
 
 
-	private InputStream exportAsPdfWithIText(Profile p) {
+	private InputStream exportAsPdfWithIText(IGDocument igdoc) {
+		Profile p = igdoc.getProfile();
 
 		List<String> header;
 		PdfPTable table;
@@ -910,11 +975,14 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		BaseColor headerFontItxtColor = WebColors.getRGBColor(headerFontColor);
 		BaseColor cpColor = WebColors.getRGBColor(constraintBackground);
 		Font coverH1Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 24, Font.BOLD,
-				BaseColor.RED);
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.BOLD,
+				BaseColor.BLACK);
 		Font coverH2Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
-				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 16, Font.NORMAL,
-				BaseColor.RED);
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 16, Font.BOLD,
+				BaseColor.BLACK);
+		Font coverFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
+				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 12, Font.BOLD,
+				BaseColor.BLACK);
 		Font tocTitleFont = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 16, Font.BOLD,
 				BaseColor.BLACK);
@@ -939,34 +1007,45 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 					coverBaos);
 			coverDocument.open();
 
-			Paragraph paragraph = new Paragraph(p.getMetaData().getName(),
+			Image img1 = Image.getInstance(this.getClass().getResource("/rendering/hl7Logo.tiff"));
+			img1.setAlignment(Element.ALIGN_CENTER);
+			coverDocument.add(img1);
+
+			Paragraph paragraph = new Paragraph(igdoc.getMetaData().getTitle(),
 					coverH1Font);
-			paragraph.setSpacingBefore(250);
-			paragraph.setAlignment(Element.ALIGN_RIGHT);
-
+			paragraph.setSpacingBefore(55);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
 			coverDocument.add(paragraph);
-			paragraph = new Paragraph(p.getMetaData().getSubTitle(),
+
+			paragraph = new Paragraph(igdoc.getMetaData().getSubTitle(),
 					coverH2Font);
-			paragraph.setAlignment(Element.ALIGN_RIGHT);
-			coverDocument.add(paragraph);
-			paragraph = new Paragraph(
-					"HL7 v" + p.getMetaData().getHl7Version(), coverH2Font);
-			paragraph.setAlignment(Element.ALIGN_RIGHT);
-			paragraph.setSpacingAfter(250);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
 			coverDocument.add(paragraph);
 
-			paragraph = new Paragraph();
-			paragraph.add(new Chunk(p.getMetaData().getOrgName(), coverH2Font));
-			paragraph.add(Chunk.NEWLINE);
-			paragraph.add(new Phrase("Document Version "
-					+ p.getMetaData().getVersion(), coverH2Font));
-			paragraph.add(Chunk.NEWLINE);
-			paragraph.add(new Phrase("Status : " + p.getMetaData().getStatus(),
-					coverH2Font));
-			paragraph.add(Chunk.NEWLINE);
-			paragraph.add(new Chunk(p.getMetaData().getDate(), coverH2Font));
-			paragraph.setAlignment(Element.ALIGN_RIGHT);
+			paragraph = new Paragraph(igdoc.getMetaData().getDate(),
+					coverH2Font);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
+			paragraph.setSpacingAfter(20);
 			coverDocument.add(paragraph);
+
+			paragraph = new Paragraph(
+					"HL7 version: " + p.getMetaData().getHl7Version(), coverFont);
+			paragraph.add(Chunk.NEWLINE);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
+			coverDocument.add(paragraph);
+
+			paragraph = new Paragraph("Document version: "
+					+ igdoc.getMetaData().getVersion(), coverFont);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
+			coverDocument.add(paragraph);
+
+			paragraph = new Paragraph(p.getMetaData().getOrgName(), coverFont);
+			paragraph.setAlignment(Element.ALIGN_CENTER);
+			coverDocument.add(paragraph);
+
+			//			paragraph = new Paragraph("Principal author: " + userService.getAccountById(p.getAccountId()).getFullName(), coverH2Font);
+			//			paragraph.setAlignment(Element.ALIGN_CENTER);
+			//			coverDocument.add(paragraph);
 
 			coverDocument.close();
 
@@ -998,30 +1077,45 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			igDocument.open();
 
 			Paragraph title = null;
-			Chapter chapter = null;
-			Section section = null;
+			com.itextpdf.text.Section section = null;
 
 			/*
-			 * Adding messages definition
+			 * Adding sections and subsections content
 			 */
-			tocDocument.add(new Paragraph("MESSAGES", titleFont));
+			traverseIGDocument4Pdf(igdoc, tocDocument, igDocument, titleFont, igWriter); 
+
+			/*
+			 * Adding Messaging infrastructure
+			 */
+			int positionMessageInfrastructure = igdoc.getChildSections().size();
+			tocDocument.add(Chunk.NEWLINE);
+			tocDocument.add(new Paragraph(String.valueOf(positionMessageInfrastructure + 1) + " " + p.getSectionTitle(), titleFont));
 			tocDocument.add(Chunk.NEWLINE);
 
-			Paragraph par = new Paragraph("Messages", titleFont);
-			chapter = new Chapter(par, 1);
-			igDocument.add(chapter);
-			igDocument.add(Chunk.NEWLINE);
+			Chapter chapterMsgInfra = new Chapter(new Paragraph(p.getSectionTitle(), titleFont), positionMessageInfrastructure + 1);
+
+			/*
+			 * Adding conformance profiles(messages) definitions
+			 */
+
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*1) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getMessages().getSectionPosition()+1) + p.getMessages().getSectionTitle(), p.getMessages().getId());
+			Chunk cp = new Chunk(p.getMessages().getSectionTitle(), titleFont).setLocalDestination(p.getMessages().getId());
+			Paragraph titleCp = new Paragraph(cp);
+			//			Paragraph titleCp = new Paragraph(p.getMessages().getSectionTitle(), titleFont);
+
+			com.itextpdf.text.Section sectionCp = chapterMsgInfra.addSection(titleCp);
 
 			List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
 			Collections.sort(messagesList);
 
+
 			for (Message m : messagesList) {
 
-				this.addTocContent(tocDocument, igWriter, m.getName());
+				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." +  String.valueOf(p.getMessages().getSectionPosition()+1)+ "." + String.valueOf(m.getSectionPosition()+1) + " " + m.getName(), m.getId());
 				title = new Paragraph(m.getName(), titleFont);
-				section = chapter.addSection(title);
+				section = sectionCp.addSection(title);
 				section.setIndentationLeft(30);
-				section.setTriggerNewPage(true);
+				//				section.setTriggerNewPage(true); TODO Check if required by users
 
 				section.add(Chunk.NEWLINE);
 				section.add(richTextToParagraph(m.getComment()));
@@ -1041,30 +1135,22 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 				section.add(Chunk.NEWLINE);
 				section.add(richTextToParagraph(m.getUsageNote()));
 				section.add(Chunk.NEWLINE);
-
-				igDocument.add(section);
 			}
 
 			/*
 			 * Adding segments details
 			 */
-			tocDocument.add(Chunk.NEWLINE);
-			tocDocument.add(new Paragraph("SEGMENTS AND FIELDS DESCRIPTIONS", titleFont));
-			tocDocument.add(Chunk.NEWLINE);
-
-			title = new Paragraph("Segments and fields descriptions", titleFont);
-			chapter = new Chapter(title, 2);
-
-			igDocument.add(title);
-			igDocument.add(Chunk.NEWLINE);
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*1) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getSegments().getSectionPosition()+1) + " " + p.getSegments().getSectionTitle(), p.getSegments().getId());
+			Paragraph titleSgt = new Paragraph(p.getSegments().getSectionTitle(), titleFont);
+			com.itextpdf.text.Section sectionSgt = chapterMsgInfra.addSection(titleSgt);
 
 			List<Segment> segmentsList = new ArrayList<Segment>(p.getSegments().getChildren());
 			Collections.sort(segmentsList);
 
 			for (Segment s: segmentsList){
 				String segmentInfo = s.getLabel() + " - " + s.getDescription();
-				this.addTocContent(tocDocument, igWriter, segmentInfo);
-				Section section1 = chapter.addSection(new Paragraph(segmentInfo, titleFont));
+				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getSegments().getSectionPosition()+1) + "." + String.valueOf(s.getSectionPosition()+1) + " " + segmentInfo, s.getId());
+				com.itextpdf.text.Section section1 = sectionSgt.addSection(new Paragraph(segmentInfo, titleFont));
 
 				section1.add(Chunk.NEWLINE);
 				section1.add(richTextToParagraph(s.getText1()));
@@ -1100,24 +1186,15 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 					}
 				}
 				section1.add(Chunk.NEWLINE);
-				section1.newPage();
-
-				igDocument.add(section1);
 			}
-
-			igDocument.add(chapter);
-			igDocument.add(Chunk.NEWLINE);
 
 
 			/*
-			 * Adding datatypes
+			 * Adding datatypes info
 			 */
-			igDocument.add(new Paragraph("DATA TYPES", titleFont));
-			igDocument.add(Chunk.NEWLINE);
-
-			tocDocument.add(Chunk.NEWLINE);
-			tocDocument.add(new Paragraph("Data types", titleFont));
-			tocDocument.add(Chunk.NEWLINE);
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*1) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getDatatypes().getSectionPosition()+1) + " " + p.getDatatypes().getSectionTitle(), p.getDatatypes().getId());
+			Paragraph titleDts = new Paragraph(p.getDatatypes().getSectionTitle(), titleFont);
+			com.itextpdf.text.Section sectionDts = chapterMsgInfra.addSection(titleDts);
 
 			header = Arrays.asList("Seq", "Element Name", "Conf\nlength", "DT",
 					"Usage", "Length", "Value\nSet", "Comment");
@@ -1127,12 +1204,12 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			Collections.sort(datatypeList);
 			for (Datatype d: datatypeList) {
 
-				this.addTocContent(tocDocument, igWriter, d.getLabel() != null ?  d.getLabel()+ " - " + d.getDescription() : d.getName()
-						+ " - " + d.getDescription());
-
-				igDocument.add(new Paragraph( d.getLabel() != null ?  d.getLabel() + " - "
+				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getDatatypes().getSectionPosition()+1) + "." + String.valueOf(d.getSectionPosition()+1) + " " + (d.getLabel() != null ?  d.getLabel()+ " - " + d.getDescription() : d.getName()
+						+ " - " + d.getDescription()), d.getId());
+				com.itextpdf.text.Section section1 = sectionDts.addSection(new Paragraph( d.getLabel() != null ?  d.getLabel() + " - "
 						+ d.getDescription() : d.getName() + " - " + d.getDescription()));
-				igDocument.add(new Paragraph(d.getComment()));
+
+				section1.add(new Paragraph(d.getComment()));
 
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
@@ -1140,20 +1217,17 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 				this.addDatatype(rows, d, p.getDatatypes(),
 						p.getTables());
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
-				igDocument.add(Chunk.NEWLINE);
-				igDocument.add(table);
-				igDocument.add(Chunk.NEWLINE);
+				section1.add(Chunk.NEWLINE);
+				section1.add(table);
+				section1.add(Chunk.NEWLINE);
 			}
 
 			/*
-			 * Adding value sets
+			 * Adding value sets info
 			 */
-			igDocument.add(new Paragraph("VALUE SETS", titleFont));
-			igDocument.add(Chunk.NEWLINE);
-
-			tocDocument.add(Chunk.NEWLINE);
-			tocDocument.add(new Paragraph("Value Sets", titleFont));
-			tocDocument.add(Chunk.NEWLINE);
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*1) + String.valueOf(positionMessageInfrastructure+1) + "." + String.valueOf(p.getTables().getSectionPosition()+1) + " " + p.getTables().getSectionTitle(), p.getTables().getId());
+			Paragraph titleVsd = new Paragraph(p.getTables().getSectionTitle(), titleFont);
+			com.itextpdf.text.Section sectionVsd = chapterMsgInfra.addSection(titleVsd);
 
 			header = Arrays.asList("Value", "Code system", "Usage", "Description");
 
@@ -1165,10 +1239,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			for (Table t : tables) {
 
-				this.addTocContent(tocDocument, igWriter, t.getBindingIdentifier()
-						+ " - " + t.getDescription());
+				this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + "." +  String.valueOf(p.getTables().getSectionPosition()+1) + "." + String.valueOf(t.getSectionPosition()+1) + " " + t.getBindingIdentifier()
+						+ " - " + t.getDescription(), t.getId());
+				com.itextpdf.text.Section section1 = sectionVsd.addSection(new Paragraph(t.getBindingIdentifier() + " - " + t.getDescription()));
 
-				igDocument.add(new Paragraph(t.getBindingIdentifier() + " - " + t.getDescription()));
 				StringBuilder sb = new StringBuilder();
 				sb.append("\nOid: ");
 				sb.append(t.getOid()==null||t.getOid().isEmpty() ? "UNSPECIFIED" : t.getOid());
@@ -1178,184 +1252,204 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 				//				sb.append(t.getExtensibility() == null ? "Closed":t.getExtensibility().value());
 				//				sb.append("\nContent: ");
 				//				sb.append(t.getContentDefinition() == null ? "Extensional":t.getContentDefinition().value());
-				igDocument.add(new Chunk(sb.toString(), cellFont));
+
+				//				igDocument.add(new Chunk(sb.toString(), cellFont));
+				section1.add(new Chunk(sb.toString(), cellFont));
 
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
 				rows = new ArrayList<List<String>>();
 				this.addValueSet(rows, t);
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
-				igDocument.add(Chunk.NEWLINE);
-				igDocument.add(table);
-				igDocument.add(Chunk.NEWLINE);
+				section1.add(Chunk.NEWLINE);
+				section1.add(table);
+				section1.add(Chunk.NEWLINE);
+
+
 			}
 
 			/*
 			 * Adding conformance information
 			 */
-			igDocument.add(new Paragraph("CONFORMANCE INFORMATION", titleFont));
-			igDocument.add(Chunk.NEWLINE);
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*1) + String.valueOf(positionMessageInfrastructure+1) + ".5" + " Conformance information", "conformanceinformation");
+			Paragraph titleCfi = new Paragraph("Conformance information", titleFont);
+			com.itextpdf.text.Section sectionCfi = chapterMsgInfra.addSection(titleCfi);
 
-			tocDocument.add(Chunk.NEWLINE);
-			tocDocument.add(new Paragraph("Conformance information", titleFont));
-			tocDocument.add(Chunk.NEWLINE);
-			
-			this.addTocContent(tocDocument, igWriter, "Conditional predicates");
-			igDocument.add(new Paragraph("Conditional predicates"));
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + ".5.1 Conditional predicates", "conditionalpredicates");
+			com.itextpdf.text.Section section1 = sectionCfi.addSection(new Paragraph("Conditional predicates"));
 
 			header = Arrays.asList("Location", "Usage", "Description");
 			columnWidths = new float[] { 15f, 15f, 75f };
 
-			this.addTocContent(tocDocument, igWriter, "Message level");
-			igDocument.add(new Paragraph("Message level"));
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*3) + String.valueOf(positionMessageInfrastructure+1) + ".5.1.1 Message level", "cpmessagelevel");
+			com.itextpdf.text.Section sectionTmp = section1.addSection(new Paragraph("Message level"));
 
+			int j = 1;
 			for (Message m: messagesList){
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
 				rows = new ArrayList<List<String>>();
 				this.addPreMessage(rows, m);
 				if (!rows.isEmpty()){
-					this.addTocContent(tocDocument, igWriter, m.getName());
-					igDocument.add(new Paragraph(m.getName()));
+					this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*4) + String.valueOf(positionMessageInfrastructure+1) + ".5.1.1."+ String.valueOf(j) + " " + m.getName(), String.valueOf(positionMessageInfrastructure+1) + ".5.1.1."+ String.valueOf(j));
+					j += 1;
+					sectionTmp.add(new Paragraph(m.getName()));
 					this.addAllCellsPdfTable(table, rows, cellFont, cpColor);
-					igDocument.add(Chunk.NEWLINE);
-					igDocument.add(table);
-					igDocument.add(Chunk.NEWLINE);
+					sectionTmp.add(Chunk.NEWLINE);
+					sectionTmp.add(table);
+					sectionTmp.add(Chunk.NEWLINE);
 				}
 			}
 
-			this.addTocContent(tocDocument, igWriter, "Group level");
-			igDocument.add(new Paragraph("Group level"));
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*3) + String.valueOf(positionMessageInfrastructure+1) + ".5.1.2 Group level", "cpgrouplevel");
+			sectionTmp = section1.addSection(new Paragraph("Group level"));
 
+			j = 1;
 			for (Message m: messagesList){
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
 				rows = new ArrayList<List<String>>();
 				this.addPreGroup(rows, m);
 				if (!rows.isEmpty()){
-					this.addTocContent(tocDocument, igWriter, m.getName());
-					igDocument.add(new Paragraph(m.getName()));
+					this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*4) + String.valueOf(positionMessageInfrastructure+1) + ".5.1.2."+ String.valueOf(j) + " " + m.getName(), String.valueOf(positionMessageInfrastructure+1) + ".5.1.2."+ String.valueOf(j));
+					j += 1;
+					sectionTmp.add(new Paragraph(m.getName()));
 					this.addAllCellsPdfTable(table, rows, cellFont, cpColor);
-					igDocument.add(Chunk.NEWLINE);
-					igDocument.add(table);
-					igDocument.add(Chunk.NEWLINE);
+					sectionTmp.add(Chunk.NEWLINE);
+					sectionTmp.add(table);
+					sectionTmp.add(Chunk.NEWLINE);
 				}
 			}
 
-			this.addTocContent(tocDocument, igWriter, "Segment level");
-			igDocument.add(new Paragraph("Segment level"));
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*3) + String.valueOf(positionMessageInfrastructure+1) + ".5.1.3 Segment level", "cpsegmentlevel");
+			sectionTmp = section1.addSection(new Paragraph("Segment level"));
 
+			j = 1;
 			for (Segment s: segmentsList){
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
 				rows = new ArrayList<List<String>>();
 				this.addPreSegment(rows, s);
 				if (!rows.isEmpty()){
-					this.addTocContent(tocDocument, igWriter, s.getName());
-					igDocument.add(new Paragraph(s.getName()));
+					this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*4) + String.valueOf(positionMessageInfrastructure+1) + ".5.1.3."+ String.valueOf(j) + " " + s.getName(), String.valueOf(positionMessageInfrastructure+1) + ".5.1.3."+ String.valueOf(j));
+					j += 1;
+					sectionTmp.add(new Paragraph(s.getName()));
 					this.addAllCellsPdfTable(table, rows, cellFont, cpColor);
-					igDocument.add(Chunk.NEWLINE);
-					igDocument.add(table);
-					igDocument.add(Chunk.NEWLINE);
+					sectionTmp.add(Chunk.NEWLINE);
+					sectionTmp.add(table);
+					sectionTmp.add(Chunk.NEWLINE);
 				}
 			}
 
-			this.addTocContent(tocDocument, igWriter, "Datatype level");
-			igDocument.add(new Paragraph("Datatype level"));
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*3) + String.valueOf(positionMessageInfrastructure+1) + ".5.1.4 Datatype level", "cpdatatypelevel");
+			sectionTmp = section1.addSection(new Paragraph("Datatype level"));
 
+			j = 1;
 			for (Datatype dt: datatypeList){
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
 				rows = new ArrayList<List<String>>();
 				this.addPreDatatype(rows, dt);
 				if (!rows.isEmpty()){
-					this.addTocContent(tocDocument, igWriter, dt.getName());
-					igDocument.add(new Paragraph(dt.getName()));
+					this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*4) + String.valueOf(positionMessageInfrastructure+1) + ".5.1.4."+ String.valueOf(j) + " " + dt.getName(), String.valueOf(positionMessageInfrastructure+1) + ".5.1.4."+ String.valueOf(j));
+					j += 1;
+					sectionTmp.add(new Paragraph(dt.getLabel()));
 					this.addAllCellsPdfTable(table, rows, cellFont, cpColor);
-					igDocument.add(Chunk.NEWLINE);
-					igDocument.add(table);
-					igDocument.add(Chunk.NEWLINE);
+					sectionTmp.add(Chunk.NEWLINE);
+					sectionTmp.add(table);
+					sectionTmp.add(Chunk.NEWLINE);
 				}
 			}
-			
-			this.addTocContent(tocDocument, igWriter, "Conformance statements");
-			igDocument.add(new Paragraph("Conformance statements"));
+
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*2) + String.valueOf(positionMessageInfrastructure+1) + ".5.2 Conformance statements", "conformancestatements");
+			section1 = sectionCfi.addSection(new Paragraph("Conformance statements"));
 
 			header = Arrays.asList("Location", "Description");
 			columnWidths = new float[] { 15f, 75f };
 
-			this.addTocContent(tocDocument, igWriter, "Message level");
-			igDocument.add(new Paragraph("Message level"));
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*3) + String.valueOf(positionMessageInfrastructure+1) + ".5.2.1 Message level", "csconformancestatement");
+			sectionTmp = section1.addSection(new Paragraph("Message level"));
 
+			j = 1;
 			for (Message m: messagesList){
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
 				rows = new ArrayList<List<String>>();
 				this.addCsMessage(rows, m);
 				if (!rows.isEmpty()){
-					this.addTocContent(tocDocument, igWriter, m.getName());
-					igDocument.add(new Paragraph(m.getName()));
+					this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*4) + String.valueOf(positionMessageInfrastructure+1) + ".5.2.1."+ String.valueOf(j) + " " + m.getName(), String.valueOf(positionMessageInfrastructure+1) + ".5.2.1."+ String.valueOf(j));
+					j += 1;
+					sectionTmp.add(new Paragraph(m.getName()));
 					this.addCellsPdfTable(table, rows, cellFont, cpColor);
-					igDocument.add(Chunk.NEWLINE);
-					igDocument.add(table);
-					igDocument.add(Chunk.NEWLINE);
+					sectionTmp.add(Chunk.NEWLINE);
+					sectionTmp.add(table);
+					sectionTmp.add(Chunk.NEWLINE);
 				}
 			}
 
-			this.addTocContent(tocDocument, igWriter, "Group level");
-			igDocument.add(new Paragraph("Group level"));
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*3) + String.valueOf(positionMessageInfrastructure+1) + ".5.2.2 Group level", "csgrouplevel");
+			sectionTmp = section1.addSection(new Paragraph("Group level"));
 
+			j = 1;
 			for (Message m: messagesList){
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
 				rows = new ArrayList<List<String>>();
 				this.addCsGroup(rows, m);
 				if (!rows.isEmpty()){
-					this.addTocContent(tocDocument, igWriter, m.getName());
-					igDocument.add(new Paragraph(m.getName()));
+					this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*4) + String.valueOf(positionMessageInfrastructure+1) + ".5.2.2."+ String.valueOf(j) + " " + m.getName(), String.valueOf(positionMessageInfrastructure+1) + ".5.2.2."+ String.valueOf(j));
+					j += 1;
+					sectionTmp.add(new Paragraph(m.getName()));
 					this.addCellsPdfTable(table, rows, cellFont, cpColor);
-					igDocument.add(Chunk.NEWLINE);
-					igDocument.add(table);
-					igDocument.add(Chunk.NEWLINE);
+					sectionTmp.add(Chunk.NEWLINE);
+					sectionTmp.add(table);
+					sectionTmp.add(Chunk.NEWLINE);
 				}
 			}
 
-			this.addTocContent(tocDocument, igWriter, "Segment level");
-			igDocument.add(new Paragraph("Segment level"));
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*3) + String.valueOf(positionMessageInfrastructure+1) + ".5.2.3 Segment level", "cssegmentlevel");
+			sectionTmp = section1.addSection(new Paragraph("Segment level"));
 
+			j = 1;
 			for (Segment s: segmentsList){
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
 				rows = new ArrayList<List<String>>();
 				this.addCsSegment(rows, s);
 				if (!rows.isEmpty()){
-					this.addTocContent(tocDocument, igWriter, s.getName());
-					igDocument.add(new Paragraph(s.getName()));
+					this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*4) + String.valueOf(positionMessageInfrastructure+1) + ".5.2.3."+ String.valueOf(j) + " " + s.getName(), String.valueOf(positionMessageInfrastructure+1) + ".5.2.3."+ String.valueOf(j));
+					j += 1;
+					sectionTmp.add(new Paragraph(s.getName()));
 					this.addCellsPdfTable(table, rows, cellFont, cpColor);
-					igDocument.add(Chunk.NEWLINE);
-					igDocument.add(table);
-					igDocument.add(Chunk.NEWLINE);
+					sectionTmp.add(Chunk.NEWLINE);
+					sectionTmp.add(table);
+					sectionTmp.add(Chunk.NEWLINE);
 				}
 			}
 
-			this.addTocContent(tocDocument, igWriter, "Datatype level");
-			igDocument.add(new Paragraph("Datatype level"));
+			this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*3) + String.valueOf(positionMessageInfrastructure+1) + ".5.2.4 Datatype level", "csdatatypelevel");
+			sectionTmp = section1.addSection(new Paragraph("Datatype level"));
 
+			j = 1;
 			for (Datatype dt: datatypeList){
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
 				rows = new ArrayList<List<String>>();
 				this.addCsDatatype(rows, dt);
 				if (!rows.isEmpty()){
-					this.addTocContent(tocDocument, igWriter, dt.getName());
-					igDocument.add(new Paragraph(dt.getName()));
+					this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*4) + String.valueOf(positionMessageInfrastructure+1) + ".5.2.4."+ String.valueOf(j) + " " + dt.getName(), String.valueOf(positionMessageInfrastructure+1) + ".5.2.4."+ String.valueOf(j));
+					j += 1;
+					sectionTmp.add(new Paragraph(dt.getLabel()));
 					this.addCellsPdfTable(table, rows, cellFont, cpColor);
-					igDocument.add(Chunk.NEWLINE);
-					igDocument.add(table);
-					igDocument.add(Chunk.NEWLINE);
+					sectionTmp.add(Chunk.NEWLINE);
+					sectionTmp.add(table);
+					sectionTmp.add(Chunk.NEWLINE);
 				}
 			}
-			
+
+			igDocument.add(chapterMsgInfra);
+			igDocument.add(Chunk.NEWLINE);
+
 			igDocument.close();
 			tocDocument.close();
 
@@ -1461,11 +1555,11 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	}
 
 	private void addTocContent(Document tocDocument, PdfWriter igWriter,
-			String title_) {
+			String title_, String idTarget) {
 		try {
 			// Create TOC
 			final String title = title_;
-			Chunk chunk = new Chunk(title).setLocalGoto(title);
+			Chunk chunk = new Chunk(title).setLocalGoto(idTarget);
 			tocDocument.add(new Paragraph(chunk));
 			// Add a placeholder for the page reference
 			tocDocument.add(new VerticalPositionMark() {
@@ -1571,11 +1665,11 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	private void addAllCellsPdfTable(PdfPTable table, List<List<String>> rows,
 			Font cellFont, BaseColor cpColor) {
 		for (List<String> cells : rows) {
-				for (String cell : cells) {
-					PdfPCell tcell;
-					tcell = new PdfPCell(new Phrase(cell, cellFont));
-					setCellBorders(tcell);
-					table.addCell(tcell);
+			for (String cell : cells) {
+				PdfPCell tcell;
+				tcell = new PdfPCell(new Phrase(cell, cellFont));
+				setCellBorders(tcell);
+				table.addCell(tcell);
 			}
 		}
 	}
@@ -1604,7 +1698,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		return null;
 	}
 
-	private InputStream exportAsDocxWithDocx4J(Profile p) {
+	private InputStream exportAsDocxWithDocx4J(IGDocument igdoc) {
+		Profile p = igdoc.getProfile();
 		WordprocessingMLPackage wordMLPackage;
 		//		try {
 		//			wordMLPackage = WordprocessingMLPackage.createPackage();
@@ -1657,14 +1752,32 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 		ObjectFactory factory = Context.getWmlObjectFactory();   
 
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title", p.getMetaData().getName());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Subtitle " + p.getMetaData().getSubTitle());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Organization name " + p.getMetaData().getOrgName());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "HL7 Version " + p.getMetaData().getHl7Version());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Document Version "
-				+ p.getMetaData().getVersion());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", "Status : " + p.getMetaData().getStatus());
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("SubTitle", p.getMetaData().getDate());
+		BufferedImage image = null;
+		try {
+			URL url = new URL("http://hit-2015.nist.gov/docs/hl7Logo.png");
+			image = ImageIO.read(url);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(image, "png", baos );
+			baos.flush();
+			byte[] imageInByte = baos.toByteArray();
+			baos.close();
+
+			addImageToPackage(wordMLPackage, imageInByte);
+		} catch (Exception e) {
+			logger.warn("Unable to add image");
+			e.printStackTrace();
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title", igdoc.getMetaData().getTitle());
+		addLineBreak(wordMLPackage, factory);
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle", "Subtitle " + igdoc.getMetaData().getSubTitle());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", igdoc.getMetaData().getDate());
+		addLineBreak(wordMLPackage, factory);
+		addLineBreak(wordMLPackage, factory);
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", "HL7 Version " + p.getMetaData().getHl7Version());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", "Document Version "
+				+ igdoc.getMetaData().getVersion());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", p.getMetaData().getOrgName());
 
 		addPageBreak(wordMLPackage, factory);
 
@@ -1695,31 +1808,21 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		wordMLPackage.getMainDocumentPart().getContent().add(paragraphForTOC);
 		addPageBreak(wordMLPackage, factory);
 
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "INTRODUCTION");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Purpose");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Audience");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Organisation of this guide");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Referenced profiles - antecedents");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Scope");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "In scope");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Out of scope");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Key technical decisions [conventions]");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "USE CASE");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Actors");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "User story");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Use case assumptions");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Pre-conditions");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Post-conditions");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Functional requirements");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Sequence diagram");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Acknowledgements");
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Error handling");
+		traverseIGDocument4Docx(igdoc, wordMLPackage); 
 
 		addPageBreak(wordMLPackage, factory);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "Conformance profiles");
+		if (p.getSectionTitle() != null){
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", p.getSectionTitle());
+		} else { 
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading1", "");
+		}
 
 		// Including information regarding messages
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Messages");
+		if (p.getMessages().getSectionTitle() != null) {
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", p.getMessages().getSectionTitle());
+		} else {
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+		}
 
 		List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
 		Collections.sort(messagesList);
@@ -1748,7 +1851,11 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		// Including information regarding segments 
 		List<Segment> segmentsList = new ArrayList<Segment>(p.getSegments().getChildren());
 		Collections.sort(segmentsList);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Segments and fields descriptions");
+		if (p.getSegments().getSectionTitle() != null) {
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", p.getSegments().getSectionTitle());
+		} else {
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+		}
 
 		for (Segment s: segmentsList){
 			String segmentInfo = s.getLabel() + " - " + s.getDescription();
@@ -1785,7 +1892,11 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		// Including information regarding data types
 		List<Datatype> datatypeList = new ArrayList<Datatype>(p.getDatatypes().getChildren());
 		Collections.sort(datatypeList);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Data types");
+		if (p.getDatatypes().getSectionTitle() != null) {
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", p.getDatatypes().getSectionTitle());
+		} else {
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+		}
 
 		for (Datatype d: datatypeList){
 			String dtInfo = d.getLabel() + " - " + d.getDescription();
@@ -1806,7 +1917,11 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		// Including information regarding value sets 
 		List<Table> tables = new ArrayList<Table>(p.getTables().getChildren());
 		Collections.sort(tables);
-		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Value sets");
+		if (p.getTables().getSectionTitle() != null) {
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", p.getTables().getSectionTitle());
+		} else {
+			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
+		}
 
 		for (Table t : tables) {
 			String valuesetInfo = t.getBindingIdentifier()
@@ -1959,7 +2074,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		try {
 			updater.update(true);
 		} catch (Docx4JException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -2170,7 +2284,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		} 
 	}
 
-	private void setHorizontalAlignment(P paragraph, JcEnumeration hAlign) {
+	private static void setHorizontalAlignment(P paragraph, JcEnumeration hAlign) {
 		if (hAlign != null) {
 			PPr pprop = new PPr();
 			Jc align = new Jc();
@@ -2261,4 +2375,146 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		}
 	}
 
+	public void traverseIGDocument4Docx(IGDocument d, WordprocessingMLPackage wordMLPackage){
+
+		addContents4Docx((Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>) d.getChildSections(), "", 1, wordMLPackage);
+
+	}
+
+	private void addContents4Docx(Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sect, String prefix, Integer depth, WordprocessingMLPackage wordMLPackage){
+		SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortedSections = sortSections(sect);
+		for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section s: sortedSections){
+			if (s.getSectionTitle() != null) {
+				wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading"+String.valueOf(depth), s.getSectionTitle());
+			} else {
+				wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading"+String.valueOf(depth), "");
+			}
+			if (s.getSectionContents() != null){
+				addRichTextToDocx(wordMLPackage, s.getSectionContents());
+			}
+			addContents4Docx(s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, wordMLPackage);
+		}
+
+	}
+
+	public void traverseIGDocument4Pdf(IGDocument d, Document tocDocument, Document igDocument, Font titleFont, PdfWriter igWriter){
+
+		addContents4Pdf((Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>) d.getChildSections(), "", 1, tocDocument, igDocument, null, titleFont, igWriter);
+
+	}
+
+	private void addContents4Pdf(Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sect, String prefix, Integer depth, Document tocDocument, Document igDocument, com.itextpdf.text.Section chapt, Font titleFont, PdfWriter igWriter){
+		SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortedSections = sortSections(sect);
+
+		for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section s: sortedSections){
+			if (depth == 1){
+				try {
+					tocDocument.add(Chunk.NEWLINE);
+					if (s.getSectionTitle() != null) {
+						Chunk link = new Chunk(String.valueOf(s.getSectionPosition()+1) + " " + s.getSectionTitle(), titleFont).setLocalGoto(s.getId());
+						tocDocument.add(new Paragraph(link));
+					} else {
+						Chunk link = new Chunk(String.valueOf(s.getSectionPosition()+1) + " ", titleFont).setLocalGoto(s.getId());
+						tocDocument.add(new Paragraph(link));
+					}
+					
+					//					tocDocument.add(new Paragraph(String.valueOf(s.getSectionPosition()+1) + " " + s.getSectionTitle(), titleFont));
+					tocDocument.add(Chunk.NEWLINE);
+
+					Chunk target;
+					if (s.getSectionTitle() != null) {
+						target = new Chunk(s.getSectionTitle(), titleFont).setLocalDestination(s.getId());
+					} else {
+						target = new Chunk(" ", titleFont).setLocalDestination(s.getId());
+					}
+					//					Paragraph par = new Paragraph(s.getSectionTitle(), titleFont);
+					Chapter chapter = new Chapter(new Paragraph(target), s.getSectionPosition()+1);
+					chapter.add(Chunk.NEWLINE);
+					if (s.getSectionContents() != null){
+						chapter.add(richTextToParagraph(s.getSectionContents()));
+					}
+					chapter.add(Chunk.NEWLINE);
+
+					addContents4Pdf(s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, tocDocument, igDocument, chapter, titleFont, igWriter);
+
+					igDocument.add(chapter); //Note: leave call after addContents4Pdf 
+				} catch (DocumentException e) {
+					e.printStackTrace();
+				}
+			} else {
+				if (s.getSectionTitle() != null) {
+					this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*depth) + prefix + "." + String.valueOf(s.getSectionPosition()) + " " + s.getSectionTitle(), s.getId());
+				} else {
+					this.addTocContent(tocDocument, igWriter, StringUtils.repeat(" ", 4*depth) + prefix + "." + String.valueOf(s.getSectionPosition()) + " ", s.getId());
+
+				}
+				//				Paragraph title = new Paragraph(s.getSectionTitle(), titleFont);
+				Chunk target;
+				if (s.getSectionTitle() != null) {
+					target = new Chunk(s.getSectionTitle(), titleFont).setLocalDestination(s.getId());
+				} else {
+					target = new Chunk(" ", titleFont).setLocalDestination(s.getId());
+				}
+
+				com.itextpdf.text.Section section = chapt.addSection(new Paragraph(target));
+
+				section.add(Chunk.NEWLINE);
+				if (s.getSectionContents() != null){
+					section.add(richTextToParagraph(s.getSectionContents()));
+				}
+				section.add(Chunk.NEWLINE);
+
+				addContents4Pdf(s.getChildSections(), prefix + "." + String.valueOf(s.getSectionPosition()), depth + 1, tocDocument, igDocument, section, titleFont, igWriter);
+			}
+		}
+	}
+
+	private SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortSections(Set<Section> s){
+		SortedSet<Section> sortedSet = new TreeSet<Section>();
+		Iterator<Section> setIt = s.iterator();
+		while (setIt.hasNext()) {
+			sortedSet.add((Section) setIt.next());
+		}
+		return sortedSet;
+	}
+
+
+	private static void addImageToPackage(WordprocessingMLPackage wordMLPackage,
+			byte[] bytes) throws Exception {
+		BinaryPartAbstractImage imagePart =
+				BinaryPartAbstractImage.createImagePart(wordMLPackage, bytes);
+
+		int docPrId = 1;
+		int cNvPrId = 2;
+		Inline inline = imagePart.createImageInline("Filename hint",
+				"Alternative text", docPrId, cNvPrId, false);
+
+		P paragraph = addInlineImageToParagraph(inline);
+		setHorizontalAlignment(paragraph, JcEnumeration.CENTER);
+
+		wordMLPackage.getMainDocumentPart().addObject(paragraph);
+	}
+
+	private static P addInlineImageToParagraph(Inline inline) {
+		// Now add the in-line image to a paragraph
+		ObjectFactory factory = new ObjectFactory();
+		P paragraph = factory.createP();
+		R run = factory.createR();
+		paragraph.getContent().add(run);
+		Drawing drawing = factory.createDrawing();
+		run.getContent().add(drawing);
+		drawing.getAnchorOrInline().add(inline);
+		return paragraph;
+	}
+
+
 }
+
+//class SectionComparator implements Comparator<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>{
+//
+//	@Override
+//	public int compare(Section o1, Section o2) {
+//		return  ((Section) o1).getSectionPosition() - ((Section) o2).getSectionPosition();
+//	}
+//
+//}
