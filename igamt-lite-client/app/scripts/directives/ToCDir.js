@@ -38,7 +38,7 @@ angular
 				"branch",
 				function($compile) {
 					var branchTemplate = "<li class='branch'>"
-							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \" ng-click='tocSelection(branch)'>"
+							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" ng-click='tocSelection(branch)'>"
 							+ "{{branch.label}}"
 							+ "</label>"
 							+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
@@ -46,7 +46,7 @@ angular
 							+ "</li>";
 					var branchMessageTemplate = "<li class='branch'"
 							+ " context-menu context-menu-close='closedCtxSubMenu(branch)' data-target='messageHeadContextDiv.html'>"
-							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected } \" ng-click='tocSelection(branch)'>"
+							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" ng-click='tocSelection(branch)'>"
 							+ "{{branch.label}}"
 							+ "</label>"
 							+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
@@ -126,7 +126,7 @@ angular
 //							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else if (scope.leaf.parent === "message") {
 							element.html(leafMessage).show();
-							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent + " leaf.reference.name=" + scope.leaf.reference.name);
+//							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent + " leaf.reference.name=" + scope.leaf.reference.name);
 						} else if (scope.leaf.parent === "table") {
 								element.html(leafValueSet).show();
 //								console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
