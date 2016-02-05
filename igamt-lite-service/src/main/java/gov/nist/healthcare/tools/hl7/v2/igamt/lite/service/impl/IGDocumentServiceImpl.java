@@ -67,11 +67,6 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 		IGDocument ig = documentRepository.findOne(id);
 		return ig;
 	}
-	
-	public List<IGDocument> findAll() {
-		List<IGDocument> ig = documentRepository.findAll();
-		return ig;
-	}
 
 	@Override
 	public List<IGDocument> findAll() {
