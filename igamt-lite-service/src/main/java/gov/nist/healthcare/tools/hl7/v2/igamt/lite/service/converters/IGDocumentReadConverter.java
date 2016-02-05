@@ -112,12 +112,17 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 
 	private DocumentMetaData documentMetaData(DBObject source) {
 		DocumentMetaData metaData = new DocumentMetaData();
-		metaData.setSubTitle(((String) source.get("subTitle")));
-		metaData.setType(((String) source.get("type")));
-		metaData.setTitle(((String) source.get("title")));
-		metaData.setVersion(((String) source.get("version")));
-		metaData.setDate(((String) source.get("date")));
+		metaData.setDate(source.get("date") != null ? ((String) source.get("date")) : null);
 		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext")) : null);
+		metaData.setIdentifier(source.get("identifier") != null ? ((String) source.get("identifier")) : null);
+		metaData.setOrgName(source.get("orgName") != null ? ((String) source.get("orgName")) : null);
+		metaData.setSpecificationName(source.get("specificationName") != null ? ((String) source.get("specificationName")) : null);
+		metaData.setStatus(source.get("status") != null ? ((String) source.get("status")) : null);
+		metaData.setSubTitle(source.get("subTitle") != null ? ((String) source.get("subTitle")) : null);
+		metaData.setTitle(source.get("title") != null ? ((String) source.get("title")) : null);
+		metaData.setTopics(source.get("topics") != null ? ((String) source.get("topics")) : null);
+		metaData.setType(source.get("type") != null ? ((String) source.get("type")) : null);
+		metaData.setVersion(source.get("version") != null ? ((String) source.get("version")) : null);
 		return metaData;
 	}
 	

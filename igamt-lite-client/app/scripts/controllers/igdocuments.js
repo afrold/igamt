@@ -195,7 +195,8 @@ angular.module('igl')
             });
 
             $scope.$on('event:openMessage', function (event, message) {
-                $scope.selectMessage(message); // Should we open in a dialog ??
+				console.log("event:openMessage=" + message);
+              $scope.selectMessage(message); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openTable', function (event, table) {

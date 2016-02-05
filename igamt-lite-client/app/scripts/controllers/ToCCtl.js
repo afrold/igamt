@@ -48,33 +48,34 @@ angular
 								entry.selected = true;
 								ToCSvc.currentLeaf.selected = false;
 								ToCSvc.currentLeaf = entry;
+								console.log("entry.parent=" + entry.parent);
 								switch (entry.parent) {
-								case "documentMetdata": {
+								case "documentMetadata": {
 									$scope.$emit('event:openDocumentMetadata',
 											entry.reference);
 									break;
 								}
-								case "profileMetdata": {
+								case "profileMetadata": {
 									$scope.$emit('event:openProfileMetadata',
 											entry.reference);
 									break;
 								}
-								case "messages": {
+								case "message": {
 									$scope.$emit('event:openMessage',
 											entry.reference);
 									break;
 								}
-								case "segments": {
+								case "segment": {
 									$scope.$emit('event:openSegment',
 											entry.reference);
 									break;
 								}
-								case "datatypes": {
+								case "datatype": {
 									$scope.$emit('event:openDatatype',
 											entry.reference);
 									break;
 								}
-								case "tables": {
+								case "table": {
 									$scope.$emit('event:openTable',
 											entry.reference);
 									break;

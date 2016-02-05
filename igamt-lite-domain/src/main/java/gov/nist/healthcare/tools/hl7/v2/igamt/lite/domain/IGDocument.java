@@ -131,6 +131,7 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		
 		p.getMessages().setSectionPosition(0);
 		p.getMessages().setSectionTitle("Conformance Profiles");
+		p.getMessages().setType("messages");
 		
 		int messagePositionNum = 0;
 		for(Message m:p.getMessages().getChildren()){
@@ -140,26 +141,57 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		
 		p.getSegments().setSectionPosition(1);
 		p.getSegments().setSectionTitle("Segments and Field Descriptions");
+		p.getSegments().setType("segments");
 		int segmentPositionNum = 0;
 		for(Segment s:p.getSegments().getChildren()){
 			s.setSectionPosition(segmentPositionNum);
 			segmentPositionNum = segmentPositionNum + 1;
+			
+			
+			for(Field f:s.getFields()){
+				if(f.getConfLength().equals("-1")){
+					f.setConfLength("");
+				}
+				
+				if(f.getMinLength().equals(-1)){
+					f.setMinLength(0);
+				}
+			}
 		}
 		
 		p.getDatatypes().setSectionPosition(2);
 		p.getDatatypes().setSectionTitle("Datatypes");
+		p.getDatatypes().setType("datatypes");
 		int datatypePositionNum = 0;
 		for(Datatype d:p.getDatatypes().getChildren()){
 			d.setSectionPosition(datatypePositionNum);
 			datatypePositionNum = datatypePositionNum + 1;
+			
+			for(Component c:d.getComponents()){
+				if(c.getConfLength().equals("-1")){
+					c.setConfLength("");
+				}
+				
+				if(c.getMinLength().equals(-1)){
+					c.setMinLength(0);
+				}
+			}
 		}
 		
 		p.getTables().setSectionPosition(3);
 		p.getTables().setSectionTitle("Value Sets");
+		p.getTables().setType("tables");
 		int tablePositionNum = 0;
 		for(Table t:p.getTables().getChildren()){
 			t.setSectionPosition(tablePositionNum);
 			tablePositionNum = tablePositionNum + 1;
+			
+			
+			String desc = t.getDescription();
+			String name = t.getName();
+			
+			t.setName(desc);
+			t.setDescription(name);
 		}
 		
 		this.setProfile(p);
