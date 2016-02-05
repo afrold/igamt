@@ -14,7 +14,7 @@
         <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
                 ng-click="cloneSegmentFlavor(segment)" ng-hide="options.readonly"
                 >
-            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
+            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Copy</span>
         </button>
         <button title="Close" type="button" class="btn btn-xs btn-warning"
                 ng-click="close()">
@@ -22,7 +22,7 @@
         </button>
         <button title="Delete" type="button" ng-hide="options.readonly"
                 class="btn btn-xs btn-danger"
-                ng-click="delete(datatype)">
+                ng-click="delete(segment)">
             <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
     </span>
