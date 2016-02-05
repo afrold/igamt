@@ -56,9 +56,9 @@ angular
 
 					var linker = function(scope, element, attrs) {
 						if (angular.isArray(scope.branch.children)) {
-							 console.log("branch id=" + scope.branch.id +
-							 " label=" + scope.branch.label + " chidren=" +
-							 scope.branch.children.length);
+//							 console.log("branch id=" + scope.branch.id +
+//							 " label=" + scope.branch.label + " chidren=" +
+//							 scope.branch.children.length);
 							if (scope.branch.id === "message") {
 								element.append(branchMessageTemplate);
 							} else {
@@ -67,7 +67,7 @@ angular
 							$compile(element.contents())(scope);
 
 						} else {
-							console.log("leaf0=" + scope.branch.label + " parent=" + scope.branch.parent);
+//							console.log("leaf0=" + scope.branch.label + " parent=" + scope.branch.parent);
 							element.append(leafTemplate).show();
 							$compile(element.contents())(scope);
 						}
@@ -132,7 +132,7 @@ angular
 //								console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else {
 							element.html(leafDefault).show();
-							console.log("leaf2=" + scope.leaf.label + " parent=" + scope.leaf.parent);
+//							console.log("leaf2=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						}
 						$compile(element.contents())(scope);
 					}
