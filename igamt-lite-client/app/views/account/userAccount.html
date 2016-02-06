@@ -1,8 +1,8 @@
 <div id="subNavBar" class="subNavBar" ng-controller="UserAccountCtrl" ng-init="initAccount()">
 
-    <div class="container" style="margin-top: 20px"  ng-show="!isPending()">
-        <accordion close-others="true">
-            <accordion-group is-open="accordi.account" panel-class="panel-info" ng-show="isAuthenticated()">
+    <div class="container" style="margin-top: 20px"  ng-show="isAuthenticated()">
+        <accordion close-others="true" ng-show="!isPending()">
+            <accordion-group is-open="accordi.account" panel-class="panel-info">
                 <accordion-heading>
                     <i class="fa"
                        ng-class="{'fa-caret-down': accordi.account, 'fa-caret-right': !accordi.account}"></i>
@@ -31,9 +31,8 @@
                 </div>
             </accordion-group>
         </accordion>
-    </div>
-    <div class="container" style="margin-top: 20px"  ng-show="isPending()">
-        <div class="row">
+
+        <div class="row"  ng-show="isPending()">
             <div class="col-md-12">
                 <div ng-class="'alert alert-warning'" id="ehralert">
                     <div msg key-expr="msg().text"></div>

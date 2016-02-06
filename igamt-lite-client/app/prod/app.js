@@ -83,8 +83,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             templateUrl: 'views/account/registration.html',
             controller: 'RegistrationCtrl'
         }).when('/useraccount', {
-            templateUrl: 'views/account/userAccount.html',
-            controller: 'AccountMgtCtrl'
+            templateUrl: 'views/account/userAccount.html'
         })
 //        .when('/account', {
 //            templateUrl: 'views/account/account.html',
@@ -419,7 +418,6 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             //console.log("cookie not found");
         }
     };
-
 
 
     $rootScope.isSubActive = function (path) {

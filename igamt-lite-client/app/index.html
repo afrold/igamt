@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="lib/material-custom/material-custom.css"/>
 
 </head>
-<body ng-controller="MainCtrl" ng-app="igl" ng-init="init()">
+<body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit>
 <div id="wrapper">
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>
@@ -147,6 +147,7 @@
 	<script src="scripts/directives/clickGo.js"></script>
 	<script src="scripts/directives/compile.js"></script>
 	<script src="scripts/directives/csSelect.js"></script>
+	<script src="scripts/directives/exit.js"></script>
 	<script src="scripts/directives/focus.js"></script>
 	<script src="scripts/directives/igCheckEmail.js"></script>
 	<script src="scripts/directives/igCheckEmployer.js"></script>
