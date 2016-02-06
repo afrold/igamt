@@ -68,10 +68,6 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 		return ig;
 	}
 	
-	public List<IGDocument> findAll() {
-		List<IGDocument> ig = documentRepository.findAll();
-		return ig;
-	}
 
 	@Override
 	public List<IGDocument> findAll() {
