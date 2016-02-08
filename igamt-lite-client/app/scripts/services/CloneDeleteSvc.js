@@ -143,7 +143,7 @@ angular.module('igl').factory(
 				$rootScope.$broadcast('event:openTable', newTable);	
 			}
 			
-			svc.cloneMessage = function(igdocument, message) {
+			svc.cloneMessage = function(message) {
 				// TODO gcr: Need to include the user identifier in the
 				// new label.
 				// $rootScope.igdocument.metaData.ext should be just that,
@@ -156,39 +156,39 @@ angular.module('igl').factory(
 					group.id = new ObjectId().toString();
 				});
 				newMessage.name = message.name + $rootScope.createNewFlavorName(message.name);
-				igdocument.profile.messages.children.splice(0, 0, newMessage);
+				$rootScope.igdocument.profile.messages.children.splice(0, 0, newMessage);
 				
 				return newMessage;
 			}
 						
-			svc.deleteValueSet = function(igdocument, valueSet) {
-				return deleteValueSets(igdocument, [valueSet.id]);
+			svc.deleteValueSet = function(valueSetId) {
+				return deleteValueSets([valueSetId]);
 			}
 			
-			function deleteValueSets(igdocument, vssIdsSincerelyDead) {
+			function deleteValueSets(vssIdsSincerelyDead) {
 //				console.log("deleteValueSets: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
 				return ProfileAccessSvc.ValueSets().removeDead(vssIdsSincerelyDead);		
 			}
 						
-			svc.deleteDatatype = function(igdocument, datatype) {
+			svc.deleteDatatype = function(datatypeId) {
 				var dtIdsLive = ProfileAccessSvc.Datatypes().getAllDatatypeIds();
 				var idxP = _.findIndex(dtIdsLive, function (
 						child) {
-					return child.id === datatype.id;
+					return child.id === datatypeId;
 				});
 				dtIdsLive.splice(idxP, 1);
 				
-				return deleteDatatypes(igdocument, dtIdsLive, [datatype.id])
+				return deleteDatatypes(dtIdsLive, [datatypeId])
 			}
 			
-			function deleteDatatypes(igdocument, dtIdsLive, dtsIdsSincerelyDead) {
+			function deleteDatatypes(dtIdsLive, dtsIdsSincerelyDead) {
 
 				// Get all value sets that are contained in the sincerely dead datatypes.
 				var vssIdsMerelyDead = ProfileAccessSvc.Datatypes().findValueSetsFromDatatypeIds(dtsIdsSincerelyDead);
 				// then all value sets that are contained in the live datatypes.
 				var vssIdsLive = ProfileAccessSvc.Datatypes().findValueSetsFromDatatypeIds(dtIdsLive);
 				var vssIdsSincerelyDead = ProfileAccessSvc.ValueSets().findDead(vssIdsMerelyDead, vssIdsLive);		
-				deleteValueSets(igdocument, vssIdsSincerelyDead);
+				deleteValueSets(vssIdsSincerelyDead);
 				
 				var rval = ProfileAccessSvc.Datatypes().removeDead(dtsIdsSincerelyDead);		
 
@@ -199,22 +199,22 @@ angular.module('igl').factory(
 				return rval;
 			}
 
-			svc.deleteSegment = function(igdocument, segment) {
+			svc.deleteSegment = function(segmentId) {
 
 				// Get all datatypes that are contained in the sincerely dead segments.
 				var segmentRefsLive = ProfileAccessSvc.Segments().getAllSegmentIds();
 				var idxP = _.findIndex(segmentRefsLive, function (
 						child) {
-					return child.id === segment.id;
+					return child.id === segmentId;
 				});
 				segmentRefsLive.splice(idxP, 1);
 
-				var rval = deleteSegments(igdocument, segmentRefsLive, [segment.id])
+				var rval = deleteSegments(segmentRefsLive, [segmentId])
 				
 				return rval;
 			}
 			
-			function deleteSegments(igdocument, segmentRefsLive, segmentRefsSincerelyDead) {
+			function deleteSegments(segmentRefsLive, segmentRefsSincerelyDead) {
 
 				// Get all datatypes that are contained in the sincerely dead segments.
 				var dtIdsMerelyDead = ProfileAccessSvc.Segments().findDatatypesFromSegmentRefs(segmentRefsSincerelyDead);
@@ -222,7 +222,7 @@ angular.module('igl').factory(
 				// then all datatypes that are contained in the live segments.				
 				var dtIdsLive = ProfileAccessSvc.Segments().findDatatypesFromSegmentRefs(segmentRefsLive);
 				var dtsIdsSincerelyDead = ProfileAccessSvc.Datatypes().findDead(dtIdsMerelyDead, dtIdsLive);
-				deleteDatatypes(igdocument, dtIdsLive, dtsIdsSincerelyDead);
+				deleteDatatypes(dtIdsLive, dtsIdsSincerelyDead);
 				
 				var rval = ProfileAccessSvc.Segments().removeDead(segmentRefsSincerelyDead);				
 
@@ -233,20 +233,20 @@ angular.module('igl').factory(
 				return rval;
 			}
 
-			svc.deleteMessage = function(igdocument, message) {
+			svc.deleteMessage = function(messageId) {
 				// We do the delete in pairs: dead and live.  dead = things we are deleting and live = things we are keeping. 
 				
 				// We are deleting the message so it's dead.
 				// The message there is from the ToC so what we need is its reference,
 				// and it must be an array of one.
-				var msgDead = [message];
+				var msgDead = [messageId];
 				// We are keeping the children so their live.
 				var msgLive = ProfileAccessSvc.Messages().messages();
 				
 				// We remove the dead message from the living.
 				var idxP = _.findIndex(msgLive, function (
 						child) {
-					return child.id === msgDead[0].id;
+					return child.id === msgDead[0];
 				});
 				msgLive.splice(idxP, 1);
 				if (0 === ProfileAccessSvc.Messages().messages().length) {
@@ -268,7 +268,7 @@ angular.module('igl').factory(
 					return;
 				}
 				
-				var rval = deleteSegments(igdocument, segmentRefsLive, segmentRefsSincerelyDead);
+				var rval = deleteSegments(segmentRefsLive, segmentRefsSincerelyDead);
 				
 //				console.log("svc.deleteMessage: segmentRefsMerelyDead=" + segmentRefsMerelyDead.length);
 //				console.log("svc.deleteMessage: segmentRefsLive=" + segmentRefsLive.length);
@@ -282,10 +282,10 @@ angular.module('igl').factory(
 				return rval;
 			}
 			
-			svc.deleteSection = function(igdocument, secDead) {
+			svc.deleteSection = function(secDead) {
 
 				// We are keeping the children so their live.
-				var secLive = igdocument.childSections;
+				var secLive = $rootScope.igdocument.childSections;
 				
 				// We remove the dead message from the living.
 				var idxP = _.findIndex(secLive, function (
@@ -295,19 +295,39 @@ angular.module('igl').factory(
 				secLive.splice(idxP, 1);
 			}
 
-//			svc.getMessages = function(toc) {
-//				var ConformanceProfile = _.find(toc, function(child) {
-//					return child.id === "3";
-//				});
-//			
-//				var messages = _.find(ConformanceProfile.children, function(
-//						child) {
-//					return child.id === "3.1";
-//				});
-//				return messages;
-//			}
+	         function abortDatatypeDelete(datatype) {
+	            var modalInstance = $modal.open({
+	                templateUrl: 'DatatypeReferencesCtrl.html',
+	                controller: 'DatatypeReferencesCtrl',
+	                resolve: {
+	                    dtToDelete: function () {
+	                        return datatype;
+	                    }
+	                }
+	            });
+	            modalInstance.result.then(function (datatype) {
+	                $scope.dtToDelete = datatype;
+	            }, function () {
+	            });
+	        };
 
-			svc.findMessageIndex = function(messages, id) {
+	        function confirmDatatypeDelete(datatype) {
+	            var modalInstance = $modal.open({
+	                templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
+	                controller: 'ConfirmDatatypeDeleteCtrl',
+	                resolve: {
+	                    dtToDelete: function () {
+	                        return datatype;
+	                    }
+	                }
+	            });
+	            modalInstance.result.then(function (datatype) {
+	                $scope.dtToDelete = datatype;
+	            }, function () {
+	            });
+	        };
+	        
+	        svc.findMessageIndex = function(messages, id) {
 				var idxT = _.findIndex(messages.children, function(child) {
 					return child.reference.id === id;
 				})

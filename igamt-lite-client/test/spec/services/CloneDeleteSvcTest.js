@@ -45,9 +45,9 @@ describe("delete message service", function () {
 			 
 // Don't ask me why, but the following fixtures path MUST have "base/" prepended or it won't work.
 // Also, see the "pattern" thing, which is the last element of the files array in test/karma.conf.js.			 
-			 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/igdocument/';
-//			 	var jsonFixture = getJSONFixture('igdocument-2.7-HL7STANDARD-.json');
-			 	var jsonFixture = getJSONFixture('igdocument-2.7.5-USER-1.0.json');
+			 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/igDocuments/';
+			 	var jsonFixture = getJSONFixture('igDocument-2.7-HL7STD.json');
+//			 	var jsonFixture = getJSONFixture('igdocument-2.7.5-USER-1.0.json');
 	    			igdocumentAsString = JSON.stringify(jsonFixture);
 			 	expect($rootScope).toBeDefined();
 				$rootScope.jsonFixture = jsonFixture;
@@ -104,7 +104,7 @@ describe("delete message service", function () {
 		
 		// We do the clone.
 		var msg = igdocument.profile.messages.children[4];
-		var newMsg = CloneDeleteSvc.cloneMessage(igdocument, msg);
+		var newMsg = CloneDeleteSvc.cloneMessage(msg);
 		
 		// We check our counts and undefineds
 		expect(igdocument.profile.messages.children.length).toBe(bCount +1);
@@ -129,7 +129,7 @@ describe("delete message service", function () {
 		var bSegCount = ProfileAccessSvc.Messages().getAllSegmentRefs(igdocument.profile.messages.children);
 
 		// Second we do the delete.
-		CloneDeleteSvc.deleteMessage(igdocument, igdocument.profile.messages.children[4]);
+		CloneDeleteSvc.deleteMessage(igdocument.profile.messages.children[4]);
 		
 		// Third we re-take the profile and record the length of its messages.
 		var aMsgCount = igdocument.profile.messages.children.length;
@@ -150,7 +150,7 @@ describe("delete message service", function () {
 		var i = 0;
 		_.eachRight(igdocument.profile.messages.children, function(message) {
 //			console.log("If we delete all messages will we also delete all segs, dts, and vss? = " + (i++) + " msgId=" + message.id + " name=" + message.name + " - " + message.description);
-			CloneDeleteSvc.deleteMessage(igdocument, message);
+			CloneDeleteSvc.deleteMessage(message);
 		});
 
 		var aMsgCount =  ProfileAccessSvc.Messages().messages().length;
@@ -169,7 +169,7 @@ describe("delete message service", function () {
 		expect(segments).toBeDefined();
 		var segment = segments[4];
 		var bCount = ProfileAccessSvc.Segments().segments().length;
-		CloneDeleteSvc.deleteSegment(igdocument, segment);
+		CloneDeleteSvc.deleteSegment(segment);
 		var aCount = ProfileAccessSvc.Segments().segments().length;
 		expect(bCount).toBe(aCount +1);
 	});
@@ -179,7 +179,7 @@ describe("delete message service", function () {
 		expect(datatypes).toBeDefined();
 		var datatype = datatypes[4];
 		var bCount = ProfileAccessSvc.Datatypes().datatypes().length;
-		CloneDeleteSvc.deleteDatatype(igdocument, datatype);
+		CloneDeleteSvc.deleteDatatype(datatype);
 		var aCount = ProfileAccessSvc.Datatypes().datatypes().length;
 		expect(bCount).toBe(aCount +1);
 	});
@@ -189,7 +189,7 @@ describe("delete message service", function () {
 		expect(valueSets).toBeDefined();
 		var valueSet = valueSets[4];
 		var bCount = ProfileAccessSvc.ValueSets().valueSets().length;
-		CloneDeleteSvc.deleteValueSet(igdocument, valueSet);
+		CloneDeleteSvc.deleteValueSet(valueSet);
 		var aCount = ProfileAccessSvc.ValueSets().valueSets().length;
 		expect(bCount).toBe(aCount +1);
 	});

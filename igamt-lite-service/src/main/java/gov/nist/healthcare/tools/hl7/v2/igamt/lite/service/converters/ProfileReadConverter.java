@@ -289,8 +289,8 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		p.setDescription((String) source.get("description"));
 		p.setAssertion(((String) source.get("assertion")));
 		p.setReference(reference(((DBObject) source.get("reference"))));
-		p.setFalseUsage(Usage.valueOf(((String) source.get("falseUsage"))));
-		p.setTrueUsage(Usage.valueOf(((String) source.get("trueUsage"))));
+		p.setFalseUsage(getFalseUsage(source));
+		p.setTrueUsage(getTrueUsage(source));
 		return p;
 	}
 
@@ -423,9 +423,9 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				table.setVersion(((String) tableObject.get("version")));
 				table.setOid(((String) tableObject.get("oid")));
 				//Nullity tests added for retro compatibility
-				table.setStability(tableObject.get("stability") == null ? Stability.Dynamic : Stability.fromValue((String) tableObject.get("stability")));
-				table.setExtensibility(tableObject.get("extensibility") == null ? Extensibility.Open : Extensibility.fromValue((String) tableObject.get("extensibility")));
-				table.setContentDefinition(tableObject.get("contentDefinition") == null ? ContentDefinition.Intensional : ContentDefinition.fromValue((String) tableObject.get("contentDefinition")));
+				table.setStability(tableObject.get("stability") == null || "".equals(tableObject.get("stability")) ? Stability.Dynamic : Stability.fromValue((String) tableObject.get("stability")));
+				table.setExtensibility(tableObject.get("extensibility") == null || "".equals(tableObject.get("extensibility")) ? Extensibility.Open : Extensibility.fromValue((String) tableObject.get("extensibility")));
+				table.setContentDefinition(tableObject.get("contentDefinition") == null || "".equals(tableObject.get("extensibility")) ? ContentDefinition.Intensional : ContentDefinition.fromValue((String) tableObject.get("contentDefinition")));
 				BasicDBList codesDBObjects = (BasicDBList) tableObject
 						.get("codes");
 				if (codesDBObjects != null)
@@ -607,7 +607,15 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				return String.valueOf((String) source.get(tag));
 			}
 		return "";
+	} 
+	
+	private Usage getTrueUsage(DBObject source){
+		return source.get("trueUsage") != null ? Usage.valueOf((String) source.get("trueUsage")):Usage.C;
 	}
+	private Usage getFalseUsage(DBObject source){
+		return source.get("falseUsage") != null ? Usage.valueOf((String) source.get("falseUsage")):Usage.C;
+	}
+	
 
 	// private DBObject findDatatypeById(String id, BasicDBList datatypes)
 	// throws ProfileConversionException {

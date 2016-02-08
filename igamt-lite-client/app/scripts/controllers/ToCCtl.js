@@ -92,8 +92,8 @@ angular
 							$scope.closedCtxSubMenu = function(leaf, $index) {
 								var ctxMenuSelection = ContextMenuSvc.get();
 								switch (ctxMenuSelection) {
-								case "Add flavor":
-									console.log("Add flavor==> node=" + leaf);
+								case "Copy":
+									console.log("Copy==> node=" + leaf);
 									if (leaf.reference.type === 'section') {
 					        				CloneDeleteSvc.cloneSectionFlavor(leaf.reference);
 									} else if (leaf.reference.type === 'segment') {
@@ -102,19 +102,29 @@ angular
 						        			CloneDeleteSvc.cloneDatatypeFlavor(leaf.reference);
 									} else if (leaf.reference.type === 'table') {
 										CloneDeleteSvc.cloneTableFlavor(leaf.reference);
+									} else if (leaf.reference.type === 'message') {
+										CloneDeleteSvc.cloneMessage(leaf.reference);
 									}
 									break;
-								case "Clone":
-									console.log("Clone==> node=" + leaf);
-									CloneDeleteSvc.cloneMessage(
-											$rootScope.igdocument, leaf.reference);
-									$rootScope.$broadcast('event:SetToC');
-									break;
+//								case "Copy":
+//									console.log("Clone==> node=" + leaf);
+//									CloneDeleteSvc.cloneMessage(
+//											$rootScope.igdocument, leaf.reference);
+//									$rootScope.$broadcast('event:SetToC');
+//									break;
 								case "Delete":
-									console.log("Delete==> node=" + leaf.label);
-									CloneDeleteSvc.deleteMessage(
-											$rootScope.igdocument, leaf.reference);
-									$rootScope.$broadcast('event:SetToC');
+									console.log("Copy==> node=" + leaf);
+									if (leaf.reference.type === 'section') {
+					        				CloneDeleteSvc.deleteSection(leaf.reference);
+									} else if (leaf.reference.type === 'segment') {
+						        			CloneDeleteSvc.deleteSegment(leaf.reference.id);
+									}  else if (leaf.reference.type === 'datatype') {
+						        			CloneDeleteSvc.deleteDatatype(leaf.reference.id);
+									} else if (leaf.reference.type === 'table') {
+										CloneDeleteSvc.deleteValueSet(leaf.reference.id);
+									} else if (leaf.reference.type === 'message') {
+										CloneDeleteSvc.deleteMessage(leaf.reference.id);
+									}
 									break;
 								default:
 									console
@@ -122,6 +132,7 @@ angular
 													+ ctxMenuSelection
 													+ " Should be Add, clone, or Delete.");
 								}
+								$rootScope.$broadcast('event:SetToC');
 							};
 
 						} ])

@@ -1,55 +1,58 @@
-<div class="container" ng-controller="IGDocumentListCtrl" ng-init="init()">
+<div class="container" ng-controller="IGDocumentListCtrl" ng-init="initIGDocuments()">
 
 <div class="row" ng-show="isAuthenticated()">
     <!--<div class="row">-->
     <div ng-show="!isPending()">
-
+        <div class="page-header">
+            <h3> Hello, <span ng-bind="getFullName()"></span></h3>
+        </div>
         <accordion close-others="false">
             <accordion-group is-open="accordi.igList" panel-class="panel-info">
                 <accordion-heading>
                     <i class="fa"
                        ng-class="{'fa-caret-down': accordi.igList, 'fa-caret-right': !accordi.igList}"></i>
-                    <i class="fa fa-file-text-o fa-fw"></i> Implementation Guide List
+                    <i class="fa fa-file-text-o fa-fw"></i> IG Documents List
                 </accordion-heading>
                 <!--<div class="panel panel-info">-->
-                    <!--<div class="panel-body">-->
-                        <div ng-include="'views/edit/listIG.html'"></div>
-                    <!--</div>-->
+                <!--<div class="panel-body">-->
+                <div ng-include="'views/edit/listIG.html'"></div>
+                <!--</div>-->
                 <!--</div>-->
             </accordion-group>
 
             <accordion-group is-open="accordi.igDetails" panel-class="panel-info">
                 <accordion-heading>
                     <i class="fa"
-                       ng-class="{'fa-caret-down': accordi.igDetails, 'fa-caret-right': !accordi.igDetails}"></i> Edit Implementation Guide
+                       ng-class="{'fa-caret-down': accordi.igDetails, 'fa-caret-right': !accordi.igDetails}"></i> Edit
+                    IG Document
                 </accordion-heading>
                 <!--<div class="panel panel-info">-->
-                    <!--<div class="panel-body">-->
-                        <div ng-include="'views/edit/editIG.html'"></div>
-                    <!--</div>-->
+                <!--<div class="panel-body">-->
+                <div ng-include="'views/edit/editIG.html'"></div>
+                <!--</div>-->
                 <!--</div>-->
 
             </accordion-group>
         </accordion>
 
         <!--<tabset>-->
-            <!--<tab select="selectIgTab(0)" active="igTabs[0]">-->
-                <!--<tab-heading>-->
-                    <!--&lt;!&ndash;<span class="badge">1</span>&ndash;&gt;-->
+        <!--<tab select="selectIgTab(0)" active="igTabs[0]">-->
+        <!--<tab-heading>-->
+        <!--&lt;!&ndash;<span class="badge">1</span>&ndash;&gt;-->
 
 
-                <!--</tab-heading>-->
+        <!--</tab-heading>-->
 
-            <!--</tab>-->
+        <!--</tab>-->
 
-            <!--<tab select="selectIgTab(1)" active="igTabs[1]">-->
-                <!--<tab-heading>-->
-                    <!--&lt;!&ndash;<span class="badge">1</span>&ndash;&gt;-->
-                    <!--<i class="fa fa-pencil fa-fw"></i>-->
-                    <!--Edit Implementation Guide-->
-                <!--</tab-heading>-->
+        <!--<tab select="selectIgTab(1)" active="igTabs[1]">-->
+        <!--<tab-heading>-->
+        <!--&lt;!&ndash;<span class="badge">1</span>&ndash;&gt;-->
+        <!--<i class="fa fa-pencil fa-fw"></i>-->
+        <!--Edit Implementation Guide-->
+        <!--</tab-heading>-->
 
-            <!--</tab>-->
+        <!--</tab>-->
 
         <!--</tabset>-->
 
@@ -67,53 +70,68 @@
         can also <a href="#/registration"><i class="fa fa-chevron-circle-right"></i>&nbsp;register</a></p>
 </div>
 
-	<script type="text/ng-template" id="hl7VersionsDlg.html">
-        <div class="modal-header">
-            <h3 class="modal-title">HL7 Versions</h3>
-        </div>
-        <div class="modal-body">
-        	<label for="versionSelect"> Select HL7 Version: </label>
-       		<select ng-show="!igdocument" id="versionSelect" class="form-control input-sm" name="versionSelect" ng-options="option for option in hl7Versions" ng-model="hl7Version" ng-change="loadIGDocumentsByVersion()">
-			</select>
-       		<span ng-show="igdocument" name="versionSelect" >{{igdocument.profile.metaData.hl7Version}}
+<script type="text/ng-template" id="hl7VersionsDlg.html">
+    <div class="modal-header">
+        <h3 class="modal-title">HL7 Versions</h3>
+    </div>
+    <div class="modal-body">
+        <label for="versionSelect"> Select HL7 Version: </label>
+        <select ng-show="!igdocument" id="versionSelect" class="form-control input-sm" name="versionSelect"
+                ng-options="option for option in hl7Versions" ng-model="hl7Version"
+                ng-change="loadIGDocumentsByVersion()">
+        </select>
+       		<span ng-show="igdocument" name="versionSelect">{{igdocument.profile.metaData.hl7Version}}
 			</span>
-        </div>
-		<form>
-		<div style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
-		<table class="igdocument-list table table-striped table-bordered">
-			<tr class="tbl-header"><th>&nbsp;</th><th>Struct Id</th><th>Version</th><th>Type</th><th>Event</th><th>Description</th></tr>
-			<tbody ng-repeat="m in messagesByVersion | orderBy: 'this[2]'">
-				<tr><td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
-					<td>{{m[2]}}</td><td></td><td></td><td>{{m[1]}}</td><td>{{m[3]}}</td></tr>
-			</tbody>
-		</table>
-        </div>
-       <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
-            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-		</div>
-		</form>
-	</script>
-    <script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html">
-        <div class="modal-header">
-            <h3 class="modal-title">Delete Confirmation
-            </h3>
-        </div>
-        <div class="modal-body">
-            <p>Are you sure you want to delete the igdocument ? This operation is irreversible</p>
-        </div>
+    </div>
+    <form>
+        <div style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
+            <table class="igdocument-list table table-striped table-bordered">
+                <tr class="tbl-header">
+                    <th>&nbsp;</th>
+                    <th>Struct Id</th>
+                    <th>Version</th>
+                    <th>Type</th>
+                    <th>Event</th>
+                    <th>Description</th>
+                </tr>
+                <tbody ng-repeat="m in messagesByVersion | orderBy: 'this[2]'">
+                <tr>
+                    <td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
+                    <td>{{m[2]}}</td>
+                    <td></td>
+                    <td></td>
+                    <td>{{m[1]}}</td>
+                    <td>{{m[3]}}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                    class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-            </button>
-            <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
-                    class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-            </button>
-            <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
-                <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
-            </div>
+            <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
         </div>
+    </form>
+</script>
+<script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Delete Confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+        <p>Are you sure you want to delete the igdocument ? This operation is irreversible</p>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-danger btn-sm" ng-disabled="loading" ng-click="delete()"><span><i
+                class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+        </div>
+    </div>
     </div>
 </script>
 
@@ -128,18 +146,17 @@
             be lost</p>
 
 
-
     </div>
-     <div class="modal-footer">
-         <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-         </button>
-         <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
-                 class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Close</span>
-         </button>
-         <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
-                 class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Close</span>
-         </button>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
+                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Close</span>
+        </button>
+        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
+                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Close</span>
+        </button>
 
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
@@ -154,18 +171,19 @@
         </h3>
     </div>
     <div class="modal-body">
-        <p>You currently have an open igdocument with unsaved changes. Are you sure you want to open the igdocument ? All
+        <p>You currently have an open IG document with unsaved changes. Are you sure you want to open the IG document ?
+            All
             unsaved changes will be lost</p>
     </div>
-     <div class="modal-footer">
-         <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
-                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
-         </button>
-         <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
-                 class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Open</span>
-         </button>
-         <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
-                 class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Open</span>
+    <div class="modal-footer">
+        <button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+        <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
+                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Open</span>
+        </button>
+        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
+                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Open</span>
         </button>
 
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">

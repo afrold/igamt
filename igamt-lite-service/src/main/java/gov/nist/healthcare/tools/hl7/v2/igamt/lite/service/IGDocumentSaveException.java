@@ -11,7 +11,12 @@ public class IGDocumentSaveException extends Exception {
 
 	public IGDocumentSaveException(String error) {
 		super(error);
+	} 
+	
+	public IGDocumentSaveException(Exception error) {
+		super(error);
 	}
+	
 
 	public IGDocumentSaveException(List<IGDocumentPropertySaveError> errors) {
 		super();

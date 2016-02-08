@@ -8,6 +8,6 @@ public enum Extensibility {
 	}
 
 	public static Extensibility fromValue(String v) {
-		return valueOf(v);
+		return !"".equals(v) && v != null ? valueOf(v): Extensibility.Open;
 	}
 }

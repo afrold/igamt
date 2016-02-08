@@ -14,8 +14,8 @@ describe("profile access service", function () {
 			 
 // Don't ask me why, but the following fixtures path MUST have "base/" prepended or it won't work.
 // Also, see the "pattern" thing, which is the last element of the files array in test/karma.conf.js.			 
-			 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/igdocument/';
-			 	var jsonFixture = getJSONFixture('igdocument-2.7-HL7STANDARD-.json');
+			 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/igDocuments/';
+			 	var jsonFixture = getJSONFixture('igDocument-2.7-HL7STD.json');
 	    			igdocumentAsString = JSON.stringify(jsonFixture);
 	    			$rootScope = _$rootScope_;
 			 	expect($rootScope).toBeDefined();

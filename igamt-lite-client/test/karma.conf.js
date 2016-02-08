@@ -55,7 +55,7 @@ module.exports = function(config) {
       'test/spec/services/**/ProfileAccessSvcTest.js',
 //      'test/spec/services/**/ToCSvcTest.js',
       'test/spec/services/**/CloneDeleteSvcTest.js',
-     { pattern:  'test/fixtures/igdocument/*.json',
+     { pattern:  'test/fixtures/igDocuments/*.json',
           watched:  true,
           served:   true,
           included: false }
