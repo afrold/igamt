@@ -81,6 +81,7 @@ import nu.xom.ValidityException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.docx4j.wml.P;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -340,6 +341,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			msd.addAttribute(new Attribute("title", ""));
 		}
 
+		profile.getMessages().setPositionsOrder();
 		List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
 		Collections.sort(msgList);
 
@@ -361,6 +363,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ss.addAttribute(new Attribute("title", ""));
 		}
 
+		profile.getSegments().setPositionsOrder();
 		List<Segment> sgtList = new ArrayList<>(profile.getSegments().getChildren());
 		Collections.sort(sgtList);
 		for (Segment s : sgtList) {
@@ -382,6 +385,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ds.addAttribute(new Attribute("title", ""));
 		}
 
+		profile.getDatatypes().setPositionsOrder();
 		List<Datatype> dtList = new ArrayList<>(profile.getDatatypes().getChildren());
 		Collections.sort(dtList);
 		for (Datatype d : dtList) {
@@ -406,6 +410,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ts.addAttribute(new Attribute("title", ""));
 		}
 
+		profile.getTables().setPositionsOrder();
 		List<Table> tables = new ArrayList<Table>(profile.getTables()
 				.getChildren());
 		Collections.sort(tables);

@@ -10,7 +10,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 public class Message extends SectionModel implements java.io.Serializable,
-		Cloneable, Comparable<Message> {
+Cloneable, Comparable<Message> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -21,7 +21,7 @@ public class Message extends SectionModel implements java.io.Serializable,
 	}
 
 	private String id;
-	
+
 	private String name;
 
 	private String identifier;
@@ -282,7 +282,7 @@ public class Message extends SectionModel implements java.io.Serializable,
 	public Message clone(HashMap<String, Datatype> dtRecords,
 			HashMap<String, Segment> segmentRecords,
 			HashMap<String, Table> tableRecords)
-			throws CloneNotSupportedException {
+					throws CloneNotSupportedException {
 		Message clonedMessage = new Message();
 
 		clonedMessage.setChildren(new ArrayList<SegmentRefOrGroup>());
@@ -321,7 +321,7 @@ public class Message extends SectionModel implements java.io.Serializable,
 		for (Predicate cp : this.predicates) {
 			clonedMessage.addPredicate(cp.clone());
 		}
-		
+
 		return clonedMessage;
 	}
 
@@ -332,10 +332,14 @@ public class Message extends SectionModel implements java.io.Serializable,
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public int compareTo(Message o) {
-		int x = this.getSectionPosition() - o.getSectionPosition();	
+		int x = String.CASE_INSENSITIVE_ORDER.compare(this.getMessageType() != null && this.getEvent() != null ? this.getMessageType() + this.getEvent() : "",
+				o.getMessageType() != null && this.getEvent() != null ? o.getMessageType() + this.getEvent() : "");
+		if (x == 0) {
+			x = (this.getMessageType() != null  && this.getEvent() != null ? this.getMessageType() + this.getEvent() : "").compareTo(o.getMessageType() != null && this.getEvent() != null ? o.getMessageType()+o.getEvent(): "");
+		}
 		return x;
 	}
 }

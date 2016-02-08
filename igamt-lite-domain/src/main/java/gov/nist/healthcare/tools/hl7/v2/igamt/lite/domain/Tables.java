@@ -1,7 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
@@ -243,6 +246,14 @@ public class Tables extends TextbasedSectionModel implements Serializable, Clone
 			} else {
 				t.setId(this.findOneTableByNameAndByVersion(t.getName(), t.getVersion()).getId());
 			}
+		}
+	}
+	
+	public void setPositionsOrder(){
+		List<Table> sortedList = new ArrayList<Table>(this.getChildren());
+		Collections.sort(sortedList);
+		for (Table elt: sortedList) {
+			elt.setSectionPosition(sortedList.indexOf(elt));
 		}
 	}
 
