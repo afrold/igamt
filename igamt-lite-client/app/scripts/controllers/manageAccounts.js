@@ -20,7 +20,7 @@ angular.module('igl')
 
         $scope.accountpwd = {};
 
-        $scope.loadAccounts();
+//        $scope.loadAccounts();
 
         $scope.updateAccount = function() {
             //not sure it is very clean...
@@ -61,7 +61,7 @@ angular.module('igl')
         };
 
         $scope.initManageAccounts = function(){
-             //$scope.loadAccounts();
+             $scope.loadAccounts();
         };
 
         $scope.selectAccount = function(row) {
