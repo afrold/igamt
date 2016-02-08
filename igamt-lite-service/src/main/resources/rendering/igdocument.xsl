@@ -279,7 +279,7 @@
 
 	<xsl:template match="Segment">
 		<xsl:value-of select="./Text[@Type='Text1']" />
-
+		<br></br>
 		<table width="1000" border="1" cellspacing="0" cellpadding="1">
 			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
 				<tr>
@@ -362,7 +362,6 @@
 		<xsl:for-each select="Field">
 			<xsl:sort select="@Position" data-type="number"></xsl:sort>
 			<xsl:if test="count(Text) &gt; 0">
-
 				<p>
 					<b>
 						<xsl:value-of select="../@Name" />
@@ -524,6 +523,12 @@
 		<br></br>
 		<xsl:value-of select="Text[@Type='UsageNote']" />
 		<br></br>
+		<xsl:for-each select="Component">
+			<xsl:sort select="@Position" data-type="number"></xsl:sort>
+			<xsl:call-template name="componentText">
+			</xsl:call-template>
+			<br></br>
+		</xsl:for-each>
 	</xsl:template>
 
 	<xsl:template name="component">
@@ -579,6 +584,10 @@
 			/> </td> <td colspan="6" style="background:#C0C0C0"> <xsl:value-of select="./Constraint" 
 			/> </td> </tr> </xsl:when> <xsl:otherwise> <tr> <td colspan="8" style="background:#C0C0C0" 
 			/> </tr> </xsl:otherwise> </xsl:choose> </xsl:if> -->
+	</xsl:template>
+
+	<xsl:template name="componentText">
+		<xsl:value-of select="Text[@Type='Text']" />
 	</xsl:template>
 
 	<xsl:template match="ValueSetDefinition" mode="toc">

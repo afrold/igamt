@@ -41,7 +41,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -68,7 +67,6 @@ import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -82,7 +80,6 @@ import nu.xom.ValidityException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1041,7 +1038,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		elmDatatype.addAttribute(new Attribute("id", d.getId()));
 		elmDatatype.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(d.getSectionPosition()+1)));
 		elmDatatype.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition()+1)));
-		nu.xom.Element elmText = new nu.xom.Element("Texts");
+		nu.xom.Element elmText = new nu.xom.Element("Text");
 		elmText.addAttribute(new Attribute("Type", "UsageNote"));
 		elmText.appendChild(d.getUsageNote());
 		elmDatatype.appendChild(elmText);
