@@ -12,79 +12,77 @@
         <div class="col-md-12">
 
             <div class="page-header">
-				<span class="header4">IG Document Metadata</span>
+                <span class="header4">IG Document Metadata</span>
             </div>
 
-             <form name="igDocumentMetaDataForm" novalidate>
+            <form name="igDocumentMetaDataForm" novalidate>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>IGAMT Project Identifier</label>
-                            <input type="text" ng-disabled="options.readonly"
-                                   ng-class="{'has-error' : igMetaDataForm.identifier.$invalid && !igMetaDataForm.identifier.$pristine }"
-                                   ng-change="recordChanged()"
-                                   name="projectIndentifier" class="igl-input"
-                                   ng-model="igdocument.metaData.identifier"
-                                   required>
+                            <input  class="form-control"  type="text" ng-disabled="options.readonly"
+                                    ng-class="{'has-error' : igMetaDataForm.projectIdentifier.$invalid && !igMetaDataForm.projectIdentifier.$pristine }"
+                                    ng-change="recordChanged()"
+                                    name="projectIdentifier" class="igl-input"
+                                    ng-model="igdocument.metaData.identifier"
+                                    required>
                         </div>
 
                         <div class="form-group">
                             <label>Title</label>
-                            <input type="text" ng-disabled="options.readonly"
-                                   ng-class="{'has-error' : igMetaDataForm.name.$invalid && !igMetaDataForm.name.$pristine }"
-                                   ng-change="recordChanged()"
-                                   name="title" 
-								   class="igl-input" 
-									ng-model="igdocument.metaData.title"
-                                   required>
+                            <input  class="form-control"  type="text" ng-disabled="options.readonly"
+                                    ng-class="{'has-error' : igMetaDataForm.title.$invalid && !igMetaDataForm.name.$pristine }"
+                                    ng-change="recordChanged()"
+                                    name="title"
+                                    ng-model="igdocument.metaData.title"
+                                    required>
                         </div>
 
                         <div class="form-group">
                             <label>Sub-Title</label>
-                            <input type="text" name="title" ng-disabled="options.readonly"
-                                   ng-change="recordChanged()"
-                                   class="igl-input"
-									ng-model="igdocument.metaData.subTitle"                                                                                                                                                                                                                                                                     itle"
-                                   required>
+                            <input  class="form-control"  type="text" name="title" ng-disabled="options.readonly"
+                                    ng-change="recordChanged()"
+                                    ng-model="igdocument.metaData.subTitle"                                                                                                                                                                                                                                                                     itle"
+                            required>
                         </div>
 
                         <div class="form-group">
                             <label>Organization</label>
-                            <input type="text" name="orgName" ng-disabled="options.readonly"
-                                   ng-change="recordChanged()"
-                                   class="igl-input" ng-model="igdocument.metaData.orgName"
-                                   required>
+                            <input  class="form-control"  type="text" name="orgName" ng-disabled="options.readonly"
+                                    ng-change="recordChanged()"
+                                    ng-model="igdocument.metaData.orgName"
+                                    required>
                         </div>
 
                         <div class="form-group">
                             <label>Extension</label>
-                            <input type="text" name="ext" ng-disabled="options.readonly"
-                                   ng-change="recordChanged()"
-                                   class="igl-input" ng-model="igdocument.metaData.ext">
+                            <input  class="form-control"  type="text" name="ext" ng-disabled="options.readonly"
+                                    ng-change="recordChanged()"
+                                    ng-model="igdocument.metaData.ext">
                         </div>
 
                         <div class="form-group"
                              ng-class="{'has-error' : igMetaDataForm.hl7Version.$invalid && !igMetaDataForm.hl7Version.$pristine }">
                             <label>Specification</label>
-                            <input type="text" name="specificationName" ng-disabled="options.readonly"
-                                   class="igl-input" ng-model="igdocument.metaData.specificationName"
-                                   required>
+                            <input  class="form-control"  type="text" name="specificationName" ng-disabled="options.readonly"
+                                    ng-model="igdocument.metaData.specificationName"
+                                    required>
                         </div>
 
                         <div class="form-group" ng-disabled="options.readonly"
                              ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.date.$pristine }">
                             <label>Status</label>
-                            <input type="text" name="status" ng-disabled="options.readonly"
-                                   class="igl-input" ng-model="igdocument.metaData.status"
-                                   required>
+                            <input  class="form-control"  type="text" name="status" ng-disabled="options.readonly"
+                                    ng-model="igdocument.metaData.status"
+                                    required>
                         </div>
- 
+
                         <div class="form-group" ng-disabled="options.readonly"
                              ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.date.$pristine }">
                             <label>Topics</label>
-                            <input type="text" name="topics" ng-disabled="options.readonly"
-                                   class="igl-input" ng-model="igdocument.metaData.topics"
-                                   required>
+                            <input  class="form-control"  type="text" name="topics" ng-disabled="options.readonly"
+                                    ng-model="igdocument.metaData.topics"
+                                    required>
                         </div>
 
                     </div>
@@ -92,7 +90,7 @@
                         <div class="form-group"
                              ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.version.$pristine }">
                             <label>Version</label>
-                            <input type="text" name="version" disabled"
+                            <input type="text" name="version" disabled
                                    ng-change="recordChanged()"
                                    class="form-control" ng-model="igdocument.metaData.version"
                                    required>
@@ -101,16 +99,16 @@
                         <div class="form-group"
                              ng-class="{'has-error' : igMetaDataForm.version.$invalid && !igMetaDataForm.version.$pristine }">
                             <label>Date</label>
-                            <input type="text" name="date" disabled"
+                            <input type="text" name="date" disabled
                                    ng-change="recordChanged()"
                                    class="form-control" ng-model="igdocument.metaData.date"
                                    required>
                         </div>
-                   </div>
+                    </div>
                 </div>
             </form>
-            </div>
         </div>
+    </div>
 </script>
 
 <script type="text/ng-template" id="EditProfileMetadata.html">
@@ -118,10 +116,10 @@
         <div class="col-md-12">
 
             <div class="page-header">
-				<span class="header4"> Metadata</span>
+                <span class="header4"> Metadata</span>
             </div>
 
-             <form name="igProfileMetaDataForm" novalidate>
+            <form name="igProfileMetaDataForm" novalidate>
                 <div class="row">
                     <div class="col-md-6">
 
@@ -137,10 +135,10 @@
 
                         <div class="form-group">
                             <label>HL7 Version</label>
-                            <input type="text" name="title" disabled"
-                                   ng-change="recordChanged()"
-                                   class="form-control" ng-model="igdocument.profile.metaData.hl7Version"                                                                                                                                                                                                                                                                     itle"
-                                   required>
+                            <input type="text" name="title"
+                            ng-change="recordChanged()"
+                            class="form-control" ng-model="igdocument.profile.metaData.hl7Version"                                                                                                                                                                                                                                                                     itle"
+                            required>
                         </div>
 
                     </div>
@@ -159,9 +157,9 @@
                                    ng-change="recordChanged()"
                                    class="form-control" ng-model="igdocument.metaData.encodings">
                         </div>
-                   </div>
+                    </div>
                 </div>
             </form>
-            </div>
         </div>
+    </div>
 </script>

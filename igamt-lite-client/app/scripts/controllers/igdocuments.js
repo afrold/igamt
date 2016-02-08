@@ -236,11 +236,11 @@ angular.module('igl')
         };
 
         $scope.loadIGDocuments = function () {
-            waitingDialog.show('Loading IG Documents...', {dialogSize: 'sm', progressType: 'info'});
             $scope.error = null;
             $rootScope.igs = [];
             $scope.tmpIgs = [].concat($rootScope.igs);
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
+                waitingDialog.show('Loading IG Documents...', {dialogSize: 'sm', progressType: 'info'});
                 $scope.loading = true;
                 StorageService.set("SelectedIgDocumentType", $scope.igDocumentConfig.selectedType);
                 $http.get('api/igdocuments', {params: {"type": $scope.igDocumentConfig.selectedType}}).then(function (response) {
@@ -253,8 +253,6 @@ angular.module('igl')
                     $scope.error = error.data;
                     waitingDialog.hide();
                 });
-            }else{
-                waitingDialog.hide();
             }
         };
 

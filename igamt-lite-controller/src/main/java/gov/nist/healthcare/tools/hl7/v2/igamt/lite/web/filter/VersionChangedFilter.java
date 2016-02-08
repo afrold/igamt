@@ -1,7 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.filter;
 
 import java.io.IOException;
-import java.util.regex.Pattern;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -49,15 +48,15 @@ public class VersionChangedFilter implements Filter {
 		HttpServletResponse res = (HttpServletResponse) response;
 		String path = req.getRequestURI().substring(
 				req.getContextPath().length());
-		if (!Pattern.compile("\\/api\\/appInfo").matcher(path).find()) {
-			String headerVersion = req.getHeader("version");
-			String contextVersion = req.getServletContext().getInitParameter(
-					"version");
-			if (!contextVersion.equals(headerVersion)) {
-				res.sendError(498);
-				return;
-			}
-		}
+		// if (!Pattern.compile("\\/api\\/appInfo").matcher(path).find()) {
+		// String headerVersion = req.getHeader("version");
+		// String contextVersion = req.getServletContext().getInitParameter(
+		// "version");
+		// if (!contextVersion.equals(headerVersion)) {
+		// res.sendError(498);
+		// return;
+		// }
+		// }
 		chain.doFilter(request, response);
 	}
 
