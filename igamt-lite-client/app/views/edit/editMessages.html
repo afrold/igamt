@@ -11,7 +11,7 @@
                         </div>
 
                         <accordion close-others="false">
-                            <accordion-group is-open="accordi.metaData" panel-class="panel-info">
+                            <accordion-group is-open="true" panel-class="panel-info">
                                 <accordion-heading>
                                     <i class="fa" ng-class="{'fa-caret-down': accordi.metaData, 'fa-caret-right': !accordi.metaData}"></i> MetaData
                                 </accordion-heading>
@@ -60,12 +60,12 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Description</label> <input style="width: 100%"
-                                                                                      class="igl-input"
+                                                                                      class="form-control"
                                                                                       type="text"
-                                                                                      disabled name="name"
+                                                                                      disabled 
+																					 name="name"
                                                                                       ng-change="recordChanged()"
-                                                                                      ng-model="message.description"
-                                                                                      ng-disabled="options.readonly">
+                                                                                      ng-model="message.description">
 
                                             </div>
                                             <div class="form-group">
@@ -99,7 +99,7 @@
                                     </div>
                                 </form>
                             </accordion-group>
-                            <accordion-group is-open="accordi.definition" panel-class="panel-info">
+                            <accordion-group is-open="true" panel-class="panel-info">
                                 <accordion-heading>
                                     <i class="fa" ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i> Definition
                                 </accordion-heading>

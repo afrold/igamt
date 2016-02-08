@@ -29,6 +29,7 @@ angular.module('igl')
 
         $scope.delete = function (segment) {
         		CloneDeleteSvc.deleteSegment(segment.id);
+			$rootScope.$broadcast('event:SetToC');
         };
         
         $scope.hasChildren = function (node) {

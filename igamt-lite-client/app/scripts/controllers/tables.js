@@ -142,6 +142,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
     $scope.cloneTableFlavor = function (table) {
 		CloneDeleteSvc.cloneTableFlavor(table);
+		$rootScope.$broadcast('event:SetToC');
     };
 
     $scope.recordChangeValue = function (value, valueType, tableId) {
@@ -179,7 +180,8 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         } else {
             $scope.confirmDelete(table);
         }
-    };
+		$rootScope.$broadcast('event:SetToC');
+   };
 
     $scope.abortDelete = function (table) {
         var modalInstance = $modal.open({

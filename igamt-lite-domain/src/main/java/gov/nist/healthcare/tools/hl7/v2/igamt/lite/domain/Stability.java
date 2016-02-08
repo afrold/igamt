@@ -8,6 +8,6 @@ public enum Stability {
 	}
 
 	public static Stability fromValue(String v) {
-		return valueOf(v);
+		return !"".equals(v) && v != null ? valueOf(v): Stability.Dynamic;
 	}
 }

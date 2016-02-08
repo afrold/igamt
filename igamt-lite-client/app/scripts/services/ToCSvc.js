@@ -21,7 +21,7 @@ angular.module('igl').factory(
 				console.log("Getting toc...");
 				toc = [];
 				
-				console.log("childSections=" + igdocument.childSections.length);
+//				console.log("childSections=" + igdocument.childSections.length);
 				var documentMetadata = getMetadata(igdocument.metaData, "documentMetadata");
 				toc.push(documentMetadata);
 				var sections = getSections(igdocument.childSections, igdocument.type);
@@ -53,7 +53,7 @@ angular.module('igl').factory(
 						section.children.push(section1);						
 					});
 				});
-				var section2 = _.sortBy(rval, function(childSection1) { return childSection1.position; });
+				var section2 = _.sortBy(rval, "position");
 				rval = section2;
 				return rval;
 			}
@@ -65,7 +65,7 @@ angular.module('igl').factory(
 					"selected" : false,
 					"position" : profile.sectionPosition,
 					"parent" : "0",
-					"reference" : "",
+					"reference" : profile,
 					"children" : []
 				}
 				rval.children.push(getMetadata(profile.metaData, "profileMetadata"));
@@ -103,7 +103,7 @@ angular.module('igl').factory(
 				_.each(children, function(child) {
 					if(parent === "message") {
 						entry = createEntry(child, child.name, parent);
-						console.log("createEntries entry.reference.name=" + entry.reference.name + " entry.parent=" + rval.parent);
+//						console.log("createEntries entry.reference.name=" + entry.reference.name + " entry.parent=" + rval.parent);
 					} else if (parent === "table") {
 						entry = createEntry(child, child.bindingIdentifier, parent);
 					} else {
