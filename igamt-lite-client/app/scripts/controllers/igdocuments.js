@@ -867,7 +867,7 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function ($scope
         }, function (error) {
             $scope.error = error;
             $scope.loading = false;
-            $modalInstance.close($scope.igdocumentToDelete);
+            $modalInstance.dismiss('cancel');
             $rootScope.msg().text = "igDeleteFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
