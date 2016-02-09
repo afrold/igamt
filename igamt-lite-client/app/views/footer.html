@@ -1,84 +1,52 @@
-<div class="container">
-    <hr/>
-    <div id="footer" class="row">
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
+<div id="footer">
+    <table>
+        <tbody>
+        <tr>
+            <td class="box">
+                <a href="http://www.nist.gov" target="_blank"><img class="footerImage" src="images/nist_logo.gif" alt="The NIST Logo" title="The NIST Logo" /></a>
+            </td>
 
-        <div  class="col-md-3" style="text-align: left">
-        </div>
-        <div  class="col-md-1" style="text-align: left">
-            <a href="http://www.nist.gov" target="_blank"><img class="footerImage" src="images/nist_logo.gif" alt="The NIST Logo" title="The NIST Logo" /></a>
+            <td class="box">
+                <div>
+                    <h5>Application Information</h5>
+                    <span>Date: {{appInfo.date |  date: 'MM/dd/yyyy HH:mm:ss'}}, </span>
+                    <span>Application Version: {{appInfo.version}}</span>
+                    <span>Resource Bundle Version:{{appInfo.rsbVersion}}</span>
+                </div>
+            </td>
 
-        </div>
-        <div  class="col-md-1" style="text-align: left">
-            <h5>Deployment Information</h5>
-            <span>Date: {{appInfos.date}}</span><br/>
-            <span>Version: {{appInfos.version}}</span>
-        </div>
-        <div  class="col-md-1" style="text-align: left">
-            <h5>Recommended Browsers</h5>
-            <span>Firefox, Chrome</span>
-        </div>
-        <div  class="col-md-1" style="text-align: left">
-            <h5>External Links</h5>
-            <ul class="footer-list">
-                <li><a class="footer-link" href="http://www.nist.gov/public_affairs/disclaimer.cfm" target="_blank" title="View Disclaimer">Disclaimer</a></li>
-                <li><a  class="footer-link" href="http://www.nist.gov/public_affairs/privacy.cfm#privpolicy" target="_blank" title="View Privacy Policy">Privacy/Policy</a></li>
-                <li><a class="footer-link" href="mailto:robert.snelick@nist.gov" title="Email Website Administrator @: robert.snelick@nist.gov">Website Administrator</a></li>
-            </ul>
-        </div>
-        <div  class="col-md-1" style="text-align: left">
-            <a href="http://www.itl.nist.gov" target="_blank"><img class="footerImage" src="images/itl-logo.jpg" alt="ITL Logo" title="ITL Logo" /></a>
-        </div>
-        <div  class="col-md-3" style="text-align: left">
-        </div>
+            <td class="box">
+                <div>
+                    <h5>Supported Browsers</h5>
+                    <span><i class="fa fa-firefox"></i> Firefox, <i class="fa fa-chrome"></i> Chrome, <i class="fa fa-safari"></i>
+Safari</span>
+                </div>
+            </td>
 
-        <!--<table>-->
-            <!--<tr>-->
-                <!--<td class="box">-->
-                    <!--<div>-->
-                             <!--<a href="http://www.nist.gov" target="_blank"><img class="footerImage" src="images/nist_logo.gif" alt="The NIST Logo" title="The NIST Logo" /></a>-->
-                     <!--</div>-->
-                <!--</td>-->
+            <td class="box">
+                <div>
+                    <h5>External Links</h5>
+                    <a class="footer-link" href="http://www.nist.gov/public_affairs/disclaimer.cfm" target="_blank" title="View Disclaimer">Disclaimer</a> |
+                    <a  class="footer-link" href="http://www.nist.gov/public_affairs/privacy.cfm#privpolicy" target="_blank" title="View Privacy Policy">Privacy/Policy</a>|
+                    <a class="footer-link" ng-href="mailto:{{appInfo.adminEmail}}" title="Email Website Administrator @: {{appInfo.adminEmail}}">Website Administrator</a>
+                </div>
+            </td>
 
-                <!--<td class="box">-->
-                    <!--<div>-->
-                        <!--<h5>Deployment Information</h5>-->
-                        <!--<span>Date: {{appInfos.date}}</span><br/>-->
-                        <!--<span>Version: {{appInfos.version}}</span>-->
-                    <!--</div>-->
-                <!--</td>-->
+            <td class="box" >
+                <a href="http://www.itl.nist.gov" target="_blank"><img class="footerImage" src="images/itl-logo.jpg" alt="ITL Logo" title="ITL Logo" /></a>
+            </td>
 
+        </tr>
+        </tbody>
 
-                <!--<td class="box">-->
-                    <!--<div>-->
-                        <!--<h5>Recommended Browsers</h5>-->
-                        <!--<span>Firefox, Chrome</span>-->
-                        <!--&lt;!&ndash;<br />&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span>Recommended Browsers: IE 9,Firefox, Chrome</span>&ndash;&gt;-->
-                    <!--</div>-->
-                <!--</td>-->
-
-                <!--<td class="box">-->
-                    <!--<div>-->
-                        <!--<h5>External Links</h5>-->
-                        <!--<ul class="footer-list">-->
-                            <!--<li><a class="footer-link" href="http://www.nist.gov/public_affairs/disclaimer.cfm" target="_blank" title="View Disclaimer">Disclaimer</a></li>-->
-                            <!--<li><a  class="footer-link" href="http://www.nist.gov/public_affairs/privacy.cfm#privpolicy" target="_blank" title="View Privacy Policy">Privacy/Policy</a></li>-->
-                            <!--<li><a class="footer-link" href="mailto:robert.snelick@nist.gov" title="Email Website Administrator @: robert.snelick@nist.gov">Website Administrator</a></li>-->
-                        <!--</ul>-->
-                    <!--</div>-->
-                <!--</td>-->
-                <!--<td class="box">-->
-                    <!--<div>-->
-                        <!--<a href="http://www.itl.nist.gov" target="_blank"><img class="footerImage" src="images/itl-logo.jpg" alt="ITL Logo" title="ITL Logo" /></a>-->
-                    <!--</div>-->
-                <!--</td>-->
-
-            <!--</tr>-->
-
-
-
-        <!--</table>-->
-
-
-    </div>
+    </table>
 </div>

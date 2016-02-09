@@ -11,9 +11,11 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.AppInfoRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
@@ -28,9 +30,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 @Service
+@PropertySource(value = "classpath:app-web-config.properties")
 public class Bootstrap implements InitializingBean {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -41,6 +46,12 @@ public class Bootstrap implements InitializingBean {
 	@Autowired
 	IGDocumentService documentService;
 
+	@Autowired
+	private Environment env;
+
+	@Autowired
+	AppInfoRepository appInfoRepository;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -49,11 +60,12 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		// init();
-		// init2();
+		// loadPreloadedIGDocuments();
+		// loadDocumentsFromProfiles();
+		loadAppInfo();
 	}
 
-	private void init2() throws Exception {
+	private void loadIGDocumentsFromProfiles() throws Exception {
 		List<Profile> profiles = profileService.findAllProfiles();
 
 		for (Profile p : profiles) {
@@ -63,7 +75,7 @@ public class Bootstrap implements InitializingBean {
 		}
 	}
 
-	private void init() throws Exception {
+	private void loadPreloadedIGDocuments() throws Exception {
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
 				"/profiles/VXU-Z22_Profile.xml"));
 		String v = IOUtils.toString(this.getClass().getResourceAsStream(
@@ -130,4 +142,12 @@ public class Bootstrap implements InitializingBean {
 		// }
 	}
 
+	private void loadAppInfo() throws Exception {
+		appInfoRepository.deleteAll();
+		AppInfo appInfo = new AppInfo();
+		appInfo.setAdminEmail(env.getProperty("admin.email"));
+		appInfo.setDate(env.getProperty("app.date"));
+		appInfo.setVersion(env.getProperty("app.version"));
+		appInfoRepository.save(appInfo);
+	}
 }

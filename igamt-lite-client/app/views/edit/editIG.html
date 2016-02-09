@@ -1,3 +1,13 @@
+
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
 <ng-include src="'views/edit/editDocument.html'"></ng-include>
 <ng-include src="'views/edit/editDatatypes.html'"></ng-include>
 <ng-include src="'views/edit/editSegments.html'"></ng-include>

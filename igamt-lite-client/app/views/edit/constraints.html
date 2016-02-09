@@ -1,3 +1,12 @@
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
 <div ng-controller="ConstraintsListCtrl" ng-init="init()" class="container">
 	<div ng-show="loading" style="text-align: center">
 		<img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..." />

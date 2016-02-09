@@ -43,9 +43,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
 @EnableJpaRepositories("gov.nist.healthcare.nht.acmgt.repo")
-@PropertySource(value = { "classpath:serverAuthWeb.properties",
-		"classpath:serverConfigurationWeb.properties" })
-@ImportResource({ "classpath:security-config.xml" })
+@PropertySource(value = { "classpath:app-auth-config.properties",
+		"classpath:app-web-config.properties" })
+@ImportResource({ "classpath:app-security-config.xml" })
 public class AccountConfig {
 
 	@Autowired
