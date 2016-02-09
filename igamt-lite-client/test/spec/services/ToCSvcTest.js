@@ -10,7 +10,7 @@ describe("toc service", function () {
 		module('igl');
 		inject(function (_ToCSvc_, $injector, $rootScope, $controller) {
 			ToCSvc = _ToCSvc_;
-			 
+ 
 // Don't ask me why, but the following fixtures path MUST have "base/" prepended or it won't work.
 // Also, see the "pattern" thing, which is the last element of the files array in test/karma.conf.js.			 
 		 	jasmine.getJSONFixtures().fixturesPath='base/test/fixtures/igDocuments/';

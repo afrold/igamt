@@ -8,7 +8,24 @@
                     <div ng-show="message !== null" id="executionPanel">
                         <div class="page-header">
                             <span class="header4">Message: {{message.identifier}}</span>
-                        </div>
+      <span class="pull-right">
+
+        <button title="Create Copy" type="button" class="btn btn-xs btn-info"
+                ng-click="copyMessage(message)" ng-hide="options.readonly"
+                >
+            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Copy</span>
+        </button>
+        <button title="Close" type="button" class="btn btn-xs btn-warning"
+                ng-click="close()">
+            <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
+        </button>
+        <button title="Delete" type="button" ng-hide="options.readonly"
+                class="btn btn-xs btn-danger"
+                ng-click="delete(message)">
+            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+    </span>
+                       </div>
 
                         <accordion close-others="false">
                             <accordion-group is-open="true" panel-class="panel-info">
@@ -24,32 +41,13 @@
                                                 <label>Identifier</label> <input type="text"
                                                                                          ng-change="recordChanged()"
                                                                                          name="identifier"
-                                                                                         class="form-control"
+                                                                                         class="igl-input"
                                                                                          ng-model="message.identifier"
                                                                                          ng-disabled="options.readonly"
                                                                                          required>
                                             </div>
-
                                             <div class="form-group">
-                                                <label>OID</label> <input type="text"
-                                                                                  ng-change="recordChanged()"
-                                                                                  name="oid"
-                                                                                  class="form-control"
-                                                                                  ng-model="message.oid"
-                                                                                  ng-disabled="options.readonly"
-                                                                                  required>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label>IGAMT ID</label> <input type="text" disabled name="id"
-                                                                               class="form-control"
-                                                                               ng-disabled="options.readonly"
-                                                                               ng-model="message.id" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Name</label> <input style="width: 100%"
+                                                <label>Name</label> <input 
                                                                                       class="igl-input"
                                                                                       type="text"
                                                                                       disabled name="name"
@@ -59,17 +57,7 @@
 
                                             </div>
                                             <div class="form-group">
-                                                <label>Description</label> <input style="width: 100%"
-                                                                                      class="form-control"
-                                                                                      type="text"
-                                                                                      disabled 
-																					 name="name"
-                                                                                      ng-change="recordChanged()"
-                                                                                      ng-model="message.description">
-
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Version</label> <input style="width: 100%"
+                                                <label>Version</label> <input
                                                                                       class="igl-input"
                                                                                       type="text"
                                                                                       disabled name="version"
@@ -79,21 +67,45 @@
 
                                             </div>
                                             <div class="form-group">
-                                                <label>Date</label> <input style="width: 100%"
-                                                                                   class="igl-input" type="text"
-                                                                                   name="date" disabled
-                                                                                   ng-change="recordChanged()"
-                                                                                   ng-disabled="options.readonly"
-                                                                                   ng-model="message.date">
-
+                                                <label>OID</label> <input type="text"
+                                                                                  ng-change="recordChanged()"
+                                                                                  name="oid"
+                                                                                  class="igl-input"
+                                                                                  ng-model="message.oid"
+                                                                                  ng-disabled="options.readonly"
+                                                                                  required>
                                             </div>
                                             <div class="form-group">
-                                                <label>Comment</label> <input style="width: 100%"
+                                                <label>Description</label> <input
+                                                                                      class="igl-input"
+                                                                                      type="text"
+																					 name="name"
+                                                                                      ng-change="recordChanged()"
+                                                                                      ng-model="message.description">
+                                                                                  	 ng-disabled="options.readonly"
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Comment</label> <input
                                                                               class="igl-input" type="text"
                                                                               name="comment"
                                                                               ng-change="recordChanged()"
                                                                               ng-disabled="options.readonly"
                                                                               ng-model="message.comment">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                             <div class="form-group">
+                                                <label>IGAMT ID</label> <input type="text" disabled name="id"
+                                                                               class="form-control"
+                                                                               ng-model="message.id" required>
+                                            </div>
+                                           <div class="form-group">
+                                                <label>Date</label> <input
+                                                                                   class="form-control" type="text"
+                                                                                   name="date" disabled
+                                                                                   ng-change="recordChanged()"
+                                                                                   ng-model="message.date">
+
                                             </div>
                                         </div>
                                     </div>
