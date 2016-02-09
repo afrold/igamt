@@ -188,7 +188,7 @@ body {
 }
 
 .nav > a {
-  background-color: #ffcc00;
+  background-color: #ffec9d;
 }
 
 .nav-tabs > .active > a:hover {
@@ -200,8 +200,8 @@ body {
 }
 
 .nav > li > a:hover {
-  background-color: #ffec9d;
-  border-color: #ffec9d;
+  background-color: #ffcc00;
+  border-color: #ffcc00;
   border-bottom: 0px solid #ffcc00;
 }
 
@@ -211,7 +211,7 @@ body {
 
 /* a bit brutal, but it works... */
 .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
-  background-color: #ffcc00;
+  background-color: #ffec9d;
 }
 
 .dropdown-menu {
@@ -1107,8 +1107,8 @@ h4.addPOAFormDateSectionTitle {
 }
 
 .nav > li > a:hover {
-  background-color: #ffec9d;
-  border-color: #ffec9d;
+  background-color: #ffcc00;
+  border-color: #ffcc00;
   border-bottom: 0px solid #ffcc00;
 }
 
@@ -1248,7 +1248,7 @@ h4.addPOAFormDateSectionTitle {
 }
 
 .nav-tabs {
-  border-bottom: 1px solid #ffcc00;
+  border-bottom: 1px solid #ffec9d;
   cursor: pointer;
 }
 
@@ -1608,7 +1608,7 @@ input.account-input {
 }
 
 .navbar .nav > .active > a, .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
-  background-color: #ffec9d;
+  background-color: #F3C60D;
 }
 
 .navbar-default .navbar-nav > li > a {
