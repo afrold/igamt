@@ -74,7 +74,7 @@ angular.module('igl')
 
 
 angular.module('igl')
-    .controller('UserAccountCtrl', ['$scope', '$resource', 'AccountLoader', 'Account', 'userInfoService', '$location', '$rootScope',
+    .controller('AccountMgtCtrl', ['$scope', '$resource', 'AccountLoader', 'Account', 'userInfoService', '$location', '$rootScope',
         function ($scope, $resource, AccountLoader, Account, userInfoService, $location,$rootScope) {
 
 
@@ -86,7 +86,7 @@ angular.module('igl')
                     $('#' + id).show();
                 }
             };
-            $scope.initAccount = function(){
+            $scope.init = function(){
                 if($rootScope.subActivePath == null){
                     $rootScope.subActivePath = "account";
                 }

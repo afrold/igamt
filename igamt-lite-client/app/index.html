@@ -63,7 +63,7 @@
 
         <div class="container">
             <div class="row">
-                <div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">
+                <div ng-class="'alert alert-'+msg().type" ng-show="msg().show && !msg().skip" id="ehralert">
                     <button type="button" class="close" ng-click="msg().show=false">×</button>
                     <div msg key-expr="msg().text"></div>
                 </div>

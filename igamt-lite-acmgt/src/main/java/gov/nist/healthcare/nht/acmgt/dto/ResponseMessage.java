@@ -18,11 +18,11 @@ public class ResponseMessage {
         success, warn, danger, info;
     }
 
-    protected final Type type;
-    protected final String text;
-    protected final String resourceId;
-    protected final String manualHandle;
-    protected   boolean skip;
+    private final Type type;
+    private final String text;
+    private final String resourceId;
+    private final String manualHandle;
+    private   boolean skip;
 
     public ResponseMessage(Type type, String text, String resourceId, String manualHandle) {
         this.type = type;

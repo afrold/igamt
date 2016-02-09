@@ -234,7 +234,6 @@ public class IGDocumentController extends CommonController {
 		response.setContentType("text/xml");
 		response.setHeader("Content-disposition",
 				"attachment;filename=" + (d.getMetaData().getTitle()==null ? "default":d.getMetaData().getTitle()) + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
-
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 

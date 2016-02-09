@@ -41,7 +41,7 @@ var
     spinner,
 
 //The list of messages we don't want to displat
-    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded','igDocumentNotSaved','igDocumentSaved'];
+    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded'];
 
 //the message to be shown to the user
 var msg = {};
@@ -216,14 +216,12 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                     //with a login windows when browsing home.
                     if ( response.config.url !== 'api/accounts/cuser') {
                         //We don't intercept this request
-                        if(response.config.url !== 'api/accounts/login') {
-                            var deferred = $q.defer(),
-                                req = {
-                                    config: response.config,
-                                    deferred: deferred
-                                };
-                            $rootScope.requests401.push(req);
-                        }
+                        var deferred = $q.defer(),
+                            req = {
+                                config: response.config,
+                                deferred: deferred
+                            };
+                        $rootScope.requests401.push(req);
                         $rootScope.$broadcast('event:loginRequired');
 //                        return deferred.promise;
 
@@ -257,7 +255,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     });
 
 
-    IdleProvider.idle(7200);
+    IdleProvider.idle(30*60);
     IdleProvider.timeout(30);
     KeepaliveProvider.interval(10);
 
@@ -416,16 +414,10 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             //If we are here in this callback, login was successfull
             //Let's get user info now
             httpHeaders.common['Authorization'] = null;
-            $http.get('api/accounts/cuser').then(function (result) {
-                if(result.data && result.data != null) {
-                    var rs = angular.fromJson(result.data);
-                    userInfoService.setCurrentUser(rs);
-                    $rootScope.$broadcast('event:loginConfirmed');
-                }else{
-                    userInfoService.setCurrentUser(null);
-                }
-            },function(){
-                userInfoService.setCurrentUser(null);
+            $http.get('api/accounts/cuser').success(function (data) {
+            	console.log("setCurrentUser=" + data);
+                userInfoService.setCurrentUser(data);
+                $rootScope.$broadcast('event:loginConfirmed');
             });
         });
     });
@@ -476,12 +468,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         $rootScope.subActivePath = path;
     };
 
-    $rootScope.getFullName = function () {
-        if (userInfoService.isAuthenticated() === true) {
-            return userInfoService.getFullName();
-        }
-        return '';
-    };
+
 
 //    $rootScope.$watch(function () {
 //        return $location.path();
