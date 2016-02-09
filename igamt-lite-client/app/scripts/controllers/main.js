@@ -115,9 +115,8 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
         }
 
         $rootScope.loginDialog = $modal.open({
-            backdrop: true,
-            keyboard: true,
-            backdropClick: false,
+            backdrop: 'static',
+            keyboard: 'false',
             controller: 'LoginCtrl',
             size: 'lg',
             templateUrl: 'views/account/login.html',

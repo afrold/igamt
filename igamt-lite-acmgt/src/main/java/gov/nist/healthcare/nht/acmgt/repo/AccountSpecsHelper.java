@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.Specification;
 public class AccountSpecsHelper extends SpecsHelper<Account> {
 
 	static final Logger logger = LoggerFactory
-			.getLogger(IssueSpecsHelper.class);
+			.getLogger(AccountSpecsHelper.class);
 
 	@Override
 	public Specification<Account> getSpecificationFromString(String filterKey,

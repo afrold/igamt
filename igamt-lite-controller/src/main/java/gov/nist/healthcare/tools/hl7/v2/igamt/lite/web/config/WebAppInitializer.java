@@ -14,11 +14,15 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration.Dynamic;
 
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.io.support.ResourcePropertySource;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+@PropertySource(value = "classpath:app-web-config.properties")
 public class WebAppInitializer implements WebApplicationInitializer
 
 {
@@ -38,7 +42,16 @@ public class WebAppInitializer implements WebApplicationInitializer
 		servlet.setLoadOnStartup(1);
 		servlet.addMapping("/api/*");
 		servlet.setAsyncSupported(true);
+		try {
+			ConfigurableEnvironment environment = root.getEnvironment();
+			environment.getPropertySources().addFirst(
+					new ResourcePropertySource(
+							"classpath:app-web-config.properties"));
+			String version = environment.getProperty("app.version");
+			servletContext.setInitParameter("version", version);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
 	}
-
 }

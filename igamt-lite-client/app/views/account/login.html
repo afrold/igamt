@@ -1,7 +1,15 @@
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
 <form name="loginForm" id="loginForm" novalidate class="form-horizontal">
     <div class="modal-header">
         <a class="close" data-dismiss="modal"></a>
-
         <h3 class="modal-title">
             <i class="fa fa-sign-in"></i>&nbsp;<span msg key="login.title"></span>
         </h3>
@@ -41,7 +49,7 @@
         <!--<div class="form-group">-->
             <div clas="col-sm-offset-2 col-sm-10">
                 <button ng-click="login()" class="btn btn-primary" type="submit"
-                        ng-disabled='(!loginForm.$valid || loginForm.$pristine)'>
+                        ng-disabled='(!loginForm.$valid)'>
                     <div msg key="login.button.login"></div>
                 </button>
                 <button class="btn btn-warning" ng-click="cancel()">
