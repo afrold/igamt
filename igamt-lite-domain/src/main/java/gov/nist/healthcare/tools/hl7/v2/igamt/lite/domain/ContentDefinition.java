@@ -9,6 +9,6 @@ public enum ContentDefinition {
 	}
 
 	public static ContentDefinition fromValue(String v) {
-		return valueOf(v);
+		return !"".equals(v) && v != null ? valueOf(v): ContentDefinition.Intensional;
 	}
 }

@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="lib/material-custom/material-custom.css"/>
 
 </head>
-<body ng-controller="MainCtrl" ng-app="igl" ng-init="init()">
+<body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit>
 <div id="wrapper">
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>
@@ -51,7 +51,7 @@
 
         <div class="container">
             <div class="row">
-                <div ng-class="'alert alert-'+msg().type" ng-show="msg().show && !msg().skip" id="ehralert">
+                <div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">
                     <button type="button" class="close" ng-click="msg().show=false">×</button>
                     <div msg key-expr="msg().text"></div>
                 </div>

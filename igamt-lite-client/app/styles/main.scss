@@ -408,6 +408,7 @@ input.form-control {
   //  background-color: #ebdb0b;
   //  color: black;
   cursor: pointer;
+  border: 1px solid #cccccc;
 }
 
 .point {
@@ -2015,4 +2016,9 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
+}
+
+.current {
+  text-decoration: none;
+  background-color:#EEC10C;
 }

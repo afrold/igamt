@@ -5,6 +5,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
     //This line fetches the info from the server if the user is currently logged in.
     //If success, the app is updated according to the role.
     userInfoService.loadFromServer();
+    $rootScope.loginDialog = null;
 
     $scope.language = function () {
         return i18n.language;
@@ -107,32 +108,35 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
         return '';
     };
 
-    $rootScope.showLoginDialog = function(username, password) {
-        if ( $rootScope.loginDialogShown === false ) {
-            $rootScope.loginDialogShown = true;
-            var dlg = $modal.open({
-                backdrop: true,
-                keyboard: true,
-                backdropClick: false,
-                controller: 'LoginCtrl',
-                size:'lg',
-                templateUrl: 'views/account/login.html',
-                resolve: {
-                    user: function() {return {username:$scope.username, password:$scope.password};}
-                }
-            });
+    $rootScope.showLoginDialog = function (username, password) {
 
-            dlg.result.then(function (result) {
-                $rootScope.loginDialogShown = false;
-                if(result) {
-                    $scope.username = result.username;
-                    $scope.password = result.password;
-                    $scope.login();
-                } else {
-                    $scope.cancel();
-                }
-            });
+        if ($rootScope.loginDialog && $rootScope.loginDialog != null && $rootScope.loginDialog.opened) {
+            $rootScope.loginDialog.dismiss('cancel');
         }
+
+        $rootScope.loginDialog = $modal.open({
+            backdrop: true,
+            keyboard: true,
+            backdropClick: false,
+            controller: 'LoginCtrl',
+            size: 'lg',
+            templateUrl: 'views/account/login.html',
+            resolve: {
+                user: function () {
+                    return {username: $scope.username, password: $scope.password};
+                }
+            }
+        });
+
+        $rootScope.loginDialog.result.then(function (result) {
+            if (result) {
+                $scope.username = result.username;
+                $scope.password = result.password;
+                $scope.login();
+            } else {
+                $scope.cancel();
+            }
+        });
     };
 
     $rootScope.started = false;
@@ -919,8 +923,14 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
 //            $rootScope.config = angular.fromJson(response.data);
 //        }, function (error) {
 //        });
-    }
+    };
 
+    $scope.getFullName = function () {
+        if (userInfoService.isAuthenticated() === true) {
+            return userInfoService.getFullName();
+        }
+        return '';
+    };
 }]);
 
 angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user', function($scope, $modalInstance, user) {

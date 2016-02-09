@@ -23,7 +23,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileDiffImpl;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerialization4ExportImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.IGDocumentSerialization4ExportImpl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 
 import java.io.IOException;
@@ -78,7 +78,7 @@ public class ProfileServiceDeltaTest {
 
 	@Test
 	public void testDelta() throws Exception {
-		ProfileSerialization4ExportImpl test1 = new ProfileSerialization4ExportImpl();
+		IGDocumentSerialization4ExportImpl test1 = new IGDocumentSerialization4ExportImpl();
 
 		Profile p1 = test1.deserializeXMLToProfile(
 				new String(Files.readAllBytes(Paths
