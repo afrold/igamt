@@ -119,8 +119,6 @@ angular.module('igl')
 
             $scope.accountpwd = {};
 
-            $scope.loadAccounts();
-
             $scope.updateAccount = function() {
                 //not sure it is very clean...
                 //TODO: Add call back?
@@ -160,7 +158,7 @@ angular.module('igl')
             };
 
             $scope.initManageAccounts = function(){
-                //$scope.loadAccounts();
+                $scope.loadAccounts();
             };
 
             $scope.selectAccount = function(row) {

@@ -10,9 +10,9 @@ public enum Usage {
 
 	public static Usage fromValue(String v) {
 		try{
-			return valueOf(v);
+			return !"".equals(v) && v != null ? valueOf(v): Usage.C;
 		}catch (IllegalArgumentException e){
-			return valueOf("C"); // ????
+			return Usage.C; // ????
 		}
 	}
 

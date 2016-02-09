@@ -49,8 +49,9 @@ var
 var msg = {};
 
 app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider) {
-
-
+	
+	app.requires.push('ngMockE2E');
+	
     $routeProvider
         .when('/', {
             templateUrl: 'views/home.html'
@@ -281,7 +282,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 
 app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http) {
 
-
     //Check if the login dialog is already displayed.
     $rootScope.loginDialogShown = false;
     $rootScope.subActivePath = null;
@@ -470,14 +470,3 @@ app.factory('StorageService',
         return service;
     }]
 );
-
-
-
-//
-//angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
-//    .controller('CarouselController', ['$scope', '$timeout', '$transition', '$q', function ($scope, $timeout, $transition, $q) {
-//    }]).directive('carousel', [function () {
-//        return {
-//
-//        }
-//    }]);

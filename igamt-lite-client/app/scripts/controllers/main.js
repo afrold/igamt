@@ -762,7 +762,7 @@ function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangul
                 $rootScope.references.push(obj);
             }
             $rootScope.findDatatypeRefs(datatype,$rootScope.datatypesMap[obj.datatype]);
-        }else if(angular.equals(obj.type,'segment')){
+        } else if(angular.equals(obj.type,'segment')){
             angular.forEach( $rootScope.segments, function (segment) {
                 angular.forEach(segment.fields, function (field) {
                     $rootScope.findDatatypeRefs(datatype,field);

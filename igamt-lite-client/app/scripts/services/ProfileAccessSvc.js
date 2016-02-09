@@ -64,6 +64,8 @@ angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 			var groups = [];
 			
 			_.each(message.children, function(groupORsegment) {
+				console.log("Was a what? groupORsegment.type="
+						+ groupORsegment.type + " name=" + message.name);
 				var grps = fetchGroups(groupORsegment);
 				_.each(grps, function(grp){
 					groups.push(grp);
@@ -78,6 +80,8 @@ angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 			var groups = [];
 			
 			if (groupORsegment.type === "group") {
+				console.log("Was a group groupORsegment.type="
+						+ groupORsegment.type);
 				groups.push(groupORsegment);
 				_.each(groupORsegment.children, function(groupORsegment1) {
 					var grps = fetchGroups(groupORsegment1);
@@ -86,8 +90,8 @@ angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 					});
 				});
 			} else {
-//				console.log("Was a segmentRef groupORsegment.type="
-//								+ groupORsegment.type);
+				console.log("Was a segmentRef groupORsegment.type="
+								+ groupORsegment.type);
 			}
 			
 			return groups;
@@ -107,7 +111,7 @@ angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 			} else if (groupORsegment.type === "segmentRef") {
 				segRefs.push(groupORsegment.ref);
 			} else {
-				console.log("Was neither group nor segmetnRef groupORsegment.type="
+				console.log("Was neither group nor segmentRef groupORsegment.type="
 								+ groupORsegment.type);
 			}
 			
@@ -148,12 +152,16 @@ angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 			return segments;
 		}
 		
-		segs.findById = function(id) {
-			var segment = _.find(segs.segments(), function(segment) {
-				return segment.id === id;
+		segs.findById = function(segId) {
+//			console.log("segIds=" + segs.getAllSegmentIds());
+			var segments = segs.segments();
+			
+			var segment = _.find(segments, function(segment1) {
+				return segment1.id === segId;
 			});
+			
 			if (!segment) {
-				console.log("segs.findById: segment not found id=" + id);
+				console.log("segs.findById: segment not found, segId=" + segId);
 			}
 			return segment;
 		}
@@ -175,6 +183,15 @@ angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 			});
 			
 			return segments.length;
+		}
+		
+		segs.getParentalDependencies = function(segment) {
+			var messages = svc.Messages().messages();
+			var rval = _.filter(messages, function(message) {
+				var segRefs= svc.Messages().getSegmentRefs(message);
+				return _.indexOf(segRefs, segment.id) >= 0;
+			});
+			return rval;
 		}
 		
 		segs.findDatatypesFromSegmentRefs  = function(segRefs) {

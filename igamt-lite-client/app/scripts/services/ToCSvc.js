@@ -59,38 +59,27 @@ angular.module('igl').factory(
 			}
 			
 			function getMessageInfrastructure(profile) {
-				var rval = {
-					"id" : profile.type,
-					"label" : profile.sectionTitle,
-					"selected" : false,
-					"position" : profile.sectionPosition,
-					"parent" : "0",
-					"reference" : profile,
-					"children" : []
-				}
-				rval.children.push(getMetadata(profile.metaData, "profileMetadata"));
-				rval.children.push(getTopEntry(profile.messages));
-				rval.children.push(getTopEntry(profile.segments));
-				rval.children.push(getTopEntry(profile.datatypes));
-				rval.children.push(getTopEntry(profile.tables));
+				var rval = new entry(profile.type, profile.sectionTitle, profile.sectionPosition, 0, profile);
+				var children = [];
+				children.push(getMetadata(profile.metaData, "profileMetadata"));
+				children.push(getTopEntry(profile.messages));
+				children.push(getTopEntry(profile.segments));
+				children.push(getTopEntry(profile.datatypes));
+				children.push(getTopEntry(profile.tables));
+				rval.children = children;
 				return rval;
 			}
 			
 			// Returns a top level entry. It can be dropped on, but cannot be
 			// dragged.
 			// It will accept a drop where the drag value matches its label.
-			function getTopEntry(fromProfile) {
+			function getTopEntry(profile) {
 				var children = [];
-				var rval = {
-					"id" : fromProfile.type,
-					"label" : fromProfile.sectionTitle,
-					"position" : fromProfile.sectionPosition,
-					"selected" : false,
-				}
-				if (fromProfile) {
-					rval["reference"] = fromProfile;
-					if(angular.isArray(fromProfile.children)) {
-						rval["children"] = createEntries(fromProfile.children[0].type, fromProfile.children);
+				var rval = new entry(profile.type, profile.sectionTitle, profile.sectionPosition, 0, profile);
+				if (profile) {
+					rval["reference"] = profile;
+					if(angular.isArray(profile.children)) {
+						rval["children"] = createEntries(profile.children[0].type, profile.children);
 					}
 				}
 				return rval;
@@ -114,23 +103,13 @@ angular.module('igl').factory(
 				if (parent === "message") {
 					return rval;
 				} else {
-					return _.sortBy(rval, "position");
+					return _.sortBy(rval, "label");
 				}
 			}
 
 			function createEntry(child, label, parent) {
 				
 				var rval = new entry(child.id, label, child.sectionPosition, child.type, child);
-//				};
-//				if (child) {
-//					rval["reference"] = child;
-//				}
-//				if (parent) {
-//					rval["parent"] = parent;
-//				}
-//				if (angular.isArray(child.children)) {
-//					rval["children"] = child.children;					}
-//				}
 				return rval;
 			}
 

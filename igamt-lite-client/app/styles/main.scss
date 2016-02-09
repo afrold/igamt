@@ -299,6 +299,7 @@ input.form-control {
   //  background-color: #ebdb0b;
   //  color: black;
   cursor: pointer;
+  border: 1px solid #cccccc;
 }
 
 .point {
@@ -325,8 +326,26 @@ input.form-control {
   //  background-color: #ebdb0b;
   //  color: black;
   cursor: pointer;
+  width: 100%;
 }
-
+.igl-text {
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  font-size: 14px;
+  line-height: 1.42857;
+  padding: 6px 12px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  font: inherit;
+  margin: 0;
+  opacity: 1;
+  width: 100%;
+}
 .has-error {
   background-color: red;
 }

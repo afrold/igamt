@@ -35,7 +35,7 @@ public class IGDocumentSaveResponse extends ResponseMessage {
 	 * @param version
 	 */
 	public IGDocumentSaveResponse(String date, String version) {
-		super(Type.success, null);
+		super(Type.success, "igDocumentSaved");
 		this.date = date;
 		this.version = version;
 	}

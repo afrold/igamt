@@ -19,10 +19,10 @@
                     <span class="header4">Datatype {{datatype.name}}: {{datatype.label}}</span>
     <span class="pull-right">
 
-        <button title="Create Flavor" type="button" class="btn btn-xs btn-info"
-                ng-click="cloneDatatypeFlavor(datatype)" ng-hide="options.readonly"
+        <button title="Create Copy" type="button" class="btn btn-xs btn-info"
+                ng-click="copyDatatype(datatype)" ng-hide="options.readonly"
                 >
-            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
+            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Copy</span>
         </button>
         <button title="Close" type="button" class="btn btn-xs btn-warning"
                 ng-click="close()">
@@ -37,7 +37,7 @@
                 </div>
                 <hr/>
                 <accordion close-others="false">
-                    <accordion-group is-open="accordi.metaData" panel-class="panel-info">
+                    <accordion-group is-open="true" panel-class="panel-info">
 
                         <accordion-heading>
                             <i class="fa"
@@ -47,6 +47,24 @@
 
                         <form name="datatypeMetaDataForm" novalidate>
                             <div class="row">
+
+                                <div class="col-sm-6">
+                                    <div class="form-group"
+                                         ng-class="{'has-error' : datatypeMetaDataForm.label.$invalid && !datatypeMetaDataForm.label.$pristine }">
+                                        <label>Label</label>
+										<span style="color:red" ng-show="isDuplicated(datatype,'label', datatypes)">Existing label (flavor name)</span>
+                                        <input type="text" ng-disabled="options.readonly"
+                                               ng-change="recordChanged()"
+                                               name="label" class="igl-input" style="width: 100%" ng-model="datatype.label"
+                                               required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Comment</label>
+                                        <input type="text" ng-disabled="options.readonly"
+                                               ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)"
+                                               name="label" class="igl-input" style="width: 100%" ng-model="datatype.comment">
+                                    </div>
+                                </div>
                                 <div class="col-sm-6">
                                     <div class="form-group"
                                          ng-class="{'has-error' : datatypeMetaDataForm.name.$invalid && !datatypeMetaDataForm.name.$pristine }">
@@ -55,36 +73,20 @@
                                                name="name" class="form-control" ng-model="datatype.name"
                                                required>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Comment</label>
-                                        <input type="text" ng-disabled="options.readonly"
-                                               ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)"
-                                               name="label" class="form-control" ng-model="datatype.comment">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group"
-                                         ng-class="{'has-error' : datatypeMetaDataForm.label.$invalid && !datatypeMetaDataForm.label.$pristine }">
-                                        <label>Label</label>
-										<span style="color:red" ng-show="isDuplicated(datatype,'label', datatypes)">Existing label (flavor name)</span>
-                                        <input type="text" ng-disabled="options.readonly"
-                                               ng-change="recordChanged()"
-                                               name="label" class="form-control" ng-model="datatype.label"
-                                               required>
-                                    </div>
                                     <div class="form-group"
                                          ng-class="{'has-error' : datatypeMetaDataForm.label.$invalid && !datatypeMetaDataForm.label.$pristine }">
                                         <label>Description</label>
 										<span style="color:red" ng-show="isDuplicated(datatype,'label', datatypes)">Existing label (flavor name)</span>
-                                        <input type="text" ng-disabled="options.readonly"
+                                        <input type="text" disabled
                                                ng-change="recordChanged()"
                                                name="label" class="form-control" ng-model="datatype.description"
                                                required>
                                     </div>
-                                    <div class="form-group">
+                                </div>                                  <div class="col-sm-12">
+                                  <div class="form-group">
                                         <label>Definition Text</label>
                                          <!--<div ng-show="!options.readonly">-->
-                                        <div text-angular style="width:100%"  ta-disabled="options.readonly"
+                                        <div text-angular class="igl-text" ta-disabled="options.readonly"
                                              name="text"
                                              ng-change="recordChanged()"
                                              ng-model="datatype.text"></div>
@@ -93,14 +95,11 @@
                                             <!--<textarea ng-bind="datatype.text" class="form-control"></textarea>-->
                                         <!--</div>-->
                                     </div>
-
-
                                 </div>
-
                             </div>
                         </form>
                     </accordion-group>
-                    <accordion-group is-open="accordi.definition" panel-class="panel-info">
+                    <accordion-group is-open="true" panel-class="panel-info">
 
                         <accordion-heading>
                             <i class="fa"
