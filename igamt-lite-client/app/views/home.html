@@ -1,8 +1,19 @@
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
 <div class="container">
+    <div class="row" style="margin-top:20px">
     <div class="panel panel-info">
     <div class="panel-heading"><span msg class="msg" key="home.message"></span></div>
     <div class="panel-body">
-        This is the Implementation Guide Authoring Tool
+        Coming soon.
      </div>
  </div>
+        </div>
 </div>

@@ -11,11 +11,11 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentOperations;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepositoryImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.AppInfoRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
@@ -30,9 +30,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 @Service
+@PropertySource(value = "classpath:app-web-config.properties")
 public class Bootstrap implements InitializingBean {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -42,7 +45,13 @@ public class Bootstrap implements InitializingBean {
 
 	@Autowired
 	IGDocumentService documentService;
-	
+
+	@Autowired
+	private Environment env;
+
+	@Autowired
+	AppInfoRepository appInfoRepository;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -51,21 +60,22 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-//		init();
-		//init2();
-	} 
-	
-	private void init2() throws Exception {
+		// loadPreloadedIGDocuments();
+		// loadDocumentsFromProfiles();
+		loadAppInfo();
+	}
+
+	private void loadIGDocumentsFromProfiles() throws Exception {
 		List<Profile> profiles = profileService.findAllProfiles();
-		
-		for(Profile p:profiles){
+
+		for (Profile p : profiles) {
 			IGDocument d = new IGDocument();
 			d.addProfile(p);
 			documentService.save(d);
 		}
 	}
-	
-	private void init()throws Exception {
+
+	private void loadPreloadedIGDocuments() throws Exception {
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
 				"/profiles/VXU-Z22_Profile.xml"));
 		String v = IOUtils.toString(this.getClass().getResourceAsStream(
@@ -73,7 +83,7 @@ public class Bootstrap implements InitializingBean {
 		String c = IOUtils.toString(this.getClass().getResourceAsStream(
 				"/profiles/VXU-Z22_Constraints.xml"));
 		Profile profile = new ProfileSerializationImpl()
-		.deserializeXMLToProfile(p, v, c);
+				.deserializeXMLToProfile(p, v, c);
 		profile.getMetaData().setName("VXU V04 Implementation Guide");
 		profile.getMetaData().setIdentifier("CDC IG_VXU_V04 Release 1.5");
 		profile.getMetaData().setOrgName("NIST");
@@ -86,50 +96,58 @@ public class Bootstrap implements InitializingBean {
 		profile.getMetaData().setHl7Version("2.5.1");
 		profileService.save(profile);
 
-//		p = IOUtils.toString(this.getClass().getResourceAsStream(
-//				"/igs/OML_O21/Profile.xml"));
-//		v = IOUtils.toString(this.getClass().getResourceAsStream(
-//				"/igs/OML_O21/ValueSets_HL7.xml"));
-//		c = IOUtils.toString(this.getClass().getResourceAsStream(
-//				"/igs/OML_O21/Constraints.xml"));
-//		profile = new ProfileSerializationImpl().deserializeXMLToProfile(p,
-//				v,
-//				c);
-//		profile.getMetaData().setName("OML_O21 Implementation Guide");
-//		profile.getMetaData().setIdentifier("OML_O21");
-//		profile.getMetaData().setOrgName("NIST");
-//		profile.getMetaData().setSubTitle("NIST");
-//		profile.getMetaData().setVersion("1.0");
-//		dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//		profile.getMetaData().setDate(
-//				dateFormat.format(Calendar.getInstance().getTime()));
-//		profile.setScope(ProfileScope.PRELOADED);
-//		profile.getMetaData().setHl7Version("2.5.1");
-//		profileService.save(profile);
-//
-//		for (String i : new String[]{"1", "3", "4", "8"}){
-//
-//			p = IOUtils.toString(this.getClass().getResourceAsStream(
-//					"/igs/ADT_A0" + i + "/Profile.xml"));
-//			v = IOUtils.toString(this.getClass().getResourceAsStream(
-//					"/igs/ADT_A0" + i + "/ValueSets_HL7.xml"));
-//			c = IOUtils.toString(this.getClass().getResourceAsStream(
-//					"/igs/ADT_A0" + i + "/Constraints.xml"));
-//			profile = new ProfileSerializationImpl().deserializeXMLToProfile(p,
-//					v,
-//					c);
-//			profile.getMetaData().setName("ADT_A0"+i+" Implementation Guide");
-//			profile.getMetaData().setIdentifier("ADT_A0"+i);
-//			profile.getMetaData().setOrgName("NIST");
-//			profile.getMetaData().setSubTitle("NIST");
-//			profile.getMetaData().setVersion("1.0");
-//			dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//			profile.getMetaData().setDate(
-//					dateFormat.format(Calendar.getInstance().getTime()));
-//			profile.setScope(ProfileScope.PRELOADED);
-//			profile.getMetaData().setHl7Version("2.5.1");
-//			profileService.save(profile);
-//		}
+		// p = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/igs/OML_O21/Profile.xml"));
+		// v = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/igs/OML_O21/ValueSets_HL7.xml"));
+		// c = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/igs/OML_O21/Constraints.xml"));
+		// profile = new ProfileSerializationImpl().deserializeXMLToProfile(p,
+		// v,
+		// c);
+		// profile.getMetaData().setName("OML_O21 Implementation Guide");
+		// profile.getMetaData().setIdentifier("OML_O21");
+		// profile.getMetaData().setOrgName("NIST");
+		// profile.getMetaData().setSubTitle("NIST");
+		// profile.getMetaData().setVersion("1.0");
+		// dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		// profile.getMetaData().setDate(
+		// dateFormat.format(Calendar.getInstance().getTime()));
+		// profile.setScope(ProfileScope.PRELOADED);
+		// profile.getMetaData().setHl7Version("2.5.1");
+		// profileService.save(profile);
+		//
+		// for (String i : new String[]{"1", "3", "4", "8"}){
+		//
+		// p = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/igs/ADT_A0" + i + "/Profile.xml"));
+		// v = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/igs/ADT_A0" + i + "/ValueSets_HL7.xml"));
+		// c = IOUtils.toString(this.getClass().getResourceAsStream(
+		// "/igs/ADT_A0" + i + "/Constraints.xml"));
+		// profile = new ProfileSerializationImpl().deserializeXMLToProfile(p,
+		// v,
+		// c);
+		// profile.getMetaData().setName("ADT_A0"+i+" Implementation Guide");
+		// profile.getMetaData().setIdentifier("ADT_A0"+i);
+		// profile.getMetaData().setOrgName("NIST");
+		// profile.getMetaData().setSubTitle("NIST");
+		// profile.getMetaData().setVersion("1.0");
+		// dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		// profile.getMetaData().setDate(
+		// dateFormat.format(Calendar.getInstance().getTime()));
+		// profile.setScope(ProfileScope.PRELOADED);
+		// profile.getMetaData().setHl7Version("2.5.1");
+		// profileService.save(profile);
+		// }
 	}
 
+	private void loadAppInfo() throws Exception {
+		appInfoRepository.deleteAll();
+		AppInfo appInfo = new AppInfo();
+		appInfo.setAdminEmail(env.getProperty("admin.email"));
+		appInfo.setDate(env.getProperty("app.date"));
+		appInfo.setVersion(env.getProperty("app.version"));
+		appInfoRepository.save(appInfo);
+	}
 }

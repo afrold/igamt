@@ -1,3 +1,13 @@
+
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
 <ng-include src="'views/edit/editDocument.html'"></ng-include>
 <ng-include src="'views/edit/editDatatypes.html'"></ng-include>
 <ng-include src="'views/edit/editSegments.html'"></ng-include>
@@ -68,7 +78,7 @@
                         <ul class="dropdown-menu igl-menu" role="menu">
                             <li><a class="point" ng-click="exportAs(igdocument.id, 'zip')">As ZIP</a></li>
                             <li><a class="point" ng-click="exportAs(igdocument.id,'pdf')">As PDF</a></li>
-                            <li><a class="point" ng-click="exportAs(igdocument.id,'docx')"><span style='color:red'>In progress</span> As WORD</a></li>
+                            <!--<li><a class="point" ng-click="exportAs(igdocument.id,'docx')"><span style='color:red'>In progress</span> As WORD</a></li>-->
                             <li><a class="point" ng-click="exportAs(igdocument.id,'html')">As HTML</a></li>
                         </ul>
                     </div>

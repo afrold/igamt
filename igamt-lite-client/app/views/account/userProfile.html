@@ -1,4 +1,13 @@
-<div class="container" ng-controller="UserProfileCtrl" ng-init="init()">
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
+<div class="container" ng-controller="AccountCtrl" ng-init="init()">
   <div class="row">
     <div class="col-md-12">
       <!--Body content-->
@@ -60,7 +69,7 @@
             <div class="control-group form-group">
                 <label class="control-label col-sm-2" for="inputFullName"><div msg key='account.fullname'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="text" class="input-xlarge immediate-help account-input" name="inputFullName" id="inputFullName" ng-model='account.fullname' ng-minlength="2" required>
+                    <input type="text" class="input-xlarge immediate-help account-input" name="inputFullName" id="inputFullName" ng-model='account.fullName' ng-minlength="2" required>
                     <div class="input-help">
                         <h4><div msg key='registration.fullname.error'></div></h4>
                     </div>
@@ -81,7 +90,7 @@
             <div class="control-group form-group">
                 <label class="control-label col-sm-2" for="inputPhoneNumber"><div msg key='account.phone'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="text" class="input-xlarge immediate-help account-input" name="inputPhoneNumber" id="inputPhoneNumber" ng-model='account.phone'>
+                    <input type="text" class="input-xlarge immediate-help account-input" name="inputPhoneNumber" id="inputPhoneNumber" ng-model='account.phone' ng-maxlength="10" ng-minlength="10">
                     <div class="input-help">
                         <h4><div msg key='registration.phone.error'></div></h4>
                     </div>

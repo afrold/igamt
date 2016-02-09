@@ -1,8 +1,17 @@
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
 <!-- <!-- Fixed navbar -->
 <div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="brand" id="appheader">
         <a style="display: inline-block; text-shadow:none" href="#">
-            <div id="apptitle"><div><span msg key="app.title"></span><span style='color:red; font-size:12px'> Beta</span></div></div>
+            <div id="apptitle"><div><span msg key="app.title"></span><span style='color:red; font-size:12px'> <span style='color:red; font-size:12px'> {{appInfo.version}}</span></span></div></div>
             <div id="appsubtitle"><div msg key="app.subtitle"></div></div>
         </a>
         <div id="userInfo" ng-show="isAuthenticated()">
@@ -62,7 +71,7 @@
 
 
         <!--<p class="navbar-text pull-right" ng-class="activeWhen(path()=='/issue')" style="margin-right: 3em">-->
-        <!--<a href="#/issue"><i class="fa fa-question"></i><span msg class="msg" key="navbar.issue"></span></a>-->
+            <!--<a href="#/issue"><i class="fa fa-question"></i><span msg class="msg" key="navbar.issue"></span></a>-->
         <!--</p>-->
     </div>
 </div>
