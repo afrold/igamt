@@ -181,6 +181,10 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             return username;
         };
 
+        var getFullName = function() {
+            return fullName;
+        };
+
         return {
             saveHthd: saveHthd,
             getHthd: getHthd,
