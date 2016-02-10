@@ -10,17 +10,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguratio
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageByListCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentDeleteException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
@@ -232,20 +229,28 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsXml(d);
 		response.setContentType("text/xml");
-		response.setHeader("Content-disposition",
-				"attachment;filename=" + (d.getMetaData().getTitle()==null ? "default":d.getMetaData().getTitle()) + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xml");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ (d.getMetaData().getTitle() == null ? "default" : d
+						.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".xml");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 	@RequestMapping(value = "/{id}/export/html", method = RequestMethod.POST, produces = "text/html")
-	public void exportHtml(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
+	public void exportHtml(@PathVariable("id") String id,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, IGDocumentNotFoundException {
 		log.info("Exporting as html file IGDcoument with id=" + id);
 		IGDocument d = this.findIGDocument(id);
 		InputStream content = null;
 		content = igDocumentExport.exportAsHtml(d);
 		response.setContentType("text/html");
-		response.setHeader("Content-disposition",
-				"attachment;filename=" + (d.getMetaData().getTitle()==null ? "default":d.getMetaData().getTitle()) + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ (d.getMetaData().getTitle() == null ? "default" : d
+						.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".html");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -258,7 +263,11 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsZip(d);
 		response.setContentType("application/zip");
-		response.setHeader("Content-disposition", "attachment;filename=" + (d.getMetaData().getTitle()==null ? "default":d.getMetaData().getTitle()) + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) +  ".zip");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ (d.getMetaData().getTitle() == null ? "default" : d
+						.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -271,7 +280,11 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsPdf(d);
 		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition", "attachment;filename=" + (d.getMetaData().getTitle()==null ? "default":d.getMetaData().getTitle()) + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ (d.getMetaData().getTitle() == null ? "default" : d
+						.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -284,7 +297,11 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsDocx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-		response.setHeader("Content-disposition", "attachment;filename=" + (d.getMetaData().getTitle()==null ? "default":d.getMetaData().getTitle()) + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".docx");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ (d.getMetaData().getTitle() == null ? "default" : d
+						.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".docx");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -299,7 +316,11 @@ public class IGDocumentController extends CommonController {
 		// TODO need to implement igDocumentService.diffToPdf
 		content = igDocumentService.diffToPdf(d);
 		response.setContentType("application/pdf");
-		response.setHeader("Content-disposition", "attachment;filename=" + (d.getMetaData().getTitle()==null ? "default":d.getMetaData().getTitle()) + "-Delta-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".pdf");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ (d.getMetaData().getTitle() == null ? "default" : d
+						.getMetaData().getTitle()) + "-Delta-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -321,7 +342,11 @@ public class IGDocumentController extends CommonController {
 		IGDocument d = findIGDocument(id);
 		content = igDocumentExport.exportAsXlsx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-disposition", "attachment;filename=" + (d.getMetaData().getTitle()==null ? "default":d.getMetaData().getTitle()) + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".xlsx");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ (d.getMetaData().getTitle() == null ? "default" : d
+						.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".xlsx");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
