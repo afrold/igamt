@@ -35,11 +35,7 @@ public interface IGDocumentService {
 	public IGDocument findOne(String id);
 
 	public List<IGDocument> findAll();
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 3bee718d20c0b52e7510c5a5f941a7cc42757d35
 	public List<IGDocument> findAllPreloaded();
 
 	public List<IGDocument> findByAccountId(Long accountId);
