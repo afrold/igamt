@@ -76,7 +76,6 @@ public class PersistenceContextUnit extends AbstractMongoConfiguration {
 		converterList.add(new FieldWriteConverter());
 		converterList.add(new ComponentWriteConverter());
 		converterList.add(new SegmentRefWriteConverter());
-		converterList.add(new ProfileReadConverter());
 		converterList.add(new IGDocumentReadConverter());
 		return new CustomConversions(converterList);
 	}

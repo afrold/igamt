@@ -18,10 +18,15 @@ import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 16, 2015
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {PersistenceContextUnit.class})
 public class ProfileCloneTest {
 
 	@Test

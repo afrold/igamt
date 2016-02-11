@@ -11,18 +11,13 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertEquals;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -34,22 +29,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
-import org.springframework.data.mongodb.core.convert.CustomConversions;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.github.fakemongo.Fongo;
 import com.jayway.jsonpath.JsonPath;
-import com.mongodb.Mongo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
+@ContextConfiguration(classes = {PersistenceContext.class})
 public class ProfileLoadingTest {    
 
 	@Autowired
@@ -111,48 +97,5 @@ public class ProfileLoadingTest {
 			assertEquals(vsl.size(), profileSaved.getTables().getChildren().size());
 
 		}
-
 	}
-
-
-	@Configuration
-	@EnableMongoRepositories(basePackages = "gov.nist.healthcare.tools")
-	@ComponentScan(basePackages = "gov.nist.healthcare.tools")
-	static class ProfileTestConfiguration extends AbstractMongoConfiguration {
-
-		@Override
-		public Mongo mongo() {
-			return new Fongo("igl_test").getMongo();
-		}
-
-		@Override
-		@Bean
-		public CustomConversions customConversions() {
-			List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
-			converterList.add(new FieldWriteConverter());
-			converterList.add(new ComponentWriteConverter());
-			converterList.add(new SegmentRefWriteConverter());
-			converterList.add(new ProfileReadConverter());
-			return new CustomConversions(converterList);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.springframework.data.mongodb.config.AbstractMongoConfiguration#
-		 * getDatabaseName()
-		 */
-		@Override
-		protected String getDatabaseName() {
-			return "igl_test";
-		}
-
-		@Override
-		public String getMappingBasePackage() {
-			return "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain";
-		}
-	}
-
-
 }
