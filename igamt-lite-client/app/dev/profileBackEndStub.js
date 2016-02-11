@@ -173,6 +173,17 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenGET(/resources\//).passThrough();
 
+    $httpBackend.whenGET('api/igdocuments?type=PRELOADED').respond(function (method, url, data, headers) {
+    		console.log("api/igdocuments/:type==>");
+        return [200, {}, {}];
+   });
+
+    $httpBackend.whenGET('api/igdocuments?type=USER').respond(function (method, url, data, headers) {
+		console.log("api/igdocuments/:type==>");
+    return [200, {}, {}];
+    });
+
+    
     $httpBackend.whenGET('api/igdocuments/findVersions').respond(function (method, url, data, headers) {
     	console.log('api/igdocuments/hl7/findVersions');
         return [200, ["2.3","2.31","2.4","2.5","2.51","2.6","2.7"], {}];
