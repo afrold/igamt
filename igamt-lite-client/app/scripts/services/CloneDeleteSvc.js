@@ -42,7 +42,7 @@ angular.module('igl').factory(
 		                		});
 		                });
 		            }
-//		            $rootScope.segments.splice(0, 0, newSegment);
+		            $rootScope.segments.splice(0, 0, newSegment);
 		            $rootScope.igdocument.profile.segments.children.splice(0, 0, newSegment);
 		            $rootScope.segment = newSegment;
 		            $rootScope.segment[newSegment.id] = newSegment;
@@ -73,7 +73,7 @@ angular.module('igl').factory(
 		                    conformanceStatement.id = new ObjectId().toString();
 		                });
 		            }
-//		            $rootScope.datatypes.splice(0, 0, newDatatype);
+		            $rootScope.datatypes.splice(0, 0, newDatatype);
 		            $rootScope.igdocument.profile.datatypes.children.splice(0, 0, newDatatype);
 		            $rootScope.datatype = newDatatype;
 		            $rootScope.datatypesMap[newDatatype.id] = newDatatype;
@@ -184,7 +184,7 @@ angular.module('igl').factory(
 		            }
 		        });
 		        modalInstance.result.then(function (table) {
-		            $scope.tableToDelete = table;
+		            tableToDelete = table;
 		        }, function () {
 		        });
 		    };
@@ -200,7 +200,7 @@ angular.module('igl').factory(
 		            }
 		        });
 		        modalInstance.result.then(function (table) {
-		            $scope.tableToDelete = table;
+		            tableToDelete = table;
 		        }, function () {
 		        });
 		    };
@@ -260,6 +260,7 @@ angular.module('igl').factory(
 	            modalInstance.result.then(function (datatype) {
 	                dtToDelete = datatype;
 	            }, function () {
+					$rootScope.$broadcast('event:SetToC');
 	            });
 	        };	
 	        

@@ -246,6 +246,7 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
 
         $rootScope.references = [];
         $modalInstance.close($scope.tableToDelete);
+        $rootScope.$broadcast('event:SetToC');
     };
 
     $scope.cancel = function () {

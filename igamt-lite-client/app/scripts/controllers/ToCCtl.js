@@ -106,12 +106,6 @@ angular
 										CloneDeleteSvc.copyMessage(leaf.reference);
 									}
 									break;
-//								case "Copy":
-//									console.log("Clone==> node=" + leaf);
-//									CloneDeleteSvc.cloneMessage(
-//											$rootScope.igdocument, leaf.reference);
-//									$rootScope.$broadcast('event:SetToC');
-//									break;
 								case "Delete":
 									console.log("Copy==> node=" + leaf);
 									if (leaf.reference.type === 'section') {
@@ -132,7 +126,6 @@ angular
 													+ ctxMenuSelection
 													+ " Should be Add, clone, or Delete.");
 								}
-								$rootScope.$broadcast('event:SetToC');
 							};
 
 						} ])
