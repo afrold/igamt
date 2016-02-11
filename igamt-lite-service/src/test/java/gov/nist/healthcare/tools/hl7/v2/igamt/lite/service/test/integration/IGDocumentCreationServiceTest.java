@@ -12,6 +12,15 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessagesRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,38 +39,13 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
-import org.springframework.data.mongodb.core.convert.CustomConversions;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fakemongo.Fongo;
-import com.mongodb.Mongo;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessagesRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
+@ContextConfiguration(classes = {PersistenceContext.class})
 public class IGDocumentCreationServiceTest {
 
 	@Autowired
@@ -81,7 +65,7 @@ public class IGDocumentCreationServiceTest {
 
 	@Autowired
 	MessageRepository messageRepository;
-	
+
 	static ProfileCreationReferentialIntegrityTest refIneteg;
 
 	@BeforeClass
@@ -98,34 +82,34 @@ public class IGDocumentCreationServiceTest {
 		}
 	}
 
-//	@Test
+	//	@Test
 	public void testProfileStandardProfilePreloaded() {
 		//FIXME for now mongo db is loaded with 2 profiles; ultimately version 2.5 until 2.8 should be preloaded
 		assertEquals(9, igDocumentCreation.findIGDocumentsByHl7Versions().size());
 	}
-	
+
 	@Test
 	public void testSummary() {
 		String[] arr = {"ADT", "ACK", "RCI", "QRY", "OML"};
 		List<String[]> msgsAll = igDocumentCreation.summary("2.7", new ArrayList<String>());
 		List<String[]> msgsSansArr = igDocumentCreation.summary("2.7", Arrays.asList(arr));
-		
+
 		assertTrue(msgsAll.size() > msgsSansArr.size());
 	}
-	
+
 	@Test
 	public void testigDocumentCreation() throws IOException, ProfileException {
 		// Collect version numbers
 		assertEquals(7, igDocumentCreation.findHl7Versions().size());
-		
+
 		String[] hl7Versions = {"2.5.1", "2.7"};
 		Long accountId = 45L;
-		
+
 		// Collect standard messages and message descriptions
 		// There should be only one HL7STANDARD profile for each version
 		for (String hl7Version : Arrays.asList(hl7Versions)) {
 			int found = igDocumentRepository.findStandardByVersion(hl7Version).size();
-//			assertEquals(1, found);
+			//			assertEquals(1, found);
 		}
 		IGDocument igDocumentSource = igDocumentRepository.findStandardByVersion(hl7Versions[1]).get(0);
 		assertEquals(193, igDocumentSource.getProfile().getMessages().getChildren().size());
@@ -133,11 +117,11 @@ public class IGDocumentCreationServiceTest {
 		// Each description has 4 items: id, event, strucId, description
 		List<String[]> msgDesc = igDocumentCreation.summary("2.7", new ArrayList<String>());
 		assertEquals(4, msgDesc.get(0).length);
-		
+
 		// Creation of a profile with five message ids
 		Set<Message> msgs = igDocumentSource.getProfile().getMessages().getChildren();
 		List<String> msgIds = selRandMsgIds(msgs, 5);
-		
+
 		IGDocument pNew = null;
 		try {
 			pNew = igDocumentCreation.createIntegratedIGDocument(msgIds, hl7Versions[1], accountId);
@@ -150,14 +134,14 @@ public class IGDocumentCreationServiceTest {
 		refIneteg.testMessagesVsSegments(pNew.getProfile());
 		refIneteg.testFieldDatatypes(pNew.getProfile());
 		refIneteg.testComponentDataypes(pNew.getProfile());
-		
+
 		// Captures the newly created profile.
 		ObjectMapper mapper = new ObjectMapper();
 		File OUTPUT_DIR = new File(System.getenv("IGAMT") + "/document");
 		File outfile = new File(OUTPUT_DIR, "igdocument-" + "2.7.5" + ".json");
 		mapper.writerWithDefaultPrettyPrinter().writeValue(outfile, pNew);
 	}
-	
+
 	@Test
 	public void testProfileUpdate() throws IOException, ProfileException, IGDocumentException {
 		// Collect version numbers
@@ -165,7 +149,7 @@ public class IGDocumentCreationServiceTest {
 
 		String[] hl7Versions = {"2.5.1", "2.7"};
 		Long accountId = 45L;
-		
+
 		// Collect standard messages and message descriptions
 		//There should be only one HL7STANDARD profile for each version
 		for (String hl7Version : Arrays.asList(hl7Versions)){
@@ -178,7 +162,7 @@ public class IGDocumentCreationServiceTest {
 		// Each description has 4 items: id, event, strucId, description
 		List<String[]> msgDesc = igDocumentCreation.summary(hl7Versions[1], new ArrayList<String>());
 		assertEquals(4, msgDesc.get(0).length);
-		
+
 		// We're selecting our messages randomly here so we take care not to make two random calls 
 		// and run the risk of duplication.
 		Set<Message> msgs = igDocumentSource.getProfile().getMessages().getChildren();
@@ -186,7 +170,7 @@ public class IGDocumentCreationServiceTest {
 		String[] ss = msgIds.toArray(new String[8]);
 		String[] ss5 = Arrays.copyOfRange(ss, 0, 5);
 		String[] ss3 = Arrays.copyOfRange(ss, 5, 8);
-		
+
 		IGDocument pNew = igDocumentCreation.createIntegratedIGDocument(Arrays.asList(ss5), hl7Versions[1], accountId);
 		assertEquals(5, pNew.getProfile().getMessages().getChildren().size());
 
@@ -196,14 +180,14 @@ public class IGDocumentCreationServiceTest {
 		refIneteg.testMessagesVsSegments(pExNew.getProfile());
 		refIneteg.testFieldDatatypes(pExNew.getProfile());
 		refIneteg.testComponentDataypes(pExNew.getProfile());
-		
+
 		// Captures the newly updated IGDocument.
 		ObjectMapper mapper = new ObjectMapper();
 		File OUTPUT_DIR = new File(System.getenv("IGAMT") + "/document");
 		File outfile = new File(OUTPUT_DIR, "igdocument-" + "2.7.8" + ".json");
 		mapper.writerWithDefaultPrettyPrinter().writeValue(outfile, pNew);
 	}
-	
+
 	public List<String> selRandMsgIds(Set<Message> msgs, int selSize) {
 		List<String> msgIds = new ArrayList<String>();
 		int limit = msgs.size();
@@ -213,49 +197,16 @@ public class IGDocumentCreationServiceTest {
 		}
 		return msgIds;
 	}
-	
+
 	public static int randInt(int min, int max) {
 
-	    // Usually this can be a field rather than a method variable
-	    Random rand = new Random();
+		// Usually this can be a field rather than a method variable
+		Random rand = new Random();
 
-	    // nextInt is normally exclusive of the top value,
-	    // so add 1 to make it inclusive
-	    int randomNum = rand.nextInt((max - min)) + min;
+		// nextInt is normally exclusive of the top value,
+		// so add 1 to make it inclusive
+		int randomNum = rand.nextInt((max - min)) + min;
 
-	    return randomNum;
-	}
-
-	@Configuration
-	@EnableMongoRepositories(basePackages = "gov.nist.healthcare.tools")
-	@ComponentScan(basePackages = "gov.nist.healthcare.tools")
-	static class ProfileTestConfiguration extends AbstractMongoConfiguration {
-
-		@Override
-		public Mongo mongo() {
-			// uses fongo for in-memory tests
-			return new Fongo("igl").getMongo();
-		}
-
-		@Override
-		@Bean
-		public CustomConversions customConversions() {
-			List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
-			converterList.add(new FieldWriteConverter());
-			converterList.add(new ComponentWriteConverter());
-			converterList.add(new SegmentRefWriteConverter());
-			converterList.add(new ProfileReadConverter());
-			return new CustomConversions(converterList);
-		}
-
-		@Override
-		protected String getDatabaseName() {
-			return "igl";
-		}
-
-		@Override
-		public String getMappingBasePackage() {
-			return "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain";
-		}
+		return randomNum;
 	}
 }

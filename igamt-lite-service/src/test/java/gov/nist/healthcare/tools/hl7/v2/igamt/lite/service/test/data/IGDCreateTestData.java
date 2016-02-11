@@ -10,10 +10,19 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.data;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessagesRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -29,35 +38,13 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
-import org.springframework.data.mongodb.core.convert.CustomConversions;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.fakemongo.Fongo;
-import com.mongodb.Mongo;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessagesRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
+@ContextConfiguration(classes = {PersistenceContext.class})
 public class IGDCreateTestData {
 
 	Logger log = LoggerFactory.getLogger(IGDCreateTestData.class);
@@ -143,38 +130,4 @@ public class IGDCreateTestData {
 		mapper.writerWithDefaultPrettyPrinter().writeValue(outfile, pNew);
 
 	}
-	
-	@Configuration
-	@EnableMongoRepositories(basePackages = "gov.nist.healthcare.tools")
-	@ComponentScan(basePackages = "gov.nist.healthcare.tools")
-	static class ProfileTestConfiguration extends AbstractMongoConfiguration {
-
-		@Override
-		public Mongo mongo() {
-			// uses fongo for in-memory tests
-			return new Fongo("igl").getMongo();
-		}
-
-		@Override
-		@Bean
-		public CustomConversions customConversions() {
-			List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
-			converterList.add(new FieldWriteConverter());
-			converterList.add(new ComponentWriteConverter());
-			converterList.add(new SegmentRefWriteConverter());
-			converterList.add(new ProfileReadConverter());
-			return new CustomConversions(converterList);
-		}
-
-		@Override
-		protected String getDatabaseName() {
-			return "igl";
-		}
-
-		@Override
-		public String getMappingBasePackage() {
-			return "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain";
-		}
-	}
-
 }
