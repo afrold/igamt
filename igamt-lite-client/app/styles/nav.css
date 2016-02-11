@@ -1,0 +1,83 @@
+
+.navbar-collapse {
+    border-width: 0 0 0px;
+    background-color: #ffec9d;
+    color: black;
+}
+
+.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
+    background-color: #ffcc00;
+}
+
+.navbar .nav > li > .dropdown-menu:after {
+    border-bottom: 6px solid #ffec9d;
+}
+
+.navbar-text > a {
+    color: black;
+}
+
+.navbar-text > a:hover {
+    color: black;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
+    background-color: #428bca;
+}
+
+
+.navbar-nav > li > a {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
+
+.navbar {
+    min-height: 32px !important;
+}
+
+.nav-tabs > li > a {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+.nav-tabs {
+    min-height: 32px !important
+}
+
+.navbar {
+    margin-bottom: 0px;
+}
+
+.navbar {
+    color: black;
+    border-bottom: none;
+}
+
+.navbar .nav > .active > a, .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+    background-color: #ffcc00;
+}
+
+.nav > .active > a {
+    background-color: #ffcc00;
+}
+
+.nav > a {
+    background-color: #ffec9d;
+    color: black;
+}
+
+.nav-tabs > .active > a:hover {
+    background-color: #ffec9d;
+}
+
+.nav-tabs {
+    cursor: pointer;
+}
+
+.nav, .pagination, .carousel, .panel-title a {
+    cursor: pointer;
+}
+
+.nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
+    background-color: #428bca;
+}
