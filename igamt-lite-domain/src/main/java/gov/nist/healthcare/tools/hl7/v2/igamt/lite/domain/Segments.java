@@ -3,8 +3,11 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
@@ -206,4 +209,13 @@ public class Segments extends TextbasedSectionModel implements java.io.Serializa
 			}
 		}
 	}
+
+	public void setPositionsOrder(){
+		List<Segment> sortedList = new ArrayList<Segment>(this.getChildren());
+		Collections.sort(sortedList);
+		for (Segment elt: sortedList) {
+			elt.setSectionPosition(sortedList.indexOf(elt));
+		}
+	}
+
 }

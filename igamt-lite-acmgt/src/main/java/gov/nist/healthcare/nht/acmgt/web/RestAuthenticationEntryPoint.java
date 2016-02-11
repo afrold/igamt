@@ -33,14 +33,9 @@ import org.springframework.security.web.AuthenticationEntryPoint;
  * catches this and handles login itself.
  */
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
-//
-//    public final void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
-//        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-//    }
-    
-	
+
 	static final Logger logger = LoggerFactory
-			.getLogger(RestAuthenticationEntryPoint.class);
+			.getLogger(JsonExceptionHandler.class);
 
 	private final ObjectMapper mapper = new ObjectMapper();
 

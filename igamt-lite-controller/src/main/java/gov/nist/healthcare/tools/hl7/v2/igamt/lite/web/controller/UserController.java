@@ -762,7 +762,6 @@ public class UserController {
 				cu.setAuthenticated(true);
 				cu.setAuthorities(u.getAuthorities());
 				cu.setPending(a.isPending());
-				cu.setFullName(a.getFullName());
 			}
 		}
 		return cu;

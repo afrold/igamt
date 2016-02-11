@@ -67,6 +67,7 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 		IGDocument ig = documentRepository.findOne(id);
 		return ig;
 	}
+	
 
 	@Override
 	public List<IGDocument> findAll() {
@@ -134,4 +135,7 @@ public class IGDocumentServiceImpl implements IGDocumentService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
+
 }

@@ -44,5 +44,68 @@ angular.module('igl')
                 $scope.registered = true;
             }
         };
+
+//        $scope.registerAccount = function() {
+//            /* Check for username already in use
+//               Verify email not already associated to an account
+//               Will need to send an email if success
+//               */
+//            var modalInstance = $modal.open({
+//                backdrop: true,
+//                keyboard: true,
+//                backdropClick: false,
+//                controller: 'AgreementCtrl',
+//                templateUrl: 'views/account/agreement.html'
+//            });
+//
+//            modalInstance.result.then(function(result) {
+//                if(result) {
+//                    //console.log("Creating account");
+//                    var acctToRegister = new NewAccount();
+//                    acctToRegister.accountType = 'provider';
+//                    acctToRegister.company =  $scope.account.company;
+//                    acctToRegister.firstname =  $scope.account.firstname;
+//                    acctToRegister.lastname =  $scope.account.lastname;
+//                    acctToRegister.username =  $scope.account.username;
+//                    acctToRegister.password =  $scope.account.password;
+//                    acctToRegister.email =  $scope.account.email;
+//                    acctToRegister.signedConfidentialityAgreement = true;
+//
+//                    acctToRegister.$save(
+//                        function() {
+//                            if (acctToRegister.text ===  'userAdded') {
+//                                $scope.account = {};
+//                                //should unfreeze the form
+//                                $scope.registered = true;
+//                                $location.path('/home');
+//                            }
+//                        },
+//                        function() {
+//                            $scope.registered = false;
+//                        }
+//                    );
+//                    //should freeze the form - at least the button
+//                    $scope.registered = true;
+//                }
+//                else {
+//                    //console.log('Account not created');
+//                }
+//            });
+//        };
     }
 ]);
+//
+//angular.module('igl').controller('AgreementCtrl', ['$scope', '$modalInstance',
+//    function ($scope, $modalInstance) {
+//
+//        $scope.acceptAgreement =  function() {
+//            var res = true;
+//            $modalInstance.close(res);
+//        };
+//
+//        $scope.doNotAcceptAgreement =  function() {
+//            var res = false;
+//            $modalInstance.close(res);
+//        };
+//    }
+//]);

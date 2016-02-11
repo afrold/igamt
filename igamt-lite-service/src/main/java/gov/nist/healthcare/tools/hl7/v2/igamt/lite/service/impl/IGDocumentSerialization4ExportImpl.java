@@ -41,7 +41,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -68,7 +67,6 @@ import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -82,8 +80,8 @@ import nu.xom.ValidityException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.docx4j.wml.P;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -343,6 +341,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			msd.addAttribute(new Attribute("title", ""));
 		}
 
+		profile.getMessages().setPositionsOrder();
 		List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
 		Collections.sort(msgList);
 
@@ -364,6 +363,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ss.addAttribute(new Attribute("title", ""));
 		}
 
+		profile.getSegments().setPositionsOrder();
 		List<Segment> sgtList = new ArrayList<>(profile.getSegments().getChildren());
 		Collections.sort(sgtList);
 		for (Segment s : sgtList) {
@@ -385,6 +385,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ds.addAttribute(new Attribute("title", ""));
 		}
 
+		profile.getDatatypes().setPositionsOrder();
 		List<Datatype> dtList = new ArrayList<>(profile.getDatatypes().getChildren());
 		Collections.sort(dtList);
 		for (Datatype d : dtList) {
@@ -409,6 +410,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ts.addAttribute(new Attribute("title", ""));
 		}
 
+		profile.getTables().setPositionsOrder();
 		List<Table> tables = new ArrayList<Table>(profile.getTables()
 				.getChildren());
 		Collections.sort(tables);
@@ -1041,7 +1043,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		elmDatatype.addAttribute(new Attribute("id", d.getId()));
 		elmDatatype.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(d.getSectionPosition()+1)));
 		elmDatatype.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition()+1)));
-		nu.xom.Element elmText = new nu.xom.Element("Texts");
+		nu.xom.Element elmText = new nu.xom.Element("Text");
 		elmText.addAttribute(new Attribute("Type", "UsageNote"));
 		elmText.appendChild(d.getUsageNote());
 		elmDatatype.appendChild(elmText);

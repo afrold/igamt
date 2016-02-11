@@ -28,11 +28,6 @@ angular.module('igl').factory('userLoaderService', ['userInfo', '$q',
 
 angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderService',
     function($cookieStore, userLoaderService) {
-        var currentUser = {
-        		username : "gcr46",
-        		accountId : 45,
-        		authorities : []
-        };
         var currentUser = null;
        var supervisor = false,
         author = false,
@@ -181,10 +176,6 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
 
         var getUsername = function() {
             return username;
-        };
-
-        var getFullName = function() {
-            return fullName;
         };
 
         return {

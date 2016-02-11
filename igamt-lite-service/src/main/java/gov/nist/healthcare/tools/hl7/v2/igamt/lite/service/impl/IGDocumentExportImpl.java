@@ -248,16 +248,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			return new NullInputStream(1L);
 		}
 	}
-
-	public InputStream exportAsSectionsHtml(IGDocument d) {
-		if (d != null) {
-			return new NullInputStream(1L);
-			//			return exportAsHtmlFromXsl(d, "true");
-		} else {
-			return new NullInputStream(1L);
-		}
-	}
-
+	
 
 	//	Functions to collect info
 	//Messages
@@ -1104,9 +1095,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			com.itextpdf.text.Section sectionCp = chapterMsgInfra.addSection(titleCp);
 
+			p.getMessages().setPositionsOrder();
 			List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
 			Collections.sort(messagesList);
-
 
 			for (Message m : messagesList) {
 
@@ -1143,6 +1134,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			Paragraph titleSgt = new Paragraph(p.getSegments().getSectionTitle(), titleFont);
 			com.itextpdf.text.Section sectionSgt = chapterMsgInfra.addSection(titleSgt);
 
+			p.getSegments().setPositionsOrder();
 			List<Segment> segmentsList = new ArrayList<Segment>(p.getSegments().getChildren());
 			Collections.sort(segmentsList);
 
@@ -1199,6 +1191,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 					"Usage", "Length", "Value\nSet", "Comment");
 			columnWidths = new float[] {6f, 20f, 9f, 7.5f, 9f, 9f, 10f, 30f};
 
+			p.getDatatypes().setPositionsOrder();
 			List<Datatype> datatypeList = new ArrayList<Datatype>(p.getDatatypes().getChildren());
 			Collections.sort(datatypeList);
 			for (Datatype d: datatypeList) {
@@ -1232,6 +1225,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			columnWidths = new float[] { 15f, 15f, 10f, 50f };
 
+			p.getTables().setPositionsOrder();
 			List<Table> tables = new ArrayList<Table>(p.getTables()
 					.getChildren());
 			Collections.sort(tables);
@@ -1823,6 +1817,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "");
 		}
 
+		p.getMessages().setPositionsOrder();
 		List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
 		Collections.sort(messagesList);
 		for (Message m : messagesList) {
@@ -1848,6 +1843,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		}
 
 		// Including information regarding segments 
+		p.getSegments().setPositionsOrder();
 		List<Segment> segmentsList = new ArrayList<Segment>(p.getSegments().getChildren());
 		Collections.sort(segmentsList);
 		if (p.getSegments().getSectionTitle() != null) {
@@ -1889,6 +1885,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		}
 
 		// Including information regarding data types
+		p.getDatatypes().setPositionsOrder();
 		List<Datatype> datatypeList = new ArrayList<Datatype>(p.getDatatypes().getChildren());
 		Collections.sort(datatypeList);
 		if (p.getDatatypes().getSectionTitle() != null) {
@@ -1914,6 +1911,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		addPageBreak(wordMLPackage, factory);
 
 		// Including information regarding value sets 
+		p.getTables().setPositionsOrder();
 		List<Table> tables = new ArrayList<Table>(p.getTables().getChildren());
 		Collections.sort(tables);
 		if (p.getTables().getSectionTitle() != null) {

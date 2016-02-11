@@ -473,7 +473,7 @@ module.exports = function(grunt) {
 					              'includeSource:prod',
 	                              'wiredep:prod',
 	                              'concurrent:server', 
-	                              'copy:dev', 
+	                              'copy:dev'
 								]);
 
 	grunt.registerTask('build', [ 'clean:dist', 

@@ -10,7 +10,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 
 public class Datatype extends SectionModelWithConstraints implements java.io.Serializable,
-		Cloneable, Comparable<Datatype> {
+Cloneable, Comparable<Datatype> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -96,7 +96,7 @@ public class Datatype extends SectionModelWithConstraints implements java.io.Ser
 	// public void setDatatypes(Datatypes datatypes) {
 	// this.datatypes = datatypes;
 	// }
-	
+
 	public String getHl7Version() {
 		return hl7Version;
 	}
@@ -198,7 +198,11 @@ public class Datatype extends SectionModelWithConstraints implements java.io.Ser
 
 	@Override
 	public int compareTo(Datatype o) {
-		int x = this.getSectionPosition() - o.getSectionPosition();	
+		int x = String.CASE_INSENSITIVE_ORDER.compare(this.getName() != null && this.label != null ? this.getName() + this.getLabel() : "",
+				o.getName() != null && this.getLabel() != null ? o.getName() + this.getLabel() : "");
+		if (x == 0) {
+			x = (this.getName() != null  && this.getLabel() != null ? this.getName() + this.getLabel() : "").compareTo(o.getName() != null && this.getLabel() != null ? o.getName()+o.getLabel(): "");
+		}
 		return x;
 	}
 
