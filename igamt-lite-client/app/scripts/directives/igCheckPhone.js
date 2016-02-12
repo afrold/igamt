@@ -7,7 +7,9 @@ angular.module('igl').directive('igCheckPhone', [
             require: 'ngModel',
             link: function (scope, element, attrs, ctrl) {
                  element.on('keyup', function() {
-                    ctrl.$setValidity('phone', element.val().length === 10);
+                     scope.phoneIsNumber  = element.val() && isFinite(element.val()) && angular.isNumber(element.val()) ? 'valid' : undefined;
+                     scope.phoneValidLength  = element.val() && element.val().length >= 7  ? 'valid' : undefined;
+                     ctrl.$setValidity('phone', scope.phoneIsNumber && scope.phoneValidLength);
                 });
             }
         };

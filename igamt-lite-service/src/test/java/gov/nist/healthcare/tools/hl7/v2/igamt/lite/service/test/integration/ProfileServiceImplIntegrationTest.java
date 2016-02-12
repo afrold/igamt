@@ -56,7 +56,7 @@ import com.github.fakemongo.Fongo;
 import com.mongodb.Mongo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration
+@ContextConfiguration(classes = {PersistenceContext.class})
 public class ProfileServiceImplIntegrationTest {
 
 	@Autowired
