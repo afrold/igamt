@@ -216,12 +216,14 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                     //with a login windows when browsing home.
                     if ( response.config.url !== 'api/accounts/cuser') {
                         //We don't intercept this request
-                        var deferred = $q.defer(),
-                            req = {
-                                config: response.config,
-                                deferred: deferred
-                            };
-                        $rootScope.requests401.push(req);
+                        if ( response.config.url !== 'api/accounts/login') {
+                            var deferred = $q.defer(),
+                                req = {
+                                    config: response.config,
+                                    deferred: deferred
+                                };
+                            $rootScope.requests401.push(req);
+                        }
                         $rootScope.$broadcast('event:loginRequired');
 //                        return deferred.promise;
 
