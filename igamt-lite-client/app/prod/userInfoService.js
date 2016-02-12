@@ -27,7 +27,7 @@ angular.module('igl').factory('userLoaderService', ['userInfo', '$q',
 ]);
 
 angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderService',
-    function($cookieStore, userLoaderService) {
+    function(StorageService, userLoaderService) {
         var currentUser = null;
        var supervisor = false,
         author = false,
@@ -36,45 +36,49 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
         username = '',
         fullName = '';
 
-        //console.log("USER ID=", $cookieStore.get('userID'));
+        //console.log("USER ID=", StorageService.get('userID'));
        
         var loadFromCookie = function() {
-            //console.log("UserID=", $cookieStore.get('userID'));
+            //console.log("UserID=", StorageService.get('userID'));
 
-            id = $cookieStore.get('userID');
-            username = $cookieStore.get('username');
-            author = $cookieStore.get('author');
-            supervisor = $cookieStore.get('supervisor');
-            admin = $cookieStore.get('admin');
+            id = StorageService.get('userID');
+            username = StorageService.get('username');
+            author = StorageService.get('author');
+            supervisor = StorageService.get('supervisor');
+            admin = StorageService.get('admin');
         };
 
         var saveToCookie = function() {
-            $cookieStore.put('accountID', id);
-            $cookieStore.put('username', username);
-            $cookieStore.put('author', author);
-            $cookieStore.put('supervisor', supervisor);
-            $cookieStore.put('admin', admin);
+            StorageService.set('accountID', id);
+            StorageService.set('username', username);
+            StorageService.set('author', author);
+            StorageService.set('supervisor', supervisor);
+            StorageService.set('admin', admin);
+            StorageService.set('fullName', fullName);
+
         };
 
         var clearCookie = function() {
-            $cookieStore.remove('accountID');
-            $cookieStore.remove('username');
-            $cookieStore.remove('author');
-            $cookieStore.remove('supervisor');
-            $cookieStore.remove('admin');
-            $cookieStore.remove('hthd');
+            StorageService.remove('accountID');
+            StorageService.remove('username');
+            StorageService.remove('author');
+            StorageService.remove('supervisor');
+            StorageService.remove('admin');
+            StorageService.remove('hthd');
+            StorageService.remove('fullName');
+
         };
 
         var saveHthd = function(header) {
-            $cookieStore.put('hthd', header);
+            StorageService.set('hthd', header);
         };
 
         var getHthd = function(header) {
-            return $cookieStore.get('hthd');
+            return StorageService.get('hthd');
         };
 
         var hasCookieInfo =  function() {
-            if ( $cookieStore.get('username') === '' ) {
+            if ( StorageService.get('username') === '' ) {
                 return false;
             }
             else {
@@ -96,14 +100,6 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
         var isAuthor = function() {
             return author;
         };
-
-//        var isAuthorizedVendor = function() {
-//            return authorizedVendor;
-//        };
-//
-//        var isCustomer = function() {
-//            return (author || authorizedVendor);
-//        };
 
         var isSupervisor = function() {
             return supervisor;
@@ -135,6 +131,7 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             if ( angular.isObject(currentUser) ) {
 //                console.log("currentUser -> "+currentUser);
                 username = currentUser.username;
+                fullName = currentUser.fullName;
                 id = currentUser.accountId;
                 if ( angular.isArray(currentUser.authorities)) {
                     angular.forEach(currentUser.authorities, function(value, key){
@@ -176,6 +173,10 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
 
         var getUsername = function() {
             return username;
+        };
+
+        var getFullName = function() {
+            return fullName;
         };
 
         return {

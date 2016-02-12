@@ -235,36 +235,6 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         };
     });
 
-
-    $httpProvider.interceptors.push(function ($rootScope, $q) {
-        return {
-            response: function (response) {
-                return response   || $q.when(response);
-            },
-            responseError: function (response) {
-                if (response.status === 401) {
-                    //We catch everything but this one. So public users are not bothered
-                    //with a login windows when browsing home.
-                    if ( response.config.url !== 'api/accounts/cuser') {
-                        //We don't intercept this request
-                        var deferred = $q.defer(),
-                            req = {
-                                config: response.config,
-                                deferred: deferred
-                            };
-                        $rootScope.requests401.push(req);
-                        $rootScope.$broadcast('event:loginRequired');
-                        return  $q.when(response);
-                    }
-                }else  if (response.status === 503) {
-
-                }
-                return $q.reject(response);
-            }
-        };
-    });
-
-
     //intercepts ALL angular ajax http calls
     $httpProvider.interceptors.push(function ($q) {
         return {
