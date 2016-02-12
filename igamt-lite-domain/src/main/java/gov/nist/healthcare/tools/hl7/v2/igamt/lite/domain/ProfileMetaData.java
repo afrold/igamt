@@ -11,40 +11,31 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 	
 	public ProfileMetaData() {
 		super();
-		this.type = "profileMetaData";
 	}
 
 	/* XSD Attributes */
 	
-	private String type = "";
+	private String profileID = ""; 				//ConformanceProfile/@ID
 	
-	private String hl7Version = "";
+	private String type = ""; 					//ConformanceProfile/@Type
 	
-	private String schemaVersion = "";
+	private String hl7Version = ""; 			//ConformanceProfile/@HL7Version
 	
-	@JsonIgnore
-	private String name;
+	private String schemaVersion = ""; 			//ConformanceProfile/@SchemaVersion
 	
-	@JsonIgnore
-	private String orgName = "";
+	private String name; 						//ConformanceProfile/MetaData/@Name
 	
-	@JsonIgnore
-	private String version = "";
+	private String orgName = ""; 				//ConformanceProfile/MetaData/@OrgName
 	
-	@JsonIgnore
-	private String status = "";
+	private String version = ""; 				//ConformanceProfile/MetaData/@Version
 	
-	@JsonIgnore
-	private String topics = "";
+	private String date = ""; 					//ConformanceProfile/MetaData/@Date
 	
-	@JsonIgnore
-	private String date = "";
+	private String specificationName = ""; 		//ConformanceProfile/MetaData/@SpecificationName
 	
-	@JsonIgnore
-	private String specificationName = "";
+	private String status = ""; 				//ConformanceProfile/MetaData/@Status
 	
-	@JsonIgnore
-	private String identifier = "";
+	private String topics = ""; 				//ConformanceProfile/MetaData/@Topics
 	
 	/* XSD Attributes END */
 	
@@ -122,14 +113,6 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 		this.encodings = encodings;
 	}
 
-	public String getIdentifier() {
-		return identifier;
-	}
-
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
-	}
-
 	public String getSubTitle() {
 		return subTitle;
 	}
@@ -172,7 +155,7 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 		}
 
 		clonedProfileMetaData.setHl7Version(hl7Version);
-		clonedProfileMetaData.setIdentifier(identifier);
+		clonedProfileMetaData.setProfileID(profileID);
 		clonedProfileMetaData.setName(name);
 		clonedProfileMetaData.setOrgName(orgName);
 		clonedProfileMetaData.setSchemaVersion(schemaVersion);
@@ -187,7 +170,7 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 
 	@Override
 	public String toString() {
-		return "ProfileMetaData [name=" + name + ", identifier=" + identifier
+		return "ProfileMetaData [name=" + name
 				+ ", subTitle=" + subTitle + ", version=" + version
 				+ ", orgName=" + orgName + ", status=" + status + ", topics="
 				+ topics + ", type=" + type + ", hl7Version=" + hl7Version
@@ -201,6 +184,14 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 
 	public void setSpecificationName(String specificationName) {
 		this.specificationName = specificationName;
+	}
+
+	public String getProfileID() {
+		return profileID;
+	}
+
+	public void setProfileID(String profileID) {
+		this.profileID = profileID;
 	}
 
 }

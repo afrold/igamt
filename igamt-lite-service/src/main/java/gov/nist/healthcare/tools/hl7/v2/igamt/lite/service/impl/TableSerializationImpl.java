@@ -40,17 +40,8 @@ public class TableSerializationImpl implements TableSerialization {
         public Tables deserializeXMLToTableLibrary(String xmlContents) {
                 Document tableLibraryDoc = this.stringToDom(xmlContents);
                 Tables tableLibrary = new Tables();
-
                 Element elmTableLibrary = (Element) tableLibraryDoc.getElementsByTagName("ValueSetLibrary").item(0);
-
-                tableLibrary.setName(elmTableLibrary.getAttribute("Name"));
                 tableLibrary.setValueSetLibraryIdentifier(elmTableLibrary.getAttribute("ValueSetLibraryIdentifier"));
-                if (elmTableLibrary.getAttribute("Description") != null && !elmTableLibrary.getAttribute("Description").equals("")) tableLibrary.setDescription(elmTableLibrary.getAttribute("Description"));
-                if (elmTableLibrary.getAttribute("OrganizationName") != null && !elmTableLibrary.getAttribute("OrganizationName").equals("")) tableLibrary.setOrganizationName(elmTableLibrary.getAttribute("OrganizationName"));
-                if (elmTableLibrary.getAttribute("ValueSetLibraryVersion") != null && !elmTableLibrary.getAttribute("ValueSetLibraryVersion").equals("")) tableLibrary.setValueSetLibraryVersion(elmTableLibrary.getAttribute("ValueSetLibraryVersion"));
-                if (elmTableLibrary.getAttribute("Status") != null && !elmTableLibrary.getAttribute("Status").equals("")) tableLibrary.setStatus(elmTableLibrary.getAttribute("Status"));
-                if (elmTableLibrary.getAttribute("DateCreated") != null && !elmTableLibrary.getAttribute("DateCreated").equals("")) tableLibrary.setDateCreated(elmTableLibrary.getAttribute("DateCreated"));
-
                 this.deserializeXMLToTable(elmTableLibrary, tableLibrary);
 
                 return tableLibrary;
@@ -130,9 +121,7 @@ public class TableSerializationImpl implements TableSerialization {
         }
 
         private void deserializeXMLToTable(Element elmTableLibrary, Tables tableLibrary) {
-        	
         	 	NodeList valueSetDefinitionsNode = elmTableLibrary.getElementsByTagName("ValueSetDefinitions");
-        	
         	 	for (int i = 0; i < valueSetDefinitionsNode.getLength(); i++) {
         	 		Element valueSetDefinitionsElement = (Element) valueSetDefinitionsNode.item(i);
         	 		NodeList valueSetDefinitionNodes = valueSetDefinitionsElement.getElementsByTagName("ValueSetDefinition");

@@ -62,12 +62,10 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 	}
 	
 	@Override
-	public Constraints deserializeXMLToConformanceStatements(
-			String xmlConstraints) {
+	public Constraints deserializeXMLToConformanceStatements(String xmlConstraints) {
 		if (xmlConstraints != null) {
 			Document conformanceContextDoc = this.stringToDom(xmlConstraints);
-			Element elmConstraints = (Element) conformanceContextDoc
-					.getElementsByTagName("Constraints").item(0);
+			Element elmConstraints = (Element) conformanceContextDoc.getElementsByTagName("Constraints").item(0);
 			Constraints constraints = new Constraints();
 
 			Context datatypeContextObj = new Context();
@@ -94,8 +92,7 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 	public Constraints deserializeXMLToPredicates(String xmlConstraints) {
 		if (xmlConstraints != null) {
 			Document conformanceContextDoc = this.stringToDom(xmlConstraints);
-			Element elmConstraints = (Element) conformanceContextDoc
-					.getElementsByTagName("Predicates").item(0);
+			Element elmConstraints = (Element) conformanceContextDoc.getElementsByTagName("Predicates").item(0);
 			Constraints constraints = new Constraints();
 
 			Context datatypeContextObj = new Context();

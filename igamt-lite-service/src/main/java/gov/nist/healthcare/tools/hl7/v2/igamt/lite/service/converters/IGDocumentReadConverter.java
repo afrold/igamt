@@ -148,7 +148,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 	private ProfileMetaData profileMetaData(DBObject source) {
 		ProfileMetaData metaData = new ProfileMetaData();
 		metaData.setName(((String) source.get("name")));
-		metaData.setIdentifier(((String) source.get("identifier")));
+		metaData.setProfileID(((String) source.get("profileID")));
 		metaData.setOrgName(((String) source.get("orgName")));
 		metaData.setStatus(((String) source.get("status")));
 		metaData.setTopics(((String) source.get("topics")));
@@ -566,9 +566,6 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 			message.setPosition((Integer) child.get("position"));
 			message.setStructID((String) child.get("structID"));
 			message.setType((String) child.get("type"));
-			message.setVersion((String) child.get("version"));
-			message.setDate((String) child.get("date"));
-			message.setOid((String) child.get("oid"));
 			message.setSectionPosition((Integer) child.get("sectionPosition"));
 
 			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child

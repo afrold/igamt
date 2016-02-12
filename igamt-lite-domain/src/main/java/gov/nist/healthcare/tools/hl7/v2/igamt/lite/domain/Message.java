@@ -22,27 +22,19 @@ Cloneable, Comparable<Message> {
 
 	private String id;
 
-	private String name;
+	private String identifier;																//Message/@Identifier
+	
+	private String messageID;
 
-	private String identifier;
+	private String name;																	//Message/@Name
+	
+	private String messageType;																//Message/@Type
 
-	// @NotNull
-	private String messageType;
+	private String event;																	//Message/@Event
 
-	// @NotNull
-	private String event;
+	private String structID;																//Message/@StructID
 
-	// @NotNull
-	private String structID;
-
-	// @Column(nullable = true, name = "MESSAGE_DESC")
-	private String description;
-
-	private String version;
-
-	private String date;
-
-	private String oid;
+	private String description;																//Message/@Description
 
 	private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
@@ -247,36 +239,12 @@ Cloneable, Comparable<Message> {
 		return c != null && this.getConformanceStatements().remove(c);
 	}
 
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public String getOid() {
-		return oid;
-	}
-
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
-
 	@Override
 	public String toString() {
 		return "Message [id=" + id + ", name=" + name 
 				+ ", identifier=" + identifier + ", type=" + messageType 
 				+ ", event=" + event + ", structID=" + structID 
-				+ ", date=" + date + ", description=" + description + "]";
+				+ ", description=" + description + "]";
 	}
 
 	public Message clone(HashMap<String, Datatype> dtRecords,
@@ -309,9 +277,6 @@ Cloneable, Comparable<Message> {
 		clonedMessage.setPosition(position);
 		clonedMessage.setStructID(structID);
 		clonedMessage.setUsageNote(usageNote);
-		clonedMessage.setDate(date);
-		clonedMessage.setOid(oid);
-		clonedMessage.setVersion(version);
 		clonedMessage
 		.setConformanceStatements(new ArrayList<ConformanceStatement>());
 		for (ConformanceStatement cs : this.conformanceStatements) {
@@ -341,5 +306,13 @@ Cloneable, Comparable<Message> {
 			x = (this.getMessageType() != null  && this.getEvent() != null ? this.getMessageType() + this.getEvent() : "").compareTo(o.getMessageType() != null && this.getEvent() != null ? o.getMessageType()+o.getEvent(): "");
 		}
 		return x;
+	}
+
+	public String getMessageID() {
+		return messageID;
+	}
+
+	public void setMessageID(String messageID) {
+		this.messageID = messageID;
 	}
 }
