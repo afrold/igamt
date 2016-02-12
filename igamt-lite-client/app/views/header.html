@@ -16,13 +16,13 @@
         </a>
         <div id="userInfo" ng-show="isAuthenticated()">
             <div>
-                <span>Logged as:</span>
-                <span class="userInfoValue" ng-bind="getUsername()"></span>
+                <span>Welcome, </span>
+                <span class="userInfoValue" ng-bind="getFullName()"></span>
             </div>
-            <div>
-                <span>Role: </span>
-                <span class="userInfoValue" ng-bind="getRoleAsString()"></span>
-            </div>
+            <!--<div>-->
+            <!--<span>Role: </span>-->
+            <!--<span class="userInfoValue" ng-bind="getRoleAsString()"></span>-->
+            <!--</div>-->
         </div>
     </div>
     <div class="navbar-collapse collapse">
@@ -32,9 +32,6 @@
                 <a class="point" href="#/home"><i class="fa fa-home"></i>&nbsp;<span msg key="navbar.home"></span></a>
             </li>
             <li ng-class="activeWhen(path()=='/ig')"><a class="point" href="#/ig"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.igs"></span></a></li>
-            <li ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
-            <li ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
-
 
             <li ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()">
                 <a href="#/registration"><div msg key="navbar.registration"></div></a>
@@ -48,8 +45,13 @@
 
             <!--<li ng-class="activeWhen(path()=='/contact')"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>-->
             <!--<li ng-class="activeWhen(language()=='en')" ng-show="false">-->
-                <!--<a class="point" ng-click="setLanguage('en')"><div msg class="msg" key="navbar.lang.english"></div></a>-->
+            <!--<a class="point" ng-click="setLanguage('en')"><div msg class="msg" key="navbar.lang.english"></div></a>-->
             <!--</li>-->
+
+            <li ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
+            <li ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
+
+
             <li ng-show='showSpinner()' ><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
 
             <!--<li ng-class="activeWhen(path()=='/registerUser')" ng-show="isAdmin()">-->
@@ -58,6 +60,7 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right" style="margin-right: 5px">
+
             <li class="" style="margin-right: 5em" ng-show="isAuthenticated()">
                 <a class="point" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span msg class="msg" key="navbar.logout"></span></a>
             </li>
@@ -68,7 +71,7 @@
 
 
         <!--<p class="navbar-text pull-right" ng-class="activeWhen(path()=='/issue')" style="margin-right: 3em">-->
-            <!--<a href="#/issue"><i class="fa fa-question"></i><span msg class="msg" key="navbar.issue"></span></a>-->
+        <!--<a href="#/issue"><i class="fa fa-question"></i><span msg class="msg" key="navbar.issue"></span></a>-->
         <!--</p>-->
     </div>
 </div>

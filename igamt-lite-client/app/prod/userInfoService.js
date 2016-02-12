@@ -2,7 +2,7 @@
 
 angular.module('igl').factory('userInfo', ['$resource',
     function ($resource) {
-        return $resource('igamt/api/accounts/cuser');
+        return $resource('api/accounts/cuser');
     }
 ]);
 
@@ -26,15 +26,15 @@ angular.module('igl').factory('userLoaderService', ['userInfo', '$q',
     }
 ]);
 
-angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderService',
-    function(StorageService, userLoaderService) {
+angular.module('igl').factory('userInfoService', ['StorageService', 'userLoaderService',
+    function(StorageService,userLoaderService) {
         var currentUser = null;
-       var supervisor = false,
+        var supervisor = false,
         author = false,
         admin = false,
         id = null,
         username = '',
-        fullName = '';
+        fullName= '';
 
         //console.log("USER ID=", StorageService.get('userID'));
        
@@ -55,7 +55,6 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             StorageService.set('supervisor', supervisor);
             StorageService.set('admin', admin);
             StorageService.set('fullName', fullName);
-
         };
 
         var clearCookie = function() {
@@ -101,6 +100,14 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             return author;
         };
 
+//        var isAuthorizedVendor = function() {
+//            return authorizedVendor;
+//        };
+//
+//        var isCustomer = function() {
+//            return (author || authorizedVendor);
+//        };
+
         var isSupervisor = function() {
             return supervisor;
         };
@@ -110,13 +117,8 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
         };
 
         var isAuthenticated = function() {
-        	if ( angular.isObject(currentUser) && currentUser.authenticated === true) {
-                return true;
-            }
-            else {
-                return false;
-            }
-//        	return true;
+        	var res =  currentUser !== undefined && currentUser != null && currentUser.authenticated === true;
+             return res;
         };
 
         var loadFromServer = function() {
@@ -127,38 +129,27 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
 
         var setCurrentUser = function(newUser) {
             currentUser = newUser;
-            //console.log("NewUser=", newUser);
-            if ( angular.isObject(currentUser) ) {
-//                console.log("currentUser -> "+currentUser);
+            if ( currentUser !== null && currentUser !== undefined ) {
                 username = currentUser.username;
-                fullName = currentUser.fullName;
                 id = currentUser.accountId;
+                fullName = currentUser.fullName;
                 if ( angular.isArray(currentUser.authorities)) {
                     angular.forEach(currentUser.authorities, function(value, key){
                         switch(value.authority)
                         {
                         case 'user':
-                            //console.log("user found");
-                            break;
+                             break;
                         case 'admin':
                             admin = true;
-                            //console.log("admin found");
-                            break;
+                             break;
                         case 'author':
                             author = true;
-                            //console.log("author found");
-                            break;
-//                        case 'authorizedVendor':
-//                            authorizedVendor = true;
-//                            //console.log("authorizedVendor found");
-//                            break;
+                             break;
                         case 'supervisor':
                             supervisor = true;
-                            //console.log("supervisor found");
-                            break;
+                             break;
                         default:
-                            //console.log("default");
-                        }
+                         }
                     });
                 }
                 //saveToCookie();
@@ -167,6 +158,9 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
                 supervisor = false;
                 author = false;
                 admin = false;
+                username = '';
+                id = null;
+                fullName = '';
                 //clearCookie();
             }
         };
@@ -194,6 +188,7 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             loadFromServer: loadFromServer,
             getUsername: getUsername,
             getFullName: getFullName
-       };
+
+        };
     }
 ]);

@@ -233,27 +233,21 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsXml(d);
 		response.setContentType("text/xml");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ (d.getMetaData().getTitle() == null ? "default" : d
-						.getMetaData().getTitle()) + "-"
+				+ d.getMetaData().getTitle() + "-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".xml");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
 	@RequestMapping(value = "/{id}/export/html", method = RequestMethod.POST, produces = "text/html")
-	public void exportHtml(@PathVariable("id") String id,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, IGDocumentNotFoundException {
+	public void exportHtml(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response) throws IOException, IGDocumentNotFoundException {
 		log.info("Exporting as html file IGDcoument with id=" + id);
 		IGDocument d = this.findIGDocument(id);
 		InputStream content = null;
 		content = igDocumentExport.exportAsHtml(d);
 		response.setContentType("text/html");
-		response.setHeader("Content-disposition", "attachment;filename="
-				+ (d.getMetaData().getTitle() == null ? "default" : d
-						.getMetaData().getTitle()) + "-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
-				+ ".html");
+		response.setHeader("Content-disposition",
+				"attachment;filename=" +  d.getMetaData().getTitle() + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -267,8 +261,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsZip(d);
 		response.setContentType("application/zip");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ (d.getMetaData().getTitle() == null ? "default" : d
-						.getMetaData().getTitle()) + "-"
+				+ d.getMetaData().getTitle() + "-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
@@ -284,8 +277,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsPdf(d);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ (d.getMetaData().getTitle() == null ? "default" : d
-						.getMetaData().getTitle()) + "-"
+				+ d.getMetaData().getTitle() + "-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
@@ -301,8 +293,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsDocx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ (d.getMetaData().getTitle() == null ? "default" : d
-						.getMetaData().getTitle()) + "-"
+				+ d.getMetaData().getTitle() + "-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".docx");
 		FileCopyUtils.copy(content, response.getOutputStream());
@@ -320,8 +311,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentService.diffToPdf(d);
 		response.setContentType("application/pdf");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ (d.getMetaData().getTitle() == null ? "default" : d
-						.getMetaData().getTitle()) + "-Delta-"
+				+ d.getMetaData().getTitle() + "-Delta-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".pdf");
 		FileCopyUtils.copy(content, response.getOutputStream());
@@ -346,8 +336,7 @@ public class IGDocumentController extends CommonController {
 		content = igDocumentExport.exportAsXlsx(d);
 		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		response.setHeader("Content-disposition", "attachment;filename="
-				+ (d.getMetaData().getTitle() == null ? "default" : d
-						.getMetaData().getTitle()) + "-"
+				+ d.getMetaData().getTitle() + "-"
 				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
 				+ ".xlsx");
 		FileCopyUtils.copy(content, response.getOutputStream());

@@ -34,6 +34,8 @@ angular.module('igl')
                             //should unfreeze the form
                             $scope.registered = true;
                             $location.path('/registrationSubmitted');
+                        }else{
+                            $scope.registered = false;
                         }
                     },
                     function() {

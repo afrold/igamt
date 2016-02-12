@@ -13,24 +13,72 @@ $icon-font-path: "../fonts/";
   padding: 0.2em 0;
 }
 
-/* Space out content a bit */
-body {
-  //  padding-top: 20px;
-  //  padding-bottom: 20px;
-  //  background-color: #f5f5f9;
-  background: #021a4c url(../images/bg_body4.jpg) no-repeat 50% -10px;
-  color: #000;
-}
-
 #wrapper {
   position: relative;
   width: 95%;
+  height: 95%;
   margin: 0 auto;
-  background: #ffffff;
+  background: white;
   color: black;
   box-shadow: 0 0 6px #021a4c;
 
 }
+
+/* Space out content a bit */
+body {
+  //  padding-top: 0px;
+  //  padding-bottom: 20px;
+  ////  background-color: #fdfdfd;
+  //  background: #f5f5f5;
+  //  color: black;
+
+  //  font: 76%/ 1.4em Arial, Geneva, Verdana, Helvetica, sans-serif;
+  //  background: #021a4c;
+  //  color: #000;
+  //     font: 76%/ 1.4em Arial, Geneva, Verdana, Helvetica, sans-serif;
+  background: #021a4c url(../images/bg_body4.jpg) no-repeat 50% -10px;
+  color: black;
+
+}
+
+
+table{
+  font-size:12px;
+}
+
+/* Space out content a bit */
+
+.iz-home {
+  background: white;
+  color: black;
+  border-radius: 14px;
+  margin: 10px;
+}
+
+#myCarousel {
+  border-radius: 14px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+  padding-bottom: 19px;
+}
+
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
@@ -1841,10 +1889,33 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 
 
 .navbar-collapse {
+  filter: none;
+  border: 0px;
+  border-radius: 0px;
+  border-bottom: 1px solid #ffec9d;
   border-width: 0 0 0px;
+  background: #ffec9d;
   background-color: #ffec9d;
+
   color: black;
 }
+
+.navbar .nav > li > a {
+  text-shadow: none;
+}
+
+
+.navbar {
+  margin-bottom: 0px;
+  color: black;
+  border-bottom: none;
+}
+
+.navbar-nav > li > a {padding-top:8px !important; padding-bottom:8px !important;}
+.navbar {min-height:32px !important}
+
+.nav-tabs > li > a {padding-top:5px !important; padding-bottom:5px !important;}
+.nav-tabs {min-height:32px !important}
 
 .navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
   background-color: #ffcc00;
@@ -1862,15 +1933,28 @@ ul.dropdown-menu, ul.dropdown-menu > li {
   color: black;
 }
 
+
+.nav-tabs > li > a {
+  border-color: #bce8f1;
+  background-color: #d9edf7;
+  color: #3a87ad;
+}
+
 .nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
   background-color: #428bca;
+  border-color: #bce8f1;
+  //border: 0px;
+  color: white;
+  cursor: pointer;
 }
 
 
-.navbar-nav > li > a {
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
+
+.navbar-collapse {
+  border-width: 0 0 0px;
+  //  height: 10px;
 }
+
 
 .navbar {
   min-height: 32px !important;
@@ -1885,42 +1969,62 @@ ul.dropdown-menu, ul.dropdown-menu > li {
   min-height: 32px !important
 }
 
-.navbar {
-  margin-bottom: 0px;
-}
-
-.navbar {
-  color: black;
-  border-bottom: none;
-}
-
 .navbar .nav > .active > a, .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
   background-color: #ffcc00;
 }
 
-.nav > li.active > a {
+.nav > .active > a {
   background-color: #ffcc00;
 }
 
 .nav > a {
   background-color: #ffec9d;
+  color:black;
+}
+
+.nav-tabs > .active > a:hover {
+  background-color: #ffcc00;
+}
+
+.nav-tabs > a:hover {
   color: black;
 }
 
+//.nav > li > a:hover {
+// background-color: #ffec9d;
+//}
+
+.navbar-default .navbar-nav > li > a {
+  color: black;
+}
+
+
+.nav-tabs > li > a {
+  color: #003399;
+  border-radius: 0px;
+}
+
+.nav-tabs > li > a:hover {
+  color: #003399;
+}
 
 .nav-tabs {
   cursor: pointer;
 }
 
-.nav, .pagination, .carousel, .panel-title a {
-  cursor: pointer;
-}
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 .nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
   background-color: #428bca;
+  border-color: #bce8f1;
+  color: white;
 }
 
+.active {
+  background-color: #ffcc00;
+}
 
-.nav-tabs > a:hover {
-  color: black;
+body {
+  background-color: #021a4c;
 }

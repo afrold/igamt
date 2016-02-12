@@ -21,7 +21,7 @@
                     </label>
 
                     <div class="controls col-md-7">
-                        <input type="text" class="input-xlarge  immediate-help account-input focus"  name="inputFullName"
+                        <input type="text" class="form-control  immediate-help account-input focus"  name="inputFullName"
                                id="inputFullName" ng-model='account.fullName' ng-minlength="4" required>
 
                         <div class="input-help">
@@ -39,7 +39,7 @@
                     </label>
 
                     <div class="controls col-md-7">
-                        <input type="email" class="input-xlarge immediate-help account-input account-input" name="inputEmail"
+                        <input type="email" class="form-control immediate-help account-input account-input" name="inputEmail"
                                id="inputEmail" ng-model='account.email' ig-check-email required>
 
                         <div class="input-help">
@@ -65,8 +65,8 @@
                     </label>
 
                     <div class="controls col-md-7">
-                        <input type="text" class="input-xlarge immediate-help account-input" name="inputPhoneNumber"
-                               id="inputPhoneNumber" ng-model='account.phone' ig-check-phone  ng-minlength="7">
+                        <input type="text" class="form-control immediate-help account-input" name="inputPhoneNumber"
+                               id="inputPhoneNumber" ng-model='account.phone' ig-check-phone>
                         <div class="input-help">
                             <h4>
                                 <div msg key='registration.phone.error'></div>
@@ -90,7 +90,7 @@
                     </label>
 
                     <div class="controls col-md-7">
-                        <input type="text" class="input-xlarge immediate-help account-input" name="inputTitle"
+                        <input type="text" class="form-control immediate-help account-input" name="inputTitle"
                                id="inputTitle" ng-model='account.title'>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                     </label>
 
                     <div class="controls col-md-7">
-                        <input type="text" class="input-xlarge immediate-help account-input" name="inputJuridiction"
+                        <input type="text" class="form-control immediate-help account-input" name="inputJuridiction"
                                id="inputJuridiction" ng-model='account.juridiction'>
                   
 
@@ -125,7 +125,7 @@
                     </label>
 
                     <div class="controls col-md-7">
-                        <input type="text" class="input-xlarge immediate-help account-input" name="inputUsername"
+                        <input type="text" class="form-control immediate-help account-input" name="inputUsername"
                                id="inputUsername" ng-model='account.username' ng-minlength="4" ng-maxlength="20"
                                ng-pattern="/^[A-z][A-z0-9]*$/" ig-check-username required>
                   
@@ -152,7 +152,7 @@
                     </label>
 
                     <div class="controls col-md-7">
-                        <input type="password" class="input-xlarge immediate-help account-input" name="inputPassword"
+                        <input type="password" class="form-control immediate-help account-input" name="inputPassword"
                                id="inputPassword" ng-model='account.password' ng-minlength="7" ng-maxlength="20"
                                ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" ig-password-validate required>
 
@@ -186,7 +186,7 @@
                     </label>
 
                     <div class="controls col-md-7">
-                        <input type="password" class="input-xlarge immediate-help account-input"
+                        <input type="password" class="form-control immediate-help account-input"
                                name="inputPasswordConfirm" id="inputPasswordConfirm" ng-model='account.passwordConfirm'
                                ig-check-password="inputPassword" required>
                   
