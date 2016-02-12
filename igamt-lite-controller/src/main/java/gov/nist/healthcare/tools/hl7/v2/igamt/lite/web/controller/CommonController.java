@@ -20,14 +20,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Harold Affo (harold.affo@nist.gov) Mar 5, 2015
  */
 public class CommonController {
-
-	Logger logger = LoggerFactory.getLogger(CommonController.class);
-
-	@ExceptionHandler(Exception.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public String exception(Exception ex) {
-		logger.debug(ex.getMessage());
-		ex.printStackTrace();
-		return "Sorry, an error occured" ;
-	}
+//
+//	Logger logger = LoggerFactory.getLogger(CommonController.class);
+//
+//	@ExceptionHandler(Exception.class)
+//	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//	public String exception(Exception ex) {
+//		logger.debug(ex.getMessage());
+//		ex.printStackTrace();
+//		return "Sorry, an error occured" ;
+//	}
 }
