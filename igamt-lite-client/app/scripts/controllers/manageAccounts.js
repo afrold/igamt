@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('igl')
-.controller('ManageAccountsCtrl', ['$scope', 'MultiAuthorsLoader', 'MultiSupervisorsLoader','Account', '$modal', '$resource','AccountLoader','userInfoService','$location',
+.controller('AccountsListCtrl', ['$scope', 'MultiAuthorsLoader', 'MultiSupervisorsLoader','Account', '$modal', '$resource','AccountLoader','userInfoService','$location',
     function ($scope, MultiAuthorsLoader, MultiSupervisorsLoader, Account, $modal, $resource, AccountLoader, userInfoService, $location) {
 
         //$scope.accountTypes = [{ 'name':'Author', 'type':'author'}, {name:'Supervisor', type:'supervisor'}];
@@ -20,6 +20,7 @@ angular.module('igl')
 
         $scope.accountpwd = {};
 
+//        $scope.loadAccounts();
 
         $scope.updateAccount = function() {
             //not sure it is very clean...
@@ -50,19 +51,17 @@ angular.module('igl')
         };
 
         $scope.loadAccounts = function(){
-            $scope.msg = null;
-            new MultiAuthorsLoader().then(function(response){
-                $scope.accountList = response;
-                $scope.tmpAccountList = [].concat($scope.accountList);
-            });
+            if (userInfoService.isAuthenticated() && userInfoService.isAdmin()) {
+                $scope.msg = null;
+                new MultiAuthorsLoader().then(function (response) {
+                    $scope.accountList = response;
+                    $scope.tmpAccountList = [].concat($scope.accountList);
+                });
+            }
         };
 
-        $scope.init = function(){
-            if (userInfoService.isAuthenticated()) {
-                $scope.loadAccounts();
-            }else{
-                $location.path('/home');
-            }
+        $scope.initManageAccounts = function(){
+             $scope.loadAccounts();
         };
 
         $scope.selectAccount = function(row) {
