@@ -1842,7 +1842,7 @@ public class ProfileDiffImpl {
 
 	public static void main(String[] args) throws IOException {
 		try {
-			ProfileSerialization4ExportImpl test1 = new ProfileSerialization4ExportImpl();
+			IGDocumentSerialization4ExportImpl test1 = new IGDocumentSerialization4ExportImpl();
 
 			Profile p1 = test1
 					.deserializeXMLToProfile(

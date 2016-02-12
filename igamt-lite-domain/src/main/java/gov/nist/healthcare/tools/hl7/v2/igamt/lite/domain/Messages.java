@@ -1,7 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
@@ -100,5 +103,13 @@ public class Messages extends TextbasedSectionModel implements java.io.Serializa
 		}
 
 		return clonedMessages;
+	}
+	
+	public void setPositionsOrder(){
+		List<Message> sortedList = new ArrayList<Message>(this.getChildren());
+		Collections.sort(sortedList);
+		for (Message elt: sortedList) {
+			elt.setSectionPosition(sortedList.indexOf(elt));
+		}
 	}
 }

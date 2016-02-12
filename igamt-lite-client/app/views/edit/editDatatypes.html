@@ -1,3 +1,12 @@
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
 <script type="text/ng-template" id="EditDatatypes.html">
     <div ng-controller="DatatypeListCtrl" ng-init="init()" class="container">
         <div ng-show="loadingSelection"
@@ -28,7 +37,7 @@
                 </div>
                 <hr/>
                 <accordion close-others="false">
-                    <accordion-group is-open="accordi.metaData" panel-class="panel-info">
+                    <accordion-group is-open="true" panel-class="panel-info">
 
                         <accordion-heading>
                             <i class="fa"
@@ -67,7 +76,7 @@
                                          ng-class="{'has-error' : datatypeMetaDataForm.label.$invalid && !datatypeMetaDataForm.label.$pristine }">
                                         <label>Description</label>
 										<span style="color:red" ng-show="isDuplicated(datatype,'label', datatypes)">Existing label (flavor name)</span>
-                                        <input type="text" ng-disabled="options.readonly"
+                                        <input type="text" disabled
                                                ng-change="recordChanged()"
                                                name="label" class="form-control" ng-model="datatype.description"
                                                required>
@@ -91,7 +100,7 @@
                             </div>
                         </form>
                     </accordion-group>
-                    <accordion-group is-open="accordi.definition" panel-class="panel-info">
+                    <accordion-group is-open="true" panel-class="panel-info">
 
                         <accordion-heading>
                             <i class="fa"

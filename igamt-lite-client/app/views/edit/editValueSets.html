@@ -1,3 +1,12 @@
+<style id="antiClickjack">body{display:none !important;}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
 <script type="text/ng-template" id="EditValueSets.html">
     <div ng-controller="TableListCtrl" ng-init="init()" class="container">
         <div ng-show="loadingSelection" style="text-align: center; padding-top:20px">
@@ -27,7 +36,7 @@
                 </div>
                 <div class="col-md-12">
                     <accordion close-others="false">
-                        <accordion-group is-open="accordi.metaData" panel-class="panel-info">
+                        <accordion-group is-open="true" panel-class="panel-info">
                             <accordion-heading>
                                 <i class="fa"
                                    ng-class="{'fa-caret-down': accordi.metaData, 'fa-caret-right': !accordi.metaData}"></i>
@@ -112,7 +121,7 @@
 
                             </form>
                         </accordion-group>
-                        <accordion-group is-open="accordi.definition" panel-class="panel-info">
+                        <accordion-group is-open="true" panel-class="panel-info">
                             <accordion-heading>
                                 <i class="fa" ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i> Values
                             </accordion-heading>

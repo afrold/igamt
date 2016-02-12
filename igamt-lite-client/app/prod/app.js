@@ -83,9 +83,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             templateUrl: 'views/account/registration.html',
             controller: 'RegistrationCtrl'
         }).when('/useraccount', {
-            templateUrl: 'views/account/userAccount.html',
-            controller: 'AccountMgtCtrl'
-        })
+            templateUrl: 'views/account/userAccount.html'
+         })
 //        .when('/account', {
 //            templateUrl: 'views/account/account.html',
 //            controller: 'AccountCtrl',
@@ -228,35 +227,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 
                         return  $q.when(response);
                     }
-                }
-                return $q.reject(response);
-            }
-        };
-    });
-
-
-    $httpProvider.interceptors.push(function ($rootScope, $q) {
-        return {
-            response: function (response) {
-                return response   || $q.when(response);
-            },
-            responseError: function (response) {
-                if (response.status === 401) {
-                    //We catch everything but this one. So public users are not bothered
-                    //with a login windows when browsing home.
-                    if ( response.config.url !== 'api/accounts/cuser') {
-                        //We don't intercept this request
-                        var deferred = $q.defer(),
-                            req = {
-                                config: response.config,
-                                deferred: deferred
-                            };
-                        $rootScope.requests401.push(req);
-                        $rootScope.$broadcast('event:loginRequired');
-                        return  $q.when(response);
-                    }
-                }else  if (response.status === 503) {
-
+                } else  if (response.status === 498 ) {
+                    $rootScope.openVersionChangeDlg();
                 }
                 return $q.reject(response);
             }
@@ -300,14 +272,61 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 });
 
 
-app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http) {
+app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http,StorageService,AppInfo,$templateCache,$window) {
 
 
     //Check if the login dialog is already displayed.
     $rootScope.loginDialogShown = false;
     $rootScope.subActivePath = null;
+    //$rootScope.stackPosition = 0;
+
+    $rootScope.clearTemplate = function () {
+        $templateCache.removeAll();
+    };
+
+    $rootScope.reloadPage = function () {
+        $window.location.reload();
+    };
+
+    $rootScope.openCriticalErrorDlg = function (errorMessage) {
+        if($rootScope.errorModalInstance && $rootScope.errorModalInstance !== null && $rootScope.errorModalInstance.opened) {
+             $rootScope.errorModalInstance.dismiss('cancel');
+        }
+
+        $rootScope.errorModalInstance = $modal.open({
+            templateUrl: 'CriticalError.html',
+            size: 'lg',
+            backdrop: 'static',
+            keyboard: 'false',
+            'controller': 'FailureCtrl',
+            resolve: {
+                error: function () {
+                    return errorMessage;
+                }
+            }
+        });
+        $rootScope.errorModalInstance .result.then(function () {
+            $rootScope.clearTemplate();
+            $rootScope.reloadPage();
+        }, function () {
+            $rootScope.clearTemplate();
+            $rootScope.reloadPage();
+        });
+    };
 
 
+    AppInfo.get().then(function (appInfo) {
+        $rootScope.appInfo = appInfo;
+        httpHeaders.common['version'] = appInfo.version;
+//        var previous = StorageService.get(StorageService.APP_VERSION_TOKEN);
+//        if (previous != null && previous !== appInfo.version) {
+//            $rootScope.openVersionChangeDlg();
+//        }
+        StorageService.set(StorageService.APP_VERSION_TOKEN, appInfo.version);
+    }, function (error) {
+        $rootScope.appInfo = {};
+        //$rootScope.openCriticalErrorDlg("Sorry, the server is not responding. Please try again.");
+    });
 
     //make current message accessible to root scope and therefore all scopes
     $rootScope.msg = function () {
@@ -324,6 +343,34 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     $rootScope.showSpinner = function() {
         return spinner;
     };
+
+    $rootScope.openVersionChangeDlg = function () {
+        if(!$rootScope.vcModalInstance || $rootScope.vcModalInstance === null || !$rootScope.vcModalInstance.opened) {
+             $rootScope.vcModalInstance.dismiss('cancel');
+        }
+
+        $rootScope.vcModalInstance = $modal.open({
+            templateUrl: 'VersionChanged.html',
+            size: 'lg',
+            backdrop: 'static',
+            keyboard: 'false',
+            'controller': 'FailureCtrl',
+            resolve: {
+                error: function () {
+                    return "";
+                }
+            }
+        });
+        $rootScope.vcModalInstance.result.then(function () {
+            $rootScope.clearTemplate();
+            $rootScope.reloadPage();
+        }, function () {
+            $rootScope.clearTemplate();
+            $rootScope.reloadPage();
+        });
+
+    };
+
 
     /**
      * Holds all the requests which failed due to 401 response.
@@ -351,8 +398,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             retry(requests[i]);
         }
         $rootScope.requests401 = [];
-
-        $location.url('/ig');
+        $location.url($location.path());
     });
 
     /*jshint sub: true */
@@ -424,6 +470,51 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
 
 
 
+//    $rootScope.$watch(function () {
+//        return $location.path();
+//    }, function (newLocation, oldLocation) {
+//        //true only for onPopState
+//        if ($rootScope.activePath === newLocation) {
+//            var back,
+//                historyState = $window.history.state;
+//            back = !!(historyState && historyState.position <= $rootScope.stackPosition);
+//            if (back) {
+//                //back button
+//                $rootScope.stackPosition--;
+//            } else {
+//                //forward button
+//                $rootScope.stackPosition++;
+//            }
+//        } else {
+//            //normal-way change of page (via link click)
+//            if ($route.current) {
+//                $window.history.replaceState({
+//                    position: $rootScope.stackPosition
+//                }, '');
+//                $rootScope.stackPosition++;
+//            }
+//        }
+//    });
+
+    $rootScope.isActive = function (path) {
+        return path === $rootScope.activePath;
+    };
+
+//    $rootScope.setActive = function (path) {
+//        if (path === '' || path === '/') {
+//            $location.path('/ig');
+//        } else {
+//            $rootScope.activePath = path;
+//        }
+//    };
+
+//    $rootScope.$on('$locationChangeSuccess', function () {
+//        //$rootScope.activePath = $location.path();
+//        $rootScope.setActive($location.path());
+//    });
+
+
+
 });
 
 
@@ -458,6 +549,7 @@ app.factory('StorageService',
     ['$rootScope', 'localStorageService', function ($rootScope, localStorageService) {
         var service = {
             TABLE_COLUMN_SETTINGS_KEY: 'SETTINGS_KEY',
+            APP_VERSION_TOKEN: 'APP_VERSION_TOKEN',
             remove: function (key) {
                 return localStorageService.remove(key);
             },
@@ -480,6 +572,43 @@ app.factory('StorageService',
     }]
 );
 
+
+app.factory('AppInfo', ['$http', '$q', function ($http, $q) {
+    return {
+        get: function () {
+            var delay = $q.defer();
+            $http.get('api/appInfo').then(
+                function (object) {
+                    delay.resolve(angular.fromJson(object.data));
+                },
+                function (response) {
+                    delay.reject(response.data);
+                }
+            );
+
+//        $http.get('../../resources/appInfo.json').then(
+//            function (object) {
+//                delay.resolve(angular.fromJson(object.data));
+//            },
+//            function (response) {
+//                delay.reject(response.data);
+//            }
+//        );
+
+            return delay.promise;
+
+        }
+    };
+}]);
+
+app.controller('FailureCtrl', [ '$scope', '$modalInstance', 'StorageService', '$window','error',
+    function ($scope, $modalInstance, StorageService, $window, error) {
+        $scope.error = error;
+        $scope.close = function () {
+            $modalInstance.close();
+        };
+    }
+]);
 
 
 //

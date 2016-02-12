@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sec="http://www.springframework.org/schema/security" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans	
+ 		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-3.1.xsd
+         http://www.springframework.org/schema/jee
+         http://www.springframework.org/schema/jee/spring-jee.xsd">
+
+	<context:property-placeholder
+		location="classpath:app-web-config.properties, classpath:app-auth-config.properties" />
+
+	<sec:http pattern="/index.html" security="none" />
+	<sec:http pattern="/404.html" security="none" />
+	<sec:http pattern="/bower_components/**" security="none" />
+	<sec:http pattern="/images/**" security="none" />
+	<sec:http pattern="/lang/**" security="none" />
+	<sec:http pattern="/scripts/**" security="none" />
+	<sec:http pattern="/styles/**" security="none" />
+	<sec:http pattern="/views/**" security="none" />
+	<sec:http pattern="/fonts/**" security="none" />
+	<sec:http pattern="/lib/**" security="none" />
+	<sec:http pattern="/api/igdocuments/config" security="none" />
+	<sec:http pattern="/api/appInfo" security="none" />
+
+	<sec:http create-session="ifRequired" use-expressions="true">
+		<sec:http-basic entry-point-ref="restAuthenticationEntryPoint" />
+		<!-- <sec:intercept-url pattern="/api/accounts/login/**" method="OPTIONS" 
+			access="isAnonymous()" /> -->
+		<sec:intercept-url pattern="/api/sooa/accounts/**"
+			access="isAnonymous()" />
+		<sec:intercept-url pattern="/api/sooa/usernames/**"
+			access="isAnonymous()" />
+		<sec:intercept-url pattern="/api/igdocuments/config"
+			access="isAnonymous()" />
+		<sec:intercept-url pattern="/api/sooa/emails/**"
+			access="isAnonymous()" />
+		<sec:intercept-url pattern="/api/sooa/issues/**"
+			access="isFullyAuthenticated() and hasRole('admin')" />
+		<sec:intercept-url pattern="/api/accounts/cuser"
+			access="isAnonymous() or isFullyAuthenticated()" />
+		<sec:intercept-url pattern="/api/**" access="isFullyAuthenticated()" />
+		<sec:intercept-url pattern="/j_spring_security_logout"
+			access="isFullyAuthenticated()" />
+		<sec:intercept-url pattern="/**"
+			access="isFullyAuthenticated() and hasRole('admin')" />
+
+
+		<sec:logout logout-success-url="/index.html" />
+		<!-- <sec:custom-filter ref="csrfHeaderFilter" after="CSRF_FILTER"/> -->
+		<!-- <sec:csrf token-repository-ref="csrfTokenRepository" /> -->
+		<!-- <sec:csrf disabled="true" /> -->
+	</sec:http>
+	
+<!-- 	<sec:http>
+    	<sec:session-management invalid-session-url="/views/sessionTimeout.html">
+        	<sec:concurrency-control max-sessions="2" expired-url="/views/sessionTimeout.html"/>
+     	</sec:session-management>
+	</sec:http> -->
+
+	<bean id="restAuthenticationEntryPoint"
+		class="gov.nist.healthcare.nht.acmgt.web.RestAuthenticationEntryPoint" />
+
+	<sec:global-method-security
+		pre-post-annotations="enabled">
+		<sec:expression-handler ref="expressionHandler" />
+	</sec:global-method-security>
+
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider
+			user-service-ref="userDetailsService">
+			<sec:password-encoder ref="shaPasswordEncoder">
+				<sec:salt-source user-property="username" />
+			</sec:password-encoder>
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+
+	<bean id="shaPasswordEncoder"
+		class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+		<constructor-arg value="256" />
+	</bean>
+
+	<!-- <bean id="csrfTokenRepository" class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository"> 
+		<property name="headerName" value="X-XSRF-TOKEN" /> </bean> -->
+
+	<!--gov.nist.itl.healthcare.ehrrandomizer.general.CustomJdbcUserDetailsManager -->
+	<!--org.springframework.security.provisioning.JdbcUserDetailsManager -->
+	<bean id="userDetailsService"
+		class="gov.nist.healthcare.nht.acmgt.general.CustomJdbcUserDetailsManager">
+		<property name="dataSource" ref="authDataSource" />
+		<property name="authenticationManager" ref="authenticationManager" />
+	</bean>
+
+	<!-- <bean id="authDataSource" class="org.apache.commons.dbcp.BasicDataSource" 
+		p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.igl.auth.url}" 
+		p:username="${jdbc.igl.auth.username}" p:password="${jdbc.igl.auth.password}" 
+		p:testWhileIdle="${jdbc.igl.auth.testWhileIdle}" p:testOnBorrow="${jdbc.igl.auth.testOnBorrow}" 
+		p:validationQuery="${jdbc.igl.auth.validationQuery}" destroy-method="close" 
+		/> -->
+
+	<jee:jndi-lookup id="authDataSource" jndi-name="java:comp/env/jdbc/igl_jndi" />
+
+
+
+	<bean id="expressionHandler"
+		class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
+		<property name="permissionEvaluator" ref="permissionEvaluator" />
+	</bean>
+
+	<bean id="permissionEvaluator" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="targetSource">
+			<bean class="org.springframework.aop.target.LazyInitTargetSource">
+				<property name="targetBeanName" value="customPermissionEvaluator" />
+			</bean>
+		</property>
+		<property name="proxyInterfaces"
+			value="org.springframework.security.access.PermissionEvaluator" />
+	</bean>
+
+</beans>

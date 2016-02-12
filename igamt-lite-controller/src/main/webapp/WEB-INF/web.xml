@@ -84,13 +84,36 @@
     <!--  session  -->
     <session-config>
         <session-timeout>
-            30
+           120
         </session-timeout>
-<!--        <cookie-config>
-            <secure>true</secure>
-        </cookie-config>-->
+ 		<tracking-mode>COOKIE</tracking-mode>
+ 
     </session-config>
+    <listener>
+    <listener-class>
+      org.springframework.security.web.session.HttpSessionEventPublisher
+    </listener-class>
+</listener>
     
+    	<error-page>
+		<error-code>404</error-code>
+		<location>/Notfound.html</location>
+	</error-page>
+	<error-page>
+		<error-code>401</error-code>
+		<location>/InvalidRequest.html</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>440</error-code>
+		<location>/SessionTimeout.html</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>498</error-code>
+		<location>/InvalidAppState.html</location>
+	</error-page>
+	
 
 
 </web-app>

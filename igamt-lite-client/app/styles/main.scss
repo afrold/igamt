@@ -179,40 +179,8 @@ body {
 //  //  background: #ffec9d;
 //}
 //
-.navbar .nav > .active > a, .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
-  background-color: #ffcc00;
-}
 
-.nav > .active > a {
-  background-color: #ffcc00;
-}
 
-.nav > a {
-  background-color: #ffcc00;
-}
-
-.nav-tabs > .active > a:hover {
-  background-color: #ffcc00;
-}
-
-.nav-tabs > a:hover {
-  color: #ffcc00;
-}
-
-.nav > li > a:hover {
-  background-color: #ffec9d;
-  border-color: #ffec9d;
-  border-bottom: 0px solid #ffcc00;
-}
-
-.navbar .nav > li > a {
-  text-shadow: none;
-}
-
-/* a bit brutal, but it works... */
-.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
-  background-color: #ffcc00;
-}
 
 .dropdown-menu {
   background-color: #ffec9d;
@@ -228,13 +196,7 @@ body {
   color: #222222;
 }
 
-.navbar .nav > li > .dropdown-menu:before {
 
-}
-
-.navbar .nav > li > .dropdown-menu:after {
-  border-bottom: 6px solid #ffec9d;
-}
 
 .nav-tabs > li > a {
   color: #666666;
@@ -405,9 +367,10 @@ select.form-control:checked {
 }
 
 input.form-control {
-  //  background-color: #ebdb0b;
+    background-color: #efefef;
   //  color: black;
   cursor: pointer;
+//  border: 1px solid #cccccc;
 }
 
 .point {
@@ -1071,45 +1034,6 @@ h4.addPOAFormDateSectionTitle {
   color: #F3C60D;
 }
 
-//
-//.navbar-inner {
-//  background: #ffec9d;
-//  background-color: #ffec9d;
-//  filter: none;
-//  border: 0px;
-//  border-radius: 0px;
-//  border-bottom: 1px solid #ffcc00;
-//}
-
-//.nav {
-//  background: #ffec9d;
-//}
-//
-.navbar .nav > .active > a, .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
-  background-color: #ffcc00;
-}
-
-.nav > .active > a {
-  background-color: #ffcc00;
-}
-
-//.nav > a {
-//  background-color: #ffcc00;
-//}
-//
-.nav-tabs > .active > a:hover {
-  background-color: #ffcc00;
-}
-
-.nav-tabs > a:hover {
-  color: #ffcc00;
-}
-
-.nav > li > a:hover {
-  background-color: #ffec9d;
-  border-color: #ffec9d;
-  border-bottom: 0px solid #ffcc00;
-}
 
 //#appsubtitle {
 //  font-size: 14px;
@@ -1198,14 +1122,6 @@ h4.addPOAFormDateSectionTitle {
 
 }
 
-.navbar .nav > li > a {
-  text-shadow: none;
-}
-
-///* a bit brutal, but it works... */
-.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
-  background-color: #ffcc00;
-}
 
 .dropdown-menu {
   background-color: #ffec9d;
@@ -1221,14 +1137,6 @@ h4.addPOAFormDateSectionTitle {
   color: #222222;
 }
 
-.navbar .nav > li > .dropdown-menu:before {
-
-}
-
-.navbar .nav > li > .dropdown-menu:after {
-  border-bottom: 6px solid #ffec9d;
-}
-
 .nav-tabs > li > a {
   color: #666666;
   border-radius: 0px;
@@ -1238,26 +1146,6 @@ h4.addPOAFormDateSectionTitle {
   color: #222222;
 }
 
-.navbar-text > a {
-  color: #666666;
-}
-
-.navbar-text > a:hover {
-  color: #222222;
-}
-
-.nav-tabs {
-  border-bottom: 1px solid #ffcc00;
-  cursor: pointer;
-}
-
-.nav-tabs > .active > a {
-  border: 1px solid #ffcc00;
-}
-
-.nav-tabs > .active > a:hover {
-  border: 1px solid #ffcc00;
-}
 
 .dark-gray {
   background-color: #f0f0f0;
@@ -1434,18 +1322,6 @@ input.account-input {
   overflow-y: auto;
 }
 
-//.navbar-collapse {
-//  border-width: 0 0 0px;
-//  //  height: 10px;
-//}
-
-//.navbar-nav > li > a {padding-top:10px !important; padding-bottom:10px !important;}
-//.navbar {min-height:32px !important}
-//
-
-//.navbar-text > li > a {padding-top:5px !important; padding-bottom:5px !important;}
-//.navbar-text {min-height:32px !important}
-//
 .nav > li > a {
   padding-top: 8px !important;
   padding-bottom: 8px !important;
@@ -1538,9 +1414,6 @@ input.account-input {
   color: #000;
 }
 
-.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
-  background-color: #ffcc00;
-}
 
 .dropdown-menu {
   background-color: #ffec9d;
@@ -1556,63 +1429,11 @@ input.account-input {
   color: black;
 }
 
-.navbar .nav > li > .dropdown-menu:before {
-
-}
-
-.navbar .nav > li > .dropdown-menu:after {
-  border-bottom: 6px solid #ffec9d;
-}
-
-.navbar-text > a {
-  color: black;
-}
-
-.navbar-text > a:hover {
-  color: black;
-}
-
-.navbar-collapse {
-  border-width: 0 0 0px;
-  //  height: 10px;
-}
-
 #appnavi {
   //  height: 5px;
   //  line-height: 5px;
 }
 
-.navbar-nav > li > a {
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-}
-
-.navbar {
-  min-height: 32px !important;
-}
-
-.navbar-collapse {
-  border-width: 0 0 0px;
-  //  height: 10px;
-}
-
-.navbar-collapse {
-  background-color: #F3C60D;
-  color: black;
-}
-
-.navbar {
-  color: black;
-  border-bottom: none;
-}
-
-.navbar .nav > .active > a, .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
-  background-color: #ffec9d;
-}
-
-.navbar-default .navbar-nav > li > a {
-  color: black;
-}
 
 .mainSubNav li a:hover, .mainSubNav li a.current {
   text-decoration: none;
@@ -1997,4 +1818,90 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
+}
+
+
+.navbar-collapse {
+  border-width: 0 0 0px;
+  background-color: #ffec9d;
+  color: black;
+}
+
+.navbar .nav li.dropdown.open > .dropdown-toggle, .navbar .nav li.dropdown.active > .dropdown-toggle, .navbar .nav li.dropdown.open.active > .dropdown-toggle {
+  background-color: #ffcc00;
+}
+
+.navbar .nav > li > .dropdown-menu:after {
+  border-bottom: 6px solid #ffec9d;
+}
+
+.navbar-text > a {
+  color: black;
+}
+
+.navbar-text > a:hover {
+  color: black;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
+  background-color: #428bca;
+}
+
+
+.navbar-nav > li > a {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+}
+
+.navbar {
+  min-height: 32px !important;
+}
+
+.nav-tabs > li > a {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+.nav-tabs {
+  min-height: 32px !important
+}
+
+.navbar {
+  margin-bottom: 0px;
+}
+
+.navbar {
+  color: black;
+  border-bottom: none;
+}
+
+.navbar .nav > .active > a, .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+  background-color: #ffcc00;
+}
+
+.nav > li.active > a {
+  background-color: #ffcc00;
+}
+
+.nav > a {
+  background-color: #ffec9d;
+  color: black;
+}
+
+
+.nav-tabs {
+  cursor: pointer;
+}
+
+.nav, .pagination, .carousel, .panel-title a {
+  cursor: pointer;
+}
+
+.nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
+  background-color: #428bca;
+}
+
+
+.nav-tabs > a:hover {
+  color: black;
 }

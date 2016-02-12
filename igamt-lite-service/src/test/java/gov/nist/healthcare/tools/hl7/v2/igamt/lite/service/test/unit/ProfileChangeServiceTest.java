@@ -42,7 +42,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Harold Affo (harold.affo@nist.gov) Apr 16, 2015
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = PersistenceContext.class)
+@ContextConfiguration(classes = {PersistenceContextUnit.class})
 public class ProfileChangeServiceTest {
 
 	@BeforeClass

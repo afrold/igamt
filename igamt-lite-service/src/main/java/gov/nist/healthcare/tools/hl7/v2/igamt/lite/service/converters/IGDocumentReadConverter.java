@@ -422,9 +422,9 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		f.setType(((String) source.get("type")));
 		f.setName(((String) source.get("name")));
 		f.setComment(readString(source, "comment"));
-		f.setMinLength(((Integer) source.get("minLength")));
+		f.setMinLength(getMinLength(source));
 		f.setMaxLength((String) source.get("maxLength"));
-		f.setConfLength((String) source.get("confLength"));
+		f.setConfLength(getConfLength(source));
 		f.setPosition((Integer) source.get("position"));
 		f.setTable(((String) source.get("table")));
 		f.setUsage(Usage.valueOf((String) source.get("usage")));
@@ -446,9 +446,9 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		c.setType(((String) source.get("type")));
 		c.setName(((String) source.get("name")));
 		c.setComment(readString(source, "comment"));
-		c.setMinLength(((Integer) source.get("minLength")));
+		c.setMinLength(getMinLength(source));
 		c.setMaxLength((String) source.get("maxLength"));
-		c.setConfLength((String) source.get("confLength"));
+		c.setConfLength(getConfLength(source));
 		c.setPosition((Integer) source.get("position"));
 		c.setTable(((String) source.get("table")));
 		c.setUsage(Usage.valueOf((String) source.get("usage")));
@@ -695,7 +695,17 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 				return String.valueOf((String) source.get(tag));
 			}
 		return "";
-	}
+	} 
+	
+	
+	private Integer getMinLength(DBObject source){
+		return ((Integer) source.get("minLength") == -1 ? 0:((Integer) source.get("minLength")));
+	} 
+	
+	private String getConfLength(DBObject source){
+		return "-1".equals((String) source.get("confLength")) ? "":(String) source.get("confLength");
+	} 
+	
 
 	// private DBObject findDatatypeById(String id, BasicDBList datatypes)
 	// throws ProfileConversionException {

@@ -25,7 +25,7 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public abstract class SpecsHelper<T> {
 
-	static final Logger logger = LoggerFactory.getLogger(IssueSpecsHelper.class);
+	static final Logger logger = LoggerFactory.getLogger(SpecsHelper.class);
 	
 	public String ARRAY_DELIMITOR = ",";
 	public String FILTER_INFO_DELIMITOR = "::";

@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Profile extends TextbasedSectionModel implements java.io.Serializable,
@@ -22,7 +24,9 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		super();
 		this.type = Constant.PROFILE;
 		scope = IGDocumentScope.PRELOADED;
+		this.id = ObjectId.get().toString();
 	}
+	
 
 	private IGDocumentScope scope;
 
