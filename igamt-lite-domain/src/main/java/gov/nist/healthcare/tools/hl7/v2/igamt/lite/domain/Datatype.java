@@ -1,14 +1,19 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+
+@Document(collection = "datatype")
 public class Datatype extends SectionModelWithConstraints implements java.io.Serializable,
 Cloneable, Comparable<Datatype> {
 
@@ -20,23 +25,21 @@ Cloneable, Comparable<Datatype> {
 		this.id = ObjectId.get().toString();
 	}
 
+	@Id
 	private String id;
 
-	// //@NotNull
 	private String label;
 
 	protected List<Component> components = new ArrayList<Component>();
 
-	// //@NotNull
 	private String name;
 
 	private String description;
 
 	private String hl7Version;
 
-	// @DBRef
-	// private Datatypes datatypes;
-
+	private SCOPE scope;
+	
 	protected String comment = "";
 
 	protected String usageNote = "";
@@ -89,14 +92,6 @@ Cloneable, Comparable<Datatype> {
 		this.description = description;
 	}
 
-	// public Datatypes getDatatypes() {
-	// return datatypes;
-	// }
-	//
-	// public void setDatatypes(Datatypes datatypes) {
-	// this.datatypes = datatypes;
-	// }
-
 	public String getHl7Version() {
 		return hl7Version;
 	}
@@ -109,22 +104,6 @@ Cloneable, Comparable<Datatype> {
 		c.setPosition(components.size() + 1);
 		components.add(c);
 	}
-
-	// public Component findOneComponent(String id) {
-	// if (this.components != null) {
-	// for (Component c : this.components) {
-	// if (c.getId().equals(id)) {
-	// return c;
-	// } else {
-	// Component r = c.getDatatype().findOneComponent(id);
-	// if (r != null) {
-	// return r;
-	// }
-	// }
-	// }
-	// }
-	// return null;
-	// }
 
 	public String getComment() {
 		return comment;
@@ -205,5 +184,4 @@ Cloneable, Comparable<Datatype> {
 		}
 		return x;
 	}
-
 }
