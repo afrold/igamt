@@ -7,26 +7,25 @@
         top.location = self.location;
     }
 </script>
-<div class="container" ng-controller="AccountCtrl" ng-init="init()">
+<div class="container" ng-controller="UserProfileCtrl" ng-init="init()">
   <div class="row">
     <div class="col-md-12">
       <!--Body content-->
         <h3 class="page-header"><div msg key="account.resetMessage"></div></h3>
         <div ng-form name="changePasswordForm" class="form-horizontal" novalidate>
-            <div class="control-group form-group">
+            <div class="control-group form-group"  ng-class="{'has-success has-feedback': changePasswordForm.inputCurrentPassword.$valid, 'has-error has-feedback': !changePasswordForm.inputCurrentPassword.$valid}">
                 <label class="control-label col-sm-2" for="inputCurrentPassword"><div msg key='account.currentPassword'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="password" class="input-xlarge immediate-help account-input" name="inputCurrentPassword" id="inputCurrentPassword" ng-model='accountpwd.currentPassword' ng-minlength="4" required>
+                    <input type="password" class="form-control immediate-help account-input" name="inputCurrentPassword" id="inputCurrentPassword" ng-model='accountpwd.currentPassword' ng-minlength="4" required>
                     <div class="input-help">
                         <h4><div msg key='account.currentpassword.error'></div></h4>
                     </div>
-                    <span class="valid" ng-show="changePasswordForm.inputCurrentPassword.$valid"><i class="fa fa-check success"></i></span><br>
-                </div>
+                 </div>
             </div>
-            <div class="control-group form-group">
+            <div class="control-group form-group" ng-class="{'has-success has-feedback': changePasswordForm.inputNewPassword.$valid, 'has-error has-feedback': !changePasswordForm.inputNewPassword.$valid}">
                 <label class="control-label col-sm-2" for="inputNewPassword"><div msg key='account.newPassword'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="password" class="input-xlarge immediate-help account-input" name="inputNewPassword" id="inputNewPassword" ng-model='accountpwd.newPassword' ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" ig-password-validate required>
+                    <input type="password" class="form-control immediate-help account-input" name="inputNewPassword" id="inputNewPassword" ng-model='accountpwd.newPassword' ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" ig-password-validate required>
                     <div class="input-help">
                         <h4><div msg key='account.password.error'></div></h4>
                         <ul>
@@ -36,13 +35,12 @@
                             <li ng-class="pwdValidLength"><div msg key='account.password.error.length'></div></strong></li>
                         </ul>
                     </div>
-                    <span class="valid" ng-show="changePasswordForm.inputNewPassword.$valid"><i class="fa fa-check success"></i></span><br>
-                </div>
+                 </div>
             </div>
-            <div class="control-group form-group">
+            <div class="control-group form-group" ng-class="{'has-success has-feedback': changePasswordForm.inputNewPasswordConfirm.$valid, 'has-error has-feedback': !changePasswordForm.inputNewPasswordConfirm.$valid}">
                 <label class="control-label col-sm-2" for="inputNewPasswordConfirm"><div msg key='account.newPasswordConfirm'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="password" class="input-xlarge immediate-help account-input" name="inputNewPasswordConfirm" id="inputNewPasswordConfirm" ng-model='accountpwd.newPasswordConfirm' ig-check-password="inputNewPassword" required>
+                    <input type="password" class="form-control immediate-help account-input" name="inputNewPasswordConfirm" id="inputNewPasswordConfirm" ng-model='accountpwd.newPasswordConfirm' ig-check-password="inputNewPassword" required>
                     <div class="input-help">
                         <h4><div msg key='registration.passwordConfirm.error'></div></h4>
                     </div>
@@ -59,38 +57,35 @@
         <h3 class="page-header"><div msg key="account.message"></div></h3>
         <div ng-form name="editAccountForm" class="form-horizontal" novalidate>
 
-            <div class="control-group form-group">
+            <div class="control-group form-group" ng-class="{'has-success has-feedback': editAccountForm.inputUsername.$valid, 'has-error has-feedback': !editAccountForm.inputUsername.$valid}">
                 <label class="control-label col-sm-2" for="inputUsername"><div msg key='account.username'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="text" class="input-xlarge account-input" name="inputUsername" id="inputUsername" ng-model='account.username' ng-disabled='true' required>
-                    <span class="valid" ng-show="editAccountForm.inputUsername.$valid"><i class="fa fa-check success"></i></span><br>
-                </div>
+                    <input type="text" class="form-control account-input" name="inputUsername" id="inputUsername" ng-model='account.username' ng-disabled='true' required>
+                 </div>
             </div>
-            <div class="control-group form-group">
+            <div class="control-group form-group" ng-class="{'has-success has-feedback': editAccountForm.inputFullName.$valid, 'has-error has-feedback': !editAccountForm.inputFullName.$valid}">
                 <label class="control-label col-sm-2" for="inputFullName"><div msg key='account.fullname'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="text" class="input-xlarge immediate-help account-input" name="inputFullName" id="inputFullName" ng-model='account.fullName' ng-minlength="2" required>
+                    <input type="text" class="form-control immediate-help account-input" name="inputFullName" id="inputFullName" ng-model='account.fullName' ng-minlength="2" required>
                     <div class="input-help">
                         <h4><div msg key='registration.fullname.error'></div></h4>
                     </div>
-                    <span class="valid" ng-show="editAccountForm.inputFullName.$valid"><i class="fa fa-check success"></i></span><br>
-                </div>
+                 </div>
             </div>
-            <div class="control-group form-group">
+            <div class="control-group form-group" ng-class="{'has-success has-feedback': editAccountForm.inputEmail.$valid, 'has-error has-feedback': !editAccountForm.inputEmail.$valid}">
                 <label class="control-label col-sm-2" for="inputEmail"><div msg key='account.email'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="email" class="input-xlarge immediate-help account-input" name="inputEmail" id="inputEmail" ng-model='account.email' required>
+                    <input type="email" class="form-control immediate-help account-input" name="inputEmail" id="inputEmail" ng-model='account.email' required>
                     <div class="input-help">
                         <h4><div msg key='registration.email.error'></div></h4>
                     </div>
-                    <span class="valid" ng-show="editAccountForm.inputEmail.$valid"><i class="fa fa-check success"></i></span><br>
-                </div>
+                 </div>
             </div>
 
-            <div class="control-group form-group">
+            <div class="control-group form-group" ng-class="{'has-success has-feedback': editAccountForm.inputPhoneNumber.$valid, 'has-error has-feedback': !editAccountForm.inputPhoneNumber.$valid}">
                 <label class="control-label col-sm-2" for="inputPhoneNumber"><div msg key='account.phone'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="text" pattern="\d*" class="input-xlarge immediate-help account-input" name="inputPhoneNumber" id="inputPhoneNumber" ig-check-phone ng-model='account.phone' ng-minlength="7">
+                    <input type="text" class="form-control immediate-help account-input" name="inputPhoneNumber" id="inputPhoneNumber" ig-check-phone ng-model='account.phone'>
                     <div class="input-help">
                         <h4><div msg key='registration.phone.error'></div></h4>
                         <ul>
@@ -102,16 +97,13 @@
                             </li>
                         </ul>
                     </div>
-
-
-                    <span class="valid" ng-show="editAccountForm.inputPhoneNumber.$valid"><i class="fa fa-check success"></i></span><br>
-                </div>
+                 </div>
             </div>
 
-            <div class="control-group form-group">
+            <div class="control-group form-group" ng-class="{'has-success has-feedback': editAccountForm.inputEmployer.$valid, 'has-error has-feedback': !editAccountForm.inputEmployer.$valid}">
                 <label class="control-label col-sm-2" for="inputEmployer"><div msg key='account.employer'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="text" class="input-xlarge immediate-help account-input" name="inputEmployer" id="inputEmployer" ng-model='account.employer' ng-minlength="2"  required>
+                    <input type="text" class="form-control immediate-help account-input" name="inputEmployer" id="inputEmployer" ng-model='account.employer' ng-minlength="2"  required>
                     <!--<div class="input-help">-->
                         <!--<h4><div msg key='account.employer.error'></div></h4>-->
                     <!--</div>-->
@@ -119,10 +111,10 @@
                 </div>
             </div>
 
-            <div class="control-group form-group">
+            <div class="control-group form-group" ng-class="{'has-success has-feedback': editAccountForm.inputTitle.$valid, 'has-error has-feedback': !editAccountForm.inputTitle.$valid}">
                 <label class="control-label col-sm-2" for="inputTitle"><div msg key='account.title'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="text" class="input-xlarge immediate-help account-input" name="inputTitle" id="inputTitle" ng-model='account.title'>
+                    <input type="text" class="form-control immediate-help account-input" name="inputTitle" id="inputTitle" ng-model='account.title'>
                     <!--<div class="input-help">-->
                         <!--<h4><div msg key='account.title.error'></div></h4>-->
                     <!--</div>-->
@@ -130,10 +122,10 @@
                 </div>
             </div>
 
-            <div class="control-group form-group">
+            <div class="control-group form-group" ng-class="{'has-success has-feedback': editAccountForm.inputJuridiction.$valid, 'has-error has-feedback': !editAccountForm.inputJuridiction.$valid}">
                 <label class="control-label col-sm-2" for="inputJuridiction"><div msg key='account.juridiction'></div></label>
                 <div class="controls col-sm-7">
-                    <input type="text" class="input-xlarge immediate-help account-input" name="inputJuridiction" id="inputJuridiction" ng-model='account.juridiction'>
+                    <input type="text" class="form-control immediate-help account-input" name="inputJuridiction" id="inputJuridiction" ng-model='account.juridiction'>
                     <!--<div class="input-help">-->
                         <!--<h4><div msg key='account.juridiction.error'></div></h4>-->
                     <!--</div>-->
@@ -141,11 +133,10 @@
                 </div>
             </div>
 
-
             <!--<div class="control-group form-group">-->
                 <!--<label class="control-label col-sm-2" for="inputLastName"><div msg key='registration.lastname'></div></label>-->
                 <!--<div class="controls col-sm-7">-->
-                    <!--<input type="text" class="input-xlarge immediate-help" name="inputLastName" id="inputLastName" ng-model='account.lastname' ng-minlength="2" required>-->
+                    <!--<input type="text" class="form-control immediate-help" name="inputLastName" id="inputLastName" ng-model='account.lastname' ng-minlength="2" required>-->
                     <!--<div class="input-help">-->
                         <!--<h4><div msg key='account.lastname.error'></div></h4>-->
                     <!--</div>-->
@@ -153,8 +144,7 @@
                 <!--</div>-->
             <!--</div>-->
 
-
-            <div class="control-group form-group">
+            <div class="control-group form-group" >
                 <div class="col-md-offset-2 col-sm-7">
                      <button class="btn btn-primary" ng-click='updateAccount()' ng-disabled='!editAccountForm.$valid || isUnchanged(account)'><div msg key="account.updateButton"></div></button>
                      <button class="btn btn-warning" ng-click='resetForm()' ng-disabled='isUnchanged(account)'><div msg key="account.resetButton"></div></button>
