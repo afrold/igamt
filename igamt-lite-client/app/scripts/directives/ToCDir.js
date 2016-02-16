@@ -59,7 +59,7 @@ angular
 //							 console.log("branch id=" + scope.branch.id +
 //							 " label=" + scope.branch.label + " chidren=" +
 //							 scope.branch.children.length);
-							if (scope.branch.id === "message") {
+							if (scope.branch.id === "messages") {
 								element.append(branchMessageTemplate);
 							} else {
 								element.append(branchTemplate);
@@ -97,7 +97,7 @@ angular
 					var leafMessage = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
 			            + " dnd-draggable='leaf'"
 			            + " dnd-effect-allowed='move'"
-			            + " dnd-moved='moved(index, leaf, drop)'"
+			            + " dnd-moved='moved(index, leaf)'"
 			            + " dnd-selected='models.selected = leaf'"
 						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='leafContextDiv.html' ng-click='tocSelection(leaf)'> "
 						+ "{{leaf.reference.name}} - {{leaf.reference.description}}" 
@@ -126,7 +126,7 @@ angular
 //							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else if (scope.leaf.parent === "message") {
 							element.html(leafMessage).show();
-//							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent + " leaf.reference.name=" + scope.leaf.reference.name);
+							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent + " leaf.reference.name=" + scope.leaf.reference.name);
 						} else if (scope.leaf.parent === "table") {
 								element.html(leafValueSet).show();
 //								console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);

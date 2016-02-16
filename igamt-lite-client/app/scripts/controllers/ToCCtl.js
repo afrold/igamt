@@ -23,17 +23,19 @@ angular
 									});
 								}
 							});
-							$scope.moved = function (index, leaf, branch) {
-								var idx = _.findLastIndex(branch, function(leaf1) {
+							
+							$scope.moved = function (index, leaf) {
+								var idx = _.findLastIndex($scope.$parent.drop, function(leaf1) {
 									return leaf.id === leaf1.id;
 								});
 							
 								if (index === idx) {
-									branch.splice(index + 1, 1);
+									$scope.$parent.drop.splice(index + 1, 1);
 								} else {
-									branch.splice(index, 1);
+									$scope.$parent.drop.splice(index, 1);
 								}
-							}
+							};
+							
 							$scope.calcOffset = function(level) {
 								return "margin-left : " + level + "em";
 							}
