@@ -10,6 +10,19 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import org.bson.types.ObjectId;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.convert.ReadingConverter;
+
+import com.mongodb.BasicDBList;
+import com.mongodb.DBObject;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
@@ -42,19 +55,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileConversionException;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.bson.types.ObjectId;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.data.convert.ReadingConverter;
-
-import com.mongodb.BasicDBList;
-import com.mongodb.DBObject;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 31, 2015
