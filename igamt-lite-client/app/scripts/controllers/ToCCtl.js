@@ -23,20 +23,22 @@ angular
 									});
 								}
 							});
-							$scope.moved = function (index, leaf, branch) {
-								var idx = _.findLastIndex(branch, function(leaf1) {
+							
+							$scope.moved = function (index, leaf) {
+								var idx = _.findLastIndex($scope.$parent.drop, function(leaf1) {
 									return leaf.id === leaf1.id;
 								});
 							
 								if (index === idx) {
-									branch.splice(index + 1, 1);
+									$scope.$parent.drop.splice(index + 1, 1);
 								} else {
-									branch.splice(index, 1);
+									$scope.$parent.drop.splice(index, 1);
 								}
-							}
+							};
+							
 							$scope.calcOffset = function(level) {
 								return "margin-left : " + level + "em";
-							}
+							};
 
 							$scope.tocSelection = function(entry) {
 								// TODO gcr: See about refactoring this to
@@ -106,12 +108,6 @@ angular
 										CloneDeleteSvc.copyMessage(leaf.reference);
 									}
 									break;
-//								case "Copy":
-//									console.log("Clone==> node=" + leaf);
-//									CloneDeleteSvc.cloneMessage(
-//											$rootScope.igdocument, leaf.reference);
-//									$rootScope.$broadcast('event:SetToC');
-//									break;
 								case "Delete":
 									console.log("Copy==> node=" + leaf);
 									if (leaf.reference.type === 'section') {
@@ -132,7 +128,6 @@ angular
 													+ ctxMenuSelection
 													+ " Should be Add, clone, or Delete.");
 								}
-								$rootScope.$broadcast('event:SetToC');
 							};
 
 						} ])

@@ -1521,7 +1521,6 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 
 });
 
-
 angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $modalInstance, segToDelete, $rootScope) {
     $scope.segToDelete = segToDelete;
     $scope.loading = false;
@@ -1530,6 +1529,10 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $
         $scope.loading = true;
         var index = $rootScope.segments.indexOf($scope.segToDelete);
         if (index > -1) $rootScope.segments.splice(index, 1);
+        if ($rootScope.segment === $scope.segToDelete) {
+            $rootScope.segment = null;
+        }
+        if (index > -1) $rootScope.igdocument.profile.segments.children.splice(index, 1);
         if ($rootScope.segment === $scope.segToDelete) {
             $rootScope.segment = null;
         }
@@ -1548,17 +1551,17 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $
             $rootScope.recordDelete("segment", "edit", $scope.segToDelete.id);
             if ($scope.segToDelete.components != undefined && $scope.segToDelete.components != null && $scope.segToDelete.components.length > 0) {
 
-                //clear components changes
-                angular.forEach($scope.dtToDelete.components, function (component) {
-                    $rootScope.recordDelete("component", "edit", component.id);
-                    $rootScope.removeObjectFromChanges("component", "delete", component.id);
+                //clear field changes
+                angular.forEach($scope.segToDelete.fields, function (component) {
+                    $rootScope.recordDelete("field", "edit", field.id);
+                    $rootScope.removeObjectFromChanges("field", "delete", field.id);
                 });
-                if ($rootScope.changes["component"]["delete"] && $rootScope.changes["component"]["delete"].length === 0) {
-                    delete  $rootScope.changes["component"]["delete"];
+                if ($rootScope.changes["field"]["delete"] && $rootScope.changes["field"]["delete"].length === 0) {
+                    delete  $rootScope.changes["field"]["delete"];
                 }
 
-                if ($rootScope.changes["component"] && Object.getOwnPropertyNames($rootScope.changes["component"]).length === 0) {
-                    delete  $rootScope.changes["component"];
+                if ($rootScope.changes["field"] && Object.getOwnPropertyNames($rootScope.changes["field"]).length === 0) {
+                    delete  $rootScope.changes["field"];
                 }
 
             }
@@ -1579,9 +1582,9 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $
 
             }
 
-            if ($scope.dtToDelete.conformanceStatements != undefined && $scope.dtToDelete.conformanceStatements != null && $scope.dtToDelete.conformanceStatements.length > 0) {
-                //clear conforamance statement changes
-                angular.forEach($scope.dtToDelete.conformanceStatements, function (confStatement) {
+            if ($scope.segToDelete.conformanceStatements != undefined && $scope.segToDelete.conformanceStatements != null && $scope.segToDelete.conformanceStatements.length > 0) {
+            	//clear conforamance statement changes
+                angular.forEach($scope.segToDelete.conformanceStatements, function (confStatement) {
                     $rootScope.recordDelete("conformanceStatement", "edit", confStatement.id);
                     $rootScope.removeObjectFromChanges("conformanceStatement", "delete", confStatement.id);
                 });
@@ -1601,7 +1604,7 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $
         $rootScope.msg().show = true;
         $rootScope.manualHandle = true;
         $modalInstance.close($scope.segToDelete);
-
+        $rootScope.$broadcast('event:SetToC');
     };
 
     $scope.cancel = function () {

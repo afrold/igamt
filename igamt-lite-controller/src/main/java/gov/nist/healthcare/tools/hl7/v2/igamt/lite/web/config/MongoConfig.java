@@ -80,6 +80,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
 		converterList.add(new SegmentRefWriteConverter());
 		converterList.add(new ProfileReadConverter());
 		converterList.add(new IGDocumentReadConverter());
+		converterList.add(new DatatypeLibraryReadConverter());
 		return new CustomConversions(converterList);
 	}
 
