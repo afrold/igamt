@@ -40,3 +40,9 @@
 .form-group.igl-has-error input.form-control:focus ~ .floating-label {
     color: #f44336;
 }
+
+.nav-tabs {
+    background-color: #ffec9d;
+    border-bottom: 1px solid #ffec9d;
+    color:black;
+}

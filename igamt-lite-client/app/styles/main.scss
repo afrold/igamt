@@ -1935,14 +1935,14 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 
 
 .nav-tabs > li > a {
-  border-color: #bce8f1;
-  background-color: #d9edf7;
-  color: #3a87ad;
+  border-color: #ffec9d;
+  background-color: #ffec9d;
+  color: black;
 }
 
 .nav-tabs > li.active > a, .nav-tabs > li > a:hover, .nav-tabs > li.active > a:hover {
-  background-color: #428bca;
-  border-color: #bce8f1;
+  background-color: #ffcc00;
+  border-color: #ffcc00;
   //border: 0px;
   color: white;
   cursor: pointer;
@@ -2000,12 +2000,12 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 
 
 .nav-tabs > li > a {
-  color: #003399;
+  color: #ffef8f;
   border-radius: 0px;
 }
 
 .nav-tabs > li > a:hover {
-  color: #003399;
+  color: #ffef8f;
 }
 
 .nav-tabs {
@@ -2015,12 +2015,12 @@ ul.dropdown-menu, ul.dropdown-menu > li {
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 .nav-tabs > li.focus > a, .nav-tabs > li > a:focus, .nav-tabs > li.active > a:focus {
-  background-color: #428bca;
-  border-color: #bce8f1;
-  color: white;
+  background-color: #ffcc00;
+  border-color: #ffcc00;
+  color: black;
 }
 
-.active {
+li.active {
   background-color: #ffcc00;
 }
 
