@@ -17,9 +17,8 @@
         </div>
         <div ng-show="!loadingSelection">
             <div class="page-header">
-                <span class="header4">{{section.sectionTitle}}</span>
+                <!--<span class="header4">{{section.sectionTitle}}</span>-->
      <span class="pull-right">
-
         <button title="Create Copy" type="button" class="btn btn-xs btn-info"
                 ng-click="copySection(section)" ng-hide="options.readonly"
                 >
@@ -35,7 +34,7 @@
             <form name="sectionForm" id="sectionForm" novalidate>
                 <div class="col-md-12">
                     <div class="form-group"
-                         ng-class="{'has-error' : sectionForm.label.$invalid && !sectionForm.label.$pristine }">
+                         ng-class="{'has-error' : sectionForm.label.$invalid}">
                         <label>Title</label>
                         <span style="color:red" ng-show="isDuplicated(section,'title', sections)">Existing label (flavor name)</span>
                         <input type="text" disabled
