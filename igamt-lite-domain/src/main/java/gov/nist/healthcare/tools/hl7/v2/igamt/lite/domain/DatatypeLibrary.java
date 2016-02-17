@@ -2,6 +2,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +23,8 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	private String id;
 
 	private Long accountId;
+	
+	private Date date;
 	
 	public enum SCOPE {HL7STANDARD, MASTER, USER};
  
@@ -57,6 +60,14 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 	public void setAccountId(Long accountId) {
 		this.accountId = accountId;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public Set<Datatype> getChildren() {

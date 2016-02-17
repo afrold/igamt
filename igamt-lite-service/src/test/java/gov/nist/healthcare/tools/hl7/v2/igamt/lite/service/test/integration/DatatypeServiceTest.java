@@ -8,35 +8,45 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
+
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 
 /**
- * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
+ * @author gcr1
+ *
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {PersistenceContext.class})
+public class DatatypeServiceTest {
 
-@RestController
-@RequestMapping("/datatypes")
-public class DatatypeController extends CommonController {
-
-	Logger log = LoggerFactory.getLogger(ProfileController.class);
-
-	 @Autowired
-	 private DatatypeService datatypeService;
+	 private Logger log = LoggerFactory.getLogger(DatatypeServiceTest.class);
 	
-		public  List<Datatype> datatypes() {
-			log.info("Fetching all preloaded IGDocuments...");
-			List<Datatype> result = datatypeService.findAll();
-			return result;
-		}
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
+	@Autowired
+	DatatypeService datatypeService;
+	
+	@Test
+	public void testFindAll() {
+		List<Datatype> datatypes = datatypeService.findAll();
+		log.info("datatypes.size()=" + datatypes.size());
+		assertEquals(91, datatypes.size());
+	}
 }

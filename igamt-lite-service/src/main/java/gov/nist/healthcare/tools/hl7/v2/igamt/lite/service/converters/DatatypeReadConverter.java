@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.convert.ReadingConverter;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
@@ -17,10 +20,18 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileConversionException;
 
+@ReadingConverter
 public class DatatypeReadConverter implements Converter<DBObject, Datatype> {
 
+	private static final Logger log = LoggerFactory.getLogger(DatatypeReadConverter.class);
+	
+	public DatatypeReadConverter() {
+		log.info("Datatype Read Converter Created");
+	}
+	
 	@Override
 	public Datatype convert(DBObject source) {
+		log.info("convert==>");
 		Datatype dt = new Datatype();
 		dt.setId(readMongoId(source));
 		dt.setType(((String) source.get("type")));
@@ -65,6 +76,8 @@ public class DatatypeReadConverter implements Converter<DBObject, Datatype> {
 			}
 			dt.setPredicates(predicates);
 		}
+		log.info("<==convert");
+
 		return dt;
 	} 
 	

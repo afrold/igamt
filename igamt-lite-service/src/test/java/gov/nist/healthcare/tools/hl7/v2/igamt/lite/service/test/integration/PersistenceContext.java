@@ -24,6 +24,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -39,11 +41,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.DatatypeReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.IGDocumentReadConverter;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRefWriteConverter;
 
 
@@ -53,6 +54,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.SegmentRef
 // @EnableTransactionManagement(proxyTargetClass = true)
 @ComponentScan(basePackages = "gov.nist.healthcare.tools.hl7.v2.igamt.lite")
 public class PersistenceContext extends AbstractMongoConfiguration {
+
+	 private Logger log = LoggerFactory.getLogger(PersistenceContext.class);
 
 	@Resource
 	private Environment env;
@@ -79,6 +82,7 @@ public class PersistenceContext extends AbstractMongoConfiguration {
 		converterList.add(new ComponentWriteConverter());
 		converterList.add(new SegmentRefWriteConverter());
 		converterList.add(new IGDocumentReadConverter());
+		converterList.add(new DatatypeReadConverter());
 		return new CustomConversions(converterList);
 	}
 

@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 
@@ -62,12 +64,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileConversionExce
 @ReadingConverter
 public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> {
 
+	private static final Logger log = LoggerFactory.getLogger(IGDocumentReadConverter.class);
+	
 	public IGDocumentReadConverter() {
-		System.out.println("IGDocument Read Converter Created");
+		log.info("IGDocument Read Converter Created");
 	}
 
 	@Override
 	public IGDocument convert(DBObject source) {
+		System.out.println("convert==>");
 		IGDocument igd = new IGDocument();
 		igd.setAccountId(readLong(source, "accountId"));
 		igd.setChildSections(sections((DBObject) source.get("childSections")));
@@ -78,6 +83,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		igd.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
 		igd.setType(((String) source.get("type")));
 		igd.setUsageNote(readString(source, "usageNote"));
+		System.out.println("<==convert");
 		return igd;
 	}
 	
