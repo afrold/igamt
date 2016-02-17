@@ -21,7 +21,7 @@ $icon-font-path: "../fonts/";
   background: white;
   color: black;
   box-shadow: 0 0 6px #021a4c;
-  background-color: #f4f4f4;
+  background-color: #fafafa;
 }
 
 /* Space out content a bit */
@@ -38,7 +38,7 @@ body {
   //     font: 76%/ 1.4em Arial, Geneva, Verdana, Helvetica, sans-serif;
   background: #021a4c url(../images/bg_body4.jpg) no-repeat 50% -10px;
   color: black;
-  background-color: #f4f4f4;
+  background-color: #fafafa;
 }
 
 
@@ -2035,3 +2035,10 @@ tr.current {
 div.col-margin{
   margin-right:15px;
 }
+
+input.form-control {
+  padding: 0px;
+}
+
+
+html {background-color: #fafafa}
