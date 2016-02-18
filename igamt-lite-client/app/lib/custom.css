@@ -1,0 +1,48 @@
+
+.igl-has-error .help-block,
+.igl-has-error .control-label,
+.igl-has-error .radio,
+.igl-has-error .checkbox,
+.igl-has-error .radio-inline,
+.igl-has-error .checkbox-inline,
+.igl-has-error.radio label,
+.igl-has-error.checkbox label,
+.igl-has-error.radio-inline label,
+.igl-has-error.checkbox-inline label {
+    color: #a94442;
+}
+.igl-has-error .form-control {
+    border-color: #a94442;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+.igl-has-error .form-control:focus {
+    border-color: #a94442;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483;
+}
+.igl-has-error .input-group-addon {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #a94442;
+}
+.igl-has-error .form-control-feedback {
+    color: #a94442;
+}
+
+.form-group.igl-has-error .material-input:focus,
+.form-group.igl-has-error .form-control:focus,
+.form-group.igl-has-error .form-control.focus {
+    background-image: linear-gradient(#f44336, #f44336), linear-gradient(#d2d2d2, #d2d2d2);
+    box-shadow: none;
+}
+.form-group.igl-has-error .control-label,
+.form-group.igl-has-error input.form-control:focus ~ .floating-label {
+    color: #f44336;
+}
+
+.nav-tabs {
+    background-color: #ffec9d;
+    border-bottom: 1px solid #ffec9d;
+    color:black;
+}

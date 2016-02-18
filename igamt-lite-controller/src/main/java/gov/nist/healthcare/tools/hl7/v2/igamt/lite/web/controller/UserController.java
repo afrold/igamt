@@ -78,7 +78,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@Autowired 
+	@Autowired
 	AccountRepository accountRepository;
 
 	@Autowired
@@ -254,14 +254,12 @@ public class UserController {
 
 		return new ResponseMessage(ResponseMessage.Type.success,
 				"resentRegistrationInvite", acc.getUsername());
-	} 
-	
-	
+	}
+
 	@PreAuthorize("hasRole('admin')")
 	@RequestMapping(value = "/accounts/{accountId}/approveaccount", method = RequestMethod.POST)
-	public ResponseMessage approveAccount(
-			@PathVariable Long accountId, HttpServletRequest request)
-			throws Exception {
+	public ResponseMessage approveAccount(@PathVariable Long accountId,
+			HttpServletRequest request) throws Exception {
 
 		// get account
 		Account acc = accountRepository.findOne(accountId);
@@ -279,14 +277,12 @@ public class UserController {
 
 		return new ResponseMessage(ResponseMessage.Type.success,
 				"accountApproved", acc.getUsername(), true);
-	}  
-	
-	
+	}
+
 	@PreAuthorize("hasRole('admin')")
 	@RequestMapping(value = "/accounts/{accountId}/suspendaccount", method = RequestMethod.POST)
-	public ResponseMessage suspendAccount(
-			@PathVariable Long accountId, HttpServletRequest request)
-			throws Exception {
+	public ResponseMessage suspendAccount(@PathVariable Long accountId,
+			HttpServletRequest request) throws Exception {
 		// get account
 		Account acc = accountRepository.findOne(accountId);
 
@@ -294,16 +290,13 @@ public class UserController {
 			return new ResponseMessage(ResponseMessage.Type.danger,
 					"badAccount", accountId.toString(), true);
 		}
-		
+
 		acc.setPending(true);
 		accountRepository.save(acc);
 		// generate and send email
- 		return new ResponseMessage(ResponseMessage.Type.success,
+		return new ResponseMessage(ResponseMessage.Type.success,
 				"accountSuspended", acc.getUsername(), true);
 	}
-	
-	
-	
 
 	/**
 	 * Unauthenticated user registers himself accountType -> (provider)
@@ -477,10 +470,10 @@ public class UserController {
 		this.sendChangeAccountPasswordNotification(onRecordAccount);
 
 		return new ResponseMessage(ResponseMessage.Type.success,
-				"accountPasswordReset", onRecordAccount.getId().toString(),true);
+				"accountPasswordReset", onRecordAccount.getId().toString(),
+				true);
 	}
-	
-	
+
 	/**
 	 * Admin wants to change user password
 	 * */
@@ -511,13 +504,12 @@ public class UserController {
 				acc.getNewPassword());
 
 		// send email notification
-		this.sendChangeAccountPasswordNotification(onRecordAccount,newPassword);
+		this.sendChangeAccountPasswordNotification(onRecordAccount, newPassword);
 
 		return new ResponseMessage(ResponseMessage.Type.success,
-				"accountPasswordReset", onRecordAccount.getId().toString(),true);
+				"accountPasswordReset", onRecordAccount.getId().toString(),
+				true);
 	}
-	
-	
 
 	/**
 	 * User has to change his password and accept the agreement to complete the
@@ -755,13 +747,14 @@ public class UserController {
 		if (u != null && u.isEnabled()) {
 			Account a = accountRepository.findByTheAccountsUsername(u
 					.getUsername());
-			if(!a.isPending()) {
+			if (!a.isPending()) {
 				cu = new CurrentUser();
 				cu.setUsername(u.getUsername());
 				cu.setAccountId(a.getId());
 				cu.setAuthenticated(true);
 				cu.setAuthorities(u.getAuthorities());
 				cu.setPending(a.isPending());
+				cu.setFullName(a.getFullName());
 			}
 		}
 		return cu;
@@ -795,8 +788,7 @@ public class UserController {
 				+ " \n" + "Your username is: " + acc.getUsername() + " \n\n"
 				+ "Please refer to the user guide for the detailed steps. "
 				+ "\n\n" + "Sincerely, " + "\n\n" + "The NIST IGAMT Team"
-				+ "\n\n"
-				+ "P.S: If you need help, contact us at '"
+				+ "\n\n" + "P.S: If you need help, contact us at '"
 				+ ADMIN_EMAIL + "'");
 
 		try {
@@ -811,13 +803,27 @@ public class UserController {
 		msg.setSubject("New Registration Application on IGAMT");
 		msg.setTo(ADMIN_EMAIL);
 		msg.setText("Hello Admin,  \n A new application has been submitted and is waiting for approval. The user information are as follow: \n\n"
-				+ "Name: " + acc.getFullName() + "\n"
-				+ "Email: " + acc.getEmail()  + "\n"
-				+ "Username: " + acc.getUsername()+ "\n"
-				+ "Title/Position: " + acc.getTitle() + "\n"
-				+ "Employer: " + acc.getEmployer() + "\n"
-				+ "Juridiction: " + acc.getJuridiction() + "\n"
-				+ "Phone Number: " + acc.getPhone() + "\n"
+				+ "Name: "
+				+ acc.getFullName()
+				+ "\n"
+				+ "Email: "
+				+ acc.getEmail()
+				+ "\n"
+				+ "Username: "
+				+ acc.getUsername()
+				+ "\n"
+				+ "Title/Position: "
+				+ acc.getTitle()
+				+ "\n"
+				+ "Employer: "
+				+ acc.getEmployer()
+				+ "\n"
+				+ "Juridiction: "
+				+ acc.getJuridiction()
+				+ "\n"
+				+ "Phone Number: "
+				+ acc.getPhone()
+				+ "\n"
 				+ " \n\n"
 				+ "Sincerely, " + "\n\n" + "The NIST IGAMT Team" + "\n\n");
 		try {
@@ -825,9 +831,8 @@ public class UserController {
 		} catch (MailException ex) {
 			logger.error(ex.getMessage(), ex);
 		}
-	} 
-	
-	
+	}
+
 	private void sendAccountApproveNotification(Account acc) {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 
@@ -838,19 +843,15 @@ public class UserController {
 				+ " \n\n"
 				+ "**** If you have not requested a new account, please disregard this email **** \n\n\n"
 				+ "Your account has been approved and you can proceed "
-				+ "to login .\n"
-				+ "\n\n" + "Sincerely, " + "\n\n" + "The NIST IGAMT Team"
-				+ "\n\n" + "P.S: If you need help, contact us at '"
-				+ ADMIN_EMAIL + "'");
+				+ "to login .\n" + "\n\n" + "Sincerely, " + "\n\n"
+				+ "The NIST IGAMT Team" + "\n\n"
+				+ "P.S: If you need help, contact us at '" + ADMIN_EMAIL + "'");
 		try {
 			this.mailSender.send(msg);
 		} catch (MailException ex) {
 			logger.error(ex.getMessage(), ex);
 		}
 	}
-
-	
-	
 
 	private void sendAccountRegistrationPasswordResetNotification(Account acc,
 			String url) {
@@ -916,15 +917,16 @@ public class UserController {
 		} catch (MailException ex) {
 			logger.error(ex.getMessage(), ex);
 		}
-	} 
-	
-	private void sendChangeAccountPasswordNotification(Account acc,String newPassword) {
+	}
+
+	private void sendChangeAccountPasswordNotification(Account acc,
+			String newPassword) {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
 		msg.setTo(acc.getEmail());
 		msg.setSubject("NIST IGAMT Password Change Notification");
 		msg.setText("Dear " + acc.getUsername() + " \n\n"
 				+ "Your password has been successfully changed." + " \n\n"
-				+ "Your new temporary password is ."+ newPassword + " \n\n"
+				+ "Your new temporary password is ." + newPassword + " \n\n"
 				+ "Please update your password once logged in. \n\n"
 				+ "Sincerely,\n\n" + "The NIST IGAMT Team");
 
@@ -934,8 +936,6 @@ public class UserController {
 			logger.error(ex.getMessage(), ex);
 		}
 	}
-
-	
 
 	private void sendResetAccountPasswordNotification(Account acc) {
 		SimpleMailMessage msg = new SimpleMailMessage(this.templateMessage);
