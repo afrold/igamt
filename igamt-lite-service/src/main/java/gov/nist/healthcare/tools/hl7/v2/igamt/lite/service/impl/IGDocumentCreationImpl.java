@@ -72,7 +72,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		for (IGDocument d : docs) {
 			for (Message m : d.getProfile().getMessages().getChildren()) {
 				if (!messageIds.contains(m.getId())) {
-					String[] msgDesc = new String[] { m.getId(), m.getEvent(), m.getStructID(), m.getDescription() };
+					String[] msgDesc = new String[] { m.getId(), m.getStructID(), m.getEvent(), m.getDescription() };
 					rst.add(msgDesc);
 				}
 			}
