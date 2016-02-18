@@ -38,12 +38,6 @@ Cloneable, Comparable<Message> {
 	// @Column(nullable = true, name = "MESSAGE_DESC")
 	private String description;
 
-	private String version;
-
-	private String date;
-
-	private String oid;
-
 	private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
 	// @DBRef
@@ -247,36 +241,14 @@ Cloneable, Comparable<Message> {
 		return c != null && this.getConformanceStatements().remove(c);
 	}
 
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public String getOid() {
-		return oid;
-	}
-
-	public void setOid(String oid) {
-		this.oid = oid;
-	}
+	 
 
 	@Override
 	public String toString() {
 		return "Message [id=" + id + ", name=" + name 
 				+ ", identifier=" + identifier + ", type=" + messageType 
 				+ ", event=" + event + ", structID=" + structID 
-				+ ", date=" + date + ", description=" + description + "]";
+				  + ", description=" + description + "]";
 	}
 
 	public Message clone(HashMap<String, Datatype> dtRecords,
@@ -309,9 +281,6 @@ Cloneable, Comparable<Message> {
 		clonedMessage.setPosition(position);
 		clonedMessage.setStructID(structID);
 		clonedMessage.setUsageNote(usageNote);
-		clonedMessage.setDate(date);
-		clonedMessage.setOid(oid);
-		clonedMessage.setVersion(version);
 		clonedMessage
 		.setConformanceStatements(new ArrayList<ConformanceStatement>());
 		for (ConformanceStatement cs : this.conformanceStatements) {
