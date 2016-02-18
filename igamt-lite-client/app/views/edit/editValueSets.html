@@ -23,13 +23,13 @@
                                         ng-click="cloneTableFlavor(table)">
                                     <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Flavor</span>
                                 </button>
-                        		<button title="Delete" type="button" class="btn btn-sm btn-danger"
+ 								<button title="Close" type="button" class="btn btn-sm btn-warning" ng-click="close()">
+                                    <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
+                                </button>
+	                       		<button title="Delete" type="button" class="btn btn-sm btn-danger"
                                         ng-hide="options.readonly"
                                         ng-click="delete(table)">
                                     <span><i class="fa fa-trash-o fa-fw"></i>&nbsp; Delete</span>
-                                </button>
-								<button title="Close" type="button" class="btn btn-sm btn-warning" ng-click="close()">
-                                    <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
                                 </button>
 							</span>
                     <hr/>
@@ -50,25 +50,25 @@
 										<span style="color:red" ng-show="isDuplicated(table,'bindingIdentifier', tables)">Existing mapping Identifier</span>
                                         <input type="text" name="tableIndentifier"  ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'bindingIdentifier', table.bindingIdentifier)"
-                                               class="form-control" ng-model="table.bindingIdentifier" required>
+                                               class="igl-input" ng-model="table.bindingIdentifier" required>
                                         <label>Version</label>
                                         <input type="text" name="version" ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'version', table.version)"
-                                               class="form-control"
+                                               class="igl-input"
                                                ng-model="table.version">
                                         <label>OID</label>
                                         <input type="text" name="oid" ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'oid', table.oid)"
-                                               class="form-control" ng-model="table.oid">
+                                               class="igl-input" ng-model="table.oid">
                                         <label>Stability</label>
-                                        <select class="form-control" ng-disabled="options.readonly"
+                                        <select class="igl-input" ng-disabled="options.readonly"
                                                 name="stability"
                                                 ng-change="recordChangeTable(table,'stability', table.stability)"
                                                 ng-model="table.stability"
                                                 ng-options="stability for stability in config.tableStabilities">
                                         </select>
 										<label>Content Definition</label>
-                                        <select class="form-control" ng-disabled="options.readonly"
+                                        <select class="igl-input" ng-disabled="options.readonly"
                                                 name="contentDefinition"
                                                 ng-change="recordChangeTable(table,'contentDefinition', table.contentDefinition)"
                                                 ng-model="table.contentDefinition"
@@ -79,24 +79,24 @@
                                         <label>Name</label>
                                         <input type="text" name="name" ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'name', table.name)"
-                                               class="form-control" ng-model="table.name" required>
+                                               class="igl-input" ng-model="table.name" required>
 										<label>Description</label>
                                         <input type="text" name="description" ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'description', table.description)"
-                                               class="form-control" ng-model="table.description">
+                                               class="igl-input" ng-model="table.description">
                                         <label>Type</label>
                                         <input type="text" name="type" ng-disabled="options.readonly"
                                                ng-change="recordChangeTable(table,'tableType', table.tableType)"
-                                               class="form-control" ng-model="table.tableType">
+                                               class="igl-input" ng-model="table.tableType">
                                         <label>Extensibility</label>
-                                        <select class="form-control" ng-disabled="options.readonly"
+                                        <select class="igl-input" ng-disabled="options.readonly"
                                                 name="Extensibility"
                                                 ng-change="recordChangeTable(table,'extensibility', table.extensibility)"
                                                 ng-model="table.extensibility"
                                                 ng-options="extensibility for extensibility in config.tableExtensibilities">
                                         </select>
 										<label>Code Systems</label>
-										<div>
+										<div class="igl-input">
 											<span ng-repeat="cs in codeSystems">
 												{{cs}} 
 												<a ng-click="delCodeSystem(cs)" ng-show="codeSysEditMode" class="point">
@@ -109,7 +109,6 @@
                     								<span><i class="fa fa-pencil fa-fw"></i></span>
                 								</a>
 	
-
 												<input class="igl-input" ng-model="codeSysForm.str" type="text" ng-show="codeSysEditMode"/>
 												<a ng-click="addCodeSystem()" ng-show="codeSysEditMode" class="point">
                     								<span><i class="fa fa-plus-circle fa-fw"></i></span>

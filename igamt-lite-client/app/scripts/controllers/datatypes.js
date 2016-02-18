@@ -32,49 +32,50 @@ angular.module('igl')
         };
 
         $scope.delete = function (datatype) {
-            $rootScope.references = [];
-            angular.forEach($rootScope.segments, function (segment) {
-                $rootScope.findDatatypeRefs(datatype, segment);
-            });
-            if ($rootScope.references != null && $rootScope.references.length > 0) {
-                $scope.abortDelete(datatype);
-            } else {
-                $scope.confirmDelete(datatype);
-            }
+        		  CloneDeleteSvc.deleteDatatype(datatype);
+//            $rootScope.references = [];
+//            angular.forEach($rootScope.segments, function (segment) {
+//                $rootScope.findDatatypeRefs(datatype, segment);
+//            });
+//            if ($rootScope.references != null && $rootScope.references.length > 0) {
+//                $scope.abortDelete(datatype);
+//            } else {
+//                $scope.confirmDelete(datatype);
+//            }
 			$rootScope.$broadcast('event:SetToC');
        };
 
-        $scope.abortDelete = function (datatype) {
-            var modalInstance = $modal.open({
-                templateUrl: 'DatatypeReferencesCtrl.html',
-                controller: 'DatatypeReferencesCtrl',
-                resolve: {
-                    dtToDelete: function () {
-                        return datatype;
-                    }
-                }
-            });
-            modalInstance.result.then(function (datatype) {
-                $scope.dtToDelete = datatype;
-            }, function () {
-            });
-        };
+//        $scope.abortDelete = function (datatype) {
+//            var modalInstance = $modal.open({
+//                templateUrl: 'DatatypeReferencesCtrl.html',
+//                controller: 'DatatypeReferencesCtrl',
+//                resolve: {
+//                    dtToDelete: function () {
+//                        return datatype;
+//                    }
+//                }
+//            });
+//            modalInstance.result.then(function (datatype) {
+//                $scope.dtToDelete = datatype;
+//            }, function () {
+//            });
+//        };
 
-        $scope.confirmDelete = function (datatype) {
-            var modalInstance = $modal.open({
-                templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
-                controller: 'ConfirmDatatypeDeleteCtrl',
-                resolve: {
-                    dtToDelete: function () {
-                        return datatype;
-                    }
-                }
-            });
-            modalInstance.result.then(function (datatype) {
-                $scope.dtToDelete = datatype;
-            }, function () {
-            });
-        };
+//        $scope.confirmDelete = function (datatype) {
+//            var modalInstance = $modal.open({
+//                templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
+//                controller: 'ConfirmDatatypeDeleteCtrl',
+//                resolve: {
+//                    dtToDelete: function () {
+//                        return datatype;
+//                    }
+//                }
+//            });
+//            modalInstance.result.then(function (datatype) {
+//                $scope.dtToDelete = datatype;
+//            }, function () {
+//            });
+//        };
 
 
         $scope.hasChildren = function (node) {

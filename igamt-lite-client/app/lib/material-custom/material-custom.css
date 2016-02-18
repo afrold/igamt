@@ -2552,7 +2552,7 @@ Then, run this script to get the list.
   content: "\e8f5";
 }
 body {
-  background-color: #eeeeee;
+  //background-color: #eeeeee;
 }
 body.inverse {
   background: #333333;

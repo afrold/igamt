@@ -140,8 +140,8 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
         $rootScope.table = null;
     };
 
-    $scope.cloneTableFlavor = function (table) {
-		CloneDeleteSvc.cloneTableFlavor(table);
+    $scope.copyTable = function (table) {
+		CloneDeleteSvc.copyTable(table);
 		$rootScope.$broadcast('event:SetToC');
     };
 
@@ -171,49 +171,50 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
     };
 
     $scope.delete = function (table) {
-        $rootScope.references = [];
-        angular.forEach($rootScope.segments, function (segment) {
-            $rootScope.findTableRefs(table, segment);
-        });
-        if ($rootScope.references != null && $rootScope.references.length > 0) {
-            $scope.abortDelete(table);
-        } else {
-            $scope.confirmDelete(table);
-        }
+    		CloneDeleteSvc.deleteValueSet(table);
+//    		$rootScope.references = [];
+//        angular.forEach($rootScope.segments, function (segment) {
+//            $rootScope.findTableRefs(table, segment);
+//        });
+//        if ($rootScope.references != null && $rootScope.references.length > 0) {
+//            $scope.abortDelete(table);
+//        } else {
+//            $scope.confirmDelete(table);
+//        }
 		$rootScope.$broadcast('event:SetToC');
    };
 
-    $scope.abortDelete = function (table) {
-        var modalInstance = $modal.open({
-            templateUrl: 'ValueSetReferencesCtrl.html',
-            controller: 'ValueSetReferencesCtrl',
-            resolve: {
-                tableToDelete: function () {
-                    return table;
-                }
-            }
-        });
-        modalInstance.result.then(function (table) {
-            $scope.tableToDelete = table;
-        }, function () {
-        });
-    };
+//    $scope.abortDelete = function (table) {
+//        var modalInstance = $modal.open({
+//            templateUrl: 'ValueSetReferencesCtrl.html',
+//            controller: 'ValueSetReferencesCtrl',
+//            resolve: {
+//                tableToDelete: function () {
+//                    return table;
+//                }
+//            }
+//        });
+//        modalInstance.result.then(function (table) {
+//            $scope.tableToDelete = table;
+//        }, function () {
+//        });
+//    };
 
-    $scope.confirmDelete = function (table) {
-        var modalInstance = $modal.open({
-            templateUrl: 'ConfirmValueSetDeleteCtrl.html',
-            controller: 'ConfirmValueSetDeleteCtrl',
-            resolve: {
-                tableToDelete: function () {
-                    return table;
-                }
-            }
-        });
-        modalInstance.result.then(function (table) {
-            $scope.tableToDelete = table;
-        }, function () {
-        });
-    };
+//    $scope.confirmDelete = function (table) {
+//        var modalInstance = $modal.open({
+//            templateUrl: 'ConfirmValueSetDeleteCtrl.html',
+//            controller: 'ConfirmValueSetDeleteCtrl',
+//            resolve: {
+//                tableToDelete: function () {
+//                    return table;
+//                }
+//            }
+//        });
+//        modalInstance.result.then(function (table) {
+//            $scope.tableToDelete = table;
+//        }, function () {
+//        });
+//    };
 });
 
 angular.module('igl').controller('TableModalCtrl', function ($scope) {
