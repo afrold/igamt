@@ -12,8 +12,8 @@ angular.module('igl')
         $scope.init = function () {
        };
 
-        $scope.cloneDatatypeFlavor = function (datatype) {
-        		CloneDeleteSvc.cloneDatatypeFlavor(datatype);
+        $scope.copy = function (datatype) {
+        		CloneDeleteSvc.copyDatatype(datatype);
         };
 
         $scope.recordDatatypeChange = function (type, command, id, valueType, value) {

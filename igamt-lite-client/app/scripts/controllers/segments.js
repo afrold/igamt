@@ -23,8 +23,8 @@ angular.module('igl')
             $scope.loadingSelection = false;
         };
         
-        $scope.cloneSegmentFlavor = function(segment) {
-        		CloneDeleteSvc.cloneSegmentFlavor(segment);
+        $scope.copy = function(segment) {
+        		CloneDeleteSvc.copySegment(segment);
         }
 
         $scope.delete = function (segment) {
