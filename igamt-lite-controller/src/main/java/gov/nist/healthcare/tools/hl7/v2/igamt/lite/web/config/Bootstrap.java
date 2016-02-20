@@ -18,21 +18,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.AppInfoRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 
 @Service
-@PropertySource(value = "classpath:app-web-config.properties")
 public class Bootstrap implements InitializingBean {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -43,12 +38,6 @@ public class Bootstrap implements InitializingBean {
 	@Autowired
 	IGDocumentService documentService;
 
-	@Autowired
-	private Environment env;
-
-	@Autowired
-	AppInfoRepository appInfoRepository;
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -57,12 +46,11 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		// loadPreloadedIGDocuments();
-		// loadDocumentsFromProfiles();
-		loadAppInfo();
+		// init();
+		// init2();
 	}
 
-	private void loadIGDocumentsFromProfiles() throws Exception {
+	private void init2() throws Exception {
 		List<Profile> profiles = profileService.findAllProfiles();
 
 		for (Profile p : profiles) {
@@ -77,16 +65,9 @@ public class Bootstrap implements InitializingBean {
 		String v = IOUtils.toString(this.getClass().getResourceAsStream("/profiles/VXU-Z22_ValueSetLibrary.xml"));
 		String c = IOUtils.toString(this.getClass().getResourceAsStream("/profiles/VXU-Z22_Constraints.xml"));
 		Profile profile = new ProfileSerializationImpl().deserializeXMLToProfile(p, v, c);
+
 		profile.setScope(IGDocumentScope.PRELOADED);
 		profileService.save(profile);
 	}
 
-	private void loadAppInfo() throws Exception {
-		appInfoRepository.deleteAll();
-		AppInfo appInfo = new AppInfo();
-		appInfo.setAdminEmail(env.getProperty("admin.email"));
-		appInfo.setDate(env.getProperty("app.date"));
-		appInfo.setVersion(env.getProperty("app.version"));
-		appInfoRepository.save(appInfo);
-	}
 }

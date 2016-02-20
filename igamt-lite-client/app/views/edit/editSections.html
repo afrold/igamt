@@ -16,6 +16,23 @@
 	<div ng-show="!loadingSelection">
 		<div class="page-header">
 			<span class="header4">{{section.sectionTitle}}</span>
+     <span class="pull-right">
+
+        <button title="Create Copy" type="button" class="btn btn-xs btn-info"
+                ng-click="copySection(section)" ng-hide="options.readonly"
+                >
+            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Copy</span>
+        </button>
+        <button title="Close" type="button" class="btn btn-xs btn-warning"
+                ng-click="close()">
+            <span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>
+        </button>
+        <button title="Delete" type="button" ng-hide="options.readonly"
+                class="btn btn-xs btn-danger"
+                ng-click="delete(section)">
+            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+        </button>
+    </span>
 	</div>
 	<form name="sectionForm" id="sectionForm" novalidate>
 		<div class="col-sm-12">
@@ -29,6 +46,7 @@
 	              ng-model="section.sectionTitle"
 	              required>
 	    </div>
+
       <accordion close-others="false">
            <accordion-group is-open="true" panel-class="panel-info">
               <accordion-heading>

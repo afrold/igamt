@@ -74,7 +74,7 @@ angular.module('igl')
 
 
 angular.module('igl')
-    .controller('AccountMgtCtrl', ['$scope', '$resource', 'AccountLoader', 'Account', 'userInfoService', '$location', '$rootScope',
+    .controller('UserAccountCtrl', ['$scope', '$resource', 'AccountLoader', 'Account', 'userInfoService', '$location', '$rootScope',
         function ($scope, $resource, AccountLoader, Account, userInfoService, $location,$rootScope) {
 
 
@@ -86,7 +86,7 @@ angular.module('igl')
                     $('#' + id).show();
                 }
             };
-            $scope.init = function(){
+            $scope.initAccount = function(){
                 if($rootScope.subActivePath == null){
                     $rootScope.subActivePath = "account";
                 }
@@ -241,4 +241,8 @@ angular.module('igl').controller('ConfirmAccountDeleteCtrl', function ($scope, $
         $modalInstance.dismiss('cancel');
     };
 });
+
+
+
+
 

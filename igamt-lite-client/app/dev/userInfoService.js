@@ -2,7 +2,7 @@
 
 angular.module('igl').factory('userInfo', ['$resource',
     function ($resource) {
-        return $resource('api/accounts/cuser');
+        return $resource('igamt/api/accounts/cuser');
     }
 ]);
 
@@ -33,11 +33,12 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
         		accountId : 45,
         		authorities : []
         };
-        var supervisor = false,
+       var supervisor = false,
         author = false,
         admin = false,
         id = null,
-        username = '';
+        username = '',
+        fullName = '';
 
         //console.log("USER ID=", $cookieStore.get('userID'));
        
@@ -181,6 +182,10 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             return username;
         };
 
+        var getFullName = function() {
+            return fullName;
+        };
+
         return {
             saveHthd: saveHthd,
             getHthd: getHthd,
@@ -194,7 +199,8 @@ angular.module('igl').factory('userInfoService', ['$cookieStore', 'userLoaderSer
             isSupervisor: isSupervisor,
             setCurrentUser: setCurrentUser,
             loadFromServer: loadFromServer,
-            getUsername: getUsername
-        };
+            getUsername: getUsername,
+            getFullName: getFullName
+       };
     }
 ]);

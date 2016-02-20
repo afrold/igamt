@@ -1,10 +1,10 @@
 angular.module('igl').factory(
 		'CloneDeleteSvc',
-		function($rootScope, ProfileAccessSvc) {
+		function($rootScope, $modal, ProfileAccessSvc) {
 
 			var svc = this;
 			
-			svc.cloneSectionFlavor = function(section) {
+			svc.copySection = function(section) {
 				var newSection = angular.copy(section);
 				newSection.id = new ObjectId();
 				var rand = Math.floor(Math.random() * 100);
@@ -20,7 +20,7 @@ angular.module('igl').factory(
 				$rootScope.$broadcast('event:openSection', newSection);	
 			}
 			
-			svc.cloneSegmentFlavor = function(segment) {
+			svc.copySegment = function(segment) {
 
 		          var newSegment = angular.copy(segment);
 		            newSegment.id = new ObjectId().toString();
@@ -51,7 +51,7 @@ angular.module('igl').factory(
 					$rootScope.$broadcast('event:openSegment', newSegment);	
 			}
 			
-			svc.cloneDatatypeFlavor = function(datatype) {
+			svc.copyDatatype = function(datatype) {
 
 		          var newDatatype = angular.copy(datatype);
 		            newDatatype.id = new ObjectId().toString();
@@ -82,7 +82,7 @@ angular.module('igl').factory(
 					$rootScope.$broadcast('event:openDatatype', newDatatype);	
 			}
 
-			svc.cloneTableFlavor = function(table) {
+			svc.copyTable = function(table) {
 
 	          var newTable = angular.copy(table);
 	          newTable.id = new ObjectId().toString();
@@ -143,7 +143,7 @@ angular.module('igl').factory(
 				$rootScope.$broadcast('event:openTable', newTable);	
 			}
 			
-			svc.cloneMessage = function(message) {
+			svc.copyMessage = function(message) {
 				// TODO gcr: Need to include the user identifier in the
 				// new label.
 				// $rootScope.igdocument.metaData.ext should be just that,
@@ -161,26 +161,109 @@ angular.module('igl').factory(
 				return newMessage;
 			}
 						
-			svc.deleteValueSet = function(valueSetId) {
-				return deleteValueSets([valueSetId]);
+			svc.deleteValueSet = function(table) {
+		        $rootScope.references = [];
+		        angular.forEach($rootScope.segments, function (segment) {
+		            $rootScope.findTableRefs(table, segment);
+		        });
+		        if ($rootScope.references != null && $rootScope.references.length > 0) {
+		        		abortValueSetDelete(table);
+		        } else {
+		        		confirmValueSetDelete(table);
+		        }
 			}
+			
+		    function abortValueSetDelete(table) {
+		        var modalInstance = $modal.open({
+		            templateUrl: 'ValueSetReferencesCtrl.html',
+		            controller: 'ValueSetReferencesCtrl',
+		            resolve: {
+		                tableToDelete: function () {
+		                    return table;
+		                }
+		            }
+		        });
+		        modalInstance.result.then(function (table) {
+		            $scope.tableToDelete = table;
+		        }, function () {
+		        });
+		    };
+		    
+		    function confirmValueSetDelete(table) {
+		        var modalInstance = $modal.open({
+		            templateUrl: 'ConfirmValueSetDeleteCtrl.html',
+		            controller: 'ConfirmValueSetDeleteCtrl',
+		            resolve: {
+		                tableToDelete: function () {
+		                    return table;
+		                }
+		            }
+		        });
+		        modalInstance.result.then(function (table) {
+		            $scope.tableToDelete = table;
+		        }, function () {
+		        });
+		    };
 			
 			function deleteValueSets(vssIdsSincerelyDead) {
 //				console.log("deleteValueSets: vssIdsSincerelyDead=" + vssIdsSincerelyDead.length);
 				return ProfileAccessSvc.ValueSets().removeDead(vssIdsSincerelyDead);		
 			}
 						
-			svc.deleteDatatype = function(datatypeId) {
-				var dtIdsLive = ProfileAccessSvc.Datatypes().getAllDatatypeIds();
-				var idxP = _.findIndex(dtIdsLive, function (
-						child) {
-					return child.id === datatypeId;
-				});
-				dtIdsLive.splice(idxP, 1);
-				
-				return deleteDatatypes(dtIdsLive, [datatypeId])
+			svc.deleteDatatype = function(datatype) {
+					$rootScope.references = [];
+		            angular.forEach($rootScope.segments, function (segment) {
+		                $rootScope.findDatatypeRefs(datatype, segment);
+		            });
+		            if ($rootScope.references != null && $rootScope.references.length > 0) {
+		            		abortDatatypeDelete(datatype);
+		            } else {
+		            		confirmDatatypeDelete(datatype);
+//						var dtIdsLive = ProfileAccessSvc.Datatypes().getAllDatatypeIds();
+//						var idxP = _.findIndex(dtIdsLive, function (
+//								child) {
+//							return child.id === datatypeId;
+//						});
+//						dtIdsLive.splice(idxP, 1);
+//		                rval = deleteDatatypes(dtIdsLive, [datatypeId]);
+		            }
 			}
 			
+			function abortDatatypeDelete(datatype) {
+				var dtToDelete;
+	            var modalInstance = $modal.open({
+	                templateUrl: 'DatatypeReferencesCtrl.html',
+	                controller: 'DatatypeReferencesCtrl',
+	                resolve: {
+	                    dtToDelete: function () {
+	                        return datatype;
+	                    }
+	                }
+	            });
+	            modalInstance.result.then(function (datatype) {
+	                dtToDelete = datatype;
+	            }, function () {
+	            });
+	        };
+
+	        function confirmDatatypeDelete(datatype) {
+				var dtToDelete;
+	            var modalInstance = $modal.open({
+	                templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
+	                controller: 'ConfirmDatatypeDeleteCtrl',
+	                resolve: {
+	                    dtToDelete: function () {
+	                        return datatype;
+	                    }
+	                }
+	            });
+	            modalInstance.result.then(function (datatype) {
+	                dtToDelete = datatype;
+	            }, function () {
+	            });
+	        };	
+	        
+	        
 			function deleteDatatypes(dtIdsLive, dtsIdsSincerelyDead) {
 
 				// Get all value sets that are contained in the sincerely dead datatypes.
@@ -199,21 +282,49 @@ angular.module('igl').factory(
 				return rval;
 			}
 
-			svc.deleteSegment = function(segmentId) {
-
-				// Get all datatypes that are contained in the sincerely dead segments.
-				var segmentRefsLive = ProfileAccessSvc.Segments().getAllSegmentIds();
-				var idxP = _.findIndex(segmentRefsLive, function (
-						child) {
-					return child.id === segmentId;
-				});
-				segmentRefsLive.splice(idxP, 1);
-
-				var rval = deleteSegments(segmentRefsLive, [segmentId])
-				
-				return rval;
+			svc.deleteSegment = function(segment) {
+				$rootScope.references = ProfileAccessSvc.Segments().getParentalDependencies(segment);
+	            if ($rootScope.references != null && $rootScope.references.length > 0) {
+	            		abortSegmentDelete(segment);
+	            } else {
+	            		confirmSegmentDelete(segment);
+	            }
 			}
 			
+			function abortSegmentDelete(segment) {
+				var segToDelete;
+	            var modalInstance = $modal.open({
+	                templateUrl: 'SegmentReferencesCtrl.html',
+	                controller: 'SegmentReferencesCtrl',
+	                resolve: {
+	                		segToDelete: function () {
+	                        return segment;
+	                    }
+	                }
+	            });
+	            modalInstance.result.then(function (segment) {
+	            		segToDelete = segment;
+	            }, function () {
+	            });
+	        };
+
+	        function confirmSegmentDelete(segment) {
+				var segToDelete;
+	            var modalInstance = $modal.open({
+	                templateUrl: 'ConfirmSegmentDeleteCtrl.html',
+	                controller: 'ConfirmSegmentDeleteCtrl',
+	                resolve: {
+	                		segToDelete: function () {
+	                        return segment;
+	                    }
+	                }
+	            });
+	            modalInstance.result.then(function (segment) {
+	            		segToDelete = segment;
+	            }, function () {
+	            });
+	        };	
+
 			function deleteSegments(segmentRefsLive, segmentRefsSincerelyDead) {
 
 				// Get all datatypes that are contained in the sincerely dead segments.
@@ -233,13 +344,13 @@ angular.module('igl').factory(
 				return rval;
 			}
 
-			svc.deleteMessage = function(messageId) {
+			svc.deleteMessage = function(message) {
 				// We do the delete in pairs: dead and live.  dead = things we are deleting and live = things we are keeping. 
 				
 				// We are deleting the message so it's dead.
 				// The message there is from the ToC so what we need is its reference,
 				// and it must be an array of one.
-				var msgDead = [messageId];
+				var msgDead = [message.id];
 				// We are keeping the children so their live.
 				var msgLive = ProfileAccessSvc.Messages().messages();
 				
@@ -294,39 +405,7 @@ angular.module('igl').factory(
 				});
 				secLive.splice(idxP, 1);
 			}
-
-	         function abortDatatypeDelete(datatype) {
-	            var modalInstance = $modal.open({
-	                templateUrl: 'DatatypeReferencesCtrl.html',
-	                controller: 'DatatypeReferencesCtrl',
-	                resolve: {
-	                    dtToDelete: function () {
-	                        return datatype;
-	                    }
-	                }
-	            });
-	            modalInstance.result.then(function (datatype) {
-	                $scope.dtToDelete = datatype;
-	            }, function () {
-	            });
-	        };
-
-	        function confirmDatatypeDelete(datatype) {
-	            var modalInstance = $modal.open({
-	                templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
-	                controller: 'ConfirmDatatypeDeleteCtrl',
-	                resolve: {
-	                    dtToDelete: function () {
-	                        return datatype;
-	                    }
-	                }
-	            });
-	            modalInstance.result.then(function (datatype) {
-	                $scope.dtToDelete = datatype;
-	            }, function () {
-	            });
-	        };
-	        
+	      
 	        svc.findMessageIndex = function(messages, id) {
 				var idxT = _.findIndex(messages.children, function(child) {
 					return child.reference.id === id;
