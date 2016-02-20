@@ -205,5 +205,4 @@ Cloneable, Comparable<Datatype> {
 		}
 		return x;
 	}
-
 }
