@@ -22,6 +22,7 @@ import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -146,14 +147,17 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		if(metaData.getSchemaVersion() != null && !metaData.getSchemaVersion().equals("")) e.addAttribute(new Attribute("SchemaVersion", ExportUtil.str(metaData.getSchemaVersion())));
 
 		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
-		elmMetaData.addAttribute(new Attribute("Name", ExportUtil.str(metaData.getName()+"")));
+		elmMetaData.addAttribute(new Attribute("Name", ExportUtil.str(metaData.getName())));
 		elmMetaData.addAttribute(new Attribute("OrgName", ExportUtil.str(metaData.getOrgName())));
 		elmMetaData.addAttribute(new Attribute("Version", ExportUtil.str(metaData.getVersion())));
 		elmMetaData.addAttribute(new Attribute("Date", ExportUtil.str(metaData.getDate())));
 		
-		if (metaData.getSpecificationName() != null && !metaData.getSpecificationName().equals("")) elmMetaData.addAttribute(new Attribute("SpecificationName",ExportUtil.str(metaData.getSpecificationName())));
-		if (metaData.getStatus() != null && !metaData.getStatus().equals("")) elmMetaData.addAttribute(new Attribute("Status", ExportUtil.str(metaData.getStatus())));
-		if (metaData.getTopics() != null && !metaData.getTopics().equals("")) elmMetaData.addAttribute(new Attribute("Topics", ExportUtil.str(metaData.getTopics())));
+		if (metaData.getSpecificationName() != null && !metaData.getSpecificationName().equals("")) 
+			elmMetaData.addAttribute(new Attribute("SpecificationName",ExportUtil.str(metaData.getSpecificationName())));
+		if (metaData.getStatus() != null && !metaData.getStatus().equals("")) 
+			elmMetaData.addAttribute(new Attribute("Status", ExportUtil.str(metaData.getStatus())));
+		if (metaData.getTopics() != null && !metaData.getTopics().equals("")) 
+			elmMetaData.addAttribute(new Attribute("Topics", ExportUtil.str(metaData.getTopics())));
 
 		e.appendChild(elmMetaData);
 
@@ -439,8 +443,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		
 		if (s.getDynamicMapping() != null && s.getDynamicMapping().getMappings().size() > 0){
 			nu.xom.Element elmDynamicMapping = new nu.xom.Element("DynamicMapping");
-			
-			System.out.println(s.getDynamicMapping().getMappings().size());
 			
 			for (Mapping m: s.getDynamicMapping().getMappings()){
 				nu.xom.Element elmMapping = new nu.xom.Element("Mapping");
@@ -786,7 +788,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		ZipOutputStream out = new ZipOutputStream(outputStream);
 
 		this.generateProfileIS(out, this.serializeProfileToXML(profile));
-		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(profile.getTables()));
+		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(profile));
 		this.generateConstraintsIS(out, new ConstraintsSerializationImpl().serializeConstraintsToXML(profile));
 
 		out.close();
@@ -830,15 +832,119 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		out.closeEntry();
 		inConstraints.close();
 	}
+	
+	@Override
+	public InputStream serializeProfileToZip(Profile original, String[] ids) throws IOException, CloneNotSupportedException {
+		Profile filteredProfile = new Profile();
+		
+		HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
+		HashMap<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
+		HashMap<String, Table> tablesMap = new HashMap<String, Table>();
+		
+		
+		filteredProfile.setBaseId(original.getBaseId());
+		filteredProfile.setChanges(original.getChanges());
+		filteredProfile.setComment(original.getComment());
+		filteredProfile.setConstraintId(original.getConstraintId());
+		filteredProfile.setScope(original.getScope());
+		filteredProfile.setSectionContents(original.getSectionContents());
+		filteredProfile.setSectionDescription(original.getSectionDescription());
+		filteredProfile.setSectionPosition(original.getSectionPosition());
+		filteredProfile.setSectionTitle(original.getSectionTitle());
+		filteredProfile.setSourceId(original.getSourceId());
+		filteredProfile.setType(original.getType());
+		filteredProfile.setUsageNote(original.getUsageNote());
+		filteredProfile.setMetaData(original.getMetaData());
+		
+		Messages messages = new Messages();
+		for(Message m:original.getMessages().getChildren()){
+			if(Arrays.asList(ids).contains(m.getId())){
+				messages.addMessage(m);
+				
+				for(SegmentRefOrGroup seog :m.getChildren()){
+					this.visit(seog, segmentsMap, datatypesMap, tablesMap, original);
+				}
+				
+			}
+		}
+		
+		Segments segments = new Segments();
+		for (String key : segmentsMap.keySet()) {
+			segments.addSegment(segmentsMap.get(key));
+		}
+		
+		Datatypes datatypes = new Datatypes();
+		for (String key : datatypesMap.keySet()) {
+			datatypes.addDatatype(datatypesMap.get(key));
+		}
+		
+		
+		Tables tables = new Tables();
+		for (String key : tablesMap.keySet()) {
+			tables.addTable(tablesMap.get(key));
+		}
+		
+		filteredProfile.setDatatypes(datatypes);
+		filteredProfile.setSegments(segments);
+		filteredProfile.setMessages(messages);
+		filteredProfile.setTables(tables);
+		
+		return this.serializeProfileToZip(filteredProfile);
+	}
+	
+	
 
-	public static void main(String[] args) throws IOException {
+	private void visit(SegmentRefOrGroup seog, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap, Profile original) {
+		if(seog instanceof SegmentRef){
+			SegmentRef sr = (SegmentRef)seog;
+		
+			Segment s = original.getSegments().findOneSegmentById(sr.getRef());
+			segmentsMap.put(sr.getRef(), s);
+			
+			for(Field f:s.getFields()){
+				this.addDatatype(f.getDatatype(), original, datatypesMap, tablesMap);
+				if(f.getTable() != null && !f.getTable().equals("")){
+					tablesMap.put(f.getTable(), original.getTables().findOneTableById(f.getTable()));
+				}
+			}
+			
+			
+		}else {
+			Group g = (Group)seog;
+			for(SegmentRefOrGroup child :g.getChildren()){
+				this.visit(child, segmentsMap, datatypesMap, tablesMap, original);
+			}
+		}
+		
+	}
+
+	private void addDatatype(String key, Profile original, HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap) {
+		Datatype d = original.getDatatypes().findOne(key);
+		
+		datatypesMap.put(key, d);
+		
+		for(Component c:d.getComponents()){
+			this.addDatatype(c.getDatatype(), original, datatypesMap, tablesMap);
+			if(c.getTable() != null && !c.getTable().equals("")){
+				tablesMap.put(c.getTable(), original.getTables().findOneTableById(c.getTable()));
+			}
+		}
+	}
+
+	public static void main(String[] args) throws IOException, CloneNotSupportedException {
 		ProfileSerializationImpl test1 = new ProfileSerializationImpl();
 		Profile profile = test1.deserializeXMLToProfile(
-				new String(Files.readAllBytes(Paths.get("src//main//resources//IZ_XML_Profiles//IZ Profiles//VXU-Z22_Profile.xml"))),
-				new String(Files.readAllBytes(Paths.get("src//main//resources//IZ_XML_Profiles//IZ ValueSets//VXU-Z22_ValueSetLibrary.xml"))),
-				new String(Files.readAllBytes(Paths.get("src//main//resources//IZ_XML_Profiles//IZ Constraints//VXU-Z22_Constraints.xml")))
+				new String(Files.readAllBytes(Paths.get("src//main//resources//IZ_XML_Profiles//IZ Profiles//IZ_Profile.xml"))),
+				new String(Files.readAllBytes(Paths.get("src//main//resources//IZ_XML_Profiles//IZ ValueSets//IZ_ValueSetLibrary.xml"))),
+				new String(Files.readAllBytes(Paths.get("src//main//resources//IZ_XML_Profiles//IZ Constraints//IZ_Constraints.xml")))
 		);
-		InputStream is = test1.serializeProfileToZip(profile);
+		Set<String> idSet = new HashSet<String>();
+	
+		for(Message m:profile.getMessages().getChildren()){
+			idSet.add(m.getId());
+		}
+		
+		InputStream is = test1.serializeProfileToZip(profile, idSet.toArray(new String[0]));
 		OutputStream outputStream =  new FileOutputStream(new File("src//main//resources//IZ_XML_Profiles//out.zip"));
 		int read = 0;
 		byte[] bytes = new byte[1024];

@@ -1571,4 +1571,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 	public static byte[] decodeImage(String imageDataString) {
 		return Base64.decodeBase64(imageDataString);
 	}
+
+	@Override
+	public InputStream serializeProfileToZip(Profile profile, String[] ids)
+			throws IOException, CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

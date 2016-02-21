@@ -431,6 +431,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		clonedProfile.setScope(scope);
 		clonedProfile.setBaseId(baseId != null ? baseId : id);
 		clonedProfile.setSourceId(id);
+		clonedProfile.setConstraintId(constraintId);
 
 		return clonedProfile;
 	}

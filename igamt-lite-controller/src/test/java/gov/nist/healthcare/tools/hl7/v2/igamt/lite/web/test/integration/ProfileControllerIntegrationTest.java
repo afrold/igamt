@@ -87,7 +87,7 @@ public class ProfileControllerIntegrationTest {
 			Profile p = new ProfileSerializationImpl().deserializeXMLToProfile(
 					xmlContentsProfile, xmlValueSet, xmlConstraints);
 			p.getMetaData().setName("Test VXU V04 Implementation Guide");
-			p.getMetaData().setIdentifier("Test IG_VXU_V04");
+			p.getMetaData().setProfileID("Test IG_VXU_V04");
 			p.getMetaData().setOrgName("Test NIST");
 			p.getMetaData().setSubTitle("Test NIST");
 			p.getMetaData().setVersion("1.0");

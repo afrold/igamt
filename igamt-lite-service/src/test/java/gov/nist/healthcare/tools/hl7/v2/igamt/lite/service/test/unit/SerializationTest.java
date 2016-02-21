@@ -215,7 +215,7 @@ public class SerializationTest {
 
 		ConstraintsSerializationImpl constraintsSerializationImpl = new
 				ConstraintsSerializationImpl();
-		String cS = constraintsSerializationImpl.serializeConstraintsToXML(p.getConformanceStatements(), p.getPredicates());
+		String cS = constraintsSerializationImpl.serializeConstraintsToXML(p);
 
 		try {
 			// parse an XML document into a DOM tree

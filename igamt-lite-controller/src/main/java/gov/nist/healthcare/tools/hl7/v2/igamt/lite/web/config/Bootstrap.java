@@ -47,7 +47,7 @@ public class Bootstrap implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		// init();
-		// init2();
+		loadPreloadedIGDocuments();
 	}
 
 	private void init2() throws Exception {
@@ -61,13 +61,18 @@ public class Bootstrap implements InitializingBean {
 	}
 
 	private void loadPreloadedIGDocuments() throws Exception {
-		String p = IOUtils.toString(this.getClass().getResourceAsStream("/profiles/VXU-Z22_Profile.xml"));
-		String v = IOUtils.toString(this.getClass().getResourceAsStream("/profiles/VXU-Z22_ValueSetLibrary.xml"));
-		String c = IOUtils.toString(this.getClass().getResourceAsStream("/profiles/VXU-Z22_Constraints.xml"));
+		IGDocument d = new IGDocument();
+		
+		String p = IOUtils.toString(this.getClass().getResourceAsStream("/profiles/IZ_Profile.xml"));
+		String v = IOUtils.toString(this.getClass().getResourceAsStream("/profiles/IZ_ValueSetLibrary.xml"));
+		String c = IOUtils.toString(this.getClass().getResourceAsStream("/profiles/IZ_Constraints.xml"));
 		Profile profile = new ProfileSerializationImpl().deserializeXMLToProfile(p, v, c);
 
 		profile.setScope(IGDocumentScope.PRELOADED);
-		profileService.save(profile);
+		
+		
+		d.addProfile(profile);
+		documentService.save(d);
 	}
 
 }

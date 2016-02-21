@@ -277,6 +277,7 @@ Cloneable, Comparable<Message> {
 		clonedMessage.setPosition(position);
 		clonedMessage.setStructID(structID);
 		clonedMessage.setUsageNote(usageNote);
+		clonedMessage.setMessageID(messageID);
 		clonedMessage
 		.setConformanceStatements(new ArrayList<ConformanceStatement>());
 		for (ConformanceStatement cs : this.conformanceStatements) {
