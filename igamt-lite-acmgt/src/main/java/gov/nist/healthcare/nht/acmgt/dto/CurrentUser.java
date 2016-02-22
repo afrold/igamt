@@ -25,6 +25,7 @@ public class CurrentUser {
 	private boolean isAuthenticated = false;
 	private boolean isPending = false;
 	private Collection<GrantedAuthority> authorities;
+	private String fullName;
 
 	/**
 	 * @return the username
@@ -92,6 +93,14 @@ public class CurrentUser {
 
 	public void setPending(boolean isPending) {
 		this.isPending = isPending;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 	
 	

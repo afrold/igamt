@@ -40,6 +40,7 @@
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.css"/>
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css"/>
     <link rel="stylesheet" href="lib/material-custom/material-custom.css"/>
+    <link rel="stylesheet" href="lib/custom.css"/>
     <script type="text/javascript">
         if (self === top) {
             var antiClickjack = document.getElementById("antiClickjack");
@@ -61,7 +62,7 @@
     <!-- Add your site or application content here -->
     <div id="appcontainer" class="">
 
-        <div class="container">
+        <div class="container" style="padding-top:20px">
             <div class="row">
                 <div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">
                     <button type="button" class="close" ng-click="msg().show=false">×</button>

@@ -572,9 +572,6 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 			message.setPosition((Integer) child.get("position"));
 			message.setStructID((String) child.get("structID"));
 			message.setType((String) child.get("type"));
-			message.setVersion((String) child.get("version"));
-			message.setDate((String) child.get("date"));
-			message.setOid((String) child.get("oid"));
 			message.setSectionPosition((Integer) child.get("sectionPosition"));
 
 			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child

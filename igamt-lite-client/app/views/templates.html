@@ -62,3 +62,22 @@
         </div>
     </div>
 </script>
+
+<script type="text/ng-template" id="ConfirmLogout.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Logout Confirmation
+        </h3>
+    </div>
+    <div class="modal-body">
+        <p>You currently have unsaved changes. Are you sure you want to proceed ? All unsaved changes will
+            be lost</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="logout()"><span><i
+                class="fa fa-sign-out fa-fw">&nbsp; </i>Logout</span>
+        </button>
+        <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i
+                class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
+        </button>
+    </div>
+</script>
