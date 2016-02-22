@@ -246,8 +246,7 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsHtml(d);
 		response.setContentType("text/html");
-		response.setHeader("Content-disposition",
-				"attachment;filename=" +  d.getMetaData().getTitle() + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
+		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle() + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
