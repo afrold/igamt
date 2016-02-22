@@ -266,6 +266,23 @@ public class IGDocumentController extends CommonController {
 				+ ".zip");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
+	
+	@RequestMapping(value = "/{id}/export/zip/{mIds}", method = RequestMethod.POST, produces = "application/zip")
+	public void exportZipByMessage(@PathVariable("id") String id,
+			@PathVariable("mIds") String[] messageIds,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
+		log.info("Exporting as xml file profile with id=" + id + " for selected messages=" + messageIds);
+		IGDocument d = findIGDocument(id);
+		InputStream content = null;
+		content = igDocumentExport.exportAsZipForSelectedMessages(d, messageIds);
+		response.setContentType("application/zip");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ d.getMetaData().getTitle() + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".zip");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
 
 	@RequestMapping(value = "/{id}/export/pdf", method = RequestMethod.POST, produces = "application/pdf")
 	public void exportPdfFromXsl(@PathVariable("id") String id,

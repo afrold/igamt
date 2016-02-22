@@ -96,7 +96,7 @@ public class ProfileServiceImplIntegrationTest {
 		String jsonChanges = "\r\n\r\n {\r\n  \"profile\": {\r\n    \"edit\": [\r\n      {\r\n        \"id\": \"552014603004d0a9f09caf16\",\r\n        \"identifier\": \"ddddddddddddd\",\r\n        \"subTitle\": \"ddddddddd\",\r\n        \"orgName\": \"NISTddddd\",\r\n        \"name\": \"VXU_V04ddddd\"\r\n      }\r\n    ]\r\n  }\r\n}\r\n                ";
 		try {
 			p1 = profileService.apply(p1);
-			assertEquals("ddddddddddddd", p1.getMetaData().getIdentifier());
+			assertEquals("ddddddddddddd", p1.getMetaData().getProfileID());
 			assertEquals("ddddddddd", p1.getMetaData().getSubTitle());
 			assertEquals("NISTddddd", p1.getMetaData().getOrgName());
 			assertEquals("VXU_V04ddddd", p1.getMetaData().getName());
@@ -148,9 +148,6 @@ public class ProfileServiceImplIntegrationTest {
 		try {
 			p1 = profileService.apply(p1);
 			assertEquals("identifier", message.getIdentifier());
-			assertEquals("version", message.getVersion());
-			assertEquals("oid", message.getOid());
-			assertEquals("today", message.getDate());
 			assertEquals("comment", message.getComment());
 
 			assertEquals("X", segmentRef.getUsage().toString());

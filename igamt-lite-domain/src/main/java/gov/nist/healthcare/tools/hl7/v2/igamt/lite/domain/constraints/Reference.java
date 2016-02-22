@@ -16,6 +16,14 @@ public class Reference implements java.io.Serializable, Cloneable {
 	private Integer page;
 	// @Column(name = "URL")
 	private String url;
+	
+	private String source;
+	
+	private String generatedBy;
+	
+	private String referenccePath;
+	
+	private String testDataCategorization;
 
 	public String getChapter() {
 		return chapter;
@@ -53,6 +61,38 @@ public class Reference implements java.io.Serializable, Cloneable {
 	public Reference clone() throws CloneNotSupportedException {
 		Reference clonedReference = (Reference) super.clone();
 		return clonedReference;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getGeneratedBy() {
+		return generatedBy;
+	}
+
+	public void setGeneratedBy(String generatedBy) {
+		this.generatedBy = generatedBy;
+	}
+
+	public String getReferenccePath() {
+		return referenccePath;
+	}
+
+	public void setReferenccePath(String referenccePath) {
+		this.referenccePath = referenccePath;
+	}
+
+	public String getTestDataCategorization() {
+		return testDataCategorization;
+	}
+
+	public void setTestDataCategorization(String testDataCategorization) {
+		this.testDataCategorization = testDataCategorization;
 	}
 
 }

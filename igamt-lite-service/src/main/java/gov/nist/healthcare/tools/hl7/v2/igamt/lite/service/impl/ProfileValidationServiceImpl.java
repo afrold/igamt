@@ -64,7 +64,7 @@ public class ProfileValidationServiceImpl implements ProfileValidationService {
 		
 		ConstraintsSerializationImpl constraintsSerializationImpl = new
 				ConstraintsSerializationImpl();
-		String cS = constraintsSerializationImpl.serializeConstraintsToXML(p.getConformanceStatements(), p.getPredicates());
+		String cS = constraintsSerializationImpl.serializeConstraintsToXML(p);
 		schemaPath = "validation/profilesSchema/ConformanceContext.xsd";
 		validate(cS, schemaPath);
 

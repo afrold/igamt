@@ -75,7 +75,7 @@ public class ProfileChangeServiceTest {
 			List<ProfilePropertySaveError> errors = new ProfileChangeService()
 					.apply(jsonChanges, p1);
 			assertEquals(0, errors.size());
-			assertEquals("ddddddddddddd", p1.getMetaData().getIdentifier());
+			assertEquals("ddddddddddddd", p1.getMetaData().getProfileID());
 			assertEquals("ddddddddd", p1.getMetaData().getSubTitle());
 			assertEquals("NISTddddd", p1.getMetaData().getOrgName());
 			assertEquals("VXU_V04ddddd", p1.getMetaData().getName());
@@ -127,9 +127,6 @@ public class ProfileChangeServiceTest {
 					.apply(jsonChanges, p1);
 			assertEquals(0, errors.size());
 			assertEquals("identifier", message.getIdentifier());
-			assertEquals("version", message.getVersion());
-			assertEquals("oid", message.getOid());
-			assertEquals("today", message.getDate());
 			assertEquals("comment", message.getComment());
 
 			assertEquals("X", segmentRef.getUsage().toString());

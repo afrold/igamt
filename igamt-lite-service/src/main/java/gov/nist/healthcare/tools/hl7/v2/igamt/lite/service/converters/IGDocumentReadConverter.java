@@ -100,6 +100,8 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		profile.setSectionDescription((String) source.get("sectionDescription"));
 		profile.setSectionPosition((Integer) source.get("sectionPosition"));
 		profile.setSectionTitle((String) source.get("sectionTitle"));
+		
+		profile.setConstraintId((String) source.get("constraintId"));
 
 		Object baseId = source.get("baseId");
 		profile.setBaseId(baseId != null ? (String) baseId : null);
@@ -153,13 +155,13 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		metaData.setStatus(((String) source.get("status")));
 		metaData.setTopics(((String) source.get("topics")));
 		metaData.setType(((String) source.get("type")));
+		metaData.setSpecificationName(source.get("specificationName") != null ? ((String) source.get("specificationName")) : null);
 		metaData.setHl7Version(((String) source.get("hl7Version")));
 		metaData.setSchemaVersion(((String) source.get("schemaVersion")));
 		metaData.setSubTitle(((String) source.get("subTitle")));
 		metaData.setVersion(((String) source.get("version")));
 		metaData.setDate(((String) source.get("date")));
-		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext"))
-				: null);
+		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext")): null);
 		Set<String> encodings = new HashSet<String>();
 		Object encodingObj = source.get("encodings");
 		BasicDBList encodingDBObjects = (BasicDBList) encodingObj;
@@ -236,16 +238,10 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 			seg.setPredicates(predicates);
 		}
 
-		BasicDBList dynamicMappingsDBObjects = (BasicDBList) source
-				.get("dynamicMappings");
-		if (dynamicMappingsDBObjects != null) {
-			List<DynamicMapping> dynamicMappings = new ArrayList<DynamicMapping>();
-			for (Object dynObj : dynamicMappingsDBObjects) {
-				DBObject dynObject = (DBObject) dynObj;
-				DynamicMapping dyn = dynamicMapping(dynObject, datatypes);
-				dynamicMappings.add(dyn);
-			}
-			seg.setDynamicMappings(dynamicMappings);
+		DBObject dynamicMappingDBObject = (DBObject) source.get("dynamicMapping");
+		if (dynamicMappingDBObject != null) {
+			DynamicMapping dyn = dynamicMapping(dynamicMappingDBObject, datatypes);
+			seg.setDynamicMapping(dyn);
 		}
 
 		return seg;
@@ -305,8 +301,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 			dt.setComponents(components);
 		}
 
-		BasicDBList confStsObjects = (BasicDBList) source
-				.get("conformanceStatements");
+		BasicDBList confStsObjects = (BasicDBList) source.get("conformanceStatements");
 		if (confStsObjects != null) {
 			List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
 			for (Object confStObj : confStsObjects) {
@@ -567,6 +562,30 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 			message.setStructID((String) child.get("structID"));
 			message.setType((String) child.get("type"));
 			message.setSectionPosition((Integer) child.get("sectionPosition"));
+			message.setMessageID((String) child.get("messageID"));
+			
+			
+			BasicDBList confStsObjects = (BasicDBList) child.get("conformanceStatements");
+			if (confStsObjects != null) {
+				List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
+				for (Object confStObj : confStsObjects) {
+					DBObject confStObject = (DBObject) confStObj;
+					ConformanceStatement cs = conformanceStatement(confStObject);
+					confStatements.add(cs);
+				}
+				message.setConformanceStatements(confStatements);
+			}
+
+			BasicDBList predDBObjects = (BasicDBList) child.get("predicates");
+			if (predDBObjects != null) {
+				List<Predicate> predicates = new ArrayList<Predicate>();
+				for (Object predObj : predDBObjects) {
+					DBObject predObject = (DBObject) predObj;
+					Predicate pred = predicate(predObject);
+					predicates.add(pred);
+				}
+				message.setPredicates(predicates);
+			}
 
 			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child
 					.get("children");
@@ -630,6 +649,33 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 			}
 		}
 		group.setChildren(segOrGroups);
+		
+		
+		BasicDBList confStsObjects = (BasicDBList) source.get("conformanceStatements");
+		if (confStsObjects != null) {
+			List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
+			for (Object confStObj : confStsObjects) {
+				DBObject confStObject = (DBObject) confStObj;
+				ConformanceStatement cs = conformanceStatement(confStObject);
+				confStatements.add(cs);
+			}
+			group.setConformanceStatements(confStatements);
+		}
+
+		BasicDBList predDBObjects = (BasicDBList) source.get("predicates");
+		if (predDBObjects != null) {
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			for (Object predObj : predDBObjects) {
+				DBObject predObject = (DBObject) predObj;
+				Predicate pred = predicate(predObject);
+				predicates.add(pred);
+			}
+			group.setPredicates(predicates);
+		}
+		
+		
+		
+		
 		return group;
 	}
 

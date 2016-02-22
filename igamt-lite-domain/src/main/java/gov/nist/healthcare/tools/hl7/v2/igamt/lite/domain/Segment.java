@@ -31,7 +31,7 @@ Cloneable, Comparable<Segment> {
 
 	private List<Field> fields = new ArrayList<Field>();
 
-	private List<DynamicMapping> dynamicMappings = new ArrayList<DynamicMapping>();
+	private DynamicMapping dynamicMapping = new DynamicMapping();
 
 	// //@NotNull
 	private String name;
@@ -115,35 +115,14 @@ Cloneable, Comparable<Segment> {
 		return null;
 	}
 
-	public void addDynamicMapping(DynamicMapping d) {
-		dynamicMappings.add(d);
-	}
-
-	public List<DynamicMapping> getDynamicMappings() {
-		return dynamicMappings;
-	}
-
-	public void setDynamicMappings(List<DynamicMapping> dynamicMappings) {
-		if (dynamicMappings != null) {
-			this.dynamicMappings.clear();
-			Iterator<DynamicMapping> it = dynamicMappings.iterator();
-			while (it.hasNext()) {
-				addDynamicMapping(it.next());
-			}
-		} else {
-			this.dynamicMappings = null;
-		}
-	}
-
 	public Mapping findOneMappingByPositionAndByReference(int position, int reference) {
-		if (this.dynamicMappings != null)
-			for (DynamicMapping d : this.dynamicMappings) {
-				for (Mapping m: d.getMappings()){
-					if (m.getPosition() == position && m.getReference() == reference){
-						return m;
-					}
+		if (this.dynamicMapping != null){
+			for (Mapping m: this.dynamicMapping.getMappings()){
+				if (m.getPosition() == position && m.getReference() == reference){
+					return m;
 				}
 			}
+		}
 		return null;
 	}
 	public String getComment() {
@@ -179,6 +158,14 @@ Cloneable, Comparable<Segment> {
 	public void setText2(String text2) {
 		this.text2 = text2;
 	}
+	
+	public DynamicMapping getDynamicMapping() {
+		return dynamicMapping;
+	}
+
+	public void setDynamicMapping(DynamicMapping dynamicMapping) {
+		this.dynamicMapping = dynamicMapping;
+	}
 
 	public Segment clone(HashMap<String, Datatype> dtRecords,
 			HashMap<String, Table> tableRecords)
@@ -191,9 +178,10 @@ Cloneable, Comparable<Segment> {
 			clonedSegment.addConformanceStatement(cs.clone());
 		}
 		clonedSegment.setDescription(description);
-		clonedSegment.setDynamicMappings(new ArrayList<DynamicMapping>());
-		for (DynamicMapping dm : this.dynamicMappings) {
-			clonedSegment.addDynamicMapping(dm.clone());
+		
+		clonedSegment.setDynamicMapping(new DynamicMapping());
+		for (Mapping mapping : this.dynamicMapping.getMappings()) {
+			clonedSegment.getDynamicMapping().addMapping(mapping.clone());
 		}
 		clonedSegment.setFields(new ArrayList<Field>());
 		for (Field f : this.fields) {

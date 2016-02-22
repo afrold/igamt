@@ -11,6 +11,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import nu.xom.Document;
 
@@ -20,6 +21,10 @@ public interface TableSerialization {
 	Tables deserializeXMLToTableLibrary(Document xmlDoc);
 
 	String serializeTableLibraryToXML(Tables tableLibrary);
+	
+	String serializeTableLibraryToXML(Profile profile);
 
 	Document serializeTableLibraryToDoc(Tables tableLibrary);
+	
+	Document serializeTableLibraryToDoc(Profile profile);
 }

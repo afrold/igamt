@@ -27,4 +27,7 @@ public interface ProfileSerialization {
 	Document serializeProfileToDoc(Profile profile);
 
 	InputStream serializeProfileToZip(Profile profile) throws IOException;
+	
+	InputStream serializeProfileToZip(Profile profile, String[] ids) throws IOException, CloneNotSupportedException;
+	
 }

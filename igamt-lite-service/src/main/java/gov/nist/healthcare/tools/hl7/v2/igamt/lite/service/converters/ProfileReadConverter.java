@@ -174,16 +174,10 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			seg.setPredicates(predicates);
 		}
 
-		BasicDBList dynamicMappingsDBObjects = (BasicDBList) source
-				.get("dynamicMappings");
-		if (dynamicMappingsDBObjects != null) {
-			List<DynamicMapping> dynamicMappings = new ArrayList<DynamicMapping>();
-			for (Object dynObj : dynamicMappingsDBObjects) {
-				DBObject dynObject = (DBObject) dynObj;
-				DynamicMapping dyn = dynamicMapping(dynObject, datatypes);
-				dynamicMappings.add(dyn);
-			}
-			seg.setDynamicMappings(dynamicMappings);
+		DBObject dynamicMappingDBObject = (DBObject) source.get("dynamicMapping");
+		if (dynamicMappingDBObject != null) {
+			DynamicMapping dyn = dynamicMapping(dynamicMappingDBObject, datatypes);
+			seg.setDynamicMapping(dyn);
 		}
 
 		return seg;
