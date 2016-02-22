@@ -17,6 +17,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 
 import java.util.List;
@@ -45,5 +46,4 @@ public class MessageRepositoryImpl implements MessageOperations   {
 		Query query = Query.query(where);
 		return mongo.find(query, Message.class);
 	}
-
 }

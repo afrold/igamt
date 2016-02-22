@@ -17,6 +17,17 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
@@ -39,19 +50,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEventFactory;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEvents;
 
 @Service
 public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
+	private Logger log = LoggerFactory.getLogger(IGDocumentCreationImpl.class);
+	
 	@Autowired
 	private IGDocumentRepository igdocumentRepository;
 
@@ -65,19 +71,20 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	@Override
-	public List<String[]> summary(String hl7Version, List<String> messageIds) {
+	public List<MessageEvents> summary(String hl7Version, List<String> messageIds) {
 		// Fetching messages of version hl7Version
-		List<String[]> rst = new ArrayList<String[]>();
-		List<IGDocument> docs = igdocumentRepository.findStandardByVersion(hl7Version);
-		for (IGDocument d : docs) {
-			for (Message m : d.getProfile().getMessages().getChildren()) {
-				if (!messageIds.contains(m.getId())) {
-					String[] msgDesc = new String[] { m.getId(), m.getEvent(), m.getStructID(), m.getDescription() };
-					rst.add(msgDesc);
-				}
+		List<Message> msgs = new ArrayList<Message>();
+		List<MessageEvents> rval = new ArrayList<MessageEvents>();
+		List<IGDocument> igds = igdocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version);
+		IGDocument igd = igds.get(0);
+		for (Message msg : igd.getProfile().getMessages().getChildren()) {
+			if (!messageIds.contains(msg.getId())) {
+				msgs.add(msg);
 			}
 		}
-		return rst;
+		MessageEventFactory mef = new MessageEventFactory(igd);
+		rval = mef.createMessageEvents(msgs);
+		return rval;
 	}
 
 	@Override

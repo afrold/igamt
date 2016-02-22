@@ -8,23 +8,41 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * @author Harold Affo (harold.affo@nist.gov)
- * Mar 30, 2015
+ * A data transfer object used to transfer a message structure id 
+ * and its related events.   
+ * 
+ * @author gcr1
+ *
  */
-public interface IGDocumentOperations {
+public class MessageEvents {
+
+	private String messageStructureId;
 	
-	 public List<IGDocument> findPreloaded();
-	 
-	 public List<IGDocument> findStandard();
-	 
-	 public List<IGDocument> findStandardByVersion(String hl7version);
-	 
-	 public List<String> findHl7Versions();
+	private Set<String> events = new HashSet<String>();
+	
+	private String description;
+	
+	public MessageEvents(String messageStructureId, Set<String> events, String description) {
+		this.messageStructureId = messageStructureId;
+		this.events = events;
+		this.description = description;
+	}
+
+	public String getMessageStructureId() {
+		return messageStructureId;
+	}
+
+	public Set<String> getEvents() {
+		return events;
+	}
+
+	public String getDescription() {
+		return description;
+	}
 }
