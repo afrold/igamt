@@ -50,4 +50,14 @@ public class DatatypeLibraryServiceTest {
 		assertEquals(1, dtl.size());
 		assertEquals(91, dtl.get(0).getChildren().size());
 	}
+	
+	@Test
+	public void saveTest() {
+		List<DatatypeLibrary> dtls = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD);
+		DatatypeLibrary dtl = dtls.get(0);
+		assertNotNull(dtl);
+		dtl.setId(null);
+		dtl.setScope(DatatypeLibrary.SCOPE.USER);
+		dtlService.apply(dtl);
+	}
 }

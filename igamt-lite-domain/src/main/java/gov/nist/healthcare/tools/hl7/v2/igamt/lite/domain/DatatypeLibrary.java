@@ -24,7 +24,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 	private Long accountId;
 	
-	private Date date;
+	private String date;
 	
 	public enum SCOPE {HL7STANDARD, MASTER, USER};
  
@@ -62,11 +62,11 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.accountId = accountId;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

@@ -28,23 +28,23 @@ public class DatatypeLibraryRespositoryImpl implements DatatypeLibraryOperations
 	 @Autowired
 	 private MongoOperations mongo;
 	 
-	@Override
-	public List<DatatypeLibrary> findAll() {
-	    return mongo.findAll(DatatypeLibrary.class);
-	}
+//	@Override
+//	public List<DatatypeLibrary> findAll() {
+//	    return mongo.findAll(DatatypeLibrary.class);
+//	}
 	 
-	@Override
-	public List<DatatypeLibrary> findByScope(DatatypeLibrary.SCOPE scope) {
- 	    Criteria where = Criteria.where("scope").is(scope);
-	    Query query = Query.query(where);
-	    return mongo.find(query, DatatypeLibrary.class);
-	}
+//	@Override
+//	public List<DatatypeLibrary> findByScope(DatatypeLibrary.SCOPE scope) {
+// 	    Criteria where = Criteria.where("scope").is(scope);
+//	    Query query = Query.query(where);
+//	    return mongo.find(query, DatatypeLibrary.class);
+//	}
 	 
-	@Override
-	public List<DatatypeLibrary> findByAccountId(Long accountId) {
-	    Criteria where = Criteria.where("scope").is(DatatypeLibrary.SCOPE.USER)
-	    	.andOperator(Criteria.where("accountId").is(accountId));
-	    Query query = Query.query(where);
-	    return mongo.find(query, DatatypeLibrary.class);
-	}
+//	@Override
+//	public List<DatatypeLibrary> findByAccountId(Long accountId) {
+//	    Criteria where = Criteria.where("scope").is(DatatypeLibrary.SCOPE.USER)
+//	    	.andOperator(Criteria.where("accountId").is(accountId));
+//	    Query query = Query.query(where);
+//	    return mongo.find(query, DatatypeLibrary.class);
+//	}
 }

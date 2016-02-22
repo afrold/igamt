@@ -26,6 +26,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryExcept
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeLibrarySaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeLibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 /**
@@ -58,7 +59,7 @@ public class DatatypeLibraryController extends CommonController {
 
 	 @RequestMapping(value = "/save/{accountId}", method = RequestMethod.POST)
 	 public DatatypeLibrarySaveResponse save(@RequestBody DatatypeLibrary library)
-				throws DatatypeLibrarySaveException ) {
+				throws DatatypeLibrarySaveException {
 			log.info("Saving the USER datatype library...");
 			DatatypeLibrary saved = datatypeLibraryService.apply(library);
 			return new DatatypeLibrarySaveResponse(saved.getDate(),

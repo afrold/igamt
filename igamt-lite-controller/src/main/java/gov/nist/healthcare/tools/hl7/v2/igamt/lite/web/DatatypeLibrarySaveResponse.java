@@ -10,10 +10,10 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web;
 
-import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.IGDocumentPropertySaveError;
-
 import java.util.List;
+
+import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DatatypeLibrarySaveError;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 16, 2015
@@ -49,28 +49,28 @@ public class DatatypeLibrarySaveResponse extends ResponseMessage {
 	}
 
 	public DatatypeLibrarySaveResponse(Type type, String text, String resourceId,
-			String manualHandle, List<IGDocumentPropertySaveError> errors) {
+			String manualHandle, List<DatatypeLibrarySaveError> errors) {
 		super(type, text, resourceId, manualHandle);
 		this.errors = errors;
 	}
 
 	public DatatypeLibrarySaveResponse(Type type, String text, String resourceId,
-			List<IGDocumentPropertySaveError> errors) {
+			List<DatatypeLibrarySaveError> errors) {
 		super(type, text, resourceId);
 		this.errors = errors;
 	}
 
 	public DatatypeLibrarySaveResponse(Type type, String text,
-			List<IGDocumentPropertySaveError> errors) {
+			List<DatatypeLibrarySaveError> errors) {
 		super(type, text);
 		this.errors = errors;
 	}
 
-	public List<IGDocumentPropertySaveError> getErrors() {
+	public List<DatatypeLibrarySaveError> getErrors() {
 		return errors;
 	}
 
-	public void setErrors(List<IGDocumentPropertySaveError> errors) {
+	public void setErrors(List<DatatypeLibrarySaveError> errors) {
 		this.errors = errors;
 	}
 
