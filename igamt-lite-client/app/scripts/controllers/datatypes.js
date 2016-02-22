@@ -1,8 +1,6 @@
 /**
  * Created by haffo on 2/13/15.
  */
-
-
 angular.module('igl')
     .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
         $scope.readonly = false;
@@ -33,55 +31,12 @@ angular.module('igl')
 
         $scope.delete = function (datatype) {
         		  CloneDeleteSvc.deleteDatatype(datatype);
-//            $rootScope.references = [];
-//            angular.forEach($rootScope.segments, function (segment) {
-//                $rootScope.findDatatypeRefs(datatype, segment);
-//            });
-//            if ($rootScope.references != null && $rootScope.references.length > 0) {
-//                $scope.abortDelete(datatype);
-//            } else {
-//                $scope.confirmDelete(datatype);
-//            }
 			$rootScope.$broadcast('event:SetToC');
        };
-
-//        $scope.abortDelete = function (datatype) {
-//            var modalInstance = $modal.open({
-//                templateUrl: 'DatatypeReferencesCtrl.html',
-//                controller: 'DatatypeReferencesCtrl',
-//                resolve: {
-//                    dtToDelete: function () {
-//                        return datatype;
-//                    }
-//                }
-//            });
-//            modalInstance.result.then(function (datatype) {
-//                $scope.dtToDelete = datatype;
-//            }, function () {
-//            });
-//        };
-
-//        $scope.confirmDelete = function (datatype) {
-//            var modalInstance = $modal.open({
-//                templateUrl: 'ConfirmDatatypeDeleteCtrl.html',
-//                controller: 'ConfirmDatatypeDeleteCtrl',
-//                resolve: {
-//                    dtToDelete: function () {
-//                        return datatype;
-//                    }
-//                }
-//            });
-//            modalInstance.result.then(function (datatype) {
-//                $scope.dtToDelete = datatype;
-//            }, function () {
-//            });
-//        };
-
 
         $scope.hasChildren = function (node) {
             return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype) != undefined && $rootScope.getDatatype(node.datatype).components != null && $rootScope.getDatatype(node.datatype).components.length > 0;
         };
-
 
         $scope.validateLabel = function (label, name) {
             if (label && !label.startsWith(name)) {
