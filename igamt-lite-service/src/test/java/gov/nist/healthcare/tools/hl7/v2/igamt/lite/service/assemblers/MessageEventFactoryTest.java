@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.finders;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
