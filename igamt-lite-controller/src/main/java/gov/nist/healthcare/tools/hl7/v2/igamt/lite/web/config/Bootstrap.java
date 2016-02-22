@@ -47,7 +47,7 @@ public class Bootstrap implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		// init();
-		loadPreloadedIGDocuments();
+//		loadPreloadedIGDocuments();
 	}
 
 	private void init2() throws Exception {
