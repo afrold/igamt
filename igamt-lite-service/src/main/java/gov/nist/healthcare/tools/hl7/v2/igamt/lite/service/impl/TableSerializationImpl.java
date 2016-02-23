@@ -14,6 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -76,7 +77,12 @@ public class TableSerializationImpl implements TableSerialization {
 			Tables tableLibrary = profile.getTables();
 			
 			nu.xom.Element elmTableLibrary = new nu.xom.Element("ValueSetLibrary");
-            elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier",ExportUtil.str(tableLibrary.getValueSetLibraryIdentifier())));
+			
+			if(tableLibrary.getValueSetLibraryIdentifier() == null || tableLibrary.getValueSetLibraryIdentifier().equals("")){
+				elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier",UUID.randomUUID().toString()));
+			}else {
+				elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier",ExportUtil.str(tableLibrary.getValueSetLibraryIdentifier())));
+			}
             nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
             if(profile.getMetaData() == null){
             	elmMetaData.addAttribute(new Attribute("Name", "Vocab for " + "Profile"));

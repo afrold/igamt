@@ -14,6 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -127,7 +128,12 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		
 		
 		nu.xom.Element e = new nu.xom.Element("ConformanceContext");
-		e.addAttribute(new Attribute("UUID", profile.getConstraintId()));
+		
+		if(profile.getConstraintId() == null || profile.getConstraintId().equals("")){
+			e.addAttribute(new Attribute("UUID", UUID.randomUUID().toString()));
+		}else {
+			e.addAttribute(new Attribute("UUID", profile.getConstraintId()));
+		}
 		
 		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
         if(profile.getMetaData() == null){

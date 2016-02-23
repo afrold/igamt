@@ -11,39 +11,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
@@ -71,7 +38,42 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import nu.xom.Attribute;
+
+import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class ProfileSerializationImpl implements ProfileSerialization {
 	Logger logger = LoggerFactory.getLogger( ProfileSerializationImpl.class );
@@ -141,7 +143,13 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	public nu.xom.Document serializeProfileToDoc(Profile profile) {
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
 		ProfileMetaData metaData = profile.getMetaData();
-		e.addAttribute(new Attribute("ID", profile.getMetaData().getProfileID()));
+		
+		if(profile.getMetaData().getProfileID() == null || profile.getMetaData().getProfileID().equals("")){
+			e.addAttribute(new Attribute("ID", UUID.randomUUID().toString()));
+		}else {
+			e.addAttribute(new Attribute("ID", profile.getMetaData().getProfileID()));
+		}
+		
 		if(metaData.getType() != null && !metaData.getType().equals("")) e.addAttribute(new Attribute("Type", ExportUtil.str(metaData.getType())));
 		if(metaData.getHl7Version() != null && !metaData.getHl7Version().equals("")) e.addAttribute(new Attribute("HL7Version", ExportUtil.str(metaData.getHl7Version())));
 		if(metaData.getSchemaVersion() != null && !metaData.getSchemaVersion().equals("")) e.addAttribute(new Attribute("SchemaVersion", ExportUtil.str(metaData.getSchemaVersion())));
