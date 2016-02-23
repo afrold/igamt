@@ -111,7 +111,7 @@ angular.module('igl').controller(
 angular.module('igl').controller(
 		'HL7VersionsInstanceDlgCtrl',
 		function($scope, $rootScope, $modalInstance, $http, hl7Versions,
-				ProfileAccessSvc) {
+				ProfileAccessSvc, ngTreetableParams) {
 
 			$scope.selected = {
 				item : hl7Versions[0]
@@ -119,18 +119,66 @@ angular.module('igl').controller(
 
 			$scope.igdocumentVersions = [];
 			var igdocumentVersions = [];
-
+			var mes = 					[ {
+				  "messageStructureId" : "ORR_O02",
+				  "type" : "structure",
+				  "events" : [ {
+				    "type" : "event",
+				    "event" : "O02"
+				  } ],
+				  "description" : "General order response message response to any ORM"
+				}, {
+				  "messageStructureId" : "BAR_P02",
+				  "type" : "structure",
+				  "events" : [ {
+				    "type" : "event",
+				    "event" : "P02"
+				  } ],
+				  "description" : "Add/change billing account"
+				}, {
+				  "messageStructureId" : "RRD_O14",
+				  "type" : "structure",
+				  "events" : [ {
+				    "type" : "event",
+				    "event" : "O14"
+				  } ],
+				  "description" : "Pharmacy/treatment dispense acknowledgment message"
+				}];
+			
 			$scope.loadIGDocumentsByVersion = function() {
 				$rootScope.hl7Version = $scope.hl7Version;
-				$http.post(
-						'api/igdocuments/messageListByVersion', angular.fromJson({
-							"hl7Version" : $scope.hl7Version,
-							"messageIds" : $scope.igdocumentVersions
-						})).then(function(response) {
-					$scope.messagesByVersion = angular.fromJson(response.data);
-					});
-				};
+				$scope.messageEventsParams = new ngTreetableParams( {
+					getNodes: function(parent) {
+						console.log("parent ? parent.children : mes;");
+						return parent ? parent.children : mes;
+					},
+			        getTemplate: function(node) {
+			            return 'MessageEventsNode.html';
+			        },
+			        options: {
+			            onNodeExpand: function() {
+			                console.log('A node was expanded!');
+			            }
+			        }
+				});
+			};
 
+//				$scope.messageEventsParams = new ngTreetableParams( {
+//					getNodes: function(parent) {
+//				        var deferred = $q.defer();
+//				        $http.post('api/igdocuments/messageListByVersion', angular.fromJson({
+//							"hl7Version" : $scope.hl7Version,
+//							"messageIds" : $scope.igdocumentVersions
+//						})).success(function(data) {
+//				            deferred.resolve(data);
+//						});
+//				        return deferred.promise;
+//					},
+//			        getTemplate: function(node) {
+//			            return 'MessageEventsNode.html';
+//			        }
+//				});
+			
 			$scope.trackSelections = function(bool, id) {
 				if (bool) {
 					igdocumentVersions.push(id);

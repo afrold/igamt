@@ -1,761 +1,1929 @@
 [ {
-  "messageStructureId" : "ADT_A45",
-  "events" : [ "A45" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "OMN_O07",
-  "events" : [ "007" ],
-  "description" : "Non-stock requisition order message"
-}, {
-  "messageStructureId" : "OML_O35",
-  "events" : [ "O35" ],
-  "description" : "Laboratory order message"
-}, {
-  "messageStructureId" : "OMS_O05",
-  "events" : [ "O05" ],
-  "description" : "Stock requisition order message"
-}, {
-  "messageStructureId" : "DFT_P03",
-  "events" : [ "P03" ],
-  "description" : "Detail financial transactions"
-}, {
-  "messageStructureId" : "ROR_ROR",
-  "events" : [ "ROR" ],
-  "description" : "Pharmacy/treatment order response"
-}, {
-  "messageStructureId" : "MFN_Znn",
-  "events" : [ ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "RDY_K15",
-  "events" : [ "K15" ],
-  "description" : "Display based response"
-}, {
-  "messageStructureId" : "ADT_A17",
-  "events" : [ "A17" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "OUL_R22",
-  "events" : [ "R22" ],
-  "description" : "Unsolicited laboratory observation message"
-}, {
-  "messageStructureId" : "ADT_A01",
-  "events" : [ "A01", " A08", " A04", " A13" ],
-  "description" : "ADT message"
+  "messageStructureId" : "ORR_O02",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O02"
+  } ],
+  "description" : "General order response message response to any ORM"
 }, {
   "messageStructureId" : "BAR_P02",
-  "events" : [ "P02" ],
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "P02"
+  } ],
   "description" : "Add/change billing account"
 }, {
-  "messageStructureId" : "RDS_O13",
-  "events" : [ "O13" ],
-  "description" : "Pharmacy/treatment dispense message"
+  "messageStructureId" : "RRD_O14",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O14"
+  } ],
+  "description" : "Pharmacy/treatment dispense acknowledgment message"
 }, {
-  "messageStructureId" : "NMQ_N01",
-  "events" : [ "N01" ],
-  "description" : "Application management query message"
+  "messageStructureId" : "OUL_R21",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "R21"
+  } ],
+  "description" : "Unsolicited laboratory observation message"
 }, {
-  "messageStructureId" : "QRY_R02",
-  "events" : [ "R02" ],
-  "description" : "Query, original mode"
-}, {
-  "messageStructureId" : "RSP_Z88",
-  "events" : [ ],
-  "description" : "Segment pattern response"
-}, {
-  "messageStructureId" : "SQR_S25",
-  "events" : [ "S25" ],
-  "description" : "Schedule query response"
-}, {
-  "messageStructureId" : "INU_U05",
-  "events" : [ "U05" ],
-  "description" : "Automated equipment inventory update message"
-}, {
-  "messageStructureId" : "ADT_A24",
-  "events" : [ "A24" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "RGV_O15",
-  "events" : [ "O15" ],
-  "description" : "Pharmacy/treatment give message"
-}, {
-  "messageStructureId" : "ADT_A02",
-  "events" : [ "A02" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "QRY_Q01",
-  "events" : [ " Q30", "Q01", " Q29", " Q28", " Q27", " Q26" ],
-  "description" : "Query, original mode"
-}, {
-  "messageStructureId" : "ORM_O01",
-  "events" : [ "O01" ],
-  "description" : "Pharmacy/treatment order message"
-}, {
-  "messageStructureId" : "QBP_Q13",
-  "events" : [ "Q13" ],
-  "description" : "Query by parameter"
-}, {
-  "messageStructureId" : "MFN_M04",
-  "events" : [ "M04" ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "PPT_PCL",
-  "events" : [ "PCL" ],
-  "description" : "Patient pathway goal-oriented response"
-}, {
-  "messageStructureId" : "CRM_C01",
-  "events" : [ " C08", "C01", " C07", " C06", " C05", " C04", " C03", " C02" ],
-  "description" : "Clinical study registration message"
-}, {
-  "messageStructureId" : "QBP_Q15",
-  "events" : [ "Q15" ],
-  "description" : "Query by parameter"
-}, {
-  "messageStructureId" : "ESU_U01",
-  "events" : [ "U01" ],
-  "description" : "Automated equipment status update message"
-}, {
-  "messageStructureId" : "QBP_Q21",
-  "events" : [ "Q21", "Q24", " Q25", " Q23", " Q22" ],
-  "description" : "Query by parameter"
+  "messageStructureId" : "EAN_U09",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "U09"
+  } ],
+  "description" : "Automated equipment notification message"
 }, {
   "messageStructureId" : "PPV_PCA",
-  "events" : [ "PCA" ],
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "PCA"
+  } ],
   "description" : "Patient goal response"
 }, {
-  "messageStructureId" : "RPI_I04",
-  "events" : [ "I04" ],
-  "description" : "Return patient information"
-}, {
-  "messageStructureId" : "MFN_M15",
-  "events" : [ "M15" ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "OSR_Q06",
-  "events" : [ "Q06" ],
-  "description" : "Query response for order status"
-}, {
-  "messageStructureId" : "QRY_A19",
-  "events" : [ "A19" ],
+  "messageStructureId" : "QRY_",
+  "type" : "structure",
+  "events" : [ ],
   "description" : "Query, original mode"
 }, {
-  "messageStructureId" : "ACK_",
+  "messageStructureId" : "SQR_S25",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "S25"
+  } ],
+  "description" : "Schedule query response"
+}, {
+  "messageStructureId" : "PMU_B01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "B01"
+  }, {
+    "type" : "event",
+    "event" : " B02"
+  } ],
+  "description" : "Add personnel record"
+}, {
+  "messageStructureId" : "MFN_M11",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M11"
+  } ],
+  "description" : "Master files notification"
+}, {
+  "messageStructureId" : "RSP_Z88",
+  "type" : "structure",
   "events" : [ ],
-  "description" : "General acknowledgment message"
-}, {
-  "messageStructureId" : "RSP_Q11",
-  "events" : [ "Q11" ],
   "description" : "Segment pattern response"
 }, {
-  "messageStructureId" : "NMD_N02",
-  "events" : [ "N02" ],
-  "description" : "Application management data message"
-}, {
-  "messageStructureId" : "RSP_Z82",
+  "messageStructureId" : "NUL_",
+  "type" : "structure",
   "events" : [ ],
-  "description" : "Segment pattern response"
+  "description" : "Response for vaccination query with multiple PID matches"
 }, {
-  "messageStructureId" : "RDR_RDR",
-  "events" : [ "RDR" ],
-  "description" : "Pharmacy/treatment dispense information"
+  "messageStructureId" : "TCU_U10",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " U11"
+  }, {
+    "type" : "event",
+    "event" : "U10"
+  } ],
+  "description" : "Automated equipment test code settings update message"
 }, {
-  "messageStructureId" : "ADT_A50",
-  "events" : [ " A51", "A50" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "PPG_PCG",
-  "events" : [ "PCC", " PCJ", " PCH", " PCG" ],
-  "description" : "Patient pathway message (goal-oriented)"
-}, {
-  "messageStructureId" : "MDM_T02",
-  "events" : [ " T08", " T06", "T02", " T04", " T10" ],
-  "description" : "Medical document management"
-}, {
-  "messageStructureId" : "ADT_A12",
-  "events" : [ "A12" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "BRP_O30",
-  "events" : [ "O30" ],
-  "description" : "Blood product dispense status acknowledgement message"
-}, {
-  "messageStructureId" : "MDM_T01",
-  "events" : [ " T09", "T01", " T07", " T05", " T03", " T11" ],
-  "description" : "Medical document management"
-}, {
-  "messageStructureId" : "OMB_O27",
-  "events" : [ "O27" ],
-  "description" : "Blood product order message"
-}, {
-  "messageStructureId" : "ADT_A38",
-  "events" : [ "A38" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "OSQ_Q06",
-  "events" : [ "Q06" ],
-  "description" : "Query response for order status"
-}, {
-  "messageStructureId" : "RQP_I04",
-  "events" : [ "I04" ],
-  "description" : "Request patient demographics"
-}, {
-  "messageStructureId" : "ADT_A37",
-  "events" : [ "A37" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "PRR_PC5",
-  "events" : [ "PC5" ],
-  "description" : "Patient problem response"
-}, {
-  "messageStructureId" : "RRI_I12",
-  "events" : [ " I15", " I14", " I13", "I12" ],
-  "description" : "Return referral information"
-}, {
-  "messageStructureId" : "RSP_K31",
-  "events" : [ "K31" ],
-  "description" : "Segment pattern response"
-}, {
-  "messageStructureId" : "RSP_K25",
-  "events" : [ "K25" ],
-  "description" : "Segment pattern response"
-}, {
-  "messageStructureId" : "MFK_M01",
-  "events" : [ " M02", " M11", " M10", " M09", " M08", " M07", " M06", " M05", " M04", "M01", " M03" ],
-  "description" : "Master files application acknowledgment"
-}, {
-  "messageStructureId" : "RQA_I08",
-  "events" : [ "I08", " I11", " I10", " I09" ],
-  "description" : "Request patient authorization"
+  "messageStructureId" : "BAR_P10",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "P10"
+  } ],
+  "description" : "Add/change billing account"
 }, {
   "messageStructureId" : "ADT_A05",
-  "events" : [ " A31", "A05", " A28", " A14" ],
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " A14"
+  }, {
+    "type" : "event",
+    "event" : "A05"
+  }, {
+    "type" : "event",
+    "event" : " A31"
+  }, {
+    "type" : "event",
+    "event" : " A28"
+  } ],
   "description" : "ADT message"
 }, {
-  "messageStructureId" : "ORI_O24",
-  "events" : [ "O24" ],
-  "description" : "Imaging order acknowledgement message"
+  "messageStructureId" : "OML_O33",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O33"
+  } ],
+  "description" : "Laboratory order message"
 }, {
-  "messageStructureId" : "ORB_O28",
-  "events" : [ "O28" ],
-  "description" : "Blood product order acknowledgement message"
+  "messageStructureId" : "PRR_PC5",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "PC5"
+  } ],
+  "description" : "Patient problem response"
 }, {
-  "messageStructureId" : "BTS_O31",
-  "events" : [ "O31" ],
-  "description" : "Blood product transfusion/disposition message"
+  "messageStructureId" : "SRM_S01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " S05"
+  }, {
+    "type" : "event",
+    "event" : " S11"
+  }, {
+    "type" : "event",
+    "event" : " S09"
+  }, {
+    "type" : "event",
+    "event" : " S08"
+  }, {
+    "type" : "event",
+    "event" : " S04"
+  }, {
+    "type" : "event",
+    "event" : " S07"
+  }, {
+    "type" : "event",
+    "event" : " S03"
+  }, {
+    "type" : "event",
+    "event" : " S02"
+  }, {
+    "type" : "event",
+    "event" : " S06"
+  }, {
+    "type" : "event",
+    "event" : " S10"
+  }, {
+    "type" : "event",
+    "event" : "S01"
+  } ],
+  "description" : "Schedule request message"
 }, {
-  "messageStructureId" : "QVR_Q17",
-  "events" : [ "Q17" ],
-  "description" : "Query for previous events"
-}, {
-  "messageStructureId" : "RPI_I01",
-  "events" : [ "I01" ],
-  "description" : "Return patient information"
-}, {
-  "messageStructureId" : "ADT_A61",
-  "events" : [ " A62", "A61" ],
+  "messageStructureId" : "ADT_A12",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A12"
+  } ],
   "description" : "ADT message"
 }, {
   "messageStructureId" : "MFN_M06",
-  "events" : [ "M06" ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "OUL_R24",
-  "events" : [ "R24" ],
-  "description" : "Unsolicited laboratory observation message"
-}, {
-  "messageStructureId" : "BPS_O29",
-  "events" : [ "O29" ],
-  "description" : "Blood product dispense status message"
-}, {
-  "messageStructureId" : "NUL_",
-  "events" : [ ],
-  "description" : "Response for vaccination query with multiple PID matches"
-}, {
-  "messageStructureId" : "ADT_A20",
-  "events" : [ "A20" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "RRE_O12",
-  "events" : [ "O12", " O26" ],
-  "description" : "Pharmacy/treatment encoded order acknowledgment message"
-}, {
-  "messageStructureId" : "BRT_O32",
-  "events" : [ "O32" ],
-  "description" : "Blood product transfusion/disposition acknowledgement message"
-}, {
-  "messageStructureId" : "EAC_U07",
-  "events" : [ "U07" ],
-  "description" : "Automated equipment command message"
-}, {
-  "messageStructureId" : "QBP_Q11",
-  "events" : [ "Q11" ],
-  "description" : "Query by parameter"
-}, {
-  "messageStructureId" : "MFN_M02",
-  "events" : [ "M02" ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "RSP_K11",
-  "events" : [ "K11" ],
-  "description" : "Segment pattern response"
-}, {
-  "messageStructureId" : "SQM_S25",
-  "events" : [ "S25" ],
-  "description" : "Schedule query message"
-}, {
-  "messageStructureId" : "OUL_R23",
-  "events" : [ "R23" ],
-  "description" : "Unsolicited laboratory observation message"
-}, {
-  "messageStructureId" : "DOC_T12",
-  "events" : [ "T12" ],
-  "description" : "Document response"
-}, {
-  "messageStructureId" : "BAR_P06",
-  "events" : [ "P06" ],
-  "description" : "Add/change billing account"
-}, {
-  "messageStructureId" : "RRA_O18",
-  "events" : [ "O18" ],
-  "description" : "Pharmacy/treatment administration acknowledgment message"
-}, {
-  "messageStructureId" : "RRD_O14",
-  "events" : [ "O14" ],
-  "description" : "Pharmacy/treatment dispense acknowledgment message"
-}, {
-  "messageStructureId" : "RDE_O11",
-  "events" : [ " O25", "O11" ],
-  "description" : "Pharmacy/treatment encoded order message"
-}, {
-  "messageStructureId" : "RTB_K13",
-  "events" : [ "K13" ],
-  "description" : "Tabular response"
-}, {
-  "messageStructureId" : "PMU_B03",
-  "events" : [ "B03" ],
-  "description" : "Add personnel record"
-}, {
-  "messageStructureId" : "ADT_A06",
-  "events" : [ "A06", " A07" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "PTR_PCF",
-  "events" : [ "PCF" ],
-  "description" : "Patient pathway problem-oriented response"
-}, {
-  "messageStructureId" : "RSP_Z90",
-  "events" : [ ],
-  "description" : "Segment pattern response"
-}, {
-  "messageStructureId" : "OMD_O03",
-  "events" : [ "O03" ],
-  "description" : "Dietary order"
-}, {
-  "messageStructureId" : "PMU_B04",
-  "events" : [ "B04", " B06", " B05" ],
-  "description" : "Add personnel record"
-}, {
-  "messageStructureId" : "ADT_A18",
-  "events" : [ "A18" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "ORF_R04",
-  "events" : [ "R04" ],
-  "description" : "Query for results of observation"
-}, {
-  "messageStructureId" : "ADT_A16",
-  "events" : [ "A16" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "PMU_B01",
-  "events" : [ "B01", " B02" ],
-  "description" : "Add personnel record"
-}, {
-  "messageStructureId" : "MFN_M10",
-  "events" : [ "M10" ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "PMU_B08",
-  "events" : [ "B08" ],
-  "description" : "Add personnel record"
-}, {
-  "messageStructureId" : "ORS_O06",
-  "events" : [ "O06" ],
-  "description" : "Stock requisition - Order acknowledgment message"
-}, {
-  "messageStructureId" : "EAR_U08",
-  "events" : [ "U08" ],
-  "description" : "Automated equipment response message"
-}, {
-  "messageStructureId" : "OMG_O19",
-  "events" : [ "O19" ],
-  "description" : "General clinical order message"
-}, {
-  "messageStructureId" : "ADT_A30",
-  "events" : [ " A49", " A48", " A36", " A47", " A35", " A46", " A34", "A30" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "ORL_O22",
-  "events" : [ "022" ],
-  "description" : "Laboratory acknowledgment message (unsolicited)"
-}, {
-  "messageStructureId" : "ADT_A15",
-  "events" : [ "A15" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "PGL_PC6",
-  "events" : [ "PC6", " PC8", " PC7" ],
-  "description" : "Patient goal message"
-}, {
-  "messageStructureId" : "MFR_M01",
-  "events" : [ " M02", "M01", " M03" ],
-  "description" : "Master files response"
-}, {
-  "messageStructureId" : "BAR_P01",
-  "events" : [ "P01" ],
-  "description" : "Add/change billing account"
-}, {
-  "messageStructureId" : "RPR_I03",
-  "events" : [ "I03" ],
-  "description" : "Return patient list"
-}, {
-  "messageStructureId" : "MFN_M12",
-  "events" : [ "M12" ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "ORL_O36",
-  "events" : [ "O36" ],
-  "description" : "Laboratory acknowledgment message (unsolicited)"
-}, {
-  "messageStructureId" : "OMI_O23",
-  "events" : [ "O23" ],
-  "description" : "Imaging order"
-}, {
-  "messageStructureId" : "TCU_U10",
-  "events" : [ "U10", " U11" ],
-  "description" : "Automated equipment test code settings update message"
-}, {
-  "messageStructureId" : "RSP_K23",
-  "events" : [ " K24", "K23" ],
-  "description" : "Segment pattern response"
-}, {
-  "messageStructureId" : "QCN_J01",
-  "events" : [ " J02", "J01" ],
-  "description" : "Cancel query"
-}, {
-  "messageStructureId" : "ADT_A21",
-  "events" : [ "A21", " A29", " A27", " A26", " A25", " A23", " A22", " A33", " A32" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "SRR_S01",
-  "events" : [ " S09", " S08", "S01", " S07", " S06", " S05", " S04", " S03", " S02", " S11", " S10" ],
-  "description" : "Scheduled request response"
-}, {
-  "messageStructureId" : "ORD_O04",
-  "events" : [ "O04" ],
-  "description" : "Dietary order acknowledgment message"
-}, {
-  "messageStructureId" : "RCI_I05",
-  "events" : [ "I05" ],
-  "description" : "Return clinical information"
-}, {
-  "messageStructureId" : "RTB_Z74",
-  "events" : [ ],
-  "description" : "Tabular response"
-}, {
-  "messageStructureId" : "OMP_O09",
-  "events" : [ "O09" ],
-  "description" : "Pharmacy/treatment order message"
-}, {
-  "messageStructureId" : "ADT_A03",
-  "events" : [ "A03" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "VXX_V02",
-  "events" : [ "V02" ],
-  "description" : "Response for vaccination query with multiple PID matches"
-}, {
-  "messageStructureId" : "ORU_R30",
-  "events" : [ "R30", " R32", " R31" ],
-  "description" : "Unsolicited transmission of an observation message"
-}, {
-  "messageStructureId" : "BAR_P05",
-  "events" : [ "P05" ],
-  "description" : "Add/change billing account"
-}, {
-  "messageStructureId" : "ORP_O10",
-  "events" : [ "O10" ],
-  "description" : "Pharmacy/treatment order acknowledgment message"
-}, {
-  "messageStructureId" : "RPA_I08",
-  "events" : [ "I08", " I11", " I09. I10" ],
-  "description" : "Return patient authorization"
-}, {
-  "messageStructureId" : "RQC_I05",
-  "events" : [ " I06", "I05" ],
-  "description" : "Request clinical information"
-}, {
-  "messageStructureId" : "CSU_C09",
-  "events" : [ " C12", " C11", "C09", " C10" ],
-  "description" : "Unsolicited study data message"
-}, {
-  "messageStructureId" : "OML_O33",
-  "events" : [ "O33" ],
-  "description" : "Laboratory order message"
-}, {
-  "messageStructureId" : "PPR_PC1",
-  "events" : [ " PC2", "PC1", " PC3" ],
-  "description" : "Patient problem message"
-}, {
-  "messageStructureId" : "RRG_O16",
-  "events" : [ "O16" ],
-  "description" : "Pharmacy/treatment give acknowledgment message"
-}, {
-  "messageStructureId" : "RQI_I01",
-  "events" : [ " I03", " I02", "I01", " I07" ],
-  "description" : "Request patient information"
-}, {
-  "messageStructureId" : "MFR_M07",
-  "events" : [ "M07" ],
-  "description" : "Master files response"
-}, {
-  "messageStructureId" : "MFR_M06",
-  "events" : [ "M06" ],
-  "description" : "Master files response"
-}, {
-  "messageStructureId" : "SUR_P09",
-  "events" : [ "P09" ],
-  "description" : "Summary product experience report"
-}, {
-  "messageStructureId" : "SSR_U04",
-  "events" : [ "U04" ],
-  "description" : "Specimen status request message"
-}, {
-  "messageStructureId" : "QRY_",
-  "events" : [ ],
-  "description" : "Query, original mode"
-}, {
-  "messageStructureId" : "MFN_M09",
-  "events" : [ "M09" ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "QRY_PC4",
-  "events" : [ "PC4", " PCK", " PC9", " PCE" ],
-  "description" : "Query, original mode"
-}, {
-  "messageStructureId" : "LSU_U12",
-  "events" : [ "U12", " U13" ],
-  "description" : "Automated equipment log/service update message"
-}, {
-  "messageStructureId" : "RER_RER",
-  "events" : [ "RER" ],
-  "description" : "Pharmacy/treatment encoded order information"
-}, {
-  "messageStructureId" : "MFN_M01",
-  "events" : [ "M01" ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "QBP_Z73",
-  "events" : [ ],
-  "description" : "Query by parameter"
-}, {
-  "messageStructureId" : "MFR_M05",
-  "events" : [ "Mo5" ],
-  "description" : "Master files response"
-}, {
-  "messageStructureId" : "ORL_O34",
-  "events" : [ "O34" ],
-  "description" : "Laboratory acknowledgment message (unsolicited)"
-}, {
-  "messageStructureId" : "SRM_S01",
-  "events" : [ " S09", " S08", "S01", " S07", " S06", " S05", " S04", " S03", " S02", " S11", " S10" ],
-  "description" : "Schedule request message"
-}, {
-  "messageStructureId" : "RCL_I06",
-  "events" : [ "I06" ],
-  "description" : "Return clinical list"
-}, {
-  "messageStructureId" : "MFN_M05",
-  "events" : [ "M05" ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "ORU_R01",
-  "events" : [ "R01" ],
-  "description" : "Unsolicited transmission of an observation message"
-}, {
-  "messageStructureId" : "QSB_Q16",
-  "events" : [ "Q16" ],
-  "description" : "Create subscription"
-}, {
-  "messageStructureId" : "SIU_S12",
-  "events" : [ " S19", "S12", " S18", " S17", " S16", " S15", " S26", " S14", " S13", " S24", " S23", " S22", " S21", " S20" ],
-  "description" : "Schedule information unsolicited"
-}, {
-  "messageStructureId" : "OML_O21",
-  "events" : [ "O21" ],
-  "description" : "Laboratory order message"
-}, {
-  "messageStructureId" : "MFR_M04",
-  "events" : [ "M04" ],
-  "description" : "Master files response"
-}, {
-  "messageStructureId" : "RAS_O17",
-  "events" : [ "O17" ],
-  "description" : "Pharmacy/treatment administration message"
-}, {
-  "messageStructureId" : "ORN_O08",
-  "events" : [ "O08" ],
-  "description" : "Non-stock requisition - General order acknowledgment message"
-}, {
-  "messageStructureId" : "NMR_N01",
-  "events" : [ "N01" ],
-  "description" : "Application management response message"
-}, {
-  "messageStructureId" : "ORG_O20",
-  "events" : [ "O20" ],
-  "description" : "General clinical order acknowledgment message"
-}, {
-  "messageStructureId" : "ESR_U02",
-  "events" : [ "U02" ],
-  "description" : "Automated equipment status update acknowledgment message"
-}, {
-  "messageStructureId" : "VXR_V03",
-  "events" : [ "V03" ],
-  "description" : "Vaccination record response"
-}, {
-  "messageStructureId" : "PEX_P07",
-  "events" : [ "P07", " P08" ],
-  "description" : "Product experience message"
-}, {
-  "messageStructureId" : "RGR_RGR",
-  "events" : [ "RGR" ],
-  "description" : "Pharmacy/treatment dose information"
-}, {
-  "messageStructureId" : "VXU_V04",
-  "events" : [ "V04" ],
-  "description" : "Unsolicited vaccination record update"
-}, {
-  "messageStructureId" : "RAR_RAR",
-  "events" : [ "RAR" ],
-  "description" : "Pharmacy/treatment administration information"
-}, {
-  "messageStructureId" : "ADR_A19",
-  "events" : [ "A19" ],
-  "description" : "ADT response"
-}, {
-  "messageStructureId" : "PMU_B07",
-  "events" : [ "B07" ],
-  "description" : "Add personnel record"
-}, {
-  "messageStructureId" : "ADT_A43",
-  "events" : [ "A43", " A44" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "RPL_I02",
-  "events" : [ "I02" ],
-  "description" : "Return patient display list"
-}, {
-  "messageStructureId" : "MFN_M08",
-  "events" : [ "M08" ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "ORR_O02",
-  "events" : [ "O02" ],
-  "description" : "General order response message response to any ORM"
-}, {
-  "messageStructureId" : "OUL_R21",
-  "events" : [ "R21" ],
-  "description" : "Unsolicited laboratory observation message"
-}, {
-  "messageStructureId" : "MFQ_M01",
-  "events" : [ " M02", " M06", " M05", " M04", "M01", " M03" ],
-  "description" : "Master files query"
-}, {
-  "messageStructureId" : "ADT_A09",
-  "events" : [ "A09", " A11", " A10" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "VXQ_V01",
-  "events" : [ "V01" ],
-  "description" : "Query for vaccination record"
-}, {
-  "messageStructureId" : "ADT_A39",
-  "events" : [ " A42", " A41", " A40", "A39" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "RSP_K21",
-  "events" : [ "K21" ],
-  "description" : "Segment pattern response"
-}, {
-  "messageStructureId" : "MFN_M13",
-  "events" : [ "M13" ],
-  "description" : "Master files notification"
-}, {
-  "messageStructureId" : "BAR_P10",
-  "events" : [ "P10" ],
-  "description" : "Add/change billing account"
-}, {
-  "messageStructureId" : "ADT_A52",
-  "events" : [ " A53", "A52", " A55" ],
-  "description" : "ADT message"
-}, {
-  "messageStructureId" : "QBP_Qnn",
-  "events" : [ ],
-  "description" : "Query by parameter"
-}, {
-  "messageStructureId" : "EAN_U09",
-  "events" : [ "U09" ],
-  "description" : "Automated equipment notification message"
-}, {
-  "messageStructureId" : "RSP_Z86",
-  "events" : [ ],
-  "description" : "Segment pattern response"
-}, {
-  "messageStructureId" : "BAR_P12",
-  "events" : [ "P12" ],
-  "description" : "Add/change billing account"
-}, {
-  "messageStructureId" : "MFN_M07",
-  "events" : [ "M07" ],
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M06"
+  } ],
   "description" : "Master files notification"
 }, {
   "messageStructureId" : "REF_I12",
-  "events" : [ " I15", " I14", " I13", "I12" ],
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " I15"
+  }, {
+    "type" : "event",
+    "event" : "I12"
+  }, {
+    "type" : "event",
+    "event" : " I14"
+  }, {
+    "type" : "event",
+    "event" : " I13"
+  } ],
   "description" : "Patient referral"
 }, {
-  "messageStructureId" : "INR_U06",
-  "events" : [ "U06" ],
-  "description" : "Automated equipment inventory request message"
-}, {
-  "messageStructureId" : "ADT_A54",
-  "events" : [ "A54" ],
+  "messageStructureId" : "ADT_A01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " A08"
+  }, {
+    "type" : "event",
+    "event" : "A01"
+  }, {
+    "type" : "event",
+    "event" : " A04"
+  }, {
+    "type" : "event",
+    "event" : " A13"
+  } ],
   "description" : "ADT message"
 }, {
-  "messageStructureId" : "MFN_M03",
-  "events" : [ "M03" ],
+  "messageStructureId" : "BRT_O32",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O32"
+  } ],
+  "description" : "Blood product transfusion/disposition acknowledgement message"
+}, {
+  "messageStructureId" : "PPP_PCB",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "PCB"
+  }, {
+    "type" : "event",
+    "event" : " PCD"
+  } ],
+  "description" : "Patient pathway message (problem-oriented)"
+}, {
+  "messageStructureId" : "OSQ_Q06",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "Q06"
+  } ],
+  "description" : "Query response for order status"
+}, {
+  "messageStructureId" : "PMU_B08",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "B08"
+  } ],
+  "description" : "Add personnel record"
+}, {
+  "messageStructureId" : "ADT_A20",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A20"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "RTB_K13",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "K13"
+  } ],
+  "description" : "Tabular response"
+}, {
+  "messageStructureId" : "BAR_P06",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "P06"
+  } ],
+  "description" : "Add/change billing account"
+}, {
+  "messageStructureId" : "RER_RER",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "RER"
+  } ],
+  "description" : "Pharmacy/treatment encoded order information"
+}, {
+  "messageStructureId" : "RQA_I08",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " I10"
+  }, {
+    "type" : "event",
+    "event" : "I08"
+  }, {
+    "type" : "event",
+    "event" : " I09"
+  }, {
+    "type" : "event",
+    "event" : " I11"
+  } ],
+  "description" : "Request patient authorization"
+}, {
+  "messageStructureId" : "SQM_S25",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "S25"
+  } ],
+  "description" : "Schedule query message"
+}, {
+  "messageStructureId" : "OUL_R24",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "R24"
+  } ],
+  "description" : "Unsolicited laboratory observation message"
+}, {
+  "messageStructureId" : "ADT_A24",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A24"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "ORL_O22",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "022"
+  } ],
+  "description" : "Laboratory acknowledgment message (unsolicited)"
+}, {
+  "messageStructureId" : "ORU_R30",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " R32"
+  }, {
+    "type" : "event",
+    "event" : " R31"
+  }, {
+    "type" : "event",
+    "event" : "R30"
+  } ],
+  "description" : "Unsolicited transmission of an observation message"
+}, {
+  "messageStructureId" : "RPR_I03",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "I03"
+  } ],
+  "description" : "Return patient list"
+}, {
+  "messageStructureId" : "MFR_M05",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "Mo5"
+  } ],
+  "description" : "Master files response"
+}, {
+  "messageStructureId" : "QBP_Q21",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "Q24"
+  }, {
+    "type" : "event",
+    "event" : " Q22"
+  }, {
+    "type" : "event",
+    "event" : "Q21"
+  }, {
+    "type" : "event",
+    "event" : " Q23"
+  }, {
+    "type" : "event",
+    "event" : " Q25"
+  } ],
+  "description" : "Query by parameter"
+}, {
+  "messageStructureId" : "NMR_N01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "N01"
+  } ],
+  "description" : "Application management response message"
+}, {
+  "messageStructureId" : "ADT_A18",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A18"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "MFR_M06",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M06"
+  } ],
+  "description" : "Master files response"
+}, {
+  "messageStructureId" : "MFR_M04",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M04"
+  } ],
+  "description" : "Master files response"
+}, {
+  "messageStructureId" : "SUR_P09",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "P09"
+  } ],
+  "description" : "Summary product experience report"
+}, {
+  "messageStructureId" : "ORI_O24",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O24"
+  } ],
+  "description" : "Imaging order acknowledgement message"
+}, {
+  "messageStructureId" : "RQI_I01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " I03"
+  }, {
+    "type" : "event",
+    "event" : "I01"
+  }, {
+    "type" : "event",
+    "event" : " I07"
+  }, {
+    "type" : "event",
+    "event" : " I02"
+  } ],
+  "description" : "Request patient information"
+}, {
+  "messageStructureId" : "OMI_O23",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O23"
+  } ],
+  "description" : "Imaging order"
+}, {
+  "messageStructureId" : "ORM_O01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O01"
+  } ],
+  "description" : "Pharmacy/treatment order message"
+}, {
+  "messageStructureId" : "MFN_M15",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M15"
+  } ],
   "description" : "Master files notification"
 }, {
-  "messageStructureId" : "ADT_A60",
-  "events" : [ "A60" ],
+  "messageStructureId" : "QRY_R02",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "R02"
+  } ],
+  "description" : "Query, original mode"
+}, {
+  "messageStructureId" : "ADT_A52",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A52"
+  }, {
+    "type" : "event",
+    "event" : " A55"
+  }, {
+    "type" : "event",
+    "event" : " A53"
+  } ],
   "description" : "ADT message"
 }, {
-  "messageStructureId" : "RTB_Knn",
+  "messageStructureId" : "MFR_M01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M01"
+  }, {
+    "type" : "event",
+    "event" : " M03"
+  }, {
+    "type" : "event",
+    "event" : " M02"
+  } ],
+  "description" : "Master files response"
+}, {
+  "messageStructureId" : "RAS_O17",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O17"
+  } ],
+  "description" : "Pharmacy/treatment administration message"
+}, {
+  "messageStructureId" : "ACK_",
+  "type" : "structure",
+  "events" : [ ],
+  "description" : "General acknowledgment message"
+}, {
+  "messageStructureId" : "MDM_T02",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " T04"
+  }, {
+    "type" : "event",
+    "event" : " T10"
+  }, {
+    "type" : "event",
+    "event" : " T06"
+  }, {
+    "type" : "event",
+    "event" : " T08"
+  }, {
+    "type" : "event",
+    "event" : "T02"
+  } ],
+  "description" : "Medical document management"
+}, {
+  "messageStructureId" : "BTS_O31",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O31"
+  } ],
+  "description" : "Blood product transfusion/disposition message"
+}, {
+  "messageStructureId" : "RTB_Z74",
+  "type" : "structure",
   "events" : [ ],
   "description" : "Tabular response"
 }, {
-  "messageStructureId" : "PPP_PCB",
-  "events" : [ "PCB", " PCD" ],
-  "description" : "Patient pathway message (problem-oriented)"
+  "messageStructureId" : "MFN_M04",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M04"
+  } ],
+  "description" : "Master files notification"
+}, {
+  "messageStructureId" : "MFN_M05",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M05"
+  } ],
+  "description" : "Master files notification"
+}, {
+  "messageStructureId" : "OMP_O09",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O09"
+  } ],
+  "description" : "Pharmacy/treatment order message"
+}, {
+  "messageStructureId" : "ADT_A06",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " A07"
+  }, {
+    "type" : "event",
+    "event" : "A06"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "ORL_O36",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O36"
+  } ],
+  "description" : "Laboratory acknowledgment message (unsolicited)"
+}, {
+  "messageStructureId" : "BRP_O30",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O30"
+  } ],
+  "description" : "Blood product dispense status acknowledgement message"
+}, {
+  "messageStructureId" : "RRE_O12",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O12"
+  }, {
+    "type" : "event",
+    "event" : " O26"
+  } ],
+  "description" : "Pharmacy/treatment encoded order acknowledgment message"
+}, {
+  "messageStructureId" : "MFN_M13",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M13"
+  } ],
+  "description" : "Master files notification"
 }, {
   "messageStructureId" : "SSU_U03",
-  "events" : [ "U03" ],
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "U03"
+  } ],
   "description" : "Specimen status update message"
 }, {
+  "messageStructureId" : "ADT_A38",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A38"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "RSP_K11",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "K11"
+  } ],
+  "description" : "Segment pattern response"
+}, {
+  "messageStructureId" : "OMS_O05",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O05"
+  } ],
+  "description" : "Stock requisition order message"
+}, {
+  "messageStructureId" : "RSP_Q11",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "Q11"
+  } ],
+  "description" : "Segment pattern response"
+}, {
+  "messageStructureId" : "PGL_PC6",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " PC7"
+  }, {
+    "type" : "event",
+    "event" : "PC6"
+  }, {
+    "type" : "event",
+    "event" : " PC8"
+  } ],
+  "description" : "Patient goal message"
+}, {
+  "messageStructureId" : "QRY_PC4",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " PC9"
+  }, {
+    "type" : "event",
+    "event" : "PC4"
+  }, {
+    "type" : "event",
+    "event" : " PCK"
+  }, {
+    "type" : "event",
+    "event" : " PCE"
+  } ],
+  "description" : "Query, original mode"
+}, {
+  "messageStructureId" : "PMU_B03",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "B03"
+  } ],
+  "description" : "Add personnel record"
+}, {
   "messageStructureId" : "DFT_P11",
-  "events" : [ "P11" ],
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "P11"
+  } ],
   "description" : "Detail financial transactions"
 }, {
-  "messageStructureId" : "MFN_M11",
-  "events" : [ "M11" ],
+  "messageStructureId" : "ADT_A37",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A37"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "RDY_K15",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "K15"
+  } ],
+  "description" : "Display based response"
+}, {
+  "messageStructureId" : "PEX_P07",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " P08"
+  }, {
+    "type" : "event",
+    "event" : "P07"
+  } ],
+  "description" : "Product experience message"
+}, {
+  "messageStructureId" : "ADT_A60",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A60"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "ADT_A09",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " A10"
+  }, {
+    "type" : "event",
+    "event" : " A11"
+  }, {
+    "type" : "event",
+    "event" : "A09"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "RSP_Z86",
+  "type" : "structure",
+  "events" : [ ],
+  "description" : "Segment pattern response"
+}, {
+  "messageStructureId" : "SIU_S12",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " S13"
+  }, {
+    "type" : "event",
+    "event" : " S23"
+  }, {
+    "type" : "event",
+    "event" : " S17"
+  }, {
+    "type" : "event",
+    "event" : " S18"
+  }, {
+    "type" : "event",
+    "event" : " S15"
+  }, {
+    "type" : "event",
+    "event" : "S12"
+  }, {
+    "type" : "event",
+    "event" : " S19"
+  }, {
+    "type" : "event",
+    "event" : " S16"
+  }, {
+    "type" : "event",
+    "event" : " S26"
+  }, {
+    "type" : "event",
+    "event" : " S24"
+  }, {
+    "type" : "event",
+    "event" : " S20"
+  }, {
+    "type" : "event",
+    "event" : " S21"
+  }, {
+    "type" : "event",
+    "event" : " S14"
+  }, {
+    "type" : "event",
+    "event" : " S22"
+  } ],
+  "description" : "Schedule information unsolicited"
+}, {
+  "messageStructureId" : "ORP_O10",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O10"
+  } ],
+  "description" : "Pharmacy/treatment order acknowledgment message"
+}, {
+  "messageStructureId" : "RGR_RGR",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "RGR"
+  } ],
+  "description" : "Pharmacy/treatment dose information"
+}, {
+  "messageStructureId" : "ORF_R04",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "R04"
+  } ],
+  "description" : "Query for results of observation"
+}, {
+  "messageStructureId" : "MFQ_M01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " M05"
+  }, {
+    "type" : "event",
+    "event" : " M02"
+  }, {
+    "type" : "event",
+    "event" : " M04"
+  }, {
+    "type" : "event",
+    "event" : "M01"
+  }, {
+    "type" : "event",
+    "event" : " M03"
+  }, {
+    "type" : "event",
+    "event" : " M06"
+  } ],
+  "description" : "Master files query"
+}, {
+  "messageStructureId" : "OUL_R22",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "R22"
+  } ],
+  "description" : "Unsolicited laboratory observation message"
+}, {
+  "messageStructureId" : "BAR_P01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "P01"
+  } ],
+  "description" : "Add/change billing account"
+}, {
+  "messageStructureId" : "ADT_A17",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A17"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "BAR_P05",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "P05"
+  } ],
+  "description" : "Add/change billing account"
+}, {
+  "messageStructureId" : "ORU_R01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "R01"
+  } ],
+  "description" : "Unsolicited transmission of an observation message"
+}, {
+  "messageStructureId" : "MFK_M01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " M06"
+  }, {
+    "type" : "event",
+    "event" : "M01"
+  }, {
+    "type" : "event",
+    "event" : " M11"
+  }, {
+    "type" : "event",
+    "event" : " M08"
+  }, {
+    "type" : "event",
+    "event" : " M03"
+  }, {
+    "type" : "event",
+    "event" : " M02"
+  }, {
+    "type" : "event",
+    "event" : " M09"
+  }, {
+    "type" : "event",
+    "event" : " M04"
+  }, {
+    "type" : "event",
+    "event" : " M10"
+  }, {
+    "type" : "event",
+    "event" : " M05"
+  }, {
+    "type" : "event",
+    "event" : " M07"
+  } ],
+  "description" : "Master files application acknowledgment"
+}, {
+  "messageStructureId" : "ADT_A16",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A16"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "ORS_O06",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O06"
+  } ],
+  "description" : "Stock requisition - Order acknowledgment message"
+}, {
+  "messageStructureId" : "BPS_O29",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O29"
+  } ],
+  "description" : "Blood product dispense status message"
+}, {
+  "messageStructureId" : "VXU_V04",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "V04"
+  } ],
+  "description" : "Unsolicited vaccination record update"
+}, {
+  "messageStructureId" : "INU_U05",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "U05"
+  } ],
+  "description" : "Automated equipment inventory update message"
+}, {
+  "messageStructureId" : "MFN_M08",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M08"
+  } ],
   "description" : "Master files notification"
+}, {
+  "messageStructureId" : "QBP_Q11",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "Q11"
+  } ],
+  "description" : "Query by parameter"
+}, {
+  "messageStructureId" : "QBP_Q15",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "Q15"
+  } ],
+  "description" : "Query by parameter"
+}, {
+  "messageStructureId" : "RAR_RAR",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "RAR"
+  } ],
+  "description" : "Pharmacy/treatment administration information"
+}, {
+  "messageStructureId" : "RQP_I04",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "I04"
+  } ],
+  "description" : "Request patient demographics"
+}, {
+  "messageStructureId" : "ADT_A61",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " A62"
+  }, {
+    "type" : "event",
+    "event" : "A61"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "QSB_Q16",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "Q16"
+  } ],
+  "description" : "Create subscription"
+}, {
+  "messageStructureId" : "OML_O35",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O35"
+  } ],
+  "description" : "Laboratory order message"
+}, {
+  "messageStructureId" : "ESU_U01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "U01"
+  } ],
+  "description" : "Automated equipment status update message"
+}, {
+  "messageStructureId" : "ADT_A03",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A03"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "RDR_RDR",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "RDR"
+  } ],
+  "description" : "Pharmacy/treatment dispense information"
+}, {
+  "messageStructureId" : "ORG_O20",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O20"
+  } ],
+  "description" : "General clinical order acknowledgment message"
+}, {
+  "messageStructureId" : "BAR_P12",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "P12"
+  } ],
+  "description" : "Add/change billing account"
+}, {
+  "messageStructureId" : "CSU_C09",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " C11"
+  }, {
+    "type" : "event",
+    "event" : " C12"
+  }, {
+    "type" : "event",
+    "event" : "C09"
+  }, {
+    "type" : "event",
+    "event" : " C10"
+  } ],
+  "description" : "Unsolicited study data message"
+}, {
+  "messageStructureId" : "EAR_U08",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "U08"
+  } ],
+  "description" : "Automated equipment response message"
+}, {
+  "messageStructureId" : "PPG_PCG",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "PCC"
+  }, {
+    "type" : "event",
+    "event" : " PCH"
+  }, {
+    "type" : "event",
+    "event" : " PCJ"
+  }, {
+    "type" : "event",
+    "event" : " PCG"
+  } ],
+  "description" : "Patient pathway message (goal-oriented)"
+}, {
+  "messageStructureId" : "PMU_B07",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "B07"
+  } ],
+  "description" : "Add personnel record"
+}, {
+  "messageStructureId" : "MFR_M07",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M07"
+  } ],
+  "description" : "Master files response"
+}, {
+  "messageStructureId" : "SSR_U04",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "U04"
+  } ],
+  "description" : "Specimen status request message"
+}, {
+  "messageStructureId" : "QVR_Q17",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "Q17"
+  } ],
+  "description" : "Query for previous events"
+}, {
+  "messageStructureId" : "OUL_R23",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "R23"
+  } ],
+  "description" : "Unsolicited laboratory observation message"
+}, {
+  "messageStructureId" : "RSP_Z82",
+  "type" : "structure",
+  "events" : [ ],
+  "description" : "Segment pattern response"
+}, {
+  "messageStructureId" : "MDM_T01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " T05"
+  }, {
+    "type" : "event",
+    "event" : " T11"
+  }, {
+    "type" : "event",
+    "event" : "T01"
+  }, {
+    "type" : "event",
+    "event" : " T07"
+  }, {
+    "type" : "event",
+    "event" : " T09"
+  }, {
+    "type" : "event",
+    "event" : " T03"
+  } ],
+  "description" : "Medical document management"
+}, {
+  "messageStructureId" : "RSP_Z90",
+  "type" : "structure",
+  "events" : [ ],
+  "description" : "Segment pattern response"
+}, {
+  "messageStructureId" : "RCI_I05",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "I05"
+  } ],
+  "description" : "Return clinical information"
+}, {
+  "messageStructureId" : "ADR_A19",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A19"
+  } ],
+  "description" : "ADT response"
+}, {
+  "messageStructureId" : "RRG_O16",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O16"
+  } ],
+  "description" : "Pharmacy/treatment give acknowledgment message"
+}, {
+  "messageStructureId" : "ESR_U02",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "U02"
+  } ],
+  "description" : "Automated equipment status update acknowledgment message"
+}, {
+  "messageStructureId" : "MFN_M10",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M10"
+  } ],
+  "description" : "Master files notification"
+}, {
+  "messageStructureId" : "RSP_K31",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "K31"
+  } ],
+  "description" : "Segment pattern response"
+}, {
+  "messageStructureId" : "QBP_Q13",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "Q13"
+  } ],
+  "description" : "Query by parameter"
+}, {
+  "messageStructureId" : "ADT_A50",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " A51"
+  }, {
+    "type" : "event",
+    "event" : "A50"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "VXQ_V01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "V01"
+  } ],
+  "description" : "Query for vaccination record"
+}, {
+  "messageStructureId" : "ADT_A21",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " A27"
+  }, {
+    "type" : "event",
+    "event" : " A33"
+  }, {
+    "type" : "event",
+    "event" : " A23"
+  }, {
+    "type" : "event",
+    "event" : "A21"
+  }, {
+    "type" : "event",
+    "event" : " A26"
+  }, {
+    "type" : "event",
+    "event" : " A32"
+  }, {
+    "type" : "event",
+    "event" : " A25"
+  }, {
+    "type" : "event",
+    "event" : " A22"
+  }, {
+    "type" : "event",
+    "event" : " A29"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "OMN_O07",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "007"
+  } ],
+  "description" : "Non-stock requisition order message"
+}, {
+  "messageStructureId" : "RQC_I05",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " I06"
+  }, {
+    "type" : "event",
+    "event" : "I05"
+  } ],
+  "description" : "Request clinical information"
+}, {
+  "messageStructureId" : "PTR_PCF",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "PCF"
+  } ],
+  "description" : "Patient pathway problem-oriented response"
+}, {
+  "messageStructureId" : "VXX_V02",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "V02"
+  } ],
+  "description" : "Response for vaccination query with multiple PID matches"
+}, {
+  "messageStructureId" : "OML_O21",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O21"
+  } ],
+  "description" : "Laboratory order message"
+}, {
+  "messageStructureId" : "PMU_B04",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " B06"
+  }, {
+    "type" : "event",
+    "event" : "B04"
+  }, {
+    "type" : "event",
+    "event" : " B05"
+  } ],
+  "description" : "Add personnel record"
+}, {
+  "messageStructureId" : "RRA_O18",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O18"
+  } ],
+  "description" : "Pharmacy/treatment administration acknowledgment message"
+}, {
+  "messageStructureId" : "QRY_A19",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A19"
+  } ],
+  "description" : "Query, original mode"
+}, {
+  "messageStructureId" : "OSR_Q06",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "Q06"
+  } ],
+  "description" : "Query response for order status"
+}, {
+  "messageStructureId" : "RDS_O13",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O13"
+  } ],
+  "description" : "Pharmacy/treatment dispense message"
+}, {
+  "messageStructureId" : "ADT_A02",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A02"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "RSP_K21",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "K21"
+  } ],
+  "description" : "Segment pattern response"
+}, {
+  "messageStructureId" : "MFN_M09",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M09"
+  } ],
+  "description" : "Master files notification"
+}, {
+  "messageStructureId" : "RCL_I06",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "I06"
+  } ],
+  "description" : "Return clinical list"
+}, {
+  "messageStructureId" : "RPL_I02",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "I02"
+  } ],
+  "description" : "Return patient display list"
+}, {
+  "messageStructureId" : "ADT_A30",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " A36"
+  }, {
+    "type" : "event",
+    "event" : "A30"
+  }, {
+    "type" : "event",
+    "event" : " A47"
+  }, {
+    "type" : "event",
+    "event" : " A46"
+  }, {
+    "type" : "event",
+    "event" : " A34"
+  }, {
+    "type" : "event",
+    "event" : " A35"
+  }, {
+    "type" : "event",
+    "event" : " A49"
+  }, {
+    "type" : "event",
+    "event" : " A48"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "RPI_I01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "I01"
+  } ],
+  "description" : "Return patient information"
+}, {
+  "messageStructureId" : "ADT_A43",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A43"
+  }, {
+    "type" : "event",
+    "event" : " A44"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "NMD_N02",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "N02"
+  } ],
+  "description" : "Application management data message"
+}, {
+  "messageStructureId" : "ORL_O34",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O34"
+  } ],
+  "description" : "Laboratory acknowledgment message (unsolicited)"
+}, {
+  "messageStructureId" : "QBP_Z73",
+  "type" : "structure",
+  "events" : [ ],
+  "description" : "Query by parameter"
+}, {
+  "messageStructureId" : "DFT_P03",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "P03"
+  } ],
+  "description" : "Detail financial transactions"
+}, {
+  "messageStructureId" : "LSU_U12",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " U13"
+  }, {
+    "type" : "event",
+    "event" : "U12"
+  } ],
+  "description" : "Automated equipment log/service update message"
+}, {
+  "messageStructureId" : "RPI_I04",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "I04"
+  } ],
+  "description" : "Return patient information"
+}, {
+  "messageStructureId" : "ADT_A45",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A45"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "MFN_M01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M01"
+  } ],
+  "description" : "Master files notification"
+}, {
+  "messageStructureId" : "DOC_T12",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "T12"
+  } ],
+  "description" : "Document response"
+}, {
+  "messageStructureId" : "ORN_O08",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O08"
+  } ],
+  "description" : "Non-stock requisition - General order acknowledgment message"
+}, {
+  "messageStructureId" : "ROR_ROR",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "ROR"
+  } ],
+  "description" : "Pharmacy/treatment order response"
+}, {
+  "messageStructureId" : "PPT_PCL",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "PCL"
+  } ],
+  "description" : "Patient pathway goal-oriented response"
+}, {
+  "messageStructureId" : "RRI_I12",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " I15"
+  }, {
+    "type" : "event",
+    "event" : " I14"
+  }, {
+    "type" : "event",
+    "event" : " I13"
+  }, {
+    "type" : "event",
+    "event" : "I12"
+  } ],
+  "description" : "Return referral information"
+}, {
+  "messageStructureId" : "PPR_PC1",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "PC1"
+  }, {
+    "type" : "event",
+    "event" : " PC2"
+  }, {
+    "type" : "event",
+    "event" : " PC3"
+  } ],
+  "description" : "Patient problem message"
+}, {
+  "messageStructureId" : "QRY_Q01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "Q01"
+  }, {
+    "type" : "event",
+    "event" : " Q27"
+  }, {
+    "type" : "event",
+    "event" : " Q30"
+  }, {
+    "type" : "event",
+    "event" : " Q26"
+  }, {
+    "type" : "event",
+    "event" : " Q28"
+  }, {
+    "type" : "event",
+    "event" : " Q29"
+  } ],
+  "description" : "Query, original mode"
+}, {
+  "messageStructureId" : "QBP_Qnn",
+  "type" : "structure",
+  "events" : [ ],
+  "description" : "Query by parameter"
+}, {
+  "messageStructureId" : "MFN_M12",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M12"
+  } ],
+  "description" : "Master files notification"
+}, {
+  "messageStructureId" : "MFN_M07",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M07"
+  } ],
+  "description" : "Master files notification"
+}, {
+  "messageStructureId" : "SRR_S01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "S01"
+  }, {
+    "type" : "event",
+    "event" : " S02"
+  }, {
+    "type" : "event",
+    "event" : " S10"
+  }, {
+    "type" : "event",
+    "event" : " S06"
+  }, {
+    "type" : "event",
+    "event" : " S03"
+  }, {
+    "type" : "event",
+    "event" : " S09"
+  }, {
+    "type" : "event",
+    "event" : " S07"
+  }, {
+    "type" : "event",
+    "event" : " S11"
+  }, {
+    "type" : "event",
+    "event" : " S04"
+  }, {
+    "type" : "event",
+    "event" : " S08"
+  }, {
+    "type" : "event",
+    "event" : " S05"
+  } ],
+  "description" : "Scheduled request response"
+}, {
+  "messageStructureId" : "MFN_M03",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M03"
+  } ],
+  "description" : "Master files notification"
+}, {
+  "messageStructureId" : "QCN_J01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "J01"
+  }, {
+    "type" : "event",
+    "event" : " J02"
+  } ],
+  "description" : "Cancel query"
+}, {
+  "messageStructureId" : "ADT_A15",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A15"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "RGV_O15",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O15"
+  } ],
+  "description" : "Pharmacy/treatment give message"
+}, {
+  "messageStructureId" : "RSP_K25",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "K25"
+  } ],
+  "description" : "Segment pattern response"
+}, {
+  "messageStructureId" : "NMQ_N01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "N01"
+  } ],
+  "description" : "Application management query message"
+}, {
+  "messageStructureId" : "OMB_O27",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O27"
+  } ],
+  "description" : "Blood product order message"
+}, {
+  "messageStructureId" : "EAC_U07",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "U07"
+  } ],
+  "description" : "Automated equipment command message"
+}, {
+  "messageStructureId" : "ORB_O28",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O28"
+  } ],
+  "description" : "Blood product order acknowledgement message"
+}, {
+  "messageStructureId" : "ORD_O04",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O04"
+  } ],
+  "description" : "Dietary order acknowledgment message"
+}, {
+  "messageStructureId" : "RSP_K23",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "K23"
+  }, {
+    "type" : "event",
+    "event" : " K24"
+  } ],
+  "description" : "Segment pattern response"
+}, {
+  "messageStructureId" : "OMG_O19",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O19"
+  } ],
+  "description" : "General clinical order message"
+}, {
+  "messageStructureId" : "RPA_I08",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "I08"
+  }, {
+    "type" : "event",
+    "event" : " I09. I10"
+  }, {
+    "type" : "event",
+    "event" : " I11"
+  } ],
+  "description" : "Return patient authorization"
+}, {
+  "messageStructureId" : "RTB_Knn",
+  "type" : "structure",
+  "events" : [ ],
+  "description" : "Tabular response"
+}, {
+  "messageStructureId" : "INR_U06",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "U06"
+  } ],
+  "description" : "Automated equipment inventory request message"
+}, {
+  "messageStructureId" : "OMD_O03",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "O03"
+  } ],
+  "description" : "Dietary order"
+}, {
+  "messageStructureId" : "MFN_M02",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "M02"
+  } ],
+  "description" : "Master files notification"
+}, {
+  "messageStructureId" : "CRM_C01",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " C08"
+  }, {
+    "type" : "event",
+    "event" : "C01"
+  }, {
+    "type" : "event",
+    "event" : " C02"
+  }, {
+    "type" : "event",
+    "event" : " C05"
+  }, {
+    "type" : "event",
+    "event" : " C03"
+  }, {
+    "type" : "event",
+    "event" : " C07"
+  }, {
+    "type" : "event",
+    "event" : " C04"
+  }, {
+    "type" : "event",
+    "event" : " C06"
+  } ],
+  "description" : "Clinical study registration message"
+}, {
+  "messageStructureId" : "MFN_Znn",
+  "type" : "structure",
+  "events" : [ ],
+  "description" : "Master files notification"
+}, {
+  "messageStructureId" : "VXR_V03",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "V03"
+  } ],
+  "description" : "Vaccination record response"
+}, {
+  "messageStructureId" : "RDE_O11",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " O25"
+  }, {
+    "type" : "event",
+    "event" : "O11"
+  } ],
+  "description" : "Pharmacy/treatment encoded order message"
+}, {
+  "messageStructureId" : "ADT_A39",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : " A42"
+  }, {
+    "type" : "event",
+    "event" : " A41"
+  }, {
+    "type" : "event",
+    "event" : "A39"
+  }, {
+    "type" : "event",
+    "event" : " A40"
+  } ],
+  "description" : "ADT message"
+}, {
+  "messageStructureId" : "ADT_A54",
+  "type" : "structure",
+  "events" : [ {
+    "type" : "event",
+    "event" : "A54"
+  } ],
+  "description" : "ADT message"
 } ]

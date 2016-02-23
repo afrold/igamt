@@ -24,25 +24,59 @@ public class MessageEvents {
 
 	private String messageStructureId;
 	
-	private Set<String> events = new HashSet<String>();
+	private final String type = "structure";
+	
+	private Set<Event> events = new HashSet<Event>();
 	
 	private String description;
 	
 	public MessageEvents(String messageStructureId, Set<String> events, String description) {
 		this.messageStructureId = messageStructureId;
-		this.events = events;
+		createEvents(events);
 		this.description = description;
 	}
 
+	void createEvents(Set<String> events) {
+		for (String event : events) {
+			this.events.add(new Event(event));
+		}
+	}
+	
 	public String getMessageStructureId() {
 		return messageStructureId;
 	}
 
-	public Set<String> getEvents() {
+	public String getType() {
+		return type;
+	}
+
+	public Set<Event> getEvents() {
 		return events;
 	}
 
 	public String getDescription() {
 		return description;
+	}
+	
+	
+	
+	class Event {
+		
+		final String type = "event";
+		
+		String event;
+
+		public Event(String event) {
+			super();
+			this.event = event;
+		}
+
+		public String getType() {
+			return type;
+		}
+
+		public String getEvent() {
+			return event;
+		}
 	}
 }

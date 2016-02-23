@@ -90,42 +90,39 @@
         <h3 class="modal-title">HL7 Versions</h3>
     </div>
     <div class="modal-body">
-        <label for="versionSelect"> Select HL7 Version: </label>
-        <select ng-show="!igdocument" id="versionSelect" class="form-control input-sm" name="versionSelect"
+        <label for="versionSelect" style="width: 10em">Select HL7 Version:</label>
+        <select style="width: 30em" ng-show="!igdocument" id="versionSelect" class="form-control input-sm" name="versionSelect"
                 ng-options="option for option in hl7Versions" ng-model="hl7Version"
                 ng-change="loadIGDocumentsByVersion()">
         </select>
-       		<span ng-show="igdocument" name="versionSelect">{{igdocument.profile.metaData.hl7Version}}
-			</span>
+       	<span ng-show="igdocument" name="versionSelect">{{igdocument.profile.metaData.hl7Version}}</span>
     </div>
     <form>
         <div style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
-            <table class="igdocument-list table table-striped table-bordered">
-                <tr class="tbl-header">
-                    <th>&nbsp;</th>
+<!--
+            <table tt-table tt-params="messageEventsParams">
+				<thead>
+                <tr>
                     <th>Struct Id</th>
-                    <th>Version</th>
-                    <th>Type</th>
-                    <th>Event</th>
                     <th>Description</th>
                 </tr>
-                <tbody ng-repeat="m in messagesByVersion | orderBy: 'this[2]'">
-                <tr>
-                    <td><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, m[0])"></td>
-                    <td>{{m[2]}}</td>
-                    <td></td>
-                    <td></td>
-                    <td>{{m[1]}}</td>
-                    <td>{{m[3]}}</td>
-                </tr>
-                </tbody>
+				</thead>
+                <tbody></tbody>
             </table>
+-->
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" type="button" ng-click="ok()">Ok</button>
             <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </form>
+</script>
+<script type="text/ng-template" id="MessageEventsNode.html">
+	<tr tt-node is-branch="node.type == 'structure'">
+        <td><span ng-bind="node.messageStructureId"></span></td>
+        <td ng-bind="node.messageStructureId"></td>
+        <td ng-bind="node.description"></td>
+    </tr>
 </script>
 <script type="text/ng-template" id="ConfirmIGDocumentDeleteCtrl.html">
     <div class="modal-header">

@@ -42,7 +42,7 @@ angular.module('igl').factory(
 		                		});
 		                });
 		            }
-//		            $rootScope.segments.splice(0, 0, newSegment);
+		            $rootScope.segments.push(newSegment);
 		            $rootScope.igdocument.profile.segments.children.splice(0, 0, newSegment);
 		            $rootScope.segment = newSegment;
 		            $rootScope.segment[newSegment.id] = newSegment;
@@ -73,7 +73,6 @@ angular.module('igl').factory(
 		                    conformanceStatement.id = new ObjectId().toString();
 		                });
 		            }
-//		            $rootScope.datatypes.splice(0, 0, newDatatype);
 		            $rootScope.igdocument.profile.datatypes.children.splice(0, 0, newDatatype);
 		            $rootScope.datatype = newDatatype;
 		            $rootScope.datatypesMap[newDatatype.id] = newDatatype;
@@ -87,27 +86,6 @@ angular.module('igl').factory(
 	          var newTable = angular.copy(table);
 	          newTable.id = new ObjectId().toString();
 		        newTable.bindingIdentifier = $rootScope.createNewFlavorName(table.bindingIdentifier);
-//		        $rootScope.newTableFakeId = $rootScope.newTableFakeId - 1;
-//		        var newTable = angular.fromJson({
-//		            id:new ObjectId().toString(),
-//		            type: '',
-//		            bindingIdentifier: '',
-//		            name: '',
-//		            version: '',
-//		            oid: '',
-//		            tableType: '',
-//		            stability: '',
-//		            extensibility: '',
-//		            codes: []
-//		        });
-//		        newTable.type = 'table';
-//		        newTable.bindingIdentifier = table.bindingIdentifier + $rootScope.createNewFlavorName(table.bindingIdentifier);
-//		        newTable.name = table.name + '_' + $rootScope.postfixCloneTable + $rootScope.newTableFakeId;
-//		        newTable.version = table.version;
-//		        newTable.oid = table.oid;
-//		        newTable.tableType = table.tableType;
-//		        newTable.stability = table.stability;
-//		        newTable.extensibility = table.extensibility;
 
 		        newTable.codes = [];
 		        for (var i = 0, len1 = table.codes.length; i < len1; i++) {
@@ -123,7 +101,6 @@ angular.module('igl').factory(
 		            newTable.codes.push(newValue);
 		        }
 
-//		        $rootScope.tables.push(newTable);
 		        $rootScope.table = newTable;
 		        $rootScope.tablesMap[newTable.id] = newTable;
 		        
@@ -219,13 +196,6 @@ angular.module('igl').factory(
 		            		abortDatatypeDelete(datatype);
 		            } else {
 		            		confirmDatatypeDelete(datatype);
-//						var dtIdsLive = ProfileAccessSvc.Datatypes().getAllDatatypeIds();
-//						var idxP = _.findIndex(dtIdsLive, function (
-//								child) {
-//							return child.id === datatypeId;
-//						});
-//						dtIdsLive.splice(idxP, 1);
-//		                rval = deleteDatatypes(dtIdsLive, [datatypeId]);
 		            }
 			}
 			
