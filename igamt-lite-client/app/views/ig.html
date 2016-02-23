@@ -15,6 +15,12 @@
         <div class="page-header">
             <h3> Hello, <span ng-bind="getFullName()"></span></h3>
         </div>
+
+        <button type="button" class="btn btn-primary btn-sm"
+                ng-click="hl7Versions('btn')" ng-controller="HL7VersionsDlgCtrl"><i class="fa fa-plus"></i>
+            Create New IG Document
+        </button>
+
         <accordion close-others="false">
             <accordion-group is-open="accordi.igList" panel-class="panel-info">
                 <accordion-heading>
@@ -32,8 +38,8 @@
             <accordion-group is-open="accordi.igDetails" panel-class="panel-info">
                 <accordion-heading>
                     <i class="fa"
-                       ng-class="{'fa-caret-down': accordi.igDetails, 'fa-caret-right': !accordi.igDetails}"></i> Edit
-                    IG Document
+                       ng-class="{'fa-caret-down': accordi.igDetails, 'fa-caret-right': !accordi.igDetails}"></i>
+                    <i class="fa fa-pencil fa-fw"></i>Edit IG Document
                 </accordion-heading>
                 <!--<div class="panel panel-info">-->
                 <!--<div class="panel-body">-->

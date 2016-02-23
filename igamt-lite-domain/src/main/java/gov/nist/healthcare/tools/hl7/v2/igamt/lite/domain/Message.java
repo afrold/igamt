@@ -239,12 +239,17 @@ Cloneable, Comparable<Message> {
 		return c != null && this.getConformanceStatements().remove(c);
 	}
 
+
 	@Override
 	public String toString() {
-		return "Message [id=" + id + ", name=" + name 
-				+ ", identifier=" + identifier + ", type=" + messageType 
-				+ ", event=" + event + ", structID=" + structID 
-				+ ", description=" + description + "]";
+		return "Message [id=" + id + ", identifier=" + identifier
+				+ ", messageID=" + messageID + ", name=" + name
+				+ ", messageType=" + messageType + ", event=" + event
+				+ ", structID=" + structID + ", description=" + description
+				+ ", children=" + children + ", position=" + position
+				+ ", comment=" + comment + ", usageNote=" + usageNote
+				+ ", predicates=" + predicates + ", conformanceStatements="
+				+ conformanceStatements + "]";
 	}
 
 	public Message clone(HashMap<String, Datatype> dtRecords,

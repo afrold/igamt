@@ -33,6 +33,8 @@
             </li>
             <li ng-class="activeWhen(path()=='/ig')"><a class="point" href="#/ig"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.igs"></span></a></li>
 
+            <li ng-show="isAuthenticated() && isAdmin()" ng-class="activeWhen(path()=='/masterDTLib')"><a class="point" href="#/masterDTLib"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.masterDTLib"></span></a></li>
+
             <li ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()">
                 <a href="#/registration"><div msg key="navbar.registration"></div></a>
             </li>
@@ -41,8 +43,6 @@
                 <a href="#/forgotten"><div msg key="navbar.forgotten"></div></a>
             </li>
 
-            <li  ng-show="isAuthenticated()" ng-class="activeWhen(path()=='/useraccount')"><a class="point" href="#/useraccount"><i class="fa fa-user"></i>&nbsp;My Account</a></li>
-
             <!--<li ng-class="activeWhen(path()=='/contact')"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>-->
             <!--<li ng-class="activeWhen(language()=='en')" ng-show="false">-->
             <!--<a class="point" ng-click="setLanguage('en')"><div msg class="msg" key="navbar.lang.english"></div></a>-->
@@ -50,8 +50,6 @@
 
             <li ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
             <li ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
-
-
             <li ng-show='showSpinner()' ><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
 
             <!--<li ng-class="activeWhen(path()=='/registerUser')" ng-show="isAdmin()">-->
@@ -60,6 +58,8 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right" style="margin-right: 5px">
+
+            <li  ng-show="isAuthenticated()" ng-class="activeWhen(path()=='/useraccount')"><a class="point" href="#/useraccount"><i class="fa fa-user"></i>&nbsp;My Account</a></li>
 
             <li class="" style="margin-right: 5em" ng-show="isAuthenticated()">
                 <a class="point" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span msg class="msg" key="navbar.logout"></span></a>

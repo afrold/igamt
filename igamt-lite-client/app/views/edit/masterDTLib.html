@@ -1,0 +1,22 @@
+<style id="antiClickjack">body {
+    display: none !important;
+}</style>
+<script type="text/javascript">
+    if (self === top) {
+        var antiClickjack = document.getElementById("antiClickjack");
+        antiClickjack.parentNode.removeChild(antiClickjack);
+    } else {
+        top.location = self.location;
+    }
+</script>
+<div ng-controller="MasterDatatypeLibraryCtrl" ng-init="initMasterLibrary()">
+    <div ng-show="isAuthenticated() && isAdmin()">
+        <div ng-show="loading" style="text-align: center">
+            <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
+        </div>
+        <div ng-show="!loading">
+
+        </div>
+    </div>
+
+</div>

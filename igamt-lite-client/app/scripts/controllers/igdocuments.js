@@ -314,10 +314,10 @@ angular.module('igl')
         };
 
         $scope.openIGDocument = function (igdocument) {
-            $timeout(function () {
-                if (igdocument != null) {
-                    waitingDialog.show('Opening IG Document...', {dialogSize: 'sm', progressType: 'info'});
-                    $scope.selectIgTab(1);
+            if (igdocument != null) {
+                waitingDialog.show('Opening IG Document...', {dialogSize: 'sm', progressType: 'info'});
+                $scope.selectIgTab(1);
+                $timeout(function () {
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
@@ -381,8 +381,8 @@ angular.module('igl')
                         $scope.selectDocumentMetaData();
                     }
                     waitingDialog.hide();
-                }
-            }, 100);
+                }, 100);
+            }
         };
 
         $scope.collectData = function (node, segRefOrGroups, segments, datatypes) {
@@ -548,7 +548,11 @@ angular.module('igl')
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
             $rootScope.igdocument.accountId = userInfoService.getAccountID();
-            var data = {"changes": changes, "igdocument": $rootScope.igdocument};
+            var data = angular.fromJson(
+                    {
+                        "changes": changes, "igDocument": $rootScope.igdocument
+                    }
+            );
             $http.post('api/igdocuments/save', data).then(function (response) {
                 var saveResponse = angular.fromJson(response.data);
                 $rootScope.igdocument.metaData.date = saveResponse.date;
@@ -878,7 +882,7 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function ($scope
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
-        $http.post($rootScope.api('api/igdocuments/' + $scope.igdocumentToDelete.id + '/delete'), {timeout: 60000}).then(function (response) {
+        $http.post($rootScope.api('api/igdocuments/' + $scope.igdocumentToDelete.id + '/delete')).then(function (response) {
             var index = $rootScope.igs.indexOf($scope.igdocumentToDelete);
             if (index > -1) $rootScope.igs.splice(index, 1);
             $rootScope.backUp = null;

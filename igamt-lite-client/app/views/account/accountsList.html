@@ -147,7 +147,7 @@
                         <!--<span class="valid" ng-show="changePasswordForm.inputCurrentPassword.$valid"><i class="fa fa-check success"></i></span><br>-->
                     <!--</div>-->
                 <!--</div>-->
-                <div class="control-group form-group">
+                <div class="control-group form-group" ng-class="{'has-success has-feedback': changePasswordForm.inputUserNewPassword.$valid, 'igl-has-error has-feedback': !changePasswordForm.inputUserNewPassword.$valid}">
                     <label class="control-label col-sm-2" for="inputUserNewPassword"><div msg key='account.newPassword'></div></label>
                     <div class="controls col-sm-7">
                         <input type="password" class="input-xlarge immediate-help account-input" name="inputUserNewPassword" id="inputUserNewPassword" ng-model='accountpwd.newPassword' ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" ig-password-validate required>
@@ -160,17 +160,17 @@
                                 <li ng-class="pwdValidLength"><div msg key='account.password.error.length'></div></strong></li>
                             </ul>
                         </div>
-                        <span class="valid" ng-show="changePasswordForm.inputUserNewPassword.$valid"><i class="fa fa-check success"></i></span><br>
+                        <!--<span class="valid" ng-show="changePasswordForm.inputUserNewPassword.$valid"><i class="fa fa-check success"></i></span><br>-->
                     </div>
                 </div>
-                <div class="control-group form-group">
+                <div class="control-group form-group" ng-class="{'has-success has-feedback': changePasswordForm.inputNewPasswordConfirm.$valid, 'igl-has-error has-feedback': !changePasswordForm.inputNewPasswordConfirm.$valid}">
                     <label class="control-label col-sm-2" for="inputUserNewPasswordConfirm"><div msg key='account.newPasswordConfirm'></div></label>
                     <div class="controls col-sm-7">
                         <input type="password" class="input-xlarge immediate-help account-input" name="inputUserNewPasswordConfirm" id="inputUserNewPasswordConfirm" ng-model='accountpwd.newPasswordConfirm' ig-check-password="inputUserNewPassword" required>
                         <div class="input-help">
                             <h4><div msg key='registration.passwordConfirm.error'></div></h4>
                         </div>
-                        <span class="valid" ng-show="changePasswordForm.inputUserNewPasswordConfirm.$valid"><i class="fa fa-check success"></i></span><br>
+                        <!--<span class="valid" ng-show="changePasswordForm.inputUserNewPasswordConfirm.$valid"><i class="fa fa-check success"></i></span><br>-->
                     </div>
                 </div>
                 <div class="control-group form-group">
