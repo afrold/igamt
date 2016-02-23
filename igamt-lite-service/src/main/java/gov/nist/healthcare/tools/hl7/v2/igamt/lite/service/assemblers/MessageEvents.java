@@ -22,61 +22,59 @@ import java.util.Set;
  */
 public class MessageEvents {
 
-	private String messageStructureId;
+	private String name;
 	
-	private final String type = "structure";
+	private final String type = "message";
 	
-	private Set<Event> events = new HashSet<Event>();
+	private Set<Event> children = new HashSet<Event>();
 	
 	private String description;
 	
-	public MessageEvents(String messageStructureId, Set<String> events, String description) {
-		this.messageStructureId = messageStructureId;
+	public MessageEvents(String name, Set<String> events, String description) {
+		this.name = name;
 		createEvents(events);
 		this.description = description;
 	}
 
 	void createEvents(Set<String> events) {
 		for (String event : events) {
-			this.events.add(new Event(event));
+			this.children.add(new Event(event));
 		}
 	}
 	
-	public String getMessageStructureId() {
-		return messageStructureId;
+	public String getName() {
+		return name;
 	}
 
 	public String getType() {
 		return type;
 	}
 
-	public Set<Event> getEvents() {
-		return events;
+	public Set<Event> getChildren() {
+		return children;
 	}
 
 	public String getDescription() {
 		return description;
 	}
-	
-	
-	
+
 	class Event {
 		
 		final String type = "event";
 		
-		String event;
+		String name;
 
-		public Event(String event) {
+		public Event(String name) {
 			super();
-			this.event = event;
+			this.name = name;
 		}
 
 		public String getType() {
 			return type;
 		}
 
-		public String getEvent() {
-			return event;
+		public String getName() {
+			return name;
 		}
 	}
 }
