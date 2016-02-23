@@ -177,7 +177,7 @@ angular.module('igl').factory(
 		            }
 		        });
 		        modalInstance.result.then(function (table) {
-		            $scope.tableToDelete = table;
+		            tableToDelete = table;
 		        }, function () {
 		        });
 		    };
