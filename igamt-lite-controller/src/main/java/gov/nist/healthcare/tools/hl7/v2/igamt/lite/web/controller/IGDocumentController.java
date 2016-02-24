@@ -1,5 +1,30 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageByListCommand;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentDeleteException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -20,32 +45,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.MessageByListCommand;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentDeleteException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEvents;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 @RestController
 @RequestMapping("/igdocuments")
@@ -247,7 +246,8 @@ public class IGDocumentController extends CommonController {
 		InputStream content = null;
 		content = igDocumentExport.exportAsHtml(d);
 		response.setContentType("text/html");
-		response.setHeader("Content-disposition", "attachment;filename=" +  d.getMetaData().getTitle() + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
+		response.setHeader("Content-disposition",
+				"attachment;filename=" +  d.getMetaData().getTitle() + "-" +  new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".html");
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
@@ -259,23 +259,6 @@ public class IGDocumentController extends CommonController {
 		IGDocument d = findIGDocument(id);
 		InputStream content = null;
 		content = igDocumentExport.exportAsZip(d);
-		response.setContentType("application/zip");
-		response.setHeader("Content-disposition", "attachment;filename="
-				+ d.getMetaData().getTitle() + "-"
-				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
-				+ ".zip");
-		FileCopyUtils.copy(content, response.getOutputStream());
-	}
-	
-	@RequestMapping(value = "/{id}/export/zip/{mIds}", method = RequestMethod.POST, produces = "application/zip")
-	public void exportZipByMessage(@PathVariable("id") String id,
-			@PathVariable("mIds") String[] messageIds,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
-		log.info("Exporting as xml file profile with id=" + id + " for selected messages=" + messageIds);
-		IGDocument d = findIGDocument(id);
-		InputStream content = null;
-		content = igDocumentExport.exportAsZipForSelectedMessages(d, messageIds);
 		response.setContentType("application/zip");
 		response.setHeader("Content-disposition", "attachment;filename="
 				+ d.getMetaData().getTitle() + "-"
@@ -417,13 +400,13 @@ public class IGDocumentController extends CommonController {
 	// public List<String[]> getMessageListByVersion(@PathVariable("hl7Version")
 	// String hl7Version, MessageByListCommand command) {
 	@RequestMapping(value = "/messageListByVersion", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public List<MessageEvents> getMessageListByVersion(
+	public List<String[]> getMessageListByVersion(
 			@RequestBody MessageByListCommand command) {
 		log.info("Fetching messages of version hl7Version="
 				+ command.getHl7Version() + " command="
 				+ command.getMessageIds() + " size="
 				+ command.getMessageIds().size());
-		List<MessageEvents> messages = igDocumentCreation.summary(
+		List<String[]> messages = igDocumentCreation.summary(
 				command.getHl7Version(), command.getMessageIds());
 		log.debug("messages=" + messages.size());
 		return messages;
