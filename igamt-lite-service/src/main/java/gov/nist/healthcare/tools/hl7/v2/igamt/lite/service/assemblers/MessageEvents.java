@@ -22,15 +22,18 @@ import java.util.Set;
  */
 public class MessageEvents {
 
-	private String name;
+	private final String id;
+
+	private final String name;
 	
 	private final String type = "message";
 	
 	private Set<Event> children = new HashSet<Event>();
 	
-	private String description;
+	private final String description;
 	
-	public MessageEvents(String name, Set<String> events, String description) {
+	public MessageEvents(String id, String name, Set<String> events, String description) {
+		this.id = id;
 		this.name = name;
 		createEvents(events);
 		this.description = description;
@@ -42,6 +45,10 @@ public class MessageEvents {
 		}
 	}
 	
+	public String getId() {
+		return id;
+	}
+
 	public String getName() {
 		return name;
 	}
