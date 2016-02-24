@@ -11,6 +11,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 
 public interface ConstraintsSerialization {
@@ -18,10 +19,7 @@ public interface ConstraintsSerialization {
 
 	Constraints deserializeXMLToPredicates(String xmlConstraints);
 
-	String serializeConstraintsToXML(Constraints conformanceStatements,
-			Constraints predicates);
+	String serializeConstraintsToXML(Profile profile);
 
-	nu.xom.Document serializeConstraintsToDoc(
-			Constraints conformanceStatements, Constraints predicates);
-
+	nu.xom.Document serializeConstraintsToDoc(Profile profile);
 }

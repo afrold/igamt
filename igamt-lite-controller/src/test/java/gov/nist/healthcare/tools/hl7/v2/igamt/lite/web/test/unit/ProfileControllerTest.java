@@ -119,7 +119,7 @@ public class ProfileControllerTest {
 			iprw.setHl7Version(profile.getMetaData().getHl7Version());
 			iprw.setMsgIds(msgs);
 			iprw.setAccountId(45L);
-			iprw.setProfile(profile);
+//			iprw.setIGDocument(igdocument);
 			StringWriter writer = new StringWriter();
 			mapper.writeValue(writer, iprw);
 			String json = writer.toString();

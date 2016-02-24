@@ -39,13 +39,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
+<<<<<<< HEAD
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessagesRepository;
+=======
+>>>>>>> ecf2bf3ea623955216633a4229260ede2e8f5e8b
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
+<<<<<<< HEAD
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEvents;
+=======
+>>>>>>> ecf2bf3ea623955216633a4229260ede2e8f5e8b
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContext.class})
@@ -62,12 +68,6 @@ public class IGDocumentCreationServiceTest {
 
 	@Autowired
 	IGDocumentCreationService igDocumentCreation;
-
-	@Autowired
-	MessagesRepository messagesRepository;
-
-	@Autowired
-	MessageRepository messageRepository;
 
 	static ProfileCreationReferentialIntegrityTest refIneteg;
 

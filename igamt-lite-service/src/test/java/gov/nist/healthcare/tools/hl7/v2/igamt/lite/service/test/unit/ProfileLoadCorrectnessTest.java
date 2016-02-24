@@ -168,7 +168,7 @@ public class ProfileLoadCorrectnessTest {
 		DBObject source = (DBObject) jsonObject.get("metaData");
 		ProfileMetaData metaDataObj = p.getMetaData();
 		assertEquals((String) source.get("name"), metaDataObj.getName());
-		assertEquals((String) source.get("identifier"), metaDataObj.getIdentifier());
+		assertEquals((String) source.get("identifier"), metaDataObj.getProfileID());
 		assertEquals((String) source.get("orgName"), metaDataObj.getOrgName());
 		assertEquals((String) source.get("status"), metaDataObj.getStatus());
 		assertEquals((String) source.get("topics"), metaDataObj.getTopics());
@@ -377,9 +377,6 @@ public class ProfileLoadCorrectnessTest {
 					assertEquals((String) ((DBObject) child).get("messageType"), msg.getMessageType());
 					assertEquals((String) ((DBObject) child).get("event"), msg.getEvent());
 					assertEquals((String) ((DBObject) child).get("structID"), msg.getStructID());
-					assertEquals((String) ((DBObject) child).get("version"), msg.getVersion());
-					assertEquals((String) ((DBObject) child).get("date"), msg.getDate());
-					assertEquals((String) ((DBObject) child).get("oid"), msg.getOid());
 					assertEquals((Integer) ((DBObject) child).get("position"), msg.getPosition());
 					assertEquals((String) ((DBObject) child).get("comment"), msg.getComment());
 					assertEquals((String) ((DBObject) child).get("usageNote"), msg.getUsageNote());

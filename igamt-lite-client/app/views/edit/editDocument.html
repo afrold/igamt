@@ -14,111 +14,102 @@
             <form name="igDocumentMetaDataForm" class="form-horizontal" novalidate>
                 <div class="row" style="margin:10px">
                     <div class="col-md-12">
-
                         <div class="col-md-2 col-margin">
-                        <div class="form-group"  ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.projectIdentifier.$invalid && !igDocumentMetaDataForm.projectIdentifier.$pristine }">
-                            <label class="control-label">IGAMT Project Identifier</label>
-                            <input  class="form-control"  type="text" ng-disabled="options.readonly"
-
-                                    ng-change="recordChanged()"
-                                    name="projectIdentifier" class="igl-input"
-                                    ng-model="igdocument.metaData.identifier"
-                                    required>
-                        </div>
-                        </div>
-
-                        <div class="col-md-2 col-margin">
-                        <div class="form-group"  ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.title.$invalid && !igDocumentMetaDataForm.title.$pristine }">
-                            <label class="control-label">Title</label>
-                            <input  class="form-control"  type="text" ng-disabled="options.readonly"
-
-                                    ng-change="recordChanged()"
-                                    name="title"
-                                    ng-model="igdocument.metaData.title"
-                                    required>
-                        </div>
-</div>
-                        <div class="col-md-2 col-margin">
-                        <div class="form-group" ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.subTitle.$invalid && !igDocumentMetaDataForm.subTitle.$pristine }">
-                            <label class="control-label">Sub-Title</label>
-                            <input  class="form-control"  type="text" name="subTitle" ng-disabled="options.readonly"
-
-
+                        	<div class="form-group"  ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.title.$invalid && !igDocumentMetaDataForm.title.$pristine }">
+                            	<label class="control-label">Title</label>
+                            	<input class="form-control"  type="text" ng-disabled="options.readonly"
+                                 	   ng-change="recordChanged()"
+                                    	name="title"
+                                    	ng-model="igdocument.metaData.title"
+                                    	required>
+                        	</div>
+						</div>
+                        
+						<div class="col-md-2 col-margin">
+                        	<div class="form-group" ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.subTitle.$invalid && !igDocumentMetaDataForm.subTitle.$pristine }">
+                            	<label class="control-label">Sub-Title</label>
+                            	<input class="form-control"  type="text" name="subTitle" ng-disabled="options.readonly"
                                     ng-change="recordChanged()"
                                     ng-model="igdocument.metaData.subTitle"                                                                                                                                                                                                                                                                     itle"
-                            required>
-                        </div>
-</div>
+                            	required>
+                        	</div>
+						</div>
+
                         <div class="col-md-2 col-margin">
-                        <div class="form-group" ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.orgName.$invalid && !igDocumentMetaDataForm.orgName.$pristine}">
-                            <label class="control-label">Organization</label>
-                            <input  class="form-control"  type="text" name="orgName" ng-disabled="options.readonly"
+                        	<div class="form-group" ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.orgName.$invalid && !igDocumentMetaDataForm.orgName.$pristine}">
+                            	<label class="control-label">Organization</label>
+                            	<input class="form-control"  type="text" name="orgName" ng-disabled="options.readonly"
                                     ng-change="recordChanged()"
 
                                     ng-model="igdocument.metaData.orgName"
                                     required>
-                        </div>
-</div>
-
-                        </div>
+                        	</div>
+						</div>
+                   	</div>
                     <div class="col-md-12">
                         <div class="col-md-2 col-margin">
-                        <div class="form-group" ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.ext.$invalid && !igDocumentMetaDataForm.ext.$pristine}">
-                            <label class="control-label">Extension</label>
-                            <input  class="form-control"  type="text" name="ext" ng-disabled="options.readonly"
+                        	<div class="form-group" ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.ext.$invalid && !igDocumentMetaDataForm.ext.$pristine}">
+                            	<label class="control-label">Extension</label>
+                            	<input class="form-control"  type="text" name="ext" ng-disabled="options.readonly"
                                     ng-change="recordChanged()"
                                     ng-model="igdocument.metaData.ext" required>
-                        </div>
-</div>
+                        	</div>
+						</div>
+
                         <div class="col-md-2 col-margin">
-                        <div class="form-group"
-                             ng-class="{'igl-has-error' : igDocumentMetaDataForm.specificationName.$invalid && !igDocumentMetaDataForm.specificationName.$pristine }">
-                            <label class="control-label">Specification</label>
-                            <input  class="form-control"  type="text" name="specificationName" ng-disabled="options.readonly"
+                        	<div class="form-group" ng-class="{'igl-has-error' : igDocumentMetaDataForm.specificationName.$invalid && !igDocumentMetaDataForm.specificationName.$pristine }">
+                            	<label class="control-label">Specification</label>
+                            	<input  class="form-control"  type="text" name="specificationName" ng-disabled="options.readonly"
                                     ng-model="igdocument.metaData.specificationName"
                                     required>
-                        </div>
-</div>
-                        <div class="col-md-2 col-margin">
-                        <div class="form-group" ng-disabled="options.readonly"
-                             ng-class="{'igl-has-error' : igDocumentMetaDataForm.status.$invalid && !igDocumentMetaDataForm.status.$pristine }">
-                            <label>Status</label>
-                            <input  class="form-control"  type="text" name="status" ng-disabled="options.readonly"
+                        	</div>
+						</div>
+                        
+						<div class="col-md-2 col-margin">
+                        	<div class="form-group" ng-disabled="options.readonly" ng-class="{'igl-has-error' : igDocumentMetaDataForm.status.$invalid && !igDocumentMetaDataForm.status.$pristine }">
+                            	<label>Status</label>
+                            	<input class="form-control"  type="text" name="status" ng-disabled="options.readonly"
                                     ng-model="igdocument.metaData.status"
                                     required>
-                        </div>
-</div>
+                        	</div>
+						</div>
                         <div class="col-md-2 col-margin">
-                        <div class="form-group" ng-disabled="options.readonly"
-                             ng-class="{'igl-has-error' : igDocumentMetaDataForm.topics.$invalid && !igDocumentMetaDataForm.topics.$pristine }">
-                            <label class="control-label">Topics</label>
-                            <input  class="form-control"  type="text" name="topics" ng-disabled="options.readonly"
+                        	<div class="form-group" ng-disabled="options.readonly" ng-class="{'igl-has-error' : igDocumentMetaDataForm.topics.$invalid && !igDocumentMetaDataForm.topics.$pristine }">
+                            	<label class="control-label">Topics</label>
+                            	<input  class="form-control"  type="text" name="topics" ng-disabled="options.readonly"
                                     ng-model="igdocument.metaData.topics"
                                     required>
-                        </div>
-</div>
+                        	</div>
+						</div>
                     </div>
+
                     <div class="col-md-12">
+						<div class="col-md-2 col-margin">
+							<div class="form-group">
+                            	<label>IGAMT Project Identifier</label>
+								<input type="text" name="identifier" disabled
+                                   ng-change="recordChanged()"
+                                   class="form-control" ng-model="igdocument.metaData.identifier"
+                                   required>
+                        	</div>
+						</div>
                         <div class="col-md-2 col-margin">
-                        <div class="form-group"
-                             ng-class="{'igl-has-error' : igDocumentMetaDataForm.version.$invalid && !igDocumentMetaDataForm.version.$pristine }">
-                            <label class="control-label">Version</label>
-                            <input type="text" name="version" disabled
+                        	<div class="form-group" ng-class="{'igl-has-error' : igDocumentMetaDataForm.version.$invalid && !igDocumentMetaDataForm.version.$pristine }">
+                            	<label class="control-label">Version</label>
+                           		<input type="text" name="version" disabled
                                    ng-change="recordChanged()"
                                    class="form-control" ng-model="igdocument.metaData.version"
                                    required>
-                        </div>
-</div>
+                        	</div>
+						</div>
                         <div class="col-md-2 col-margin">
-                        <div class="form-group"
-                             ng-class="{'igl-has-error' : igDocumentMetaDataForm.date.$invalid && !igDocumentMetaDataForm.date.$pristine }">
-                            <label class="control-label">Date</label>
-                            <input type="text" name="date" disabled
+                        	<div class="form-group" ng-class="{'igl-has-error' : igDocumentMetaDataForm.date.$invalid && !igDocumentMetaDataForm.date.$pristine }">
+                            	<label class="control-label">Date</label>
+                            	<input type="text" name="date" disabled
                                    ng-change="recordChanged()"
-                                   class="form-control" ng-model="igdocument.metaData.date"
-                                   required>
-                        </div>
-                            </div>
+                                   class="form-control" ng-model="igdocument.metaData.date" required>
+                       		</div>
+                       </div>
                     </div>
                 </div>
             </form>

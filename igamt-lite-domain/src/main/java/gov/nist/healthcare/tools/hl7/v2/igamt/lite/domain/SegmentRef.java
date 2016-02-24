@@ -48,14 +48,6 @@ public class SegmentRef extends SegmentRefOrGroup implements Cloneable {
 		clonedSegmentRef.setMin(min);
 		clonedSegmentRef.setPosition(position);
 		clonedSegmentRef.setRef(ref);
-
-		// if (segmentRecords.containsKey(ref.getId())) {
-		// clonedSegmentRef.setRef(segmentRecords.get(ref.getId()));
-		// } else {
-		// Segment dt = ref.clone(dtRecords, tableRecords);
-		// clonedSegmentRef.setRef(dt);
-		// segmentRecords.put(ref.getId(), dt);
-		// }
 		clonedSegmentRef.setUsage(usage);
 
 		return clonedSegmentRef;

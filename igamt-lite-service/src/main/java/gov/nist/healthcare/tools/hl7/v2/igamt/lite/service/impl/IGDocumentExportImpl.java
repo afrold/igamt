@@ -216,6 +216,14 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			return new NullInputStream(1L);
 		}
 	}
+	
+	public InputStream exportAsZipForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
+		if (d != null) {
+			return new ProfileSerializationImpl().serializeProfileToZip(d.getProfile(), mids);
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
 
 	public InputStream exportAsDocx(IGDocument d) {
 		if (d != null) {

@@ -11,22 +11,14 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
-
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.HashMap;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import nu.xom.Attribute;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -34,23 +26,24 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
+import nu.xom.Attribute;
+
 public class TableSerializationImpl implements TableSerialization {
 
         @Override
         public Tables deserializeXMLToTableLibrary(String xmlContents) {
                 Document tableLibraryDoc = this.stringToDom(xmlContents);
                 Tables tableLibrary = new Tables();
-
                 Element elmTableLibrary = (Element) tableLibraryDoc.getElementsByTagName("ValueSetLibrary").item(0);
-
-                tableLibrary.setName(elmTableLibrary.getAttribute("Name"));
                 tableLibrary.setValueSetLibraryIdentifier(elmTableLibrary.getAttribute("ValueSetLibraryIdentifier"));
-                if (elmTableLibrary.getAttribute("Description") != null && !elmTableLibrary.getAttribute("Description").equals("")) tableLibrary.setDescription(elmTableLibrary.getAttribute("Description"));
-                if (elmTableLibrary.getAttribute("OrganizationName") != null && !elmTableLibrary.getAttribute("OrganizationName").equals("")) tableLibrary.setOrganizationName(elmTableLibrary.getAttribute("OrganizationName"));
-                if (elmTableLibrary.getAttribute("ValueSetLibraryVersion") != null && !elmTableLibrary.getAttribute("ValueSetLibraryVersion").equals("")) tableLibrary.setValueSetLibraryVersion(elmTableLibrary.getAttribute("ValueSetLibraryVersion"));
-                if (elmTableLibrary.getAttribute("Status") != null && !elmTableLibrary.getAttribute("Status").equals("")) tableLibrary.setStatus(elmTableLibrary.getAttribute("Status"));
-                if (elmTableLibrary.getAttribute("DateCreated") != null && !elmTableLibrary.getAttribute("DateCreated").equals("")) tableLibrary.setDateCreated(elmTableLibrary.getAttribute("DateCreated"));
-
                 this.deserializeXMLToTable(elmTableLibrary, tableLibrary);
 
                 return tableLibrary;
@@ -63,76 +56,113 @@ public class TableSerializationImpl implements TableSerialization {
 
         @Override
         public String serializeTableLibraryToXML(Tables tableLibrary) {
-                return this.serializeTableLibraryToDoc(tableLibrary).toXML();
+        	return this.serializeTableLibraryToDoc(tableLibrary).toXML();
         }
 
         @Override
         public nu.xom.Document serializeTableLibraryToDoc(Tables tableLibrary) {
-                nu.xom.Element elmTableLibrary = new nu.xom.Element("ValueSetLibrary");
-                elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier",ExportUtil.str(tableLibrary.getValueSetLibraryIdentifier())));
-                elmTableLibrary.addAttribute(new Attribute("Name", ExportUtil.str(tableLibrary.getName())));
-                if(tableLibrary.getOrganizationName() != null && !tableLibrary.getOrganizationName().equals(""))
-                elmTableLibrary.addAttribute(new Attribute("OrganizationName", ExportUtil.str(tableLibrary.getOrganizationName())));
-                if(tableLibrary.getValueSetLibraryVersion() != null && !tableLibrary.getValueSetLibraryVersion().equals(""))
-                elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryVersion", ExportUtil.str(tableLibrary.getValueSetLibraryVersion())));
-                if(tableLibrary.getStatus() != null && !tableLibrary.getStatus().equals(""))
-                elmTableLibrary.addAttribute(new Attribute("Status", ExportUtil.str(tableLibrary.getStatus())));
-                if(tableLibrary.getDescription() != null && !tableLibrary.getDescription().equals(""))
-                elmTableLibrary.addAttribute(new Attribute("Description", ExportUtil.str(tableLibrary.getDescription())));
-                if(tableLibrary.getDateCreated() != null && !tableLibrary.getDateCreated().equals(""))
-                elmTableLibrary.addAttribute(new Attribute("DateCreated", ExportUtil.str(tableLibrary.getDateCreated())));
-
-
-                nu.xom.Element elmValueSetDefinitions = new nu.xom.Element("ValueSetDefinitions");
-                elmTableLibrary.appendChild(elmValueSetDefinitions);
-
-                for (Table t : tableLibrary.getChildren()) {
-                        nu.xom.Element elmValueSetDefinition = new nu.xom.Element("ValueSetDefinition");
-                        elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", ExportUtil.str(t.getBindingIdentifier())));
-                        elmValueSetDefinition.addAttribute(new Attribute("Name", ExportUtil.str(t.getName())));
-                        if(t.getDescription() != null && !t.getDescription().equals(""))
-                        	elmValueSetDefinition.addAttribute(new Attribute("Description",ExportUtil.str( t.getDescription())));
-                        if(t.getVersion() != null && !t.getVersion().equals(""))
-                        	elmValueSetDefinition.addAttribute(new Attribute("Version", ExportUtil.str(t.getVersion())));
-                        if(t.getOid() != null && !t.getOid().equals(""))
-                        	elmValueSetDefinition.addAttribute(new Attribute("Oid",ExportUtil.str(t.getOid())));
-                        if(t.getStability() != null && !t.getStability().equals(""))
-                        	elmValueSetDefinition.addAttribute(new Attribute("Stability", ExportUtil.str(t.getStability().value())));
-                        if(t.getExtensibility() != null && !t.getExtensibility().equals(""))
-                        	elmValueSetDefinition.addAttribute(new Attribute("Extensibility", ExportUtil.str(t.getExtensibility().value())));
-                        if(t.getContentDefinition() != null && !t.getContentDefinition().equals(""))
-                        	elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition", ExportUtil.str(t.getContentDefinition().value())));
-                        
-
-                        elmValueSetDefinitions.appendChild(elmValueSetDefinition);
-
-                        if (t.getCodes() != null) {
-                                for (Code c : t.getCodes()) {
-                                        nu.xom.Element elmValueElement = new nu.xom.Element("ValueElement");
-                                        elmValueElement.addAttribute(new Attribute("Value", ExportUtil.str(c.getValue())));
-                                        elmValueElement.addAttribute(new Attribute("DisplayName", ExportUtil.str(c.getLabel() + "")));
-                                        if(c.getCodeSystem() != null && !c.getCodeSystem().equals(""))
-                                        	elmValueElement.addAttribute(new Attribute("CodeSystem", ExportUtil.str(c.getCodeSystem())));
-                                        if(c.getCodeSystem() != null && !c.getCodeSystem().equals(""))
-                                        	elmValueElement.addAttribute(new Attribute("CodeSystemVersion", ExportUtil.str(c.getCodeSystemVersion())));
-                                        if(c.getCodeSystem() != null && !c.getCodeSystem().equals(""))
-                                        	elmValueElement.addAttribute(new Attribute("Usage", ExportUtil.str(c.getCodeUsage())));
-                                        if(c.getCodeSystem() != null && !c.getCodeSystem().equals(""))
-                                        	elmValueElement.addAttribute(new Attribute("Comments", ExportUtil.str(c.getComments())));
-                                        elmValueSetDefinition.appendChild(elmValueElement);
-                                }
-                        }
-
-                }
-                nu.xom.Document doc = new nu.xom.Document(elmTableLibrary);
-
-                return doc;
+        	Profile p = new Profile();
+        	p.setTables(tableLibrary);
+        	p.setMetaData(null);
+        	return this.serializeTableLibraryToDoc(p);
         }
+        
+        @Override
+		public String serializeTableLibraryToXML(Profile profile) {
+        	return this.serializeTableLibraryToDoc(profile).toXML();
+		}
+
+		@Override
+		public nu.xom.Document serializeTableLibraryToDoc(Profile profile) {
+			Tables tableLibrary = profile.getTables();
+			
+			nu.xom.Element elmTableLibrary = new nu.xom.Element("ValueSetLibrary");
+			
+			if(tableLibrary.getValueSetLibraryIdentifier() == null || tableLibrary.getValueSetLibraryIdentifier().equals("")){
+				elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier",UUID.randomUUID().toString()));
+			}else {
+				elmTableLibrary.addAttribute(new Attribute("ValueSetLibraryIdentifier",ExportUtil.str(tableLibrary.getValueSetLibraryIdentifier())));
+			}
+            nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
+            if(profile.getMetaData() == null){
+            	elmMetaData.addAttribute(new Attribute("Name", "Vocab for " + "Profile"));
+                elmMetaData.addAttribute(new Attribute("OrgName", "NIST"));
+                elmMetaData.addAttribute(new Attribute("Version", "1.0.0"));
+                elmMetaData.addAttribute(new Attribute("Date", ""));
+            }else {
+            	elmMetaData.addAttribute(new Attribute("Name", "Vocab for " + profile.getMetaData().getName()));
+                elmMetaData.addAttribute(new Attribute("OrgName", ExportUtil.str(profile.getMetaData().getOrgName())));
+                elmMetaData.addAttribute(new Attribute("Version", ExportUtil.str(profile.getMetaData().getVersion())));
+                elmMetaData.addAttribute(new Attribute("Date", ExportUtil.str(profile.getMetaData().getDate())));
+                
+                if(profile.getMetaData().getSpecificationName() != null && !profile.getMetaData().getSpecificationName().equals("")) elmMetaData.addAttribute(new Attribute("SpecificationName", ExportUtil.str(profile.getMetaData().getSpecificationName())));
+                if(profile.getMetaData().getStatus() != null && !profile.getMetaData().getStatus().equals("")) elmMetaData.addAttribute(new Attribute("Status", ExportUtil.str(profile.getMetaData().getStatus())));
+                if(profile.getMetaData().getTopics() != null && !profile.getMetaData().getTopics().equals("")) elmMetaData.addAttribute(new Attribute("Topics", ExportUtil.str(profile.getMetaData().getTopics())));
+            }
+
+            HashMap<String, nu.xom.Element> valueSetDefinitionsMap = new HashMap<String, nu.xom.Element>();
+
+            for (Table t : tableLibrary.getChildren()) {
+            	nu.xom.Element elmValueSetDefinition = new nu.xom.Element("ValueSetDefinition");
+                elmValueSetDefinition.addAttribute(new Attribute("BindingIdentifier", ExportUtil.str(t.getBindingIdentifier())));
+                elmValueSetDefinition.addAttribute(new Attribute("Name", ExportUtil.str(t.getName())));
+                if(t.getDescription() != null && !t.getDescription().equals("")) elmValueSetDefinition.addAttribute(new Attribute("Description",ExportUtil.str( t.getDescription())));
+                if(t.getVersion() != null && !t.getVersion().equals("")) elmValueSetDefinition.addAttribute(new Attribute("Version", ExportUtil.str(t.getVersion())));
+                if(t.getOid() != null && !t.getOid().equals("")) elmValueSetDefinition.addAttribute(new Attribute("Oid",ExportUtil.str(t.getOid())));
+                if(t.getStability() != null && !t.getStability().equals("")) elmValueSetDefinition.addAttribute(new Attribute("Stability", ExportUtil.str(t.getStability().value())));
+                if(t.getExtensibility() != null && !t.getExtensibility().equals("")) elmValueSetDefinition.addAttribute(new Attribute("Extensibility", ExportUtil.str(t.getExtensibility().value())));
+                if(t.getContentDefinition() != null && !t.getContentDefinition().equals("")) elmValueSetDefinition.addAttribute(new Attribute("ContentDefinition", ExportUtil.str(t.getContentDefinition().value())));
+                
+                
+                nu.xom.Element elmValueSetDefinitions = null;
+                if(t.getGroup() != null && !t.getGroup().equals("")){
+                	elmValueSetDefinitions = valueSetDefinitionsMap.get(t.getGroup());
+                }else {
+                	elmValueSetDefinitions = valueSetDefinitionsMap.get("NOGroup");
+                }
+                if(elmValueSetDefinitions == null) {
+                	elmValueSetDefinitions = new nu.xom.Element("ValueSetDefinitions");
+                	
+                	if(t.getGroup() != null && !t.getGroup().equals("")){
+                		elmValueSetDefinitions.addAttribute(new Attribute("Group", t.getGroup()));
+                    	elmValueSetDefinitions.addAttribute(new Attribute("Order", t.getOrder() + ""));
+                    	valueSetDefinitionsMap.put(t.getGroup(), elmValueSetDefinitions);
+                	}else {
+                		elmValueSetDefinitions.addAttribute(new Attribute("Group", "NOGroup"));
+                    	elmValueSetDefinitions.addAttribute(new Attribute("Order", "0"));
+                    	valueSetDefinitionsMap.put("NOGroup", elmValueSetDefinitions);
+                	}
+                	
+                }
+                elmValueSetDefinitions.appendChild(elmValueSetDefinition);
+
+                if (t.getCodes() != null) {
+                	for (Code c : t.getCodes()) {
+                        nu.xom.Element elmValueElement = new nu.xom.Element("ValueElement");
+                        elmValueElement.addAttribute(new Attribute("Value", ExportUtil.str(c.getValue())));
+                        elmValueElement.addAttribute(new Attribute("DisplayName", ExportUtil.str(c.getLabel() + "")));
+                        if(c.getCodeSystem() != null && !c.getCodeSystem().equals("")) elmValueElement.addAttribute(new Attribute("CodeSystem", ExportUtil.str(c.getCodeSystem())));
+                        if(c.getCodeSystemVersion() != null && !c.getCodeSystemVersion().equals("")) elmValueElement.addAttribute(new Attribute("CodeSystemVersion", ExportUtil.str(c.getCodeSystemVersion())));
+                        if(c.getCodeUsage() != null && !c.getCodeUsage().equals("")) elmValueElement.addAttribute(new Attribute("Usage", ExportUtil.str(c.getCodeUsage())));
+                        if(c.getComments() != null && !c.getComments().equals("")) elmValueElement.addAttribute(new Attribute("Comments", ExportUtil.str(c.getComments())));
+                        elmValueSetDefinition.appendChild(elmValueElement);
+                	}
+                }
+            }
+            
+            elmTableLibrary.appendChild(elmMetaData);
+            
+            for(nu.xom.Element elmValueSetDefinitions:valueSetDefinitionsMap.values()){
+            	elmTableLibrary.appendChild(elmValueSetDefinitions);
+            }
+            
+            nu.xom.Document doc = new nu.xom.Document(elmTableLibrary);
+
+            return doc;
+		}
 
         private void deserializeXMLToTable(Element elmTableLibrary, Tables tableLibrary) {
-        	
         	 	NodeList valueSetDefinitionsNode = elmTableLibrary.getElementsByTagName("ValueSetDefinitions");
-        	
         	 	for (int i = 0; i < valueSetDefinitionsNode.getLength(); i++) {
         	 		Element valueSetDefinitionsElement = (Element) valueSetDefinitionsNode.item(i);
         	 		NodeList valueSetDefinitionNodes = valueSetDefinitionsElement.getElementsByTagName("ValueSetDefinition");
@@ -220,7 +250,5 @@ public class TableSerializationImpl implements TableSerialization {
                         e.printStackTrace();
                 }
                 return null;
-        } 
-        
-     
+        }
 }

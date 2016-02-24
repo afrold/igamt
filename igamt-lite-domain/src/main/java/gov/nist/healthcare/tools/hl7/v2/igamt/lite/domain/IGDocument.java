@@ -68,7 +68,7 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		documentMetaData.setTitle(p.getMetaData().getName());
 		documentMetaData.setType(p.getMetaData().getType());
 		documentMetaData.setVersion(p.getMetaData().getVersion());
-		documentMetaData.setIdentifier(p.getMetaData().getIdentifier());
+		documentMetaData.setIdentifier(p.getMetaData().getProfileID());
 		documentMetaData.setOrgName(p.getMetaData().getOrgName());
 		documentMetaData.setSpecificationName(p.getMetaData().getSpecificationName());
 		documentMetaData.setStatus(p.getMetaData().getStatus());
