@@ -43,10 +43,13 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -61,6 +64,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -94,6 +98,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -101,27 +106,38 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.docx4j.XmlUtils;
+import org.docx4j.convert.out.pdf.viaXSLFO.PdfSettings;
 import org.docx4j.dml.wordprocessingDrawing.Inline;
+import org.docx4j.fonts.IdentityPlusMapper;
+import org.docx4j.fonts.Mapper;
+import org.docx4j.fonts.PhysicalFont;
+import org.docx4j.fonts.PhysicalFonts;
 import org.docx4j.jaxb.Context;
 import org.docx4j.model.fields.FieldUpdater;
 import org.docx4j.openpackaging.contenttype.CTOverride;
+import org.docx4j.openpackaging.contenttype.ContentType;
 import org.docx4j.openpackaging.contenttype.ContentTypeManager;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
+import org.docx4j.openpackaging.io.SaveToZipFile;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.PartName;
 import org.docx4j.openpackaging.parts.WordprocessingML.AltChunkType;
+import org.docx4j.openpackaging.parts.WordprocessingML.AlternativeFormatInputPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.openpackaging.parts.WordprocessingML.DocumentSettingsPart;
+import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.openpackaging.parts.relationships.Namespaces;
 import org.docx4j.openpackaging.parts.relationships.RelationshipsPart;
+import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.BooleanDefaultTrue;
 import org.docx4j.wml.Br;
+import org.docx4j.wml.CTAltChunk;
 import org.docx4j.wml.CTBorder;
 import org.docx4j.wml.CTRel;
 import org.docx4j.wml.CTSettings;
 import org.docx4j.wml.CTShd;
 import org.docx4j.wml.CTTblLayoutType;
-import org.docx4j.wml.CTVerticalJc;
 import org.docx4j.wml.Color;
 import org.docx4j.wml.Drawing;
 import org.docx4j.wml.FldChar;
@@ -137,6 +153,7 @@ import org.docx4j.wml.RPr;
 import org.docx4j.wml.STBorder;
 import org.docx4j.wml.STBrType;
 import org.docx4j.wml.STFldCharType;
+import org.docx4j.wml.STShd;
 import org.docx4j.wml.STTblLayoutType;
 import org.docx4j.wml.STVerticalJc;
 import org.docx4j.wml.Tbl;
@@ -150,6 +167,13 @@ import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 import org.docx4j.wml.U;
 import org.docx4j.wml.UnderlineEnumeration;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHeight;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTString;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTblPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTcPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTTrPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTVerticalJc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -184,6 +208,15 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.UnderlinePatterns;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.apache.xmlbeans.XmlOptions;
 
 @Service
 public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocumentExportService{
@@ -219,7 +252,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	public InputStream exportAsDocx(IGDocument d) {
 		if (d != null) {
-			return exportAsDocxWithDocx4J(d); 
+			//			InputStream is = exportAsDocxWithDocx4J(d);
+			InputStream is = exportAsDocxFromHtml(d, "true"); 
+			return is;
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -248,7 +283,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			return new NullInputStream(1L);
 		}
 	}
-	
+
 
 	//	Functions to collect info
 	//Messages
@@ -893,8 +928,17 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		//		}
 	}
 
+
 	public InputStream exportAsPdfFromXsl(IGDocument d, String inlineConstraints) {
 		// Note: inlineConstraint can be true or false
+		
+		Profile p = d.getProfile();
+		p.getMessages().setPositionsOrder();
+		p.getSegments().setPositionsOrder();
+		p.getDatatypes().setPositionsOrder();
+		p.getTables().setPositionsOrder();
+
+		
 		try {
 			// Generate xml file containing profile
 			//			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
@@ -1691,6 +1735,349 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		return null;
 	}
 
+	public InputStream exportAsDocxFromHtml(IGDocument igdoc, String inlineConstraints) {
+		// Note: inlineConstraint can be true or false
+
+		try {
+			File tmpHtmlFile = File.createTempFile("IGDocTemp", ".html");
+
+			// Generate xml file containing profile
+			File tmpXmlFile = File.createTempFile("IGDocTemp", ".xml");
+			String stringIgDoc = new IGDocumentSerialization4ExportImpl()
+			.serializeIGDocumentToXML(igdoc);
+			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
+					Charset.forName("UTF-8"));
+
+			TransformerFactory factoryTf = TransformerFactory.newInstance();
+			Source xslt = new StreamSource(this.getClass()
+					.getResourceAsStream("/rendering/igdocument2.xsl"));
+			Transformer transformer;
+
+			// Apply XSL transformation on xml file to generate html
+			transformer = factoryTf.newTransformer(xslt);
+			transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
+
+			String html =  FileUtils.readFileToString(tmpHtmlFile);
+
+			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(this.getClass()
+					.getResourceAsStream("/rendering/lri_template.dotx"));
+
+			ObjectFactory factory = Context.getWmlObjectFactory();   
+
+			createCoverPageForDocx4j(igdoc, wordMLPackage, factory);
+
+			createTableOfContentForDocx4j(wordMLPackage, factory);
+
+			FieldUpdater updater = new FieldUpdater(wordMLPackage);
+			try {
+				updater.update(true);
+			} catch (Docx4JException e1) {
+				e1.printStackTrace();
+			}
+
+			AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(new PartName("/hw.html"));
+			afiPart.setBinaryData(html.getBytes());
+			afiPart.setContentType(new ContentType("text/html"));
+			Relationship altChunkRel = wordMLPackage.getMainDocumentPart().addTargetPart(afiPart);
+
+			// .. the bit in document body
+			CTAltChunk ac = Context.getWmlObjectFactory().createCTAltChunk();
+			ac.setId(altChunkRel.getId() );
+			wordMLPackage.getMainDocumentPart().addObject(ac);
+
+			// .. content type
+			wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");
+			
+			addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
+
+			loadTemplateForDocx4j(wordMLPackage); //Repeats the lines above but necessary; don't delete
+
+			File tmpFile;
+			tmpFile = File.createTempFile("IgDocument", ".docx");
+			wordMLPackage.save(tmpFile);
+			
+
+			return FileUtils.openInputStream(tmpFile);
+
+		} catch (TransformerException | IOException | Docx4JException e) {
+			e.printStackTrace();
+			return new NullInputStream(1L);
+		}
+	}
+
+
+
+	@SuppressWarnings("resource")
+	public static void mergePOI(InputStream src1, InputStream src2, OutputStream dest) throws Exception {
+		OPCPackage src1Package = OPCPackage.open(src1);
+		OPCPackage src2Package = OPCPackage.open(src2);
+		XWPFDocument src1Document = new XWPFDocument(src1Package);        
+		CTBody src1Body = src1Document.getDocument().getBody();
+		XWPFDocument src2Document = new XWPFDocument(src2Package);
+		CTBody src2Body = src2Document.getDocument().getBody();        
+		appendBody(src1Body, src2Body);
+		src1Document.write(dest);
+	}
+
+	private static void appendBody(CTBody src, CTBody append) throws Exception {
+		XmlOptions optionsOuter = new XmlOptions();
+		optionsOuter.setSaveOuter();
+		String appendString = append.xmlText(optionsOuter);
+		String srcString = src.xmlText();
+		String prefix = srcString.substring(0,srcString.indexOf(">")+1);
+		String mainPart = srcString.substring(srcString.indexOf(">")+1,srcString.lastIndexOf("<"));
+		String sufix = srcString.substring( srcString.lastIndexOf("<") );
+		String addPart = appendString.substring(appendString.indexOf(">") + 1, appendString.lastIndexOf("<"));
+		CTBody makeBody = CTBody.Factory.parse(prefix+mainPart+addPart+sufix);
+		src.set(makeBody);
+	}
+
+	private static long chunk = 0;
+	private static final String CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+	@SuppressWarnings("deprecation")
+	public void mergeDocx4J(InputStream s1, InputStream s2, OutputStream os) throws Exception {
+		WordprocessingMLPackage target = WordprocessingMLPackage.load(s1);
+		insertDocx(target.getMainDocumentPart(), IOUtils.toByteArray(s2));
+		SaveToZipFile saver = new SaveToZipFile(target);
+		FileOutputStream out = new FileOutputStream("mergeddocx4.docx");
+		saver.save(out);
+	}
+
+	private static void insertDocx(MainDocumentPart main, byte[] bytes) throws Exception {
+		AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(new PartName("/part" + (chunk++) + ".docx"));
+		afiPart.setContentType(new ContentType(CONTENT_TYPE));
+		afiPart.setBinaryData(bytes);
+		Relationship altChunkRel = main.addTargetPart(afiPart);
+
+		CTAltChunk chunk = Context.getWmlObjectFactory().createCTAltChunk();
+		chunk.setId(altChunkRel.getId());
+
+		main.addObject(chunk);
+	}
+
+
+	private void createCoverPageForDocx4j(IGDocument igdoc, WordprocessingMLPackage wordMLPackage, ObjectFactory factory){
+		Profile p = igdoc.getProfile();
+
+		BufferedImage image = null;
+		try {
+			URL url = new URL("http://hit-2015.nist.gov/docs/hl7Logo.png");
+			image = ImageIO.read(url);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(image, "png", baos );
+			baos.flush();
+			byte[] imageInByte = baos.toByteArray();
+			baos.close();
+
+			addImageToPackage(wordMLPackage, imageInByte);
+		} catch (Exception e) {
+			logger.warn("Unable to add image");
+			e.printStackTrace();
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title", igdoc.getMetaData().getTitle());
+		addLineBreak(wordMLPackage, factory);
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle", "Subtitle " + igdoc.getMetaData().getSubTitle());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", igdoc.getMetaData().getDate());
+		addLineBreak(wordMLPackage, factory);
+		addLineBreak(wordMLPackage, factory);
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", "HL7 Version " + p.getMetaData().getHl7Version());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", "Document Version "
+				+ igdoc.getMetaData().getVersion());
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Style1", p.getMetaData().getOrgName());
+
+		addPageBreak(wordMLPackage, factory);	
+	}
+
+	private void createTableOfContentForDocx4j(WordprocessingMLPackage wordMLPackage, ObjectFactory factory){
+		P paragraphForTOC = factory.createP();		       
+		R r = factory.createR();
+
+		FldChar fldchar = factory.createFldChar();
+		fldchar.setFldCharType(STFldCharType.BEGIN);
+		fldchar.setDirty(true);
+		r.getContent().add(getWrappedFldChar(fldchar));
+		paragraphForTOC.getContent().add(r);
+
+		R r1 = factory.createR();
+		Text txt = new Text();
+		txt.setSpace("preserve");
+		txt.setValue("TOC \\o \"1-3\" \\h \\z \\u \\h");
+		r.getContent().add(factory.createRInstrText(txt) );
+		paragraphForTOC.getContent().add(r1);
+
+		FldChar fldcharend = factory.createFldChar();
+		fldcharend.setFldCharType(STFldCharType.END);
+		R r2 = factory.createR();
+		r2.getContent().add(getWrappedFldChar(fldcharend));
+		paragraphForTOC.getContent().add(r2);
+
+		wordMLPackage.getMainDocumentPart().getContent().add(paragraphForTOC);
+		addPageBreak(wordMLPackage, factory);
+	}
+
+	private void loadTemplateForDocx4j(WordprocessingMLPackage wordMLPackage){
+		try {
+			// Replace dotx content type with docx
+			ContentTypeManager ctm = wordMLPackage.getContentTypeManager();
+
+			// Get <Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.template.main+xml"/>
+			CTOverride override;
+			override = ctm.getOverrideContentType().get(new URI("/word/document.xml"));
+			override.setContentType(org.docx4j.openpackaging.contenttype.ContentTypes.WORDPROCESSINGML_DOCUMENT);
+
+			// Create settings part, and init content
+			DocumentSettingsPart dsp = new DocumentSettingsPart();
+			CTSettings settings = Context.getWmlObjectFactory().createCTSettings();
+			dsp.setJaxbElement(settings);
+			wordMLPackage.getMainDocumentPart().addTargetPart(dsp);
+
+			// Create external rel
+			RelationshipsPart rp = RelationshipsPart.createRelationshipsPartForPart(dsp); 		
+			org.docx4j.relationships.Relationship rel = new org.docx4j.relationships.ObjectFactory().createRelationship();
+			rel.setType( Namespaces.ATTACHED_TEMPLATE  );
+			//			String templatePath = "/rendering/lri_template.dotx";
+			URL templateData = getClass().getResource("/rendering/lri_template.dotx");
+			rel.setTarget(templateData.getPath());
+			rel.setTargetMode("External");  		
+			rp.addRelationship(rel); // addRelationship sets the rel's @Id
+
+			settings.setAttachedTemplate(
+					(CTRel)XmlUtils.unmarshalString("<w:attachedTemplate xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" r:id=\"" + rel.getId() + "\"/>", Context.jc, CTRel.class)
+					);
+
+		} catch (URISyntaxException | JAXBException | Docx4JException e1) {
+			e1.printStackTrace();
+		} 
+	}
+	
+	private void addConformanceInformationForDocx4j(IGDocument igdoc, WordprocessingMLPackage wordMLPackage, ObjectFactory factory){
+		Profile p = igdoc.getProfile();
+		List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
+		Collections.sort(messagesList);
+		List<Datatype> datatypeList = new ArrayList<Datatype>(p.getDatatypes().getChildren());
+		Collections.sort(datatypeList);
+		List<Segment> segmentsList = new ArrayList<Segment>(p.getSegments().getChildren());
+		Collections.sort(segmentsList);
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading2", "Conformance information");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Conditional predicates");
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Message Level");
+		for (Message m : messagesList) { 
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addPreMessage(rows, m);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(m.getName(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Usage", "Description");
+				List<Integer> widths = Arrays.asList(1500, 1500, 6000);
+				wordMLPackage.getMainDocumentPart().addObject(IGDocumentExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Group Level");
+		for (Message m : messagesList) { 
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addPreGroup(rows, m);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(m.getName(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Usage", "Description");
+				List<Integer> widths = Arrays.asList(1500, 1500, 6000);
+				wordMLPackage.getMainDocumentPart().addObject(IGDocumentExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Segment Level");
+		for (Segment s: segmentsList){
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addPreSegment(rows, s);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(s.getLabel(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Usage", "Description");
+				List<Integer> widths = Arrays.asList(1500, 1500, 6000);
+				wordMLPackage.getMainDocumentPart().addObject(IGDocumentExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Datatype Level");
+		for (Datatype dt:datatypeList){
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addPreDatatype(rows, dt);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(dt.getLabel(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Usage", "Description");
+				List<Integer> widths = Arrays.asList(1500, 1500, 6000);
+				wordMLPackage.getMainDocumentPart().addObject(IGDocumentExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading3", "Conformance statements");
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Message Level");
+		for (Message m : messagesList) { 
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addCsMessage(rows, m);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(m.getName(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Description");
+				List<Integer> widths = Arrays.asList(1500, 7500);
+				wordMLPackage.getMainDocumentPart().addObject(IGDocumentExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Group Level");
+		for (Message m : messagesList) { 
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addCsGroup(rows, m);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(m.getName(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Description");
+				List<Integer> widths = Arrays.asList(1500, 7500);
+				wordMLPackage.getMainDocumentPart().addObject(IGDocumentExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Segment Level");
+		for (Segment s: segmentsList){
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addCsSegment(rows, s);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(s.getLabel(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Description");
+				List<Integer> widths = Arrays.asList(1500, 7500);
+				wordMLPackage.getMainDocumentPart().addObject(IGDocumentExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
+		wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Heading4", "Datatype Level");
+		for (Datatype dt:datatypeList){
+			ArrayList<List<String>> rows = new ArrayList<List<String>>();
+			addCsDatatype(rows, dt);
+			if (!rows.isEmpty()){
+				addLineBreak(wordMLPackage, factory);
+				addParagraph(dt.getLabel(), wordMLPackage, factory);
+				addLineBreak(wordMLPackage, factory);
+				List<String> header = Arrays.asList("Location", "Description");
+				List<Integer> widths = Arrays.asList(1500, 7500);
+				wordMLPackage.getMainDocumentPart().addObject(IGDocumentExportImpl.createTableDocx(header, widths, rows, wordMLPackage, factory));
+			}
+		}
+
+	}
+
 	private InputStream exportAsDocxWithDocx4J(IGDocument igdoc) {
 		Profile p = igdoc.getProfile();
 		WordprocessingMLPackage wordMLPackage;
@@ -2218,7 +2605,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		Tc tc = factory.createTc();
 		TcPr tcpr = factory.createTcPr();
 		tc.setTcPr(tcpr);
-		CTVerticalJc valign = factory.createCTVerticalJc();
+		org.docx4j.wml.CTVerticalJc valign = factory.createCTVerticalJc();
 		valign.setVal(STVerticalJc.TOP);
 		tcpr.setVAlign(valign);
 		if (backgroundColor != null){
@@ -2414,7 +2801,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 						Chunk link = new Chunk(String.valueOf(s.getSectionPosition()+1) + " ", titleFont).setLocalGoto(s.getId());
 						tocDocument.add(new Paragraph(link));
 					}
-					
+
 					//					tocDocument.add(new Paragraph(String.valueOf(s.getSectionPosition()+1) + " " + s.getSectionTitle(), titleFont));
 					tocDocument.add(Chunk.NEWLINE);
 
