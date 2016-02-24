@@ -192,7 +192,8 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/igdocuments/messageListByVersion start' + ' data=' + data);
-        request.open('GET', '../../resources/igDocuments/mes-hl7Version-USER-1.0.json', false);
+//        request.open('GET', '../../resources/igDocuments/mes-hl7Version-USER-1.0.json', false);
+        request.open('GET', '../../resources/igDocuments/igdocument-2.7.5-USER-1.0.json', false);
         request.send(null);
         var d = angular.fromJson(request.response);
         console.log('api/igdocuments/messageListByVersion end');

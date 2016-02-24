@@ -28,7 +28,7 @@ angular.module('igl')
         }
 
         $scope.delete = function (segment) {
-        		CloneDeleteSvc.deleteSegment(segment.id);
+        		CloneDeleteSvc.deleteSegment(segment);
 			$rootScope.$broadcast('event:SetToC');
         };
         
@@ -1528,8 +1528,16 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $
     
     $scope.delete = function () {
         $scope.loading = true;
-        var index = $rootScope.segments.indexOf($scope.segToDelete);
+        // Contrary to popular belief, we must remove the segment from both places.
+        var index = _.findIndex($rootScope.igdocument.profile.segments.children, function(child) {
+        		return child.id === $scope.segToDelete.id;
+	    });
+	    if (index > -1) $rootScope.igdocument.profile.segments.children.splice(index, 1);
+        var index = _.findIndex($rootScope.segments, function(child) {
+        		return child.id === $scope.segToDelete.id;
+        });        
         if (index > -1) $rootScope.segments.splice(index, 1);
+        
         if ($rootScope.segment === $scope.segToDelete) {
             $rootScope.segment = null;
         }
@@ -1600,6 +1608,7 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $
         $rootScope.msg().type = "success";
         $rootScope.msg().show = true;
         $rootScope.manualHandle = true;
+		$rootScope.$broadcast('event:SetToC');
         $modalInstance.close($scope.segToDelete);
 
     };
