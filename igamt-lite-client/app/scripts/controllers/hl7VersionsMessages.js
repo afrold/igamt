@@ -5,6 +5,7 @@ angular.module('igl').controller(
 
 			$rootScope.clickSource = {};
 			$scope.hl7Version = {};
+
 			$scope.hl7Versions = function(clickSource) {
 				$rootScope.clickSource = clickSource;
 				if (clickSource === "btn") {
@@ -110,7 +111,7 @@ angular.module('igl').controller(
 angular.module('igl').controller(
 		'HL7VersionsInstanceDlgCtrl',
 		function($scope, $rootScope, $modalInstance, $http, hl7Versions,
-				ProfileAccessSvc, MessageEventsSvc) {
+				ProfileAccessSvc) {
 
 			$scope.selected = {
 				item : hl7Versions[0]
@@ -118,11 +119,17 @@ angular.module('igl').controller(
 
 			$scope.igdocumentVersions = [];
 			var igdocumentVersions = [];
-			
+
 			$scope.loadIGDocumentsByVersion = function() {
 				$rootScope.hl7Version = $scope.hl7Version;
-				$scope.messageEventsParams = MessageEventsSvc.getMessageEvents($scope.hl7Version, $scope.igdocumentVersions);
-			};
+				$http.post(
+						'api/igdocuments/messageListByVersion', angular.fromJson({
+							"hl7Version" : $scope.hl7Version,
+							"messageIds" : $scope.igdocumentVersions
+						})).then(function(response) {
+					$scope.messagesByVersion = angular.fromJson(response.data);
+					});
+				};
 
 			$scope.trackSelections = function(bool, id) {
 				if (bool) {
