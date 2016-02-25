@@ -18,9 +18,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -50,7 +47,7 @@ public class Bootstrap implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		// init();
-		// init2();
+		// loadPreloadedIGDocuments();
 	}
 
 	private void init2() throws Exception {
@@ -63,71 +60,22 @@ public class Bootstrap implements InitializingBean {
 		}
 	}
 
-	private void init() throws Exception {
+	private void loadPreloadedIGDocuments() throws Exception {
+		IGDocument d = new IGDocument();
+
 		String p = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/VXU-Z22_Profile.xml"));
+				"/profiles/IZ_Profile.xml"));
 		String v = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/VXU-Z22_ValueSetLibrary.xml"));
+				"/profiles/IZ_ValueSetLibrary.xml"));
 		String c = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/VXU-Z22_Constraints.xml"));
+				"/profiles/IZ_Constraints.xml"));
 		Profile profile = new ProfileSerializationImpl()
 				.deserializeXMLToProfile(p, v, c);
-		profile.getMetaData().setName("VXU V04 Implementation Guide");
-		profile.getMetaData().setIdentifier("CDC IG_VXU_V04 Release 1.5");
-		profile.getMetaData().setOrgName("NIST");
-		profile.getMetaData().setSubTitle("NIST");
-		profile.getMetaData().setVersion("1.0");
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		profile.getMetaData().setDate(
-				dateFormat.format(Calendar.getInstance().getTime()));
-		profile.setScope(IGDocumentScope.PRELOADED);
-		profile.getMetaData().setHl7Version("2.5.1");
-		profileService.save(profile);
 
-		// p = IOUtils.toString(this.getClass().getResourceAsStream(
-		// "/igs/OML_O21/Profile.xml"));
-		// v = IOUtils.toString(this.getClass().getResourceAsStream(
-		// "/igs/OML_O21/ValueSets_HL7.xml"));
-		// c = IOUtils.toString(this.getClass().getResourceAsStream(
-		// "/igs/OML_O21/Constraints.xml"));
-		// profile = new ProfileSerializationImpl().deserializeXMLToProfile(p,
-		// v,
-		// c);
-		// profile.getMetaData().setName("OML_O21 Implementation Guide");
-		// profile.getMetaData().setIdentifier("OML_O21");
-		// profile.getMetaData().setOrgName("NIST");
-		// profile.getMetaData().setSubTitle("NIST");
-		// profile.getMetaData().setVersion("1.0");
-		// dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		// profile.getMetaData().setDate(
-		// dateFormat.format(Calendar.getInstance().getTime()));
-		// profile.setScope(ProfileScope.PRELOADED);
-		// profile.getMetaData().setHl7Version("2.5.1");
-		// profileService.save(profile);
-		//
-		// for (String i : new String[]{"1", "3", "4", "8"}){
-		//
-		// p = IOUtils.toString(this.getClass().getResourceAsStream(
-		// "/igs/ADT_A0" + i + "/Profile.xml"));
-		// v = IOUtils.toString(this.getClass().getResourceAsStream(
-		// "/igs/ADT_A0" + i + "/ValueSets_HL7.xml"));
-		// c = IOUtils.toString(this.getClass().getResourceAsStream(
-		// "/igs/ADT_A0" + i + "/Constraints.xml"));
-		// profile = new ProfileSerializationImpl().deserializeXMLToProfile(p,
-		// v,
-		// c);
-		// profile.getMetaData().setName("ADT_A0"+i+" Implementation Guide");
-		// profile.getMetaData().setIdentifier("ADT_A0"+i);
-		// profile.getMetaData().setOrgName("NIST");
-		// profile.getMetaData().setSubTitle("NIST");
-		// profile.getMetaData().setVersion("1.0");
-		// dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		// profile.getMetaData().setDate(
-		// dateFormat.format(Calendar.getInstance().getTime()));
-		// profile.setScope(ProfileScope.PRELOADED);
-		// profile.getMetaData().setHl7Version("2.5.1");
-		// profileService.save(profile);
-		// }
+		profile.setScope(IGDocumentScope.PRELOADED);
+
+		d.addProfile(profile);
+		documentService.save(d);
 	}
 
 }
