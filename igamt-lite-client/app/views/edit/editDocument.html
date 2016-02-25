@@ -1,11 +1,15 @@
-<style id="antiClickjack">body{display:none !important;}</style>
+<style id="antiClickjack">
+body {
+	display: none !important;
+}
+</style>
 <script type="text/javascript">
-    if (self === top) {
-        var antiClickjack = document.getElementById("antiClickjack");
-        antiClickjack.parentNode.removeChild(antiClickjack);
-    } else {
-        top.location = self.location;
-    }
+	if (self === top) {
+		var antiClickjack = document.getElementById("antiClickjack");
+		antiClickjack.parentNode.removeChild(antiClickjack);
+	} else {
+		top.location = self.location;
+	}
 </script>
 <script type="text/ng-template" id="EditDocumentMetadata.html">
     <div class="page-header">
@@ -119,46 +123,53 @@
     <div class="page-header">
         <span class="header4"> Conformance Profile Metadata</span>
     </div>
-            <form name="igProfileMetaDataForm" novalidate>
-                <div class="row" style="margin:10px">
-                    <div class="col-md-12">
-                        <div class="col-md-2 col-margin">
-                        <div class="form-group" ng-class="{'igl-has-error' : igProfileMetaDataForm.type.$invalid && !igProfileMetaDataForm.type.$pristine}"
-                                >
-                            <label class="control-label">Type</label>
-                            <input type="text" ng-disabled="options.readonly"
-                                   ng-class="{'igl-has-error' : igProfileMetaDataForm.type.$invalid && !igProfileMetaDataForm.type.$pristine }"
-                                   ng-change="recordChanged()"
-                                   name="type" class="form-control" ng-model="igdocument.profile.metaData.type"
-                                   required>
-                        </div>
-</div>
-                        <div class="col-md-2 col-margin">
-                        <div class="form-group" ng-class="{'igl-has-error' : igProfileMetaDataForm.hl7Version.$invalid && !igProfileMetaDataForm.hl7Version.$pristine }">
-                            <label class="control-label">HL7 Version</label>
-                            <input type="text" name="hl7Version"
+    
+	<form name="igProfileMetaDataForm" novalidate>
+    	<div class="row" style="margin:10px">
+        	<div class="col-md-12">
+            	<div class="col-md-2 col-margin">
+                	<div class="form-group" ng-class="{'igl-has-error' : igProfileMetaDataForm.type.$invalid && !igProfileMetaDataForm.type.$pristine}">
+                    	<label class="control-label">Type</label>
+						<select class="form-control" ng-disabled="options.readonly"
+                            name="type"
                             ng-change="recordChanged()"
-                            class="form-control" ng-model="igdocument.profile.metaData.hl7Version"                                                                                                                                                                                                                                                                     itle"
-                            required>
-                        </div>
-</div>
-                        <div class="col-md-2 col-margin">
-                        <div class="form-group" ng-class="{'igl-has-error' : igProfileMetaDataForm.schemaVersion.$invalid && !igProfileMetaDataForm.schemaVersion.$pristine }">
-                            <label class="control-label">Schema Version</label>
-                            <input type="text" name="schemaVersion" ng-disabled="options.readonly"
-                                   ng-change="recordChanged()"
-                                   class="form-control" ng-model="igdocument.metaData.schemaVersion" required>
-                        </div>
-</div>
-                        <div class="col-md-2 col-margin">
-                        <div class="form-group" ng-class="{'igl-has-error' : igProfileMetaDataForm.encodings.$invalid && !igProfileMetaDataForm.encodings.$pristine }">
-                            <label class="control-label">Encodings</label>
-                            <input type="text" name="encodings" ng-disabled="options.readonly"
-                                   ng-change="recordChanged()"
-                                   class="form-control" ng-model="igdocument.metaData.encodings">
-                        </div>
-                            </div>
+                            ng-model="igdocument.profile.metaData.type">
+							<option value="HL7">HL7</option>
+      						<option value="Constrainable">Constrainable</option>
+      						<option value="Implementation">Implementation</option>
+                    	</select>
                     </div>
-                </div>
-            </form>
+				</div>
+                    
+				<div class="col-md-2 col-margin">
+                	<div class="form-group" ng-class="{'igl-has-error' : igProfileMetaDataForm.hl7Version.$invalid && !igProfileMetaDataForm.hl7Version.$pristine }">
+                    	<label class="control-label">HL7 Version</label>
+						<select class="form-control" ng-disabled="options.readonly"
+                            name="type"
+                            ng-change="recordChanged()"
+                            ng-model="igdocument.profile.metaData.hl7Version">
+							<option value="2.1">2.1</option>
+      						<option value="2.2">2.2</option>
+      						<option value="2.3">2.3</option>
+							<option value="2.3.1">2.3.1</option>
+							<option value="2.4">2.4</option>
+							<option value="2.5">2.5</option>
+							<option value="2.5.1">2.5.1</option>	
+							<option value="2.6">2.6</option>
+							<option value="2.7">2.7</option>
+                    	</select>
+                    </div>
+				</div>
+
+               	<div class="col-md-2 col-margin">
+                	<div class="form-group" ng-class="{'igl-has-error' : igProfileMetaDataForm.schemaVersion.$invalid && !igProfileMetaDataForm.schemaVersion.$pristine }">
+                    	<label class="control-label">Schema Version</label>
+                    	<input type="text" name="schemaVersion" ng-disabled="options.readonly"
+                        	ng-change="recordChanged()"
+                            class="form-control" ng-model="igdocument.metaData.schemaVersion" required>
+                	</div>
+				</div>
+           	</div>
+        </div>
+    </form>
 </script>
