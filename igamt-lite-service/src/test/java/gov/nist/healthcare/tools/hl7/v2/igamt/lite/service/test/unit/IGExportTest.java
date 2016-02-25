@@ -89,11 +89,30 @@ public class IGExportTest {
 		try {
 			igs = igService.findAll();
 			ig = igs.get(0);
+			ig = igService.findOne("56b4b811d4c6f591953e7b7a");
 
 			content = igExport.exportAsDocx(ig);
 			assertNotNull(content);
 			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 			tmpFile = new File("IG_"+timeStamp+".docx");
+			logger.debug("Writing to file");
+			FileUtils.copyInputStreamToFile(content, tmpFile);
+			logger.debug("Export done");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testCallDTExportDocx() {
+		try {
+			igs = igService.findAll();
+			ig = igs.get(0);
+
+			content = igExport.exportAsDocxDatatypes(ig);
+			assertNotNull(content);
+			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+			tmpFile = new File("DT_"+timeStamp+".docx");
 			logger.debug("Writing to file");
 			FileUtils.copyInputStreamToFile(content, tmpFile);
 			logger.debug("Export done");

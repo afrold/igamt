@@ -260,6 +260,15 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		}
 	}
 
+	public InputStream exportAsDocxDatatypes(IGDocument d) {
+		if (d != null) {
+			InputStream is = exportAsDocxFromHtmlDatatypes(d, "true"); 
+			return is;
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
 	public InputStream exportAsPdf(IGDocument d) {
 		if (d != null) {
 			return exportAsPdfWithIText(d);
@@ -1805,6 +1814,75 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		}
 	}
 
+	public InputStream exportAsDocxFromHtmlDatatypes(IGDocument igdoc, String inlineConstraints) {
+		// Note: inlineConstraint can be true or false
+
+		try {
+			File tmpHtmlFile = File.createTempFile("DTTemp", ".html");
+
+			// Generate xml file containing profile
+			File tmpXmlFile = File.createTempFile("DTTemp", ".xml");
+			String stringIgDoc = new IGDocumentSerialization4ExportImpl()
+			.serializeDatatypesToXML(igdoc);
+			FileUtils.writeStringToFile(tmpXmlFile, stringIgDoc,
+					Charset.forName("UTF-8"));
+
+			TransformerFactory factoryTf = TransformerFactory.newInstance();
+			Source xslt = new StreamSource(this.getClass()
+					.getResourceAsStream("/rendering/igdocument2.xsl"));
+			Transformer transformer;
+
+			// Apply XSL transformation on xml file to generate html
+			transformer = factoryTf.newTransformer(xslt);
+			transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
+
+			String html =  FileUtils.readFileToString(tmpHtmlFile);
+
+			WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(this.getClass()
+					.getResourceAsStream("/rendering/lri_template.dotx"));
+
+			ObjectFactory factory = Context.getWmlObjectFactory();   
+
+			createCoverPageForDocx4j(igdoc, wordMLPackage, factory);
+
+			createTableOfContentForDocx4j(wordMLPackage, factory);
+
+			FieldUpdater updater = new FieldUpdater(wordMLPackage);
+			try {
+				updater.update(true);
+			} catch (Docx4JException e1) {
+				e1.printStackTrace();
+			}
+
+			AlternativeFormatInputPart afiPart = new AlternativeFormatInputPart(new PartName("/hw.html"));
+			afiPart.setBinaryData(html.getBytes());
+			afiPart.setContentType(new ContentType("text/html"));
+			Relationship altChunkRel = wordMLPackage.getMainDocumentPart().addTargetPart(afiPart);
+
+			// .. the bit in document body
+			CTAltChunk ac = Context.getWmlObjectFactory().createCTAltChunk();
+			ac.setId(altChunkRel.getId() );
+			wordMLPackage.getMainDocumentPart().addObject(ac);
+
+			// .. content type
+			wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");
+			
+			addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
+
+			loadTemplateForDocx4j(wordMLPackage); //Repeats the lines above but necessary; don't delete
+
+			File tmpFile;
+			tmpFile = File.createTempFile("DTDocument", ".docx");
+			wordMLPackage.save(tmpFile);
+			
+
+			return FileUtils.openInputStream(tmpFile);
+
+		} catch (TransformerException | IOException | Docx4JException e) {
+			e.printStackTrace();
+			return new NullInputStream(1L);
+		}
+	}
 
 
 	@SuppressWarnings("resource")
