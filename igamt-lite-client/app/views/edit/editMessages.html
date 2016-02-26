@@ -568,7 +568,7 @@
     </table>
 </div>
 
-<h5>Define New Predicate of {{selectedNode.name}}</h5>
+<h5>Define New predicate for {{selectedNode.name}}</h5>
 
 <label class="control-label" for="constraintTypeSelect">Constraint Type: </label>
 <select name="constraintTypeSelect" ng-model="constraintType">
@@ -661,7 +661,7 @@
     </table>
 </div>
 
-<h5>Define Plain Constratint</h5>
+<h5>Define plain constraint</h5>
 
 <div class="table-responsive">
     <table class="table table-striped table-bordered">
@@ -772,7 +772,7 @@
                 									<span>ValueSet ID: </span>
 													<select name="valueSetId" class="form-control"
                                                             ng-model="newConstraint.valueSetId">
-                                                        <option ng-repeat="table in tables"
+                                                        <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'"
                                                                 value="{{table.bindingIdentifier}}">
                                                             {{table.bindingIdentifier}}
                                                         </option>
@@ -824,12 +824,12 @@
 
 <script type="text/ng-template" id="ConformanceStatementMessageCtrl.html">
 <div class="modal-header">
-    <h3 class="modal-title">ConformanceStatement for {{selectedNode.name}}</h3>
+    <h3 class="modal-title">Conformance statement for {{selectedNode.name}}</h3>
 </div>
 
 <div class="modal-body">
 <form role="form">
-<h5>ConformanceStatements of {{selectedNode.name}}</h5>
+<h5>Conformance statements of {{selectedNode.name}}</h5>
 
 <div class="table-responsive">
     <table class="table table-striped table-bordered">
@@ -857,7 +857,7 @@
     </table>
 </div>
 
-<h5>Define New Conformance Statement of {{selectedNode.name}}</h5>
+<h5>Define new conformance statement of {{selectedNode.name}}</h5>
 
 
 <label class="control-label" for="constraintTypeSelect">Constraint Type: </label>
@@ -1120,7 +1120,7 @@
                 									<span>ValueSet ID: </span>
 													<select name="valueSetId" class="form-control"
                                                             ng-model="newConstraint.valueSetId">
-                                                        <option ng-repeat="table in tables"
+                                                        <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'"
                                                                 value="{{table.bindingIdentifier}}">
                                                             {{table.bindingIdentifier}}
                                                         </option>
