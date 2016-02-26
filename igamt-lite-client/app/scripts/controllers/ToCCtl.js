@@ -51,7 +51,7 @@ angular
 								ToCSvc.currentLeaf.selected = false;
 								ToCSvc.currentLeaf = entry;
 								console.log("entry.parent=" + entry.parent);
-								switch (entry.parent) {
+								switch (entry.type) {
 								case "documentMetadata": {
 									$scope.$emit('event:openDocumentMetadata',
 											entry.reference);

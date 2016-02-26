@@ -16,6 +16,7 @@ angular.module('igl').factory(
 				+ rand;
 				newSection.label = newSection.sectionTitle;
 				section.parent.childSections.splice(0, 0, newSection);
+				section.parent.childSections = positionElements(section.parent.childSections);
 				$rootScope.$broadcast('event:SetToC');	
 				$rootScope.$broadcast('event:openSection', newSection);	
 //				$rootScope.igdocument.childSections.splice(0, 0, newSection);
@@ -45,6 +46,7 @@ angular.module('igl').factory(
 		            }
 		            $rootScope.segments.push(newSegment);
 		            $rootScope.igdocument.profile.segments.children.splice(0, 0, newSegment);
+		            $rootScope.igdocument.profile.segments.children = positionElements($rootScope.igdocument.profile.segments.children);
 		            $rootScope.segment = newSegment;
 		            $rootScope.segment[newSegment.id] = newSegment;
 		            $rootScope.recordChanged();
@@ -75,6 +77,7 @@ angular.module('igl').factory(
 		                });
 		            }
 		            $rootScope.igdocument.profile.datatypes.children.splice(0, 0, newDatatype);
+		            $rootScope.igdocument.profile.datatypes.children = positionElements($rootScope.igdocument.profile.datatypes.children);
 		            $rootScope.datatype = newDatatype;
 		            $rootScope.datatypesMap[newDatatype.id] = newDatatype;
 		            $rootScope.recordChanged();
@@ -116,6 +119,7 @@ angular.module('igl').factory(
 		    		}
 		     
 		        $rootScope.igdocument.profile.tables.children.splice(0, 0, newTable);
+	            $rootScope.igdocument.profile.tables.children = positionElements($rootScope.igdocument.profile.tables.children);
 	            $rootScope.recordChanged();
 				$rootScope.$broadcast('event:SetToC');	
 				$rootScope.$broadcast('event:openTable', newTable);	
@@ -381,6 +385,15 @@ angular.module('igl').factory(
 					return child.reference.id === id;
 				})
 				return idxT;
+			}
+			
+			function positionElements(chidren) {
+				var sorted = _.sortBy(chidren, "sectionPosition");
+				var start = sorted[0].sectionPosition;
+				_.each(sorted, function(sortee) {
+					sortee.sectionPosition = start++;
+				});
+				return sorted;
 			}
 
 			return svc;

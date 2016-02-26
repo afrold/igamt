@@ -37,7 +37,7 @@ angular
 		.directive(
 				"branch",
 				function($compile) {
-					var branchTemplate = "<li class='branch'>"
+					var branchTemplate = "<li class='branch' prevent-right-click>"
 							+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" ng-click='tocSelection(branch)'>"
 							+ "{{branch.label}}"
 							+ "</label>"
@@ -55,11 +55,13 @@ angular
 					var leafTemplate = "<leaf leaf='branch' index='index'></leaf>";
 
 					var linker = function(scope, element, attrs) {
+//						scope.$watch("tocData", function() {
+						console.log("<=label=" + scope.branch.label);
 						if (angular.isArray(scope.branch.children)) {
 							 console.log("branch id=" + scope.branch.id +
-							 " label=" + scope.branch.label + " chidren=" +
+							 " label=" + scope.branch.label + " children=" +
 							 scope.branch.children.length);
-							if (scope.branch.id === "message") {
+							if (scope.branch.id === "messages") {
 								element.append(branchMessageTemplate);
 							} else {
 								element.append(branchTemplate);
@@ -67,10 +69,11 @@ angular
 							$compile(element.contents())(scope);
 
 						} else {
-							console.log("leaf0=" + scope.branch.label + " parent=" + scope.branch.parent.type);
+							console.log("leaf=" + scope.branch.label + " parent=" + scope.branch.parent.type);
 							element.append(leafTemplate).show();
 							$compile(element.contents())(scope);
 						}
+//						});
 					}
 
 					return {
@@ -90,10 +93,10 @@ angular
 				function($compile) {
 
 					var leafMetadata = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
-						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='headContextDiv.html' ng-click='tocSelection(leaf)'> "
+						+ "  prevent-right-click ng-click='tocSelection(leaf)'> "
 						+ "{{leaf.label}}" 
 						+ "</li>";
-
+//context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='headContextDiv.html'
 					var leafMessage = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
 			            + " dnd-draggable='leaf'"
 			            + " dnd-effect-allowed='move'"
@@ -118,23 +121,25 @@ angular
 						+ "</li>";
 
 					var linker = function(scope, element, attrs) {
-						if (scope.leaf.type === "documentMetadata" || scope.leaf.parent === "profileMetadata") {
+//						scope.$watch("tocData", function() {
+						if (scope.leaf.type === "documentMetadata" || scope.leaf.type === "profileMetadata") {
 							element.html(leafMetadata).show();
-//							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
+//							console.log("leafMeta=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else if (scope.leaf.type === "section") {
 							element.html(leafSection).show();
-//							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
+							console.log("leafSection=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else if (scope.leaf.type === "message") {
 							element.html(leafMessage).show();
-//							console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent + " leaf.reference.name=" + scope.leaf.reference.name);
+//							console.log("leafMessage=" + scope.leaf.label + " parent=" + scope.leaf.parent + " leaf.reference.name=" + scope.leaf.reference.name);
 						} else if (scope.leaf.type === "table") {
 								element.html(leafValueSet).show();
-//								console.log("leaf1=" + scope.leaf.label + " parent=" + scope.leaf.parent);
+//								console.log("leafTable=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else {
 							element.html(leafDefault).show();
-//							console.log("leaf2=" + scope.leaf.label + " parent=" + scope.leaf.parent);
+//							console.log("leafDefault=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						}
 						$compile(element.contents())(scope);
+//						});
 					}
 
 					return {

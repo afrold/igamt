@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings, StorageService) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings, StorageService) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -217,6 +217,8 @@ angular.module('igl')
 
             $rootScope.$on('event:SetToC', function (event) {
                 $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);
+                $scope.apply();
+//                $templateCache.remove('views/edit/editIG.html');
             });
 
             $rootScope.$on('event:IgsPushed', function (event, igdocument) {

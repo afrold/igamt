@@ -62,7 +62,7 @@ angular.module('igl').factory(
 			function getMessageInfrastructure(igdocument) {
 				var rval = new entry(igdocument.profile.type, igdocument.profile.sectionTitle, igdocument.profile.sectionPosition, 0, igdocument.profile);
 				var children = [];
-				children.push(getMetadata(igdocument.profile.metaData, "profileMetadata"));
+				children.push(getMetadata(igdocument.profile, "profileMetadata"));
 				children.push(getTopEntry(igdocument.profile.messages, igdocument.profile));
 				children.push(getTopEntry(igdocument.profile.segments, igdocument.profile));
 				children.push(getTopEntry(igdocument.profile.datatypes, igdocument.profile));
