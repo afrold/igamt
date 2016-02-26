@@ -97,7 +97,7 @@ angular
 								case "Copy":
 									console.log("Copy==> node=" + leaf);
 									if (leaf.reference.type === 'section') {
-					        				CloneDeleteSvc.copySection(leaf.reference);
+					        				CloneDeleteSvc.copySection(leaf);
 									} else if (leaf.reference.type === 'segment') {
 						        			CloneDeleteSvc.copySegment(leaf.reference);
 									}  else if (leaf.reference.type === 'datatype') {
@@ -108,16 +108,10 @@ angular
 										CloneDeleteSvc.copyMessage(leaf.reference);
 									}
 									break;
-//								case "Copy":
-//									console.log("Clone==> node=" + leaf);
-//									CloneDeleteSvc.cloneMessage(
-//											$rootScope.igdocument, leaf.reference);
-//									$rootScope.$broadcast('event:SetToC');
-//									break;
 								case "Delete":
 									console.log("Copy==> node=" + leaf);
 									if (leaf.reference.type === 'section') {
-					        				CloneDeleteSvc.deleteSection(leaf.reference);
+					        				CloneDeleteSvc.deleteSection(leaf);
 									} else if (leaf.reference.type === 'segment') {
 						        			CloneDeleteSvc.deleteSegment(leaf.reference);
 									}  else if (leaf.reference.type === 'datatype') {

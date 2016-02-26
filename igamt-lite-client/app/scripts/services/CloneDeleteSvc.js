@@ -5,19 +5,20 @@ angular.module('igl').factory(
 			var svc = this;
 			
 			svc.copySection = function(section) {
-				var newSection = angular.copy(section);
+				var newSection = angular.copy(section.reference);
 				newSection.id = new ObjectId();
 				var rand = Math.floor(Math.random() * 100);
 				if (!$rootScope.igdocument.profile.metaData.ext) {
 					$rootScope.igdocument.profile.metaData.ext = "";
 				}
-				newSection.sectionTitle = section.sectionTitle + "-"
+				newSection.sectionTitle = section.reference.sectionTitle + "-"
 				+ $rootScope.igdocument.profile.metaData.ext + "-"
 				+ rand;
 				newSection.label = newSection.sectionTitle;
-				$rootScope.igdocument.childSections.splice(0, 0, newSection);
+				section.parent.childSections.splice(0, 0, newSection);
 				$rootScope.$broadcast('event:SetToC');	
 				$rootScope.$broadcast('event:openSection', newSection);	
+//				$rootScope.igdocument.childSections.splice(0, 0, newSection);
 			}
 			
 			svc.copySegment = function(segment) {
@@ -329,6 +330,7 @@ angular.module('igl').factory(
 						child) {
 					return child.id === msgDead[0];
 				});
+				
 				msgLive.splice(idxP, 1);
 				if (0 === ProfileAccessSvc.Messages().messages().length) {
 					ProfileAccessSvc.ValueSets().truncate();
@@ -363,17 +365,15 @@ angular.module('igl').factory(
 				return rval;
 			}
 			
-			svc.deleteSection = function(secDead) {
+			svc.deleteSection = function(section) {
 
-				// We are keeping the children so their live.
-				var secLive = $rootScope.igdocument.childSections;
+				var secLive = section.parent.childSections;
 				
-				// We remove the dead message from the living.
 				var idxP = _.findIndex(secLive, function (
 						child) {
-					return child.id === secDead.id;
+					return child.id === section.reference.id;
 				});
-				secLive.splice(idxP, 1);
+				section.parent.childSections.splice(idxP, 1);
 			}
 	      
 	        svc.findMessageIndex = function(messages, id) {

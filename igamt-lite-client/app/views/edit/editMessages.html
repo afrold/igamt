@@ -22,9 +22,9 @@
                 <form name="messageForm" novalidate class="form-horizontal">
 					<span class="pull-right">
 						<button title="Create Copy" type="button" class="btn btn-xs btn-info" ng-disabled='!messageForm.$valid' ng-click="copy(message)" ng-hide="options.readonly">
-            				<span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Copy</span>
+            				<span><i class="fa fa-plus-circle fa-fw"></i>Copy</span>
         				</button>
-        				<button title="Delete" type="button" ng-hide="options.readonly" class="btn btn-xs btn-danger" ng-click="delete(message)">
+        				<button title="Delete" type="button" ng-hide="options.readonly" class="btn btn-xs btn-danger" ng-disabled='!message' ng-click="delete(message)">
             				<span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         				</button>
     				</span>

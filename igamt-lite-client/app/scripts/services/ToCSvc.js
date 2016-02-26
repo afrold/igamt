@@ -4,11 +4,12 @@ angular.module('igl').factory(
 
 			var svc = this;
 			
-			function entry(id, label, position, parent, reference) { 
+			function entry(id, label, position, type, parent, reference) { 
 				this.id = id;
 				this.label = label;
 				this.selected = false;
 				this.position = position;
+				this.type = type;
 				this.parent = parent;
 				this.reference = reference;
 			};
@@ -22,32 +23,32 @@ angular.module('igl').factory(
 				toc = [];
 				
 //				console.log("childSections=" + igdocument.childSections.length);
-				var documentMetadata = getMetadata(igdocument.metaData, "documentMetadata");
+				var documentMetadata = getMetadata(igdocument, "documentMetadata");
 				toc.push(documentMetadata);
-				var sections = getSections(igdocument.childSections, igdocument.type);
+				var sections = getSections(igdocument.childSections, igdocument.type, igdocument);
 				_.each(sections, function(section){
 					toc.push(section);
 				});
-				var conformanceProfile = getMessageInfrastructure(igdocument.profile);
+				var conformanceProfile = getMessageInfrastructure(igdocument);
 				toc.push(conformanceProfile);
 				return toc;
 			}
 			
-			function getMetadata(metaData, parent) {
-				var rval = new entry(parent, "Metadata", 0, parent, metaData);
+			function getMetadata(parent, type) {
+				var rval = new entry(type, "Metadata", 0, type, parent, parent.metaData);
 				return rval;
 			}
 			
-			function getSections(childSections, parent) {
+			function getSections(childSections, parentType, parent) {
 
 				var rval = [];
 				
  				_.each(childSections, function(childSection) {
- 					var section = new entry(parent, childSection.sectionTitle, childSection.sectionPosition, childSection.type, childSection);
+ 					var section = new entry(parentType, childSection.sectionTitle, childSection.sectionPosition, childSection.type, parent, childSection);
  					rval.push(section);	
-					var sections1 = getSections(childSection.childSections, childSection.type);
+					var sections1 = getSections(childSection.childSections, childSection.type, childSection);
 					_.each(sections1, function(section1) {
-						if (!section.childSections) {
+						if (!section.children) {
 							section.children = [];
 						}
 						section.children.push(section1);						
@@ -58,14 +59,14 @@ angular.module('igl').factory(
 				return rval;
 			}
 			
-			function getMessageInfrastructure(profile) {
-				var rval = new entry(profile.type, profile.sectionTitle, profile.sectionPosition, 0, profile);
+			function getMessageInfrastructure(igdocument) {
+				var rval = new entry(igdocument.profile.type, igdocument.profile.sectionTitle, igdocument.profile.sectionPosition, 0, igdocument.profile);
 				var children = [];
-				children.push(getMetadata(profile.metaData, "profileMetadata"));
-				children.push(getTopEntry(profile.messages));
-				children.push(getTopEntry(profile.segments));
-				children.push(getTopEntry(profile.datatypes));
-				children.push(getTopEntry(profile.tables));
+				children.push(getMetadata(igdocument.profile.metaData, "profileMetadata"));
+				children.push(getTopEntry(igdocument.profile.messages, igdocument.profile));
+				children.push(getTopEntry(igdocument.profile.segments, igdocument.profile));
+				children.push(getTopEntry(igdocument.profile.datatypes, igdocument.profile));
+				children.push(getTopEntry(igdocument.profile.tables, igdocument.profile));
 				rval.children = children;
 				return rval;
 			}
@@ -73,27 +74,27 @@ angular.module('igl').factory(
 			// Returns a top level entry. It can be dropped on, but cannot be
 			// dragged.
 			// It will accept a drop where the drag value matches its label.
-			function getTopEntry(profile) {
+			function getTopEntry(child, parent) {
 				var children = [];
-				var rval = new entry(profile.type, profile.sectionTitle, profile.sectionPosition, 0, profile);
-				if (profile) {
-					rval["reference"] = profile;
-					if(angular.isArray(profile.children)) {
-						rval["children"] = createEntries(profile.children[0].type, profile.children);
+				var rval = new entry(child.type, child.sectionTitle, child.sectionPosition, 0, parent, child);
+				if (child) {
+					rval["reference"] = child;
+					if(angular.isArray(child.children) && child.children.length > 0) {
+						rval["children"] = createEntries(child.children[0].type, child, child.children);
 					}
 				}
 				return rval;
 			}
 
 			// Returns a second level set entries, These are draggable. "drag"
-			function createEntries(parent, children) {
+			function createEntries(parentType, parent, children) {
 				var rval = [];
 				var entry = {};
 				_.each(children, function(child) {
-					if(parent === "message") {
+					if(parentType === "message") {
 						entry = createEntry(child, child.name, parent);
 //						console.log("createEntries entry.reference.name=" + entry.reference.name + " entry.parent=" + rval.parent);
-					} else if (parent === "table") {
+					} else if (parentType === "table") {
 						entry = createEntry(child, child.bindingIdentifier, parent);
 					} else {
 						entry = createEntry(child, child.label, parent);
@@ -109,7 +110,7 @@ angular.module('igl').factory(
 
 			function createEntry(child, label, parent) {
 				
-				var rval = new entry(child.id, label, child.sectionPosition, child.type, child);
+				var rval = new entry(child.id, label, child.sectionPosition, child.type, parent, child);
 				return rval;
 			}
 
