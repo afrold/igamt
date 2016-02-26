@@ -12,14 +12,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessageRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.MessagesRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileCreationService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,6 +33,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileCreationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContext.class})
 public class ProfileCreationServiceTest {
@@ -57,11 +56,6 @@ public class ProfileCreationServiceTest {
 	@Autowired
 	ProfileCreationService profileCreation;
 
-	@Autowired
-	MessagesRepository messagesRepository;
-
-	@Autowired
-	MessageRepository messageRepository;
 	
 	static ProfileCreationReferentialIntegrityTest refIneteg;
 

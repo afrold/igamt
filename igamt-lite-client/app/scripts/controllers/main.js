@@ -53,6 +53,21 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $scope.logout = function () {
+            if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.hasChanges()) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'ConfirmLogout.html',
+                    controller: 'ConfirmLogoutCtrl'
+                });
+                modalInstance.result.then(function () {
+                    $scope.execLogout();
+                }, function () {
+                });
+            }else{
+                $scope.execLogout();
+            }
+        };
+
+        $scope.execLogout = function () {
             userInfoService.setCurrentUser(null);
             $scope.username = $scope.password = null;
             $scope.$emit('event:logoutRequest');
@@ -969,6 +984,16 @@ angular.module('igl').controller('InputTextCtrl', ['$scope', '$modalInstance','e
 
     $scope.close = function() {
         $modalInstance.close($scope.editorTarget);
+    };
+}]);
+
+angular.module('igl').controller('ConfirmLogoutCtrl', ["$scope", "$modalInstance", "$rootScope", "$http", function ($scope, $modalInstance, $rootScope, $http) {
+    $scope.logout = function () {
+        $modalInstance.close();
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
     };
 }]);
 

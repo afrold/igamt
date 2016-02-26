@@ -23,8 +23,8 @@ angular.module('igl')
             $scope.loadingSelection = false;
         };
         
-        $scope.cloneSegmentFlavor = function(segment) {
-        		CloneDeleteSvc.cloneSegmentFlavor(segment);
+        $scope.copy = function(segment) {
+        		CloneDeleteSvc.copySegment(segment);
         }
 
         $scope.delete = function (segment) {
@@ -552,7 +552,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
                         };
                 	$scope.newComplexConstraint.push(cp);
                 }
-            } else if ($scope.newConstraint.contraintType === 'identical to the another node') {
+            } else if ($scope.newConstraint.contraintType === 'identical to another node') {
                 if($scope.constraintType === 'Plain'){
                 	var cp = {
                             id: new ObjectId().toString(),
@@ -581,7 +581,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
                         };
                 	$scope.newComplexConstraint.push(cp);
                 }
-            } else if ($scope.newConstraint.contraintType === 'equal to the another node') {
+            } else if ($scope.newConstraint.contraintType === 'equal to another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -611,7 +611,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
             		
             		$scope.newComplexConstraint.push(cp);
             	}
-            } else if ($scope.newConstraint.contraintType === 'not-equal to the another node') {
+            } else if ($scope.newConstraint.contraintType === 'not-equal to another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -641,7 +641,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
             		
             		$scope.newComplexConstraint.push(cp);
             	}
-            } else if ($scope.newConstraint.contraintType === 'greater than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'greater than another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -671,7 +671,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
             		
             		$scope.newComplexConstraint.push(cp);
             	}
-            } else if ($scope.newConstraint.contraintType === 'equal to or greater than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'equal to or greater than another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -701,7 +701,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
             		
             		$scope.newComplexConstraint.push(cp);
             	}
-            } else if ($scope.newConstraint.contraintType === 'less than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'less than another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -731,7 +731,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
             		
             		$scope.newComplexConstraint.push(cp);
             	}
-            } else if ($scope.newConstraint.contraintType === 'equal to or less than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'equal to or less than another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -1289,7 +1289,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                 }else if($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'identical to the another node') {
+            } else if ($scope.newConstraint.contraintType === 'identical to another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1306,7 +1306,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'equal to the another node') {
+            } else if ($scope.newConstraint.contraintType === 'equal to another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1323,7 +1323,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                   	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'not-equal to the another node') {
+            } else if ($scope.newConstraint.contraintType === 'not-equal to another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1340,7 +1340,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                   	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'greater than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'greater than another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1357,7 +1357,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                   	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'equal to or greater than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'equal to or greater than another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1374,7 +1374,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                   	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'less than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'less than another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1391,7 +1391,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                   	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'equal to or less than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'equal to or less than another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1536,63 +1536,63 @@ angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $
         $rootScope.segmentsMap[$scope.segToDelete.id] = null;
         $rootScope.references = [];
         if ($scope.segToDelete.id < 0) {
-            var index = $rootScope.changes["segment"]["add"].indexOf($scope.segToDelete);
-            if (index > -1) $rootScope.changes["segment"]["add"].splice(index, 1);
-            if ($rootScope.changes["segment"]["add"] && $rootScope.changes["segment"]["add"].length === 0) {
-                delete  $rootScope.changes["segment"]["add"];
-            }
-            if ($rootScope.changes["segment"] && Object.getOwnPropertyNames($rootScope.changes["segment"]).length === 0) {
-                delete  $rootScope.changes["segment"];
-            }
+//            var index = $rootScope.changes["segment"]["add"].indexOf($scope.segToDelete);
+//            if (index > -1) $rootScope.changes["segment"]["add"].splice(index, 1);
+//            if ($rootScope.changes["segment"]["add"] && $rootScope.changes["segment"]["add"].length === 0) {
+//                delete  $rootScope.changes["segment"]["add"];
+//            }
+//            if ($rootScope.changes["segment"] && Object.getOwnPropertyNames($rootScope.changes["segment"]).length === 0) {
+//                delete  $rootScope.changes["segment"];
+//            }
         } else {
             $rootScope.recordDelete("segment", "edit", $scope.segToDelete.id);
-            if ($scope.segToDelete.components != undefined && $scope.segToDelete.components != null && $scope.segToDelete.components.length > 0) {
-
-                //clear components changes
-                angular.forEach($scope.dtToDelete.components, function (component) {
-                    $rootScope.recordDelete("component", "edit", component.id);
-                    $rootScope.removeObjectFromChanges("component", "delete", component.id);
-                });
-                if ($rootScope.changes["component"]["delete"] && $rootScope.changes["component"]["delete"].length === 0) {
-                    delete  $rootScope.changes["component"]["delete"];
-                }
-
-                if ($rootScope.changes["component"] && Object.getOwnPropertyNames($rootScope.changes["component"]).length === 0) {
-                    delete  $rootScope.changes["component"];
-                }
-
-            }
-
-            if ($scope.segToDelete.predicates != undefined && $scope.segToDelete.predicates != null && $scope.segToDelete.predicates.length > 0) {
-                //clear predicates changes
-                angular.forEach($scope.segToDelete.predicates, function (predicate) {
-                    $rootScope.recordDelete("predicate", "edit", predicate.id);
-                    $rootScope.removeObjectFromChanges("predicate", "delete", predicate.id);
-                });
-                if ($rootScope.changes["predicate"]["delete"] && $rootScope.changes["predicate"]["delete"].length === 0) {
-                    delete  $rootScope.changes["predicate"]["delete"];
-                }
-
-                if ($rootScope.changes["predicate"] && Object.getOwnPropertyNames($rootScope.changes["predicate"]).length === 0) {
-                    delete  $rootScope.changes["predicate"];
-                }
-
-            }
-
-            if ($scope.dtToDelete.conformanceStatements != undefined && $scope.dtToDelete.conformanceStatements != null && $scope.dtToDelete.conformanceStatements.length > 0) {
-                //clear conforamance statement changes
-                angular.forEach($scope.dtToDelete.conformanceStatements, function (confStatement) {
-                    $rootScope.recordDelete("conformanceStatement", "edit", confStatement.id);
-                    $rootScope.removeObjectFromChanges("conformanceStatement", "delete", confStatement.id);
-                });
-                if ($rootScope.changes["conformanceStatement"]["delete"] && $rootScope.changes["conformanceStatement"]["delete"].length === 0) {
-                    delete  $rootScope.changes["conformanceStatement"]["delete"];
-                }
-
-                if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["conformanceStatement"]).length === 0) {
-                    delete  $rootScope.changes["conformanceStatement"];
-                }
-            }
+//            if ($scope.segToDelete.components != undefined && $scope.segToDelete.components != null && $scope.segToDelete.components.length > 0) {
+//
+//                //clear components changes
+//                angular.forEach($scope.dtToDelete.components, function (component) {
+//                    $rootScope.recordDelete("component", "edit", component.id);
+//                    $rootScope.removeObjectFromChanges("component", "delete", component.id);
+//                });
+//                if ($rootScope.changes["component"]["delete"] && $rootScope.changes["component"]["delete"].length === 0) {
+//                    delete  $rootScope.changes["component"]["delete"];
+//                }
+//
+//                if ($rootScope.changes["component"] && Object.getOwnPropertyNames($rootScope.changes["component"]).length === 0) {
+//                    delete  $rootScope.changes["component"];
+//                }
+//
+//            }
+//
+//            if ($scope.segToDelete.predicates != undefined && $scope.segToDelete.predicates != null && $scope.segToDelete.predicates.length > 0) {
+//                //clear predicates changes
+//                angular.forEach($scope.segToDelete.predicates, function (predicate) {
+//                    $rootScope.recordDelete("predicate", "edit", predicate.id);
+//                    $rootScope.removeObjectFromChanges("predicate", "delete", predicate.id);
+//                });
+//                if ($rootScope.changes["predicate"]["delete"] && $rootScope.changes["predicate"]["delete"].length === 0) {
+//                    delete  $rootScope.changes["predicate"]["delete"];
+//                }
+//
+//                if ($rootScope.changes["predicate"] && Object.getOwnPropertyNames($rootScope.changes["predicate"]).length === 0) {
+//                    delete  $rootScope.changes["predicate"];
+//                }
+//
+//            }
+//
+//            if ($scope.dtToDelete.conformanceStatements != undefined && $scope.dtToDelete.conformanceStatements != null && $scope.dtToDelete.conformanceStatements.length > 0) {
+//                //clear conforamance statement changes
+//                angular.forEach($scope.dtToDelete.conformanceStatements, function (confStatement) {
+//                    $rootScope.recordDelete("conformanceStatement", "edit", confStatement.id);
+//                    $rootScope.removeObjectFromChanges("conformanceStatement", "delete", confStatement.id);
+//                });
+//                if ($rootScope.changes["conformanceStatement"]["delete"] && $rootScope.changes["conformanceStatement"]["delete"].length === 0) {
+//                    delete  $rootScope.changes["conformanceStatement"]["delete"];
+//                }
+//
+//                if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["conformanceStatement"]).length === 0) {
+//                    delete  $rootScope.changes["conformanceStatement"];
+//                }
+//            }
         }
 
 

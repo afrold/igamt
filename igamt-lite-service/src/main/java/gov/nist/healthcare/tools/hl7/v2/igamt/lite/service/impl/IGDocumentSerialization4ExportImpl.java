@@ -11,36 +11,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.HL7Version;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -72,16 +42,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 
-import nu.xom.Attribute;
-import nu.xom.Builder;
-import nu.xom.ParsingException;
-import nu.xom.Serializer;
-import nu.xom.ValidityException;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.docx4j.wml.P;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -89,6 +52,41 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.HL7Version;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import nu.xom.Attribute;
+import nu.xom.Builder;
+import nu.xom.ParsingException;
+import nu.xom.Serializer;
+import nu.xom.ValidityException;
 
 public class IGDocumentSerialization4ExportImpl implements ProfileSerialization {
 
@@ -239,10 +237,10 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 			if (depth == 1){
 				xsect.addAttribute(new Attribute("prefix", String.valueOf(s.getSectionPosition()+1)));
-				addContents4Html(s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, xsect);
+				addContents4Html((Set<Section>)s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, xsect);
 			} else {
 				xsect.addAttribute(new Attribute("prefix", prefix+"."+String.valueOf(s.getSectionPosition())));
-				addContents4Html(s.getChildSections(), prefix+"."+String.valueOf(s.getSectionPosition()), depth + 1, xsect);
+				addContents4Html((Set<Section>)s.getChildSections(), prefix+"."+String.valueOf(s.getSectionPosition()), depth + 1, xsect);
 			}
 			elt.appendChild(xsect); 
 		} 
@@ -1583,7 +1581,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 		this.generateProfileIS(out, this.serializeProfileToXML(profile));
 		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(profile.getTables()));
-		this.generateConstraintsIS(out, new ConstraintsSerializationImpl().serializeConstraintsToXML(profile.getConformanceStatements(), profile.getPredicates()));
+		this.generateConstraintsIS(out, new ConstraintsSerializationImpl().serializeConstraintsToXML(profile));
 
 		out.close();
 		bytes = outputStream.toByteArray();
@@ -1644,5 +1642,12 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 	 */
 	public static byte[] decodeImage(String imageDataString) {
 		return Base64.decodeBase64(imageDataString);
+	}
+
+	@Override
+	public InputStream serializeProfileToZip(Profile profile, String[] ids)
+			throws IOException, CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

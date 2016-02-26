@@ -93,7 +93,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private ProfileMetaData metaData(DBObject source) {
 		ProfileMetaData metaData = new ProfileMetaData();
 		metaData.setName(((String) source.get("name")));
-		metaData.setIdentifier(((String) source.get("identifier")));
+		metaData.setProfileID(((String) source.get("profileID")));
 		metaData.setOrgName(((String) source.get("orgName")));
 		metaData.setStatus(((String) source.get("status")));
 		metaData.setTopics(((String) source.get("topics")));
@@ -174,16 +174,10 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			seg.setPredicates(predicates);
 		}
 
-		BasicDBList dynamicMappingsDBObjects = (BasicDBList) source
-				.get("dynamicMappings");
-		if (dynamicMappingsDBObjects != null) {
-			List<DynamicMapping> dynamicMappings = new ArrayList<DynamicMapping>();
-			for (Object dynObj : dynamicMappingsDBObjects) {
-				DBObject dynObject = (DBObject) dynObj;
-				DynamicMapping dyn = dynamicMapping(dynObject, datatypes);
-				dynamicMappings.add(dyn);
-			}
-			seg.setDynamicMappings(dynamicMappings);
+		DBObject dynamicMappingDBObject = (DBObject) source.get("dynamicMapping");
+		if (dynamicMappingDBObject != null) {
+			DynamicMapping dyn = dynamicMapping(dynamicMappingDBObject, datatypes);
+			seg.setDynamicMapping(dyn);
 		}
 
 		return seg;
@@ -479,9 +473,6 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			message.setPosition((Integer) child.get("position"));
 			message.setStructID((String) child.get("structID"));
 			message.setType((String) child.get("type"));
-			message.setVersion((String) child.get("version"));
-			message.setDate((String) child.get("date"));
-			message.setOid((String) child.get("oid"));
 
 			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child
 					.get("children");

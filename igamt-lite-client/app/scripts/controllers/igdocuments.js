@@ -314,10 +314,10 @@ angular.module('igl')
         };
 
         $scope.openIGDocument = function (igdocument) {
-            $timeout(function () {
-                if (igdocument != null) {
-                    waitingDialog.show('Opening IG Document...', {dialogSize: 'sm', progressType: 'info'});
-                    $scope.selectIgTab(1);
+            if (igdocument != null) {
+                waitingDialog.show('Opening IG Document...', {dialogSize: 'sm', progressType: 'info'});
+                $scope.selectIgTab(1);
+                $timeout(function () {
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
@@ -381,8 +381,8 @@ angular.module('igl')
                         $scope.selectDocumentMetaData();
                     }
                     waitingDialog.hide();
-                }
-            }, 100);
+                }, 100);
+            }
         };
 
         $scope.collectData = function (node, segRefOrGroups, segments, datatypes) {
@@ -468,8 +468,38 @@ angular.module('igl')
             }, function () {
             });
         };
-
-
+        
+        
+        $scope.selectMessages = function (igdocument) {
+            var modalInstance = $modal.open({
+                templateUrl: 'SelectMessagesOpenCtrl.html',
+                controller: 'SelectMessagesOpenCtrl',
+                resolve: {
+                    igdocumentToSelect: function () {
+                        return igdocument;
+                    }
+                }
+            });
+            modalInstance.result.then(function () {
+            }, function () {
+            });
+        };
+        
+        
+        $scope.exportAsMessages = function (id, mids) {
+        	var form = document.createElement("form");
+            form.action = $rootScope.api('api/igdocuments/' + id + '/export/pdf/' + mids);
+            form.method = "POST";
+            form.target = "_target";
+            var csrfInput = document.createElement("input");
+            csrfInput.name = "X-XSRF-TOKEN";
+            csrfInput.value = $cookies['XSRF-TOKEN'];
+            form.appendChild(csrfInput);
+            form.style.display = 'none';
+            document.body.appendChild(form);
+            form.submit();
+        }
+        
         $scope.exportAs = function (id, format) {
             var form = document.createElement("form");
             form.action = $rootScope.api('api/igdocuments/' + id + '/export/' + format);
@@ -518,7 +548,11 @@ angular.module('igl')
             waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
             $rootScope.igdocument.accountId = userInfoService.getAccountID();
-            var data = {"changes": changes, "igdocument": $rootScope.igdocument};
+            var data = angular.fromJson(
+                    {
+                        "changes": changes, "igDocument": $rootScope.igdocument
+                    }
+            );
             $http.post('api/igdocuments/save', data).then(function (response) {
                 var saveResponse = angular.fromJson(response.data);
                 $rootScope.igdocument.metaData.date = saveResponse.date;
@@ -848,7 +882,7 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function ($scope
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
-        $http.post($rootScope.api('api/igdocuments/' + $scope.igdocumentToDelete.id + '/delete'), {timeout: 60000}).then(function (response) {
+        $http.post($rootScope.api('api/igdocuments/' + $scope.igdocumentToDelete.id + '/delete')).then(function (response) {
             var index = $rootScope.igs.indexOf($scope.igdocumentToDelete);
             if (index > -1) $rootScope.igs.splice(index, 1);
             $rootScope.backUp = null;
@@ -966,6 +1000,59 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
             $modalInstance.dismiss('cancel');
         });
     };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+});
+
+angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies) {
+    $scope.igdocumentToSelect = igdocumentToSelect;
+    $scope.selectedMessagesIDs = [];
+    $scope.loading = false;
+
+
+    $scope.trackSelections = function(bool, id) {
+		if (bool) {
+			$scope.selectedMessagesIDs.push(id);
+		} else {
+			for (var i = 0; i < $scope.selectedMessagesIDs.length; i++) {
+				if ($scope.selectedMessagesIDs[i].id == id) {
+					$scope.selectedMessagesIDs.splice(i, 1);
+				}
+			}
+		}
+	};
+	
+	 $scope.exportAsMessages = function (id, mids) {
+     	var form = document.createElement("form");
+     	console.log("ID: " + id);
+     	console.log("Message IDs: " + mids);
+     	form.action = $rootScope.api('api/igdocuments/' + id + '/export/zip/' + mids);
+     	form.method = "POST";
+     	form.target = "_target";
+     	var csrfInput = document.createElement("input");
+     	csrfInput.name = "X-XSRF-TOKEN";
+     	csrfInput.value = $cookies['XSRF-TOKEN'];
+     	form.appendChild(csrfInput);
+     	form.style.display = 'none';
+     	document.body.appendChild(form);
+     	form.submit();
+     }
+	 
+	
+	$scope.exportAsZIPforSelectedMessages = function () {
+		$scope.loading = true;
+		$scope.exportAsMessages($scope.igdocumentToSelect.id,$scope.selectedMessagesIDs);
+        $scope.loading = false;
+    };
+    
+    $scope.exportAsZIPDisplayforSelectedMessages = function () {
+		$scope.loading = true;
+		$scope.exportAsMessages($scope.igdocumentToSelect.id,$scope.selectedMessagesIDs);
+        $scope.loading = false;
+    };
+    
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');

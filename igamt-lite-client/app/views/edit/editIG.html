@@ -30,7 +30,7 @@
             
             <div class="col-md-12">
                 <div class="page-header">
-                    <h3>{{igdocument.metaData.identifier}}</h3>
+                    <h3>{{igdocument.metaData.title}}</h3>
                 </div>
             </div>
             <div class="col-md-12">
@@ -44,7 +44,7 @@
                             ng-hide="options.readonly"
                             ng-show="igDocumentConfig.selectedType === 'USER'"
                             ng-click="save()">
-                        <span><i class="fa fa-check fa-fw"></i> Apply</span>
+                        <span><i class="fa fa-check fa-fw"></i> Save</span>
                     </button>
 
                     <button ng-show="options.readonly && igDocumentConfig.selectedType === 'USER'"
@@ -76,7 +76,7 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu igl-menu" role="menu">
-                            <li><a class="point" ng-click="exportAs(igdocument.id, 'zip')">As ZIP</a></li>
+                            <li><a class="point" ng-click="selectMessages(igdocument)">As XML</a></li>
                             <li><a class="point" ng-click="exportAs(igdocument.id,'pdf')">As PDF</a></li>
                             <!--<li><a class="point" ng-click="exportAs(igdocument.id,'docx')"><span style='color:red'>In progress</span> As WORD</a></li>-->
                             <li><a class="point" ng-click="exportAs(igdocument.id,'html')">As HTML</a></li>

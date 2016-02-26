@@ -195,7 +195,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Message m : this.getMessages().getChildren()) {
 			ByID byID = new ByID();
-			byID.setByID("" + m.getId());
+			byID.setByID(m.getMessageID());
 			if (m.getConformanceStatements().size() > 0) {
 				byID.setConformanceStatements(m.getConformanceStatements());
 				byNameOrByIDs.add(byID);
@@ -207,10 +207,11 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		for (Message m : this.getMessages().getChildren()) {
 			for (SegmentRefOrGroup srog: m.getChildren()){
 				if (srog instanceof Group) {
+					Group g = (Group)srog;
 					ByID byID = new ByID();
-					byID.setByID("" + srog.getId());
-					if (((Group) srog).getConformanceStatements().size() > 0) {
-						byID.setConformanceStatements(((Group) srog).getConformanceStatements());
+					byID.setByID("" + g.getName());
+					if (g.getConformanceStatements().size() > 0) {
+						byID.setConformanceStatements(g.getConformanceStatements());
 						byNameOrByIDs.add(byID);
 					}
 				}
@@ -218,9 +219,10 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		}
 		gContext.setByNameOrByIDs(byNameOrByIDs);
 		
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Segment s : this.getSegments().getChildren()) {
 			ByID byID = new ByID();
-			byID.setByID("" + s.getId());
+			byID.setByID(s.getLabel());
 			if (s.getConformanceStatements().size() > 0) {
 				byID.setConformanceStatements(s.getConformanceStatements());
 				byNameOrByIDs.add(byID);
@@ -231,7 +233,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Datatype d : this.getDatatypes().getChildren()) {
 			ByID byID = new ByID();
-			byID.setByID("" + d.getId());
+			byID.setByID(d.getLabel());
 			if (d.getConformanceStatements().size() > 0) {
 				byID.setConformanceStatements(d.getConformanceStatements());
 				byNameOrByIDs.add(byID);
@@ -242,6 +244,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
 		constraints.setGroups(gContext);
+		constraints.setMessages(mContext);
 		return constraints;
 	}
 
@@ -258,7 +261,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Message m : this.getMessages().getChildren()) {
 			ByID byID = new ByID();
-			byID.setByID("" + m.getId());
+			byID.setByID(m.getMessageID());
 			if (m.getPredicates().size() > 0) {
 				byID.setPredicates(m.getPredicates());
 				byNameOrByIDs.add(byID);
@@ -270,10 +273,11 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		for (Message m : this.getMessages().getChildren()) {
 			for (SegmentRefOrGroup srog: m.getChildren()){
 				if (srog instanceof Group) {
+					Group g = (Group)srog;
 					ByID byID = new ByID();
-					byID.setByID("" + srog.getId());
-					if (((Group) srog).getPredicates().size() > 0) {
-						byID.setPredicates(((Group) srog).getPredicates());
+					byID.setByID(g.getName());
+					if (g.getPredicates().size() > 0) {
+						byID.setPredicates(g.getPredicates());
 						byNameOrByIDs.add(byID);
 					}
 				}
@@ -284,7 +288,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Segment s : this.getSegments().getChildren()) {
 			ByID byID = new ByID();
-			byID.setByID("" + s.getId());
+			byID.setByID(s.getLabel());
 			if (s.getPredicates().size() > 0) {
 				byID.setPredicates(s.getPredicates());
 				byNameOrByIDs.add(byID);
@@ -295,7 +299,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Datatype d : this.getDatatypes().getChildren()) {
 			ByID byID = new ByID();
-			byID.setByID("" + d.getId());
+			byID.setByID(d.getLabel());
 			if (d.getPredicates().size() > 0) {
 				byID.setPredicates(d.getPredicates());
 				byNameOrByIDs.add(byID);
@@ -306,6 +310,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		constraints.setDatatypes(dtContext);
 		constraints.setSegments(sContext);
 		constraints.setGroups(gContext);
+		constraints.setMessages(mContext);
 		return constraints;
 	}
 
@@ -426,6 +431,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		clonedProfile.setScope(scope);
 		clonedProfile.setBaseId(baseId != null ? baseId : id);
 		clonedProfile.setSourceId(id);
+		clonedProfile.setConstraintId(constraintId);
 
 		return clonedProfile;
 	}

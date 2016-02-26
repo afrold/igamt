@@ -115,6 +115,9 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         .when('/registrationSubmitted', {
             templateUrl: 'views/account/registrationSubmitted.html'
         })
+        .when('/masterDTLib', {
+            templateUrl: 'views/edit/masterDTLib.html'
+        })
         .otherwise({
             redirectTo: '/'
         });
@@ -460,6 +463,8 @@ app.factory('StorageService',
         return service;
     }]
 );
+
+
 
 
 
