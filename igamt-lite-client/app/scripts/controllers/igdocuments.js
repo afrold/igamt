@@ -217,8 +217,6 @@ angular.module('igl')
 
             $rootScope.$on('event:SetToC', function (event) {
                 $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);
-                $scope.apply();
-//                $templateCache.remove('views/edit/editIG.html');
             });
 
             $rootScope.$on('event:IgsPushed', function (event, igdocument) {

@@ -76,7 +76,7 @@ angular.module('igl').factory(
 			// It will accept a drop where the drag value matches its label.
 			function getTopEntry(child, parent) {
 				var children = [];
-				var rval = new entry(child.type, child.sectionTitle, child.sectionPosition, 0, parent, child);
+				var rval = new entry(child.type, child.sectionTitle, child.sectionPosition, child.type, parent, child);
 				if (child) {
 					rval["reference"] = child;
 					if(angular.isArray(child.children) && child.children.length > 0) {

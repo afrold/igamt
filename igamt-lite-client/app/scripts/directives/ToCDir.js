@@ -5,11 +5,12 @@ angular
 				function() {
 					console.log("trunk");
 
-					var template = "<ul class='trunk'><branch ng-repeat='branch in trunk track by $index' branch='branch'></branch></ul>";
+					var template = "<ul class='trunk'><branch ng-repeat='branch in trunk track by trackBy()' branch='branch'></branch></ul>";
 
 					return {
 						restrict : "E",
 						replace : true,
+						controller : "ToCCtl",
 						scope : {
 							trunk : '='
 						},
@@ -58,7 +59,7 @@ angular
 //						scope.$watch("tocData", function() {
 						console.log("<=label=" + scope.branch.label);
 						if (angular.isArray(scope.branch.children)) {
-							 console.log("branch id=" + scope.branch.id +
+							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
 							 " label=" + scope.branch.label + " children=" +
 							 scope.branch.children.length);
 							if (scope.branch.id === "messages") {
@@ -69,7 +70,7 @@ angular
 							$compile(element.contents())(scope);
 
 						} else {
-							console.log("leaf=" + scope.branch.label + " parent=" + scope.branch.parent.type);
+							console.log("leaf id=" + scope.branch.id + " leaf type="  + scope.branch.type + " leaf label="  + scope.branch.label + " parent=" + scope.branch.parent.type);
 							element.append(leafTemplate).show();
 							$compile(element.contents())(scope);
 						}

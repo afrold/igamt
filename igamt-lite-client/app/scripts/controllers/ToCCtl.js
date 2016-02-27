@@ -40,6 +40,10 @@ angular
 								return "margin-left : " + level + "em";
 							}
 
+							$scope.trackBy = function() {
+								return new ObjectId().toString();
+							}
+							
 							$scope.tocSelection = function(entry) {
 								// TODO gcr: See about refactoring this to
 								// eliminate the switch.
