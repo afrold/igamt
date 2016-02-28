@@ -56,7 +56,6 @@ angular
 					var leafTemplate = "<leaf leaf='branch' index='index'></leaf>";
 
 					var linker = function(scope, element, attrs) {
-//						scope.$watch("tocData", function() {
 						console.log("<=label=" + scope.branch.label);
 						if (angular.isArray(scope.branch.children)) {
 							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
@@ -74,7 +73,6 @@ angular
 							element.append(leafTemplate).show();
 							$compile(element.contents())(scope);
 						}
-//						});
 					}
 
 					return {
@@ -97,7 +95,6 @@ angular
 						+ "  prevent-right-click ng-click='tocSelection(leaf)'> "
 						+ "{{leaf.label}}" 
 						+ "</li>";
-//context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='headContextDiv.html'
 					var leafMessage = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
 			            + " dnd-draggable='leaf'"
 			            + " dnd-effect-allowed='move'"
@@ -122,7 +119,6 @@ angular
 						+ "</li>";
 
 					var linker = function(scope, element, attrs) {
-//						scope.$watch("tocData", function() {
 						if (scope.leaf.type === "documentMetadata" || scope.leaf.type === "profileMetadata") {
 							element.html(leafMetadata).show();
 //							console.log("leafMeta=" + scope.leaf.label + " parent=" + scope.leaf.parent);
@@ -140,7 +136,6 @@ angular
 //							console.log("leafDefault=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						}
 						$compile(element.contents())(scope);
-//						});
 					}
 
 					return {

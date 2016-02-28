@@ -1,118 +1,186 @@
-angular.module('igl').factory(
-		'ToCSvc',
-		function() {
+angular
+		.module('igl')
+		.factory(
+				'ToCSvc',
+				function() {
 
-			var svc = this;
-			
-			function entry(id, label, position, type, parent, reference) { 
-				this.id = id;
-				this.label = label;
-				this.selected = false;
-				this.position = position;
-				this.type = type;
-				this.parent = parent;
-				this.reference = reference;
-			};
+					var svc = this;
 
-			svc.currentLeaf = {
-				selected : false
-			};
+					function entry(id, label, position, type, parent, reference) {
+						this.id = id;
+						this.label = label;
+						this.selected = false;
+						this.position = position;
+						this.type = type;
+						this.parent = parent;
+						this.reference = reference;
+					}
+					;
 
-			svc.getToC = function(igdocument) {
-				console.log("Getting toc...");
-				toc = [];
-				
-//				console.log("childSections=" + igdocument.childSections.length);
-				var documentMetadata = getMetadata(igdocument, "documentMetadata");
-				toc.push(documentMetadata);
-				var sections = getSections(igdocument.childSections, igdocument.type, igdocument);
-				_.each(sections, function(section){
-					toc.push(section);
-				});
-				var conformanceProfile = getMessageInfrastructure(igdocument);
-				toc.push(conformanceProfile);
-				return toc;
-			}
-			
-			function getMetadata(parent, type) {
-				var rval = new entry(type, "Metadata", 0, type, parent, parent.metaData);
-				return rval;
-			}
-			
-			function getSections(childSections, parentType, parent) {
+					svc.currentLeaf = {
+						selected : false
+					};
 
-				var rval = [];
-				
- 				_.each(childSections, function(childSection) {
- 					var section = new entry(parentType, childSection.sectionTitle, childSection.sectionPosition, childSection.type, parent, childSection);
- 					rval.push(section);	
-					var sections1 = getSections(childSection.childSections, childSection.type, childSection);
-					_.each(sections1, function(section1) {
-						if (!section.children) {
-							section.children = [];
+					svc.findEntryFromRefId = function(refId, entries) {
+						var rval = undefined;
+						if (angular.isArray(entries)) {
+							_.each(entries, function(entry) {
+								if (entry.reference && entry.reference.id) {
+									if (entry.reference.id === refId) {
+										rval = entry;
+									} else {
+										if (rval) {
+											return rval;
+										}
+										rval = svc.findEntryFromRefId(refId,
+												entry.children);
+									}
+								} 
+							});
 						}
-						section.children.push(section1);						
-					});
-				});
-				var section2 = _.sortBy(rval, "position");
-				rval = section2;
-				return rval;
-			}
-			
-			function getMessageInfrastructure(igdocument) {
-				var rval = new entry(igdocument.profile.type, igdocument.profile.sectionTitle, igdocument.profile.sectionPosition, 0, igdocument.profile);
-				var children = [];
-				children.push(getMetadata(igdocument.profile, "profileMetadata"));
-				children.push(getTopEntry(igdocument.profile.messages, igdocument.profile));
-				children.push(getTopEntry(igdocument.profile.segments, igdocument.profile));
-				children.push(getTopEntry(igdocument.profile.datatypes, igdocument.profile));
-				children.push(getTopEntry(igdocument.profile.tables, igdocument.profile));
-				rval.children = children;
-				return rval;
-			}
-			
-			// Returns a top level entry. It can be dropped on, but cannot be
-			// dragged.
-			// It will accept a drop where the drag value matches its label.
-			function getTopEntry(child, parent) {
-				var children = [];
-				var rval = new entry(child.type, child.sectionTitle, child.sectionPosition, child.type, parent, child);
-				if (child) {
-					rval["reference"] = child;
-					if(angular.isArray(child.children) && child.children.length > 0) {
-						rval["children"] = createEntries(child.children[0].type, child, child.children);
+						return rval;
+					};
+
+					svc.getToC = function(igdocument) {
+						console.log("Getting toc...");
+						toc = [];
+
+						// console.log("childSections=" +
+						// igdocument.childSections.length);
+						var documentMetadata = getMetadata(igdocument,
+								"documentMetadata");
+						toc.push(documentMetadata);
+						var sections = getSections(igdocument.childSections,
+								igdocument.type, igdocument);
+						_.each(sections, function(section) {
+							toc.push(section);
+						});
+						var conformanceProfile = getMessageInfrastructure(igdocument);
+						toc.push(conformanceProfile);
+						return toc;
+					};
+
+					function getMetadata(parent, type) {
+						var rval = new entry(type, "Metadata", 0, type, parent,
+								parent.metaData);
+						return rval;
 					}
-				}
-				return rval;
-			}
+					;
 
-			// Returns a second level set entries, These are draggable. "drag"
-			function createEntries(parentType, parent, children) {
-				var rval = [];
-				var entry = {};
-				_.each(children, function(child) {
-					if(parentType === "message") {
-						entry = createEntry(child, child.name, parent);
-//						console.log("createEntries entry.reference.name=" + entry.reference.name + " entry.parent=" + rval.parent);
-					} else if (parentType === "table") {
-						entry = createEntry(child, child.bindingIdentifier, parent);
-					} else {
-						entry = createEntry(child, child.label, parent);
+					function getSections(childSections, parentType, parent) {
+
+						var rval = [];
+
+						_.each(childSections, function(childSection) {
+							var section = new entry(parentType,
+									childSection.sectionTitle,
+									childSection.sectionPosition,
+									childSection.type, parent, childSection);
+							rval.push(section);
+							var sections1 = getSections(
+									childSection.childSections,
+									childSection.type, childSection);
+							_.each(sections1, function(section1) {
+								if (!section.children) {
+									section.children = [];
+								}
+								section.children.push(section1);
+							});
+						});
+						var section2 = _.sortBy(rval, "position");
+						rval = section2;
+						return rval;
 					}
-					rval.push(entry);
-				});
-				if (parent === "message") {
-					return rval;
-				} else {
-					return _.sortBy(rval, "label");
-				}
-			}
+					;
 
-			function createEntry(child, label, parent) {
-				
-				var rval = new entry(child.id, label, child.sectionPosition, child.type, parent, child);
-				return rval;
-			}
+					function getMessageInfrastructure(igdocument) {
+						var rval = new entry(igdocument.profile.type,
+								igdocument.profile.sectionTitle,
+								igdocument.profile.sectionPosition, 0,
+								igdocument.profile);
+						var children = [];
+						children.push(getMetadata(igdocument.profile,
+								"profileMetadata"));
+						children.push(getTopEntry(igdocument.profile.messages,
+								igdocument.profile));
+						children.push(getTopEntry(igdocument.profile.segments,
+								igdocument.profile));
+						children.push(getTopEntry(igdocument.profile.datatypes,
+								igdocument.profile));
+						children.push(getTopEntry(igdocument.profile.tables,
+								igdocument.profile));
+						rval.children = children;
+						return rval;
+					}
+					;
 
-			return svc;
-		})
+					// Returns a top level entry. It can be dropped on, but
+					// cannot be
+					// dragged.
+					// It will accept a drop where the drag value matches its
+					// label.
+					function getTopEntry(child, parent) {
+						var children = [];
+						var rval = new entry(child.type, child.sectionTitle,
+								child.sectionPosition, child.type, parent,
+								child);
+						if (child) {
+							rval["reference"] = child;
+							if (angular.isArray(child.children)
+									&& child.children.length > 0) {
+								rval["children"] = createEntries(
+										child.children[0].type, child,
+										child.children);
+							}
+						}
+						return rval;
+					}
+					;
+
+					// Returns a second level set entries, These are draggable.
+					// "drag"
+					function createEntries(parentType, parent, children) {
+						var rval = [];
+						var entry = {};
+						_
+								.each(
+										children,
+										function(child) {
+											if (parentType === "message") {
+												entry = createEntry(child,
+														child.name, parent);
+												// console.log("createEntries
+												// entry.reference.name=" +
+												// entry.reference.name + "
+												// entry.parent=" +
+												// rval.parent);
+											} else if (parentType === "table") {
+												entry = createEntry(
+														child,
+														child.bindingIdentifier,
+														parent);
+											} else {
+												entry = createEntry(child,
+														child.label, parent);
+											}
+											rval.push(entry);
+										});
+						if (parent === "message") {
+							return rval;
+						} else {
+							return _.sortBy(rval, "label");
+						}
+					}
+					;
+
+					function createEntry(child, label, parent) {
+
+						var rval = new entry(child.id, label,
+								child.sectionPosition, child.type, parent,
+								child);
+						return rval;
+					}
+					;
+
+					return svc;
+				})
