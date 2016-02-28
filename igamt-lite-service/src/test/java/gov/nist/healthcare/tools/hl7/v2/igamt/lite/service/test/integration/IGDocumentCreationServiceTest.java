@@ -50,8 +50,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 <<<<<<< HEAD
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEvents;
-=======
->>>>>>> ecf2bf3ea623955216633a4229260ede2e8f5e8b
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContext.class})
@@ -107,7 +105,7 @@ public class IGDocumentCreationServiceTest {
 	}
 
 //	@Test
-	public void testigDocumentCreation() throws IOException, ProfileException {
+	public void testIGDocumentCreation() throws IOException, ProfileException {
 		// Collect version numbers
 		assertEquals(7, igDocumentCreation.findHl7Versions().size());
 
@@ -125,11 +123,11 @@ public class IGDocumentCreationServiceTest {
 
 		// Creation of a profile with five message ids
 		Set<Message> msgs = igDocumentSource.getProfile().getMessages().getChildren();
-		List<String> msgIds = selRandMsgIds(msgs, 5);
+		List<MessageEvents> msgEvts = null; // selRandMsgIds(msgs, 5);
 
 		IGDocument pNew = null;
 		try {
-			pNew = igDocumentCreation.createIntegratedIGDocument(msgIds, hl7Versions[1], accountId);
+			pNew = igDocumentCreation.createIntegratedIGDocument(msgEvts, hl7Versions[1], accountId);
 		} catch (IGDocumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

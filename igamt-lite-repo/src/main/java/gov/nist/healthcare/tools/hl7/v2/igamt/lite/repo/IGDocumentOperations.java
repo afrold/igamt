@@ -19,11 +19,12 @@ import java.util.List;
  * Mar 30, 2015
  */
 public interface IGDocumentOperations {
-	 List<IGDocument> findPreloaded();
+	
+	 public List<IGDocument> findPreloaded();
 	 
 	 public List<IGDocument> findStandard();
 	 
 	 public List<IGDocument> findStandardByVersion(String hl7version);
 	 
-	 public List<String> findHl7Versions();	 
+	 public List<String> findHl7Versions();
 }

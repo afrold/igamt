@@ -186,29 +186,29 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     
     $httpBackend.whenGET('api/igdocuments/findVersions').respond(function (method, url, data, headers) {
     	console.log('api/igdocuments/hl7/findVersions');
-        return [200, ["2.3","2.31","2.4","2.5","2.51","2.6","2.7"], {}];
-    });
-    
-    $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
-        var msgList = [["5665cee2d4c613e7b531be55", "P11", "DFT_P11", "Detail financial transactions"], 
-         ["5665cee2d4c613e7b531b7ba", "A24", "ADT_A24", "ADT messagee"], 
-         ["5665cee2d4c613e7b531be18", "I08", "RPA_I08", "Request patient authorization"],
-        ["5665cee2d4c613e7b531be4e", "Q16", "QSB_Q16", "Create subscription"],
-        ["5665cee2d4c613e7b531bbbb", "B08", "PMU_B08", "Add personnel record"]]
-        return [200, msgList, {}];
+        return [200, ["2.5.1","2.6","2.7"], {}];
     });
     
 //    $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
-//        var request = new XMLHttpRequest();
-//        console.log('api/igdocuments/messageListByVersion start' + ' data=' + data);
-////k        request.open('GET', '../../resources/igDocuments/mes-hl7Version-USER-1.0.json', false);
-//        request.open('GET', '../../resources/igDocuments/igdocument-2.7.5-USER-1.0.json', false);
-//        request.send(null);
-//        var d = angular.fromJson(request.response);
-//        console.log('api/igdocuments/messageListByVersion end');
-//        return [request.status, d, {}];
+//        var msgList = [["5665cee2d4c613e7b531be55", "P11", "DFT_P11", "Detail financial transactions"], 
+//         ["5665cee2d4c613e7b531b7ba", "A24", "ADT_A24", "ADT messagee"], 
+//         ["5665cee2d4c613e7b531be18", "I08", "RPA_I08", "Request patient authorization"],
+//        ["5665cee2d4c613e7b531be4e", "Q16", "QSB_Q16", "Create subscription"],
+//        ["5665cee2d4c613e7b531bbbb", "B08", "PMU_B08", "Add personnel record"]]
 //        return [200, msgList, {}];
 //    });
+    
+    $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        console.log('api/igdocuments/messageListByVersion start' + ' data=' + data);
+        request.open('GET', '../../resources/igDocuments/mes-hl7Version-USER-1.0.json', false);
+//        request.open('GET', '../../resources/igDocuments/igdocument-2.7.5-USER-1.0.json', false);
+        request.send(null);
+        var d = angular.fromJson(request.response);
+        console.log('api/igdocuments/messageListByVersion end');
+        return [request.status, d, {}];
+        return [200, msgList, {}];
+    });
     
     
     $httpBackend.whenPOST('api/igdocuments/createIntegrationProfile').respond(function (method, url, data, headers) {

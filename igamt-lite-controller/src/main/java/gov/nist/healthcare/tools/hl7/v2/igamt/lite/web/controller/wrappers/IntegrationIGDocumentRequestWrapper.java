@@ -1,9 +1,10 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-
 import java.io.Serializable;
 import java.util.List;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEvents;
 
 public class IntegrationIGDocumentRequestWrapper implements Serializable {
  
@@ -14,7 +15,7 @@ public class IntegrationIGDocumentRequestWrapper implements Serializable {
 		private static final long serialVersionUID = -8337269625916897011L;
 		
 		String hl7Version;
-		List<String> msgIds;
+		List<MessageEvents> msgEvts;
 		IGDocument igdocument;
 		Long accountId;
 
@@ -26,12 +27,12 @@ public class IntegrationIGDocumentRequestWrapper implements Serializable {
 			this.hl7Version = hl7Version;
 		}
 
-		public List<String> getMsgIds() {
-			return msgIds;
+		public List<MessageEvents> getMsgEvts() {
+			return msgEvts;
 		}
 
-		public void setMsgIds(List<String> msgIds) {
-			this.msgIds = msgIds;
+		public void setMsgEvts(List<MessageEvents> msgEvts) {
+			this.msgEvts = msgEvts;
 		}
 
 		public IGDocument getIgdocument() {

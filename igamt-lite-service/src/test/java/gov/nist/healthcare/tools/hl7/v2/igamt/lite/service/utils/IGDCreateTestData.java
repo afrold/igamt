@@ -51,13 +51,13 @@ public class IGDCreateTestData {
 	public void createMessageEventsData() {
 		try {
 			List<String> msgIds = new ArrayList<String>();
-			IGDocument igDocumentTarget = create.createIntegratedIGDocument(msgIds, hl7Version, accountId);
-			List<MessageEvents> mes = create.summary(hl7Version, msgIds);
+			List<MessageEvents> msgEvts = create.summary(hl7Version, msgIds);
+			IGDocument igDocumentTarget = create.createIntegratedIGDocument(msgEvts, hl7Version, accountId);
 			
 			File outfile = new File(OUTPUT_DIR, "mes-" + "hl7Version" + "-" + igDocumentTarget.getScope().name() + "-" + igDocumentTarget.getMetaData().getVersion() + ".json"); 
 			Writer mesJson = new FileWriter(outfile);
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.writerWithDefaultPrettyPrinter().writeValue(mesJson, mes);
+			mapper.writerWithDefaultPrettyPrinter().writeValue(mesJson, msgEvts);
 		} catch (JsonGenerationException e) {
 			log.error("" , e);
 		} catch (JsonMappingException e) {
@@ -71,8 +71,8 @@ public class IGDCreateTestData {
 //	@Test
 	public void createIntegratedIGDocumentData() {
 		try {
-			List<String> msgIds = new ArrayList<String>();
-			IGDocument igDocumentTarget = create.createIntegratedIGDocument(msgIds, hl7Version, accountId);
+			List<MessageEvents> msgEvts = new ArrayList<MessageEvents>();
+			IGDocument igDocumentTarget = create.createIntegratedIGDocument(msgEvts, hl7Version, accountId);
 			File outfile = new File(OUTPUT_DIR, "igdocument-" + "hl7Version" + ".5" + "-" + igDocumentTarget.getScope().name() + "-" + igDocumentTarget.getMetaData().getVersion() + ".json"); 
 			Writer igdocumentJson = new FileWriter(outfile);
 			ObjectMapper mapper = new ObjectMapper();

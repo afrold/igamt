@@ -41,7 +41,7 @@ public class MessageEvents {
 
 	void createEvents(Set<String> events) {
 		for (String event : events) {
-			this.children.add(new Event(event));
+			this.children.add(new Event(id, event));
 		}
 	}
 	
@@ -65,14 +65,15 @@ public class MessageEvents {
 		return description;
 	}
 
-	class Event {
+	public class Event {
 		
+		final String id;
+		final String name;
 		final String type = "event";
-		
-		String name;
 
-		public Event(String name) {
+		public Event(String id, String name) {
 			super();
+			this.id = id;
 			this.name = name;
 		}
 
