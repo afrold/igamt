@@ -2397,7 +2397,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			if (s.getSectionContents() != null){
 				addRichTextToDocx(wordMLPackage, s.getSectionContents());
 			}
-			addContents4Docx(s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, wordMLPackage);
+			addContents4Docx((Set<Section>)s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, wordMLPackage);
 		}
 
 	}
@@ -2440,7 +2440,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 					}
 					chapter.add(Chunk.NEWLINE);
 
-					addContents4Pdf(s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, tocDocument, igDocument, chapter, titleFont, igWriter);
+					addContents4Pdf((Set<Section>)s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, tocDocument, igDocument, chapter, titleFont, igWriter);
 
 					igDocument.add(chapter); //Note: leave call after addContents4Pdf 
 				} catch (DocumentException e) {
@@ -2469,7 +2469,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 				}
 				section.add(Chunk.NEWLINE);
 
-				addContents4Pdf(s.getChildSections(), prefix + "." + String.valueOf(s.getSectionPosition()), depth + 1, tocDocument, igDocument, section, titleFont, igWriter);
+				addContents4Pdf((Set<Section>)s.getChildSections(), prefix + "." + String.valueOf(s.getSectionPosition()), depth + 1, tocDocument, igDocument, section, titleFont, igWriter);
 			}
 		}
 	}
