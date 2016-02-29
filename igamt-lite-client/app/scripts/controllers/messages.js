@@ -18,10 +18,10 @@ angular.module('igl')
                 $scope.messagesParams.refresh();
         };
 
-        $scope.delete = function() {
+        $scope.delete = function(message) {
     			CloneDeleteSvc.deleteMessage(message);
-    			$rootScope.$broadcast('event:SetToC');
-        }
+			$rootScope.$broadcast('event:SetToC');
+         }
         
         $scope.goToSegment = function (segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);

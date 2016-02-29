@@ -17,12 +17,13 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 
  public interface IGDocumentRepository  extends MongoRepository<IGDocument, String> , IGDocumentOperations   {
 	 
@@ -31,4 +32,4 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 	 List<IGDocument> findByScope(IGDocumentScope scope);
 	 
 	 List<IGDocument> findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope scope, String hl7version);
-}
+ }

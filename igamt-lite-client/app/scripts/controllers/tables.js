@@ -172,49 +172,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
 
     $scope.delete = function (table) {
     		CloneDeleteSvc.deleteValueSet(table);
-//    		$rootScope.references = [];
-//        angular.forEach($rootScope.segments, function (segment) {
-//            $rootScope.findTableRefs(table, segment);
-//        });
-//        if ($rootScope.references != null && $rootScope.references.length > 0) {
-//            $scope.abortDelete(table);
-//        } else {
-//            $scope.confirmDelete(table);
-//        }
-		$rootScope.$broadcast('event:SetToC');
    };
-
-//    $scope.abortDelete = function (table) {
-//        var modalInstance = $modal.open({
-//            templateUrl: 'ValueSetReferencesCtrl.html',
-//            controller: 'ValueSetReferencesCtrl',
-//            resolve: {
-//                tableToDelete: function () {
-//                    return table;
-//                }
-//            }
-//        });
-//        modalInstance.result.then(function (table) {
-//            $scope.tableToDelete = table;
-//        }, function () {
-//        });
-//    };
-
-//    $scope.confirmDelete = function (table) {
-//        var modalInstance = $modal.open({
-//            templateUrl: 'ConfirmValueSetDeleteCtrl.html',
-//            controller: 'ConfirmValueSetDeleteCtrl',
-//            resolve: {
-//                tableToDelete: function () {
-//                    return table;
-//                }
-//            }
-//        });
-//        modalInstance.result.then(function (table) {
-//            $scope.tableToDelete = table;
-//        }, function () {
-//        });
-//    };
 });
 
 angular.module('igl').controller('TableModalCtrl', function ($scope) {
@@ -231,11 +189,10 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
         $scope.loading = true;
 
         if (!$scope.isNewTableThenDelete(tableToDelete.id)) {
-        	$rootScope.recordChangeForEdit2('table', "delete", tableToDelete.id,'id', tableToDelete.id);
+//        	$rootScope.recordChangeForEdit2('table', "delete", tableToDelete.id,'id', tableToDelete.id);
         }
         $rootScope.tables.splice($rootScope.tables.indexOf(tableToDelete), 1);
         $rootScope.tablesMap[tableToDelete.id] = undefined;
-        
         
         $rootScope.generalInfo.type = 'info';
         $rootScope.generalInfo.message = "Table " + $scope.tableToDelete.bindingIdentifier + " deleted successfully";
@@ -245,6 +202,7 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
         }
 
         $rootScope.references = [];
+		$rootScope.$broadcast('event:SetToC');
         $modalInstance.close($scope.tableToDelete);
     };
 
