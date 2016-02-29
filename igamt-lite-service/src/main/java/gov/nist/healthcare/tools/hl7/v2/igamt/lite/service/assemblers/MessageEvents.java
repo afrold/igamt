@@ -32,9 +32,9 @@ public class MessageEvents {
 	
 	private final String description;
 	
-	public MessageEvents(String id, String name, Set<String> events, String description) {
+	public MessageEvents(String id, String structId, Set<String> events, String description) {
 		this.id = id;
-		this.name = name;
+		this.name = structId;
 		createEvents(events);
 		this.description = description;
 	}
@@ -71,10 +71,14 @@ public class MessageEvents {
 		final String name;
 		final String type = "event";
 
-		public Event(String id, String name) {
+		public Event(String id, String event) {
 			super();
 			this.id = id;
-			this.name = name;
+			this.name = event;
+		}
+
+		public String getId() {
+			return id;
 		}
 
 		public String getType() {

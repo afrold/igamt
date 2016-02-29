@@ -5,11 +5,10 @@ angular
 				[
 						'$scope',
 						'$rootScope',
-						'$q',
 						'ToCSvc',
 						'ContextMenuSvc',
 						'CloneDeleteSvc',
-						function($scope, $rootScope, $q, ToCSvc,
+						function($scope, $rootScope, ToCSvc,
 								ContextMenuSvc, CloneDeleteSvc) {
 							var ctl = this;
 							$scope.collapsed = [];

@@ -119,7 +119,7 @@
 </script>
 <script type="text/ng-template" id="MessageEventsNode.html">
 	<tr class="row" tt-node is-branch="node.type === 'message'">
-        <td class="col-lg-2"><input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-change="trackSelections(bool, node.id, node.name)"></input><span ng-bind="node.name" style="margin-left : 7px;"></span></td>
+        <td class="col-lg-2"><input ng-show="node.type === 'event'" type="checkbox" ng-model="bool" ng-change="trackSelections(bool, node)"></input><span ng-bind="node.name" style="margin-left : 7px;"></span></td>
         <td class="col-lg-10" ng-bind="node.description"></td>
     </tr>
 </script>

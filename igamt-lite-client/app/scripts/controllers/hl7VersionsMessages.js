@@ -54,11 +54,11 @@ angular.module('igl').controller(
 			 * 
 			 * @param msgIds
 			 */
-			$scope.createIGDocument = function(hl7Version, msgIds) {
+			$scope.createIGDocument = function(hl7Version, msgEvts) {
 				console.log("Creating igdocument...");
 				var iprw = {
 					"hl7Version" : hl7Version,
-					"msgIds" : msgIds,
+					"msgEvts" : msgEvts,
 					"accountID" : userInfoService.getAccountID(), 
 					"timeout" : 60000
 				};
@@ -125,9 +125,22 @@ angular.module('igl').controller(
 				$scope.messageEventsParams = MessageEventsSvc.getMessageEvents($scope.hl7Version, $scope.messageIds);
 			};
 			
+			$scope.isBranch = function(node) {
+				var rval = false;
+				if (node.type === "message") {
+					rval = true;
+					MessageEventsSvc.putState(node);
+				}
+				return rval;
+			};
+			
+			$scope.getState = function() {
+				return MessageEventsSvc.getState();
+			}
+			
 			$scope.trackSelections = function(bool, event) {
 				if (bool) {
-					messageEvents.push({ "id" : $scope.messageId, "children" : [event]});
+					messageEvents.push({ "id" : event.id, "children" : [{"name" : event.name}]});
 				} else {
 					for (var i = 0; i < messageEvents.length; i++) {
 						if (messageEvents[i].id == id) {

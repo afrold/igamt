@@ -14,6 +14,16 @@ angular.module('igl').factory('MessageEventsSvc', function($http, ngTreetablePar
 	
 	svc.messagesByVersion = {};
 	
+	svc.state = {};
+	
+	svc.getState = function() {
+		return svc.state; 
+	}
+	
+	svc.putState = function(state) {
+		svc.state = state; 
+	}
+	
 	svc.getMessageEvents = function(hl7Version, messageIds) {
 		return new ngTreetableParams( {
 			getNodes: function(parent) {
