@@ -11,34 +11,35 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 
 /**
- * @author Harold Affo (harold.affo@nist.gov) Apr 15, 2015
+ * @author gcr1
+ *
  */
-public class ProfilePropertySaveError extends AbscractPropertySaveError {
+public class DatatypeLibrarySaveError extends AbscractPropertySaveError {
 
 	/**
 	 * @param targetId
-	 * @param fieldName
 	 * @param targetType
-	 * @param fieldValue
+	 * @param propertyName
+	 * @param propertyValue
 	 * @param command
 	 */
-	public ProfilePropertySaveError(String targetId, String targetType,
-			String propertyName, String propertyValue, String command) {
+	public DatatypeLibrarySaveError(String targetId, String targetType, String propertyName, String propertyValue,
+			String command) {
 		super(targetId, targetType, propertyName, propertyValue, command);
 	}
 
 	/**
 	 * @param targetId
+	 * @param targetType
 	 * @param errorMsg
 	 */
-	public ProfilePropertySaveError(String targetId, String targetType,
-			String errorMsg) {
+	public DatatypeLibrarySaveError(String targetId, String targetType, String errorMsg) {
 		super(targetId, targetType, errorMsg);
 	}
-
+	
 	@Override
 	public String toString() {
-		return "ProfilePropertySaveError [targetId=" + this.getTargetId()
+		return "DatatypeLibrarySaveError [targetId=" + this.getTargetId()
 				+ ", propertyName=" + this.getPropertyName() + ", targetType="
 				+ this.getTargetType() + ", propertyValue=" + this.getPropertyValue()
 				+ ", command=" + this.getCommand() + ", errorMsg=" + this.getErrorMsg() + "]";

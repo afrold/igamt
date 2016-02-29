@@ -10,13 +10,13 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 31, 2015

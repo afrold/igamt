@@ -8,35 +8,17 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 
-/**
- * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
- */
+@Service
+public interface DatatypeService {
 
-@RestController
-@RequestMapping("/datatypes")
-public class DatatypeController extends CommonController {
+	List<Datatype> findAll();
 
-	Logger log = LoggerFactory.getLogger(ProfileController.class);
-
-	 @Autowired
-	 private DatatypeService datatypeService;
-	
-		public  List<Datatype> datatypes() {
-			log.info("Fetching all preloaded IGDocuments...");
-			List<Datatype> result = datatypeService.findAll();
-			return result;
-		}
 }

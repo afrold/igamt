@@ -17,11 +17,19 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface DatatypesRepository extends MongoRepository<Datatypes, String> {
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
+
+public interface DatatypeLibraryRepository extends MongoRepository<DatatypeLibrary, String> {
 	
+	@Override
+	public List<DatatypeLibrary> findAll();
+
+	public List<DatatypeLibrary> findByScope(DatatypeLibrary.SCOPE scope);
+
+	public List<DatatypeLibrary> findByAccountId(Long accountId);
 } 

@@ -37,7 +37,7 @@ angular
 							
 							$scope.calcOffset = function(level) {
 								return "margin-left : " + level + "em";
-							}
+							};
 
 							$scope.trackBy = function() {
 								return new ObjectId().toString();
@@ -131,7 +131,6 @@ angular
 													+ ctxMenuSelection
 													+ " Should be Add, clone, or Delete.");
 								}
-								$rootScope.$broadcast('event:SetToC');
 							};
 
 						} ])
