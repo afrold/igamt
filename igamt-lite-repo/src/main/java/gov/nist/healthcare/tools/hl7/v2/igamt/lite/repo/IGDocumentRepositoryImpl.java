@@ -17,11 +17,8 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -31,6 +28,9 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+
 public class IGDocumentRepositoryImpl implements IGDocumentOperations   {
 
 	 private Logger log = LoggerFactory.getLogger(IGDocumentRepositoryImpl.class);
@@ -38,10 +38,6 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations   {
 	 @Autowired
 	 private MongoOperations mongo;
 	 
-	 
-	/* (non-Javadoc)
-	 * @see gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileOperations#findByPreloaded(java.lang.Boolean)
-	 */
 	@Override
 	public List<IGDocument> findPreloaded() {
  	    Criteria where = Criteria.where("scope").is(IGDocumentScope.PRELOADED);
@@ -49,12 +45,14 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations   {
 	    return mongo.find(query, IGDocument.class);
  	}
 	
+	@Override
 	public List<IGDocument> findStandard() {
  	    Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD);
 	    Query query = Query.query(where);
 	    return mongo.find(query, IGDocument.class);
  	}
 	
+	@Override
 	public List<IGDocument> findStandardByVersion(String hl7version) {
 		log.debug("findStandardByVersion");
 		Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD).andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7version));
@@ -64,8 +62,31 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations   {
 	    return list;
  	}
 	
+//	@Override
+//	public List<IGDocument> findIn0354Table(List<String> structIDs, String hl7Verson) {
+//		Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD)
+//		.andOperator(Criteria.where("profile.metaData.hl7Version").is(hl7Verson));
+////		Criteria fields = Criteria.where("profile").elemMatch(Criteria.where("tables.children.bindingIdentifier").is("0354"));
+////		.andOperator(Criteria.where("profile.tables.children.codes.value").in(structIDs));
+//		Query query = Query.query(where);
+//		query.fields().include("profile.tables.children");
+////		BasicQuery query = new BasicQuery(where.getCriteriaObject(), fields.getCriteriaObject());
+//		List<IGDocument> rval = null;
+//		DBObjec                               rval1 =  (DBObject) mongo.find(query, IGDocument.class);
+//		return rval;
+//	}
+	
+	@Override
 	public List<String> findHl7Versions() {
-		return new ArrayList<String>(
-				Arrays.asList("2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"));
+		Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD)
+		.andOperator(Criteria.where("profile.metaData.hl7Version").gt("2.5"));
+		Query query = Query.query(where);
+		List<String> rval = new ArrayList<String>();
+		List<IGDocument> rs = mongo.find(query, IGDocument.class);
+		for (IGDocument igd : rs) {
+			rval.add(igd.getProfile().getMetaData().getHl7Version());
+		}
+		Collections.sort(rval);
+		return rval;
 	}
 }

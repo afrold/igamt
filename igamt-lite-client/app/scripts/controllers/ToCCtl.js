@@ -23,21 +23,27 @@ angular
 									});
 								}
 							});
-							$scope.moved = function (index, leaf, branch) {
-								var idx = _.findLastIndex(branch, function(leaf1) {
+							
+							$scope.moved = function (index, leaf) {
+								var idx = _.findLastIndex($scope.$parent.drop, function(leaf1) {
 									return leaf.id === leaf1.id;
 								});
 							
 								if (index === idx) {
-									branch.splice(index + 1, 1);
+									$scope.$parent.drop.splice(index + 1, 1);
 								} else {
-									branch.splice(index, 1);
+									$scope.$parent.drop.splice(index, 1);
 								}
-							}
+							};
+							
 							$scope.calcOffset = function(level) {
 								return "margin-left : " + level + "em";
 							}
 
+							$scope.trackBy = function() {
+								return new ObjectId().toString();
+							}
+							
 							$scope.tocSelection = function(entry) {
 								// TODO gcr: See about refactoring this to
 								// eliminate the switch.
@@ -49,7 +55,7 @@ angular
 								ToCSvc.currentLeaf.selected = false;
 								ToCSvc.currentLeaf = entry;
 								console.log("entry.parent=" + entry.parent);
-								switch (entry.parent) {
+								switch (entry.type) {
 								case "documentMetadata": {
 									$scope.$emit('event:openDocumentMetadata',
 											entry.reference);
@@ -95,7 +101,7 @@ angular
 								case "Copy":
 									console.log("Copy==> node=" + leaf);
 									if (leaf.reference.type === 'section') {
-					        				CloneDeleteSvc.copySection(leaf.reference);
+					        				CloneDeleteSvc.copySection(leaf);
 									} else if (leaf.reference.type === 'segment') {
 						        			CloneDeleteSvc.copySegment(leaf.reference);
 									}  else if (leaf.reference.type === 'datatype') {
@@ -106,16 +112,10 @@ angular
 										CloneDeleteSvc.copyMessage(leaf.reference);
 									}
 									break;
-//								case "Copy":
-//									console.log("Clone==> node=" + leaf);
-//									CloneDeleteSvc.cloneMessage(
-//											$rootScope.igdocument, leaf.reference);
-//									$rootScope.$broadcast('event:SetToC');
-//									break;
 								case "Delete":
 									console.log("Copy==> node=" + leaf);
 									if (leaf.reference.type === 'section') {
-					        				CloneDeleteSvc.deleteSection(leaf.reference);
+					        				CloneDeleteSvc.deleteSection(leaf);
 									} else if (leaf.reference.type === 'segment') {
 						        			CloneDeleteSvc.deleteSegment(leaf.reference);
 									}  else if (leaf.reference.type === 'datatype') {

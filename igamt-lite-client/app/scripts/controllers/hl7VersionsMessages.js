@@ -5,7 +5,6 @@ angular.module('igl').controller(
 
 			$rootScope.clickSource = {};
 			$scope.hl7Version = {};
-
 			$scope.hl7Versions = function(clickSource) {
 				$rootScope.clickSource = clickSource;
 				if (clickSource === "btn") {
@@ -111,33 +110,28 @@ angular.module('igl').controller(
 angular.module('igl').controller(
 		'HL7VersionsInstanceDlgCtrl',
 		function($scope, $rootScope, $modalInstance, $http, hl7Versions,
-				ProfileAccessSvc) {
+				ProfileAccessSvc, MessageEventsSvc) {
 
 			$scope.selected = {
 				item : hl7Versions[0]
 			};
 
-			$scope.igdocumentVersions = [];
-			var igdocumentVersions = [];
-
+			$scope.messageIds = [];
+			$scope.messageEvents = [];
+			var messageEvents = [];
+			
 			$scope.loadIGDocumentsByVersion = function() {
 				$rootScope.hl7Version = $scope.hl7Version;
-				$http.post(
-						'api/igdocuments/messageListByVersion', angular.fromJson({
-							"hl7Version" : $scope.hl7Version,
-							"messageIds" : $scope.igdocumentVersions
-						})).then(function(response) {
-					$scope.messagesByVersion = angular.fromJson(response.data);
-					});
-				};
-
-			$scope.trackSelections = function(bool, id) {
+				$scope.messageEventsParams = MessageEventsSvc.getMessageEvents($scope.hl7Version, $scope.messageIds);
+			};
+			
+			$scope.trackSelections = function(bool, event) {
 				if (bool) {
-					igdocumentVersions.push(id);
+					messageEvents.push({ "id" : $scope.messageId, "children" : [event]});
 				} else {
-					for (var i = 0; i < igdocumentVersions.length; i++) {
-						if (igdocumentVersions[i].id == id) {
-							igdocumentVersions.splice(i, 1);
+					for (var i = 0; i < messageEvents.length; i++) {
+						if (messageEvents[i].id == id) {
+							messageEvents.splice(i, 1);
 						}
 					}
 				}
@@ -148,19 +142,15 @@ angular.module('igl').controller(
 			}, function(newValue, oldValue) {
 				if ($rootScope.clickSource === "ctx") {
 					$scope.hl7Version = newValue.metaData.hl7Version;
-					$scope.igdocumentVersions = ProfileAccessSvc.Messages().getMessageIds();
+					$scope.messageIds = ProfileAccessSvc.Messages().getMessageIds();
 					$scope.loadIGDocumentsByVersion();
 				}
 			});
 
-//			$scope.getHL7Version = function() {
-//				return ProfileAccessSvc.Version();
-//			};
-
 			$scope.hl7Versions = hl7Versions;
 			$scope.ok = function() {
-				$scope.igdocumentVersions = igdocumentVersions;
-				$modalInstance.close(igdocumentVersions);
+				$scope.messageEvents = messageEvents;
+				$modalInstance.close(messageEvents);
 			};
 
 			$scope.cancel = function() {
