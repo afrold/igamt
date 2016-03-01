@@ -874,6 +874,63 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             }
             else return true;
         };
+        
+        $rootScope.constraintFilter = function(id, message) {
+            return function(constraint) {
+                return $rootScope.findPositionPath(id, message, "" , null) === constraint.constraintTarget;
+            }
+        }
+        
+        $rootScope.findPositionPath = function (id, node, path, result){
+        	if(node.type === 'message' || node.type === 'group'){
+        		if(node.children && node.children.length > 0){
+            		for (var i = 0, len1 = node.children.length; i < len1; i++) {
+                		if(node.children[i].id === id){
+                			if(path == ""){
+                				return (i+1) + "[1]";
+                			}else{
+                				return path + "." + (i+1) + "[1]";
+                			}
+                			
+                		}else {
+                			if(path == ""){
+                				result = $rootScope.findPositionPath(id, node.children[i], (i+1) + "[1]", result);
+                			}else{
+                				result = $rootScope.findPositionPath(id, node.children[i], path + "." + (i+1) + "[1]", result);
+                			}
+                			
+                			if(result !== null) return result;
+                		}
+                	}
+            	}	
+        	}else if(node.type === 'segmentRef'){
+        		var segment = $rootScope.segmentsMap[node.ref];
+        		if(segment.fields && segment.fields.length > 0){
+        			for (var i = 0, len1 = segment.fields.length; i < len1; i++) {
+        				if(segment.fields[i].id === id){
+                			return path + "." + (i+1) + "[1]";
+                		}else {
+               				result = $rootScope.findPositionPath(id, segment.fields[i], path + "." + (i+1) + "[1]", result);
+                			if(result !== null) return result;
+                		}
+        			}
+        		}
+        	}else if(node.type === 'field' || node.type === 'component'){
+        		var datatype = $rootScope.datatypesMap[node.datatype];
+        		if(datatype.components && datatype.components.length > 0){
+        			for (var i = 0, len1 = datatype.components.length; i < len1; i++) {
+        				if(datatype.components[i].id === id){
+                			return path + "." + (i+1) + "[1]";
+                		}else {
+               				result = $rootScope.findPositionPath(id, datatype.components[i], path + "." + (i+1) + "[1]", result);
+                			if(result !== null) return result;
+                		}
+        			}
+        		}
+        	}
+        	
+        	return null;
+        }
 
 
         //We check for IE when the user load the main page.

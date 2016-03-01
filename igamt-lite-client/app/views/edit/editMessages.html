@@ -281,7 +281,19 @@
         </td>
 
         <td class="col-xs-1" ng-style="csWidth">
-            <div>-</div>
+			<div>
+				<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.id, message))">
+                    <a ng-click="manageConformanceStatement(node, message)"
+                       tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+                       tooltip-animation="false" tooltip-placement="left"></a>
+                </p>
+				<div ng-hide="filteredConstraints.length">
+					<a ng-click="manageConformanceStatement(node, message)" class="point">
+                		<span><i class="fa fa-plus fa-fw"></i></span>
+                	</a>
+				</div>
+			</div>
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>-</div>
@@ -305,17 +317,15 @@
 <script type="text/ng-template" id="MessageGroupEditTree.html">
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
-                                        <span>
-                                            <img style="width:15px; height:15px"
-                                                 ng-src="images/group.png">
-                                              <span
-                                                      tooltip-html="getGroupNodeName(node)"
-                                                      tooltip-append-to-body="true"
-                                                      tooltip-class="constraints-tooltip"
-                                                      ng-bind-html="getGroupNodeName(node)" tooltip-trigger
-                                                      tooltip-animation="false" tooltip-placement="left"
-                                                      ></span>
-                                        </span>
+        	<span>
+            	<img style="width:15px; height:15px" ng-src="images/group.png"/>
+            	<span
+                	tooltip-html="getGroupNodeName(node)"
+                	tooltip-append-to-body="true"
+                	tooltip-class="constraints-tooltip"
+                	ng-bind-html="getGroupNodeName(node)" tooltip-trigger
+                	tooltip-animation="false" tooltip-placement="left"/>
+            </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>
@@ -364,7 +374,8 @@
         </td>
         <td class="col-xs-1" ng-style="predWidth">
             <div>
-                <div ng-show="countPredicates(node) == 0">
+				<!--
+                <div ng-show="countPredicates(node, message) == 0">
                     <a ng-click="managePredicate(node)" class="point">
                         <span><i class="fa fa-plus fa-fw"></i></span>
                     </a>
@@ -373,28 +384,26 @@
                     <a ng-click="managePredicate(node)"
                        tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
                        tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
-                       tooltip-animation="false" tooltip-placement="left"
-
-                            ></a>
+                       tooltip-animation="false" tooltip-placement="left"></a>
                 </p>
+				-->
             </div>
         </td>
 
         <td class="col-xs-1" ng-style="csWidth">
-            <div>
-                <div ng-show="countConformanceStatements(node) == 0">
-                    <a ng-click="manageConformanceStatement(node)" class="point">
-                        <span><i class="fa fa-plus fa-fw"></i></span>
-                    </a>
-                </div>
-                <p ng-repeat="c in node.conformanceStatements">
-                    <a ng-click="manageConformanceStatement(node)"
-                       tooltip-html="getConstraintAsString(c)" tooltip-append-to-body="true"
-                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(c)" tooltip-trigger
-                       tooltip-animation="false" tooltip-placement="left"
-                            ></a>
+			<div>
+				<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.id, message))">
+                    <a ng-click="manageConformanceStatement(node, message)"
+                       tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+                       tooltip-animation="false" tooltip-placement="left"></a>
                 </p>
-            </div>
+				<div ng-hide="filteredConstraints.length">
+					<a ng-click="manageConformanceStatement(node, message)" class="point">
+                		<span><i class="fa fa-plus fa-fw"></i></span>
+                	</a>
+				</div>
+			</div>
         </td>
 
         <td class="col-xs-1 col-fixed-80">
@@ -467,6 +476,19 @@
             </p>
         </td>
         <td class="col-xs-1" ng-style="csWidth">
+			<div>
+				<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.id, message))">
+                    <a ng-click="manageConformanceStatement(node, message)"
+                       tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+                       tooltip-animation="false" tooltip-placement="left"></a>
+                </p>
+				<div ng-hide="filteredConstraints.length">
+					<a ng-click="manageConformanceStatement(node, message)" class="point">
+                		<span><i class="fa fa-plus fa-fw"></i></span>
+                	</a>
+				</div>
+			</div>
             <p ng-repeat="c in parentsMap[node.id].conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true"
                tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true"
                tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)" tooltip-trigger
@@ -540,6 +562,19 @@
             </p>
         </td>
         <td class="col-xs-1" ng-style="csWidth">
+			<div>
+				<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.id, message))">
+                    <a ng-click="manageConformanceStatement(node, message)"
+                       tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+                       tooltip-animation="false" tooltip-placement="left"></a>
+                </p>
+				<div ng-hide="filteredConstraints.length">
+					<a ng-click="manageConformanceStatement(node, message)" class="point">
+                		<span><i class="fa fa-plus fa-fw"></i></span>
+                	</a>
+				</div>
+			</div>
             <p ng-repeat="p in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true"
                tooltip-html="getConformanceStatementAsString(p)" tooltip-append-to-body="true"
                tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(p)" tooltip-trigger
@@ -1352,9 +1387,9 @@
         <td class="col-xs-1" ng-style="csWidth">
             <div>
                 <p ng-repeat="c in node.conformanceStatements">
-                    <a ng-click="manageConformanceStatement(node)"
-                       tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
-                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
+                    <a ng-click="manageConformanceStatement(node, message)"
+                       tooltip-html="getConstraintAsString(c)" tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(c)" tooltip-trigger
                        tooltip-animation="false" tooltip-placement="left"
                             ></a>
                 </p>

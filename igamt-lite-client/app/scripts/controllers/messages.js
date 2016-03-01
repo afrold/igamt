@@ -61,29 +61,36 @@ angular.module('igl')
             return component.type === 'component' && $rootScope.parentsMap && $rootScope.parentsMap[component.id] && $rootScope.parentsMap[component.id].type === 'component';
         };
 
-        $scope.countConformanceStatements = function (node) {
-            if (node != null && node.conformanceStatements) {
-                return node.conformanceStatements.length;
-            }
-            return 0;
+        $scope.countConformanceStatements = function (node, message) {
+        	var positionPath = $rootScope.findPositionPath(node.id, message, "" , null);
+        	var count = 0;
+        	if(message.conformanceStatements){
+        		for (var i = 0, len1 = message.conformanceStatements.length; i < len1; i++) {
+            		if(message.conformanceStatements[i].constraintTarget === positionPath) count = count + 1;
+            	}
+        	}
+            return count;
         };
 
-        $scope.countPredicates = function (node) {
+        $scope.countPredicates = function (node, message) {
             if (node != null && node.predicates) {
                 return node.predicates.length;
             }
             return 0;
         };
 
-        $scope.manageConformanceStatement = function (node) {
+        $scope.manageConformanceStatement = function (node, message) {
             var modalInstance = $modal.open({
                 templateUrl: 'ConformanceStatementMessageCtrl.html',
                 controller: 'ConformanceStatementMessageCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
-                    selectedNode: function () {
-                        return node;
-                    }
+                    selectedMessage: function () {
+                        return message;
+                    },
+            		selectedNode: function () {
+            			return node;
+            		}
                 }
             });
             modalInstance.result.then(function (node) {
@@ -1160,8 +1167,9 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
 });
 
 
-angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($scope, $modalInstance, selectedMessage, selectedNode, $rootScope) {
     $scope.selectedNode = selectedNode;
+    $scope.selectedMessage = selectedMessage;
     $scope.constraintType = 'Plain';
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -1170,50 +1178,6 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     $scope.newComplexConstraintId = '';
     $scope.newComplexConstraintClassification = 'E';
     $scope.newComplexConstraint = [];
-    
-    $scope.newConstraint = angular.fromJson({
-        position_1: null,
-        position_2: null,
-        location_1: null,
-        location_2: null,
-        currentNode_1: null,
-        currentNode_2: null,
-        childNodes_1: [],
-        childNodes_2: [],
-        verb: null,
-        constraintId: null,
-        contraintType: null,
-        value: null,
-        valueSetId: null,
-        bindingStrength: 'R',
-        bindingLocation: '1',
-        constraintClassification: 'E'
-    });
-    $scope.newConstraint.location_1 = $scope.selectedNode.name;
-    $scope.newConstraint.location_2 = $scope.selectedNode.name;
-
-    for (var i = 0, len1 = $scope.selectedNode.children.length; i < len1; i++) {
-        if ($scope.selectedNode.children[i].type === 'group') {
-            var groupModel = {
-                name: $scope.selectedNode.children[i].name,
-                position: $scope.selectedNode.children[i].position,
-                type: 'group',
-                node: $scope.selectedNode.children[i]
-            };
-            $scope.newConstraint.childNodes_1.push(groupModel);
-            $scope.newConstraint.childNodes_2.push(groupModel);
-        } else if ($scope.selectedNode.children[i].type === 'segmentRef') {
-            var segmentModel = {
-                name: $scope.selectedNode.name + '.' + $rootScope.segmentsMap[$scope.selectedNode.children[i].ref].name,
-                position: $scope.selectedNode.children[i].position,
-                type: 'segment',
-                node: $rootScope.segmentsMap[$scope.selectedNode.children[i].ref]
-            };
-            $scope.newConstraint.childNodes_1.push(segmentModel);
-            $scope.newConstraint.childNodes_2.push(segmentModel);
-        }
-    }
-    
     
     $scope.initConformanceStatement = function (){
     	$scope.newConstraint = angular.fromJson({
@@ -1234,25 +1198,23 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
 	        bindingLocation: '1',
 	        constraintClassification: 'E'
         });
-        $scope.newConstraint.location_1 = $scope.selectedNode.name;
-        $scope.newConstraint.location_2 = $scope.selectedNode.name;
 
-        for (var i = 0, len1 = $scope.selectedNode.children.length; i < len1; i++) {
-            if ($scope.selectedNode.children[i].type === 'group') {
+    	for (var i = 0, len1 = $scope.selectedMessage.children.length; i < len1; i++) {
+            if ($scope.selectedMessage.children[i].type === 'group') {
                 var groupModel = {
-                    name: $scope.selectedNode.children[i].name,
-                    position: $scope.selectedNode.children[i].position,
+                    name: $scope.selectedMessage.children[i].name,
+                    position: $scope.selectedMessage.children[i].position,
                     type: 'group',
-                    node: $scope.selectedNode.children[i]
+                    node: $scope.selectedMessage.children[i]
                 };
                 $scope.newConstraint.childNodes_1.push(groupModel);
                 $scope.newConstraint.childNodes_2.push(groupModel);
-            } else if ($scope.selectedNode.children[i].type === 'segmentRef') {
+            } else if ($scope.selectedMessage.children[i].type === 'segmentRef') {
                 var segmentModel = {
-                    name: $scope.selectedNode.name + '.' + $rootScope.segmentsMap[$scope.selectedNode.children[i].ref].name,
-                    position: $scope.selectedNode.children[i].position,
+                    name: $rootScope.segmentsMap[$scope.selectedMessage.children[i].ref].name,
+                    position: $scope.selectedMessage.children[i].position,
                     type: 'segment',
-                    node: $rootScope.segmentsMap[$scope.selectedNode.children[i].ref]
+                    node: $rootScope.segmentsMap[$scope.selectedMessage.children[i].ref]
                 };
                 $scope.newConstraint.childNodes_1.push(segmentModel);
                 $scope.newConstraint.childNodes_2.push(segmentModel);
@@ -1429,48 +1391,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     };
     
     $scope.changeConstraintType = function () {
-    	$scope.newConstraint = angular.fromJson({
-            position_1: null,
-            position_2: null,
-            location_1: null,
-            location_2: null,
-            currentNode_1: null,
-            currentNode_2: null,
-            childNodes_1: [],
-            childNodes_2: [],
-            verb: null,
-            constraintId: null,
-            contraintType: null,
-            value: null,
-	        valueSetId: null,
-	        bindingStrength: 'R',
-	        bindingLocation: '1',
-	        constraintClassification: 'E'
-        });
-        $scope.newConstraint.location_1 = $scope.selectedNode.name;
-        $scope.newConstraint.location_2 = $scope.selectedNode.name;
-
-        for (var i = 0, len1 = $scope.selectedNode.children.length; i < len1; i++) {
-            if ($scope.selectedNode.children[i].type === 'group') {
-                var groupModel = {
-                    name: $scope.selectedNode.children[i].name,
-                    position: $scope.selectedNode.children[i].position,
-                    type: 'group',
-                    node: $scope.selectedNode.children[i]
-                };
-                $scope.newConstraint.childNodes_1.push(groupModel);
-                $scope.newConstraint.childNodes_2.push(groupModel);
-            } else if ($scope.selectedNode.children[i].type === 'segmentRef') {
-                var segmentModel = {
-                    name: $scope.selectedNode.name + '.' + $rootScope.segmentsMap[$scope.selectedNode.children[i].ref].name,
-                    position: $scope.selectedNode.children[i].position,
-                    type: 'segment',
-                    node: $rootScope.segmentsMap[$scope.selectedNode.children[i].ref]
-                };
-                $scope.newConstraint.childNodes_1.push(segmentModel);
-                $scope.newConstraint.childNodes_2.push(segmentModel);
-            }
-        }
+    	$scope.initConformanceStatement();
 		
     	if($scope.constraintType === 'Complex'){
     		$scope.newComplexConstraint = [];
@@ -1836,6 +1757,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
         $modalInstance.close($scope.selectedNode);
     };
 
+    $scope.initConformanceStatement();
 });
 
 
