@@ -1356,40 +1356,12 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
 
     $scope.deleteConformanceStatement = function (conformanceStatement) {
     	$scope.selectedMessage.conformanceStatements.splice($scope.selectedMessage.conformanceStatements.indexOf(conformanceStatement), 1);
-        if (!$scope.isNewCS(conformanceStatement.id)) {
-            $rootScope.recordChanged();
-        }
     };
     
     $scope.deleteConformanceStatementForComplex = function (conformanceStatement) {
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(conformanceStatement), 1);
     };
 
-
-    $scope.isNewCS = function (id) {
-        if ($rootScope.isNewObject("conformanceStatement", "add", id)) {
-            if ($rootScope.changes['conformanceStatement'] !== undefined && $rootScope.changes['conformanceStatement']['add'] !== undefined) {
-                for (var i = 0; i < $rootScope.changes['conformanceStatement']['add'].length; i++) {
-                    var tmp = $rootScope.changes['conformanceStatement']['add'][i];
-                    if (tmp.obj.id === id) {
-                        $rootScope.changes['conformanceStatement']['add'].splice(i, 1);
-                        if ($rootScope.changes["conformanceStatement"]["add"] && $rootScope.changes["conformanceStatement"]["add"].length === 0) {
-                            delete  $rootScope.changes["conformanceStatement"]["add"];
-                        }
-
-                        if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["conformanceStatement"]).length === 0) {
-                            delete  $rootScope.changes["conformanceStatement"];
-                        }
-                        return true;
-                    }
-
-                }
-            }
-            return true;
-        }
-        return false;
-    };
-    
     $scope.changeConstraintType = function () {
     	$scope.initConformanceStatement();
 		
@@ -1403,51 +1375,19 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     $scope.addComplexConformanceStatement = function(){
     	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
     	$scope.complexConstraint.constraintClassification = $scope.newComplexConstraintClassification;
-    	
+    	$scope.complexConstraint.assertion = "<Assertion>" + $scope.complexConstraint.assertion + "</Assertion>";
     	$scope.selectedMessage.conformanceStatements.push($scope.complexConstraint);
-        var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: $scope.complexConstraint};
         $rootScope.recordChanged();
-        
         $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
-        
         $scope.complexConstraint = null;
         $scope.newComplexConstraintId = '';
         $scope.newComplexConstraintClassification = 'E';
     };
     
     $scope.compositeConformanceStatements = function(){
-    	if($scope.compositeType === 'AND'){
-    		var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: 'AND(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
-                    constraintTarget: positionPath,
-                    description: '['+ $scope.firstConstraint.description + '] ' + 'AND' + ' [' + $scope.secondConstraint.description + ']',
-                    assertion: '<AND>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</AND>'
-            };
-    		$scope.newComplexConstraint.push(cs);
-    	}else if($scope.compositeType === 'OR'){
-    		var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: 'OR(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
-                    constraintTarget: positionPath,
-                    description: '['+ $scope.firstConstraint.description + '] ' + 'OR' + ' [' + $scope.secondConstraint.description + ']',
-                    assertion: '<OR>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</OR>'
-            };
-    		$scope.newComplexConstraint.push(cs);
-    	}else if($scope.compositeType === 'IFTHEN'){
-    		var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: 'IFTHEN(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
-                    constraintTarget: positionPath,
-                    description: 'IF ['+ $scope.firstConstraint.description + '] ' + 'THEN ' + ' [' + $scope.secondConstraint.description + ']',
-                    assertion: '<IMPLY>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</IMPLY>'
-            };
-    		$scope.newComplexConstraint.push(cs);
-    	}
-    	
+    	$scope.newComplexConstraint.push($rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint));
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
-    	
     	$scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
@@ -1455,300 +1395,16 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     
 
     $scope.addConformanceStatement = function () {
-        $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
-
-        var positionPath = $rootScope.findPositionPath($scope.selectedNode.id, $scope.selectedMessage, "" , null);
-        
         if ($scope.newConstraint.position_1 != null) {
-            if ($scope.newConstraint.contraintType === 'valued') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + '.',
-                    assertion: '<Presence Path=\"' + $scope.newConstraint.position_1 + '\"/>'
-                };
-                
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'a literal value') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
-                    assertion: '<PlainText Path=\"' + $scope.newConstraint.position_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'one of list values') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
-                    assertion: '<StringList Path=\"' + $scope.newConstraint.position_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'one of codes in ValueSet') {
-                var cs = {
-                        id: new ObjectId().toString(),
-                        constraintId: $scope.newConstraint.constraintId,
-                        constraintTarget: positionPath,
-                        constraintClassification: $scope.newConstraint.constraintClassification,
-                        description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.valueSetId + '.',
-                        assertion: '<ValueSet Path=\"' + $scope.newConstraint.position_1 + '\" ValueSetID=\"' + $scope.newConstraint.valueSetId + '\" BindingStrength=\"' + $scope.newConstraint.bindingStrength + '\" BindingLocation=\"' + $scope.newConstraint.bindingLocation +'\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            }  else if ($scope.newConstraint.contraintType === 'formatted value') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
-                    assertion: '<Format Path=\"' + $scope.newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'identical to another node') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + $scope.newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'equal to another node') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to the value of ' + $scope.newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'not-equal to another node') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' different with the value of ' + $scope.newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="NE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'greater than another node') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' greater than the value of ' + $scope.newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="GT" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'equal to or greater than another node') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than the value of ' + $scope.newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="GE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-               }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'less than another node') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' less than the value of ' + $scope.newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="LT" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'equal to or less than another node') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than the value of ' + $scope.newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="LE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'equal to') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to ' + $scope.newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Value=\"' + $scope.newConstraint.value + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'not-equal to') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' different with ' + $scope.newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="NE" Value=\"' + $scope.newConstraint.value + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'greater than') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' greater than ' + $scope.newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="GT" Value=\"' + $scope.newConstraint.value + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'equal to or greater than') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than ' + $scope.newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="GE" Value=\"' + $scope.newConstraint.value + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'less than') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' less than ' + $scope.newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="LT" Value=\"' + $scope.newConstraint.value + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
-            } else if ($scope.newConstraint.contraintType === 'equal to or less than') {
-                var cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: $scope.newConstraint.constraintClassification,
-                    description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than ' + $scope.newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="LE" Value=\"' + $scope.newConstraint.value + '\"/>'
-                };
-                if($scope.constraintType === 'Plain'){
-                	$scope.selectedMessage.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
-                    $rootScope.recordChanged();
-                }else if ($scope.constraintType === 'Complex'){
-                	$scope.newComplexConstraint.push(cs);
-                }
+        	$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
+        	var positionPath = $rootScope.findPositionPath($scope.selectedNode.id, $scope.selectedMessage, "" , null);
+        	var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
+            if($scope.constraintType === 'Plain'){
+            	cs.assertion = "<Assertion>" + cs.assertion + "</Assertion>";
+            	$scope.selectedMessage.conformanceStatements.push(cs);
+                $rootScope.recordChanged();
+            }else if ($scope.constraintType === 'Complex'){
+            	$scope.newComplexConstraint.push(cs);
             }
         }
         

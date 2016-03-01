@@ -931,6 +931,207 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         	
         	return null;
         }
+        
+        
+        $rootScope.generateCompositeConformanceStatement = function(compositeType, firstConstraint, secondConstraint){
+        	var cs = null;
+        	if(compositeType === 'AND'){
+        		var cs = {
+                        id: new ObjectId().toString(),
+                        constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                        constraintTarget: positionPath,
+                        description: '['+ firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
+                        assertion: '<AND>' + firstConstraint.assertion + secondConstraint.assertion + '</AND>'
+                };
+        	}else if(compositeType === 'OR'){
+        		var cs = {
+                        id: new ObjectId().toString(),
+                        constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                        constraintTarget: positionPath,
+                        description: '['+ firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
+                        assertion: '<OR>' + firstConstraint.assertion + secondConstraint.assertion + '</OR>'
+                };
+        	}else if(compositeType === 'IFTHEN'){
+        		var cs = {
+                        id: new ObjectId().toString(),
+                        constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                        constraintTarget: positionPath,
+                        description: 'IF ['+ firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
+                        assertion: '<IMPLY>' + firstConstraint.assertion + secondConstraint.assertion + '</IMPLY>'
+                };
+        	}
+        	return cs;
+        }
+        
+        
+        $rootScope.generateConformanceStatement = function(positionPath, newConstraint){
+        	var cs = null;
+        	if ($scope.newConstraint.contraintType === 'valued') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + '.',
+                    assertion: '<Presence Path=\"' + newConstraint.position_1 + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'a literal value') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
+                    assertion: '<PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/>'
+                };
+            } else if (newConstraint.contraintType === 'one of list values') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.value + '.',
+                    assertion: '<StringList Path=\"' + newConstraint.position_1 + '\" CSV=\"' + newConstraint.value + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'one of codes in ValueSet') {
+                cs = {
+                        id: new ObjectId().toString(),
+                        constraintId: newConstraint.constraintId,
+                        constraintTarget: positionPath,
+                        constraintClassification: newConstraint.constraintClassification,
+                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.valueSetId + '.',
+                        assertion: '<ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation +'\"/>'
+                };
+            }  else if (newConstraint.contraintType === 'formatted value') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                    assertion: '<Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'identical to another node') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' identical to the value of ' + newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'equal to another node') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to the value of ' + newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'not-equal to another node') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with the value of ' + newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="NE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'greater than another node') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than the value of ' + newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GT" Path2=\"' + newConstraint.position_2 + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'equal to or greater than another node') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than the value of ' + newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'less than another node') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than the value of ' + newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LT" Path2=\"' + newConstraint.position_2 + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'equal to or less than another node') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than the value of ' + newConstraint.location_2 + '.',
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'equal to') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to ' + newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="EQ" Value=\"' + newConstraint.value + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'not-equal to') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with ' + newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="NE" Value=\"' + newConstraint.value + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'greater than') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than ' + newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GT" Value=\"' + newConstraint.value + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'equal to or greater than') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than ' + newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GE" Value=\"' + newConstraint.value + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'less than') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than ' + newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LT" Value=\"' + newConstraint.value + '\"/>'
+                };
+            } else if (newConstraint.contraintType === 'equal to or less than') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than ' + newConstraint.value + '.',
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LE" Value=\"' + newConstraint.value + '\"/>'
+                };
+            }
+        	
+        	return cs;
+        }
 
 
         //We check for IE when the user load the main page.

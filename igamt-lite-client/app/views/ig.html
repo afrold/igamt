@@ -248,6 +248,43 @@
     </div>
 </script>
 
+
+<script type="text/ng-template" id="SelectMessagesOpenCtrl.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Select Message to export
+        </h3>
+    </div>
+    <div class="modal-body">
+        <div style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
+            <table class="igdocument-list table table-striped table-bordered">
+                <tr class="tbl-header">
+                    <th>&nbsp;</th>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+                <tbody ng-repeat="message in igdocumentToSelect.profile.messages.children">
+                <tr>
+                    <td><input type="checkbox" ng-model="bool"  ng-change="trackSelections(bool, message.id)"></td>
+                    <td>{{message.identifier}}</td>
+                    <td>{{message.name}}</td>
+                    <td>{{message.description}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-file-text fa-fw">&nbsp; </i>Export XMLs (ZIP Archive)</span></button>
+		<button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="exportAsZIPDisplayforSelectedMessages()"><span><i class="fa fa-file-text fa-fw">&nbsp; </i>Export XMLs (ZIP Archive, Display Version)</span></button>
+		<button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+        <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
+            <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
+        </div>
+    </div>
+</script>
+
+
 <!--<div ng-include="'views/edit/editDatatypes.html'"></div>-->
 <!--<div ng-include="'views/edit/editSegments.html'"></div>-->
 <!--<div ng-include="'views/edit/editValueSets.html'"></div>-->
