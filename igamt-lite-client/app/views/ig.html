@@ -86,6 +86,15 @@
 </div>
 
 <script type="text/ng-template" id="hl7VersionsDlg.html">
+<style>
+.modal-dialog {
+  left : 50%;
+  width : 900px;
+  margin-left : -450px;
+}
+
+</style>
+    <div class="modal-dialog">
     <div class="modal-header">
         <h3 class="modal-title">HL7 Versions</h3>
     </div>
@@ -94,7 +103,7 @@
         <label class="col-md-4 for="versionSelect">Select HL7 Version:</label>
         <select class="col-md-8" ng-show="!igdocument" id="versionSelect" name="versionSelect"
                 ng-options="option for option in hl7Versions" ng-model="hl7Version"
-                ng-change="loadIGDocumentsByVersion()">
+                ng-change="loadIGDocumentsByVersion()" class="form-control input-sm" >
         </select>
 		</div>
        	<span ng-show="igdocument" name="versionSelect">{{igdocument.profile.metaData.hl7Version}}</span>
@@ -116,6 +125,7 @@
             <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </form>
+</div>
 </script>
 <script type="text/ng-template" id="MessageEventsNode.html">
 	<tr class="row" tt-node is-branch="node.type === 'message'">

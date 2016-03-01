@@ -60,8 +60,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             templateUrl: 'views/ig.html'
         })
         .when('/masterDTLib', {
-            templateUrl: 'views/masterDTLib.html'
-            controller: 'DatatypeLibraryCtrl'
+            templateUrl: 'views/masterDTLib.html',
+            controller: 'DatatypeLibraryCtl'
         })
         .when('/doc', {
             templateUrl: 'views/doc.html'

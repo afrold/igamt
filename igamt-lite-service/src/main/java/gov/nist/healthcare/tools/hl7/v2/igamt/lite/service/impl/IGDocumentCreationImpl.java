@@ -51,6 +51,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.Event;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEventFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.EventNotSetException;
@@ -188,7 +189,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		Messages messages = pTarget.getMessages();
 		for (MessageEvents msgEvt : msgEvts) {
 			Message m = pSource.getMessages().findOne(msgEvt.getId());
-			Iterator<MessageEvents.Event> itr = msgEvt.getChildren().iterator();
+			Iterator<Event> itr = msgEvt.getChildren().iterator();
 			if (itr.hasNext()) {
 				String event = itr.next().getName();
 				m.setEvent(event);

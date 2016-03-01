@@ -61,7 +61,7 @@ angular
 							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
 							 " label=" + scope.branch.label + " children=" +
 							 scope.branch.children.length);
-							if (scope.branch.id === "messages") {
+							if (scope.branch.type === "messages") {
 								element.append(branchMessageTemplate);
 							} else {
 								element.append(branchTemplate);

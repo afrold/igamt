@@ -417,7 +417,8 @@ public class IGDocumentController extends CommonController {
 	public IGDocument createIG(
 			@RequestBody IntegrationIGDocumentRequestWrapper idrw)
 			throws IGDocumentException {
-		log.info("Creation of profile.");
+		log.info("Creation of IGDocument.");
+		log.debug("idrw.getMsgEvts()=" + idrw.getMsgEvts());
 		IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(
 				idrw.getMsgEvts(), idrw.getHl7Version(), idrw.getAccountId());
 		igDocumentService.save(igDocument);

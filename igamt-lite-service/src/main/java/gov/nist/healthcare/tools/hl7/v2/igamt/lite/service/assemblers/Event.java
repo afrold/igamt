@@ -10,62 +10,36 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
- * A data transfer object used to transfer a message structure id 
- * and its related events.   
- * 
  * @author gcr1
  *
  */
-public class MessageEvents {
-
-	private String id;
-
-	private String name;
+public class Event {
 	
-	private final String type = "message";
-	
-	private Set<Event> children = new HashSet<Event>();
-	
-	private String description;
+	String id;
+	String name;
+	final String type = "event";
 
-	public MessageEvents() {
+	public Event() {
 		super();
 	}
-	
-	public MessageEvents(String id, String structId, Set<String> events, String description) {
+
+	public Event(String id, String event) {
+		super();
 		this.id = id;
-		this.name = structId;
-		createEvents(events);
-		this.description = description;
+		this.name = event;
 	}
 
-	void createEvents(Set<String> events) {
-		for (String event : events) {
-			this.children.add(new Event(id, event));
-		}
-	}
-	
 	public String getId() {
 		return id;
-	}
-
-	public String getName() {
-		return name;
 	}
 
 	public String getType() {
 		return type;
 	}
 
-	public Set<Event> getChildren() {
-		return children;
-	}
-
-	public String getDescription() {
-		return description;
+	public String getName() {
+		return name;
 	}
 }
+

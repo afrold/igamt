@@ -25,18 +25,57 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEve
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {PersistenceContext.class})
+@ContextConfiguration(classes = { PersistenceContext.class })
 public class MessageEventFactoryTest {
 
 	@Autowired
 	IGDocumentRepository igDocumentRepository;
 
 	@Test
-	public void testCreateMessageEvents() {
-		List<IGDocument> igds = igDocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD,  "2.5.1");
+	public void testSortOrder() {
+		List<IGDocument> igds = igDocumentRepository
+				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
 		IGDocument igd = igds.get(0);
 		List<Message> msgs = new ArrayList<Message>();
-		Collections.addAll(msgs, igd.getProfile().getMessages().getChildren().toArray(new Message[igd.getProfile().getMessages().getChildren().size()]));
+		Collections.addAll(msgs, igd.getProfile().getMessages().getChildren()
+				.toArray(new Message[igd.getProfile().getMessages().getChildren().size()]));
+		MessageEventFactory sut0 = new MessageEventFactory(igd);
+		List<MessageEvents> mes0 = sut0.createMessageEvents(msgs);
+		MessageEventFactory sut1 = new MessageEventFactory(igd);
+		List<MessageEvents> mes1 = sut0.createMessageEvents(msgs);
+		assertNotNull(mes0);
+		assertNotNull(mes1);
+		assertEquals(mes0.size(), mes1.size());
+		assertEquals(mes0.get(0).getId(), mes1.get(0).getId());
+		assertEquals(mes0.get(1).getId(), mes1.get(1).getId());
+		assertEquals(mes0.get(0).getName(), mes1.get(0).getName());
+		assertEquals(mes0.get(1).getName(), mes1.get(1).getName());
+		assertEquals(-1, mes0.get(0).getName().compareTo(mes0.get(1).getName()));
+		Set<Event> evts = mes0.get(0).getChildren();
+
+		boolean firstTime = true;
+		Event thisEvt = null;
+		Event thatEvt = null;
+		for (Event evt : evts) {
+			if (firstTime) {
+				thisEvt = evt;
+				firstTime = false;
+			} else {
+				thatEvt = evt;
+				assertEquals(-1, thisEvt.getName().compareTo(thatEvt.getName()));
+				thisEvt = thatEvt;
+			}
+		}
+	}
+
+	@Test
+	public void testCreateMessageEvents() {
+		List<IGDocument> igds = igDocumentRepository
+				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
+		IGDocument igd = igds.get(0);
+		List<Message> msgs = new ArrayList<Message>();
+		Collections.addAll(msgs, igd.getProfile().getMessages().getChildren()
+				.toArray(new Message[igd.getProfile().getMessages().getChildren().size()]));
 		MessageEventFactory sut = new MessageEventFactory(igd);
 		List<MessageEvents> mes = sut.createMessageEvents(msgs);
 		assertNotNull(mes);
@@ -45,7 +84,8 @@ public class MessageEventFactoryTest {
 
 	@Test
 	public void testFindEvents() {
-		List<IGDocument> igds = igDocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD,  "2.5.1");
+		List<IGDocument> igds = igDocumentRepository
+				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
 		IGDocument igd = igds.get(0);
 		Set<Message> msgs = igd.getProfile().getMessages().getChildren();
 		Message msg = msgs.iterator().next();
@@ -58,7 +98,8 @@ public class MessageEventFactoryTest {
 
 	@Test
 	public void testGet0354Table() {
-		List<IGDocument> igds = igDocumentRepository.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
+		List<IGDocument> igds = igDocumentRepository
+				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
 		IGDocument igd = igds.get(0);
 		MessageEventFactory sut = new MessageEventFactory(igd);
 		Table tab = sut.get0354Table();

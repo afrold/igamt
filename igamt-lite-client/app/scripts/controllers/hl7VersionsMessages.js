@@ -55,13 +55,15 @@ angular.module('igl').controller(
 			 * @param msgIds
 			 */
 			$scope.createIGDocument = function(hl7Version, msgEvts) {
-				console.log("Creating igdocument...");
+				console.log("Creating IGDocument...");
+				console.log("msgEvts=" + msgEvts);
 				var iprw = {
 					"hl7Version" : hl7Version,
 					"msgEvts" : msgEvts,
 					"accountID" : userInfoService.getAccountID(), 
 					"timeout" : 60000
 				};
+				console.log("iprw=" + JSON.stringify(iprw));
 				$http.post('api/igdocuments/createIntegrationProfile', iprw)
 						.then(
 								function(response) {
