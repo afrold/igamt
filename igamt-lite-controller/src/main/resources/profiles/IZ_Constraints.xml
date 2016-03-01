@@ -370,20 +370,6 @@
                 </Predicate>
             </ByID>
 
-            <ByID ID="ORC_IZ_001">
-                <Predicate ID="ORC_IZ_001-12_Display" Target="12[1]" TrueUsage="RE" FalseUsage="O">
-                    <Description>If the value of RXA-9.1 (Identifier) is '00' AND if RXA-9.1 (Identifier) is valued AND if the value of RXA-20 (Completion Status) is one of List Values: 'CP','PA' AND if RXA-20 (Completion Status) is valued.</Description>
-                    <Condition>
-                        <OR>
-                            <Presence Path="12[1]"/>
-                            <NOT>
-                                <Presence Path="12[1]"/>
-                            </NOT>
-                        </OR>
-                    </Condition>
-                </Predicate>
-            </ByID>
-
             <ByID ID="PD1_IZ_001">
                 <Predicate ID="PD1_IZ_001-13" Target="13[1]" TrueUsage="RE" FalseUsage="X">
                     <Description>If PD1-12 (Protection Indicator) is valued.</Description>
@@ -547,7 +533,7 @@
         </Segment>
         <Group>
             <ByID ID="VXU_V04.ORDER">
-                <Predicate ID="VXU_V04.ORDER.1.12_Actual" Target="1[1].12[1]" TrueUsage="RE" FalseUsage="O">
+                <Predicate ID="VXU_V04.ORDER.1.12" Target="1[1].12[1]" TrueUsage="RE" FalseUsage="O">
                     <Description>If the value of RXA-9.1 (Identifier) is '00' AND if RXA-9.1 (Identifier) is valued AND if the value of RXA-20 (Completion Status) is one of List Values: 'CP','PA' AND if RXA-20 (Completion Status) is valued.</Description>
                     <Condition>
                         <AND>
@@ -566,7 +552,7 @@
             </ByID>
             
             <ByID ID="RSP_K11.ORDER">
-                <Predicate ID="RSP_K11.ORDER.1.12_Actual" Target="1[1].12[1]" TrueUsage="RE" FalseUsage="O">
+                <Predicate ID="RSP_K11.ORDER.1.12" Target="1[1].12[1]" TrueUsage="RE" FalseUsage="O">
                     <Description>If the value of RXA-9.1 (Identifier) is '00' AND if RXA-9.1 (Identifier) is valued AND if the value of RXA-20 (Completion Status) is one of List Values: 'CP','PA' AND if RXA-20 (Completion Status) is valued.</Description>
                     <Condition>
                         <AND>

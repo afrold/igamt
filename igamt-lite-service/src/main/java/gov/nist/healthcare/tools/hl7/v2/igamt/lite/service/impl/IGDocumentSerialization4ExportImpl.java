@@ -224,10 +224,10 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 			if (depth == 1){
 				xsect.addAttribute(new Attribute("prefix", String.valueOf(s.getSectionPosition()+1)));
-				addContents4Html(s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, xsect);
+				addContents4Html((Set<Section>)s.getChildSections(), String.valueOf(s.getSectionPosition()+1), depth + 1, xsect);
 			} else {
 				xsect.addAttribute(new Attribute("prefix", prefix+"."+String.valueOf(s.getSectionPosition())));
-				addContents4Html(s.getChildSections(), prefix+"."+String.valueOf(s.getSectionPosition()), depth + 1, xsect);
+				addContents4Html((Set<Section>)s.getChildSections(), prefix+"."+String.valueOf(s.getSectionPosition()), depth + 1, xsect);
 			}
 			elt.appendChild(xsect); 
 		} 
