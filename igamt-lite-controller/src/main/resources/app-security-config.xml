@@ -45,10 +45,8 @@
 		<sec:intercept-url pattern="/api/accounts/cuser"
 			access="isAnonymous() or isFullyAuthenticated()" />
 		<sec:intercept-url pattern="/api/**" access="isFullyAuthenticated()" />
-		<sec:intercept-url pattern="/j_spring_security_logout"
-			access="isFullyAuthenticated()" />
-		<sec:intercept-url pattern="/**"
-			access="isFullyAuthenticated() and hasRole('admin')" />
+		<sec:intercept-url pattern="/j_spring_security_logout" access="isFullyAuthenticated()" />
+		<sec:intercept-url pattern="/**" access="isFullyAuthenticated()" />
 
 
 		<sec:logout logout-success-url="/index.html" />

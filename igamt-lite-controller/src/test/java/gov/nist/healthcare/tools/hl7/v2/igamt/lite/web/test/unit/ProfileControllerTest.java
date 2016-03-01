@@ -117,7 +117,7 @@ public class ProfileControllerTest {
 			msgs.add(mm[5].getId());
 			msgs.add(mm[9].getId());
 			iprw.setHl7Version(profile.getMetaData().getHl7Version());
-			iprw.setMsgIds(msgs);
+//			iprw.setMsgIds(msgs);
 			iprw.setAccountId(45L);
 //			iprw.setIGDocument(igdocument);
 			StringWriter writer = new StringWriter();

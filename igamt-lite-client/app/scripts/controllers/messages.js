@@ -1355,7 +1355,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     };
 
     $scope.deleteConformanceStatement = function (conformanceStatement) {
-        $scope.selectedNode.conformanceStatements.splice($scope.selectedNode.conformanceStatements.indexOf(conformanceStatement), 1);
+    	$scope.selectedMessage.conformanceStatements.splice($scope.selectedMessage.conformanceStatements.indexOf(conformanceStatement), 1);
         if (!$scope.isNewCS(conformanceStatement.id)) {
             $rootScope.recordChanged();
         }
@@ -1404,8 +1404,8 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
     	$scope.complexConstraint.constraintClassification = $scope.newComplexConstraintClassification;
     	
-    	$scope.selectedNode.conformanceStatements.push($scope.complexConstraint);
-        var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: $scope.complexConstraint};
+    	$scope.selectedMessage.conformanceStatements.push($scope.complexConstraint);
+        var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: $scope.complexConstraint};
         $rootScope.recordChanged();
         
         $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
@@ -1420,7 +1420,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     		var cs = {
                     id: new ObjectId().toString(),
                     constraintId: 'AND(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     description: '['+ $scope.firstConstraint.description + '] ' + 'AND' + ' [' + $scope.secondConstraint.description + ']',
                     assertion: '<AND>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</AND>'
             };
@@ -1429,7 +1429,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     		var cs = {
                     id: new ObjectId().toString(),
                     constraintId: 'OR(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     description: '['+ $scope.firstConstraint.description + '] ' + 'OR' + ' [' + $scope.secondConstraint.description + ']',
                     assertion: '<OR>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</OR>'
             };
@@ -1438,7 +1438,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     		var cs = {
                     id: new ObjectId().toString(),
                     constraintId: 'IFTHEN(' + $scope.firstConstraint.constraintId + ',' + $scope.secondConstraint.constraintId + ')',
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     description: 'IF ['+ $scope.firstConstraint.description + '] ' + 'THEN ' + ' [' + $scope.secondConstraint.description + ']',
                     assertion: '<IMPLY>' + $scope.firstConstraint.assertion + $scope.secondConstraint.assertion + '</IMPLY>'
             };
@@ -1457,20 +1457,22 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     $scope.addConformanceStatement = function () {
         $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
 
+        var positionPath = $rootScope.findPositionPath($scope.selectedNode.id, $scope.selectedMessage, "" , null);
+        
         if ($scope.newConstraint.position_1 != null) {
             if ($scope.newConstraint.contraintType === 'valued') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + '.',
                     assertion: '<Presence Path=\"' + $scope.newConstraint.position_1 + '\"/>'
                 };
                 
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1479,14 +1481,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' \'' + $scope.newConstraint.value + '\'.',
                     assertion: '<PlainText Path=\"' + $scope.newConstraint.position_1 + '\" Text=\"' + $scope.newConstraint.value + '\" IgnoreCase="false"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1495,14 +1497,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.value + '.',
                     assertion: '<StringList Path=\"' + $scope.newConstraint.position_1 + '\" CSV=\"' + $scope.newConstraint.value + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1511,14 +1513,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                         id: new ObjectId().toString(),
                         constraintId: $scope.newConstraint.constraintId,
-                        constraintTarget: '.',
+                        constraintTarget: positionPath,
                         constraintClassification: $scope.newConstraint.constraintClassification,
                         description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' ' + $scope.newConstraint.contraintType + ': ' + $scope.newConstraint.valueSetId + '.',
                         assertion: '<ValueSet Path=\"' + $scope.newConstraint.position_1 + '\" ValueSetID=\"' + $scope.newConstraint.valueSetId + '\" BindingStrength=\"' + $scope.newConstraint.bindingStrength + '\" BindingLocation=\"' + $scope.newConstraint.bindingLocation +'\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1527,14 +1529,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' valid in format: \'' + $scope.newConstraint.value + '\'.',
                     assertion: '<Format Path=\"' + $scope.newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex($scope.newConstraint.value) + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1543,14 +1545,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' identical to the value of ' + $scope.newConstraint.location_2 + '.',
                     assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1559,14 +1561,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to the value of ' + $scope.newConstraint.location_2 + '.',
                     assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1575,14 +1577,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' different with the value of ' + $scope.newConstraint.location_2 + '.',
                     assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="NE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1591,14 +1593,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' greater than the value of ' + $scope.newConstraint.location_2 + '.',
                     assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="GT" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1607,14 +1609,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than the value of ' + $scope.newConstraint.location_2 + '.',
                     assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="GE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1623,14 +1625,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' less than the value of ' + $scope.newConstraint.location_2 + '.',
                     assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="LT" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1639,14 +1641,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than the value of ' + $scope.newConstraint.location_2 + '.',
                     assertion: '<PathValue Path1=\"' + $scope.newConstraint.position_1 + '\" Operator="LE" Path2=\"' + $scope.newConstraint.position_2 + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1655,14 +1657,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="EQ" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1671,14 +1673,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' different with ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="NE" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1687,14 +1689,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' greater than ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="GT" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1703,14 +1705,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or greater than ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="GE" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1719,14 +1721,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' less than ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="LT" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
@@ -1735,14 +1737,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
-                    constraintTarget: '.',
+                    constraintTarget: positionPath,
                     constraintClassification: $scope.newConstraint.constraintClassification,
                     description: 'The value of ' + $scope.newConstraint.location_1 + ' ' + $scope.newConstraint.verb + ' equal to or less than ' + $scope.newConstraint.value + '.',
                     assertion: '<SimpleValue Path=\"' + $scope.newConstraint.position_1 + '\" Operator="LE" Value=\"' + $scope.newConstraint.value + '\"/>'
                 };
                 if($scope.constraintType === 'Plain'){
-                	$scope.selectedNode.conformanceStatements.push(cs);
-                    var newCSBlock = {targetType: 'group', targetId: $scope.selectedNode.id, obj: cs};
+                	$scope.selectedMessage.conformanceStatements.push(cs);
+                    var newCSBlock = {targetType: 'message', targetId: $scope.selectedMessage.id, obj: cs};
                     $rootScope.recordChanged();
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
