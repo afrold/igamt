@@ -18,10 +18,10 @@ angular.module('igl')
                 $scope.messagesParams.refresh();
         };
 
-        $scope.delete = function() {
+        $scope.delete = function(message) {
     			CloneDeleteSvc.deleteMessage(message);
-    			$rootScope.$broadcast('event:SetToC');
-        }
+			$rootScope.$broadcast('event:SetToC');
+         }
         
         $scope.goToSegment = function (segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
@@ -774,7 +774,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
                         };
             		$scope.newComplexConstraint.push(cp);
             	}
-            } else if ($scope.newConstraint.contraintType === 'identical to the another node') {
+            } else if ($scope.newConstraint.contraintType === 'identical to another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
                             id: new ObjectId().toString(),
@@ -806,7 +806,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
             
             
             
-            else if ($scope.newConstraint.contraintType === 'equal to the another node') {
+            else if ($scope.newConstraint.contraintType === 'equal to another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -835,7 +835,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
             		
             		$scope.newComplexConstraint.push(cp);
             	}
-            } else if ($scope.newConstraint.contraintType === 'not-equal to the another node') {
+            } else if ($scope.newConstraint.contraintType === 'not-equal to another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -864,7 +864,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
             		
             		$scope.newComplexConstraint.push(cp);
             	}
-            } else if ($scope.newConstraint.contraintType === 'greater than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'greater than another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -893,7 +893,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
             		
             		$scope.newComplexConstraint.push(cp);
             	}
-            } else if ($scope.newConstraint.contraintType === 'equal to or greater than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'equal to or greater than another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -922,7 +922,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
             		
             		$scope.newComplexConstraint.push(cp);
             	}
-            } else if ($scope.newConstraint.contraintType === 'less than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'less than another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -951,7 +951,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
             		
             		$scope.newComplexConstraint.push(cp);
             	}
-            } else if ($scope.newConstraint.contraintType === 'equal to or less than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'equal to or less than another node') {
             	if($scope.constraintType === 'Plain'){
             		var cp = {
             				id: new ObjectId().toString(),
@@ -1539,7 +1539,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'identical to the another node') {
+            } else if ($scope.newConstraint.contraintType === 'identical to another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1555,7 +1555,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'equal to the another node') {
+            } else if ($scope.newConstraint.contraintType === 'equal to another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1571,7 +1571,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'not-equal to the another node') {
+            } else if ($scope.newConstraint.contraintType === 'not-equal to another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1587,7 +1587,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'greater than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'greater than another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1603,7 +1603,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'equal to or greater than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'equal to or greater than another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1619,7 +1619,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'less than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'less than another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,
@@ -1635,7 +1635,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 }else if ($scope.constraintType === 'Complex'){
                 	$scope.newComplexConstraint.push(cs);
                 }
-            } else if ($scope.newConstraint.contraintType === 'equal to or less than the another node') {
+            } else if ($scope.newConstraint.contraintType === 'equal to or less than another node') {
                 var cs = {
                     id: new ObjectId().toString(),
                     constraintId: $scope.newConstraint.constraintId,

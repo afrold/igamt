@@ -8,23 +8,21 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-
-import java.util.List;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception;
 
 /**
- * @author Harold Affo (harold.affo@nist.gov)
- * Mar 30, 2015
+ * @author gcr1
+ *
  */
-public interface IGDocumentOperations {
+public class EventNotSetException extends Exception {
 	
-	 public List<IGDocument> findPreloaded();
-	 
-	 public List<IGDocument> findStandard();
-	 
-	 public List<IGDocument> findStandardByVersion(String hl7version);
-	 
-	 public List<String> findHl7Versions();
+	private static final long serialVersionUID = 1789079702103332561L;
+
+	public EventNotSetException(String error) {
+		super(error);
+	}
+
+	public EventNotSetException(Exception error) {
+		super(error);
+	}
 }

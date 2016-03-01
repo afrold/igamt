@@ -31,7 +31,7 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 	private String id;
 	
 	
-	protected Set<Section> childSections = new HashSet<Section>();
+	protected Set<?> childSections = new HashSet<Section>();
 
 	public String getId() {
 		return id;
@@ -41,7 +41,7 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 		this.id = id;
 	}
 	
-	public Set<Section> getChildSections() {
+	public Set<?> getChildSections() {
 		return childSections;
 	}
 
@@ -51,7 +51,11 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 	
 	public void addSection(Section section){
 		section.setSectionPosition(this.childSections.size() + 1);
-		childSections.add(section);
+		@SuppressWarnings("unchecked")
+		Set<Section> sections = (Set<Section>) this.childSections;
+		sections.add(section);
+		
+		this.setChildSections(sections);
 	}
 	
 	@Override
@@ -64,8 +68,8 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 		clonedSection.setSectionTitle(this.sectionTitle);
 		clonedSection.setChildSections(new HashSet<Section>());
 		
-		for(Section s:this.childSections){
-			clonedSection.addSection(s.clone());
+		for(Object s:this.childSections){
+			clonedSection.addSection(((Section)s).clone());
 		}
 		
 		return clonedSection;
