@@ -180,44 +180,44 @@ public class ProfileServiceImplIntegrationTest {
 		//
 	}
 
-	@Configuration
-	@EnableMongoRepositories(basePackages = "gov.nist.healthcare.tools")
-	@ComponentScan(basePackages = "gov.nist.healthcare.tools")
-	static class ProfileTestConfiguration extends AbstractMongoConfiguration {
-
-		@Override
-		public Mongo mongo() {
-			// uses fongo for in-memory tests
-			return new Fongo("igl_test").getMongo();
-		}
-
-		@Override
-		@Bean
-		public CustomConversions customConversions() {
-			List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
-			converterList.add(new FieldWriteConverter());
-			converterList.add(new ComponentWriteConverter());
-			converterList.add(new SegmentRefWriteConverter());
-			converterList.add(new ProfileReadConverter());
-			return new CustomConversions(converterList);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.springframework.data.mongodb.config.AbstractMongoConfiguration#
-		 * getDatabaseName()
-		 */
-		@Override
-		protected String getDatabaseName() {
-			return "igl_test";
-		}
-
-		@Override
-		public String getMappingBasePackage() {
-			return "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain";
-		}
-	}
+//	@Configuration
+//	@EnableMongoRepositories(basePackages = "gov.nist.healthcare.tools")
+//	@ComponentScan(basePackages = "gov.nist.healthcare.tools")
+//	static class ProfileTestConfiguration extends AbstractMongoConfiguration {
+//
+//		@Override
+//		public Mongo mongo() {
+//			// uses fongo for in-memory tests
+//			return new Fongo("igl_test").getMongo();
+//		}
+//
+//		@Override
+//		@Bean
+//		public CustomConversions customConversions() {
+//			List<Converter<?, ?>> converterList = new ArrayList<Converter<?, ?>>();
+//			converterList.add(new FieldWriteConverter());
+//			converterList.add(new ComponentWriteConverter());
+//			converterList.add(new SegmentRefWriteConverter());
+//			converterList.add(new ProfileReadConverter());
+//			return new CustomConversions(converterList);
+//		}
+//
+//		/*
+//		 * (non-Javadoc)
+//		 * 
+//		 * @see
+//		 * org.springframework.data.mongodb.config.AbstractMongoConfiguration#
+//		 * getDatabaseName()
+//		 */
+//		@Override
+//		protected String getDatabaseName() {
+//			return "igl_test";
+//		}
+//
+//		@Override
+//		public String getMappingBasePackage() {
+//			return "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain";
+//		}
+//	}
 
 }

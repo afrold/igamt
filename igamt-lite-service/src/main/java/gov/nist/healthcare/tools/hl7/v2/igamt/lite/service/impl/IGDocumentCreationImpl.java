@@ -17,6 +17,18 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
@@ -39,18 +51,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEventFactory;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEvents;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.EventNotSetException;
 
 @Service
 public class IGDocumentCreationImpl implements IGDocumentCreationService {
+
+	private Logger log = LoggerFactory.getLogger(IGDocumentCreationImpl.class);
 
 	@Autowired
 	private IGDocumentRepository igdocumentRepository;
@@ -65,23 +73,26 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	@Override
-	public List<String[]> summary(String hl7Version, List<String> messageIds) {
+	public List<MessageEvents> summary(String hl7Version, List<String> messageIds) {
 		// Fetching messages of version hl7Version
-		List<String[]> rst = new ArrayList<String[]>();
-		List<IGDocument> docs = igdocumentRepository.findStandardByVersion(hl7Version);
-		for (IGDocument d : docs) {
-			for (Message m : d.getProfile().getMessages().getChildren()) {
-				if (!messageIds.contains(m.getId())) {
-					String[] msgDesc = new String[] { m.getId(), m.getEvent(), m.getStructID(), m.getDescription() };
-					rst.add(msgDesc);
-				}
+		List<Message> msgs = new ArrayList<Message>();
+		List<MessageEvents> rval = new ArrayList<MessageEvents>();
+		List<IGDocument> igds = igdocumentRepository
+				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version);
+		IGDocument igd = igds.get(0);
+		for (Message msg : igd.getProfile().getMessages().getChildren()) {
+			if (!messageIds.contains(msg.getId())) {
+				msgs.add(msg);
 			}
 		}
-		return rst;
+		MessageEventFactory mef = new MessageEventFactory(igd);
+		rval = mef.createMessageEvents(msgs);
+		return rval;
 	}
 
 	@Override
-	public IGDocument createIntegratedIGDocument(List<String> msgIds, String hl7Version, Long accountId) throws IGDocumentException {
+	public IGDocument createIntegratedIGDocument(List<MessageEvents> msgEvts, String hl7Version, Long accountId)
+			throws IGDocumentException {
 		// Creation of profile
 		IGDocument dSource = igdocumentRepository.findStandardByVersion(hl7Version).get(0);
 		IGDocument dTarget = new IGDocument();
@@ -99,7 +110,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		metaData.setIdentifier("Default Identifier");
 		metaData.setSubTitle("Default Sub Title");
 		metaData.setTitle("Default Title");
-		
+
 		// Setting profile metaData
 		ProfileMetaData profileMetaData = new ProfileMetaData();
 		pTarget.setMetaData(profileMetaData);
@@ -111,7 +122,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 		profileMetaData.setHl7Version(hl7Version);
 		profileMetaData.setStatus("Draft");
-		
+
 		// Setting profile info
 		pTarget.setScope(IGDocumentScope.USER);
 		pTarget.setComment("Created " + date.toString());
@@ -152,30 +163,43 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		pTarget.setTables(tabTarget);
 
 		addSections(dSource, dTarget);
-		addMessages(msgIds, dSource.getProfile(), pTarget);
-		
+		addMessages(msgEvts, dSource.getProfile(), pTarget);
+
 		dTarget.setProfile(pTarget);
-		
+
 		return dTarget;
 	}
 
 	@Override
-	public IGDocument updateIntegratedIGDocument(List<String> msgIds, IGDocument dTarget) throws IGDocumentException {
+	public IGDocument updateIntegratedIGDocument(List<MessageEvents> msgEvts, IGDocument dTarget)
+			throws IGDocumentException {
 		// Update profile with additional messages.
 		String hl7Version = dTarget.getProfile().getMetaData().getHl7Version();
 		IGDocument dSource = igdocumentRepository.findStandardByVersion(hl7Version).get(0);
-		addMessages(msgIds, dSource.getProfile(), dTarget.getProfile());
+		addMessages(msgEvts, dSource.getProfile(), dTarget.getProfile());
 		return dTarget;
 	}
-	
+
 	private void addSections(IGDocument dSource, IGDocument dTarget) {
 		dTarget.setChildSections(dSource.getChildSections());
 	}
 
-	private void addMessages(List<String> msgIds, Profile pSource, Profile pTarget) {
+	private void addMessages(List<MessageEvents> msgEvts, Profile pSource, Profile pTarget) {
 		Messages messages = pTarget.getMessages();
-		for (String msgId : msgIds) {
-			Message m = pSource.getMessages().findOne(msgId);
+		for (MessageEvents msgEvt : msgEvts) {
+			Message m = pSource.getMessages().findOne(msgEvt.getId());
+			Iterator<MessageEvents.Event> itr = msgEvt.getChildren().iterator();
+			if (itr.hasNext()) {
+				String event = itr.next().getName();
+				m.setEvent(event);
+			} else {
+				try {
+					throw new EventNotSetException("MessageEvent id=" + msgEvt.getId() + " name=" + msgEvt.getName());
+				} catch (EventNotSetException e) {
+					log.error("Event was set to \"event unk\"", e);
+				}
+				m.setEvent("event unk");
+			}
 			messages.addMessage(m);
 			for (SegmentRefOrGroup sg : m.getChildren()) {
 				if (sg instanceof SegmentRef) {
@@ -210,12 +234,12 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	private void addDatatype(Datatype dt, Profile pSource, Profile pTarget) {
-		Datatypes dtsSource= pSource.getDatatypes();
+		Datatypes dtsSource = pSource.getDatatypes();
 		Datatypes dtsTarget = pTarget.getDatatypes();
 		Tables vsdTarget = pTarget.getTables();
-		if (dt != null && !dtsTarget.getChildren().contains(dt)){
+		if (dt != null && !dtsTarget.getChildren().contains(dt)) {
 			dtsTarget.addDatatype(dt);
-			for (Component cpt: dt.getComponents()){
+			for (Component cpt : dt.getComponents()) {
 				addDatatype(dtsSource.findOne(cpt.getDatatype()), pSource, pTarget);
 				addTable(vsdTarget.findOneTableById(cpt.getTable()), pSource, pTarget);
 			}
@@ -224,7 +248,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	private void addTable(Table vsd, Profile pSource, Profile pTarget) {
 		Tables vsdTarget = pTarget.getTables();
-		if (vsd != null && !vsdTarget.getChildren().contains(vsd)){
+		if (vsd != null && !vsdTarget.getChildren().contains(vsd)) {
 			vsdTarget.addTable(vsd);
 		}
 	}

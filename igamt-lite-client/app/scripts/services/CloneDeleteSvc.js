@@ -5,19 +5,21 @@ angular.module('igl').factory(
 			var svc = this;
 			
 			svc.copySection = function(section) {
-				var newSection = angular.copy(section);
+				var newSection = angular.copy(section.reference);
 				newSection.id = new ObjectId();
 				var rand = Math.floor(Math.random() * 100);
 				if (!$rootScope.igdocument.profile.metaData.ext) {
 					$rootScope.igdocument.profile.metaData.ext = "";
 				}
-				newSection.sectionTitle = section.sectionTitle + "-"
+				newSection.sectionTitle = section.reference.sectionTitle + "-"
 				+ $rootScope.igdocument.profile.metaData.ext + "-"
 				+ rand;
 				newSection.label = newSection.sectionTitle;
-				$rootScope.igdocument.childSections.splice(0, 0, newSection);
+				section.parent.childSections.splice(0, 0, newSection);
+				section.parent.childSections = positionElements(section.parent.childSections);
 				$rootScope.$broadcast('event:SetToC');	
 				$rootScope.$broadcast('event:openSection', newSection);	
+//				$rootScope.igdocument.childSections.splice(0, 0, newSection);
 			}
 			
 			svc.copySegment = function(segment) {
@@ -42,8 +44,9 @@ angular.module('igl').factory(
 		                		});
 		                });
 		            }
-//		            $rootScope.segments.splice(0, 0, newSegment);
+		            $rootScope.segments.push(newSegment);
 		            $rootScope.igdocument.profile.segments.children.splice(0, 0, newSegment);
+		            $rootScope.igdocument.profile.segments.children = positionElements($rootScope.igdocument.profile.segments.children);
 		            $rootScope.segment = newSegment;
 		            $rootScope.segment[newSegment.id] = newSegment;
 		            $rootScope.recordChanged();
@@ -73,8 +76,8 @@ angular.module('igl').factory(
 		                    conformanceStatement.id = new ObjectId().toString();
 		                });
 		            }
-//		            $rootScope.datatypes.splice(0, 0, newDatatype);
 		            $rootScope.igdocument.profile.datatypes.children.splice(0, 0, newDatatype);
+		            $rootScope.igdocument.profile.datatypes.children = positionElements($rootScope.igdocument.profile.datatypes.children);
 		            $rootScope.datatype = newDatatype;
 		            $rootScope.datatypesMap[newDatatype.id] = newDatatype;
 		            $rootScope.recordChanged();
@@ -87,27 +90,6 @@ angular.module('igl').factory(
 	          var newTable = angular.copy(table);
 	          newTable.id = new ObjectId().toString();
 		        newTable.bindingIdentifier = $rootScope.createNewFlavorName(table.bindingIdentifier);
-//		        $rootScope.newTableFakeId = $rootScope.newTableFakeId - 1;
-//		        var newTable = angular.fromJson({
-//		            id:new ObjectId().toString(),
-//		            type: '',
-//		            bindingIdentifier: '',
-//		            name: '',
-//		            version: '',
-//		            oid: '',
-//		            tableType: '',
-//		            stability: '',
-//		            extensibility: '',
-//		            codes: []
-//		        });
-//		        newTable.type = 'table';
-//		        newTable.bindingIdentifier = table.bindingIdentifier + $rootScope.createNewFlavorName(table.bindingIdentifier);
-//		        newTable.name = table.name + '_' + $rootScope.postfixCloneTable + $rootScope.newTableFakeId;
-//		        newTable.version = table.version;
-//		        newTable.oid = table.oid;
-//		        newTable.tableType = table.tableType;
-//		        newTable.stability = table.stability;
-//		        newTable.extensibility = table.extensibility;
 
 		        newTable.codes = [];
 		        for (var i = 0, len1 = table.codes.length; i < len1; i++) {
@@ -123,7 +105,6 @@ angular.module('igl').factory(
 		            newTable.codes.push(newValue);
 		        }
 
-//		        $rootScope.tables.push(newTable);
 		        $rootScope.table = newTable;
 		        $rootScope.tablesMap[newTable.id] = newTable;
 		        
@@ -138,6 +119,7 @@ angular.module('igl').factory(
 		    		}
 		     
 		        $rootScope.igdocument.profile.tables.children.splice(0, 0, newTable);
+	            $rootScope.igdocument.profile.tables.children = positionElements($rootScope.igdocument.profile.tables.children);
 	            $rootScope.recordChanged();
 				$rootScope.$broadcast('event:SetToC');	
 				$rootScope.$broadcast('event:openTable', newTable);	
@@ -200,7 +182,7 @@ angular.module('igl').factory(
 		            }
 		        });
 		        modalInstance.result.then(function (table) {
-		            $scope.tableToDelete = table;
+		            tableToDelete = table;
 		        }, function () {
 		        });
 		    };
@@ -219,13 +201,6 @@ angular.module('igl').factory(
 		            		abortDatatypeDelete(datatype);
 		            } else {
 		            		confirmDatatypeDelete(datatype);
-//						var dtIdsLive = ProfileAccessSvc.Datatypes().getAllDatatypeIds();
-//						var idxP = _.findIndex(dtIdsLive, function (
-//								child) {
-//							return child.id === datatypeId;
-//						});
-//						dtIdsLive.splice(idxP, 1);
-//		                rval = deleteDatatypes(dtIdsLive, [datatypeId]);
 		            }
 			}
 			
@@ -359,6 +334,7 @@ angular.module('igl').factory(
 						child) {
 					return child.id === msgDead[0];
 				});
+				
 				msgLive.splice(idxP, 1);
 				if (0 === ProfileAccessSvc.Messages().messages().length) {
 					ProfileAccessSvc.ValueSets().truncate();
@@ -393,17 +369,15 @@ angular.module('igl').factory(
 				return rval;
 			}
 			
-			svc.deleteSection = function(secDead) {
+			svc.deleteSection = function(section) {
 
-				// We are keeping the children so their live.
-				var secLive = $rootScope.igdocument.childSections;
+				var secLive = section.parent.childSections;
 				
-				// We remove the dead message from the living.
 				var idxP = _.findIndex(secLive, function (
 						child) {
-					return child.id === secDead.id;
+					return child.id === section.reference.id;
 				});
-				secLive.splice(idxP, 1);
+				section.parent.childSections.splice(idxP, 1);
 			}
 	      
 	        svc.findMessageIndex = function(messages, id) {
@@ -411,6 +385,15 @@ angular.module('igl').factory(
 					return child.reference.id === id;
 				})
 				return idxT;
+			}
+			
+			function positionElements(chidren) {
+				var sorted = _.sortBy(chidren, "sectionPosition");
+				var start = sorted[0].sectionPosition;
+				_.each(sorted, function(sortee) {
+					sortee.sectionPosition = start++;
+				});
+				return sorted;
 			}
 
 			return svc;
