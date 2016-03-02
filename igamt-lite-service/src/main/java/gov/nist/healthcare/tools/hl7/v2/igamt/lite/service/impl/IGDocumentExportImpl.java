@@ -900,7 +900,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			TransformerFactory factory = TransformerFactory.newInstance();
 			Source xslt = new StreamSource(this.getClass()
-					.getResourceAsStream("/rendering/igdocument.xsl"));
+					.getResourceAsStream("/rendering/igdoc2htmlWithTOC.xsl"));
 			Transformer transformer;
 
 			// Apply XSL transformation on xml file to generate html

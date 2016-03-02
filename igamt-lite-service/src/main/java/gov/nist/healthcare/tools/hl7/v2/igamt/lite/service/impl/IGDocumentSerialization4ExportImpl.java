@@ -614,7 +614,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(t.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("position", String.valueOf(t.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("h", String.valueOf(3)));
-		sect.addAttribute(new Attribute("title", t.getBindingIdentifier() + " - " + t.getName()));
+		sect.addAttribute(new Attribute("title", t.getBindingIdentifier() + " - " + t.getDescription()));
 
 		nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
 		elmTableDefinition.addAttribute(new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
