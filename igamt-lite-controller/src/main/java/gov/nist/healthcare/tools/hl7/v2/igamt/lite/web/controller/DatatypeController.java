@@ -29,14 +29,14 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 @RequestMapping("/datatypes")
 public class DatatypeController extends CommonController {
 
-	Logger log = LoggerFactory.getLogger(ProfileController.class);
+	Logger log = LoggerFactory.getLogger(DatatypeController.class);
 
-	 @Autowired
-	 private DatatypeService datatypeService;
-	
-		public  List<Datatype> datatypes() {
-			log.info("Fetching all preloaded IGDocuments...");
-			List<Datatype> result = datatypeService.findAll();
-			return result;
-		}
+	@Autowired
+	private DatatypeService datatypeService;
+
+	public List<Datatype> datatypes() {
+		log.info("Fetching all preloaded IGDocuments...");
+		List<Datatype> result = datatypeService.findAll();
+		return result;
+	}
 }

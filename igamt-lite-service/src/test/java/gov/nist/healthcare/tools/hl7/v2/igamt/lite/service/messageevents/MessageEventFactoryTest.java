@@ -1,4 +1,4 @@
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.messageevents;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -18,10 +18,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEventFactory;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEventFactory;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,13 +38,11 @@ public class MessageEventFactoryTest {
 		List<IGDocument> igds = igDocumentRepository
 				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
 		IGDocument igd = igds.get(0);
-		List<Message> msgs = new ArrayList<Message>();
-		Collections.addAll(msgs, igd.getProfile().getMessages().getChildren()
-				.toArray(new Message[igd.getProfile().getMessages().getChildren().size()]));
+		Messages msgs = igd.getProfile().getMessages();
 		MessageEventFactory sut0 = new MessageEventFactory(igd);
 		List<MessageEvents> mes0 = sut0.createMessageEvents(msgs);
 		MessageEventFactory sut1 = new MessageEventFactory(igd);
-		List<MessageEvents> mes1 = sut0.createMessageEvents(msgs);
+		List<MessageEvents> mes1 = sut1.createMessageEvents(msgs);
 		assertNotNull(mes0);
 		assertNotNull(mes1);
 		assertEquals(mes0.size(), mes1.size());
@@ -73,13 +73,11 @@ public class MessageEventFactoryTest {
 		List<IGDocument> igds = igDocumentRepository
 				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
 		IGDocument igd = igds.get(0);
-		List<Message> msgs = new ArrayList<Message>();
-		Collections.addAll(msgs, igd.getProfile().getMessages().getChildren()
-				.toArray(new Message[igd.getProfile().getMessages().getChildren().size()]));
+		Messages msgs = igd.getProfile().getMessages();
 		MessageEventFactory sut = new MessageEventFactory(igd);
 		List<MessageEvents> mes = sut.createMessageEvents(msgs);
 		assertNotNull(mes);
-		assertEquals(msgs.size(), mes.size());
+		assertEquals(msgs.getChildren().size(), mes.size());
 	}
 
 	@Test

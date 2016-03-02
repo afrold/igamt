@@ -19,7 +19,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -48,13 +47,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEventFactory;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.Event;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEventFactory;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.EventNotSetException;
 
 @Service
@@ -62,6 +61,9 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	private Logger log = LoggerFactory.getLogger(IGDocumentCreationImpl.class);
 
+	private boolean CREATE = true;
+	private boolean UPDATE = false;
+	
 	@Autowired
 	private IGDocumentRepository igdocumentRepository;
 
@@ -75,20 +77,13 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	@Override
-	public List<MessageEvents> summary(String hl7Version, List<String> messageIds) {
-		// Fetching messages of version hl7Version
-		List<Message> msgs = new ArrayList<Message>();
-		List<MessageEvents> rval = new ArrayList<MessageEvents>();
+	public List<MessageEvents> summary(String hl7Version) {
 		List<IGDocument> igds = igdocumentRepository
 				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version);
 		IGDocument igd = igds.get(0);
-		for (Message msg : igd.getProfile().getMessages().getChildren()) {
-			if (!messageIds.contains(msg.getId())) {
-				msgs.add(msg);
-			}
-		}
 		MessageEventFactory mef = new MessageEventFactory(igd);
-		rval = mef.createMessageEvents(msgs);
+		Messages msgs = igd.getProfile().getMessages();
+		List<MessageEvents> rval = mef.createMessageEvents(msgs);
 		return rval;
 	}
 
@@ -165,7 +160,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		pTarget.setTables(tabTarget);
 
 		addSections(dSource, dTarget);
-		addMessages(msgEvts, dSource.getProfile(), pTarget);
+		addMessages(msgEvts, dSource.getProfile(), pTarget, CREATE);
 
 		dTarget.setProfile(pTarget);
 
@@ -178,7 +173,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// Update profile with additional messages.
 		String hl7Version = dTarget.getProfile().getMetaData().getHl7Version();
 		IGDocument dSource = igdocumentRepository.findStandardByVersion(hl7Version).get(0);
-		addMessages(msgEvts, dSource.getProfile(), dTarget.getProfile());
+		addMessages(msgEvts, dSource.getProfile(), dTarget.getProfile(), UPDATE);
 		return dTarget;
 	}
 
@@ -186,7 +181,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		dTarget.setChildSections(dSource.getChildSections());
 	}
 
-	private void addMessages(List<MessageEvents> msgEvts, Profile pSource, Profile pTarget) {
+	private void addMessages(List<MessageEvents> msgEvts, Profile pSource, Profile pTarget, boolean create) {
 		Messages messages = pTarget.getMessages();
 		messages.setType(pSource.getMessages().getType());
 		for (MessageEvents msgEvt : msgEvts) {
@@ -217,12 +212,14 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 			log.debug("Message.name=" + name);
 			m1.setName(name);
 			messages.addMessage(m1);
+			if(create) {
 			for (SegmentRefOrGroup sg : m.getChildren()) {
 				if (sg instanceof SegmentRef) {
 					addSegment((SegmentRef) sg, pSource, pTarget);
 				} else if (sg instanceof Group) {
 					addGroup((Group) sg, pSource, pTarget);
 				}
+			}
 			}
 		}
 	}

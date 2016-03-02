@@ -48,7 +48,7 @@ public class ProfileChangeServiceTest {
 	public static void setup() {
 		try {
 			Properties p = new Properties();
-			InputStream log4jFile = ProfileServiceImplIntegrationTest.class
+			InputStream log4jFile = ProfileChangeServiceTest.class
 					.getResourceAsStream("/igl-test-log4j.properties");
 			p.load(log4jFile);
 			PropertyConfigurator.configure(p);

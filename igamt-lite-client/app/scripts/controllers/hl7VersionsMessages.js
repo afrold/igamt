@@ -131,7 +131,7 @@ angular.module('igl').controller(
 				if (!$scope.hl7Version && $rootScope.hl7Version) {
 					$scope.hl7Version = $rootScope.hl7Version;
 				}
-				$scope.messageEventsParams = MessageEventsSvc.getMessageEvents($scope.hl7Version, $scope.messageIds);
+				$scope.messageEventsParams = MessageEventsSvc.getMessageEvents($scope.hl7Version);
 			};
 			
 			$scope.isBranch = function(node) {

@@ -20,7 +20,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 import java.util.List;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEvents;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 
 public interface IGDocumentCreationService {
 	
@@ -28,7 +28,7 @@ public interface IGDocumentCreationService {
 	
 	List<IGDocument> findIGDocumentsByHl7Versions();
 	
-	List<MessageEvents> summary(String hl7Version, List<String> messageIds);
+	List<MessageEvents> summary(String hl7Version);
 	
 	IGDocument createIntegratedIGDocument(List<MessageEvents> msgIds, String hl7Version, Long accountId) throws IGDocumentException;
 

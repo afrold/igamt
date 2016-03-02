@@ -8,7 +8,7 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 
@@ -42,10 +43,10 @@ public class MessageEventFactory {
 		tables = igdocument.getProfile().getTables();
 	}
 	
-	public List<MessageEvents> createMessageEvents(List<Message> msgs) {
+	public List<MessageEvents> createMessageEvents(Messages msgs) {
 		
 		List<MessageEvents> list = new ArrayList<MessageEvents>();
-		for(Message msg : msgs) {
+		for(Message msg : msgs.getChildren()) {
 			String id = msg.getId();
 			String structID = msg.getStructID();
 			Set<String> events = findEvents(structID);
@@ -56,7 +57,7 @@ public class MessageEventFactory {
 		return list;
 	}
 
-	Set<String> findEvents(String structID) {
+	public Set<String> findEvents(String structID) {
 		Set<String> events = new TreeSet<String>(new EventComparator());
 		Code code = get0354Table().findOneCodeByValue(structID);
 		if (code != null) {
@@ -69,7 +70,7 @@ public class MessageEventFactory {
 		return events;
 	}
 
-	Table get0354Table() {
+	public Table get0354Table() {
 		if (tab0354 == null) {
 			for (Table tab : tables.getChildren()) {
 				if ("0354".equals(tab.getBindingIdentifier())) {

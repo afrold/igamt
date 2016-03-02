@@ -53,7 +53,7 @@ angular
 								entry.selected = true;
 								ToCSvc.currentLeaf.selected = false;
 								ToCSvc.currentLeaf = entry;
-								console.log("entry.parent=" + entry.parent);
+								console.log("entry=" + entry.reference.sectionTitle);
 								switch (entry.type) {
 								case "documentMetadata": {
 									$scope.$emit('event:openDocumentMetadata',
@@ -94,39 +94,39 @@ angular
 								return $scope.subview;
 							};
 							
-							$scope.closedCtxSubMenu = function(leaf, $index) {
+							$scope.closedCtxSubMenu = function(node, $index) {
 								var ctxMenuSelection = ContextMenuSvc.get();
 								console.log("ctxMenuSelection=" + ctxMenuSelection);
 								switch (ctxMenuSelection) {
 								case "Add":
-									console.log("Add==> node=" + leaf);
+									console.log("Add==> node=" + node);
 									break;
 								case "Copy":
-									console.log("Copy==> node=" + leaf);
-									if (leaf.reference.type === 'section') {
-					        				CloneDeleteSvc.copySection(leaf);
-									} else if (leaf.reference.type === 'segment') {
-						        			CloneDeleteSvc.copySegment(leaf.reference);
-									}  else if (leaf.reference.type === 'datatype') {
-						        			CloneDeleteSvc.copyDatatype(leaf.reference);
-									} else if (leaf.reference.type === 'table') {
-										CloneDeleteSvc.copyTable(leaf.reference);
-									} else if (leaf.reference.type === 'message') {
-										CloneDeleteSvc.copyMessage(leaf.reference);
+									console.log("Copy==> node=" + node);
+									if (node.reference.type === 'section') {
+					        				CloneDeleteSvc.copySection(node);
+									} else if (node.reference.type === 'segment') {
+						        			CloneDeleteSvc.copySegment(node.reference);
+									}  else if (node.reference.type === 'datatype') {
+						        			CloneDeleteSvc.copyDatatype(node.reference);
+									} else if (node.reference.type === 'table') {
+										CloneDeleteSvc.copyTable(node.reference);
+									} else if (node.reference.type === 'message') {
+										CloneDeleteSvc.copyMessage(node.reference);
 									}
 									break;
 								case "Delete":
-									console.log("Copy==> node=" + leaf);
-									if (leaf.reference.type === 'section') {
-					        				CloneDeleteSvc.deleteSection(leaf);
-									} else if (leaf.reference.type === 'segment') {
-						        			CloneDeleteSvc.deleteSegment(leaf.reference);
-									}  else if (leaf.reference.type === 'datatype') {
-						        			CloneDeleteSvc.deleteDatatype(leaf.reference);
-									} else if (leaf.reference.type === 'table') {
-										CloneDeleteSvc.deleteValueSet(leaf.reference);
-									} else if (leaf.reference.type === 'message') {
-										CloneDeleteSvc.deleteMessage(leaf.reference);
+									console.log("Copy==> node=" + node);
+									if (node.reference.type === 'section') {
+					        				CloneDeleteSvc.deleteSection(node);
+									} else if (node.reference.type === 'segment') {
+						        			CloneDeleteSvc.deleteSegment(node.reference);
+									}  else if (node.reference.type === 'datatype') {
+						        			CloneDeleteSvc.deleteDatatype(node.reference);
+									} else if (node.reference.type === 'table') {
+										CloneDeleteSvc.deleteValueSet(node.reference);
+									} else if (node.reference.type === 'message') {
+										CloneDeleteSvc.deleteMessage(node.reference);
 									}
 									break;
 								default:
