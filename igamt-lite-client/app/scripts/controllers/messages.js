@@ -99,15 +99,18 @@ angular.module('igl')
             });
         };
 
-        $scope.managePredicate = function (node) {
+        $scope.managePredicate = function (node, message) {
             var modalInstance = $modal.open({
                 templateUrl: 'PredicateMessageCtrl.html',
                 controller: 'PredicateMessageCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
-                    selectedNode: function () {
-                        return node;
-                    }
+                	selectedMessage: function () {
+                        return message;
+                    },
+            		selectedNode: function () {
+            			return node;
+            		}
                 }
             });
             modalInstance.result.then(function (node) {
@@ -164,8 +167,9 @@ angular.module('igl')
 
     });
 
-angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $modalInstance, selectedNode, selectedMessage, $rootScope) {
     $scope.selectedNode = selectedNode;
+    $scope.selectedMessage = selectedMessage;
     $scope.constraintType = 'Plain';
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;

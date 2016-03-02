@@ -373,6 +373,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.section = {};
         $rootScope.parentsMap = {};
         $rootScope.igChanged = false;
+        
+        
+        $rootScope.messageTree = null;
 
         $scope.scrollbarWidth = 0;
 
@@ -441,6 +444,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.newConformanceStatementFakeId = 0;
             $rootScope.clearChanges();
             $rootScope.parentsMap = [];
+            
+            $rootScope.messageTree = null;
         };
 
         $rootScope.$watch(function () {
@@ -671,91 +676,125 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
 
-        $rootScope.processElement = function (element, parent) {
-            try {
-                if (element.type === "group" && element.children) {
-                    $rootScope.parentsMap[element.id] = parent;
-//            element["parent"] = parent;
-                    element.children = $filter('orderBy')(element.children, 'position');
-                    angular.forEach(element.children, function (segmentRefOrGroup) {
-                        $rootScope.processElement(segmentRefOrGroup, element);
-                    });
-                } else if (element.type === "segmentRef") {
-                    if (parent) {
-                        $rootScope.parentsMap[element.id] = parent;
-                    }
-                    var ref = $rootScope.segmentsMap[element.ref];
-                    //element.ref["path"] = ref.name;
-                    $rootScope.processElement(ref, element);
-                } else if (element.type === "segment") {
-                    if ($rootScope.segments.indexOf(element) === -1) {
-                        element["path"] = element["name"];
-                        $rootScope.segments.push(element);
-                        for (var i = 0; i < element.predicates.length; i++) {
-                            if ($rootScope.segmentPredicates.indexOf(element.predicates[i]) === -1)
-                                $rootScope.segmentPredicates.push(element.predicates[i]);
-                        }
-
-                        for (var i = 0; i < element.conformanceStatements.length; i++) {
-                            if ($rootScope.segmentConformanceStatements.indexOf(element.conformanceStatements[i]) === -1)
-                                $rootScope.segmentConformanceStatements.push(element.conformanceStatements[i]);
-                        }
-                        element.fields = $filter('orderBy')(element.fields, 'position');
-                        angular.forEach(element.fields, function (field) {
-                            $rootScope.processElement(field, element);
-                        });
-                    }
-                } else if (element.type === "field") {
-                    $rootScope.parentsMap[element.id] = parent;
-//            element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
-                    element["path"] = parent.path + "." + element.position;
-//            if(element.type === "component") {
-//                element['sub'] = parent.type === 'component';
-//            }
-//            if (angular.isDefined(element.table) && element.table != null) {
-//                var table = $rootScope.tablesMap[element.table];
-//                if ($rootScope.tables.indexOf(table) === -1) {
-//                    $rootScope.tables.push(table);
+        $rootScope.processElement = function (element, parent, parentId) {
+        	try {
+        		if(element.type === "message") {
+        			var m = new Object();
+        			m.children = [];
+        			$rootScope.messageTree = m
+        			
+        			element.children = $filter('orderBy')(element.children, 'position');
+        			angular.forEach(element.children, function (segmentRefOrGroup) {
+        				$rootScope.processElement(segmentRefOrGroup, m, element.id);
+        			});
+        			
+        		} else if (element.type === "group" && element.children) {
+        			var g = new Object();
+        			g.path = element.position;
+        			g.obj = element;
+        			g.children = [];
+        			if(parent.path){
+        				$rootScope.parentsMap[element.id] = parentId;
+        				g.path = parent.path + "." + element.position;
+        			}
+        			parent.children.push(g);
+        			element.children = $filter('orderBy')(element.children, 'position');
+        			angular.forEach(element.children, function (segmentRefOrGroup) {
+        				$rootScope.processElement(segmentRefOrGroup, g, element.id );
+        			});
+        		} else if(element.type === "segmentRef") {
+        			var s = new Object();
+        			s.path = element.position;
+        			s.obj = element;
+        			s.children = [];
+        			if(parent.path){
+        				$rootScope.parentsMap[element.id] = parentId;
+        				s.path = parent.path + "." + element.position;
+        			}
+        			parent.children.push(s);
+        			
+        			var ref = $rootScope.segmentsMap[element.ref];
+        			$rootScope.processElement(ref, s, element.id);
+        			
+        		} else if (element.type === "segment") {
+        			element.fields = $filter('orderBy')(element.fields, 'position');
+        			angular.forEach(element.fields, function (field) {
+        				$rootScope.processElement(field, parent, element.id);
+        			});
+        		} else if (element.type === "field") {
+        			$rootScope.parentsMap[element.id] = parentId;
+        			var f = new Object();
+        			f.obj = element;
+        			f.path = parent.path + "." + element.position;
+        			f.children = [];
+        			parent.children.push(f);
+        			$rootScope.processElement($rootScope.datatypesMap[element.datatype], f, element.id);
+        		} else if (element.type === "component") {
+        			$rootScope.parentsMap[element.id] = parentId;
+        			var c = new Object();
+        			c.obj = element;
+        			c.path = parent.path + "." + element.position;
+        			c.children = [];
+        			parent.children.push(c);
+        			$rootScope.processElement($rootScope.datatypesMap[element.datatype], c, element.id);
+        		} else if (element.type === "datatype") {
+        			element.components = $filter('orderBy')(element.components, 'position');
+        			angular.forEach(element.components, function (component) {
+        				$rootScope.processElement(component, parent, element.id);
+        			});
+        		}
+        	}catch(e){
+        		throw e;
+        	}
+        	
+        	
+        	
+//            try {
+//                if (element.type === "group" && element.children) {
+//                	element["path"] = element.position;
+//                    if (parent) {
+//                    	element["path"] = parent.path + "." + element.position;
+//                    	$rootScope.parentsMap[element.id] = parent;
+//                    }
+//                    element.children = $filter('orderBy')(element.children, 'position');
+//                    angular.forEach(element.children, function (segmentRefOrGroup) {
+//                        $rootScope.processElement(segmentRefOrGroup, element);
+//                    });
+//                } else if (element.type === "segmentRef") {
+//                	element["path"] = element.position;
+//                    if (parent) {
+//                    	element["path"] = parent.path + "." + element.position;
+//                    	$rootScope.parentsMap[element.id] = parent;
+//                    }
+//                    var ref = $rootScope.segmentsMap[element.ref];
+//                    $rootScope.processElement(ref, element);
+//                } else if (element.type === "segment") {
+//                    if ($rootScope.segments.indexOf(element) === -1) {
+//                        element["path"] = parent.path;
+//                        $rootScope.segments.push(element);
+//                        element.fields = $filter('orderBy')(element.fields, 'position');
+//                        angular.forEach(element.fields, function (field) {
+//                            $rootScope.processElement(field, element);
+//                        });
+//                    }
+//                } else if (element.type === "field") {
+//                    $rootScope.parentsMap[element.id] = parent;
+//                    element["path"] = parent.path + "." + element.position;
+//                    $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+//                } else if (element.type === "component") {
+//                    $rootScope.parentsMap[element.id] = parent;
+//                    element["path"] = parent.path + "." + element.position;
+//                    $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+//                } else if (element.type === "datatype") {
+//                	element["path"] = parent.path;
+//                    element.components = $filter('orderBy')(element.components, 'position');
+//                    angular.forEach(element.components, function (component) {
+//                        $rootScope.processElement(component, element);
+//                    });
 //                }
+//            }catch (e){
+//                throw e;
 //            }
-                    $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
-                } else if (element.type === "component") {
-                    $rootScope.parentsMap[element.id] = parent;
-//              element["datatype"] = $rootScope.datatypesMap[element.datatype.id];
-                    element["path"] = parent.path + "." + element.position;
-//              if(element.type === "component") {
-//                  element['sub'] = parent.type === 'component';
-//              }
-//              if (angular.isDefined(element.table) && element.table != null) {
-//                  var table = $rootScope.tablesMap[element.table];
-//                  if ($rootScope.tables.indexOf(table) === -1) {
-//                      $rootScope.tables.push(table);
-//                  }
-//              }
-                    $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
-                } else if (element.type === "datatype") {
-//            if ($rootScope.datatypes.indexOf(element) === -1) {
-//                $rootScope.datatypes.push(element);
-                    for (var i = 0; i < element.predicates.length; i++) {
-                        if ($rootScope.datatypePredicates.indexOf(element.predicates[i]) === -1)
-                            $rootScope.datatypePredicates.push(element.predicates[i]);
-                    }
-
-                    for (var i = 0; i < element.conformanceStatements.length; i++) {
-                        if ($rootScope.datatypeConformanceStatements.indexOf(element.conformanceStatements[i]) === -1)
-                            $rootScope.datatypeConformanceStatements.push(element.conformanceStatements[i]);
-                    }
-
-
-                    element.components = $filter('orderBy')(element.components, 'position');
-                    angular.forEach(element.components, function (component) {
-                        $rootScope.processElement(component, element);
-                    });
-//            }
-                }
-            }catch (e){
-                throw e;
-            }
         };
 
         $rootScope.createNewFlavorName = function(label){
@@ -939,7 +978,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         		var cs = {
                         id: new ObjectId().toString(),
                         constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                        constraintTarget: positionPath,
+                        constraintTarget: firstConstraint.constraintTarget,
                         description: '['+ firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
                         assertion: '<AND>' + firstConstraint.assertion + secondConstraint.assertion + '</AND>'
                 };
@@ -947,7 +986,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         		var cs = {
                         id: new ObjectId().toString(),
                         constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                        constraintTarget: positionPath,
+                        constraintTarget: firstConstraint.constraintTarget,
                         description: '['+ firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
                         assertion: '<OR>' + firstConstraint.assertion + secondConstraint.assertion + '</OR>'
                 };
@@ -955,7 +994,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         		var cs = {
                         id: new ObjectId().toString(),
                         constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                        constraintTarget: positionPath,
+                        constraintTarget: firstConstraint.constraintTarget,
                         description: 'IF ['+ firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
                         assertion: '<IMPLY>' + firstConstraint.assertion + secondConstraint.assertion + '</IMPLY>'
                 };
@@ -966,7 +1005,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         
         $rootScope.generateConformanceStatement = function(positionPath, newConstraint){
         	var cs = null;
-        	if ($scope.newConstraint.contraintType === 'valued') {
+        	if (newConstraint.contraintType === 'valued') {
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
