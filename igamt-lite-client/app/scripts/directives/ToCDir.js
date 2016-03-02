@@ -56,11 +56,11 @@ angular
 					var leafTemplate = "<leaf leaf='branch' index='index'></leaf>";
 
 					var linker = function(scope, element, attrs) {
-						console.log("<=label=" + scope.branch.label);
+//						console.log("<=label=" + scope.branch.label);
 						if (angular.isArray(scope.branch.children)) {
-							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
-							 " label=" + scope.branch.label + " children=" +
-							 scope.branch.children.length);
+//							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
+//							 " label=" + scope.branch.label + " children=" +
+//							 scope.branch.children.length);
 							if (scope.branch.type === "messages") {
 								element.append(branchMessageTemplate);
 							} else {
@@ -69,7 +69,7 @@ angular
 							$compile(element.contents())(scope);
 
 						} else {
-							console.log("leaf id=" + scope.branch.id + " leaf type="  + scope.branch.type + " leaf label="  + scope.branch.label + " parent=" + scope.branch.parent.type);
+//							console.log("leaf id=" + scope.branch.id + " leaf type="  + scope.branch.type + " leaf label="  + scope.branch.label + " parent=" + scope.branch.parent.type);
 							element.append(leafTemplate).show();
 							$compile(element.contents())(scope);
 						}
@@ -124,7 +124,7 @@ angular
 //							console.log("leafMeta=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else if (scope.leaf.type === "section") {
 							element.html(leafSection).show();
-							console.log("leafSection=" + scope.leaf.label + " parent=" + scope.leaf.parent);
+//							console.log("leafSection=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						} else if (scope.leaf.type === "message") {
 							element.html(leafMessage).show();
 //							console.log("leafMessage=" + scope.leaf.label + " parent=" + scope.leaf.parent + " leaf.reference.name=" + scope.leaf.reference.name);

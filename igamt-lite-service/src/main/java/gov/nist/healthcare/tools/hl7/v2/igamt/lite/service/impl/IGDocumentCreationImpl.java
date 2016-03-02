@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,21 +188,35 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	private void addMessages(List<MessageEvents> msgEvts, Profile pSource, Profile pTarget) {
 		Messages messages = pTarget.getMessages();
+		messages.setType(pSource.getMessages().getType());
 		for (MessageEvents msgEvt : msgEvts) {
 			Message m = pSource.getMessages().findOne(msgEvt.getId());
+			Message m1 = null;
+			try {
+				m1 = m.clone();
+			} catch (CloneNotSupportedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			m1.setId(ObjectId.get().toString());
 			Iterator<Event> itr = msgEvt.getChildren().iterator();
 			if (itr.hasNext()) {
 				String event = itr.next().getName();
-				m.setEvent(event);
+				log.debug("msgEvt=" + msgEvt.getId() + " " + event);
+				m1.setEvent(event);
 			} else {
 				try {
 					throw new EventNotSetException("MessageEvent id=" + msgEvt.getId() + " name=" + msgEvt.getName());
 				} catch (EventNotSetException e) {
 					log.error("Event was set to \"event unk\"", e);
 				}
-				m.setEvent("event unk");
+				ObjectId.get().toString();
+				m1.setEvent("event unk");
 			}
-			messages.addMessage(m);
+			String name = m1.getMessageType() + "^" + m1.getEvent() + "^" + m1.getStructID();
+			log.debug("Message.name=" + name);
+			m1.setName(name);
+			messages.addMessage(m1);
 			for (SegmentRefOrGroup sg : m.getChildren()) {
 				if (sg instanceof SegmentRef) {
 					addSegment((SegmentRef) sg, pSource, pTarget);
@@ -214,6 +229,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	private void addSegment(SegmentRef sref, Profile pSource, Profile pTarget) {
 		Segments sgtsTarget = pTarget.getSegments();
+		sgtsTarget.setType(pSource.getSegments().getType());
 		Segment sgt = pSource.getSegments().findOneSegmentById(sref.getRef());
 		sgtsTarget.addSegment(sgt);
 		for (Field f : sgt.getFields()) {
@@ -237,6 +253,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	private void addDatatype(Datatype dt, Profile pSource, Profile pTarget) {
 		Datatypes dtsSource = pSource.getDatatypes();
 		Datatypes dtsTarget = pTarget.getDatatypes();
+		dtsTarget.setType(dtsSource.getType());
 		Tables vsdTarget = pTarget.getTables();
 		if (dt != null && !dtsTarget.getChildren().contains(dt)) {
 			dtsTarget.addDatatype(dt);
@@ -249,6 +266,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	private void addTable(Table vsd, Profile pSource, Profile pTarget) {
 		Tables vsdTarget = pTarget.getTables();
+		vsdTarget.setType(pSource.getTables().getType());
 		if (vsd != null && !vsdTarget.getChildren().contains(vsd)) {
 			vsdTarget.addTable(vsd);
 		}

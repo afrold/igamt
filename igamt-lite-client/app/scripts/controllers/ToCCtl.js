@@ -96,7 +96,11 @@ angular
 							
 							$scope.closedCtxSubMenu = function(leaf, $index) {
 								var ctxMenuSelection = ContextMenuSvc.get();
+								console.log("ctxMenuSelection=" + ctxMenuSelection);
 								switch (ctxMenuSelection) {
+								case "Add":
+									console.log("Add==> node=" + leaf);
+									break;
 								case "Copy":
 									console.log("Copy==> node=" + leaf);
 									if (leaf.reference.type === 'section') {
@@ -129,7 +133,7 @@ angular
 									console
 											.log("Context menu defaulted with "
 													+ ctxMenuSelection
-													+ " Should be Add, clone, or Delete.");
+													+ " Should be Add, Copy, or Delete.");
 								}
 							};
 

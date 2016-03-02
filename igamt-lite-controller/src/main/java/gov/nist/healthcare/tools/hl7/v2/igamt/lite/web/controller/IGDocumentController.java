@@ -408,10 +408,10 @@ public class IGDocumentController extends CommonController {
 				+ command.getMessageIds() + " size="
 				+ command.getMessageIds().size());
 		List<MessageEvents> messages = igDocumentCreation.summary(
-				command.getHl7Version(), command.getMessageIds());
+		command.getHl7Version(), command.getMessageIds());
 		log.debug("messages=" + messages.size());
 		return messages;
-	}
+	}      
 
 	@RequestMapping(value = "/createIntegrationProfile", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public IGDocument createIG(
@@ -432,6 +432,8 @@ public class IGDocumentController extends CommonController {
 			@RequestBody IntegrationIGDocumentRequestWrapper idrw)
 			throws IGDocumentException {
 		log.info("Update profile with additional messages.");
+		log.debug("getMsgEvts()" + idrw.getMsgEvts());
+		log.debug("getIgdocument()" + idrw.getIgdocument());
 		IGDocument igDocument = igDocumentCreation.updateIntegratedIGDocument(
 				idrw.getMsgEvts(), idrw.getIgdocument());
 		igDocumentService.save(igDocument);

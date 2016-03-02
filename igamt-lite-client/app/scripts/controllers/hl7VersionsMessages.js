@@ -22,6 +22,8 @@ angular.module('igl').controller(
 				});
 
 				hl7VersionsInstance.result.then(function(result) {
+					console.log("hl7VersionsInstance.result$scope.hl7Version=" + $scope.hl7Version);
+					console.log("hl7VersionsInstance.result$rootScope.hl7Version=" + $rootScope.hl7Version);
 					var hl7Version = $rootScope.hl7Version;
 					switch ($rootScope.clickSource) {
 					case "btn": {
@@ -84,11 +86,12 @@ angular.module('igl').controller(
 			 * 
 			 * @param msgIds
 			 */
-			$scope.updateIGDocument = function(msgIds) {
+			$scope.updateIGDocument = function(msgEvts) {
 				console.log("Updating igdocument...");
+				console.log("$scope.updateIGDocumentmsgEvts=" + JSON.stringify(msgEvts));
 				var iprw = {
 					"igdocument" : $rootScope.igdocument,
-					"msgIds" : msgIds,
+					"msgEvts" : msgEvts,
 					"timeout" : 60000
 				};
 				$http.post('api/igdocuments/updateIntegrationProfile', iprw)
@@ -123,7 +126,11 @@ angular.module('igl').controller(
 			var messageEvents = [];
 			
 			$scope.loadIGDocumentsByVersion = function() {
-				$rootScope.hl7Version = $scope.hl7Version;
+				console.log("$scope.hl7Version=" + $scope.hl7Version);
+				console.log("$rootScope.hl7Version=" + $rootScope.hl7Version);
+				if (!$scope.hl7Version && $rootScope.hl7Version) {
+					$scope.hl7Version = $rootScope.hl7Version;
+				}
 				$scope.messageEventsParams = MessageEventsSvc.getMessageEvents($scope.hl7Version, $scope.messageIds);
 			};
 			
@@ -164,6 +171,9 @@ angular.module('igl').controller(
 
 			$scope.hl7Versions = hl7Versions;
 			$scope.ok = function() {
+				console.log("$scope.ok$scope.hl7Version=" + $scope.hl7Version);
+				console.log("$scope.ok$rootScope.hl7Version=" + $rootScope.hl7Version);
+				$rootScope.hl7Version = $scope.hl7Version;
 				$scope.messageEvents = messageEvents;
 				$modalInstance.close(messageEvents);
 			};

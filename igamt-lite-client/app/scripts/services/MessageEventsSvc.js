@@ -12,17 +12,17 @@ angular.module('igl').factory('MessageEventsSvc', function($http, ngTreetablePar
 	
 	var svc = this;
 	
-	svc.messagesByVersion = {};
+//	svc.messagesByVersion = {};
 	
-	svc.state = {};
-	
-	svc.getState = function() {
-		return svc.state; 
-	}
-	
-	svc.putState = function(state) {
-		svc.state = state; 
-	}
+//	svc.state = {};
+//	
+//	svc.getState = function() {
+//		return svc.state; 
+//	}
+//	
+//	svc.putState = function(state) {
+//		svc.state = state; 
+//	}
 	
 	svc.getMessageEvents = function(hl7Version, messageIds) {
 		return new ngTreetableParams( {
@@ -41,7 +41,8 @@ angular.module('igl').factory('MessageEventsSvc', function($http, ngTreetablePar
 	};
 	
 function mes(hl7Version, messageIds) {
-
+	console.log("hl7Version=" + JSON.stringify(hl7Version));
+	console.log("messageIds=" + JSON.stringify(messageIds));
 	return $http.post(
 			'api/igdocuments/messageListByVersion', angular.fromJson({
 				"hl7Version" : hl7Version,
