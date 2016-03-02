@@ -945,6 +945,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             }
             return '';
         };
+
+        $scope.froalaOptions = {
+            toolbarButtons : ["bold", "italic", "underline", "|", "align", "formatOL", "formatUL"]
+        }
+
     }]);
 
 angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user', function($scope, $modalInstance, user) {

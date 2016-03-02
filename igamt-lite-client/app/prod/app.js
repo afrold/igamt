@@ -27,7 +27,8 @@ var app = angular
         'ng-context-menu',
         'table-settings',
         'angularjs-dropdown-multiselect',
-        'dndLists'
+        'dndLists',
+        'froala'
     ]);
 
 var
@@ -442,6 +443,8 @@ app.factory('StorageService',
     ['$rootScope', 'localStorageService', function ($rootScope, localStorageService) {
         var service = {
             TABLE_COLUMN_SETTINGS_KEY: 'SETTINGS_KEY',
+            SELECTED_IG_DOCUMENT_TYPE:'SelectedIgDocumentType',
+            SELECTED_IG_DOCUMENT_ID:'SelectedIgDocumentId',
             remove: function (key) {
                 return localStorageService.remove(key);
             },
@@ -458,6 +461,18 @@ app.factory('StorageService',
             },
             get: function (key) {
                 return localStorageService.get(key);
+            },
+            setSelectedIgDocumentType: function (val) {
+                this.set(this.SELECTED_IG_DOCUMENT_TYPE,val);
+            },
+            getSelectedIgDocumentType: function (key) {
+                return this.get(this.SELECTED_IG_DOCUMENT_TYPE);
+            },
+            setSelectedIgDocumentId: function (id) {
+                this.set(this.SELECTED_IG_DOCUMENT_ID,id);
+            },
+            getSelectedIgDocumentId: function () {
+                return this.get(this.SELECTED_IG_DOCUMENT_ID);
             }
         };
         return service;

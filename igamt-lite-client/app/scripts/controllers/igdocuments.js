@@ -170,20 +170,19 @@ angular.module('igl')
          * init the controller
          */
         $scope.initIGDocuments = function () {
-            $scope.igDocumentConfig.selectedType = StorageService.get("SelectedIgDocumentType") != null ? StorageService.get("SelectedIgDocumentType") : 'USER';
+            $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ?StorageService.getSelectedIgDocumentType() : 'USER';
             $scope.loadIGDocuments();
             $scope.getScrollbarWidth();
             /**
              * On 'event:loginConfirmed', resend all the 401 requests.
              */
             $scope.$on('event:loginConfirmed', function (event) {
-                $scope.igDocumentConfig.selectedType = StorageService.get("SelectedIgDocumentType") != null ? StorageService.get("SelectedIgDocumentType") : 'USER';
+                $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ? StorageService.getSelectedIgDocumentType(): 'USER';
                 $scope.loadIGDocuments();
             });
 
             $rootScope.$on('event:openIGDocumentRequest', function (event, igdocument) {
-                $rootScope.igdocument = igdocument;
-                $scope.openIGDocument(igdocument);
+                $scope.selectIGDocument(igdocument);
             });
 
             $scope.$on('event:openDatatype', function (event, datatype) {
@@ -195,8 +194,7 @@ angular.module('igl')
             });
 
             $scope.$on('event:openMessage', function (event, message) {
-                console.log("event:openMessage=" + message);
-                $scope.selectMessage(message); // Should we open in a dialog ??
+                 $scope.selectMessage(message); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openTable', function (event, table) {
@@ -231,8 +229,13 @@ angular.module('igl')
 
         $scope.selectIGDocumentType = function (selectedType) {
             $scope.igDocumentConfig.selectedType = selectedType;
-            StorageService.set("SelectedIgDocumentType", selectedType);
+            StorageService.setSelectedIgDocumentType(selectedType);
             $scope.loadIGDocuments();
+        };
+
+        $scope.selectIGDocument = function (igdocument) {
+            $rootScope.igdocument = igdocument;
+            $scope.openIGDocument(igdocument);
         };
 
         $scope.loadIGDocuments = function () {
@@ -242,12 +245,19 @@ angular.module('igl')
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
                 waitingDialog.show('Loading IG Documents...', {dialogSize: 'sm', progressType: 'info'});
                 $scope.loading = true;
-                StorageService.set("SelectedIgDocumentType", $scope.igDocumentConfig.selectedType);
+                StorageService.setSelectedIgDocumentType($scope.igDocumentConfig.selectedType);
                 $http.get('api/igdocuments', {params: {"type": $scope.igDocumentConfig.selectedType}}).then(function (response) {
                     $rootScope.igs = angular.fromJson(response.data);
                     $scope.tmpIgs = [].concat($rootScope.igs);
                     $scope.loading = false;
                     waitingDialog.hide();
+                    var prevIgDocId = StorageService.getSelectedIgDocumentId();
+                    if(prevIgDocId !=null){
+                        var prevIgDoc = $scope.findOne(prevIgDocId);
+                        if(prevIgDoc != null){
+                            $scope.selectIGDocument(prevIgDoc);
+                        }
+                    }
                 }, function (error) {
                     $scope.loading = false;
                     $scope.error = error.data;
@@ -318,72 +328,103 @@ angular.module('igl')
                 waitingDialog.show('Opening IG Document...', {dialogSize: 'sm', progressType: 'info'});
                 $scope.selectIgTab(1);
                 $timeout(function () {
+                    StorageService.setSelectedIgDocumentId($rootScope.igdocument.id);
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
-                    $rootScope.igdocument.profile.messages.children = $filter('orderBy')($rootScope.igdocument.profile.messages.children, 'label');
-                    $rootScope.igdocument.profile.segments.children = $filter('orderBy')($rootScope.igdocument.profile.segments.children, 'label');
-                    $rootScope.igdocument.profile.datatypes.children = $filter('orderBy')($rootScope.igdocument.profile.datatypes.children, 'label');
-                    $rootScope.igdocument.profile.tables.children = $filter('orderBy')($rootScope.igdocument.profile.tables.children, 'label');
-                    $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);
+                    $scope.sortByLabels();
+                    $scope.loadToc();
                     $rootScope.initMaps();
-                    $rootScope.messages = $rootScope.igdocument.profile.messages.children;
-                    angular.forEach($rootScope.igdocument.profile.datatypes.children, function (child) {
-                        this[child.id] = child;
-                        if (child.displayName) { // TODO: Change displayName to label
-                            child.label = child.displayName;
-                        }
-                    }, $rootScope.datatypesMap);
-                    angular.forEach($rootScope.igdocument.profile.segments.children, function (child) {
-                        this[child.id] = child;
-                        if (child.displayName) { // TODO: Change displayName to label
-                            child.label = child.displayName;
-                        }
-                    }, $rootScope.segmentsMap);
-
-                    angular.forEach($rootScope.igdocument.profile.tables.children, function (child) {
-                        this[child.id] = child;
-                        if (child.displayName) { // TODO: Change displayName to label
-                            child.label = child.displayName;
-                        }
-                        angular.forEach(child.codes, function (code) {
-                            if (code.displayName) { // TODO: Change displayName to label
-                                code.label = code.displayName;
-                            }
-                        });
-                    }, $rootScope.tablesMap);
-
-                    $rootScope.segments = [];
-                    $rootScope.tables = $rootScope.igdocument.profile.tables.children;
-                    $rootScope.datatypes = $rootScope.igdocument.profile.datatypes.children;
-
-                    angular.forEach($rootScope.igdocument.profile.messages.children, function (child) {
-                        this[child.id] = child;
-                        var cnt = 0;
-                        angular.forEach(child.children, function (segmentRefOrGroup) {
-                            $rootScope.processElement(segmentRefOrGroup);
-                        });
-                    }, $rootScope.messagesMap);
-
-                    if (!$rootScope.config || $rootScope.config === null) {
-                        $http.get('api/igdocuments/config').then(function (response) {
-                            $rootScope.config = angular.fromJson(response.data);
-                            $scope.loadingIGDocument = false;
-                            $scope.toEditIGDocumentId = null;
-                            $scope.selectDocumentMetaData();
-                        }, function (error) {
-                            $scope.loadingIGDocument = false;
-                            $scope.toEditIGDocumentId = null;
-                        });
-                    } else {
-                        $scope.loadingIGDocument = false;
-                        $scope.toEditIGDocumentId = null;
-                        $scope.selectDocumentMetaData();
-                    }
+                    $scope.collectDatatypes();
+                    $scope.collectSegments();
+                    $scope.collectTables();
+                    $scope.collectMessages();
+                    $scope.loadIgDocumentMetaData();
                     waitingDialog.hide();
                 }, 100);
             }
         };
+
+        $scope.sortByLabels = function () {
+            $rootScope.igdocument.profile.messages.children = $filter('orderBy')($rootScope.igdocument.profile.messages.children, 'label');
+            $rootScope.igdocument.profile.segments.children = $filter('orderBy')($rootScope.igdocument.profile.segments.children, 'label');
+            $rootScope.igdocument.profile.datatypes.children = $filter('orderBy')($rootScope.igdocument.profile.datatypes.children, 'label');
+            $rootScope.igdocument.profile.tables.children = $filter('orderBy')($rootScope.igdocument.profile.tables.children, 'label');
+        };
+
+        $scope.loadIgDocumentMetaData = function () {
+            if (!$rootScope.config || $rootScope.config === null) {
+                $http.get('api/igdocuments/config').then(function (response) {
+                    $rootScope.config = angular.fromJson(response.data);
+                    $scope.loadingIGDocument = false;
+                    $scope.toEditIGDocumentId = null;
+                    $scope.selectDocumentMetaData();
+                }, function (error) {
+                    $scope.loadingIGDocument = false;
+                    $scope.toEditIGDocumentId = null;
+                });
+            } else {
+                $scope.loadingIGDocument = false;
+                $scope.toEditIGDocumentId = null;
+                $scope.selectDocumentMetaData();
+            }
+        };
+
+        $scope.loadToc = function () {
+            $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);
+        };
+
+        $scope.collectDatatypes = function () {
+            $rootScope.datatypesMap = {};
+            $rootScope.datatypes = $rootScope.igdocument.profile.datatypes.children;
+            angular.forEach($rootScope.igdocument.profile.datatypes.children, function (child) {
+                this[child.id] = child;
+                if (child.displayName) {
+                    child.label = child.displayName;
+                }
+            }, $rootScope.datatypesMap);
+        };
+
+        $scope.collectSegments = function () {
+            $rootScope.segmentsMap = {};
+            $rootScope.segments = [];
+            angular.forEach($rootScope.igdocument.profile.segments.children, function (child) {
+                this[child.id] = child;
+                if (child.displayName) {
+                    child.label = child.displayName;
+                }
+            }, $rootScope.segmentsMap);
+        };
+
+        $scope.collectTables = function () {
+            $rootScope.tables = $rootScope.igdocument.profile.tables.children;
+            $rootScope.tablesMap = {};
+            angular.forEach($rootScope.igdocument.profile.tables.children, function (child) {
+                this[child.id] = child;
+                if (child.displayName) {
+                    child.label = child.displayName;
+                }
+                angular.forEach(child.codes, function (code) {
+                    if (code.displayName) {
+                        code.label = code.displayName;
+                    }
+                });
+            }, $rootScope.tablesMap);
+        };
+
+        $scope.collectMessages = function () {
+            $rootScope.messages = $rootScope.igdocument.profile.messages.children;
+            $rootScope.messagesMap = {};
+            angular.forEach($rootScope.igdocument.profile.messages.children, function (child) {
+                this[child.id] = child;
+                var cnt = 0;
+                angular.forEach(child.children, function (segmentRefOrGroup) {
+                    $rootScope.processElement(segmentRefOrGroup);
+                });
+            }, $rootScope.messagesMap);
+        };
+
+
 
         $scope.collectData = function (node, segRefOrGroups, segments, datatypes) {
             if (node) {

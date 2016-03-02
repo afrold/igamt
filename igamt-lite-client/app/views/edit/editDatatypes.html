@@ -96,10 +96,13 @@
                                  ng-class="{'has-error' : datatypeForm.text.$invalid}">
                                 <label class="control-label">Definition Text</label>
                                 <!--<div ng-show="!options.readonly">-->
-                                <div text-angular class="igl-text" ta-disabled="options.readonly"
-                                     name="text"
-                                     ng-change="recordChanged()"
-                                     ng-model="datatype.text"></div>
+                                <!--<div text-angular class="igl-text" ta-disabled="options.readonly"-->
+                                     <!--name="text"-->
+                                     <!--ng-change="recordChanged()"-->
+                                     <!--ng-model="datatype.text"></div>-->
+
+                                <textarea froala ng-model="datatype.text" ng-change="recordChanged()" ng-disabled="options.readonly"></textarea>
+
                                 <!--</div>-->
                                 <!--<div ng-show="options.readonly">-->
                                 <!--<textarea ng-bind="datatype.text" class="form-control"></textarea>-->
