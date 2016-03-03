@@ -358,6 +358,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     $scope.addComplexConformanceStatement = function(){
         $scope.complexConstraint.constraintId = $scope.complexConstraint.constraintTarget;
         $scope.complexConstraint.constraintClassification = $scope.newComplexConstraintClassification;
+        $scope.complexConstraint.assertion = "<Condition>" + $scope.complexConstraint.assertion + "</Condition>";
         $scope.selectedMessage.predicates.push($scope.complexConstraint);
         $rootScope.recordChanged();
         $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
@@ -381,7 +382,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         	var positionPath = selectedNode.path;
         	var cp = $rootScope.generatePredicate(positionPath, $scope.newConstraint);
             if($scope.constraintType === 'Plain'){
-            	cp.assertion = "<Assertion>" + cp.assertion + "</Assertion>";
+            	cp.assertion = "<Condition>" + cp.assertion + "</Condition>";
             	$scope.selectedMessage.predicates.push(cp);
                 $rootScope.recordChanged();
             }else if ($scope.constraintType === 'Complex'){
