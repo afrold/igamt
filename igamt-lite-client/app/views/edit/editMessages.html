@@ -242,7 +242,7 @@ body {
         </td>
         <td class="col-xs-1" ng-style="predWidth">
             <div>
-				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:constraintFilter(node.obj.id, message))">
+				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
                     <a ng-click="managePredicate(node.obj, message)"
                        tooltip-html="getConstraintAsString(constraint)" tooltip-append-to-body="true"
                        tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(constraint)" tooltip-trigger
@@ -258,21 +258,21 @@ body {
 
         <td class="col-xs-1" ng-style="csWidth">
 			<div>
-				<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.obj.id, message))">
-                    <a ng-click="manageConformanceStatement(node.obj, message)"
+				<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)">
+                    <a ng-click="manageConformanceStatement(node, message)"
                        tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
                        tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
                        tooltip-animation="false" tooltip-placement="left"></a>
                 </div>
 				<div ng-hide="filteredConstraints.length">
-					<a ng-click="manageConformanceStatement(node.obj, message)" class="point">
+					<a ng-click="manageConformanceStatement(node, message)" class="point">
                 		<span><i class="fa fa-plus fa-fw"></i></span>
                 	</a>
 				</div>
 			</div>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <div>{{node.path}}</div>
+            <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth">
             <div>
@@ -350,7 +350,7 @@ body {
         </td>
         <td class="col-xs-1" ng-style="predWidth">
 			<div>
-				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:constraintFilter(node.obj.id, message))">
+				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
                     <a ng-click="managePredicate(node.obj, message)"
                        tooltip-html="getConstraintAsString(constraint)" tooltip-append-to-body="true"
                        tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(constraint)" tooltip-trigger
@@ -366,14 +366,14 @@ body {
 
         <td class="col-xs-1" ng-style="csWidth">
 			<div>
-				<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.obj.id, message))">
-                    <a ng-click="manageConformanceStatement(node.obj, message)"
+				<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)">
+                    <a ng-click="manageConformanceStatement(node, message)"
                        tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
                        tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
                        tooltip-animation="false" tooltip-placement="left"></a>
                 </div>
 				<div ng-hide="filteredConstraints.length">
-					<a ng-click="manageConformanceStatement(node.obj, message)" class="point">
+					<a ng-click="manageConformanceStatement(node, message)" class="point">
                 		<span><i class="fa fa-plus fa-fw"></i></span>
                 	</a>
 				</div>
@@ -381,7 +381,7 @@ body {
         </td>
 
         <td class="col-xs-1 col-fixed-80">
-            <div>{{node.path}}</div>
+            <div>-</div>
         </td>
 
         <td class="col-xs-1" ng-style="commentWidth">
@@ -444,7 +444,7 @@ body {
         </td>
         <td class="col-xs-1" ng-style="predWidth">
 			<!--<div>
-				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:constraintFilter(node.obj.id, message))">
+				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
 					<div ng-show="options.readonly">
 						<p 
                				tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
@@ -475,7 +475,7 @@ body {
         <td class="col-xs-1" ng-style="csWidth">
 			<div>
 				<div ng-show="options.readonly">
-					<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.obj.id, message))"
+					<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)"
                				tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
                				tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
                				tooltip-animation="false" tooltip-placement="left">
@@ -483,14 +483,14 @@ body {
 				</div>
 
 				<div ng-hide="options.readonly">
-					<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.obj.id, message))">
-						<a ng-click="manageConformanceStatement(node.obj, message)"
+					<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)">
+						<a ng-click="manageConformanceStatement(node, message)"
                        		tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
                        		tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
                        		tooltip-animation="false" tooltip-placement="left"></a>
 					</div>
 					<div ng-hide="filteredConstraints.length || options.readonly">
-						<a ng-click="manageConformanceStatement(node.obj, message)" class="point">
+						<a ng-click="manageConformanceStatement(node, message)" class="point">
                 			<span><i class="fa fa-plus fa-fw"></i></span>
                 		</a>
 					</div>
@@ -504,7 +504,7 @@ body {
 			</div>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <div>{{node.path}}</div>
+            <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth">
             <div tooltip-html="node.obj.comment" tooltip-append-to-body="true"
@@ -564,7 +564,7 @@ body {
         </td>
         <td class="col-xs-1" ng-style="predWidth">
 			<!--<div>
-				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:constraintFilter(node.obj.id, message))">
+				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
 					<div ng-show="options.readonly">
 						<p 
                				tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
@@ -595,7 +595,7 @@ body {
         <td class="col-xs-1" ng-style="csWidth">
 			<div>
 				<div ng-show="options.readonly">
-					<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.obj.id, message))"
+					<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)"
                				tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
                				tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
                				tooltip-animation="false" tooltip-placement="left">
@@ -603,14 +603,14 @@ body {
 				</div>
 
 				<div ng-hide="options.readonly">
-					<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.obj.id, message))">
-						<a ng-click="manageConformanceStatement(node.obj, message)"
+					<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)">
+						<a ng-click="manageConformanceStatement(node, message)"
                        		tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
                        		tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
                        		tooltip-animation="false" tooltip-placement="left"></a>
 					</div>
 					<div ng-hide="filteredConstraints.length || options.readonly">
-						<a ng-click="manageConformanceStatement(node.obj, message)" class="point">
+						<a ng-click="manageConformanceStatement(node, message)" class="point">
                 			<span><i class="fa fa-plus fa-fw"></i></span>
                 		</a>
 					</div>
@@ -625,7 +625,7 @@ body {
         </td>
 
         <td class="col-xs-1 col-fixed-80">
-            <div>{{node.path}}</div>
+            <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth">
             <div tooltip-html="node.obj.comment" tooltip-append-to-body="true"
@@ -931,17 +931,16 @@ body {
 <script type="text/ng-template" id="ConformanceStatementMessageCtrl.html">
 <div class="modal-header">
 	<div ng-show="selectedNode.obj.type === 'segmentRef'">
-		<h3 class="modal-title">Conformance statement for {{segmentsMap[selectedNode.obj.ref].name}}</h3>
+		<h3 class="modal-title">Conformance statement for {{segmentsMap[selectedNode.obj.ref].name}}({{selectedNode.path}})</h3>
 	</div>
 	<div ng-hide="selectedNode.obj.type === 'segmentRef'">
-		<h3 class="modal-title">Conformance statement for {{selectedNode.obj.name}}</h3>
+		<h3 class="modal-title">Conformance statement for {{selectedNode.obj.name}}({{selectedNode.path}})</h3>
 	</div>
 </div>
 
 <div class="modal-body">
 <form role="form">
 <h5>List of conformance statements</h5>
-
 <div class="table-responsive">
     <table class="table table-striped table-bordered">
         <thead>
@@ -952,10 +951,8 @@ body {
             <th class="col-xs-1"></th>
         </tr>
         </thead>
-
         <tbody>
-
-        <tr ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(selectedNode.obj.id, message))">
+        <tr ng-repeat="constraint in message.conformanceStatements | filter: {constraintTarget: selectedNode.path}:true">
             <td class="col-xs-2">{{constraint.constraintId}}</td>
             <td class="col-xs-7">{{constraint.description}}</td>
             <td class="col-md-2">{{constraint.constraintClassification}}</td>
@@ -1363,7 +1360,7 @@ body {
 
         <td class="col-xs-2" ng-style="predWidth">
             <!--<div>
-				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:constraintFilter(node.obj.id, message))"
+				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)"
                		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
                		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
                		tooltip-animation="false" tooltip-placement="left">
@@ -1373,7 +1370,7 @@ body {
 
         <td class="col-xs-3" ng-style="csWidth">
             <div>
-				<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.obj.id, message))"
+				<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)"
                		tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
                		tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
                		tooltip-animation="false" tooltip-placement="left">
@@ -1436,7 +1433,7 @@ body {
 
         <td class="col-xs-1" ng-style="predWidth">
             <div>
-				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:constraintFilter(node.obj.id, message))"
+				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)"
                		tooltip-html="getConstraintAsString(constraint)" tooltip-append-to-body="true"
                		tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(constraint)" tooltip-trigger
                		tooltip-animation="false" tooltip-placement="left">
@@ -1446,7 +1443,7 @@ body {
 
         <td class="col-xs-1" ng-style="csWidth">
             <div>
-                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:constraintFilter(node.obj.id, message))"
+                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)"
                		tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
                		tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
                		tooltip-animation="false" tooltip-placement="left">

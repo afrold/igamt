@@ -61,24 +61,6 @@ angular.module('igl')
             return component.type === 'component' && $rootScope.parentsMap && $rootScope.parentsMap[component.id] && $rootScope.parentsMap[component.id].type === 'component';
         };
 
-        $scope.countConformanceStatements = function (node, message) {
-        	var positionPath = $rootScope.findPositionPath(node.id, message, "" , null);
-        	var count = 0;
-        	if(message.conformanceStatements){
-        		for (var i = 0, len1 = message.conformanceStatements.length; i < len1; i++) {
-            		if(message.conformanceStatements[i].constraintTarget === positionPath) count = count + 1;
-            	}
-        	}
-            return count;
-        };
-
-        $scope.countPredicates = function (node, message) {
-            if (node != null && node.predicates) {
-                return node.predicates.length;
-            }
-            return 0;
-        };
-
         $scope.manageConformanceStatement = function (node, message) {
             var modalInstance = $modal.open({
                 templateUrl: 'ConformanceStatementMessageCtrl.html',
@@ -1401,7 +1383,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     $scope.addConformanceStatement = function () {
         if ($scope.newConstraint.position_1 != null) {
         	$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
-        	var positionPath = $rootScope.findPositionPath($scope.selectedNode.id, $scope.selectedMessage, "" , null);
+        	var positionPath = selectedNode.path;
         	var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
             if($scope.constraintType === 'Plain'){
             	cs.assertion = "<Assertion>" + cs.assertion + "</Assertion>";

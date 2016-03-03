@@ -674,9 +674,51 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.getDatatype = function(id){
             return $rootScope.datatypesMap && $rootScope.datatypesMap[id];
         };
+        
+        $rootScope.processElement = function (element, parent) {
+        	try {
+        		if(element.type === "message") {
+        			element.children = $filter('orderBy')(element.children, 'position');
+        			angular.forEach(element.children, function (segmentRefOrGroup) {
+        				$rootScope.processElement(segmentRefOrGroup, element);
+        			});
+        		} else if (element.type === "group" && element.children) {
+        			if(parent){
+        				$rootScope.parentsMap[element.id] = parent;
+        			}
+        			element.children = $filter('orderBy')(element.children, 'position');
+        			angular.forEach(element.children, function (segmentRefOrGroup) {
+        				$rootScope.processElement(segmentRefOrGroup, element);
+        			});
+        		} else if(element.type === "segmentRef") {
+        			if(parent){
+        				$rootScope.parentsMap[element.id] = parent;
+        			}
+        			$rootScope.processElement($rootScope.segmentsMap[element.ref], element);
+        		} else if (element.type === "segment") {
+        			element.fields = $filter('orderBy')(element.fields, 'position');
+        			angular.forEach(element.fields, function (field) {
+        				$rootScope.processElement(field, element);
+        			});
+        		} else if (element.type === "field") {
+        			$rootScope.parentsMap[element.id] = parent;
+        			$rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+        		} else if (element.type === "component") {
+        			$rootScope.parentsMap[element.id] = parent;
+        			$rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+        		} else if (element.type === "datatype") {
+        			element.components = $filter('orderBy')(element.components, 'position');
+        			angular.forEach(element.components, function (component) {
+        				$rootScope.processElement(component, element);
+        			});
+        		}
+        	}catch(e){
+        		throw e;
+        	}
+        };
 
 
-        $rootScope.processElement = function (element, parent, parentOBJ) {
+        $rootScope.processMessageTree = function (element, parent) {
         	try {
         		if(element.type === "message") {
         			var m = new Object();
@@ -685,116 +727,63 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         			
         			element.children = $filter('orderBy')(element.children, 'position');
         			angular.forEach(element.children, function (segmentRefOrGroup) {
-        				$rootScope.processElement(segmentRefOrGroup, m, element);
+        				$rootScope.processMessageTree(segmentRefOrGroup, m);
         			});
         			
         		} else if (element.type === "group" && element.children) {
         			var g = new Object();
-        			g.path = element.position;
+        			g.path = element.position + "[1]";
         			g.obj = element;
         			g.children = [];
         			if(parent.path){
-        				$rootScope.parentsMap[element.id] = parentOBJ;
-        				g.path = parent.path + "." + element.position;
+        				g.path = parent.path + "." + element.position + "[1]";
         			}
         			parent.children.push(g);
         			element.children = $filter('orderBy')(element.children, 'position');
         			angular.forEach(element.children, function (segmentRefOrGroup) {
-        				$rootScope.processElement(segmentRefOrGroup, g, element);
+        				$rootScope.processMessageTree(segmentRefOrGroup, g);
         			});
         		} else if(element.type === "segmentRef") {
         			var s = new Object();
-        			s.path = element.position;
+        			s.path = element.position + "[1]";
         			s.obj = element;
         			s.children = [];
         			if(parent.path){
-        				$rootScope.parentsMap[element.id] = parentOBJ;
-        				s.path = parent.path + "." + element.position;
+        				s.path = parent.path + "." + element.position + "[1]";
         			}
         			parent.children.push(s);
         			
         			var ref = $rootScope.segmentsMap[element.ref];
-        			$rootScope.processElement(ref, s, element);
+        			$rootScope.processMessageTree(ref, s);
         			
         		} else if (element.type === "segment") {
         			element.fields = $filter('orderBy')(element.fields, 'position');
         			angular.forEach(element.fields, function (field) {
-        				$rootScope.processElement(field, parent, element);
+        				$rootScope.processMessageTree(field, parent);
         			});
         		} else if (element.type === "field") {
-        			$rootScope.parentsMap[element.id] = parentOBJ;
         			var f = new Object();
         			f.obj = element;
-        			f.path = parent.path + "." + element.position;
+        			f.path = parent.path + "." + element.position + "[1]";
         			f.children = [];
         			parent.children.push(f);
-        			$rootScope.processElement($rootScope.datatypesMap[element.datatype], f, element);
+        			$rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], f);
         		} else if (element.type === "component") {
-        			$rootScope.parentsMap[element.id] = parentOBJ;
         			var c = new Object();
         			c.obj = element;
-        			c.path = parent.path + "." + element.position;
+        			c.path = parent.path + "." + element.position + "[1]";
         			c.children = [];
         			parent.children.push(c);
-        			$rootScope.processElement($rootScope.datatypesMap[element.datatype], c, element);
+        			$rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], c);
         		} else if (element.type === "datatype") {
         			element.components = $filter('orderBy')(element.components, 'position');
         			angular.forEach(element.components, function (component) {
-        				$rootScope.processElement(component, parent, element.id);
+        				$rootScope.processMessageTree(component, parent);
         			});
         		}
         	}catch(e){
         		throw e;
         	}
-        	
-        	
-        	
-//            try {
-//                if (element.type === "group" && element.children) {
-//                	element["path"] = element.position;
-//                    if (parent) {
-//                    	element["path"] = parent.path + "." + element.position;
-//                    	$rootScope.parentsMap[element.id] = parent;
-//                    }
-//                    element.children = $filter('orderBy')(element.children, 'position');
-//                    angular.forEach(element.children, function (segmentRefOrGroup) {
-//                        $rootScope.processElement(segmentRefOrGroup, element);
-//                    });
-//                } else if (element.type === "segmentRef") {
-//                	element["path"] = element.position;
-//                    if (parent) {
-//                    	element["path"] = parent.path + "." + element.position;
-//                    	$rootScope.parentsMap[element.id] = parent;
-//                    }
-//                    var ref = $rootScope.segmentsMap[element.ref];
-//                    $rootScope.processElement(ref, element);
-//                } else if (element.type === "segment") {
-//                    if ($rootScope.segments.indexOf(element) === -1) {
-//                        element["path"] = parent.path;
-//                        $rootScope.segments.push(element);
-//                        element.fields = $filter('orderBy')(element.fields, 'position');
-//                        angular.forEach(element.fields, function (field) {
-//                            $rootScope.processElement(field, element);
-//                        });
-//                    }
-//                } else if (element.type === "field") {
-//                    $rootScope.parentsMap[element.id] = parent;
-//                    element["path"] = parent.path + "." + element.position;
-//                    $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
-//                } else if (element.type === "component") {
-//                    $rootScope.parentsMap[element.id] = parent;
-//                    element["path"] = parent.path + "." + element.position;
-//                    $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
-//                } else if (element.type === "datatype") {
-//                	element["path"] = parent.path;
-//                    element.components = $filter('orderBy')(element.components, 'position');
-//                    angular.forEach(element.components, function (component) {
-//                        $rootScope.processElement(component, element);
-//                    });
-//                }
-//            }catch (e){
-//                throw e;
-//            }
         };
 
         $rootScope.createNewFlavorName = function(label){
@@ -913,64 +902,6 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             }
             else return true;
         };
-        
-        $rootScope.constraintFilter = function(id, message) {
-            return function(constraint) {
-                return $rootScope.findPositionPath(id, message, "" , null) === constraint.constraintTarget;
-            }
-        }
-        
-        $rootScope.findPositionPath = function (id, node, path, result){
-        	if(node.type === 'message' || node.type === 'group'){
-        		if(node.children && node.children.length > 0){
-            		for (var i = 0, len1 = node.children.length; i < len1; i++) {
-                		if(node.children[i].id === id){
-                			if(path == ""){
-                				return (i+1) + "[1]";
-                			}else{
-                				return path + "." + (i+1) + "[1]";
-                			}
-                			
-                		}else {
-                			if(path == ""){
-                				result = $rootScope.findPositionPath(id, node.children[i], (i+1) + "[1]", result);
-                			}else{
-                				result = $rootScope.findPositionPath(id, node.children[i], path + "." + (i+1) + "[1]", result);
-                			}
-                			
-                			if(result !== null) return result;
-                		}
-                	}
-            	}	
-        	}else if(node.type === 'segmentRef'){
-        		var segment = $rootScope.segmentsMap[node.ref];
-        		if(segment.fields && segment.fields.length > 0){
-        			for (var i = 0, len1 = segment.fields.length; i < len1; i++) {
-        				if(segment.fields[i].id === id){
-                			return path + "." + (i+1) + "[1]";
-                		}else {
-               				result = $rootScope.findPositionPath(id, segment.fields[i], path + "." + (i+1) + "[1]", result);
-                			if(result !== null) return result;
-                		}
-        			}
-        		}
-        	}else if(node.type === 'field' || node.type === 'component'){
-        		var datatype = $rootScope.datatypesMap[node.datatype];
-        		if(datatype.components && datatype.components.length > 0){
-        			for (var i = 0, len1 = datatype.components.length; i < len1; i++) {
-        				if(datatype.components[i].id === id){
-                			return path + "." + (i+1) + "[1]";
-                		}else {
-               				result = $rootScope.findPositionPath(id, datatype.components[i], path + "." + (i+1) + "[1]", result);
-                			if(result !== null) return result;
-                		}
-        			}
-        		}
-        	}
-        	
-        	return null;
-        }
-        
         
         $rootScope.generateCompositeConformanceStatement = function(compositeType, firstConstraint, secondConstraint){
         	var cs = null;

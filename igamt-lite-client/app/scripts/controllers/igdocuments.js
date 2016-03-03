@@ -204,7 +204,7 @@ angular.module('igl')
                 console.log("event:openMessage=" + message);
                 
                 $rootScope.messageTree = null;
-                $rootScope.processElement(message);
+                $rootScope.processMessageTree(message);
                 console.log("load Message Tree=" + JSON.stringify($rootScope.messageTree));
                 
                 $scope.selectMessage(message); // Should we open in a dialog ??
@@ -371,9 +371,9 @@ angular.module('igl')
                     angular.forEach($rootScope.igdocument.profile.messages.children, function (child) {
                         this[child.id] = child;
                         var cnt = 0;
-//                        angular.forEach(child.children, function (segmentRefOrGroup) {
-//                            $rootScope.processElement(segmentRefOrGroup);
-//                        });
+                        angular.forEach(child.children, function (segmentRefOrGroup) {
+                            $rootScope.processElement(segmentRefOrGroup);
+                        });
                     }, $rootScope.messagesMap);
 
                     if (!$rootScope.config || $rootScope.config === null) {
