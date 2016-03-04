@@ -109,6 +109,7 @@ angular.module('igl')
             $rootScope.isEditing = false;
             $scope.selectIgTab(0);
             $rootScope.initMaps();
+            StorageService.setSelectedIgDocumentId(null);
             $rootScope.clearChanges();
         };
 
@@ -170,14 +171,12 @@ angular.module('igl')
          * init the controller
          */
         $scope.initIGDocuments = function () {
-            $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ?StorageService.getSelectedIgDocumentType() : 'USER';
             $scope.loadIGDocuments();
             $scope.getScrollbarWidth();
             /**
              * On 'event:loginConfirmed', resend all the 401 requests.
              */
             $scope.$on('event:loginConfirmed', function (event) {
-                $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ? StorageService.getSelectedIgDocumentType(): 'USER';
                 $scope.loadIGDocuments();
             });
 
@@ -239,24 +238,25 @@ angular.module('igl')
         };
 
         $scope.loadIGDocuments = function () {
+            $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ? StorageService.getSelectedIgDocumentType(): 'USER';
             $scope.error = null;
             $rootScope.igs = [];
             $scope.tmpIgs = [].concat($rootScope.igs);
             if (userInfoService.isAuthenticated() && !userInfoService.isPending()) {
-                waitingDialog.show('Loading IG Documents...', {dialogSize: 'sm', progressType: 'info'});
+                waitingDialog.show('Loading IG Documents...', {dialogSize: 'xs', progressType: 'info'});
                 $scope.loading = true;
                 StorageService.setSelectedIgDocumentType($scope.igDocumentConfig.selectedType);
                 $http.get('api/igdocuments', {params: {"type": $scope.igDocumentConfig.selectedType}}).then(function (response) {
                     $rootScope.igs = angular.fromJson(response.data);
                     $scope.tmpIgs = [].concat($rootScope.igs);
                     $scope.loading = false;
-                    waitingDialog.hide();
                     var prevIgDocId = StorageService.getSelectedIgDocumentId();
-                    if(prevIgDocId !=null){
-                        var prevIgDoc = $scope.findOne(prevIgDocId);
-                        if(prevIgDoc != null){
+                    var prevIgDoc = prevIgDocId !=null ? $scope.findOne(prevIgDocId):null;
+                    waitingDialog.hide();
+                    if(prevIgDoc !=null){
+                        $timeout(function() {
                             $scope.selectIGDocument(prevIgDoc);
-                        }
+                        });
                     }
                 }, function (error) {
                     $scope.loading = false;
@@ -268,7 +268,7 @@ angular.module('igl')
 
         $scope.clone = function (igdocument) {
             $scope.toEditIGDocumentId = igdocument.id;
-            waitingDialog.show('Copying IG Document...', {dialogSize: 'sm', progressType: 'info'});
+            waitingDialog.show('Copying IG Document...', {dialogSize: 'xs', progressType: 'info'});
             $http.post('api/igdocuments/' + igdocument.id + '/clone').then(function (response) {
                 $scope.toEditIGDocumentId = null;
                 if ($scope.igDocumentConfig.selectedType === 'USER') {
@@ -325,13 +325,13 @@ angular.module('igl')
 
         $scope.openIGDocument = function (igdocument) {
             if (igdocument != null) {
-                waitingDialog.show('Opening IG Document...', {dialogSize: 'sm', progressType: 'info'});
+                waitingDialog.show('Opening IG Document...', {dialogSize: 'xs', progressType: 'info'});
                 $scope.selectIgTab(1);
                 $timeout(function () {
-                    StorageService.setSelectedIgDocumentId($rootScope.igdocument.id);
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
+                    StorageService.setSelectedIgDocumentId($rootScope.igdocument.id);
                     $scope.sortByLabels();
                     $scope.loadToc();
                     $rootScope.initMaps();
@@ -573,7 +573,7 @@ angular.module('igl')
             if ($rootScope.hasChanges()) {
                 $scope.confirmClose();
             } else {
-                waitingDialog.show('Closing igdocument...', {dialogSize: 'sm', progressType: 'info'});
+                waitingDialog.show('Closing igdocument...', {dialogSize: 'xs', progressType: 'info'});
                 $rootScope.closeIGDocument();
                 waitingDialog.hide();
             }
@@ -586,7 +586,7 @@ angular.module('igl')
 
         $scope.save = function () {
             $scope.igDocumentMsg = {};
-            waitingDialog.show('Saving changes...', {dialogSize: 'sm', progressType: 'success'});
+            waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
             $rootScope.igdocument.accountId = userInfoService.getAccountID();
             var data = angular.fromJson(
@@ -901,7 +901,7 @@ angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalIn
     $scope.loading = false;
     $scope.exportChanges = function () {
         $scope.loading = true;
-        waitingDialog.show('Exporting changes...', {dialogSize: 'sm', progressType: 'success'});
+        waitingDialog.show('Exporting changes...', {dialogSize: 'xs', progressType: 'success'});
         var form = document.createElement("form");
         form.action = 'api/igdocuments/export/changes';
         form.method = "POST";

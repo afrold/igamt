@@ -1,8 +1,6 @@
 /**
  * Created by haffo on 2/13/15.
  */
-
-
 angular.module('igl')
     .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
         $scope.readonly = false;
@@ -32,13 +30,13 @@ angular.module('igl')
         };
 
         $scope.delete = function (datatype) {
-        		  CloneDeleteSvc.deleteDatatype(datatype);
+        		CloneDeleteSvc.deleteDatatype(datatype);
+			$rootScope.$broadcast('event:SetToC');
        };
 
         $scope.hasChildren = function (node) {
             return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype) != undefined && $rootScope.getDatatype(node.datatype).components != null && $rootScope.getDatatype(node.datatype).components.length > 0;
         };
-
 
         $scope.validateLabel = function (label, name) {
             if (label && !label.startsWith(name)) {
@@ -151,6 +149,8 @@ angular.module('igl')
 
             return 0;
         };
+
+
     });
 
 

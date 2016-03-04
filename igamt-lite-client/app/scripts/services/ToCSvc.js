@@ -64,15 +64,14 @@ angular
 						var rval = new entry(type, "Metadata", 0, type, parent,
 								parent.metaData);
 						return rval;
-					}
-					;
+					};
 
 					function getSections(childSections, parentType, parent) {
 
 						var rval = [];
 
 						_.each(childSections, function(childSection) {
-							var section = new entry(parentType,
+							var section = new entry(childSection.id,
 									childSection.sectionTitle,
 									childSection.sectionPosition,
 									childSection.type, parent, childSection);
@@ -94,9 +93,9 @@ angular
 					;
 
 					function getMessageInfrastructure(igdocument) {
-						var rval = new entry(igdocument.profile.type,
+						var rval = new entry(igdocument.profile.id,
 								igdocument.profile.sectionTitle,
-								igdocument.profile.sectionPosition, 0,
+								igdocument.profile.sectionPosition, igdocument.profile.type,
 								igdocument.profile);
 						var children = [];
 						children.push(getMetadata(igdocument.profile,
@@ -121,7 +120,7 @@ angular
 					// label.
 					function getTopEntry(child, parent) {
 						var children = [];
-						var rval = new entry(child.type, child.sectionTitle,
+						var rval = new entry(child.id, child.sectionTitle,
 								child.sectionPosition, child.type, parent,
 								child);
 						if (child) {

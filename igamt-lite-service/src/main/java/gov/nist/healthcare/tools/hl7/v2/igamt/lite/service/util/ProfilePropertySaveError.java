@@ -13,14 +13,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util;
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 15, 2015
  */
-public class ProfilePropertySaveError {
-
-	private String targetId;
-	private String propertyName;
-	private String targetType;
-	private String propertyValue;
-	private String command;
-	private String errorMsg;
+public class ProfilePropertySaveError extends AbscractPropertySaveError {
 
 	/**
 	 * @param targetId
@@ -31,12 +24,7 @@ public class ProfilePropertySaveError {
 	 */
 	public ProfilePropertySaveError(String targetId, String targetType,
 			String propertyName, String propertyValue, String command) {
-		super();
-		this.targetId = targetId;
-		this.propertyName = propertyName;
-		this.targetType = targetType;
-		this.propertyValue = propertyValue;
-		this.command = command;
+		super(targetId, targetType, propertyName, propertyValue, command);
 	}
 
 	/**
@@ -45,66 +33,14 @@ public class ProfilePropertySaveError {
 	 */
 	public ProfilePropertySaveError(String targetId, String targetType,
 			String errorMsg) {
-		super();
-		this.targetId = targetId;
-		this.targetType = targetType;
-		this.errorMsg = errorMsg;
-	}
-
-	public String getTargetId() {
-		return targetId;
-	}
-
-	public void setTargetId(String targetId) {
-		this.targetId = targetId;
-	}
-
-	public String getTargetType() {
-		return targetType;
-	}
-
-	public void setTargetType(String targetType) {
-		this.targetType = targetType;
-	}
-
-	public String getCommand() {
-		return command;
-	}
-
-	public void setCommand(String command) {
-		this.command = command;
-	}
-
-	public String getPropertyName() {
-		return propertyName;
-	}
-
-	public void setPropertyName(String propertyName) {
-		this.propertyName = propertyName;
-	}
-
-	public String getPropertyValue() {
-		return propertyValue;
-	}
-
-	public void setPropertyValue(String propertyValue) {
-		this.propertyValue = propertyValue;
-	}
-
-	public String getErrorMsg() {
-		return errorMsg;
-	}
-
-	public void setErrorMsg(String errorMsg) {
-		this.errorMsg = errorMsg;
+		super(targetId, targetType, errorMsg);
 	}
 
 	@Override
 	public String toString() {
-		return "ProfilePropertySaveError [targetId=" + targetId
-				+ ", propertyName=" + propertyName + ", targetType="
-				+ targetType + ", propertyValue=" + propertyValue
-				+ ", command=" + command + ", errorMsg=" + errorMsg + "]";
+		return "ProfilePropertySaveError [targetId=" + this.getTargetId()
+				+ ", propertyName=" + this.getPropertyName() + ", targetType="
+				+ this.getTargetType() + ", propertyValue=" + this.getPropertyValue()
+				+ ", command=" + this.getCommand() + ", errorMsg=" + this.getErrorMsg() + "]";
 	}
-
 }
