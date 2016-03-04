@@ -8,7 +8,7 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,19 +22,23 @@ import java.util.Set;
  */
 public class MessageEvents {
 
-	private final String id;
+	private String id;
 
-	private final String name;
+	private String name;
 	
 	private final String type = "message";
 	
 	private Set<Event> children = new HashSet<Event>();
 	
-	private final String description;
+	private String description;
+
+	public MessageEvents() {
+		super();
+	}
 	
-	public MessageEvents(String id, String name, Set<String> events, String description) {
+	public MessageEvents(String id, String structId, Set<String> events, String description) {
 		this.id = id;
-		this.name = name;
+		this.name = structId;
 		createEvents(events);
 		this.description = description;
 	}
@@ -63,26 +67,5 @@ public class MessageEvents {
 
 	public String getDescription() {
 		return description;
-	}
-
-	public class Event {
-		
-		final String id;
-		final String name;
-		final String type = "event";
-
-		public Event(String id, String name) {
-			super();
-			this.id = id;
-			this.name = name;
-		}
-
-		public String getType() {
-			return type;
-		}
-
-		public String getName() {
-			return name;
-		}
 	}
 }

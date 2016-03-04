@@ -17,8 +17,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.test.integration.ProfileControllerIntegrationTest;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -36,8 +34,7 @@ public class TestConfig {
 	@PostConstruct
 	public void init() {
 		try {
-			InputStream log4j = ProfileControllerIntegrationTest.class
-					.getResourceAsStream("/igl-test-log4j.properties");
+			InputStream log4j = TestConfig.class.getResourceAsStream("/igl-test-log4j.properties");
 			properties.load(log4j);
 			PropertyConfigurator.configure(properties);
 		} catch (IOException e) {
