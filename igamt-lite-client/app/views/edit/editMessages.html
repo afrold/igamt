@@ -194,24 +194,20 @@ body {
                     ></a>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <div>
-                <!--<span ng-show="!node.obj.predicates || node.obj.predicates == null || node.obj.predicates.length == 0">-->
-											<span>
-                                                <select class="form-control input-sm"
-                                                        name="usage"
-                                                        ng-change="recordChanged()"
-                                                        required
-                                                        ng-model="node.obj.usage"
-                                                        ng-options="usage for usage in config.usages">
-                                                </select>
-                                            </span>
-                <!--<span ng-show="node.obj.predicates != null && node.obj.predicates.length > 0">C({{node.obj.predicates[0].trueUsage}}, {{node.obj.predicates[0].falseUsage}})</span>-->
-
+			<div>
+                <span ng-show="node.obj.usage !== 'C'  || (node.obj.usage === 'C' && countPredicate(node.path) === 0)">
+                	<select class="form-control input-sm" name="usage" ng-change="recordChanged()" required 
+						ng-model="node.obj.usage" ng-options="usage for usage in config.usages" />
+                </span>
+				<div ng-show="node.obj.usage === 'C' && countPredicate(node.path) !== 0">
+					<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+                   		C({{constraint.trueUsage}}/{{constraint.falseUsage}})
+                	</p>
+				</div>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
-            <div
-                    ng-controller="MessageRowCtrl">
+            <div ng-controller="MessageRowCtrl">
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="form-control"
                                                        name="min"
@@ -242,18 +238,21 @@ body {
         </td>
         <td class="col-xs-1" ng-style="predWidth">
 			<div>
-				<div ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
-                    <a ng-click="managePredicate(node, message)"
-                       tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
-                       tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
-                       tooltip-animation="false" tooltip-placement="left"></a>
-                </div>
-				<div ng-hide="filteredConstraints.length">
+                <div ng-show="countPredicate(node.path) === 0 && node.obj.usage === 'C'">
 					<a ng-click="managePredicate(node, message)" class="point">
                 		<span><i class="fa fa-plus fa-fw"></i></span>
+						<p class="warning">Need predicate</p>
                 	</a>
+                </div>
+				<div ng-show="countPredicate(node.path) !== 0 && node.obj.usage === 'C'">
+					<div ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+                    	<a ng-click="managePredicate(node, message)"
+                       		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+                       		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+                       		tooltip-animation="false" tooltip-placement="left"></a>
+                	</div>
 				</div>
-			</div>
+            </div>
         </td>
 
         <td class="col-xs-1" ng-style="csWidth">
@@ -305,16 +304,15 @@ body {
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>
- 											<span>
-                                                <select class="form-control input-sm"
-                                                        name="usage"
-                                                        ng-change="recordChanged()"
-                                                        required
-                                                        ng-model="node.obj.usage"
-                                                        ng-options="usage for usage in config.usages">
-                                                </select>
-                                            </span>
-
+                <span ng-show="node.obj.usage !== 'C'  || (node.obj.usage === 'C' && countPredicate(node.path) === 0)">
+                	<select class="form-control input-sm" name="usage" ng-change="recordChanged()" required 
+						ng-model="node.obj.usage" ng-options="usage for usage in config.usages" />
+                </span>
+				<div ng-show="node.obj.usage === 'C' && countPredicate(node.path) !== 0">
+					<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+                   		C({{constraint.trueUsage}}/{{constraint.falseUsage}})
+                	</p>
+				</div>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
@@ -350,18 +348,21 @@ body {
         </td>
         <td class="col-xs-1" ng-style="predWidth">
 			<div>
-				<div ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
-                    <a ng-click="managePredicate(node, message)"
-                       tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
-                       tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
-                       tooltip-animation="false" tooltip-placement="left"></a>
-                </div>
-				<div ng-hide="filteredConstraints.length">
+                <div ng-show="countPredicate(node.path) === 0 && node.obj.usage === 'C'">
 					<a ng-click="managePredicate(node, message)" class="point">
                 		<span><i class="fa fa-plus fa-fw"></i></span>
+						<p class="warning">Need predicate</p>
                 	</a>
+                </div>
+				<div ng-show="countPredicate(node.path) !== 0 && node.obj.usage === 'C'">
+					<div ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+                    	<a ng-click="managePredicate(node, message)"
+                       		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+                       		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+                       		tooltip-animation="false" tooltip-placement="left"></a>
+                	</div>
 				</div>
-			</div>
+            </div>
         </td>
 
         <td class="col-xs-1" ng-style="csWidth">
@@ -416,6 +417,9 @@ body {
 				<span ng-repeat="p in parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true">
 					({{p.trueUsage}}/{{p.falseUsage}})
 				</span>
+				<span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
@@ -451,7 +455,6 @@ body {
                				tooltip-animation="false" tooltip-placement="left">
             		</p>
 				</div>
-
 				<div ng-hide="options.readonly">
 					<div ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
 						<a ng-click="managePredicate(node, message)"
@@ -459,14 +462,15 @@ body {
                        		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
                        		tooltip-animation="false" tooltip-placement="left"></a>
 					</div>
-					<div ng-hide="filteredConstraints.length || options.readonly">
+					<div ng-hide="filteredConstraints.length || filteredSubConstraints.length || options.readonly || node.obj.usage !== 'C'">
 						<a ng-click="managePredicate(node, message)" class="point">
                 			<span><i class="fa fa-plus fa-fw"></i></span>
+							<p class="warning">Need predicate</p>
                 		</a>
 					</div>
 				</div>
 
-				<p ng-repeat="constraint in parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true"
+				<p ng-repeat="constraint in filteredSubConstraints = (parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true)"
                		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
                		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
                		tooltip-animation="false" tooltip-placement="left">
@@ -530,9 +534,12 @@ body {
             </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <div>
+			<div>
                 <span>{{node.obj.usage}}</span>
 				<span ng-repeat="p in parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
+				<span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
 					({{p.trueUsage}}/{{p.falseUsage}})
 				</span>
             </div>
@@ -572,7 +579,6 @@ body {
                				tooltip-animation="false" tooltip-placement="left">
             		</p>
 				</div>
-
 				<div ng-hide="options.readonly">
 					<div ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
 						<a ng-click="managePredicate(node, message)"
@@ -580,14 +586,15 @@ body {
                        		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
                        		tooltip-animation="false" tooltip-placement="left"></a>
 					</div>
-					<div ng-hide="filteredConstraints.length || options.readonly">
+					<div ng-hide="filteredConstraints.length || filteredSubConstraints.length || options.readonly || node.obj.usage !== 'C'">
 						<a ng-click="managePredicate(node, message)" class="point">
                 			<span><i class="fa fa-plus fa-fw"></i></span>
+							<p class="warning">Need predicate</p>
                 		</a>
 					</div>
 				</div>
 
-				<p ng-repeat="constraint in parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true"
+				<p ng-repeat="constraint in filteredSubConstraints = (parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true)"
                		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
                		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
                		tooltip-animation="false" tooltip-placement="left">
@@ -669,7 +676,7 @@ body {
 			<td class="col-xs-1">{{constraint.constraintClassification}}</td>
             <td class="col-xs-1">
                 <a ng-click="deletePredicate(constraint)" class="point">
-                    <span><i class="fa fa-minus fa-fw"></i></span>
+                    <span><i class="fa fa-times fa-fw"></i></span>
                 </a>
             </td>
         </tr>
@@ -947,7 +954,7 @@ body {
             <td class="col-md-2">{{constraint.constraintClassification}}</td>
             <td class="col-xs-1">
                 <a ng-click="deleteConformanceStatement(constraint)" class="point">
-                    <span><i class="fa fa-minus fa-fw"></i></span>
+                    <span><i class="fa fa-times fa-fw"></i></span>
                 </a>
             </td>
         </tr>
@@ -1328,6 +1335,9 @@ body {
         </td>
         <td class="col-xs-1 col-fixed-80">
             <span ng-bind="node.obj.usage"></span>
+			<span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+					({{p.trueUsage}}/{{p.falseUsage}})
+			</span>
         </td>
         <td class="col-xs-1 col-fixed-100">
             [{{::node.obj.min}}, {{::node.obj.max}}]
@@ -1399,7 +1409,9 @@ body {
         <td class="col-xs-1 col-fixed-80">
             <div>
                 <span ng-bind="node.obj.usage"></span>
-
+				<span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">

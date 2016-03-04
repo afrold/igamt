@@ -100,6 +100,16 @@ angular.module('igl')
             }, function () {
             });
         };
+        
+        $scope.countPredicate = function (position) {
+            if ($rootScope.message != null) {
+                for (var i = 0, len1 = $rootScope.message.predicates.length; i < len1; i++) {
+                    if ($rootScope.message.predicates[i].constraintTarget.indexOf(position) === 0)
+                        return 1;
+                }
+            }
+            return 0;
+        };
     });
 
 
