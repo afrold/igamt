@@ -115,47 +115,53 @@ angular.module('igl')
 
         $scope.messagesParams = new ngTreetableParams({
             getNodes: function (parent) {
-                if (!parent || parent == null) {
-                    if ($rootScope.message != null) {
-                        return $rootScope.message.children;
-                    } else {
-                        return [];
-                    }
-                } else if (parent.type === 'segmentRef') {
-                    return $rootScope.segmentsMap[parent.ref].fields;
-                } else if (parent.type === 'field') {
-                    return $rootScope.datatypesMap[parent.datatype].components;
-                } else if (parent.type === 'component') {
-                    return $rootScope.datatypesMap[parent.datatype].components;
-                } else if (parent.type === 'group') {
-                    return parent.children;
-                } else {
-                    return [];
-                }
+//                if (!parent || parent == null) {
+//                    if ($rootScope.message != null) {
+//                        return $rootScope.message.children;
+//                    } else {
+//                        return [];
+//                    }
+//                } else if (parent.type === 'segmentRef') {
+//                    return $rootScope.segmentsMap[parent.ref].fields;
+//                } else if (parent.type === 'field') {
+//                    return $rootScope.datatypesMap[parent.datatype].components;
+//                } else if (parent.type === 'component') {
+//                    return $rootScope.datatypesMap[parent.datatype].components;
+//                } else if (parent.type === 'group') {
+//                    return parent.children;
+//                } else {
+//                    return [];
+//                }
+            	if (!parent || parent == null) {
+            		return $rootScope.messageTree.children;
+            	}else {
+            		return parent.children;
+            	}
+            	
 
             },
             getTemplate: function (node) {
                 if ($scope.options.readonly) {
 
-                    if (node.type === 'segmentRef') {
+                    if (node.obj.type === 'segmentRef') {
                         return 'MessageSegmentRefReadTree.html';
-                    } else if (node.type === 'group') {
+                    } else if (node.obj.type === 'group') {
                         return 'MessageGroupReadTree.html';
-                    } else if (node.type === 'field') {
+                    } else if (node.obj.type === 'field') {
                         return 'MessageFieldViewTree.html';
-                    } else if (node.type === 'component') {
+                    } else if (node.obj.type === 'component') {
                         return 'MessageComponentViewTree.html';
                     } else {
                         return 'MessageReadTree.html';
                     }
                 } else {
-                    if (node.type === 'segmentRef') {
+                    if (node.obj.type === 'segmentRef') {
                         return 'MessageSegmentRefEditTree.html';
-                    } else if (node.type === 'group') {
+                    } else if (node.obj.type === 'group') {
                         return 'MessageGroupEditTree.html';
-                    } else if (node.type === 'field') {
+                    } else if (node.obj.type === 'field') {
                         return 'MessageFieldViewTree.html';
-                    } else if (node.type === 'component') {
+                    } else if (node.obj.type === 'component') {
                         return 'MessageComponentViewTree.html';
                     } else {
                         return 'MessageEditTree.html';
@@ -202,7 +208,11 @@ angular.module('igl')
             });
 
             $scope.$on('event:openMessage', function (event, message) {
-                 $scope.selectMessage(message); // Should we open in a dialog ??
+                console.log("event:openMessage=" + message);
+                $rootScope.messageTree = null;
+                $rootScope.processMessageTree(message);
+                console.log("load Message Tree=" + JSON.stringify($rootScope.messageTree));
+                $scope.selectMessage(message); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openTable', function (event, table) {

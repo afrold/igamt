@@ -1797,7 +1797,7 @@
         </Group>
         <Message>
             <ByID ID="dc3368ee-35e9-4724-bc27-37f774867090">
-                <Constraint ID="NIST-01" Target="12[1].4[1].1[1]">
+                <Constraint ID="NIST-01" Target="12[1].4[1].1[1].1[1]">
                     <Description>The Value of OBX-1 (Set ID-OBX) SHALL be valued sequentially starting with the value "1" within a message or for each group.</Description>
                     <Assertion>
                         <IZSetID Parent="12[*]" Element="4[*].1[*].1[*]"/>
@@ -1806,7 +1806,7 @@
             </ByID>
             
             <ByID ID="e13dfbab-8832-4c3f-bfa5-0e9c18e644c4">
-                <Constraint ID="NIST-01" Target="8[1].4[1].1[1]">
+                <Constraint ID="NIST-01" Target="8[1].4[1].1[1].1[1]">
                     <Description>The Value of OBX-1 (Set ID-OBX) SHALL be valued sequentially starting with the value "1" within a message or for each group.</Description>
                     <Assertion>
                         <IZSetID Parent="8[*]" Element="4[*].1[*].1[*]"/>
@@ -1815,7 +1815,7 @@
             </ByID>
 
             <ByID ID="aa72383a-7b48-46e5-a74a-82e019591fe7">
-                <Constraint ID="NIST-01" Target="9[1].5[1].1[1]">
+                <Constraint ID="NIST-01" Target="9[1].5[1].1[1].1[1]">
                     <Description>The Value of OBX-1 (Set ID-OBX) SHALL be valued sequentially starting with the value "1" within a message or for each group.</Description>
                     <Assertion>
                         <IZSetID Parent="9[*]" Element="5[*].1[*].1[*]"/>

@@ -1,13 +1,15 @@
-<style id="antiClickjack">body {
-    display: none !important;
-}</style>
+<style id="antiClickjack">
+body {
+	display: none !important;
+}
+</style>
 <script type="text/javascript">
-    if (self === top) {
-        var antiClickjack = document.getElementById("antiClickjack");
-        antiClickjack.parentNode.removeChild(antiClickjack);
-    } else {
-        top.location = self.location;
-    }
+	if (self === top) {
+		var antiClickjack = document.getElementById("antiClickjack");
+		antiClickjack.parentNode.removeChild(antiClickjack);
+	} else {
+		top.location = self.location;
+	}
 </script>
 <script type="text/ng-template" id="EditMessages.html">
     <div ng-controller="MessageListCtrl" ng-init="init()">
@@ -139,12 +141,6 @@
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <!--</form>-->
-                                <!--</accordion-group>-->
-                                <!--<accordion-group is-open="true" panel-class="panel-info">-->
-                                <!--<accordion-heading>-->
-                                <!--<i class="fa" ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i> Definition-->
-                                <!--</accordion-heading>-->
                                 <table tt-table tt-params="messagesParams"
                                        class="table table-striped table-bordered table-fix-header table-condensed profile-table">
                                     <thead>
@@ -164,10 +160,9 @@
                                     </thead>
                                     <tbody></tbody>
                                 </table>
-                                <!--</accordion-group>-->
-                                <!--</accordion>-->
                             </div>
                         </div>
+					</div>
                 </form>
             </div>
         </div>
@@ -175,9 +170,9 @@
 </script>
 
 <script type="text/ng-template" id="MessageEditTree.html">
-    <tr tt-node is-branch="hasChildren(node)">
+    <tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-xs-2 col-fixed-250">
-            <span>{{node.event}}^{{node.structID}}:{{node.description}}</span>
+            <span>{{node.obj.event}}^{{node.obj.structID}}:{{node.obj.description}}</span>
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>-</div>
@@ -213,48 +208,44 @@
 </script>
 
 <script type="text/ng-template" id="MessageSegmentRefEditTree.html">
-    <tr tt-node is-branch="hasChildren(node)">
+    <tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-xs-2 col-fixed-250">
             <img style="width:15px; height:15px"
                  ng-src="images/segment.png">
-            <a ng-click="goToSegment(node.ref)" class="point"
-               tooltip-html="getSegmentRefNodeName(node)" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node)" tooltip-trigger
+            <a ng-click="goToSegment(node.obj.ref)" class="point"
+               tooltip-html="getSegmentRefNodeName(node.obj)" tooltip-append-to-body="true"
+               tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node.obj)" tooltip-trigger
                tooltip-animation="false" tooltip-placement="left"
                     ></a>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <div>
-                <!--<span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">-->
-											<span>
-                                                <select class="form-control input-sm"
-                                                        name="usage"
-                                                        ng-change="recordChanged()"
-                                                        required
-                                                        ng-model="node.usage"
-                                                        ng-options="usage for usage in config.usages">
-                                                </select>
-                                            </span>
-                <!--<span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}, {{node.predicates[0].falseUsage}})</span>-->
-
+			<div>
+                <span ng-show="node.obj.usage !== 'C'  || (node.obj.usage === 'C' && countPredicate(node.path) === 0)">
+                	<select class="form-control input-sm" name="usage" ng-change="recordChanged()" required 
+						ng-model="node.obj.usage" ng-options="usage for usage in config.usages" />
+                </span>
+				<div ng-show="node.obj.usage === 'C' && countPredicate(node.path) !== 0">
+					<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+                   		C({{constraint.trueUsage}}/{{constraint.falseUsage}})
+                	</p>
+				</div>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
-            <div
-                    ng-controller="MessageRowCtrl">
+            <div ng-controller="MessageRowCtrl">
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="form-control"
                                                        name="min"
                                                        ng-change="recordChanged()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
-                                                       ng-model="node.min" required ng-minlength="1">
+                                                       ng-model="node.obj.min" required ng-minlength="1">
                                                 <input style="width:45%" class="form-control" type="text"
                                                        name="max"
                                                        ng-change="recordChanged()"
                                                        ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
-                                                       ng-model="node.max" required>
+                                                       ng-model="node.obj.max" required>
                                             </span>
             </div>
         </td>
@@ -271,58 +262,82 @@
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="predWidth">
-            <div>-</div>
+			<div>
+                <div ng-show="countPredicate(node.path) === 0 && node.obj.usage === 'C'">
+					<a ng-click="managePredicate(node, message)" class="point">
+                		<span><i class="fa fa-plus fa-fw"></i></span>
+						<p class="warning">Need predicate</p>
+                	</a>
+                </div>
+				<div ng-show="countPredicate(node.path) !== 0 && node.obj.usage === 'C'">
+					<div ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+                    	<a ng-click="managePredicate(node, message)"
+                       		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+                       		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+                       		tooltip-animation="false" tooltip-placement="left"></a>
+                	</div>
+				</div>
+            </div>
         </td>
 
         <td class="col-xs-1" ng-style="csWidth">
-            <div>-</div>
+			<div>
+				<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)">
+                    <a ng-click="manageConformanceStatement(node, message)"
+                       tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+                       tooltip-animation="false" tooltip-placement="left"></a>
+                </div>
+				<div ng-hide="filteredConstraints.length">
+					<a ng-click="manageConformanceStatement(node, message)" class="point">
+                		<span><i class="fa fa-plus fa-fw"></i></span>
+                	</a>
+				</div>
+			</div>
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth">
             <div>
-                <a ng-show="node.comment === '' || node.comment === null"
-                   ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="point">
+                <a ng-show="node.obj.comment === '' || node.obj.comment === null"
+                   ng-click="openInputTextDlg(node.obj, 'comment', 'Comment', false)" class="point">
                     <i class="fa fa-plus fa-fw"></i>
                 </a>
-                <a class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)"
-                   tooltip-html="node.comment" tooltip-append-to-body="true"
+                <a class="point" ng-click="openInputTextDlg(node.obj, 'comment','Comment', false)"
+                   tooltip-html="node.obj.comment" tooltip-append-to-body="true"
                    tooltip-class="constraints-tooltip"
                    tooltip-trigger tooltip-animation="false" tooltip-placement="left"
-                   ng-show="node.comment !== '' && node.comment !== null" ng-bind="node.comment"></a>
+                   ng-show="node.obj.comment !== '' && node.obj.comment !== null" ng-bind="node.obj.comment"></a>
             </div>
         </td>
     </tr>
 </script>
 
 <script type="text/ng-template" id="MessageGroupEditTree.html">
-    <tr tt-node is-branch="hasChildren(node)">
+    <tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-xs-2 col-fixed-250">
-                                        <span>
-                                            <img style="width:15px; height:15px"
-                                                 ng-src="images/group.png">
-                                              <span
-                                                      tooltip-html="getGroupNodeName(node)"
-                                                      tooltip-append-to-body="true"
-                                                      tooltip-class="constraints-tooltip"
-                                                      ng-bind-html="getGroupNodeName(node)" tooltip-trigger
-                                                      tooltip-animation="false" tooltip-placement="left"
-                                                      ></span>
-                                        </span>
+        	<span>
+            	<img style="width:15px; height:15px" ng-src="images/group.png"/>
+            	<span
+                	tooltip-html="getGroupNodeName(node.obj)"
+                	tooltip-append-to-body="true"
+                	tooltip-class="constraints-tooltip"
+                	ng-bind-html="getGroupNodeName(node.obj)" tooltip-trigger
+                	tooltip-animation="false" tooltip-placement="left"/>
+            </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>
- 											<span>
-                                                <select class="form-control input-sm"
-                                                        name="usage"
-                                                        ng-change="recordChanged()"
-                                                        required
-                                                        ng-model="node.usage"
-                                                        ng-options="usage for usage in config.usages">
-                                                </select>
-                                            </span>
-
+                <span ng-show="node.obj.usage !== 'C'  || (node.obj.usage === 'C' && countPredicate(node.path) === 0)">
+                	<select class="form-control input-sm" name="usage" ng-change="recordChanged()" required 
+						ng-model="node.obj.usage" ng-options="usage for usage in config.usages" />
+                </span>
+				<div ng-show="node.obj.usage === 'C' && countPredicate(node.path) !== 0">
+					<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+                   		C({{constraint.trueUsage}}/{{constraint.falseUsage}})
+                	</p>
+				</div>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
@@ -334,13 +349,13 @@
                                                        ng-change="recordChanged()"
                                                        ng-pattern="/^\d+$/"
                                                        ng-class="{ 'has-error' : {{formName}}.min.$invalid}"
-                                                       ng-model="node.min" required ng-minlength="1">
+                                                       ng-model="node.obj.min" required ng-minlength="1">
                                                 <input style="width:45%" class="form-control" type="text"
                                                        name="max"
                                                        ng-change="recordChanged()"
                                                        ng-class="{ 'has-error' : {{formName}}.max.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
-                                                       ng-model="node.max" required>
+                                                       ng-model="node.obj.max" required>
                                             </span>
             </div>
         </td>
@@ -357,38 +372,38 @@
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="predWidth">
-            <div>
-                <div ng-show="countPredicates(node) == 0">
-                    <a ng-click="managePredicate(node)" class="point">
-                        <span><i class="fa fa-plus fa-fw"></i></span>
-                    </a>
+			<div>
+                <div ng-show="countPredicate(node.path) === 0 && node.obj.usage === 'C'">
+					<a ng-click="managePredicate(node, message)" class="point">
+                		<span><i class="fa fa-plus fa-fw"></i></span>
+						<p class="warning">Need predicate</p>
+                	</a>
                 </div>
-                <p ng-repeat="p in node.predicates">
-                    <a ng-click="managePredicate(node)"
-                       tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
-                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
-                       tooltip-animation="false" tooltip-placement="left"
-
-                            ></a>
-                </p>
+				<div ng-show="countPredicate(node.path) !== 0 && node.obj.usage === 'C'">
+					<div ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+                    	<a ng-click="managePredicate(node, message)"
+                       		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+                       		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+                       		tooltip-animation="false" tooltip-placement="left"></a>
+                	</div>
+				</div>
             </div>
         </td>
 
         <td class="col-xs-1" ng-style="csWidth">
-            <div>
-                <div ng-show="countConformanceStatements(node) == 0">
-                    <a ng-click="manageConformanceStatement(node)" class="point">
-                        <span><i class="fa fa-plus fa-fw"></i></span>
-                    </a>
+			<div>
+				<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)">
+                    <a ng-click="manageConformanceStatement(node, message)"
+                       tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+                       tooltip-animation="false" tooltip-placement="left"></a>
                 </div>
-                <p ng-repeat="c in node.conformanceStatements">
-                    <a ng-click="manageConformanceStatement(node)"
-                       tooltip-html="getConstraintAsString(c)" tooltip-append-to-body="true"
-                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(c)" tooltip-trigger
-                       tooltip-animation="false" tooltip-placement="left"
-                            ></a>
-                </p>
-            </div>
+				<div ng-hide="filteredConstraints.length">
+					<a ng-click="manageConformanceStatement(node, message)" class="point">
+                		<span><i class="fa fa-plus fa-fw"></i></span>
+                	</a>
+				</div>
+			</div>
         </td>
 
         <td class="col-xs-1 col-fixed-80">
@@ -397,81 +412,132 @@
 
         <td class="col-xs-1" ng-style="commentWidth">
             <div>
-                <a ng-show="node.comment === '' || node.comment === null" class="point"
-                   ng-click="openInputTextDlg(node, 'comment', 'Comment', false)">
+                <a ng-show="node.obj.comment === '' || node.obj.comment === null" class="point"
+                   ng-click="openInputTextDlg(node.obj, 'comment', 'Comment', false)">
                     <i class="fa fa-plus fa-fw"></i>
                 </a>
-                <a class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)"
-                   tooltip-html="node.comment" tooltip-append-to-body="true"
+                <a class="point" ng-click="openInputTextDlg(node.obj, 'comment','Comment', false)"
+                   tooltip-html="node.obj.comment" tooltip-append-to-body="true"
                    tooltip-class="constraints-tooltip"
                    tooltip-trigger tooltip-animation="false" tooltip-placement="left"
-                   ng-show="node.comment !== '' && node.comment !== null" ng-bind="node.comment"></a>
+                   ng-show="node.obj.comment !== '' && node.obj.comment !== null" ng-bind="node.obj.comment"></a>
             </div>
         </td>
     </tr>
 </script>
 
 <script type="text/ng-template" id="MessageFieldViewTree.html">
-    <tr tt-node is-branch="hasChildren(node)">
+    <tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-xs-2 col-fixed-250">
-            <img style="width:15px; height:15px" ng-src="images/{{node.type}}.png">
+            <img style="width:15px; height:15px" ng-src="images/{{node.obj.type}}.png">
             <span
-                    tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"
-                    tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node)" tooltip-trigger
+                    tooltip-html="getFieldNodeName(node.obj)" tooltip-append-to-body="true"
+                    tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node.obj)" tooltip-trigger
                     tooltip-animation="false" tooltip-placement="left"
                     ></span>
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>
-                <span>{{node.usage}}</span>
-				<span ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                <span>{{node.obj.usage}}</span>
+				<span ng-repeat="p in parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
+				<span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
 					({{p.trueUsage}}/{{p.falseUsage}})
 				</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
             <div>
-                <span>[{{node.min}},{{node.max}}]</span>
+                <span>[{{node.obj.min}},{{node.obj.max}}]</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
             <div>
-                <span>[{{node.minLength}},{{node.maxLength}}]</span>
+                <span>[{{node.obj.minLength}},{{node.obj.maxLength}}]</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <span>{{node.confLength}}</span>
+            <span>{{node.obj.confLength}}</span>
         </td>
         <td class="col-xs-1 col-fixed-100">
             <a class="point"
-               ng-click="goToDatatype(datatypesMap[node.datatype])">{{datatypesMap[node.datatype].label}}</a>
+               ng-click="goToDatatype(datatypesMap[node.obj.datatype])">{{datatypesMap[node.obj.datatype].label}}</a>
         </td>
         <td class="col-xs-1 col-fixed-130">
             <div>
-				<span ng-show="node.table != undefined && node.table != null">
-					<a class="point" ng-click="goToTable(tablesMap[node.table])">{{tablesMap[node.table].bindingIdentifier}}</a>
+				<span ng-show="node.obj.table != undefined && node.obj.table != null">
+					<a class="point" ng-click="goToTable(tablesMap[node.obj.table])">{{tablesMap[node.obj.table].bindingIdentifier}}</a>
                 </span>
             </div>
         </td>
         <td class="col-xs-1" ng-style="predWidth">
-            <p ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true"
-               tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
-               tooltip-animation="false" tooltip-placement="left">
-            </p>
+			<div>
+				<div ng-show="options.readonly">
+					<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)"
+               				tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+               				tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+               				tooltip-animation="false" tooltip-placement="left">
+            		</p>
+				</div>
+				<div ng-hide="options.readonly">
+					<div ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+						<a ng-click="managePredicate(node, message)"
+                       		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+                       		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+                       		tooltip-animation="false" tooltip-placement="left"></a>
+					</div>
+					<div ng-hide="filteredConstraints.length || filteredSubConstraints.length || options.readonly || node.obj.usage !== 'C'">
+						<a ng-click="managePredicate(node, message)" class="point">
+                			<span><i class="fa fa-plus fa-fw"></i></span>
+							<p class="warning">Need predicate</p>
+                		</a>
+					</div>
+				</div>
+
+				<p ng-repeat="constraint in filteredSubConstraints = (parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true)"
+               		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+               		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+               		tooltip-animation="false" tooltip-placement="left">
+            	</p>
+			</div>
         </td>
         <td class="col-xs-1" ng-style="csWidth">
-            <p ng-repeat="c in parentsMap[node.id].conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true"
-               tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(c)" tooltip-trigger
-               tooltip-animation="false" tooltip-placement="left">
-            </p>
+			<div>
+				<div ng-show="options.readonly">
+					<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)"
+               				tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+               				tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+               				tooltip-animation="false" tooltip-placement="left">
+            		</p>
+				</div>
+
+				<div ng-hide="options.readonly">
+					<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)">
+						<a ng-click="manageConformanceStatement(node, message)"
+                       		tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+                       		tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+                       		tooltip-animation="false" tooltip-placement="left"></a>
+					</div>
+					<div ng-hide="filteredConstraints.length || options.readonly">
+						<a ng-click="manageConformanceStatement(node, message)" class="point">
+                			<span><i class="fa fa-plus fa-fw"></i></span>
+                		</a>
+					</div>
+				</div>
+
+				<p ng-repeat="constraint in parentsMap[node.obj.id].conformanceStatements | filter:{constraintTarget:node.obj.position + '[1]'}:true"
+               		tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+               		tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+               		tooltip-animation="false" tooltip-placement="left">
+            	</p>
+			</div>
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth">
-            <div tooltip-html="node.comment" tooltip-append-to-body="true"
+            <div tooltip-html="node.obj.comment" tooltip-append-to-body="true"
                  tooltip-class="constraints-tooltip"
                  tooltip-trigger tooltip-animation="false" tooltip-placement="left">
             </div>
@@ -480,22 +546,25 @@
 </script>
 
 <script type="text/ng-template" id="MessageComponentViewTree.html">
-    <tr tt-node is-branch="hasChildren(node)">
+    <tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-xs-2 col-fixed-250">
         	<span>
-            	<img ng-show="!isSubDT(node)" style="width:15px; height:15px" ng-src="images/{{node.type}}.png"/>
-                <img ng-show="isSubDT(node)" style="width:15px; height:15px" ng-src="images/subcomponent.png"/>
+            	<img ng-show="!isSubDT(node.obj)" style="width:15px; height:15px" ng-src="images/{{node.obj.type}}.png"/>
+                <img ng-show="isSubDT(node.obj)" style="width:15px; height:15px" ng-src="images/subcomponent.png"/>
                 <span
-                        tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true"
-                        tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)" tooltip-trigger
-                        tooltip-animation="false" tooltip-placement="left"
-                        ></span>
+                        tooltip-html="getComponentNodeName(node.obj)" tooltip-append-to-body="true"
+                        tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node.obj)" tooltip-trigger
+                        tooltip-animation="false" tooltip-placement="left">
+				</span>
             </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <div>
-                <span>{{node.usage}}</span>
-				<span ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+			<div>
+                <span>{{node.obj.usage}}</span>
+				<span ng-repeat="p in parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
+				<span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
 					({{p.trueUsage}}/{{p.falseUsage}})
 				</span>
             </div>
@@ -507,45 +576,93 @@
         </td>
         <td class="col-xs-1 col-fixed-100">
             <div>
-                [{{node.minLength}},{{node.maxLength}}]
+                [{{node.obj.minLength}},{{node.obj.maxLength}}]
             </div>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <div ng-bind="node.confLength">
+            <div ng-bind="node.obj.confLength">
             </div>
         </td>
 
         <td class="col-xs-1 col-fixed-100">
             <a class="point"
-               ng-click="goToDatatype(datatypesMap[node.datatype])">{{datatypesMap[node.datatype].label}}</a>
+               ng-click="goToDatatype(datatypesMap[node.obj.datatype])">{{datatypesMap[node.obj.datatype].label}}</a>
         </td>
         <td class="col-xs-1 col-fixed-130">
             <div>
-				<span ng-show="node.table != undefined && node.table != null">
-					<a class="point" ng-click="goToTable(tablesMap[node.table])">{{tablesMap[node.table].bindingIdentifier}}</a>
+				<span ng-show="node.obj.table != undefined && node.obj.table != null">
+					<a class="point" ng-click="goToTable(tablesMap[node.obj.table])">{{tablesMap[node.obj.table].bindingIdentifier}}</a>
                 </span>
             </div>
         </td>
         <td class="col-xs-1" ng-style="predWidth">
-            <p ng-repeat="p in parentsMap[node.id].predicates  | filter:{constraintTarget:node.position + '[1]'}:true"
-               tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
-               tooltip-animation="false" tooltip-placement="left">
-            </p>
+			<div>
+				<div ng-show="options.readonly">
+					<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)"
+               				tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+               				tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+               				tooltip-animation="false" tooltip-placement="left">
+            		</p>
+				</div>
+				<div ng-hide="options.readonly">
+					<div ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+						<a ng-click="managePredicate(node, message)"
+                       		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+                       		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+                       		tooltip-animation="false" tooltip-placement="left"></a>
+					</div>
+					<div ng-hide="filteredConstraints.length || filteredSubConstraints.length || options.readonly || node.obj.usage !== 'C'">
+						<a ng-click="managePredicate(node, message)" class="point">
+                			<span><i class="fa fa-plus fa-fw"></i></span>
+							<p class="warning">Need predicate</p>
+                		</a>
+					</div>
+				</div>
+
+				<p ng-repeat="constraint in filteredSubConstraints = (parentsMap[node.obj.id].predicates | filter:{constraintTarget:node.obj.position + '[1]'}:true)"
+               		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+               		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+               		tooltip-animation="false" tooltip-placement="left">
+            	</p>
+			</div>
         </td>
         <td class="col-xs-1" ng-style="csWidth">
-            <p ng-repeat="p in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true"
-               tooltip-html="getConformanceStatementAsString(p)" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(p)" tooltip-trigger
-               tooltip-animation="false" tooltip-placement="left">
-            </p>
+			<div>
+				<div ng-show="options.readonly">
+					<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)"
+               				tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+               				tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+               				tooltip-animation="false" tooltip-placement="left">
+            		</p>
+				</div>
+
+				<div ng-hide="options.readonly">
+					<div ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)">
+						<a ng-click="manageConformanceStatement(node, message)"
+                       		tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+                       		tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+                       		tooltip-animation="false" tooltip-placement="left"></a>
+					</div>
+					<div ng-hide="filteredConstraints.length || options.readonly">
+						<a ng-click="manageConformanceStatement(node, message)" class="point">
+                			<span><i class="fa fa-plus fa-fw"></i></span>
+                		</a>
+					</div>
+				</div>
+
+				<p ng-repeat="constraint in parentsMap[node.obj.id].conformanceStatements  | filter:{constraintTarget:node.obj.position + '[1]'}:true"
+               		tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+               		tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+               		tooltip-animation="false" tooltip-placement="left">
+            	</p>
+			</div>
         </td>
 
         <td class="col-xs-1 col-fixed-80">
             <div>-</div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth">
-            <div tooltip-html="node.comment" tooltip-append-to-body="true"
+            <div tooltip-html="node.obj.comment" tooltip-append-to-body="true"
                  tooltip-class="constraints-tooltip"
                  tooltip-trigger tooltip-animation="false" tooltip-placement="left"></div>
         </td>
@@ -554,36 +671,37 @@
 
 <script type="text/ng-template" id="PredicateMessageCtrl.html">
 <div class="modal-header">
-    <h3 class="modal-title">Predicates for {{selectedNode.name}}</h3>
+	<div ng-show="selectedNode.obj.type === 'segmentRef'">
+		<h3 class="modal-title">Predicate for {{segmentsMap[selectedNode.obj.ref].name}}({{selectedNode.path}})</h3>
+	</div>
+	<div ng-hide="selectedNode.obj.type === 'segmentRef'">
+		<h3 class="modal-title">Predicate for {{selectedNode.obj.name}}({{selectedNode.path}})</h3>
+	</div>
 </div>
 
 <div class="modal-body">
 <form role="form">
-<h5>Predicates of {{selectedNode.name}}</h5>
-
+<h5>Predicate</h5>
 <div class="table-responsive">
     <table class="table table-striped table-bordered">
         <thead>
         <tr class="tbl-header">
-            <th class="col-xs-6">Condition</th>
-            <th class="col-xs-2">Target Location</th>
+            <th class="col-xs-8">Condition</th>
             <th class="col-xs-1">True Usage</th>
             <th class="col-xs-1">False Usage</th>
             <th class="col-xs-1">Classification</th>
             <th class="col-xs-1"></th>
         </tr>
         </thead>
-
         <tbody>
-        <tr ng-repeat="p in selectedNode.predicates">
-            <td class="col-xs-6">{{p.description}}</td>
-            <td class="col-xs-2">{{p.constraintTarget}}</td>
-            <td class="col-xs-1">{{p.trueUsage}}</td>
-            <td class="col-xs-1">{{p.falseUsage}}</td>
-            <td class="col-xs-1">{{p.constraintClassification}}</td>
+        <tr ng-repeat="constraint in message.predicates | filter: {constraintTarget: selectedNode.path}:true">
+            <td class="col-xs-8">{{constraint.description}}</td>
+            <td class="col-xs-1">{{constraint.trueUsage}}</td>
+            <td class="col-xs-1">{{constraint.falseUsage}}</td>
+			<td class="col-xs-1">{{constraint.constraintClassification}}</td>
             <td class="col-xs-1">
-                <a ng-click="deletePredicate(p)" class="point">
-                    <span><i class="fa fa-minus fa-fw"></i></span>
+                <a ng-click="deletePredicate(constraint)" class="point">
+                    <span><i class="fa fa-times fa-fw"></i></span>
                 </a>
             </td>
         </tr>
@@ -591,7 +709,7 @@
     </table>
 </div>
 
-<h5>Define New predicate for {{selectedNode.name}}</h5>
+<h5>Define new predicate</h5>
 
 <label class="control-label" for="constraintTypeSelect">Constraint Type: </label>
 <select name="constraintTypeSelect" ng-model="constraintType">
@@ -600,12 +718,151 @@
 </select>
 
 <div class="table-responsive">
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr class="tbl-header">
+			<th class="col-xs-8" colspan="4">Condition</th>
+            <th class="col-xs-1" colspan="1" rowspan="2">True Usage</th>
+            <th class="col-xs-1" colspan="1" rowspan="2">False Usage</th>
+            <th class="col-xs-1" colspan="1" rowspan="2">Classification</th>
+            <th class="col-xs-1" colspan="1" rowspan="2"></th>
+        </tr>
+        <tr class="tbl-header">
+            <th class="col-xs-2" colspan="1">Node</th>
+            <th class="col-xs-2" colspan="1">Verb</th>
+            <th class="col-xs-2" colspan="1">Constraint</th>
+            <th class="col-xs-2" colspan="1">Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+			<td class="col-xs-2" colspan="1">
+                <span>{{newConstraint.location_1}}</span>
+				<span ng-show="newConstraint.childNodes_1 != null && newConstraint.childNodes_1.length > 0">
+					<select name="child" class="form-control"
+                    	ng-change="updateLocation1()"
+                    	ng-model="newConstraint.currentNode_1"
+                    	ng-options="child as child.name for child in newConstraint.childNodes_1"/>
+				</span>
+            </td>
+
+			<td class="col-xs-2" colspan="1">
+                <select name="verb" class="form-control"
+                        ng-change=""
+                        ng-model="newConstraint.verb"
+                        ng-options="constraintVerb for constraintVerb in config.constraintVerbs">
+                </select>
+            </td>
+
+			<td class="col-xs-2" colspan="1">
+                <select name="contraintType" class="form-control"
+                        ng-change=""
+                        ng-model="newConstraint.contraintType"
+                        ng-options="contraintType for contraintType in config.constraintTypes">
+                </select>
+            </td>
+
+			<td class="col-xs-2" colspan="1">
+                								<span ng-show="newConstraint.contraintType == 'a literal value' || 
+															   newConstraint.contraintType == 'equal to' ||
+															   newConstraint.contraintType == 'not-equal to' ||
+															   newConstraint.contraintType == 'greater than' ||
+															   newConstraint.contraintType == 'equal to or greater than' ||
+															   newConstraint.contraintType == 'less than' ||
+															   newConstraint.contraintType == 'equal to or less than'">
+                									<input style="width:100%" class="form-control"
+                                                           ng-model="newConstraint.value" type="text"/>
+                								</span>
+
+												<span ng-show="newConstraint.contraintType == 'one of list values'">
+                									<input style="width:100%" class="form-control"
+                                                           ng-model="newConstraint.value" placeholder="CSV Value"
+                                                           type="text"/>
+                								</span>
+
+												<span ng-show="newConstraint.contraintType == 'formatted value'">
+                									<select name="format" class="form-control"
+                                                            ng-model="newConstraint.value"
+                                                            ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats"/>
+                								</span>
+
+												<span ng-show="newConstraint.contraintType == 'identical to another node' ||
+															   newConstraint.contraintType == 'equal to another node' ||
+															   newConstraint.contraintType == 'not-equal to another node' ||
+															   newConstraint.contraintType == 'greater than another node' ||
+															   newConstraint.contraintType == 'equal to or greater than another node' ||
+															   newConstraint.contraintType == 'less than another node' ||
+															   newConstraint.contraintType == 'equal to or less than another node'">
+													<span>{{newConstraint.location_2}}</span>
+													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
+														<select name="child" class="form-control"
+                                                                ng-change="updateLocation2()"
+                                                                ng-model="newConstraint.currentNode_2"
+                                                                ng-options="child as child.name for child in newConstraint.childNodes_2"/>
+													</span>
+                								</span>
+												<span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
+                									<span>ValueSet ID: </span>
+													<select name="valueSetId" class="form-control"
+                                                            ng-model="newConstraint.valueSetId">
+                                                        <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'"
+                                                                value="{{table.bindingIdentifier}}">
+                                                            {{table.bindingIdentifier}}
+                                                        </option>
+                                                    </select>
+													<br/>
+													<span>BindingStrength: </span>
+													<select name="bindingStrength" class="form-control"
+                                                            ng-model="newConstraint.bindingStrength">
+                                                        <option value="R">R</option>
+                                                        <option value="S">S</option>
+                                                        <option value="U">U</option>
+                                                    </select>
+													<br/>
+													<span>BindingLocation: </span>
+													<input class="form-control" ng-model="newConstraint.bindingLocation"
+                                                           type="text"/>
+                								</span>
+            </td>
+           
+
+            <td class="col-xs-1" colspan="1">
+                <select name="trueUsage" class="form-control" ng-model="newConstraint.trueUsage"
+                        ng-options="usage for usage in config.usages"/>
+            </td>
+
+            <td class="col-xs-1" colspan="1">
+                <select name="falseUsage" class="form-control" ng-model="newConstraint.falseUsage"
+                        ng-options="usage for usage in config.usages"/>
+            </td>
+            
+			<td class="col-xs-1" colspan="1">
+                <select ng-model="newConstraint.constraintClassification">
+                    <option value="E">Error</option>
+                    <option value="W">Warning</option>
+                    <option value="A">Alert</option>
+                    /select>
+            </td>
+         
+            <td class="col-xs-1" colspan="1">
+                <a ng-click="initPredicate()" class="point">
+                    <span><i class="fa fa-times fa-fw"></i></span>
+                </a>
+                <a ng-click="addPredicate()" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="table-responsive">
     <table ng-show="constraintType == 'Complex'" class="table table-striped table-bordered">
         <thead>
         <tr class="tbl-header">
             <th class="col-md-1">ID</th>
-            <th class="col-md-6">Desciption</th>
-            <th class="col-md-2">Target Location</th>
+            <th class="col-md-8">Desciption</th>
             <th class="col-md-1">True Usage</th>
             <th class="col-md-1">False Usage</th>
             <th class="col-md-1"></th>
@@ -614,8 +871,7 @@
         <tbody>
         <tr ng-repeat="p in newComplexConstraint">
             <td class="col-md-1">{{p.constraintId}}</td>
-            <td class="col-md-6">{{p.description}}</td>
-            <td class="col-md-2">{{p.constraintTarget}}</td>
+            <td class="col-md-8">{{p.description}}</td>
             <td class="col-md-1">{{p.trueUsage}}</td>
             <td class="col-md-1">{{p.falseUsage}}</td>
             <td class="col-md-1">
@@ -683,158 +939,6 @@
         </tbody>
     </table>
 </div>
-
-<h5>Define plain constraint</h5>
-
-<div class="table-responsive">
-    <table class="table table-striped table-bordered">
-        <thead>
-        <tr class="tbl-header">
-            <th class="col-xs-1" colspan="1" rowspan="2">Target Node</th>
-            <th class="col-xs-1" colspan="1" rowspan="2">True Usage</th>
-            <th class="col-xs-1" colspan="1" rowspan="2">False Usage</th>
-            <th class="col-xs-7" colspan="4">Condition</th>
-            <th class="col-xs-1" colspan="1" rowspan="2">Classification</th>
-            <th class="col-xs-1" colspan="1" rowspan="2"></th>
-        </tr>
-        <tr class="tbl-header">
-            <th class="col-xs-2" colspan="1">Node</th>
-            <th class="col-xs-1" colspan="1">Verb</th>
-            <th class="col-xs-2" colspan="1">Constraint</th>
-            <th class="col-xs-2" colspan="1">Value</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class="col-xs-1" colspan="1">
-                <span>{{newConstraint.location_T}}</span>
-												<span ng-show="newConstraint.childNodes_T != null && newConstraint.childNodes_T.length > 0">
-													<select name="child" class="form-control"
-                                                            ng-change="updateLocationT()"
-                                                            ng-model="newConstraint.currentNode_T"
-                                                            ng-options="child as child.name for child in newConstraint.childNodes_T"/>
-												</span>
-            </td>
-
-            <td class="col-xs-1" colspan="1">
-                <select name="trueUsage" class="form-control" ng-model="newConstraint.trueUsage"
-                        ng-options="usage for usage in config.usages"/>
-            </td>
-
-            <td class="col-xs-1" colspan="1">
-                <select name="falseUsage" class="form-control" ng-model="newConstraint.falseUsage"
-                        ng-options="usage for usage in config.usages"/>
-            </td>
-
-            <td class="col-xs-2" colspan="1">
-                <span>{{newConstraint.location_1}}</span>
-												<span ng-show="newConstraint.childNodes_1 != null && newConstraint.childNodes_1.length > 0">
-													<select name="child" class="form-control"
-                                                            ng-change="updateLocation1()"
-                                                            ng-model="newConstraint.currentNode_1"
-                                                            ng-options="child as child.name for child in newConstraint.childNodes_1"/>
-												</span>
-            </td>
-
-            <td class="col-xs-1" colspan="1">
-                <select name="verb" class="form-control"
-                        ng-change=""
-                        ng-model="newConstraint.verb"
-                        ng-options="constraintVerb for constraintVerb in config.constraintVerbs">
-                </select>
-            </td>
-
-            <td class="col-xs-2" colspan="1">
-                <select name="contraintType" class="form-control"
-                        ng-change=""
-                        ng-model="newConstraint.contraintType"
-                        ng-options="contraintType for contraintType in config.constraintTypes">
-                </select>
-            </td>
-
-            <td class="col-xs-2" colspan="1">
-                								<span ng-show="newConstraint.contraintType == 'a literal value' || 
-															   newConstraint.contraintType == 'equal to' ||
-															   newConstraint.contraintType == 'not-equal to' ||
-															   newConstraint.contraintType == 'greater than' ||
-															   newConstraint.contraintType == 'equal to or greater than' ||
-															   newConstraint.contraintType == 'less than' ||
-															   newConstraint.contraintType == 'equal to or less than'">
-                									<input style="width:100%" class="form-control"
-                                                           ng-model="newConstraint.value" type="text"/>
-                								</span>
-
-												<span ng-show="newConstraint.contraintType == 'one of list values'">
-                									<input style="width:100%" class="form-control"
-                                                           ng-model="newConstraint.value" placeholder="CSV Value"
-                                                           type="text"/>
-                								</span>
-
-												<span ng-show="newConstraint.contraintType == 'formatted value'">
-                									<select name="format" class="form-control"
-                                                            ng-model="newConstraint.value"
-                                                            ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats"/>
-                								</span>
-
-												<span ng-show="newConstraint.contraintType == 'identical to the another node' ||
-															   newConstraint.contraintType == 'equal to the another node' ||
-															   newConstraint.contraintType == 'not-equal to the another node' ||
-															   newConstraint.contraintType == 'greater than the another node' ||
-															   newConstraint.contraintType == 'equal to or greater than the another node' ||
-															   newConstraint.contraintType == 'less than the another node' ||
-															   newConstraint.contraintType == 'equal to or less than the another node'">
-													<span>{{newConstraint.location_2}}</span>
-													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
-														<select name="child" class="form-control"
-                                                                ng-change="updateLocation2()"
-                                                                ng-model="newConstraint.currentNode_2"
-                                                                ng-options="child as child.name for child in newConstraint.childNodes_2"/>
-													</span>
-                								</span>
-												<span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
-                									<span>ValueSet ID: </span>
-													<select name="valueSetId" class="form-control"
-                                                            ng-model="newConstraint.valueSetId">
-                                                        <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'"
-                                                                value="{{table.bindingIdentifier}}">
-                                                            {{table.bindingIdentifier}}
-                                                        </option>
-                                                    </select>
-													<br/>
-													<span>BindingStrength: </span>
-													<select name="bindingStrength" class="form-control"
-                                                            ng-model="newConstraint.bindingStrength">
-                                                        <option value="R">R</option>
-                                                        <option value="S">S</option>
-                                                        <option value="U">U</option>
-                                                    </select>
-													<br/>
-													<span>BindingLocation: </span>
-													<input class="form-control" ng-model="newConstraint.bindingLocation"
-                                                           type="text"/>
-                								</span>
-            </td>
-
-            <td class="col-md-1" colspan="1">
-                <select ng-model="newConstraint.constraintClassification">
-                    <option value="E">Error</option>
-                    <option value="W">Warning</option>
-                    <option value="A">Alert</option>
-                    /select>
-            </td>
-
-            <td class="col-xs-1" colspan="1">
-                <a ng-click="initPredicate()" class="point">
-                    <span><i class="fa fa-times fa-fw"></i></span>
-                </a>
-                <a ng-click="addPredicate()" class="point">
-                    <span><i class="fa fa-plus fa-fw"></i></span>
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
 </form>
 </div>
 
@@ -847,13 +951,17 @@
 
 <script type="text/ng-template" id="ConformanceStatementMessageCtrl.html">
 <div class="modal-header">
-    <h3 class="modal-title">Conformance statement for {{selectedNode.name}}</h3>
+	<div ng-show="selectedNode.obj.type === 'segmentRef'">
+		<h3 class="modal-title">Conformance statement for {{segmentsMap[selectedNode.obj.ref].name}}({{selectedNode.path}})</h3>
+	</div>
+	<div ng-hide="selectedNode.obj.type === 'segmentRef'">
+		<h3 class="modal-title">Conformance statement for {{selectedNode.obj.name}}({{selectedNode.path}})</h3>
+	</div>
 </div>
 
 <div class="modal-body">
 <form role="form">
-<h5>Conformance statements of {{selectedNode.name}}</h5>
-
+<h5>List of conformance statements</h5>
 <div class="table-responsive">
     <table class="table table-striped table-bordered">
         <thead>
@@ -864,15 +972,14 @@
             <th class="col-xs-1"></th>
         </tr>
         </thead>
-
         <tbody>
-        <tr ng-repeat="c in selectedNode.conformanceStatements">
-            <td class="col-xs-2">{{c.constraintId}}</td>
-            <td class="col-xs-7">{{c.description}}</td>
-            <td class="col-md-2">{{c.constraintClassification}}</td>
+        <tr ng-repeat="constraint in message.conformanceStatements | filter: {constraintTarget: selectedNode.path}:true">
+            <td class="col-xs-2">{{constraint.constraintId}}</td>
+            <td class="col-xs-7">{{constraint.description}}</td>
+            <td class="col-md-2">{{constraint.constraintClassification}}</td>
             <td class="col-xs-1">
-                <a ng-click="deleteConformanceStatement(c)" class="point">
-                    <span><i class="fa fa-minus fa-fw"></i></span>
+                <a ng-click="deleteConformanceStatement(constraint)" class="point">
+                    <span><i class="fa fa-times fa-fw"></i></span>
                 </a>
             </td>
         </tr>
@@ -880,95 +987,13 @@
     </table>
 </div>
 
-<h5>Define new conformance statement of {{selectedNode.name}}</h5>
-
+<h5>Define new conformance statement</h5>
 
 <label class="control-label" for="constraintTypeSelect">Constraint Type: </label>
 <select name="constraintTypeSelect" ng-model="constraintType">
     <option value="Complex">Complex</option>
     <option value="Plain">Plain</option>
 </select>
-
-<div class="table-responsive">
-    <table ng-show="constraintType == 'Complex'" class="table table-striped table-bordered">
-        <thead>
-        <tr class="tbl-header">
-            <th class="col-md-2">Plain Constraint ID</th>
-            <th class="col-md-9">Desciption</th>
-            <th class="col-md-1"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="c in newComplexConstraint">
-            <td class="col-md-2">{{c.constraintId}}</td>
-            <td class="col-md-9">{{c.description}}</td>
-            <td class="col-md-1">
-                <a ng-click="deleteConformanceStatementForComplex(c)" class="point">
-                    <span><i class="fa fa-minus fa-fw"></i></span>
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-<div class="table-responsive">
-    <table ng-show="constraintType == 'Complex'" class="table table-striped table-bordered">
-        <tbody>
-        <tr>
-            <td class="col-md-2">Merge Two Constraints:</td>
-            <td class="col-md-9">
-                <span>First Constraint: </span>
-                <select ng-show="constraintType == 'Complex'"
-                        name="firstConstraintSelect"
-                        ng-model="firstConstraint"
-                        ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
-                </select>
-
-                <span>Second Constraint: </span>
-                <select name="secondConstraintSelect"
-                        ng-model="secondConstraint"
-                        ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
-                </select>
-
-                <span>Composite Type: </span>
-                <select name="compositeTypeSelect" ng-model="compositeType">
-                    <option value="AND">AND</option>
-                    <option value="OR">OR</option>
-                    <option value="IFTHEN">IFTHEN</option>
-                </select>
-            </td>
-            <td class="col-md-1">
-                <a ng-click="compositeConformanceStatements()" class="point">
-                    <span><i class="fa fa-link fa-fw"></i></span>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td class="col-md-2">Add Complex Constraint:</td>
-            <td class="col-md-9">
-                <span>Complex Constraint ID: </span>
-                <input class="form-control" ng-model="newComplexConstraintId" type="text"/>
-                <span>Complex Constraint: </span>
-                <select name="complexConstraintSelect" ng-model="complexConstraint"
-                        ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
-                </select>
-                <span>Constraint Classification: </span>
-                <select ng-model="newComplexConstraintClassification">
-                    <option value="E">Error</option>
-                    <option value="W">Warning</option>
-                    <option value="A">Alert</option>
-                </select>
-            </td>
-            <td class="col-md-1">
-                <a ng-click="addComplexConformanceStatement()" class="point">
-                    <span><i class="fa fa-plus fa-fw"></i></span>
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
 
 <div class="table-responsive">
 <table class="table table-striped table-bordered">
@@ -990,8 +1015,7 @@
 <tbody>
 <tr>
     <td class="col-xs-2" colspan="1">
-        <input style="width:100%" class="form-control" ng-model="newConstraint.constraintId"
-               placeholder="Type ID" type="text"/>
+        <input style="width:100%" class="form-control" ng-model="newConstraint.constraintId" placeholder="Type ID" type="text"/>
     </td>
 
     <td class="col-xs-2" colspan="1">
@@ -1039,7 +1063,7 @@
                                                             ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats"/>
                 								</span>
 
-												<span ng-show="newConstraint.contraintType == 'identical to the another node'">
+												<span ng-show="newConstraint.contraintType == 'identical to another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
 														<select name="child" class="form-control"
@@ -1049,7 +1073,7 @@
 													</span>
                 								</span>
 
-												<span ng-show="newConstraint.contraintType == 'equal to the another node'">
+												<span ng-show="newConstraint.contraintType == 'equal to another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
 														<select name="child" class="form-control"
@@ -1059,7 +1083,7 @@
 													</span>
                 								</span>
 										
-												<span ng-show="newConstraint.contraintType == 'not-equal to the another node'">
+												<span ng-show="newConstraint.contraintType == 'not-equal to another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
 														<select name="child" class="form-control"
@@ -1069,7 +1093,7 @@
 													</span>
                 								</span>
 	
-												<span ng-show="newConstraint.contraintType == 'greater than the another node'">
+												<span ng-show="newConstraint.contraintType == 'greater than another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
 														<select name="child" class="form-control"
@@ -1079,7 +1103,7 @@
 													</span>
                 								</span>
 
-												<span ng-show="newConstraint.contraintType == 'equal to or greater than the another node'">
+												<span ng-show="newConstraint.contraintType == 'equal to or greater than another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
 														<select name="child" class="form-control"
@@ -1089,7 +1113,7 @@
 													</span>
                 								</span>
 
-												<span ng-show="newConstraint.contraintType == 'less than the another node'">
+												<span ng-show="newConstraint.contraintType == 'less than another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
 														<select name="child" class="form-control"
@@ -1099,7 +1123,7 @@
 													</span>
                 								</span>
 
-												<span ng-show="newConstraint.contraintType == 'equal to or less than the another node'">
+												<span ng-show="newConstraint.contraintType == 'equal to or less than another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
 														<select name="child" class="form-control"
@@ -1183,6 +1207,92 @@
 </tbody>
 </table>
 </div>
+
+
+
+
+
+
+<div class="table-responsive">
+    <table ng-show="constraintType == 'Complex'" class="table table-striped table-bordered">
+        <thead>
+        <tr class="tbl-header">
+            <th class="col-md-2">Plain Constraint ID</th>
+            <th class="col-md-9">Desciption</th>
+            <th class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="c in newComplexConstraint">
+            <td class="col-md-2">{{c.constraintId}}</td>
+            <td class="col-md-9">{{c.description}}</td>
+            <td class="col-md-1">
+                <a ng-click="deleteConformanceStatementForComplex(c)" class="point">
+                    <span><i class="fa fa-minus fa-fw"></i></span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="table-responsive">
+    <table ng-show="constraintType == 'Complex'" class="table table-striped table-bordered">
+        <tbody>
+        <tr>
+            <td class="col-md-2">Merge Two Constraints:</td>
+            <td class="col-md-9">
+                <span>First Constraint: </span>
+                <select ng-show="constraintType == 'Complex'"
+                        name="firstConstraintSelect"
+                        ng-model="firstConstraint"
+                        ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
+                </select>
+
+                <span>Second Constraint: </span>
+                <select name="secondConstraintSelect"
+                        ng-model="secondConstraint"
+                        ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
+                </select>
+
+                <span>Composite Type: </span>
+                <select name="compositeTypeSelect" ng-model="compositeType">
+                    <option value="AND">AND</option>
+                    <option value="OR">OR</option>
+                    <option value="IFTHEN">IFTHEN</option>
+                </select>
+            </td>
+            <td class="col-md-1">
+                <a ng-click="compositeConformanceStatements()" class="point">
+                    <span><i class="fa fa-link fa-fw"></i></span>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2">Add Complex Constraint:</td>
+            <td class="col-md-9">
+                <span>Complex Constraint ID: </span>
+           		<input ng-model="newComplexConstraintId" type="text"/>
+                <span>Complex Constraint: </span>
+                <select name="complexConstraintSelect" ng-model="complexConstraint" ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint"/>
+                <span>Constraint Classification: </span>
+                <select ng-model="newComplexConstraintClassification">
+                    <option value="E">Error</option>
+                    <option value="W">Warning</option>
+                    <option value="A">Alert</option>
+                </select>
+            </td>
+            <td class="col-md-1">
+                <a ng-click="addComplexConformanceStatement()" class="point">
+                    <span><i class="fa fa-plus fa-fw"></i></span>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
 </form>
 </div>
 
@@ -1194,9 +1304,9 @@
 </script>
 
 <script type="text/ng-template" id="MessageReadTree.html">
-    <tr tt-node is-branch="hasChildren(node)">
+    <tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-xs-2 col-fixed-250">
-            <span>{{::node.event}}^{{::node.structID}}:{{::node.description}}</span>
+            <span>{{::node.obj.event}}^{{::node.obj.structID}}:{{::node.obj.description}}</span>
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>-</div>
@@ -1236,23 +1346,26 @@
 </script>
 
 <script type="text/ng-template" id="MessageSegmentRefReadTree.html">
-    <tr tt-node is-branch="hasChildren(node)">
+    <tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-xs-2 col-fixed-250">
             <img style="width:15px; height:15px"
                  ng-src="images/segment.png">
             <a
-                    tooltip-html="getGroupNodeName(node)" tooltip-append-to-body="true"
+                    tooltip-html="getGroupNodeName(node.obj)" tooltip-append-to-body="true"
                     class="point"
-                    ng-click="goToSegment(node.ref)"
-                    tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node)" tooltip-trigger
+                    ng-click="goToSegment(node.obj.ref)"
+                    tooltip-class="constraints-tooltip" ng-bind-html="getSegmentRefNodeName(node.obj)" tooltip-trigger
                     tooltip-animation="false" tooltip-placement="left"
                     ></a>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <span ng-bind="node.usage"></span>
+            <span ng-bind="node.obj.usage"></span>
+			<span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+					({{p.trueUsage}}/{{p.falseUsage}})
+			</span>
         </td>
         <td class="col-xs-1 col-fixed-100">
-            [{{::node.min}}, {{::node.max}}]
+            [{{::node.obj.min}}, {{::node.obj.max}}]
         </td>
 
         <td class="col-xs-1 col-fixed-100">
@@ -1270,50 +1383,64 @@
 
 
         <td class="col-xs-2" ng-style="predWidth">
-            <div>-</div>
+			<div>
+				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)"
+               		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+               		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+               		tooltip-animation="false" tooltip-placement="left">
+            	</p>
+			</div>
         </td>
 
         <td class="col-xs-3" ng-style="csWidth">
-            <div>-</div>
+            <div>
+				<p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)"
+               		tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+               		tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+               		tooltip-animation="false" tooltip-placement="left">
+            	</p>
+			</div>
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>-</div>
         </td>
 
         <td class="col-xs-1" ng-style="commentWidth">
-                 <span ng-show="node.comment !== '' && node.comment !== null"
-                       tooltip-html="node.comment" tooltip-append-to-body="true"
+                 <span ng-show="node.obj.comment !== '' && node.obj.comment !== null"
+                       tooltip-html="node.obj.comment" tooltip-append-to-body="true"
                        tooltip-class="constraints-tooltip"
                        tooltip-trigger tooltip-animation="false" tooltip-placement="left"
-                       ng-bind="node.comment"></span>
+                       ng-bind="node.obj.comment"></span>
         </td>
     </tr>
 </script>
 
 <script type="text/ng-template" id="MessageGroupReadTree.html">
-    <tr tt-node is-branch="hasChildren(node)">
+    <tr tt-node is-branch="hasChildren(node.obj)">
         <td class="col-xs-2 col-fixed-250">
                                         <span>
 
                                             <img style="width:15px; height:15px"
                                                  ng-src="images/group.png">
                                               <span
-                                                      tooltip-html="getGroupNodeName(node)"
+                                                      tooltip-html="getGroupNodeName(node.obj)"
                                                       tooltip-append-to-body="true"
                                                       tooltip-class="constraints-tooltip"
-                                                      ng-bind-html="getGroupNodeName(node)" tooltip-trigger
+                                                      ng-bind-html="getGroupNodeName(node.obj)" tooltip-trigger
                                                       tooltip-animation="false" tooltip-placement="left"
                                                       ></span>
                                         </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
             <div>
-                <span ng-bind="node.usage"></span>
-
+                <span ng-bind="node.obj.usage"></span>
+				<span ng-repeat="p in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)">
+					({{p.trueUsage}}/{{p.falseUsage}})
+				</span>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
-            [{{::node.min}}, {{::node.max}}]
+            [{{::node.obj.min}}, {{::node.obj.max}}]
         </td>
 
 
@@ -1332,26 +1459,21 @@
 
         <td class="col-xs-1" ng-style="predWidth">
             <div>
-                <p ng-repeat="p in node.predicates">
-                    <a ng-click="managePredicate(node)"
-                       tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
-                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
-                       tooltip-animation="false" tooltip-placement="left"
-
-                            ></a>
-                </p>
-            </div>
+				<p ng-repeat="constraint in filteredConstraints  = (message.predicates | filter:{constraintTarget:node.path}:true)"
+               		tooltip-html="getPredicateAsString(constraint)" tooltip-append-to-body="true"
+               		tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(constraint)" tooltip-trigger
+               		tooltip-animation="false" tooltip-placement="left">
+            	</p>
+			</div>
         </td>
 
         <td class="col-xs-1" ng-style="csWidth">
             <div>
-                <p ng-repeat="c in node.conformanceStatements">
-                    <a ng-click="manageConformanceStatement(node)"
-                       tooltip-html="getConstraintAsString(p)" tooltip-append-to-body="true"
-                       tooltip-class="constraints-tooltip" ng-bind-html="getConstraintAsString(p)" tooltip-trigger
-                       tooltip-animation="false" tooltip-placement="left"
-                            ></a>
-                </p>
+                <p ng-repeat="constraint in filteredConstraints  = (message.conformanceStatements | filter:{constraintTarget:node.path}:true)"
+               		tooltip-html="getConformanceStatementAsString(constraint)" tooltip-append-to-body="true"
+               		tooltip-class="constraints-tooltip" ng-bind-html="getConformanceStatementAsString(constraint)" tooltip-trigger
+               		tooltip-animation="false" tooltip-placement="left">
+            	</p>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-80">
@@ -1359,11 +1481,11 @@
         </td>
 
         <td class="col-xs-1" ng-style="commentWidth">
-                 <span ng-show="node.comment !== '' && node.comment !== null"
-                       tooltip-html="node.comment" tooltip-append-to-body="true"
+                 <span ng-show="node.obj.comment !== '' && node.obj.comment !== null"
+                       tooltip-html="node.obj.comment" tooltip-append-to-body="true"
                        tooltip-class="constraints-tooltip"
                        tooltip-trigger tooltip-animation="false" tooltip-placement="left"
-                       ng-bind="node.comment"></span>
+                       ng-bind="node.obj.comment"></span>
         </td>
     </tr>
 </script>
