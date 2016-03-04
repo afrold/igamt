@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings, StorageService) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings, StorageService,$q) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -171,7 +171,16 @@ angular.module('igl')
          * init the controller
          */
         $scope.initIGDocuments = function () {
-            $scope.loadIGDocuments();
+            $scope.loadIGDocuments().then(function(){
+                $timeout(function() {
+                var prevIgDocId = StorageService.getSelectedIgDocumentId();
+                var prevIgDoc = prevIgDocId !=null ? $scope.findOne(prevIgDocId):null;
+                    if (prevIgDoc != null) {
+                        $scope.selectIGDocument(prevIgDoc);
+                    }
+                },500);
+            });
+
             $scope.getScrollbarWidth();
             /**
              * On 'event:loginConfirmed', resend all the 401 requests.
@@ -238,6 +247,7 @@ angular.module('igl')
         };
 
         $scope.loadIGDocuments = function () {
+            var delay = $q.defer();
             $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ? StorageService.getSelectedIgDocumentType(): 'USER';
             $scope.error = null;
             $rootScope.igs = [];
@@ -247,23 +257,21 @@ angular.module('igl')
                 $scope.loading = true;
                 StorageService.setSelectedIgDocumentType($scope.igDocumentConfig.selectedType);
                 $http.get('api/igdocuments', {params: {"type": $scope.igDocumentConfig.selectedType}}).then(function (response) {
+                    waitingDialog.hide();
                     $rootScope.igs = angular.fromJson(response.data);
                     $scope.tmpIgs = [].concat($rootScope.igs);
                     $scope.loading = false;
-                    var prevIgDocId = StorageService.getSelectedIgDocumentId();
-                    var prevIgDoc = prevIgDocId !=null ? $scope.findOne(prevIgDocId):null;
-                    waitingDialog.hide();
-                    if(prevIgDoc !=null){
-                        $timeout(function() {
-                            $scope.selectIGDocument(prevIgDoc);
-                        });
-                    }
+                    delay.resolve(true);
                 }, function (error) {
                     $scope.loading = false;
                     $scope.error = error.data;
                     waitingDialog.hide();
+                    delay.reject(false);
                 });
+            }else{
+                delay.reject(false);
             }
+            return delay.promise;
         };
 
         $scope.clone = function (igdocument) {

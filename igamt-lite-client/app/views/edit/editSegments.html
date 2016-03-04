@@ -17,21 +17,11 @@
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="segment !== null" id="executionPanel">
-                <div class="page-header">
-									<span class="header4">Segment {{segment.name}}:
-										{{segment.label}}</span>
-
-                </div>
-                <!--<accordion close-others="false">-->
-                <!--<accordion-group is-open="true" panel-class="panel-info">-->
-                <!--<accordion-heading>-->
-                <!--<i class="fa"-->
-                <!--ng-class="{'fa-caret-down': accordi.metaData, 'fa-caret-right': !accordi.metaData}"></i>-->
-                <!--MetaData-->
-                <!--</accordion-heading>-->
                 <form name="segmentForm" id="segmentForm" novalidate class="form-horizontal">
 
-
+                    <div class="page-header">
+									<span class="header4 pull-left">Segment {{segment.name}}:
+										{{segment.label}}</span>
                      <span class="pull-right">
 
         <button title="Create Copy" type="button" class="btn btn-xs btn-info" ng-disabled='!segmentForm.$valid'
@@ -45,153 +35,149 @@
             <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
     </span>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="page-header">
-                                <span class="header4">MetaData</span>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row">
-                        <div class="col-md-12">
-
-                            <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error has-feedback' : segmentForm.name.$invalid}">
-                                    <label class="control-label">Name</label> <input type="text" disabled
-                                                                                     name="identifier"
-                                                                                     class="form-control"
-                                                                                     ng-model="segment.name"
-                                                                                     ng-change="recordChanged('segment','edit',segment.id,'name', segment.name)"
-                                                                                     required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2 col-margin">
-
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error has-feedback' : segmentForm.description.$invalid}">
-                                    <label class="control-label">Description</label> <input type="text" disabled
-                                                                                            ng-change="recordChanged('segment','edit',segment.id,'description', segment.description)"
-                                                                                            name="description"
-                                                                                            class="form-control"
-                                                                                            ng-model="segment.description"
-                                                                                            required>
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error has-feedback' : segmentForm.label.$invalid}">
-                                    <label class="control-label">Label</label>
-                                    <span class="igl-has-error has-feedback" ng-show="isDuplicated(segment,'label', segments)">Existing label (flavor name)</span>
-                                    <input type="text" ng-disabled="options.readonly"
-                                           class="form-control"
-                                           ng-change="recordChanged()"
-                                           name="label" class="form-control"
-                                           ng-model="segment.label"
-                                           required>
-                                </div>
-                            </div>
-
-                            <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error has-feedback' : segmentForm.comment.$invalid}">
-                                    <label class="control-label">Comment</label> <input
-                                        ng-disabled="options.readonly"
-                                        class="form-control" type="text"
-                                        name="comment"
-                                        ng-change="recordChanged()"
-                                        ng-model="segment.comment">
-
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="col-md-12 col-margin">
-                            <div class="form-group"
-                                 ng-class="{'igl-has-error has-feedback' : segmentForm.text1.$invalid}">
-                                <label class="control-label">Definition Pre-Text</label>
-
-                                <div ng-if="!options.readonly">
-                                    <textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1"
-                                              name="text1"
-                                              ng-change="recordChanged()"></textarea>
-                                </div>
-                                <div ng-if="options.readonly">
-                                    <div froala-view="segment.text1"></div>
-                                </div>
-
 </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-12 col-margin">
+                        <div class="row">
                             <div class="col-md-12">
-                            <div class="form-group"
-                                 ng-class="{'igl-has-error has-feedback' : segmentForm.text2.$invalid}">
-                                <label class="control-label">Definition Post-Text</label>
-
-                                <div ng-if="!options.readonly">
-                                    <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2"
-                                              name="text2"
-                                              ng-change="recordChanged()"></textarea>
+                                <div class="page-header">
+                                    <span class="header4">MetaData</span>
                                 </div>
-                                <div ng-if="options.readonly">
-                                    <div froala-view="segment.text2"></div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-2 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error has-feedback' : segmentForm.name.$invalid}">
+                                        <label class="control-label">Name</label> <input type="text" disabled
+                                                                                         name="identifier"
+                                                                                         class="form-control"
+                                                                                         ng-model="segment.name"
+                                                                                         ng-change="recordChanged('segment','edit',segment.id,'name', segment.name)"
+                                                                                         required>
+                                    </div>
                                 </div>
-</div>
 
+                                <div class="col-md-2 col-margin">
+
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error has-feedback' : segmentForm.description.$invalid}">
+                                        <label class="control-label">Description</label> <input type="text" disabled
+                                                                                                ng-change="recordChanged('segment','edit',segment.id,'description', segment.description)"
+                                                                                                name="description"
+                                                                                                class="form-control"
+                                                                                                ng-model="segment.description"
+                                                                                                required>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-2 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error has-feedback' : segmentForm.label.$invalid}">
+                                        <label class="control-label">Label</label>
+                                        <span class="igl-has-error has-feedback"
+                                              ng-show="isDuplicated(segment,'label', segments)">Existing label (flavor name)</span>
+                                        <input type="text" ng-disabled="options.readonly"
+                                               class="form-control"
+                                               ng-change="recordChanged()"
+                                               name="label" class="form-control"
+                                               ng-model="segment.label"
+                                               required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error has-feedback' : segmentForm.comment.$invalid}">
+                                        <label class="control-label">Comment</label> <input
+                                            ng-disabled="options.readonly"
+                                            class="form-control" type="text"
+                                            name="comment"
+                                            ng-change="recordChanged()"
+                                            ng-model="segment.comment">
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="col-md-12 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error has-feedback' : segmentForm.text1.$invalid}">
+                                        <label class="control-label">Definition Pre-Text</label>
+
+                                        <div ng-if="!options.readonly">
+                                            <textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1"
+                                                      name="text1"
+                                                      ng-change="recordChanged()"></textarea>
+                                        </div>
+                                        <div ng-if="options.readonly">
+                                            <div froala-view="segment.text1"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-margin">
+                                <div class="col-md-12">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error has-feedback' : segmentForm.text2.$invalid}">
+                                        <label class="control-label">Definition Post-Text</label>
+
+                                        <div ng-if="!options.readonly">
+                                            <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2"
+                                                      name="text2"
+                                                      ng-change="recordChanged()"></textarea>
+                                        </div>
+                                        <div ng-if="options.readonly">
+                                            <div froala-view="segment.text2"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="page-header">
+                                    <span class="header4">Definition</span>
+                                </div>
                             </div>
                         </div>
 
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="page-header">
-                                <span class="header4">Definition</span>
+                        <div class="row" style="margin-top:20px">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table tt-table tt-params="segmentsParams"
+                                           class="table table-striped table-bordered table-fix-header table-condensed profile-table">
+                                        <thead>
+                                        <tr class="tbl-header"
+                                            style="margin-right: {{scrollbarWidth}}px;">
+                                            <th class="col-xs-2 col-fixed-250">Name</th>
+                                            <th class="col-xs-1 col-fixed-80">Usage</th>
+                                            <th class="col-xs-1 col-fixed-100">Cardinality</th>
+                                            <th class="col-xs-1 col-fixed-100">Length</th>
+                                            <th class="col-xs-1 col-fixed-80">ConfLength</th>
+                                            <th class="col-xs-1 col-fixed-100">Datatype</th>
+                                            <th class="col-xs-1 col-fixed-130">ValueSet</th>
+                                            <th class="col-xs-1" ng-style="predWidth">Predicate</th>
+                                            <th class="col-xs-1" ng-style="csWidth">Conformance
+                                                Statement
+                                            </th>
+                                            <th class="col-xs-1 col-fixed-80">Def.Text</th>
+                                            <th class="col-xs-1" ng-style="commentWidth">Comment</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row" style="margin-top:20px">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table tt-table tt-params="segmentsParams"
-                                       class="table table-striped table-bordered table-fix-header table-condensed profile-table">
-                                    <thead>
-                                    <tr class="tbl-header"
-                                        style="margin-right: {{scrollbarWidth}}px;">
-                                        <th class="col-xs-2 col-fixed-250">Name</th>
-                                        <th class="col-xs-1 col-fixed-80">Usage</th>
-                                        <th class="col-xs-1 col-fixed-100">Cardinality</th>
-                                        <th class="col-xs-1 col-fixed-100">Length</th>
-                                        <th class="col-xs-1 col-fixed-80">ConfLength</th>
-                                        <th class="col-xs-1 col-fixed-100">Datatype</th>
-                                        <th class="col-xs-1 col-fixed-130">ValueSet</th>
-                                        <th class="col-xs-1" ng-style="predWidth">Predicate</th>
-                                        <th class="col-xs-1" ng-style="csWidth">Conformance
-                                            Statement
-                                        </th>
-                                        <th class="col-xs-1 col-fixed-80">Def.Text</th>
-                                        <th class="col-xs-1" ng-style="commentWidth">Comment</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                 </form>
 
             </div>

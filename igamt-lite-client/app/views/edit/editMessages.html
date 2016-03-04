@@ -16,18 +16,22 @@
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="message !== null" id="executionPanel">
-                <div class="page-header">
-                    <span class="header4">Message: {{message.identifier}}</span>
-                </div>
+
                 <form name="messageForm" novalidate class="form-horizontal">
-					<span class="pull-right">
-						<button title="Create Copy" type="button" class="btn btn-xs btn-info" ng-disabled='!messageForm.$valid' ng-click="copy(message)" ng-hide="options.readonly">
-            				<span><i class="fa fa-plus-circle fa-fw"></i>Copy</span>
-        				</button>
-        				<button title="Delete" type="button" ng-hide="options.readonly" class="btn btn-xs btn-danger" ng-disabled='!message' ng-click="delete(message)">
-            				<span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        				</button>
+
+                    <div class="page-header">
+                        <span class="header4 pull-left">Message: {{message.identifier}}</span>
+                            <span class="pull-right">
+						<button title="Create Copy" type="button" class="btn btn-xs btn-info"
+                                ng-disabled='!messageForm.$valid' ng-click="copy(message)" ng-hide="options.readonly">
+                            <span><i class="fa fa-plus-circle fa-fw"></i>Copy</span>
+                        </button>
+        				<button title="Delete" type="button" ng-hide="options.readonly" class="btn btn-xs btn-danger"
+                                ng-disabled='!message' ng-click="delete(message)">
+                            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+                        </button>
     				</span>
+                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
@@ -35,96 +39,105 @@
                                 <span class="header4">MetaData</span>
                             </div>
 
-                        <div class="col-md-12">
-                            <div class="col-md-2 col-margin">
-                                <div class="form-group" ng-class="{'igl-has-error' : messageForm.identifier.$invalid}">
-                                    <label class="control-label">Identifier</label>
-                                    <input type="text"
-                                           ng-change="recordChanged()"
-                                           name="identifier"
-                                           class="form-control"
-                                           ng-model="message.identifier"
-                                           ng-disabled="options.readonly"
-                                           required>
+                            <div class="col-md-12">
+                                <div class="col-md-2 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error' : messageForm.identifier.$invalid}">
+                                        <label class="control-label">Identifier</label>
+                                        <input type="text"
+                                               ng-change="recordChanged()"
+                                               name="identifier"
+                                               class="form-control"
+                                               ng-model="message.identifier"
+                                               ng-disabled="options.readonly"
+                                               required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error' : messageForm.name.$invalid}">
-                                    <label class="control-label">Name</label>
-									<input
-                                        class="form-control"
-                                        type="text"
-                                        disabled name="name"
-                                        ng-change="recordChanged()"
-                                        ng-model="message.name"
-                                        ng-disabled="options.readonly">
+                                <div class="col-md-2 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error' : messageForm.name.$invalid}">
+                                        <label class="control-label">Name</label>
+                                        <input
+                                                class="form-control"
+                                                type="text"
+                                                disabled name="name"
+                                                ng-change="recordChanged()"
+                                                ng-model="message.name"
+                                                ng-disabled="options.readonly">
 
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error' : messageForm.description.$invalid}">
+                                        <label class="control-label">Description</label>
+                                        <input
+                                                class="form-control"
+                                                type="text"
+                                                name="description"
+                                                ng-change="recordChanged()"
+                                                ng-model="message.description"
+                                                ng-disabled="options.readonly">
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error' : messageForm.comment.$invalid}">
+                                        <label class="control-label">Comment</label> <input
+                                            class="form-control" type="text"
+                                            name="comment"
+                                            ng-change="recordChanged()"
+                                            ng-disabled="options.readonly"
+                                            ng-model="message.comment">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error' : messageForm.description.$invalid}">
-                                    <label class="control-label">Description</label>
-                                    <input
-                                        class="form-control"
-                                        type="text"
-                                        name="description"
-                                        ng-change="recordChanged()"
-                                        ng-model="message.description"
-                                        ng-disabled="options.readonly">
+                            <div class="col-md-12">
+
+                                <div class="col-md-2 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error' : messageForm.messageOId.$invalid}">
+                                        <label class="control-label">Message OID</label>
+                                        <input type="text" disabled name="messageOId" class="form-control"
+                                               ng-model="message.messageID" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'igl-has-error' : messageForm.comment.$invalid}">
-                                    <label class="control-label">Comment</label> <input
-                                        class="form-control" type="text"
-                                        name="comment"
-                                        ng-change="recordChanged()"
-                                        ng-disabled="options.readonly"
-                                        ng-model="message.comment">
+
+                                <div class="col-md-2 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error' : messageForm.messageType.$invalid}">
+                                        <label class="control-label">Message Type</label>
+                                        <input type="text" disabled name="messageType" class="form-control"
+                                               ng-model="message.messageType" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error' : messageForm.messageEvent.$invalid}">
+                                        <label class="control-label">Message Event</label>
+                                        <input type="text" disabled name="messageEvent" class="form-control"
+                                               ng-model="message.event" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 col-margin">
+                                    <div class="form-group"
+                                         ng-class="{'igl-has-error' : messageForm.messageStructID.$invalid}">
+                                        <label class="control-label">Message StructID</label>
+                                        <input type="text" disabled name="messageStructID" class="form-control"
+                                               ng-model="message.structID" required>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
 
-                            <div class="col-md-2 col-margin">
-                                <div class="form-group" ng-class="{'igl-has-error' : messageForm.messageOId.$invalid}">
-                                    <label class="control-label">Message OID</label> 
-									<input type="text" disabled name="messageOId" class="form-control" ng-model="message.messageID" required>
+                        <div class="row col-margin" style="margin-top:20px">
+                            <div class="col-md-12">
+                                <div class="page-header">
+                                    <span class="header4">Definition</span>
                                 </div>
                             </div>
-
-							<div class="col-md-2 col-margin">
-                                <div class="form-group" ng-class="{'igl-has-error' : messageForm.messageType.$invalid}">
-                                    <label class="control-label">Message Type</label> 
-									<input type="text" disabled name="messageType" class="form-control" ng-model="message.messageType" required>
-                                </div>
-                            </div>
-
-							<div class="col-md-2 col-margin">
-                                <div class="form-group" ng-class="{'igl-has-error' : messageForm.messageEvent.$invalid}">
-                                    <label class="control-label">Message Event</label> 
-									<input type="text" disabled name="messageEvent" class="form-control" ng-model="message.event" required>
-                                </div>
-                            </div>
-
-							<div class="col-md-2 col-margin">
-                                <div class="form-group" ng-class="{'igl-has-error' : messageForm.messageStructID.$invalid}">
-                                    <label class="control-label">Message StructID</label> 
-									<input type="text" disabled name="messageStructID" class="form-control" ng-model="message.structID" required>
-                                </div>
-                            </div>
-                        </div>
-					</div>
-                        
-					<div class="row" style="margin-top:20px">
-                        <div class="col-md-12">
-                            <div class="page-header">
-                                <span class="header4">Definition</span>
-                            </div>
-                        </div>
                             <div class="col-md-12">
                                 <!--</form>-->
                                 <!--</accordion-group>-->
@@ -155,10 +168,10 @@
                                 <!--</accordion>-->
                             </div>
                         </div>
-</form>
-                </div>
+                </form>
             </div>
         </div>
+    </div>
 </script>
 
 <script type="text/ng-template" id="MessageEditTree.html">

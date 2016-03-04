@@ -17,10 +17,6 @@
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="datatype !== null" id="executionPanel">
-                <div>
-                    <span class="header4">Datatype {{datatype.name}}: {{datatype.label}}</span>
-                </div>
-                <hr/>
                 <!--<accordion close-others="false">-->
                 <!--<accordion-group is-open="true" panel-class="panel-info">-->
 
@@ -31,7 +27,10 @@
                 <!--</accordion-heading>-->
 
                 <form name="datatypeForm" novalidate class="form-horizontal">
-                        <span class="pull-right">
+
+                    <div class="page-header">
+                        <span class="header4">Datatype {{datatype.name}}: {{datatype.label}}</span>
+                         <span class="pull-right">
         <button title="Create Copy" type="button" class="btn btn-xs btn-info" ng-disabled='!datatypeForm.$valid'
                 ng-click="copy(datatype)" ng-hide="options.readonly"
                 >
@@ -43,18 +42,14 @@
             <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
     </span>
-
+                        <hr />
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="page-header">
                                 <span class="header4">MetaData</span>
-
                             </div>
                         </div>
-
-                        </div>
-                    <div class="row">
-
                         <div class="col-md-12">
                             <div class="col-md-2 col-margin">
                                 <div class="form-group control-group"
@@ -70,7 +65,7 @@
                                 <div class="form-group control-group"
                                      ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
                                     <label class="control-label">Description</label>
-                                     <input type="text" disabled
+                                    <input type="text" disabled
                                            ng-change="recordChanged()"
                                            name="description" class="form-control" ng-model="datatype.description"
                                            required>
