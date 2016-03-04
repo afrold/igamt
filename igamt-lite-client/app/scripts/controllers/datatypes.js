@@ -149,7 +149,6 @@ angular.module('igl')
 
             return 0;
         };
-<<<<<<< HEAD
         
         $scope.countPredicateOnSubComponent = function (position, componentId) {
         	var dt = $scope.findDTByComponentId(componentId);
@@ -161,10 +160,7 @@ angular.module('igl')
 
             return 0;
         }
-=======
 
-
->>>>>>> datatype-management
     });
 
 
