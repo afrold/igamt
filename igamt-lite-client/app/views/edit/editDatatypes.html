@@ -290,7 +290,7 @@
             <div>
                 <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
                 	<select class="form-control input-sm" name="usage"
-                        ng-change="recordDatatypeChange('component','edit',node.id,'usage', node.usage)"
+                        ng-change="recordChanged()"
                         required ng-model="node.usage" ng-options="usage for usage in config.usages" />
                 </span>
 				<div ng-show="node.usage === 'C' && countPredicate(node.position) !== 0">
@@ -298,11 +298,7 @@
                    		C({{p.trueUsage}}/{{p.falseUsage}})
                 	</p>
 				</div>
-
-
-                <span ng-show="node.predicates != null && node.predicates.length > 0">C({{::node.predicates[0].trueUsage}}/{{::node.predicates[0].falseUsage}})</span>
             </div>
-
         </td>
         <td class="col-xs-1 col-fixed-100" ng-show="columnSettings.isVisibleColumn('length')">
             <div ng-controller="DatatypeRowCtrl">

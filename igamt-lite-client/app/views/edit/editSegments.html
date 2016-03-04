@@ -264,17 +264,18 @@
 
         </td>
         <td class="col-xs-1 col-fixed-80">
-                                             <span ng-show="!node.predicates || node.predicates == null || node.predicates.length == 0">
-                                                <select class="form-control input-sm"
-                                                        name="usage"
-                                                        ng-change="recordChangeForEdit2('field','edit',node.id,'usage', node.usage)"
-                                                        required
-                                                        ng-model="node.usage"
-                                                        ng-options="usage for usage in config.usages">
-                                                </select>
-                                            </span>
-            <span ng-show="node.predicates != null && node.predicates.length > 0">C({{node.predicates[0].trueUsage}}/{{node.predicates[0].falseUsage}})</span>
-
+			<div>
+                <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
+                	<select class="form-control input-sm" name="usage"
+                        ng-change="recordChanged()"
+                        required ng-model="node.usage" ng-options="usage for usage in config.usages" />
+                </span>
+				<div ng-show="node.usage === 'C' && countPredicate(node.position) !== 0">
+					<p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                   		C({{p.trueUsage}}/{{p.falseUsage}})
+                	</p>
+				</div>
+            </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
             <div ng-controller="SegmentRowCtrl">
@@ -354,17 +355,22 @@
             </div>
         </td>
         <td class="col-xs-1" ng-style="predWidth">
-            <div ng-show="countPredicate(node.position) == 0">
-                <a ng-click="managePredicate(node)" class="point">
-                    <span><i class="fa fa-plus fa-fw"></i></span>
-                </a>
+			<div>
+                <div ng-show="countPredicate(node.position) === 0 && node.usage === 'C'">
+                    <a ng-click="managePredicate(node)" class="point">
+                        <i class="fa fa-plus fa-fw"></i>
+						<p class="warning">Need predicate</p>
+                    </a>
+                </div>
+				<div ng-show="countPredicate(node.position) !== 0 && node.usage === 'C'">
+					<p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                    <a ng-click="managePredicate(node)" tooltip-html="getPredicateAsString(p)"
+                       tooltip-append-to-body="true"
+                       tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
+                       tooltip-animation="false" tooltip-placement="left"></a>
+                	</p>
+				</div>
             </div>
-            <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-                <a ng-click="managePredicate(node)"
-                   tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true"
-                   tooltip-class="constraints-tooltip" ng-bind-html="getPredicateAsString(p)" tooltip-trigger
-                   tooltip-animation="false" tooltip-placement="left"/>
-            </p>
         </td>
         <td class="col-xs-1" ng-style="csWidth">
             <div ng-show="countConformanceStatements(node.position) == 0">
@@ -417,11 +423,15 @@
         </td>
 
         <td class="col-xs-1 col-fixed-80">
-            <div>
-                <span>{{node.usage}}</span>
-				<span ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-					({{p.trueUsage}}/{{p.falseUsage}})
-				</span>
+			<div>
+				<span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
+                	<span>{{node.usage}}</span>
+                </span>
+				<div ng-show="node.usage === 'C' && countPredicate(node.position) !== 0">
+					<p ng-repeat="p in datatype.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
+                   		C({{p.trueUsage}}/{{p.falseUsage}})
+                	</p>
+				</div>
             </div>
         </td>
         <td class="col-xs-1 col-fixed-100">
@@ -498,12 +508,14 @@
                                  </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <div>
-                <span>{{node.usage}}</span>
-				<span ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-					({{p.trueUsage}}/{{p.falseUsage}})
-				</span>
-            </div>
+			<span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicateOnComponent(node.position, node.id) === 0)">
+            	{{node.usage}}
+            </span>
+			<div ng-show="node.usage === 'C' && countPredicateOnComponent(node.position, node.id) !== 0">
+				<p ng-repeat="p in parentsMap[node.id].predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
+                	C({{p.trueUsage}}/{{p.falseUsage}})
+                </p>
+			</div>
         </td>
         <td class="col-xs-1 col-fixed-100">
             <div>
@@ -590,12 +602,14 @@
                                  </span>
         </td>
         <td class="col-xs-1 col-fixed-80">
-            <div>
-                <span>{{node.usage}}</span>
-				<span ng-repeat="p in parentsMap[node.id].predicates | filter:{constraintTarget:node.position + '[1]'}:true">
-					({{p.trueUsage}}/{{p.falseUsage}})
-				</span>
-            </div>
+            <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicateOnComponent(node.position, node.id) === 0)">
+            	{{node.usage}}
+            </span>
+			<div ng-show="node.usage === 'C' && countPredicateOnComponent(node.position, node.id) !== 0">
+				<p ng-repeat="p in parentsMap[node.id].predicates  | filter:{constraintTarget:node.position + '[1]'}:true">
+                	C({{p.trueUsage}}/{{p.falseUsage}})
+                </p>
+			</div>
         </td>
         <td class="col-xs-1 col-fixed-100">
             <div>

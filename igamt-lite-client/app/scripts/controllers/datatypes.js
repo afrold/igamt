@@ -154,8 +154,6 @@ angular.module('igl')
         
         $scope.countPredicateOnSubComponent = function (position, componentId) {
         	var dt = $scope.findDTByComponentId(componentId);
-        	console.log(componentId);
-        	console.log(dt);
         	if (dt != null)
                 for (var i = 0, len1 = dt.predicates.length; i < len1; i++) {
                     if (dt.predicates[i].constraintTarget.indexOf(position + '[') === 0)
