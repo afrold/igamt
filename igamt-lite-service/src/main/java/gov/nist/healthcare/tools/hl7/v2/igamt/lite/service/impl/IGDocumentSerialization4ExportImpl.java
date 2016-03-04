@@ -161,6 +161,19 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		return doc;
 	}
 
+	public String serializeDatatypesToXML(IGDocument igdoc) {
+		return serializeDatatypesToDoc(igdoc).toXML();
+	}
+
+	public nu.xom.Document serializeDatatypesToDoc(IGDocument igdoc) {
+		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
+		nu.xom.Element datatypesSections = this.serializeDatatypesToElement(igdoc);
+		nu.xom.Document doc = new nu.xom.Document(e);
+		e.appendChild(datatypesSections);
+
+		return doc;
+	}
+
 	public nu.xom.Element serializeIGDocumentMetadataToDoc(IGDocument igdoc) {
 		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
 
@@ -421,6 +434,65 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		return xsect;
 	}
 
+
+	public nu.xom.Element serializeDatatypesToElement(IGDocument igdoc) {
+		Profile profile = igdoc.getProfile();
+		nu.xom.Element xsect = new nu.xom.Element("Section");
+		xsect.addAttribute(new Attribute("id", profile.getId()));
+		xsect.addAttribute(new Attribute("position", String.valueOf(profile.getSectionPosition())));
+		xsect.addAttribute(new Attribute("prefix", String.valueOf(profile.getSectionPosition()+1)));
+		xsect.addAttribute(new Attribute("h", String.valueOf(1)));
+		if (profile.getSectionTitle() != null){
+			xsect.addAttribute(new Attribute("title", profile.getSectionTitle()));
+		} else {
+			xsect.addAttribute(new Attribute("title", ""));
+		}
+
+		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
+		e.addAttribute(new Attribute("ID", profile.getId()));
+		ProfileMetaData metaData = profile.getMetaData();
+		if (metaData.getType() != null && !metaData.getType().isEmpty())
+			e.addAttribute(new Attribute("Type", metaData.getType()));
+		if (metaData.getHl7Version() != null
+				&& !metaData.getHl7Version().equals(""))
+			e.addAttribute(new Attribute("HL7Version", metaData.getHl7Version()));
+		if (metaData.getSchemaVersion() != null
+				&& !metaData.getSchemaVersion().equals(""))
+			e.addAttribute(new Attribute("SchemaVersion", metaData
+					.getSchemaVersion()));
+		
+		String prefix = "";
+
+		//		nu.xom.Element ds = new nu.xom.Element("Datatypes");
+		nu.xom.Element ds = new nu.xom.Element("Section");
+		ds.addAttribute(new Attribute("id", profile.getDatatypes().getId()));
+		ds.addAttribute(new Attribute("position", String.valueOf(profile.getDatatypes().getSectionPosition())));
+		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(profile.getDatatypes().getSectionPosition()+1);
+		ds.addAttribute(new Attribute("prefix", prefix));
+		ds.addAttribute(new Attribute("h", String.valueOf(2)));
+		if (profile.getDatatypes().getSectionTitle() != null){
+			ds.addAttribute(new Attribute("title", profile.getDatatypes().getSectionTitle()));
+		} else {
+			ds.addAttribute(new Attribute("title", ""));
+		}
+
+		profile.getDatatypes().setPositionsOrder();
+		List<Datatype> dtList = new ArrayList<>(profile.getDatatypes().getChildren());
+		Collections.sort(dtList);
+		for (Datatype d : dtList) {
+			//Old condition to serialize only flavoured datatypes
+			//			if (d.getLabel().contains("_")) {
+			//				ds.appendChild(this.serializeDatatype(d, profile.getTables(), profile.getDatatypes()));
+			//			}
+			ds.appendChild(this.serializeDatatype(d, profile.getTables(), profile.getDatatypes(), prefix));
+		}
+		xsect.appendChild(ds);
+
+		xsect.appendChild(e);
+		return xsect;
+	}
+
+	
 	@Override
 	public nu.xom.Document serializeProfileToDoc(Profile profile) {
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
@@ -542,7 +614,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(t.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("position", String.valueOf(t.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("h", String.valueOf(3)));
-		sect.addAttribute(new Attribute("title", t.getName()));
+		sect.addAttribute(new Attribute("title", t.getBindingIdentifier() + " - " + t.getDescription()));
 
 		nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
 		elmTableDefinition.addAttribute(new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
@@ -787,7 +859,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(m.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("position", String.valueOf(m.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("h", String.valueOf(3)));
-		sect.addAttribute(new Attribute("title", m.getName()));
+		sect.addAttribute(new Attribute("title", m.getName() + " - " + m.getDescription()));
 
 		nu.xom.Element elmMessage = new nu.xom.Element("MessageDisplay");
 		elmMessage.addAttribute(new Attribute("ID", m.getId() + ""));
@@ -908,7 +980,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(s.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("h", String.valueOf(3)));
-		sect.addAttribute(new Attribute("title", s.getLabel()));
+		sect.addAttribute(new Attribute("title", s.getLabel() + " - " + s.getDescription()));
 
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 		elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
@@ -1028,7 +1100,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(d.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("h", String.valueOf(3)));
-		sect.addAttribute(new Attribute("title", d.getLabel()));
+		sect.addAttribute(new Attribute("title", d.getLabel() + " - " + d.getDescription()));
 
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
 		elmDatatype.addAttribute(new Attribute("ID", d.getId() + ""));
