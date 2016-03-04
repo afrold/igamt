@@ -128,7 +128,7 @@ angular.module('igl')
         };
 
         $scope.findDTByComponentId = function (componentId) {
-            return $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId].datatype : null;
+            return $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId] : null;
         };
 
         $scope.countConformanceStatements = function (position) {
@@ -151,6 +151,19 @@ angular.module('igl')
 
             return 0;
         };
+        
+        $scope.countPredicateOnSubComponent = function (position, componentId) {
+        	var dt = $scope.findDTByComponentId(componentId);
+        	console.log(componentId);
+        	console.log(dt);
+        	if (dt != null)
+                for (var i = 0, len1 = dt.predicates.length; i < len1; i++) {
+                    if (dt.predicates[i].constraintTarget.indexOf(position + '[') === 0)
+                        return 1;
+                }
+
+            return 0;
+        }
     });
 
 
