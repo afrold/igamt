@@ -36,9 +36,19 @@
 
                     <div class="row">
                         <div class="col-md-12">
+                            <div class="page-header">
+                                <span class="header4">MetaData</span>
+
+                            </div>
+                        </div>
+
+                        </div>
+                    <div class="row">
+
+                        <div class="col-md-12">
                             <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'has-error' : datatypeForm.name.$invalid}">
+                                <div class="form-group control-group"
+                                     ng-class="{'igl-has-error has-feedback' : datatypeForm.name.$invalid}">
                                     <label class="control-label">Name</label>
                                     <input type="text" disabled
                                            name="name" class="form-control" ng-model="datatype.name"
@@ -47,31 +57,31 @@
                             </div>
 
                             <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'has-error' : datatypeForm.label.$invalid}">
+                                <div class="form-group control-group"
+                                     ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
                                     <label class="control-label">Description</label>
-                                    <span style="color:red" ng-show="isDuplicated(datatype,'label', datatypes)">Existing label (flavor name)</span>
-                                    <input type="text" disabled
+                                     <input type="text" disabled
                                            ng-change="recordChanged()"
-                                           name="label" class="form-control" ng-model="datatype.description"
+                                           name="description" class="form-control" ng-model="datatype.description"
                                            required>
                                 </div>
                             </div>
 
                             <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'has-error' : datatypeForm.label.$invalid}">
+                                <div class="form-group control-group"
+                                     ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
                                     <label class="control-label">Label</label>
-                                    <span style="color:red" ng-show="isDuplicated(datatype,'label', datatypes)">Existing label (flavor name)</span>
                                     <input type="text" ng-disabled="options.readonly"
                                            ng-change="recordChanged()"
-                                           name="label" class="form-control"   ng-model="datatype.label"
-                                           required>
+                                           name="label" id="label" class="form-control" ng-model="datatype.label"
+                                           required aria-describedby="helpBlock2">
+                                    <span id="helpBlock2" class="help-block" style="color:red"
+                                          ng-show="isDuplicated(datatype,'label', datatypes)">Label already used</span>
                                 </div>
                             </div>
                             <div class="col-md-2 col-margin">
-                                <div class="form-group"
-                                     ng-class="{'has-error' : datatypeForm.comment.$invalid}">
+                                <div class="form-group control-group"
+                                     ng-class="{'igl-has-error has-feedback' : datatypeForm.comment.$invalid}">
                                     <label class="control-label">Comment</label>
                                     <input type="text" ng-disabled="options.readonly"
                                            ng-change="recordDatatypeChange('datatype','edit',datatype.id,'comment', datatype.comment)"
@@ -82,85 +92,96 @@
 
                         </div>
                         <div class="col-md-12">
-                            <div class="form-group"
-                                 ng-class="{'has-error' : datatypeForm.text.$invalid}">
-                                <label class="control-label">Definition Text</label>
-                                <!--<div ng-show="!options.readonly">-->
-                                <div text-angular class="igl-text" ta-disabled="options.readonly"
-                                     name="text"
-                                     ng-change="recordChanged()"
-                                     ng-model="datatype.text"></div>
-                                <!--</div>-->
-                                <!--<div ng-show="options.readonly">-->
-                                <!--<textarea ng-bind="datatype.text" class="form-control"></textarea>-->
-                                <!--</div>-->
+                            <div class="col-md-12 col-margin">
+                                <div class="form-group control-group"
+                                     ng-class="{'igl-has-error has-feedback' : datatypeForm.text.$invalid}">
+                                    <label class="control-label">Definition Text</label>
+
+                                    <div ng-if="!options.readonly">
+                                        <textarea froala="froalaEditorOptions" ng-model="datatype.text" name="text"
+                                                  id="text"
+                                                  ng-change="recordChanged()"></textarea>
+                                    </div>
+
+                                    <div ng-if="options.readonly">
+                                        <div froala-view="datatype.text"></div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
 
 
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="page-header">
+                                <span class="header4">Definition</span>
+                            </div>
                         </div>
+                    </div>
                     <div class="row" style="margin-top:20px">
                         <div class="col-md-12">
-                     <!--</form>-->
-                    <!--&lt;!&ndash;</accordion-group>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<accordion-group is-open="true" panel-class="panel-info">&ndash;&gt;-->
+                            <!--</form>-->
+                            <!--&lt;!&ndash;</accordion-group>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<accordion-group is-open="true" panel-class="panel-info">&ndash;&gt;-->
 
-                    <!--&lt;!&ndash;<accordion-heading>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<i class="fa"&ndash;&gt;-->
-                    <!--&lt;!&ndash;ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i>&ndash;&gt;
-                    -->
-                    <!--&lt;!&ndash;Definition&ndash;&gt;-->
+                            <!--&lt;!&ndash;<accordion-heading>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<i class="fa"&ndash;&gt;-->
+                            <!--&lt;!&ndash;ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i>&ndash;&gt;
+                            -->
+                            <!--&lt;!&ndash;Definition&ndash;&gt;-->
 
-                    <!--&lt;!&ndash;</accordion-heading>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</accordion-heading>&ndash;&gt;-->
 
-                    <!--<form class="form-horizontal" name="datatypeForm">-->
-                    <div class="igl-menu">
-                        <!--<div ng-dropdown-multiselect="" options="columnSettings.options" selected-model="columnSettings.visibleColumns"-->
-                        <!--events="columnSettings.events"  extra-settings="columnSettings.extra"></div>-->
-                    </div>
-                         <div class="table-responsive">
-                            <table tt-table tt-params="datatypesParams"
-                                   class="table table-striped table-bordered table-fix-header table-condensed profile-table">
-                                <thead>
-                                <tr class="tbl-header"
-                                    style="margin-right: {{scrollbarWidth}}px;">
-                                    <th class="col-xs-2 col-fixed-250">Name</th>
-                                    <th class="col-xs-1 col-fixed-80"
-                                        ng-show="columnSettings.isVisibleColumn('usage')">Usage
-                                    </th>
-                                    <th class="col-xs-1 col-fixed-100"
-                                        ng-show="columnSettings.isVisibleColumn('length')">Length
-                                    </th>
-                                    <th class="col-xs-1 col-fixed-80"
-                                        ng-show="columnSettings.isVisibleColumn('confLength')">ConfLength
-                                    </th>
-                                    <th class="col-xs-1 col-fixed-100"
-                                        ng-show="columnSettings.isVisibleColumn('datatype')">Datatype
-                                    </th>
-                                    <th class="col-xs-1 col-fixed-130"
-                                        ng-show="columnSettings.isVisibleColumn('valueSet')">ValueSet
-                                    </th>
-                                    <th class="col-xs-1" ng-style="predWidth"
-                                        ng-show="columnSettings.isVisibleColumn('predicate')">Predicate
-                                    </th>
-                                    <th class="col-xs-2" ng-style="csWidth"
-                                        ng-show="columnSettings.isVisibleColumn('confStatement')">Conformance
-                                        Statement
-                                    </th>
-                                    <th class="col-xs-1 col-fixed-80"
-                                        ng-show="columnSettings.isVisibleColumn('defText')">Def.Text
-                                    </th>
-                                    <th class="col-xs-1" ng-style="commentWidth"
-                                        ng-show="columnSettings.isVisibleColumn('comment')">Comment
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                            <!--<form class="form-horizontal" name="datatypeForm">-->
+                            <div class="igl-menu">
+                                <!--<div ng-dropdown-multiselect="" options="columnSettings.options" selected-model="columnSettings.visibleColumns"-->
+                                <!--events="columnSettings.events"  extra-settings="columnSettings.extra"></div>-->
+                            </div>
+                            <div class="table-responsive">
+                                <table tt-table tt-params="datatypesParams"
+                                       class="table table-striped table-bordered table-fix-header table-condensed profile-table">
+                                    <thead>
+                                    <tr class="tbl-header"
+                                        style="margin-right: {{scrollbarWidth}}px;">
+                                        <th class="col-xs-2 col-fixed-250">Name</th>
+                                        <th class="col-xs-1 col-fixed-80"
+                                            ng-show="columnSettings.isVisibleColumn('usage')">Usage
+                                        </th>
+                                        <th class="col-xs-1 col-fixed-100"
+                                            ng-show="columnSettings.isVisibleColumn('length')">Length
+                                        </th>
+                                        <th class="col-xs-1 col-fixed-80"
+                                            ng-show="columnSettings.isVisibleColumn('confLength')">ConfLength
+                                        </th>
+                                        <th class="col-xs-1 col-fixed-100"
+                                            ng-show="columnSettings.isVisibleColumn('datatype')">Datatype
+                                        </th>
+                                        <th class="col-xs-1 col-fixed-130"
+                                            ng-show="columnSettings.isVisibleColumn('valueSet')">ValueSet
+                                        </th>
+                                        <th class="col-xs-1" ng-style="predWidth"
+                                            ng-show="columnSettings.isVisibleColumn('predicate')">Predicate
+                                        </th>
+                                        <th class="col-xs-2" ng-style="csWidth"
+                                            ng-show="columnSettings.isVisibleColumn('confStatement')">Conformance
+                                            Statement
+                                        </th>
+                                        <th class="col-xs-1 col-fixed-80"
+                                            ng-show="columnSettings.isVisibleColumn('defText')">Defin.Text
+                                        </th>
+                                        <th class="col-xs-1" ng-style="commentWidth"
+                                            ng-show="columnSettings.isVisibleColumn('comment')">Comment
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                        </div>
-                  </form>
+                </form>
             </div>
         </div>
     </div>
@@ -307,12 +328,12 @@
                                                        name="minLength"
                                                        ng-change="recordDatatypeChange('component','edit',node.id,'minLength', node.minLength)"
                                                        ng-pattern="/^\d+$/"
-                                                       ng-class="{ 'has-error' : {{formName}}.minLength.$invalid}"
+                                                       ng-class="{ 'igl-has-error has-feedback' : {{formName}}.minLength.$invalid}"
                                                        ng-model="node.minLength" required ng-minlength="1">
                                                 <input style="width:45%" class="form-control" type="text"
                                                        name="maxLength"
                                                        ng-change="recordDatatypeChange('component','edit',node.id,'maxLength', node.maxLength)"
-                                                       ng-class="{ 'has-error' : {{formName}}.maxLength.$invalid}"
+                                                       ng-class="{ 'igl-has-error has-feedback' : {{formName}}.maxLength.$invalid}"
                                                        ng-pattern="/^\d+$|^\*?$/"
                                                        ng-model="node.maxLength" required>
                                             </span>
@@ -325,7 +346,7 @@
                                                    name="confLength"
                                                    ng-change="recordDatatypeChange('component','edit',node.id,'confLength', node.confLength)"
 
-                                                   ng-class="{ 'has-error' : {{formName}}.confLength.$invalid}"
+                                                   ng-class="{ 'igl-has-error has-feedback' : {{formName}}.confLength.$invalid}"
                                                    ng-pattern="/^\d+$/"
                                                    ng-model="node.confLength">
                                             </span>

@@ -11,19 +11,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import static org.junit.Assert.assertEquals;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.ProfileServiceImplIntegrationTest;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfileChangeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfilePropertySaveError;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +25,18 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfileChangeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ProfilePropertySaveError;
+
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 16, 2015
  */
@@ -49,7 +48,7 @@ public class ProfileChangeServiceTest {
 	public static void setup() {
 		try {
 			Properties p = new Properties();
-			InputStream log4jFile = ProfileServiceImplIntegrationTest.class
+			InputStream log4jFile = ProfileChangeServiceTest.class
 					.getResourceAsStream("/igl-test-log4j.properties");
 			p.load(log4jFile);
 			PropertyConfigurator.configure(p);

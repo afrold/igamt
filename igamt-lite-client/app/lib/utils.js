@@ -40,7 +40,7 @@ var waitingDialog = (function ($) {
         show: function (message, options) {
             // Assigning defaults
             var settings = $.extend({
-                dialogSize: 'm',
+                dialogSize: 'xs',
                 progressType: ''
             }, options);
             if (typeof message === 'undefined') {

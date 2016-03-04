@@ -12,6 +12,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ComponentWriteConverter;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.DatatypeReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.FieldWriteConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.IGDocumentReadConverter;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters.ProfileReadConverter;
@@ -28,6 +29,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.env.Environment;
 import org.springframework.data.mongodb.config.AbstractMongoConfiguration;
 import org.springframework.data.mongodb.core.convert.CustomConversions;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.mongodb.Mongo;
@@ -40,7 +42,7 @@ import com.mongodb.ServerAddress;
  */
 
 @Configuration
-@EnableMongoRepositories(basePackages={"gov.nist.healthcare"})
+@EnableMongoRepositories(basePackages = { "gov.nist.healthcare" })
 @PropertySource(value = "classpath:igl-mongo.properties")
 public class MongoConfig extends AbstractMongoConfiguration {
 
@@ -80,6 +82,7 @@ public class MongoConfig extends AbstractMongoConfiguration {
 		converterList.add(new SegmentRefWriteConverter());
 		converterList.add(new ProfileReadConverter());
 		converterList.add(new IGDocumentReadConverter());
+		converterList.add(new DatatypeReadConverter());
 		return new CustomConversions(converterList);
 	}
 
@@ -97,6 +100,11 @@ public class MongoConfig extends AbstractMongoConfiguration {
 	@Override
 	public String getMappingBasePackage() {
 		return "gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain";
+	}
+
+	@Bean
+	public GridFsTemplate gridFsTemplate() throws Exception {
+		return new GridFsTemplate(mongoDbFactory(), mappingMongoConverter());
 	}
 
 }

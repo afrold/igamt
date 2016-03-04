@@ -1417,6 +1417,18 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             }
             return '';
         };
+
+        $scope.froalaEditorOptions = {
+            placeholderText: '',
+            toolbarButtons:['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink','insertImage', 'insertFile'],
+//            imageUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
+            events: {
+                'froalaEditor.initialized': function() {
+
+                }
+            }
+        };
+
     }]);
 
 angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user', function($scope, $modalInstance, user) {

@@ -7,8 +7,6 @@ public abstract class TextbasedSectionModel extends SectionModel{
 	protected String sectionDescription;
 	protected String sectionContents;
 	
-	
-
 	public String getSectionTitle() {
 		return sectionTitle;
 	}

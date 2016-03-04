@@ -28,7 +28,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class WebBeanConfig {
 	
-	
 	@Bean
 	IGDocumentConfiguration igDocumentConfig() {
 		IGDocumentConfiguration config = new IGDocumentConfiguration();

@@ -199,7 +199,13 @@
 
 	<xsl:template match="MessageDisplay">
 		<xsl:value-of select="Comment" />
-		<table width="1000" border="1" cellspacing="0" cellpadding="1">
+		<table width="100%" border="1" cellspacing="0" cellpadding="1">
+			<col style="width:10%"></col>
+			<col style="width:20%"></col>
+			<col style="width:20%"></col>
+			<col style="width:10%"></col>
+			<col style="width:10%"></col>
+			<col style="width:30%"></col>
 			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
 				<tr>
 					<th>
@@ -280,7 +286,15 @@
 	<xsl:template match="Segment">
 		<xsl:value-of select="./Text[@Type='Text1']" />
 		<br></br>
-		<table width="1000" border="1" cellspacing="0" cellpadding="1">
+		<table width="100%" border="1" cellspacing="0" cellpadding="1">
+			<col style="width:5%"></col>
+			<col style="width:15%"></col>
+			<col style="width:10%"></col>
+			<col style="width:10%"></col>
+			<col style="width:10%"></col>
+			<col style="width:10%"></col>
+			<col style="width:10%"></col>
+			<col style="width:30%"></col>
 			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
 				<tr>
 					<th>
@@ -326,7 +340,7 @@
 			<xsl:when test="normalize-space($inlineConstraints) = 'false'">
 				<xsl:if test="count(Field//Constraint) &gt; 0">
 					<br></br>
-					<table width="1000" border="1" cellspacing="0" cellpadding="1">
+					<table width="100%" border="1" cellspacing="0" cellpadding="1">
 						<thead>
 							<tr style="background:#C0C0C0">
 								<th>
@@ -445,7 +459,15 @@
 	</xsl:template>
 
 	<xsl:template match="Datatype">
-		<table width="1000" border="1" cellspacing="0" cellpadding="0">
+		<table width="100%" border="1" cellspacing="0" cellpadding="0">
+			<col style="width:5%"></col>
+			<col style="width:15%"></col>
+			<col style="width:10%"></col>
+			<col style="width:10%"></col>
+			<col style="width:10%"></col>
+			<col style="width:10%"></col>
+			<col style="width:10%"></col>
+			<col style="width:30%"></col>
 			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
 				<tr>
 					<th>
@@ -490,7 +512,7 @@
 		<xsl:if test="count(Field//Constraint) &gt; 0">
 			<xsl:choose>
 				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
-					<table width="1000" border="1" cellspacing="0" cellpadding="1">
+					<table width="100%" border="1" cellspacing="0" cellpadding="1">
 						<thead>
 							<tr style="background:#C0C0C0">
 								<th>

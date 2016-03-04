@@ -16,11 +16,12 @@
             <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
         </div>
         <div ng-show="!loadingSelection">
-            <div class="page-header">
-                <!--<span class="header4">{{section.sectionTitle}}</span>-->
-     <span class="pull-right">
+            <form name="sectionForm" id="sectionForm" class="form-horizontal" novalidate>
+                <div class="rows">
+                    <div class="col-md-12">
+                         <span class="pull-right">
         <button title="Create Copy" type="button" class="btn btn-xs btn-info"
-                ng-click="copy(section)" ng-hide="options.readonly"
+                ng-click="copy(section)" ng-hide="options.readonly" ng-disabled="sectionForm.$invalid"
                 >
             <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Copy</span>
         </button>
@@ -30,43 +31,42 @@
             <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
         </button>
     </span>
-            </div>
-            <form name="sectionForm" id="sectionForm" novalidate>
-                <div class="col-md-12">
-                    <div class="form-group"
-                         ng-class="{'has-error' : sectionForm.label.$invalid}">
-                        <label>Title</label>
-                        <span style="color:red" ng-show="isDuplicated(section,'title', sections)">Existing label (flavor name)</span>
-                        <input type="text" disabled
-                               ng-change="recordChanged()"
-                               name="title" class="form-control"
-                               ng-model="section.sectionTitle"
-                               required>
                     </div>
-
                     <div class="col-md-12">
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea disabled style="width: 100%" name="sectionDescription"
-                                      ng-change="recordChanged()"
-                                      ng-model="section.sectionDescription">
-                                {{section.sectionDescription}}
-                            </textarea>
+                        <div class="form-group control-group"
+                             ng-class="{'igl-has-error has-feedback' : sectionForm.title.$invalid}">
+                            <label class="control-label" for="title">
+                                Title
+                            </label>
+                            <input type="text"
+                                   ng-change="recordChanged()"
+                                   name="title" id="title" class="form-control"
+                                   ng-model="section.sectionTitle"
+                                   required
+                                   aria-describedby="helpBlock2">
+                            <span id="helpBlock2" class="help-block" style="color:red"
+                                  ng-show="isDuplicated(section,'title', sections)">Label already used</span>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label>Contents</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group control-group"
+                             ng-class="{'igl-has-error has-feedback' : sectionForm.content.$invalid}">
+                            <label>Contents</label>
 
-                                <div text-angular style="width: 100%" name="sectionContents"
-                                     ta-disabled="options.readonly"
-                                     ng-change="recordChanged()"
-                                     ng-model="section.sectionContents">
-                                </div>
+                            <div ng-if="!options.readonly">
+                                <textarea froala="froalaEditorOptions" ng-model="section.sectionContents"
+                                          id="content"
+                                          name="content"
+                                          ng-change="recordChanged()"></textarea>
+                            </div>
+                            <div ng-if="options.readonly">
+                                <div froala-view="section.sectionContents"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
         </div>
+        </form>
+    </div>
     </div>
 </script>

@@ -22,6 +22,8 @@ angular.module('igl').controller(
 				});
 
 				hl7VersionsInstance.result.then(function(result) {
+					console.log("hl7VersionsInstance.result$scope.hl7Version=" + $scope.hl7Version);
+					console.log("hl7VersionsInstance.result$rootScope.hl7Version=" + $rootScope.hl7Version);
 					var hl7Version = $rootScope.hl7Version;
 					switch ($rootScope.clickSource) {
 					case "btn": {
@@ -54,14 +56,16 @@ angular.module('igl').controller(
 			 * 
 			 * @param msgIds
 			 */
-			$scope.createIGDocument = function(hl7Version, msgIds) {
-				console.log("Creating igdocument...");
+			$scope.createIGDocument = function(hl7Version, msgEvts) {
+				console.log("Creating IGDocument...");
+				console.log("msgEvts=" + msgEvts);
 				var iprw = {
 					"hl7Version" : hl7Version,
-					"msgIds" : msgIds,
+					"msgEvts" : msgEvts,
 					"accountID" : userInfoService.getAccountID(), 
 					"timeout" : 60000
 				};
+				console.log("iprw=" + JSON.stringify(iprw));
 				$http.post('api/igdocuments/createIntegrationProfile', iprw)
 						.then(
 								function(response) {
@@ -82,11 +86,12 @@ angular.module('igl').controller(
 			 * 
 			 * @param msgIds
 			 */
-			$scope.updateIGDocument = function(msgIds) {
+			$scope.updateIGDocument = function(msgEvts) {
 				console.log("Updating igdocument...");
+				console.log("$scope.updateIGDocumentmsgEvts=" + JSON.stringify(msgEvts));
 				var iprw = {
 					"igdocument" : $rootScope.igdocument,
-					"msgIds" : msgIds,
+					"msgEvts" : msgEvts,
 					"timeout" : 60000
 				};
 				$http.post('api/igdocuments/updateIntegrationProfile', iprw)
@@ -121,13 +126,30 @@ angular.module('igl').controller(
 			var messageEvents = [];
 			
 			$scope.loadIGDocumentsByVersion = function() {
-				$rootScope.hl7Version = $scope.hl7Version;
-				$scope.messageEventsParams = MessageEventsSvc.getMessageEvents($scope.hl7Version, $scope.messageIds);
+				console.log("$scope.hl7Version=" + $scope.hl7Version);
+				console.log("$rootScope.hl7Version=" + $rootScope.hl7Version);
+				if (!$scope.hl7Version && $rootScope.hl7Version) {
+					$scope.hl7Version = $rootScope.hl7Version;
+				}
+				$scope.messageEventsParams = MessageEventsSvc.getMessageEvents($scope.hl7Version);
 			};
+			
+			$scope.isBranch = function(node) {
+				var rval = false;
+				if (node.type === "message") {
+					rval = true;
+					MessageEventsSvc.putState(node);
+				}
+				return rval;
+			};
+			
+			$scope.getState = function() {
+				return MessageEventsSvc.getState();
+			}
 			
 			$scope.trackSelections = function(bool, event) {
 				if (bool) {
-					messageEvents.push({ "id" : $scope.messageId, "children" : [event]});
+					messageEvents.push({ "id" : event.id, "children" : [{"name" : event.name}]});
 				} else {
 					for (var i = 0; i < messageEvents.length; i++) {
 						if (messageEvents[i].id == id) {
@@ -149,6 +171,9 @@ angular.module('igl').controller(
 
 			$scope.hl7Versions = hl7Versions;
 			$scope.ok = function() {
+				console.log("$scope.ok$scope.hl7Version=" + $scope.hl7Version);
+				console.log("$scope.ok$rootScope.hl7Version=" + $rootScope.hl7Version);
+				$rootScope.hl7Version = $scope.hl7Version;
 				$scope.messageEvents = messageEvents;
 				$modalInstance.close(messageEvents);
 			};

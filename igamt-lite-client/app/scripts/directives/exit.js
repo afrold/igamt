@@ -1,4 +1,4 @@
-angular.module('igl').directive('windowExit', function($window, $templateCache,$http) {
+angular.module('igl').directive('windowExit', function($window, $templateCache,$http, $rootScope) {
     return {
         restrict: 'AE',
         //performance will be improved in compile

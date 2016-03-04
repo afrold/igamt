@@ -251,7 +251,46 @@ Cloneable, Comparable<Message> {
 				+ ", predicates=" + predicates + ", conformanceStatements="
 				+ conformanceStatements + "]";
 	}
+	public Message clone() throws CloneNotSupportedException {
+		Message clonedMessage = new Message();
 
+		clonedMessage.setChildren(new ArrayList<SegmentRefOrGroup>());
+		for (SegmentRefOrGroup srog : this.children) {
+			if (srog instanceof Group) {
+				Group g = (Group) srog;
+				Group clone = g.clone();
+				clone.setId(g.getId());
+				clonedMessage.addSegmentRefOrGroup(clone);
+			} else if (srog instanceof SegmentRef) {
+				SegmentRef sr = (SegmentRef) srog;
+				SegmentRef clone = sr.clone();
+				clone.setId(sr.getId());
+				clonedMessage.addSegmentRefOrGroup(clone);
+			}
+		}
+		clonedMessage.setId(ObjectId.get().toString());
+		clonedMessage.setComment(comment);
+		clonedMessage.setDescription(description);
+		clonedMessage.setEvent(event);
+		clonedMessage.setIdentifier(identifier);
+		clonedMessage.setMessageType(messageType);
+		clonedMessage.setPosition(position);
+		clonedMessage.setStructID(structID);
+		clonedMessage.setUsageNote(usageNote);
+		clonedMessage.setMessageID(messageID);
+		clonedMessage.setType(type);
+		clonedMessage
+		.setConformanceStatements(new ArrayList<ConformanceStatement>());
+		for (ConformanceStatement cs : this.conformanceStatements) {
+			clonedMessage.addConformanceStatement(cs.clone());
+		}
+		clonedMessage.setPredicates(new ArrayList<Predicate>());
+		for (Predicate cp : this.predicates) {
+			clonedMessage.addPredicate(cp.clone());
+		}
+		return clonedMessage;
+	}
+	
 	public Message clone(HashMap<String, Datatype> dtRecords,
 			HashMap<String, Segment> segmentRecords,
 			HashMap<String, Table> tableRecords)
@@ -273,7 +312,7 @@ Cloneable, Comparable<Message> {
 			}
 		}
 
-		clonedMessage.setId(id);
+		clonedMessage.setId(ObjectId.get().toString());
 		clonedMessage.setComment(comment);
 		clonedMessage.setDescription(description);
 		clonedMessage.setEvent(event);
@@ -283,6 +322,7 @@ Cloneable, Comparable<Message> {
 		clonedMessage.setStructID(structID);
 		clonedMessage.setUsageNote(usageNote);
 		clonedMessage.setMessageID(messageID);
+		clonedMessage.setType(type);
 		clonedMessage
 		.setConformanceStatements(new ArrayList<ConformanceStatement>());
 		for (ConformanceStatement cs : this.conformanceStatements) {

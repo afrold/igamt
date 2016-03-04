@@ -23,11 +23,11 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular',
-        'textAngular',
         'ng-context-menu',
         'table-settings',
         'angularjs-dropdown-multiselect',
-        'dndLists'
+        'dndLists',
+        'froala'
     ]);
 
 var
@@ -41,7 +41,7 @@ var
     spinner,
 
 //The list of messages we don't want to displat
-    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded','igDocumentNotSaved','igDocumentSaved'];
+    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded','igDocumentNotSaved','igDocumentSaved','uploadImageFailed'];
 
 //the message to be shown to the user
 var msg = {};
@@ -58,6 +58,10 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         })
         .when('/ig', {
             templateUrl: 'views/ig.html'
+        })
+        .when('/masterDTLib', {
+            templateUrl: 'views/masterDTLib.html',
+            controller: 'DatatypeLibraryCtl'
         })
         .when('/doc', {
             templateUrl: 'views/doc.html'
@@ -274,13 +278,25 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 });
 
 
-app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http) {
-
-
+app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http,AppInfo,StorageService,$templateCache,$window) {
+    $rootScope.appInfo = {};
     //Check if the login dialog is already displayed.
     $rootScope.loginDialogShown = false;
     $rootScope.subActivePath = null;
 
+    // load app info
+    AppInfo.get().then(function (appInfo) {
+        $rootScope.appInfo = appInfo;
+        httpHeaders.common['appVersion'] = appInfo.version;
+        var prevVersion = StorageService.getAppVersion(StorageService.APP_VERSION);
+        StorageService.setAppVersion(appInfo.version);
+        if (prevVersion == null || prevVersion !== appInfo.version) {
+            $rootScope.clearAndReloadApp();
+        }
+    }, function (error) {
+        $rootScope.appInfo = {};
+        $rootScope.openErrorDlg("Sorry we could not communicate with the server. Please try again");
+    });
 
 
     //make current message accessible to root scope and therefore all scopes
@@ -407,72 +423,65 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         }
         return '';
     };
+    $rootScope.clearAndReloadApp = function () {
+        $rootScope.clearTemplate();
+        $rootScope.reloadPage();
+    };
+
+    $rootScope.openErrorDlg = function (errorMessage) {
+        StorageService.clearAll();
+        if(!$rootScope.errorModalInstance || $rootScope.errorModalInstance === null || !$rootScope.errorModalInstance.opened) {
+            $rootScope.errorModalInstance = $modal.open({
+                templateUrl: 'CriticalError.html',
+                size: 'lg',
+                backdrop: true,
+                keyboard: 'true',
+                'controller': 'FailureCtrl',
+                resolve: {
+                    error: function () {
+                        return errorMessage;
+                    }
+                }
+            });
+            $rootScope.errorModalInstance.result.then(function () {
+                $rootScope.clearAndReloadApp();
+            }, function () {
+                $rootScope.clearAndReloadApp();
+            });
+        }
+    };
+
+    $rootScope.openSessionExpiredDlg = function () {
+        if(!$rootScope.sessionExpiredModalInstance || $rootScope.sessionExpiredModalInstance === null || !$rootScope.sessionExpiredModalInstance.opened) {
+            $rootScope.sessionExpiredModalInstance = $modal.open({
+                templateUrl: 'timedout-dialog.html',
+                size: 'lg',
+                backdrop: true,
+                keyboard: 'true',
+                'controller': 'FailureCtrl',
+                resolve: {
+                    error: function () {
+                        return "";
+                    }
+                }
+            });
+            $rootScope.sessionExpiredModalInstance.result.then(function () {
+                $rootScope.clearAndReloadApp();
+            }, function () {
+                $rootScope.clearAndReloadApp();
+            });
+        }
+    };
+
+    $rootScope.clearTemplate = function () {
+        $templateCache.removeAll();
+    };
+
+    $rootScope.reloadPage = function () {
+        $window.location.reload();
+    };
 
 });
 
 
-app.controller('ErrorDetailsCtrl', function ($scope, $modalInstance, error) {
-    $scope.error = error;
-    $scope.ok = function () {
-        $modalInstance.close($scope.error);
-    };
 
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-});
-
-
-//app.filter('flavors', function() {
-//    return function(input, name) {
-//
-//    };
-//});
-
-app.filter('flavors',function(){
-    return function(inputArray,name){
-        return inputArray.filter(function(item){
-            return item.name === name || angular.equals(item.name,name);
-        });
-    };
-});
-
-
-app.factory('StorageService',
-    ['$rootScope', 'localStorageService', function ($rootScope, localStorageService) {
-        var service = {
-            TABLE_COLUMN_SETTINGS_KEY: 'SETTINGS_KEY',
-            remove: function (key) {
-                return localStorageService.remove(key);
-            },
-
-            removeList: function removeItems(key1, key2, key3) {
-                return localStorageService.remove(key1, key2, key3);
-            },
-
-            clearAll: function () {
-                return localStorageService.clearAll();
-            },
-            set: function (key, val) {
-                return localStorageService.set(key, val);
-            },
-            get: function (key) {
-                return localStorageService.get(key);
-            }
-        };
-        return service;
-    }]
-);
-
-
-
-
-
-//
-//angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
-//    .controller('CarouselController', ['$scope', '$timeout', '$transition', '$q', function ($scope, $timeout, $transition, $q) {
-//    }]).directive('carousel', [function () {
-//        return {
-//
-//        }
-//    }]);

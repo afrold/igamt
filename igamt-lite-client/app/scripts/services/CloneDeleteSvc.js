@@ -19,7 +19,6 @@ angular.module('igl').factory(
 				section.parent.childSections = positionElements(section.parent.childSections);
 				$rootScope.$broadcast('event:SetToC');	
 				$rootScope.$broadcast('event:openSection', newSection);	
-//				$rootScope.igdocument.childSections.splice(0, 0, newSection);
 			}
 			
 			svc.copySegment = function(segment) {
