@@ -20,21 +20,16 @@ import nu.xom.Document;
 
 public interface ProfileSerialization {
 	Profile deserializeXMLToProfile(String xmlContentsProfile, String xmlValueSet, String xmlConstraints);
-
 	Profile deserializeXMLToProfile(Document docProfile, Document docValueSet, Document docConstraints);
 
 	String serializeProfileToXML(Profile profile);
-
 	Document serializeProfileToDoc(Profile profile);
-
 	InputStream serializeProfileToZip(Profile profile) throws IOException;
+	InputStream serializeProfileToZip(Profile profile, String[] ids) throws IOException, CloneNotSupportedException;
+	
+	InputStream serializeProfileDisplayToZip(Profile original, String id) throws IOException, CloneNotSupportedException;
 	
 	InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException;
-	
-	InputStream serializeProfileToZip(Profile profile, String[] ids) throws IOException, CloneNotSupportedException;
-
 	String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary);
-
 	Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary);
-	
 }

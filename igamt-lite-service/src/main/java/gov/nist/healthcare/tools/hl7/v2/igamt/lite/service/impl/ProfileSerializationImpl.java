@@ -139,6 +139,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return this.serializeProfileToDoc(profile).toXML();
 	}
 	
+	private String serializeProfileDisplayToXML(Profile profile) {
+		return this.serializeProfileDisplayToDoc(profile).toXML();
+	}
+	
 	@Override
 	public String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary) {
 		return this.serializeDatatypeLibraryToDoc(datatypeLibrary).toXML();
@@ -197,46 +201,24 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return doc;
 	}
 
+	//TODO
+	private nu.xom.Document serializeProfileDisplayToDoc(Profile profile) {
+		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
+		this.serializeProfileMetaData(e, profile.getMetaData());
+		
+		nu.xom.Element me = new nu.xom.Element("Message");
+		for (Message m : profile.getMessages().getChildren()) {
+			me.appendChild(this.serializeDisplayMessage(m, profile));
+		}
+		
+		nu.xom.Document doc = new nu.xom.Document(e);
+		return doc;
+	}
+	
 	@Override
 	public nu.xom.Document serializeProfileToDoc(Profile profile) {
-		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
-		ProfileMetaData metaData = profile.getMetaData();
-		
-		if(profile.getMetaData().getProfileID() == null || profile.getMetaData().getProfileID().equals("")){
-			e.addAttribute(new Attribute("ID", UUID.randomUUID().toString()));
-		}else {
-			e.addAttribute(new Attribute("ID", profile.getMetaData().getProfileID()));
-		}
-		
-		if(metaData.getType() != null && !metaData.getType().equals("")) e.addAttribute(new Attribute("Type", ExportUtil.str(metaData.getType())));
-		if(metaData.getHl7Version() != null && !metaData.getHl7Version().equals("")) e.addAttribute(new Attribute("HL7Version", ExportUtil.str(metaData.getHl7Version())));
-		if(metaData.getSchemaVersion() != null && !metaData.getSchemaVersion().equals("")) e.addAttribute(new Attribute("SchemaVersion", ExportUtil.str(metaData.getSchemaVersion())));
-
-		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
-		elmMetaData.addAttribute(new Attribute("Name", ExportUtil.str(metaData.getName())));
-		elmMetaData.addAttribute(new Attribute("OrgName", ExportUtil.str(metaData.getOrgName())));
-		elmMetaData.addAttribute(new Attribute("Version", ExportUtil.str(metaData.getVersion())));
-		elmMetaData.addAttribute(new Attribute("Date", ExportUtil.str(metaData.getDate())));
-		
-		if (metaData.getSpecificationName() != null && !metaData.getSpecificationName().equals("")) 
-			elmMetaData.addAttribute(new Attribute("SpecificationName",ExportUtil.str(metaData.getSpecificationName())));
-		if (metaData.getStatus() != null && !metaData.getStatus().equals("")) 
-			elmMetaData.addAttribute(new Attribute("Status", ExportUtil.str(metaData.getStatus())));
-		if (metaData.getTopics() != null && !metaData.getTopics().equals("")) 
-			elmMetaData.addAttribute(new Attribute("Topics", ExportUtil.str(metaData.getTopics())));
-
-		e.appendChild(elmMetaData);
-
-		if (profile.getMetaData().getEncodings() != null && profile.getMetaData().getEncodings().size() > 0) {
-			nu.xom.Element elmEncodings = new nu.xom.Element("Encodings");
-			for (String encoding : profile.getMetaData().getEncodings()) {
-				nu.xom.Element elmEncoding = new nu.xom.Element("Encoding");
-				elmEncoding.appendChild(encoding);
-				elmEncodings.appendChild(elmEncoding);
-			}
-			e.appendChild(elmEncodings);
-		}
-
+		nu.xom.Element e = new nu.xom.Element("IntegrationProfile");
+		this.serializeProfileMetaData(e, profile.getMetaData());
 
 		nu.xom.Element ms = new nu.xom.Element("Messages");
 		for (Message m : profile.getMessages().getChildren()) {
@@ -259,6 +241,43 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		nu.xom.Document doc = new nu.xom.Document(e);
 
 		return doc;
+	}
+	
+	private void serializeProfileMetaData(nu.xom.Element e, ProfileMetaData metaData){
+		if(metaData.getProfileID() == null || metaData.getProfileID().equals("")){
+			e.addAttribute(new Attribute("ID", UUID.randomUUID().toString()));
+		}else {
+			e.addAttribute(new Attribute("ID", metaData.getProfileID()));
+		}
+		
+		if(metaData.getType() != null && !metaData.getType().equals("")) e.addAttribute(new Attribute("Type", ExportUtil.str(metaData.getType())));
+		if(metaData.getHl7Version() != null && !metaData.getHl7Version().equals("")) e.addAttribute(new Attribute("HL7Version", ExportUtil.str(metaData.getHl7Version())));
+		if(metaData.getSchemaVersion() != null && !metaData.getSchemaVersion().equals("")) e.addAttribute(new Attribute("SchemaVersion", ExportUtil.str(metaData.getSchemaVersion())));
+
+		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
+		elmMetaData.addAttribute(new Attribute("Name", ExportUtil.str(metaData.getName())));
+		elmMetaData.addAttribute(new Attribute("OrgName", ExportUtil.str(metaData.getOrgName())));
+		elmMetaData.addAttribute(new Attribute("Version", ExportUtil.str(metaData.getVersion())));
+		elmMetaData.addAttribute(new Attribute("Date", ExportUtil.str(metaData.getDate())));
+		
+		if (metaData.getSpecificationName() != null && !metaData.getSpecificationName().equals("")) 
+			elmMetaData.addAttribute(new Attribute("SpecificationName",ExportUtil.str(metaData.getSpecificationName())));
+		if (metaData.getStatus() != null && !metaData.getStatus().equals("")) 
+			elmMetaData.addAttribute(new Attribute("Status", ExportUtil.str(metaData.getStatus())));
+		if (metaData.getTopics() != null && !metaData.getTopics().equals("")) 
+			elmMetaData.addAttribute(new Attribute("Topics", ExportUtil.str(metaData.getTopics())));
+
+		e.appendChild(elmMetaData);
+
+		if (metaData.getEncodings() != null && metaData.getEncodings().size() > 0) {
+			nu.xom.Element elmEncodings = new nu.xom.Element("Encodings");
+			for (String encoding : metaData.getEncodings()) {
+				nu.xom.Element elmEncoding = new nu.xom.Element("Encoding");
+				elmEncoding.appendChild(encoding);
+				elmEncodings.appendChild(elmEncoding);
+			}
+			e.appendChild(elmEncodings);
+		}
 	}
 
 	private void constructDatatypesMap(Element elmDatatypes, Profile profile) {
@@ -464,6 +483,12 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		return elmMessage;
 	}
+	
+	private String serializeDisplayMessage(Message m, Profile profile) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	private nu.xom.Element serializeGroup(Group group, Segments segments) {
 		nu.xom.Element elmGroup = new nu.xom.Element("Group");
@@ -903,6 +928,20 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		bytes = outputStream.toByteArray();
 		return new ByteArrayInputStream(bytes);
 	}
+	
+	private InputStream serializeProfileDisplayToZip(Profile profile) throws IOException {
+		ByteArrayOutputStream outputStream = null;
+		byte[] bytes;
+		outputStream = new ByteArrayOutputStream();
+		ZipOutputStream out = new ZipOutputStream(outputStream);
+
+		this.generateDisplayProfileIS(out, this.serializeProfileDisplayToXML(profile));
+		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(profile));
+
+		out.close();
+		bytes = outputStream.toByteArray();
+		return new ByteArrayInputStream(bytes);
+	}
 
 	@Override
 	public InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException{
@@ -935,6 +974,18 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	private void generateProfileIS(ZipOutputStream out, String profileXML) throws IOException {
 		byte[] buf = new byte[1024];
 		out.putNextEntry(new ZipEntry("Profile.xml"));
+		InputStream inProfile = IOUtils.toInputStream(profileXML);
+		int lenTP;
+		while ((lenTP = inProfile.read(buf)) > 0) {
+			out.write(buf, 0, lenTP);
+		}
+		out.closeEntry();
+		inProfile.close();
+	}
+	
+	private void generateDisplayProfileIS(ZipOutputStream out, String profileXML) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("NIST_DisplayProfile.xml"));
 		InputStream inProfile = IOUtils.toInputStream(profileXML);
 		int lenTP;
 		while ((lenTP = inProfile.read(buf)) > 0) {
@@ -1025,6 +1076,65 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		filteredProfile.setTables(tables);
 		
 		return this.serializeProfileToZip(filteredProfile);
+	}
+	
+	@Override
+	public InputStream serializeProfileDisplayToZip(Profile original, String id) throws IOException, CloneNotSupportedException {
+		Profile filteredProfile = new Profile();
+		
+		HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
+		HashMap<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
+		HashMap<String, Table> tablesMap = new HashMap<String, Table>();
+		
+		
+		filteredProfile.setBaseId(original.getBaseId());
+		filteredProfile.setChanges(original.getChanges());
+		filteredProfile.setComment(original.getComment());
+		filteredProfile.setConstraintId(original.getConstraintId());
+		filteredProfile.setScope(original.getScope());
+		filteredProfile.setSectionContents(original.getSectionContents());
+		filteredProfile.setSectionDescription(original.getSectionDescription());
+		filteredProfile.setSectionPosition(original.getSectionPosition());
+		filteredProfile.setSectionTitle(original.getSectionTitle());
+		filteredProfile.setSourceId(original.getSourceId());
+		filteredProfile.setType(original.getType());
+		filteredProfile.setUsageNote(original.getUsageNote());
+		filteredProfile.setMetaData(original.getMetaData());
+		
+		Messages messages = new Messages();
+		for(Message m:original.getMessages().getChildren()){
+			if(id.equals(m.getId())){
+				filteredProfile.getMetaData().setProfileID(m.getMessageID());
+				messages.addMessage(m);
+				for(SegmentRefOrGroup seog :m.getChildren()){
+					this.visit(seog, segmentsMap, datatypesMap, tablesMap, original);
+				}
+				
+			}
+		}
+		
+		Segments segments = new Segments();
+		for (String key : segmentsMap.keySet()) {
+			segments.addSegment(segmentsMap.get(key));
+		}
+		
+		Datatypes datatypes = new Datatypes();
+		for (String key : datatypesMap.keySet()) {
+			datatypes.addDatatype(datatypesMap.get(key));
+		}
+		
+		
+		Tables tables = new Tables();
+		for (String key : tablesMap.keySet()) {
+			tables.addTable(tablesMap.get(key));
+		}
+		
+		filteredProfile.setDatatypes(datatypes);
+		filteredProfile.setSegments(segments);
+		filteredProfile.setMessages(messages);
+		filteredProfile.setTables(tables);
+		
+		return this.serializeProfileDisplayToZip(filteredProfile);
 	}
 	
 	
