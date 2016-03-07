@@ -158,7 +158,7 @@
 			<br />
 			<xsl:call-template name="dispSectContent" />
 			<xsl:call-template name="dispProfileContent" />
-			<a href="#top">Link to top</a>
+			
 		</xsl:if>
 	</xsl:template>
 
@@ -804,7 +804,7 @@
 				</xsl:for-each>
 			</tbody>
 		</table>
-		<!-- <br></br> <a href="#top">Link to top</a> -->
+		<!-- <br></br>  -->
 	</xsl:template>
 
 	<xsl:template name="ValueElement">
