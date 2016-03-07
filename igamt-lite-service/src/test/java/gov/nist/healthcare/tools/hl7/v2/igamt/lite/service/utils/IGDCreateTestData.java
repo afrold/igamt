@@ -21,9 +21,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,14 +50,13 @@ public class IGDCreateTestData {
 	@Test
 	public void createMessageEventsData() {
 		try {
-			List<String> msgIds = new ArrayList<String>();
-			List<MessageEvents> msgEvts = create.summary(hl7Version, msgIds);
-			IGDocument igDocumentTarget = create.createIntegratedIGDocument(msgEvts, hl7Version, accountId);
+			List<MessageEvents> msgEvts1 = create.summary(hl7Version);
+			IGDocument igDocumentTarget = create.createIntegratedIGDocument(msgEvts1, hl7Version, accountId);
 			
 			File outfile = new File(OUTPUT_DIR, "mes-" + "hl7Version" + "-" + igDocumentTarget.getScope().name() + "-" + igDocumentTarget.getMetaData().getVersion() + ".json"); 
 			Writer mesJson = new FileWriter(outfile);
 			ObjectMapper mapper = new ObjectMapper();
-			mapper.writerWithDefaultPrettyPrinter().writeValue(mesJson, msgEvts);
+			mapper.writerWithDefaultPrettyPrinter().writeValue(mesJson, msgEvts1);
 		} catch (JsonGenerationException e) {
 			log.error("" , e);
 		} catch (JsonMappingException e) {

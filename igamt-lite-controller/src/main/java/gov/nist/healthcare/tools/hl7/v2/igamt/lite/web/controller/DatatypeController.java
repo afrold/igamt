@@ -10,10 +10,16 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
@@ -23,23 +29,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/datatypes")
 public class DatatypeController extends CommonController {
 
-	Logger logger = LoggerFactory.getLogger(ProfileController.class);
+	Logger log = LoggerFactory.getLogger(DatatypeController.class);
 
-	// @Autowired
-	// private DatatypeService datatypeService;
-	//
-	// @RequestMapping(value = "/{targetId}/clone", method = RequestMethod.POST)
-	// public Datatype clone(@PathVariable("targetId") String targetId,
-	// @PathVariable("profileId") String profileId)
-	// throws DatatypeNotFoundException, CloneNotSupportedException {
-	// logger.info("Clone datatype with id=" + targetId);
-	// Datatype d = datatypeService.findOne(targetId);
-	// if (d == null) {
-	// throw new DatatypeNotFoundException(targetId);
-	// }
-	// Datatype clone = datatypeService.clone(d); // FIXME: clone datatype
-	// datatypeService.save(clone);
-	// return clone;
-	// }
+	@Autowired
+	private DatatypeService datatypeService;
 
+	public List<Datatype> datatypes() {
+		log.info("Fetching all preloaded IGDocuments...");
+		List<Datatype> result = datatypeService.findAll();
+		return result;
+	}
 }
