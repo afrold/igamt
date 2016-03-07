@@ -17,8 +17,10 @@
         </div>
         <div ng-show="!loadingSelection">
             <form name="sectionForm" id="sectionForm" class="form-horizontal" novalidate>
-                <div class="rows">
+                <div class="row">
                     <div class="col-md-12">
+                        <span class="header4 pull-left">{{section.sectionTitle}}</span>
+
                          <span class="pull-right">
         <button title="Create Copy" type="button" class="btn btn-xs btn-info"
                 ng-click="copy(section)" ng-hide="options.readonly" ng-disabled="sectionForm.$invalid"

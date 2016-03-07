@@ -19,7 +19,7 @@
 <div ng-show="table != null" class="row">
 <form name="editTableForm" novalidate>
 <div class="col-md-12">
-    <span class="header4">Table {{table.bindingIdentifier}}</span>
+    <span class="header4 pull-left">Table: {{table.bindingIdentifier}}</span>
 							<span class="pull-right">
 								<button title="Flavor" type="button" class="btn btn-sm btn-info"
                                         ng-hide="options.readonly" ng-disabled='!editTableForm.$valid'
@@ -35,13 +35,12 @@
                                     <span><i class="fa fa-trash-o fa-fw"></i>&nbsp; Delete</span>
                                 </button>
 							</span>
-    <hr/>
-</div>
+ </div>
 
 <div class="row">
 <div class="col-md-12">
     <div class="page-header">
-        <span class="header4">MetaData</span>
+        <span class="header5">MetaData</span>
     </div>
 </div>
 
@@ -54,8 +53,7 @@
     <!--ng-class="{'fa-caret-down': accordi.metaData, 'fa-caret-right': !accordi.metaData}"></i>-->
     <!--MetaData-->
     <!--</accordion-heading>-->
-    <div class="col-md-12">
-        <div class="col-md-6">
+         <div class="col-md-6">
             <label>Mapping Identifier</label>
             <span style="color:red" ng-show="isDuplicated(table,'bindingIdentifier', tables)">Existing mapping Identifier</span>
             <input type="text" name="tableIndentifier" ng-disabled="options.readonly"
@@ -129,34 +127,39 @@
                 </div>
             </div>
         </div>
-    </div>
-
 </div>
+    </div>
 <!--</accordion-group>-->
 <!--<accordion-group is-open="true" panel-class="panel-info">-->
 <!--<accordion-heading>-->
 <!--<i class="fa" ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i> Values-->
 <!--</accordion-heading>-->
-<div class="margin-top:40px">
+<div class="row" style="margin-top: 40px">
+
     <div class="col-md-12">
-										<span class="pull-left">
-											<div class="input-group">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-search"></i>
-                                                </div>
-                                                <input type="text" class="form-control" placeholder="Search Value"
-                                                       ng-model="searchValue.value"/>
-                                            </div>
-										</span>
+        <div class="page-header">
+            <span class="header5">List of Values</span>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="input-group">
+            <div class="input-group-addon">
+                <i class="fa fa-search"></i>
+            </div>
+            <input type="text" class="form-control" placeholder="Search Value"
+                   ng-model="searchValue.value"/>
+        </div>
+    </div>
+    <div class="col-md-12">
  										<span class="pull-right">
 											<button title="Add new Value" type="button" ng-hide="options.readonly"
-                                                    class="btn btn-sm btn-primary" ng-click="addValue()">
-                                                <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Add Value</span>
+                                                    class="btn btn-sm btn-info" ng-click="addValue()">
+                                                <span><i class="fa fa-plus fa-fw"></i>&nbsp; Add Value</span>
                                             </button>
 										</span>
-
-        <div>
-            <div class="col-md-12">
+    </div>
+             <div class="col-md-12">
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered">
                         <thead>
@@ -228,9 +231,9 @@
                                 </select>
                             </td>
                             <td class="col-md-1">
-                                <button title="Delete" type="button" class="btn btn-sm btn-danger"
+                                <button title="Delete" type="button" class="btn btn-xs btn-danger"
                                         ng-hide="options.readonly" ng-click="deleteValue(c)">
-                                    <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
+                                    <i class="fa fa-trash-o fa-fw"></i>
                                 </button>
                             </td>
                         </tr>
@@ -238,11 +241,9 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
+     </div>
 </div>
-</div>
-</form>
+ </form>
 </div>
 </div>
 </div>

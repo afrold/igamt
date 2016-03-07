@@ -315,11 +315,25 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     $rootScope.subActivePath = null;
 
     // load app info
+    // load app info
     AppInfo.get().then(function (appInfo) {
         $rootScope.appInfo = appInfo;
+        $rootScope.froalaEditorOptions = {
+            placeholderText: '',
+            toolbarButtons:['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink','insertImage', 'insertFile'],
+            imageUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
+            charCounterCount: false,
+            quickInsertTags: 8,
+            events: {
+                'froalaEditor.initialized': function() {
+
+                }
+            }
+        };
         httpHeaders.common['appVersion'] = appInfo.version;
         var prevVersion = StorageService.getAppVersion(StorageService.APP_VERSION);
         StorageService.setAppVersion(appInfo.version);
+
         if (prevVersion == null || prevVersion !== appInfo.version) {
             $rootScope.clearAndReloadApp();
         }
