@@ -31,6 +31,8 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	
 	private String date;
 	
+	private DatatypeLibraryMetaData metaData;
+	
 	public enum SCOPE {HL7STANDARD, MASTER, USER};
  
 	public DatatypeLibrary() {
@@ -51,7 +53,8 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	@DBRef
 	private Set<Datatype> children = new HashSet<Datatype>();
 	
-	private Tables tableLibrary;
+	@DBRef
+	private Set<Table> tables = new HashSet<Table>();
 
 	public String getId() {
 		return id;
@@ -252,14 +255,6 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 			elt.setSectionPosition(sortedList.indexOf(elt));
 		}
 	}
-
-	public Tables getTableLibrary() {
-		return tableLibrary;
-	}
-
-	public void setTableLibrary(Tables tableLibrary) {
-		this.tableLibrary = tableLibrary;
-	}
 	
 	@JsonIgnore
 	public Constraints getConformanceStatements() {
@@ -304,5 +299,52 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		constraints.setDatatypes(dtContext);
 		return constraints;
 	}
+
+	public DatatypeLibraryMetaData getMetaData() {
+		return metaData;
+	}
+
+	public void setMetaData(DatatypeLibraryMetaData metaData) {
+		this.metaData = metaData;
+	}
+
+	public Set<Table> getTables() {
+		return tables;
+	}
+
+	public void setTables(Set<Table> tables) {
+		this.tables = tables;
+	}
+	
+	public Table addTable(Table t){
+		if (!this.tables.contains(t)) {
+			this.tables.add(t);
+		}
+		return t;
+	}
+	
+	public Table findTableById(String id) {
+		if (this.tables != null) {
+			for (Table t : this.tables) {
+				if (t.getId().equals(id)) {
+					return t;
+				}
+			}
+		}
+
+		return null;
+	}
+	
+	public Table findTableByBindingIdentifier(String bindingIdentifier) {
+		if (this.tables != null) {
+			for (Table t : this.tables) {
+				if (t.getBindingIdentifier().equals(bindingIdentifier)) {
+					return t;
+				}
+			}
+		}
+		return null;
+	}
+	
 
 }

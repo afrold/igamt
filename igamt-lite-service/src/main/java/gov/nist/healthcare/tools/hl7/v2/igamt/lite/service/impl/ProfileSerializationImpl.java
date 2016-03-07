@@ -186,11 +186,11 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		}
 		*/ 
 		
-		nu.xom.Element ds = new nu.xom.Element("Datatypes");
-		for (Datatype d : datatypeLibrary.getChildren()) {
-			ds.appendChild(this.serializeDatatype(d, datatypeLibrary.getTableLibrary(), datatypeLibrary));
-		}
-		e.appendChild(ds);
+//		nu.xom.Element ds = new nu.xom.Element("Datatypes");
+//		for (Datatype d : datatypeLibrary.getChildren()) {
+//			ds.appendChild(this.serializeDatatype(d, datatypeLibrary.getTables(), datatypeLibrary));
+//		}
+//		e.appendChild(ds);
 
 		nu.xom.Document doc = new nu.xom.Document(e);
 
