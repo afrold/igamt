@@ -14,61 +14,61 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * @author Harold Affo (NIST)
  * 
  */
-@Document
-public class AppInfo  implements Serializable {
 
-  private static final long serialVersionUID = 8805967508478985159L;
+@org.springframework.stereotype.Component
+@PropertySource(value = "classpath:app-web-config.properties")
+public class AppInfo implements Serializable {
 
-  @Id
-  private String id;
+	private static final long serialVersionUID = 8805967508478985159L;
 
-  private String version;
+	@Value("${app.version}")
+	private String version;
 
-  private String date;
- 
-   
-  private String adminEmail;
-    
-  public String getVersion() {
-    return version;
-  }
+	@Value("${app.date}")
+	private String date;
 
-  public void setVersion(String version) {
-    this.version = version;
-  }
+	private String uploadedImagesUrl;
 
-  public String getDate() {
-    return date;
-  }
+	@Value("${admin.email}")
+	private String adminEmail;
 
-  public void setDate(String date) {
-    this.date = date;
-  }
- 
-  public String getAdminEmail() {
-    return adminEmail;
-  }
+	public String getVersion() {
+		return version;
+	}
 
-  public void setAdminEmail(String adminEmail) {
-    this.adminEmail = adminEmail;
-  }
- 
+	public void setVersion(String version) {
+		this.version = version;
+	}
 
-   
+	public String getDate() {
+		return date;
+	}
 
+	public void setDate(String date) {
+		this.date = date;
+	}
 
+	public String getAdminEmail() {
+		return adminEmail;
+	}
+
+	public void setAdminEmail(String adminEmail) {
+		this.adminEmail = adminEmail;
+	}
+
+	public String getUploadedImagesUrl() {
+		return uploadedImagesUrl;
+	}
+
+	public void setUploadedImagesUrl(String uploadedImagesUrl) {
+		this.uploadedImagesUrl = uploadedImagesUrl;
+	}
 
 }

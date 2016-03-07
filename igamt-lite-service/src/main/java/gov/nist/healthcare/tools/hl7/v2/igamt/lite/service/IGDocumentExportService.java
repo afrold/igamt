@@ -26,18 +26,21 @@ public interface IGDocumentExportService {
 	
 	InputStream exportAsPdf(IGDocument d) throws IOException;
 	
-	InputStream exportAsZipForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
-	
-	InputStream exportAsPdfFromXsl(IGDocument p, String inlineConstraints) throws IOException;
+	InputStream exportAsPdfFromXsl(IGDocument d, String inlineConstraints) throws IOException;
 
-	InputStream exportAsXlsx(IGDocument p) throws IOException;
+	InputStream exportAsZipForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException;
+
+
+	InputStream exportAsXlsx(IGDocument d) throws IOException;
 	
-	InputStream exportAsXml(IGDocument p) throws IOException;
+	InputStream exportAsXml(IGDocument d) throws IOException;
 	
-	InputStream exportAsZip(IGDocument p) throws IOException;
+	InputStream exportAsZip(IGDocument d) throws IOException;
 	
-	InputStream exportAsDocx(IGDocument p)  throws IOException; 
+	InputStream exportAsDocx(IGDocument d)  throws IOException; 
 	
-	InputStream exportAsHtml(IGDocument p) throws IOException;
+	InputStream exportAsDocxDatatypes(IGDocument d)  throws IOException; 
+	
+	InputStream exportAsHtml(IGDocument d) throws IOException;
 	
 }

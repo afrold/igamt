@@ -64,10 +64,27 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
 	}
 
 	// @Override
-	// public void addInterceptors(InterceptorRegistry registry) {
-	// CSRFHandlerInterceptor csrfInterceptor = new CSRFHandlerInterceptor();
-	// csrfInterceptor.setCsrfTokenManager(new CSRFTokenManager());
-	// registry.addInterceptor(csrfInterceptor);
+	// public void configureMessageConverters(
+	// List<HttpMessageConverter<?>> converters) {
+	// converters.add(byteArrayHttpMessageConverter());
+	// }
+	//
+	// @Bean
+	// public ByteArrayHttpMessageConverter byteArrayHttpMessageConverter() {
+	// ByteArrayHttpMessageConverter arrayHttpMessageConverter = new
+	// ByteArrayHttpMessageConverter();
+	// arrayHttpMessageConverter
+	// .setSupportedMediaTypes(getSupportedMediaTypes());
+	// return arrayHttpMessageConverter;
+	// }
+	//
+	// private List<MediaType> getSupportedMediaTypes() {
+	// List<MediaType> list = new ArrayList<MediaType>();
+	// list.add(MediaType.IMAGE_JPEG);
+	// list.add(MediaType.IMAGE_PNG);
+	// list.add(MediaType.IMAGE_GIF);
+	// list.add(MediaType.APPLICATION_OCTET_STREAM);
+	// return list;
 	// }
 
 }
