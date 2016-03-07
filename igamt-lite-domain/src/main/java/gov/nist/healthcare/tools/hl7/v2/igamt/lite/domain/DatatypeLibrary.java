@@ -2,7 +2,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +11,13 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 @Document(collection = "datatype-library")
@@ -45,6 +50,8 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 	@DBRef
 	private Set<Datatype> children = new HashSet<Datatype>();
+	
+	private Tables tableLibrary;
 
 	public String getId() {
 		return id;
@@ -244,6 +251,58 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		for (Datatype elt: sortedList) {
 			elt.setSectionPosition(sortedList.indexOf(elt));
 		}
+	}
+
+	public Tables getTableLibrary() {
+		return tableLibrary;
+	}
+
+	public void setTableLibrary(Tables tableLibrary) {
+		this.tableLibrary = tableLibrary;
+	}
+	
+	@JsonIgnore
+	public Constraints getConformanceStatements() {
+		//TODO Only byID constraints are considered; might want to consider byName
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Datatype d : this.getChildren()) {
+			ByID byID = new ByID();
+			byID.setByID(d.getLabel());
+			if (d.getConformanceStatements().size() > 0) {
+				byID.setConformanceStatements(d.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+		constraints.setDatatypes(dtContext);
+		return constraints;
+	}
+	
+	@JsonIgnore
+	public Constraints getPredicates() {
+		//TODO Only byID constraints are considered; might want to consider byName
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Datatype d : this.getChildren()) {
+			ByID byID = new ByID();
+			byID.setByID(d.getLabel());
+			if (d.getPredicates().size() > 0) {
+				byID.setPredicates(d.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+		constraints.setDatatypes(dtContext);
+		return constraints;
 	}
 
 }

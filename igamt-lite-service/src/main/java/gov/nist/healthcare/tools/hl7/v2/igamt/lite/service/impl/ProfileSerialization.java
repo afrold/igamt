@@ -14,6 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import java.io.IOException;
 import java.io.InputStream;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import nu.xom.Document;
 
@@ -28,6 +29,12 @@ public interface ProfileSerialization {
 
 	InputStream serializeProfileToZip(Profile profile) throws IOException;
 	
+	InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException;
+	
 	InputStream serializeProfileToZip(Profile profile, String[] ids) throws IOException, CloneNotSupportedException;
+
+	String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary);
+
+	Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary);
 	
 }

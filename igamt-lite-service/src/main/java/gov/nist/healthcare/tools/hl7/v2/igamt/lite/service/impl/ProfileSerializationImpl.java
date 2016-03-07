@@ -11,34 +11,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -64,8 +36,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import nu.xom.Attribute;
-
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +44,36 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
+import nu.xom.Attribute;
 
 public class ProfileSerializationImpl implements ProfileSerialization {
 	Logger logger = LoggerFactory.getLogger( ProfileSerializationImpl.class );
@@ -137,6 +137,64 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	@Override
 	public String serializeProfileToXML(Profile profile) {
 		return this.serializeProfileToDoc(profile).toXML();
+	}
+	
+	@Override
+	public String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary) {
+		return this.serializeDatatypeLibraryToDoc(datatypeLibrary).toXML();
+	}
+
+	
+	@Override
+	public nu.xom.Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary) {
+		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
+		
+		
+		//TODO Need to define UUID logic
+		e.addAttribute(new Attribute("ID", UUID.randomUUID().toString()));
+		
+		//TODO Need to define Metadata for Datatype Library
+		e.addAttribute(new Attribute("Type", "NEED TYPE"));
+		e.addAttribute(new Attribute("HL7Version", "NEED HL7Version"));
+		e.addAttribute(new Attribute("SchemaVersion", "NEED SchemaVersion"));
+
+		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
+		elmMetaData.addAttribute(new Attribute("Name", "NEED NAME"));
+		elmMetaData.addAttribute(new Attribute("OrgName", "NIST"));
+		elmMetaData.addAttribute(new Attribute("Version", "NEED VERSION"));
+		elmMetaData.addAttribute(new Attribute("Date", "NEED DATE"));
+		
+//		if (metaData.getSpecificationName() != null && !metaData.getSpecificationName().equals("")) 
+//			elmMetaData.addAttribute(new Attribute("SpecificationName",ExportUtil.str(metaData.getSpecificationName())));
+//		if (metaData.getStatus() != null && !metaData.getStatus().equals("")) 
+//			elmMetaData.addAttribute(new Attribute("Status", ExportUtil.str(metaData.getStatus())));
+//		if (metaData.getTopics() != null && !metaData.getTopics().equals("")) 
+//			elmMetaData.addAttribute(new Attribute("Topics", ExportUtil.str(metaData.getTopics())));
+
+		e.appendChild(elmMetaData);
+		
+		//TODO need to add encoding for DatatypeLibrary
+		/*
+		if (profile.getMetaData().getEncodings() != null && profile.getMetaData().getEncodings().size() > 0) {
+			nu.xom.Element elmEncodings = new nu.xom.Element("Encodings");
+			for (String encoding : profile.getMetaData().getEncodings()) {
+				nu.xom.Element elmEncoding = new nu.xom.Element("Encoding");
+				elmEncoding.appendChild(encoding);
+				elmEncodings.appendChild(elmEncoding);
+			}
+			e.appendChild(elmEncodings);
+		}
+		*/ 
+		
+		nu.xom.Element ds = new nu.xom.Element("Datatypes");
+		for (Datatype d : datatypeLibrary.getChildren()) {
+			ds.appendChild(this.serializeDatatype(d, datatypeLibrary.getTableLibrary(), datatypeLibrary));
+		}
+		e.appendChild(ds);
+
+		nu.xom.Document doc = new nu.xom.Document(e);
+
+		return doc;
 	}
 
 	@Override
@@ -538,6 +596,48 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		}
 		return elmDatatype;
 	}
+	
+	private nu.xom.Element serializeDatatype(Datatype d, Tables tables, DatatypeLibrary datatypeLib) {
+		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
+		elmDatatype.addAttribute(new Attribute("ID", ExportUtil.str(d.getLabel())));
+		elmDatatype.addAttribute(new Attribute("Name", ExportUtil.str(d.getName())));
+		elmDatatype.addAttribute(new Attribute("Label", ExportUtil.str(d.getLabel())));
+		elmDatatype.addAttribute(new Attribute("Description", ExportUtil.str(d.getDescription())));
+
+		if (d.getComponents() != null) {
+
+			Map<Integer, Component> components = new HashMap<Integer, Component>();
+
+			for (Component c : d.getComponents()) {
+				components.put(c.getPosition(), c);
+			}
+
+			for (int i = 1; i < components.size() + 1; i++) {
+				Component c = components.get(i);
+				nu.xom.Element elmComponent = new nu.xom.Element("Component");
+				elmComponent.addAttribute(new Attribute("Name", ExportUtil.str(c.getName())));
+				elmComponent.addAttribute(new Attribute("Usage", ExportUtil.str(c.getUsage().toString())));
+				elmComponent.addAttribute(new Attribute("Datatype", ExportUtil.str(datatypeLib.findOne(c.getDatatype()).getLabel())));
+				elmComponent.addAttribute(new Attribute("MinLength", "" + c.getMinLength()));
+				if (c.getMaxLength() != null && !c.getMaxLength().equals("")) elmComponent.addAttribute(new Attribute("MaxLength", ExportUtil.str(c.getMaxLength())));
+				if (c.getConfLength() != null && !c.getConfLength().equals("")) elmComponent.addAttribute(new Attribute("ConfLength", ExportUtil.str(c.getConfLength())));
+				if (c.getTable() != null && !c.getTable().equals("")){
+					if (tables.findOneTableById(c.getTable()) != null){
+						elmComponent.addAttribute(new Attribute("Binding", tables.findOneTableById(c.getTable()).getBindingIdentifier() + ""));
+					} else {
+						logger.warn("Value set "+c.getTable()+" not found in library");
+						elmComponent.addAttribute(new Attribute("Binding", c.getTable()));
+					}
+				}
+				if (c.getBindingStrength() != null && !c.getBindingStrength().equals("")) elmComponent.addAttribute(new Attribute("BindingStrength", ExportUtil.str(c.getBindingStrength())));
+				if (c.getBindingLocation() != null && !c.getBindingLocation().equals("")) elmComponent.addAttribute(new Attribute("BindingLocation", ExportUtil.str(c.getBindingLocation())));
+				if (c.isHide()) elmComponent.addAttribute(new Attribute("Hide", "true"));
+				
+				elmDatatype.appendChild(elmComponent);
+			}
+		}
+		return elmDatatype;
+	}
 
 	private void deserializeMetaData(Profile profile, Element elmConformanceProfile) {
 		profile.getMetaData().setProfileID(elmConformanceProfile.getAttribute("ID"));
@@ -804,6 +904,33 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return new ByteArrayInputStream(bytes);
 	}
 
+	@Override
+	public InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException{
+		ByteArrayOutputStream outputStream = null;
+		byte[] bytes;
+		outputStream = new ByteArrayOutputStream();
+		ZipOutputStream out = new ZipOutputStream(outputStream);
+
+		this.generateDatatypeLibraryIS(out, this.serializeDatatypeLibraryToXML(datatypeLibrary));
+		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(datatypeLibrary));
+		this.generateConstraintsIS(out, new ConstraintsSerializationImpl().serializeConstraintsToXML(datatypeLibrary));
+
+		out.close();
+		bytes = outputStream.toByteArray();
+		return new ByteArrayInputStream(bytes);
+	}
+	
+	private void generateDatatypeLibraryIS(ZipOutputStream out, String dtLibXML) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("Datatypes.xml"));
+		InputStream inProfile = IOUtils.toInputStream(dtLibXML);
+		int lenTP;
+		while ((lenTP = inProfile.read(buf)) > 0) {
+			out.write(buf, 0, lenTP);
+		}
+		out.closeEntry();
+		inProfile.close();
+	}
 
 	private void generateProfileIS(ZipOutputStream out, String profileXML) throws IOException {
 		byte[] buf = new byte[1024];

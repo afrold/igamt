@@ -56,6 +56,7 @@ import org.xml.sax.SAXException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -1647,6 +1648,24 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 	@Override
 	public InputStream serializeProfileToZip(Profile profile, String[] ids)
 			throws IOException, CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public nu.xom.Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary) {
 		// TODO Auto-generated method stub
 		return null;
 	}
