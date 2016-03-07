@@ -508,6 +508,7 @@ angular.module('igl')
                 controller: 'ConfirmIGDocumentCloseCtrl'
             });
             modalInstance.result.then(function () {
+                $rootScope.clearChanges();
             }, function () {
             });
         };
@@ -523,6 +524,7 @@ angular.module('igl')
                 }
             });
             modalInstance.result.then(function (igdocument) {
+                $rootScope.clearChanges();
                 $scope.openIGDocument(igdocument);
             }, function () {
             });
