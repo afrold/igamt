@@ -8,14 +8,13 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 
@@ -43,34 +41,46 @@ public class MessageEventFactory {
 		tables = igdocument.getProfile().getTables();
 	}
 	
-	public List<MessageEvents> createMessageEvents(Messages msgs) {
+	public List<MessageEvents> createMessageEvents(List<Message> msgs) {
 		
 		List<MessageEvents> list = new ArrayList<MessageEvents>();
-		for(Message msg : msgs.getChildren()) {
+		for(Message msg : msgs) {
 			String id = msg.getId();
 			String structID = msg.getStructID();
 			Set<String> events = findEvents(structID);
 			String description = msg.getDescription();
 			list.add(new MessageEvents(id, structID, events, description));
 		}
-		Collections.sort(list, new MessageEventsComparator());
 		return list;
 	}
 
-	public Set<String> findEvents(String structID) {
-		Set<String> events = new TreeSet<String>(new EventComparator());
-		Code code = get0354Table().findOneCodeByValue(structID);
+	Set<String> findEvents(String structID) {
+		Set<String> events = new HashSet<String>();
+		String structID1 = fixUnderscore(structID);
+		Code code = get0354Table().findOneCodeByValue(structID1);
 		if (code != null) {
 			String label = code.getLabel();
 			String[] ss = label.split(",");
+			if (ss[0].equalsIgnoreCase("Varies")) {
+				ss[0] = structID1;
+			}
 			Collections.addAll(events, ss);
 		} else {
-			log.error("No code found for structID=" + structID);
+			log.error("No code found for structID=" + structID1);
 		}
 		return events;
 	}
 
-	public Table get0354Table() {
+	String fixUnderscore (String structID) {
+		if (structID.endsWith("_")) {
+			int pos = structID.length();
+			return structID.substring(0, pos -1);
+		} else {
+			return structID;
+		}
+	}
+	
+	Table get0354Table() {
 		if (tab0354 == null) {
 			for (Table tab : tables.getChildren()) {
 				if ("0354".equals(tab.getBindingIdentifier())) {
@@ -80,21 +90,5 @@ public class MessageEventFactory {
 			}
 		}
 		return tab0354;
-	}
-	
-	class MessageEventsComparator implements Comparator<MessageEvents> {
-
-		@Override
-		public int compare(MessageEvents thisOne, MessageEvents thatOne) {
-			return thisOne.getName().compareTo(thatOne.getName());
-		}
-	}
-	
-	class EventComparator implements Comparator<String> {
-
-		@Override
-		public int compare(String thisOne, String thatOne) {
-			return thisOne.compareTo(thatOne);
-		}
 	}
 }
