@@ -350,7 +350,7 @@
 				</xsl:for-each>
 			</tbody>
 		</table>
-		<xsl:value-of select="Text[@Type='UsageNote']" />
+		<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='UsageNote']" />
 		<br></br>
 	</xsl:template>
 
@@ -395,7 +395,7 @@
 	</xsl:template>
 
 	<xsl:template match="Segment">
-		<xsl:value-of select="./Text[@Type='Text1']" />
+		<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text1']" />
 		<br></br>
 		<table width="100%" border="1" cellspacing="0" cellpadding="1">
 			<col style="width:5%"></col>
@@ -482,7 +482,7 @@
 			</xsl:when>
 		</xsl:choose>
 		<br></br>
-		<xsl:copy-of select="Text[@Type='Text2']" />
+		<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text2']" />
 
 		<xsl:for-each select="Field">
 			<xsl:sort select="@Position" data-type="number"></xsl:sort>
@@ -498,7 +498,7 @@
 						<xsl:value-of select="./@Datatype" />
 						)
 					</b>
-					<xsl:copy-of select="./Text[@Type='Text']" />
+					<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
 				</p>
 			</xsl:if>
 		</xsl:for-each>
