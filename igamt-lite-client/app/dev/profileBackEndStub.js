@@ -262,5 +262,13 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
     });
 
+    $httpBackend.whenGET('api/appInfo').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/appInfo/appInfo.json', false);
+        request.send(null);
+        var d = angular.fromJson(request.response);
+        return [request.status, d, {}];
+    });
+
 });
 

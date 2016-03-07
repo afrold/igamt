@@ -29,7 +29,7 @@ body {
   //  padding-top: 0px;
   //  padding-bottom: 20px;
   ////  background-color: #fdfdfd;
-  //  background: #f5f5f5;
+//    background: #f5f5f5;
   //  color: black;
 
   //  font: 76%/ 1.4em Arial, Geneva, Verdana, Helvetica, sans-serif;
@@ -38,7 +38,8 @@ body {
   //     font: 76%/ 1.4em Arial, Geneva, Verdana, Helvetica, sans-serif;
   background: #021a4c url(../images/bg_body4.jpg) no-repeat 50% -10px;
   color: black;
-  background-color: #fafafa;
+//  background-color: #fafafa;
+  background-color: #021a4c;
 }
 
 
@@ -2047,9 +2048,6 @@ li.active {
   background-color: #ffcc00;
 }
 
-body {
-  background-color: #021a4c;
-}
 
 tr.current {
   background-color: #ffef8f;
@@ -2063,5 +2061,36 @@ input.form-control {
   padding: 0px;
 }
 
+.info-dlg {
+  font-size: 20px;
+  line-height: 1.4;
+  color: #000000;
+  background: #efefef;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  margin: 0 auto;
+}
 
-html {background-color: #fafafa}
+
+.error-dlg {
+  font-size: 20px;
+  line-height: 1.4;
+  color: #737373;
+  background: #f2aaaa;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  margin: 0 auto;
+}
+
+#exception > p {
+  margin: 1em 0;
+  text-align: center;
+
+}
+
+#exception  > ul {
+  padding: 0 0 0 40px;
+  margin: 1em 0;
+}
+
+

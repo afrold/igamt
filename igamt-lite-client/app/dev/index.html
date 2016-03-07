@@ -21,9 +21,10 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/sass-bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css" />
-    <link rel="stylesheet" href="bower_components/textAngular/src/textAngular.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/material.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/ripples.css" />
+    <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/froala_editor.min.css" />
+    <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/froala_style.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -31,10 +32,16 @@
     <!-- endbuild -->
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-    <!--<link rel="stylesheet" href="styles/font-awesome.min.css">-->
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.css"/>
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css"/>
     <link rel="stylesheet" href="lib/material-custom/material-custom.css"/>
+    <link rel="stylesheet" href="lib/igamt.css"/>
+     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/colors.css">
+     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/file.css">
+    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/fullscreen.css">
+    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/image.css">
+    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/line_breaker.css">
+    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/table.css">
 
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()">
@@ -63,7 +70,7 @@
     </div>
 
     <div ng-include="'views/footer.html'"></div>
-    <div ng-include="'views/session-templates.html'"></div>
+    <div ng-include="'views/templates.html'"></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <!--<script>-->

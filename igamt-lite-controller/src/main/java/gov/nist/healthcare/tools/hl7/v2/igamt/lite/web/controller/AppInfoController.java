@@ -13,7 +13,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.AppInfo;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.AppInfoService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.util.HttpUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,11 +31,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppInfoController {
 
 	@Autowired
-	private AppInfoService appInfoService;
+	private AppInfo appInfo;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public AppInfo info(HttpServletRequest request) {
-		AppInfo appInfo = appInfoService.get();
-		return appInfo != null ? appInfo : new AppInfo();
+		if (appInfo.getUploadedImagesUrl() == null) {
+			appInfo.setUploadedImagesUrl(HttpUtil.getImagesRootUrl(request));
+		}
+		return appInfo;
 	}
 }

@@ -17,6 +17,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListExcepti
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UploadImageFileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 import java.io.IOException;
@@ -87,6 +88,11 @@ public class JsonExceptionHandler implements HandlerExceptionResolver {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
 						ResponseMessage.Type.danger, "igDocumentListFailed"));
+			} else if (ex instanceof UploadImageFileException) {
+				logger.error("ERROR: Failed to upload the image file", ex);
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				mapper.writeValue(response.getWriter(), new ResponseMessage(
+						ResponseMessage.Type.danger, "uploadImageFailed"));
 			} else {
 				logger.error("ERROR: " + ex.getMessage(), ex);
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

@@ -23,11 +23,11 @@ var app = angular
         'smart-table',
         'ngTreetable',
         'restangular',
-        'textAngular',
         'ng-context-menu',
         'table-settings',
         'angularjs-dropdown-multiselect',
-        'dndLists'
+        'dndLists',
+        'froala'
         ,
         'ngMockE2E'
     ]);
@@ -43,15 +43,16 @@ var
     spinner,
 
 //The list of messages we don't want to displat
-    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded'];
+    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded','igDocumentNotSaved','igDocumentSaved','uploadImageFailed'];
 
 //the message to be shown to the user
 var msg = {};
 
+
 app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider) {
-	
-	app.requires.push('ngMockE2E');
-	
+
+    app.requires.push('ngMockE2E');
+
     $routeProvider
         .when('/', {
             templateUrl: 'views/home.html'
@@ -106,7 +107,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             templateUrl: 'views/account/registerResetPassword.html',
             controller: 'RegisterResetPasswordCtrl',
             resolve: {
-                isFirstSetup: function() {
+                isFirstSetup: function () {
                     return true;
                 }
             }
@@ -115,7 +116,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             templateUrl: 'views/account/registerResetPassword.html',
             controller: 'RegisterResetPasswordCtrl',
             resolve: {
-                isFirstSetup: function() {
+                isFirstSetup: function () {
                     return false;
                 }
             }
@@ -148,7 +149,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         var setMessage = function (response) {
             //if the response has a text and a type property, it is a message to be shown
             if (response.data && response.data.text && response.data.type) {
-                if (response.status === 401 ) {
+                if (response.status === 401) {
 //                        console.log("setting login message");
                     loginMessage = {
                         text: response.data.text,
@@ -158,7 +159,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                         manualHandle: response.data.manualHandle
                     };
 
-                } else  if (response.status === 503 ) {
+                } else if (response.status === 503) {
                     msg = {
                         text: "server.down",
                         type: "danger",
@@ -175,13 +176,13 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                     };
                     var found = false;
                     var i = 0;
-                    while ( i < mToHide.length && !found ) {
-                        if ( msg.text === mToHide[i] ) {
+                    while (i < mToHide.length && !found) {
+                        if (msg.text === mToHide[i]) {
                             found = true;
                         }
                         i++;
                     }
-                    if ( found === true) {
+                    if (found === true) {
                         msg.show = false;
                     } else {
 //                        //hide the msg in 5 seconds
@@ -216,13 +217,13 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     $httpProvider.interceptors.push(function ($rootScope, $q) {
         return {
             response: function (response) {
-                return response   || $q.when(response);
+                return response || $q.when(response);
             },
             responseError: function (response) {
                 if (response.status === 401) {
                     //We catch everything but this one. So public users are not bothered
                     //with a login windows when browsing home.
-                    if ( response.config.url !== 'api/accounts/cuser') {
+                    if (response.config.url !== 'api/accounts/cuser') {
                         //We don't intercept this request
                         var deferred = $q.defer(),
                             req = {
@@ -245,13 +246,13 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     $httpProvider.interceptors.push(function ($rootScope, $q) {
         return {
             response: function (response) {
-                return response   || $q.when(response);
+                return response || $q.when(response);
             },
             responseError: function (response) {
                 if (response.status === 401) {
                     //We catch everything but this one. So public users are not bothered
                     //with a login windows when browsing home.
-                    if ( response.config.url !== 'api/accounts/cuser') {
+                    if (response.config.url !== 'api/accounts/cuser') {
                         //We don't intercept this request
                         var deferred = $q.defer(),
                             req = {
@@ -262,7 +263,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                         $rootScope.$broadcast('event:loginRequired');
                         return  $q.when(response);
                     }
-                }else  if (response.status === 503) {
+                } else if (response.status === 503) {
 
                 }
                 return $q.reject(response);
@@ -277,7 +278,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             response: function (response) {
                 //hide the spinner
                 spinner = false;
-                return response   || $q.when(response);
+                return response || $q.when(response);
             },
             responseError: function (response) {
                 //hide the spinner
@@ -290,7 +291,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     });
 
 
-    IdleProvider.idle(30*60);
+    IdleProvider.idle(30 * 60);
     IdleProvider.timeout(30);
     KeepaliveProvider.interval(10);
 
@@ -307,12 +308,39 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 });
 
 
-app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http) {
-
+app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http, AppInfo,StorageService,$templateCache,$window) {
+    $rootScope.appInfo = {};
     //Check if the login dialog is already displayed.
     $rootScope.loginDialogShown = false;
     $rootScope.subActivePath = null;
 
+    // load app info
+    // load app info
+    AppInfo.get().then(function (appInfo) {
+        $rootScope.appInfo = appInfo;
+        $rootScope.froalaEditorOptions = {
+            placeholderText: '',
+            toolbarButtons:['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink','insertImage', 'insertFile'],
+            imageUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
+            charCounterCount: false,
+            quickInsertTags: 8,
+            events: {
+                'froalaEditor.initialized': function() {
+
+                }
+            }
+        };
+        httpHeaders.common['appVersion'] = appInfo.version;
+        var prevVersion = StorageService.getAppVersion(StorageService.APP_VERSION);
+        StorageService.setAppVersion(appInfo.version);
+
+        if (prevVersion == null || prevVersion !== appInfo.version) {
+            $rootScope.clearAndReloadApp();
+        }
+    }, function (error) {
+        $rootScope.appInfo = {};
+        $rootScope.openErrorDlg("Sorry we could not communicate with the server. Please try again");
+    });
 
 
     //make current message accessible to root scope and therefore all scopes
@@ -327,7 +355,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     };
 
     //showSpinner can be referenced from the view
-    $rootScope.showSpinner = function() {
+    $rootScope.showSpinner = function () {
         return spinner;
     };
 
@@ -370,12 +398,12 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         httpHeaders.common['Authorization'] = 'Basic ' + base64.encode(username + ':' + password);
 //        httpHeaders.common['withCredentials']=true;
 //        httpHeaders.common['Origin']="http://localhost:9000";
-        $http.get('api/accounts/login').success(function() {
+        $http.get('api/accounts/login').success(function () {
             //If we are here in this callback, login was successfull
             //Let's get user info now
             httpHeaders.common['Authorization'] = null;
             $http.get('api/accounts/cuser').success(function (data) {
-            	console.log("setCurrentUser=" + data);
+                console.log("setCurrentUser=" + data);
                 userInfoService.setCurrentUser(data);
                 $rootScope.$broadcast('event:loginConfirmed');
             });
@@ -394,21 +422,21 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     /**
      * On 'loginCancel' clears the Authentication header
      */
-    $rootScope.$on('event:loginCancel',function (){
+    $rootScope.$on('event:loginCancel', function () {
         httpHeaders.common['Authorization'] = null;
     });
 
-    $rootScope.$on('$routeChangeStart', function(next, current) {
+    $rootScope.$on('$routeChangeStart', function (next, current) {
 //            console.log('route changing');
         // If there is a message while change Route the stop showing the message
-        if (msg && msg.manualHandle === 'false'){
+        if (msg && msg.manualHandle === 'false') {
 //                console.log('detected msg with text: ' + msg.text);
             msg.show = false;
         }
     });
 
-    $rootScope.loadUserFromCookie = function() {
-        if ( userInfoService.hasCookieInfo() === true ) {
+    $rootScope.loadUserFromCookie = function () {
+        if (userInfoService.hasCookieInfo() === true) {
             //console.log("found cookie!")
             userInfoService.loadFromCookie();
             httpHeaders.common['Authorization'] = userInfoService.getHthd();
@@ -419,7 +447,6 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     };
 
 
-
     $rootScope.isSubActive = function (path) {
         return path === $rootScope.subActivePath;
     };
@@ -428,60 +455,65 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         $rootScope.subActivePath = path;
     };
 
+    $rootScope.clearAndReloadApp = function () {
+        $rootScope.clearTemplate();
+        $rootScope.reloadPage();
+    };
+
+    $rootScope.openErrorDlg = function (errorMessage) {
+        StorageService.clearAll();
+        if(!$rootScope.errorModalInstance || $rootScope.errorModalInstance === null || !$rootScope.errorModalInstance.opened) {
+            $rootScope.errorModalInstance = $modal.open({
+                templateUrl: 'CriticalError.html',
+                size: 'lg',
+                backdrop: true,
+                keyboard: 'true',
+                'controller': 'FailureCtrl',
+                resolve: {
+                    error: function () {
+                        return errorMessage;
+                    }
+                }
+            });
+            $rootScope.errorModalInstance.result.then(function () {
+                $rootScope.clearAndReloadApp();
+            }, function () {
+                $rootScope.clearAndReloadApp();
+            });
+        }
+    };
+
+    $rootScope.openSessionExpiredDlg = function () {
+        if(!$rootScope.sessionExpiredModalInstance || $rootScope.sessionExpiredModalInstance === null || !$rootScope.sessionExpiredModalInstance.opened) {
+            $rootScope.sessionExpiredModalInstance = $modal.open({
+                templateUrl: 'timedout-dialog.html',
+                size: 'lg',
+                backdrop: true,
+                keyboard: 'true',
+                'controller': 'FailureCtrl',
+                resolve: {
+                    error: function () {
+                        return "";
+                    }
+                }
+            });
+            $rootScope.sessionExpiredModalInstance.result.then(function () {
+                $rootScope.clearAndReloadApp();
+            }, function () {
+                $rootScope.clearAndReloadApp();
+            });
+        }
+    };
+
+    $rootScope.clearTemplate = function () {
+        $templateCache.removeAll();
+    };
+
+    $rootScope.reloadPage = function () {
+        $window.location.reload();
+    };
 
 
 });
 
 
-app.controller('ErrorDetailsCtrl', function ($scope, $modalInstance, error) {
-    $scope.error = error;
-    $scope.ok = function () {
-        $modalInstance.close($scope.error);
-    };
-
-    $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-    };
-});
-
-
-//app.filter('flavors', function() {
-//    return function(input, name) {
-//
-//    };
-//});
-
-app.filter('flavors',function(){
-    return function(inputArray,name){
-        return inputArray.filter(function(item){
-            return item.name === name || angular.equals(item.name,name);
-        });
-    };
-});
-
-
-app.factory('StorageService',
-    ['$rootScope', 'localStorageService', function ($rootScope, localStorageService) {
-        var service = {
-            TABLE_COLUMN_SETTINGS_KEY: 'SETTINGS_KEY',
-            remove: function (key) {
-                return localStorageService.remove(key);
-            },
-
-            removeList: function removeItems(key1, key2, key3) {
-                return localStorageService.remove(key1, key2, key3);
-            },
-
-            clearAll: function () {
-                return localStorageService.clearAll();
-            },
-            set: function (key, val) {
-                return localStorageService.set(key, val);
-            },
-            get: function (key) {
-                return localStorageService.get(key);
-            }
-        };
-        return service;
-    }]
-);
