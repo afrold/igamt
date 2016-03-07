@@ -56,17 +56,30 @@ public class MessageEventFactory {
 
 	Set<String> findEvents(String structID) {
 		Set<String> events = new HashSet<String>();
-		Code code = get0354Table().findOneCodeByValue(structID);
+		String structID1 = fixUnderscore(structID);
+		Code code = get0354Table().findOneCodeByValue(structID1);
 		if (code != null) {
 			String label = code.getLabel();
 			String[] ss = label.split(",");
+			if (ss[0].equalsIgnoreCase("Varies")) {
+				ss[0] = structID1;
+			}
 			Collections.addAll(events, ss);
 		} else {
-			log.error("No code found for structID=" + structID);
+			log.error("No code found for structID=" + structID1);
 		}
 		return events;
 	}
 
+	String fixUnderscore (String structID) {
+		if (structID.endsWith("_")) {
+			int pos = structID.length();
+			return structID.substring(0, pos -1);
+		} else {
+			return structID;
+		}
+	}
+	
 	Table get0354Table() {
 		if (tab0354 == null) {
 			for (Table tab : tables.getChildren()) {
