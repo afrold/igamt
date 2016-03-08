@@ -55,7 +55,7 @@ public class MessageEventFactory {
 		return list;
 	}
 
-	Set<String> findEvents(String structID) {
+	public Set<String> findEvents(String structID) {
 		Set<String> events = new HashSet<String>();
 		String structID1 = fixUnderscore(structID);
 		Code code = get0354Table().findOneCodeByValue(structID1);
@@ -81,7 +81,7 @@ public class MessageEventFactory {
 		}
 	}
 	
-	Table get0354Table() {
+	public Table get0354Table() {
 		if (tab0354 == null) {
 			for (Table tab : tables.getChildren()) {
 				if ("0354".equals(tab.getBindingIdentifier())) {
