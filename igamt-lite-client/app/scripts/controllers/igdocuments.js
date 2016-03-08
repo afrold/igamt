@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings, StorageService,$q) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings, StorageService,$q,notifications) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -334,6 +334,7 @@ angular.module('igl')
                 $rootScope.msg().text = "igInitFailed";
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
+                $rootScope.showNotification($rootScope.msg());
                 $scope.loadingIGDocument = false;
                 $scope.toEditIGDocumentId = null;
             }
@@ -614,7 +615,6 @@ angular.module('igl')
 
         $scope.save = function () {
             var delay = $q.defer();
-            $scope.igDocumentMsg = {};
             waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
             $rootScope.igdocument.accountId = userInfoService.getAccountID();
@@ -634,16 +634,16 @@ angular.module('igl')
                         $rootScope.igs [index] = $rootScope.igdocument;
                     }
                 }
-                $scope.igDocumentMsg.text = saveResponse.text;
-                $scope.igDocumentMsg.type = saveResponse.type;
-                $scope.igDocumentMsg.show = true;
+                $rootScope.msg().text = saveResponse.text;
+                $rootScope.msg().type = saveResponse.type;
+                $rootScope.msg().show = true;
                 $rootScope.clearChanges();
                 waitingDialog.hide();
                 delay.resolve(true);
             }, function (error) {
-                $scope.igDocumentMsg.text = error.data.text;
-                $scope.igDocumentMsg.type = error.data.type;
-                $scope.igDocumentMsg.show = true;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
                 waitingDialog.hide();
                 delay.reject(false);
             });
@@ -968,7 +968,6 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function ($scope
             $rootScope.manualHandle = true;
             $scope.igdocumentToDelete = null;
             $scope.loading = false;
-
             $modalInstance.close($scope.igdocumentToDelete);
 
         }, function (error) {
@@ -978,6 +977,7 @@ angular.module('igl').controller('ConfirmIGDocumentDeleteCtrl', function ($scope
             $rootScope.msg().text = "igDeleteFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
+
 
 // waitingDialog.hide();
         });
@@ -1003,6 +1003,7 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
             $rootScope.msg().text = "igResetFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
+
             $modalInstance.dismiss('cancel');
         });
     };
@@ -1026,6 +1027,7 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
             $rootScope.msg().text = "igSaveFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
+
             $scope.loading = false;
             $modalInstance.dismiss('cancel');
         });
@@ -1051,6 +1053,7 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
             $rootScope.msg().text = "igResetFailed";
             $rootScope.msg().type = "danger";
             $rootScope.msg().show = true;
+
             $modalInstance.dismiss('cancel');
         });
     };
@@ -1111,7 +1114,7 @@ angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $mo
      	form.style.display = 'none';
      	document.body.appendChild(form);
      	form.submit();
-     }
+     };
 	 
 	
 	$scope.exportAsZIPforSelectedMessages = function () {

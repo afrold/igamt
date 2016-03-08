@@ -239,8 +239,6 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
 //                }
             }
         }
-
-
         $rootScope.msg().text = "dtDeleteSuccess";
         $rootScope.msg().type = "success";
         $rootScope.msg().show = true;
