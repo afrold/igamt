@@ -64,8 +64,8 @@ angular.module('igl').factory ('ProfileAccessSvc', function($rootScope) {
 			var groups = [];
 			
 			_.each(message.children, function(groupORsegment) {
-				console.log("Was a what? groupORsegment.type="
-						+ groupORsegment.type + " name=" + message.name);
+//				console.log("Was a what? groupORsegment.type="
+//						+ groupORsegment.type + " name=" + message.name);
 				var grps = fetchGroups(groupORsegment);
 				_.each(grps, function(grp){
 					groups.push(grp);

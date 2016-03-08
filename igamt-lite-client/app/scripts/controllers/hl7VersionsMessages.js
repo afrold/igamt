@@ -65,7 +65,6 @@ angular.module('igl').controller(
 					"accountID" : userInfoService.getAccountID(), 
 					"timeout" : 60000
 				};
-				console.log("iprw=" + JSON.stringify(iprw));
 				$http.post('api/igdocuments/createIntegrationProfile', iprw)
 						.then(
 								function(response) {

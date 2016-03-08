@@ -62,9 +62,6 @@ public class MessageEventFactory {
 		if (code != null) {
 			String label = code.getLabel();
 			String[] ss = label.split(",");
-			if (ss[0].equalsIgnoreCase("Varies")) {
-				ss[0] = structID1;
-			}
 			Collections.addAll(events, ss);
 		} else {
 			log.error("No code found for structID=" + structID1);
