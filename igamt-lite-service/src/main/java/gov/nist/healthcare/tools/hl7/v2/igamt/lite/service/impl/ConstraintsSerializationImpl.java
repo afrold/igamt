@@ -33,6 +33,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
@@ -122,6 +123,11 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 	}
 	
 	@Override
+	public String serializeConstraintsToXML(DatatypeLibrary datatypeLibrary) {
+		return this.serializeConstraintsToDoc(datatypeLibrary).toXML();
+	}
+	
+	@Override
 	public nu.xom.Document serializeConstraintsToDoc(Profile profile) {
 		Constraints predicates = profile.getPredicates();
 		Constraints conformanceStatements = profile.getConformanceStatements();
@@ -152,7 +158,34 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
             if(profile.getMetaData().getTopics() != null && !profile.getMetaData().getTopics().equals("")) elmMetaData.addAttribute(new Attribute("Topics", ExportUtil.str(profile.getMetaData().getTopics())));
         }
 		e.appendChild(elmMetaData);
+		
+		this.serializeMain(e, predicates, conformanceStatements);
+		
+		return new nu.xom.Document(e);
+	}
+	
+	private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrary) {
+		Constraints predicates = datatypeLibrary.getPredicates();
+		Constraints conformanceStatements = datatypeLibrary.getConformanceStatements();
+		
+		
+		nu.xom.Element e = new nu.xom.Element("ConformanceContext");
+		
+		e.addAttribute(new Attribute("UUID", UUID.randomUUID().toString()));
+		
+		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
+		elmMetaData.addAttribute(new Attribute("Name", "Constraints for " + "Profile"));
+        elmMetaData.addAttribute(new Attribute("OrgName", "NIST"));
+        elmMetaData.addAttribute(new Attribute("Version", "1.0.0"));
+        elmMetaData.addAttribute(new Attribute("Date", ""));
+		e.appendChild(elmMetaData);
+		
+		this.serializeMain(e, predicates, conformanceStatements);
+		
+		return new nu.xom.Document(e);
+	}
 
+	private nu.xom.Element serializeMain(nu.xom.Element e, Constraints predicates, Constraints conformanceStatements ){
 		nu.xom.Element predicates_Elm = new nu.xom.Element("Predicates");
 
 		nu.xom.Element predicates_dataType_Elm = new nu.xom.Element("Datatype");
@@ -214,12 +247,11 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			if (messageConstaint != null) constraints_message_Elm.appendChild(messageConstaint);
 		}
 		constraints_Elm.appendChild(constraints_message_Elm);
-		
-
 		e.appendChild(constraints_Elm);
-		return new nu.xom.Document(e);
+		
+		return e;
 	}
-
+	
 	private nu.xom.Element serializeByNameOrByID(ByNameOrByID byNameOrByIDObj) {
 		if (byNameOrByIDObj instanceof ByName) {
 			ByName byNameObj = (ByName) byNameOrByIDObj;

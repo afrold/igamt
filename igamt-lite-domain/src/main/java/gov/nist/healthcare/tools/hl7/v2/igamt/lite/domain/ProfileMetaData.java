@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class ProfileMetaData implements java.io.Serializable, Cloneable {
+public class ProfileMetaData extends MetaData{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -22,14 +22,6 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 	private String hl7Version = ""; 			//ConformanceProfile/@HL7Version
 	
 	private String schemaVersion = ""; 			//ConformanceProfile/@SchemaVersion
-	
-	private String name; 						//ConformanceProfile/MetaData/@Name
-	
-	private String orgName = ""; 				//ConformanceProfile/MetaData/@OrgName
-	
-	private String version = ""; 				//ConformanceProfile/MetaData/@Version
-	
-	private String date = ""; 					//ConformanceProfile/MetaData/@Date
 	
 	private String specificationName = ""; 		//ConformanceProfile/MetaData/@SpecificationName
 	
@@ -48,22 +40,6 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 	private String ext = "";
 
 	private Set<String> encodings = new HashSet<String>();
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getOrgName() {
-		return orgName;
-	}
-
-	public void setOrgName(String orgName) {
-		this.orgName = orgName;
-	}
 
 	public String getStatus() {
 		return status;
@@ -121,22 +97,6 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 		this.subTitle = subTitle;
 	}
 
-	public String getVersion() {
-		return version;
-	}
-
-	public void setVersion(String version) {
-		this.version = version;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
 	public String getExt() {
 		return ext;
 	}
@@ -156,26 +116,17 @@ public class ProfileMetaData implements java.io.Serializable, Cloneable {
 
 		clonedProfileMetaData.setHl7Version(hl7Version);
 		clonedProfileMetaData.setProfileID(profileID);
-		clonedProfileMetaData.setName(name);
-		clonedProfileMetaData.setOrgName(orgName);
+		clonedProfileMetaData.setName(this.getName());
+		clonedProfileMetaData.setOrgName(this.getOrgName());
 		clonedProfileMetaData.setSchemaVersion(schemaVersion);
 		clonedProfileMetaData.setStatus(status);
 		clonedProfileMetaData.setTopics(topics);
 		clonedProfileMetaData.setType(type);
-		clonedProfileMetaData.setDate(date);
+		clonedProfileMetaData.setDate(this.getDate());
+		clonedProfileMetaData.setVersion(this.getVersion());
 		clonedProfileMetaData.setSubTitle(subTitle);
 		clonedProfileMetaData.setVersion(hl7Version);
 		return clonedProfileMetaData;
-	}
-
-	@Override
-	public String toString() {
-		return "ProfileMetaData [name=" + name
-				+ ", subTitle=" + subTitle + ", version=" + version
-				+ ", orgName=" + orgName + ", status=" + status + ", topics="
-				+ topics + ", type=" + type + ", hl7Version=" + hl7Version
-				+ ", schemaVersion=" + schemaVersion + ", date=" + date
-				+ ", ext=" + ext + ", encodings=" + encodings + "]";
 	}
 
 	public String getSpecificationName() {
