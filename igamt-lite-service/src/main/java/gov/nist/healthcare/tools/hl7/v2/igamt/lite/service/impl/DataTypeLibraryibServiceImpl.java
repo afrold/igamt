@@ -42,9 +42,9 @@ public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
 	
 	@Override
 	public DatatypeLibrary findByScope(DatatypeLibrary.SCOPE scope, DatatypeLibrary dtLibSource) {
-		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByScope(scope);
-		log.info("datatypeLibrary=" + datatypeLibrary.size());
-		return datatypeLibrary;
+		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryRepository.findByScope(scope);
+		log.info("datatypeLibraries=" + datatypeLibraries.size());
+		return null;
 	}
 	
 	@Override

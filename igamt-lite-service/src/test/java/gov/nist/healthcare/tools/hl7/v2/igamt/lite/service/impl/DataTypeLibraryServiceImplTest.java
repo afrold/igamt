@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,7 +25,7 @@ public class DataTypeLibraryServiceImplTest {
 	@Autowired
 	DataTypeLibraryService dtlService;
 	
-	@Test
+//	@Test
 	public void testFindAll() {
 		List<DatatypeLibrary> dtl = dtlService.findAll();
 		assertNotNull(dtl);
@@ -35,6 +34,7 @@ public class DataTypeLibraryServiceImplTest {
 
 	@Test
 	public void testFindByScope() {
+		DatatypeLibrary dtl9 = dtlService.findByScope(DatatypeLibrary.SCOPE.USER, null);
 		List<DatatypeLibrary> dtl0 = dtlService.findAll();
 		assertEquals(91, dtl0.get(0).getChildren().size());
 
