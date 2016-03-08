@@ -291,6 +291,9 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             placeholderText: '',
             toolbarButtons:['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink','insertImage', 'insertFile'],
             imageUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
+            imageAllowedTypes: ['jpeg', 'jpg', 'png','gif'],
+            fileUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
+            fileAllowedTypes:['application/pdf', 'application/msword','application/x-pdf','text/plain','application/xml'],
             charCounterCount: false,
             quickInsertTags: 8,
             events: {
