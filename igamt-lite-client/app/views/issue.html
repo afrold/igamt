@@ -1,4 +1,6 @@
-<style id="antiClickjack">body{display:none !important;}</style>
+<style id="antiClickjack">body {
+    display: none !important;
+}</style>
 <script type="text/javascript">
     if (self === top) {
         var antiClickjack = document.getElementById("antiClickjack");
@@ -7,49 +9,21 @@
         top.location = self.location;
     }
 </script>
-<div class="container-fluid">
-    <div class="row-fluid">
-        <div class="span10">
-            <!--Body content-->
-            <h3><div msg key="issue.message"></div></h3>
-            <form name="reportIssueForm" class="form-horizontal" novalidate>
-                <div class="control-group">
-                    <label class="control-label" for="inputTitle"><div msg key='issue.title'></div></label>
-                    <div class="controls">
-                        <input type="text" class="input-xlarge immediate-help focus" name="inputTitle" id="inputTitle" ng-minlength="2" ng-model='issue.title' required>
-                        <div class="input-help input-help">
-                            <h4><div msg key='issue.inputTitleError'></div></h4>
-                        </div>
-                        <span class="valid" ng-show="reportIssueForm.inputTitle.$valid"><img alt="check OK" src="images/check.png"/></span><br>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputEmail"><div msg key='issue.email'></div></label>
-                    <div class="controls">
-                        <input type="email" class="input-xlarge immediate-help" name="inputEmail" id="inputEmail" ng-model='issue.email'>
-                        <div class="input-help">
-                            <h4><div msg key='registration.email.error'></div></h4>
-                        </div>
-                        <span class="valid" ng-show="addAccountForm.inputEmail.$valid"><img alt="check OK" src="images/check.png"/></span><br>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="inputDescription"><div msg key='issue.description'></div></label>
-                    <div class="controls">
-                        <textarea class="input-xlarge immediate-help" rows="8" name="inputDescription" id="inputDescription" ng-minlength="20" ng-model='issue.description' required></textarea>
-                        <div class="input-help input-help">
-                            <h4><div msg key='issue.inputDescriptionError'></div></h4>
-                        </div>
-                        <span class="valid" ng-show="reportIssueForm.inputDescription.$valid"><img alt="check OK" src="images/check.png"/></span><br>
-                    </div>
-                </div>
 
-                <div class="control-group">
-                    <div class="controls">
-                        <button class="btn" ng-click='submitIssue()' ng-disabled='!reportIssueForm.$valid'><div msg key="issue.submitButton"></div></button>
-                    </div>
-                </div>
-            </form>
+<div class="container2">
+    <div class="row">
+        <div class="col-md-12">
+        <!--<div class="panel panel-info">-->
+            <!--<div class="panel-heading"></div>-->
+            <!--<div class="panel-body">-->
+                <p>Please submit your issue at <a href="https://github.com/haffonist/igamt/issues" target="_blank">IGAMT GitHub</a>.
+                A GitHub account is required. You can register to GitHub by clicking <a href="https://github.com/join?source=header-home" target="_blank">here</a>
+                </p>
+                <p> We recommend adding any new issue/feature to the <i>"User Issues"</i> pipeline for us to easily locate your issue. Please use the labels <i> urgent, medium or low </i> to set the priority of the issue/feature. NIST reserves the right to change the priority of an issue/feature based on the current or next backlogs and other factors</p>
+                </p>
+            <!--</div>-->
         </div>
+
+        <!--</div>-->
     </div>
 </div>
