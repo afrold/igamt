@@ -59,16 +59,6 @@ public class IGExportTest {
 
 	@Before
 	public void setUp() throws Exception {
-		try {
-			Properties p = new Properties();
-			InputStream log4jFile = IGExportTest.class
-					.getResourceAsStream("/igl-test-log4j.properties");
-			p.load(log4jFile);
-			PropertyConfigurator.configure(p);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@After
@@ -89,7 +79,7 @@ public class IGExportTest {
 		try {
 			igs = igService.findAll();
 			ig = igs.get(0);
-			ig = igService.findOne("56b4b811d4c6f591953e7b7a");
+//			ig = igService.findOne("56b4b811d4c6f591953e7b7a");
 
 			content = igExport.exportAsDocx(ig);
 			assertNotNull(content);
