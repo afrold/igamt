@@ -692,40 +692,42 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.processElement = function (element, parent) {
             try {
-                if (element.type === "message") {
-                    element.children = $filter('orderBy')(element.children, 'position');
-                    angular.forEach(element.children, function (segmentRefOrGroup) {
-                        $rootScope.processElement(segmentRefOrGroup, element);
-                    });
-                } else if (element.type === "group" && element.children) {
-                    if (parent) {
+                if(element != undefined) {
+                    if (element.type === "message") {
+                        element.children = $filter('orderBy')(element.children, 'position');
+                        angular.forEach(element.children, function (segmentRefOrGroup) {
+                            $rootScope.processElement(segmentRefOrGroup, element);
+                        });
+                    } else if (element.type === "group" && element.children) {
+                        if (parent) {
+                            $rootScope.parentsMap[element.id] = parent;
+                        }
+                        element.children = $filter('orderBy')(element.children, 'position');
+                        angular.forEach(element.children, function (segmentRefOrGroup) {
+                            $rootScope.processElement(segmentRefOrGroup, element);
+                        });
+                    } else if (element.type === "segmentRef") {
+                        if (parent) {
+                            $rootScope.parentsMap[element.id] = parent;
+                        }
+                        $rootScope.processElement($rootScope.segmentsMap[element.ref], element);
+                    } else if (element.type === "segment") {
+                        element.fields = $filter('orderBy')(element.fields, 'position');
+                        angular.forEach(element.fields, function (field) {
+                            $rootScope.processElement(field, element);
+                        });
+                    } else if (element.type === "field") {
                         $rootScope.parentsMap[element.id] = parent;
-                    }
-                    element.children = $filter('orderBy')(element.children, 'position');
-                    angular.forEach(element.children, function (segmentRefOrGroup) {
-                        $rootScope.processElement(segmentRefOrGroup, element);
-                    });
-                } else if (element.type === "segmentRef") {
-                    if (parent) {
+                        $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+                    } else if (element.type === "component") {
                         $rootScope.parentsMap[element.id] = parent;
+                        $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+                    } else if (element.type === "datatype") {
+                        element.components = $filter('orderBy')(element.components, 'position');
+                        angular.forEach(element.components, function (component) {
+                            $rootScope.processElement(component, element);
+                        });
                     }
-                    $rootScope.processElement($rootScope.segmentsMap[element.ref], element);
-                } else if (element.type === "segment") {
-                    element.fields = $filter('orderBy')(element.fields, 'position');
-                    angular.forEach(element.fields, function (field) {
-                        $rootScope.processElement(field, element);
-                    });
-                } else if (element.type === "field") {
-                    $rootScope.parentsMap[element.id] = parent;
-                    $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
-                } else if (element.type === "component") {
-                    $rootScope.parentsMap[element.id] = parent;
-                    $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
-                } else if (element.type === "datatype") {
-                    element.components = $filter('orderBy')(element.components, 'position');
-                    angular.forEach(element.components, function (component) {
-                        $rootScope.processElement(component, element);
-                    });
                 }
             } catch (e) {
                 throw e;
