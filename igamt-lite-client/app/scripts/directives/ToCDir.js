@@ -66,9 +66,9 @@ angular
 					var linker = function(scope, element, attrs) {
 //						console.log("<=label=" + scope.branch.label);
 						if (angular.isArray(scope.branch.children)) {
-							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
-							 " label=" + scope.branch.label + " children=" +
-							 scope.branch.children.length);
+//							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
+//							 " label=" + scope.branch.label + " children=" +
+//							 scope.branch.children.length);
 							if ( _.indexOf(["profile", "segments", "datatypes", "tables"], scope.branch.type) > -1) {
 								element.append(branchNoCtxTemplate);
 							} else if (scope.branch.type === "messages") {
@@ -132,10 +132,10 @@ angular
 					var linker = function(scope, element, attrs) {
 						if (_.indexOf(["documentMetadata", "profileMetadata"] ,scope.leaf.type) > -1) {
 							element.html(leafMetadata).show();
-							console.log("leafMeta=" + scope.leaf.label + " type=" + scope.leaf.type + " parent=" + scope.leaf.parent);
+//							console.log("leafMeta=" + scope.leaf.label + " type=" + scope.leaf.type + " parent=" + scope.leaf.parent);
 						} else if (scope.leaf.type === "section") {
 							element.html(leafSection).show();
-							console.log("leafSection=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent);
+//							console.log("leafSection=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent);
 						} else if (scope.leaf.type === "message") {
 							element.html(leafMessage).show();
 //							console.log("leafMessage=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent + " leaf.reference.name=" + scope.leaf.reference.name);
