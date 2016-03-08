@@ -22,7 +22,7 @@ public interface DataTypeLibraryService {
 
 	List<DatatypeLibrary> findAll();
 
-	DatatypeLibrary findByScope(SCOPE scope, DatatypeLibrary dtl);
+	DatatypeLibrary findByScope(SCOPE scope, DatatypeLibrary dtLibSource);
 
 	List<DatatypeLibrary> findByAccountId(Long accountId);
 
