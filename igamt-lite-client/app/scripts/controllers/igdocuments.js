@@ -243,6 +243,14 @@ angular.module('igl')
                     $scope.loadIGDocuments();
                 }
             });
+
+            $rootScope.$on('event:saveAndExecLogout', function (event) {
+                $scope.save().then(function(result){
+                    $rootScope.$emit('event:execLogout');
+                },function(error){
+                    $rootScope.$emit('event:execLogout');
+                });
+            });
         };
 
         $scope.selectIGDocumentType = function (selectedType) {
@@ -559,7 +567,7 @@ angular.module('igl')
             form.style.display = 'none';
             document.body.appendChild(form);
             form.submit();
-        }
+        };
         
         $scope.exportAs = function (id, format) {
             var form = document.createElement("form");
@@ -605,6 +613,7 @@ angular.module('igl')
         };
 
         $scope.save = function () {
+            var delay = $q.defer();
             $scope.igDocumentMsg = {};
             waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
             var changes = angular.toJson($rootScope.changes);
@@ -630,12 +639,15 @@ angular.module('igl')
                 $scope.igDocumentMsg.show = true;
                 $rootScope.clearChanges();
                 waitingDialog.hide();
+                delay.resolve(true);
             }, function (error) {
                 $scope.igDocumentMsg.text = error.data.text;
                 $scope.igDocumentMsg.type = error.data.type;
                 $scope.igDocumentMsg.show = true;
                 waitingDialog.hide();
+                delay.reject(false);
             });
+            return delay.promise;
         };
 
         $scope.exportChanges = function () {
