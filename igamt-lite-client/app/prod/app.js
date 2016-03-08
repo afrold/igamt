@@ -303,12 +303,22 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             imageUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
             imageAllowedTypes: ['jpeg', 'jpg', 'png', 'gif'],
             fileUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
-            fileAllowedTypes: ['application/pdf', 'application/msword', 'application/x-pdf', 'text/plain', 'application/xml'],
+            fileAllowedTypes: ['application/pdf', 'application/msword', 'application/x-pdf', 'text/plain', 'application/xml','text/xml'],
             charCounterCount: false,
             quickInsertTags: 8,
             events: {
                 'froalaEditor.initialized': function () {
 
+                },
+                'froalaEditor.file.error': function(e, editor, error){
+                    $rootScope.msg().text= error.text;
+                    $rootScope.msg().type= error.type;
+                    $rootScope.msg().show= true;
+                 },
+                'froalaEditor.image.error ':function(e, editor, error){
+                    $rootScope.msg().text= error.text;
+                    $rootScope.msg().type= error.type;
+                    $rootScope.msg().show= true;
                 }
             }
         };
