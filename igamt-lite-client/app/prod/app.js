@@ -27,7 +27,8 @@ var app = angular
         'table-settings',
         'angularjs-dropdown-multiselect',
         'dndLists',
-        'froala'
+        'froala',
+        'ngNotificationsBar'
     ]);
 
 var
