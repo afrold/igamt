@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeLibrarySaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeLibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
@@ -40,7 +40,7 @@ public class DatatypeLibraryController extends CommonController {
 	Logger log = LoggerFactory.getLogger(DatatypeLibraryController.class);
 
 	 @Autowired
-	 private DatatypeLibraryService datatypeLibraryService;
+	 private DataTypeLibraryService datatypeLibraryService;
 
 	 public  List<DatatypeLibrary> datatypeLibrary() {
 			log.info("Fetching the HL7STANDARD datatype library...");

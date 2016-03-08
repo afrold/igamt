@@ -18,11 +18,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
 
 @Service
-public interface DatatypeLibraryService {
+public interface DataTypeLibraryService {
 
 	List<DatatypeLibrary> findAll();
 
-	List<DatatypeLibrary> findByScope(SCOPE scope);
+	DatatypeLibrary findByScope(SCOPE scope, DatatypeLibrary dtl);
 
 	List<DatatypeLibrary> findByAccountId(Long accountId);
 

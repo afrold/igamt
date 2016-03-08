@@ -15,16 +15,16 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DTLibService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {PersistenceContext.class})
-public class DTLibServiceImplTest {
+public class DataTypeLibraryServiceImplTest {
 
 	@Autowired
-	DTLibService dtlService;
+	DataTypeLibraryService dtlService;
 	
 	@Test
 	public void testFindAll() {
