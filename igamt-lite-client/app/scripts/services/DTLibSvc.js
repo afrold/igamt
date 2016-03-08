@@ -1,7 +1,7 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').factory('DTLibSvc', function($http, ngTreetableParams) {
+angular.module('igl').factory('DTLibSvc', function($http, ngTreetableParams, userInfoService) {
 	
 	var svc = this;
 	
@@ -27,6 +27,7 @@ angular.module('igl').factory('DTLibSvc', function($http, ngTreetableParams) {
 		console.log("dtLib scope=" + JSON.stringify(scope));
 		var dtlrw = {
 			"scope" : scope,
+			"accountId" : userInfoService.getAccountID(),
 			"dtLib" : svc.dtLib
 		}
 		return $http.post(

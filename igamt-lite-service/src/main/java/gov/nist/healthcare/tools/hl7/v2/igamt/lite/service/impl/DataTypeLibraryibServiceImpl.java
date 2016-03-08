@@ -41,10 +41,22 @@ public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
 	}
 	
 	@Override
-	public DatatypeLibrary findByScope(DatatypeLibrary.SCOPE scope, DatatypeLibrary dtLibSource) {
+	public DatatypeLibrary findByScope(DatatypeLibrary.SCOPE scope, Long accountId, DatatypeLibrary dtLibSource) {
 		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryRepository.findByScope(scope);
 		log.info("datatypeLibraries=" + datatypeLibraries.size());
-		return null;
+		DatatypeLibrary dtLibTarget = null;
+		if (datatypeLibraries.size() > 0) {
+			dtLibTarget = datatypeLibraries.get(0);
+			
+		} else {
+			dtLibTarget = new DatatypeLibrary();
+			dtLibTarget.setScope(scope);
+			dtLibTarget.setAccountId(accountId);
+			dtLibTarget.setDate(date);
+			dtLibTarget.setMetaData(dtLibSource.getMetaData());
+			dtLibTarget.setChildren(dtLibSource.getChildren());
+		}
+		return dtLibTarget;
 	}
 	
 	@Override
