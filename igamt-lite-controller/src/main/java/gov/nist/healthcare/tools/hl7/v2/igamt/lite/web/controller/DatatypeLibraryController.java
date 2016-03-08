@@ -51,7 +51,7 @@ public class DatatypeLibraryController extends CommonController {
 	}
 
 	@RequestMapping(value = "/getDTLibByScope", method = RequestMethod.POST)
-	public DatatypeLibrary getDatatTypeLibraryByScope(@RequestBody DatatypeLibraryRequestWrapper dtlrw) {
+	public DatatypeLibrary getDataTypeLibraryByScope(@RequestBody DatatypeLibraryRequestWrapper dtlrw) {
 		log.info("Fetching the " + dtlrw.getScope() + " datatype library...");
 		DatatypeLibrary.SCOPE scope = DatatypeLibrary.SCOPE.valueOf(dtlrw.getScope());
 		DatatypeLibrary result = datatypeLibraryService.findByScope(scope, dtlrw.getAccountId(), dtlrw.getDtLib());

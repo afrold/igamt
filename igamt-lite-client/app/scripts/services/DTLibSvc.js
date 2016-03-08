@@ -31,7 +31,7 @@ angular.module('igl').factory('DTLibSvc', function($http, ngTreetableParams, use
 			"dtLib" : svc.dtLib
 		}
 		return $http.post(
-				'api/master-dt-lib', dtlrw)
+				'api/datatype-library', dtlrw)
 				.then(function(response) {
 					svc.dtLib = response.data;
 				return angular.fromJson(dtLib.children)});
@@ -39,7 +39,7 @@ angular.module('igl').factory('DTLibSvc', function($http, ngTreetableParams, use
 
 	svc.save = function(dtLib) {
 		return $http.post(
-				'api/master-dt-lib', dtLib).then(function(response) {
+				'api/datatype-library', dtLib).then(function(response) {
 				return angular.fromJson(response.data.children)});
 	};
 	

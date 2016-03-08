@@ -34,10 +34,10 @@ public class DataTypeLibraryServiceImplTest {
 
 	@Test
 	public void testFindByScope() {
-		DatatypeLibrary dtl9 = dtlService.findByScope(DatatypeLibrary.SCOPE.USER, null);
+		DatatypeLibrary dtl9 = dtlService.findByScope(DatatypeLibrary.SCOPE.USER, 45L, null);
 		List<DatatypeLibrary> dtl0 = dtlService.findAll();
 		assertEquals(91, dtl0.get(0).getChildren().size());
-		DatatypeLibrary dtl1 = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, null);
+		DatatypeLibrary dtl1 = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, 45L, null);
 		assertNotNull(dtl1);
 		assertEquals(dtl0.get(0).getChildren().size(), dtl1.getChildren().size());
 		DatatypeLibrary dtl2 = dtl0.get(0);
@@ -46,14 +46,14 @@ public class DataTypeLibraryServiceImplTest {
 		Set<Datatype> dts = new HashSet<Datatype>();
 		dts.add(dt);
 		dtl2.setChildren(dts);
-		DatatypeLibrary dtl3 = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, dtl2);
+		DatatypeLibrary dtl3 = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, 45L, dtl2);
 		assertEquals(dtl0.get(0).getChildren().size(), dtl3.getChildren().size() - dtl2.getChildren().size());
 	}
 	
 //	@Test
 	public void saveTest() {
 		DatatypeLibrary dtl;
-		dtl = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, null);
+		dtl = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, 45L, null);
 		assertNotNull(dtl);
 		dtl.setId(null);
 		dtl.setScope(DatatypeLibrary.SCOPE.USER);

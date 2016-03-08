@@ -10,6 +10,10 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
@@ -47,12 +52,24 @@ public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
 		DatatypeLibrary dtLibTarget = null;
 		if (datatypeLibraries.size() > 0) {
 			dtLibTarget = datatypeLibraries.get(0);
-			
+			if (dtLibSource != null) {
+				List<String> dtIds = new ArrayList<String>();
+				for (Datatype dt : dtLibSource.getChildren()) {
+					dtIds.add(dt.getId());
+				}
+				for (Datatype dt : dtLibTarget.getChildren()) {
+					if (!dtIds.contains(dt.getId())) {
+						dtLibTarget.addDatatype(dt);
+					}
+				}
+			}
 		} else {
 			dtLibTarget = new DatatypeLibrary();
+			DateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
+			Date date = new Date();
+			dtLibTarget.setDate(dateFormat.format(date));
 			dtLibTarget.setScope(scope);
 			dtLibTarget.setAccountId(accountId);
-			dtLibTarget.setDate(date);
 			dtLibTarget.setMetaData(dtLibSource.getMetaData());
 			dtLibTarget.setChildren(dtLibSource.getChildren());
 		}
