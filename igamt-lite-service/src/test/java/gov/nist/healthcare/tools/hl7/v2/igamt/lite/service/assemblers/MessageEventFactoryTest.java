@@ -48,7 +48,6 @@ public class MessageEventFactoryTest {
 
 	// @Test
 	public void testCreateMessageEvents() {
-<<<<<<< HEAD
 		List<IGDocument> igds = igDocumentRepository
 				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
 		IGDocument igd = igds.get(0);
@@ -59,18 +58,6 @@ public class MessageEventFactoryTest {
 		List<MessageEvents> mes = sut.createMessageEvents(msgs);
 		assertNotNull(mes);
 		assertEquals(msgs.getChildren().size(), mes.size());
-=======
-//		List<IGDocument> igds = igDocumentRepository
-//				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
-//		IGDocument igd = igds.get(0);
-//		List<Message> msgs = new ArrayList<Message>();
-//		Collections.addAll(msgs, igd.getProfile().getMessages().getChildren()
-//				.toArray(new Message[igd.getProfile().getMessages().getChildren().size()]));
-//		MessageEventFactory sut = new MessageEventFactory(igd);
-//		List<MessageEvents> mes = sut.createMessageEvents(msgs);
-//		assertNotNull(mes);
-//		assertEquals(msgs.size(), mes.size());
->>>>>>> datatype-management
 	}
 
 //	@Test
