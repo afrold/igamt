@@ -83,7 +83,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import nu.xom.Attribute;
-import nu.xom.Builder;
 import nu.xom.ParsingException;
 import nu.xom.Serializer;
 import nu.xom.ValidityException;
@@ -956,19 +955,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 	private nu.xom.Element serializeRichtext(String attribute, String richtext){
 		nu.xom.Element elmText1 = new nu.xom.Element("Text");
-		try {
-			elmText1.addAttribute(new Attribute("Type", attribute));
-			Builder parser = new Builder();
-
-			nu.xom.Document document = parser.build(new StringReader(
-					"<p>" + richtext + "</p>"));
-			nu.xom.Element child = document
-					.getRootElement();
-
-			elmText1.appendChild(child.copy());
-		} catch (ParsingException | IOException e) {
-			e.printStackTrace();
-		}
+		elmText1.addAttribute(new Attribute("Type", attribute));
+		elmText1.appendChild(richtext);
 		return elmText1;
 	}
 
