@@ -8,7 +8,7 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.assemblers;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 
@@ -41,10 +42,10 @@ public class MessageEventFactory {
 		tables = igdocument.getProfile().getTables();
 	}
 	
-	public List<MessageEvents> createMessageEvents(List<Message> msgs) {
+	public List<MessageEvents> createMessageEvents(Messages msgs) {
 		
 		List<MessageEvents> list = new ArrayList<MessageEvents>();
-		for(Message msg : msgs) {
+		for(Message msg : msgs.getChildren()) {
 			String id = msg.getId();
 			String structID = msg.getStructID();
 			Set<String> events = findEvents(structID);
