@@ -26,10 +26,9 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/sass-bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/textAngular/src/textAngular.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/material.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/ripples.css" />
-    <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/froala_editor.min.css" />
-    <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/froala_style.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -37,18 +36,11 @@
     <!-- endbuild -->
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <!--<link rel="stylesheet" href="styles/font-awesome.min.css">-->
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.css"/>
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css"/>
     <link rel="stylesheet" href="lib/material-custom/material-custom.css"/>
-    <link rel="stylesheet" href="lib/igamt.css"/>
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/colors.css">
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/file.css">
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/fullscreen.css">
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/image.css">
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/line_breaker.css">
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/table.css">
-
-
+    <link rel="stylesheet" href="lib/custom.css"/>
     <script type="text/javascript">
         if (self === top) {
             var antiClickjack = document.getElementById("antiClickjack");
@@ -100,6 +92,39 @@
 
     <!-- build:js(.) scripts/plugins.js -->
     <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <script src="bower_components/ng-idle/angular-idle.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/restangular/dist/restangular.js"></script>
+    <script src="bower_components/sass-bootstrap/dist/js/bootstrap.js"></script>
+    <script src="bower_components/rangy/rangy-core.js"></script>
+    <script src="bower_components/rangy/rangy-classapplier.js"></script>
+    <script src="bower_components/rangy/rangy-highlighter.js"></script>
+    <script src="bower_components/rangy/rangy-selectionsaverestore.js"></script>
+    <script src="bower_components/rangy/rangy-serializer.js"></script>
+    <script src="bower_components/rangy/rangy-textrange.js"></script>
+    <script src="bower_components/textAngular/src/textAngular.js"></script>
+    <script src="bower_components/textAngular/src/textAngular-sanitize.js"></script>
+    <script src="bower_components/textAngular/src/textAngularSetup.js"></script>
+    <script src="bower_components/ng-context-menu/dist/ng-context-menu.js"></script>
+    <script src="bower_components/bootstrap-material-design/dist/js/material.js"></script>
+    <script src="bower_components/bootstrap-material-design/dist/js/ripples.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+    <script src="bower_components/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect.js"></script>
+    <script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js scripts/modules.js -->
@@ -110,29 +135,6 @@
     <script src="lib/angular-treetable/angular-treetable.js"></script>
     <script src="lib/angular-treetable/js/angular-treetable.min.js"></script>
     <script src="lib/angular-treetable/js/jquery.treetable.js"></script>
-    <script src="lib/froala-plugins/js/plugins/align.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/char_counter.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/colors.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/draggable.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/emoticons.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/entities.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/file.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/font_family.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/font_size.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/fullscreen.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/image.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/image_manager.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/inline_style.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/line_breaker.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/link.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/lists.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/paragraph_format.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/paragraph_style.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/quick_insert.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/quote.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/save.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/table.min.js"></script>
-    <script src="lib/froala-plugins/js/plugins/url.min.js"></script>
     <script src="lib/jquery-file-download.js"></script>
     <script src="lib/jquery.i18n.properties-1.0.9.js"></script>
     <script src="lib/lodash/lodash.js"></script>
@@ -142,14 +144,12 @@
     <script src="prod/app.js"></script>
     <script src="prod/userInfoService.js"></script>
     <script src="scripts/services/AccountLoader.js"></script>
-    <script src="scripts/services/AppInfo.js"></script>
     <script src="scripts/services/CloneDeleteSvc.js"></script>
     <script src="scripts/services/ContextMenuSvc.js"></script>
     <script src="scripts/services/DTLibSvc.js"></script>
     <script src="scripts/services/MessageEventsSvc.js"></script>
     <script src="scripts/services/MultiAccountLoader.js"></script>
     <script src="scripts/services/ProfileAccessSvc.js"></script>
-    <script src="scripts/services/StorageService.js"></script>
     <script src="scripts/services/ToCSvc.js"></script>
     <script src="scripts/services/about.js"></script>
     <script src="scripts/services/base64.js"></script>
@@ -158,7 +158,6 @@
     <script src="scripts/services/main.js"></script>
     <script src="scripts/services/user.js"></script>
     <script src="scripts/filters/bytes.js"></script>
-    <script src="scripts/filters/flavors.js"></script>
     <script src="scripts/filters/yesno.js"></script>
     <script src="scripts/directives/PreventRighClickDir.js"></script>
     <script src="scripts/directives/ToCDir.js"></script>
@@ -182,7 +181,6 @@
     <script src="scripts/controllers/ContextMenuCtl.js"></script>
     <script src="scripts/controllers/DatatypeLibraryCtl.js"></script>
     <script src="scripts/controllers/EditSectionsCtl.js"></script>
-    <script src="scripts/controllers/ErrorsCtrl.js"></script>
     <script src="scripts/controllers/ToCCtl.js"></script>
     <script src="scripts/controllers/about.js"></script>
     <script src="scripts/controllers/account.js"></script>

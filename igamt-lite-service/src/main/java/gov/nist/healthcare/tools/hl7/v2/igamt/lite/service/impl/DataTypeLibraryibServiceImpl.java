@@ -19,16 +19,16 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
 
 /**
  * @author gcr1
  *
  */
 @Service
-public class DataypeLibraryServiceImpl implements DatatypeLibraryService {
+public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
 	
-	Logger log = LoggerFactory.getLogger(DataypeLibraryServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(DataTypeLibraryibServiceImpl.class);
 
 	@Autowired
 	private DatatypeLibraryRepository datatypeLibraryRepository;
@@ -41,7 +41,7 @@ public class DataypeLibraryServiceImpl implements DatatypeLibraryService {
 	}
 	
 	@Override
-	public List<DatatypeLibrary> findByScope(DatatypeLibrary.SCOPE scope) {
+	public DatatypeLibrary findByScope(DatatypeLibrary.SCOPE scope, DatatypeLibrary dtLibSource) {
 		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByScope(scope);
 		log.info("datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;

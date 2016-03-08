@@ -22,7 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DTLibService;
 
 /**
  * @author gcr1
@@ -33,7 +33,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryServic
 public class DatatypeLibraryServiceTest {
 	
 	@Autowired
-	DatatypeLibraryService dtlService;
+	DTLibService dtlService;
 	
 	@Test
 	public void findAllTest() {

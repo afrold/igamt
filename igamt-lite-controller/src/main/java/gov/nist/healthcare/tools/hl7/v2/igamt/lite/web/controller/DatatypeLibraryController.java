@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeLibrarySaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeLibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
@@ -39,30 +39,27 @@ public class DatatypeLibraryController extends CommonController {
 
 	Logger log = LoggerFactory.getLogger(DatatypeLibraryController.class);
 
-	 @Autowired
-	 private DataTypeLibraryService datatypeLibraryService;
+	@Autowired
+	private DataTypeLibraryService datatypeLibraryService;
 
-	 public  List<DatatypeLibrary> datatypeLibrary() {
-			log.info("Fetching the HL7STANDARD datatype library...");
-			List<DatatypeLibrary> result = datatypeLibraryService.findAll();
-			return result;
-		}
+	public List<DatatypeLibrary> datatypeLibrary() {
+		log.info("Fetching the HL7STANDARD datatype library...");
+		List<DatatypeLibrary> result = datatypeLibraryService.findAll();
+		return result;
+	}
 
-	 @RequestMapping(value = "/{accountId}", method = RequestMethod.POST)
-	 public  List<DatatypeLibrary> datatypeLibraryByAccountId(@PathVariable("accountId") Long accountId)
-			throws DatatypeLibraryNotFoundException, UserAccountNotFoundException,
-			DatatypeLibraryException {
-			log.info("Fetching the USER datatype library...");
-			List<DatatypeLibrary> result = datatypeLibraryService.findByAccountId(accountId);
-			return result;
-	 }
+	@RequestMapping(value = "/{accountId}", method = RequestMethod.POST)
+	public List<DatatypeLibrary> datatypeLibraryByAccountId(@PathVariable("accountId") Long accountId)
+			throws DatatypeLibraryNotFoundException, UserAccountNotFoundException, DatatypeLibraryException {
+		log.info("Fetching the USER datatype library...");
+		List<DatatypeLibrary> result = datatypeLibraryService.findByAccountId(accountId);
+		return result;
+	}
 
-	 @RequestMapping(value = "/save/{accountId}", method = RequestMethod.POST)
-	 public DatatypeLibrarySaveResponse save(@RequestBody DatatypeLibrary library)
-				throws DatatypeLibrarySaveException {
-			log.info("Saving the USER datatype library...");
-			DatatypeLibrary saved = datatypeLibraryService.apply(library);
-			return new DatatypeLibrarySaveResponse(saved.getDate(),
-					saved.getScope().name());
-		}
+	@RequestMapping(value = "/save/{accountId}", method = RequestMethod.POST)
+	public DatatypeLibrarySaveResponse save(@RequestBody DatatypeLibrary library) throws DatatypeLibrarySaveException {
+		log.info("Saving the USER datatype library...");
+		DatatypeLibrary saved = datatypeLibraryService.apply(library);
+		return new DatatypeLibrarySaveResponse(saved.getDate(), saved.getScope().name());
+	}
 }
