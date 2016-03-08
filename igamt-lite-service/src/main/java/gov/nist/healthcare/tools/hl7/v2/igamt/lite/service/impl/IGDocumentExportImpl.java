@@ -167,6 +167,7 @@ import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 import org.docx4j.wml.U;
 import org.docx4j.wml.UnderlineEnumeration;
+import org.jsoup.Jsoup;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTHeight;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTString;
@@ -249,7 +250,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			return new NullInputStream(1L);
 		}
 	}
-	
+
 	public InputStream exportAsZipForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
 		if (d != null) {
 			return new ProfileSerializationImpl().serializeProfileToZip(d.getProfile(), mids);
@@ -948,14 +949,14 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	public InputStream exportAsPdfFromXsl(IGDocument d, String inlineConstraints) {
 		// Note: inlineConstraint can be true or false
-		
+
 		Profile p = d.getProfile();
 		p.getMessages().setPositionsOrder();
 		p.getSegments().setPositionsOrder();
 		p.getDatatypes().setPositionsOrder();
 		p.getTables().setPositionsOrder();
 
-		
+
 		try {
 			// Generate xml file containing profile
 			//			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
@@ -1734,12 +1735,22 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		tcell.setBorderColorBottom(WebColors.getRGBColor(tableHSeparator));
 	}
 
-	@SuppressWarnings("deprecation")
 	private Paragraph richTextToParagraph(String htmlString){
 		List<Element> p = new ArrayList<Element>();
-		StringReader strReader = new StringReader(htmlString);
 		try {
-			p = HTMLWorker.parseToList(strReader, null);
+			logger.info(htmlString);
+
+			Tidy tidy = new Tidy();
+			tidy.setWraplen(Integer.MAX_VALUE);
+			tidy.setXHTML(true);
+			tidy.setShowWarnings(false); //to hide errors
+			tidy.setQuiet(true); //to hide warning
+			InputStream inputStream = new ByteArrayInputStream(htmlString.getBytes());
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			tidy.parseDOM(inputStream, outputStream);
+
+			p = XMLWorkerHelper.parseToElementList(outputStream.toString(), null);
+
 			Paragraph paragraph=new Paragraph();
 			for (int k = 0; k < p.size(); ++k){
 				paragraph.add((Element) p.get(k));
@@ -1804,7 +1815,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			// .. content type
 			wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");
-			
+
 			addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
 
 			loadTemplateForDocx4j(wordMLPackage); //Repeats the lines above but necessary; don't delete
@@ -1812,7 +1823,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			File tmpFile;
 			tmpFile = File.createTempFile("IgDocument", ".docx");
 			wordMLPackage.save(tmpFile);
-			
+
 
 			return FileUtils.openInputStream(tmpFile);
 
@@ -1874,7 +1885,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			// .. content type
 			wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");
-			
+
 			addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
 
 			loadTemplateForDocx4j(wordMLPackage); //Repeats the lines above but necessary; don't delete
@@ -1882,7 +1893,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			File tmpFile;
 			tmpFile = File.createTempFile("DTDocument", ".docx");
 			wordMLPackage.save(tmpFile);
-			
+
 
 			return FileUtils.openInputStream(tmpFile);
 
@@ -2037,7 +2048,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			e1.printStackTrace();
 		} 
 	}
-	
+
 	private void addConformanceInformationForDocx4j(IGDocument igdoc, WordprocessingMLPackage wordMLPackage, ObjectFactory factory){
 		Profile p = igdoc.getProfile();
 		List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
