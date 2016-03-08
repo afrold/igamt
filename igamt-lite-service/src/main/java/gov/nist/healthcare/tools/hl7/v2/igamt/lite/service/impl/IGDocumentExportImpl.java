@@ -1262,8 +1262,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 						+ " - " + d.getDescription()), d.getId());
 				com.itextpdf.text.Section section1 = sectionDts.addSection(new Paragraph( d.getLabel() != null ?  d.getLabel() + " - "
 						+ d.getDescription() : d.getName() + " - " + d.getDescription()));
-
-				section1.add(new Paragraph(d.getComment()));
+				
 
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
@@ -1273,6 +1272,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
 				section1.add(Chunk.NEWLINE);
 				section1.add(table);
+				section1.add(Chunk.NEWLINE);
+				section1.add(richTextToParagraph(d.getUsageNote()));
+				section1.add(Chunk.NEWLINE);
+				section1.add(new Paragraph(d.getComment()));				
 				section1.add(Chunk.NEWLINE);
 			}
 
