@@ -148,6 +148,10 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return this.serializeProfileDisplayToDoc(profile).toXML();
 	}
 	
+	private String serializeProfileGazelleToXML(Profile profile) {
+		return this.serializeProfileGazelleToDoc(profile).toXML();
+	}
+	
 	@Override
 	public String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary) {
 		return this.serializeDatatypeLibraryToDoc(datatypeLibrary).toXML();
@@ -186,6 +190,73 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		
 		for (Message m : profile.getMessages().getChildren()) {
 			e.appendChild(this.serializeDisplayMessage(m, profile));
+		}
+		
+		nu.xom.Document doc = new nu.xom.Document(e);
+		return doc;
+	}
+	
+	private nu.xom.Document serializeProfileGazelleToDoc(Profile profile) {
+		nu.xom.Element e = new nu.xom.Element("HL7v2xConformanceProfile");
+		e.addAttribute(new Attribute("HL7Version", ExportUtil.str(profile.getMetaData().getHl7Version())));
+		e.addAttribute(new Attribute("ProfileType", ExportUtil.str(profile.getMetaData().getType())));
+//		e.addAttribute(new Attribute("Identifier", ExportUtil.str(profile.getMetaData().getProfileID())));
+		
+		nu.xom.Element metadataElm = new nu.xom.Element("MetaData");
+		metadataElm.addAttribute(new Attribute("Name", ExportUtil.str(profile.getMetaData().getName())));
+		metadataElm.addAttribute(new Attribute("OrgName", ExportUtil.str(profile.getMetaData().getOrgName())));
+		metadataElm.addAttribute(new Attribute("Version", ExportUtil.str(profile.getMetaData().getVersion())));
+//		metadataElm.addAttribute(new Attribute("Status", ExportUtil.str(profile.getMetaData().getStatus())));
+//		metadataElm.addAttribute(new Attribute("Topics", ExportUtil.str(profile.getMetaData().getTopics())));
+		e.appendChild(metadataElm);
+		
+		
+		nu.xom.Element impNoteElm = new nu.xom.Element("ImpNote");
+		impNoteElm.appendChild(ExportUtil.str(profile.getMetaData().getName()));
+		e.appendChild(impNoteElm);
+		
+		nu.xom.Element useCaseElm = new nu.xom.Element("UseCase");
+		e.appendChild(useCaseElm);
+		
+		nu.xom.Element encodingsElm = new nu.xom.Element("Encodings");
+		nu.xom.Element encodingElm = new nu.xom.Element("Encoding");
+		encodingElm.appendChild("ER7");
+		encodingsElm.appendChild(encodingElm);
+		e.appendChild(encodingsElm);
+		
+		nu.xom.Element dynamicDefElm = new nu.xom.Element("DynamicDef");
+		dynamicDefElm.addAttribute(new Attribute("AccAck", "NE"));
+		dynamicDefElm.addAttribute(new Attribute("AppAck", "AL"));
+		dynamicDefElm.addAttribute(new Attribute("MsgAckMode", "Deferred"));
+		e.appendChild(dynamicDefElm);
+		
+		for (Message message : profile.getMessages().getChildren()) {
+			nu.xom.Element hL7v2xStaticDefElm = new nu.xom.Element("HL7v2xStaticDef");
+			hL7v2xStaticDefElm.addAttribute(new Attribute("MsgType", ExportUtil.str(message.getMessageType())));
+			hL7v2xStaticDefElm.addAttribute(new Attribute("EventType", ExportUtil.str(message.getEvent())));
+			hL7v2xStaticDefElm.addAttribute(new Attribute("MsgStructID", ExportUtil.str(message.getStructID())));
+			hL7v2xStaticDefElm.addAttribute(new Attribute("EventDesc", ExportUtil.str(message.getDescription())));
+//			hL7v2xStaticDefElm.addAttribute(new Attribute("Identifier", ExportUtil.str(message.getMessageID())));
+			
+			nu.xom.Element metadataMessageElm = new nu.xom.Element("MetaData");
+			metadataMessageElm.addAttribute(new Attribute("Name", ExportUtil.str(message.getName())));
+			metadataMessageElm.addAttribute(new Attribute("OrgName", ExportUtil.str(profile.getMetaData().getOrgName())));
+			hL7v2xStaticDefElm.appendChild(metadataMessageElm);
+			
+			Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
+			for (SegmentRefOrGroup segmentRefOrGroup : message.getChildren()) {
+				segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
+			}
+			for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
+				String path = i + "[1]";
+				SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
+				if (segmentRefOrGroup instanceof SegmentRef) {
+					hL7v2xStaticDefElm.appendChild(serializeGazelleSegment((SegmentRef) segmentRefOrGroup, profile, message, path));
+				} else if (segmentRefOrGroup instanceof Group) {
+					hL7v2xStaticDefElm.appendChild(serializeGazelleGroup((Group) segmentRefOrGroup, profile, message, path));
+				}
+			}
+			e.appendChild(hL7v2xStaticDefElm);
 		}
 		
 		nu.xom.Document doc = new nu.xom.Document(e);
@@ -485,6 +556,65 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return elmGroup;
 	}
 	
+	private nu.xom.Element serializeGazelleGroup(Group group, Profile profile, Message message, String path) { 
+		nu.xom.Element elmSegGroup = new nu.xom.Element("SegGroup");
+		if(group.getName().contains(".")){
+			elmSegGroup.addAttribute(new Attribute("Name", ExportUtil.str(group.getName().substring(group.getName().lastIndexOf(".") + 1))));
+		}else {
+			elmSegGroup.addAttribute(new Attribute("Name", ExportUtil.str(group.getName())));
+		}
+		
+		elmSegGroup.addAttribute(new Attribute("LongName", ExportUtil.str(group.getName())));
+		if(group.getUsage().value().equals("B")){
+			elmSegGroup.addAttribute(new Attribute("Usage", "X"));
+		}else{
+			elmSegGroup.addAttribute(new Attribute("Usage", ExportUtil.str(group.getUsage().value())));
+		}
+		elmSegGroup.addAttribute(new Attribute("Min", ExportUtil.str(group.getMin() + "")));
+		if(group.getMax().equals("0")){
+			elmSegGroup.addAttribute(new Attribute("Max", "" + 1));
+		}else {
+			elmSegGroup.addAttribute(new Attribute("Max", ExportUtil.str(group.getMax())));
+		}
+		List<ConformanceStatement> groupConformanceStatements = this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
+		
+		if(groupConformanceStatements.size() > 0){
+			nu.xom.Element elmImpNote = new nu.xom.Element("ImpNote");
+			String note = "";
+			for(ConformanceStatement c : groupConformanceStatements){
+				note = note + "\n" + "[" + c.getConstraintId() + "]" + c.getDescription();
+			}
+			elmImpNote.appendChild(note);
+			elmSegGroup.appendChild(elmImpNote);
+		}
+		
+		Predicate groupPredicate = this.findPredicate(null, null, message.getPredicates(), path);
+		if(groupPredicate != null){
+			nu.xom.Element elmPredicate = new nu.xom.Element("Predicate");
+			String note = "[C(" +  groupPredicate.getTrueUsage() + "/" + groupPredicate.getFalseUsage() + ")]" + groupPredicate.getDescription();
+			elmPredicate.appendChild(note);
+			elmSegGroup.appendChild(elmPredicate);
+		}
+		
+		Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
+		
+		for (SegmentRefOrGroup segmentRefOrGroup : group.getChildren()) {
+			segmentRefOrGroups.put(segmentRefOrGroup.getPosition(), segmentRefOrGroup);
+		}
+		
+		for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
+			String childPath = path + "." + i + "[1]";
+			SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
+			if (segmentRefOrGroup instanceof SegmentRef) {
+				elmSegGroup.appendChild(serializeGazelleSegment((SegmentRef) segmentRefOrGroup, profile, message, childPath));
+			} else if (segmentRefOrGroup instanceof Group) {
+				elmSegGroup.appendChild(serializeGazelleGroup((Group) segmentRefOrGroup, profile, message, childPath));
+			}
+		}
+		
+		return elmSegGroup;
+	}
+	
 	private nu.xom.Element serializeDisplayGroup(Group group, Profile profile, Message message, String path) { 
 		nu.xom.Element elmGroup = new nu.xom.Element("Group");
 		elmGroup.addAttribute(new Attribute("ID", ExportUtil.str(group.getName())));
@@ -602,6 +732,59 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return result;
 	}
 	
+	private nu.xom.Element serializeGazelleSegment(SegmentRef segmentRef, Profile profile, Message message, String path) {
+		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
+		
+		Segment segment = profile.getSegments().findOneSegmentById(segmentRef.getRef());
+		elmSegment.addAttribute(new Attribute("Name", ExportUtil.str(segment.getName())));
+		elmSegment.addAttribute(new Attribute("LongName", ExportUtil.str(segment.getDescription())));
+		if(segmentRef.getUsage().value().equals("B")){
+			elmSegment.addAttribute(new Attribute("Usage", "X"));
+		}else{
+			elmSegment.addAttribute(new Attribute("Usage", ExportUtil.str(segmentRef.getUsage().value())));
+		}
+		elmSegment.addAttribute(new Attribute("Min", ExportUtil.str(segmentRef.getMin() + "")));
+		
+		if(segmentRef.getMax().equals("0")){
+			elmSegment.addAttribute(new Attribute("Max", "" + 1));
+		}else {
+			elmSegment.addAttribute(new Attribute("Max", ExportUtil.str(segmentRef.getMax())));
+		}
+		
+		List<ConformanceStatement> segmentConformanceStatements = this.findConformanceStatements(null, null, message.getConformanceStatements(), path);
+		if(segmentConformanceStatements.size() > 0){
+			nu.xom.Element elmImpNote = new nu.xom.Element("ImpNote");
+			String note = "";
+			for(ConformanceStatement c : segmentConformanceStatements){
+				note = note + "\n" + "[" + c.getConstraintId() + "]" + c.getDescription();
+			}
+			elmImpNote.appendChild(note);
+			elmSegment.appendChild(elmImpNote);
+		}
+		
+		Predicate segmentPredicate = this.findPredicate(null, null, message.getPredicates(), path);
+		if(segmentPredicate != null){
+			nu.xom.Element elmPredicate = new nu.xom.Element("Predicate");
+			String note = "[C(" +  segmentPredicate.getTrueUsage() + "/" + segmentPredicate.getFalseUsage() + ")]" + segmentPredicate.getDescription();
+			elmPredicate.appendChild(note);
+			elmSegment.appendChild(elmPredicate);
+		}
+		
+		Map<Integer, Field> fields = new HashMap<Integer, Field>();
+		for (Field f : segment.getFields()) {
+			fields.put(f.getPosition(), f);
+		}
+		
+		for (int i = 1; i < fields.size() + 1; i++) {
+			String fieldPath = path + "." + i + "[1]";
+			Field f = fields.get(i);
+			this.serializeGazelleField(f, profile.getDatatypes().findOne(f.getDatatype()), elmSegment, profile, message, segment, fieldPath);
+			
+		}
+		return elmSegment;
+	}
+	
+	
 	private nu.xom.Element serializeDisplaySegment(SegmentRef segmentRef, Profile profile, Message message, String path) {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 		
@@ -685,6 +868,68 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return elmSegment;
 	}
 	
+	private void serializeGazelleField(Field f, Datatype fieldDatatype, nu.xom.Element elmParent, Profile profile, Message message, Segment segment, String fieldPath){
+		nu.xom.Element elmField = new nu.xom.Element("Field");
+		elmParent.appendChild(elmField);
+		
+		elmField.addAttribute(new Attribute("Name", ExportUtil.str(f.getName())));
+		if(f.getUsage().value().equals("B")){
+			elmField.addAttribute(new Attribute("Usage", "X"));
+		}else{
+			elmField.addAttribute(new Attribute("Usage", ExportUtil.str(f.getUsage().value())));
+		}
+		elmField.addAttribute(new Attribute("Min", "" + f.getMin()));
+		if(f.getMax().equals("0")){
+			elmField.addAttribute(new Attribute("Max", "" + 1));
+		}else {
+			elmField.addAttribute(new Attribute("Max", ExportUtil.str(f.getMax())));
+		}
+		
+		if (f.getMaxLength() != null && !f.getMaxLength().equals("")) {
+			if(f.getMaxLength().equals("*")){
+				elmField.addAttribute(new Attribute("Length", "" + 225));
+			}else if(f.getMaxLength().equals("0")){
+				elmField.addAttribute(new Attribute("Length", "" + 1));
+			}else {
+				elmField.addAttribute(new Attribute("Length", ExportUtil.str(f.getMaxLength())));
+			}
+		}
+		elmField.addAttribute(new Attribute("Datatype", ExportUtil.str(fieldDatatype.getName())));
+		if (f.getTable() != null && !f.getTable().equals("")) elmField.addAttribute(new Attribute("Table", profile.getTables().findOneTableById(f.getTable()).getBindingIdentifier()));
+		if (f.getItemNo() != null && !f.getItemNo().equals("")) elmField.addAttribute(new Attribute("ItemNo",ExportUtil.str( f.getItemNo())));
+		
+		List<ConformanceStatement> fieldConformanceStatements = this.findConformanceStatements(segment.getConformanceStatements(), f.getPosition() + "[1]", message.getConformanceStatements(), fieldPath);
+		if(fieldConformanceStatements.size() > 0){
+			nu.xom.Element elmImpNote = new nu.xom.Element("ImpNote");
+			String note = "";
+			for(ConformanceStatement c : fieldConformanceStatements){
+				note = note + "\n" + "[" + c.getConstraintId() + "]" + c.getDescription();
+			}
+			elmImpNote.appendChild(note);
+			elmField.appendChild(elmImpNote);
+		}
+		
+		Predicate fieldPredicate = this.findPredicate(segment.getPredicates(), f.getPosition() + "[1]", message.getPredicates(), fieldPath);
+		if(fieldPredicate != null){
+			nu.xom.Element elmPredicate = new nu.xom.Element("Predicate");
+			String note = "[C(" +  fieldPredicate.getTrueUsage() + "/" + fieldPredicate.getFalseUsage() + ")]" + fieldPredicate.getDescription();
+			elmPredicate.appendChild(note);
+			elmField.appendChild(elmPredicate);
+		}
+
+		Map<Integer, Component> components = new HashMap<Integer, Component>();
+
+		for (Component c : fieldDatatype.getComponents()) {
+			components.put(c.getPosition(), c);
+		}
+		
+		for (int j = 1; j < components.size() + 1; j++) {
+			String componentPath = fieldPath + "." + j + "[1]";
+			Component c = components.get(j);
+			this.serializeGazelleComponent(c, profile.getDatatypes().findOne(c.getDatatype()), elmField, profile, message, fieldDatatype, componentPath);
+		}
+	}
+	
 	private void serializeDisplayField(Field f, Datatype fieldDatatype, nu.xom.Element elmParent, Profile profile, Message message, Segment segment, String fieldPath){
 		nu.xom.Element elmField = new nu.xom.Element("Field");
 		elmParent.appendChild(elmField);
@@ -756,6 +1001,66 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			Component c = components.get(j);
 			this.serializeDisplayComponent(c, profile.getDatatypes().findOne(c.getDatatype()), elmFieldStructure, profile, message, fieldDatatype, componentPath);
 		}
+	}
+	
+	private void serializeGazelleComponent(Component c, Datatype componentDatatype, nu.xom.Element elmParent, Profile profile, Message message, Datatype fieldDatatype, String componentPath){
+		nu.xom.Element elmComponent = new nu.xom.Element("Component");
+		elmComponent.addAttribute(new Attribute("Name", ExportUtil.str(c.getName())));
+		if(c.getUsage().value().equals("B")){
+			elmComponent.addAttribute(new Attribute("Usage", "X"));
+		}else{
+			elmComponent.addAttribute(new Attribute("Usage", ExportUtil.str(c.getUsage().value())));
+		}
+		elmComponent.addAttribute(new Attribute("Datatype", ExportUtil.str(componentDatatype.getName())));
+		if (c.getMaxLength() != null && !c.getMaxLength().equals("")) {
+			if(c.getMaxLength().equals("*")){
+				elmComponent.addAttribute(new Attribute("Length", "" + 225));
+			}else if(c.getMaxLength().equals("0")){
+				elmComponent.addAttribute(new Attribute("Length", "" + 1));
+			}else {
+				elmComponent.addAttribute(new Attribute("Length", ExportUtil.str(c.getMaxLength())));
+			}
+		}
+		if (c.getTable() != null && !c.getTable().equals("")){
+			if (profile.getTables().findOneTableById(c.getTable()) != null){
+				elmComponent.addAttribute(new Attribute("Table", profile.getTables().findOneTableById(c.getTable()).getBindingIdentifier() + ""));
+			} else {
+				logger.warn("Value set "+c.getTable()+" not found in library");
+				elmComponent.addAttribute(new Attribute("Table", c.getTable()));
+			}
+		}
+		
+		List<ConformanceStatement> componentConformanceStatements = this.findConformanceStatements(fieldDatatype.getConformanceStatements(), c.getPosition() + "[1]", message.getConformanceStatements(), componentPath);
+		if(componentConformanceStatements.size() > 0){
+			nu.xom.Element elmImpNote = new nu.xom.Element("ImpNote");
+			String note = "";
+			for(ConformanceStatement cs : componentConformanceStatements){
+				note = note + "\n" + "[" + cs.getConstraintId() + "]" + cs.getDescription();
+			}
+			elmImpNote.appendChild(note);
+			elmComponent.appendChild(elmImpNote);
+		}
+		
+		Predicate componentPredicate = this.findPredicate(fieldDatatype.getPredicates(), c.getPosition() + "[1]", message.getPredicates(), componentPath);
+		if(componentPredicate != null){
+			nu.xom.Element elmPredicate = new nu.xom.Element("Predicate");
+			String note = "[C(" +  componentPredicate.getTrueUsage() + "/" + componentPredicate.getFalseUsage() + ")]" + componentPredicate.getDescription();
+			elmPredicate.appendChild(note);
+			elmComponent.appendChild(elmPredicate);
+		}
+		
+		Map<Integer, Component> subComponents = new HashMap<Integer, Component>();
+		
+		for (Component sc : componentDatatype.getComponents()) {
+			subComponents.put(sc.getPosition(), sc);
+		}
+		
+		for (int k = 1; k < subComponents.size() + 1; k++) {
+			String subComponentPath = componentPath + "." + k + "[1]"; 
+			Component sc = subComponents.get(k);
+			this.serializeGazelleSubComponent(sc, profile.getDatatypes().findOne(sc.getDatatype()), elmComponent, profile, message, componentDatatype, subComponentPath);
+		}
+		elmParent.appendChild(elmComponent);
 	}
 	
 	private void serializeDisplayComponent(Component c, Datatype componentDatatype, nu.xom.Element elmParent, Profile profile, Message message, Datatype fieldDatatype, String componentPath){
@@ -832,6 +1137,55 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 			this.serializeDisplaySubComponent(sc, profile.getDatatypes().findOne(sc.getDatatype()), elmComponentStructure, profile, message, componentDatatype, subComponentPath);
 		}
 		elmParent.appendChild(elmComponent);
+	}
+	
+	private void serializeGazelleSubComponent(Component sc, Datatype subComponentDatatype, nu.xom.Element elmParent, Profile profile, Message message, Datatype componentDatatype, String subComponentPath){
+		nu.xom.Element elmSubComponent = new nu.xom.Element("SubComponent");
+		elmSubComponent.addAttribute(new Attribute("Name", ExportUtil.str(sc.getName())));
+		if(sc.getUsage().value().equals("B")){
+			elmSubComponent.addAttribute(new Attribute("Usage", "X"));
+		}else{
+			elmSubComponent.addAttribute(new Attribute("Usage", ExportUtil.str(sc.getUsage().value())));
+		}
+		elmSubComponent.addAttribute(new Attribute("Datatype", ExportUtil.str(subComponentDatatype.getName())));
+		if (sc.getMaxLength() != null && !sc.getMaxLength().equals("")){
+			if(sc.getMaxLength().equals("*")){
+				elmSubComponent.addAttribute(new Attribute("Length", "" + 225));
+			}else if(sc.getMaxLength().equals("0")){
+				elmSubComponent.addAttribute(new Attribute("Length", "" + 1));
+			}else {
+				elmSubComponent.addAttribute(new Attribute("Length", ExportUtil.str(sc.getMaxLength())));
+			}
+		}
+		if (sc.getTable() != null && !sc.getTable().equals("")){
+			if (profile.getTables().findOneTableById(sc.getTable()) != null){
+				elmSubComponent.addAttribute(new Attribute("Table", profile.getTables().findOneTableById(sc.getTable()).getBindingIdentifier() + ""));
+			} else {
+				logger.warn("Value set "+sc.getTable()+" not found in library");
+				elmSubComponent.addAttribute(new Attribute("Table", sc.getTable()));
+			}
+		}
+		
+		List<ConformanceStatement> subComponentConformanceStatements = this.findConformanceStatements(componentDatatype.getConformanceStatements(), sc.getPosition() + "[1]", message.getConformanceStatements(), subComponentPath);
+		if(subComponentConformanceStatements.size() > 0){
+			nu.xom.Element elmImpNote = new nu.xom.Element("ImpNote");
+			String note = "";
+			for(ConformanceStatement cs : subComponentConformanceStatements){
+				note = note + "\n" + "[" + cs.getConstraintId() + "]" + cs.getDescription();
+			}
+			elmImpNote.appendChild(note);
+			elmSubComponent.appendChild(elmImpNote);
+		}
+		
+		Predicate subComponentPredicate = this.findPredicate(componentDatatype.getPredicates(), sc.getPosition() + "[1]", message.getPredicates(), subComponentPath);
+		if(subComponentPredicate != null){
+			nu.xom.Element elmPredicate = new nu.xom.Element("Predicate");
+			String note = "[C(" +  subComponentPredicate.getTrueUsage() + "/" + subComponentPredicate.getFalseUsage() + ")]" + subComponentPredicate.getDescription();
+			elmPredicate.appendChild(note);
+			elmSubComponent.appendChild(elmPredicate);
+		}
+		
+		elmParent.appendChild(elmSubComponent);
 	}
 	
 	private void serializeDisplaySubComponent(Component sc, Datatype subComponentDatatype, nu.xom.Element elmParent, Profile profile, Message message, Datatype componentDatatype, String subComponentPath){
@@ -1358,6 +1712,20 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return new ByteArrayInputStream(bytes);
 	}
 	
+	private InputStream serializeProfileGazelleToZip(Profile profile) throws IOException {
+		ByteArrayOutputStream outputStream = null;
+		byte[] bytes;
+		outputStream = new ByteArrayOutputStream();
+		ZipOutputStream out = new ZipOutputStream(outputStream);
+
+		this.generateGazelleProfileIS(out, this.serializeProfileGazelleToXML(profile));
+		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(profile)); //TODO need implement gazelle Table
+
+		out.close();
+		bytes = outputStream.toByteArray();
+		return new ByteArrayInputStream(bytes);
+	}
+	
 	private InputStream serializeProfileDisplayToZip(Profile profile) throws IOException {
 		ByteArrayOutputStream outputStream = null;
 		byte[] bytes;
@@ -1411,6 +1779,18 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		inProfile.close();
 	}
 	
+	private void generateGazelleProfileIS(ZipOutputStream out, String profileXML) throws IOException {
+		byte[] buf = new byte[1024];
+		out.putNextEntry(new ZipEntry("Gazelle_Profile.xml"));
+		InputStream inProfile = IOUtils.toInputStream(profileXML);
+		int lenTP;
+		while ((lenTP = inProfile.read(buf)) > 0) {
+			out.write(buf, 0, lenTP);
+		}
+		out.closeEntry();
+		inProfile.close();
+	}
+	
 	private void generateDisplayProfileIS(ZipOutputStream out, String profileXML) throws IOException {
 		byte[] buf = new byte[1024];
 		out.putNextEntry(new ZipEntry("NIST_DisplayProfile.xml"));
@@ -1445,6 +1825,64 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		}
 		out.closeEntry();
 		inConstraints.close();
+	}
+	
+	@Override
+	public InputStream serializeProfileGazelleToZip(Profile original, String id) throws IOException, CloneNotSupportedException {
+		Profile filteredProfile = new Profile();
+		
+		HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
+		HashMap<String, Datatype> datatypesMap = new HashMap<String, Datatype>();
+		HashMap<String, Table> tablesMap = new HashMap<String, Table>();
+		
+		
+		filteredProfile.setBaseId(original.getBaseId());
+		filteredProfile.setChanges(original.getChanges());
+		filteredProfile.setComment(original.getComment());
+		filteredProfile.setConstraintId(original.getConstraintId());
+		filteredProfile.setScope(original.getScope());
+		filteredProfile.setSectionContents(original.getSectionContents());
+		filteredProfile.setSectionDescription(original.getSectionDescription());
+		filteredProfile.setSectionPosition(original.getSectionPosition());
+		filteredProfile.setSectionTitle(original.getSectionTitle());
+		filteredProfile.setSourceId(original.getSourceId());
+		filteredProfile.setType(original.getType());
+		filteredProfile.setUsageNote(original.getUsageNote());
+		filteredProfile.setMetaData(original.getMetaData());
+		
+		Messages messages = new Messages();
+		for(Message m:original.getMessages().getChildren()){
+			if(id.equals(m.getId())){
+				messages.addMessage(m);
+				for(SegmentRefOrGroup seog :m.getChildren()){
+					this.visit(seog, segmentsMap, datatypesMap, tablesMap, original);
+				}
+				
+			}
+		}
+		
+		Segments segments = new Segments();
+		for (String key : segmentsMap.keySet()) {
+			segments.addSegment(segmentsMap.get(key));
+		}
+		
+		Datatypes datatypes = new Datatypes();
+		for (String key : datatypesMap.keySet()) {
+			datatypes.addDatatype(datatypesMap.get(key));
+		}
+		
+		
+		Tables tables = new Tables();
+		for (String key : tablesMap.keySet()) {
+			tables.addTable(tablesMap.get(key));
+		}
+		
+		filteredProfile.setDatatypes(datatypes);
+		filteredProfile.setSegments(segments);
+		filteredProfile.setMessages(messages);
+		filteredProfile.setTables(tables);
+		
+		return this.serializeProfileGazelleToZip(filteredProfile);
 	}
 	
 	@Override
@@ -1645,6 +2083,17 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		}
 		
 		outputStream2.close();
+		
+		InputStream is3 = test1.serializeProfileGazelleToZip(profile, mid);
+		OutputStream outputStream3 =  new FileOutputStream(new File("src//main//resources//IZ_XML_Profiles//out3.zip"));
+		int read3 = 0;
+		byte[] bytes3 = new byte[1024];
+
+		while ((read3 = is3.read(bytes3)) != -1) {
+			outputStream3.write(bytes3, 0, read3);
+		}
+		
+		outputStream3.close();
 		
 	}
 }

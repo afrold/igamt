@@ -1676,4 +1676,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public InputStream serializeProfileGazelleToZip(Profile original, String id)
+			throws IOException, CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
