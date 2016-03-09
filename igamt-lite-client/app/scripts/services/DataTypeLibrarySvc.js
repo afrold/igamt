@@ -1,7 +1,7 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').factory('DTLibSvc', function($http, ngTreetableParams, userInfoService) {
+angular.module('igl').factory('DataTypeLibrarySvc', function($http, ngTreetableParams, userInfoService) {
 	
 	var svc = this;
 	
@@ -13,7 +13,7 @@ angular.module('igl').factory('DTLibSvc', function($http, ngTreetableParams, use
 				return dtLib(scope);
 			},
 	        getTemplate : function(node) {
-	            return 'DTLibNode.html';
+	            return 'dataTypeNode.html';
 	        },
 	        options : {
 	            onNodeExpand: function() {
