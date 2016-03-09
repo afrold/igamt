@@ -157,8 +157,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return this.serializeDatatypeLibraryToDoc(datatypeLibrary).toXML();
 	}
 
-	
-	@Override
+		@Override
 	public nu.xom.Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary) {
 		nu.xom.Element e = new nu.xom.Element("DatatypeLibrary");
 		e.addAttribute(new Attribute("ID",datatypeLibrary.getMetaData().getDatatypLibId()));
@@ -529,7 +528,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return elmMessage;
 	}
 
-
 	private nu.xom.Element serializeGroup(Group group, Segments segments) {
 		nu.xom.Element elmGroup = new nu.xom.Element("Group");
 		elmGroup.addAttribute(new Attribute("ID", ExportUtil.str(group.getName())));
@@ -783,7 +781,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		}
 		return elmSegment;
 	}
-	
 	
 	private nu.xom.Element serializeDisplaySegment(SegmentRef segmentRef, Profile profile, Message message, String path) {
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
@@ -2003,8 +2000,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		return this.serializeProfileDisplayToZip(filteredProfile);
 	}
 	
-	
-
 	private void visit(SegmentRefOrGroup seog, HashMap<String, Segment> segmentsMap, HashMap<String, Datatype> datatypesMap, HashMap<String, Table> tablesMap, Profile original) {
 		if(seog instanceof SegmentRef){
 			SegmentRef sr = (SegmentRef)seog;
