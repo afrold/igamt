@@ -25,11 +25,11 @@
                      <span class="pull-right">
 
         <button title="Create Copy" type="button" class="btn btn-xs btn-info" ng-disabled='!segmentForm.$valid'
-                ng-click="copy(segment)" ng-hide="options.readonly"
+                ng-click="copy(segment)" ng-hide="viewSettings.tableReadonly"
                 >
             <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Copy</span>
         </button>
-        <button title="Delete" type="button" ng-hide="options.readonly"
+        <button title="Delete" type="button" ng-hide="viewSettings.tableReadonly"
                 class="btn btn-xs btn-danger"
                 ng-click="delete(segment)">
             <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
@@ -75,7 +75,7 @@
                                         <label class="control-label">Label</label>
                                         <span class="igl-has-error has-feedback"
                                               ng-show="isDuplicated(segment,'label', segments)">Existing label (flavor name)</span>
-                                        <input type="text" ng-disabled="options.readonly"
+                                        <input type="text" ng-disabled="viewSettings.tableReadonly"
                                                class="form-control"
                                                ng-change="recordChanged()"
                                                name="label" class="form-control"
@@ -88,7 +88,7 @@
                                     <div class="form-group"
                                          ng-class="{'igl-has-error has-feedback' : segmentForm.comment.$invalid}">
                                         <label class="control-label">Comment</label> <input
-                                            ng-disabled="options.readonly"
+                                            ng-disabled="viewSettings.tableReadonly"
                                             class="form-control" type="text"
                                             name="comment"
                                             ng-change="recordChanged()"
@@ -106,12 +106,12 @@
                                          ng-class="{'igl-has-error has-feedback' : segmentForm.text1.$invalid}">
                                         <label class="control-label">Definition Pre-Text</label>
 
-                                        <div ng-if="!options.readonly">
+                                        <div ng-if="!viewSettings.tableReadonly">
                                             <textarea froala="froalaEditorOptions" ng-model="segment.text1" id="text1"
                                                       name="text1"
                                                       ng-change="recordChanged()"></textarea>
                                         </div>
-                                        <div ng-if="options.readonly">
+                                        <div ng-if="viewSettings.tableReadonly">
                                             <div froala-view="segment.text1"></div>
                                         </div>
 
@@ -126,12 +126,12 @@
                                          ng-class="{'igl-has-error has-feedback' : segmentForm.text2.$invalid}">
                                         <label class="control-label">Definition Post-Text</label>
 
-                                        <div ng-if="!options.readonly">
+                                        <div ng-if="!viewSettings.tableReadonly">
                                             <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2"
                                                       name="text2"
                                                       ng-change="recordChanged()"></textarea>
                                         </div>
-                                        <div ng-if="options.readonly">
+                                        <div ng-if="viewSettings.tableReadonly">
                                             <div froala-view="segment.text2"></div>
                                         </div>
                                     </div>
@@ -146,6 +146,10 @@
                             <div class="col-md-12">
                                 <div class="page-header">
                                     <span class="header5">Definition</span>
+                                    <span class="igl-menu pull-right" style="margin-right: 20px">
+                                    <div ng-dropdown-multiselect="" options="viewSettings.columnOptions" selected-model="viewSettings.visibleColumns"
+                                         events="viewSettings.events"  extra-settings="viewSettings.extra" translation-texts="viewSettings.translations"></div>
+                                </span>
                                 </div>
                             </div>
                         </div>
@@ -159,18 +163,18 @@
                                         <tr class="tbl-header"
                                             style="margin-right: {{scrollbarWidth}}px;">
                                             <th class="col-xs-2 col-fixed-250">Name</th>
-                                            <th class="col-xs-1 col-fixed-80">Usage</th>
-                                            <th class="col-xs-1 col-fixed-100">Cardinality</th>
-                                            <th class="col-xs-1 col-fixed-100">Length</th>
-                                            <th class="col-xs-1 col-fixed-80">ConfLength</th>
-                                            <th class="col-xs-1 col-fixed-100">Datatype</th>
-                                            <th class="col-xs-1 col-fixed-130">ValueSet</th>
-                                            <th class="col-xs-1" ng-style="predWidth">Predicate</th>
-                                            <th class="col-xs-1" ng-style="csWidth">Conformance
+                                            <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">Usage</th>
+                                            <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">Cardinality</th>
+                                            <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">Length</th>
+                                            <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">ConfLength</th>
+                                            <th class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">Datatype</th>
+                                            <th class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">ValueSet</th>
+                                            <th class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">Predicate</th>
+                                            <th class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">Conf.
                                                 Statement
                                             </th>
-                                            <th class="col-xs-1 col-fixed-80">Def.Text</th>
-                                            <th class="col-xs-1" ng-style="commentWidth">Comment</th>
+                                            <th class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">Def.Text</th>
+                                            <th class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">Comment</th>
                                         </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -188,40 +192,43 @@
 <script type="text/ng-template" id="SegmentEditTree.html">
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
-            <img style="width:15px; height:15px"
-                 ng-src="images/{{node.type}}.png">
+
+            <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
+            <span ng-if="node.type === 'component'"class="label label-component label-icon">C</span>
+            <span ng-if="node.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
+
             <span style="width:60%">{{node.name}}:</span>
             <span ng-bind="node.description"></span>
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">
             <div>-</div>
         </td>
 
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-130">
+        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>-</div>
         </td>
-        <td class="col-xs-1" ng-style="predWidth">
+        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>-</div>
         </td>
-        <td class="col-xs-1" ng-style="csWidth">
+        <td class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <div>-</div>
         </td>
-        <td class="col-xs-1" ng-style="commentWidth">
+        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <div>-</div>
         </td>
     </tr>
@@ -230,40 +237,41 @@
 <script type="text/ng-template" id="SegmentReadTree.html">
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
-            <img style="width:15px; height:15px"
-                 ng-src="images/{{node.type}}.png">
+            <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
+            <span ng-if="node.type === 'component'"class="label label-component label-icon">C</span>
+            <span ng-if="node.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
             <span style="width:60%">{{node.name}}:</span>
             <span ng-bind="node.description"></span>
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">
             <div>-</div>
         </td>
 
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-130">
+        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>-</div>
         </td>
-        <td class="col-xs-1" ng-style="predWidth">
+        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>-</div>
         </td>
-        <td class="col-xs-1" ng-style="csWidth">
+        <td class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>-</div>
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <div>-</div>
         </td>
-        <td class="col-xs-1" ng-style="commentWidth">
+        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <div>-</div>
         </td>
     </tr>
@@ -272,8 +280,10 @@
 <script type="text/ng-template" id="SegmentFieldEditTree.html">
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
-            <img style="width:15px; height:15px"
-                 ng-src="images/{{node.type}}.png">
+            <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
+            <span ng-if="node.type === 'component'"class="label label-component label-icon">C</span>
+            <span ng-if="node.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
+
             <span
                     tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"
                     tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node)" tooltip-trigger
@@ -282,7 +292,7 @@
 
 
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
 			<div>
                 <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
                 	<select class="form-control input-sm" name="usage"
@@ -296,7 +306,7 @@
 				</div>
             </div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">
             <div ng-controller="SegmentRowCtrl">
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="form-control"
@@ -314,7 +324,7 @@
                                             </span>
             </div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">
             <div ng-controller="SegmentRowCtrl">
                                             <span ng-form name="{{formName}}">
                                                 <input style="width:45%" class="form-control"
@@ -332,7 +342,7 @@
                                             </span>
             </div>
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">
             <div ng-controller="SegmentRowCtrl">
                                             <span ng-form name="{{formName}}">
                                             <input style="width:50%" class="form-control" type="text"
@@ -345,7 +355,7 @@
             </div>
         </td>
 
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <select class="form-control input-sm"
                     name="segment"
                     ng-change="onDatatypeChange(node)"
@@ -355,7 +365,7 @@
                     ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype].name">
             </select>
         </td>
-        <td class="col-xs-1 col-fixed-130">
+        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div ng-show="node.table != undefined && node.table !== null">
                 <a ng-click="goToTable(tablesMap[node.table])" class="point">
                     <span>{{tablesMap[node.table].bindingIdentifier}}</span>
@@ -373,7 +383,7 @@
                 </a>
             </div>
         </td>
-        <td class="col-xs-1" ng-style="predWidth">
+        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
 			<div>
                 <div ng-show="countPredicate(node.position) === 0 && node.usage === 'C'">
                     <a ng-click="managePredicate(node)" class="point">
@@ -391,7 +401,7 @@
 				</div>
             </div>
         </td>
-        <td class="col-xs-1" ng-style="csWidth">
+        <td class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div ng-show="countConformanceStatements(node.position) == 0">
                 <a ng-click="manageConformanceStatement(node)" class="point">
                     <span><i class="fa fa-plus fa-fw"></i></span>
@@ -406,7 +416,7 @@
             </p>
         </td>
 
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <a type="button" ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
                class="point">
                 <i class="fa fa-plus fa-fw" ng-show="node.text === '' || node.text === null"></i>
@@ -414,7 +424,7 @@
             </a>
         </td>
 
-        <td class="col-xs-1" ng-style="commentWidth">
+        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <a ng-show="node.comment === '' || node.comment === null"
                ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="point">
                 <i class="fa fa-plus fa-fw"></i>
@@ -432,8 +442,9 @@
     <tr tt-node is-branch="hasChildren(node)">
 
         <td class="col-xs-2 col-fixed-250">
-            <img style="width:15px; height:15px"
-                 ng-src="images/{{::node.type}}.png">
+            <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
+            <span ng-if="node.type === 'component'"class="label label-component label-icon">C</span>
+            <span ng-if="node.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
              <span
                      tooltip-html="getFieldNodeName(node)" tooltip-append-to-body="true"
                      tooltip-class="constraints-tooltip" ng-bind-html="getFieldNodeName(node)" tooltip-trigger
@@ -441,7 +452,7 @@
                      ></span>
         </td>
 
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
 			<div>
 				<span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
                 	<span>{{node.usage}}</span>
@@ -453,28 +464,28 @@
 				</div>
             </div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">
             [{{::node.min}}, {{::node.max}}]
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">
             [{{::node.minLength}}, {{::node.maxLength}}]
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">
             {{::node.confLength}}
         </td>
 
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <a ng-click="goToDatatype(datatypesMap[node.datatype])"
                class="point">{{::datatypesMap[node.datatype].label}}
             </a>
         </td>
-        <td class="col-xs-1 col-fixed-130">
+        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <a ng-click="goToTable(tablesMap[node.table])" class="point"
                ng-show="node.table != undefined && node.table !== null">
                 {{::tablesMap[node.table].bindingIdentifier}}
             </a>
         </td>
-        <td class="col-xs-1" ng-style="predWidth">
+        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
             <p ng-repeat="p in segment.predicates | filter:{constraintTarget:node.position + '[1]'}:true">
                 <span
                         tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true"
@@ -482,7 +493,7 @@
                         tooltip-animation="false" tooltip-placement="left"/>
             </p>
         </td>
-        <td class="col-xs-1" ng-style="csWidth">
+        <td class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <p ng-repeat="c in segment.conformanceStatements | filter:{constraintTarget:node.position + '[1]'}:true">
                 <span
                         tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true"
@@ -492,7 +503,7 @@
             </p>
         </td>
 
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <a ng-show="node.text !== '' && node.text !== null" type="button"
                ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
                class="btn btn-info btn-xs">
@@ -500,7 +511,7 @@
             </a>
         </td>
 
-        <td class="col-xs-1" ng-style="commentWidth">
+        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <span
                     tooltip-html="node.comment" tooltip-append-to-body="true"
                     tooltip-class="constraints-tooltip"
@@ -514,10 +525,9 @@
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
                              <span>
-                                         <img ng-show="!isSubDT(node)" style="width:15px; height:15px"
-                                              ng-src="images/{{node.type}}.png">
-                                         <img ng-show="isSubDT(node)" style="width:15px; height:15px"
-                                              ng-src="images/subcomponent.png">
+                                 <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
+             <span ng-if="node.type === 'component'"class="label label-component label-icon">C</span>
+            <span ng-if="node.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
                                   <span
                                           tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true"
                                           tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)"
@@ -526,7 +536,7 @@
                                           ></span>
                                  </span>
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
 			<span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicateOnComponent(node.position, node.id) === 0)">
             	{{node.usage}}
             </span>
@@ -536,29 +546,29 @@
                 </p>
 			</div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">
             <div>
                 -
             </div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">
             <div>
                 [{{node.minLength}},{{node.maxLength}}]
             </div>
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">
             <div ng-bind="node.confLength">
             </div>
         </td>
 
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <div>
                 <a ng-click="goToDatatype(datatypesMap[node.datatype])" class="point">
                     <span>{{datatypesMap[node.datatype].label}}</span>
                 </a>
             </div>
         </td>
-        <td class="col-xs-1 col-fixed-130">
+        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <div>
 				<span ng-show="node.table != undefined && node.table != null">
 					<a ng-click="goToTable(tablesMap[node.table])" class="point">
@@ -569,7 +579,7 @@
 
             <div ng-show="node.type === 'segment'">-</div>
         </td>
-        <td class="col-xs-1" ng-style="predWidth">
+        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <p ng-repeat="p in parentsMap[node.id].predicates  | filter:{constraintTarget:node.position + '[1]'}:true"
                    tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true"
@@ -578,7 +588,7 @@
                 </p>
             </div>
         </td>
-        <td class="col-xs-1" ng-style="csWidth">
+        <td class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>
                 <p ng-repeat="c in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true"
                    tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true"
@@ -588,7 +598,7 @@
             </div>
         </td>
 
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <div>
                 <a ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)"
                    class="point">
@@ -596,7 +606,7 @@
                 </a>
             </div>
         </td>
-        <td class="col-xs-1" ng-style="commentWidth">
+        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <div tooltip-html="node.comment" tooltip-append-to-body="true"
                  tooltip-class="constraints-tooltip"
                  tooltip-trigger tooltip-animation="false" tooltip-placement="left"></div>
@@ -608,10 +618,9 @@
     <tr tt-node is-branch="hasChildren(node)">
         <td class="col-xs-2 col-fixed-250">
                              <span>
-                                         <img ng-show="!isSubDT(node)" style="width:15px; height:15px"
-                                              ng-src="images/{{::node.type}}.png">
-                                         <img ng-show="isSubDT(node)" style="width:15px; height:15px"
-                                              ng-src="images/subcomponent.png">
+                                <span ng-if="node.type === 'field'" class="label label-field label-icon">F</span>
+            <span ng-if="node.type === 'component'"class="label label-component label-icon">C</span>
+            <span ng-if="node.type === 'subcomponent'" class="label label-sub-component label-icon">S</span>
                                    <span
                                            tooltip-html="getComponentNodeName(node)" tooltip-append-to-body="true"
                                            tooltip-class="constraints-tooltip" ng-bind-html="getComponentNodeName(node)"
@@ -620,7 +629,7 @@
                                            ></span>
                                  </span>
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('usage')">
             <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicateOnComponent(node.position, node.id) === 0)">
             	{{node.usage}}
             </span>
@@ -630,27 +639,27 @@
                 </p>
 			</div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('cardinality')">
             <div>
                 -
             </div>
         </td>
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('length')">
             <div>
                 [{{::node.minLength}},{{::node.maxLength}}]
             </div>
         </td>
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('confLength')">
             <div ng-bind="node.confLength">
             </div>
         </td>
 
-        <td class="col-xs-1 col-fixed-100">
+        <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')">
             <a ng-click="goToDatatype(datatypesMap[node.datatype])"
                class="point">{{::datatypesMap[node.datatype].label}}
             </a>
         </td>
-        <td class="col-xs-1 col-fixed-130">
+        <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')">
             <a type="button" ng-click="goToTable(tablesMap[node.table])"
                ng-show="node.table != undefined && node.table != null"
                class="point">
@@ -658,7 +667,7 @@
             </a>
         </td>
 
-        <td class="col-xs-1" ng-style="predWidth">
+        <td class="col-xs-1" ng-style="predWidth" ng-show="viewSettings.isVisibleColumn('predicate')">
             <div>
                 <p ng-repeat="p in parentsMap[node.id].predicates  | filter:{constraintTarget:node.position + '[1]'}:true"
                    tooltip-html="getPredicateAsString(p)" tooltip-append-to-body="true"
@@ -667,7 +676,7 @@
                 </p>
             </div>
         </td>
-        <td class="col-xs-1" ng-style="csWidth">
+        <td class="col-xs-1" ng-style="csWidth" ng-show="viewSettings.isVisibleColumn('confStatement')">
             <div>
                 <p ng-repeat="c in parentsMap[node.id].conformanceStatements  | filter:{constraintTarget:node.position + '[1]'}:true"
                    tooltip-html="getConformanceStatementAsString(c)" tooltip-append-to-body="true"
@@ -677,14 +686,14 @@
             </div>
         </td>
 
-        <td class="col-xs-1 col-fixed-80">
+        <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
             <a ng-show="node.text != null"
                ng-click="openRichTextDlg(node, 'text', 'Definition Text', true)"
                class="point">
                 <i class="fa fa-eye fa-fw"></i>
             </a>
         </td>
-        <td class="col-xs-1" ng-style="commentWidth">
+        <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
             <span ng-show="node.comment != null" tooltip-html="node.comment" tooltip-append-to-body="true"
                   tooltip-class="constraints-tooltip"
                   tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
@@ -1670,8 +1679,11 @@
                 <tr ng-repeat="ref in references">
                     <td>
                                         <span>
-                                              <img style="width:15px; height:15px"
-                                                   ng-src="images/{{ref.type}}.png">
+
+                                            <span ng-show="ref.type === 'group'"
+                                                  class="label label-success label-icon">G</span>
+                                            <span ng-show="ref.type === 'segmentRef'" class="label label-segment label-icon">S</span>
+
                                              <span style="width:60%"
                                                    name="name"
                                                    ng-bind="ref.name"></span>

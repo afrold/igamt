@@ -46,3 +46,30 @@
     border-bottom: 1px solid #ffec9d;
     color:black;
 }
+
+.label-icon{
+    width:5px;
+    height:5px;
+    border-radius: 10px;
+}
+
+.label-segment {
+    background-color: #0f44f2;
+}
+
+.label-field {
+    background-color: #f24a08;
+}
+
+.label-component {
+    background-color: #f2c60d;
+}
+
+.label-sub-component {
+    background-color: rgba(0, 0, 0, 0.91);
+}
+
+
+.label-datatype {
+    background-color: rgba(30, 24, 242, 0.91);
+}
