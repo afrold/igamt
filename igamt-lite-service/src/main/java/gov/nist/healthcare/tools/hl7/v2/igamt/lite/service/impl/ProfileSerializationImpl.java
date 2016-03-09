@@ -1828,7 +1828,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 	}
 	
 	@Override
-	public InputStream serializeProfileGazelleToZip(Profile original, String id) throws IOException, CloneNotSupportedException {
+	public InputStream serializeProfileGazelleToZip(Profile original, String[] ids) throws IOException, CloneNotSupportedException {
 		Profile filteredProfile = new Profile();
 		
 		HashMap<String, Segment> segmentsMap = new HashMap<String, Segment>();
@@ -1852,7 +1852,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		
 		Messages messages = new Messages();
 		for(Message m:original.getMessages().getChildren()){
-			if(id.equals(m.getId())){
+			if(Arrays.asList(ids).contains(m.getId())){
 				messages.addMessage(m);
 				for(SegmentRefOrGroup seog :m.getChildren()){
 					this.visit(seog, segmentsMap, datatypesMap, tablesMap, original);
@@ -2084,7 +2084,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		
 		outputStream2.close();
 		
-		InputStream is3 = test1.serializeProfileGazelleToZip(profile, mid);
+		InputStream is3 = test1.serializeProfileGazelleToZip(profile, idSet.toArray(new String[0]));
 		OutputStream outputStream3 =  new FileOutputStream(new File("src//main//resources//IZ_XML_Profiles//out3.zip"));
 		int read3 = 0;
 		byte[] bytes3 = new byte[1024];
