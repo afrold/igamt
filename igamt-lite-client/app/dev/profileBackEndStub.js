@@ -255,12 +255,29 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     $httpBackend.whenPOST('api/datatype-library').respond(function (method, url, data, headers) {
          var request = new XMLHttpRequest();
          console.log('api/datatype-library-MASTER begin');
-         request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
-        request.send(null);
-        var d = angular.fromJson(request.response);
+         var d = {};
+         var scope = angular.fromJson(data).scope;
+         if (scope === "MASTER") {
+             d = saved;
+         } else {
+             request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
+             request.send(null);
+             d = angular.fromJson(request.response);
+         }
         console.log('api/datatype-library end');
         return [request.status, d, {}];
     });
+
+    var saved = {};
+    $httpBackend.whenPOST('api/datatype-library/save').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        console.log('api/datatype-library/save begin=>' + data);
+        saved = angular.fromJson(data);
+       request.send(null);
+       var d = angular.fromJson(request.response);
+       console.log('api/datatype-library end' + d);
+       return [request.status, d, {}];
+   });
 
     $httpBackend.whenGET('api/appInfo').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();

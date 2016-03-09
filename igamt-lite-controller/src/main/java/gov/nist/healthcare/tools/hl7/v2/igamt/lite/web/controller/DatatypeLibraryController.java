@@ -43,30 +43,31 @@ public class DatatypeLibraryController extends CommonController {
 	@Autowired
 	private DataTypeLibraryService datatypeLibraryService;
 
-	@RequestMapping(value = "/{accountId}", method = RequestMethod.POST)
-	public List<DatatypeLibrary> datatypeLibrary() {
+	@RequestMapping(method = RequestMethod.POST)
+	public List<DatatypeLibrary> getDatatypeLibraries() {
 		log.info("Fetching the HL7STANDARD datatype library...");
-		List<DatatypeLibrary> result = datatypeLibraryService.findAll();
-		return result;
+		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryService.findAll();
+		return datatypeLibraries;
 	}
 
-	@RequestMapping(value = "/getDTLibByScope", method = RequestMethod.POST)
+	@RequestMapping(value = "/getDatatypeLibraryByScope", method = RequestMethod.POST)
 	public DatatypeLibrary getDataTypeLibraryByScope(@RequestBody DatatypeLibraryRequestWrapper dtlrw) {
 		log.info("Fetching the " + dtlrw.getScope() + " datatype library...");
 		DatatypeLibrary.SCOPE scope = DatatypeLibrary.SCOPE.valueOf(dtlrw.getScope());
-		DatatypeLibrary result = datatypeLibraryService.findByScope(scope, dtlrw.getAccountId(), dtlrw.getDtLib());
-		return result;
+		DatatypeLibrary datatypeLibrary = datatypeLibraryService.findByScope(scope, dtlrw.getAccountId(),
+				dtlrw.getDatatypeLibrary());
+		return datatypeLibrary;
 	}
 
 	@RequestMapping(value = "/{accountId}", method = RequestMethod.POST)
-	public List<DatatypeLibrary> datatypeLibraryByAccountId(@PathVariable("accountId") Long accountId)
+	public List<DatatypeLibrary> getDatatypeLibraryByAccountId(@PathVariable("accountId") Long accountId)
 			throws DatatypeLibraryNotFoundException, UserAccountNotFoundException, DatatypeLibraryException {
 		log.info("Fetching the USER datatype library...");
 		List<DatatypeLibrary> result = datatypeLibraryService.findByAccountId(accountId);
 		return result;
 	}
 
-	@RequestMapping(value = "/save/{accountId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public DatatypeLibrarySaveResponse save(@RequestBody DatatypeLibrary library) throws DatatypeLibrarySaveException {
 		log.info("Saving the USER datatype library...");
 		DatatypeLibrary saved = datatypeLibraryService.apply(library);

@@ -19,6 +19,8 @@ Cloneable, Comparable<Datatype> {
 
 	private static final long serialVersionUID = 1L;
 
+	public enum STATUS { PUBLISHED, UNPUBLISHED };
+	
 	public Datatype() {
 		super();
 		this.type = Constant.DATATYPE;
@@ -30,6 +32,8 @@ Cloneable, Comparable<Datatype> {
 
 	private String label;
 
+	private String ext;
+
 	protected List<Component> components = new ArrayList<Component>();
 
 	private String name;
@@ -39,11 +43,13 @@ Cloneable, Comparable<Datatype> {
 	private String hl7Version;
 
 	private SCOPE scope;
+
+	private STATUS status;
 	
 	protected String comment = "";
 
 	protected String usageNote = "";
-
+	
 	public String getId() {
 		return id;
 	}
@@ -58,6 +64,14 @@ Cloneable, Comparable<Datatype> {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
 	}
 
 	public List<Component> getComponents() {
@@ -98,6 +112,22 @@ Cloneable, Comparable<Datatype> {
 
 	public void setHl7Version(String hl7Version) {
 		this.hl7Version = hl7Version;
+	}
+
+	public SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(SCOPE scope) {
+		this.scope = scope;
+	}
+
+	public STATUS getStatus() {
+		return status;
+	}
+
+	public void setStatus(STATUS status) {
+		this.status = status;
 	}
 
 	public void addComponent(Component c) {

@@ -116,6 +116,8 @@ angular.module('igl').controller(
 		function($scope, $rootScope, $modalInstance, $http, hl7Versions,
 				ProfileAccessSvc, MessageEventsSvc) {
 
+			$scope.hl7Versions = hl7Versions;
+
 			$scope.selected = {
 				item : hl7Versions[0]
 			};
@@ -142,16 +144,16 @@ angular.module('igl').controller(
 				return rval;
 			};
 			
-			$scope.getState = function() {
-				return MessageEventsSvc.getState();
-			}
+//			$scope.getState = function() {
+//				return MessageEventsSvc.getState();
+//			}
 			
 			$scope.trackSelections = function(bool, event) {
 				if (bool) {
 					messageEvents.push({ "id" : event.id, "children" : [{"name" : event.name}]});
 				} else {
 					for (var i = 0; i < messageEvents.length; i++) {
-						if (messageEvents[i].id == id) {
+						if (messageEvents[i].id === event.id) {
 							messageEvents.splice(i, 1);
 						}
 					}
@@ -168,7 +170,6 @@ angular.module('igl').controller(
 				}
 			});
 
-			$scope.hl7Versions = hl7Versions;
 			$scope.ok = function() {
 				console.log("$scope.ok$scope.hl7Version=" + $scope.hl7Version);
 				console.log("$scope.ok$rootScope.hl7Version=" + $rootScope.hl7Version);
