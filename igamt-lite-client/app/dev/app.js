@@ -27,7 +27,8 @@ var app = angular
         'table-settings',
         'angularjs-dropdown-multiselect',
         'dndLists',
-        'froala'
+        'froala',
+        'ngNotificationsBar'
         ,
         'ngMockE2E'
     ]);
@@ -49,7 +50,7 @@ var
 var msg = {};
 
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider,notificationsConfigProvider) {
 
     app.requires.push('ngMockE2E');
 
@@ -294,7 +295,14 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     IdleProvider.idle(30 * 60);
     IdleProvider.timeout(30);
     KeepaliveProvider.interval(10);
+    // auto hide
+    notificationsConfigProvider.setAutoHide(false);
 
+    // delay before hide
+    notificationsConfigProvider.setHideDelay(3000);
+
+    // delay between animation and removing the nofitication
+    notificationsConfigProvider.setAutoHideAnimationDelay(1200);
 
     var spinnerStarter = function (data, headersGetter) {
         spinner = true;
@@ -308,7 +316,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 });
 
 
-app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http, AppInfo,StorageService,$templateCache,$window) {
+app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http, AppInfo,StorageService,$templateCache,$window,notifications) {
     $rootScope.appInfo = {};
     //Check if the login dialog is already displayed.
     $rootScope.loginDialogShown = false;
@@ -435,6 +443,16 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         }
     });
 
+    $rootScope.$watch(function(){
+        return $rootScope.msg().text;
+    }, function (value) {
+        $rootScope.showNotification($rootScope.msg());
+    });
+
+    $rootScope.$watch('language()', function (value) {
+        $rootScope.showNotification($rootScope.msg());
+    });
+
     $rootScope.loadUserFromCookie = function () {
         if (userInfoService.hasCookieInfo() === true) {
             //console.log("found cookie!")
@@ -511,6 +529,26 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
 
     $rootScope.reloadPage = function () {
         $window.location.reload();
+    };
+
+    $rootScope.showNotification = function (m) {
+        if(m != undefined && m.show && m.text != null) {
+            var msg = angular.copy(m);
+            var message = $.i18n.prop(msg.text);
+            var type = msg.type;
+            notifications.closeAll();
+            if (type === "danger") {
+                notifications.showError({message: message});
+            } else if (type === 'warning') {
+                notifications.showWarning({message: message});
+            } else if (type === 'success') {
+                notifications.showSuccess({message: message});
+            }
+            //reset
+            m.text = null;
+            m.type = null;
+            m.show = false;
+        }
     };
 
 

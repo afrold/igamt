@@ -27,7 +27,8 @@ var app = angular
         'table-settings',
         'angularjs-dropdown-multiselect',
         'dndLists',
-        'froala'
+        'froala',
+        'ngNotificationsBar'
     ]);
 
 var
@@ -41,12 +42,12 @@ var
     spinner,
 
 //The list of messages we don't want to displat
-    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded','igDocumentNotSaved','igDocumentSaved','uploadImageFailed'];
+    mToHide = ['usernameNotFound', 'emailNotFound', 'usernameFound', 'emailFound', 'loginSuccess', 'userAdded', 'igDocumentNotSaved', 'igDocumentSaved', 'uploadImageFailed'];
 
 //the message to be shown to the user
 var msg = {};
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider, notificationsConfigProvider) {
 
 
     $routeProvider
@@ -102,7 +103,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             templateUrl: 'views/account/registerResetPassword.html',
             controller: 'RegisterResetPasswordCtrl',
             resolve: {
-                isFirstSetup: function() {
+                isFirstSetup: function () {
                     return true;
                 }
             }
@@ -111,7 +112,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             templateUrl: 'views/account/registerResetPassword.html',
             controller: 'RegisterResetPasswordCtrl',
             resolve: {
-                isFirstSetup: function() {
+                isFirstSetup: function () {
                     return false;
                 }
             }
@@ -125,6 +126,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         .otherwise({
             redirectTo: '/'
         });
+
 
 //    $http.defaults.headers.post['X-CSRFToken'] = $cookies['csrftoken'];
 
@@ -147,7 +149,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         var setMessage = function (response) {
             //if the response has a text and a type property, it is a message to be shown
             if (response.data && response.data.text && response.data.type) {
-                if (response.status === 401 ) {
+                if (response.status === 401) {
 //                        console.log("setting login message");
                     loginMessage = {
                         text: response.data.text,
@@ -157,7 +159,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                         manualHandle: response.data.manualHandle
                     };
 
-                } else  if (response.status === 503 ) {
+                } else if (response.status === 503) {
                     msg = {
                         text: "server.down",
                         type: "danger",
@@ -174,13 +176,13 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
                     };
                     var found = false;
                     var i = 0;
-                    while ( i < mToHide.length && !found ) {
-                        if ( msg.text === mToHide[i] ) {
+                    while (i < mToHide.length && !found) {
+                        if (msg.text === mToHide[i]) {
                             found = true;
                         }
                         i++;
                     }
-                    if ( found === true) {
+                    if (found === true) {
                         msg.show = false;
                     } else {
 //                        //hide the msg in 5 seconds
@@ -193,7 +195,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 //                                                    10000
 //                                                );
                     }
-                }
+                 }
             }
         };
 
@@ -215,15 +217,15 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     $httpProvider.interceptors.push(function ($rootScope, $q) {
         return {
             response: function (response) {
-                return response   || $q.when(response);
+                return response || $q.when(response);
             },
             responseError: function (response) {
                 if (response.status === 401) {
                     //We catch everything but this one. So public users are not bothered
                     //with a login windows when browsing home.
-                    if ( response.config.url !== 'api/accounts/cuser') {
+                    if (response.config.url !== 'api/accounts/cuser') {
                         //We don't intercept this request
-                        if(response.config.url !== 'api/accounts/login') {
+                        if (response.config.url !== 'api/accounts/login') {
                             var deferred = $q.defer(),
                                 req = {
                                     config: response.config,
@@ -248,7 +250,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             response: function (response) {
                 //hide the spinner
                 spinner = false;
-                return response   || $q.when(response);
+                return response || $q.when(response);
             },
             responseError: function (response) {
                 //hide the spinner
@@ -265,6 +267,14 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     IdleProvider.timeout(30);
     KeepaliveProvider.interval(10);
 
+    // auto hide
+    notificationsConfigProvider.setAutoHide(false);
+
+    // delay before hide
+    notificationsConfigProvider.setHideDelay(3000);
+
+    // delay between animation and removing the nofitication
+    notificationsConfigProvider.setAutoHideAnimationDelay(1200);
 
     var spinnerStarter = function (data, headersGetter) {
         spinner = true;
@@ -278,7 +288,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 });
 
 
-app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http,AppInfo,StorageService,$templateCache,$window) {
+app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, userInfoService, $http, AppInfo, StorageService, $templateCache, $window, notifications) {
     $rootScope.appInfo = {};
     //Check if the login dialog is already displayed.
     $rootScope.loginDialogShown = false;
@@ -289,13 +299,26 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         $rootScope.appInfo = appInfo;
         $rootScope.froalaEditorOptions = {
             placeholderText: '',
-            toolbarButtons:['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink','insertImage', 'insertFile'],
+            toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink', 'insertImage', 'insertFile'],
             imageUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
+            imageAllowedTypes: ['jpeg', 'jpg', 'png', 'gif'],
+            fileUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
+            fileAllowedTypes: ['application/pdf', 'application/msword', 'application/x-pdf', 'text/plain', 'application/xml','text/xml'],
             charCounterCount: false,
             quickInsertTags: 8,
             events: {
-                'froalaEditor.initialized': function() {
+                'froalaEditor.initialized': function () {
 
+                },
+                'froalaEditor.file.error': function(e, editor, error){
+                    $rootScope.msg().text= error.text;
+                    $rootScope.msg().type= error.type;
+                    $rootScope.msg().show= true;
+                 },
+                'froalaEditor.image.error ':function(e, editor, error){
+                    $rootScope.msg().text= error.text;
+                    $rootScope.msg().type= error.type;
+                    $rootScope.msg().show= true;
                 }
             }
         };
@@ -324,7 +347,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     };
 
     //showSpinner can be referenced from the view
-    $rootScope.showSpinner = function() {
+    $rootScope.showSpinner = function () {
         return spinner;
     };
 
@@ -367,19 +390,19 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
         httpHeaders.common['Authorization'] = 'Basic ' + base64.encode(username + ':' + password);
 //        httpHeaders.common['withCredentials']=true;
 //        httpHeaders.common['Origin']="http://localhost:9000";
-        $http.get('api/accounts/login').success(function() {
+        $http.get('api/accounts/login').success(function () {
             //If we are here in this callback, login was successfull
             //Let's get user info now
             httpHeaders.common['Authorization'] = null;
             $http.get('api/accounts/cuser').then(function (result) {
-                if(result.data && result.data != null) {
+                if (result.data && result.data != null) {
                     var rs = angular.fromJson(result.data);
                     userInfoService.setCurrentUser(rs);
                     $rootScope.$broadcast('event:loginConfirmed');
-                }else{
+                } else {
                     userInfoService.setCurrentUser(null);
                 }
-            },function(){
+            }, function () {
                 userInfoService.setCurrentUser(null);
             });
         });
@@ -397,21 +420,31 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     /**
      * On 'loginCancel' clears the Authentication header
      */
-    $rootScope.$on('event:loginCancel',function (){
+    $rootScope.$on('event:loginCancel', function () {
         httpHeaders.common['Authorization'] = null;
     });
 
-    $rootScope.$on('$routeChangeStart', function(next, current) {
+    $rootScope.$on('$routeChangeStart', function (next, current) {
 //            console.log('route changing');
         // If there is a message while change Route the stop showing the message
-        if (msg && msg.manualHandle === 'false'){
+        if (msg && msg.manualHandle === 'false') {
 //                console.log('detected msg with text: ' + msg.text);
             msg.show = false;
         }
     });
 
-    $rootScope.loadUserFromCookie = function() {
-        if ( userInfoService.hasCookieInfo() === true ) {
+    $rootScope.$watch(function(){
+        return $rootScope.msg().text;
+    }, function (value) {
+        $rootScope.showNotification($rootScope.msg());
+    });
+
+    $rootScope.$watch('language()', function (value) {
+        $rootScope.showNotification($rootScope.msg());
+    });
+
+    $rootScope.loadUserFromCookie = function () {
+        if (userInfoService.hasCookieInfo() === true) {
             //console.log("found cookie!")
             userInfoService.loadFromCookie();
             httpHeaders.common['Authorization'] = userInfoService.getHthd();
@@ -443,7 +476,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
 
     $rootScope.openErrorDlg = function (errorMessage) {
         StorageService.clearAll();
-        if(!$rootScope.errorModalInstance || $rootScope.errorModalInstance === null || !$rootScope.errorModalInstance.opened) {
+        if (!$rootScope.errorModalInstance || $rootScope.errorModalInstance === null || !$rootScope.errorModalInstance.opened) {
             $rootScope.errorModalInstance = $modal.open({
                 templateUrl: 'CriticalError.html',
                 size: 'lg',
@@ -465,7 +498,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     };
 
     $rootScope.openSessionExpiredDlg = function () {
-        if(!$rootScope.sessionExpiredModalInstance || $rootScope.sessionExpiredModalInstance === null || !$rootScope.sessionExpiredModalInstance.opened) {
+        if (!$rootScope.sessionExpiredModalInstance || $rootScope.sessionExpiredModalInstance === null || !$rootScope.sessionExpiredModalInstance.opened) {
             $rootScope.sessionExpiredModalInstance = $modal.open({
                 templateUrl: 'timedout-dialog.html',
                 size: 'lg',
@@ -493,6 +526,30 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     $rootScope.reloadPage = function () {
         $window.location.reload();
     };
+
+    $rootScope.showNotification = function (m) {
+        if(m != undefined && m.show && m.text != null) {
+            var msg = angular.copy(m);
+            var message = $.i18n.prop(msg.text);
+            var type = msg.type;
+            notifications.closeAll();
+            if (type === "danger") {
+                notifications.showError({message: message});
+            } else if (type === 'warning') {
+                notifications.showWarning({message: message});
+            } else if (type === 'success') {
+                notifications.showSuccess({message: message});
+            }
+            //reset
+            m.text = null;
+            m.type = null;
+            m.show = false;
+        }
+    };
+
+
+
+
 
 });
 

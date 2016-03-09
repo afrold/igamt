@@ -26,20 +26,8 @@ $icon-font-path: "../fonts/";
 
 /* Space out content a bit */
 body {
-  //  padding-top: 0px;
-  //  padding-bottom: 20px;
-  ////  background-color: #fdfdfd;
-//    background: #f5f5f5;
-  //  color: black;
-
-  //  font: 76%/ 1.4em Arial, Geneva, Verdana, Helvetica, sans-serif;
-  //  background: #021a4c;
-  //  color: #000;
-  //     font: 76%/ 1.4em Arial, Geneva, Verdana, Helvetica, sans-serif;
   background: #021a4c url(../images/bg_body4.jpg) no-repeat 50% -10px;
   color: black;
-//  background-color: #fafafa;
-  background-color: #021a4c;
 }
 
 
@@ -369,6 +357,12 @@ div.ngRow.selected {
   margin: 0 auto;
   width: 99%;
 }
+
+.container2 {
+  margin: 20px auto;
+  width: 99%;
+}
+
 
 .row {
   //  margin-left:10px;
@@ -2093,4 +2087,21 @@ input.form-control {
   margin: 1em 0;
 }
 
+.igamt-home {
+  background: white;
+  color: black;
+  border-radius: 14px;
+  margin: 10px;
+}
 
+
+.home-page-panel {
+  height:300px;
+}
+
+
+.home-page-panel-content {
+  max-height: 100px !important;
+  overflow: auto;
+  text-align: left;
+}

@@ -15,7 +15,7 @@
     <!--<div class="row">-->
     <div ng-show="!isPending()">
         <div class="page-header">
-            <h3> Hello, <span ng-bind="getFullName()"></span></h3>
+            <h5> Hello, <span ng-bind="getFullName()"></span></h5>
         </div>
 
         <button type="button" class="btn btn-primary btn-sm"
@@ -180,10 +180,10 @@
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
         <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndClose()"><span><i
-                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Close</span>
+                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
         </button>
         <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndClose()"><span><i
-                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Close</span>
+                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
         </button>
 
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
@@ -208,10 +208,10 @@
                 class="fa fa-times fa-fw">&nbsp; </i>Cancel</span>
         </button>
         <button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="discardChangesAndOpen()"><span><i
-                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes And Open</span>
+                class="fa fa-times-circle fa-fw">&nbsp; </i>Discard Changes</span>
         </button>
         <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="saveChangesAndOpen()"><span><i
-                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes And Open</span>
+                class="fa fa-check-circle fa-fw">&nbsp; </i>Apply Changes</span>
         </button>
 
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">

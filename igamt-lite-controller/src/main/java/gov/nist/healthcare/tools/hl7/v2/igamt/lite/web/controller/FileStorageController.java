@@ -61,12 +61,17 @@ public class FileStorageController {
 			String extension = FilenameUtils.getExtension(filename);
 			if (((mime.equals("text/plain")
 					|| (mime.equals("application/msword"))
+					|| (mime.equals("text/xml"))
 					|| (mime.equals("application/x-pdf")) || (mime
 						.equals("application/pdf")))
 					|| (mime.equals("image/jpeg"))
 					|| (mime.equals("image/gif")) || (mime.equals("image/png")))
 					&& FileStorageUtil.allowedExtensions.contains(extension
 							.toLowerCase())) {
+
+				if (part.getSize() >= 1024 * 1024 * 10) {
+					throw new UploadImageFileException("fileSizeTooBig");
+				}
 				InputStream in = part.getInputStream();
 				DBObject metaData = new BasicDBObject();
 				metaData.put("accountId", account.getId());
@@ -80,7 +85,7 @@ public class FileStorageController {
 						HttpUtil.getImagesRootUrl(request) + "/file?name="
 								+ dbFile.getFilename());
 			}
-			throw new UploadImageFileException("Unsupported File Type");
+			throw new UploadImageFileException("fileTypeUnsupported");
 
 		} catch (RuntimeException e) {
 			throw new UploadImageFileException(e);

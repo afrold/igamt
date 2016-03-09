@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/ripples.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/froala_editor.min.css" />
     <link rel="stylesheet" href="bower_components/froala-wysiwyg-editor/css/froala_style.min.css" />
+    <link rel="stylesheet" href="bower_components/ng-notifications-bar/dist/ngNotificationsBar.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -58,6 +59,7 @@
     </script>
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit>
+<notifications-bar class="notifications" closeIcon="fa fa-times-circle"></notifications-bar>
 <div id="wrapper">
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>
@@ -69,14 +71,14 @@
     <!-- Add your site or application content here -->
     <div id="appcontainer" class="">
 
-        <div class="container" style="padding-top:20px">
-            <div class="row">
-                <div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">
-                    <button type="button" class="close" ng-click="msg().show=false">×</button>
-                    <div msg key-expr="msg().text"></div>
-                </div>
-            </div>
-        </div>
+        <!--<div class="container" style="padding-top:20px">-->
+            <!--<div class="row">-->
+                <!--<div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">-->
+                    <!--<button type="button" class="close" ng-click="msg().show=false">×</button>-->
+                    <!--<div msg key-expr="msg().text"></div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div ng-view></div>
 
@@ -125,6 +127,7 @@
     <script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
     <script src="bower_components/froala-wysiwyg-editor/js/froala_editor.min.js"></script>
     <script src="bower_components/angular-froala/src/angular-froala.js"></script>
+    <script src="bower_components/ng-notifications-bar/dist/ngNotificationsBar.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js scripts/modules.js -->
@@ -170,6 +173,7 @@
     <script src="scripts/services/AppInfo.js"></script>
     <script src="scripts/services/CloneDeleteSvc.js"></script>
     <script src="scripts/services/ContextMenuSvc.js"></script>
+    <script src="scripts/services/DTLibSvc.js"></script>
     <script src="scripts/services/MessageEventsSvc.js"></script>
     <script src="scripts/services/MultiAccountLoader.js"></script>
     <script src="scripts/services/ProfileAccessSvc.js"></script>

@@ -59,6 +59,7 @@
     </script>
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit>
+<notifications-bar class="notifications" closeIcon="fa fa-times-circle"></notifications-bar>
 <div id="wrapper">
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>
@@ -70,14 +71,14 @@
     <!-- Add your site or application content here -->
     <div id="appcontainer" class="">
 
-        <div class="container" style="padding-top:20px">
-            <div class="row">
-                <div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">
-                    <button type="button" class="close" ng-click="msg().show=false">×</button>
-                    <div msg key-expr="msg().text"></div>
-                </div>
-            </div>
-        </div>
+        <!--<div class="container" style="padding-top:20px">-->
+            <!--<div class="row">-->
+                <!--<div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">-->
+                    <!--<button type="button" class="close" ng-click="msg().show=false">×</button>-->
+                    <!--<div msg key-expr="msg().text"></div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div ng-view></div>
 

@@ -102,13 +102,13 @@
                                     <label class="control-label">Definition Text</label>
 
                                     <div ng-if="!options.readonly">
-                                        <textarea froala="froalaEditorOptions" ng-model="datatype.text" name="text"
+                                        <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="text"
                                                   id="text"
                                                   ng-change="recordChanged()"></textarea>
                                     </div>
 
                                     <div ng-if="options.readonly">
-                                        <div froala-view="datatype.text"></div>
+                                        <div froala-view="datatype.usageNote"></div>
                                     </div>
 
                                 </div>

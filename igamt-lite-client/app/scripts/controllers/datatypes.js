@@ -25,8 +25,6 @@ angular.module('igl')
             $rootScope.datatype = null;
             $scope.refreshTree();
             $scope.loadingSelection = false;
-            $scope.accordion.datatypeStatus = false;
-            $scope.accordion.listStatus = !$scope.accordion.datatypeStatus;
         };
 
         $scope.delete = function (datatype) {
@@ -241,8 +239,6 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
 //                }
             }
         }
-
-
         $rootScope.msg().text = "dtDeleteSuccess";
         $rootScope.msg().type = "success";
         $rootScope.msg().show = true;
