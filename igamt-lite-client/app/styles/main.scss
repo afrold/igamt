@@ -2105,3 +2105,14 @@ input.form-control {
   overflow: auto;
   text-align: left;
 }
+
+.igl-page-header{
+  border-bottom: 1px solid #eeeeee; margin-bottom: 20px;
+}
+
+table.profile-table thead {
+  background-color: #00bcd4;
+  color: rgba(255, 255, 255, 0.84);
+  font-weight: normal;
+  border-color:#00bcd4;
+}

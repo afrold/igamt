@@ -89,6 +89,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
             controller: 'RegistrationCtrl'
         }).when('/useraccount', {
             templateUrl: 'views/account/userAccount.html'
+        }) .when('/glossary', {
+            templateUrl: 'views/glossary.html'
         })
 //        .when('/account', {
 //            templateUrl: 'views/account/account.html',

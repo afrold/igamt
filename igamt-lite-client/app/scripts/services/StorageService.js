@@ -6,6 +6,10 @@ angular.module('igl').factory('StorageService',
             SELECTED_IG_DOCUMENT_TYPE:'SelectedIgDocumentType',
             SELECTED_IG_DOCUMENT_ID:'SelectedIgDocumentId',
             APP_VERSION:'APP_VERSION',
+            TABLE_CONCISE_SETTINGS:'TABLE_CONCISE_SETTINGS',
+            TABLE_RELEVANCE_SETTINGS:'TABLE_RELEVANCE_SETTINGS',
+            TABLE_COLLAPSE_SETTINGS:'TABLE_COLLAPSE_SETTINGS',
+            TABLE_READONLY_SETTINGS:'TABLE_READONLY_SETTINGS',
 
             remove: function (key) {
                 return localStorageService.remove(key);

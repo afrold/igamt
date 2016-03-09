@@ -2,11 +2,13 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
+    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, ViewSettings,DatatypeService) {
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
         $scope.datatypeCopy = null;
+        $scope.viewSettings = ViewSettings;
+
         $scope.init = function () {
        };
 
@@ -157,7 +159,74 @@ angular.module('igl')
                 }
 
             return 0;
-        }
+        };
+
+        $scope.isRelevant = function (node) {
+            if (node === undefined || !$scope.viewSettings.tableRelevance)
+                return true;
+            if (node.hide == undefined || !node.hide || node.hide === false) {
+                var predicates = $scope.getDatatypeLevelPredicates(node);
+                if (predicates && predicates != null && predicates.length > 0 ) {
+                    return  predicates[0].trueUsage === "R" ||predicates[0].trueUsage === "RE" || predicates[0].falseUsage === "R" || predicates[0].falseUsage === "RE";
+                }else {
+                    return node.usage == null || !node.usage || node.usage === "R" || node.usage === "RE";
+                }
+            } else {
+                return false;
+            }
+        };
+
+        $scope.isBranch = function (node) {
+            var children = $scope.children(node);
+            return children != null && children.length > 0;
+        };
+
+        $scope.hasRelevantChild = function (node) {
+            if (node != undefined) {
+                var children = $scope.children(node);
+                if (children && children != null && children.length > 0) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        $scope.isVisible = function (node) {
+            return  node ? $scope.isRelevant(node) ? $scope.isVisible($scope.getParent(node)) : false:true;
+         };
+
+        $scope.children = function (node) {
+            return DatatypeService.getNodes(node);
+        };
+
+        $scope.filterConstraints = function (node, constraints) {
+            if (constraints) {
+                return $filter('filter')(constraints, {constraintTarget: node.position + '[1]'}, true);
+            }
+            return null;
+        };
+
+        $scope.getParent = function (node) {
+            return $scope.findDTByComponentId(node.id);
+        };
+
+        $scope.getDatatypeLevelConfStatements = function (element) {
+            var datatype = $scope.getParent(element);
+            var confStatements = [];
+            if (datatype && datatype != null && datatype.conformanceStatements.length > 0) {
+                return $scope.filterConstraints(element,datatype.conformanceStatements);
+            }
+            return confStatements;
+        };
+
+        $scope.getDatatypeLevelPredicates = function (element) {
+            var datatype = $scope.getParent(element);
+            var predicates = [];
+            if (datatype && datatype != null && datatype.predicates.length > 0) {
+                return $scope.filterConstraints(element,datatype.predicates);
+            }
+            return predicates;
+        };
 
     });
 

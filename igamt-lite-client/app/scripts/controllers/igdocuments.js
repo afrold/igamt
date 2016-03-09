@@ -3,25 +3,19 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ColumnSettings, StorageService,$q,notifications) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService,$q,notifications,DatatypeService) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
         $scope.tmpIgs = [].concat($rootScope.igs);
         $scope.error = null;
         $scope.loading = false;
-        $scope.columnSettings = ColumnSettings;
-//        $scope.visibleColumns = angular.copy(ColumnSettings.visibleColumns);
-
+        $scope.viewSettings = ViewSettings;
         $scope.igDocumentMsg = {};
         $scope.igDocumentConfig = {
             selectedType: null
         };
 
-
-        $scope.options = {
-            'readonly': false
-        };
 
         $scope.igDocumentTypes = [
             {
@@ -57,7 +51,7 @@ angular.module('igl')
                 return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];
             },
             getTemplate: function (node) {
-                if ($scope.options.readonly) {
+                if ($scope.viewSettings.tableReadonly) {
                     return node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
                 } else {
                     return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
@@ -67,41 +61,16 @@ angular.module('igl')
 
         $scope.datatypesParams = new ngTreetableParams({
             getNodes: function (parent) {
-                if (parent && parent != null) {
-
-                    if (parent.datatype) {
-                        var dt = $rootScope.datatypesMap[parent.datatype];
-                        return dt.components;
-
-                    } else {
-                        return parent.components;
-                    }
-                } else {
-                    if ($rootScope.datatype != null) {
-                        return $rootScope.datatype.components;
-                    } else {
-                        return [];
-                    }
-                }
+               return DatatypeService.getNodes(parent);
             },
             getTemplate: function (node) {
-                if ($scope.options.readonly) {
-                    return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentReadTree.html' : '';
-                } else {
-                    return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !$scope.isDatatypeSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && $scope.isDatatypeSubDT(node) ? 'DatatypeSubComponentEditTree.html' : '';
-                }
+                 return DatatypeService.getTemplate(node);
             }
         });
 
 
         $scope.isDatatypeSubDT = function (component) {
-            if ($rootScope.datatype != null) {
-                for (var i = 0, len = $rootScope.datatype.components.length; i < len; i++) {
-                    if ($rootScope.datatype.components[i].id === component.id)
-                        return false;
-                }
-            }
-            return true;
+            return DatatypeService.isDatatypeSubDT(component);
         };
 
         $rootScope.closeIGDocument = function () {
@@ -141,7 +110,7 @@ angular.module('igl')
 
             },
             getTemplate: function (node) {
-                if ($scope.options.readonly) {
+                if ($scope.viewSettings.tableReadonly) {
 
                     if (node.obj.type === 'segmentRef') {
                         return 'MessageSegmentRefReadTree.html';
@@ -341,12 +310,12 @@ angular.module('igl')
         };
 
         $scope.edit = function (igdocument) {
-            $scope.options.readonly = false;
+            $scope.viewSettings.setTableReadonly(false);
             $scope.show(igdocument);
         };
 
         $scope.view = function (igdocument) {
-            $scope.options.readonly = true;
+            $scope.viewSettings.setTableReadonly(true);
             $scope.show(igdocument);
         };
 
@@ -917,7 +886,7 @@ angular.module('igl')
         };
 
         $scope.onColumnToggle = function (item) {
-            $scope.columnSettings.save();
+            $scope.viewSettings.save();
         };
 
         $scope.getFullName = function () {
@@ -926,6 +895,8 @@ angular.module('igl')
             }
             return '';
         };
+
+
     });
 
 angular.module('igl').controller('ViewIGChangesCtrl', function ($scope, $modalInstance, changes, $rootScope, $http) {

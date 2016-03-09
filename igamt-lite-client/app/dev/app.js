@@ -24,7 +24,6 @@ var app = angular
         'ngTreetable',
         'restangular',
         'ng-context-menu',
-        'table-settings',
         'angularjs-dropdown-multiselect',
         'dndLists',
         'froala',
@@ -124,6 +123,9 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
         })
         .when('/registrationSubmitted', {
             templateUrl: 'views/account/registrationSubmitted.html'
+        })
+        .when('/glossary', {
+            templateUrl: 'views/glossary.html'
         })
         .otherwise({
             redirectTo: '/'
