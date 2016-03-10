@@ -161,71 +161,34 @@ angular.module('igl')
             return 0;
         };
 
+
         $scope.isRelevant = function (node) {
-            if (node === undefined || !$scope.viewSettings.tableRelevance)
-                return true;
-            if (node.hide == undefined || !node.hide || node.hide === false) {
-                var predicates = $scope.getDatatypeLevelPredicates(node);
-                if (predicates && predicates != null && predicates.length > 0 ) {
-                    return  predicates[0].trueUsage === "R" ||predicates[0].trueUsage === "RE" || predicates[0].falseUsage === "R" || predicates[0].falseUsage === "RE";
-                }else {
-                    return node.usage == null || !node.usage || node.usage === "R" || node.usage === "RE";
-                }
-            } else {
-                return false;
-            }
+            return DatatypeService.isRelevant(node);
         };
 
         $scope.isBranch = function (node) {
-            var children = $scope.children(node);
-            return children != null && children.length > 0;
+            return DatatypeService.isBranch(node);
         };
 
-        $scope.hasRelevantChild = function (node) {
-            if (node != undefined) {
-                var children = $scope.children(node);
-                if (children && children != null && children.length > 0) {
-                    return true;
-                }
-            }
-            return false;
-        };
 
         $scope.isVisible = function (node) {
-            return  node ? $scope.isRelevant(node) ? $scope.isVisible($scope.getParent(node)) : false:true;
+            return DatatypeService.isVisible(node);
          };
 
         $scope.children = function (node) {
             return DatatypeService.getNodes(node);
         };
 
-        $scope.filterConstraints = function (node, constraints) {
-            if (constraints) {
-                return $filter('filter')(constraints, {constraintTarget: node.position + '[1]'}, true);
-            }
-            return null;
-        };
-
         $scope.getParent = function (node) {
-            return $scope.findDTByComponentId(node.id);
+            return DatatypeService.getParent(node);
         };
 
         $scope.getDatatypeLevelConfStatements = function (element) {
-            var datatype = $scope.getParent(element);
-            var confStatements = [];
-            if (datatype && datatype != null && datatype.conformanceStatements.length > 0) {
-                return $scope.filterConstraints(element,datatype.conformanceStatements);
-            }
-            return confStatements;
+            return DatatypeService.getDatatypeLevelConfStatements(element);
         };
 
         $scope.getDatatypeLevelPredicates = function (element) {
-            var datatype = $scope.getParent(element);
-            var predicates = [];
-            if (datatype && datatype != null && datatype.predicates.length > 0) {
-                return $scope.filterConstraints(element,datatype.predicates);
-            }
-            return predicates;
+            return DatatypeService.getDatatypeLevelPredicates(element);
         };
 
     });

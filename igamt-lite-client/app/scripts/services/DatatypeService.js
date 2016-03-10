@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    ['$rootScope', 'ViewSettings', function ($rootScope, ViewSettings) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', function ($rootScope, ViewSettings, ElementUtils) {
         var DatatypeService = {
             getNodes: function (parent) {
                 if (parent && parent != null) {
@@ -22,7 +22,7 @@ angular.module('igl').factory('DatatypeService',
                 }
             },
             getParent: function (child) {
-
+                return $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
             },
             getTemplate: function (node) {
                 if (ViewSettings.tableReadonly) {
@@ -39,6 +39,40 @@ angular.module('igl').factory('DatatypeService',
                     }
                 }
                 return true;
+            },
+            isBranch: function (node) {
+                var children = DatatypeService.getNodes(node);
+                return children != null && children.length > 0;
+            },
+            isVisible: function (node) {
+                return  node ? DatatypeService.isRelevant(node) ? DatatypeService.isVisible(DatatypeService.getParent(node)) : false : true;
+            },
+            isRelevant: function (node) {
+                if (node === undefined || !ViewSettings.tableRelevance)
+                    return true;
+                if (node.hide == undefined || !node.hide || node.hide === false) {
+                    var predicates = DatatypeService.getDatatypeLevelPredicates(node);
+                    return ElementUtils.isRelevant(node, predicates);
+                } else {
+                    return false;
+                }
+            },
+            getDatatypeLevelConfStatements: function (element) {
+                var datatype = DatatypeService.getParent(element);
+                var confStatements = [];
+                if (datatype && datatype != null && datatype.conformanceStatements.length > 0) {
+                    return ElementUtils.filterConstraints(element, datatype.conformanceStatements);
+                }
+                return confStatements;
+            },
+
+            getDatatypeLevelPredicates: function (element) {
+                var datatype = DatatypeService.getParent(element);
+                var predicates = [];
+                if (datatype && datatype != null && datatype.predicates.length > 0) {
+                    return ElementUtils.filterConstraints(element, datatype.predicates);
+                }
+                return predicates;
             }
         };
         return DatatypeService;
