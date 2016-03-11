@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -351,7 +352,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			msd.addAttribute(new Attribute("title", ""));
 		}
 
-		profile.getMessages().setPositionsOrder();
+		//		profile.getMessages().setPositionsOrder();
 		List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
 		Collections.sort(msgList);
 
@@ -373,7 +374,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ss.addAttribute(new Attribute("title", ""));
 		}
 
-		profile.getSegments().setPositionsOrder();
+		//		profile.getSegments().setPositionsOrder();
 		List<Segment> sgtList = new ArrayList<>(profile.getSegments().getChildren());
 		Collections.sort(sgtList);
 		for (Segment s : sgtList) {
@@ -395,7 +396,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ds.addAttribute(new Attribute("title", ""));
 		}
 
-		profile.getDatatypes().setPositionsOrder();
+		//		profile.getDatatypes().setPositionsOrder();
 		List<Datatype> dtList = new ArrayList<>(profile.getDatatypes().getChildren());
 		Collections.sort(dtList);
 		for (Datatype d : dtList) {
@@ -420,7 +421,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ts.addAttribute(new Attribute("title", ""));
 		}
 
-		profile.getTables().setPositionsOrder();
+		//		profile.getTables().setPositionsOrder();
 		List<Table> tables = new ArrayList<Table>(profile.getTables()
 				.getChildren());
 		Collections.sort(tables);
@@ -428,6 +429,230 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ts.appendChild(this.serializeTable(t, prefix));
 		}
 		xsect.appendChild(ts);
+
+
+		////////////////
+		nu.xom.Element cnts = new nu.xom.Element("Section");
+		cnts.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+		cnts.addAttribute(new Attribute("position", String.valueOf(5)));
+		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(5);
+		cnts.addAttribute(new Attribute("prefix", prefix));
+		cnts.addAttribute(new Attribute("h", String.valueOf(2)));
+		cnts.addAttribute(new Attribute("title", "Conformance information"));
+
+		nu.xom.Element cs = new nu.xom.Element("Section");
+		cs.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+		cs.addAttribute(new Attribute("position", String.valueOf(1)));
+		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(5)+"."+String.valueOf(1);
+		cs.addAttribute(new Attribute("prefix", prefix));
+		cs.addAttribute(new Attribute("h", String.valueOf(3)));
+		cs.addAttribute(new Attribute("title", "Conformance statements"));
+
+		nu.xom.Element cp = new nu.xom.Element("Section");
+		cp.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+		cp.addAttribute(new Attribute("position", String.valueOf(2)));
+		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(5)+"."+String.valueOf(2);
+		cp.addAttribute(new Attribute("prefix", prefix));
+		cp.addAttribute(new Attribute("h", String.valueOf(3)));
+		cp.addAttribute(new Attribute("title", "Conditional predicates"));
+
+		//* Messages
+		nu.xom.Element csmsg = new nu.xom.Element("Section");
+		csmsg.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+		csmsg.addAttribute(new Attribute("position", String.valueOf(3)));
+		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(5)+"."+String.valueOf(1)+"."+String.valueOf(profile.getMessages().getSectionPosition());
+		csmsg.addAttribute(new Attribute("prefix", prefix));
+		csmsg.addAttribute(new Attribute("h", String.valueOf(4)));
+		csmsg.addAttribute(new Attribute("title", "Conformance profile level"));
+
+		nu.xom.Element cpmsg = new nu.xom.Element("Section");
+		cpmsg.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+		cpmsg.addAttribute(new Attribute("position", String.valueOf(3)));
+		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(5)+"."+String.valueOf(2)+"."+String.valueOf(profile.getMessages().getSectionPosition());
+		cpmsg.addAttribute(new Attribute("prefix", prefix));
+		cpmsg.addAttribute(new Attribute("h", String.valueOf(4)));
+		cpmsg.addAttribute(new Attribute("title", "Conformance profile level"));
+
+
+		for (Message m : profile.getMessages().getChildren()){
+			if (m.getChildren() != null) {
+
+				nu.xom.Element csmsginfo = new nu.xom.Element("Constraints");
+				csmsginfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+				csmsginfo.addAttribute(new Attribute("position", String.valueOf(m.getSectionPosition())));
+				csmsginfo.addAttribute(new Attribute("h", String.valueOf(3)));
+				csmsginfo.addAttribute(new Attribute("title", m.getName()));
+				csmsginfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
+
+				nu.xom.Element cpmsginfo = new nu.xom.Element("Constraints");
+				cpmsginfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+				cpmsginfo.addAttribute(new Attribute("position", String.valueOf(m.getSectionPosition())));
+				cpmsginfo.addAttribute(new Attribute("h", String.valueOf(3)));
+				cpmsginfo.addAttribute(new Attribute("title", m.getName()));
+				cpmsginfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
+
+			}
+		}
+
+		//TODO Not yet implemented
+
+		cp.appendChild(cpmsg);
+		cs.appendChild(csmsg);
+
+
+		// Constraints for segments
+		nu.xom.Element cssg = new nu.xom.Element("Section");
+		cssg.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+		cssg.addAttribute(new Attribute("position", String.valueOf(3)));
+		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(5)+"."+String.valueOf(1)+"."+String.valueOf(profile.getSegments().getSectionPosition());
+		cssg.addAttribute(new Attribute("prefix", prefix));
+		cssg.addAttribute(new Attribute("h", String.valueOf(4)));
+		cssg.addAttribute(new Attribute("title", "Segment level"));
+
+		nu.xom.Element cpsg = new nu.xom.Element("Section");
+		cpsg.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+		cpsg.addAttribute(new Attribute("position", String.valueOf(3)));
+		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(5)+"."+String.valueOf(2)+"."+String.valueOf(profile.getSegments().getSectionPosition());
+		cpsg.addAttribute(new Attribute("prefix", prefix));
+		cpsg.addAttribute(new Attribute("h", String.valueOf(4)));
+		cpsg.addAttribute(new Attribute("title", "Segment level"));
+
+
+		for (Segment s : profile.getSegments().getChildren()){
+			if (s.getFields() != null) {
+
+				nu.xom.Element csinfo = new nu.xom.Element("Constraints");
+				csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+				csinfo.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition())));
+				csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
+				csinfo.addAttribute(new Attribute("title", s.getLabel()));
+				csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
+
+				nu.xom.Element cpinfo = new nu.xom.Element("Constraints");
+				cpinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+				cpinfo.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition())));
+				cpinfo.addAttribute(new Attribute("h", String.valueOf(3)));
+				cpinfo.addAttribute(new Attribute("title", s.getLabel()));
+				cpinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
+
+
+				Map<Integer, Field> fields = new HashMap<Integer, Field>();
+
+				for (Field f : s.getFields()) {
+					fields.put(f.getPosition(), f);
+				}
+
+				for (int i = 1; i < fields.size() + 1; i++) {
+					List<Constraint> constraints = findConstraints( i, s.getPredicates(), s.getConformanceStatements());
+					if (!constraints.isEmpty()) {
+						for (Constraint constraint : constraints) {
+							if (constraint instanceof Predicate) {
+								nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
+								prefix = String.valueOf(profile.getSectionPosition()+1) + "5.1.3";
+								cpinfo.addAttribute(new Attribute("prefix", prefix)); 
+								elmConstraint.addAttribute(new Attribute("Usage", "C(" + ((Predicate)constraint).getTrueUsage()
+										+ "/"+ ((Predicate)constraint).getFalseUsage() + ")"));
+								elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()));
+								elmConstraint.appendChild(constraint.getDescription());
+								cpinfo.appendChild(elmConstraint);
+							} else if (constraint instanceof ConformanceStatement) {
+								nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
+								prefix = String.valueOf(profile.getSectionPosition()+1) + "5.2.3";
+								csinfo.addAttribute(new Attribute("prefix", prefix));
+								elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()));
+								elmConstraint.appendChild(constraint.getDescription());
+								csinfo.appendChild(elmConstraint);
+							}
+						}
+					}
+				}
+				cpsg.appendChild(cpinfo);
+				cssg.appendChild(csinfo);
+			}
+		}
+
+		cp.appendChild(cpsg);
+		cs.appendChild(cssg);
+		
+
+		// Constraints for datatypes
+		nu.xom.Element csdt = new nu.xom.Element("Section");
+		csdt.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+		csdt.addAttribute(new Attribute("position", String.valueOf(3)));
+		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(5)+"."+String.valueOf(1)+"."+String.valueOf(profile.getDatatypes().getSectionPosition());
+		csdt.addAttribute(new Attribute("prefix", prefix));
+		csdt.addAttribute(new Attribute("h", String.valueOf(4)));
+		csdt.addAttribute(new Attribute("title", "Datatype level"));
+
+		nu.xom.Element cpdt = new nu.xom.Element("Section");
+		cpdt.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+		cpdt.addAttribute(new Attribute("position", String.valueOf(3)));
+		prefix = String.valueOf(profile.getSectionPosition()+1)+"."+String.valueOf(5)+"."+String.valueOf(2)+"."+String.valueOf(profile.getDatatypes().getSectionPosition());
+		cpdt.addAttribute(new Attribute("prefix", prefix));
+		cpdt.addAttribute(new Attribute("h", String.valueOf(4)));
+		cpdt.addAttribute(new Attribute("title", "Datatype level"));
+
+
+		for (Datatype d : profile.getDatatypes().getChildren()){
+			if (d.getComponents() != null) {
+
+				nu.xom.Element csdtinfo = new nu.xom.Element("Constraints");
+				csdtinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+				csdtinfo.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition())));
+				csdtinfo.addAttribute(new Attribute("h", String.valueOf(3)));
+				csdtinfo.addAttribute(new Attribute("title", d.getLabel()));
+				csdtinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
+
+				nu.xom.Element cpdtinfo = new nu.xom.Element("Constraints");
+				cpdtinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+				cpdtinfo.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition())));
+				cpdtinfo.addAttribute(new Attribute("h", String.valueOf(3)));
+				cpdtinfo.addAttribute(new Attribute("title", d.getLabel()));
+				cpdtinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
+
+				Map<Integer, Component> components = new HashMap<Integer, Component>();
+				for (Component c : d.getComponents()) {
+					components.put(c.getPosition(), c);
+				}
+				for (int i = 1; i < components.size() + 1; i++) {
+					Component c = components.get(i);
+					List<Constraint> constraints = findConstraints( i, d.getPredicates(), d.getConformanceStatements());
+					if (!constraints.isEmpty()) {
+						for (Constraint constraint : constraints) {
+
+							if (constraint instanceof Predicate) {
+								nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
+								prefix = String.valueOf(profile.getSectionPosition()+1) + "5.1.3";
+								cpdtinfo.addAttribute(new Attribute("prefix", prefix)); 
+								elmConstraint.addAttribute(new Attribute("Usage", "C(" + ((Predicate)constraint).getTrueUsage()
+										+ "/"+ ((Predicate)constraint).getFalseUsage() + ")"));
+								elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()));
+								elmConstraint.appendChild(constraint.getDescription());
+								cpdtinfo.appendChild(elmConstraint);
+							} else if (constraint instanceof ConformanceStatement) {
+								nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
+								prefix = String.valueOf(profile.getSectionPosition()+1) + "5.2.3";
+								csdtinfo.addAttribute(new Attribute("prefix", prefix));
+								elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()));
+								elmConstraint.appendChild(constraint.getDescription());
+								csdtinfo.appendChild(elmConstraint);
+							}
+						}
+					}
+				}
+				cpdt.appendChild(cpdtinfo);
+				csdt.appendChild(csdtinfo);
+			}
+		}
+
+		cp.appendChild(cpdt);
+		cs.appendChild(csdt);
+
+		cnts.appendChild(cp);
+		cnts.appendChild(cs);
+
+		xsect.appendChild(cnts);
+		///////////////
 
 		xsect.appendChild(e);
 		return xsect;
@@ -459,7 +684,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 				&& !metaData.getSchemaVersion().equals(""))
 			e.addAttribute(new Attribute("SchemaVersion", metaData
 					.getSchemaVersion()));
-		
+
 		String prefix = "";
 
 		//		nu.xom.Element ds = new nu.xom.Element("Datatypes");
@@ -491,7 +716,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		return xsect;
 	}
 
-	
+
 	@Override
 	public nu.xom.Document serializeProfileToDoc(Profile profile) {
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
