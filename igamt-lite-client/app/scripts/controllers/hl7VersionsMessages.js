@@ -4,17 +4,22 @@ angular.module('igl').controller(
 				userInfoService) {
 
 			$rootScope.clickSource = {};
+			$rootScope.stash = {};
 			$scope.hl7Versions = function(clickSource) {
 				$rootScope.clickSource = clickSource;
 				if (clickSource === "btn") {
 					if ($rootScope.hasChanges()) {
 						$scope.confirmOpen($rootScope.igdocument);
 					} else {
-						$rootScope.hl7Version = {};
+						$rootScope.hl7Version = false;
 						$rootScope.igdocument = false;
 						$scope.hl7VersionsInstance();
 					}
 				} else if  (clickSource === "ctx") {
+					console.log("clickSource === ctx.hl7Version=" + JSON.stringify($scope.hl7Version));
+					console.log("clickSource === ctx$rootScope.hl7Version=" + JSON.stringify($rootScope.hl7Version));
+					console.log("clickSource === ctx$rootScopes.stash.hl7Version=" + JSON.stringify($rootScope.stash.hl7Version));
+	                	$rootScope.stash = {"hl7Version" : $rootScope.hl7Version, "igdocument" : $rootScope.igdocument};
 					$scope.hl7VersionsInstance();
 				}
 			};
@@ -39,6 +44,9 @@ angular.module('igl').controller(
 						break;
 					}
 					}
+					console.log("$scope.hl7VersionsInstance.hl7Version=" + JSON.stringify($scope.hl7Version));
+					console.log("$scope.hl7VersionsInstance$rootScope.hl7Version=" + JSON.stringify($rootScope.hl7Version));
+					console.log("$scope.hl7VersionsInstance$rootScopes.stash.hl7Version=" + JSON.stringify($rootScope.stash.hl7Version));
 				});			
 			};
 
@@ -53,7 +61,10 @@ angular.module('igl').controller(
 	                }
 	            }).result.then(function (igdocument) {
 	                $rootScope.clearChanges();
-					$rootScope.hl7Version = {};
+	                if ($rootScope.hl7Version && $rootScope.igdocument) {
+	                		$rootScope.stash = {"hl7Version" : $rootScope.hl7Version, "igdocument" : $rootScope.igdocument};
+	            		}
+					$rootScope.hl7Version = false;
 					$rootScope.igdocument = false;
 	                $scope.hl7VersionsInstance();
 	            }, function () {
@@ -82,6 +93,8 @@ angular.module('igl').controller(
 			$scope.createIGDocument = function(hl7Version, msgEvts) {
 				console.log("Creating IGDocument...");
 				console.log("msgEvts=" + msgEvts);
+				$rootScope.hl7Version = {};
+				$rootScope.igdocument = false;
 				var iprw = {
 					"hl7Version" : hl7Version,
 					"msgEvts" : msgEvts,
@@ -139,7 +152,7 @@ angular.module('igl').controller(
 		function($scope, $rootScope, $modalInstance, $http, hl7Versions,
 				ProfileAccessSvc, MessageEventsSvc) {
 
-			$scope.hl7Version = {};
+			$scope.hl7Version = false;
 			$scope.hl7Versions = hl7Versions;
 			$scope.okDisabled = true;
 			$scope.messageIds = [];
@@ -182,6 +195,14 @@ angular.module('igl').controller(
 				return $rootScope.igdocument;
 			}, function(newValue, oldValue) {
 				if ($rootScope.clickSource === "ctx") {
+					console.log("$scope.$watch.hl7Version=" + JSON.stringify($scope.hl7Version));
+					console.log("$scope.$watch$rootScope.hl7Version=" + JSON.stringify($rootScope.hl7Version));
+					console.log("$scope.$watchScope.stash.hl7Version=" + JSON.stringify($rootScope.stash.hl7Version));
+					if ($rootScope.hl7Version) {
+						$scope.hl7Version = $rootScope.hl7Version;
+					} else {
+						$scope.hl7Version = $rootScope.stash.hl7Version;
+					}
 					$scope.hl7Version = $rootScope.hl7Version;
 					$scope.messageIds = ProfileAccessSvc.Messages().getMessageIds();
 					$scope.loadIGDocumentsByVersion();
@@ -194,7 +215,10 @@ angular.module('igl').controller(
 				$scope.messageEvents = messageEvents;
 				$modalInstance.close(messageEvents);
 			};
+			
 			$scope.cancel = function() {
+				$rootScope.hl7Version = $rootScope.stash.hl7Version;
+				$rootScope.igdocument = $rootScope.stash.igdocument;
 				$modalInstance.dismiss('cancel');
 			};
 		});
