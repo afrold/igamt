@@ -17,6 +17,7 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 
 import java.io.IOException;
@@ -41,6 +42,11 @@ public interface IGDocumentExportService {
 	
 	InputStream exportAsDocxDatatypes(IGDocument d)  throws IOException; 
 	
+	InputStream exportAsDocxDatatype(Datatype d, IGDocument igdoc)  throws IOException; 
+
 	InputStream exportAsHtml(IGDocument d) throws IOException;
 	
+	InputStream exportAsHtmlDatatypes(IGDocument d)  throws IOException; 
+
+	InputStream exportAsHtmlDatatype(Datatype d, IGDocument igdoc)  throws IOException; 
 }

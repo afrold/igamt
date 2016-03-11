@@ -174,6 +174,16 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		return doc;
 	}
 
+	public String serializeDatatypeToXML(Datatype d, IGDocument igdoc) {
+		return serializeDatatypeToDoc(d, igdoc).toXML();
+	}
+
+	public nu.xom.Document serializeDatatypeToDoc(Datatype d, IGDocument igdoc) {
+		nu.xom.Element e = serializeDatatype(d, igdoc.getProfile().getTables(), igdoc.getProfile().getDatatypes(), "");
+		nu.xom.Document doc = new nu.xom.Document(e);
+		return doc;
+	}
+
 	public nu.xom.Element serializeIGDocumentMetadataToDoc(IGDocument igdoc) {
 		nu.xom.Element elmMetaData = new nu.xom.Element("MetaData");
 
@@ -1322,6 +1332,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		elmDatatype.addAttribute(new Attribute("Description", d
 				.getDescription()));
 		elmDatatype.addAttribute(new Attribute("Comment", d.getComment()));
+		elmDatatype.addAttribute(new Attribute("Hl7Version", d.getHl7Version()==null?"":d.getHl7Version()));//TODO Check do we want here?
+
 
 		elmDatatype.addAttribute(new Attribute("id", d.getId()));
 		elmDatatype.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(d.getSectionPosition()+1)));
@@ -1386,6 +1398,13 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 					}
 				}
 				elmDatatype.appendChild(elmComponent);
+			}
+			if (d.getComponents().size() == 0) {
+				nu.xom.Element elmComponent = new nu.xom.Element("Component");
+				elmComponent.addAttribute(new Attribute("Name", d.getName()));
+				elmComponent.addAttribute(new Attribute("Position", "1"));
+				elmDatatype.appendChild(elmComponent);
+
 			}
 		}
 		sect.appendChild(elmDatatype);
