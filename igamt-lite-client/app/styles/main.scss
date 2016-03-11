@@ -1770,7 +1770,7 @@ table.profile-table td {
   text-align: left
 }
 
-table.ig-list-table {
+table.igl-list-table {
   max-height: 600px !important;
 }
 
@@ -2104,4 +2104,15 @@ input.form-control {
   max-height: 100px !important;
   overflow: auto;
   text-align: left;
+}
+
+.igl-page-header{
+  border-bottom: 1px solid #eeeeee; margin-bottom: 20px;
+}
+
+tr.tbl-header {
+  background-color: #00bcd4;
+  color: rgba(255, 255, 255, 0.84);
+  font-weight: normal;
+  border-color:#00bcd4;
 }
