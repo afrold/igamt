@@ -24,7 +24,6 @@ var app = angular
         'ngTreetable',
         'restangular',
         'ng-context-menu',
-        'table-settings',
         'angularjs-dropdown-multiselect',
         'dndLists',
         'froala',

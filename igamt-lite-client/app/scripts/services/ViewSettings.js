@@ -16,7 +16,7 @@ angular.module('igl').factory('ViewSettings',
             { id: "defText", label: "Defin. Text"},
             { id: "comment", label: "Comment"}
         ];
-        var visibleColumns = StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY) == null ? angular.copy(options) : angular.fromJson(StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY));
+        var visibleColumns = StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY) == null ? angular.copy(columnOptions) : angular.fromJson(StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY));
         var ViewSettings = {
             columnOptions: columnOptions,
             visibleColumns: visibleColumns,
