@@ -272,8 +272,8 @@ public class IGDocumentController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-	@RequestMapping(value = "/{id}/export/zip/{mIds}", method = RequestMethod.POST, produces = "application/zip")
-	public void exportZipByMessage(@PathVariable("id") String id,
+	@RequestMapping(value = "/{id}/export/validation/{mIds}", method = RequestMethod.POST, produces = "application/zip")
+	public void exportValidationXMLByMessages(@PathVariable("id") String id,
 			@PathVariable("mIds") String[] messageIds,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, IGDocumentNotFoundException,
@@ -282,8 +282,43 @@ public class IGDocumentController extends CommonController {
 				+ " for selected messages=" + messageIds);
 		IGDocument d = findIGDocument(id);
 		InputStream content = null;
-		content = igDocumentExport
-				.exportAsZipForSelectedMessages(d, messageIds);
+		content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
+		response.setContentType("application/zip");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ StringUtils.escape(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".zip");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+	
+	@RequestMapping(value = "/{id}/export/Gazelle/{mIds}", method = RequestMethod.POST, produces = "application/zip")
+	public void exportGazelleXMLByMessages(@PathVariable("id") String id,
+			@PathVariable("mIds") String[] messageIds,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, IGDocumentNotFoundException,
+			CloneNotSupportedException {
+		log.info("Exporting as xml file profile with id=" + id
+				+ " for selected messages=" + messageIds);
+		IGDocument d = findIGDocument(id);
+		InputStream content = null;
+		content = igDocumentExport.exportAsGazelleForSelectedMessages(d, messageIds);
+		response.setContentType("application/zip");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ StringUtils.escape(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".zip");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+	
+	@RequestMapping(value = "/{id}/export/Display/{mId}", method = RequestMethod.POST, produces = "application/zip")
+	public void exportValidationXMLByMessages(@PathVariable("id") String id,
+			@PathVariable("mId") String messageId,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, IGDocumentNotFoundException,
+			CloneNotSupportedException {
+		IGDocument d = findIGDocument(id);
+		InputStream content = null;
+		content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageId);
 		response.setContentType("application/zip");
 		response.setHeader("Content-disposition", "attachment;filename="
 				+ StringUtils.escape(d.getMetaData().getTitle()) + "-"

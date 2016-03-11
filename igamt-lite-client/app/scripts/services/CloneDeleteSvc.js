@@ -1,6 +1,6 @@
 angular.module('igl').factory(
 		'CloneDeleteSvc',
-		function($rootScope, $modal, ProfileAccessSvc) {
+		function($rootScope, $modal, ProfileAccessSvc, $cookies) {
 
 			var svc = this;
 			
@@ -152,6 +152,20 @@ angular.module('igl').factory(
 		        } else {
 		        		confirmValueSetDelete(table);
 		        }
+			}
+			
+			svc.exportDisplayXML = function(messageID) {
+				var form = document.createElement("form");
+		     	form.action = $rootScope.api('api/igdocuments/' + $rootScope.igdocument.id + '/export/Display/' + messageID);
+		     	form.method = "POST";
+		     	form.target = "_target";
+		     	var csrfInput = document.createElement("input");
+		     	csrfInput.name = "X-XSRF-TOKEN";
+		     	csrfInput.value = $cookies['XSRF-TOKEN'];
+		     	form.appendChild(csrfInput);
+		     	form.style.display = 'none';
+		     	document.body.appendChild(form);
+		     	form.submit();
 			}
 			
 		    function abortValueSetDelete(table) {

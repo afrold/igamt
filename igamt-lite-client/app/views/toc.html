@@ -105,9 +105,19 @@ li input:checked+ul>branch:last-child {
 		<li><a class="pointer" role="menuitem" tabindex="1"
 			ng-click="hl7Versions('ctx')">Add</a></li>
 		<li><a class="pointer" role="menuitem" tabindex="2"
-			ng-click="selectMessages(igdocument)">Export NIST Validation XML</a></li>
+			ng-click="selectMessages(igdocument)">Export NIST Validation/Gazelle XML</a></li>
+	</ul>
+</div>
+
+<div class="dropdown position-fixed" id="messageContextDiv.html"
+	ng-controller="ContextMenuCtl">
+	<ul class="dropdown-menu" role="menu">
+		<li><a class="pointer" role="menuitem" tabindex="1"
+			ng-click="clicked('Copy')">Copy</a></li>
+		<li><a class="pointer" role="menuitem" tabindex="2"
+			ng-click="clicked('Delete')">Delete</a></li>
 		<li><a class="pointer" role="menuitem" tabindex="3"
-			ng-click="">Export Gazelle XML</a></li>
+			ng-click="clicked('Export')">Export NIST Display XML</a></li>
 	</ul>
 </div>
 

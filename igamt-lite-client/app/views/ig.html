@@ -276,8 +276,7 @@
 
 <script type="text/ng-template" id="SelectMessagesOpenCtrl.html">
     <div class="modal-header">
-        <h3 class="modal-title">Select Message to export
-        </h3>
+        <h3 class="modal-title">Select Messages to export NIST Validation/Gazelle XML</h3>
     </div>
     <div class="modal-body">
         <div style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
@@ -300,8 +299,8 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-file-text fa-fw">&nbsp; </i>Export XMLs (ZIP Archive)</span></button>
-		<button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="exportAsZIPDisplayforSelectedMessages()"><span><i class="fa fa-file-text fa-fw">&nbsp; </i>Export XMLs (ZIP Archive, Display Version)</span></button>
+        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="exportAsZIPforSelectedMessages('Validation')"><span><i class="fa fa-file-text fa-fw">&nbsp; </i>Export XML(ZIP Archive) as NIST Validation format</span></button>
+		<button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="exportAsZIPforSelectedMessages('Gazelle')"><span><i class="fa fa-file-text fa-fw">&nbsp; </i>Export XML (ZIP Archive) as Gazelle format</span></button>
 		<button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>

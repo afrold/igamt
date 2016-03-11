@@ -221,15 +221,26 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		}
 	}
 	
-	public InputStream exportAsZipForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
+	@Override
+	public InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
 		if (d != null) {
 			return new ProfileSerializationImpl().serializeProfileToZip(d.getProfile(), mids);
 		} else {
 			return new NullInputStream(1L);
 		}
 	}
+
+	@Override
+	public InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
+		if (d != null) {
+			return new ProfileSerializationImpl().serializeProfileGazelleToZip(d.getProfile(), mids);
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
 	
-	public InputStream exportAsZipForDisplaySelectedMessages(IGDocument d, String mid) throws IOException, CloneNotSupportedException {
+	@Override
+	public InputStream exportAsDisplayForSelectedMessage(IGDocument d, String mid) throws IOException, CloneNotSupportedException {
 		if (d != null) {
 			return new ProfileSerializationImpl().serializeProfileDisplayToZip(d.getProfile(), mid);
 		} else {
@@ -2974,8 +2985,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		drawing.getAnchorOrInline().add(inline);
 		return paragraph;
 	}
-
-
 }
 
 //class SectionComparator implements Comparator<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>{
