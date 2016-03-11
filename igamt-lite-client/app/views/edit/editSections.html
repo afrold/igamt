@@ -17,15 +17,17 @@
         </div>
         <div ng-show="!loadingSelection">
             <form name="sectionForm" id="sectionForm" class="form-horizontal" novalidate>
-                <div class="rows">
+                <div class="row">
                     <div class="col-md-12">
+                        <span class="header4 pull-left">{{section.sectionTitle}}</span>
+
                          <span class="pull-right">
         <button title="Create Copy" type="button" class="btn btn-xs btn-info"
-                ng-click="copy(section)" ng-hide="options.readonly" ng-disabled="sectionForm.$invalid"
+                ng-click="copy(section)" ng-hide="viewSettings.tableReadonly" ng-disabled="sectionForm.$invalid"
                 >
             <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Copy</span>
         </button>
-        <button title="Delete" type="button" ng-hide="options.readonly"
+        <button title="Delete" type="button" ng-hide="viewSettings.tableReadonly"
                 class="btn btn-xs btn-danger"
                 ng-click="delete(section)">
             <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
@@ -53,13 +55,13 @@
                              ng-class="{'igl-has-error has-feedback' : sectionForm.content.$invalid}">
                             <label>Contents</label>
 
-                            <div ng-if="!options.readonly">
+                            <div ng-if="!viewSettings.tableReadonly">
                                 <textarea froala="froalaEditorOptions" ng-model="section.sectionContents"
                                           id="content"
                                           name="content"
                                           ng-change="recordChanged()"></textarea>
                             </div>
-                            <div ng-if="options.readonly">
+                            <div ng-if="viewSettings.tableReadonly">
                                 <div froala-view="section.sectionContents"></div>
                             </div>
                         </div>

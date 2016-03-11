@@ -136,9 +136,9 @@ angular.module('igl').factory(
 				angular.forEach(groups, function(group) {
 					group.id = new ObjectId().toString();
 				});
-				newMessage.name = message.name + $rootScope.createNewFlavorName(message.name);
+				newMessage.name = $rootScope.createNewFlavorName(message.name);
 				$rootScope.igdocument.profile.messages.children.splice(0, 0, newMessage);
-				
+				$rootScope.$broadcast('event:SetToC');	
 				return newMessage;
 			}
 						

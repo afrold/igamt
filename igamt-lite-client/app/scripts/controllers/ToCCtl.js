@@ -102,7 +102,7 @@ angular
 									console.log("Add==> node=" + node);
 									break;
 								case "Copy":
-									console.log("Copy==> node=" + node);
+									console.log("Copy==> node=" + node + " node.reference.type=" + node.reference.type);
 									if (node.reference.type === 'section') {
 					        				CloneDeleteSvc.copySection(node);
 									} else if (node.reference.type === 'segment') {
@@ -135,6 +135,6 @@ angular
 													+ ctxMenuSelection
 													+ " Should be Add, Copy, or Delete.");
 								}
+								$rootScope.$broadcast('event:SetToC');	
 							};
-
 						} ])

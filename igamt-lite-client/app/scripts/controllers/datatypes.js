@@ -2,11 +2,13 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
+    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, ViewSettings,DatatypeService) {
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
         $scope.datatypeCopy = null;
+        $scope.viewSettings = ViewSettings;
+
         $scope.init = function () {
        };
 
@@ -25,8 +27,6 @@ angular.module('igl')
             $rootScope.datatype = null;
             $scope.refreshTree();
             $scope.loadingSelection = false;
-            $scope.accordion.datatypeStatus = false;
-            $scope.accordion.listStatus = !$scope.accordion.datatypeStatus;
         };
 
         $scope.delete = function (datatype) {
@@ -159,7 +159,37 @@ angular.module('igl')
                 }
 
             return 0;
-        }
+        };
+
+
+        $scope.isRelevant = function (node) {
+            return DatatypeService.isRelevant(node);
+        };
+
+        $scope.isBranch = function (node) {
+            return DatatypeService.isBranch(node);
+        };
+
+
+        $scope.isVisible = function (node) {
+            return DatatypeService.isVisible(node);
+         };
+
+        $scope.children = function (node) {
+            return DatatypeService.getNodes(node);
+        };
+
+        $scope.getParent = function (node) {
+            return DatatypeService.getParent(node);
+        };
+
+        $scope.getDatatypeLevelConfStatements = function (element) {
+            return DatatypeService.getDatatypeLevelConfStatements(element);
+        };
+
+        $scope.getDatatypeLevelPredicates = function (element) {
+            return DatatypeService.getDatatypeLevelPredicates(element);
+        };
 
     });
 
@@ -241,8 +271,6 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
 //                }
             }
         }
-
-
         $rootScope.msg().text = "dtDeleteSuccess";
         $rootScope.msg().type = "success";
         $rootScope.msg().show = true;

@@ -41,13 +41,9 @@
     <link rel="stylesheet" type="text/css" href="lib/angular-treetable/style/jquery.treetable.theme.default.css"/>
     <link rel="stylesheet" href="lib/material-custom/material-custom.css"/>
     <link rel="stylesheet" href="lib/igamt.css"/>
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/char_counter.css">
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/code_view.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/colors.css">
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/emoticons.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/file.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/fullscreen.css">
-    <link rel="stylesheet" href="lib/froala-plugins/css/plugins/image_manager.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/image.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/line_breaker.css">
     <link rel="stylesheet" href="lib/froala-plugins/css/plugins/table.css">
@@ -63,6 +59,7 @@
     </script>
 </head>
 <body ng-controller="MainCtrl" ng-app="igl" ng-init="init()" window-exit>
+<notifications-bar class="notifications" closeIcon="fa fa-times-circle"></notifications-bar>
 <div id="wrapper">
     <div ng-include="'views/header.html'"></div>
     <!--[if lt IE 7]>
@@ -74,14 +71,14 @@
     <!-- Add your site or application content here -->
     <div id="appcontainer" class="">
 
-        <div class="container" style="padding-top:20px">
-            <div class="row">
-                <div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">
-                    <button type="button" class="close" ng-click="msg().show=false">×</button>
-                    <div msg key-expr="msg().text"></div>
-                </div>
-            </div>
-        </div>
+        <!--<div class="container" style="padding-top:20px">-->
+            <!--<div class="row">-->
+                <!--<div ng-class="'alert alert-'+msg().type" ng-show="msg().show" id="ehralert">-->
+                    <!--<button type="button" class="close" ng-click="msg().show=false">×</button>-->
+                    <!--<div msg key-expr="msg().text"></div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <div ng-view></div>
 

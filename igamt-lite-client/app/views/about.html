@@ -1,4 +1,6 @@
-<style id="antiClickjack">body{display:none !important;}</style>
+<style id="antiClickjack">body {
+    display: none !important;
+}</style>
 <script type="text/javascript">
     if (self === top) {
         var antiClickjack = document.getElementById("antiClickjack");
@@ -7,11 +9,116 @@
         top.location = self.location;
     }
 </script>
-<div class="container">
-    <div class="panel panel-info">
-        <div class="panel-heading">About Us</div>
-        <div class="panel-body">
-            Coming soon
+<div ng-controller="AboutCtrl">
+    <div class="container2">
+        <div class="row">
+            <div class="col-md-12" style="margin-bottom: 20px">
+                <div class="page-header">
+                    <div class="header5">Current Deployment Information</div>
+                </div>
+                <div>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                        <tr class="tbl-header">
+
+                            <th>
+                                Field
+                            </th>
+
+                            <th>
+                                Value
+                            </th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <b>Version</b>
+                            </td>
+
+                            <td>
+                                {{appInfo.version}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Date</b>
+                            </td>
+
+                            <td>
+                                {{appInfo.date | date: 'MM/dd/yyyy HH:mm:ss'}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Updates</b>
+                            </th>
+
+                            <td>
+                                <ul>
+                                    <li>
+                                        Display the left side table of contents for HTML export
+                                    </li>
+                                    <li>
+                                        Add Image (pfg,gif,jpeg,jpg) upload feature
+                                    </li>
+                                    <li>
+                                        Add File (word, html,pdf) Upload feature
+                                    </li>
+                                    <li>
+                                        Export IG Document as Word Document
+                                    </li>
+                                    <li>
+                                        Display the list message events by version for the creation of a new IG Document
+                                    </li>
+                                    <li>
+                                        Handle the message level predicates and conformance statements
+                                    </li>
+                                    <li>
+                                        Added Issue and About Tabs
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <div class="col-md-12" style="margin-bottom: 20px">
+                <div class="page-header">
+                    <div class="header5">Previous Deployments Information</div>
+                </div>
+                <div>
+                    No information Available.
+                </div>
+            </div>
+
+            <div class="col-md-12" ng-if="appInfo.acknowledgment != null && appInfo.acknowledgment != undefined"
+                 style="margin-bottom: 20px">
+                <div class="page-header">
+                    <h2>Acknowledgment</h2>
+                </div>
+                <div
+                        ng-bind-html="appInfo.acknowledgment">
+                </div>
+            </div>
+
+            <div class="col-md-12" ng-if="appInfo.confidentiality != null && appInfo.confidentiality != undefined"
+                 style="margin-bottom: 20px">
+                <div class="page-header">
+                    <h2>Confidentiality</h2>
+                </div>
+
+                <div style="margin-bottom: 20px"
+                     ng-bind-html="appInfo.confidentiality">
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>

@@ -14,6 +14,6 @@ public class HttpUtil {
 	}
 
 	public static String getImagesRootUrl(HttpServletRequest request) {
-		return HttpUtil.getAppUrl(request) + "api/" + FileStorageUtil.root;
+		return HttpUtil.getAppUrl(request) + "/api" + FileStorageUtil.root;
 	}
 }

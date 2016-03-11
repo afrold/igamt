@@ -47,7 +47,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -104,7 +103,6 @@ import org.docx4j.openpackaging.contenttype.ContentType;
 import org.docx4j.openpackaging.contenttype.ContentTypeManager;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
-import org.docx4j.openpackaging.io.SaveToZipFile;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.PartName;
 import org.docx4j.openpackaging.parts.WordprocessingML.AltChunkType;
@@ -170,8 +168,6 @@ import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.html.WebColors;
-import com.itextpdf.text.html.simpleparser.HTMLWorker;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfImportedPage;
@@ -192,11 +188,11 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	//	@Autowired
 	//	private UserService userService;
 
-	static String constraintBackground = "EDEDED";
-	static String headerBackground = "F0F0F0";
-	static String headerFontColor = "B21A1C";
-	static String tableHSeparator = "F01D1D";
-	static String tableVSeparator = "D3D3D3";
+	static String constraintBackground = "#EDEDED";
+	static String headerBackground = "#F0F0F0";
+	static String headerFontColor = "#B21A1C";
+	static String tableHSeparator = "#F01D1D";
+	static String tableVSeparator = "#D3D3D3";
 
 
 	@Override
@@ -216,7 +212,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			return new NullInputStream(1L);
 		}
 	}
-	
+
 	public InputStream exportAsZip(DatatypeLibrary d) throws IOException {
 		if (d != null) {
 			return new ProfileSerializationImpl().serializeDatatypeToZip(d);
@@ -931,14 +927,14 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	public InputStream exportAsPdfFromXsl(IGDocument d, String inlineConstraints) {
 		// Note: inlineConstraint can be true or false
-		
+
 		Profile p = d.getProfile();
 		p.getMessages().setPositionsOrder();
 		p.getSegments().setPositionsOrder();
 		p.getDatatypes().setPositionsOrder();
 		p.getTables().setPositionsOrder();
 
-		
+
 		try {
 			// Generate xml file containing profile
 			//			File tmpXmlFile = File.createTempFile("ProfileTemp", ".xml");
@@ -1005,9 +1001,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		List<List<String>> rows;
 
 		// Create fonts and colors to be used in generated pdf
-		BaseColor headerBackgroundColor = WebColors.getRGBColor(headerBackground);
-		BaseColor headerFontItxtColor = WebColors.getRGBColor(headerFontColor);
-		BaseColor cpColor = WebColors.getRGBColor(constraintBackground);
+		BaseColor headerBackgroundColor = new BaseColor(java.awt.Color.decode(headerBackground).getRGB());//WebColors.getRGBColor(headerBackground);
+		BaseColor headerFontItxtColor = new BaseColor(java.awt.Color.decode(headerFontColor).getRGB());//WebColors.getRGBColor(headerFontColor);
+		BaseColor cpColor = new BaseColor(java.awt.Color.decode(constraintBackground).getRGB());//WebColors.getRGBColor(constraintBackground);
 		Font coverH1Font = FontFactory.getFont("/rendering/Arial Narrow.ttf",
 				BaseFont.IDENTITY_H, BaseFont.EMBEDDED, 18, Font.BOLD,
 				BaseColor.BLACK);
@@ -1244,8 +1240,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 						+ " - " + d.getDescription()), d.getId());
 				com.itextpdf.text.Section section1 = sectionDts.addSection(new Paragraph( d.getLabel() != null ?  d.getLabel() + " - "
 						+ d.getDescription() : d.getName() + " - " + d.getDescription()));
-
-				section1.add(new Paragraph(d.getComment()));
+				
 
 				table = this.addHeaderPdfTable(header, columnWidths,
 						headerFont, headerBackgroundColor);
@@ -1255,6 +1250,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 				this.addCellsPdfTable(table, rows, cellFont, cpColor);
 				section1.add(Chunk.NEWLINE);
 				section1.add(table);
+				section1.add(Chunk.NEWLINE);
+				section1.add(richTextToParagraph(d.getUsageNote()));
+				section1.add(Chunk.NEWLINE);
+				section1.add(new Paragraph(d.getComment()));				
 				section1.add(Chunk.NEWLINE);
 			}
 
@@ -1711,18 +1710,26 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		}
 	}
 	private void setCellBorders(PdfPCell tcell){
-		tcell.setBorderColorRight(WebColors.getRGBColor(tableVSeparator));
-		tcell.setBorderColorLeft(WebColors.getRGBColor(tableVSeparator));
-		tcell.setBorderColorTop(WebColors.getRGBColor(tableHSeparator));
-		tcell.setBorderColorBottom(WebColors.getRGBColor(tableHSeparator));
+		tcell.setBorderColorRight(new BaseColor(java.awt.Color.decode(tableVSeparator).getRGB()));
+		tcell.setBorderColorLeft(new BaseColor(java.awt.Color.decode(tableVSeparator).getRGB()));
+		tcell.setBorderColorTop(new BaseColor(java.awt.Color.decode(tableHSeparator).getRGB()));
+		tcell.setBorderColorBottom(new BaseColor(java.awt.Color.decode(tableHSeparator).getRGB()));
 	}
 
-	@SuppressWarnings("deprecation")
 	private Paragraph richTextToParagraph(String htmlString){
 		List<Element> p = new ArrayList<Element>();
-		StringReader strReader = new StringReader(htmlString);
 		try {
-			p = HTMLWorker.parseToList(strReader, null);
+			Tidy tidy = new Tidy();
+			tidy.setWraplen(Integer.MAX_VALUE);
+			tidy.setXHTML(true);
+			tidy.setShowWarnings(false); //to hide errors
+			tidy.setQuiet(true); //to hide warning
+			InputStream inputStream = new ByteArrayInputStream(htmlString.getBytes());
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			tidy.parseDOM(inputStream, outputStream);
+
+			p = XMLWorkerHelper.parseToElementList(outputStream.toString(), null);
+
 			Paragraph paragraph=new Paragraph();
 			for (int k = 0; k < p.size(); ++k){
 				paragraph.add((Element) p.get(k));
@@ -1787,7 +1794,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			// .. content type
 			wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");
-			
+
 			addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
 
 			loadTemplateForDocx4j(wordMLPackage); //Repeats the lines above but necessary; don't delete
@@ -1795,7 +1802,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			File tmpFile;
 			tmpFile = File.createTempFile("IgDocument", ".docx");
 			wordMLPackage.save(tmpFile);
-			
+
 
 			return FileUtils.openInputStream(tmpFile);
 
@@ -1857,7 +1864,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			// .. content type
 			wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");
-			
+
 			addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
 
 			loadTemplateForDocx4j(wordMLPackage); //Repeats the lines above but necessary; don't delete
@@ -1865,7 +1872,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			File tmpFile;
 			tmpFile = File.createTempFile("DTDocument", ".docx");
 			wordMLPackage.save(tmpFile);
-			
+
 
 			return FileUtils.openInputStream(tmpFile);
 
@@ -1904,11 +1911,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	private static long chunk = 0;
 	private static final String CONTENT_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
-	@SuppressWarnings("deprecation")
 	public void mergeDocx4J(InputStream s1, InputStream s2, OutputStream os) throws Exception {
 		WordprocessingMLPackage target = WordprocessingMLPackage.load(s1);
 		insertDocx(target.getMainDocumentPart(), IOUtils.toByteArray(s2));
-		SaveToZipFile saver = new SaveToZipFile(target);
+		 org.docx4j.openpackaging.io3.Save saver = new  org.docx4j.openpackaging.io3.Save(target);
 		FileOutputStream out = new FileOutputStream("mergeddocx4.docx");
 		saver.save(out);
 	}
@@ -2020,7 +2026,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			e1.printStackTrace();
 		} 
 	}
-	
+
 	private void addConformanceInformationForDocx4j(IGDocument igdoc, WordprocessingMLPackage wordMLPackage, ObjectFactory factory){
 		Profile p = igdoc.getProfile();
 		List<Message> messagesList = new ArrayList<Message>(p.getMessages().getChildren());
@@ -2147,16 +2153,10 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	}
 
+	@SuppressWarnings("unused")
 	private InputStream exportAsDocxWithDocx4J(IGDocument igdoc) {
 		Profile p = igdoc.getProfile();
 		WordprocessingMLPackage wordMLPackage;
-		//		try {
-		//			wordMLPackage = WordprocessingMLPackage.createPackage();
-		//		} catch (InvalidFormatException e1) {
-		//			e1.printStackTrace();
-		//			return new NullInputStream(1L);
-		//		}
-
 		try {
 			wordMLPackage = WordprocessingMLPackage.load(this.getClass()
 					.getResourceAsStream("/rendering/lri_template.dotx"));
@@ -2709,6 +2709,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	}
 
 
+	@SuppressWarnings("unused")
 	private void setFontSize(RPr runProperties, String fontSize) {
 		if (fontSize != null && !fontSize.isEmpty()) {
 			HpsMeasure size = new HpsMeasure();
@@ -2718,6 +2719,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void setFontFamily(RPr runProperties, String fontFamily) {
 		if (fontFamily != null) {
 			RFonts rf = runProperties.getRFonts();
@@ -2753,12 +2755,14 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		runProperties.setB(b);
 	}
 
+	@SuppressWarnings("unused")
 	private void addItalicStyle(RPr runProperties) {
 		BooleanDefaultTrue b = new BooleanDefaultTrue();
 		b.setVal(true);
 		runProperties.setI(b);
 	}
 
+	@SuppressWarnings("unused")
 	private void addUnderlineStyle(RPr runProperties) {
 		U val = new U();
 		val.setVal(UnderlineEnumeration.SINGLE);
@@ -2814,8 +2818,17 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	private String wrapRichText(String htmlString){
 		//Adds html tags so that string can be decoded in docx export
+		Tidy tidy = new Tidy();
+		tidy.setWraplen(Integer.MAX_VALUE);
+		tidy.setXHTML(true);
+		tidy.setShowWarnings(false); //to hide errors
+		tidy.setQuiet(true); //to hide warning
+		InputStream inputStream = new ByteArrayInputStream(htmlString.getBytes());
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		tidy.parseDOM(inputStream, outputStream);
+
 		StringBuilder rst = new StringBuilder("<html><head></head><body></body>");
-		return rst.insert(25, htmlString).toString();
+		return rst.insert(25, outputStream.toString()).toString();
 	}
 
 	private void addRichTextToDocx(WordprocessingMLPackage wordMLPackage, String htmlString){
@@ -2834,6 +2847,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private void addContents4Docx(Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sect, String prefix, Integer depth, WordprocessingMLPackage wordMLPackage){
 		SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortedSections = sortSections(sect);
 		for (gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section s: sortedSections){
@@ -2856,6 +2870,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private void addContents4Pdf(Set<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sect, String prefix, Integer depth, Document tocDocument, Document igDocument, com.itextpdf.text.Section chapt, Font titleFont, PdfWriter igWriter){
 		SortedSet<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section> sortedSections = sortSections(sect);
 

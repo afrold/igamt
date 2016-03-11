@@ -20,14 +20,13 @@
     </div>
     <div ng-show="isEditing">
         <div class="row">
-
-            <div class="col-md-12" ng-show="igDocumentMsg !== null">
-                <div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">
-                    <button type="button" class="close" ng-click="igDocumentMsg.show = false">×</button>
-                    <div msg key-expr="igDocumentMsg.text"></div>
-                </div>
-            </div>
-            
+            <!--<div class="col-md-12" ng-show="igDocumentMsg !== null">-->
+                <!--<div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">-->
+                    <!--<button type="button" class="close" ng-click="igDocumentMsg.show = false">×</button>-->
+                    <!--<div msg key-expr="igDocumentMsg.text"></div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!---->
             <div class="col-md-12">
                 <div class="page-header">
                     <h3>{{igdocument.metaData.title}}</h3>
@@ -41,13 +40,13 @@
 
 
                     <button title="Save Changes" type="button" class="btn btn-xs btn-success"
-                            ng-hide="options.readonly"
+                            ng-hide="viewSettings.tableReadonly"
                             ng-show="igDocumentConfig.selectedType === 'USER'"
                             ng-click="save()">
                         <span><i class="fa fa-check fa-fw"></i> Save</span>
                     </button>
 
-                    <button ng-show="options.readonly && igDocumentConfig.selectedType === 'USER'"
+                    <button ng-show="viewSettings.tableReadonly && igDocumentConfig.selectedType === 'USER'"
                             title="Edit"
                             type="button" class="btn btn-xs btn-primary"
                             ng-click="edit(igdocument)">
@@ -78,7 +77,7 @@
                         <ul class="dropdown-menu igl-menu" role="menu">
                             <li><a class="point" ng-click="selectMessages(igdocument)">As XML</a></li>
                             <li><a class="point" ng-click="exportAs(igdocument.id,'pdf')">As PDF</a></li>
-                            <!--<li><a class="point" ng-click="exportAs(igdocument.id,'docx')"><span style='color:red'>In progress</span> As WORD</a></li>-->
+                            <li><a class="point" ng-click="exportAs(igdocument.id,'docx')">As WORD</a></li>
                             <li><a class="point" ng-click="exportAs(igdocument.id,'html')">As HTML</a></li>
                         </ul>
                     </div>
@@ -89,7 +88,7 @@
                     </button>
 
                     <button title="Delete permanently" type="button" class="btn btn-xs btn-danger"
-                            ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="options.readonly"
+                            ng-show="igDocumentConfig.selectedType === 'USER'" ng-hide="viewSettings.tableReadonly"
                             ng-click="confirmDelete(igdocument)">
                         <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
                     </button>
@@ -129,8 +128,8 @@
             <div ng-class="showToC ? 'col-md-9' : 'col-md-11'">
                 <div class="panel panel-info">
                     <div class="panel-heading">Edit Area</div>
-                    <div class="panel-body">
-                        <div id="edit" ng-show="subview !== undefined">
+                    <div class="panel-body" style="padding-bottom:100px">
+                        <div id="edit" ng-show="subview !== undefined" style="width:100%">
                             <ng-include src="subview"></ng-include>
                         </div>
                     </div>

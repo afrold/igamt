@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal','Restangular','$filter','base64','$http','Idle',
-    function ($scope, $rootScope, i18n, $location, userInfoService, $modal,Restangular,$filter,base64,$http,Idle) {
+angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications',
+    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle,notifications) {
         //This line fetches the info from the server if the user is currently logged in.
         //If success, the app is updated according to the role.
         userInfoService.loadFromServer();
@@ -19,14 +19,14 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             return value ? 'active' : '';
         };
 
-        $scope.activeIfInList = function(value, pathsList) {
+        $scope.activeIfInList = function (value, pathsList) {
             var found = false;
-            if ( angular.isArray(pathsList) === false ) {
+            if (angular.isArray(pathsList) === false) {
                 return '';
             }
             var i = 0;
-            while ( (i < pathsList.length) && (found === false)) {
-                if ( pathsList[i] === value ) {
+            while ((i < pathsList.length) && (found === false)) {
+                if (pathsList[i] === value) {
                     return 'active';
                 }
                 i++;
@@ -45,9 +45,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $scope.loginReq = function () {
 //        console.log("in loginReq");
-            if ($rootScope.loginMessage()){
-                $rootScope.loginMessage().text="";
-                $rootScope.loginMessage().show=false;
+            if ($rootScope.loginMessage()) {
+                $rootScope.loginMessage().text = "";
+                $rootScope.loginMessage().show = false;
             }
             $scope.$emit('event:loginRequired');
         };
@@ -62,7 +62,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     $scope.execLogout();
                 }, function () {
                 });
-            }else{
+            } else {
                 $scope.execLogout();
             }
         };
@@ -80,44 +80,50 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $scope.$emit('event:loginCancel');
         };
 
-        $scope.isAuthenticated = function() {
+        $scope.isAuthenticated = function () {
             return userInfoService.isAuthenticated();
         };
 
-        $scope.isPending = function() {
+        $scope.isPending = function () {
             return userInfoService.isPending();
         };
 
 
-        $scope.isSupervisor = function() {
+        $scope.isSupervisor = function () {
             return userInfoService.isSupervisor();
         };
 
-        $scope.isVendor = function() {
+        $scope.isVendor = function () {
             return userInfoService.isAuthorizedVendor();
         };
 
-        $scope.isAuthor = function() {
+        $scope.isAuthor = function () {
             return userInfoService.isAuthor();
         };
 
-        $scope.isCustomer = function() {
+        $scope.isCustomer = function () {
             return userInfoService.isCustomer();
         };
 
-        $scope.isAdmin = function() {
+        $scope.isAdmin = function () {
             return userInfoService.isAdmin();
         };
 
-        $scope.getRoleAsString = function() {
-            if ( $scope.isAuthor() === true ) { return 'author'; }
-            if ( $scope.isSupervisor() === true ) { return 'Supervisor'; }
-            if ( $scope.isAdmin() === true ) { return 'Admin'; }
+        $scope.getRoleAsString = function () {
+            if ($scope.isAuthor() === true) {
+                return 'author';
+            }
+            if ($scope.isSupervisor() === true) {
+                return 'Supervisor';
+            }
+            if ($scope.isAdmin() === true) {
+                return 'Admin';
+            }
             return 'undefined';
         };
 
-        $scope.getUsername = function() {
-            if ( userInfoService.isAuthenticated() === true ) {
+        $scope.getUsername = function () {
+            if (userInfoService.isAuthenticated() === true) {
                 return userInfoService.getUsername();
             }
             return '';
@@ -157,7 +163,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         Idle.watch();
 
-        $rootScope.$on('IdleStart', function() {
+        $rootScope.$on('IdleStart', function () {
             closeModals();
             $rootScope.warning = $modal.open({
                 templateUrl: 'warning-dialog.html',
@@ -165,19 +171,27 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             });
         });
 
-        $rootScope.$on('IdleEnd', function() {
+        $rootScope.$on('IdleEnd', function () {
             closeModals();
         });
 
-        $rootScope.$on('IdleTimeout', function() {
+        $rootScope.$on('IdleTimeout', function () {
             closeModals();
-            if( $scope.isAuthenticated) {
-                $scope.logout();
+            if ($scope.isAuthenticated) {
+                if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.hasChanges()) {
+                    $rootScope.$emit('event:saveAndExecLogout');
+                }else {
+                    $rootScope.$emit('event:execLogout');
+                }
             }
             $rootScope.timedout = $modal.open({
                 templateUrl: 'timedout-dialog.html',
                 windowClass: 'modal-danger'
             });
+        });
+
+        $rootScope.$on('event:execLogout', function () {
+            $scope.execLogout();
         });
 
         function closeModals() {
@@ -192,13 +206,13 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             }
         };
 
-        $rootScope.start = function() {
+        $rootScope.start = function () {
             closeModals();
             Idle.watch();
             $rootScope.started = true;
         };
 
-        $rootScope.stop = function() {
+        $rootScope.stop = function () {
             closeModals();
             Idle.unwatch();
             $rootScope.started = false;
@@ -206,7 +220,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
 
-        $scope.checkForIE = function() {
+        $scope.checkForIE = function () {
             var BrowserDetect = {
                 init: function () {
                     this.browser = this.searchString(this.dataBrowser) || 'An unknown browser';
@@ -214,7 +228,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     this.OS = this.searchString(this.dataOS) || 'an unknown OS';
                 },
                 searchString: function (data) {
-                    for (var i=0;i<data.length;i++) {
+                    for (var i = 0; i < data.length; i++) {
                         var dataString = data[i].string;
                         var dataProp = data[i].prop;
                         this.versionSearchString = data[i].versionSearch || data[i].identity;
@@ -230,8 +244,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 },
                 searchVersion: function (dataString) {
                     var index = dataString.indexOf(this.versionSearchString);
-                    if (index === -1) { return; }
-                    return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
+                    if (index === -1) {
+                        return;
+                    }
+                    return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
                 },
                 dataBrowser: [
                     {
@@ -299,7 +315,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         versionSearch: 'Mozilla'
                     }
                 ],
-                dataOS : [
+                dataOS: [
                     {
                         string: navigator.platform,
                         subString: 'Win',
@@ -325,13 +341,14 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             };
             BrowserDetect.init();
 
-            if ( BrowserDetect.browser === 'Explorer' ) {
+            if (BrowserDetect.browser === 'Explorer') {
                 var title = 'You are using Internet Explorer';
                 var msg = 'This site is not yet optimized with Internet Explorer. For the best user experience, please use Chrome, Firefox or Safari. Thank you for your patience.';
-                var btns = [{result:'ok', label: 'OK', cssClass: 'btn'}];
+                var btns = [
+                    {result: 'ok', label: 'OK', cssClass: 'btn'}
+                ];
 
                 //$dialog.messageBox(title, msg, btns).open();
-
 
 
             }
@@ -362,19 +379,19 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.newPredicateFakeId = 0;
         $rootScope.newConformanceStatementFakeId = 0;
         $rootScope.segment = null;
-        $rootScope.config= null;
+        $rootScope.config = null;
         $rootScope.messagesData = [];
         $rootScope.messages = [];// list of messages
-        $rootScope.customIgs=[];
+        $rootScope.customIgs = [];
         $rootScope.preloadedIgs = [];
         $rootScope.changes = {};
         $rootScope.generalInfo = {type: null, 'message': null};
-        $rootScope.references =[]; // collection of element referencing a datatype to delete
+        $rootScope.references = []; // collection of element referencing a datatype to delete
         $rootScope.section = {};
         $rootScope.parentsMap = {};
         $rootScope.igChanged = false;
-        
-        
+
+
         $rootScope.messageTree = null;
 
         $scope.scrollbarWidth = 0;
@@ -391,8 +408,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 //        $rootScope.igdocumentTabs[value] = true;
         };
 
-        $scope.getScrollbarWidth = function() {
-            if($scope.scrollbarWidth == 0) {
+        $scope.getScrollbarWidth = function () {
+            if ($scope.scrollbarWidth == 0) {
                 var outer = document.createElement("div");
                 outer.style.visibility = "hidden";
                 outer.style.width = "100px";
@@ -444,7 +461,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.newConformanceStatementFakeId = 0;
             $rootScope.clearChanges();
             $rootScope.parentsMap = [];
-            
+
             $rootScope.messageTree = null;
         };
 
@@ -453,7 +470,6 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         }, function (newLocation, oldLocation) {
             $rootScope.setActive(newLocation);
         });
-
 
 
         $rootScope.api = function (value) {
@@ -478,16 +494,16 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.igChanged = false;
         };
 
-        $rootScope.hasChanges = function(){
+        $rootScope.hasChanges = function () {
             //return Object.getOwnPropertyNames($rootScope.changes).length !== 0;
             return $rootScope.igChanged;
         };
 
-        $rootScope.recordChanged = function(){
+        $rootScope.recordChanged = function () {
             $rootScope.igChanged = true;
         };
 
-        $rootScope.recordChange = function(object,changeType) {
+        $rootScope.recordChange = function (object, changeType) {
 //        var type = object.type;
 //
 //
@@ -510,7 +526,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
 
-        $rootScope.recordChange2 = function(type,id,attr,value) {
+        $rootScope.recordChange2 = function (type, id, attr, value) {
 //        if($rootScope.changes[type] === undefined){
 //            $rootScope.changes[type] = {};
 //        }
@@ -525,7 +541,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.recordChanged();
         };
 
-        $rootScope.recordChangeForEdit = function(object,changeType) {
+        $rootScope.recordChangeForEdit = function (object, changeType) {
 //        var type = object.type;
 //
 //        if($rootScope.changes[type] === undefined){
@@ -543,7 +559,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.recordChanged();
         };
 
-        $rootScope.recordChangeForEdit2 = function(type,command,id,valueType,value) {
+        $rootScope.recordChangeForEdit2 = function (type, command, id, valueType, value) {
 //        var obj = $rootScope.findObjectInChanges(type, "add", id);
 //        if (obj === undefined) { // not a new object
 //            if ($rootScope.changes[type] === undefined) {
@@ -566,11 +582,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.recordChanged();
         };
 
-        $rootScope.recordDelete = function(type,command,id) {
-            if(id < 0){ // new object
+        $rootScope.recordDelete = function (type, command, id) {
+            if (id < 0) { // new object
                 $rootScope.removeObjectFromChanges(type, "add", id);
-            }else{
-                $rootScope.removeObjectFromChanges(type, "edit",id);
+            } else {
+                $rootScope.removeObjectFromChanges(type, "edit", id);
 //            if ($rootScope.changes[type] === undefined) {
 //                $rootScope.changes[type] = {};
 //            }
@@ -601,9 +617,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
 
-
-        $rootScope.findObjectInChanges = function(type, command, id){
-            if($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
+        $rootScope.findObjectInChanges = function (type, command, id) {
+            if ($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
                 for (var i = 0; i < $rootScope.changes[type][command].length; i++) {
                     var tmp = $rootScope.changes[type][command][i];
                     if (tmp.id === id) {
@@ -615,8 +630,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
 
-        $rootScope.isNewObject = function(type, command, id){
-            if($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
+        $rootScope.isNewObject = function (type, command, id) {
+            if ($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
                 for (var i = 0; i < $rootScope.changes[type][command].length; i++) {
                     var tmp = $rootScope.changes[type][command][i];
                     if (tmp.id === id) {
@@ -628,8 +643,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
 
-        $rootScope.removeObjectFromChanges = function(type, command, id){
-            if($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
+        $rootScope.removeObjectFromChanges = function (type, command, id) {
+            if ($rootScope.changes[type] !== undefined && $rootScope.changes[type][command] !== undefined) {
                 for (var i = 0; i < $rootScope.changes[type][command].length; i++) {
                     var tmp = $rootScope.changes[type][command][i];
                     if (tmp.id === id) {
@@ -663,218 +678,220 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
 
-        $rootScope.apply = function(label){ //FIXME. weak check
+        $rootScope.apply = function (label) { //FIXME. weak check
             return label != undefined && label != null && (label.indexOf('_') !== -1 || label.indexOf('-') !== -1);
         };
 
-        $rootScope.isFlavor = function(label){ //FIXME. weak check
+        $rootScope.isFlavor = function (label) { //FIXME. weak check
             return label != undefined && label != null && (label.indexOf('_') !== -1 || label.indexOf('-') !== -1);
         };
 
-        $rootScope.getDatatype = function(id){
+        $rootScope.getDatatype = function (id) {
             return $rootScope.datatypesMap && $rootScope.datatypesMap[id];
         };
-        
+
         $rootScope.processElement = function (element, parent) {
-        	try {
-        		if(element.type === "message") {
-        			element.children = $filter('orderBy')(element.children, 'position');
-        			angular.forEach(element.children, function (segmentRefOrGroup) {
-        				$rootScope.processElement(segmentRefOrGroup, element);
-        			});
-        		} else if (element.type === "group" && element.children) {
-        			if(parent){
-        				$rootScope.parentsMap[element.id] = parent;
-        			}
-        			element.children = $filter('orderBy')(element.children, 'position');
-        			angular.forEach(element.children, function (segmentRefOrGroup) {
-        				$rootScope.processElement(segmentRefOrGroup, element);
-        			});
-        		} else if(element.type === "segmentRef") {
-        			if(parent){
-        				$rootScope.parentsMap[element.id] = parent;
-        			}
-        			$rootScope.processElement($rootScope.segmentsMap[element.ref], element);
-        		} else if (element.type === "segment") {
-        			element.fields = $filter('orderBy')(element.fields, 'position');
-        			angular.forEach(element.fields, function (field) {
-        				$rootScope.processElement(field, element);
-        			});
-        		} else if (element.type === "field") {
-        			$rootScope.parentsMap[element.id] = parent;
-        			$rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
-        		} else if (element.type === "component") {
-        			$rootScope.parentsMap[element.id] = parent;
-        			$rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
-        		} else if (element.type === "datatype") {
-        			element.components = $filter('orderBy')(element.components, 'position');
-        			angular.forEach(element.components, function (component) {
-        				$rootScope.processElement(component, element);
-        			});
-        		}
-        	}catch(e){
-        		throw e;
-        	}
+            try {
+                if(element != undefined) {
+                    if (element.type === "message") {
+                        element.children = $filter('orderBy')(element.children, 'position');
+                        angular.forEach(element.children, function (segmentRefOrGroup) {
+                            $rootScope.processElement(segmentRefOrGroup, element);
+                        });
+                    } else if (element.type === "group" && element.children) {
+                        if (parent) {
+                            $rootScope.parentsMap[element.id] = parent;
+                        }
+                        element.children = $filter('orderBy')(element.children, 'position');
+                        angular.forEach(element.children, function (segmentRefOrGroup) {
+                            $rootScope.processElement(segmentRefOrGroup, element);
+                        });
+                    } else if (element.type === "segmentRef") {
+                        if (parent) {
+                            $rootScope.parentsMap[element.id] = parent;
+                        }
+                        $rootScope.processElement($rootScope.segmentsMap[element.ref], element);
+                    } else if (element.type === "segment") {
+                        element.fields = $filter('orderBy')(element.fields, 'position');
+                        angular.forEach(element.fields, function (field) {
+                            $rootScope.processElement(field, element);
+                        });
+                    } else if (element.type === "field") {
+                        $rootScope.parentsMap[element.id] = parent;
+                        $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+                    } else if (element.type === "component") {
+                        $rootScope.parentsMap[element.id] = parent;
+                        $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
+                    } else if (element.type === "datatype") {
+                        element.components = $filter('orderBy')(element.components, 'position');
+                        angular.forEach(element.components, function (component) {
+                            $rootScope.processElement(component, element);
+                        });
+                    }
+                }
+            } catch (e) {
+                throw e;
+            }
         };
 
 
         $rootScope.processMessageTree = function (element, parent) {
-        	try {
-        		if(element.type === "message") {
-        			var m = new Object();
-        			m.children = [];
-        			$rootScope.messageTree = m
-        			
-        			element.children = $filter('orderBy')(element.children, 'position');
-        			angular.forEach(element.children, function (segmentRefOrGroup) {
-        				$rootScope.processMessageTree(segmentRefOrGroup, m);
-        			});
-        			
-        		} else if (element.type === "group" && element.children) {
-        			var g = new Object();
-        			g.path = element.position + "[1]";
-        			g.obj = element;
-        			g.children = [];
-        			if(parent.path){
-        				g.path = parent.path + "." + element.position + "[1]";
-        			}
-        			parent.children.push(g);
-        			element.children = $filter('orderBy')(element.children, 'position');
-        			angular.forEach(element.children, function (segmentRefOrGroup) {
-        				$rootScope.processMessageTree(segmentRefOrGroup, g);
-        			});
-        		} else if(element.type === "segmentRef") {
-        			var s = new Object();
-        			s.path = element.position + "[1]";
-        			s.obj = element;
-        			s.children = [];
-        			if(parent.path){
-        				s.path = parent.path + "." + element.position + "[1]";
-        			}
-        			parent.children.push(s);
-        			
-        			var ref = $rootScope.segmentsMap[element.ref];
-        			$rootScope.processMessageTree(ref, s);
-        			
-        		} else if (element.type === "segment") {
-        			element.fields = $filter('orderBy')(element.fields, 'position');
-        			angular.forEach(element.fields, function (field) {
-        				$rootScope.processMessageTree(field, parent);
-        			});
-        		} else if (element.type === "field") {
-        			var f = new Object();
-        			f.obj = element;
-        			f.path = parent.path + "." + element.position + "[1]";
-        			f.children = [];
-        			parent.children.push(f);
-        			$rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], f);
-        		} else if (element.type === "component") {
-        			var c = new Object();
-        			c.obj = element;
-        			c.path = parent.path + "." + element.position + "[1]";
-        			c.children = [];
-        			parent.children.push(c);
-        			$rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], c);
-        		} else if (element.type === "datatype") {
-        			element.components = $filter('orderBy')(element.components, 'position');
-        			angular.forEach(element.components, function (component) {
-        				$rootScope.processMessageTree(component, parent);
-        			});
-        		}
-        	}catch(e){
-        		throw e;
-        	}
+            try {
+                if (element.type === "message") {
+                    var m = new Object();
+                    m.children = [];
+                    $rootScope.messageTree = m
+
+                    element.children = $filter('orderBy')(element.children, 'position');
+                    angular.forEach(element.children, function (segmentRefOrGroup) {
+                        $rootScope.processMessageTree(segmentRefOrGroup, m);
+                    });
+
+                } else if (element.type === "group" && element.children) {
+                    var g = new Object();
+                    g.path = element.position + "[1]";
+                    g.obj = element;
+                    g.children = [];
+                    if (parent.path) {
+                        g.path = parent.path + "." + element.position + "[1]";
+                    }
+                    parent.children.push(g);
+                    element.children = $filter('orderBy')(element.children, 'position');
+                    angular.forEach(element.children, function (segmentRefOrGroup) {
+                        $rootScope.processMessageTree(segmentRefOrGroup, g);
+                    });
+                } else if (element.type === "segmentRef") {
+                    var s = new Object();
+                    s.path = element.position + "[1]";
+                    s.obj = element;
+                    s.children = [];
+                    if (parent.path) {
+                        s.path = parent.path + "." + element.position + "[1]";
+                    }
+                    parent.children.push(s);
+
+                    var ref = $rootScope.segmentsMap[element.ref];
+                    $rootScope.processMessageTree(ref, s);
+
+                } else if (element.type === "segment") {
+                    element.fields = $filter('orderBy')(element.fields, 'position');
+                    angular.forEach(element.fields, function (field) {
+                        $rootScope.processMessageTree(field, parent);
+                    });
+                } else if (element.type === "field") {
+                    var f = new Object();
+                    f.obj = element;
+                    f.path = parent.path + "." + element.position + "[1]";
+                    f.children = [];
+                    parent.children.push(f);
+                    $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], f);
+                } else if (element.type === "component") {
+                    var c = new Object();
+                    c.obj = element;
+                    c.path = parent.path + "." + element.position + "[1]";
+                    c.children = [];
+                    parent.children.push(c);
+                    $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], c);
+                } else if (element.type === "datatype") {
+                    element.components = $filter('orderBy')(element.components, 'position');
+                    angular.forEach(element.components, function (component) {
+                        $rootScope.processMessageTree(component, parent);
+                    });
+                }
+            } catch (e) {
+                throw e;
+            }
         };
 
-        $rootScope.createNewFlavorName = function(label){
-            if( $rootScope.igdocument != null) {
+        $rootScope.createNewFlavorName = function (label) {
+            if ($rootScope.igdocument != null) {
                 return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
-            }else{
+            } else {
                 return null;
             }
         };
 
 
-        $rootScope.isSubComponent = function(node){
-            node.type === 'component' &&  $rootScope.parentsMap[node.id] && $rootScope.parentsMap[node.id].type === 'component';
+        $rootScope.isSubComponent = function (node) {
+            node.type === 'component' && $rootScope.parentsMap[node.id] && $rootScope.parentsMap[node.id].type === 'component';
         };
 
         $rootScope.findDatatypeRefs = function (datatype, obj) {
-            if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
-                if($rootScope.datatypesMap[obj.datatype] === datatype && $rootScope.references.indexOf(obj) === -1) {
+            if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                if ($rootScope.datatypesMap[obj.datatype] === datatype && $rootScope.references.indexOf(obj) === -1) {
                     $rootScope.references.push(obj);
                 }
-                $rootScope.findDatatypeRefs(datatype,$rootScope.datatypesMap[obj.datatype]);
-            }else if(angular.equals(obj.type,'segment')){
-                angular.forEach( $rootScope.segments, function (segment) {
+                $rootScope.findDatatypeRefs(datatype, $rootScope.datatypesMap[obj.datatype]);
+            } else if (angular.equals(obj.type, 'segment')) {
+                angular.forEach($rootScope.segments, function (segment) {
                     angular.forEach(segment.fields, function (field) {
-                        $rootScope.findDatatypeRefs(datatype,field);
+                        $rootScope.findDatatypeRefs(datatype, field);
                     });
                 });
-            } else if(angular.equals(obj.type,'datatype')){
-                if(obj.components != undefined && obj.components != null && obj.components.length > 0){
+            } else if (angular.equals(obj.type, 'datatype')) {
+                if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
                     angular.forEach(obj.components, function (component) {
-                        $rootScope.findDatatypeRefs(datatype,component);
+                        $rootScope.findDatatypeRefs(datatype, component);
                     });
                 }
             }
         };
 
         $rootScope.findTableRefs = function (table, obj) {
-            if(angular.equals(obj.type,'field') || angular.equals(obj.type,'component')){
-                if(obj.table != undefined){
-                    if(obj.table === table.id && $rootScope.references.indexOf(obj) === -1) {
+            if (angular.equals(obj.type, 'field') || angular.equals(obj.type, 'component')) {
+                if (obj.table != undefined) {
+                    if (obj.table === table.id && $rootScope.references.indexOf(obj) === -1) {
                         $rootScope.references.push(obj);
                     }
                 }
-                $rootScope.findTableRefs(table,$rootScope.datatypesMap[obj.datatype]);
-            }else if(angular.equals(obj.type,'segment')){
-                angular.forEach( $rootScope.segments, function (segment) {
+                $rootScope.findTableRefs(table, $rootScope.datatypesMap[obj.datatype]);
+            } else if (angular.equals(obj.type, 'segment')) {
+                angular.forEach($rootScope.segments, function (segment) {
                     angular.forEach(segment.fields, function (field) {
-                        $rootScope.findTableRefs(table,field);
+                        $rootScope.findTableRefs(table, field);
                     });
                 });
-            } else if(angular.equals(obj.type,'datatype')){
-                if(obj.components != undefined && obj.components != null && obj.components.length > 0){
+            } else if (angular.equals(obj.type, 'datatype')) {
+                if (obj.components != undefined && obj.components != null && obj.components.length > 0) {
                     angular.forEach(obj.components, function (component) {
-                        $rootScope.findTableRefs(table,component);
+                        $rootScope.findTableRefs(table, component);
                     });
                 }
             }
         };
 
-        $rootScope.genRegex = function (format){
-            if(format === 'YYYY'){
+        $rootScope.genRegex = function (format) {
+            if (format === 'YYYY') {
                 return '(([0-9]{4})|(([0-9]{4})((0[1-9])|(1[0-2])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
-            } else if(format === 'YYYYMM'){
+            } else if (format === 'YYYYMM') {
                 return '((([0-9]{4})((0[1-9])|(1[0-2])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
-            } else if(format === 'YYYYMMDD'){
+            } else if (format === 'YYYYMMDD') {
                 return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
-            } else if(format === 'YYYYMMDDhh'){
+            } else if (format === 'YYYYMMDDhh') {
                 return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
-            } else if(format === 'YYYYMMDDhhmm'){
+            } else if (format === 'YYYYMMDDhhmm') {
                 return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
-            } else if(format === 'YYYYMMDDhhmmss'){
+            } else if (format === 'YYYYMMDDhhmmss') {
                 return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]))|(([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
-            } else if(format === 'YYYYMMDDhhmmss.sss'){
+            } else if (format === 'YYYYMMDDhhmmss.sss') {
                 return '((([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]))';
-            } else if(format === 'YYYY+-ZZZZ'){
+            } else if (format === 'YYYY+-ZZZZ') {
                 return '([0-9]{4}).*((\\+|\\-)[0-9]{4})';
-            } else if(format === 'YYYYMM+-ZZZZ'){
+            } else if (format === 'YYYYMM+-ZZZZ') {
                 return '([0-9]{4})((0[1-9])|(1[0-2])).*((\\+|\\-)[0-9]{4})';
-            } else if(format === 'YYYYMMDD+-ZZZZ'){
+            } else if (format === 'YYYYMMDD+-ZZZZ') {
                 return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1])).*((\\+|\\-)[0-9]{4})';
-            } else if(format === 'YYYYMMDDhh+-ZZZZ'){
+            } else if (format === 'YYYYMMDDhh+-ZZZZ') {
                 return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3])).*((\\+|\\-)[0-9]{4})';
-            } else if(format === 'YYYYMMDDhhmm+-ZZZZ'){
+            } else if (format === 'YYYYMMDDhhmm+-ZZZZ') {
                 return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9]).*((\\+|\\-)[0-9]{4})';
-            } else if(format === 'YYYYMMDDhhmmss+-ZZZZ'){
+            } else if (format === 'YYYYMMDDhhmmss+-ZZZZ') {
                 return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9]).*((\\+|\\-)[0-9]{4})';
-            } else if(format === 'YYYYMMDDhhmmss.sss+-ZZZZ'){
+            } else if (format === 'YYYYMMDDhhmmss.sss+-ZZZZ') {
                 return '([0-9]{4})((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))(([0-1][0-9])|(2[0-3]))([0-5][0-9])([0-5][0-9])\\.[0-9][0-9][0-9][0-9]((\\+|\\-)[0-9]{4})';
-            } else if(format === 'ISO-compliant OID'){
+            } else if (format === 'ISO-compliant OID') {
                 return '[0-2](\\.(0|[1-9][0-9]*))*';
-            } else if(format === 'Alphanumeric'){
+            } else if (format === 'Alphanumeric') {
                 return '^[a-zA-Z0-9]*$';
             }
 
@@ -882,97 +899,97 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.isAvailableDTForTable = function (dt) {
-            if(dt != undefined){
-                if(dt.name === 'IS' ||  dt.name === 'ID' ||dt.name === 'CWE' ||dt.name === 'CNE' ||dt.name === 'CE') return true;
+            if (dt != undefined) {
+                if (dt.name === 'IS' || dt.name === 'ID' || dt.name === 'CWE' || dt.name === 'CNE' || dt.name === 'CE') return true;
 
-                if(dt.components != undefined && dt.components.length > 0) return true;
+                if (dt.components != undefined && dt.components.length > 0) return true;
 
             }
             return false;
         };
 
-        $rootScope.validateNumber = function(event) {
+        $rootScope.validateNumber = function (event) {
             var key = window.event ? event.keyCode : event.which;
             if (event.keyCode == 8 || event.keyCode == 46
                 || event.keyCode == 37 || event.keyCode == 39) {
                 return true;
             }
-            else if ( key < 48 || key > 57 ) {
+            else if (key < 48 || key > 57) {
                 return false;
             }
             else return true;
         };
-        
-        $rootScope.generateCompositeConformanceStatement = function(compositeType, firstConstraint, secondConstraint){
-        	var cs = null;
-        	if(compositeType === 'AND'){
-        		cs = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                        constraintTarget: firstConstraint.constraintTarget,
-                        description: '['+ firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
-                        assertion: '<AND>' + firstConstraint.assertion + secondConstraint.assertion + '</AND>'
+
+        $rootScope.generateCompositeConformanceStatement = function (compositeType, firstConstraint, secondConstraint) {
+            var cs = null;
+            if (compositeType === 'AND') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
+                    description: '[' + firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
+                    assertion: '<AND>' + firstConstraint.assertion + secondConstraint.assertion + '</AND>'
                 };
-        	}else if(compositeType === 'OR'){
-        		cs = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                        constraintTarget: firstConstraint.constraintTarget,
-                        description: '['+ firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
-                        assertion: '<OR>' + firstConstraint.assertion + secondConstraint.assertion + '</OR>'
+            } else if (compositeType === 'OR') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
+                    description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
+                    assertion: '<OR>' + firstConstraint.assertion + secondConstraint.assertion + '</OR>'
                 };
-        	}else if(compositeType === 'IFTHEN'){
-        		cs = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                        constraintTarget: firstConstraint.constraintTarget,
-                        description: 'IF ['+ firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
-                        assertion: '<IMPLY>' + firstConstraint.assertion + secondConstraint.assertion + '</IMPLY>'
+            } else if (compositeType === 'IFTHEN') {
+                cs = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
+                    description: 'IF [' + firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
+                    assertion: '<IMPLY>' + firstConstraint.assertion + secondConstraint.assertion + '</IMPLY>'
                 };
-        	}
-        	return cs;
+            }
+            return cs;
         }
-        
-        
-        $rootScope.generateCompositePredicate = function(compositeType, firstConstraint, secondConstraint){
-        	var cp = null;
-        	if(compositeType === 'AND'){
-        		cp = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                        constraintTarget: firstConstraint.constraintTarget,
-                        description: '['+ firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
-                        trueUsage: firstConstraint.trueUsage,
-                        falseUsage: firstConstraint.falseUsage,
-                        assertion: '<AND>' + firstConstraint.assertion + secondConstraint.assertion + '</AND>'
+
+
+        $rootScope.generateCompositePredicate = function (compositeType, firstConstraint, secondConstraint) {
+            var cp = null;
+            if (compositeType === 'AND') {
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
+                    description: '[' + firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
+                    trueUsage: firstConstraint.trueUsage,
+                    falseUsage: firstConstraint.falseUsage,
+                    assertion: '<AND>' + firstConstraint.assertion + secondConstraint.assertion + '</AND>'
                 };
-        	}else if(compositeType === 'OR'){
-        		cp = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                        constraintTarget: firstConstraint.constraintTarget,
-                        description: '['+ firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
-                        trueUsage: firstConstraint.trueUsage,
-                        falseUsage: firstConstraint.falseUsage,
-                        assertion: '<OR>' + firstConstraint.assertion + secondConstraint.assertion + '</OR>'
+            } else if (compositeType === 'OR') {
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
+                    description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
+                    trueUsage: firstConstraint.trueUsage,
+                    falseUsage: firstConstraint.falseUsage,
+                    assertion: '<OR>' + firstConstraint.assertion + secondConstraint.assertion + '</OR>'
                 };
-        	}else if(compositeType === 'IFTHEN'){
-        		cp = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
-                        constraintTarget: firstConstraint.constraintTarget,
-                        description: 'IF ['+ firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
-                        trueUsage: firstConstraint.trueUsage,
-                        falseUsage: firstConstraint.falseUsage,
-                        assertion: '<IMPLY>' + firstConstraint.assertion + secondConstraint.assertion + '</IMPLY>'
+            } else if (compositeType === 'IFTHEN') {
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
+                    constraintTarget: firstConstraint.constraintTarget,
+                    description: 'IF [' + firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
+                    trueUsage: firstConstraint.trueUsage,
+                    falseUsage: firstConstraint.falseUsage,
+                    assertion: '<IMPLY>' + firstConstraint.assertion + secondConstraint.assertion + '</IMPLY>'
                 };
-        	}
-        	return cp;
+            }
+            return cp;
         }
-        
-        $rootScope.generateConformanceStatement = function(positionPath, newConstraint){
-        	var cs = null;
-        	if (newConstraint.contraintType === 'valued') {
+
+        $rootScope.generateConformanceStatement = function (positionPath, newConstraint) {
+            var cs = null;
+            if (newConstraint.contraintType === 'valued') {
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
@@ -1001,14 +1018,14 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 };
             } else if (newConstraint.contraintType === 'one of codes in ValueSet') {
                 cs = {
-                        id: new ObjectId().toString(),
-                        constraintId: newConstraint.constraintId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.valueSetId + '.',
-                        assertion: '<ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation +'\"/>'
+                    id: new ObjectId().toString(),
+                    constraintId: newConstraint.constraintId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.valueSetId + '.',
+                    assertion: '<ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/>'
                 };
-            }  else if (newConstraint.contraintType === 'formatted value') {
+            } else if (newConstraint.contraintType === 'formatted value') {
                 cs = {
                     id: new ObjectId().toString(),
                     constraintId: newConstraint.constraintId,
@@ -1135,217 +1152,215 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LE" Value=\"' + newConstraint.value + '\"/>'
                 };
             }
-        	
-        	return cs;
+
+            return cs;
         }
-        
-        
-        $rootScope.generatePredicate = function(positionPath, newConstraint){
-        	var cp = null;
+
+
+        $rootScope.generatePredicate = function (positionPath, newConstraint) {
+            var cp = null;
             if (newConstraint.contraintType === 'valued') {
-            	cp = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType,
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<Presence Path=\"' + newConstraint.position_1 + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType,
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<Presence Path=\"' + newConstraint.position_1 + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'a literal value') {
-            	cp = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/>'
                 };
             } else if (newConstraint.contraintType === 'one of list values') {
-            	cp = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.value + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<StringList Path=\"' + newConstraint.position_1 + '\" CSV=\"' + newConstraint.value + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.value + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<StringList Path=\"' + newConstraint.position_1 + '\" CSV=\"' + newConstraint.value + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'one of codes in ValueSet') {
-            	cp = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.valueSetId + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation +'\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.valueSetId + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'formatted value') {
-            	cp = {
-                        id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'identical to another node') {
-            	cp = {
-            			id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' identical to the value of ' + newConstraint.location_2 + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' identical to the value of ' + newConstraint.location_2 + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'equal to another node') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to the value of ' + newConstraint.location_2  + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to the value of ' + newConstraint.location_2 + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'not-equal to another node') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with the value of ' + newConstraint.location_2  + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="NE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with the value of ' + newConstraint.location_2 + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="NE" Path2=\"' + newConstraint.position_2 + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'greater than another node') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than the value of ' + newConstraint.location_2  + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GT" Path2=\"' + newConstraint.position_2 + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than the value of ' + newConstraint.location_2 + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GT" Path2=\"' + newConstraint.position_2 + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'equal to or greater than another node') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than the value of ' + newConstraint.location_2  + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than the value of ' + newConstraint.location_2 + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GE" Path2=\"' + newConstraint.position_2 + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'less than another node') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than the value of ' + newConstraint.location_2  + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LT" Path2=\"' + newConstraint.position_2 + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than the value of ' + newConstraint.location_2 + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LT" Path2=\"' + newConstraint.position_2 + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'equal to or less than another node') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than the value of ' + newConstraint.location_2  + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than the value of ' + newConstraint.location_2 + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LE" Path2=\"' + newConstraint.position_2 + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'equal to') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to ' + newConstraint.value + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="EQ" Value=\"' + newConstraint.value + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to ' + newConstraint.value + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="EQ" Value=\"' + newConstraint.value + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'not-equal to') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with ' + newConstraint.value + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="NE" Value=\"' + newConstraint.value + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with ' + newConstraint.value + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="NE" Value=\"' + newConstraint.value + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'greater than') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than ' + newConstraint.value + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GT" Value=\"' + newConstraint.value + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than ' + newConstraint.value + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GT" Value=\"' + newConstraint.value + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'equal to or greater than') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than ' + newConstraint.value + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GE" Value=\"' + newConstraint.value + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than ' + newConstraint.value + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GE" Value=\"' + newConstraint.value + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'less than') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than ' + newConstraint.value + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LT" Value=\"' + newConstraint.value + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than ' + newConstraint.value + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LT" Value=\"' + newConstraint.value + '\"/>'
                 };
             } else if (newConstraint.contraintType === 'equal to or less than') {
-            	cp = {
-        				id: new ObjectId().toString(),
-                        constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                        constraintTarget: positionPath,
-                        constraintClassification: newConstraint.constraintClassification,
-                        description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than ' + newConstraint.value + '.',
-                        trueUsage: newConstraint.trueUsage,
-                        falseUsage: newConstraint.falseUsage,
-                        assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LE" Value=\"' + newConstraint.value + '\"/>'
+                cp = {
+                    id: new ObjectId().toString(),
+                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                    constraintTarget: positionPath,
+                    constraintClassification: newConstraint.constraintClassification,
+                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than ' + newConstraint.value + '.',
+                    trueUsage: newConstraint.trueUsage,
+                    falseUsage: newConstraint.falseUsage,
+                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LE" Value=\"' + newConstraint.value + '\"/>'
                 };
             }
-            
+
             return cp;
         }
-        
-        
 
 
         //We check for IE when the user load the main page.
@@ -1353,7 +1368,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 //    $scope.checkForIE();
 
 
-        $rootScope.openRichTextDlg = function(obj, key, title, disabled){
+        $rootScope.openRichTextDlg = function (obj, key, title, disabled) {
             var modalInstance = $modal.open({
                 templateUrl: 'RichTextCtrl.html',
                 controller: 'RichTextCtrl',
@@ -1364,17 +1379,17 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 resolve: {
                     editorTarget: function () {
                         return {
-                            key:key,
-                            obj:obj,
-                            disabled:disabled,
-                            title:title
+                            key: key,
+                            obj: obj,
+                            disabled: disabled,
+                            title: title
                         };
                     }
                 }
             });
         };
 
-        $rootScope.openInputTextDlg = function(obj, key,title, disabled){
+        $rootScope.openInputTextDlg = function (obj, key, title, disabled) {
             var modalInstance = $modal.open({
                 templateUrl: 'InputTextCtrl.html',
                 controller: 'InputTextCtrl',
@@ -1385,10 +1400,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 resolve: {
                     editorTarget: function () {
                         return {
-                            key:key,
-                            obj:obj,
-                            disabled:disabled,
-                            title:title
+                            key: key,
+                            obj: obj,
+                            disabled: disabled,
+                            title: title
                         };
                     }
                 }
@@ -1397,14 +1412,14 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
 
         $rootScope.isDuplicated = function (obj, context, list) {
-            if(obj == null || obj == undefined) return false;
+            if (obj == null || obj == undefined) return false;
 
-            return _.find(_.without(list, obj), function(item) {
+            return _.find(_.without(list, obj), function (item) {
                 return item[context] == obj[context];
             });
         };
 
-        $scope.init = function(){
+        $scope.init = function () {
 //        $http.get('api/igdocuments/config', {timeout: 60000}).then(function (response) {
 //            $rootScope.config = angular.fromJson(response.data);
 //        }, function (error) {
@@ -1418,55 +1433,43 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             return '';
         };
 
-        $scope.froalaEditorOptions = {
-            placeholderText: '',
-            toolbarButtons:['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', '|', 'color', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', 'quote', 'insertHR', '-', 'undo', 'redo', 'clearFormatting', 'selectAll', 'insertTable', 'insertLink','insertImage', 'insertFile'],
-//            imageUploadURL: $rootScope.appInfo.uploadedImagesUrl + "/upload",
-            events: {
-                'froalaEditor.initialized': function() {
-
-                }
-            }
-        };
-
     }]);
 
-angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user', function($scope, $modalInstance, user) {
+angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user', function ($scope, $modalInstance, user) {
     $scope.user = user;
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
 
-    $scope.login = function() {
+    $scope.login = function () {
 //        console.log("logging in...");
         $modalInstance.close($scope.user);
     };
 }]);
 
 
-angular.module('igl').controller('RichTextCtrl', ['$scope', '$modalInstance','editorTarget', function($scope, $modalInstance, editorTarget) {
+angular.module('igl').controller('RichTextCtrl', ['$scope', '$modalInstance', 'editorTarget', function ($scope, $modalInstance, editorTarget) {
     $scope.editorTarget = editorTarget;
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
 
-    $scope.close = function() {
+    $scope.close = function () {
         $modalInstance.close($scope.editorTarget);
     };
 }]);
 
 
-
-angular.module('igl').controller('InputTextCtrl', ['$scope', '$modalInstance','editorTarget', function($scope, $modalInstance, editorTarget) {
+angular.module('igl').controller('InputTextCtrl', ['$scope', '$modalInstance', 'editorTarget', function ($scope, $modalInstance, editorTarget) {
     $scope.editorTarget = editorTarget;
 
-    $scope.cancel = function() {
+    $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
 
-    $scope.close = function() {
+    $scope.close = function () {
         $modalInstance.close($scope.editorTarget);
     };
 }]);

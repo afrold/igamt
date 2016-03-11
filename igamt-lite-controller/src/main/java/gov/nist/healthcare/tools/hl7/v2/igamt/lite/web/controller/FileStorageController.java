@@ -21,9 +21,9 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,16 +57,21 @@ public class FileStorageController {
 			if (account == null)
 				throw new UserAccountNotFoundException();
 			String mime = part.getContentType();
-			String filename = part.getName();
+			String filename = part.getOriginalFilename();
 			String extension = FilenameUtils.getExtension(filename);
 			if (((mime.equals("text/plain")
 					|| (mime.equals("application/msword"))
+					|| (mime.equals("text/xml"))
 					|| (mime.equals("application/x-pdf")) || (mime
 						.equals("application/pdf")))
 					|| (mime.equals("image/jpeg"))
 					|| (mime.equals("image/gif")) || (mime.equals("image/png")))
 					&& FileStorageUtil.allowedExtensions.contains(extension
 							.toLowerCase())) {
+
+				if (part.getSize() >= 1024 * 1024 * 10) {
+					throw new UploadImageFileException("fileSizeTooBig");
+				}
 				InputStream in = part.getInputStream();
 				DBObject metaData = new BasicDBObject();
 				metaData.put("accountId", account.getId());
@@ -77,10 +82,10 @@ public class FileStorageController {
 				GridFSDBFile dbFile = storageService.findOne(fsFile.getId()
 						.toString());
 				return new UploadFileResponse(
-						HttpUtil.getImagesRootUrl(request) + "/"
+						HttpUtil.getImagesRootUrl(request) + "/file?name="
 								+ dbFile.getFilename());
 			}
-			throw new UploadImageFileException("Unsupported File Type");
+			throw new UploadImageFileException("fileTypeUnsupported");
 
 		} catch (RuntimeException e) {
 			throw new UploadImageFileException(e);
@@ -90,9 +95,9 @@ public class FileStorageController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/{filename}", method = RequestMethod.GET)
+	@RequestMapping(value = "/file", method = RequestMethod.GET)
 	public ResponseEntity<InputStreamResource> getByName(
-			@PathVariable("filename") String filename)
+			@RequestParam("name") String filename)
 			throws UploadImageFileException {
 		try {
 			GridFSDBFile dbFile = storageService.findOneByFilename(filename);

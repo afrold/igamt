@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout) {
+    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService) {
 //        $scope.loading = false;
         $scope.readonly = false;
         $scope.saved = false;
@@ -164,7 +164,36 @@ angular.module('igl')
                 }
 
             return 0;
-        }
+        };
+
+        $scope.isRelevant = function (node) {
+           return SegmentService.isRelevant(node);
+        };
+
+        $scope.isBranch = function (node) {
+            SegmentService.isBranch(node);
+        };
+
+        $scope.isVisible = function (node) {
+            return SegmentService.isVisible(node);
+        };
+
+        $scope.children = function (node) {
+            return SegmentService.getNodes(node);
+        };
+
+        $scope.getParent = function (node) {
+            return SegmentService.getParent(node);
+        };
+
+        $scope.getSegmentLevelConfStatements = function (element) {
+             return SegmentService.getSegmentLevelConfStatements(element);
+        };
+
+        $scope.getSegmentLevelPredicates = function (element) {
+            return SegmentService.getSegmentLevelPredicates(element);
+        };
+
     });
 
 angular.module('igl')

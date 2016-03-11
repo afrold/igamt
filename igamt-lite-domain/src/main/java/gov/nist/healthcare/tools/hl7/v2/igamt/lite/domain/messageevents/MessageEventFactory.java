@@ -12,10 +12,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,23 +52,32 @@ public class MessageEventFactory {
 			String description = msg.getDescription();
 			list.add(new MessageEvents(id, structID, events, description));
 		}
-		Collections.sort(list, new MessageEventsComparator());
 		return list;
 	}
 
 	public Set<String> findEvents(String structID) {
-		Set<String> events = new TreeSet<String>(new EventComparator());
-		Code code = get0354Table().findOneCodeByValue(structID);
+		Set<String> events = new HashSet<String>();
+		String structID1 = fixUnderscore(structID);
+		Code code = get0354Table().findOneCodeByValue(structID1);
 		if (code != null) {
 			String label = code.getLabel();
 			String[] ss = label.split(",");
 			Collections.addAll(events, ss);
 		} else {
-			log.error("No code found for structID=" + structID);
+			log.error("No code found for structID=" + structID1);
 		}
 		return events;
 	}
 
+	String fixUnderscore (String structID) {
+		if (structID.endsWith("_")) {
+			int pos = structID.length();
+			return structID.substring(0, pos -1);
+		} else {
+			return structID;
+		}
+	}
+	
 	public Table get0354Table() {
 		if (tab0354 == null) {
 			for (Table tab : tables.getChildren()) {
@@ -80,21 +88,5 @@ public class MessageEventFactory {
 			}
 		}
 		return tab0354;
-	}
-	
-	class MessageEventsComparator implements Comparator<MessageEvents> {
-
-		@Override
-		public int compare(MessageEvents thisOne, MessageEvents thatOne) {
-			return thisOne.getName().compareTo(thatOne.getName());
-		}
-	}
-	
-	class EventComparator implements Comparator<String> {
-
-		@Override
-		public int compare(String thisOne, String thatOne) {
-			return thisOne.compareTo(thatOne);
-		}
 	}
 }
