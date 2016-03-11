@@ -12,6 +12,14 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, profile, {}];
     });
 
+    $httpBackend.whenGET('api/igdocuments/{id}').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/profile4.json', false);
+        request.send(null);
+        var profile = angular.fromJson(request.response);
+        return [request.status, profile, {}];
+    });
+
     $httpBackend.whenGET('api/shortaccounts?filter=accountType::author').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/shortaccounts.json', false);

@@ -27,7 +27,7 @@ angular.module('igl').factory('MessageEventsSvc', function($http, ngTreetablePar
 	svc.getMessageEvents = function(hl7Version) {
 		return new ngTreetableParams( {
 			getNodes: function(parent) {
-				return parent ? parent.children : mes(hl7Version);
+				return parent ? parent.children : mes(hl7Version)
 			},
 	        getTemplate: function(node) {
 	            return 'MessageEventsNode.html';
@@ -44,7 +44,9 @@ function mes(hl7Version) {
 	console.log("hl7Version=" + JSON.stringify(hl7Version));
 	return $http.post(
 			'api/igdocuments/messageListByVersion', hl7Version).then(function(response) {
-			return angular.fromJson(response.data)});
+				var messageEvents = angular.fromJson(response.data);
+				return _.sortBy(messageEvents, function(messageEvent) { return messageEvent.name; });
+			});
 		};
 
 	return svc;

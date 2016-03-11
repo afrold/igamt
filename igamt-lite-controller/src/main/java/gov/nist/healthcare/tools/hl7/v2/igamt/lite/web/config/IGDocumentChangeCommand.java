@@ -35,7 +35,4 @@ public class IGDocumentChangeCommand {
 	public void setIgDocument(IGDocument igDocument) {
 		this.igDocument = igDocument;
 	}
-
-	
-
 }

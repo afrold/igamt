@@ -19,6 +19,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -63,7 +64,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	private boolean CREATE = true;
 	private boolean UPDATE = false;
-	
+
 	@Autowired
 	private IGDocumentRepository igdocumentRepository;
 
@@ -80,11 +81,16 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	public List<MessageEvents> summary(String hl7Version) {
 		List<IGDocument> igds = igdocumentRepository
 				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version);
-		IGDocument igd = igds.get(0);
-		MessageEventFactory mef = new MessageEventFactory(igd);
-		Messages msgs = igd.getProfile().getMessages();
-		List<MessageEvents> rval = mef.createMessageEvents(msgs);
-		return rval;
+		List<MessageEvents> messageEvents = new ArrayList<MessageEvents>();
+		if (!igds.isEmpty()) {
+			IGDocument igd = igds.get(0);
+			MessageEventFactory mef = new MessageEventFactory(igd);
+			Messages msgs = igd.getProfile().getMessages();
+			messageEvents = mef.createMessageEvents(msgs);
+		} else {
+			log.debug("IGDocument Not found for hl7Version=" + hl7Version);
+		}
+		return messageEvents;
 	}
 
 	@Override
@@ -212,14 +218,14 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 			log.debug("Message.name=" + name);
 			m1.setName(name);
 			messages.addMessage(m1);
-			if(create) {
-			for (SegmentRefOrGroup sg : m.getChildren()) {
-				if (sg instanceof SegmentRef) {
-					addSegment((SegmentRef) sg, pSource, pTarget);
-				} else if (sg instanceof Group) {
-					addGroup((Group) sg, pSource, pTarget);
+			if (create) {
+				for (SegmentRefOrGroup sg : m.getChildren()) {
+					if (sg instanceof SegmentRef) {
+						addSegment((SegmentRef) sg, pSource, pTarget);
+					} else if (sg instanceof Group) {
+						addGroup((Group) sg, pSource, pTarget);
+					}
 				}
-			}
 			}
 		}
 	}
