@@ -26,13 +26,8 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 					}
 				}
 			};
-		});
+			
 
-angular.module('igl').controller('StandardDatatypeLibraryDlgCtl',
-		function($scope, $rootScope, $filter, $http, $modal, $httpBackend, DatatypeLibrarySvc, userInfoService) {
-
-			$scope.standardSelections = [];
-	
 			$scope.openStandardDataypes = function() {
 				
 				var standardDatatypesInstance = $modal.open({
@@ -52,7 +47,34 @@ angular.module('igl').controller('StandardDatatypeLibraryDlgCtl',
 					});
 			});
 			};
+
 		});
+
+//angular.module('igl').controller('StandardDatatypeLibraryDlgCtl',
+//		function($scope, $rootScope, $filter, $http, $modal, $httpBackend, DatatypeLibrarySvc, userInfoService) {
+//
+//			$scope.standardSelections = [];
+//	
+//			$scope.openStandardDataypes = function() {
+//				
+//				var standardDatatypesInstance = $modal.open({
+//					templateUrl : 'standardDatatypeDlg.html',
+//					controller : 'StandardDatatypeLibraryInstanceDlgCtl',
+//					resolve : {
+//						datatypeLibrary : DatatypeLibrarySvc.getDataTypeLibrary("STANDARD")
+//					}
+//				});
+//				
+//				standardDatatypesInstance.result.then(function(result) {
+//					var datatypeLibrary = angular.copy(DatatypeLibrarySvc.datatypeLibrary);
+//					datatypeLibrary.id = undefined;
+//					datatypeLibrary.children = result;
+//					DatatypeLibrarySvc.save(datatypeLibrary).then(function()  {
+//						$rootScope.$broadcast('event:initDatatypeLibrary');	
+//					});
+//			});
+//			};
+//		});
 
 angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 		function($scope, $rootScope, $filter, $http, $modalInstance, $httpBackend, datatypeLibrary, DatatypeLibrarySvc, userInfoService) {
