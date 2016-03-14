@@ -29,12 +29,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
@@ -47,6 +50,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
 @ContextConfiguration(classes = { PersistenceContext.class })
 public class IGDocumentCreationServiceTest {
 
+	Logger log = LoggerFactory.getLogger( IGDocumentCreationServiceTest.class ); 
+			
 	@Autowired
 	IGDocumentRepository igDocumentRepository;
 
@@ -66,16 +71,7 @@ public class IGDocumentCreationServiceTest {
 
 	@BeforeClass
 	public static void setup() {
-		try {
-			Properties p = new Properties();
-			InputStream log4jFile = IGDocumentCreationServiceTest.class
-					.getResourceAsStream("/igl-test-log4j.properties");
-			p.load(log4jFile);
-			PropertyConfigurator.configure(p);
-			refIneteg = new ProfileCreationReferentialIntegrityTest();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		refIneteg = new ProfileCreationReferentialIntegrityTest();
 	}
 
 	@Test
@@ -102,7 +98,7 @@ public class IGDocumentCreationServiceTest {
 		assertEquals(igd.getProfile().getMessages().getChildren().size(), mes.size());
 	}
 
-//	@Test
+	@Test
 	public void testIGDocumentCreation() throws IOException, ProfileException {
 
 		// Creation of a profile with five message ids
@@ -117,7 +113,9 @@ public class IGDocumentCreationServiceTest {
 			e.printStackTrace();
 		}
 		assertEquals(5, pNew.getProfile().getMessages().getChildren().size());
-
+		for (Message msg : pNew.getProfile().getMessages().getChildren() ) {
+			assertNotNull(msg.getId());
+		}
 		refIneteg.testMessagesVsSegments(pNew.getProfile());
 		refIneteg.testFieldDatatypes(pNew.getProfile());
 		refIneteg.testComponentDataypes(pNew.getProfile());
