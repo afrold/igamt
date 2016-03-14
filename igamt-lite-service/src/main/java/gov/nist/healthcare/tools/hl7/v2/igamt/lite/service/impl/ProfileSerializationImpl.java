@@ -381,6 +381,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 	private nu.xom.Element serializeMessage(Message m, Segments segments) {
 		nu.xom.Element elmMessage = new nu.xom.Element("Message");
+		logger.debug("m.getMessageID()=" + m.getMessageID());
 		elmMessage.addAttribute(new Attribute("ID", m.getMessageID()));
 		if(m.getIdentifier() != null && !m.getIdentifier().equals("")) elmMessage.addAttribute(new Attribute("Identifier", ExportUtil.str(m.getIdentifier())));
 		if(m.getName() != null && !m.getName().equals("")) elmMessage.addAttribute(new Attribute("Name", ExportUtil.str(m.getName())));
