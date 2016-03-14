@@ -19,7 +19,7 @@
                            ng-class="{'active':igDocumentConfig.selectedType === tt.type}"
                            ng-repeat="tt in igDocumentTypes | uppercase">
                         <input ng-disabled="loading" type="radio" ng-value="tt.type"
-                                ng-model="igDocumentConfig.selectedType"><i class="fa fa-th-list"></i> {{tt.name}}
+                                ng-model="$parent.igDocumentConfig.selectedType"><i class="fa fa-th-list"></i> {{tt.name}}
                     </label>
                 </div>
                 <div class="pull-right" style="margin-right:20px">

@@ -301,7 +301,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     notificationsConfigProvider.setAutoHide(false);
 
     // delay before hide
-    notificationsConfigProvider.setHideDelay(3000);
+    notificationsConfigProvider.setHideDelay(30000);
 
     // delay between animation and removing the nofitication
     notificationsConfigProvider.setAutoHideAnimationDelay(1200);
