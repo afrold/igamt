@@ -2,7 +2,7 @@
  * http://usejsdoc.org/
  */
 angular.module('igl').controller('MasterDatatypeLibraryCtl',
-		function($scope, $rootScope, $filter, $http, $httpBackend, DatatypeLibrarySvc, userInfoService) {
+		function($scope, $rootScope, $filter, $http, $httpBackend, $modal, DatatypeLibrarySvc, userInfoService) {
 
 			$scope.publishSelections = [];
 			
