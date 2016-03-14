@@ -128,9 +128,11 @@ public class Tables extends TextbasedSectionModel implements Serializable, Clone
 
 	public Table findOneTableById(String id) {
 		if (this.children != null)
-			for (Table m : this.children) {
-				if (m.getId().equals(id)) {
-					return m;
+			for (Table t : this.children) {
+				if(t != null && t.getId() != null){
+					if (t.getId().equals(id)) {
+						return t;
+					}
 				}
 			}
 		return null;

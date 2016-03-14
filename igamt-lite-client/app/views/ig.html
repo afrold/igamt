@@ -276,18 +276,23 @@
 
 <script type="text/ng-template" id="SelectMessagesOpenCtrl.html">
     <div class="modal-header">
-        <h3 class="modal-title">Select Message to export
-        </h3>
+        <h3 class="modal-title">Export XML</h3>
     </div>
     <div class="modal-body">
         <div style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
-            <table class="igdocument-list table table-striped table-bordered">
-                <tr class="tbl-header">
+            <label class="col-md-3 for="formatSelect">Select XML format:</label>
+        	<select class="col-md-3" id="formatSelect" name="formatSelect" ng-model="xmlFormat" class="form-control input-sm">
+				<option value="Validation">NIST Validation</option>
+            	<option value="Display">NIST Display</option>
+            	<option value="Gazelle">Gazelle</option>
+       		</select>
+			<table class="igdocument-list table table-striped table-bordered">
+                <theader>
                     <th>&nbsp;</th>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Description</th>
-                </tr>
+                </theader>
                 <tbody ng-repeat="message in igdocumentToSelect.profile.messages.children">
                 <tr>
                     <td><input type="checkbox" ng-model="bool"  ng-change="trackSelections(bool, message.id)"></td>
@@ -300,9 +305,10 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-file-text fa-fw">&nbsp; </i>Export XMLs (ZIP Archive)</span></button>
-		<button class="btn btn-primary btn-sm" ng-disabled="loading" ng-click="exportAsZIPDisplayforSelectedMessages()"><span><i class="fa fa-file-text fa-fw">&nbsp; </i>Export XMLs (ZIP Archive, Display Version)</span></button>
-		<button class="btn btn-default btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span></button>
+		<button class="btn btn-primary btn-sm" ng-show="xmlFormat === 'Validation'" ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-download fa-fw">&nbsp; </i>Export</span></button>
+        <button class="btn btn-primary btn-sm" ng-show="xmlFormat === 'Display'" ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-download fa-fw">&nbsp; </i>Expor</span></button>
+		<button class="btn btn-primary btn-sm" ng-show="xmlFormat === 'Gazelle'" ng-click="exportAsZIPforSelectedMessages()"><span><i class="fa fa-download fa-fw">&nbsp; </i>Export</span></button>
+		<button class="btn btn-warning btn-sm" ng-disabled="loading" ng-click="cancel()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
         <div ng-show="loading" style="text-align:center;padding-top:20px; padding-bottom:20px">
             <img class="ajax-loading" ng-src="images/ajax-loader.gif" alt="loading..."/>
         </div>

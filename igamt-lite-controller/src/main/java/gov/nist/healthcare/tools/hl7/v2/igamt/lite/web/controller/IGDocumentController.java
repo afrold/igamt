@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -251,14 +252,52 @@ public class IGDocumentController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-	@RequestMapping(value = "/{id}/export/zip/{mIds}", method = RequestMethod.POST, produces = "application/zip")
-	public void exportZipByMessage(@PathVariable("id") String id, @PathVariable("mIds") String[] messageIds,
+	@RequestMapping(value = "/{id}/export/Validation/{mIds}", method = RequestMethod.POST, produces = "application/zip")
+	public void exportValidationXMLByMessages(@PathVariable("id") String id,
+			@PathVariable("mIds") String[] messageIds,
 			HttpServletRequest request, HttpServletResponse response)
 					throws IOException, IGDocumentNotFoundException, CloneNotSupportedException {
-		log.info("Exporting as xml file profile with id=" + id + " for selected messages=" + messageIds);
+		log.info("Exporting as xml file profile with id=" + id + " for selected messages="
+				+ Arrays.toString(messageIds));
 		IGDocument d = findIGDocument(id);
 		InputStream content = null;
-		content = igDocumentExport.exportAsZipForSelectedMessages(d, messageIds);
+		content = igDocumentExport.exportAsValidationForSelectedMessages(d, messageIds);
+		response.setContentType("application/zip");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ StringUtils.escape(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".zip");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+	
+	@RequestMapping(value = "/{id}/export/Gazelle/{mIds}", method = RequestMethod.POST, produces = "application/zip")
+	public void exportGazelleXMLByMessages(@PathVariable("id") String id,
+			@PathVariable("mIds") String[] messageIds,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, IGDocumentNotFoundException,
+			CloneNotSupportedException {
+		log.info("Exporting as xml file profile with id=" + id
+				+ " for selected messages=" + messageIds);
+		IGDocument d = findIGDocument(id);
+		InputStream content = null;
+		content = igDocumentExport.exportAsGazelleForSelectedMessages(d, messageIds);
+		response.setContentType("application/zip");
+		response.setHeader("Content-disposition", "attachment;filename="
+				+ StringUtils.escape(d.getMetaData().getTitle()) + "-"
+				+ new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())
+				+ ".zip");
+		FileCopyUtils.copy(content, response.getOutputStream());
+	}
+	
+	@RequestMapping(value = "/{id}/export/Display/{mIds}", method = RequestMethod.POST, produces = "application/zip")
+	public void exportDisplayXMLByMessages(@PathVariable("id") String id,
+			@PathVariable("mIds") String[] messageIds,
+			HttpServletRequest request, HttpServletResponse response)
+			throws IOException, IGDocumentNotFoundException,
+			CloneNotSupportedException {
+		IGDocument d = findIGDocument(id);
+		InputStream content = null;
+		content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageIds);
 		response.setContentType("application/zip");
 		response.setHeader("Content-disposition",
 				"attachment;filename=" + StringUtils.escape(d.getMetaData().getTitle()) + "-"
@@ -397,8 +436,12 @@ public class IGDocumentController extends CommonController {
 	public IGDocument createIG(@RequestBody IntegrationIGDocumentRequestWrapper idrw) throws IGDocumentException {
 		log.info("Creation of IGDocument.");
 		log.debug("idrw.getMsgEvts()=" + idrw.getMsgEvts());
+		log.debug("idrw.getAccountId()=" + idrw.getAccountId());
+		User u = userService.getCurrentUser();
+		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
 		IGDocument igDocument = igDocumentCreation.createIntegratedIGDocument(idrw.getMsgEvts(), idrw.getHl7Version(),
-				idrw.getAccountId());
+				account.getId());
+
 		igDocumentService.save(igDocument);
 		assert (igDocument.getId() != null);
 		assert (igDocument.getAccountId() != null);

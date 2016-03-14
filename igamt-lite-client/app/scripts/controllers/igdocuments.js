@@ -508,6 +508,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'SelectMessagesOpenCtrl.html',
                 controller: 'SelectMessagesOpenCtrl',
+                windowClass: 'app-modal-window',
                 resolve: {
                     igdocumentToSelect: function () {
                         return igdocument;
@@ -1051,6 +1052,7 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
 
 angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies) {
     $scope.igdocumentToSelect = igdocumentToSelect;
+    $scope.xmlFormat = '';
     $scope.selectedMessagesIDs = [];
     $scope.loading = false;
 
@@ -1071,7 +1073,14 @@ angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $mo
      	var form = document.createElement("form");
      	console.log("ID: " + id);
      	console.log("Message IDs: " + mids);
-     	form.action = $rootScope.api('api/igdocuments/' + id + '/export/zip/' + mids);
+     	
+     	if($scope.xmlFormat === 'Validation'){
+     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Validation/' + mids);
+     	}else if($scope.xmlFormat === 'Display'){
+     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Display/' + mids);
+     	}else if($scope.xmlFormat === 'Gazelle'){
+     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Gazelle/' + mids);
+     	}
      	form.method = "POST";
      	form.target = "_target";
      	var csrfInput = document.createElement("input");
@@ -1084,18 +1093,11 @@ angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $mo
      };
 	 
 	
-	$scope.exportAsZIPforSelectedMessages = function () {
+	$scope.exportAsZIPforSelectedMessages = function (type) {
 		$scope.loading = true;
-		$scope.exportAsMessages($scope.igdocumentToSelect.id,$scope.selectedMessagesIDs);
+		$scope.exportAsMessages($scope.igdocumentToSelect.id,$scope.selectedMessagesIDs, type);
         $scope.loading = false;
     };
-    
-    $scope.exportAsZIPDisplayforSelectedMessages = function () {
-		$scope.loading = true;
-		$scope.exportAsMessages($scope.igdocumentToSelect.id,$scope.selectedMessagesIDs);
-        $scope.loading = false;
-    };
-    
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');

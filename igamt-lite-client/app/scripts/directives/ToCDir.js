@@ -53,7 +53,7 @@ angular
 						+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
 						+ "<trunk trunk='branch.children'></trunk>"
 						+ "</li>";
-					var branchMessageTemplate = "<li class='branch'"
+					var branchMessagesTemplate = "<li class='branch'"
 						+ " context-menu context-menu-close='closedCtxSubMenu(branch)' data-target='messageHeadContextDiv.html'>"
 						+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" ng-click='tocSelection(branch)'>"
 						+ "{{branch.label}}"
@@ -72,7 +72,7 @@ angular
 							if ( _.indexOf(["profile", "segments", "datatypes", "tables"], scope.branch.type) > -1) {
 								element.append(branchNoCtxTemplate);
 							} else if (scope.branch.type === "messages") {
-								element.append(branchMessageTemplate);
+								element.append(branchMessagesTemplate);
 							} else {
 								element.append(branchTemplate);
 							}
@@ -111,7 +111,7 @@ angular
 			            + " dnd-effect-allowed='move'"
 			            + " dnd-moved='moved(index, leaf)'"
 			            + " dnd-selected='models.selected = leaf'"
-						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html' ng-click='tocSelection(leaf, branch)'> "
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='messageContextDiv.html' ng-click='tocSelection(leaf, branch)'> "
 						+ "{{leaf.reference.name}} - {{leaf.reference.description}}" 
 						+ "</li>";
 					
