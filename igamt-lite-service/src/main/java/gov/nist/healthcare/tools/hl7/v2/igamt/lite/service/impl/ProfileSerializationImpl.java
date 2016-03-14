@@ -1898,7 +1898,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		
 		Tables tables = new Tables();
 		for (String key : tablesMap.keySet()) {
-			tables.addTable(tablesMap.get(key));
+			if(tablesMap.get(key) != null) tables.addTable(tablesMap.get(key));
 		}
 		
 		filteredProfile.setDatatypes(datatypes);
@@ -1957,7 +1957,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		
 		Tables tables = new Tables();
 		for (String key : tablesMap.keySet()) {
-			tables.addTable(tablesMap.get(key));
+			if(tablesMap.get(key) != null) tables.addTable(tablesMap.get(key));
 		}
 		
 		filteredProfile.setDatatypes(datatypes);
