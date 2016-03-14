@@ -802,9 +802,13 @@
 				<table width="100%" border="1" cellspacing="0" cellpadding="0">
 					<col style="width:10%"></col>
 					<col style="width:10%"></col>
-					<col style="width:80%"></col>
+					<col style="width:10%"></col>
+					<col style="width:70%"></col>
 					<thead style="background:#F0F0F0; color:#B21A1C; align:center">
 						<tr>
+							<th>
+								Id
+							</th>
 							<th>
 								Location
 							</th>
@@ -821,6 +825,9 @@
 							<xsl:sort select="@Position" data-type="number"></xsl:sort>
 							<tr style="'background-color:white;text-decoration:normal'">
 								<td>
+									<xsl:value-of select="Id" />
+								</td>
+								<td>
 									<xsl:value-of select="@Location" />
 								</td>
 								<td>
@@ -836,10 +843,14 @@
 			</xsl:if>
 			<xsl:if test="./@Type='ConformanceStatement'">
 				<table width="100%" border="1" cellspacing="0" cellpadding="0">
-					<col style="width:20%"></col>
+					<col style="width:10%"></col>
+					<col style="width:10%"></col>
 					<col style="width:80%"></col>
 					<thead style="background:#F0F0F0; color:#B21A1C; align:center">
 						<tr>
+							<th>
+								Id
+							</th>
 							<th>
 								Location
 							</th>
@@ -853,7 +864,10 @@
 							<xsl:sort select="@Position" data-type="number"></xsl:sort>
 							<tr style="'background-color:white;text-decoration:normal'">
 								<td>
-									<xsl:value-of select="@Location" />
+									<xsl:value-of select="@Id" />
+								</td>
+								<td>
+									<xsl:value-of select="concat(../@Name, @Location)" />
 								</td>
 								<td>
 									<xsl:value-of select="." />

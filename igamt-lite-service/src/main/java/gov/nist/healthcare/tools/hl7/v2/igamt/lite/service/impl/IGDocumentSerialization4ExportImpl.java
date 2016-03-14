@@ -440,8 +440,6 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		}
 		xsect.appendChild(ts);
 
-
-		////////////////
 		nu.xom.Element cnts = new nu.xom.Element("Section");
 		cnts.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
 		cnts.addAttribute(new Attribute("position", String.valueOf(5)));
@@ -487,24 +485,41 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		for (Message m : profile.getMessages().getChildren()){
 			if (m.getChildren() != null) {
 
-				nu.xom.Element csmsginfo = new nu.xom.Element("Constraints");
-				csmsginfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-				csmsginfo.addAttribute(new Attribute("position", String.valueOf(m.getSectionPosition())));
-				csmsginfo.addAttribute(new Attribute("h", String.valueOf(3)));
-				csmsginfo.addAttribute(new Attribute("title", m.getName()));
-				csmsginfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
+				nu.xom.Element csinfo = new nu.xom.Element("Constraints");
+				csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+				csinfo.addAttribute(new Attribute("position", String.valueOf(m.getSectionPosition())));
+				csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
+				csinfo.addAttribute(new Attribute("title", m.getName())); 
+				csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
 
-				nu.xom.Element cpmsginfo = new nu.xom.Element("Constraints");
-				cpmsginfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-				cpmsginfo.addAttribute(new Attribute("position", String.valueOf(m.getSectionPosition())));
-				cpmsginfo.addAttribute(new Attribute("h", String.valueOf(3)));
-				cpmsginfo.addAttribute(new Attribute("title", m.getName()));
-				cpmsginfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
+				nu.xom.Element cpinfo = new nu.xom.Element("Constraints");
+				cpinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+				cpinfo.addAttribute(new Attribute("position", String.valueOf(m.getSectionPosition())));
+				cpinfo.addAttribute(new Attribute("h", String.valueOf(3)));
+				cpinfo.addAttribute(new Attribute("title", m.getName()));
+				cpinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
 
+
+				Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
+
+				for (SegmentRefOrGroup segmentRefOrGroup : m.getChildren()) {
+					segmentRefOrGroups.put(segmentRefOrGroup.getPosition(),
+							segmentRefOrGroup);
+				}
+
+				for (int i = 1; i < segmentRefOrGroups.size() + 1; i++) {
+					SegmentRefOrGroup segmentRefOrGroup = segmentRefOrGroups.get(i);
+
+					String prefixcp = String.valueOf(profile.getSectionPosition()+1) + "5.1.3";
+					String prefixcs = String.valueOf(profile.getSectionPosition()+1) + "5.2.3";
+
+					this.serializeSegmentRefOrGroupConstraint(i, segmentRefOrGroup, csinfo, cpinfo, prefixcs, prefixcp);
+
+				}
+				cpmsg.appendChild(cpinfo);
+				csmsg.appendChild(csinfo);	
 			}
 		}
-
-		//TODO Not yet implemented
 
 		cp.appendChild(cpmsg);
 		cs.appendChild(csmsg);
@@ -545,7 +560,6 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 				cpinfo.addAttribute(new Attribute("title", s.getLabel()));
 				cpinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
 
-
 				Map<Integer, Field> fields = new HashMap<Integer, Field>();
 
 				for (Field f : s.getFields()) {
@@ -556,21 +570,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 					List<Constraint> constraints = findConstraints( i, s.getPredicates(), s.getConformanceStatements());
 					if (!constraints.isEmpty()) {
 						for (Constraint constraint : constraints) {
+							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint);
 							if (constraint instanceof Predicate) {
-								nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
 								prefix = String.valueOf(profile.getSectionPosition()+1) + "5.1.3";
-								cpinfo.addAttribute(new Attribute("prefix", prefix)); 
-								elmConstraint.addAttribute(new Attribute("Usage", "C(" + ((Predicate)constraint).getTrueUsage()
-										+ "/"+ ((Predicate)constraint).getFalseUsage() + ")"));
-								elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()));
-								elmConstraint.appendChild(constraint.getDescription());
+								cpinfo.addAttribute(new Attribute("prefix", prefix));
 								cpinfo.appendChild(elmConstraint);
 							} else if (constraint instanceof ConformanceStatement) {
-								nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
 								prefix = String.valueOf(profile.getSectionPosition()+1) + "5.2.3";
 								csinfo.addAttribute(new Attribute("prefix", prefix));
-								elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()));
-								elmConstraint.appendChild(constraint.getDescription());
 								csinfo.appendChild(elmConstraint);
 							}
 						}
@@ -583,7 +590,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 		cp.appendChild(cpsg);
 		cs.appendChild(cssg);
-		
+
 
 		// Constraints for datatypes
 		nu.xom.Element csdt = new nu.xom.Element("Section");
@@ -606,12 +613,12 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		for (Datatype d : profile.getDatatypes().getChildren()){
 			if (d.getComponents() != null) {
 
-				nu.xom.Element csdtinfo = new nu.xom.Element("Constraints");
-				csdtinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
-				csdtinfo.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition())));
-				csdtinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-				csdtinfo.addAttribute(new Attribute("title", d.getLabel()));
-				csdtinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
+				nu.xom.Element csinfo = new nu.xom.Element("Constraints");
+				csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
+				csinfo.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition())));
+				csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
+				csinfo.addAttribute(new Attribute("title", d.getLabel()));
+				csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
 
 				nu.xom.Element cpdtinfo = new nu.xom.Element("Constraints");
 				cpdtinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
@@ -629,29 +636,21 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 					List<Constraint> constraints = findConstraints( i, d.getPredicates(), d.getConformanceStatements());
 					if (!constraints.isEmpty()) {
 						for (Constraint constraint : constraints) {
-
+							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint);
 							if (constraint instanceof Predicate) {
-								nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
 								prefix = String.valueOf(profile.getSectionPosition()+1) + "5.1.3";
-								cpdtinfo.addAttribute(new Attribute("prefix", prefix)); 
-								elmConstraint.addAttribute(new Attribute("Usage", "C(" + ((Predicate)constraint).getTrueUsage()
-										+ "/"+ ((Predicate)constraint).getFalseUsage() + ")"));
-								elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()));
-								elmConstraint.appendChild(constraint.getDescription());
+								cpdtinfo.addAttribute(new Attribute("prefix", prefix));
 								cpdtinfo.appendChild(elmConstraint);
 							} else if (constraint instanceof ConformanceStatement) {
-								nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
 								prefix = String.valueOf(profile.getSectionPosition()+1) + "5.2.3";
-								csdtinfo.addAttribute(new Attribute("prefix", prefix));
-								elmConstraint.addAttribute(new Attribute("Location", constraint.getConstraintTarget()));
-								elmConstraint.appendChild(constraint.getDescription());
-								csdtinfo.appendChild(elmConstraint);
+								csinfo.addAttribute(new Attribute("prefix", prefix));
+								csinfo.appendChild(elmConstraint);
 							}
 						}
 					}
 				}
 				cpdt.appendChild(cpdtinfo);
-				csdt.appendChild(csdtinfo);
+				csdt.appendChild(csinfo);
 			}
 		}
 
@@ -662,12 +661,55 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		cnts.appendChild(cs);
 
 		xsect.appendChild(cnts);
-		///////////////
 
 		xsect.appendChild(e);
 		return xsect;
 	}
 
+	public nu.xom.Element serializeConstraintToElement(Constraint constraint) {
+		nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
+		elmConstraint.addAttribute(new Attribute("Id", constraint.getId()));
+		elmConstraint.addAttribute(new Attribute("Location", constraint
+				.getConstraintTarget().substring(
+						0, constraint.getConstraintTarget().indexOf(
+								'['))));
+		elmConstraint.appendChild(constraint.getDescription());
+		if (constraint instanceof Predicate) {
+			elmConstraint.addAttribute(new Attribute("Usage", "C(" + ((Predicate)constraint).getTrueUsage()
+					+ "/"+ ((Predicate)constraint).getFalseUsage() + ")"));
+		} else if (constraint instanceof ConformanceStatement) {
+		}			
+		return elmConstraint;
+	}
+
+	private void serializeSegmentRefOrGroupConstraint(Integer i, SegmentRefOrGroup segmentRefOrGroup, nu.xom.Element csinfo, nu.xom.Element cpinfo, String prefixcs,  String prefixcp){
+		List<Constraint> constraints = findConstraints(i, segmentRefOrGroup.getPredicates(), segmentRefOrGroup.getConformanceStatements());
+		if (!constraints.isEmpty()) {
+			for (Constraint constraint : constraints) {
+				nu.xom.Element elmConstraint = serializeConstraintToElement(constraint);
+				if (constraint instanceof Predicate) {
+					cpinfo.addAttribute(new Attribute("prefix", prefixcp));
+					cpinfo.appendChild(elmConstraint);
+				} else if (constraint instanceof ConformanceStatement) {
+					csinfo.addAttribute(new Attribute("prefix", prefixcs));
+					csinfo.appendChild(elmConstraint);
+				}
+			}
+		}
+
+		if (segmentRefOrGroup instanceof Group) {
+			Map<Integer, SegmentRefOrGroup> segmentRefOrGroups = new HashMap<Integer, SegmentRefOrGroup>();
+
+			for (SegmentRefOrGroup srog : ((Group) segmentRefOrGroup).getChildren()) {
+				segmentRefOrGroups.put(srog.getPosition(), srog);
+			}
+
+			for (int j = 1; j < segmentRefOrGroups.size() + 1; j++) {
+				SegmentRefOrGroup srog = segmentRefOrGroups.get(j);
+				this.serializeSegmentRefOrGroupConstraint(j, srog, csinfo, cpinfo, prefixcs, prefixcp);
+			}			
+		}
+	}
 
 	public nu.xom.Element serializeDatatypesToElement(IGDocument igdoc) {
 		Profile profile = igdoc.getProfile();
@@ -1277,6 +1319,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 					nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
 					if (constraint instanceof Predicate) {
 						elmConstraint.addAttribute(new Attribute("Type", "ConditionPredicate"));
+						elmConstraint.addAttribute(new Attribute("Usage", "C(" + ((Predicate)constraint).getTrueUsage()
+								+ "/"+ ((Predicate)constraint).getFalseUsage() + ")"));
+
 					} else if (constraint instanceof ConformanceStatement) {
 						elmConstraint.addAttribute(new Attribute("Type", "ConformanceStatement"));
 					}
@@ -1390,6 +1435,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 						nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
 						if (constraint instanceof Predicate) {
 							elmConstraint.addAttribute(new Attribute("Type", "ConditionPredicate"));
+							elmConstraint.addAttribute(new Attribute("Usage", "C(" + ((Predicate)constraint).getTrueUsage()
+									+ "/"+ ((Predicate)constraint).getFalseUsage() + ")"));
 						} else if (constraint instanceof ConformanceStatement) {
 							elmConstraint.addAttribute(new Attribute("Type", "ConformanceStatement"));
 						}
