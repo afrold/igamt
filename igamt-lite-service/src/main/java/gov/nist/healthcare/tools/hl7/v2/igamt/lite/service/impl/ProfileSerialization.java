@@ -27,7 +27,7 @@ public interface ProfileSerialization {
 	InputStream serializeProfileToZip(Profile profile) throws IOException;
 	InputStream serializeProfileToZip(Profile profile, String[] ids) throws IOException, CloneNotSupportedException;
 	
-	InputStream serializeProfileDisplayToZip(Profile profile, String id) throws IOException, CloneNotSupportedException;
+	InputStream serializeProfileDisplayToZip(Profile profile, String[] ids) throws IOException, CloneNotSupportedException;
 	InputStream serializeProfileGazelleToZip(Profile profile, String[] ids) throws IOException, CloneNotSupportedException;
 	
 	

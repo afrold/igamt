@@ -1659,7 +1659,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 	}
 
 	@Override
-	public InputStream serializeProfileDisplayToZip(Profile original, String id)
+	public InputStream serializeProfileDisplayToZip(Profile original, String[] ids)
 			throws IOException, CloneNotSupportedException {
 		// TODO Auto-generated method stub
 		return null;

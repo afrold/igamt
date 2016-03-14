@@ -240,9 +240,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	}
 	
 	@Override
-	public InputStream exportAsDisplayForSelectedMessage(IGDocument d, String mid) throws IOException, CloneNotSupportedException {
+	public InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
 		if (d != null) {
-			return new ProfileSerializationImpl().serializeProfileDisplayToZip(d.getProfile(), mid);
+			return new ProfileSerializationImpl().serializeProfileDisplayToZip(d.getProfile(), mids);
 		} else {
 			return new NullInputStream(1L);
 		}

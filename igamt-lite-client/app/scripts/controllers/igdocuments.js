@@ -1052,6 +1052,7 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
 
 angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies) {
     $scope.igdocumentToSelect = igdocumentToSelect;
+    $scope.xmlFormat = '';
     $scope.selectedMessagesIDs = [];
     $scope.loading = false;
 
@@ -1068,14 +1069,16 @@ angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $mo
 		}
 	};
 	
-	 $scope.exportAsMessages = function (id, mids, type) {
+	 $scope.exportAsMessages = function (id, mids) {
      	var form = document.createElement("form");
      	console.log("ID: " + id);
      	console.log("Message IDs: " + mids);
      	
-     	if(type === 'Validation'){
-     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/validation/' + mids);
-     	}else if(type === 'Gazelle'){
+     	if($scope.xmlFormat === 'Validation'){
+     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Validation/' + mids);
+     	}else if($scope.xmlFormat === 'Display'){
+     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Display/' + mids);
+     	}else if($scope.xmlFormat === 'Gazelle'){
      		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Gazelle/' + mids);
      	}
      	form.method = "POST";

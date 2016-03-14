@@ -272,7 +272,7 @@ public class IGDocumentController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 
-	@RequestMapping(value = "/{id}/export/validation/{mIds}", method = RequestMethod.POST, produces = "application/zip")
+	@RequestMapping(value = "/{id}/export/Validation/{mIds}", method = RequestMethod.POST, produces = "application/zip")
 	public void exportValidationXMLByMessages(@PathVariable("id") String id,
 			@PathVariable("mIds") String[] messageIds,
 			HttpServletRequest request, HttpServletResponse response)
@@ -310,15 +310,15 @@ public class IGDocumentController extends CommonController {
 		FileCopyUtils.copy(content, response.getOutputStream());
 	}
 	
-	@RequestMapping(value = "/{id}/export/Display/{mId}", method = RequestMethod.POST, produces = "application/zip")
-	public void exportValidationXMLByMessages(@PathVariable("id") String id,
-			@PathVariable("mId") String messageId,
+	@RequestMapping(value = "/{id}/export/Display/{mIds}", method = RequestMethod.POST, produces = "application/zip")
+	public void exportDisplayXMLByMessages(@PathVariable("id") String id,
+			@PathVariable("mIds") String[] messageIds,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, IGDocumentNotFoundException,
 			CloneNotSupportedException {
 		IGDocument d = findIGDocument(id);
 		InputStream content = null;
-		content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageId);
+		content = igDocumentExport.exportAsDisplayForSelectedMessage(d, messageIds);
 		response.setContentType("application/zip");
 		response.setHeader("Content-disposition", "attachment;filename="
 				+ StringUtils.escape(d.getMetaData().getTitle()) + "-"
