@@ -78,8 +78,7 @@ public class IGDocumentRepositoryImpl implements IGDocumentOperations   {
 	
 	@Override
 	public List<String> findHl7Versions() {
-		Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD)
-		.andOperator(Criteria.where("profile.metaData.hl7Version").gt("2.5"));
+		Criteria where = Criteria.where("scope").is(IGDocumentScope.HL7STANDARD);
 		Query query = Query.query(where);
 		List<String> rval = new ArrayList<String>();
 		List<IGDocument> rs = mongo.find(query, IGDocument.class);

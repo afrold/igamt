@@ -176,7 +176,6 @@ angular.module('igl')
                 console.log("event:openMessage=" + message);
                 $rootScope.messageTree = null;
                 $rootScope.processMessageTree(message);
-                console.log("load Message Tree=" + JSON.stringify($rootScope.messageTree));
                 $scope.selectMessage(message); // Should we open in a dialog ??
             });
 
@@ -980,11 +979,11 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
         $modalInstance.close();
     };
 
-    $scope.saveChangesAndClose = function () {
+    $scope.ConfirmIGDocumentOpenCtrl = function () {
         $scope.loading = true;
         var changes = angular.toJson($rootScope.changes);
-        var data = {"changes": changes, "igdocument": $rootScope.igdocument};
-        $http.post('api/igdocuments/' + $rootScope.igdocument.id + '/save', data, {timeout: 60000}).then(function (response) {
+        var data = {"changes": changes, "igDocument": $rootScope.igdocument};
+        $http.post('api/igdocuments/save', data, {timeout: 60000}).then(function (response) {
             var saveResponse = angular.fromJson(response.data);
             $rootScope.igdocument.metaData.date = saveResponse.date;
             $rootScope.igdocument.metaData.version = saveResponse.version;
@@ -1008,6 +1007,7 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
 angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, $modalInstance, igdocumentToOpen, $rootScope, $http) {
     $scope.igdocumentToOpen = igdocumentToOpen;
     $scope.loading = false;
+    
     $scope.discardChangesAndOpen = function () {
         $scope.loading = true;
         $http.get('api/igdocuments/' + $rootScope.igdocument.id, {timeout: 60000}).then(function (response) {
@@ -1028,8 +1028,8 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
     $scope.saveChangesAndOpen = function () {
         $scope.loading = true;
         var changes = angular.toJson($rootScope.changes);
-        var data = {"changes": changes, "igdocument": $rootScope.igdocument};
-        $http.post('api/igdocuments/' + $rootScope.igdocument.id + '/save', data, {timeout: 60000}).then(function (response) {
+        var data = {"changes": changes, "igDocument": $rootScope.igdocument};
+        $http.post('api/igdocuments/save', data, {timeout: 60000}).then(function (response) {
             var saveResponse = angular.fromJson(response.data);
             $rootScope.igdocument.metaData.date = saveResponse.date;
             $rootScope.igdocument.metaData.version = saveResponse.version;
