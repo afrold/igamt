@@ -15,9 +15,7 @@
 				<style type="text/css">
 					body,
 					html {
-					font-family: 'Arial Narrow',
-					sans-serif;
-					sans-serif;
+					font-family: 'Arial Narrow', sans-serif;
 					}
 
 					#sidebar {
@@ -74,9 +72,7 @@
 					auto;
 					max-height: 100vh;
 					}
-					h1, .divh1 {
-					/* margin:0;
-					*/
+					h1, .divh1{
 					padding-left: 15px;
 					}
 					h2, .divh2 {
@@ -88,7 +84,7 @@
 					h4, .divh4 {
 					padding-left: 60px;
 					}
-					h5, .divh5 {
+					h5, .divh5  {
 					padding-left:
 					75px;
 					}
@@ -96,15 +92,18 @@
 					padding-left:
 					90px;
 					}
-					.hidden {
+    				.hidden {
 					display: none;
 					}
 					.unhidden {
 					display: block;
 					}
+					.btn {
+					float:right;
+					}
 				</style>
 				<script type="text/javascript"><xsl:text disable-output-escaping="yes">
-					function unhide(divID) {
+					function unhide(divID, btnID) {
 					var oLimit = document.querySelector("#sidebar");
 					var divs = document.querySelectorAll("div");
 					for (var i = 0; i &lt; divs.length; i++) {
@@ -112,6 +111,7 @@
     						divs[i].className = (divs[i].className=='hidden')?'unhidden':'hidden';
 						}
 						}
+					document.getElementById(btnID).innerHTML = ((document.getElementById(divID).className=='hidden')? "[Show]":"[Hide]");
 					}</xsl:text>
 				</script>
 			</head>
@@ -119,6 +119,7 @@
 			<body style="font-family:Arial Narrow, Arial, sans-serif;">
 				<div id="sidebar">
 					<h1>TABLE OF CONTENT</h1>
+					<br/>
 					<xsl:call-template name="tocSect" />
 				</div>
 				<div id="main">
@@ -158,7 +159,7 @@
 			<br />
 			<xsl:call-template name="dispSectContent" />
 			<xsl:call-template name="dispProfileContent" />
-			<a href="#top">Link to top</a>
+			
 		</xsl:if>
 	</xsl:template>
 
@@ -257,63 +258,26 @@
 
 	<xsl:template name="tocInfoSect">
 		<xsl:if test="name() = 'Section'">
-			<xsl:variable name="pad.tmp">
-				<xsl:call-template name="pad">
-					<xsl:with-param name="padChar" select="'#'" />
-					<xsl:with-param name="padCount" select="@h" />
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:variable name="pad" select="translate($pad.tmp,'#','    ')" />
-
 			<a href="#{@id}">
 				<xsl:attribute name="class"><xsl:value-of select="concat('divh', @h)" /></xsl:attribute>
-				<!-- <pre> -->
-				<!-- <xsl:value-of select="$pad" /> -->
 				<xsl:value-of select="@prefix" />
 				-
 				<xsl:value-of select="@title" />
 				<xsl:choose>
-					<xsl:when test="@h &lt; 2">
+					<xsl:when test="count(Section) &gt; 0">					
 						<xsl:element name="a">
 							<xsl:attribute name="href">javascript:unhide('<xsl:value-of
-								select="concat(@id, '_toc')" />');</xsl:attribute>
-							[Show/Hide]
+								select="concat(@id, '_toc')" />', '<xsl:value-of
+								select="concat(@id, '_btn')" />');</xsl:attribute>
+							<xsl:element name="div">
+							<xsl:attribute name="id"><xsl:value-of select="concat(@id, '_btn')" /></xsl:attribute>
+							<xsl:attribute name="class">unhidden btn</xsl:attribute>
+							[Hide]
+							</xsl:element>	
 						</xsl:element>
 					</xsl:when>
-					<xsl:otherwise>
-						<xsl:choose>
-							<xsl:when test="count(Section/MessageDisplay) &gt; 0">
-								<xsl:element name="a">
-									<xsl:attribute name="href">javascript:unhide('<xsl:value-of
-										select="concat(@id, '_toc')" />');</xsl:attribute>
-									[Show/Hide]
-								</xsl:element>
-							</xsl:when>
-							<xsl:when test="count(Section/Segment) &gt; 0">
-								<xsl:element name="a">
-									<xsl:attribute name="href">javascript:unhide('<xsl:value-of
-										select="concat(@id, '_toc')" />');</xsl:attribute>
-									[Show/Hide]
-								</xsl:element>
-							</xsl:when>
-							<xsl:when test="count(Section/Datatype) &gt; 0">
-								<xsl:element name="a">
-									<xsl:attribute name="href">javascript:unhide('<xsl:value-of
-										select="concat(@id, '_toc')" />');</xsl:attribute>
-									[Show/Hide]
-								</xsl:element>
-							</xsl:when>
-							<xsl:when test="count(Section/ValueSetDefinition) &gt; 0">
-								<xsl:element name="a">
-									<xsl:attribute name="href">javascript:unhide('<xsl:value-of
-										select="concat(@id, '_toc')" />');</xsl:attribute>
-									[Show/Hide]
-								</xsl:element>
-							</xsl:when>
-							<xsl:otherwise>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:otherwise>
+ 					<xsl:otherwise>
+ 	 				</xsl:otherwise>
 				</xsl:choose>
 			</a>
 			<br></br>
@@ -386,7 +350,7 @@
 				</xsl:for-each>
 			</tbody>
 		</table>
-		<xsl:value-of select="Text[@Type='UsageNote']" />
+		<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='UsageNote']" />
 		<br></br>
 	</xsl:template>
 
@@ -431,7 +395,7 @@
 	</xsl:template>
 
 	<xsl:template match="Segment">
-		<xsl:value-of select="./Text[@Type='Text1']" />
+		<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text1']" />
 		<br></br>
 		<table width="100%" border="1" cellspacing="0" cellpadding="1">
 			<col style="width:5%"></col>
@@ -518,7 +482,7 @@
 			</xsl:when>
 		</xsl:choose>
 		<br></br>
-		<xsl:copy-of select="Text[@Type='Text2']" />
+		<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text2']" />
 
 		<xsl:for-each select="Field">
 			<xsl:sort select="@Position" data-type="number"></xsl:sort>
@@ -534,7 +498,7 @@
 						<xsl:value-of select="./@Datatype" />
 						)
 					</b>
-					<xsl:copy-of select="./Text[@Type='Text']" />
+					<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
 				</p>
 			</xsl:if>
 		</xsl:for-each>
@@ -804,7 +768,7 @@
 				</xsl:for-each>
 			</tbody>
 		</table>
-		<!-- <br></br> <a href="#top">Link to top</a> -->
+		<!-- <br></br>  -->
 	</xsl:template>
 
 	<xsl:template name="ValueElement">

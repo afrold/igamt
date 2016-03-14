@@ -21,7 +21,7 @@ body {
                         <div class="col-md-2 col-margin">
                         	<div class="form-group"  ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.title.$invalid && !igDocumentMetaDataForm.title.$pristine }">
                             	<label class="control-label">Title</label>
-                            	<input class="form-control"  type="text" ng-disabled="options.readonly"
+                            	<input class="form-control"  type="text" ng-disabled="viewSettings.tableReadonly"
                                  	   ng-change="recordChanged()"
                                     	name="title"
                                     	ng-model="igdocument.metaData.title"
@@ -32,7 +32,7 @@ body {
 						<div class="col-md-2 col-margin">
                         	<div class="form-group" ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.subTitle.$invalid && !igDocumentMetaDataForm.subTitle.$pristine }">
                             	<label class="control-label">Sub-Title</label>
-                            	<input class="form-control"  type="text" name="subTitle" ng-disabled="options.readonly"
+                            	<input class="form-control"  type="text" name="subTitle" ng-disabled="viewSettings.tableReadonly"
                                     ng-change="recordChanged()"
                                     ng-model="igdocument.metaData.subTitle"                                                                                                                                                                                                                                                                     itle"
                             	required>
@@ -42,7 +42,7 @@ body {
                         <div class="col-md-2 col-margin">
                         	<div class="form-group" ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.orgName.$invalid && !igDocumentMetaDataForm.orgName.$pristine}">
                             	<label class="control-label">Organization</label>
-                            	<input class="form-control"  type="text" name="orgName" ng-disabled="options.readonly"
+                            	<input class="form-control"  type="text" name="orgName" ng-disabled="viewSettings.tableReadonly"
                                     ng-change="recordChanged()"
 
                                     ng-model="igdocument.metaData.orgName"
@@ -54,7 +54,7 @@ body {
                         <div class="col-md-2 col-margin">
                         	<div class="form-group" ng-class="{'igl-has-error has-feedback' : igDocumentMetaDataForm.ext.$invalid && !igDocumentMetaDataForm.ext.$pristine}">
                             	<label class="control-label">Extension</label>
-                            	<input class="form-control"  type="text" name="ext" ng-disabled="options.readonly"
+                            	<input class="form-control"  type="text" name="ext" ng-disabled="viewSettings.tableReadonly"
                                     ng-change="recordChanged()"
                                     ng-model="igdocument.metaData.ext" required>
                         	</div>
@@ -63,24 +63,24 @@ body {
                         <div class="col-md-2 col-margin">
                         	<div class="form-group" ng-class="{'igl-has-error' : igDocumentMetaDataForm.specificationName.$invalid && !igDocumentMetaDataForm.specificationName.$pristine }">
                             	<label class="control-label">Specification</label>
-                            	<input  class="form-control"  type="text" name="specificationName" ng-disabled="options.readonly"
+                            	<input  class="form-control"  type="text" name="specificationName" ng-disabled="viewSettings.tableReadonly"
                                     ng-model="igdocument.metaData.specificationName"
                                     required>
                         	</div>
 						</div>
                         
 						<div class="col-md-2 col-margin">
-                        	<div class="form-group" ng-disabled="options.readonly" ng-class="{'igl-has-error' : igDocumentMetaDataForm.status.$invalid && !igDocumentMetaDataForm.status.$pristine }">
+                        	<div class="form-group" ng-disabled="viewSettings.tableReadonly" ng-class="{'igl-has-error' : igDocumentMetaDataForm.status.$invalid && !igDocumentMetaDataForm.status.$pristine }">
                             	<label>Status</label>
-                            	<input class="form-control"  type="text" name="status" ng-disabled="options.readonly"
+                            	<input class="form-control"  type="text" name="status" ng-disabled="viewSettings.tableReadonly"
                                     ng-model="igdocument.metaData.status"
                                     required>
                         	</div>
 						</div>
                         <div class="col-md-2 col-margin">
-                        	<div class="form-group" ng-disabled="options.readonly" ng-class="{'igl-has-error' : igDocumentMetaDataForm.topics.$invalid && !igDocumentMetaDataForm.topics.$pristine }">
+                        	<div class="form-group" ng-disabled="viewSettings.tableReadonly" ng-class="{'igl-has-error' : igDocumentMetaDataForm.topics.$invalid && !igDocumentMetaDataForm.topics.$pristine }">
                             	<label class="control-label">Topics</label>
-                            	<input  class="form-control"  type="text" name="topics" ng-disabled="options.readonly"
+                            	<input  class="form-control"  type="text" name="topics" ng-disabled="viewSettings.tableReadonly"
                                     ng-model="igdocument.metaData.topics"
                                     required>
                         	</div>
@@ -130,7 +130,7 @@ body {
             	<div class="col-md-2 col-margin">
                 	<div class="form-group" ng-class="{'igl-has-error' : igProfileMetaDataForm.type.$invalid && !igProfileMetaDataForm.type.$pristine}">
                     	<label class="control-label">Type</label>
-						<select class="form-control" ng-disabled="options.readonly"
+						<select class="form-control" ng-disabled="viewSettings.tableReadonly"
                             name="type"
                             ng-change="recordChanged()"
                             ng-model="igdocument.profile.metaData.type">
@@ -144,7 +144,7 @@ body {
 				<div class="col-md-2 col-margin">
                 	<div class="form-group" ng-class="{'igl-has-error' : igProfileMetaDataForm.hl7Version.$invalid && !igProfileMetaDataForm.hl7Version.$pristine }">
                     	<label class="control-label">HL7 Version</label>
-						<select class="form-control" ng-disabled="options.readonly"
+						<select class="form-control" ng-disabled="viewSettings.tableReadonly"
                             name="type"
                             ng-change="recordChanged()"
                             ng-model="igdocument.profile.metaData.hl7Version">
@@ -164,7 +164,7 @@ body {
                	<div class="col-md-2 col-margin">
                 	<div class="form-group" ng-class="{'igl-has-error' : igProfileMetaDataForm.schemaVersion.$invalid && !igProfileMetaDataForm.schemaVersion.$pristine }">
                     	<label class="control-label">Schema Version</label>
-                    	<input type="text" name="schemaVersion" ng-disabled="options.readonly"
+                    	<input type="text" name="schemaVersion" ng-disabled="viewSettings.tableReadonly"
                         	ng-change="recordChanged()"
                             class="form-control" ng-model="igdocument.metaData.schemaVersion" required>
                 	</div>

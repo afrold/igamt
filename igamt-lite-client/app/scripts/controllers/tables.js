@@ -5,13 +5,13 @@
 angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, Restangular, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
     $scope.readonly = false;
     $scope.codeSysEditMode = false;
-    $scope.codeSysForm = {};;
+    $scope.codeSysForm = {};
     $scope.saved = false;
     $scope.message = false;
     $scope.params = null;
     $scope.init = function () {
         $rootScope.$on('event:cloneTableFlavor', function(event, table) {
-        	$scope.cloneTableFlavor(table);         
+        	$scope.copyTable(table);
       });
     };
 

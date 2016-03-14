@@ -92,7 +92,7 @@ public class JsonExceptionHandler implements HandlerExceptionResolver {
 				logger.error("ERROR: Failed to upload the image file", ex);
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
-						ResponseMessage.Type.danger, "uploadImageFailed"));
+						ResponseMessage.Type.danger, ex.getMessage()));
 			} else {
 				logger.error("ERROR: " + ex.getMessage(), ex);
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
