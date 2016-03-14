@@ -1,10 +1,7 @@
-//$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
-//// bower:scss
-@import "font-awesome/scss/font-awesome.scss";
-// endbower
-
+//$icon-font-path: "/bower_components/sass-bootstrap/fonts/";
 $icon-font-path: "../fonts/";
-@import '../bower_components/sass-bootstrap/lib/bootstrap';
+
+@import 'sass-bootstrap/lib/bootstrap';
 
 .browsehappy {
   margin: 0.2em 0;
@@ -2122,4 +2119,37 @@ table > theader{
   color: rgba(255, 255, 255, 0.84);
   font-weight: normal;
   border-color:#00bcd4;
+}
+
+.hl7-versions-modal .modal-dialog {
+  width: 920px;
+  height: 60%;
+}
+
+
+
+.conformance-profiles-modal .modal-dialog {
+  width: 920px;
+  height: 60%;
+}
+
+
+
+table.hl7-versions-table {
+  max-height: 500px !important;
+  width: 905px !important;
+}
+
+table.hl7-versions-table td {
+  text-align: left;
+}
+
+
+table.conformance-profiles-table {
+  max-height: 500px !important;
+  width: 905px !important;
+}
+
+table.conformance-profiles-table td {
+  text-align: left;
 }
