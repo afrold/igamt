@@ -95,7 +95,8 @@ li input:checked+ul>branch:last-child {
 	ng-controller="ContextMenuCtl">
 	<ul class="dropdown-menu" role="menu">
 		<li><a class="pointer" role="menuitem" tabindex="1"
-			ng-click="clicked('Copy')">Copy</a></li>
+			ng-click="clicked('Copy')"><i
+                class="fa fa-plus fa-fw"></i>Copy</a></li>
 	</ul>
 </div>
 
@@ -103,7 +104,22 @@ li input:checked+ul>branch:last-child {
 	ng-controller="HL7VersionsDlgCtrl">
 	<ul class="dropdown-menu" role="menu">
 		<li><a class="pointer" role="menuitem" tabindex="1"
-			ng-click="hl7Versions('ctx')">Add</a></li>
+			ng-click="hl7Versions('ctx')"><i class="fa fa-plus fa-fw"></i>Add</a></li>
+		<li><a class="pointer" role="menuitem" tabindex="2"
+			ng-click="selectMessages(igdocument)"><i class="fa fa-download fa-fw"></i>Export</a></li>
+	</ul>
+</div>
+
+<div class="dropdown position-fixed" id="messageContextDiv.html"
+	ng-controller="ContextMenuCtl">
+	<ul class="dropdown-menu" role="menu">
+		<li><a class="pointer" role="menuitem" tabindex="1"
+			ng-click="clicked('Copy')"><i
+                class="fa fa-plus fa-fw"></i>Copy</a></li>
+		<li><a class="pointer" role="menuitem" tabindex="2"
+			ng-click="clicked('Delete')"><i class="fa fa-trash-o fa-fw"></i>Delete</a></li>
+		<li><a class="pointer" role="menuitem" tabindex="3"
+			ng-click="selectMessages(igdocument)"><i class="fa fa-download fa-fw"></i>Export</a></li>
 	</ul>
 </div>
 
@@ -111,9 +127,10 @@ li input:checked+ul>branch:last-child {
 	ng-controller="ContextMenuCtl">
 	<ul class="dropdown-menu" role="menu">
 		<li><a class="pointer" role="menuitem" tabindex="1"
-			ng-click="clicked('Copy')">Copy</a></li>
+			ng-click="clicked('Copy')"><i
+                class="fa fa-plus fa-fw"></i>Copy</a></li>
 		<li><a class="pointer" role="menuitem" tabindex="2"
-			ng-click="clicked('Delete')">Delete</a></li>
+			ng-click="clicked('Delete')"><i class="fa fa-trash-o fa-fw"></i>Delete</a></li>
 	</ul>
 </div>
 

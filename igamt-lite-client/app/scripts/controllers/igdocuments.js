@@ -19,10 +19,10 @@ angular.module('igl')
 
         $scope.igDocumentTypes = [
             {
-                name: "Predefined Implementation Guides", type: 'PRELOADED'
+                name: "Browse Existing Preloaded Implementation Guides", type: 'PRELOADED'
             },
             {
-                name: "User Implementation Guides", type: 'USER'
+                name: "Access My implementation guides", type: 'USER'
             }
         ];
         $scope.loadingIGDocument = false;
@@ -176,7 +176,6 @@ angular.module('igl')
                 console.log("event:openMessage=" + message);
                 $rootScope.messageTree = null;
                 $rootScope.processMessageTree(message);
-                console.log("load Message Tree=" + JSON.stringify($rootScope.messageTree));
                 $scope.selectMessage(message); // Should we open in a dialog ??
             });
 
@@ -509,6 +508,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'SelectMessagesOpenCtrl.html',
                 controller: 'SelectMessagesOpenCtrl',
+                windowClass: 'conformance-profiles-modal',
                 resolve: {
                     igdocumentToSelect: function () {
                         return igdocument;
@@ -980,11 +980,11 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
         $modalInstance.close();
     };
 
-    $scope.saveChangesAndClose = function () {
+    $scope.ConfirmIGDocumentOpenCtrl = function () {
         $scope.loading = true;
         var changes = angular.toJson($rootScope.changes);
-        var data = {"changes": changes, "igdocument": $rootScope.igdocument};
-        $http.post('api/igdocuments/' + $rootScope.igdocument.id + '/save', data, {timeout: 60000}).then(function (response) {
+        var data = {"changes": changes, "igDocument": $rootScope.igdocument};
+        $http.post('api/igdocuments/save', data, {timeout: 60000}).then(function (response) {
             var saveResponse = angular.fromJson(response.data);
             $rootScope.igdocument.metaData.date = saveResponse.date;
             $rootScope.igdocument.metaData.version = saveResponse.version;
@@ -1008,6 +1008,7 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
 angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, $modalInstance, igdocumentToOpen, $rootScope, $http) {
     $scope.igdocumentToOpen = igdocumentToOpen;
     $scope.loading = false;
+    
     $scope.discardChangesAndOpen = function () {
         $scope.loading = true;
         $http.get('api/igdocuments/' + $rootScope.igdocument.id, {timeout: 60000}).then(function (response) {
@@ -1028,8 +1029,8 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
     $scope.saveChangesAndOpen = function () {
         $scope.loading = true;
         var changes = angular.toJson($rootScope.changes);
-        var data = {"changes": changes, "igdocument": $rootScope.igdocument};
-        $http.post('api/igdocuments/' + $rootScope.igdocument.id + '/save', data, {timeout: 60000}).then(function (response) {
+        var data = {"changes": changes, "igDocument": $rootScope.igdocument};
+        $http.post('api/igdocuments/save', data, {timeout: 60000}).then(function (response) {
             var saveResponse = angular.fromJson(response.data);
             $rootScope.igdocument.metaData.date = saveResponse.date;
             $rootScope.igdocument.metaData.version = saveResponse.version;
@@ -1051,6 +1052,7 @@ angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, 
 
 angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies) {
     $scope.igdocumentToSelect = igdocumentToSelect;
+    $scope.xmlFormat = '';
     $scope.selectedMessagesIDs = [];
     $scope.loading = false;
 
@@ -1071,7 +1073,14 @@ angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $mo
      	var form = document.createElement("form");
      	console.log("ID: " + id);
      	console.log("Message IDs: " + mids);
-     	form.action = $rootScope.api('api/igdocuments/' + id + '/export/zip/' + mids);
+     	
+     	if($scope.xmlFormat === 'Validation'){
+     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Validation/' + mids);
+     	}else if($scope.xmlFormat === 'Display'){
+     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Display/' + mids);
+     	}else if($scope.xmlFormat === 'Gazelle'){
+     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Gazelle/' + mids);
+     	}
      	form.method = "POST";
      	form.target = "_target";
      	var csrfInput = document.createElement("input");
@@ -1084,18 +1093,11 @@ angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $mo
      };
 	 
 	
-	$scope.exportAsZIPforSelectedMessages = function () {
+	$scope.exportAsZIPforSelectedMessages = function (type) {
 		$scope.loading = true;
-		$scope.exportAsMessages($scope.igdocumentToSelect.id,$scope.selectedMessagesIDs);
+		$scope.exportAsMessages($scope.igdocumentToSelect.id,$scope.selectedMessagesIDs, type);
         $scope.loading = false;
     };
-    
-    $scope.exportAsZIPDisplayforSelectedMessages = function () {
-		$scope.loading = true;
-		$scope.exportAsMessages($scope.igdocumentToSelect.id,$scope.selectedMessagesIDs);
-        $scope.loading = false;
-    };
-    
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');

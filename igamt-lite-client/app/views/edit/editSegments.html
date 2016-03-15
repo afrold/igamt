@@ -27,7 +27,7 @@
         <button title="Create Copy" type="button" class="btn btn-xs btn-info" ng-disabled='!segmentForm.$valid'
                 ng-click="copy(segment)" ng-hide="viewSettings.tableReadonly"
                 >
-            <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Copy</span>
+            <span><i class="fa fa-plus fa-fw"></i>&nbsp; Copy</span>
         </button>
         <button title="Delete" type="button" ng-hide="viewSettings.tableReadonly"
                 class="btn btn-xs btn-danger"
@@ -146,19 +146,19 @@
                         <div class="col-md-12 igl-page-header">
 <span class="pull-left">
     <span class="header5">Definition</span>
-                                    <div style="margin-left:15px" class="btn-group btn-group-xs" data-toggle="buttons">
-                                        <label class="btn btn-primary" ng-click="viewSettings.setTableRelevance(true)"
-                                               ng-class="{'active': viewSettings.tableRelevance}">
-                                            <input type="radio" ng-model="viewSettings.tableRelevance"
-                                                   ng-click="viewSettings.setTableRelevance(viewSettings.tableRelevance)"
-                                                   autocomplete="off" checked>R,RE,C(only)
-                                        </label>
-                                        <label class="btn  btn-primary" ng-click="viewSettings.setTableRelevance(false)"
-                                               ng-class="{'active': !viewSettings.tableRelevance}">
-                                            <input type="radio" ng-model="viewSettings.tableRelevance"
-                                                   autocomplete="off">R,RE,C,O,X (All)
-                                        </label>
-                                    </div>
+                                    <!--<div style="margin-left:15px" class="btn-group btn-group-xs" data-toggle="buttons">-->
+                                        <!--<label class="btn btn-primary" ng-click="viewSettings.setTableRelevance(true)"-->
+                                               <!--ng-class="{'active': viewSettings.tableRelevance}">-->
+                                            <!--<input type="radio" ng-model="viewSettings.tableRelevance"-->
+                                                   <!--ng-click="viewSettings.setTableRelevance(viewSettings.tableRelevance)"-->
+                                                   <!--autocomplete="off" checked>R,RE,C(only)-->
+                                        <!--</label>-->
+                                        <!--<label class="btn  btn-primary" ng-click="viewSettings.setTableRelevance(false)"-->
+                                               <!--ng-class="{'active': !viewSettings.tableRelevance}">-->
+                                            <!--<input type="radio" ng-model="viewSettings.tableRelevance"-->
+                                                   <!--autocomplete="off">R,RE,C,O,X (All)-->
+                                        <!--</label>-->
+                                    <!--</div>-->
 
                              </span>
                             <span class="pull-right">

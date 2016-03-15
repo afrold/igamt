@@ -16,14 +16,14 @@ angular.module('igl').factory('ViewSettings',
             { id: "defText", label: "Defin. Text"},
             { id: "comment", label: "Comment"}
         ];
-        var visibleColumns = StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY) == null ? angular.copy(options) : angular.fromJson(StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY));
+        var visibleColumns = StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY) == null ? angular.copy(columnOptions) : angular.fromJson(StorageService.get(StorageService.TABLE_COLUMN_SETTINGS_KEY));
         var ViewSettings = {
             columnOptions: columnOptions,
             visibleColumns: visibleColumns,
             translations: {buttonDefaultText: 'Visible Columns'},
             extra: {displayProp: 'label', buttonClasses: 'btn btn-xs btn-primary', showCheckAll: false, showUncheckAll: false, scrollable: false},
-            tableRelevance:StorageService.get(StorageService.TABLE_RELEVANCE_SETTINGS) == null ? true : StorageService.get(StorageService.TABLE_RELEVANCE_SETTINGS),
-            tableConcise:StorageService.get(StorageService.TABLE_CONCISE_SETTINGS) == null ? true : StorageService.get(StorageService.TABLE_CONCISE_SETTINGS),
+            tableRelevance:StorageService.get(StorageService.TABLE_RELEVANCE_SETTINGS) == null ? false : StorageService.get(StorageService.TABLE_RELEVANCE_SETTINGS),
+            tableConcise:StorageService.get(StorageService.TABLE_CONCISE_SETTINGS) == null ? false : StorageService.get(StorageService.TABLE_CONCISE_SETTINGS),
             tableCollapse:StorageService.get(StorageService.TABLE_COLLAPSE_SETTINGS) == null ? true : StorageService.get(StorageService.TABLE_COLLAPSE_SETTINGS),
             tableReadonly:StorageService.get(StorageService.TABLE_READONLY_SETTINGS) == null ? false : StorageService.get(StorageService.TABLE_READONLY_SETTINGS),
             events: {

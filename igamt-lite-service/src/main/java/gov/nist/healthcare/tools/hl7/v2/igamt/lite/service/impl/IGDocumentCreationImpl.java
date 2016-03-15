@@ -19,6 +19,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -63,7 +64,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	private boolean CREATE = true;
 	private boolean UPDATE = false;
-	
+
 	@Autowired
 	private IGDocumentRepository igdocumentRepository;
 
@@ -80,11 +81,16 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	public List<MessageEvents> summary(String hl7Version) {
 		List<IGDocument> igds = igdocumentRepository
 				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, hl7Version);
-		IGDocument igd = igds.get(0);
-		MessageEventFactory mef = new MessageEventFactory(igd);
-		Messages msgs = igd.getProfile().getMessages();
-		List<MessageEvents> rval = mef.createMessageEvents(msgs);
-		return rval;
+		List<MessageEvents> messageEvents = new ArrayList<MessageEvents>();
+		if (!igds.isEmpty()) {
+			IGDocument igd = igds.get(0);
+			MessageEventFactory mef = new MessageEventFactory(igd);
+			Messages msgs = igd.getProfile().getMessages();
+			messageEvents = mef.createMessageEvents(msgs);
+		} else {
+			log.debug("IGDocument Not found for hl7Version=" + hl7Version);
+		}
+		return messageEvents;
 	}
 
 	@Override
@@ -181,46 +187,41 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		dTarget.setChildSections(dSource.getChildSections());
 	}
 
-	private void addMessages(List<MessageEvents> msgEvts, Profile pSource, Profile pTarget, boolean create) {
+	private void addMessages(List<MessageEvents> msgEvts, Profile pSource, Profile pTarget, boolean create)
+			throws IGDocumentException {
 		Messages messages = pTarget.getMessages();
 		messages.setType(pSource.getMessages().getType());
-		for (MessageEvents msgEvt : msgEvts) {
-			Message m = pSource.getMessages().findOne(msgEvt.getId());
-			Message m1 = null;
-			try {
+		try {
+			for (MessageEvents msgEvt : msgEvts) {
+				Message m = pSource.getMessages().findOne(msgEvt.getId());
+				Message m1 = null;
 				m1 = m.clone();
-			} catch (CloneNotSupportedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			m1.setId(ObjectId.get().toString());
-			Iterator<Event> itr = msgEvt.getChildren().iterator();
-			if (itr.hasNext()) {
-				String event = itr.next().getName();
-				log.debug("msgEvt=" + msgEvt.getId() + " " + event);
-				m1.setEvent(event);
-			} else {
-				try {
+				m1.setId(ObjectId.get().toString());
+				Iterator<Event> itr = msgEvt.getChildren().iterator();
+				if (itr.hasNext()) {
+					String event = itr.next().getName();
+					log.debug("msgEvt=" + msgEvt.getId() + " " + event);
+					m1.setEvent(event);
+				} else {
 					throw new EventNotSetException("MessageEvent id=" + msgEvt.getId() + " name=" + msgEvt.getName());
-				} catch (EventNotSetException e) {
-					log.error("Event was set to \"event unk\"", e);
 				}
-				ObjectId.get().toString();
-				m1.setEvent("event unk");
-			}
-			String name = m1.getMessageType() + "^" + m1.getEvent() + "^" + m1.getStructID();
-			log.debug("Message.name=" + name);
-			m1.setName(name);
-			messages.addMessage(m1);
-			if(create) {
-			for (SegmentRefOrGroup sg : m.getChildren()) {
-				if (sg instanceof SegmentRef) {
-					addSegment((SegmentRef) sg, pSource, pTarget);
-				} else if (sg instanceof Group) {
-					addGroup((Group) sg, pSource, pTarget);
+				String name = m1.getMessageType() + "^" + m1.getEvent() + "^" + m1.getStructID();
+				log.debug("Message.name=" + name);
+				m1.setName(name);
+				messages.addMessage(m1);
+				if (create) {
+					for (SegmentRefOrGroup sg : m.getChildren()) {
+						if (sg instanceof SegmentRef) {
+							addSegment((SegmentRef) sg, pSource, pTarget);
+						} else if (sg instanceof Group) {
+							addGroup((Group) sg, pSource, pTarget);
+						}
+					}
 				}
 			}
-			}
+		} catch (Exception e) {
+			log.error("Message error==>", e);
+			throw new IGDocumentException(e);
 		}
 	}
 

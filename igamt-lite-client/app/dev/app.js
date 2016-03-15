@@ -301,7 +301,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     notificationsConfigProvider.setAutoHide(false);
 
     // delay before hide
-    notificationsConfigProvider.setHideDelay(3000);
+    notificationsConfigProvider.setHideDelay(30000);
 
     // delay between animation and removing the nofitication
     notificationsConfigProvider.setAutoHideAnimationDelay(1200);
@@ -551,6 +551,37 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             m.type = null;
             m.show = false;
         }
+    };
+
+    $rootScope.scrollbarWidth = 0;
+
+    $rootScope.getScrollbarWidth = function () {
+        if ($rootScope.scrollbarWidth == 0) {
+            var outer = document.createElement("div");
+            outer.style.visibility = "hidden";
+            outer.style.width = "100px";
+            outer.style.msOverflowStyle = "scrollbar"; // needed for WinJS apps
+
+            document.body.appendChild(outer);
+
+            var widthNoScroll = outer.offsetWidth;
+            // force scrollbars
+            outer.style.overflow = "scroll";
+
+            // add innerdiv
+            var inner = document.createElement("div");
+            inner.style.width = "100%";
+            outer.appendChild(inner);
+
+            var widthWithScroll = inner.offsetWidth;
+
+            // remove divs
+            outer.parentNode.removeChild(outer);
+
+            $rootScope.scrollbarWidth = widthNoScroll - widthWithScroll;
+        }
+
+        return $rootScope.scrollbarWidth;
     };
 
 

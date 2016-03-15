@@ -14,6 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -55,6 +56,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import nu.xom.Attribute;
+import nu.xom.Document;
 import nu.xom.Serializer;
 
 import org.apache.commons.codec.binary.Base64;
@@ -63,8 +65,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-//public class IGDocumentSerialization4ExportImpl implements ProfileSerialization {
-public class IGDocumentSerialization4ExportImpl {
+public class IGDocumentSerialization4ExportImpl implements ProfileSerialization {
 
 	Logger logger = LoggerFactory.getLogger( IGDocumentSerialization4ExportImpl.class );
 
@@ -1291,5 +1292,68 @@ public class IGDocumentSerialization4ExportImpl {
 	public static String encodeImage(byte[] imageByteArray) {
 		return Base64.encodeBase64URLSafeString(imageByteArray);
 	}
-	
+
+	/**
+	 * Decodes the base64 string into byte array
+	 *
+	 * @param imageDataString - a {@link java.lang.String}
+	 * @return byte array
+	 */
+	public static byte[] decodeImage(String imageDataString) {
+		return Base64.decodeBase64(imageDataString);
+	}
+
+	@Override
+	public InputStream serializeProfileToZip(Profile profile, String[] ids)
+			throws IOException, CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public InputStream serializeDatatypeToZip(DatatypeLibrary datatypeLibrary) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String serializeDatatypeLibraryToXML(DatatypeLibrary datatypeLibrary) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public nu.xom.Document serializeDatatypeLibraryToDoc(DatatypeLibrary datatypeLibrary) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public InputStream serializeProfileDisplayToZip(Profile original, String[] ids)
+			throws IOException, CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public InputStream serializeProfileGazelleToZip(Profile original, String[] ids)
+			throws IOException, CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Profile deserializeXMLToProfile(String xmlContentsProfile,
+			String xmlValueSet, String xmlConstraints) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Profile deserializeXMLToProfile(Document docProfile,
+			Document docValueSet, Document docConstraints) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

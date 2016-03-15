@@ -1,5 +1,6 @@
-
-<style id="antiClickjack">body{display:none !important;}</style>
+<style id="antiClickjack">body {
+    display: none !important;
+}</style>
 <script type="text/javascript">
     if (self === top) {
         var antiClickjack = document.getElementById("antiClickjack");
@@ -16,15 +17,17 @@
 <ng-include src="'views/edit/editSections.html'"></ng-include>
 <div ng-show="!loadingIGDocument">
     <div class="row" ng-show="!isEditing">
-        <p>No Implementation Guide Selected.</p>
+        <div class="col-md-12">
+            <p>No Implementation Guide Selected.</p>
+        </div>
     </div>
     <div ng-show="isEditing">
         <div class="row">
             <!--<div class="col-md-12" ng-show="igDocumentMsg !== null">-->
-                <!--<div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">-->
-                    <!--<button type="button" class="close" ng-click="igDocumentMsg.show = false">×</button>-->
-                    <!--<div msg key-expr="igDocumentMsg.text"></div>-->
-                <!--</div>-->
+            <!--<div ng-class="'alert alert-'+igDocumentMsg.type" ng-show="igDocumentMsg.show" id="ehralert">-->
+            <!--<button type="button" class="close" ng-click="igDocumentMsg.show = false">×</button>-->
+            <!--<div msg key-expr="igDocumentMsg.text"></div>-->
+            <!--</div>-->
             <!--</div>-->
             <!---->
             <div class="col-md-12">
@@ -54,13 +57,13 @@
                                                 class="fa fa-pencil fa-fw"></i>Edit</span>
                     </button>
 
-                    <button
-                            title="Clone"
-                            type="button" class="btn btn-xs btn-info"
-                            ng-click="clone(igdocument)">
-                                        <span><i
-                                                class="fa fa-plus fa-fw"></i>Copy</span>
-                    </button>
+                    <!--<button-->
+                    <!--title="Clone"-->
+                    <!--type="button" class="btn btn-xs btn-info"-->
+                    <!--ng-click="clone(igdocument)">-->
+                    <!--<span><i-->
+                    <!--class="fa fa-plus fa-fw"></i>Copy</span>-->
+                    <!--</button>-->
 
 
                     <div class="btn-group">
@@ -75,7 +78,6 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu igl-menu" role="menu">
-                            <li><a class="point" ng-click="selectMessages(igdocument)">As XML</a></li>
                             <li><a class="point" ng-click="exportAs(igdocument.id,'pdf')">As PDF</a></li>
                             <li><a class="point" ng-click="exportAs(igdocument.id,'docx')">As WORD</a></li>
                             <li><a class="point" ng-click="exportAs(igdocument.id,'html')">As HTML</a></li>
@@ -116,10 +118,11 @@
 							        'fa-caret-right': !showToC
 								      }">
 								    </span>
-                             </a>
+                            </a>
                         </div>
                     </div>
-                    <div class="panel-body" ng-show="showToC" style="max-width: 100%; overflow-x: auto; max-height: 900px; overflow-y: auto;white-space:nowrap;">
+                    <div class="panel-body" ng-show="showToC"
+                         style="max-width: 100%; overflow-x: auto; max-height: 900px; overflow-y: auto;white-space:nowrap;">
                         <div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
                         </div>
                     </div>

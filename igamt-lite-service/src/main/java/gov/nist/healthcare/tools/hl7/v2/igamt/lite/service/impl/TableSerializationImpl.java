@@ -28,6 +28,7 @@ import org.xml.sax.SAXException;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
@@ -57,6 +58,13 @@ public class TableSerializationImpl implements TableSerialization {
         @Override
         public String serializeTableLibraryToXML(Tables tableLibrary) {
         	return this.serializeTableLibraryToDoc(tableLibrary).toXML();
+        }
+        
+        @Override
+        public String serializeTableLibraryToXML(DatatypeLibrary datatypeLibrary) {
+        	Tables tables = new Tables();
+        	tables.setChildren(datatypeLibrary.getTables());
+        	return this.serializeTableLibraryToDoc(tables).toXML();
         }
 
         @Override

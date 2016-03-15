@@ -129,6 +129,14 @@ angular
 										CloneDeleteSvc.deleteMessage(node.reference);
 									}
 									break;
+								case "Export":
+									if (node.reference.type === 'message') {
+										console.log("Export==> node=" + node);
+										console.log("IG document ID  : " +  $rootScope.igdocument.id);
+										console.log("Selected Message ID  : " +  node.reference.id);
+										CloneDeleteSvc.exportDisplayXML(node.reference.id);
+									}
+									break;
 								default:
 									console
 											.log("Context menu defaulted with "

@@ -2,7 +2,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +11,13 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 @Document(collection = "datatype-library")
@@ -25,6 +30,8 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	private Long accountId;
 	
 	private String date;
+	
+	private DatatypeLibraryMetaData metaData;
 	
 	public enum SCOPE {HL7STANDARD, MASTER, USER};
  
@@ -45,6 +52,9 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 	@DBRef
 	private Set<Datatype> children = new HashSet<Datatype>();
+	
+	@DBRef
+	private Set<Table> tables = new HashSet<Table>();
 
 	public String getId() {
 		return id;
@@ -245,5 +255,96 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 			elt.setSectionPosition(sortedList.indexOf(elt));
 		}
 	}
+	
+	@JsonIgnore
+	public Constraints getConformanceStatements() {
+		//TODO Only byID constraints are considered; might want to consider byName
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Datatype d : this.getChildren()) {
+			ByID byID = new ByID();
+			byID.setByID(d.getLabel());
+			if (d.getConformanceStatements().size() > 0) {
+				byID.setConformanceStatements(d.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+		constraints.setDatatypes(dtContext);
+		return constraints;
+	}
+	
+	@JsonIgnore
+	public Constraints getPredicates() {
+		//TODO Only byID constraints are considered; might want to consider byName
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Datatype d : this.getChildren()) {
+			ByID byID = new ByID();
+			byID.setByID(d.getLabel());
+			if (d.getPredicates().size() > 0) {
+				byID.setPredicates(d.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+		constraints.setDatatypes(dtContext);
+		return constraints;
+	}
+
+	public DatatypeLibraryMetaData getMetaData() {
+		return metaData;
+	}
+
+	public void setMetaData(DatatypeLibraryMetaData metaData) {
+		this.metaData = metaData;
+	}
+
+	public Set<Table> getTables() {
+		return tables;
+	}
+
+	public void setTables(Set<Table> tables) {
+		this.tables = tables;
+	}
+	
+	public Table addTable(Table t){
+		if (!this.tables.contains(t)) {
+			this.tables.add(t);
+		}
+		return t;
+	}
+	
+	public Table findTableById(String id) {
+		if (this.tables != null) {
+			for (Table t : this.tables) {
+				if (t.getId().equals(id)) {
+					return t;
+				}
+			}
+		}
+
+		return null;
+	}
+	
+	public Table findTableByBindingIdentifier(String bindingIdentifier) {
+		if (this.tables != null) {
+			for (Table t : this.tables) {
+				if (t.getBindingIdentifier().equals(bindingIdentifier)) {
+					return t;
+				}
+			}
+		}
+		return null;
+	}
+	
 
 }

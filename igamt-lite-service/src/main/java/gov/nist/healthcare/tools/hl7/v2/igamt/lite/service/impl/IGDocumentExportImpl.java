@@ -20,6 +20,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
@@ -180,7 +181,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.VerticalPositionMark;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 
-
 @Service
 public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocumentExportService{
 	Logger logger = LoggerFactory.getLogger( IGDocumentExportImpl.class ); 
@@ -214,9 +214,36 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		}
 	}
 
-	public InputStream exportAsZipForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
+	public InputStream exportAsZip(DatatypeLibrary d) throws IOException {
+		if (d != null) {
+			return new ProfileSerializationImpl().serializeDatatypeToZip(d);
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+	
+	@Override
+	public InputStream exportAsValidationForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
 		if (d != null) {
 			return new ProfileSerializationImpl().serializeProfileToZip(d.getProfile(), mids);
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+
+	@Override
+	public InputStream exportAsGazelleForSelectedMessages(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
+		if (d != null) {
+			return new ProfileSerializationImpl().serializeProfileGazelleToZip(d.getProfile(), mids);
+		} else {
+			return new NullInputStream(1L);
+		}
+	}
+	
+	@Override
+	public InputStream exportAsDisplayForSelectedMessage(IGDocument d, String[] mids) throws IOException, CloneNotSupportedException {
+		if (d != null) {
+			return new ProfileSerializationImpl().serializeProfileDisplayToZip(d.getProfile(), mids);
 		} else {
 			return new NullInputStream(1L);
 		}
@@ -3114,8 +3141,6 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 		drawing.getAnchorOrInline().add(inline);
 		return paragraph;
 	}
-
-
 }
 
 //class SectionComparator implements Comparator<gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section>{
