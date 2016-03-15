@@ -321,7 +321,8 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
                     $rootScope.msg().type= error.type;
                     $rootScope.msg().show= true;
                 }
-            }
+            },
+            key: 'Rg1Wb2KYd1Td1WIh1CVc2F=='
         };
         httpHeaders.common['appVersion'] = appInfo.version;
         var prevVersion = StorageService.getAppVersion(StorageService.APP_VERSION);
