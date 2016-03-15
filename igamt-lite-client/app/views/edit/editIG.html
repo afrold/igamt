@@ -30,24 +30,15 @@
             <!--</div>-->
             <!--</div>-->
             <!---->
-            <div class="col-md-12">
-                <div class="page-header">
-                    <h3>{{igdocument.metaData.title}}</h3>
-                </div>
-            </div>
-            <div class="col-md-12">
-                <span>Current version: {{igdocument.metaData.version}}
-                </span>
-
-                <div class="pull-right">
-
-
-                    <button title="Save Changes" type="button" class="btn btn-xs btn-success"
-                            ng-hide="viewSettings.tableReadonly"
-                            ng-show="igDocumentConfig.selectedType === 'USER'"
-                            ng-click="save()">
-                        <span><i class="fa fa-check fa-fw"></i> Save</span>
-                    </button>
+            <div class="col-md-12 igl-page-header">
+                <span class="header4 pull-left">IG Document: {{igdocument.metaData.title}}</span>
+                     <span class="pull-right">
+         <button title="Save Changes" type="button" class="btn btn-xs btn-success"
+                 ng-hide="viewSettings.tableReadonly"
+                 ng-show="igDocumentConfig.selectedType === 'USER'"
+                 ng-click="save()">
+             <span><i class="fa fa-check fa-fw"></i> Save</span>
+         </button>
 
                     <button ng-show="viewSettings.tableReadonly && igDocumentConfig.selectedType === 'USER'"
                             title="Edit"
@@ -56,15 +47,6 @@
                                         <span><i
                                                 class="fa fa-pencil fa-fw"></i>Edit</span>
                     </button>
-
-                    <!--<button-->
-                    <!--title="Clone"-->
-                    <!--type="button" class="btn btn-xs btn-info"-->
-                    <!--ng-click="clone(igdocument)">-->
-                    <!--<span><i-->
-                    <!--class="fa fa-plus fa-fw"></i>Copy</span>-->
-                    <!--</button>-->
-
 
                     <div class="btn-group">
                         <button ng-disabled="hasChanges()" type="button"
@@ -94,42 +76,48 @@
                             ng-click="confirmDelete(igdocument)">
                         <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
                     </button>
-                </div>
+    </span>
+
+
+            </div>
+            <div class="col-md-12">
+                <span>version: {{igdocument.metaData.version}}
+                </span>
             </div>
         </div>
-        <div class="row" ng-init="showToC = true">
-            <div ng-class="showToC ? 'col-md-3' : 'col-md-1 col-fixed-100'">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <div ng-show="showToC">
-                            Table of Contents
-                            <a class="btn btn-onc btn-xs" ng-click="showToC = !showToC">
-									<span class="fa fa-lg"
-                                          ng-class="{
-							        'fa-caret-left': showToC
-								      }">
-								    </span>
-                            </a>
-                        </div>
-                        <div ng-show="!showToC">
-                            <a class="btn btn-onc btn-xs" ng-click="showToC = !showToC">
-									<span class="fa fa-lg"
-                                          ng-class="{
-							        'fa-caret-right': !showToC
-								      }">
-								    </span>
-                            </a>
-                        </div>
+
+        <div class="row">
+            <div class="col-md-1 col-1-percent" ng-show="hideToc" style="margin-right:6px">
+                <button title="Show Table of Contents" class="btn btn-xs btn-primary"
+                        ng-click="hideToc = !hideToc">
+                    <i class="fa fa-caret-right"></i>
+                </button>
+            </div>
+
+            <div ng-show="!hideToc" class="col-md-3">
+                <div class="panel panel-primary">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading panel-heading-collapsable">
+                        <i class="glyphicon glyphicon-list"></i> Table of Contents
+
+                        <button title="Hide  Table of Contents" class="btn btn-xs btn-default pull-right"
+                                style="margin:0px"
+                                ng-click="hideToc = !hideToc">
+                            <i class="fa fa-caret-left"></i>
+                        </button>
+
                     </div>
-                    <div class="panel-body" ng-show="showToC"
-                         style="max-width: 100%; overflow-x: auto; max-height: 900px; overflow-y: auto;white-space:nowrap;">
-                        <div ng-class="showToC ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">
+
+                    <div class="panel-body"
+                            >
+                        <div class="toc-container">
+                            <div ng-include="'views/toc.html'"></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div ng-class="showToC ? 'col-md-9' : 'col-md-11'">
-                <div class="panel panel-info">
+            <div ng-class="{'col-md-9': !hideToc, 'col-md-11 col-98-5-percent':hideToc}">
+                <div class="panel panel-primary">
                     <div class="panel-heading">Edit Area</div>
                     <div class="panel-body" style="padding-bottom:100px">
                         <div id="edit" ng-show="subview !== undefined" style="width:100%">
@@ -138,11 +126,55 @@
                     </div>
                 </div>
             </div>
+
+
+            <!--<div class="row" ng-init="hideToc = true">-->
+            <!--<div ng-class="hideToc ? 'col-md-3' : 'col-md-1 col-fixed-100'">-->
+            <!--<div class="panel panel-primary">-->
+            <!--<div class="panel-heading">-->
+            <!--<div ng-show="hideToc">-->
+            <!--Table of Contents-->
+            <!--<a class="btn btn-onc btn-xs" ng-click="hideToc = !hideToc">-->
+            <!--<span class="fa fa-lg"-->
+            <!--ng-class="{-->
+            <!--'fa-caret-left': hideToc-->
+            <!--}">-->
+            <!--</span>-->
+            <!--</a>-->
+            <!--</div>-->
+            <!--<div ng-show="!hideToc">-->
+            <!--<a class="btn btn-onc btn-xs" ng-click="hideToc = !hideToc">-->
+            <!--<span class="fa fa-lg"-->
+            <!--ng-class="{-->
+            <!--'fa-caret-right': !hideToc-->
+            <!--}">-->
+            <!--</span>-->
+            <!--</a>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="panel-body" ng-show="hideToc"-->
+            <!--style="max-width: 100%; overflow-x: auto; max-height: 900px; overflow-y: auto;white-space:nowrap;">-->
+            <!--<div ng-class="hideToc ? 'col-md-4' : 'col-md-1 '" ng-include="'views/toc.html'">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div ng-class="hideToc ? 'col-md-9' : 'col-md-11'">-->
+            <!--<div class="panel panel-primary">-->
+            <!--<div class="panel-heading">Edit Area</div>-->
+            <!--<div class="panel-body" style="padding-bottom:100px">-->
+            <!--<div id="edit" ng-show="subview !== undefined" style="width:100%">-->
+            <!--<ng-include src="subview"></ng-include>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
         </div>
+        <div ng-show="loadingIGDocument"
+             style="text-align: center;">
+            <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
+        </div>
+
     </div>
 </div>
-<div ng-show="loadingIGDocument"
-     style="text-align: center;">
-    <i class="fa fa-spinner fa-pulse fa-align-center fa-2x"></i>
-</div>
-

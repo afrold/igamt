@@ -3,6 +3,7 @@ $icon-font-path: "../fonts/";
 
 @import 'sass-bootstrap/lib/bootstrap';
 
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -2152,4 +2153,23 @@ table.conformance-profiles-table {
 
 table.conformance-profiles-table td {
   text-align: left;
+}
+
+.col-98-5-percent {
+  width:98.5%;
+}
+
+.col-1-percent {
+  width:1%;
+}
+
+.panel-heading-collapsable {
+  //padding: 10px 5px;
+}
+
+.toc-container {
+  max-width: 100% !important;
+  max-height: 700px !important;
+  overflow: auto;
+  white-space:nowrap;
 }
