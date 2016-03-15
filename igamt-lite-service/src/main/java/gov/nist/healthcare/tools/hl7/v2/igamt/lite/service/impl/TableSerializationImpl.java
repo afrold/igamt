@@ -79,10 +79,9 @@ public class TableSerializationImpl implements TableSerialization {
 		public String serializeTableLibraryToXML(Profile profile) {
         	return this.serializeTableLibraryToDoc(profile).toXML();
 		}
-
-		@Override
-		public nu.xom.Document serializeTableLibraryToDoc(Profile profile) {
-			Tables tableLibrary = profile.getTables();
+        
+        public nu.xom.Element serializeTableLibraryToElement(Profile profile) {
+        	Tables tableLibrary = profile.getTables();
 			
 			nu.xom.Element elmTableLibrary = new nu.xom.Element("ValueSetLibrary");
 			
@@ -164,9 +163,12 @@ public class TableSerializationImpl implements TableSerialization {
             	elmTableLibrary.appendChild(elmValueSetDefinitions);
             }
             
-            nu.xom.Document doc = new nu.xom.Document(elmTableLibrary);
+            return elmTableLibrary;
+        }
 
-            return doc;
+		@Override
+		public nu.xom.Document serializeTableLibraryToDoc(Profile profile) {
+            return new nu.xom.Document(this.serializeTableLibraryToElement(profile));
 		}
 
         private void deserializeXMLToTable(Element elmTableLibrary, Tables tableLibrary) {
