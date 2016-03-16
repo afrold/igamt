@@ -66,9 +66,9 @@ angular
 					var linker = function(scope, element, attrs) {
 //						console.log("<=label=" + scope.branch.label);
 						if (angular.isArray(scope.branch.children)) {
-//							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
-//							 " label=" + scope.branch.label + " children=" +
-//							 scope.branch.children.length);
+							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
+							 " label=" + scope.branch.label + " children=" +
+							 scope.branch.children.length);
 							if ( _.indexOf(["profile", "segments", "datatypes", "tables"], scope.branch.type) > -1) {
 								element.append(branchNoCtxTemplate);
 							} else if (scope.branch.type === "messages") {

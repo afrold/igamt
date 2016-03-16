@@ -205,11 +205,14 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
     $scope.loading = false;
     $scope.delete = function () {
         $scope.loading = true;
+        // We must delete from two collections.
         var index = $rootScope.datatypes.indexOf($scope.dtToDelete);
-        if (index > -1) $rootScope.datatypes.splice(index, 1);
+       if (index > -1) $rootScope.datatypes.splice(index, 1);
         if ($rootScope.datatype === $scope.dtToDelete) {
             $rootScope.datatype = null;
         }
+        var index = $rootScope.igdocument.profile.datatypes.children.indexOf($scope.dtToDelete);
+        if (index > -1) $rootScope.igdocument.profile.datatypes.children.splice(index, 1);
         $rootScope.datatypesMap[$scope.dtToDelete.id] = null;
         $rootScope.references = [];
         if ($scope.dtToDelete.id < 0) { //datatype flavor
