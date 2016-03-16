@@ -19,8 +19,8 @@
             <div ng-show="segment !== null" id="executionPanel">
                 <form name="segmentForm" id="segmentForm" novalidate class="form-horizontal">
 
-                    <div class="">
-									<span class="header4 pull-left">Segment: {{segment.name}}:
+                    <div class="igl-page-header">
+									<span class="header4 pull-left">Segment:
 										{{segment.label}}</span>
                      <span class="pull-right">
 
@@ -174,7 +174,7 @@
                         <div class="col-md-12">
                             <div class="table-responsive">
                                 <table tt-table tt-params="segmentsParams"
-                                       class="table table-striped table-bordered table-fix-header table-condensed profile-table">
+                                       class="table table-bordered table-fix-header table-condensed profile-table">
                                     <thead>
                                     <tr class="tbl-header"
                                         style="margin-right: {{scrollbarWidth}}px;">
@@ -189,23 +189,23 @@
                                             ng-show="viewSettings.isVisibleColumn('length')">Length
                                         </th>
                                         <th class="col-xs-1 col-fixed-80"
-                                            ng-show="viewSettings.isVisibleColumn('confLength')">ConfLength
+                                            ng-show="viewSettings.isVisibleColumn('confLength')">Conformance Length
                                         </th>
                                         <th class="col-xs-1 col-fixed-100"
-                                            ng-show="viewSettings.isVisibleColumn('datatype')">Datatype
+                                            ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
                                         </th>
                                         <th class="col-xs-1 col-fixed-130"
-                                            ng-show="viewSettings.isVisibleColumn('valueSet')">ValueSet
+                                            ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
                                         </th>
                                         <th class="col-xs-1" ng-style="predWidth"
                                             ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
                                         </th>
                                         <th class="col-xs-1" ng-style="csWidth"
-                                            ng-show="viewSettings.isVisibleColumn('confStatement')">Conf.
+                                            ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance
                                             Statement
                                         </th>
                                         <th class="col-xs-1 col-fixed-80"
-                                            ng-show="viewSettings.isVisibleColumn('defText')">Def.Text
+                                            ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
                                         </th>
                                         <th class="col-xs-1" ng-style="commentWidth"
                                             ng-show="viewSettings.isVisibleColumn('comment')">Comment
@@ -462,15 +462,18 @@
         </td>
 
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <a ng-show="node.comment === '' || node.comment === null"
-               ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="point">
-                <i class="fa fa-plus fa-fw"></i>
-            </a>
-            <a class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)"
-               tooltip-html="node.comment" tooltip-append-to-body="true"
-               tooltip-class="constraints-tooltip"
-               tooltip-trigger tooltip-animation="false" tooltip-placement="left"
-               ng-show="node.comment !== '' && node.comment !== null" ng-bind="node.comment"></a>
+            <!--<a ng-show="node.comment === '' || node.comment === null"-->
+               <!--ng-click="openInputTextDlg(node, 'comment', 'Comment', false)" class="point">-->
+                <!--<i class="fa fa-plus fa-fw"></i>-->
+            <!--</a>-->
+            <!--<a class="point" ng-click="openInputTextDlg(node, 'comment','Comment', false)"-->
+               <!--tooltip-html="node.comment" tooltip-append-to-body="true"-->
+               <!--tooltip-class="constraints-tooltip"-->
+               <!--tooltip-trigger tooltip-animation="false" tooltip-placement="left"-->
+               <!--ng-show="node.comment !== '' && node.comment !== null" ng-bind="node.comment"></a>-->
+            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment">
+            </textarea>
+
         </td>
     </tr>
 </script>
@@ -550,11 +553,8 @@
         </td>
 
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <span
-                    tooltip-html="node.comment" tooltip-append-to-body="true"
-                    tooltip-class="constraints-tooltip"
-                    tooltip-trigger tooltip-animation="false" tooltip-placement="left"
-                    ng-show="node.comment !== '' && node.comment !== null" ng-bind="node.comment"></span>
+            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null"  disabled>
+            </textarea>
         </td>
     </tr>
 </script>
@@ -646,9 +646,8 @@
             </div>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <div tooltip-html="node.comment" tooltip-append-to-body="true"
-                 tooltip-class="constraints-tooltip"
-                 tooltip-trigger tooltip-animation="false" tooltip-placement="left"></div>
+            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" disabled ng-show="node.comment != null && node.comment != ''">
+            </textarea>
         </td>
     </tr>
 </script>
@@ -734,9 +733,8 @@
             </a>
         </td>
         <td class="col-xs-1" ng-style="commentWidth" ng-show="viewSettings.isVisibleColumn('comment')">
-            <span ng-show="node.comment != null" tooltip-html="node.comment" tooltip-append-to-body="true"
-                  tooltip-class="constraints-tooltip"
-                  tooltip-trigger tooltip-animation="false" tooltip-placement="left"></span>
+            <textarea class="form-control" style="width:100%;height:100%" ng-model="node.comment" ng-show="node.comment !== '' && node.comment !== null"  disabled>
+            </textarea>
         </td>
     </tr>
 </script>

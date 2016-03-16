@@ -258,15 +258,21 @@
             {{editorTarget.title}}</h3>
     </div>
     <div class="modal-body">
-        <div class="row">
-            <textarea rows="5" style="width:100%" type="text" ng-disabled="editorTarget.disabled"
+
+        <form class="form-horizontal" novalidate>
+            <div class="row">
+                <div class="col-md-12">
+            <textarea rows="5"  type="text" ng-disabled="editorTarget.disabled" style="width:100%;" autofocus
                       name="inputEditor" class="form-control" ng-model="editorTarget.obj[editorTarget.key]"
                     ></textarea>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="close()"><span><i class="fa fa-times fa-fw">
-            &nbsp; </i>Close</span>
+        <button class="btn btn-primary btn-sm" ng-click="close()"><span><i class="fa fa-check fa-fw">
+            &nbsp; </i>Save</span>
         </button>
     </div>
 </script>
