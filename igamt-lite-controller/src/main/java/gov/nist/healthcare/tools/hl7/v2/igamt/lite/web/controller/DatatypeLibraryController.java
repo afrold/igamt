@@ -15,20 +15,19 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeLibrarySaveResponse;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.DatatypeLibraryRequestWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeLibrarySaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
@@ -43,34 +42,56 @@ public class DatatypeLibraryController extends CommonController {
 	@Autowired
 	private DataTypeLibraryService datatypeLibraryService;
 
+	@Autowired
+	UserService userService;
+
+	@Autowired
+	AccountRepository accountRepository;
+
 	@RequestMapping(method = RequestMethod.POST)
 	public List<DatatypeLibrary> getDatatypeLibraries() {
-		log.info("Fetching the HL7STANDARD datatype library...");
+		log.info("Fetching all datatype libraries.");
 		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryService.findAll();
 		return datatypeLibraries;
 	}
 
-	@RequestMapping(value = "/getDatatypeLibraryByScope", method = RequestMethod.POST)
-	public DatatypeLibrary getDataTypeLibraryByScope(@RequestBody DatatypeLibraryRequestWrapper dtlrw) {
-		log.info("Fetching the " + dtlrw.getScope() + " datatype library...");
-		DatatypeLibrary.SCOPE scope = DatatypeLibrary.SCOPE.valueOf(dtlrw.getScope());
-		DatatypeLibrary datatypeLibrary = datatypeLibraryService.findByScope(scope, dtlrw.getAccountId(),
-				dtlrw.getDatatypeLibrary());
+	@RequestMapping(value = "/getDataTypeLibraryByScope", method = RequestMethod.POST)
+	public DatatypeLibrary getDataTypeLibraryByScope(@RequestBody String sScope) {
+		log.info("Fetching the " + sScope + " datatype library.");
+		DatatypeLibrary.SCOPE scope = DatatypeLibrary.SCOPE.valueOf(sScope);
+		DatatypeLibrary datatypeLibrary = datatypeLibraryService.findByScope(scope);
 		return datatypeLibrary;
 	}
 
-	@RequestMapping(value = "/{accountId}", method = RequestMethod.POST)
-	public List<DatatypeLibrary> getDatatypeLibraryByAccountId(@PathVariable("accountId") Long accountId)
-			throws DatatypeLibraryNotFoundException, UserAccountNotFoundException, DatatypeLibraryException {
-		log.info("Fetching the USER datatype library...");
-		List<DatatypeLibrary> result = datatypeLibraryService.findByAccountId(accountId);
-		return result;
+	@RequestMapping(value = "/createUpdate", method = RequestMethod.POST)
+	public DatatypeLibrary createUpdate(@RequestBody DatatypeLibrary datatypeLibrary) {
+		log.info("Creating of updating the " + datatypeLibrary.getScope() + " datatype library.");
+		User u = userService.getCurrentUser();
+		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+		DatatypeLibrary createdUpdated = datatypeLibraryService.createFrom(account.getId(), datatypeLibrary);
+		return createdUpdated;
 	}
 
+	// gcr not used at present but will be in the future.
+	// @RequestMapping(value = "/{accountId}", method = RequestMethod.POST)
+	// public List<DatatypeLibrary>
+	// getDatatypeLibraryByAccountId(@PathVariable("accountId") Long accountId)
+	// throws DatatypeLibraryNotFoundException, UserAccountNotFoundException,
+	// DatatypeLibraryException {
+	// log.info("Fetching the USER datatype library...");
+	// List<DatatypeLibrary> result =
+	// datatypeLibraryService.findByAccountId(accountId);
+	// return result;
+	// }
+
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public DatatypeLibrarySaveResponse save(@RequestBody DatatypeLibrary library) throws DatatypeLibrarySaveException {
-		log.info("Saving the USER datatype library...");
-		DatatypeLibrary saved = datatypeLibraryService.apply(library);
+	public DatatypeLibrarySaveResponse save(@RequestBody DatatypeLibrary datatypeLibrary)
+			throws DatatypeLibrarySaveException {
+		log.info("Saving the " + datatypeLibrary.getScope() + " datatype library.");
+		User u = userService.getCurrentUser();
+		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+		datatypeLibrary.setAccountId(account.getId());
+		DatatypeLibrary saved = datatypeLibraryService.apply(datatypeLibrary);
 		return new DatatypeLibrarySaveResponse(saved.getDate(), saved.getScope().name());
 	}
 }

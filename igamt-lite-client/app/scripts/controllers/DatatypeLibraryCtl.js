@@ -2,8 +2,10 @@
  * http://usejsdoc.org/
  */
 angular.module('igl').controller('MasterDatatypeLibraryCtl',
-		function($scope, $rootScope, $filter, $http, $httpBackend, $modal, DatatypeLibrarySvc, userInfoService) {
+		function($scope, $rootScope, $filter, $http, $httpBackend, $modal, $q, ngTreetableParams, DatatypeLibrarySvc, userInfoService) {
 
+			$scope.datatypes = [];
+			$scope.datatypeLibrary = false;		
 			$scope.publishSelections = [];
 			
             $rootScope.$on('event:initDatatypeLibrary', function (event) {
@@ -12,7 +14,32 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 			
 			$scope.initDatatypeLibrary = function() {
 				$scope.start = false;
-				$scope.datatypeLibrary = DatatypeLibrarySvc.getDataTypeLibrary("MASTER");
+				$scope.datatypeLibrary = getDataTypeLibrary("MASTER");
+			};
+			
+			function getDataTypeLibrary(scope) {
+				DatatypeLibrarySvc.getDataTypeLibrary(scope).then(function(data) {
+				    $scope.datatypes = data;
+					return assembleDatatypeLibrary($scope.datatypes);
+				}).catch( function (error) {
+					console.log(error);
+				});
+			};
+			
+			function assembleDatatypeLibrary(datatypes) {
+				return new ngTreetableParams({
+					getNodes : function(parent) {
+						return datatypes.children;
+					},
+			        getTemplate : function(node) {
+			            return 'dataTypeNode.html';
+			        },
+			        options : {
+			            onNodeExpand: function() {
+			                console.log('A node was expanded!');
+			            }
+			        }
+				});
 			};
 			
 			$scope.trackSelections = function(bool, selection) {
@@ -27,54 +54,26 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				}
 			};
 			
-
 			$scope.openStandardDataypes = function() {
 				
 				var standardDatatypesInstance = $modal.open({
 					templateUrl : 'standardDatatypeDlg.html',
 					controller : 'StandardDatatypeLibraryInstanceDlgCtl',
 					resolve : {
-						datatypeLibrary : DatatypeLibrarySvc.getDataTypeLibrary("STANDARD")
+						datatypeLibrary : getDataTypeLibrary("HL7STANDARD")
 					}
-				});
-				
-				standardDatatypesInstance.result.then(function(result) {
-					var datatypeLibrary = angular.copy(DatatypeLibrarySvc.datatypeLibrary);
-					datatypeLibrary.id = undefined;
-					datatypeLibrary.children = result;
-					DatatypeLibrarySvc.save(datatypeLibrary).then(function()  {
+				}).result.then(function(standardSelections) {
+					angular.foreach(standardSelections, function(child) {
+						$scope.datatypes.value.children.push(child);
+					});
+					$scope.datatypes.id = undefined;
+					$scope.datatypes.scope = "MASTER";
+					DatatypeLibrarySvc.save($scope.datatypes).then(function()  {
 						$rootScope.$broadcast('event:initDatatypeLibrary');	
 					});
-			});
+				});
 			};
-
 		});
-
-//angular.module('igl').controller('StandardDatatypeLibraryDlgCtl',
-//		function($scope, $rootScope, $filter, $http, $modal, $httpBackend, DatatypeLibrarySvc, userInfoService) {
-//
-//			$scope.standardSelections = [];
-//	
-//			$scope.openStandardDataypes = function() {
-//				
-//				var standardDatatypesInstance = $modal.open({
-//					templateUrl : 'standardDatatypeDlg.html',
-//					controller : 'StandardDatatypeLibraryInstanceDlgCtl',
-//					resolve : {
-//						datatypeLibrary : DatatypeLibrarySvc.getDataTypeLibrary("STANDARD")
-//					}
-//				});
-//				
-//				standardDatatypesInstance.result.then(function(result) {
-//					var datatypeLibrary = angular.copy(DatatypeLibrarySvc.datatypeLibrary);
-//					datatypeLibrary.id = undefined;
-//					datatypeLibrary.children = result;
-//					DatatypeLibrarySvc.save(datatypeLibrary).then(function()  {
-//						$rootScope.$broadcast('event:initDatatypeLibrary');	
-//					});
-//			});
-//			};
-//		});
 
 angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 		function($scope, $rootScope, $filter, $http, $modalInstance, $httpBackend, datatypeLibrary, DatatypeLibrarySvc, userInfoService) {

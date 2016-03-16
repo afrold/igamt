@@ -2,10 +2,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
@@ -25,7 +23,7 @@ public class DataTypeLibraryServiceImplTest {
 	@Autowired
 	DataTypeLibraryService dtlService;
 	
-//	@Test
+	@Test
 	public void testFindAll() {
 		List<DatatypeLibrary> dtl = dtlService.findAll();
 		assertNotNull(dtl);
@@ -34,29 +32,31 @@ public class DataTypeLibraryServiceImplTest {
 
 	@Test
 	public void testFindByScope() {
-		DatatypeLibrary dtl9 = dtlService.findByScope(DatatypeLibrary.SCOPE.USER, 45L, null);
-		List<DatatypeLibrary> dtl0 = dtlService.findAll();
-		assertEquals(91, dtl0.get(0).getChildren().size());
-		DatatypeLibrary dtl1 = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, 45L, null);
-		assertNotNull(dtl1);
-		assertEquals(dtl0.get(0).getChildren().size(), dtl1.getChildren().size());
-		DatatypeLibrary dtl2 = dtl0.get(0);
-		assertNotNull(dtl2);
-		Datatype dt = dtl2.getChildren().iterator().next();
-		Set<Datatype> dts = new HashSet<Datatype>();
-		dts.add(dt);
-		dtl2.setChildren(dts);
-		DatatypeLibrary dtl3 = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, 45L, dtl2);
-		assertEquals(dtl0.get(0).getChildren().size(), dtl3.getChildren().size() - dtl2.getChildren().size());
+		DatatypeLibrary dtlH = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, 45L, null);
+		assertNotNull(dtlH);
+		DatatypeLibrary dtlM = dtlService.findByScope(DatatypeLibrary.SCOPE.MASTER, 45L, null);
+		assertNotNull(dtlM);
+		assertEquals(0, dtlM.getChildren().size());
 	}
 	
-//	@Test
+	@Test
 	public void saveTest() {
-		DatatypeLibrary dtl;
-		dtl = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, 45L, null);
-		assertNotNull(dtl);
-		dtl.setId(null);
-		dtl.setScope(DatatypeLibrary.SCOPE.USER);
-		dtlService.apply(dtl);
+		List<DatatypeLibrary> dtls = dtlService.findAll();
+		assertEquals(1, dtls.size());
+		DatatypeLibrary dtlH;
+		dtlH = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, 45L, null);
+		assertNotNull(dtlH);
+		dtlH.setId(null);
+		dtlH.setScope(DatatypeLibrary.SCOPE.USER);
+		dtlService.apply(dtlH);
+		dtls = dtlService.findAll();
+		assertEquals(2, dtls.size());
+		DatatypeLibrary dtlU = dtlService.findByScope(DatatypeLibrary.SCOPE.USER, 45L, null);
+		assertNotNull(dtlU);
+		assertEquals(91, dtlU.getChildren().size());
+		assertEquals(DatatypeLibrary.SCOPE.USER, dtlU.getScope());
+		dtlService.delete(dtlU);
+		dtls = dtlService.findAll();
+		assertEquals(1, dtls.size());
 	}
 }

@@ -22,9 +22,15 @@ public interface DataTypeLibraryService {
 
 	List<DatatypeLibrary> findAll();
 
-	DatatypeLibrary findByScope(SCOPE scope, Long accountId, DatatypeLibrary dtLibSource);
+	DatatypeLibrary findByScope(SCOPE scope);
 
 	List<DatatypeLibrary> findByAccountId(Long accountId);
 
 	DatatypeLibrary apply(DatatypeLibrary library);
+
+	DatatypeLibrary createFrom(Long accountId, DatatypeLibrary datatypeLibrary);
+
+	DatatypeLibrary create(DatatypeLibrary library);
+
+	void delete(DatatypeLibrary library);
 }

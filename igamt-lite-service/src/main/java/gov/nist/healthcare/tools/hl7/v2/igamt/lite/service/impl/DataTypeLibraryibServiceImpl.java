@@ -21,8 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
 
@@ -32,7 +34,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryServic
  */
 @Service
 public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
-	
+
 	Logger log = LoggerFactory.getLogger(DataTypeLibraryibServiceImpl.class);
 
 	@Autowired
@@ -44,48 +46,61 @@ public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
 		log.info("datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;
 	}
-	
+
 	@Override
-	public DatatypeLibrary findByScope(DatatypeLibrary.SCOPE scope, Long accountId, DatatypeLibrary dtLibSource) {
+	public DatatypeLibrary findByScope(DatatypeLibrary.SCOPE scope) {
 		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryRepository.findByScope(scope);
 		log.info("datatypeLibraries=" + datatypeLibraries.size());
-		DatatypeLibrary dtLibTarget = null;
+		DatatypeLibrary datatypeLibrary = null;
 		if (datatypeLibraries.size() > 0) {
-			dtLibTarget = datatypeLibraries.get(0);
-			if (dtLibSource != null) {
-				List<String> dtIds = new ArrayList<String>();
-				for (Datatype dt : dtLibSource.getChildren()) {
-					dtIds.add(dt.getId());
-				}
-				for (Datatype dt : dtLibTarget.getChildren()) {
-					if (!dtIds.contains(dt.getId())) {
-						dtLibTarget.addDatatype(dt);
-					}
-				}
-			}
-		} else {
-			dtLibTarget = new DatatypeLibrary();
-			DateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
-			Date date = new Date();
-			dtLibTarget.setDate(dateFormat.format(date));
-			dtLibTarget.setScope(scope);
-			dtLibTarget.setAccountId(accountId);
-			dtLibTarget.setMetaData(dtLibSource.getMetaData());
-			dtLibTarget.setChildren(dtLibSource.getChildren());
+			datatypeLibrary = datatypeLibraries.get(0);
 		}
-		return dtLibTarget;
+		return datatypeLibrary;
 	}
-	
+
 	@Override
 	public List<DatatypeLibrary> findByAccountId(Long accountId) {
 		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByAccountId(accountId);
 		log.info("datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;
 	}
-	
+
 	@Override
 	public DatatypeLibrary apply(DatatypeLibrary library) {
 		DatatypeLibrary datatypeLibrary = datatypeLibraryRepository.save(library);
 		return datatypeLibrary;
+	}
+
+	@Override
+	public DatatypeLibrary createFrom(Long accountId, DatatypeLibrary datatypeLibrary) {
+		DatatypeLibrary existing = findByScope(datatypeLibrary.getScope());
+		if (existing != null) {
+			for (Datatype dt : datatypeLibrary.getChildren()) {
+				existing.addDatatype(dt);
+				apply(existing);
+			}
+			return existing;
+		} else {
+			return create(datatypeLibrary);
+		}
+	}
+
+	DatatypeLibraryMetaData defaultMetadata() {
+		DatatypeLibraryMetaData metaData = new DatatypeLibraryMetaData();
+		metaData.setName("Master data type library");
+		metaData.setOrgName("NIST");
+		metaData.setDate(Constant.mdy.format(new Date()));
+		return metaData;
+	}
+
+	@Override
+	public DatatypeLibrary create(DatatypeLibrary datatypeLibrary) {
+		datatypeLibrary = datatypeLibraryRepository.insert(datatypeLibrary);
+		return datatypeLibrary;
+	}
+
+	@Override
+	public void delete(DatatypeLibrary library) {
+		datatypeLibraryRepository.delete(library);
 	}
 }

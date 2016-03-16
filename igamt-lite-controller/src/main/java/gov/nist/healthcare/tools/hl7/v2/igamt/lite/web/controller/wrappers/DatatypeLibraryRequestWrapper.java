@@ -20,8 +20,6 @@ public class DatatypeLibraryRequestWrapper {
 
 	private String scope;
 
-	private Long accountId;
-
 	private DatatypeLibrary datatypeLibrary;
 
 	public String getScope() {
@@ -30,14 +28,6 @@ public class DatatypeLibraryRequestWrapper {
 
 	public void setScope(String scope) {
 		this.scope = scope;
-	}
-
-	public Long getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
 	}
 
 	public DatatypeLibrary getDatatypeLibrary() {

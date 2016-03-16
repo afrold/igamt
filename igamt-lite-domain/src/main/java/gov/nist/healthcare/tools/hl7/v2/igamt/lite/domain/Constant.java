@@ -10,6 +10,9 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * @author Harold Affo (harold.affo@nist.gov) Feb 13, 2015
  */
@@ -33,5 +36,6 @@ public class Constant {
 	
 	public final static String SECTION = "section";
 	public final static String Document = "document";
+	public final static DateFormat mdy = new SimpleDateFormat("MMMM dd, yyyy");
 
 }

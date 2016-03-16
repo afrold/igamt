@@ -14,8 +14,7 @@ angular
 						this.type = type;
 						this.parent = parent;
 						this.reference = reference;
-					}
-					;
+					};
 
 					svc.currentLeaf = {
 						selected : false
