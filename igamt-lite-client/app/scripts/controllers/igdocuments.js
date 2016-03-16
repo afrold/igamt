@@ -267,9 +267,15 @@ angular.module('igl')
                     $scope.igDocumentConfig.selectedType = 'USER';
                     $scope.loadIGDocuments();
                 }
+                $rootScope.msg().text = "igClonedSuccess";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
                 waitingDialog.hide();
             }, function (error) {
                 $scope.toEditIGDocumentId = null;
+                $rootScope.msg().text = "igClonedFailed";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
                 waitingDialog.hide();
             });
         };
@@ -298,7 +304,6 @@ angular.module('igl')
                 $rootScope.msg().text = "igInitFailed";
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
-                $rootScope.showNotification($rootScope.msg());
                 $scope.loadingIGDocument = false;
                 $scope.toEditIGDocumentId = null;
             }

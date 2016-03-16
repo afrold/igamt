@@ -14,7 +14,7 @@ angular
 						scope : {
 							trunk : '='
 						},
-						template : template,
+						template : template
 					}
 				})
 		.directive(
@@ -32,7 +32,7 @@ angular
 						scope : {
 							drop : '='
 						},
-						template : template,
+						template : template
 					}
 				})
 		.directive(
@@ -83,7 +83,7 @@ angular
 							element.append(leafTemplate).show();
 							$compile(element.contents())(scope);
 						}
-					}
+					};
 
 					return {
 						restrict : "E",
@@ -122,7 +122,7 @@ angular
 
 					var leafSection = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
 						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html' ng-click='tocSelection(leaf)'> "
-						+ "{{leaf.reference.sectionTitle}}"
+						+ "{{leaf.reference.sectionTitle}}";
 
 					var leafDefault = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
 						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html' ng-click='tocSelection(leaf)'> "
@@ -147,7 +147,7 @@ angular
 //							console.log("leafDefault=" + scope.leaf.label + " parent=" + scope.leaf.parent);
 						}
 						$compile(element.contents())(scope);
-					}
+					};
 
 					return {
 						restrict : "E",
@@ -160,4 +160,4 @@ angular
 						},
 						link : linker
 					}
-				})
+				});

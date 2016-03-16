@@ -1,3 +1,32 @@
+/*@font-face {*/
+    /*font-family: 'chunkfiveroman';*/
+    /*src: url('fonts/chunkfive-webfont.eot');*/
+    /*src: url('fonts/chunkfive-webfont.eot?#iefix') format('embedded-opentype'),*/
+    /*url('fonts/chunkfive-webfont.woff2') format('woff2'),*/
+    /*url('fonts/chunkfive-webfont.woff') format('woff'),*/
+    /*url('fonts/chunkfive-webfont.ttf') format('truetype'),*/
+    /*url('fonts/chunkfive-webfont.svg#chunkfiveroman') format('svg');*/
+    /*font-weight: normal;*/
+    /*font-style: normal;*/
+/*}*/
+
+/*@font-face {*/
+    /*font-family: 'aniversregular';*/
+    /*src: url('fonts/Anivers_Regular-webfont.eot');*/
+    /*src: url('fonts/Anivers_Regular-webfont.eot?#iefix') format('embedded-opentype'),*/
+    /*url('fonts/Anivers_Regular-webfont.woff2') format('woff2'),*/
+    /*url('fonts/Anivers_Regular-webfont.woff') format('woff'),*/
+    /*url('fonts/Anivers_Regular-webfont.ttf') format('truetype'),*/
+    /*url('fonts/Anivers_Regular-webfont.svg#aniversregular') format('svg');*/
+    /*font-weight: normal;*/
+    /*font-style: normal;*/
+
+/*}*/
+
+
+/*body {*/
+     /*font-family: 'aniversregular';*/
+/*}*/
 
 .igl-has-error .help-block,
 .igl-has-error .control-label,
@@ -92,3 +121,7 @@
     padding-bottom:2px;
     margin: 10px 0 10px;
  }
+
+.panel-group .panel {
+    border-radius:0px;
+}
