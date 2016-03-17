@@ -2,7 +2,7 @@
  * http://usejsdoc.org/
  */
 angular.module('igl').controller('MasterDatatypeLibraryCtl',
-		function($scope, $rootScope, $filter, $http, $httpBackend, $modal, $q, ngTreetableParams, DatatypeLibrarySvc, userInfoService) {
+		function($scope, $rootScope, $filter, $http, $httpBackend, $modal, $q, DatatypeLibrarySvc, userInfoService) {
 
 			$scope.datatypeStruct = {};
 			$scope.datatypeLibrary = false;		
@@ -19,29 +19,10 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 			
 			function getDataTypeLibrary(scope) {
 				DatatypeLibrarySvc.getDataTypeLibrary(scope).then(function(data) {
-					$scope.datatypeStruct = data;
-				    $scope.datatypeLibrary = DatatypeLibrarySvc.assembleDatatypeLibrary($scope.datatypeStruct);
-				    } else {
-				    	return dtLib;
-				    }
+						$scope.datatypeStruct = data;
+					    $scope.datatypeLibrary = DatatypeLibrarySvc.assembleDatatypeLibrary($scope.datatypeStruct);
 				}).catch( function (error) {
 					console.log(error);
-				});
-			};
-			
-			function assembleDatatypeLibrary(datatypeStruct) {
-				return new ngTreetableParams({
-					getNodes : function(parent) {
-						return datatypeStruct.children;
-					},
-			        getTemplate : function(node) {
-			            return 'dataTypeNode.html';
-			        },
-			        options : {
-			            onNodeExpand: function() {
-			                console.log('A node was expanded!');
-			            }
-			        }
 				});
 			};
 			
@@ -57,24 +38,31 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				}
 			};
 			
-			$scope.openStandardDataypes = function() {
-				
-				var standardDatatypesInstance = $modal.open({
-					templateUrl : 'standardDatatypeDlg.html',
-					controller : 'StandardDatatypeLibraryInstanceDlgCtl',
-					resolve : {
-						datatypeLibrary : getDataTypeLibrary("HL7STANDARD")
-					}
-				}).result.then(function(standardSelections) {
-					angular.foreach(standardSelections, function(child) {
-						$scope.datatypes.value.children.push(child);
+			$scope.openStandardDataypes = function(scope) {
+				DatatypeLibrarySvc.getDataTypeLibrary(scope).then(function(datatypeStruct) {
+				    var datatypeLibrary = DatatypeLibrarySvc.assembleDatatypeLibrary(datatypeStruct);
+
+					var standardDatatypesInstance = $modal.open({
+						templateUrl : 'standardDatatypeDlg.html',
+						controller : 'StandardDatatypeLibraryInstanceDlgCtl',
+						resolve : {
+							"datatypeLibrary" : datatypeLibrary
+						}
+					}).result.then(function(standardSelections) {
+						angular.forEach(standardSelections, function(child) {
+							$scope.datatypeStruct.children.push(child);
+						});
+						$scope.datatypeStruct.id = undefined;
+						$scope.datatypeLibrary = DatatypeLibrarySvc.assembleDatatypeLibrary(datatypeStruct);
+						$scope.datatypeLibrary.refresh();
+						DatatypeLibrarySvc.save($scope.datatypeStruct).then(function()  {
+							$rootScope.$broadcast('event:initDatatypeLibrary');	
+						});
 					});
-					$scope.datatypes.id = undefined;
-					$scope.datatypes.scope = "MASTER";
-					DatatypeLibrarySvc.save($scope.datatypes).then(function()  {
-						$rootScope.$broadcast('event:initDatatypeLibrary');	
-					});
-				});
+					
+				}).catch( function (error) {
+				console.log(error);
+			});
 		};
 });
 

@@ -1,7 +1,7 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').factory('DatatypeLibrarySvc', function($http, userInfoService) {
+angular.module('igl').factory('DatatypeLibrarySvc', function($http, ngTreetableParams, userInfoService) {
 	
 	var svc = this;
 	

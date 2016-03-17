@@ -6,7 +6,6 @@ angular.module('igl').controller(
 			$rootScope.clickSource = {};
 
             $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
-
 			
 			$scope.hl7Versions = function(clickSource) {
 				console.log("$scope.hl7Versions  clickSource=" + clickSource);
