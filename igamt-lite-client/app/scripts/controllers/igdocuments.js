@@ -19,10 +19,10 @@ angular.module('igl')
 
         $scope.igDocumentTypes = [
             {
-                name: "Predefined Implementation Guides", type: 'PRELOADED'
+                name: "Browse Existing Preloaded Implementation Guides", type: 'PRELOADED'
             },
             {
-                name: "User Implementation Guides", type: 'USER'
+                name: "Access My implementation guides", type: 'USER'
             }
         ];
         $scope.loadingIGDocument = false;
@@ -267,9 +267,15 @@ angular.module('igl')
                     $scope.igDocumentConfig.selectedType = 'USER';
                     $scope.loadIGDocuments();
                 }
+                $rootScope.msg().text = "igClonedSuccess";
+                $rootScope.msg().type = "success";
+                $rootScope.msg().show = true;
                 waitingDialog.hide();
             }, function (error) {
                 $scope.toEditIGDocumentId = null;
+                $rootScope.msg().text = "igClonedFailed";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
                 waitingDialog.hide();
             });
         };
@@ -298,7 +304,6 @@ angular.module('igl')
                 $rootScope.msg().text = "igInitFailed";
                 $rootScope.msg().type = "danger";
                 $rootScope.msg().show = true;
-                $rootScope.showNotification($rootScope.msg());
                 $scope.loadingIGDocument = false;
                 $scope.toEditIGDocumentId = null;
             }
@@ -322,6 +327,7 @@ angular.module('igl')
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
+                    $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
                     StorageService.setSelectedIgDocumentId($rootScope.igdocument.id);
                     $scope.sortByLabels();
                     $scope.loadToc();
@@ -508,7 +514,7 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'SelectMessagesOpenCtrl.html',
                 controller: 'SelectMessagesOpenCtrl',
-                windowClass: 'app-modal-window',
+                windowClass: 'conformance-profiles-modal',
                 resolve: {
                     igdocumentToSelect: function () {
                         return igdocument;

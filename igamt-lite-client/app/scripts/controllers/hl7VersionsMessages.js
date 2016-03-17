@@ -4,7 +4,9 @@ angular.module('igl').controller(
 				userInfoService) {
 
 			$rootScope.clickSource = {};
-			
+
+            $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+		
 			$scope.hl7Versions = function(clickSource) {
 				console.log("$scope.hl7Versions  clickSource=" + clickSource);
 				$rootScope.clickSource = clickSource;
@@ -37,6 +39,7 @@ angular.module('igl').controller(
 				return $modal.open({
 					templateUrl : 'hl7VersionsDlg.html',
 					controller : 'HL7VersionsInstanceDlgCtrl',
+                    windowClass: 'hl7-versions-modal',
 					resolve : {
 						hl7Versions : function() {
 							return $scope.listHL7Versions();
@@ -136,18 +139,25 @@ angular.module('igl').controller(
 angular.module('igl').controller(
 		'HL7VersionsInstanceDlgCtrl',
 		function($scope, $rootScope, $modalInstance, $http, hl7Versions,
-				ProfileAccessSvc, MessageEventsSvc) {
+				ProfileAccessSvc, MessageEventsSvc, $timeout) {
 
 			$scope.hl7Versions = hl7Versions;
 			$scope.hl7Version = $rootScope.hl7Version;
 			$scope.okDisabled = true;
 			$scope.messageIds = [];
 			$scope.messageEvents = [];
+            $scope.loading = false;
 			var messageEvents = [];
-			
-			$scope.loadIGDocumentsByVersion = function() {
-				$rootScope.hl7Version = $scope.hl7Version;
-				$scope.messageEventsParams = MessageEventsSvc.getMessageEvents($rootScope.hl7Version);
+            $scope.messageEventsParams = null;
+            $scope.scrollbarWidth = $rootScope.getScrollbarWidth();
+
+            $scope.loadIGDocumentsByVersion = function() {
+                $scope.loading = true;
+                $timeout(function() {
+                    $rootScope.hl7Version = $scope.hl7Version;
+                    $scope.messageEventsParams = MessageEventsSvc.getMessageEvents($rootScope.hl7Version);
+                    $scope.loading = false;
+                });
 			};
 			
 			$scope.isBranch = function(node) {
@@ -172,8 +182,9 @@ angular.module('igl').controller(
 				$scope.okDisabled = messageEvents.length === 0;
 			};
 
+
 			$scope.$watch(function() {
-				return $rootScope.igdocument;
+				return $rootScope.igdocument.id;
 			}, function(newValue, oldValue) {
 				if ($rootScope.clickSource === "ctx") {
 					$scope.hl7Version = $rootScope.hl7Version;

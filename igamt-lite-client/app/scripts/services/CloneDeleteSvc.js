@@ -47,7 +47,7 @@ angular.module('igl').factory(
 		            $rootScope.igdocument.profile.segments.children.splice(0, 0, newSegment);
 		            $rootScope.igdocument.profile.segments.children = positionElements($rootScope.igdocument.profile.segments.children);
 		            $rootScope.segment = newSegment;
-		            $rootScope.segment[newSegment.id] = newSegment;
+		            $rootScope.segmentsMap[newSegment.id] = newSegment;
 		            $rootScope.recordChanged();
 					$rootScope.$broadcast('event:SetToC');	
 					$rootScope.$broadcast('event:openSegment', newSegment);	
