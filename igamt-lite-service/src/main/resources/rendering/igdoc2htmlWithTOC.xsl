@@ -78,23 +78,23 @@
 					auto;
 					max-height: 100vh;
 					}
-					h1, .divh1{
+					.divh1{
 					padding-left: 15px;
 					}
-					h2, .divh2 {
+					.divh2 {
 					padding-left: 30px;
 					}
-					h3, .divh3 {
+					.divh3 {
 					padding-left: 45px;
 					}
-					h4, .divh4 {
+					.divh4 {
 					padding-left: 60px;
 					}
-					h5, .divh5 {
+					.divh5 {
 					padding-left:
 					75px;
 					}
-					h6, .divh6 {
+					.divh6 {
 					padding-left:
 					90px;
 					}
@@ -109,19 +109,6 @@
 					float:right;
 					}
 				</style>
-				<script type="text/javascript">
-					<xsl:text disable-output-escaping="yes">
-					function unhide(divID, btnID) {
-					var oLimit = document.querySelector("#sidebar");
-					var divs = document.querySelectorAll("div");
-					for (var i = 0; i &lt; divs.length; i++) {
-					if (divs[i].id == divID) {
-					divs[i].className = (divs[i].className=='hidden')?'unhidden':'hidden';
-					}
-					}
-					document.getElementById(btnID).innerHTML = ((document.getElementById(divID).className=='hidden')? "[Show]":"[Hide]");
-					}</xsl:text>
-				</script>
 			</head>
 
 			<body style="font-family:Arial Narrow, Arial, sans-serif;">
@@ -138,6 +125,19 @@
 					<!-- <xsl:value-of select="$inlineConstraints" /> -->
 					<xsl:call-template name="dispSect" />
 				</div>
+				<script type="text/javascript">
+					<xsl:text disable-output-escaping="yes">
+					function unhide(divID, btnID) {
+					var oLimit = document.querySelector("#sidebar");
+					var divs = document.querySelectorAll("div");
+					for (var i = 0; i &lt; divs.length; i++) {
+					if (divs[i].id == divID) {
+					divs[i].className = (divs[i].className=='hidden')?'unhidden':'hidden';
+					}
+					}
+					document.getElementById(btnID).innerHTML = ((document.getElementById(divID).className=='hidden')? "[Show]":"[Hide]");
+					}</xsl:text>
+				</script>
 			</body>
 		</html>
 	</xsl:template>
@@ -387,7 +387,7 @@
 	<xsl:template match="Segment">
 		<xsl:value-of disable-output-escaping="yes"
 			select="./Text[@Type='Text1']" />
-		<br></br>
+		<p>
 		<table width="100%" border="1" cellspacing="0" cellpadding="1">
 			<col style="width:5%"></col>
 			<col style="width:15%"></col>
@@ -437,62 +437,45 @@
 				</xsl:for-each>
 			</tbody>
 		</table>
+		</p>
 
 		<xsl:choose>
 			<xsl:when test="normalize-space($inlineConstraints) = 'false'">
 				<xsl:if test="count(Field//Constraint) &gt; 0">
-
-					<br></br>
-					<table width="100%" border="1" cellspacing="0" cellpadding="1">
-						<col style="width:10%"></col>
-						<col style="width:10%"></col>
-						<col style="width:10%"></col>
-						<col style="width:70%"></col>
-						<thead>
-							<tr style="background:#F0F0F0; color:#B21A1C; align:center">
-								<th>
-									Id
-								</th>
-								<th>
-									Location
-								</th>
-								<th>
-									Classification/Usage
-								</th>
-								<th>
-									Description
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<xsl:for-each select="Field">
-								<xsl:sort select="@Type" data-type="text"></xsl:sort>
-								<xsl:sort select="@Position" data-type="number"></xsl:sort>
-								<xsl:if test="node()">
-									<tr>
-										<td>
-											<xsl:value-of select="./Constraint/@Id" />
-										</td>
-										<td>
-											<xsl:value-of
-												select="concat(../@Label, '.', ./Constraint/@Location)" />
-										</td>
-										<td>
-											<xsl:value-of select="./Constraint/@Classification" />
-											<xsl:value-of select="./Constraint/@Usage" />
-										</td>
-										<td>
-											<xsl:value-of select="./Constraint" />
-										</td>
-									</tr>
-								</xsl:if>
-							</xsl:for-each>
-						</tbody>
-					</table>
+					<p>
+						<table width="100%" border="1" cellspacing="0" cellpadding="1">
+							<col style="width:10%"></col>
+							<col style="width:10%"></col>
+							<col style="width:10%"></col>
+							<col style="width:70%"></col>
+							<thead>
+								<tr style="background:#F0F0F0; color:#B21A1C; align:center">
+									<th>
+										Id
+									</th>
+									<th>
+										Location
+									</th>
+									<th>
+										Classification/Usage
+									</th>
+									<th>
+										Description
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<xsl:for-each select="Field">
+									<xsl:sort select="@Type" data-type="text"></xsl:sort>
+									<xsl:sort select="@Position" data-type="number"></xsl:sort>
+									<xsl:apply-templates select="." mode="doc"></xsl:apply-templates>
+								</xsl:for-each>
+							</tbody>
+						</table>
+					</p>
 				</xsl:if>
 			</xsl:when>
 		</xsl:choose>
-		<br></br>
 		<xsl:value-of disable-output-escaping="yes"
 			select="./Text[@Type='Text2']" />
 
@@ -557,22 +540,7 @@
 		<xsl:if test="normalize-space($inlineConstraints) = 'true'">
 
 			<xsl:if test="count(Constraint) &gt; 0">
-				<tr style="background:#E8E8E8">
-					<td></td>
-					<td>
-						<xsl:value-of select="./Constraint/@Id" />
-					</td>
-					<td>
-						<xsl:value-of select="concat(../@Label, '.', ./Constraint/@Location)" />
-					</td>
-					<td>
-						<xsl:value-of select="./Constraint/@Classification" />
-						<xsl:value-of select="./Constraint/@Usage" />
-					</td>
-					<td colspan="4">
-						<xsl:value-of select="./Constraint" />
-					</td>
-				</tr>
+				<xsl:apply-templates select="." mode="doc"></xsl:apply-templates>
 			</xsl:if>
 		</xsl:if>
 	</xsl:template>
@@ -640,7 +608,7 @@
 			</tbody>
 		</table>
 
-		<xsl:if test="count(Field//Constraint) &gt; 0">
+		<xsl:if test="count(Component//Constraint) &gt; 0">
 			<xsl:choose>
 				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
 					<table width="100%" border="1" cellspacing="0" cellpadding="1">
@@ -660,26 +628,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							<xsl:for-each select="Field">
+							<xsl:for-each select="Component">
+								<xsl:sort select="@Type" data-type="text"></xsl:sort>
 								<xsl:sort select="@Position" data-type="number"></xsl:sort>
-								<xsl:if test="node()">
-									<tr>
-										<td>
-											<xsl:value-of select="./Constraint/@Id" />
-										</td>
-										<td>
-											<xsl:value-of
-												select="concat(../@Label, '.', ./Constraint/@Location)" />
-										</td>
-										<td>
-											<xsl:value-of select="./Constraint/@Classification" />
-											<xsl:value-of select="./Constraint/@Usage" />
-										</td>
-										<td>
-											<xsl:value-of select="./Constraint" />
-										</td>
-									</tr>
-								</xsl:if>
+								<xsl:apply-templates select="." mode="doc"></xsl:apply-templates>
 							</xsl:for-each>
 						</tbody>
 					</table>
@@ -687,7 +639,8 @@
 			</xsl:choose>
 		</xsl:if>
 		<br></br>
-		<xsl:value-of select="Text[@Type='UsageNote']" />
+		<xsl:value-of disable-output-escaping="yes"
+			select="Text[@Type='UsageNote']" />
 		<br></br>
 		<xsl:for-each select="Component">
 			<xsl:sort select="@Position" data-type="number"></xsl:sort>
@@ -734,34 +687,14 @@
 		<xsl:if test="normalize-space($inlineConstraints) = 'true'">
 
 			<xsl:if test="count(Constraint) &gt; 0">
-				<tr style="background:#E8E8E8">
-					<td></td>
-					<td>
-						<xsl:value-of select="./Constraint/@Id" />
-					</td>
-					<td>
-						<xsl:value-of select="concat(../@Label, '.', ./Constraint/@Location)" />
-					</td>
-					<td>
-						<xsl:value-of select="./Constraint/@Classification" />
-						<xsl:value-of select="./Constraint/@Usage" />
-					</td>
-					<td colspan="4">
-						<xsl:value-of select="./Constraint" />
-					</td>
-				</tr>
+				<xsl:apply-templates select="." mode="doc"></xsl:apply-templates>
 			</xsl:if>
 		</xsl:if>
-		<!-- <xsl:if test="node()"> <xsl:choose> <xsl:when test="normalize-space($inlineConstraints) 
-			= 'true'"> <tr> <td></td> <td style="background:#F0F0F0; color:#B21A1C; align:center"> 
-			<xsl:value-of select="./Constraint/@Type" /> </td> <td colspan="6" style="background:#F0F0F0; 
-			color:#B21A1C; align:center"> <xsl:value-of select="./Constraint" /> </td> 
-			</tr> </xsl:when> <xsl:otherwise> <tr> <td colspan="8" style="background:#F0F0F0; 
-			color:#B21A1C; align:center" /> </tr> </xsl:otherwise> </xsl:choose> </xsl:if> -->
 	</xsl:template>
 
 	<xsl:template name="componentText">
-		<xsl:value-of select="Text[@Type='Text']" />
+		<xsl:value-of disable-output-escaping="yes"
+			select="Text[@Type='Text']" />
 	</xsl:template>
 
 	<xsl:template match="ValueSetDefinition" mode="toc">
@@ -833,13 +766,11 @@
 
 	<xsl:template match="Constraints">
 		<xsl:if test="count(./Constraint) &gt; 0">
-			<u>
-				<b>
-					<xsl:value-of select="@title" />
-				</b>
-			</u>
+			<b>
+				<xsl:value-of select="@title" />
+			</b>
 			<br></br>
-			<br />
+			<p>
 			<xsl:if test="./@Type='ConditionPredicate'">
 				<table width="100%" border="1" cellspacing="0" cellpadding="0">
 					<col style="width:10%"></col>
@@ -849,15 +780,12 @@
 					<thead style="background:#F0F0F0; color:#B21A1C; align:center">
 						<tr>
 							<th>
-								Id
-							</th>
-							<th>
 								Location
 							</th>
 							<th>
 								Usage
 							</th>
-							<th>
+							<th colspan='2'>
 								Description
 							</th>
 						</tr>
@@ -865,24 +793,11 @@
 					<tbody>
 						<xsl:for-each select="./Constraint">
 							<xsl:sort select="@Position" data-type="number"></xsl:sort>
-							<tr style="'background-color:white;text-decoration:normal'">
-								<td>
-									<xsl:value-of select="@Id" />
-								</td>
-								<td>
-									<xsl:value-of select="concat(../@title, '.', @Location)" />
-								</td>
-								<td>
-									<xsl:value-of select="@Usage" />
-								</td>
-								<td>
-									<xsl:value-of select="." />
-								</td>
-							</tr>
+							<xsl:apply-templates select="." mode="summ"></xsl:apply-templates>
 						</xsl:for-each>
 					</tbody>
-					<br></br>
 				</table>
+				<br></br>
 			</xsl:if>
 			<xsl:if test="./@Type='ConformanceStatement'">
 				<table width="100%" border="1" cellspacing="0" cellpadding="0">
@@ -909,29 +824,84 @@
 					<tbody>
 						<xsl:for-each select="./Constraint">
 							<xsl:sort select="@Position" data-type="number"></xsl:sort>
-							<tr style="'background-color:#E8E8E8;text-decoration:normal'">
-								<td>
-									<xsl:value-of select="@Id" />
-								</td>
-								<td>
-									<xsl:value-of select="concat(../@title, '.', @Location)" />
-								</td>
-								<td>
-									<xsl:value-of select="@Classification" />
-								</td>
-								<td>
-									<xsl:value-of select="." />
-								</td>
-							</tr>
+							<xsl:apply-templates select="." mode="summ"></xsl:apply-templates>
 						</xsl:for-each>
 					</tbody>
 				</table>
-				<br></br>
 				<br />
 			</xsl:if>
+			</p>
 		</xsl:if>
 	</xsl:template>
-	
+
+	<xsl:template match="Constraint" mode="doc">
+		<xsl:if test="./@Type='pre'">
+			<tr style="'background-color:#E8E8E8;text-decoration:normal'">
+				<td>
+				</td>
+				<td>
+					<xsl:value-of select="concat(../@title, '-', @Location)" />
+				</td>
+				<td>
+					<xsl:value-of select="@Usage" />
+				</td>
+				<td colspan='4'>
+					<xsl:value-of select="." />
+				</td>
+			</tr>
+
+		</xsl:if>
+		<xsl:if test="./@Type='cs'">
+			<tr style="'background-color:#E8E8E8;text-decoration:normal'">
+				<td>
+					<xsl:value-of select="@Id" />
+				</td>
+				<td>
+					<xsl:value-of select="concat(../@title, '-', @Location)" />
+				</td>
+				<td>
+					<xsl:value-of select="@Classification" />
+				</td>
+				<td colspan='4'>
+					<xsl:value-of select="." />
+				</td>
+			</tr>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="Constraint" mode="summ">
+		<xsl:if test="./@Type='pre'">
+			<tr style="'background-color:white;text-decoration:normal'">
+				<td>
+					<xsl:value-of select="concat(../@title, '-', @Location)" />
+				</td>
+				<td>
+					<xsl:value-of select="@Usage" />
+				</td>
+				<td colspan='2'>
+					<xsl:value-of select="." />
+				</td>
+			</tr>
+
+		</xsl:if>
+		<xsl:if test="./@Type='cs'">
+			<tr style="'background-color:#E8E8E8;text-decoration:normal'">
+				<td>
+					<xsl:value-of select="@Id" />
+				</td>
+				<td>
+					<xsl:value-of select="concat(../@title, '-', @Location)" />
+				</td>
+				<td>
+					<xsl:value-of select="@Classification" />
+				</td>
+				<td>
+					<xsl:value-of select="." />
+				</td>
+			</tr>
+		</xsl:if>
+	</xsl:template>
+
 </xsl:stylesheet>
 
 
