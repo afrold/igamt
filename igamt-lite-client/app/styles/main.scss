@@ -2141,9 +2141,18 @@ table.hl7-versions-table {
   width: 905px !important;
 }
 
+table.hl7-versions-valueset {
+  max-height: 500px !important;
+}
+
 table.hl7-versions-table td {
   text-align: left;
 }
+
+table.hl7-versions-valueset td {
+  text-align: left;
+}
+
 
 
 table.conformance-profiles-table {
