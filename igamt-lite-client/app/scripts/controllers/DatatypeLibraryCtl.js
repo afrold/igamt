@@ -4,7 +4,7 @@
 angular.module('igl').controller('MasterDatatypeLibraryCtl',
 		function($scope, $rootScope, $filter, $http, $httpBackend, $modal, $q, ngTreetableParams, DatatypeLibrarySvc, userInfoService) {
 
-			$scope.datatypes = [];
+			$scope.datatypeStruct = {};
 			$scope.datatypeLibrary = false;		
 			$scope.publishSelections = [];
 			
@@ -19,10 +19,8 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 			
 			function getDataTypeLibrary(scope) {
 				DatatypeLibrarySvc.getDataTypeLibrary(scope).then(function(data) {
-				    var dtLib = assembleDatatypeLibrary(data);
-				    if (scope === "MASTER") {
-					    $scope.datatypes = data;
-				    $scope.datatypeLibrary = dtLib;
+					$scope.datatypeStruct = data;
+				    $scope.datatypeLibrary = DatatypeLibrarySvc.assembleDatatypeLibrary($scope.datatypeStruct);
 				    } else {
 				    	return dtLib;
 				    }
@@ -31,10 +29,10 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				});
 			};
 			
-			function assembleDatatypeLibrary(datatypes) {
+			function assembleDatatypeLibrary(datatypeStruct) {
 				return new ngTreetableParams({
 					getNodes : function(parent) {
-						return datatypes.children;
+						return datatypeStruct.children;
 					},
 			        getTemplate : function(node) {
 			            return 'dataTypeNode.html';
