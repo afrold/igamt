@@ -42,7 +42,7 @@ angular
 					};
 
 					svc.getToC = function(igdocument) {
-						console.log("Getting toc...");
+						console.log("Getting toc... version=" + igdocument.profile.metaData.hl7Version  + " " + igdocument.id);
 						toc = [];
 
 						// console.log("childSections=" +
@@ -116,9 +116,9 @@ angular
 					// Returns a top level entry. It can be dropped on, but
 					// cannot be
 					// dragged.
-					// It will accept a drop where the drag value matches its
-					// label.
 					function getTopEntry(child, parent) {
+//						console.log("getTopEntry sectionTitle=" + child.sectionTitle);
+//						console.log("getTopEntry type=" + child.type);
 						var children = [];
 						var rval = new entry(child.id, child.sectionTitle,
 								child.sectionPosition, child.type, parent,
@@ -148,11 +148,7 @@ angular
 											if (parentType === "message") {
 												entry = createEntry(child,
 														child.name, parent);
-												// console.log("createEntries
-												// entry.reference.name=" +
-												// entry.reference.name + "
-												// entry.parent=" +
-												// rval.parent);
+// console.log("createEntries entry.reference.name=" + entry.reference.name + "entry.parent=" + rval.parent);
 											} else if (parentType === "table") {
 												entry = createEntry(
 														child,

@@ -18,13 +18,13 @@
 <div ng-show="!loadingSelection">
 <div ng-show="table != null" class="row">
 <form name="editTableForm" novalidate>
-<div class="col-md-12">
+<div class="col-md-12 igl-page-header">
     <span class="header4 pull-left">Table: {{table.bindingIdentifier}}</span>
 							<span class="pull-right">
 								<button title="Flavor" type="button" class="btn btn-sm btn-info"
                                         ng-hide="viewSettings.tableReadonly" ng-disabled='!editTableForm.$valid'
                                         ng-click="copyTable(table)">
-                                    <span><i class="fa fa-plus-circle fa-fw"></i>&nbsp; Copy</span>
+                                    <span><i class="fa fa-plus fa-fw"></i>&nbsp; Copy</span>
                                 </button>
  								<!--<button title="Close" type="button" class="btn btn-sm btn-warning" ng-click="close()">-->
                                     <!--<span><i class="fa fa-times fa-fw"></i>&nbsp; Close</span>-->
