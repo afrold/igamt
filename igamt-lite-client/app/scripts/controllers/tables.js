@@ -191,7 +191,11 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
         if (!$scope.isNewTableThenDelete(tableToDelete.id)) {
 //        	$rootScope.recordChangeForEdit2('table', "delete", tableToDelete.id,'id', tableToDelete.id);
         }
-        $rootScope.tables.splice($rootScope.tables.indexOf(tableToDelete), 1);
+        // We must delete from two collections.
+        var index = $rootScope.tables.indexOf(tableToDelete)
+        $rootScope.tables.splice(index, 1);
+        var index = $rootScope.igdocument.profile.tables.children.indexOf($scope.tableToDelete);
+        if (index > -1) $rootScope.igdocument.profile.tables.children.splice(index, 1);
         $rootScope.tablesMap[tableToDelete.id] = undefined;
         
         $rootScope.generalInfo.type = 'info';
@@ -204,7 +208,6 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
         $rootScope.references = [];
 		$rootScope.$broadcast('event:SetToC');
         $modalInstance.close($scope.tableToDelete);
-        $rootScope.$broadcast('event:SetToC');
     };
 
     $scope.cancel = function () {
