@@ -14,13 +14,18 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 			
 			$scope.initDatatypeLibrary = function() {
 				$scope.start = false;
-				$scope.datatypeLibrary = getDataTypeLibrary("MASTER");
+				getDataTypeLibrary("MASTER");
 			};
 			
 			function getDataTypeLibrary(scope) {
 				DatatypeLibrarySvc.getDataTypeLibrary(scope).then(function(data) {
 				    $scope.datatypes = data;
-					return assembleDatatypeLibrary($scope.datatypes);
+				    var dtLib = assembleDatatypeLibrary($scope.datatypes);
+				    if (scope === "MASTER") {
+				    $scope.datatypeLibrary = dtLib;
+				    } else {
+				    	return dtLib;
+				    }
 				}).catch( function (error) {
 					console.log(error);
 				});
@@ -72,8 +77,8 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 						$rootScope.$broadcast('event:initDatatypeLibrary');	
 					});
 				});
-			};
-		});
+		};
+});
 
 angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 		function($scope, $rootScope, $filter, $http, $modalInstance, $httpBackend, datatypeLibrary, DatatypeLibrarySvc, userInfoService) {
