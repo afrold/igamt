@@ -173,7 +173,7 @@ angular.module('igl')
             });
 
             $scope.$on('event:openMessage', function (event, message) {
-                console.log("event:openMessage=" + message);
+                console.log("event:openMessage=" + JSON.stringify(message, null, 2));
                 $rootScope.messageTree = null;
                 $rootScope.processMessageTree(message);
                 $scope.selectMessage(message); // Should we open in a dialog ??

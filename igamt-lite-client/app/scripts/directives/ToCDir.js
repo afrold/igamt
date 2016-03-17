@@ -3,7 +3,7 @@ angular
 		.directive(
 				'trunk',
 				function() {
-					console.log("trunk");
+//					console.log("trunk");
 
 					var template = "<ul class='trunk'><branch ng-repeat='branch in trunk track by trackBy()' branch='branch'></branch></ul>";
 
@@ -20,7 +20,7 @@ angular
 		.directive(
 				'drop',
 				function() {
-					console.log("drop");
+//					console.log("drop");
 
 					var template = "<ul dnd-list='drop'>"
 							+ "<branch ng-repeat='branch in drop track by $index' index='$index' branch='branch' drop='drop'></branch>"
@@ -66,9 +66,9 @@ angular
 					var linker = function(scope, element, attrs) {
 //						console.log("<=label=" + scope.branch.label);
 						if (angular.isArray(scope.branch.children)) {
-							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
-							 " label=" + scope.branch.label + " children=" +
-							 scope.branch.children.length);
+//							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
+//							 " label=" + scope.branch.label + " children=" +
+//							 scope.branch.children.length);
 							if ( _.indexOf(["profile", "segments", "datatypes", "tables"], scope.branch.type) > -1) {
 								element.append(branchNoCtxTemplate);
 							} else if (scope.branch.type === "messages") {
