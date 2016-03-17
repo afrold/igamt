@@ -140,7 +140,7 @@ angular
 							element.html(leafMessage).show();
 //							console.log("leafMessage=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent + " leaf.reference.name=" + scope.leaf.reference.name);
 						} else if (scope.leaf.type === "table") {
-								element.html(leafValueSet).show();
+							element.html(leafValueSet).show();
 //								console.log("leafTable=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent);
 						} else {
 							element.html(leafDefault).show();
