@@ -25,6 +25,22 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, userInfoServ
 				});
 	};
 	
+	svc.assembleDatatypeLibrary = function(datatypeStruct) {
+		return new ngTreetableParams({
+			getNodes : function(parent) {
+				return datatypeStruct.children;
+			},
+	        getTemplate : function(node) {
+	            return 'dataTypeNode.html';
+	        },
+	        options : {
+	            onNodeExpand: function() {
+	                console.log('A node was expanded!');
+	            }
+	        }
+		});
+	};
+	
 	svc.append = function(fromchildren, toChildren) {
 		angular.foreach(fromchildren, function(child) {
 			toChildren.push(child);
