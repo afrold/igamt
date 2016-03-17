@@ -327,6 +327,7 @@ angular.module('igl')
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
+                    $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
                     StorageService.setSelectedIgDocumentId($rootScope.igdocument.id);
                     $scope.sortByLabels();
                     $scope.loadToc();
