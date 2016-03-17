@@ -112,8 +112,8 @@ public class DatatypeReadConverter implements Converter<DBObject, Datatype> {
 		p.setDescription((String) source.get("description"));
 		p.setAssertion(((String) source.get("assertion")));
 		p.setReference(reference(((DBObject) source.get("reference"))));
-		p.setFalseUsage(Usage.valueOf(((String) source.get("falseUsage"))));
-		p.setTrueUsage(Usage.valueOf(((String) source.get("trueUsage"))));
+		p.setFalseUsage(source.get("falseUsage") != null ? Usage.valueOf(((String) source.get("falseUsage"))):null);
+		p.setTrueUsage(source.get("trueUsage") != null ?Usage.valueOf(((String) source.get("trueUsage"))):null);
 		return p;
 	}
 

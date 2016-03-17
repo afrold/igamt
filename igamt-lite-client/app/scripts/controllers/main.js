@@ -1395,7 +1395,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 controller: 'InputTextCtrl',
                 backdrop: true,
                 keyboard: true,
-                size: 'lg',
+                windowClass: 'app-modal-window',
                 backdropClick: false,
                 resolve: {
                     editorTarget: function () {
