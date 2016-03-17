@@ -19,9 +19,9 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 			
 			function getDataTypeLibrary(scope) {
 				DatatypeLibrarySvc.getDataTypeLibrary(scope).then(function(data) {
-				    $scope.datatypes = data;
-				    var dtLib = assembleDatatypeLibrary($scope.datatypes);
+				    var dtLib = assembleDatatypeLibrary(data);
 				    if (scope === "MASTER") {
+					    $scope.datatypes = data;
 				    $scope.datatypeLibrary = dtLib;
 				    } else {
 				    	return dtLib;
