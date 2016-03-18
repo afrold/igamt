@@ -17,8 +17,17 @@ angular.module('igl').factory('ElementUtils',
                 } else {
                     return node.usage == null || !node.usage || node.usage === "R" || node.usage === "RE" || node.usage === "C";
                 }
+            },
+            setUsage: function (node) {
+                if( node.usage && node.min) {
+                    if( node.usage === "R" && node.min == 0){
+                        node.min = 1;
+                    }
+                    if( node.usage === "0"){
+                        node.min = 0;
+                    }
+                }
             }
-
         };
         return ElementUtils;
     }]);

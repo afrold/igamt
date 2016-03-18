@@ -73,14 +73,14 @@
                                 <div class="form-group"
                                      ng-class="{'igl-has-error has-feedback' : segmentForm.label.$invalid}">
                                     <label class="control-label">Label</label>
-                                        <span class="igl-has-error has-feedback"
-                                              ng-show="isDuplicated(segment,'label', segments)">Existing label (flavor name)</span>
                                     <input type="text" ng-disabled="viewSettings.tableReadonly"
                                            class="form-control"
                                            ng-change="recordChanged()"
                                            name="label" class="form-control"
                                            ng-model="segment.label"
-                                           required>
+                                           required required aria-describedby="helpBlock2">
+                                    <span id="helpBlock2" class="help-block" style="color:red"
+                                          ng-show="isDuplicated(segment,'label', segments)">Label already used</span>
                                 </div>
                             </div>
 
@@ -331,7 +331,7 @@
             <div>
                 <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
                 	<select class="form-control input-sm" name="usage"
-                            ng-change="recordChanged()"
+                            ng-change="setUsage(node)"
                             required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
                 </span>
 
@@ -454,10 +454,12 @@
         </td>
 
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
-            <a type="button" ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
+            <a ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
                class="point">
-                <i class="fa fa-plus fa-fw" ng-show="node.text === '' || node.text === null"></i>
-                <i class="fa fa-pencil fa-fw" ng-show="node.text !== '' && node.text !== null"></i>
+                <i class="fa fa-pencil fa-fw"></i>
+            </a>
+            <a ng-click="node.text = ''" ng-show="node.text !== '' && node.text !== null">
+                <i class="fa fa-times fa-fw"></i>
             </a>
         </td>
 
@@ -545,10 +547,12 @@
         </td>
 
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
-            <a ng-show="node.text !== '' && node.text !== null" type="button"
-               ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
-               class="btn btn-info btn-xs">
+            <a ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
+               class="point">
                 <i class="fa fa-pencil fa-fw"></i>
+            </a>
+            <a ng-click="node.text = ''" ng-show="node.text !== '' && node.text !== null">
+                <i class="fa fa-times fa-fw"></i>
             </a>
         </td>
 

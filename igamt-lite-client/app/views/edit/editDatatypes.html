@@ -326,7 +326,7 @@
             <div>
                 <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
                 	<select class="form-control input-sm" name="usage"
-                            ng-change="recordChanged()"
+                            ng-change="setUsage(node)"
                             required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
                 </span>
 
@@ -442,8 +442,10 @@
             <div>
                 <a ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
                    class="point">
-                    <i ng-show="node.text === '' || node.text === null" class="fa fa-plus fa-fw"></i>
-                    <i ng-show="node.text !== '' && node.text !== null" class="fa fa-pencil fa-fw"></i>
+                     <i class="fa fa-pencil fa-fw"></i>
+                </a>
+                <a ng-click="node.text = ''" ng-show="node.text !== '' && node.text !== null">
+                    <i class="fa fa-times fa-fw"></i>
                 </a>
             </div>
         </td>
