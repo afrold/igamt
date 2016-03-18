@@ -1,8 +1,35 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentDeleteException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -22,31 +49,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentDeleteException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileNotFoundException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.IGDocumentSaveResponse;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config.IGDocumentChangeCommand;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.IntegrationIGDocumentRequestWrapper;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 @RestController
 @RequestMapping("/igdocuments")
@@ -413,6 +415,16 @@ public class IGDocumentController extends CommonController {
 		log.info("Fetching all HL7 versions.");
 		List<String> result = igDocumentCreation.findHl7Versions();
 		return result;
+	}
+	
+	@RequestMapping(value = "/{hl7Version}/tables", method = RequestMethod.GET, produces = "application/json")
+	public Tables findHl7Tables(@PathVariable("hl7Version") String hl7Version) {
+		log.info("Fetching all Tables for " + hl7Version);
+		List<IGDocument> igDocuments = igDocumentCreation.findIGDocumentsByHl7Versions();
+		for(IGDocument igd:igDocuments){
+			if(igd.getProfile().getMetaData().getHl7Version().equals(hl7Version)) return igd.getProfile().getTables();
+		}
+		return null;
 	}
 
 	// TODO Change to query as is but with $nin a list of messages that can be

@@ -327,6 +327,7 @@ angular.module('igl')
                     $scope.loadingIGDocument = true;
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
+                    $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
                     StorageService.setSelectedIgDocumentId($rootScope.igdocument.id);
                     $scope.sortByLabels();
                     $scope.loadToc();
@@ -513,6 +514,22 @@ angular.module('igl')
             var modalInstance = $modal.open({
                 templateUrl: 'SelectMessagesOpenCtrl.html',
                 controller: 'SelectMessagesOpenCtrl',
+                windowClass: 'conformance-profiles-modal',
+                resolve: {
+                    igdocumentToSelect: function () {
+                        return igdocument;
+                    }
+                }
+            });
+            modalInstance.result.then(function () {
+            }, function () {
+            });
+        };
+        
+        $scope.addTable = function (igdocument) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AddTableOpenCtrl.html',
+                controller: 'AddTableOpenCtrl',
                 windowClass: 'conformance-profiles-modal',
                 resolve: {
                     igdocumentToSelect: function () {
@@ -1107,4 +1124,39 @@ angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $mo
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+});
+
+angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies) {
+	$scope.igdocumentToSelect = igdocumentToSelect;
+	$scope.source = '';
+	$scope.hl7Version = '';
+	$scope.hl7Versions = [];
+	$scope.selectedTables = null;
+	
+	$scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+    
+    $scope.listHL7Versions = function() {
+		return $http.get('api/igdocuments/findVersions', {
+			timeout : 60000
+		}).then(function(response) {
+			var hl7Versions = [];
+			var length = response.data.length;
+			for (var i = 0; i < length; i++) {
+				hl7Versions.push(response.data[i]);
+			}
+			$scope.hl7Versions = hl7Versions;
+		});
+	};
+	
+	$scope.loadTablesByVersion = function(hl7Version) {
+		return $http.get('api/igdocuments/' + hl7Version + "/tables", {
+			timeout : 60000
+		}).then(function(response) {
+			console.log("Called!!");
+			$scope.selectedTables = response.data;
+		});
+	};
+	
 });

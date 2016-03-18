@@ -1724,7 +1724,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		ZipOutputStream out = new ZipOutputStream(outputStream);
 
 		this.generateGazelleProfileIS(out, this.serializeProfileGazelleToXML(profile));
-		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToGazelleXML(profile));
+//		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToGazelleXML(profile));
 
 		out.close();
 		bytes = outputStream.toByteArray();

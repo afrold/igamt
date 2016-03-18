@@ -61,6 +61,14 @@ angular
 						+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
 						+ "<drop drop='branch.children'></drop>"
 						+ "</li>";
+					var branchTablesTemplate = "<li class='branch'"
+						+ " context-menu context-menu-close='closedCtxSubMenu(branch)' data-target='tableHeadContextDiv.html'>"
+						+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" ng-click='tocSelection(branch)'>"
+						+ "{{branch.label}}"
+						+ "</label>"
+						+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
+						+ "<drop drop='branch.children'></drop>"
+						+ "</li>";
 					var leafTemplate = "<leaf leaf='branch' index='index'></leaf>";
 
 					var linker = function(scope, element, attrs) {
@@ -69,10 +77,12 @@ angular
 							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
 							 " label=" + scope.branch.label + " children=" +
 							 scope.branch.children.length);
-							if ( _.indexOf(["profile", "segments", "datatypes", "tables"], scope.branch.type) > -1) {
+							if ( _.indexOf(["profile", "segments", "datatypes"], scope.branch.type) > -1) {
 								element.append(branchNoCtxTemplate);
 							} else if (scope.branch.type === "messages") {
 								element.append(branchMessagesTemplate);
+							} else if (scope.branch.type === "tables") {
+								element.append(branchTablesTemplate);
 							} else {
 								element.append(branchTemplate);
 							}
