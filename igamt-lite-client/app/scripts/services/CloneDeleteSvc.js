@@ -115,7 +115,7 @@ angular.module('igl').factory(
 		        			$rootScope.codeSystems.push($rootScope.table.codes[i].codeSystem);
 		        		}
 					}
-		    		}
+		    	}
 		     
 		        $rootScope.igdocument.profile.tables.children.splice(0, 0, newTable);
 	            $rootScope.igdocument.profile.tables.children = positionElements($rootScope.igdocument.profile.tables.children);
