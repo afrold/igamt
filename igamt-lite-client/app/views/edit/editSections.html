@@ -52,13 +52,11 @@
                             <label>Contents</label>
 
                             <div ng-if="!viewSettings.tableReadonly">
-                                <div class="fr-view">
-                                <textarea froala="froalaEditorOptions" ng-model="section.sectionContents"
+                                 <textarea froala="froalaEditorOptions" ng-model="section.sectionContents"
                                           id="content"
                                           name="content" autofocus
                                           ng-change="recordChanged()"></textarea>
-                                 </div>
-                            </div>
+                             </div>
                             <div ng-if="viewSettings.tableReadonly">
                                 <div class="fr-view">
                                 <div froala-view="section.sectionContents"></div>
