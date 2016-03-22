@@ -5,7 +5,7 @@
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		indent="yes" />
-	<xsl:param name="inlineConstraints" select="'true'"></xsl:param>
+	<xsl:param name="inlineConstraints" select="'false'"></xsl:param>
 	<xsl:template match="/">
 
 		<html xmlns="http://www.w3.org/1999/xhtml">
@@ -468,7 +468,7 @@
 								<xsl:for-each select="Field">
 									<xsl:sort select="@Type" data-type="text"></xsl:sort>
 									<xsl:sort select="@Position" data-type="number"></xsl:sort>
-									<xsl:apply-templates select="." mode="doc"></xsl:apply-templates>
+									<xsl:apply-templates select="." mode="inline"></xsl:apply-templates>
 								</xsl:for-each>
 							</tbody>
 						</table>
@@ -540,7 +540,7 @@
 		<xsl:if test="normalize-space($inlineConstraints) = 'true'">
 
 			<xsl:if test="count(Constraint) &gt; 0">
-				<xsl:apply-templates select="." mode="doc"></xsl:apply-templates>
+				<xsl:apply-templates select="." mode="inline"></xsl:apply-templates>
 			</xsl:if>
 		</xsl:if>
 	</xsl:template>
@@ -637,7 +637,7 @@
 								<xsl:for-each select="Component">
 									<xsl:sort select="@Type" data-type="text"></xsl:sort>
 									<xsl:sort select="@Position" data-type="number"></xsl:sort>
-									<xsl:apply-templates select="." mode="doc"></xsl:apply-templates>
+									<xsl:apply-templates select="." mode="inline"></xsl:apply-templates>
 								</xsl:for-each>
 							</tbody>
 						</table>
