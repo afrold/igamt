@@ -168,11 +168,11 @@
 			<xsl:value-of select="@HL7Version"></xsl:value-of>
 		</p>
 		<br></br>
-		<p style="font-size:14px; text-align:center" >
+		<p style="font-size:14px; text-align:center">
 			<xsl:text>Document version </xsl:text>
 			<xsl:value-of select="@DocumentVersion"></xsl:value-of>
 		</p>
-		<p style="font-size:14px; text-align:center" >
+		<p style="font-size:14px; text-align:center">
 			<xsl:value-of select="@OrgName"></xsl:value-of>
 		</p>
 		<!-- <br></br> <xsl:value-of select="@Ext"></xsl:value-of> <br></br> <xsl:value-of 
@@ -410,6 +410,7 @@
 		<xsl:choose>
 			<xsl:when test="normalize-space($inlineConstraints) = 'false'">
 				<xsl:if test="count(Field//Constraint) &gt; 0">
+					<br></br>
 					<p>
 						<table width="100%" border="1" cellspacing="0" cellpadding="1">
 							<col style="width:10%"></col>
@@ -583,7 +584,7 @@
 			<xsl:choose>
 				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
 					<xsl:if test="count(Component//Constraint[@Type='cs']) &gt; 0">
-
+						<br></br>
 						<table width="100%" border="1" cellspacing="0" cellpadding="1">
 							<thead>
 								<tr style="background:#F0F0F0; color:#B21A1C; align:center">
