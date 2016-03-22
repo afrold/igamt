@@ -187,8 +187,14 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
    });
 
     $httpBackend.whenGET('api/igdocuments?type=USER').respond(function (method, url, data, headers) {
-		console.log("api/igdocuments/:type==>");
-    return [200, {}, {}];
+        var request = new XMLHttpRequest();
+        console.log('api/igdocuments?type=USER' + ' data=' + data);
+        request.open('GET', '../../resources/igDocuments/igdocument-2.6-USER.json', false);
+        request.send(null);
+        var d = angular.fromJson(request.response);
+        console.log('api/igdocuments?type=USER end');
+        return [request.status, d, {}];
+        return [200, msgList, {}];
     });
 
     
@@ -215,7 +221,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         var d = angular.fromJson(request.response);
         console.log('api/igdocuments/messageListByVersion end');
         return [request.status, d, {}];
-        return [200, msgList, {}];
+        return [200, d, {}];
     });
     
     
