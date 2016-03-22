@@ -127,12 +127,16 @@
                                     <label class="control-label">Definition Post-Text</label>
 
                                     <div ng-if="!viewSettings.tableReadonly">
+                                        <div class="fr-view">
                                         <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2"
                                                   name="text2"
                                                   ng-change="recordChanged()"></textarea>
+                                            </div>
                                     </div>
                                     <div ng-if="viewSettings.tableReadonly">
+                                        <div class="fr-view">
                                         <div froala-view="segment.text2"></div>
+                                            </div>
                                     </div>
                                 </div>
 

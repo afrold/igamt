@@ -103,13 +103,17 @@
                                     <label class="control-label">Definition Text</label>
 
                                     <div ng-if="!viewSettings.tableReadonly">
+                                        <div class="fr-view">
                                         <textarea froala="froalaEditorOptions" ng-model="datatype.usageNote" name="text"
                                                   id="text"
                                                   ng-change="recordChanged()"></textarea>
+                                        </div>
                                     </div>
 
                                     <div ng-if="viewSettings.tableReadonly">
+                                        <div class="fr-view">
                                         <div froala-view="datatype.usageNote"></div>
+                                            </div>
                                     </div>
 
                                 </div>
