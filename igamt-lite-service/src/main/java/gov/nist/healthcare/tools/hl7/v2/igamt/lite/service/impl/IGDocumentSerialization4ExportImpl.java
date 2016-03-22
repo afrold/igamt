@@ -537,7 +537,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 					List<Constraint> constraints = findConstraints( i, s.getPredicates(), s.getConformanceStatements());
 					if (!constraints.isEmpty()) {
 						for (Constraint constraint : constraints) {
-							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint);
+							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, s.getName()+"-");
 							if (constraint instanceof Predicate) {
 								prefix = String.valueOf(profile.getSectionPosition()+1) + "5.1.3";
 								cpinfo.addAttribute(new Attribute("prefix", prefix));
@@ -603,7 +603,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 					List<Constraint> constraints = findConstraints( i, d.getPredicates(), d.getConformanceStatements());
 					if (!constraints.isEmpty()) {
 						for (Constraint constraint : constraints) {
-							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint);
+							nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, d.getName()+".");
 							if (constraint instanceof Predicate) {
 								prefix = String.valueOf(profile.getSectionPosition()+1) + "5.1.3";
 								cpdtinfo.addAttribute(new Attribute("prefix", prefix));
@@ -633,13 +633,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		return xsect;
 	}
 
-	public nu.xom.Element serializeConstraintToElement(Constraint constraint) {
+	public nu.xom.Element serializeConstraintToElement(Constraint constraint, String locationName) {
 		nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
 		elmConstraint.addAttribute(new Attribute("Id", constraint.getConstraintId()));
 		elmConstraint.addAttribute(new Attribute("Location", constraint
 				.getConstraintTarget().substring(
 						0, constraint.getConstraintTarget().indexOf(
 								'['))));
+		elmConstraint.addAttribute(new Attribute("LocationName", locationName));
 		elmConstraint.appendChild(constraint.getDescription());
 		if (constraint instanceof Predicate) {
 			elmConstraint.addAttribute(new Attribute("Type", "pre"));
@@ -656,7 +657,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		List<Constraint> constraints = findConstraints(i, segmentRefOrGroup.getPredicates(), segmentRefOrGroup.getConformanceStatements());
 		if (!constraints.isEmpty()) {
 			for (Constraint constraint : constraints) {
-				nu.xom.Element elmConstraint = serializeConstraintToElement(constraint);
+				String locationName = segmentRefOrGroup instanceof Group ? ((Group) segmentRefOrGroup).getName():((SegmentRef) segmentRefOrGroup).getRef();
+				nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, locationName+"-");
 				if (constraint instanceof Predicate) {
 					cpinfo.addAttribute(new Attribute("prefix", prefixcp));
 					cpinfo.appendChild(elmConstraint);
@@ -1025,10 +1027,10 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		elmSegment.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition()+1)));
 
 		//TODO if ( !s.getText1().equals("") | !s.getText2().equals("")){
-		if (!s.getText1().equals("")){
+		if (s.getText1()!= null && !s.getText1().equals("")){
 			elmSegment.appendChild(this.serializeRichtext("Text1", s.getText1()));
 		}
-		if (!s.getText2().equals("")){
+		if (s.getText2()!= null && !s.getText2().equals("")){
 			elmSegment.appendChild(this.serializeRichtext("Text2", s.getText2()));
 		}
 		//              }
@@ -1078,7 +1080,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			List<Constraint> constraints = findConstraints( i, s.getPredicates(), s.getConformanceStatements());
 			if (!constraints.isEmpty()) {
 				for (Constraint constraint : constraints) {
-					nu.xom.Element elmConstraint = serializeConstraintToElement(constraint);
+					nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, s.getName()+"-");
 					elmField.appendChild(elmConstraint);
 				}
 			}
@@ -1185,7 +1187,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 				List<Constraint> constraints = findConstraints( i, d.getPredicates(), d.getConformanceStatements());
 				if (!constraints.isEmpty()) {
 					for (Constraint constraint : constraints) {
-						nu.xom.Element elmConstraint = serializeConstraintToElement(constraint);
+						nu.xom.Element elmConstraint = serializeConstraintToElement(constraint, d.getName()+".");
 						elmComponent.appendChild(elmConstraint);
 					}
 				}

@@ -388,55 +388,55 @@
 		<xsl:value-of disable-output-escaping="yes"
 			select="./Text[@Type='Text1']" />
 		<p>
-		<table width="100%" border="1" cellspacing="0" cellpadding="1">
-			<col style="width:5%"></col>
-			<col style="width:15%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:30%"></col>
-			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
-				<tr>
-					<th>
-						Seq
-					</th>
-					<th>
-						Element name
-					</th>
-					<th>
-						Data type
-					</th>
-					<th>
-						Usage
-					</th>
-					<th>
-						Cardinality
-					</th>
-					<th>
-						Length
-					</th>
-					<th>
-						Value Set
-					</th>
-					<th>
-						Comment
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<xsl:for-each select="Field">
-					<xsl:sort select="@Position" data-type="number"></xsl:sort>
-					<xsl:call-template name="field">
-						<xsl:with-param name="style"
-							select="'background-color:white;text-decoration:normal'">
-						</xsl:with-param>
-					</xsl:call-template>
+			<table width="100%" border="1" cellspacing="0" cellpadding="1">
+				<col style="width:5%"></col>
+				<col style="width:15%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:30%"></col>
+				<thead style="background:#F0F0F0; color:#B21A1C; align:center">
+					<tr>
+						<th>
+							Seq
+						</th>
+						<th>
+							Element name
+						</th>
+						<th>
+							Data type
+						</th>
+						<th>
+							Usage
+						</th>
+						<th>
+							Cardinality
+						</th>
+						<th>
+							Length
+						</th>
+						<th>
+							Value Set
+						</th>
+						<th>
+							Comment
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:for-each select="Field">
+						<xsl:sort select="@Position" data-type="number"></xsl:sort>
+						<xsl:call-template name="field">
+							<xsl:with-param name="style"
+								select="'background-color:white;text-decoration:normal'">
+							</xsl:with-param>
+						</xsl:call-template>
 
-				</xsl:for-each>
-			</tbody>
-		</table>
+					</xsl:for-each>
+				</tbody>
+			</table>
 		</p>
 
 		<xsl:choose>
@@ -558,90 +558,94 @@
 	</xsl:template>
 
 	<xsl:template match="Datatype">
-		<table width="100%" border="1" cellspacing="0" cellpadding="0">
-			<col style="width:5%"></col>
-			<col style="width:15%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:30%"></col>
-			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
-				<tr>
-					<th>
-						Seq
-					</th>
-					<th>
-						Element name
-					</th>
-					<th>
-						Conf length
-					</th>
-					<th>
-						DT
-					</th>
-					<th>
-						Usage
-					</th>
-					<th>
-						Length
-					</th>
-					<th>
-						Value set
-					</th>
-					<th>
-						Comment
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<xsl:for-each select="Component">
-					<xsl:sort select="@Position" data-type="number"></xsl:sort>
-					<xsl:call-template name="component">
-						<xsl:with-param name="style"
-							select="'background-color:white;text-decoration:normal'">
-						</xsl:with-param>
-					</xsl:call-template>
-
-				</xsl:for-each>
-			</tbody>
-		</table>
+		<xsl:value-of disable-output-escaping="yes"
+			select="Text[@Type='UsageNote']" />
+		<p>
+			<table width="100%" border="1" cellspacing="0" cellpadding="0">
+				<col style="width:5%"></col>
+				<col style="width:15%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:30%"></col>
+				<thead style="background:#F0F0F0; color:#B21A1C; align:center">
+					<tr>
+						<th>
+							Seq
+						</th>
+						<th>
+							Element name
+						</th>
+						<th>
+							Conf length
+						</th>
+						<th>
+							Data type
+						</th>
+						<th>
+							Usage
+						</th>
+						<th>
+							Length
+						</th>
+						<th>
+							Value set
+						</th>
+						<th>
+							Comment
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:for-each select="Component">
+						<xsl:sort select="@Position" data-type="number"></xsl:sort>
+						<xsl:call-template name="component">
+							<xsl:with-param name="style"
+								select="'background-color:white;text-decoration:normal'">
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:for-each>
+				</tbody>
+			</table>
+		</p>
 
 		<xsl:if test="count(Component//Constraint) &gt; 0">
 			<xsl:choose>
 				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
-					<table width="100%" border="1" cellspacing="0" cellpadding="1">
-						<thead>
-							<tr style="background:#F0F0F0; color:#B21A1C; align:center">
-								<th>
-									Id
-								</th>
-								<th>
-									Location
-								</th>
-								<th>
-									Classification/Usage
-								</th>
-								<th>Description
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<xsl:for-each select="Component">
-								<xsl:sort select="@Type" data-type="text"></xsl:sort>
-								<xsl:sort select="@Position" data-type="number"></xsl:sort>
-								<xsl:apply-templates select="." mode="doc"></xsl:apply-templates>
-							</xsl:for-each>
-						</tbody>
-					</table>
+					<xsl:if test="count(Component//Constraint[@Type='cs']) &gt; 0">
+
+						<table width="100%" border="1" cellspacing="0" cellpadding="1">
+							<thead>
+								<tr style="background:#F0F0F0; color:#B21A1C; align:center">
+									<th>
+										Id
+									</th>
+									<th>
+										Location
+									</th>
+									<th>
+										Classification/Usage
+									</th>
+									<th>
+										Description
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<xsl:for-each select="Component">
+									<xsl:sort select="@Type" data-type="text"></xsl:sort>
+									<xsl:sort select="@Position" data-type="number"></xsl:sort>
+									<xsl:apply-templates select="." mode="doc"></xsl:apply-templates>
+								</xsl:for-each>
+							</tbody>
+						</table>
+					</xsl:if>
 				</xsl:when>
 			</xsl:choose>
 		</xsl:if>
-		<br></br>
-		<xsl:value-of disable-output-escaping="yes"
-			select="Text[@Type='UsageNote']" />
-		<br></br>
+
 		<xsl:for-each select="Component">
 			<xsl:sort select="@Position" data-type="number"></xsl:sort>
 			<xsl:call-template name="componentText">
@@ -685,9 +689,8 @@
 		</tr>
 
 		<xsl:if test="normalize-space($inlineConstraints) = 'true'">
-
 			<xsl:if test="count(Constraint) &gt; 0">
-				<xsl:apply-templates select="." mode="doc"></xsl:apply-templates>
+				<xsl:apply-templates select="." mode="inline"></xsl:apply-templates>
 			</xsl:if>
 		</xsl:if>
 	</xsl:template>
@@ -771,76 +774,77 @@
 			</b>
 			<br></br>
 			<p>
-			<xsl:if test="./@Type='ConditionPredicate'">
-				<table width="100%" border="1" cellspacing="0" cellpadding="0">
-					<col style="width:10%"></col>
-					<col style="width:10%"></col>
-					<col style="width:10%"></col>
-					<col style="width:70%"></col>
-					<thead style="background:#F0F0F0; color:#B21A1C; align:center">
-						<tr>
-							<th>
-								Location
-							</th>
-							<th>
-								Usage
-							</th>
-							<th colspan='2'>
-								Description
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<xsl:for-each select="./Constraint">
-							<xsl:sort select="@Position" data-type="number"></xsl:sort>
-							<xsl:apply-templates select="." mode="summ"></xsl:apply-templates>
-						</xsl:for-each>
-					</tbody>
-				</table>
-				<br></br>
-			</xsl:if>
-			<xsl:if test="./@Type='ConformanceStatement'">
-				<table width="100%" border="1" cellspacing="0" cellpadding="0">
-					<col style="width:10%"></col>
-					<col style="width:10%"></col>
-					<col style="width:10%"></col>
-					<col style="width:70%"></col>
-					<thead style="background:white; color:#B21A1C; align:center">
-						<tr>
-							<th>
-								Id
-							</th>
-							<th>
-								Location
-							</th>
-							<th>
-								Classification
-							</th>
-							<th>
-								Description
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<xsl:for-each select="./Constraint">
-							<xsl:sort select="@Position" data-type="number"></xsl:sort>
-							<xsl:apply-templates select="." mode="summ"></xsl:apply-templates>
-						</xsl:for-each>
-					</tbody>
-				</table>
-				<br />
-			</xsl:if>
+				<xsl:if test="./@Type='ConditionPredicate'">
+					<table width="100%" border="1" cellspacing="0" cellpadding="0">
+						<col style="width:10%"></col>
+						<col style="width:10%"></col>
+						<col style="width:10%"></col>
+						<col style="width:70%"></col>
+						<thead style="background:#F0F0F0; color:#B21A1C; align:center">
+							<tr>
+								<th>
+									Location
+								</th>
+								<th>
+									Usage
+								</th>
+								<th colspan='2'>
+									Description
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<xsl:for-each select="./Constraint">
+								<xsl:sort select="@Position" data-type="number"></xsl:sort>
+								<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
+							</xsl:for-each>
+						</tbody>
+					</table>
+					<br></br>
+				</xsl:if>
+				<xsl:if test="./@Type='ConformanceStatement'">
+					<table width="100%" border="1" cellspacing="0" cellpadding="0">
+						<col style="width:10%"></col>
+						<col style="width:10%"></col>
+						<col style="width:10%"></col>
+						<col style="width:70%"></col>
+						<thead style="background:white; color:#B21A1C; align:center">
+							<tr>
+								<th>
+									Id
+								</th>
+								<th>
+									Location
+								</th>
+								<th>
+									Classification
+								</th>
+								<th>
+									Description
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<xsl:for-each select="./Constraint">
+								<xsl:sort select="@Position" data-type="number"></xsl:sort>
+								<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
+							</xsl:for-each>
+						</tbody>
+					</table>
+					<br />
+				</xsl:if>
 			</p>
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="Constraint" mode="doc">
+	<!-- Parse constraint for inline mode -->
+	<xsl:template match="Constraint" mode="inline">
 		<xsl:if test="./@Type='pre'">
 			<tr style="'background-color:#E8E8E8;text-decoration:normal'">
 				<td>
 				</td>
 				<td>
-					<xsl:value-of select="concat(../@title, '-', @Location)" />
+					<xsl:value-of select="concat(@LocationName, @Location)" />
 				</td>
 				<td>
 					<xsl:value-of select="@Usage" />
@@ -857,7 +861,7 @@
 					<xsl:value-of select="@Id" />
 				</td>
 				<td>
-					<xsl:value-of select="concat(../@title, '-', @Location)" />
+					<xsl:value-of select="concat(@LocationName, @Location)" />
 				</td>
 				<td>
 					<xsl:value-of select="@Classification" />
@@ -869,11 +873,12 @@
 		</xsl:if>
 	</xsl:template>
 
-	<xsl:template match="Constraint" mode="summ">
+	<!-- Parse constraint for standalone mode -->
+	<xsl:template match="Constraint" mode="standalone">
 		<xsl:if test="./@Type='pre'">
 			<tr style="'background-color:white;text-decoration:normal'">
 				<td>
-					<xsl:value-of select="concat(../@title, '-', @Location)" />
+					<xsl:value-of select="concat(@LocationName, @Location)" />
 				</td>
 				<td>
 					<xsl:value-of select="@Usage" />
@@ -890,7 +895,7 @@
 					<xsl:value-of select="@Id" />
 				</td>
 				<td>
-					<xsl:value-of select="concat(../@title, '-', @Location)" />
+					<xsl:value-of select="concat(@LocationName, @Location)" />
 				</td>
 				<td>
 					<xsl:value-of select="@Classification" />
