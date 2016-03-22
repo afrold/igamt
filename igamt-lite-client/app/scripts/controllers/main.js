@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications',
-    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle,notifications) {
+angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications', 'IdleService','AutoSaveService',
+    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle,notifications,IdleService,AutoSaveService) {
         //This line fetches the info from the server if the user is currently logged in.
         //If success, the app is updated according to the role.
         userInfoService.loadFromServer();
@@ -73,6 +73,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $scope.$emit('event:logoutRequest');
             $rootScope.initMaps();
             $rootScope.igdocument = null;
+            AutoSaveService.stop();
             $location.url('/home');
         };
 
@@ -188,6 +189,10 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 templateUrl: 'timedout-dialog.html',
                 windowClass: 'modal-danger'
             });
+        });
+
+        $scope.$on('Keepalive', function() {
+            IdleService.keepAlive();
         });
 
         $rootScope.$on('event:execLogout', function () {
@@ -692,7 +697,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.processElement = function (element, parent) {
             try {
-                if(element != undefined) {
+                if(element != undefined && element != null) {
                     if (element.type === "message") {
                         element.children = $filter('orderBy')(element.children, 'position');
                         angular.forEach(element.children, function (segmentRefOrGroup) {
@@ -736,67 +741,80 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
 
         $rootScope.processMessageTree = function (element, parent) {
+
+        		if (element && !parent) {
+	        		console.log("e but not p element.name=" + element.name + " element.id=" +  element.id);
+	        	} else if (!element && parent) {
+	        		console.log("not e but p  parent.name=" + parent.name + " parent.id=" +  parent.id);
+	        	} else if (element && parent) {
+	        		console.log("e and p element.name=" + element.name + " element.id=" +  element.id + " parent.name=" + parent.name + " parent.id=" +  parent.id);
+	        	} else {
+	        		console.log("not e and not p element=" + element + " parent=" + parent);
+	        	}
+        	
             try {
-                if (element.type === "message") {
-                    var m = new Object();
-                    m.children = [];
-                    $rootScope.messageTree = m
+                if(element != undefined && element != null) {
+                    if (element.type === "message") {
+                        var m = new Object();
+                        m.children = [];
+                        $rootScope.messageTree = m;
 
-                    element.children = $filter('orderBy')(element.children, 'position');
-                    angular.forEach(element.children, function (segmentRefOrGroup) {
-                        $rootScope.processMessageTree(segmentRefOrGroup, m);
-                    });
+                        element.children = $filter('orderBy')(element.children, 'position');
+                        angular.forEach(element.children, function (segmentRefOrGroup) {
+                            $rootScope.processMessageTree(segmentRefOrGroup, m);
+                        });
 
-                } else if (element.type === "group" && element.children) {
-                    var g = new Object();
-                    g.path = element.position + "[1]";
-                    g.obj = element;
-                    g.children = [];
-                    if (parent.path) {
-                        g.path = parent.path + "." + element.position + "[1]";
+                    } else if (element.type === "group" && element.children) {
+                        var g = new Object();
+                        g.path = element.position + "[1]";
+                        g.obj = element;
+                        g.children = [];
+                        if (parent.path) {
+                            g.path = parent.path + "." + element.position + "[1]";
+                        }
+                        parent.children.push(g);
+                        element.children = $filter('orderBy')(element.children, 'position');
+                        angular.forEach(element.children, function (segmentRefOrGroup) {
+                            $rootScope.processMessageTree(segmentRefOrGroup, g);
+                        });
+                    } else if (element.type === "segmentRef") {
+                        var s = new Object();
+                        s.path = element.position + "[1]";
+                        s.obj = element;
+                        s.children = [];
+                        if (parent.path) {
+                            s.path = parent.path + "." + element.position + "[1]";
+                        }
+                        parent.children.push(s);
+
+                        var ref = $rootScope.segmentsMap[element.ref];
+                        $rootScope.processMessageTree(ref, s);
+
+                    } else if (element.type === "segment") {
+                        element.fields = $filter('orderBy')(element.fields, 'position');
+                        angular.forEach(element.fields, function (field) {
+                            $rootScope.processMessageTree(field, parent);
+                        });
+                    } else if (element.type === "field") {
+                        var f = new Object();
+                        f.obj = element;
+                        f.path = parent.path + "." + element.position + "[1]";
+                        f.children = [];
+                        parent.children.push(f);
+                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], f);
+                    } else if (element.type === "component") {
+                        var c = new Object();
+                        c.obj = element;
+                        c.path = parent.path + "." + element.position + "[1]";
+                        c.children = [];
+                        parent.children.push(c);
+                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], c);
+                    } else if (element.type === "datatype") {
+                        element.components = $filter('orderBy')(element.components, 'position');
+                        angular.forEach(element.components, function (component) {
+                            $rootScope.processMessageTree(component, parent);
+                        });
                     }
-                    parent.children.push(g);
-                    element.children = $filter('orderBy')(element.children, 'position');
-                    angular.forEach(element.children, function (segmentRefOrGroup) {
-                        $rootScope.processMessageTree(segmentRefOrGroup, g);
-                    });
-                } else if (element.type === "segmentRef") {
-                    var s = new Object();
-                    s.path = element.position + "[1]";
-                    s.obj = element;
-                    s.children = [];
-                    if (parent.path) {
-                        s.path = parent.path + "." + element.position + "[1]";
-                    }
-                    parent.children.push(s);
-
-                    var ref = $rootScope.segmentsMap[element.ref];
-                    $rootScope.processMessageTree(ref, s);
-
-                } else if (element.type === "segment") {
-                    element.fields = $filter('orderBy')(element.fields, 'position');
-                    angular.forEach(element.fields, function (field) {
-                        $rootScope.processMessageTree(field, parent);
-                    });
-                } else if (element.type === "field") {
-                    var f = new Object();
-                    f.obj = element;
-                    f.path = parent.path + "." + element.position + "[1]";
-                    f.children = [];
-                    parent.children.push(f);
-                    $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], f);
-                } else if (element.type === "component") {
-                    var c = new Object();
-                    c.obj = element;
-                    c.path = parent.path + "." + element.position + "[1]";
-                    c.children = [];
-                    parent.children.push(c);
-                    $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], c);
-                } else if (element.type === "datatype") {
-                    element.components = $filter('orderBy')(element.components, 'position');
-                    angular.forEach(element.components, function (component) {
-                        $rootScope.processMessageTree(component, parent);
-                    });
                 }
             } catch (e) {
                 throw e;

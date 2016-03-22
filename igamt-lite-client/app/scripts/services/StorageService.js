@@ -10,7 +10,7 @@ angular.module('igl').factory('StorageService',
             TABLE_RELEVANCE_SETTINGS:'TABLE_RELEVANCE_SETTINGS',
             TABLE_COLLAPSE_SETTINGS:'TABLE_COLLAPSE_SETTINGS',
             TABLE_READONLY_SETTINGS:'TABLE_READONLY_SETTINGS',
-
+            IG_DOCUMENT:'IG_DOCUMENT',
             remove: function (key) {
                 return localStorageService.remove(key);
             },
@@ -31,20 +31,20 @@ angular.module('igl').factory('StorageService',
             setSelectedIgDocumentType: function (val) {
                 this.set(this.SELECTED_IG_DOCUMENT_TYPE,val);
             },
-            getSelectedIgDocumentType: function (key) {
+            getSelectedIgDocumentType: function () {
                 return this.get(this.SELECTED_IG_DOCUMENT_TYPE);
-            },
-            setSelectedIgDocumentId: function (id) {
-                this.set(this.SELECTED_IG_DOCUMENT_ID,id);
-            },
-            getSelectedIgDocumentId: function () {
-                return this.get(this.SELECTED_IG_DOCUMENT_ID);
             },
             setAppVersion: function (version) {
                 this.set(this.APP_VERSION,version);
             },
             getAppVersion: function () {
                 return this.get(this.APP_VERSION);
+            },
+            getIgDocument: function () {
+                return this.get(this.IG_DOCUMENT) != null ? angular.fromJson(this.get(this.IG_DOCUMENT)):null;
+            },
+            setIgDocument: function (igDocument) {
+                this.set(this.IG_DOCUMENT,igDocument != null ?  angular.toJson(igDocument):null);
             }
         };
         return service;

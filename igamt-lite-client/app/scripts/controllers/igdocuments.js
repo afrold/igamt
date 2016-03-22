@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService,$q,notifications,DatatypeService,SegmentService) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils,AutoSaveService) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -35,6 +35,10 @@ angular.module('igl')
         $scope.commentWidth = null;
         $scope.loadingSelection = false;
         $scope.accordi = {metaData: false, definition: true, igList: true, igDetails: false};
+        $rootScope.autoSaving = false;
+        AutoSaveService.stop();
+        $rootScope.saved = false;
+
 
         $scope.selectIgTab = function (value) {
             if (value === 1) {
@@ -57,10 +61,10 @@ angular.module('igl')
 
         $scope.datatypesParams = new ngTreetableParams({
             getNodes: function (parent) {
-               return DatatypeService.getNodes(parent);
+                return DatatypeService.getNodes(parent);
             },
             getTemplate: function (node) {
-                 return DatatypeService.getTemplate(node);
+                return DatatypeService.getTemplate(node);
             }
         });
 
@@ -74,8 +78,9 @@ angular.module('igl')
             $rootScope.isEditing = false;
             $scope.selectIgTab(0);
             $rootScope.initMaps();
-            StorageService.setSelectedIgDocumentId(null);
+            StorageService.setIgDocument(null);
             $rootScope.clearChanges();
+            AutoSaveService.stop();
         };
 
         $scope.messagesParams = new ngTreetableParams({
@@ -97,12 +102,12 @@ angular.module('igl')
 //                } else {
 //                    return [];
 //                }
-            	if (!parent || parent == null) {
-            		return $rootScope.messageTree.children;
-            	}else {
-            		return parent.children;
-            	}
-            	
+                if (!parent || parent == null) {
+                    return $rootScope.messageTree.children;
+                } else {
+                    return parent.children;
+                }
+
 
             },
             getTemplate: function (node) {
@@ -142,14 +147,16 @@ angular.module('igl')
          * init the controller
          */
         $scope.initIGDocuments = function () {
-            $scope.loadIGDocuments().then(function(){
-                $timeout(function() {
-                var prevIgDocId = StorageService.getSelectedIgDocumentId();
-                var prevIgDoc = prevIgDocId !=null ? $scope.findOne(prevIgDocId):null;
-                    if (prevIgDoc != null) {
-                        $scope.selectIGDocument(prevIgDoc);
+            $scope.loadIGDocuments().then(function () {
+                $timeout(function () {
+                    var igdocument = StorageService.getIgDocument();
+                    if (igdocument != null) {
+                        var found = $scope.findOne(igdocument.id);
+                        if (found != null) {
+                            $scope.selectIGDocument(igdocument);
+                        }
                     }
-                },500);
+                }, 500);
             });
 
             $scope.getScrollbarWidth();
@@ -173,7 +180,7 @@ angular.module('igl')
             });
 
             $scope.$on('event:openMessage', function (event, message) {
-                console.log("event:openMessage=" + message);
+                console.log("event:openMessage=" + JSON.stringify(message, null, 2));
                 $rootScope.messageTree = null;
                 $rootScope.processMessageTree(message);
                 $scope.selectMessage(message); // Should we open in a dialog ??
@@ -209,11 +216,14 @@ angular.module('igl')
             });
 
             $rootScope.$on('event:saveAndExecLogout', function (event) {
-                $scope.save().then(function(result){
-                    $rootScope.$emit('event:execLogout');
-                },function(error){
-                    $rootScope.$emit('event:execLogout');
-                });
+                if ($rootScope.igdocument != null) {
+                    IgDocumentService.save($rootScope.igdocument).then(function (result) {
+                        StorageService.setIgDocument($rootScope.igdocument);
+                        $rootScope.$emit('event:execLogout');
+                    }, function (error) {
+                        $rootScope.$emit('event:execLogout');
+                    });
+                }
             });
         };
 
@@ -230,7 +240,7 @@ angular.module('igl')
 
         $scope.loadIGDocuments = function () {
             var delay = $q.defer();
-            $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ? StorageService.getSelectedIgDocumentType(): 'USER';
+            $scope.igDocumentConfig.selectedType = StorageService.getSelectedIgDocumentType() != null ? StorageService.getSelectedIgDocumentType() : 'USER';
             $scope.error = null;
             $rootScope.igs = [];
             $scope.tmpIgs = [].concat($rootScope.igs);
@@ -250,7 +260,7 @@ angular.module('igl')
                     waitingDialog.hide();
                     delay.reject(false);
                 });
-            }else{
+            } else {
                 delay.reject(false);
             }
             return delay.promise;
@@ -328,7 +338,7 @@ angular.module('igl')
                     $rootScope.isEditing = true;
                     $rootScope.igdocument = igdocument;
                     $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
-                    StorageService.setSelectedIgDocumentId($rootScope.igdocument.id);
+                    StorageService.setIgDocument($rootScope.igdocument);
                     $scope.sortByLabels();
                     $scope.loadToc();
                     $rootScope.initMaps();
@@ -337,6 +347,7 @@ angular.module('igl')
                     $scope.collectTables();
                     $scope.collectMessages();
                     $scope.loadIgDocumentMetaData();
+                    AutoSaveService.start();
                     waitingDialog.hide();
                 }, 100);
             }
@@ -420,7 +431,6 @@ angular.module('igl')
                 });
             }, $rootScope.messagesMap);
         };
-
 
 
         $scope.collectData = function (node, segRefOrGroups, segments, datatypes) {
@@ -508,8 +518,8 @@ angular.module('igl')
             }, function () {
             });
         };
-        
-        
+
+
         $scope.selectMessages = function (igdocument) {
             var modalInstance = $modal.open({
                 templateUrl: 'SelectMessagesOpenCtrl.html',
@@ -542,9 +552,8 @@ angular.module('igl')
             });
         };
         
-        
         $scope.exportAsMessages = function (id, mids) {
-        	var form = document.createElement("form");
+            var form = document.createElement("form");
             form.action = $rootScope.api('api/igdocuments/' + id + '/export/pdf/' + mids);
             form.method = "POST";
             form.target = "_target";
@@ -556,19 +565,21 @@ angular.module('igl')
             document.body.appendChild(form);
             form.submit();
         };
-        
-        $scope.exportAs = function (id, format) {
-            var form = document.createElement("form");
-            form.action = $rootScope.api('api/igdocuments/' + id + '/export/' + format);
-            form.method = "POST";
-            form.target = "_target";
-            var csrfInput = document.createElement("input");
-            csrfInput.name = "X-XSRF-TOKEN";
-            csrfInput.value = $cookies['XSRF-TOKEN'];
-            form.appendChild(csrfInput);
-            form.style.display = 'none';
-            document.body.appendChild(form);
-            form.submit();
+
+        $scope.exportAs = function (format) {
+            if ($rootScope.igdocument != null) {
+                if (!ViewSettings.tableReadonly) {
+                    IgDocumentService.save($rootScope.igdocument).then(function (result) {
+                        IgDocumentService.exportAs($rootScope.igdocument, format);
+                    }, function (error) {
+                        $rootScope.msg().text = error.data.text;
+                        $rootScope.msg().type = error.data.type;
+                        $rootScope.msg().show = true;
+                    });
+                } else {
+                    IgDocumentService.exportAs($rootScope.igdocument, format);
+                }
+            }
         };
 
         $scope.exportDelta = function (id, format) {
@@ -603,17 +614,7 @@ angular.module('igl')
         $scope.save = function () {
             var delay = $q.defer();
             waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
-            var changes = angular.toJson($rootScope.changes);
-            $rootScope.igdocument.accountId = userInfoService.getAccountID();
-            var data = angular.fromJson(
-                    {
-                        "changes": changes, "igDocument": $rootScope.igdocument
-                    }
-            );
-            $http.post('api/igdocuments/save', data).then(function (response) {
-                var saveResponse = angular.fromJson(response.data);
-                $rootScope.igdocument.metaData.date = saveResponse.date;
-                $rootScope.igdocument.metaData.version = saveResponse.version;
+            IgDocumentService.save($rootScope.igdocument).then(function (saveResponse) {
                 var found = $scope.findOne($rootScope.igdocument.id);
                 if (found != null) {
                     var index = $rootScope.igs.indexOf(found);
@@ -624,6 +625,7 @@ angular.module('igl')
                 $rootScope.msg().text = saveResponse.text;
                 $rootScope.msg().type = saveResponse.type;
                 $rootScope.msg().show = true;
+                StorageService.setIgDocument($rootScope.igdocument);
                 $rootScope.clearChanges();
                 waitingDialog.hide();
                 delay.resolve(true);
@@ -914,6 +916,11 @@ angular.module('igl')
             return '';
         };
 
+        $scope.setUsage = function (node) {
+            ElementUtils.setUsage(node);
+            $scope.recordChanged();
+        };
+
 
     });
 
@@ -1030,7 +1037,7 @@ angular.module('igl').controller('ConfirmIGDocumentCloseCtrl', function ($scope,
 angular.module('igl').controller('ConfirmIGDocumentOpenCtrl', function ($scope, $modalInstance, igdocumentToOpen, $rootScope, $http) {
     $scope.igdocumentToOpen = igdocumentToOpen;
     $scope.loading = false;
-    
+
     $scope.discardChangesAndOpen = function () {
         $scope.loading = true;
         $http.get('api/igdocuments/' + $rootScope.igdocument.id, {timeout: 60000}).then(function (response) {
@@ -1079,45 +1086,45 @@ angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $mo
     $scope.loading = false;
 
 
-    $scope.trackSelections = function(bool, id) {
-		if (bool) {
-			$scope.selectedMessagesIDs.push(id);
-		} else {
-			for (var i = 0; i < $scope.selectedMessagesIDs.length; i++) {
-				if ($scope.selectedMessagesIDs[i].id == id) {
-					$scope.selectedMessagesIDs.splice(i, 1);
-				}
-			}
-		}
-	};
-	
-	 $scope.exportAsMessages = function (id, mids) {
-     	var form = document.createElement("form");
-     	console.log("ID: " + id);
-     	console.log("Message IDs: " + mids);
-     	
-     	if($scope.xmlFormat === 'Validation'){
-     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Validation/' + mids);
-     	}else if($scope.xmlFormat === 'Display'){
-     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Display/' + mids);
-     	}else if($scope.xmlFormat === 'Gazelle'){
-     		form.action = $rootScope.api('api/igdocuments/' + id + '/export/Gazelle/' + mids);
-     	}
-     	form.method = "POST";
-     	form.target = "_target";
-     	var csrfInput = document.createElement("input");
-     	csrfInput.name = "X-XSRF-TOKEN";
-     	csrfInput.value = $cookies['XSRF-TOKEN'];
-     	form.appendChild(csrfInput);
-     	form.style.display = 'none';
-     	document.body.appendChild(form);
-     	form.submit();
-     };
-	 
-	
-	$scope.exportAsZIPforSelectedMessages = function (type) {
-		$scope.loading = true;
-		$scope.exportAsMessages($scope.igdocumentToSelect.id,$scope.selectedMessagesIDs, type);
+    $scope.trackSelections = function (bool, id) {
+        if (bool) {
+            $scope.selectedMessagesIDs.push(id);
+        } else {
+            for (var i = 0; i < $scope.selectedMessagesIDs.length; i++) {
+                if ($scope.selectedMessagesIDs[i].id == id) {
+                    $scope.selectedMessagesIDs.splice(i, 1);
+                }
+            }
+        }
+    };
+
+    $scope.exportAsMessages = function (id, mids) {
+        var form = document.createElement("form");
+        console.log("ID: " + id);
+        console.log("Message IDs: " + mids);
+
+        if ($scope.xmlFormat === 'Validation') {
+            form.action = $rootScope.api('api/igdocuments/' + id + '/export/Validation/' + mids);
+        } else if ($scope.xmlFormat === 'Display') {
+            form.action = $rootScope.api('api/igdocuments/' + id + '/export/Display/' + mids);
+        } else if ($scope.xmlFormat === 'Gazelle') {
+            form.action = $rootScope.api('api/igdocuments/' + id + '/export/Gazelle/' + mids);
+        }
+        form.method = "POST";
+        form.target = "_target";
+        var csrfInput = document.createElement("input");
+        csrfInput.name = "X-XSRF-TOKEN";
+        csrfInput.value = $cookies['XSRF-TOKEN'];
+        form.appendChild(csrfInput);
+        form.style.display = 'none';
+        document.body.appendChild(form);
+        form.submit();
+    };
+
+
+    $scope.exportAsZIPforSelectedMessages = function (type) {
+        $scope.loading = true;
+        $scope.exportAsMessages($scope.igdocumentToSelect.id, $scope.selectedMessagesIDs, type);
         $scope.loading = false;
     };
 

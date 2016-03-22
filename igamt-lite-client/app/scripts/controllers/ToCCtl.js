@@ -53,7 +53,7 @@ angular
 								entry.selected = true;
 								ToCSvc.currentLeaf.selected = false;
 								ToCSvc.currentLeaf = entry;
-								console.log("entry=" + entry.reference.sectionTitle);
+//								console.log("entry=" + entry.reference.sectionTitle);
 								switch (entry.type) {
 								case "documentMetadata": {
 									$scope.$emit('event:openDocumentMetadata',
@@ -96,7 +96,7 @@ angular
 							
 							$scope.closedCtxSubMenu = function(node, $index) {
 								var ctxMenuSelection = ContextMenuSvc.get();
-								console.log("ctxMenuSelection=" + ctxMenuSelection);
+//								console.log("ctxMenuSelection=" + ctxMenuSelection);
 								switch (ctxMenuSelection) {
 								case "Add":
 									console.log("Add==> node=" + node);
