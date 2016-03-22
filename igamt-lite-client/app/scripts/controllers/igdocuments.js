@@ -1192,9 +1192,9 @@ angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalIns
             description: table.name,
             version: '',
             oid: table.oid,
-            tableType: '',
-            stability: '',
-            extensibility: '',
+            stability: 'Static',
+            extensibility: 'Open',
+            contentDefinition: 'Extensional',
             source: $scope.source + " " + $scope.selectedHL7Version,
             codes: []
         });

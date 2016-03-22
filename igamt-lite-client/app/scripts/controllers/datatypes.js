@@ -327,6 +327,7 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
 });
 
 angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+	$scope.changed = false;
 	$scope.selectedNode = selectedNode;
     $scope.constraintType = 'Plain';
     $scope.firstConstraint = null;
@@ -364,6 +365,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 
     $scope.deleteConformanceStatement = function (conformanceStatement) {
         $rootScope.datatype.conformanceStatements.splice($rootScope.datatype.conformanceStatements.indexOf(conformanceStatement), 1);
+        $scope.changed = true;
     };
     
     $scope.deleteConformanceStatementForComplex = function (conformanceStatement) {
@@ -450,6 +452,8 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
             }
         }
         $scope.initConformanceStatement();
+        
+        $scope.changed = true;
     };
 
     $scope.ok = function () {

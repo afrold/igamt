@@ -823,7 +823,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.createNewFlavorName = function (label) {
             if ($rootScope.igdocument != null) {
-                return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
+            	if($rootScope.igdocument.metaData["ext"] === null){
+            		return label + "_" + (Math.floor(Math.random() * 10000000) + 1);
+            	}else {
+            		return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
+            	}
             } else {
                 return null;
             }
@@ -977,8 +981,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
-                    trueUsage: firstConstraint.trueUsage,
-                    falseUsage: firstConstraint.falseUsage,
+                    trueUsage: '',
+                    falseUsage: '',
                     assertion: '<AND>' + firstConstraint.assertion + secondConstraint.assertion + '</AND>'
                 };
             } else if (compositeType === 'OR') {
@@ -987,8 +991,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
-                    trueUsage: firstConstraint.trueUsage,
-                    falseUsage: firstConstraint.falseUsage,
+                    trueUsage: '',
+                    falseUsage: '',
                     assertion: '<OR>' + firstConstraint.assertion + secondConstraint.assertion + '</OR>'
                 };
             } else if (compositeType === 'IFTHEN') {
@@ -997,8 +1001,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: 'IF [' + firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
-                    trueUsage: firstConstraint.trueUsage,
-                    falseUsage: firstConstraint.falseUsage,
+                    trueUsage: '',
+                    falseUsage: '',
                     assertion: '<IMPLY>' + firstConstraint.assertion + secondConstraint.assertion + '</IMPLY>'
                 };
             }

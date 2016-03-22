@@ -115,15 +115,6 @@
     </div>
 
     <div class="col-md-12">
-        <div class="input-group">
-            <div class="input-group-addon">
-                <i class="fa fa-search"></i>
-            </div>
-            <input type="text" class="form-control" placeholder="Search Value by code" ng-model="searchValue.value"/>
-			<input type="text" class="form-control" placeholder="Search Value by description" ng-model="searchValue.label"/>
-        </div>
-    </div>
-    <div class="col-md-12">
  										<span class="pull-right">
 											<button title="Add new Value" type="button" ng-hide="viewSettings.tableReadonly"
                                                     class="btn btn-sm btn-info" ng-click="addValue()">
@@ -146,17 +137,27 @@
 								<i ng-show="!reverse && predicate==='label'" class="fa fa-sort-asc"></i>
 								<i ng-show="predicate!=='label'" class="fa fa-sort"></i>
 							</th>
-                            <th class="col-md-2">CodeSystem
-                                <select class="form-control" ng-hide="viewSettings.tableReadonly"
+                            <th class="col-md-2">CodeSystem</th>
+                            <th class="col-md-2">Usage</th>
+                            <th class="col-md-1">Action</th>
+                        </tr>
+						<tr>
+							<th>
+								<input type="text" class="form-control" placeholder="Search Value by code" ng-model="searchValue.value"/>
+							</th>
+							<th>
+								<input type="text" class="form-control" placeholder="Search Value by description" ng-model="searchValue.label"/>
+							</th>
+							<th>
+								<select class="form-control" ng-hide="viewSettings.tableReadonly"
                                         name="setALLCodeSystem"
                                         ng-change="updateCodeSystem(table,codeSystem)"
                                         ng-model="codeSystem"
                                         ng-options="cs for cs in codeSystems">
                                 </select>
-                            </th>
-                            <th class="col-md-2">Usage
-                                <div class="btn-group btn-group-xs btn-info" role="group"
-                                     ng-hide="viewSettings.tableReadonly" aria-label="...">
+							</th>
+							<th>
+								<div class="btn-group btn-group-xs btn-info" role="group" ng-hide="viewSettings.tableReadonly" aria-label="...">
                                     <button type="button" ng-click="setAllCodeUsage(table, 'R')"
                                             ng-disabled="viewSettings.tableReadonly" class="btn btn-default btn-info">
                                         R
@@ -170,38 +171,67 @@
                                         E
                                     </button>
                                 </div>
-                            </th>
-                            <th class="col-md-1">Action</th>
-                        </tr>
+							</th>
+							<th/>
+						</tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="c in table.codes|filter:searchValue|orderBy:predicate:reverse">
                             <td class="col-md-3">
                                 <span ng-show="viewSettings.tableReadonly">{{c.value}}</span>
-                                <input type="text" style="width: 100%" name="Value"
+								<div ng-show="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)">
+									<input type="text" style="width: 100%" name="Value"
                                        ng-hide="viewSettings.tableReadonly"
-                                       class="form-control"
+									   class="form-control-warning"
                                        ng-model="c.value"
                                        ng-change="recordChangeValue(c,'value',c.value ,table.id)"/>
-                                <span style="color:red" ng-show="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)">Duplicated</span>
+									<span style="color:red">Duplicated</span>
+								</div>
+								<div ng-hide="isDuplicatedTwoContexts(c,'value', 'codeSystem', table.codes)">
+									<input type="text" style="width: 100%" name="Value"
+                                       ng-hide="viewSettings.tableReadonly"
+									   class="form-control"
+                                       ng-model="c.value"
+                                       ng-change="recordChangeValue(c,'value',c.value ,table.id)"/>
+								</div>
                             </td>
                             <td class="col-md-4">
                                 <span ng-show="viewSettings.tableReadonly">{{c.label}}</span>
-                                <input type="text" style="width: 100%" name="Label"
+								<div ng-show="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)">
+									<input type="text" style="width: 100%" name="Label"
                                        ng-hide="viewSettings.tableReadonly"
-                                       class="form-control"
+									   class="form-control-warning"
                                        ng-model="c.label"
                                        ng-change="recordChangeValue(c,'label',c.label ,table.id)"/>
-								<span style="color:red" ng-show="isDuplicated(c,'label', table.codes)">Duplicated</span>
+									<span style="color:red">Duplicated</span>
+								</div>
+								<div ng-hide="isDuplicatedTwoContexts(c,'label', 'codeSystem' , table.codes)">
+									<input type="text" style="width: 100%" name="Label"
+                                       ng-hide="viewSettings.tableReadonly"
+									   class="form-control"
+                                       ng-model="c.label"
+                                       ng-change="recordChangeValue(c,'label',c.label ,table.id)"/>
+								</div>
                             </td>
                             <td class="col-md-2">
                                 <span ng-show="viewSettings.tableReadonly">{{c.codeSystem}}</span>
-                                <select class="form-control" ng-hide="viewSettings.tableReadonly"
+								<div ng-show="!c.codeSystem || c.codeSystem === ''">
+									<select class="form-control-warning"
+										ng-hide="viewSettings.tableReadonly"
                                         ng-change="recordChangeValue(c,'codeSystem',c.codeSystem ,table.id)"
                                         ng-model="c.codeSystem"
                                         ng-options="cs for cs in codeSystems">
-                                </select>
-								<span style="color:red" ng-show="!c.codeSystem || c.codeSystem === ''">Missing CodeSystem</span>
+                                	</select>
+									<span style="color:red">Missing CodeSystem</span>
+								</div>
+								<div ng-hide="!c.codeSystem || c.codeSystem === ''">
+									<select class="form-control"
+										ng-hide="viewSettings.tableReadonly"
+                                        ng-change="recordChangeValue(c,'codeSystem',c.codeSystem ,table.id)"
+                                        ng-model="c.codeSystem"
+                                        ng-options="cs for cs in codeSystems">
+                                	</select>
+								</div>
                             </td>
                             <td class="col-md-2">
                                 <span ng-show="viewSettings.tableReadonly">{{c.codeUsage}}</span>

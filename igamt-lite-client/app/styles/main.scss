@@ -401,6 +401,12 @@ select.form-control {
   cursor: pointer;
 }
 
+select.form-control-warning {
+  background-color: #B33A3A;
+  cursor: pointer;
+  width: 100%;
+}
+
 select.form-control:checked {
   //  background-color: #428bca;
   //  color: #d9edf7;
@@ -435,6 +441,12 @@ input.form-control {
   //  color: black;
   cursor: pointer;
 //  border: 1px solid #cccccc;
+}
+
+input.form-control-warning {
+  background-color: #B33A3A;
+  cursor: pointer;
+  width: 100%;
 }
 
 .point {
