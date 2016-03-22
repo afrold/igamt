@@ -127,7 +127,7 @@ angular
 					
 					var leafValueSet = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
 						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html' ng-click='tocSelection(leaf)'> "
-						+ "{{leaf.reference.bindingIdentifier}} - {{leaf.reference.description}}" 
+						+ "{{leaf.reference.bindingIdentifier}} - {{leaf.reference.name}}" 
 						+ "</li>";
 
 					var leafSection = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "

@@ -183,6 +183,7 @@ public class TableSerializationImpl implements TableSerialization {
 
                             tableObj.setBindingIdentifier(elmTable.getAttribute("BindingIdentifier"));
                             tableObj.setName(elmTable.getAttribute("Name"));
+                            
                             tableObj.setGroup(valueSetDefinitionsElement.getAttribute("Group"));
                             String orderStr = valueSetDefinitionsElement.getAttribute("Order");
                             if(orderStr != null && !orderStr.equals("")){
@@ -228,12 +229,12 @@ public class TableSerializationImpl implements TableSerialization {
                         codeObj.setValue(elmCode.getAttribute("Value"));
                         codeObj.setLabel(elmCode.getAttribute("DisplayName"));
 
-                        if (elmCode.getAttribute("CodeSystem") != null && !elmTable.getAttribute("CodeSystem").equals("")) codeObj.setCodeSystem(elmTable.getAttribute("CodeSystem"));
-                        if (elmCode.getAttribute("CodeSystemVersion") != null && !elmTable.getAttribute("CodeSystemVersion").equals("")) codeObj.setCodeSystemVersion(elmTable.getAttribute("CodeSystemVersion"));
-                        if (elmCode.getAttribute("Comments") != null && !elmTable.getAttribute("Comments").equals("")) codeObj.setComments(elmTable.getAttribute("Comments"));
+                        if (elmCode.getAttribute("CodeSystem") != null && !elmCode.getAttribute("CodeSystem").equals("")) codeObj.setCodeSystem(elmCode.getAttribute("CodeSystem"));
+                        if (elmCode.getAttribute("CodeSystemVersion") != null && !elmCode.getAttribute("CodeSystemVersion").equals("")) codeObj.setCodeSystemVersion(elmCode.getAttribute("CodeSystemVersion"));
+                        if (elmCode.getAttribute("Comments") != null && !elmCode.getAttribute("Comments").equals("")) codeObj.setComments(elmCode.getAttribute("Comments"));
 
-                        if (elmCode.getAttribute("Usage") != null && !elmTable.getAttribute("Usage").equals("")) {
-                                codeObj.setCodeUsage(elmTable.getAttribute("Usage"));
+                        if (elmCode.getAttribute("Usage") != null && !elmCode.getAttribute("Usage").equals("")) {
+                                codeObj.setCodeUsage(elmCode.getAttribute("Usage"));
                         } else {
                                 codeObj.setCodeUsage("R");
                         }

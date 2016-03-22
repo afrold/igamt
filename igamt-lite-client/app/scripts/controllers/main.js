@@ -1418,6 +1418,18 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 return item[context] == obj[context];
             });
         };
+        
+        $rootScope.isDuplicatedTwoContexts = function (obj, context1, context2,  list) {
+            if (obj == null || obj == undefined) return false;
+
+            return _.find(_.without(list, obj), function (item) {
+            	if(item[context1] == obj[context1]){
+            		return item[context2] == obj[context2];
+            	}else {
+            		return false
+            	}
+            });
+        };
 
         $scope.init = function () {
 //        $http.get('api/igdocuments/config', {timeout: 60000}).then(function (response) {
