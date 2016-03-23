@@ -517,14 +517,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 				csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
 				csinfo.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition())));
 				csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-				csinfo.addAttribute(new Attribute("title", s.getName()));
+				csinfo.addAttribute(new Attribute("title", s.getLabel()));
 				csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
 
 				nu.xom.Element cpinfo = new nu.xom.Element("Constraints");
 				cpinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
 				cpinfo.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition())));
 				cpinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-				cpinfo.addAttribute(new Attribute("title", s.getName()));
+				cpinfo.addAttribute(new Attribute("title", s.getLabel()));
 				cpinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
 
 				Map<Integer, Field> fields = new HashMap<Integer, Field>();
@@ -584,14 +584,14 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 				csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
 				csinfo.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition())));
 				csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-				csinfo.addAttribute(new Attribute("title", d.getName()));
+				csinfo.addAttribute(new Attribute("title", d.getLabel()));
 				csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
 
 				nu.xom.Element cpdtinfo = new nu.xom.Element("Constraints");
 				cpdtinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
 				cpdtinfo.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition())));
 				cpdtinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-				cpdtinfo.addAttribute(new Attribute("title", d.getName()));
+				cpdtinfo.addAttribute(new Attribute("title", d.getLabel()));
 				cpdtinfo.addAttribute(new Attribute("Type", "ConditionPredicate"));
 
 				Map<Integer, Component> components = new HashMap<Integer, Component>();

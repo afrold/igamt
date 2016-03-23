@@ -193,6 +193,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	static String headerFontColor = "#B21A1C";
 	static String tableHSeparator = "#F01D1D";
 	static String tableVSeparator = "#D3D3D3";
+	
 	static String inlineConstraints = "false";
 
 
@@ -921,6 +922,8 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			// Apply XSL transformation on xml file to generate html
 			transformer = factory.newTransformer(xslt);
 			transformer.setParameter("inlineConstraints", inlineConstraints);
+			transformer.setParameter("includeTOC", "false");
+
 			transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
 			return FileUtils.openInputStream(tmpHtmlFile);
 
@@ -1853,11 +1856,13 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 
 			TransformerFactory factoryTf = TransformerFactory.newInstance();
 			Source xslt = new StreamSource(this.getClass()
-					.getResourceAsStream("/rendering/igdocument2.xsl"));
+					.getResourceAsStream("/rendering/igdoc2htmlWithTOC.xsl"));
 			Transformer transformer;
 
 			// Apply XSL transformation on xml file to generate html
 			transformer = factoryTf.newTransformer(xslt);
+			transformer.setParameter("inlineConstraints", inlineConstraints);
+			transformer.setParameter("includeTOC", "false");
 			transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
 
 			String html =  FileUtils.readFileToString(tmpHtmlFile);
