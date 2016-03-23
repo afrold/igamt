@@ -33,8 +33,7 @@
             </li>
             <li ng-class="activeWhen(path()=='/ig')"><a class="point" href="#/ig"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.igs"></span></a></li>
 
-            <li ng-show="true" ng-class="activeWhen(path()=='/datatypeLibrary')"><a class="point" href="#/datatypeLibrary"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.datatypeLibrary"></span></a></li>
-         	<!-- isAuthenticated() && isAdmin() -->
+            <li ng-show="isAuthenticated() && isAdmin()" ng-class="activeWhen(path()=='/datatypeLibrary')"><a class="point" href="#/datatypeLibrary"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.datatypeLibrary"></span></a></li>
              <li ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()">
                 <a href="#/registration"><div msg key="navbar.registration"></div></a>
             </li>

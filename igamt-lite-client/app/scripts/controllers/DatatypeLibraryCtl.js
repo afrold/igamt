@@ -8,10 +8,6 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 			$scope.datatypeLibrary = false;		
 			$scope.publishSelections = [];
 			
-            $rootScope.$on('event:initDatatypeLibrary', function (event) {
-                $scope.initDatatypeLibrary();
-            });
-			
 			$scope.initDatatypeLibrary = function() {
 				$scope.start = false;
 				getDataTypeLibrary("MASTER");
@@ -21,7 +17,8 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				DatatypeLibrarySvc.getDataTypeLibrary(scope).then(function(data) {
 						$scope.datatypeStruct = data;
 					    $scope.datatypeLibrary = DatatypeLibrarySvc.assembleDatatypeLibrary($scope.datatypeStruct);
-				}).catch( function (error) {
+					    $scope.datatypeLibrary.refresh();
+					}).catch( function (error) {
 					console.log(error);
 				});
 			};
@@ -53,10 +50,8 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 							$scope.datatypeStruct.children.push(child);
 						});
 						$scope.datatypeStruct.id = undefined;
-						$scope.datatypeLibrary = DatatypeLibrarySvc.assembleDatatypeLibrary(datatypeStruct);
-						$scope.datatypeLibrary.refresh();
 						DatatypeLibrarySvc.save($scope.datatypeStruct).then(function()  {
-							$rootScope.$broadcast('event:initDatatypeLibrary');	
+			                $scope.getDataTypeLibrary("MASTER");
 						});
 					});
 					

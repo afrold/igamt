@@ -283,10 +283,10 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         var request = new XMLHttpRequest();
         console.log('api/datatype-library/save begin=>' + data);
         saved = angular.fromJson(data);
-       request.send(null);
-       var d = angular.fromJson(request.response);
-       console.log('api/datatype-library end' + d);
-       return [request.status, d, {}];
+        request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
+        request.send(null);
+       console.log('api/datatype-library end');
+       return [request.status, saved, {}];
    });
 
     $httpBackend.whenGET('api/appInfo').respond(function (method, url, data, headers) {

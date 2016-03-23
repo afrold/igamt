@@ -10,36 +10,33 @@
     }
 </script>
 <div ng-controller="MasterDatatypeLibraryCtl" ng-init="initDatatypeLibrary()">
-    <div ng-show=true>
-    <!--isAuthenticated() && isAdmin() -->
-        <div ng-show="loading" style="text-align: center">
-            <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
-        </div>
-        <div ng-show="!loading">
-        <div class="page-header">
-            <h3> Master Data Type Library</h3>
-        </div>
-        <button type="button" class="btn btn-primary btn-sm"
-                ng-click="openStandardDataypes()"><i class="fa fa-plus"></i>
-            Select HL7 Standard Data Types
-        </button>
-        <div class="container" style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
-            <table tt-table tt-params="datatypeLibrary" ng-if="datatypeLibrary" class="table table-striped table-bordered">
-				<thead>
-                <tr class="row">
-                   <td class="col-lg-1">Published</td>
-                   <td class="col-lg-2">Label</td> 
-                   <td class="col-lg-9">Description</td>
-                </tr>
-				</thead>
-                <tbody></tbody>
-            </table>
-	        <button type="button" class="btn btn-primary btn-sm"
-	                ng-click="save()"><i class="fa fa-plus"></i>
-	            Save
-	        </button>
-        </div>
-        </div>
+    <div ng-show="loading" style="text-align: center">
+        <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
+    </div>
+    <div ng-show="!loading">
+    <div class="page-header">
+        <h3> Master Data Type Library</h3>
+    </div>
+    <button type="button" class="btn btn-primary btn-sm"
+            ng-click="openStandardDataypes()"><i class="fa fa-plus"></i>
+        Select HL7 Standard Data Types
+    </button>
+    <div class="container" style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
+        <table tt-table tt-params="datatypeLibrary" ng-if="datatypeLibrary" class="table table-striped table-bordered">
+<thead>
+            <tr class="row">
+               <td class="col-lg-1">Published</td>
+               <td class="col-lg-2">Label</td> 
+               <td class="col-lg-9">Description</td>
+            </tr>
+</thead>
+            <tbody></tbody>
+        </table>
+     <button type="button" class="btn btn-primary btn-sm"
+             ng-click="save()"><i class="fa fa-plus"></i>
+         Save
+     </button>
+    </div>
     </div>
 </div>
 <script type="text/ng-template" id="dataTypeNode.html">

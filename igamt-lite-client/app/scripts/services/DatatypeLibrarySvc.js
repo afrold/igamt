@@ -14,10 +14,12 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, ngTreetableP
 	};
 	
 	svc.getDataTypeLibrary = function(scope) {
-		console.log("datatypeLibrary scope=" + JSON.stringify(scope));
+		console.log("datatype-library/getDataTypeLibraryByScope scope=" + JSON.stringify(scope));
+		var param = angular.toJson(scope);
 		return $http.post(
-				'api/datatype-library/getDatatypeLibraryByScope', scope)
+				'api/datatype-library/getDataTypeLibraryByScope', scope)
 				.then(function(response) {
+					console.log("response" + JSON.stringify(response));
 					var datatypes = angular.fromJson(response.data);
 					var sortedChildren = _.sortBy(datatypes.children, function(child) { return child.name; });
 					datatypes.children = sortedChildren;
@@ -32,11 +34,6 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, ngTreetableP
 			},
 	        getTemplate : function(node) {
 	            return 'dataTypeNode.html';
-	        },
-	        options : {
-	            onNodeExpand: function() {
-	                console.log('A node was expanded!');
-	            }
 	        }
 		});
 	};

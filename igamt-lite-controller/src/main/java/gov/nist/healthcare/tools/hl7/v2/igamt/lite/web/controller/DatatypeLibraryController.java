@@ -55,15 +55,15 @@ public class DatatypeLibraryController extends CommonController {
 		return datatypeLibraries;
 	}
 
-	@RequestMapping(value = "/getDataTypeLibraryByScope", method = RequestMethod.POST)
-	public DatatypeLibrary getDataTypeLibraryByScope(@RequestBody String sScope) {
-		log.info("Fetching the " + sScope + " datatype library.");
-		DatatypeLibrary.SCOPE scope = DatatypeLibrary.SCOPE.valueOf(sScope);
-		DatatypeLibrary datatypeLibrary = datatypeLibraryService.findByScope(scope);
+	@RequestMapping(value = "/getDataTypeLibraryByScope", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public DatatypeLibrary getDataTypeLibraryByScope(@RequestBody String scope) {
+		log.info("Fetching the " + scope + " datatype library.");
+		DatatypeLibrary.SCOPE scope1 = DatatypeLibrary.SCOPE.valueOf(scope);
+		DatatypeLibrary datatypeLibrary = datatypeLibraryService.findByScope(scope1);
 		return datatypeLibrary;
 	}
 
-	@RequestMapping(value = "/createUpdate", method = RequestMethod.POST)
+	@RequestMapping(value = "/createUpdate", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public DatatypeLibrary createUpdate(@RequestBody DatatypeLibrary datatypeLibrary) {
 		log.info("Creating of updating the " + datatypeLibrary.getScope() + " datatype library.");
 		User u = userService.getCurrentUser();
