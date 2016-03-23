@@ -208,7 +208,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 			if (s.getSectionContents()!= null && !s.getSectionContents().isEmpty()){
 				nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
-				sectCont.appendChild(s.getSectionContents());
+				sectCont.appendChild("<div class=\"fr-view\">" + s.getSectionContents() + "</div>"); 
 				xsect.appendChild(sectCont);
 			}
 
@@ -997,7 +997,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 	private nu.xom.Element serializeRichtext(String attribute, String richtext){
 		nu.xom.Element elmText1 = new nu.xom.Element("Text");
 		elmText1.addAttribute(new Attribute("Type", attribute));
-		elmText1.appendChild(richtext);
+		elmText1.appendChild("<div class=\"fr-view\">" + richtext +"</div>");
 		return elmText1;
 	}
 
