@@ -672,9 +672,9 @@
 
 		<xsl:for-each select="Component">
 			<xsl:sort select="@Position" data-type="number"></xsl:sort>
-			<xsl:call-template name="componentText">
-			</xsl:call-template>
-			<br></br>
+				<p>
+					<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
+				</p>
 		</xsl:for-each>
 	</xsl:template>
 
@@ -717,11 +717,6 @@
 				<xsl:apply-templates select="." mode="inlineDt"></xsl:apply-templates>
 			</xsl:if>
 		</xsl:if>
-	</xsl:template>
-
-	<xsl:template name="componentText">
-		<xsl:value-of disable-output-escaping="yes"
-			select="Text[@Type='Text']" />
 	</xsl:template>
 
 	<xsl:template match="ValueSetDefinition" mode="toc">
@@ -800,23 +795,7 @@
 			<p>
 				<xsl:if test="./@Type='ConditionPredicate'">
 					<table width="100%" border="1" cellspacing="0" cellpadding="0">
-						<col style="width:10%"></col>
-						<col style="width:10%"></col>
-						<col style="width:10%"></col>
-						<col style="width:70%"></col>
-						<thead style="background:#F0F0F0; color:#B21A1C; align:center">
-							<tr>
-								<th>
-									Location
-								</th>
-								<th>
-									Usage
-								</th>
-								<th colspan='2'>
-									Description
-								</th>
-							</tr>
-						</thead>
+					<xsl:call-template name="csheader"></xsl:call-template>
 						<tbody>
 							<xsl:for-each select="./Constraint">
 								<xsl:sort select="@Position" data-type="number"></xsl:sort>
@@ -828,26 +807,7 @@
 				</xsl:if>
 				<xsl:if test="./@Type='ConformanceStatement'">
 					<table width="100%" border="1" cellspacing="0" cellpadding="0">
-						<col style="width:10%"></col>
-						<col style="width:10%"></col>
-						<col style="width:10%"></col>
-						<col style="width:70%"></col>
-						<thead style="background:white; color:#B21A1C; align:center">
-							<tr>
-								<th>
-									Id
-								</th>
-								<th>
-									Location
-								</th>
-								<th>
-									Classification
-								</th>
-								<th>
-									Description
-								</th>
-							</tr>
-						</thead>
+						<xsl:call-template name="preheader"></xsl:call-template>
 						<tbody>
 							<xsl:for-each select="./Constraint">
 								<xsl:sort select="@Position" data-type="number"></xsl:sort>
@@ -992,7 +952,7 @@
 	<!-- Parse constraint for standalone mode -->
 	<xsl:template match="Constraint" mode="standalone">
 		<xsl:if test="./@Type='pre'">
-			<tr style="'background-color:white;text-decoration:normal'">
+			<tr style="background-color:white;text-decoration:normal">
 				<td>
 					<xsl:value-of select="concat(@LocationName, @Location)" />
 				</td>
@@ -1006,7 +966,7 @@
 
 		</xsl:if>
 		<xsl:if test="./@Type='cs'">
-			<tr style="'background-color:#E8E8E8;text-decoration:normal'">
+			<tr style="background-color:white;text-decoration:normal">
 				<td>
 					<xsl:value-of select="@Id" />
 				</td>
