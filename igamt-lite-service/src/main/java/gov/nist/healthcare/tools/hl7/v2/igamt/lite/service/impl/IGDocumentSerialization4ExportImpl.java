@@ -245,6 +245,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		} else {
 			xsect.addAttribute(new Attribute("title", ""));
 		}
+		if (profile.getSectionContents()!= null && !profile.getSectionContents().isEmpty()){
+			nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
+			sectCont.appendChild("<div class=\"fr-view\">" + profile.getSectionContents() + "</div>"); 
+			xsect.appendChild(sectCont);
+		}
 
 		nu.xom.Element e = new nu.xom.Element("ConformanceProfile");
 		e.addAttribute(new Attribute("ID", profile.getId()));
@@ -304,7 +309,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			}
 		}
 
-		if (profile.getUsageNote() != null) {
+		if (profile.getUsageNote() != null && !profile.getUsageNote().isEmpty()) {
 			nu.xom.Element ts = new nu.xom.Element("Text");
 			if (profile.getUsageNote() != null && !profile.getUsageNote().equals("")) {
 				nu.xom.Element elmUsageNote = new nu.xom.Element("UsageNote");
@@ -328,6 +333,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		} else {
 			msd.addAttribute(new Attribute("title", ""));
 		}
+		if (profile.getMessages().getSectionContents()!= null && !profile.getMessages().getSectionContents().isEmpty()){
+			nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
+			sectCont.appendChild("<div class=\"fr-view\">" + profile.getMessages().getSectionContents() + "</div>"); 
+			msd.appendChild(sectCont);
+		}
 
 		//		profile.getMessages().setPositionsOrder();
 		List<Message> msgList = new ArrayList<>(profile.getMessages().getChildren());
@@ -350,6 +360,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		} else {
 			ss.addAttribute(new Attribute("title", ""));
 		}
+		if (profile.getSegments().getSectionContents()!= null && !profile.getSegments().getSectionContents().isEmpty()){
+			nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
+			sectCont.appendChild("<div class=\"fr-view\">" + profile.getSegments().getSectionContents() + "</div>"); 
+			ss.appendChild(sectCont);
+		}
 
 		//		profile.getSegments().setPositionsOrder();
 		List<Segment> sgtList = new ArrayList<>(profile.getSegments().getChildren());
@@ -371,6 +386,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ds.addAttribute(new Attribute("title", profile.getDatatypes().getSectionTitle()));
 		} else {
 			ds.addAttribute(new Attribute("title", ""));
+		}
+		if (profile.getDatatypes().getSectionContents()!= null && !profile.getDatatypes().getSectionContents().isEmpty()){
+			nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
+			sectCont.appendChild("<div class=\"fr-view\">" + profile.getDatatypes().getSectionContents() + "</div>"); 
+			ds.appendChild(sectCont);
 		}
 
 		//		profile.getDatatypes().setPositionsOrder();
@@ -396,6 +416,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 			ts.addAttribute(new Attribute("title", profile.getTables().getSectionTitle()));
 		} else {
 			ts.addAttribute(new Attribute("title", ""));
+		}
+		if (profile.getTables().getSectionContents()!= null && !profile.getTables().getSectionContents().isEmpty()){
+			nu.xom.Element sectCont = new nu.xom.Element("SectionContent");
+			sectCont.appendChild("<div class=\"fr-view\">" + profile.getTables().getSectionContents() + "</div>"); 
+			ts.appendChild(sectCont);
 		}
 
 		//		profile.getTables().setPositionsOrder();
