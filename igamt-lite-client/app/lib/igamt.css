@@ -125,3 +125,9 @@
 .panel-group .panel {
     border-radius:0px;
 }
+
+
+.form-control {
+    background-color: #efefef;
+    cursor: pointer;
+}
