@@ -936,12 +936,12 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		if (m.getDescription() != null && !m.getDescription().equals(""))
 			elmMessage.addAttribute(new Attribute("Description", m
 					.getDescription()));
-		if (m.getComment() != null && !m.getComment().equals("")) {
+		if (m.getComment() != null && !m.getComment().isEmpty()) {
 			elmMessage.addAttribute(new Attribute("Comment", m.getComment()));
 		}
 		//		elmMessage.addAttribute(new Attribute("Position", m.getPosition().toString()));
 		elmMessage.addAttribute(new Attribute("Position", String.valueOf(m.getSectionPosition()+1)));
-		if (m.getUsageNote() != null && !m.getUsageNote().equals("")) {
+		if (m.getUsageNote() != null && !m.getUsageNote().isEmpty()) {
 			elmMessage.appendChild(this.serializeRichtext("UsageNote", m.getUsageNote()));
 		}
 
@@ -1043,7 +1043,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		elmSegment.addAttribute(new Attribute("Position", String.valueOf(s.getSectionPosition()+1)));
 		elmSegment
 		.addAttribute(new Attribute("Description", s.getDescription()));
-		if (s.getComment() != null){
+		if (s.getComment() != null && !s.getComment().isEmpty()){
 			elmSegment.addAttribute(new Attribute("Comment", s.getComment()));
 		}
 
@@ -1052,10 +1052,10 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		elmSegment.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition()+1)));
 
 		//TODO if ( !s.getText1().equals("") | !s.getText2().equals("")){
-		if (s.getText1()!= null && !s.getText1().equals("")){
+		if (s.getText1()!= null && !s.getText1().isEmpty()){
 			elmSegment.appendChild(this.serializeRichtext("Text1", s.getText1()));
 		}
-		if (s.getText2()!= null && !s.getText2().equals("")){
+		if (s.getText2()!= null && !s.getText2().isEmpty()){
 			elmSegment.appendChild(this.serializeRichtext("Text2", s.getText2()));
 		}
 		//              }
@@ -1093,10 +1093,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 						f.getTable()).getBindingIdentifier()+""));
 			if (f.getItemNo() != null && !f.getItemNo().equals(""))
 				elmField.addAttribute(new Attribute("ItemNo", f.getItemNo()));
-			if (f.getComment() != null && !f.getText().equals(""))
+			if (f.getComment() != null && !f.getComment().isEmpty())
 				elmField.addAttribute(new Attribute("Comment", f.getComment()));
 			elmField.addAttribute(new Attribute("Position", String.valueOf(f.getPosition())));
-
 
 			if (f.getText() != null && !f.getText().equals("")){
 				elmField.appendChild(this.serializeRichtext("Text", f.getText()));

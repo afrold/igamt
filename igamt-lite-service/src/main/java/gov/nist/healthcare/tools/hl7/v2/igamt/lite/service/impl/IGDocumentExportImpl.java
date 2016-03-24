@@ -922,7 +922,7 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			// Apply XSL transformation on xml file to generate html
 			transformer = factory.newTransformer(xslt);
 			transformer.setParameter("inlineConstraints", inlineConstraints);
-			transformer.setParameter("includeTOC", "false");
+			transformer.setParameter("includeTOC", "true");
 
 			transformer.transform(new StreamSource(tmpXmlFile), new StreamResult(tmpHtmlFile));
 			return FileUtils.openInputStream(tmpHtmlFile);
@@ -1896,7 +1896,24 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 			// .. content type
 			wordMLPackage.getContentTypeManager().addDefaultContentType("html", "text/html");
 
-			addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
+			
+			
+//			Tidy tidy = new Tidy();
+//			tidy.setWraplen(Integer.MAX_VALUE);
+//			tidy.setXHTML(true);
+//			tidy.setShowWarnings(false); //to hide errors
+//			tidy.setQuiet(true); //to hide warning
+//			InputStream inputStream = new ByteArrayInputStream(html.getBytes());
+//			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//			tidy.parseDOM(inputStream, outputStream);
+//			File cleanTmpHtmlFile = File.createTempFile("IGDocTemp", ".html");
+//			FileUtils.writeByteArrayToFile(cleanTmpHtmlFile, outputStream.toByteArray());
+//			XHTMLImporterImpl XHTMLImporter = new XHTMLImporterImpl(wordMLPackage);
+//			wordMLPackage.getMainDocumentPart().getContent().addAll( 
+//						XHTMLImporter.convert(cleanTmpHtmlFile, null) );
+			
+			
+//			addConformanceInformationForDocx4j(igdoc, wordMLPackage, factory);
 
 			loadTemplateForDocx4j(wordMLPackage); //Repeats the lines above but necessary; don't delete
 
