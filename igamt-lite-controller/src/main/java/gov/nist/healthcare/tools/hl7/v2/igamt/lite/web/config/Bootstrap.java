@@ -49,8 +49,8 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		loadPreloadedIGDocuments();
-		checkTableNameForAllIGDocuments();
+		// loadPreloadedIGDocuments();
+		// checkTableNameForAllIGDocuments();
 	}
 
 	private void loadPreloadedIGDocuments() throws Exception {
@@ -68,41 +68,46 @@ public class Bootstrap implements InitializingBean {
 		profile.setScope(IGDocumentScope.PRELOADED);
 
 		d.addProfile(profile);
-		
+
 		boolean existPreloadedDocument = false;
-		
+
 		String documentID = d.getMetaData().getIdentifier();
 		String documentVersion = d.getMetaData().getVersion();
-		
+
 		List<IGDocument> igDocuments = documentService.findAll();
-		
-		for(IGDocument igd:igDocuments){
-			if(igd.getScope().equals(IGDocumentScope.PRELOADED) && documentID.equals(igd.getMetaData().getIdentifier()) && documentVersion.equals(igd.getMetaData().getVersion())){
+
+		for (IGDocument igd : igDocuments) {
+			if (igd.getScope().equals(IGDocumentScope.PRELOADED)
+					&& documentID.equals(igd.getMetaData().getIdentifier())
+					&& documentVersion.equals(igd.getMetaData().getVersion())) {
 				existPreloadedDocument = true;
 			}
 		}
-		if(!existPreloadedDocument) documentService.save(d);
+		if (!existPreloadedDocument)
+			documentService.save(d);
 	}
-	
-	private void checkTableNameForAllIGDocuments() throws IGDocumentSaveException {
-		
+
+	private void checkTableNameForAllIGDocuments()
+			throws IGDocumentSaveException {
+
 		List<IGDocument> igDocuments = documentService.findAll();
-		
-		for(IGDocument igd:igDocuments){
+
+		for (IGDocument igd : igDocuments) {
 			boolean ischanged = false;
 			Tables tables = igd.getProfile().getTables();
-			
-			for(Table t:tables.getChildren()){
-				if(t.getName() == null || t.getName().equals("")){
-					if(t.getDescription() != null){
+
+			for (Table t : tables.getChildren()) {
+				if (t.getName() == null || t.getName().equals("")) {
+					if (t.getDescription() != null) {
 						t.setName(t.getDescription());
 						ischanged = true;
-					}
-					else t.setName("NONAME");
+					} else
+						t.setName("NONAME");
 				}
 			}
-			
-			if(ischanged) documentService.apply(igd);
+
+			if (ischanged)
+				documentService.apply(igd);
 		}
 	}
 
