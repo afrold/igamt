@@ -178,7 +178,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.$on('IdleTimeout', function () {
             closeModals();
-            if ($scope.isAuthenticated) {
+            if ($scope.isAuthenticated()) {
                 if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.hasChanges()) {
                     $rootScope.$emit('event:saveAndExecLogout');
                 }else {
@@ -192,7 +192,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         });
 
         $scope.$on('Keepalive', function() {
-            IdleService.keepAlive();
+            if ($scope.isAuthenticated()) {
+                IdleService.keepAlive();
+            }
         });
 
         $rootScope.$on('event:execLogout', function () {
