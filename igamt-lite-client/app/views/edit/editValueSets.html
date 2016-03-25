@@ -27,13 +27,6 @@
 
 
 <div class="col-md-12">
-    <!--<accordion close-others="false">-->
-    <!--<accordion-group is-open="true" panel-class="panel-info">-->
-    <!--<accordion-heading>-->
-    <!--<i class="fa"-->
-    <!--ng-class="{'fa-caret-down': accordi.metaData, 'fa-caret-right': !accordi.metaData}"></i>-->
-    <!--MetaData-->
-    <!--</accordion-heading>-->
          <div class="col-md-6">
             <label>Mapping Identifier</label>
             <span style="color:red" ng-show="isDuplicated(table,'bindingIdentifier', tables)">Existing mapping Identifier</span>
@@ -117,7 +110,7 @@
     <div class="col-md-12">
  										<span class="pull-right">
 											<button title="Add new Value" type="button" ng-hide="viewSettings.tableReadonly"
-                                                    class="btn btn-sm btn-info" ng-click="addValue()">
+                                                    class="btn btn-sm btn-info" ng-click="addValue(); searchValue.value = ''; searchValue.label = '';">
                                                 <span><i class="fa fa-plus fa-fw"></i>&nbsp; Add Value</span>
                                             </button>
 										</span>
@@ -172,7 +165,11 @@
                                     </button>
                                 </div>
 							</th>
-							<th/>
+							<th>
+								<button title="Reset Search" type="button" class="btn btn-xs btn-info" ng-click="searchValue.value = ''; searchValue.label = '';">
+                                    <i class="fa fa-refresh fa-fw"></i>
+                                </button>
+							</th>
 						</tr>
                         </thead>
                         <tbody>

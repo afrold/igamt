@@ -170,6 +170,11 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     $scope.newComplexConstraintId = '';
     $scope.newComplexConstraintClassification = 'E';
     $scope.newComplexConstraint = [];
+    
+    $scope.changed = false;
+    $scope.tempPredicates = [];
+    angular.copy($scope.selectedMessage.predicates, $scope.tempPredicates);
+    
        
     $scope.initPredicate = function(){
     	$scope.newConstraint = angular.fromJson({
@@ -216,11 +221,22 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     }
 
     $scope.deletePredicate = function (predicate) {
-        $scope.selectedMessage.predicates.splice($scope.selectedMessage.predicates.indexOf(predicate), 1);
+        $scope.tempPredicates.splice($scope.tempPredicates.indexOf(predicate), 1);
+        $scope.changed = true;
     };
     
     $scope.deletePredicateForComplex = function (predicate) {
     	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(predicate), 1);
+    };
+    
+    $scope.deletePredicateByTarget = function () {
+        for (var i = 0, len1 = $scope.tempPredicates.length; i < len1; i++) {
+            if ($scope.tempPredicates[i].constraintTarget === $scope.selectedNode.path) {
+                $scope.deletePredicate($scope.tempPredicates[i]);
+                return true;
+            }
+        }
+        return false;
     };
 
     $scope.updateLocation1 = function () {
@@ -366,14 +382,15 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     }
     
     $scope.addComplexConformanceStatement = function(){
+    	$scope.deletePredicateByTarget();
         $scope.complexConstraint.constraintId = $scope.complexConstraint.constraintTarget;
         $scope.complexConstraint.constraintClassification = $scope.newComplexConstraintClassification;
         $scope.complexConstraint.assertion = "<Condition>" + $scope.complexConstraint.assertion + "</Condition>";
-        $scope.selectedMessage.predicates.push($scope.complexConstraint);
-        $rootScope.recordChanged();
+        $scope.tempPredicates.push($scope.complexConstraint);
         $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
         $scope.complexConstraint = null;
         $scope.newComplexConstraintClassification = 'E';
+        $scope.changed = true;
     };
     
     $scope.compositeConformanceStatements = function(){
@@ -387,14 +404,15 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     
 
     $scope.addPredicate = function () {
+    	$scope.deletePredicateByTarget();
         if ($scope.newConstraint.position_1 != null) {
         	$rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
         	var positionPath = selectedNode.path;
         	var cp = $rootScope.generatePredicate(positionPath, $scope.newConstraint);
             if($scope.constraintType === 'Plain'){
             	cp.assertion = "<Condition>" + cp.assertion + "</Condition>";
-            	$scope.selectedMessage.predicates.push(cp);
-                $rootScope.recordChanged();
+            	$scope.tempPredicates.push(cp);
+                $scope.changed = true;
             }else if ($scope.constraintType === 'Complex'){
             	$scope.newComplexConstraint.push(cp);
             }
@@ -403,6 +421,12 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     };
 
     $scope.ok = function () {
+        $modalInstance.close($scope.selectedNode);
+    };
+    
+    $scope.saveclose = function () {
+    	angular.copy($scope.tempPredicates, $scope.selectedMessage.predicates);
+    	$rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);
     };
     
@@ -422,6 +446,11 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     $scope.newComplexConstraintId = '';
     $scope.newComplexConstraintClassification = 'E';
     $scope.newComplexConstraint = [];
+    
+    
+    $scope.changed = false;
+    $scope.tempComformanceStatements = [];
+    angular.copy($scope.selectedMessage.conformanceStatements, $scope.tempComformanceStatements);
     
     $scope.initConformanceStatement = function (){
     	$scope.newConstraint = angular.fromJson({
@@ -599,7 +628,8 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     };
 
     $scope.deleteConformanceStatement = function (conformanceStatement) {
-    	$scope.selectedMessage.conformanceStatements.splice($scope.selectedMessage.conformanceStatements.indexOf(conformanceStatement), 1);
+    	$scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
+        $scope.changed = true;
     };
     
     $scope.deleteConformanceStatementForComplex = function (conformanceStatement) {
@@ -620,12 +650,13 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
     	$scope.complexConstraint.constraintClassification = $scope.newComplexConstraintClassification;
     	$scope.complexConstraint.assertion = "<Assertion>" + $scope.complexConstraint.assertion + "</Assertion>";
-    	$scope.selectedMessage.conformanceStatements.push($scope.complexConstraint);
+    	$scope.tempComformanceStatements.push($scope.complexConstraint);
         $rootScope.recordChanged();
         $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
         $scope.complexConstraint = null;
         $scope.newComplexConstraintId = '';
         $scope.newComplexConstraintClassification = 'E';
+        $scope.changed = true;
     };
     
     $scope.compositeConformanceStatements = function(){
@@ -645,8 +676,8 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
         	var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
             if($scope.constraintType === 'Plain'){
             	cs.assertion = "<Assertion>" + cs.assertion + "</Assertion>";
-            	$scope.selectedMessage.conformanceStatements.push(cs);
-                $rootScope.recordChanged();
+            	$scope.tempComformanceStatements.push(cs);
+            	$scope.changed = true;
             }else if ($scope.constraintType === 'Complex'){
             	$scope.newComplexConstraint.push(cs);
             }
@@ -656,6 +687,12 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     };
 
     $scope.ok = function () {
+        $modalInstance.close($scope.selectedNode);
+    };
+    
+    $scope.saveclose = function () {
+    	angular.copy($scope.tempComformanceStatements, $scope.selectedMessage.conformanceStatements);
+    	$rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);
     };
 

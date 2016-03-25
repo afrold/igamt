@@ -401,6 +401,11 @@ select.form-control {
   cursor: pointer;
 }
 
+select.form-control-short {
+  width: 100px !important;
+  display: initial !important;
+}
+
 select.form-control-warning {
   background-color: #B33A3A;
   cursor: pointer;
@@ -2065,6 +2070,11 @@ input.form-control {
   padding: 0px;
 }
 
+input.form-control-short {
+  width: 100px !important;
+  display: initial !important;
+}
+
 .info-dlg {
   font-size: 20px;
   line-height: 1.4;
@@ -2202,3 +2212,12 @@ table.conformance-profiles-table td {
 .green {
   color: #c1f0a2;
 }
+
+.btn-xxs {
+	padding: 5px 10px !important;
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 3px !important;
+    margin: 0px !important;
+}
+
