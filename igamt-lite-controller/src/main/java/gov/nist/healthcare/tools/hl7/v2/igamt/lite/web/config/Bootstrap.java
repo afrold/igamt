@@ -14,6 +14,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
@@ -46,18 +49,8 @@ public class Bootstrap implements InitializingBean {
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		// init();
 		// loadPreloadedIGDocuments();
-	}
-
-	private void init2() throws Exception {
-		List<Profile> profiles = profileService.findAllProfiles();
-
-		for (Profile p : profiles) {
-			IGDocument d = new IGDocument();
-			d.addProfile(p);
-			documentService.save(d);
-		}
+		// checkTableNameForAllIGDocuments();
 	}
 
 	private void loadPreloadedIGDocuments() throws Exception {
@@ -75,7 +68,47 @@ public class Bootstrap implements InitializingBean {
 		profile.setScope(IGDocumentScope.PRELOADED);
 
 		d.addProfile(profile);
-		documentService.save(d);
+
+		boolean existPreloadedDocument = false;
+
+		String documentID = d.getMetaData().getIdentifier();
+		String documentVersion = d.getMetaData().getVersion();
+
+		List<IGDocument> igDocuments = documentService.findAll();
+
+		for (IGDocument igd : igDocuments) {
+			if (igd.getScope().equals(IGDocumentScope.PRELOADED)
+					&& documentID.equals(igd.getMetaData().getIdentifier())
+					&& documentVersion.equals(igd.getMetaData().getVersion())) {
+				existPreloadedDocument = true;
+			}
+		}
+		if (!existPreloadedDocument)
+			documentService.save(d);
+	}
+
+	private void checkTableNameForAllIGDocuments()
+			throws IGDocumentSaveException {
+
+		List<IGDocument> igDocuments = documentService.findAll();
+
+		for (IGDocument igd : igDocuments) {
+			boolean ischanged = false;
+			Tables tables = igd.getProfile().getTables();
+
+			for (Table t : tables.getChildren()) {
+				if (t.getName() == null || t.getName().equals("")) {
+					if (t.getDescription() != null) {
+						t.setName(t.getDescription());
+						ischanged = true;
+					} else
+						t.setName("NONAME");
+				}
+			}
+
+			if (ischanged)
+				documentService.apply(igd);
+		}
 	}
 
 }

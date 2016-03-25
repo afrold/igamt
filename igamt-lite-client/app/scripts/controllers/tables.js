@@ -70,7 +70,7 @@ angular.module('igl').controller('TableListCtrl', function ($scope, $rootScope, 
             value: '',
             label: '',
             codeSystem: null,
-            codeUsage: 'E'
+            codeUsage: 'R'
         };
 
 

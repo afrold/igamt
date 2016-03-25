@@ -190,7 +190,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		for (Message m : profile.getMessages().getChildren()) {
 			e.appendChild(this.serializeDisplayMessage(m, profile));
 		}
-		
+		e.appendChild(new TableSerializationImpl().serializeTableLibraryToElement(profile));
 		nu.xom.Document doc = new nu.xom.Document(e);
 		return doc;
 	}
@@ -1724,7 +1724,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		ZipOutputStream out = new ZipOutputStream(outputStream);
 
 		this.generateGazelleProfileIS(out, this.serializeProfileGazelleToXML(profile));
-		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(profile)); //TODO need implement gazelle Table
+//		this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToGazelleXML(profile));
 
 		out.close();
 		bytes = outputStream.toByteArray();
@@ -1740,10 +1740,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		for(Profile p:profiles){
 			Message m = p.getMessages().getChildren().iterator().next();
 			String folderName = m.getIdentifier() + "(" + m.getName() + ")";
-			
-			
 			this.generateDisplayProfileIS(out, this.serializeProfileDisplayToXML(p), folderName);
-			this.generateValueSetIS(out, new TableSerializationImpl().serializeTableLibraryToXML(p), folderName);
 		}
 
 
@@ -1813,18 +1810,6 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		}
 		out.closeEntry();
 		inProfile.close();
-	}
-
-	private void generateValueSetIS(ZipOutputStream out, String valueSetXML, String name) throws IOException {
-		byte[] buf = new byte[1024];
-		out.putNextEntry(new ZipEntry(name +  File.separator + "ValueSets.xml"));
-		InputStream inValueSet = IOUtils.toInputStream(valueSetXML);
-		int lenTP;
-		while ((lenTP = inValueSet.read(buf)) > 0) {
-			out.write(buf, 0, lenTP);
-		}
-		out.closeEntry();
-		inValueSet.close();
 	}
 	
 	private void generateValueSetIS(ZipOutputStream out, String valueSetXML) throws IOException {

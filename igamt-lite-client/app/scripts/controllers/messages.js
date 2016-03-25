@@ -4,9 +4,10 @@
 
 angular.module('igl')
     .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
-        $scope.init = function () {
-        };
 
+    	$scope.init = function () {
+        };
+        
         $scope.copy = function(message) {
         		CloneDeleteSvc.copyMessage(message);
     			$rootScope.$broadcast('event:SetToC');
@@ -44,8 +45,6 @@ angular.module('igl')
           	}else if(node.type === 'field' || node.type === 'component'){
           		return $rootScope.datatypesMap[node.datatype].components && $rootScope.datatypesMap[node.datatype].components.length > 0;
           	}
-          	
-          	
           	return false;
           }else {
           	return false;
@@ -256,7 +255,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         } else if ($scope.newConstraint.currentNode_1.type === 'segment') {
             for (var i = 0, len1 = $scope.newConstraint.currentNode_1.node.fields.length; i < len1; i++) {
                 var fieldModel = {
-                    name: $scope.newConstraint.location_1 + '.' + $scope.newConstraint.currentNode_1.node.fields[i].position,
+                    name: $scope.newConstraint.location_1 + '-' + $scope.newConstraint.currentNode_1.node.fields[i].position,
                     position: $scope.newConstraint.currentNode_1.node.fields[i].position,
                     type: 'field',
                     node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.fields[i].datatype]
@@ -322,7 +321,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         } else if ($scope.newConstraint.currentNode_2.type === 'segment') {
             for (var i = 0, len1 = $scope.newConstraint.currentNode_2.node.fields.length; i < len1; i++) {
                 var fieldModel = {
-                    name: $scope.newConstraint.location_2 + '.' + $scope.newConstraint.currentNode_2.node.fields[i].position,
+                    name: $scope.newConstraint.location_2 + '-' + $scope.newConstraint.currentNode_2.node.fields[i].position,
                     position: $scope.newConstraint.currentNode_2.node.fields[i].position,
                     type: 'field',
                     node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.fields[i].datatype]
@@ -499,7 +498,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
         } else if ($scope.newConstraint.currentNode_1.type === 'segment') {
             for (var i = 0, len1 = $scope.newConstraint.currentNode_1.node.fields.length; i < len1; i++) {
                 var fieldModel = {
-                    name: $scope.newConstraint.location_1 + '.' + $scope.newConstraint.currentNode_1.node.fields[i].position,
+                    name: $scope.newConstraint.location_1 + '-' + $scope.newConstraint.currentNode_1.node.fields[i].position,
                     position: $scope.newConstraint.currentNode_1.node.fields[i].position,
                     type: 'field',
                     node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.fields[i].datatype]
@@ -565,7 +564,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
         } else if ($scope.newConstraint.currentNode_2.type === 'segment') {
             for (var i = 0, len1 = $scope.newConstraint.currentNode_2.node.fields.length; i < len1; i++) {
                 var fieldModel = {
-                    name: $scope.newConstraint.location_2 + '.' + $scope.newConstraint.currentNode_2.node.fields[i].position,
+                    name: $scope.newConstraint.location_2 + '-' + $scope.newConstraint.currentNode_2.node.fields[i].position,
                     position: $scope.newConstraint.currentNode_2.node.fields[i].position,
                     type: 'field',
                     node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.fields[i].datatype]

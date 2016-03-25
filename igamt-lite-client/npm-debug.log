@@ -1,0 +1,165 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/Cellar/node/0.10.24/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'grunt-remove-logging' ]
+2 info using npm@1.3.21
+3 info using node@v0.10.24
+4 warn package.json igl@0.0.0 No repository field.
+5 verbose readDependencies using package.json deps
+6 verbose cache add [ 'grunt-remove-logging', null ]
+7 verbose cache add name=undefined spec="grunt-remove-logging" args=["grunt-remove-logging",null]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: 'grunt-remove-logging',
+8 verbose parsed url   path: 'grunt-remove-logging',
+8 verbose parsed url   href: 'grunt-remove-logging' }
+9 silly lockFile 19f7a0a9-grunt-remove-logging grunt-remove-logging
+10 verbose lock grunt-remove-logging /Users/haffo/.npm/19f7a0a9-grunt-remove-logging.lock
+11 silly lockFile 19f7a0a9-grunt-remove-logging grunt-remove-logging
+12 silly lockFile 19f7a0a9-grunt-remove-logging grunt-remove-logging
+13 verbose addNamed [ 'grunt-remove-logging', '' ]
+14 verbose addNamed [ null, '*' ]
+15 silly lockFile d9f35211-grunt-remove-logging grunt-remove-logging@
+16 verbose lock grunt-remove-logging@ /Users/haffo/.npm/d9f35211-grunt-remove-logging.lock
+17 silly addNameRange { name: 'grunt-remove-logging', range: '*', hasData: false }
+18 verbose url raw grunt-remove-logging
+19 verbose url resolving [ 'https://registry.npmjs.org/', './grunt-remove-logging' ]
+20 verbose url resolved https://registry.npmjs.org/grunt-remove-logging
+21 info trying registry request attempt 1 at 15:13:36
+22 verbose etag "3BJ9UQCSNBFI8M2LJXJOKT4TV"
+23 http GET https://registry.npmjs.org/grunt-remove-logging
+24 http 304 https://registry.npmjs.org/grunt-remove-logging
+25 silly registry.get cb [ 304,
+25 silly registry.get   { date: 'Fri, 18 Mar 2016 19:13:37 GMT',
+25 silly registry.get     via: '1.1 varnish',
+25 silly registry.get     'cache-control': 'max-age=300',
+25 silly registry.get     etag: '"3BJ9UQCSNBFI8M2LJXJOKT4TV"',
+25 silly registry.get     age: '134',
+25 silly registry.get     connection: 'keep-alive',
+25 silly registry.get     'x-served-by': 'cache-atl6246-ATL',
+25 silly registry.get     'x-cache': 'HIT',
+25 silly registry.get     'x-cache-hits': '1',
+25 silly registry.get     'x-timer': 'S1458328417.776470,VS0,VE0',
+25 silly registry.get     vary: 'Accept' } ]
+26 verbose etag grunt-remove-logging from cache
+27 silly addNameRange number 2 { name: 'grunt-remove-logging', range: '*', hasData: true }
+28 silly addNameRange versions [ 'grunt-remove-logging',
+28 silly addNameRange   [ '0.0.1',
+28 silly addNameRange     '0.0.2',
+28 silly addNameRange     '0.0.3',
+28 silly addNameRange     '0.0.4',
+28 silly addNameRange     '0.0.5',
+28 silly addNameRange     '0.1.0',
+28 silly addNameRange     '0.1.1',
+28 silly addNameRange     '0.2.0' ] ]
+29 verbose addNamed [ 'grunt-remove-logging', '0.2.0' ]
+30 verbose addNamed [ '0.2.0', '0.2.0' ]
+31 silly lockFile 8f5ab9ed-grunt-remove-logging-0-2-0 grunt-remove-logging@0.2.0
+32 verbose lock grunt-remove-logging@0.2.0 /Users/haffo/.npm/8f5ab9ed-grunt-remove-logging-0-2-0.lock
+33 silly lockFile 8f5ab9ed-grunt-remove-logging-0-2-0 grunt-remove-logging@0.2.0
+34 silly lockFile 8f5ab9ed-grunt-remove-logging-0-2-0 grunt-remove-logging@0.2.0
+35 silly lockFile d9f35211-grunt-remove-logging grunt-remove-logging@
+36 silly lockFile d9f35211-grunt-remove-logging grunt-remove-logging@
+37 silly resolved [ { name: 'grunt-remove-logging',
+37 silly resolved     description: 'Grunt task to remove console logging statements',
+37 silly resolved     version: '0.2.0',
+37 silly resolved     homepage: 'https://github.com/ehynds/grunt-remove-logging',
+37 silly resolved     author:
+37 silly resolved      { name: 'Eric Hynds',
+37 silly resolved        email: 'ehynds@gmail.com',
+37 silly resolved        url: 'http://erichynds.com' },
+37 silly resolved     contributors:
+37 silly resolved      { name: 'Thomas Welton',
+37 silly resolved        email: 'thomaswelton@me.com',
+37 silly resolved        url: 'https://github.com/thomaswelton' },
+37 silly resolved     repository:
+37 silly resolved      { type: 'git',
+37 silly resolved        url: 'git://github.com/ehynds/grunt-remove-logging.git' },
+37 silly resolved     bugs: { url: 'https://github.com/ehynds/grunt-remove-logging/issues' },
+37 silly resolved     main: 'grunt.js',
+37 silly resolved     bin: { 'grunt-remove-logging': 'bin/grunt-remove-logging' },
+37 silly resolved     engines: { node: '*' },
+37 silly resolved     scripts: { test: 'grunt test' },
+37 silly resolved     devDependencies:
+37 silly resolved      { grunt: '~0.4.2',
+37 silly resolved        'grunt-contrib-jshint': '~0.7.2',
+37 silly resolved        'grunt-contrib-nodeunit': '~0.2.2' },
+37 silly resolved     keywords:
+37 silly resolved      [ 'gruntplugin',
+37 silly resolved        'console',
+37 silly resolved        'log',
+37 silly resolved        'debugging',
+37 silly resolved        'remove',
+37 silly resolved        'statements' ],
+37 silly resolved     readme: '## About\n\nThis task removes all console logging statements from your source code.\n\n## Getting Started\n\nInstall this plugin with the command:\n\n```js\nnpm install grunt-remove-logging\n```\n\nNext, add this line to your project\'s grunt file:\n\n```js\ngrunt.loadNpmTasks("grunt-remove-logging");\n```\n\nLastly, add the configuration settings (see below) to your grunt file.\n\n## Documentation\n\nThis task has two required properties, `src` and `dest`. `src` is the path to\nyour source file and `dest` is the file this task will write to (relative to the\ngrunt.js file).\n\nAn example configuration looks like this:\n\n```js\ngrunt.initConfig({\n  removelogging: {\n    dist: {\n      src: "js/application.js",\n      dest: "js/application-clean.js",\n\n      options: {\n        // see below for options. this is optional.\n      }\n    }\n  }\n});\n```\n\nTo run this task against multiple files and **automatically overwrite them**\nwith the resultant output, omit the `dist` option:\n\n```js\ngrunt.initConfig({\n  removelogging: {\n    dist: {\n      src: "dist/**/*.js" // Each file will be overwritten with the output!\n    }\n  }\n});\n```\n\n### Optional Configuration Properties\n\nThis plugin can be customized by specifying the following options:\n\n* `replaceWith`: A value to replace logging statements with. This option defaults to an empty string. If you use fancy statements like `console && console.log("foo");`, you may choose to specify a `replaceWith` value like `0;` so that your scripts don\'t completely break.\n* `namespace`: An array of object names that logging methods are attached to.\nDefaults to `[ \'console\', \'window.console\' ]`. If you use a custom logger, like\n`MyApp.logger.log(foo)`, you would set this option to `[MyApp.logger]`.\n* `methods`: An array of method names to remove. Defaults to [all the methods](http://getfirebug.com/wiki/index.php/Console_API) in the Firebug console API. This option is useful if you want to strip out all `log` methods, but keep `warn` for example.\n\n### Skipping Individual Statements\n\nYou can tell this task to keep specific logging statements by adding the comment directive `/*RemoveLogging:skip*/` after the statement:\n\n```js\nconsole.log("foo");/*RemoveLogging:skip*/\n\n// or:\n\nconsole.log("foo")/*RemoveLogging:skip*/;\n\n// whitespace is fine too, whatever floats your boat:\n\nconsole.log("foo") /* RemoveLogging:skip */;\n```\n',
+37 silly resolved     readmeFilename: 'README.md',
+37 silly resolved     _id: 'grunt-remove-logging@0.2.0',
+37 silly resolved     _from: 'grunt-remove-logging@' } ]
+38 info install grunt-remove-logging@0.2.0 into /Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client
+39 info installOne grunt-remove-logging@0.2.0
+40 info /Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules/grunt-remove-logging unbuild
+41 info preuninstall grunt-remove-logging@0.2.0
+42 info uninstall grunt-remove-logging@0.2.0
+43 verbose true,/Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules,/Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules unbuild grunt-remove-logging@0.2.0
+44 verbose /Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules/.bin,[object Object] binRoot
+45 info postuninstall grunt-remove-logging@0.2.0
+46 verbose tar unpack /Users/haffo/.npm/grunt-remove-logging/0.2.0/package.tgz
+47 silly lockFile f4b6d0a3-ode-modules-grunt-remove-logging tar:///Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules/grunt-remove-logging
+48 verbose lock tar:///Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules/grunt-remove-logging /Users/haffo/.npm/f4b6d0a3-ode-modules-grunt-remove-logging.lock
+49 silly lockFile db5bdabe-remove-logging-0-2-0-package-tgz tar:///Users/haffo/.npm/grunt-remove-logging/0.2.0/package.tgz
+50 verbose lock tar:///Users/haffo/.npm/grunt-remove-logging/0.2.0/package.tgz /Users/haffo/.npm/db5bdabe-remove-logging-0-2-0-package-tgz.lock
+51 silly gunzTarPerm modes [ '755', '644' ]
+52 silly gunzTarPerm extractEntry package.json
+53 silly gunzTarPerm extractEntry .npmignore
+54 silly gunzTarPerm extractEntry README.md
+55 silly gunzTarPerm extractEntry Gruntfile.js
+56 silly gunzTarPerm extractEntry LICENSE-MIT
+57 silly gunzTarPerm extractEntry bin/grunt-remove-logging
+58 silly gunzTarPerm extractEntry example/Gruntfile.js
+59 silly gunzTarPerm extractEntry example/js/app.js
+60 silly gunzTarPerm extractEntry example/js/output.js
+61 silly gunzTarPerm extractEntry tasks/grunt-remove-logging.js
+62 silly gunzTarPerm extractEntry tasks/lib/removelogging.js
+63 silly gunzTarPerm extractEntry test/test.js
+64 silly gunzTarPerm extractEntry test/tests.txt
+65 silly lockFile f4b6d0a3-ode-modules-grunt-remove-logging tar:///Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules/grunt-remove-logging
+66 silly lockFile f4b6d0a3-ode-modules-grunt-remove-logging tar:///Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules/grunt-remove-logging
+67 silly lockFile db5bdabe-remove-logging-0-2-0-package-tgz tar:///Users/haffo/.npm/grunt-remove-logging/0.2.0/package.tgz
+68 silly lockFile db5bdabe-remove-logging-0-2-0-package-tgz tar:///Users/haffo/.npm/grunt-remove-logging/0.2.0/package.tgz
+69 info preinstall grunt-remove-logging@0.2.0
+70 verbose readDependencies using package.json deps
+71 verbose readDependencies using package.json deps
+72 silly resolved []
+73 verbose about to build /Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules/grunt-remove-logging
+74 info build /Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules/grunt-remove-logging
+75 verbose linkStuff [ false,
+75 verbose linkStuff   false,
+75 verbose linkStuff   false,
+75 verbose linkStuff   '/Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules' ]
+76 info linkStuff grunt-remove-logging@0.2.0
+77 verbose linkBins grunt-remove-logging@0.2.0
+78 verbose link bins [ { 'grunt-remove-logging': 'bin/grunt-remove-logging' },
+78 verbose link bins   '/Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client/node_modules/.bin',
+78 verbose link bins   false ]
+79 verbose linkMans grunt-remove-logging@0.2.0
+80 verbose rebuildBundles grunt-remove-logging@0.2.0
+81 info install grunt-remove-logging@0.2.0
+82 info postinstall grunt-remove-logging@0.2.0
+83 error peerinvalid The package karma does not satisfy its siblings' peerDependencies requirements!
+83 error peerinvalid Peer grunt-karma@0.10.1 wants karma@~0.12.0
+83 error peerinvalid Peer karma-phantomjs-launcher@0.1.4 wants karma@>=0.9
+84 error System Darwin 13.4.0
+85 error command "/usr/local/Cellar/node/0.10.24/bin/node" "/usr/local/bin/npm" "install" "grunt-remove-logging"
+86 error cwd /Users/haffo/Documents/DEV/CHECKOUT/github/igamt/igamt-lite-client
+87 error node -v v0.10.24
+88 error npm -v 1.3.21
+89 error code EPEERINVALID
+90 verbose exit [ 1, true ]

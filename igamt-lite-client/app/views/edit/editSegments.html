@@ -20,21 +20,7 @@
                 <form name="segmentForm" id="segmentForm" novalidate class="form-horizontal">
 
                     <div class="igl-page-header">
-									<span class="header4 pull-left">Segment:
-										{{segment.label}}</span>
-                     <span class="pull-right">
-
-        <button title="Create Copy" type="button" class="btn btn-xs btn-info" ng-disabled='!segmentForm.$valid'
-                ng-click="copy(segment)" ng-hide="viewSettings.tableReadonly"
-                >
-            <span><i class="fa fa-plus fa-fw"></i>&nbsp; Copy</span>
-        </button>
-        <button title="Delete" type="button" ng-hide="viewSettings.tableReadonly"
-                class="btn btn-xs btn-danger"
-                ng-click="delete(segment)">
-            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-    </span>
+									<span class="header4 pull-left">Segment: {{segment.label}}</span>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
@@ -73,14 +59,14 @@
                                 <div class="form-group"
                                      ng-class="{'igl-has-error has-feedback' : segmentForm.label.$invalid}">
                                     <label class="control-label">Label</label>
-                                        <span class="igl-has-error has-feedback"
-                                              ng-show="isDuplicated(segment,'label', segments)">Existing label (flavor name)</span>
                                     <input type="text" ng-disabled="viewSettings.tableReadonly"
                                            class="form-control"
                                            ng-change="recordChanged()"
                                            name="label" class="form-control"
                                            ng-model="segment.label"
-                                           required>
+                                           required required aria-describedby="helpBlock2">
+                                    <span id="helpBlock2" class="help-block" style="color:red"
+                                          ng-show="isDuplicated(segment,'label', segments)">Label already used</span>
                                 </div>
                             </div>
 
@@ -127,12 +113,14 @@
                                     <label class="control-label">Definition Post-Text</label>
 
                                     <div ng-if="!viewSettings.tableReadonly">
-                                        <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2"
+                                         <textarea froala="froalaEditorOptions" ng-model="segment.text2" id="text2"
                                                   name="text2"
                                                   ng-change="recordChanged()"></textarea>
-                                    </div>
+                                     </div>
                                     <div ng-if="viewSettings.tableReadonly">
+                                        <div class="fr-view">
                                         <div froala-view="segment.text2"></div>
+                                            </div>
                                     </div>
                                 </div>
 
@@ -331,7 +319,7 @@
             <div>
                 <span ng-show="node.usage !== 'C'  || (node.usage === 'C' && countPredicate(node.position) === 0)">
                 	<select class="form-control input-sm" name="usage"
-                            ng-change="recordChanged()"
+                            ng-change="setUsage(node)"
                             required ng-model="node.usage" ng-options="usage for usage in config.usages"/>
                 </span>
 
@@ -454,10 +442,12 @@
         </td>
 
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
-            <a type="button" ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
+            <a ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
                class="point">
-                <i class="fa fa-plus fa-fw" ng-show="node.text === '' || node.text === null"></i>
-                <i class="fa fa-pencil fa-fw" ng-show="node.text !== '' && node.text !== null"></i>
+                <i class="fa fa-pencil fa-fw"></i>
+            </a>
+            <a ng-click="node.text = ''" ng-show="node.text !== '' && node.text !== null">
+                <i class="fa fa-times fa-fw"></i>
             </a>
         </td>
 
@@ -545,10 +535,12 @@
         </td>
 
         <td class="col-xs-1 col-fixed-80" ng-show="viewSettings.isVisibleColumn('defText')">
-            <a ng-show="node.text !== '' && node.text !== null" type="button"
-               ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
-               class="btn btn-info btn-xs">
+            <a ng-click="openRichTextDlg(node, 'text','Definition Text', false)"
+               class="point">
                 <i class="fa fa-pencil fa-fw"></i>
+            </a>
+            <a ng-click="node.text = ''" ng-show="node.text !== '' && node.text !== null">
+                <i class="fa fa-times fa-fw"></i>
             </a>
         </td>
 
@@ -752,16 +744,14 @@
         <thead>
         <tr class="tbl-header">
             <th class="col-md-2">ID</th>
-            <th class="col-md-7">Desciption</th>
-            <th class="col-md-2">Classification</th>
+            <th class="col-md-9">Desciption</th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="c in segment.conformanceStatements | filter:{constraintTarget:selectedNode.position + '[1]'}:true">
             <td class="col-md-2">{{c.constraintId}}</td>
-            <td class="col-md-7">{{c.description}}</td>
-            <td class="col-md-2">{{c.constraintClassification}}</td>
+            <td class="col-md-9">{{c.description}}</td>
             <td class="col-md-1">
                 <a ng-click="deleteConformanceStatement(c)" class="point">
                     <span><i class="fa fa-times fa-fw"></i></span>
@@ -785,14 +775,13 @@
 <thead>
 <tr class="tbl-header">
     <th class="col-md-2" colspan="1" rowspan="2">ID</th>
-    <th class="col-md-8" colspan="4">Desciption</th>
-    <th class="col-md-1" colspan="1" rowspan="2">Classification</th>
+    <th class="col-md-9" colspan="4">Desciption</th>
     <th class="col-md-1" colspan="1" rowspan="2"></th>
 </tr>
 <tr class="tbl-header">
     <th class="col-md-2" colspan="1">Node</th>
     <th class="col-md-2" colspan="1">Verb</th>
-    <th class="col-md-2" colspan="1">Constraint</th>
+    <th class="col-md-3" colspan="1">Constraint</th>
     <th class="col-md-2" colspan="1">Value</th>
 </tr>
 </thead>
@@ -830,14 +819,14 @@
     <select name="verb" class="form-control"
             ng-change=""
             ng-model="newConstraint.verb"
-            ng-options="constraintVerb for constraintVerb in config.constraintVerbs">
+            ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'">
     </select>
 </td>
-<td class="col-md-2" colspan="1">
+<td class="col-md-3" colspan="1">
     <select name="contraintType" class="form-control"
             ng-change=""
             ng-model="newConstraint.contraintType"
-            ng-options="contraintType for contraintType in config.constraintTypes">
+            ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'">
     </select>
 </td>
 <td class="col-md-2" colspan="1">
@@ -847,7 +836,7 @@
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'one of list values'">
                 			<input style="width:100%" class="form-control" ng-model="newConstraint.value"
-                                   placeholder="CSV Value" type="text"/>
+                                   placeholder="Comma-Separated Values(CSV)" type="text"/>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'formatted value'">
                 			<select name="format" class="form-control"
@@ -1041,13 +1030,6 @@
                 		</span>
 </td>
 <td class="col-md-1" colspan="1">
-    <select ng-model="newConstraint.constraintClassification">
-        <option value="E">Error</option>
-        <option value="W">Warning</option>
-        <option value="A">Alert</option>
-    </select>
-</td>
-<td class="col-md-1" colspan="1">
     <a ng-click="initConformanceStatement()" class="point">
         <span><i class="fa fa-times fa-fw"></i></span>
     </a>
@@ -1127,12 +1109,6 @@
                         ng-model="complexConstraint"
                         ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
                 </select>
-                <span>Constraint Classification: </span>
-                <select ng-model="newComplexConstraintClassification">
-                    <option value="E">Error</option>
-                    <option value="W">Warning</option>
-                    <option value="A">Alert</option>
-                </select>
             </td>
             <td class="col-md-1">
                 <a ng-click="addComplexConformanceStatement()" class="point">
@@ -1163,19 +1139,17 @@
     <table class="table table-striped table-bordered">
         <thead>
         <tr class="tbl-header">
-            <th class="col-md-7">Desciption</th>
+            <th class="col-md-9">Desciption</th>
             <th class="col-md-1">True Usage</th>
             <th class="col-md-1">False Usage</th>
-            <th class="col-md-2">Classification</th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="p in segment.predicates | filter:{constraintTarget:selectedNode.position + '[1]'}:true">
-            <td class="col-md-7">{{p.description}}</td>
+            <td class="col-md-9">{{p.description}}</td>
             <td class="col-md-1">{{p.trueUsage}}</td>
             <td class="col-md-1">{{p.falseUsage}}</td>
-            <td class="col-md-2">{{p.constraintClassification}}</td>
             <td class="col-md-1">
                 <a ng-click="deletePredicate(p)" class="point">
                     <span><i class="fa fa-times fa-fw"></i></span>
@@ -1197,16 +1171,15 @@
 <table class="table table-striped table-bordered">
 <thead>
 <tr class="tbl-header">
-    <th class="col-md-8" colspan="4">Desciption</th>
+    <th class="col-md-9" colspan="4">Desciption</th>
     <th class="col-md-1" colspan="1" rowspan="2">True Usage</th>
     <th class="col-md-1" colspan="1" rowspan="2">False Usage</th>
-    <th class="col-md-1" colspan="1" rowspan="2">Classification</th>
     <th class="col-md-1" colspan="1" rowspan="2"></th>
 </tr>
 <tr class="tbl-header">
     <th class="col-md-2" colspan="1">Node</th>
     <th class="col-md-2" colspan="1">Verb</th>
-    <th class="col-md-2" colspan="1">Constraint</th>
+    <th class="col-md-3" colspan="1">Constraint</th>
     <th class="col-md-2" colspan="1">Value</th>
 </tr>
 </thead>
@@ -1237,14 +1210,14 @@
     <select name="verb" class="form-control"
             ng-change=""
             ng-model="newConstraint.verb"
-            ng-options="constraintVerb for constraintVerb in config.constraintVerbs">
+            ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'">
     </select>
 </td>
-<td class="col-md-2" colspan="1">
+<td class="col-md-3" colspan="1">
     <select name="contraintType" class="form-control"
             ng-change=""
             ng-model="newConstraint.contraintType"
-            ng-options="contraintType for contraintType in config.constraintTypes">
+            ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'">
     </select>
 </td>
 <td class="col-md-2" colspan="1">
@@ -1254,7 +1227,7 @@
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'one of list values'">
                 			<input style="width:100%" class="form-control" ng-model="newConstraint.value"
-                                   placeholder="CSV Value" type="text"/>
+                                   placeholder="Comma-Separated Values(CSV)" type="text"/>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'formatted value'">
                 			<select name="format" class="form-control"
@@ -1447,26 +1420,23 @@
 							<input " ng-model="newConstraint.bindingLocation" type="text"/>
                 		</span>
 </td>
+
 <td class="col-md-1" colspan="1">
     <select name="trueUsage" class="form-control"
             ng-model="newConstraint.trueUsage"
-            ng-options="usage for usage in config.usages">
+            ng-options="usage for usage in config.usages"
+			ng-hide="constraintType == 'Complex'">
     </select>
+	<span ng-show="constraintType == 'Complex'">-</span>
 </td>
 
 <td class="col-md-1" colspan="1">
     <select name="falseUsage" class="form-control"
             ng-model="newConstraint.falseUsage"
-            ng-options="usage for usage in config.usages">
+            ng-options="usage for usage in config.usages"
+			ng-hide="constraintType == 'Complex'">
     </select>
-</td>
-
-<td class="col-md-1" colspan="1">
-    <select ng-model="newConstraint.constraintClassification">
-        <option value="E">Error</option>
-        <option value="W">Warning</option>
-        <option value="A">Alert</option>
-    </select>
+	<span ng-show="constraintType == 'Complex'">-</span>
 </td>
 
 <td class="col-md-1" colspan="1">
@@ -1489,18 +1459,14 @@
         <thead>
         <tr class="tbl-header">
             <th class="col-md-1">ID</th>
-            <th class="col-md-8">Desciption</th>
-            <th class="col-md-1">True Usage</th>
-            <th class="col-md-1">False Usage</th>
+            <th class="col-md-10">Desciption</th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="p in newComplexConstraint">
             <td class="col-md-1">{{p.constraintId}}</td>
-            <td class="col-md-8">{{p.description}}</td>
-            <td class="col-md-1">{{p.trueUsage}}</td>
-            <td class="col-md-1">{{p.falseUsage}}</td>
+            <td class="col-md-10">{{p.description}}</td>
             <td class="col-md-1">
                 <a ng-click="deletePredicateForComplex(p)" class="point">
                     <span><i class="fa fa-minus fa-fw"></i></span>
@@ -1550,12 +1516,16 @@
                         ng-model="complexConstraint"
                         ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
                 </select>
-                <span>Constraint Classification: </span>
-                <select ng-model="newComplexConstraintClassification">
-                    <option value="E">Error</option>
-                    <option value="W">Warning</option>
-                    <option value="A">Alert</option>
-                </select>
+				<span>True usage: </span>
+				<select name="trueUsage"
+            		ng-model="complexConstraint.trueUsage"
+            		ng-options="usage for usage in config.usages">
+    			</select>
+				<span>False usage: </span>
+				<select name="falseUsage"
+            		ng-model="complexConstraint.falseUsage"
+            		ng-options="usage for usage in config.usages">
+    			</select>
             </td>
             <td class="col-md-1">
                 <a ng-click="addComplexConformanceStatement()" class="point">
@@ -1576,108 +1546,118 @@
 
 <script type="text/ng-template" id="TableMappingSegmentCtrl.html">
     <div class="modal-header">
-        <h3 class="modal-title">Mapping Table for {{segment.name}}-{{selectedNode.position}}</h3>
+        <h3 class="modal-title">Edit mapping Table for {{segment.name}}-{{selectedNode.position}}</h3>
     </div>
     <div class="modal-body">
         <div class="row">
             <form role="form">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <h5>List of Tables</h5>
 
-                    <div class="igl-table">
-                        <table st-table="displayedTableCollection" st-safe-src="tables"
-                               class="table table-striped table-bordered">
-                            <thead>
-                            <tr class="tbl-header">
-                                <th st-sort="bindingIdentifier">ID</th>
-                                <th st-sort="Name">Name</th>
-                            </tr>
-                            <tr>
-                                <th colspan="2">
-                                    <input st-search="" class="form-control" placeholder="search table..." type="text"/>
-                                </th>
-                            </tr>
+					<div class="igl-table">
+                    	<table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+							<thead>
+                            	<tr class="tbl-header">
+									<th data-ng-click="predicate = 'bindingIdentifier'; reverse=!reverse">ID 
+    									<i ng-show="reverse && predicate==='bindingIdentifier'" class="fa fa-sort-desc"></i>
+										<i ng-show="!reverse && predicate==='bindingIdentifier'" class="fa fa-sort-asc"></i>
+										<i ng-show="predicate!=='bindingIdentifier'" class="fa fa-sort"></i>
+									</th>
+									<th data-ng-click="predicate = 'name'; reverse=!reverse">Name 
+    									<i ng-show="reverse && predicate==='name'" class="fa fa-sort-desc"></i>
+										<i ng-show="!reverse && predicate==='name'" class="fa fa-sort-asc"></i>
+										<i ng-show="predicate!=='name'" class="fa fa-sort"></i>
+									</th>
+                            	</tr>
+                            	<tr>
+                                	<th>
+										<input type="text" class="form-control" placeholder="Search by id" ng-model="searchTableValue.bindingIdentifier"/>
+                                	</th>
+									<th>
+										<input type="text" class="form-control" placeholder="Search by name" ng-model="searchTableValue.name"/>
+                                	</th>
+                            	</tr>
                             </thead>
-
-                            <tbody>
-                            <tr ng-repeat="row in displayedTableCollection">
-                                <td>
-                                    <a ng-click="selectTable(row)">{{row.bindingIdentifier}}</a>
-                                </td>
-                                <td ng-bind-html="row.name"></td>
-                            </tr>
+							<tbody>
+								<tr ng-repeat="table in tables|filter:searchTableValue|orderBy:predicate:reverse">
+                                	<td>
+                                    	<a ng-click="selectTable(table)">{{table.bindingIdentifier}}</a>
+                                	</td>
+                                	<td ng-bind-html="table.name"></td>
+                            	</tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-6">
+				<h5>Selected Table for {{segment.name}}-{{selectedNode.position}}</h5>
 	 			<span ng-show="selectedTable != undefined">
-	 				<button type="button" ng-click="mappingTable()" class="btn btn-warning">Select this Table for
-                        {{segment.name}}.{{selectedNode.position}}
-                    </button>
-	 				<hr/>
 	 				<div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-2">
                             <p>ID:</p>
-
-                            <p>Name:</p>
-
-                            <p>Type:</p>
-
-                            <p>Stability:</p>
-
                             <p>Extensibility:</p>
-
-                            <p>List of Values:</p>
                         </div>
-                        <div class="col-sm-8">
+                        <div class="col-sm-4">
                             <p>{{selectedTable.bindingIdentifier}}</p>
-
-                            <p>{{selectedTable.name}}</p>
-
-                            <p>{{selectedTable.tableType}}</p>
-
-                            <p>{{selectedTable.stability}}</p>
-
                             <p>{{selectedTable.extensibility}}</p>
                         </div>
+						<div class="col-sm-2">
+                            <p>Name:</p>
+                            <p>Stability:</p>
+                        </div>
+                        <div class="col-sm-4">
+                            <p>{{selectedTable.name}}</p>
+                            <p>{{selectedTable.stability}}</p>
+                        </div>
                     </div>
-					<div class="igl-table">
-                        <table st-table="displayedCodeCollection" st-safe-src="selectedTable.codes"
-                               class="table table-striped table-bordered">
-                            <thead>
-                            <tr class="tbl-header">
-                                <th st-sort="Value">Value</th>
-                                <th st-sort="Label">Label</th>
-                                <th>Codesystem</th>
-                                <th>Usage</th>
-                            </tr>
-                            <tr>
-                                <th colspan="2">
-                                    <input st-search="" class="form-control" placeholder="search value..." type="text"/>
-                                </th>
-                            </tr>
-                            </thead>
 
-                            <tbody>
-                            <tr ng-repeat="row in displayedCodeCollection">
-                                <td ng-bind-html="row.value"></td>
-                                <td ng-bind-html="row.label"></td>
-                                <td ng-bind-html="row.codeSystem"></td>
-                                <td ng-bind-html="row.codeUsage"></td>
-                            </tr>
+					<h5>List of Codes</h5>
+					
+					<div class="igl-table">
+                    	<table class="table table-striped table-bordered table-condensed hl7-versions-valueset">
+							<thead>
+                            	<tr class="tbl-header">
+									<th data-ng-click="predicate = 'value'; reverse=!reverse">Value 
+    									<i ng-show="reverse && predicate==='value'" class="fa fa-sort-desc"></i>
+										<i ng-show="!reverse && predicate==='value'" class="fa fa-sort-asc"></i>
+										<i ng-show="predicate!=='value'" class="fa fa-sort"></i>
+									</th>
+									<th data-ng-click="predicate = 'label'; reverse=!reverse">Description 
+    									<i ng-show="reverse && predicate==='label'" class="fa fa-sort-desc"></i>
+										<i ng-show="!reverse && predicate==='label'" class="fa fa-sort-asc"></i>
+										<i ng-show="predicate!=='label'" class="fa fa-sort"></i>
+									</th>
+									<th>Codesys</th>
+                                	<th>Usage</th>
+                            	</tr>
+                            	<tr>
+                                	<th>
+										<input type="text" class="form-control" placeholder="Search by value" ng-model="searchCodeValue.value"/>
+                                	</th>
+									<th>
+										<input type="text" class="form-control" placeholder="Search by description" ng-model="searchCodeValue.label"/>
+                                	</th>
+                            	</tr>
+                            </thead>
+							<tbody>
+								<tr ng-repeat="c in selectedTable.codes|filter:searchCodeValue|orderBy:predicate:reverse">
+                                	<td ng-bind-html="c.value"></td>
+                                	<td ng-bind-html="c.label"></td>
+                               		<td ng-bind-html="c.codeSystem"></td>
+                                	<td ng-bind-html="c.codeUsage"></td>
+                            	</tr>
                             </tbody>
                         </table>
                     </div>
-
 	 			</span>
                 </div>
             </form>
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Close</span>
-        </button>
+		<button ng-show="changed" type="button" ng-click="mappingTable()" class="btn btn-primary btn-sm"><i class="fa fa-plus fa-fw">&nbsp; </i>Save</button>
+		<button ng-show="changed" type="button" ng-click="ok()" class="btn btn-warning btn-sm"><i class="fa fa-times fa-fw">&nbsp; </i>Close</button>
+		<button ng-show="!changed" class="btn btn-warning btn-sm" ng-click="ok()"><span><i class="fa fa-times fa-fw">&nbsp; </i>Cancel</span></button>
     </div>
 </script>
 

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications',
-    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle,notifications) {
+angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications', 'IdleService','AutoSaveService',
+    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle,notifications,IdleService,AutoSaveService) {
         //This line fetches the info from the server if the user is currently logged in.
         //If success, the app is updated according to the role.
         userInfoService.loadFromServer();
@@ -73,6 +73,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $scope.$emit('event:logoutRequest');
             $rootScope.initMaps();
             $rootScope.igdocument = null;
+            AutoSaveService.stop();
             $location.url('/home');
         };
 
@@ -177,7 +178,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.$on('IdleTimeout', function () {
             closeModals();
-            if ($scope.isAuthenticated) {
+            if ($scope.isAuthenticated()) {
                 if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.hasChanges()) {
                     $rootScope.$emit('event:saveAndExecLogout');
                 }else {
@@ -188,6 +189,12 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                 templateUrl: 'timedout-dialog.html',
                 windowClass: 'modal-danger'
             });
+        });
+
+        $scope.$on('Keepalive', function() {
+            if ($scope.isAuthenticated()) {
+                IdleService.keepAlive();
+            }
         });
 
         $rootScope.$on('event:execLogout', function () {
@@ -692,7 +699,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.processElement = function (element, parent) {
             try {
-                if(element != undefined) {
+                if(element != undefined && element != null) {
                     if (element.type === "message") {
                         element.children = $filter('orderBy')(element.children, 'position');
                         angular.forEach(element.children, function (segmentRefOrGroup) {
@@ -736,67 +743,70 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
 
         $rootScope.processMessageTree = function (element, parent) {
+
             try {
-                if (element.type === "message") {
-                    var m = new Object();
-                    m.children = [];
-                    $rootScope.messageTree = m
+                if(element != undefined && element != null) {
+                    if (element.type === "message") {
+                        var m = new Object();
+                        m.children = [];
+                        $rootScope.messageTree = m;
 
-                    element.children = $filter('orderBy')(element.children, 'position');
-                    angular.forEach(element.children, function (segmentRefOrGroup) {
-                        $rootScope.processMessageTree(segmentRefOrGroup, m);
-                    });
+                        element.children = $filter('orderBy')(element.children, 'position');
+                        angular.forEach(element.children, function (segmentRefOrGroup) {
+                            $rootScope.processMessageTree(segmentRefOrGroup, m);
+                        });
 
-                } else if (element.type === "group" && element.children) {
-                    var g = new Object();
-                    g.path = element.position + "[1]";
-                    g.obj = element;
-                    g.children = [];
-                    if (parent.path) {
-                        g.path = parent.path + "." + element.position + "[1]";
+                    } else if (element.type === "group" && element.children) {
+                        var g = new Object();
+                        g.path = element.position + "[1]";
+                        g.obj = element;
+                        g.children = [];
+                        if (parent.path) {
+                            g.path = parent.path + "." + element.position + "[1]";
+                        }
+                        parent.children.push(g);
+                        element.children = $filter('orderBy')(element.children, 'position');
+                        angular.forEach(element.children, function (segmentRefOrGroup) {
+                            $rootScope.processMessageTree(segmentRefOrGroup, g);
+                        });
+                    } else if (element.type === "segmentRef") {
+                        var s = new Object();
+                        s.path = element.position + "[1]";
+                        s.obj = element;
+                        s.children = [];
+                        if (parent.path) {
+                            s.path = parent.path + "." + element.position + "[1]";
+                        }
+                        parent.children.push(s);
+
+                        var ref = $rootScope.segmentsMap[element.ref];
+                        $rootScope.processMessageTree(ref, s);
+
+                    } else if (element.type === "segment") {
+                        element.fields = $filter('orderBy')(element.fields, 'position');
+                        angular.forEach(element.fields, function (field) {
+                            $rootScope.processMessageTree(field, parent);
+                        });
+                    } else if (element.type === "field") {
+                        var f = new Object();
+                        f.obj = element;
+                        f.path = parent.path + "." + element.position + "[1]";
+                        f.children = [];
+                        parent.children.push(f);
+                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], f);
+                    } else if (element.type === "component") {
+                        var c = new Object();
+                        c.obj = element;
+                        c.path = parent.path + "." + element.position + "[1]";
+                        c.children = [];
+                        parent.children.push(c);
+                        $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], c);
+                    } else if (element.type === "datatype") {
+                        element.components = $filter('orderBy')(element.components, 'position');
+                        angular.forEach(element.components, function (component) {
+                            $rootScope.processMessageTree(component, parent);
+                        });
                     }
-                    parent.children.push(g);
-                    element.children = $filter('orderBy')(element.children, 'position');
-                    angular.forEach(element.children, function (segmentRefOrGroup) {
-                        $rootScope.processMessageTree(segmentRefOrGroup, g);
-                    });
-                } else if (element.type === "segmentRef") {
-                    var s = new Object();
-                    s.path = element.position + "[1]";
-                    s.obj = element;
-                    s.children = [];
-                    if (parent.path) {
-                        s.path = parent.path + "." + element.position + "[1]";
-                    }
-                    parent.children.push(s);
-
-                    var ref = $rootScope.segmentsMap[element.ref];
-                    $rootScope.processMessageTree(ref, s);
-
-                } else if (element.type === "segment") {
-                    element.fields = $filter('orderBy')(element.fields, 'position');
-                    angular.forEach(element.fields, function (field) {
-                        $rootScope.processMessageTree(field, parent);
-                    });
-                } else if (element.type === "field") {
-                    var f = new Object();
-                    f.obj = element;
-                    f.path = parent.path + "." + element.position + "[1]";
-                    f.children = [];
-                    parent.children.push(f);
-                    $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], f);
-                } else if (element.type === "component") {
-                    var c = new Object();
-                    c.obj = element;
-                    c.path = parent.path + "." + element.position + "[1]";
-                    c.children = [];
-                    parent.children.push(c);
-                    $rootScope.processMessageTree($rootScope.datatypesMap[element.datatype], c);
-                } else if (element.type === "datatype") {
-                    element.components = $filter('orderBy')(element.components, 'position');
-                    angular.forEach(element.components, function (component) {
-                        $rootScope.processMessageTree(component, parent);
-                    });
                 }
             } catch (e) {
                 throw e;
@@ -805,7 +815,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.createNewFlavorName = function (label) {
             if ($rootScope.igdocument != null) {
-                return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
+            	if($rootScope.igdocument.metaData["ext"] === null){
+            		return label + "_" + (Math.floor(Math.random() * 10000000) + 1);
+            	}else {
+            		return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
+            	}
             } else {
                 return null;
             }
@@ -959,8 +973,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
-                    trueUsage: firstConstraint.trueUsage,
-                    falseUsage: firstConstraint.falseUsage,
+                    trueUsage: '',
+                    falseUsage: '',
                     assertion: '<AND>' + firstConstraint.assertion + secondConstraint.assertion + '</AND>'
                 };
             } else if (compositeType === 'OR') {
@@ -969,8 +983,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
-                    trueUsage: firstConstraint.trueUsage,
-                    falseUsage: firstConstraint.falseUsage,
+                    trueUsage: '',
+                    falseUsage: '',
                     assertion: '<OR>' + firstConstraint.assertion + secondConstraint.assertion + '</OR>'
                 };
             } else if (compositeType === 'IFTHEN') {
@@ -979,8 +993,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: 'IF [' + firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
-                    trueUsage: firstConstraint.trueUsage,
-                    falseUsage: firstConstraint.falseUsage,
+                    trueUsage: '',
+                    falseUsage: '',
                     assertion: '<IMPLY>' + firstConstraint.assertion + secondConstraint.assertion + '</IMPLY>'
                 };
             }
@@ -1416,6 +1430,18 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
             return _.find(_.without(list, obj), function (item) {
                 return item[context] == obj[context];
+            });
+        };
+        
+        $rootScope.isDuplicatedTwoContexts = function (obj, context1, context2,  list) {
+            if (obj == null || obj == undefined) return false;
+
+            return _.find(_.without(list, obj), function (item) {
+            	if(item[context1] == obj[context1]){
+            		return item[context2] == obj[context2];
+            	}else {
+            		return false
+            	}
             });
         };
 

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -214,4 +216,24 @@ Cloneable, Comparable<Datatype> {
 		}
 		return x;
 	}
+	
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31).
+            append(id).
+            toHashCode();
+    }
+	
+    @Override
+    public boolean equals(Object obj) {
+       if (!(obj instanceof Datatype))
+            return false;
+        if (obj == this)
+            return true;
+
+        Datatype rhs = (Datatype) obj;
+        return new EqualsBuilder().
+            append(id, rhs.id).
+            isEquals();
+    }
 }

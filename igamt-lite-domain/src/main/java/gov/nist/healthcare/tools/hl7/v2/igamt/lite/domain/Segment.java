@@ -1,14 +1,15 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 public class Segment extends SectionModelWithConstraints implements java.io.Serializable,
 Cloneable, Comparable<Segment> {
@@ -22,6 +23,7 @@ Cloneable, Comparable<Segment> {
 	}
 
 	private String id;
+
 	//
 	// @DBRef
 	// private Segments segments;
@@ -53,7 +55,7 @@ Cloneable, Comparable<Segment> {
 	public void setId(String id) {
 		this.id = id;
 	}
-
+	
 	public String getLabel() {
 		return label;
 	}
@@ -139,7 +141,7 @@ Cloneable, Comparable<Segment> {
 
 	@Override
 	public String toString() {
-		return "Segment [id=" + id + ", label=" + label + ", name=" + name
+		return "Segment [id=" + getId() + ", label=" + label + ", name=" + name
 				+ ", description=" + description +  ", comment=" + comment + "]";
 	}
 
@@ -209,4 +211,23 @@ Cloneable, Comparable<Segment> {
 		return x;
 	}
 	
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31).
+            append(id).
+            toHashCode();
+    }
+	
+    @Override
+    public boolean equals(Object obj) {
+       if (!(obj instanceof Segment))
+            return false;
+        if (obj == this)
+            return true;
+
+        Segment rhs = (Segment) obj;
+        return new EqualsBuilder().
+            append(id, rhs.id).
+            isEquals();
+    }
 }

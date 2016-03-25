@@ -32,18 +32,18 @@
                             <span id="helpBlock2" class="help-block" style="color:red"
                                   ng-show="isDuplicated(section,'title', sections)">Label already used</span>
                         </div>
-                         <span class="pull-right">
-        <button title="Create Copy" type="button" class="btn btn-xs btn-info"
-                ng-click="copy(section)" ng-hide="viewSettings.tableReadonly" ng-disabled="sectionForm.$invalid"
-                >
-            <span><i class="fa fa-plus fa-fw"></i>&nbsp; Copy</span>
-        </button>
-        <button title="Delete" type="button" ng-hide="viewSettings.tableReadonly"
-                class="btn btn-xs btn-danger"
-                ng-click="delete(section)">
-            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-        </button>
-    </span>
+                         <!--<span class="pull-right">-->
+        <!--<button title="Create Copy" type="button" class="btn btn-xs btn-info"-->
+                <!--ng-click="copy(section)" ng-hide="viewSettings.tableReadonly" ng-disabled="sectionForm.$invalid"-->
+                <!-->-->
+            <!--<span><i class="fa fa-plus fa-fw"></i>&nbsp; Copy</span>-->
+        <!--</button>-->
+        <!--<button title="Delete" type="button" ng-hide="viewSettings.tableReadonly"-->
+                <!--class="btn btn-xs btn-danger"-->
+                <!--ng-click="delete(section)">-->
+            <!--<span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>-->
+        <!--</button>-->
+    <!--</span>-->
                     </div>
 
                     <div class="col-md-12">
@@ -52,13 +52,15 @@
                             <label>Contents</label>
 
                             <div ng-if="!viewSettings.tableReadonly">
-                                <textarea froala="froalaEditorOptions" ng-model="section.sectionContents"
+                                 <textarea froala="froalaEditorOptions" ng-model="section.sectionContents"
                                           id="content"
                                           name="content" autofocus
                                           ng-change="recordChanged()"></textarea>
-                            </div>
+                             </div>
                             <div ng-if="viewSettings.tableReadonly">
+                                <div class="fr-view">
                                 <div froala-view="section.sectionContents"></div>
+                                    </div>
                             </div>
                         </div>
                     </div>
