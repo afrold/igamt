@@ -40,10 +40,10 @@
 			access="isAnonymous()" />
 		<sec:intercept-url pattern="/api/sooa/usernames/**"
 			access="isAnonymous()" />
-<!--
+
 		<sec:intercept-url pattern="/api/igdocuments/config"
 			access="isAnonymous()" />
-		<sec:intercept-url pattern="/api/datatype-library/config"
+<!--		<sec:intercept-url pattern="/api/datatype-library/config"
 			access="isAnonymous()" />
 -->
 		<sec:intercept-url pattern="/api/sooa/emails/**"
