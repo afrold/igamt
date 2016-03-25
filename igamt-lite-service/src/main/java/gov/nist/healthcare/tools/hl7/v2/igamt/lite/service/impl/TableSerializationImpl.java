@@ -11,21 +11,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.UUID;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
@@ -35,7 +20,25 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import nu.xom.Attribute;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class TableSerializationImpl implements TableSerialization {
 
@@ -79,6 +82,105 @@ public class TableSerializationImpl implements TableSerialization {
 		public String serializeTableLibraryToXML(Profile profile) {
         	return this.serializeTableLibraryToDoc(profile).toXML();
 		}
+        
+        @Override
+		public String serializeTableLibraryToGazelleXML(Profile profile) {
+        	return this.serializeTableLibraryToGazelleDoc(profile).toXML();
+		}
+        
+        
+        public nu.xom.Element serializeTableLibraryToGazelleElement(Profile profile) {
+        	Tables tableLibrary = profile.getTables();
+        	
+        	nu.xom.Element elmSpecification = new nu.xom.Element("Specification");
+        	
+//        	if(profile.getMetaData() == null){
+        		elmSpecification.addAttribute(new Attribute("SpecName", "NOSpecName"));
+        		elmSpecification.addAttribute(new Attribute("OrgName", "NIST"));
+        		elmSpecification.addAttribute(new Attribute("HL7Version", "1"));
+        		elmSpecification.addAttribute(new Attribute("SpecVersion", "1"));
+        		elmSpecification.addAttribute(new Attribute("Status", "Draft"));
+        		elmSpecification.addAttribute(new Attribute("ConformanceType", "Tolerant"));
+        		elmSpecification.addAttribute(new Attribute("Role", "Sender"));
+        		elmSpecification.addAttribute(new Attribute("HL7OID", ""));
+        		elmSpecification.addAttribute(new Attribute("ProcRule", "HL7"));
+//        	}else {
+//        		elmSpecification.addAttribute(new Attribute("SpecName", ExportUtil.str(profile.getMetaData().getSpecificationName())));
+//        		elmSpecification.addAttribute(new Attribute("OrgName", ExportUtil.str(profile.getMetaData().getOrgName())));
+//        		elmSpecification.addAttribute(new Attribute("HL7Version", ExportUtil.str(profile.getMetaData().getHl7Version())));
+//        		elmSpecification.addAttribute(new Attribute("SpecVersion", ExportUtil.str(profile.getMetaData().getVersion())));
+//        		elmSpecification.addAttribute(new Attribute("Status", ExportUtil.str(profile.getMetaData().getStatus())));
+//        		elmSpecification.addAttribute(new Attribute("ConformanceType", "Tolerant"));
+//        		elmSpecification.addAttribute(new Attribute("Role", "Sender"));
+//        		elmSpecification.addAttribute(new Attribute("HL7OID", ""));
+//        		elmSpecification.addAttribute(new Attribute("ProcRule", "HL7"));
+//        	}
+        	
+        	nu.xom.Element elmConformance = new nu.xom.Element("Conformance");
+        	elmConformance.addAttribute(new Attribute("AccAck", "NE"));
+        	elmConformance.addAttribute(new Attribute("AppAck", "AL"));
+        	elmConformance.addAttribute(new Attribute("StaticID", ""));
+        	elmConformance.addAttribute(new Attribute("MsgAckMode", "Deferred"));
+        	elmConformance.addAttribute(new Attribute("QueryStatus", "Event"));
+        	elmConformance.addAttribute(new Attribute("QueryMode", "Non Query"));
+        	elmConformance.addAttribute(new Attribute("DynamicID", ""));
+        	elmSpecification.appendChild(elmConformance);
+        	
+        	nu.xom.Element elmEncodings = new nu.xom.Element("Encodings");
+        	nu.xom.Element elmEncoding = new nu.xom.Element("Encoding");
+        	elmEncoding.appendChild("ER7");
+        	elmEncodings.appendChild(elmEncoding);
+        	elmSpecification.appendChild(elmEncodings);
+        	
+        	int tableID = 0;
+        	nu.xom.Element elmHl7tables = new nu.xom.Element("hl7tables");
+        	
+        	for (Table t : tableLibrary.getChildren()) {
+        		tableID = tableID + 1;
+        		nu.xom.Element elmHl7table = new nu.xom.Element("hl7table");
+        		elmHl7table.addAttribute(new Attribute("id", tableID + ""));
+        		elmHl7table.addAttribute(new Attribute("name", ExportUtil.str(t.getBindingIdentifier())));
+        		elmHl7table.addAttribute(new Attribute("type", "HL7"));
+        		
+        		int order = 0;
+        		List<String> codesysList = new ArrayList<String>();
+        		
+        		for (Code c : t.getCodes()) {
+        			order = order + 1;
+        			if(c.getCodeSystem() != null && !codesysList.contains(c.getCodeSystem())) codesysList.add(c.getCodeSystem());
+        			
+        			nu.xom.Element elmTableElement = new nu.xom.Element("tableElement");
+        			elmTableElement.addAttribute(new Attribute("order", order + ""));
+        			elmTableElement.addAttribute(new Attribute("code", ExportUtil.str(c.getValue())));
+        			elmTableElement.addAttribute(new Attribute("description", ExportUtil.str(c.getLabel())));
+        			elmTableElement.addAttribute(new Attribute("displayName", ExportUtil.str(c.getLabel())));
+        			
+        			if(c.getCodeSystem() == null || c.getCodeSystem().equals("")) elmTableElement.addAttribute(new Attribute("source", "NOSource"));
+        			else elmTableElement.addAttribute(new Attribute("source", ExportUtil.str(c.getCodeSystem())));
+        			elmTableElement.addAttribute(new Attribute("usage", "Optional"));
+        			elmTableElement.addAttribute(new Attribute("creator", ""));
+        			elmTableElement.addAttribute(new Attribute("date", ""));
+        			elmTableElement.addAttribute(new Attribute("instruction", ""));
+        			elmHl7table.appendChild(elmTableElement);
+        		}
+        		
+        		if(codesysList.size() == 0) {
+        			elmHl7table.addAttribute(new Attribute("codeSys", ""));
+        		}else {
+        			String codeSysSet = "";
+        			for(String s:codesysList){
+        				codeSysSet = codeSysSet + "," + s;
+        			}
+        			elmHl7table.addAttribute(new Attribute("codeSys", codeSysSet.substring(1)));
+        		}
+        		
+        		elmHl7tables.appendChild(elmHl7table);
+        	}
+        	
+        	elmSpecification.appendChild(elmHl7tables);
+        	
+        	return elmSpecification;
+        }
         
         public nu.xom.Element serializeTableLibraryToElement(Profile profile) {
         	Tables tableLibrary = profile.getTables();
@@ -169,6 +271,11 @@ public class TableSerializationImpl implements TableSerialization {
 		@Override
 		public nu.xom.Document serializeTableLibraryToDoc(Profile profile) {
             return new nu.xom.Document(this.serializeTableLibraryToElement(profile));
+		}
+		
+		@Override
+		public nu.xom.Document serializeTableLibraryToGazelleDoc(Profile profile) {
+            return new nu.xom.Document(this.serializeTableLibraryToGazelleElement(profile));
 		}
 
         private void deserializeXMLToTable(Element elmTableLibrary, Tables tableLibrary) {
@@ -262,4 +369,5 @@ public class TableSerializationImpl implements TableSerialization {
                 }
                 return null;
         }
+
 }
