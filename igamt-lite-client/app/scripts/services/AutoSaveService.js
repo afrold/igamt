@@ -27,9 +27,15 @@ angular.module('igl').factory('AutoSaveService',
                         $rootScope.autoSaving = false;
                         $rootScope.saved = true;
                         StorageService.setIgDocument($rootScope.igdocument);
+                        $rootScope.msg().text = null;
+                        $rootScope.msg().type =null;
+                        $rootScope.msg().show = false;
                     },function(){
                         $rootScope.autoSaving = false;
                         $rootScope.saved = false;
+                        $rootScope.msg().text = null;
+                        $rootScope.msg().type =null;
+                        $rootScope.msg().show = false;
                     });
                 }
             }
