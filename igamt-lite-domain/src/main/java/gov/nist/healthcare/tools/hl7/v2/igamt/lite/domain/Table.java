@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
 
 /**
@@ -211,4 +213,25 @@ public class Table extends SectionModel implements Serializable,
 
 		return clonedTable;
 	}
+	
+	
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31).
+            append(id).
+            toHashCode();
+    }
+	
+    @Override
+    public boolean equals(Object obj) {
+       if (!(obj instanceof Table))
+            return false;
+        if (obj == this)
+            return true;
+
+        Table rhs = (Table) obj;
+        return new EqualsBuilder().
+            append(id, rhs.id).
+            isEquals();
+    }
 }

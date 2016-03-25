@@ -742,16 +742,6 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.processMessageTree = function (element, parent) {
 
-        		if (element && !parent) {
-	        		console.log("e but not p element.name=" + element.name + " element.id=" +  element.id);
-	        	} else if (!element && parent) {
-	        		console.log("not e but p  parent.name=" + parent.name + " parent.id=" +  parent.id);
-	        	} else if (element && parent) {
-	        		console.log("e and p element.name=" + element.name + " element.id=" +  element.id + " parent.name=" + parent.name + " parent.id=" +  parent.id);
-	        	} else {
-	        		console.log("not e and not p element=" + element + " parent=" + parent);
-	        	}
-        	
             try {
                 if(element != undefined && element != null) {
                     if (element.type === "message") {

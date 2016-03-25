@@ -2,6 +2,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.HashMap;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
 
 /**
@@ -129,4 +131,24 @@ public class Field extends DataElement implements java.io.Serializable,
 
 		return clonedField;
 	}
+	
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 31).
+            append(id).
+            toHashCode();
+    }
+	
+    @Override
+    public boolean equals(Object obj) {
+       if (!(obj instanceof Field))
+            return false;
+        if (obj == this)
+            return true;
+
+        Field rhs = (Field) obj;
+        return new EqualsBuilder().
+            append(id, rhs.id).
+            isEquals();
+    }
 }

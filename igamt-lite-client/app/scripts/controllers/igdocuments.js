@@ -16,7 +16,7 @@ angular.module('igl')
             selectedType: null
         };
 
-
+        $scope.nodeReady = true;
         $scope.igDocumentTypes = [
             {
                 name: "Browse Existing Preloaded Implementation Guides", type: 'PRELOADED'
@@ -83,65 +83,85 @@ angular.module('igl')
             AutoSaveService.stop();
         };
 
-        $scope.messagesParams = new ngTreetableParams({
-            getNodes: function (parent) {
+        $scope.getMessageParams = function() {
+	        return new ngTreetableParams({
+	            getNodes: function (parent) {
+	                if (!parent || parent == null) {
+	                    return $rootScope.messageTree.children;
+	                } else {
+	                    return parent.children;
+	                }
+	            },
+	            getTemplate: function (node) {
+	                if ($scope.viewSettings.tableReadonly) {
+	
+	                    if (node.obj.type === 'segmentRef') {
+	                        return 'MessageSegmentRefReadTree.html';
+	                    } else if (node.obj.type === 'group') {
+	                        return 'MessageGroupReadTree.html';
+	                    } else if (node.obj.type === 'field') {
+	                        return 'MessageFieldViewTree.html';
+	                    } else if (node.obj.type === 'component') {
+	                        return 'MessageComponentViewTree.html';
+	                    } else {
+	                        return 'MessageReadTree.html';
+	                    }
+	                } else {
+	                    if (node.obj.type === 'segmentRef') {
+	                        return 'MessageSegmentRefEditTree.html';
+	                    } else if (node.obj.type === 'group') {
+	                        return 'MessageGroupEditTree.html';
+	                    } else if (node.obj.type === 'field') {
+	                        return 'MessageFieldViewTree.html';
+	                    } else if (node.obj.type === 'component') {
+	                        return 'MessageComponentViewTree.html';
+	                    } else {
+	                        return 'MessageEditTree.html';
+	                    }
+	                }
+	            }
+	        });
+        };
+ 
+//        $scope.messagesParams = $scope.getMessageParams();
+    	
+//        $scope.messagesParams = new ngTreetableParams({
+//            getNodes: function (parent) {
 //                if (!parent || parent == null) {
-//                    if ($rootScope.message != null) {
-//                        return $rootScope.message.children;
-//                    } else {
-//                        return [];
-//                    }
-//                } else if (parent.type === 'segmentRef') {
-//                    return $rootScope.segmentsMap[parent.ref].fields;
-//                } else if (parent.type === 'field') {
-//                    return $rootScope.datatypesMap[parent.datatype].components;
-//                } else if (parent.type === 'component') {
-//                    return $rootScope.datatypesMap[parent.datatype].components;
-//                } else if (parent.type === 'group') {
-//                    return parent.children;
+//                    return $rootScope.messageTree.children;
 //                } else {
-//                    return [];
+//                    return parent.children;
 //                }
-                if (!parent || parent == null) {
-                    return $rootScope.messageTree.children;
-                } else {
-                    return parent.children;
-                }
-
-
-            },
-            getTemplate: function (node) {
-                if ($scope.viewSettings.tableReadonly) {
-
-                    if (node.obj.type === 'segmentRef') {
-                        return 'MessageSegmentRefReadTree.html';
-                    } else if (node.obj.type === 'group') {
-                        return 'MessageGroupReadTree.html';
-                    } else if (node.obj.type === 'field') {
-                        return 'MessageFieldViewTree.html';
-                    } else if (node.obj.type === 'component') {
-                        return 'MessageComponentViewTree.html';
-                    } else {
-                        return 'MessageReadTree.html';
-                    }
-                } else {
-                    if (node.obj.type === 'segmentRef') {
-                        return 'MessageSegmentRefEditTree.html';
-                    } else if (node.obj.type === 'group') {
-                        return 'MessageGroupEditTree.html';
-                    } else if (node.obj.type === 'field') {
-                        return 'MessageFieldViewTree.html';
-                    } else if (node.obj.type === 'component') {
-                        return 'MessageComponentViewTree.html';
-                    } else {
-                        return 'MessageEditTree.html';
-                    }
-                }
-            }
-//            options: {
-//                initialState: 'expanded'
+//            },
+//            getTemplate: function (node) {
+//                if ($scope.viewSettings.tableReadonly) {
+//
+//                    if (node.obj.type === 'segmentRef') {
+//                        return 'MessageSegmentRefReadTree.html';
+//                    } else if (node.obj.type === 'group') {
+//                        return 'MessageGroupReadTree.html';
+//                    } else if (node.obj.type === 'field') {
+//                        return 'MessageFieldViewTree.html';
+//                    } else if (node.obj.type === 'component') {
+//                        return 'MessageComponentViewTree.html';
+//                    } else {
+//                        return 'MessageReadTree.html';
+//                    }
+//                } else {
+//                    if (node.obj.type === 'segmentRef') {
+//                        return 'MessageSegmentRefEditTree.html';
+//                    } else if (node.obj.type === 'group') {
+//                        return 'MessageGroupEditTree.html';
+//                    } else if (node.obj.type === 'field') {
+//                        return 'MessageFieldViewTree.html';
+//                    } else if (node.obj.type === 'component') {
+//                        return 'MessageComponentViewTree.html';
+//                    } else {
+//                        return 'MessageEditTree.html';
+//                    }
+//                }
 //            }
-        });
+//        });
 
         /**
          * init the controller
@@ -180,7 +200,6 @@ angular.module('igl')
             });
 
             $scope.$on('event:openMessage', function (event, message) {
-                console.log("event:openMessage=" + JSON.stringify(message, null, 2));
                 $rootScope.messageTree = null;
                 $rootScope.processMessageTree(message);
                 $scope.selectMessage(message); // Should we open in a dialog ??
@@ -330,7 +349,7 @@ angular.module('igl')
         };
 
         $scope.openIGDocument = function (igdocument) {
-            if (igdocument != null) {
+           if (igdocument != null) {
                 waitingDialog.show('Opening IG Document...', {dialogSize: 'xs', progressType: 'info'});
                 $scope.selectIgTab(1);
                 $timeout(function () {
@@ -340,12 +359,13 @@ angular.module('igl')
                     $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
                     StorageService.setIgDocument($rootScope.igdocument);
                     $scope.sortByLabels();
-                    $scope.loadToc();
                     $rootScope.initMaps();
+                    $scope.loadToc();
                     $scope.collectDatatypes();
                     $scope.collectSegments();
                     $scope.collectTables();
                     $scope.collectMessages();
+                    $scope.messagesParams = $scope.getMessageParams();
                     $scope.loadIgDocumentMetaData();
                     AutoSaveService.start();
                     waitingDialog.hide();
@@ -421,13 +441,12 @@ angular.module('igl')
         };
 
         $scope.collectMessages = function () {
-            $rootScope.messages = $rootScope.igdocument.profile.messages.children;
             $rootScope.messagesMap = {};
             angular.forEach($rootScope.igdocument.profile.messages.children, function (child) {
                 this[child.id] = child;
                 var cnt = 0;
                 angular.forEach(child.children, function (segmentRefOrGroup) {
-                    $rootScope.processElement(segmentRefOrGroup);
+                	$rootScope.processElement(segmentRefOrGroup);
                 });
             }, $rootScope.messagesMap);
         };
@@ -708,9 +727,9 @@ angular.module('igl')
                         $scope.csWidth = $scope.getDynamicWidth(1, 3, 990);
                         $scope.predWidth = $scope.getDynamicWidth(1, 3, 990);
                         $scope.commentWidth = $scope.getDynamicWidth(1, 3, 990);
-                        if ($scope.segmentsParams)
-                            $scope.segmentsParams.refresh();
                         $scope.loadingSelection = false;
+                       if ($scope.segmentsParams)
+                            $scope.segmentsParams.refresh();
                     }, 100);
             }
         };
@@ -746,9 +765,9 @@ angular.module('igl')
                         $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
                         $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
                         $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
-                        if ($scope.datatypesParams)
-                            $scope.datatypesParams.refresh();
                         $scope.loadingSelection = false;
+                       if ($scope.datatypesParams)
+                            $scope.datatypesParams.refresh();
                     }, 100);
             }
         };
@@ -764,9 +783,9 @@ angular.module('igl')
                     $scope.csWidth = $scope.getDynamicWidth(1, 3, 630);
                     $scope.predWidth = $scope.getDynamicWidth(1, 3, 630);
                     $scope.commentWidth = $scope.getDynamicWidth(1, 3, 630);
-                    if ($scope.messagesParams)
-                        $scope.messagesParams.refresh();
                     $scope.loadingSelection = false;
+//                   if ($scope.messagesParams)
+//                        $scope.messagesParams.refresh();
                 }, 100);
         };
 
@@ -871,6 +890,11 @@ angular.module('igl')
         };
 
         $scope.getSegmentRefNodeName = function (node) {
+	        	if(!$rootScope.segmentsMap[node.ref]) {
+	        		console.log("igdoc.id=" + $rootScope.igdocument.id);
+	        		console.log("node.id=" + node.id);
+	        		console.log("node.ref=" + node.ref);
+	        	}
             return node.position + "." + $rootScope.segmentsMap[node.ref].name + ":" + $rootScope.segmentsMap[node.ref].description;
         };
 

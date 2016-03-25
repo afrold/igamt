@@ -4,9 +4,10 @@
 
 angular.module('igl')
     .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
-        $scope.init = function () {
-        };
 
+    	$scope.init = function () {
+        };
+        
         $scope.copy = function(message) {
         		CloneDeleteSvc.copyMessage(message);
     			$rootScope.$broadcast('event:SetToC');
@@ -44,8 +45,6 @@ angular.module('igl')
           	}else if(node.type === 'field' || node.type === 'component'){
           		return $rootScope.datatypesMap[node.datatype].components && $rootScope.datatypesMap[node.datatype].components.length > 0;
           	}
-          	
-          	
           	return false;
           }else {
           	return false;
