@@ -61,6 +61,14 @@ angular
 						+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
 						+ "<drop drop='branch.children'></drop>"
 						+ "</li>";
+					var branchTablesTemplate = "<li class='branch'"
+						+ " context-menu context-menu-close='closedCtxSubMenu(branch)' data-target='tableHeadContextDiv.html'>"
+						+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" ng-click='tocSelection(branch)'>"
+						+ "{{branch.label}}"
+						+ "</label>"
+						+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
+						+ "<drop drop='branch.children'></drop>"
+						+ "</li>";
 					var leafTemplate = "<leaf leaf='branch' index='index'></leaf>";
 
 					var linker = function(scope, element, attrs) {
@@ -69,10 +77,12 @@ angular
 //							 console.log("branch id=" + scope.branch.id + " branch type=" + scope.branch.type +
 //							 " label=" + scope.branch.label + " children=" +
 //							 scope.branch.children.length);
-							if ( _.indexOf(["profile", "segments", "datatypes", "tables"], scope.branch.type) > -1) {
+							if ( _.indexOf(["profile", "segments", "datatypes"], scope.branch.type) > -1) {
 								element.append(branchNoCtxTemplate);
 							} else if (scope.branch.type === "messages") {
 								element.append(branchMessagesTemplate);
+							} else if (scope.branch.type === "tables") {
+								element.append(branchTablesTemplate);
 							} else {
 								element.append(branchTemplate);
 							}
@@ -117,7 +127,7 @@ angular
 					
 					var leafValueSet = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
 						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html' ng-click='tocSelection(leaf)'> "
-						+ "{{leaf.reference.bindingIdentifier}} - {{leaf.reference.description}}" 
+						+ "{{leaf.reference.bindingIdentifier}} - {{leaf.reference.name}}" 
 						+ "</li>";
 
 					var leafSection = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
@@ -140,7 +150,7 @@ angular
 							element.html(leafMessage).show();
 //							console.log("leafMessage=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent + " leaf.reference.name=" + scope.leaf.reference.name);
 						} else if (scope.leaf.type === "table") {
-								element.html(leafValueSet).show();
+							element.html(leafValueSet).show();
 //								console.log("leafTable=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent);
 						} else {
 							element.html(leafDefault).show();

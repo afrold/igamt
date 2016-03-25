@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('IgDocumentService',
-    ['$rootScope', 'ViewSettings', '$q', 'userInfoService', '$http', 'StorageService', function ($rootScope, ViewSettings, $q, userInfoService, $http,StorageService) {
+    ['$rootScope', 'ViewSettings', '$q', 'userInfoService', '$http', 'StorageService', '$cookies',function ($rootScope, ViewSettings, $q, userInfoService, $http,StorageService,$cookies) {
         var IgDocumentService = {
             save: function (igDocument) {
                 $rootScope.saved = false;

@@ -554,8 +554,23 @@ angular.module('igl')
             }, function () {
             });
         };
-
-
+        
+        $scope.addTable = function (igdocument) {
+            var modalInstance = $modal.open({
+                templateUrl: 'AddTableOpenCtrl.html',
+                controller: 'AddTableOpenCtrl',
+                windowClass: 'conformance-profiles-modal',
+                resolve: {
+                    igdocumentToSelect: function () {
+                        return igdocument;
+                    }
+                }
+            });
+            modalInstance.result.then(function () {
+            }, function () {
+            });
+        };
+        
         $scope.exportAsMessages = function (id, mids) {
             var form = document.createElement("form");
             form.action = $rootScope.api('api/igdocuments/' + id + '/export/pdf/' + mids);
@@ -1140,4 +1155,112 @@ angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $mo
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+});
+
+angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies) {
+	$scope.loading = false;
+	$scope.igdocumentToSelect = igdocumentToSelect;
+	$scope.source = '';
+	$scope.selectedHL7Version = '';
+	$scope.searchText = '';
+	$scope.hl7Versions = [];
+	$scope.hl7Tables = null;
+	$scope.phinvadsTables = null;
+	$scope.selectedTables = [];
+	
+	$scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+    
+    $scope.listHL7Versions = function() {
+		return $http.get('api/igdocuments/findVersions', {
+			timeout : 60000
+		}).then(function(response) {
+			var hl7Versions = [];
+			var length = response.data.length;
+			for (var i = 0; i < length; i++) {
+				hl7Versions.push(response.data[i]);
+			}
+			$scope.hl7Versions = hl7Versions;
+		});
+	};
+	
+	$scope.loadTablesByVersion = function(hl7Version) {
+		$scope.loading = true;
+		$scope.selectedHL7Version = hl7Version;
+		return $http.get('api/igdocuments/' + hl7Version + "/tables", {
+			timeout : 60000
+		}).then(function(response) {
+			$scope.hl7Tables = response.data;
+			$scope.loading = false;
+		});
+	};
+	
+	$scope.searchPhinvads = function(searchText) {
+		$scope.loading = true;
+		$scope.searchText = searchText;
+		return $http.get('api/igdocuments/' + searchText + "/PHINVADS/tables", {
+			timeout : 600000
+		}).then(function(response) {
+			$scope.phinvadsTables = response.data;
+			$scope.loading = false;
+		});
+	}
+	
+	$scope.addTable = function(table) {
+		var newTable = angular.fromJson({
+            id: new ObjectId().toString(),
+            type: 'table',
+            bindingIdentifier: $rootScope.createNewFlavorName(table.bindingIdentifier),
+            name: table.name,
+            description: table.name,
+            version: '',
+            oid: table.oid,
+            stability: 'Static',
+            extensibility: 'Open',
+            contentDefinition: 'Extensional',
+            source: $scope.source + " " + $scope.selectedHL7Version,
+            codes: []
+        });
+	    
+	    for (var i = 0, len1 = table.codes.length; i < len1; i++) {
+	    	var newValue = {
+	    			id: new ObjectId().toString(),
+	                type: 'value',
+	                value: table.codes[i].value,
+	                label: table.codes[i].label,
+	                codeSystem: table.codes[i].codeSystem,
+	                codeUsage: table.codes[i].codeUsage
+	        };
+	            
+	        newTable.codes.push(newValue);
+	    }
+		$scope.selectedTables.push(newTable);
+	};
+	
+	$scope.deleteTable = function(table) {
+		var index = $scope.selectedTables.indexOf(table);
+		if (index > -1) $scope.selectedTables.splice(index, 1);
+	};
+	
+	$scope.save = function() {
+		for (var i = 0; i < $scope.selectedTables.length; i++) {
+			var v = $scope.selectedTables[i];
+			$rootScope.tablesMap[v.id] = v;
+	        $rootScope.igdocument.profile.tables.children.splice(0, 0, v);	
+		}
+        $rootScope.igdocument.profile.tables.children = positionElements($rootScope.igdocument.profile.tables.children);
+        $rootScope.recordChanged();
+		$rootScope.$broadcast('event:SetToC');	
+		$modalInstance.dismiss('cancel');
+	};
+	
+	function positionElements(chidren) {
+		var sorted = _.sortBy(chidren, "sectionPosition");
+		var start = sorted[0].sectionPosition;
+		_.each(sorted, function(sortee) {
+			sortee.sectionPosition = start++;
+		});
+		return sorted;
+	}
 });

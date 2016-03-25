@@ -79,10 +79,9 @@ public class TableSerializationImpl implements TableSerialization {
 		public String serializeTableLibraryToXML(Profile profile) {
         	return this.serializeTableLibraryToDoc(profile).toXML();
 		}
-
-		@Override
-		public nu.xom.Document serializeTableLibraryToDoc(Profile profile) {
-			Tables tableLibrary = profile.getTables();
+        
+        public nu.xom.Element serializeTableLibraryToElement(Profile profile) {
+        	Tables tableLibrary = profile.getTables();
 			
 			nu.xom.Element elmTableLibrary = new nu.xom.Element("ValueSetLibrary");
 			
@@ -164,9 +163,12 @@ public class TableSerializationImpl implements TableSerialization {
             	elmTableLibrary.appendChild(elmValueSetDefinitions);
             }
             
-            nu.xom.Document doc = new nu.xom.Document(elmTableLibrary);
+            return elmTableLibrary;
+        }
 
-            return doc;
+		@Override
+		public nu.xom.Document serializeTableLibraryToDoc(Profile profile) {
+            return new nu.xom.Document(this.serializeTableLibraryToElement(profile));
 		}
 
         private void deserializeXMLToTable(Element elmTableLibrary, Tables tableLibrary) {
@@ -181,6 +183,7 @@ public class TableSerializationImpl implements TableSerialization {
 
                             tableObj.setBindingIdentifier(elmTable.getAttribute("BindingIdentifier"));
                             tableObj.setName(elmTable.getAttribute("Name"));
+                            
                             tableObj.setGroup(valueSetDefinitionsElement.getAttribute("Group"));
                             String orderStr = valueSetDefinitionsElement.getAttribute("Order");
                             if(orderStr != null && !orderStr.equals("")){
@@ -226,12 +229,12 @@ public class TableSerializationImpl implements TableSerialization {
                         codeObj.setValue(elmCode.getAttribute("Value"));
                         codeObj.setLabel(elmCode.getAttribute("DisplayName"));
 
-                        if (elmCode.getAttribute("CodeSystem") != null && !elmTable.getAttribute("CodeSystem").equals("")) codeObj.setCodeSystem(elmTable.getAttribute("CodeSystem"));
-                        if (elmCode.getAttribute("CodeSystemVersion") != null && !elmTable.getAttribute("CodeSystemVersion").equals("")) codeObj.setCodeSystemVersion(elmTable.getAttribute("CodeSystemVersion"));
-                        if (elmCode.getAttribute("Comments") != null && !elmTable.getAttribute("Comments").equals("")) codeObj.setComments(elmTable.getAttribute("Comments"));
+                        if (elmCode.getAttribute("CodeSystem") != null && !elmCode.getAttribute("CodeSystem").equals("")) codeObj.setCodeSystem(elmCode.getAttribute("CodeSystem"));
+                        if (elmCode.getAttribute("CodeSystemVersion") != null && !elmCode.getAttribute("CodeSystemVersion").equals("")) codeObj.setCodeSystemVersion(elmCode.getAttribute("CodeSystemVersion"));
+                        if (elmCode.getAttribute("Comments") != null && !elmCode.getAttribute("Comments").equals("")) codeObj.setComments(elmCode.getAttribute("Comments"));
 
-                        if (elmCode.getAttribute("Usage") != null && !elmTable.getAttribute("Usage").equals("")) {
-                                codeObj.setCodeUsage(elmTable.getAttribute("Usage"));
+                        if (elmCode.getAttribute("Usage") != null && !elmCode.getAttribute("Usage").equals("")) {
+                                codeObj.setCodeUsage(elmCode.getAttribute("Usage"));
                         } else {
                                 codeObj.setCodeUsage("R");
                         }

@@ -6,7 +6,7 @@ angular.module('igl').factory('IdleService',
     function ($http) {
         var IdleService = {
             keepAlive: function () {
-                return $http.get(
+                 return $http.get(
                     'api/session/keepAlive');
             }
         };

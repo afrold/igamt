@@ -178,7 +178,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.$on('IdleTimeout', function () {
             closeModals();
-            if ($scope.isAuthenticated) {
+            if ($scope.isAuthenticated()) {
                 if ($rootScope.igdocument && $rootScope.igdocument != null && $rootScope.hasChanges()) {
                     $rootScope.$emit('event:saveAndExecLogout');
                 }else {
@@ -192,7 +192,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         });
 
         $scope.$on('Keepalive', function() {
-            IdleService.keepAlive();
+            if ($scope.isAuthenticated()) {
+                IdleService.keepAlive();
+            }
         });
 
         $rootScope.$on('event:execLogout', function () {
@@ -813,7 +815,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
         $rootScope.createNewFlavorName = function (label) {
             if ($rootScope.igdocument != null) {
-                return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
+            	if($rootScope.igdocument.metaData["ext"] === null){
+            		return label + "_" + (Math.floor(Math.random() * 10000000) + 1);
+            	}else {
+            		return label + "_" + $rootScope.igdocument.metaData["ext"] + "_" + (Math.floor(Math.random() * 10000000) + 1);
+            	}
             } else {
                 return null;
             }
@@ -967,8 +973,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
-                    trueUsage: firstConstraint.trueUsage,
-                    falseUsage: firstConstraint.falseUsage,
+                    trueUsage: '',
+                    falseUsage: '',
                     assertion: '<AND>' + firstConstraint.assertion + secondConstraint.assertion + '</AND>'
                 };
             } else if (compositeType === 'OR') {
@@ -977,8 +983,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
-                    trueUsage: firstConstraint.trueUsage,
-                    falseUsage: firstConstraint.falseUsage,
+                    trueUsage: '',
+                    falseUsage: '',
                     assertion: '<OR>' + firstConstraint.assertion + secondConstraint.assertion + '</OR>'
                 };
             } else if (compositeType === 'IFTHEN') {
@@ -987,8 +993,8 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: 'IF [' + firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
-                    trueUsage: firstConstraint.trueUsage,
-                    falseUsage: firstConstraint.falseUsage,
+                    trueUsage: '',
+                    falseUsage: '',
                     assertion: '<IMPLY>' + firstConstraint.assertion + secondConstraint.assertion + '</IMPLY>'
                 };
             }
@@ -1424,6 +1430,18 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
             return _.find(_.without(list, obj), function (item) {
                 return item[context] == obj[context];
+            });
+        };
+        
+        $rootScope.isDuplicatedTwoContexts = function (obj, context1, context2,  list) {
+            if (obj == null || obj == undefined) return false;
+
+            return _.find(_.without(list, obj), function (item) {
+            	if(item[context1] == obj[context1]){
+            		return item[context2] == obj[context2];
+            	}else {
+            		return false
+            	}
             });
         };
 

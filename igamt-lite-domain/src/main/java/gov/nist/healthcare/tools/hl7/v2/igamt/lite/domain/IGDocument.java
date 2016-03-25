@@ -185,13 +185,6 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		for(Table t:p.getTables().getChildren()){
 			t.setSectionPosition(tablePositionNum);
 			tablePositionNum = tablePositionNum + 1;
-			
-			
-			String desc = t.getDescription();
-			String name = t.getName();
-			
-			t.setName(desc);
-			t.setDescription(name);
 		}
 		
 		this.setProfile(p);

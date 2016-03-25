@@ -202,7 +202,7 @@ angular.module('igl')
     });
 
 angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
-
+	$scope.changed = false;
     $scope.selectedNode = selectedNode;
     $scope.selectedTable = null;
     if (selectedNode.table != undefined) {
@@ -211,6 +211,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
 
     $scope.selectTable = function (table) {
         $scope.selectedTable = table;
+        $scope.changed = true;
     };
 
     $scope.mappingTable = function () {
@@ -337,10 +338,10 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         	$scope.deletePredicateByTarget();
         }
 
-        $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-        $scope.newConstraint.position_2  = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
-        $scope.newConstraint.location_1 = $scope.genLocation($scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-        $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+        $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+        $scope.newConstraint.position_2  = $scope.genPosition($scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+        $scope.newConstraint.location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+        $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
         
         if ($scope.newConstraint.position_1 != null) {
         	var positionPath = $scope.selectedNode.position + '[1]';
@@ -356,30 +357,30 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         $scope.initPredicate();
     };
 
-    $scope.genPosition = function (segment, field, component, subComponent) {
-        var position = null;
-        if (field != null && component == null && subComponent == null) {
-            position = segment + '-' + field.position;
-        } else if (field != null && component != null && subComponent == null) {
-            position = segment + '-' + field.position + '.' + component.position;
-        } else if (field != null && component != null && subComponent != null) {
-            position = segment + '-' + field.position + '.' + component.position + '.' + subComponent.position;
-        }
-
-        return position;
-    };
-
-    $scope.genLocation = function (field, component, subComponent) {
+    $scope.genLocation= function (segment, field, component, subComponent) {
         var location = null;
         if (field != null && component == null && subComponent == null) {
-            location = field.position + '[1]';
+        	location = segment + '-' + field.position + "(" + field.name + ")";
         } else if (field != null && component != null && subComponent == null) {
-            location = field.position + '[1].' + component.position + '[1]';
+        	location = segment + '-' + field.position + '.' + component.position + "(" + component.name + ")";
         } else if (field != null && component != null && subComponent != null) {
-            location = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
+        	location = segment + '-' + field.position + '.' + component.position + '.' + subComponent.position + "(" + subComponent.name + ")";
         }
 
         return location;
+    };
+
+    $scope.genPosition = function (field, component, subComponent) {
+        var position = null;
+        if (field != null && component == null && subComponent == null) {
+        	position = field.position + '[1]';
+        } else if (field != null && component != null && subComponent == null) {
+        	position = field.position + '[1].' + component.position + '[1]';
+        } else if (field != null && component != null && subComponent != null) {
+        	position = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
+        }
+
+        return position;
     };
 
     $scope.ok = function () {
@@ -461,30 +462,30 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         $scope.newConstraint.subComponent_2 = null;
     };
 
-    $scope.genPosition = function (segment, field, component, subComponent) {
-        var position = null;
-        if (field != null && component == null && subComponent == null) {
-            position = segment + '-' + field.position;
-        } else if (field != null && component != null && subComponent == null) {
-            position = segment + '-' + field.position + '.' + component.position;
-        } else if (field != null && component != null && subComponent != null) {
-            position = segment + '-' + field.position + '.' + component.position + '.' + subComponent.position;
-        }
-
-        return position;
-    };
-
-    $scope.genLocation = function (field, component, subComponent) {
+    $scope.genLocation= function (segment, field, component, subComponent) {
         var location = null;
         if (field != null && component == null && subComponent == null) {
-            location = field.position + '[1]';
+        	location = segment + '-' + field.position + "(" + field.name + ")";
         } else if (field != null && component != null && subComponent == null) {
-            location = field.position + '[1].' + component.position + '[1]';
+        	location = segment + '-' + field.position + '.' + component.position + "(" + component.name + ")";
         } else if (field != null && component != null && subComponent != null) {
-            location = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
+        	location = segment + '-' + field.position + '.' + component.position + '.' + subComponent.position + "(" + subComponent.name + ")";
         }
 
         return location;
+    };
+
+    $scope.genPosition = function (field, component, subComponent) {
+        var position = null;
+        if (field != null && component == null && subComponent == null) {
+        	position = field.position + '[1]';
+        } else if (field != null && component != null && subComponent == null) {
+        	position = field.position + '[1].' + component.position + '[1]';
+        } else if (field != null && component != null && subComponent != null) {
+        	position = field.position + '[1].' + component.position + '[1].' + subComponent.position + '[1]';
+        }
+
+        return position;
     };
     
     $scope.addComplexConformanceStatement = function(){
@@ -508,10 +509,10 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     };
 
     $scope.addConformanceStatement = function () {
-        $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-        $scope.newConstraint.position_2 = $scope.genPosition($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
-        $scope.newConstraint.location_1 = $scope.genLocation($scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
-        $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+        $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+        $scope.newConstraint.position_2 = $scope.genPosition($scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
+        $scope.newConstraint.location_1 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
+        $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.segment, $scope.newConstraint.field_2, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 
         if ($scope.newConstraint.position_1 != null) {
         	$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;

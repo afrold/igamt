@@ -20,21 +20,6 @@
             <div ng-show="message !== null" id="executionPanel">
 
                 <form name="messageForm" novalidate class="form-horizontal">
-
-                    <div class="igl-page-header">
-                        <span class="header4 pull-left">Conformance Profile: {{message.identifier}}</span>
-                            <span class="pull-right">
-						<button title="Create Copy" type="button" class="btn btn-xs btn-info"
-                                ng-disabled='!messageForm.$valid' ng-click="copy(message)" ng-hide="viewSettings.tableReadonly">
-                            <span><i class="fa fa-plus fa-fw"></i>Copy</span>
-                        </button>
-        				<button title="Delete" type="button" ng-hide="viewSettings.tableReadonly" class="btn btn-xs btn-danger"
-                                ng-disabled='!message' ng-click="delete(message)">
-                            <span><i class="fa fa-trash-o fa-fw">&nbsp; </i>Delete</span>
-                        </button>
-    				</span>
-                    </div>
-
                     <div class="row">
                         <div class="col-md-12">
                             <div class="page-header">
@@ -735,19 +720,17 @@
     <table class="table table-striped table-bordered">
         <thead>
         <tr class="tbl-header">
-            <th class="col-xs-8">Condition</th>
+            <th class="col-xs-9">Condition</th>
             <th class="col-xs-1">True Usage</th>
             <th class="col-xs-1">False Usage</th>
-            <th class="col-xs-1">Classification</th>
             <th class="col-xs-1"></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="constraint in message.predicates | filter: {constraintTarget: selectedNode.path}:true">
-            <td class="col-xs-8">{{constraint.description}}</td>
+            <td class="col-xs-9">{{constraint.description}}</td>
             <td class="col-xs-1">{{constraint.trueUsage}}</td>
             <td class="col-xs-1">{{constraint.falseUsage}}</td>
-            <td class="col-xs-1">{{constraint.constraintClassification}}</td>
             <td class="col-xs-1">
                 <a ng-click="deletePredicate(constraint)" class="point">
                     <span><i class="fa fa-times fa-fw"></i></span>
@@ -770,16 +753,15 @@
     <table class="table table-striped table-bordered">
         <thead>
         <tr class="tbl-header">
-            <th class="col-xs-8" colspan="4">Condition</th>
+            <th class="col-xs-9" colspan="4">Condition</th>
             <th class="col-xs-1" colspan="1" rowspan="2">True Usage</th>
             <th class="col-xs-1" colspan="1" rowspan="2">False Usage</th>
-            <th class="col-xs-1" colspan="1" rowspan="2">Classification</th>
             <th class="col-xs-1" colspan="1" rowspan="2"></th>
         </tr>
         <tr class="tbl-header">
             <th class="col-xs-2" colspan="1">Node</th>
             <th class="col-xs-2" colspan="1">Verb</th>
-            <th class="col-xs-2" colspan="1">Constraint</th>
+            <th class="col-xs-3" colspan="1">Constraint</th>
             <th class="col-xs-2" colspan="1">Value</th>
         </tr>
         </thead>
@@ -799,15 +781,15 @@
                 <select name="verb" class="form-control"
                         ng-change=""
                         ng-model="newConstraint.verb"
-                        ng-options="constraintVerb for constraintVerb in config.constraintVerbs">
+                        ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'">
                 </select>
             </td>
 
-            <td class="col-xs-2" colspan="1">
+            <td class="col-xs-3" colspan="1">
                 <select name="contraintType" class="form-control"
                         ng-change=""
                         ng-model="newConstraint.contraintType"
-                        ng-options="contraintType for contraintType in config.constraintTypes">
+                        ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'">
                 </select>
             </td>
 
@@ -825,7 +807,7 @@
 
 												<span ng-show="newConstraint.contraintType == 'one of list values'">
                 									<input style="width:100%" class="form-control"
-                                                           ng-model="newConstraint.value" placeholder="CSV Value"
+                                                           ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)"
                                                            type="text"/>
                 								</span>
 
@@ -874,26 +856,21 @@
                 								</span>
             </td>
 
+			<td class="col-md-1" colspan="1">
+    			<select name="trueUsage" class="form-control" ng-model="newConstraint.trueUsage"
+            			ng-options="usage for usage in config.usages" ng-hide="constraintType == 'Complex'">
+    			</select>
+				<span ng-show="constraintType == 'Complex'">-</span>
+			</td>
 
-            <td class="col-xs-1" colspan="1">
-                <select name="trueUsage" class="form-control" ng-model="newConstraint.trueUsage"
-                        ng-options="usage for usage in config.usages"/>
-            </td>
+			<td class="col-md-1" colspan="1">
+    			<select name="falseUsage" class="form-control" ng-model="newConstraint.falseUsage"
+            			ng-options="usage for usage in config.usages" ng-hide="constraintType == 'Complex'">
+    			</select>
+				<span ng-show="constraintType == 'Complex'">-</span>
+			</td>
 
-            <td class="col-xs-1" colspan="1">
-                <select name="falseUsage" class="form-control" ng-model="newConstraint.falseUsage"
-                        ng-options="usage for usage in config.usages"/>
-            </td>
-
-            <td class="col-xs-1" colspan="1">
-                <select ng-model="newConstraint.constraintClassification">
-                    <option value="E">Error</option>
-                    <option value="W">Warning</option>
-                    <option value="A">Alert</option>
-                    /select>
-            </td>
-
-            <td class="col-xs-1" colspan="1">
+            <td class="col-md-1" colspan="1">
                 <a ng-click="initPredicate()" class="point">
                     <span><i class="fa fa-times fa-fw"></i></span>
                 </a>
@@ -911,18 +888,14 @@
         <thead>
         <tr class="tbl-header">
             <th class="col-md-1">ID</th>
-            <th class="col-md-8">Desciption</th>
-            <th class="col-md-1">True Usage</th>
-            <th class="col-md-1">False Usage</th>
+            <th class="col-md-10">Desciption</th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="p in newComplexConstraint">
             <td class="col-md-1">{{p.constraintId}}</td>
-            <td class="col-md-8">{{p.description}}</td>
-            <td class="col-md-1">{{p.trueUsage}}</td>
-            <td class="col-md-1">{{p.falseUsage}}</td>
+            <td class="col-md-10">{{p.description}}</td>
             <td class="col-md-1">
                 <a ng-click="deletePredicateForComplex(p)" class="point">
                     <span><i class="fa fa-minus fa-fw"></i></span>
@@ -972,12 +945,16 @@
                         ng-model="complexConstraint"
                         ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint">
                 </select>
-                <span>Constraint Classification: </span>
-                <select ng-model="newComplexConstraintClassification">
-                    <option value="E">Error</option>
-                    <option value="W">Warning</option>
-                    <option value="A">Alert</option>
-                </select>
+				<span>True usage: </span>
+				<select name="trueUsage"
+            		ng-model="complexConstraint.trueUsage"
+            		ng-options="usage for usage in config.usages">
+    			</select>
+				<span>False usage: </span>
+				<select name="falseUsage"
+            		ng-model="complexConstraint.falseUsage"
+            		ng-options="usage for usage in config.usages">
+    			</select>
             </td>
             <td class="col-md-1">
                 <a ng-click="addComplexConformanceStatement()" class="point">
@@ -1018,16 +995,14 @@
         <thead>
         <tr class="tbl-header">
             <th class="col-xs-2">ID</th>
-            <th class="col-xs-7">Desciption</th>
-            <th class="col-xs-2">Classification</th>
+            <th class="col-xs-9">Desciption</th>
             <th class="col-xs-1"></th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="constraint in message.conformanceStatements | filter: {constraintTarget: selectedNode.path}:true">
             <td class="col-xs-2">{{constraint.constraintId}}</td>
-            <td class="col-xs-7">{{constraint.description}}</td>
-            <td class="col-md-2">{{constraint.constraintClassification}}</td>
+            <td class="col-xs-9">{{constraint.description}}</td>
             <td class="col-xs-1">
                 <a ng-click="deleteConformanceStatement(constraint)" class="point">
                     <span><i class="fa fa-times fa-fw"></i></span>
@@ -1051,14 +1026,13 @@
 <thead>
 <tr class="tbl-header">
     <th class="col-xs-2" colspan="1" rowspan="2">ID</th>
-    <th class="col-xs-8" colspan="4">Desciption</th>
-    <th class="col-xs-1" colspan="1" rowspan="2">Classification</th>
+    <th class="col-xs-9" colspan="4">Desciption</th>
     <th class="col-xs-1" colspan="1" rowspan="2"></th>
 </tr>
 <tr class="tbl-header">
     <th class="col-xs-2" colspan="1">Node</th>
     <th class="col-xs-2" colspan="1">Verb</th>
-    <th class="col-xs-2" colspan="1">Constraint</th>
+    <th class="col-xs-3" colspan="1">Constraint</th>
     <th class="col-xs-2" colspan="1">Value</th>
 </tr>
 </thead>
@@ -1084,15 +1058,15 @@
         <select name="verb" class="form-control"
                 ng-change=""
                 ng-model="newConstraint.verb"
-                ng-options="constraintVerb for constraintVerb in config.constraintVerbs">
+                ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'">
         </select>
     </td>
 
-    <td class="col-xs-2" colspan="1">
+    <td class="col-xs-3" colspan="1">
         <select name="contraintType" class="form-control"
                 ng-change=""
                 ng-model="newConstraint.contraintType"
-                ng-options="contraintType for contraintType in config.constraintTypes">
+                ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'">
         </select>
     </td>
 
@@ -1105,7 +1079,7 @@
 
 												<span ng-show="newConstraint.contraintType == 'one of list values'">
                 									<input style="width:100%" class="form-control"
-                                                           ng-model="newConstraint.value" placeholder="CSV Value"
+                                                           ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)"
                                                            type="text"/>
                 								</span>
 
@@ -1239,14 +1213,6 @@
                 									</span>
     </td>
 
-    <td class="col-md-1" colspan="1">
-        <select ng-model="newConstraint.constraintClassification">
-            <option value="E">Error</option>
-            <option value="W">Warning</option>
-            <option value="A">Alert</option>
-        </select>
-    </td>
-
     <td class="col-xs-1" colspan="1">
         <a ng-click="initConformanceStatement()" class="point">
             <span><i class="fa fa-times fa-fw"></i></span>
@@ -1324,12 +1290,6 @@
                 <span>Complex Constraint: </span>
                 <select name="complexConstraintSelect" ng-model="complexConstraint"
                         ng-options="constraint as constraint.constraintId for constraint in newComplexConstraint"/>
-                <span>Constraint Classification: </span>
-                <select ng-model="newComplexConstraintClassification">
-                    <option value="E">Error</option>
-                    <option value="W">Warning</option>
-                    <option value="A">Alert</option>
-                </select>
             </td>
             <td class="col-md-1">
                 <a ng-click="addComplexConformanceStatement()" class="point">
