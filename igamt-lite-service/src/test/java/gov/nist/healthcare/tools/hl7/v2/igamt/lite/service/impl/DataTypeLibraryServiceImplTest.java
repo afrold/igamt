@@ -32,9 +32,9 @@ public class DataTypeLibraryServiceImplTest {
 
 	@Test
 	public void testFindByScope() {
-		DatatypeLibrary dtlH = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, 45L, null);
+		DatatypeLibrary dtlH = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD);
 		assertNotNull(dtlH);
-		DatatypeLibrary dtlM = dtlService.findByScope(DatatypeLibrary.SCOPE.MASTER, 45L, null);
+		DatatypeLibrary dtlM = dtlService.findByScope(DatatypeLibrary.SCOPE.MASTER);
 		assertNotNull(dtlM);
 		assertEquals(0, dtlM.getChildren().size());
 	}
@@ -44,14 +44,14 @@ public class DataTypeLibraryServiceImplTest {
 		List<DatatypeLibrary> dtls = dtlService.findAll();
 		assertEquals(1, dtls.size());
 		DatatypeLibrary dtlH;
-		dtlH = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD, 45L, null);
+		dtlH = dtlService.findByScope(DatatypeLibrary.SCOPE.HL7STANDARD);
 		assertNotNull(dtlH);
 		dtlH.setId(null);
 		dtlH.setScope(DatatypeLibrary.SCOPE.USER);
 		dtlService.apply(dtlH);
 		dtls = dtlService.findAll();
 		assertEquals(2, dtls.size());
-		DatatypeLibrary dtlU = dtlService.findByScope(DatatypeLibrary.SCOPE.USER, 45L, null);
+		DatatypeLibrary dtlU = dtlService.findByScope(DatatypeLibrary.SCOPE.USER);
 		assertNotNull(dtlU);
 		assertEquals(91, dtlU.getChildren().size());
 		assertEquals(DatatypeLibrary.SCOPE.USER, dtlU.getScope());

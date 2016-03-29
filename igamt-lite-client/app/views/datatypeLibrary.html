@@ -33,16 +33,16 @@
             <tbody></tbody>
         </table>
      <button type="button" class="btn btn-primary btn-sm"
-             ng-click="save()"><i class="fa fa-plus"></i>
+             ng-click="save()" ng-disabled="datatypeLibrary"><i class="fa fa-plus"></i>
          Save
      </button>
     </div>
     </div>
 </div>
 <script type="text/ng-template" id="dataTypeNode.html">
-	<tr class="row" tt-node" is-branch="node.type === 'datatype'">
+	<tr class="row" tt-node">
         <td class="col-lg-1"><input type="checkbox" ng-bind="node.selected" ng-model="bool" ng-change="trackSelections(bool, node)"></input><span ng-bind="node.selection" style="margin-left : 7px;"></span></td>
-        <td class="col-lg-2" ng-bind="node.label"></td>
+        <td class="col-lg-2" ng-bind="getDisplayLabel(node.label, node.extension)"></td>
         <td class="col-lg-9" ng-bind="node.description"></td>
     </tr>
 </script>
@@ -62,7 +62,7 @@
     <div class="container modal-body">
     <form>
         <div class="container" style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
-            <table tt-table tt-params="datatypeLibrary" ng-if="datatypeLibrary" class="table table-striped table-bordered">
+         <table tt-table tt-params="datatypeLibrary" ng-if="datatypeLibrary" class="table table-striped table-bordered">
 				<thead>
                 <tr class="row">
                    <td class="col-lg-1">Master</td>

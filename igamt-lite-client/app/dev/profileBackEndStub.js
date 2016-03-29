@@ -4,6 +4,10 @@
 
 angular.module('igl').run(function ($httpBackend, $q, $http) {
 
+    $httpBackend.whenGET('api/session/keepAlive').respond(function (method, url, data, headers) {
+        return [200, {}, {}];
+    });
+
     $httpBackend.whenGET('api/igdocuments').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/profile4.json', false);
@@ -277,7 +281,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
     });
 
-    $httpBackend.whenPOST('api/datatype-library/getDatatypeLibraryByScope').respond(function (method, url, data, headers) {
+    $httpBackend.whenPOST('api/datatype-library/getDataTypeLibraryByScope').respond(function (method, url, data, headers) {
          var request = new XMLHttpRequest();
          console.log('api/datatype-library begin=' + data);
          var d = {};

@@ -29,7 +29,7 @@ public interface DatatypeLibraryRepository extends MongoRepository<DatatypeLibra
 	@Override
 	public List<DatatypeLibrary> findAll();
 
-	public List<DatatypeLibrary> findByScope(DatatypeLibrary.SCOPE scope);
-
 	public List<DatatypeLibrary> findByAccountId(Long accountId);
+
+	public List<DatatypeLibrary> findByScope(SCOPE scope);
 } 

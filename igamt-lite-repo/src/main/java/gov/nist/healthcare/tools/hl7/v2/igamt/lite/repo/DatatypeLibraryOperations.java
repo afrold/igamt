@@ -20,10 +20,4 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
  *
  */
 public interface DatatypeLibraryOperations {
-
-//	List<DatatypeLibrary> findAll();
-//
-//	List<DatatypeLibrary> findByScope(SCOPE scope);
-//
-//	List<DatatypeLibrary> findByAccountId(Long accountId);
 }

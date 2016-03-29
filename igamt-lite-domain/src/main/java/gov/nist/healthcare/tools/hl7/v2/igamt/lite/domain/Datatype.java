@@ -36,6 +36,8 @@ Cloneable, Comparable<Datatype> {
 
 	private String ext;
 
+	private String dtLibExt;
+
 	protected List<Component> components = new ArrayList<Component>();
 
 	private String name;
@@ -74,6 +76,14 @@ Cloneable, Comparable<Datatype> {
 
 	public void setExt(String ext) {
 		this.ext = ext;
+	}
+
+	public String getDtLibExt() {
+		return dtLibExt;
+	}
+
+	public void setDtLibExt(String dtLibExt) {
+		this.dtLibExt = dtLibExt;
 	}
 
 	public List<Component> getComponents() {

@@ -10,11 +10,11 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
@@ -54,6 +55,8 @@ public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
 		DatatypeLibrary datatypeLibrary = null;
 		if (datatypeLibraries.size() > 0) {
 			datatypeLibrary = datatypeLibraries.get(0);
+		} else {
+			datatypeLibrary = new DatatypeLibrary();
 		}
 		return datatypeLibrary;
 	}
@@ -102,5 +105,13 @@ public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
 	@Override
 	public void delete(DatatypeLibrary library) {
 		datatypeLibraryRepository.delete(library);
+	}
+	
+	class DatatypeByLabel implements Comparator<Datatype> {
+
+		@Override
+		public int compare(Datatype thisDt, Datatype thatDt) {
+			return thatDt.getLabel().compareTo(thisDt.getLabel());
+		}
 	}
 }

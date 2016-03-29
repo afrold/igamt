@@ -31,6 +31,8 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	
 	private String date;
 	
+	private String ext;
+
 	private DatatypeLibraryMetaData metaData;
 	
 	public enum SCOPE {HL7STANDARD, MASTER, USER};
@@ -89,6 +91,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	}
 
 	public void addDatatype(Datatype d) {
+		d.setDtLibExt(ext);
 		children.add(d);
 	}
 

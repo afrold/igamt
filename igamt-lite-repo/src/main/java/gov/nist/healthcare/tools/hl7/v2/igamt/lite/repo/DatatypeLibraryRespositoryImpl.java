@@ -21,5 +21,4 @@ public class DatatypeLibraryRespositoryImpl implements DatatypeLibraryOperations
 
 	 @Autowired
 	 private MongoOperations mongo;
-	 
 }

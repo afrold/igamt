@@ -1,7 +1,7 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').factory('DatatypeLibrarySvc', function($http, ngTreetableParams, userInfoService) {
+angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend, ngTreetableParams, userInfoService) {
 	
 	var svc = this;
 	
@@ -14,23 +14,21 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, ngTreetableP
 	};
 	
 	svc.getDataTypeLibrary = function(scope) {
-		console.log("datatype-library/getDataTypeLibraryByScope scope=" + JSON.stringify(scope));
-		var param = angular.toJson(scope);
+		console.log("datatype-library/getDataTypeLibraryByScope scope=" + scope);
 		return $http.post(
 				'api/datatype-library/getDataTypeLibraryByScope', scope)
 				.then(function(response) {
-					console.log("response" + JSON.stringify(response));
-					var datatypes = angular.fromJson(response.data);
-					var sortedChildren = _.sortBy(datatypes.children, function(child) { return child.name; });
-					datatypes.children = sortedChildren;
-					return new dtLibStruct(scope, sortedChildren);
+//					console.log("response" + JSON.stringify(response));
+					var datatypeLibrary = angular.fromJson(response.data);
+					return new dtLibStruct(scope, datatypeLibrary.children);
 				});
 	};
 	
 	svc.assembleDatatypeLibrary = function(datatypeStruct) {
 		return new ngTreetableParams({
 			getNodes : function(parent) {
-				return datatypeStruct.children;
+				return _.sortBy(datatypeStruct.children, 'label');
+
 			},
 	        getTemplate : function(node) {
 	            return 'dataTypeNode.html';
