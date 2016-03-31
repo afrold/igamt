@@ -11,7 +11,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
@@ -46,13 +45,15 @@ Cloneable, Comparable<Datatype> {
 
 	private String hl7Version;
 
-	private SCOPE scope;
+	private Constant.SCOPE scope;
 
 	private STATUS status;
 	
 	protected String comment = "";
 
 	protected String usageNote = "";
+	
+	private Long accountId;
 	
 	public String getId() {
 		return id;
@@ -126,11 +127,11 @@ Cloneable, Comparable<Datatype> {
 		this.hl7Version = hl7Version;
 	}
 
-	public SCOPE getScope() {
+	public Constant.SCOPE getScope() {
 		return scope;
 	}
 
-	public void setScope(SCOPE scope) {
+	public void setScope(Constant.SCOPE scope) {
 		this.scope = scope;
 	}
 
@@ -161,6 +162,14 @@ Cloneable, Comparable<Datatype> {
 
 	public void setUsageNote(String usageNote) {
 		this.usageNote = usageNote;
+	}
+	
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
 	}
 
 	@Override

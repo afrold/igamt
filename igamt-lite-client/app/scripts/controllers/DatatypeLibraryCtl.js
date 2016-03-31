@@ -4,10 +4,10 @@
 angular.module('igl').controller('MasterDatatypeLibraryCtl',
 		function($scope, $rootScope, $filter, $http, $httpBackend, $modal, $q, DatatypeLibrarySvc, userInfoService) {
 
-			$scope.datatypeStruct = {"children" : []};
-			$scope.datatypeLibrary = false;		
-			$scope.publishSelections = [];
+			$scope.datatypeStruct = false;
 			
+			$scope.publishSelections = [];
+			$scope.datatypeDisplay	= [];		
 			$scope.initDatatypeLibrary = function() {
 				$scope.start = false;
 				getDataTypeLibrary("MASTER");
@@ -15,81 +15,88 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 			
 			function getDataTypeLibrary(scope) {
 				DatatypeLibrarySvc.getDataTypeLibrary(scope).then(function(data) {
-						$scope.datatypeStruct = data;
-					    $scope.datatypeLibrary = DatatypeLibrarySvc.assembleDatatypeLibrary($scope.datatypeStruct);
-					    $scope.datatypeLibrary.refresh();
-					}).catch( function (error) {
+						$scope.datatypeStruct =  data;
+						if (!$scope.datatypeStruct.scope) {
+							$scope.datatypeStruct.scope = scope;
+						}
+						console.log("$scope.datatypeStruct.id=" + $scope.datatypeStruct.id + " $scope.datatypeStruct.scope=" + $scope.datatypeStruct.scope);
+				}).catch( function (error) {
 					console.log(error);
 				});
 			};
 			
-			$scope.getDisplayLabel = function(label, extension) {
-				return (extension) ? label + "_" + extension : label;
+			$scope.getDisplayLabel = function(dt) {
+				if(dt) {
+					return (dt.ext) ? dt.label + "_" + dt.ext : dt.label;
+				}
 			} 
 			
 			$scope.trackSelections = function(bool, selection) {
 				if (bool) {
-					$scope.publishSelections.push(selection);
+					selection.status = "PUBLISHED";
 				} else {
-					for (var i = 0; i < $scope.publishSelections.length; i++) {
-						if ($scope.publishSelections[i].id === id) {
-							$scope.publishSelections.splice(i, 1);
-						}
-					}
+					selection.status = "UNPUBLISHED";
 				}
 			};
 			
 			$scope.save = function() {
-				DatatypeLibrarySvc.save($scope.datatypeLibrary);
+				angular.forEach($scope.datatypeStruct.children, function(dt) {
+					delete dt.new;
+				});
+				DatatypeLibrarySvc.save($scope.datatypeStruct);
+			};
+			
+			$scope.openDatatype = function(datatype) {
+				console.log("$scope.openDatatype(datatype)");
 			};
 			
 			$scope.openStandardDataypes = function() {
 				DatatypeLibrarySvc.getDataTypeLibrary("HL7STANDARD").then(function(data) {
-				    var datatypeLibrary = DatatypeLibrarySvc.assembleDatatypeLibrary(data);
-				    // Assemble a datatypeLibrary and pass it into the dialog.
+					var datatypeStruct = data;
 					var standardDatatypesInstance = $modal.open({
 						templateUrl : 'standardDatatypeDlg.html',
 						controller : 'StandardDatatypeLibraryInstanceDlgCtl',
 						resolve : {
-							"datatypeLibrary" : datatypeLibrary
+							"datatypeStruct" : datatypeStruct
 						}
 					}).result.then(function(standardSelections) {
 						console.log("standardSelections=" + standardSelections.length);
 					    // Decorate the user selections.
-						var decoratedSelections = decorateLabels(standardSelections);
+						var decoratedSelections = decoratedSelections(standardSelections);
 					    // Push them on to the scope.
 						angular.forEach(decoratedSelections, function(child) {
+							child.new = true;
 							$scope.datatypeStruct.children.push(child);
 						});
-					    // Assemble a datatypeLibrary and keep it in this scope.
-						$scope.datatypeLibrary = DatatypeLibrarySvc.assembleDatatypeLibrary($scope.datatypeStruct);
-						$scope.datatypeLibrary.refresh();
 						console.log("$scope.datatypeStruct.children=" + $scope.datatypeStruct.children.length);
-						console.log("$scope.datatypeLibrary=" + JSON.stringify($scope.datatypeLibrary));
 					});
 				}).catch( function (error) {
 				console.log(error);
 			});
 		};
 		
-		function decorateLabels(datatypes) {
-			angular.forEach(datatypes.children, function(child) {
+		function decoratedSelections(datatypes) {
+			angular.forEach(datatypes, function(child) {
 				child.ext = Math.floor(Math.random() * 100);
+				child.scope = "MASTER";
+				child.accountId = 
 			});
 			return datatypes;
 		};
 });
 
 angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
-		function($scope, $rootScope, $filter, $http, $modalInstance, $httpBackend, datatypeLibrary, DatatypeLibrarySvc, userInfoService) {
+		function($scope, $rootScope, $filter, $http, $modalInstance, $httpBackend, datatypeStruct, DatatypeLibrarySvc, userInfoService) {
 			
 			$scope.okDisabled = true;
 
-			$scope.datatypeLibrary = datatypeLibrary;		
+			$scope.datatypeStruct = datatypeStruct;	
 			$scope.standardSelections = [];
 			
-			$scope.getDisplayLabel = function(label, extension) {
-				return label;
+			$scope.getDisplayLabel = function(dt) {
+				if (dt) {
+					return dt.label;
+				}
 			} 
 			
 			$scope.trackSelections = function(bool, event) {

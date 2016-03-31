@@ -123,46 +123,6 @@ angular.module('igl')
 	        });
         };
  
-//        $scope.messagesParams = $scope.getMessageParams();
-    	
-//        $scope.messagesParams = new ngTreetableParams({
-//            getNodes: function (parent) {
-//                if (!parent || parent == null) {
-//                    return $rootScope.messageTree.children;
-//                } else {
-//                    return parent.children;
-//                }
-//            },
-//            getTemplate: function (node) {
-//                if ($scope.viewSettings.tableReadonly) {
-//
-//                    if (node.obj.type === 'segmentRef') {
-//                        return 'MessageSegmentRefReadTree.html';
-//                    } else if (node.obj.type === 'group') {
-//                        return 'MessageGroupReadTree.html';
-//                    } else if (node.obj.type === 'field') {
-//                        return 'MessageFieldViewTree.html';
-//                    } else if (node.obj.type === 'component') {
-//                        return 'MessageComponentViewTree.html';
-//                    } else {
-//                        return 'MessageReadTree.html';
-//                    }
-//                } else {
-//                    if (node.obj.type === 'segmentRef') {
-//                        return 'MessageSegmentRefEditTree.html';
-//                    } else if (node.obj.type === 'group') {
-//                        return 'MessageGroupEditTree.html';
-//                    } else if (node.obj.type === 'field') {
-//                        return 'MessageFieldViewTree.html';
-//                    } else if (node.obj.type === 'component') {
-//                        return 'MessageComponentViewTree.html';
-//                    } else {
-//                        return 'MessageEditTree.html';
-//                    }
-//                }
-//            }
-//        });
-
         /**
          * init the controller
          */

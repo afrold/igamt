@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -25,6 +26,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
 	private String id;
 
 	private Long accountId;
@@ -35,20 +37,17 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 	private DatatypeLibraryMetaData metaData;
 	
-	public enum SCOPE {HL7STANDARD, MASTER, USER};
- 
 	public DatatypeLibrary() {
 		super();
-		this.id = ObjectId.get().toString();
 	}
 	
-	private SCOPE scope;
+	private Constant.SCOPE scope;
 
-	public SCOPE getScope() {
+	public Constant.SCOPE getScope() {
 		return scope;
 	}
 
-	public void setScope(SCOPE scope) {
+	public void setScope(Constant.SCOPE scope) {
 		this.scope = scope;
 	}
 

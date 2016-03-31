@@ -13,8 +13,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,23 +22,23 @@ import org.springframework.stereotype.Service;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DataTypeLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 
 /**
  * @author gcr1
  *
  */
 @Service
-public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
+public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 
 	Logger log = LoggerFactory.getLogger(DataTypeLibraryibServiceImpl.class);
 
 	@Autowired
 	private DatatypeLibraryRepository datatypeLibraryRepository;
-
+	
 	@Override
 	public List<DatatypeLibrary> findAll() {
 		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findAll();
@@ -49,7 +47,7 @@ public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
 	}
 
 	@Override
-	public DatatypeLibrary findByScope(DatatypeLibrary.SCOPE scope) {
+	public DatatypeLibrary findByScope(Constant.SCOPE scope) {
 		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryRepository.findByScope(scope);
 		log.info("datatypeLibraries=" + datatypeLibraries.size());
 		DatatypeLibrary datatypeLibrary = null;
@@ -69,7 +67,7 @@ public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
 	}
 
 	@Override
-	public DatatypeLibrary apply(DatatypeLibrary library) {
+	public DatatypeLibrary save(DatatypeLibrary library) {
 		DatatypeLibrary datatypeLibrary = datatypeLibraryRepository.save(library);
 		return datatypeLibrary;
 	}
@@ -80,7 +78,7 @@ public class DataTypeLibraryibServiceImpl implements DataTypeLibraryService {
 		if (existing != null) {
 			for (Datatype dt : datatypeLibrary.getChildren()) {
 				existing.addDatatype(dt);
-				apply(existing);
+				save(existing);
 			}
 			return existing;
 		} else {

@@ -8,18 +8,12 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception;
 
-import java.util.List;
+/**
+ * @author gcr1
+ *
+ */
+public class DatatypeSaveException extends Exception {
 
-import org.springframework.stereotype.Service;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-
-@Service
-public interface DatatypeService {
-
-	List<Datatype> findAll();
-
-	Datatype save(Datatype datatype);
 }

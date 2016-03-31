@@ -14,19 +14,19 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
 
 @Service
-public interface DataTypeLibraryService {
+public interface DatatypeLibraryService {
 
 	List<DatatypeLibrary> findAll();
 
-	DatatypeLibrary findByScope(SCOPE scope);
+	DatatypeLibrary findByScope(Constant.SCOPE scope);
 
 	List<DatatypeLibrary> findByAccountId(Long accountId);
 
-	DatatypeLibrary apply(DatatypeLibrary library);
+	DatatypeLibrary save(DatatypeLibrary library);
 
 	DatatypeLibrary createFrom(Long accountId, DatatypeLibrary datatypeLibrary);
 

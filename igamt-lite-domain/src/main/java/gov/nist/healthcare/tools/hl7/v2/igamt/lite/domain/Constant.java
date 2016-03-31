@@ -37,5 +37,7 @@ public class Constant {
 	public final static String SECTION = "section";
 	public final static String Document = "document";
 	public final static DateFormat mdy = new SimpleDateFormat("MMMM dd, yyyy");
+	public enum SCOPE {HL7STANDARD, MASTER, USER};
+	 
 
 }

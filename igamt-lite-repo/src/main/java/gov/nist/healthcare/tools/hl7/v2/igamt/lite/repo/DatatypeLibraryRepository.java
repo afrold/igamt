@@ -21,8 +21,8 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
 
 public interface DatatypeLibraryRepository extends MongoRepository<DatatypeLibrary, String> {
 	
@@ -31,5 +31,5 @@ public interface DatatypeLibraryRepository extends MongoRepository<DatatypeLibra
 
 	public List<DatatypeLibrary> findByAccountId(Long accountId);
 
-	public List<DatatypeLibrary> findByScope(SCOPE scope);
+	public List<DatatypeLibrary> findByScope(Constant.SCOPE scope);
 } 

@@ -19,22 +19,21 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
 				'api/datatype-library/getDataTypeLibraryByScope', scope)
 				.then(function(response) {
 //					console.log("response" + JSON.stringify(response));
-					var datatypeLibrary = angular.fromJson(response.data);
-					return new dtLibStruct(scope, datatypeLibrary.children);
+					return angular.fromJson(response.data);
 				});
 	};
 	
-	svc.assembleDatatypeLibrary = function(datatypeStruct) {
-		return new ngTreetableParams({
-			getNodes : function(parent) {
-				return _.sortBy(datatypeStruct.children, 'label');
-
-			},
-	        getTemplate : function(node) {
-	            return 'dataTypeNode.html';
-	        }
-		});
-	};
+//	svc.assembleDatatypeLibrary = function(datatypeStruct) {
+//		return new ngTreetableParams({
+//			getNodes : function(parent) {
+//				return _.sortBy(datatypeStruct.children, 'label');
+//
+//			},
+//	        getTemplate : function(node) {
+//	            return 'dataTypeNode.html';
+//	        }
+//		});
+//	};
 	
 	svc.append = function(fromchildren, toChildren) {
 		angular.foreach(fromchildren, function(child) {

@@ -13,6 +13,7 @@
     "conformanceStatements" : [ ],
     "id" : "565f3ab6d4c6e52cfd43ea4c",
     "label" : "ED",
+    "scope" : "MASTER",
     "components" : [ {
       "type" : "component",
       "name" : "Source Application",
@@ -92,9 +93,11 @@
       "comment" : "",
       "text" : "",
       "hide" : false,
+    	  "accountId" : 45,
       "id" : "565f3ab6d4c6e52cfd43eabc"
     } ],
     "name" : "ED",
+    "ext" : "44",
     "description" : "Encapsulated Data",
     "comment" : "",
     "usageNote" : ""
@@ -105,6 +108,7 @@
     "conformanceStatements" : [ ],
     "id" : "565f3ab6d4c6e52cfd43ea75",
     "label" : "WVS",
+    "scope" : "MASTER",
     "components" : [ {
       "type" : "component",
       "name" : "Source One Name",
@@ -136,9 +140,11 @@
       "comment" : "",
       "text" : "",
       "hide" : false,
+    	  "accountId" : 45,
       "id" : "565f3ab6d4c6e52cfd43eb7d"
     } ],
     "name" : "WVS",
+    "ext" : "45",
     "description" : "Waveform Source",
     "comment" : "",
     "usageNote" : ""
