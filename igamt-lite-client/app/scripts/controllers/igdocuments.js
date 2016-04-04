@@ -367,6 +367,7 @@ angular.module('igl')
                     $scope.collectMessages();
                     $scope.messagesParams = $scope.getMessageParams();
                     $scope.loadIgDocumentMetaData();
+                    AutoSaveService.stop();
                     AutoSaveService.start();
                     waitingDialog.hide();
                 }, 100);
@@ -631,6 +632,9 @@ angular.module('igl')
         };
 
         $scope.save = function () {
+            $rootScope.msg().text = null;
+            $rootScope.msg().type = null;
+            $rootScope.msg().show = false;
             var delay = $q.defer();
             waitingDialog.show('Saving changes...', {dialogSize: 'xs', progressType: 'success'});
             IgDocumentService.save($rootScope.igdocument).then(function (saveResponse) {
