@@ -62,9 +62,6 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 
 	private Logger log = LoggerFactory.getLogger(IGDocumentCreationImpl.class);
 
-	private boolean CREATE = true;
-	private boolean UPDATE = false;
-
 	@Autowired
 	private IGDocumentRepository igdocumentRepository;
 
@@ -166,7 +163,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		pTarget.setTables(tabTarget);
 
 		addSections(dSource, dTarget);
-		addMessages(msgEvts, dSource.getProfile(), pTarget, CREATE);
+		addMessages(msgEvts, dSource.getProfile(), pTarget);
 
 		dTarget.setProfile(pTarget);
 
@@ -179,7 +176,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// Update profile with additional messages.
 		String hl7Version = dTarget.getProfile().getMetaData().getHl7Version();
 		IGDocument dSource = igdocumentRepository.findStandardByVersion(hl7Version).get(0);
-		addMessages(msgEvts, dSource.getProfile(), dTarget.getProfile(), UPDATE);
+		addMessages(msgEvts, dSource.getProfile(), dTarget.getProfile());
 		return dTarget;
 	}
 
@@ -187,8 +184,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		dTarget.setChildSections(dSource.getChildSections());
 	}
 
-	private void addMessages(List<MessageEvents> msgEvts, Profile pSource, Profile pTarget, boolean create)
-			throws IGDocumentException {
+	private void addMessages(List<MessageEvents> msgEvts, Profile pSource, Profile pTarget) throws IGDocumentException {
 		Messages messages = pTarget.getMessages();
 		messages.setType(pSource.getMessages().getType());
 		try {
@@ -209,14 +205,12 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 				log.debug("Message.name=" + name);
 				m1.setName(name);
 				messages.addMessage(m1);
-				if (create) {
-					for (SegmentRefOrGroup sg : m.getChildren()) {
-						if (sg instanceof SegmentRef) {
-							addSegment((SegmentRef) sg, pSource, pTarget);
-						} else if (sg instanceof Group) {
-							addGroup((Group) sg, pSource, pTarget);
-						}
-					}
+				for (SegmentRefOrGroup sg : m.getChildren()) {
+					if (sg instanceof SegmentRef) {
+						addSegment((SegmentRef) sg, pSource, pTarget);
+					} else if (sg instanceof Group) {
+						addGroup( (Group) sg, pSource, pTarget);
+					} 
 				}
 			}
 		} catch (Exception e) {

@@ -17,6 +17,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 public abstract class SectionModelWithConstraints extends SectionModel{
+	
 	protected List<Predicate> predicates = new ArrayList<Predicate>();
 
 	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();

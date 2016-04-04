@@ -25,10 +25,10 @@
 	<sec:http pattern="/views/**" security="none" />
 	<sec:http pattern="/fonts/**" security="none" />
 	<sec:http pattern="/lib/**" security="none" />
-<!-- 	
+ 	
 	<sec:http pattern="/api/igdocuments/config" security="none" />
 	<sec:http pattern="/api/datatype-library/config" security="none" />
--->	
+ 
 	<sec:http pattern="/api/appInfo" security="none" />
 	<sec:http pattern="/api/uploaded_files/file" security="none" />
 
@@ -40,10 +40,10 @@
 			access="isAnonymous()" />
 		<sec:intercept-url pattern="/api/sooa/usernames/**"
 			access="isAnonymous()" />
-<!--
+
 		<sec:intercept-url pattern="/api/igdocuments/config"
 			access="isAnonymous()" />
-		<sec:intercept-url pattern="/api/datatype-library/config"
+<!--		<sec:intercept-url pattern="/api/datatype-library/config"
 			access="isAnonymous()" />
 -->
 		<sec:intercept-url pattern="/api/sooa/emails/**"

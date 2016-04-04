@@ -266,7 +266,7 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
 
     IdleProvider.idle(7200);
     IdleProvider.timeout(30);
-    KeepaliveProvider.interval(10);
+    KeepaliveProvider.interval(60);
 
     // auto hide
     notificationsConfigProvider.setAutoHide(true);
