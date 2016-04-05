@@ -39,34 +39,33 @@ angular
 				"branch",
 				function($compile) {
 					var branchNoCtxTemplate = "<li class='branch' prevent-right-click>"
-						+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" ng-click='tocSelection(branch)'>"
-						+ "{{branch.label}}"
+						+ "<label for='{{branch.id}}' class='fa fa-lg' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" />"
 						+ "</label>"
 						+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
+						+ "<a ng-click='tocSelection(branch)' ng-class=\" {'toc-selected' : branch.highlight, 'selected': models.selected === branch} \" >{{branch.label}}</a>"
 						+ "<trunk trunk='branch.children'></trunk>"
 						+ "</li>";
 					var branchTemplate = "<li class='branch'"
 						+ " context-menu context-menu-close='closedCtxSubMenu(branch)' data-target='contextDiv.html''> "
-						+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" ng-click='tocSelection(branch)'>"
-						+ "{{branch.label}}"
+						+ "<label for='{{branch.id}}' class='fa fa-lg' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" />"
 						+ "</label>"
 						+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
+						+ "<a ng-click='tocSelection(branch)' ng-class=\" {'toc-selected' : branch.highlight, 'selected': models.selected === branch} \" >{{branch.label}}</a>"
 						+ "<trunk trunk='branch.children'></trunk>"
 						+ "</li>";
 					var branchMessagesTemplate = "<li class='branch'"
 						+ " context-menu context-menu-close='closedCtxSubMenu(branch)' data-target='messageHeadContextDiv.html'>"
-						+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" ng-click='tocSelection(branch)'>"
-						+ "{{branch.label}}"
-						+ "</label>"
-						+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
+						+ "<label for='{{branch.id}}' class='fa fa-lg' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" />"
+						+ "<input type='checkbox' id='{{branch.id}}'ng-model='branch.selected'/>"
+						+ "<a ng-click='tocSelection(branch)' ng-class=\" {'toc-selected' : branch.highlight, 'selected': models.selected === branch} \" >{{branch.label}}</a>"
 						+ "<drop drop='branch.children'></drop>"
 						+ "</li>";
 					var branchTablesTemplate = "<li class='branch'"
 						+ " context-menu context-menu-close='closedCtxSubMenu(branch)' data-target='tableHeadContextDiv.html'>"
-						+ "<label for='{{branch.id}}' class='fa' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" ng-click='tocSelection(branch)'>"
-						+ "{{branch.label}}"
+						+ "<label for='{{branch.id}}' class='fa fa-lg' ng-class=\" {'fa-caret-right': branch.selected,'fa-caret-down': !branch.selected} \" />"
 						+ "</label>"
 						+ "<input type='checkbox' id='{{branch.id}}' ng-model='branch.selected'/>"
+						+ "<a ng-click='tocSelection(branch)' ng-class=\" {'toc-selected' : branch.highlight, 'selected': models.selected === branch} \" >{{branch.label}}</a>"
 						+ "<drop drop='branch.children'></drop>"
 						+ "</li>";
 					var leafTemplate = "<leaf leaf='branch' index='index'></leaf>";
@@ -111,32 +110,32 @@ angular
 				"leaf",
 				function($compile) {
 
-					var leafMetadata = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
-						+ "  prevent-right-click ng-click='tocSelection(leaf)'> "
-						+ "{{leaf.label}}" 
+					var leafMetadata = "<li class='point leaf'"
+						+ "  prevent-right-click> "
+						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.label}}</a>" 
 						+ "</li>";
 					
-					var leafMessage = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
+					var leafMessage = "<li class='point leaf'"
 			            + " dnd-draggable='leaf'"
 			            + " dnd-effect-allowed='move'"
 			            + " dnd-moved='moved(index, leaf)'"
 			            + " dnd-selected='models.selected = leaf'"
-						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='messageContextDiv.html' ng-click='tocSelection(leaf, branch)'> "
-						+ "{{leaf.reference.name}} - {{leaf.reference.description}}" 
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='messageContextDiv.html'> "
+						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.reference.name}} - {{leaf.reference.description}}</a>" 
 						+ "</li>";
 					
-					var leafValueSet = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
-						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html' ng-click='tocSelection(leaf)'> "
-						+ "{{leaf.reference.bindingIdentifier}} - {{leaf.reference.name}}" 
+					var leafValueSet = "<li class='point leaf'"
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html'> "
+						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.reference.bindingIdentifier}} - {{leaf.reference.name}}</a>" 
 						+ "</li>";
 
-					var leafSection = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
-						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html' ng-click='tocSelection(leaf)'> "
-						+ "{{leaf.reference.sectionTitle}}";
+					var leafSection = "<li class='point leaf'"
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html'> "
+						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.reference.sectionTitle}}</a>" 
 
-					var leafDefault = "<li class='point leaf' ng-class=\" {'toc-selected' : leaf.selected, 'selected': models.selected === leaf} \" "
-						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html' ng-click='tocSelection(leaf)'> "
-						+ "{{leaf.reference.label}} - {{leaf.reference.description}}"
+					var leafDefault = "<li class='point leaf'"
+						+ " context-menu context-menu-close='closedCtxSubMenu(leaf)' data-target='contextDiv.html'> "
+						+ "<a ng-click='tocSelection(leaf)' ng-class=\" {'toc-selected' : leaf.highlight, 'selected': models.selected === leaf} \" >{{leaf.reference.label}} - {{leaf.reference.description}}</a>" 
 						+ "</li>";
 
 					var linker = function(scope, element, attrs) {
