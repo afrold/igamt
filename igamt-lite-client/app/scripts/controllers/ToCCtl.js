@@ -5,10 +5,11 @@ angular
 				[
 						'$scope',
 						'$rootScope',
+						'$timeout',
 						'ToCSvc',
 						'ContextMenuSvc',
 						'CloneDeleteSvc',
-						function($scope, $rootScope, ToCSvc,
+						function($scope, $rootScope, $timeout, ToCSvc,
 								ContextMenuSvc, CloneDeleteSvc) {
 							var ctl = this;
 							$scope.collapsed = [];
@@ -33,6 +34,14 @@ angular
 								} else {
 									$scope.$parent.drop.splice(index, 1);
 								}
+								$timeout(function(){
+									var pos = 1;
+									_.each($scope.$parent.drop, function(child){
+										console.log("b child.messageType=" + child.reference.messageType + " child.position=" + child.reference.position);
+										child.reference.position = pos++;
+										console.log("a child.id=" + child.reference.id + " child.messageType=" + child.reference.messageType + " child.position=" + child.reference.position);
+									});
+								}, 100);
 							};
 							
 							$scope.calcOffset = function(level) {

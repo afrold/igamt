@@ -632,6 +632,9 @@ angular.module('igl')
         };
 
         $scope.save = function () {
+        		_.each($rootScope.igdocument.profile.messages.children, function(child){
+					console.log("s child.id=" + child.id + " " + child.messageType + " child.position=" + child.position);
+        		});
             $rootScope.msg().text = null;
             $rootScope.msg().type = null;
             $rootScope.msg().show = false;
