@@ -624,7 +624,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 					components.put(c.getPosition(), c);
 				}
 				for (int i = 1; i < components.size() + 1; i++) {
-//					Component c = components.get(i);
+					//					Component c = components.get(i);
 					List<Constraint> constraints = findConstraints( i, d.getPredicates(), d.getConformanceStatements());
 					if (!constraints.isEmpty()) {
 						for (Constraint constraint : constraints) {
@@ -660,7 +660,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 	public nu.xom.Element serializeConstraintToElement(Constraint constraint, String locationName) {
 		nu.xom.Element elmConstraint = new nu.xom.Element("Constraint");
-		elmConstraint.addAttribute(new Attribute("Id", constraint.getConstraintId()));
+		elmConstraint.addAttribute(new Attribute("Id", constraint.getConstraintId() == null? "":constraint.getConstraintId()));
 		elmConstraint.addAttribute(new Attribute("Location", constraint
 				.getConstraintTarget().substring(
 						0, constraint.getConstraintTarget().indexOf(
@@ -1004,14 +1004,16 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		nu.xom.Element elmSegment = new nu.xom.Element("Elt");
 		elmSegment.addAttribute(new Attribute("IDRef", segmentRef.getId()));
 		elmSegment.addAttribute(new Attribute("IDSeg", segmentRef.getRef()));
-		elmSegment.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getName()));
-		elmSegment.addAttribute(new Attribute("Label", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getLabel()));
-		elmSegment.addAttribute(new Attribute("Description", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getDescription()));
+		if (segments.findOneSegmentById(segmentRef.getRef()) != null && ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getName() != null) {
+			elmSegment.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getName()));
+			elmSegment.addAttribute(new Attribute("Label", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getLabel()));
+			elmSegment.addAttribute(new Attribute("Description", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getDescription()));
+		}
 		elmSegment.addAttribute(new Attribute("Depth", String.valueOf(depth)));
 		elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage()
 				.value()));
 		elmSegment.addAttribute(new Attribute("Min", segmentRef.getMin() + ""));
-		elmSegment.addAttribute(new Attribute("Max", segmentRef.getMax()));
+		elmSegment.addAttribute(new Attribute("Max", segmentRef.getMax() + ""));
 		if (segmentRef.getComment() != null)
 			elmSegment.addAttribute(new Attribute("Comment", segmentRef.getComment()));
 		elmSegment.addAttribute(new Attribute("Position", segmentRef.getPosition().toString()));
@@ -1181,8 +1183,10 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 				elmComponent.addAttribute(new Attribute("Name", c.getName()));
 				elmComponent.addAttribute(new Attribute("Usage", c.getUsage()
 						.toString()));
-				elmComponent.addAttribute(new Attribute("Datatype", datatypes.findOne(
-						c.getDatatype()).getLabel()));
+				if (datatypes.findOne(c.getDatatype()) != null && datatypes.findOne(c.getDatatype()).getLabel() != null) {
+					elmComponent.addAttribute(new Attribute("Datatype", datatypes.findOne(
+							c.getDatatype()).getLabel()));
+				}
 				elmComponent.addAttribute(new Attribute("MinLength", ""
 						+ c.getMinLength()));
 				if (c.getMaxLength() != null && !c.getMaxLength().equals(""))
@@ -1255,7 +1259,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 	}
 
-	
+
 	public InputStream serializeProfileToZip(Profile profile) throws IOException {
 		ByteArrayOutputStream outputStream = null;
 		byte[] bytes;

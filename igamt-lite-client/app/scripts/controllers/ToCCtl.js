@@ -50,8 +50,8 @@ angular
 								// the $emit string.
 								// Doing so would require maintaining a sync
 								// with the ProfileListController.
-								entry.selected = true;
-								ToCSvc.currentLeaf.selected = false;
+								entry.highlight = true;
+								ToCSvc.currentLeaf.highlight = false;
 								ToCSvc.currentLeaf = entry;
 //								console.log("entry=" + entry.reference.sectionTitle);
 								switch (entry.type) {
