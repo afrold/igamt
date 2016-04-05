@@ -68,7 +68,7 @@ li.leaf {
 	width: 400px;
 }
 
-li input:checked+ul {
+li input:checked ~ ul {
 	background-position: 15px;
 	background-size: 1px;
 	margin: -1.25em 0 0 -44px; /* 20px */
@@ -76,13 +76,17 @@ li input:checked+ul {
 	height: auto;
 }
 
-li input:checked+ul>branch {
+li input:checked ~ ul > branch {
 	display: none;
 	margin: 0 0 0.125em;
 }
 
-li input:checked+ul>branch:last-child {
+li input:checked ~ ul > branch:last-child {
 	margin: 0 0 0.063em;
+}
+
+a {
+	cursor: pointer;
 }
 </style>
 <div class="container" style="margin-left: -3em;" ng-controller="ToCCtl">
