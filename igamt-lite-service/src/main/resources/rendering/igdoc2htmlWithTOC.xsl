@@ -5,7 +5,9 @@
 		doctype-public="-//W3C//DTD XHTML 1.0 Transitional//EN"
 		doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"
 		indent="yes" />
-	<xsl:param name="inlineConstraints" select="'true'"></xsl:param>
+	<xsl:param name="inlineConstraints" select="'false'"></xsl:param>
+	<xsl:param name="includeTOC" select="'true'"></xsl:param>
+
 	<xsl:template match="/">
 
 		<html xmlns="http://www.w3.org/1999/xhtml">
@@ -15,7 +17,8 @@
 				<style type="text/css">
 					body,
 					html {
-					font-family: 'Arial Narrow', sans-serif;
+					font-family: 'Arial Narrow',
+					sans-serif;
 					}
 
 					#sidebar {
@@ -25,17 +28,21 @@
 					overflow: auto;
 					max-height: 100vh;
 					font-family:
-					'Arial Narrow', sans-serif;
+					'Arial Narrow',
+					sans-serif;
 					margin-top: 1px;
 					margin-bottom: 1px;
 					/*
-					border-right: 2px solid
-					black; */
+					border-right: 2px
+					solid
+					black;
+					*/
 					}
 					/* unvisited link */
 					#sidebar a:link {
 					color: #000066;
-					margin-top: 1px;
+					margin-top:
+					1px;
 					margin-bottom: 1px;
 					/* margin-right: 150px;
 					margin-left: 80px;
@@ -44,7 +51,8 @@
 
 					/* visited link */
 					#sidebar a:visited {
-					color: green;
+					color:
+					green;
 					margin-top: 1px;
 					margin-bottom: 1px;
 					}
@@ -72,64 +80,146 @@
 					auto;
 					max-height: 100vh;
 					}
-					h1, .divh1{
+					#notoc {
+					float:right;
+					width:100%;
+					overflow:
+					auto;
+					max-height: 100vh;
+					}
+					.divh1{
 					padding-left: 15px;
 					}
-					h2, .divh2 {
+					.divh2 {
 					padding-left: 30px;
 					}
-					h3, .divh3 {
+					.divh3 {
 					padding-left: 45px;
 					}
-					h4, .divh4 {
+					.divh4 {
 					padding-left: 60px;
 					}
-					h5, .divh5  {
+					.divh5 {
 					padding-left:
 					75px;
 					}
-					h6, .divh6 {
+					.divh6 {
 					padding-left:
 					90px;
 					}
-    				.hidden {
+					.hidden {
 					display: none;
 					}
 					.unhidden {
-					display: block;
+					display:
+					block;
 					}
 					.btn {
 					float:right;
 					}
 				</style>
-				<script type="text/javascript"><xsl:text disable-output-escaping="yes">
+				<style type="text/css">
+
+					/*!
+					* froala_editor v2.2.1 (https://www.froala.com/wysiwyg-editor)
+					*
+					License https://froala.com/wysiwyg-editor/terms/
+					* Copyright
+					2014-2016 Froala Labs
+					*/
+					.clearfix::after{clear:both;display:block;content:""}.fr-view
+					table{border:0;border-collapse:collapse;empty-cells:show;max-width:100%}.fr-view
+					table.fr-dashed-borders td,.fr-view table.fr-dashed-borders
+					th{border-style:dashed}.fr-view table.fr-alternate-rows tbody
+					tr:nth-child(2n){background:#f5f5f5}.fr-view table td,.fr-view
+					table th{border:1px solid #ddd}.fr-view table td:empty,.fr-view
+					table th:empty{height:20px}.fr-view table
+					td.fr-highlighted,.fr-view table th.fr-highlighted{border:1px
+					double red}.fr-view table td.fr-thick,.fr-view table
+					th.fr-thick{border-width:2px}.fr-view table
+					th{background:#e6e6e6}.fr-view
+					hr{clear:both;user-select:none;-o-user-select:none;-moz-user-select:none;-khtml-user-select:none;-webkit-user-select:none;-ms-user-select:none;page-break-after:always}.fr-view
+					.fr-file{position:relative}.fr-view
+					.fr-file::after{position:relative;content:"\1F4CE";font-weight:400}.fr-view
+					pre{white-space:pre-wrap;word-wrap:break-word}.fr-view
+					blockquote{border-left:solid 2px
+					#5e35b1;margin-left:0;padding-left:5px;color:#5e35b1}.fr-view
+					blockquote blockquote{border-color:#00bcd4;color:#00bcd4}.fr-view
+					blockquote blockquote
+					blockquote{border-color:#43a047;color:#43a047}.fr-view
+					span.fr-emoticon{font-weight:400;font-family:"Apple Color
+					Emoji","Segoe UI Emoji",NotoColorEmoji,"Segoe UI Symbol","Android
+					Emoji",EmojiSymbols;display:inline;line-height:0}.fr-view
+					span.fr-emoticon.fr-emoticon-img{font-size:inherit;height:1em;width:1em;min-height:20px;min-width:20px;display:inline-block;margin:-.2em
+					.15em .2em;line-height:normal;vertical-align:middle}.fr-view
+					.fr-text-gray{color:#AAA!important}.fr-view
+					.fr-text-bordered{border-top:solid 1px #222;border-bottom:solid 1px
+					#222;padding:10px 0}.fr-view
+					.fr-text-spaced{letter-spacing:1px}.fr-view
+					.fr-text-uppercase{text-transform:uppercase}.fr-view
+					img{z-index:3;position:relative;overflow:auto;cursor:pointer}.fr-view
+					img.fr-dib{margin:auto;display:block;float:none;vertical-align:top;margin-top:5px;margin-bottom:5px}.fr-view
+					img.fr-dib.fr-fil{margin:5px auto 5px 0;left:5px}.fr-view
+					img.fr-dib.fr-fir{margin:5px 0 5px auto;right:5px}.fr-view
+					img.fr-dii{margin:auto;display:inline-block;float:none;margin-top:5px;margin-bottom:5px}.fr-view
+					img.fr-dii.fr-fil{margin:5px 10px 5px
+					0;left:5px;float:left}.fr-view img.fr-dii.fr-fir{margin:5px 0 5px
+					10px;right:5px;float:right}.fr-view
+					img.fr-rounded{border-radius:100%;-moz-border-radius:100%;-webkit-border-radius:100%;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box}.fr-view
+					img.fr-bordered{border:solid 10px
+					#CCC;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}.fr-view
+					.fr-video{text-align:center;position:relative}.fr-view
+					.fr-video>*{-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;max-width:100%;border:0}.fr-view
+					.fr-video.fr-dvb{display:block;clear:both}.fr-view
+					.fr-video.fr-dvb.fr-fvl{text-align:left}.fr-view
+					.fr-video.fr-dvb.fr-fvr{text-align:right}.fr-view
+					.fr-video.fr-dvi{display:inline-block}.fr-view
+					.fr-video.fr-dvi.fr-fvl{float:left}.fr-view
+					.fr-video.fr-dvi.fr-fvr{float:right}.fr-view
+					a.fr-strong{font-weight:700}.fr-view
+					a.fr-green{color:green}a.fr-view.fr-strong{font-weight:700}a.fr-view.fr-green{color:green}img.fr-view{z-index:3;position:relative;overflow:auto;cursor:pointer}img.fr-view.fr-dib{margin:auto;display:block;float:none;vertical-align:top;margin-top:5px;margin-bottom:5px}img.fr-view.fr-dib.fr-fil{margin:5px
+					auto 5px 0;left:5px}img.fr-view.fr-dib.fr-fir{margin:5px 0 5px
+					auto;right:5px}img.fr-view.fr-dii{margin:auto;display:inline-block;float:none;margin-top:5px;margin-bottom:5px}img.fr-view.fr-dii.fr-fil{margin:5px
+					10px 5px 0;left:5px;float:left}img.fr-view.fr-dii.fr-fir{margin:5px
+					0 5px
+					10px;right:5px;float:right}img.fr-view.fr-rounded{border-radius:100%;-moz-border-radius:100%;-webkit-border-radius:100%;-moz-background-clip:padding;-webkit-background-clip:padding-box;background-clip:padding-box}img.fr-view.fr-bordered{border:solid
+					10px
+					#CCC;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box}
+				</style>
+			</head>
+
+			<body style="font-family:Arial Narrow, Arial, sans-serif;">
+				<xsl:if test="$includeTOC='true'">
+					<div id="sidebar">
+						<h1>TABLE OF CONTENT</h1>
+						<br />
+						<xsl:call-template name="tocSect" />
+					</div>
+					<div id="main">
+						<xsl:apply-templates select="ConformanceProfile/MetaData" />
+						<hr></hr>
+						<a name="top"></a>
+						<xsl:call-template name="dispSect" />
+					</div>
+					<script type="text/javascript">
+						<xsl:text disable-output-escaping="yes">
 					function unhide(divID, btnID) {
 					var oLimit = document.querySelector("#sidebar");
 					var divs = document.querySelectorAll("div");
 					for (var i = 0; i &lt; divs.length; i++) {
-    					if (divs[i].id == divID) {
-    						divs[i].className = (divs[i].className=='hidden')?'unhidden':'hidden';
-						}
-						}
+					if (divs[i].id == divID) {
+					divs[i].className = (divs[i].className=='hidden')?'unhidden':'hidden';
+					}
+					}
 					document.getElementById(btnID).innerHTML = ((document.getElementById(divID).className=='hidden')? "[Show]":"[Hide]");
 					}</xsl:text>
-				</script>
-			</head>
-
-			<body style="font-family:Arial Narrow, Arial, sans-serif;">
-				<div id="sidebar">
-					<h1>TABLE OF CONTENT</h1>
-					<br/>
-					<xsl:call-template name="tocSect" />
-				</div>
-				<div id="main">
-					<xsl:apply-templates select="ConformanceProfile/MetaData" />
-					<hr></hr>
-					<a name="top"></a>
-
-					<!-- <xsl:value-of select="$inlineConstraints" /> -->
-					<xsl:call-template name="dispSect" />
-				</div>
+					</script>
+				</xsl:if>
+				<xsl:if test="normalize-space($includeTOC) = 'false'">
+					<div id="notoc">
+						<xsl:call-template name="dispSect" />
+					</div>
+				</xsl:if>
 			</body>
 		</html>
 	</xsl:template>
@@ -139,73 +229,84 @@
 			<a id="{@id}" name="{@id}">
 				<u>
 					<xsl:choose>
-						<xsl:when test="@h &lt; 7">
+						<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'true'">
 							<xsl:element name="{concat('h', @h)}">
 								<xsl:value-of select="@prefix" />
 								-
 								<xsl:value-of select="@title" />
 							</xsl:element>
 						</xsl:when>
-						<xsl:otherwise>
+						<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
 							<xsl:element name="h6">
 								<xsl:value-of select="@prefix" />
 								-
 								<xsl:value-of select="@title" />
 							</xsl:element>
-						</xsl:otherwise>
+						</xsl:when>
+						<xsl:when test="@h &lt; 7 and normalize-space($includeTOC) = 'false'">
+							<xsl:element name="{concat('h', @h)}">
+								<xsl:value-of select="@title" />
+							</xsl:element>
+						</xsl:when>
+						<xsl:when test="@h &gt; 7 and normalize-space($includeTOC) = 'true'">
+							<xsl:element name="h6">
+								<xsl:value-of select="@prefix" />
+								-
+								<xsl:value-of select="@title" />
+							</xsl:element>
+						</xsl:when>
 					</xsl:choose>
 				</u>
 			</a>
 			<br />
 			<xsl:call-template name="dispSectContent" />
 			<xsl:call-template name="dispProfileContent" />
-			
+
 		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="MetaData">
-		<h1 align="center">
+		<p style="text-align:center">
 			<xsl:element name="img">
 				<xsl:attribute name="src">
 					<xsl:text>http://hit-2015.nist.gov/docs/hl7Logo.png</xsl:text>
-			</xsl:attribute>
+				</xsl:attribute>
 			</xsl:element>
-		</h1>
-		<h1 align="center">
-			<xsl:value-of select="@Name"></xsl:value-of>
-		</h1>
+		</p>
+		<p style="font-size:250%; text-align:center">
+			<strong>
+				<xsl:value-of select="@Name"></xsl:value-of>
+			</strong>
+		</p>
 		<br></br>
-		<h2 align="center">
+		<p style="font-size:200%; text-align:center">
 			<xsl:value-of select="@Subtitle"></xsl:value-of>
-		</h2>
+		</p>
 		<br></br>
-		<h3 align="center">
+		<p style="font-size:100%; text-align:center">
 			<xsl:value-of select="@Date"></xsl:value-of>
-		</h3>
+		</p>
 		<br></br>
 		<br></br>
-		<h4 align="center">
+		<p style="font-size:100%; text-align:center">
 			<xsl:text>HL7 version </xsl:text>
 			<xsl:value-of select="@HL7Version"></xsl:value-of>
-		</h4>
+		</p>
 		<br></br>
-		<h4 align="center">
+		<p style="font-size:80%; text-align:center">
 			<xsl:text>Document version </xsl:text>
 			<xsl:value-of select="@DocumentVersion"></xsl:value-of>
-		</h4>
+		</p>
 		<br></br>
-		<h4 align="center">
+		<p style="font-size:80%; text-align:center">
 			<xsl:value-of select="@OrgName"></xsl:value-of>
-		</h4>
-		<!-- <br></br> <xsl:value-of select="@Ext"></xsl:value-of> <br></br> <xsl:value-of 
-			select="@Status"></xsl:value-of> <br></br> <xsl:value-of select="@Topics"></xsl:value-of> 
-			<br></br> -->
-
+		</p>
+		<p style="font-size:62.5; text-align:center">
+		</p>
 	</xsl:template>
 
 	<xsl:template name="dispSectContent">
 		<xsl:value-of disable-output-escaping="yes" select="SectionContent" />
-		<!--<xsl:copy-of select="node()" /> -->
 	</xsl:template>
 
 	<xsl:template name="dispProfileContent">
@@ -230,21 +331,13 @@
 					<xsl:sort select="@position" data-type="number"></xsl:sort>
 				</xsl:apply-templates>
 			</xsl:when>
+			<xsl:when test="count(Constraints) &gt; 0">
+				<xsl:apply-templates select="Constraints">
+				</xsl:apply-templates>
+			</xsl:when>
 			<xsl:otherwise>
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
-
-	<xsl:template name="pad">
-		<xsl:param name="padChar" select="'#'" />
-		<xsl:param name="padCount" select="0" />
-		<xsl:value-of select="$padChar" />
-		<xsl:if test="$padCount&gt;1">
-			<xsl:call-template name="pad">
-				<xsl:with-param name="padCount" select="number($padCount) - 1" />
-				<xsl:with-param name="padChar" select="$padChar" />
-			</xsl:call-template>
-		</xsl:if>
 	</xsl:template>
 
 	<xsl:template name="dispSect">
@@ -264,20 +357,19 @@
 				-
 				<xsl:value-of select="@title" />
 				<xsl:choose>
-					<xsl:when test="count(Section) &gt; 0">					
+					<xsl:when test="count(Section) &gt; 0">
 						<xsl:element name="a">
 							<xsl:attribute name="href">javascript:unhide('<xsl:value-of
 								select="concat(@id, '_toc')" />', '<xsl:value-of
 								select="concat(@id, '_btn')" />');</xsl:attribute>
 							<xsl:element name="div">
-							<xsl:attribute name="id"><xsl:value-of select="concat(@id, '_btn')" /></xsl:attribute>
-							<xsl:attribute name="class">unhidden btn</xsl:attribute>
-							[Hide]
-							</xsl:element>	
+								<xsl:attribute name="id"><xsl:value-of
+									select="concat(@id, '_btn')" /></xsl:attribute>
+								<xsl:attribute name="class">unhidden btn</xsl:attribute>
+								[Hide]
+							</xsl:element>
 						</xsl:element>
 					</xsl:when>
- 					<xsl:otherwise>
- 	 				</xsl:otherwise>
 				</xsl:choose>
 			</a>
 			<br></br>
@@ -296,61 +388,52 @@
 		</xsl:element>
 	</xsl:template>
 
-	<xsl:template match="MessageDisplay" mode="toc">
-		<a href="#{@ID}">
-			<br></br>
-			<xsl:value-of select="@Position" />
-			<xsl:text>.</xsl:text>
-			<xsl:value-of select="@Name" />
-			-
-			<xsl:value-of select="@Description" />
-		</a>
-	</xsl:template>
-
-
 	<xsl:template match="MessageDisplay">
-		<xsl:value-of select="Comment" />
-		<table width="100%" border="1" cellspacing="0" cellpadding="1">
-			<col style="width:10%"></col>
-			<col style="width:20%"></col>
-			<col style="width:20%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:30%"></col>
-			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
-				<tr>
-					<th>
-						Segment
-					</th>
-					<th>
-						Flavor
-					</th>
-					<th>
-						Element name
-					</th>
-					<th>
-						Card.
-					</th>
-					<th>
-						Usage
-					</th>
-					<th>
-						Description/Comments
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<xsl:for-each select="Elt">
-					<xsl:call-template name="elt">
-						<xsl:with-param name="style"
-							select="'background-color:white;text-decoration:normal'">
-						</xsl:with-param>
-					</xsl:call-template>
+		<xsl:value-of select="@Comment" />
+		<p>
+			<table width="100%" border="1" cellspacing="0" cellpadding="1">
+				<col style="width:10%"></col>
+				<col style="width:20%"></col>
+				<col style="width:20%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:30%"></col>
+				<thead style="background:#F0F0F0; color:#B21A1C; align:center">
+					<tr>
+						<th>
+							Segment
+						</th>
+						<th>
+							Flavor
+						</th>
+						<th>
+							Element name
+						</th>
+						<th>
+							Cardinality
+						</th>
+						<th>
+							Usage
+						</th>
+						<th>
+							Description/Comments
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:for-each select="Elt">
+						<xsl:call-template name="elt">
+							<xsl:with-param name="style"
+								select="'background-color:white;text-decoration:normal'">
+							</xsl:with-param>
+						</xsl:call-template>
 
-				</xsl:for-each>
-			</tbody>
-		</table>
-		<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='UsageNote']" />
+					</xsl:for-each>
+				</tbody>
+			</table>
+		</p>
+		<xsl:value-of disable-output-escaping="yes"
+			select="./Text[@Type='UsageNote']" />
 		<br></br>
 	</xsl:template>
 
@@ -395,94 +478,104 @@
 	</xsl:template>
 
 	<xsl:template match="Segment">
-		<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text1']" />
-		<br></br>
-		<table width="100%" border="1" cellspacing="0" cellpadding="1">
-			<col style="width:5%"></col>
-			<col style="width:15%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:30%"></col>
-			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
-				<tr>
-					<th>
-						Seq
-					</th>
-					<th>
-						Element name
-					</th>
-					<th>
-						DT
-					</th>
-					<th>
-						Usage
-					</th>
-					<th>
-						Card.
-					</th>
-					<th>
-						Length
-					</th>
-					<th>
-						Value Set
-					</th>
-					<th>
-						Comment
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<xsl:for-each select="Field">
-					<xsl:sort select="@Position" data-type="number"></xsl:sort>
-					<xsl:call-template name="field">
-						<xsl:with-param name="style"
-							select="'background-color:white;text-decoration:normal'">
-						</xsl:with-param>
-					</xsl:call-template>
+		<xsl:value-of select="@Comment"></xsl:value-of>
+		<xsl:if test="count(./Text[@Type='Text1']) &gt; 0">
+			<p>
+				<xsl:value-of disable-output-escaping="yes"
+					select="./Text[@Type='Text1']" />
+			</p>
+		</xsl:if>
+		<p>
+			<table width="100%" border="1" cellspacing="0" cellpadding="1">
+				<col style="width:5%"></col>
+				<col style="width:15%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:30%"></col>
+				<thead style="background:#F0F0F0; color:#B21A1C; align:center">
+					<tr>
+						<th>
+							Seq
+						</th>
+						<th>
+							Element name
+						</th>
+						<th>
+							Data type
+						</th>
+						<th>
+							Usage
+						</th>
+						<th>
+							Cardinality
+						</th>
+						<th>
+							Length
+						</th>
+						<th>
+							Value Set
+						</th>
+						<th>
+							Comment
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:for-each select="Field">
+						<xsl:sort select="@Position" data-type="number"></xsl:sort>
+						<xsl:call-template name="field">
+							<xsl:with-param name="style"
+								select="'background-color:white;text-decoration:normal'">
+							</xsl:with-param>
+						</xsl:call-template>
 
-				</xsl:for-each>
-			</tbody>
-		</table>
+					</xsl:for-each>
+				</tbody>
+			</table>
+		</p>
 
 		<xsl:choose>
 			<xsl:when test="normalize-space($inlineConstraints) = 'false'">
-				<xsl:if test="count(Field//Constraint) &gt; 0">
-					<br></br>
-					<table width="100%" border="1" cellspacing="0" cellpadding="1">
-						<thead>
-							<tr style="background:#C0C0C0">
-								<th>
-									Type
-								</th>
-								<th>
-									Constraints
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<xsl:for-each select="Field">
-								<xsl:sort select="@Position" data-type="number"></xsl:sort>
-								<xsl:if test="node()">
-									<tr>
-										<td>
-											<xsl:value-of select="./Constraint/@Type" />
-										</td>
-										<td>
-											<xsl:value-of select="./Constraint" />
-										</td>
-									</tr>
-								</xsl:if>
-							</xsl:for-each>
-						</tbody>
-					</table>
+				<xsl:if test="count(Field//Constraint[@Type='cs']) &gt; 0">
+					<p>
+						<strong>
+							<u>Conformance statements</u>
+						</strong>
+						<table width="100%" border="1" cellspacing="0" cellpadding="1">
+							<xsl:call-template name="csheader"></xsl:call-template>
+							<tbody>
+								<xsl:for-each select="Field/Constraint[@Type='cs']">
+									<xsl:sort select="@Position" data-type="number"></xsl:sort>
+									<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
+								</xsl:for-each>
+							</tbody>
+						</table>
+					</p>
+				</xsl:if>
+				<xsl:if test="count(Field//Constraint[@Type='pre']) &gt; 0">
+					<p>
+						<strong>
+							<u>Conditional predicates</u>
+						</strong>
+						<table width="100%" border="1" cellspacing="0" cellpadding="1">
+							<xsl:call-template name="preheader"></xsl:call-template>
+							<tbody>
+								<xsl:for-each select="Field/Constraint[@Type='pre']">
+									<xsl:sort select="@Position" data-type="number"></xsl:sort>
+									<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
+								</xsl:for-each>
+							</tbody>
+						</table>
+					</p>
 				</xsl:if>
 			</xsl:when>
 		</xsl:choose>
-		<br></br>
-		<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text2']" />
+
+		<xsl:value-of disable-output-escaping="yes"
+			select="./Text[@Type='Text2']" />
 
 		<xsl:for-each select="Field">
 			<xsl:sort select="@Position" data-type="number"></xsl:sort>
@@ -498,7 +591,8 @@
 						<xsl:value-of select="./@Datatype" />
 						)
 					</b>
-					<xsl:value-of disable-output-escaping="yes" select="./Text[@Type='Text']" />
+					<xsl:value-of disable-output-escaping="yes"
+						select="./Text[@Type='Text']" />
 				</p>
 			</xsl:if>
 		</xsl:for-each>
@@ -542,21 +636,11 @@
 			</td>
 		</tr>
 		<xsl:if test="normalize-space($inlineConstraints) = 'true'">
-
 			<xsl:if test="count(Constraint) &gt; 0">
-				<tr>
-					<td></td>
-					<td style="background:#C0C0C0">
-						<xsl:value-of select="./Constraint/@Type" />
-					</td>
-					<td colspan="9">
-						<xsl:value-of select="./Constraint" />
-					</td>
-				</tr>
+				<xsl:apply-templates select="." mode="inlineSgt"></xsl:apply-templates>
 			</xsl:if>
 		</xsl:if>
 	</xsl:template>
-
 
 	<xsl:template match="Datatype" mode="toc">
 		<a href="#{@ID}">
@@ -570,97 +654,109 @@
 	</xsl:template>
 
 	<xsl:template match="Datatype">
-		<table width="100%" border="1" cellspacing="0" cellpadding="0">
-			<col style="width:5%"></col>
-			<col style="width:15%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:10%"></col>
-			<col style="width:30%"></col>
-			<thead style="background:#F0F0F0; color:#B21A1C; align:center">
-				<tr>
-					<th>
-						Seq
-					</th>
-					<th>
-						Element name
-					</th>
-					<th>
-						Conf length
-					</th>
-					<th>
-						DT
-					</th>
-					<th>
-						Usage
-					</th>
-					<th>
-						Length
-					</th>
-					<th>
-						Value set
-					</th>
-					<th>
-						Comment
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<xsl:for-each select="Component">
-					<xsl:sort select="@Position" data-type="number"></xsl:sort>
-					<xsl:call-template name="component">
-						<xsl:with-param name="style"
-							select="'background-color:white;text-decoration:normal'">
-						</xsl:with-param>
-					</xsl:call-template>
+		<xsl:value-of select="@Comment"></xsl:value-of>
+		<xsl:if test="count(Text[@Type='UsageNote']) &gt; 0">
+			<p>
+				<xsl:value-of disable-output-escaping="yes"
+					select="Text[@Type='UsageNote']" />
+			</p>
+		</xsl:if>
+		<p>
+			<table width="100%" border="1" cellspacing="0" cellpadding="0">
+				<col style="width:5%"></col>
+				<col style="width:15%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:10%"></col>
+				<col style="width:30%"></col>
+				<thead style="background:#F0F0F0; color:#B21A1C; align:center">
+					<tr>
+						<th>
+							Seq
+						</th>
+						<th>
+							Element name
+						</th>
+						<th>
+							Conf length
+						</th>
+						<th>
+							Data type
+						</th>
+						<th>
+							Usage
+						</th>
+						<th>
+							Length
+						</th>
+						<th>
+							Value set
+						</th>
+						<th>
+							Comment
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<xsl:for-each select="Component">
+						<xsl:sort select="@Position" data-type="number"></xsl:sort>
+						<xsl:call-template name="component">
+							<xsl:with-param name="style"
+								select="'background-color:white;text-decoration:normal'">
+							</xsl:with-param>
+						</xsl:call-template>
+					</xsl:for-each>
+				</tbody>
+			</table>
+		</p>
 
-				</xsl:for-each>
-			</tbody>
-		</table>
-
-		<xsl:if test="count(Field//Constraint) &gt; 0">
+		<xsl:if test="count(Component//Constraint) &gt; 0">
 			<xsl:choose>
 				<xsl:when test="normalize-space($inlineConstraints) = 'false'">
-					<table width="100%" border="1" cellspacing="0" cellpadding="1">
-						<thead>
-							<tr style="background:#C0C0C0">
-								<th>
-									Type
-								</th>
-								<th>
-									Constraints
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<xsl:for-each select="Field">
-								<xsl:sort select="@Position" data-type="number"></xsl:sort>
-								<xsl:if test="node()">
-									<tr>
-										<td>
-											<xsl:value-of select="./Constraint/@Type" />
-										</td>
-										<td>
-											<xsl:value-of select="./Constraint" />
-										</td>
-									</tr>
-								</xsl:if>
-							</xsl:for-each>
-						</tbody>
-					</table>
+					<xsl:if test="count(Component//Constraint[@Type='cs']) &gt; 0">
+						<p>
+							<strong>
+								<u>Conformance statements</u>
+							</strong>
+							<table width="100%" border="1" cellspacing="0" cellpadding="1">
+								<xsl:call-template name="csheader"></xsl:call-template>
+								<tbody>
+									<xsl:for-each select="Component/Constraint[@Type='cs']">
+										<xsl:sort select="@Position" data-type="number"></xsl:sort>
+										<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
+									</xsl:for-each>
+								</tbody>
+							</table>
+						</p>
+					</xsl:if>
+					<xsl:if test="count(Component//Constraint[@Type='pre']) &gt; 0">
+						<p>
+							<strong>
+								<u>Conditional predicates</u>
+							</strong>
+							<table width="100%" border="1" cellspacing="0" cellpadding="1">
+								<xsl:call-template name="preheader"></xsl:call-template>
+								<tbody>
+									<xsl:for-each select="Component/Constraint[@Type='pre']">
+										<xsl:sort select="@Position" data-type="number"></xsl:sort>
+										<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
+									</xsl:for-each>
+								</tbody>
+							</table>
+						</p>
+					</xsl:if>
 				</xsl:when>
 			</xsl:choose>
 		</xsl:if>
-		<br></br>
-		<xsl:value-of select="Text[@Type='UsageNote']" />
-		<br></br>
+
 		<xsl:for-each select="Component">
 			<xsl:sort select="@Position" data-type="number"></xsl:sort>
-			<xsl:call-template name="componentText">
-			</xsl:call-template>
-			<br></br>
+			<p>
+				<xsl:value-of disable-output-escaping="yes"
+					select="./Text[@Type='Text']" />
+			</p>
 		</xsl:for-each>
 	</xsl:template>
 
@@ -699,28 +795,10 @@
 		</tr>
 
 		<xsl:if test="normalize-space($inlineConstraints) = 'true'">
-
 			<xsl:if test="count(Constraint) &gt; 0">
-				<tr>
-					<td></td>
-					<td style="background:#C0C0C0">
-						<xsl:value-of select="./Constraint/@Type" />
-					</td>
-					<td colspan="8">
-						<xsl:value-of select="./Constraint" />
-					</td>
-				</tr>
+				<xsl:apply-templates select="." mode="inlineDt"></xsl:apply-templates>
 			</xsl:if>
 		</xsl:if>
-		<!-- <xsl:if test="node()"> <xsl:choose> <xsl:when test="normalize-space($inlineConstraints) 
-			= 'true'"> <tr> <td></td> <td style="background:#C0C0C0"> <xsl:value-of select="./Constraint/@Type" 
-			/> </td> <td colspan="6" style="background:#C0C0C0"> <xsl:value-of select="./Constraint" 
-			/> </td> </tr> </xsl:when> <xsl:otherwise> <tr> <td colspan="8" style="background:#C0C0C0" 
-			/> </tr> </xsl:otherwise> </xsl:choose> </xsl:if> -->
-	</xsl:template>
-
-	<xsl:template name="componentText">
-		<xsl:value-of select="Text[@Type='Text']" />
 	</xsl:template>
 
 	<xsl:template match="ValueSetDefinition" mode="toc">
@@ -735,8 +813,23 @@
 	</xsl:template>
 
 	<xsl:template match="ValueSetDefinition">
-		<xsl:text>Oid: </xsl:text>
-		<xsl:value-of select="@Oid"></xsl:value-of>
+		<xsl:if test="@Stability != ''">
+			<p><xsl:text>Stability: </xsl:text>
+			<xsl:value-of select="@Stability"></xsl:value-of>
+			</p>
+		</xsl:if>
+		<xsl:if test="@Extensibility != ''">
+			<p><xsl:text>Extensibility: </xsl:text>
+			<xsl:value-of select="@Extensibility"></xsl:value-of></p>
+		</xsl:if>
+		<xsl:if test="@ContentDefinition != ''">
+			<p><xsl:text>Content Definition: </xsl:text>
+			<xsl:value-of select="@ContentDefinition"></xsl:value-of></p>
+		</xsl:if>
+		<xsl:if test="@Oid != ''">
+			<p><xsl:text>Oid: </xsl:text>
+			<xsl:value-of select="@Oid"></xsl:value-of></p>
+		</xsl:if>
 		<table width="100%" border="1" cellspacing="0" cellpadding="0">
 			<col style="width:15%"></col>
 			<col style="width:15%"></col>
@@ -768,7 +861,7 @@
 				</xsl:for-each>
 			</tbody>
 		</table>
-		<!-- <br></br>  -->
+		<!-- <br></br> -->
 	</xsl:template>
 
 	<xsl:template name="ValueElement">
@@ -787,6 +880,212 @@
 				<xsl:value-of select="@Label" />
 			</td>
 		</tr>
+	</xsl:template>
+
+
+	<xsl:template match="Constraints">
+		<xsl:if test="count(./Constraint) &gt; 0">
+			<b>
+				<xsl:value-of select="@title" />
+			</b>
+			<br></br>
+			<p>
+				<xsl:if test="./@Type='ConditionPredicate'">
+					<table width="100%" border="1" cellspacing="0" cellpadding="0">
+						<xsl:call-template name="csheader"></xsl:call-template>
+						<tbody>
+							<xsl:for-each select="./Constraint">
+								<xsl:sort select="@Position" data-type="number"></xsl:sort>
+								<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
+							</xsl:for-each>
+						</tbody>
+					</table>
+					<br></br>
+				</xsl:if>
+				<xsl:if test="./@Type='ConformanceStatement'">
+					<table width="100%" border="1" cellspacing="0" cellpadding="0">
+						<xsl:call-template name="preheader"></xsl:call-template>
+						<tbody>
+							<xsl:for-each select="./Constraint">
+								<xsl:sort select="@Position" data-type="number"></xsl:sort>
+								<xsl:apply-templates select="." mode="standalone"></xsl:apply-templates>
+							</xsl:for-each>
+						</tbody>
+					</table>
+					<br />
+				</xsl:if>
+			</p>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- Conformance statement header -->
+	<xsl:template name="csheader">
+		<col style="width:10%"></col>
+		<col style="width:10%"></col>
+		<col style="width:10%"></col>
+		<col style="width:70%"></col>
+		<thead>
+			<tr style="background:#F0F0F0; color:#B21A1C; align:center">
+				<th>
+					Id
+				</th>
+				<th>
+					Location
+				</th>
+				<th>
+					Classification
+				</th>
+				<th>
+					Description
+				</th>
+			</tr>
+		</thead>
+
+	</xsl:template>
+
+	<!-- Predicate header -->
+	<xsl:template name="preheader">
+		<col style="width:10%"></col>
+		<col style="width:10%"></col>
+		<col style="width:10%"></col>
+		<col style="width:70%"></col>
+		<thead style="background:#F0F0F0; color:#B21A1C; align:center">
+			<tr>
+				<th>
+					Location
+				</th>
+				<th>
+					Usage
+				</th>
+				<th colspan='2'>
+					Description
+				</th>
+			</tr>
+		</thead>
+	</xsl:template>
+
+	<!-- Parse constraint for inline mode segment -->
+	<xsl:template match="Constraint" mode="inlineSgt">
+		<xsl:variable name="precolspan" select="4"></xsl:variable>
+		<xsl:variable name="cscolspan" select="5"></xsl:variable>
+		<xsl:if test="./@Type='pre'">
+			<tr style="background-color:#E8E8E8;text-decoration:normal">
+				<td>
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+				<td>
+					<xsl:value-of select="@Usage" />
+				</td>
+				<xsl:element name="td">
+					<xsl:attribute name="colspan">
+				<xsl:value-of select="$precolspan" />
+				</xsl:attribute>
+					<xsl:value-of select="." />
+				</xsl:element>
+			</tr>
+		</xsl:if>
+		<xsl:if test="./@Type='cs'">
+			<tr style="background-color:#E8E8E8;text-decoration:normal">
+				<td>
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+				<xsl:element name="td">
+					<xsl:attribute name="colspan">
+				<xsl:value-of select="number($cscolspan)" />	
+				</xsl:attribute>
+					<xsl:value-of select="@Id" />
+					:
+					<xsl:value-of select="@Classification" />
+					:
+					<xsl:value-of select="." />
+				</xsl:element>
+			</tr>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- Parse constraint for inline mode datatype -->
+	<xsl:template match="Constraint" mode="inlineDt">
+		<xsl:variable name="precolspan" select="4"></xsl:variable>
+		<xsl:variable name="cscolspan" select="5"></xsl:variable>
+		<xsl:if test="./@Type='pre'">
+			<tr style="background-color:#E8E8E8;text-decoration:normal">
+				<td>
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+				<td>
+					<xsl:value-of select="@Usage" />
+				</td>
+				<xsl:element name="td">
+					<xsl:attribute name="colspan">
+				<xsl:value-of select="$precolspan" />
+				</xsl:attribute>
+					<xsl:value-of select="." />
+				</xsl:element>
+			</tr>
+		</xsl:if>
+		<xsl:if test="./@Type='cs'">
+			<tr style="background-color:#E8E8E8;text-decoration:normal">
+				<td>
+				</td>
+				<td>
+				</td>
+				<td>
+				</td>
+				<xsl:element name="td">
+					<xsl:attribute name="colspan">
+				<xsl:value-of select="number($cscolspan)" />	
+				</xsl:attribute>
+					<xsl:value-of select="@Id" />
+					:
+					<xsl:value-of select="@Classification" />
+					:
+					<xsl:value-of select="." />
+				</xsl:element>
+			</tr>
+		</xsl:if>
+	</xsl:template>
+
+	<!-- Parse constraint for standalone mode -->
+	<xsl:template match="Constraint" mode="standalone">
+		<xsl:if test="./@Type='pre'">
+			<tr style="background-color:white;text-decoration:normal">
+				<td>
+					<xsl:value-of select="concat(@LocationName, @Location)" />
+				</td>
+				<td>
+					<xsl:value-of select="@Usage" />
+				</td>
+				<td colspan='2'>
+					<xsl:value-of select="." />
+				</td>
+			</tr>
+
+		</xsl:if>
+		<xsl:if test="./@Type='cs'">
+			<tr style="background-color:white;text-decoration:normal">
+				<td>
+					<xsl:value-of select="@Id" />
+				</td>
+				<td>
+					<xsl:value-of select="concat(@LocationName, @Location)" />
+				</td>
+				<td>
+					<xsl:value-of select="@Classification" />
+				</td>
+				<td>
+					<xsl:value-of select="." />
+				</td>
+			</tr>
+		</xsl:if>
 	</xsl:template>
 
 </xsl:stylesheet>

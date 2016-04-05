@@ -11,6 +11,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 
 import static org.junit.Assert.assertNotNull;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentExportService;
@@ -94,12 +95,68 @@ public class IGExportTest {
 	}
 
 	@Test
-	public void testCallDTExportDocx() {
+	public void testCallDTLExportDocx() {
 		try {
 			igs = igService.findAll();
 			ig = igs.get(0);
 
 			content = igExport.exportAsDocxDatatypes(ig);
+			assertNotNull(content);
+			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+			tmpFile = new File("DTL_"+timeStamp+".docx");
+			logger.debug("Writing to file");
+			FileUtils.copyInputStreamToFile(content, tmpFile);
+			logger.debug("Export done");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testCallDTLExportHtml() {
+		try {
+			igs = igService.findAll();
+			ig = igs.get(0);
+
+			content = igExport.exportAsHtmlDatatypes(ig);
+			assertNotNull(content);
+			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+			tmpFile = new File("DTL_"+timeStamp+".html");
+			logger.debug("Writing to file");
+			FileUtils.copyInputStreamToFile(content, tmpFile);
+			logger.debug("Export done");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testCallDTExportHtml() {
+		try {
+			igs = igService.findAll();
+			ig = igs.get(0);
+			Datatype d = (Datatype) ig.getProfile().getDatatypes().getChildren().toArray()[0];
+
+			content = igExport.exportAsHtmlDatatype(d, ig);
+			assertNotNull(content);
+			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+			tmpFile = new File("DT_"+timeStamp+".html");
+			logger.debug("Writing to file");
+			FileUtils.copyInputStreamToFile(content, tmpFile);
+			logger.debug("Export done");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testCallDTExportDocx() {
+		try {
+			igs = igService.findAll();
+			ig = igs.get(0);
+			Datatype d = (Datatype) ig.getProfile().getDatatypes().getChildren().toArray()[0];
+
+			content = igExport.exportAsDocxDatatype(d, ig);
 			assertNotNull(content);
 			timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 			tmpFile = new File("DT_"+timeStamp+".docx");
@@ -110,6 +167,7 @@ public class IGExportTest {
 			e.printStackTrace();
 		}
 	}
+
 
 	@Test
 	public void testCallIGExportPdf() {

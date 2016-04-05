@@ -352,6 +352,7 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		cs.setDescription((String) source.get("description"));
 		cs.setAssertion(((String) source.get("assertion")));
 		cs.setReference(reference(((DBObject) source.get("reference"))));
+		cs.setConstraintClassification(source.get("constraintClassification")==null?"E":((String) source.get("constraintClassification")));
 		return cs;
 	}
 
