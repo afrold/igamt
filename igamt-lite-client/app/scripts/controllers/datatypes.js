@@ -414,10 +414,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
     $scope.addComplexConformanceStatement = function(){
     	$scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
     	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
-    	$scope.complexConstraint.assertion = "<Assertion>" + $scope.complexConstraint.assertion + "</Assertion>";
     	$scope.tempComformanceStatements.push($scope.complexConstraint);
-    	$scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf($scope.firstConstraint), 1);
-    	$scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf($scope.secondConstraint), 1);
     	$scope.initComplexStatement();
         $scope.changed = true;
     };
@@ -432,7 +429,6 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
         	$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
         	var positionPath = $scope.selectedNode.position + '[1]';
         	var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
-        	cs.assertion = "<Assertion>" + cs.assertion + "</Assertion>";
             $scope.tempComformanceStatements.push(cs);
             $scope.changed = true;
         }
@@ -453,17 +449,21 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 
 angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
 	$scope.selectedNode = selectedNode;
-    $scope.constraintType = 'Plain';
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = '';
-    $scope.newComplexConstraint = [];
+    $scope.complexConstraintTrueUsage = null;
+    $scope.complexConstraintFalseUsage = null;
     
     $scope.changed = false;
     $scope.tempPredicates = [];
     angular.copy($rootScope.datatype.predicates, $scope.tempPredicates);
+
+    
+    $scope.setChanged = function () {
+    	$scope.changed = true;
+    }
 
     $scope.initPredicate = function () {
     	$scope.newConstraint = angular.fromJson({
@@ -483,33 +483,26 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
             falseUsage: null,
             valueSetId: null,
             bindingStrength: 'R',
-            bindingLocation: '1',
-            constraintClassification: 'E'
+            bindingLocation: '1'
         });
         $scope.newConstraint.datatype = $rootScope.datatype.name;
+    }
+    
+    $scope.initComplexPredicate = function () {
+    	$scope.firstConstraint = null;
+        $scope.secondConstraint = null;
+        $scope.compositeType = null;
+        $scope.complexConstraintTrueUsage = null;
+        $scope.complexConstraintFalseUsage = null;
     }
     
     $scope.initPredicate();
     
     
-    
-    $scope.deletePredicateForComplex = function (predicate) {
-    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf(predicate), 1);
-    };
-    
     $scope.deletePredicate = function (predicate) {
     	$scope.tempPredicates.splice($scope.tempPredicates.indexOf(predicate), 1);
         $scope.changed = true;
     };
-
-    $scope.changeConstraintType = function () {
-    	$scope.initPredicate();
-		
-    	if($scope.constraintType === 'Complex'){
-    		$scope.newComplexConstraint = [];
-    		$scope.newComplexConstraintId = '';
-    	}
-    }
 
     $scope.updateComponent_1 = function () {
         $scope.newConstraint.subComponent_1 = null;
@@ -553,31 +546,18 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
         return false;
     };
     
-    $scope.addComplexConformanceStatement = function(){
-        $scope.deletePredicateByTarget();
-        $scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
-        $scope.complexConstraint.assertion = "<Condition>" + $scope.complexConstraint.assertion + "</Condition>";
-        $scope.tempPredicates.predicates.push($scope.complexConstraint);
-        $scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.complexConstraint), 1);
-        $scope.complexConstraint = null;
+    $scope.addComplexPredicate = function(){
+        $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
+        $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
+        $scope.complexConstraint.falseUsage = $scope.complexConstraintFalseUsage;
+    	$scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
+    	$scope.tempPredicates.push($scope.complexConstraint);
+    	$scope.initComplexPredicate();
         $scope.changed = true;
     };
     
-    $scope.compositeConformanceStatements = function(){
-        $scope.newComplexConstraint.push($rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint));
-    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.firstConstraint), 1);
-    	$scope.newComplexConstraint.splice($scope.newComplexConstraint.indexOf($scope.secondConstraint), 1);
-    	$scope.firstConstraint = null;
-        $scope.secondConstraint = null;
-        $scope.compositeType = null;
-    };
-    
-
     $scope.updatePredicate = function () {
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
-        if ($scope.constraintType === 'Plain'){
-        	$scope.deletePredicateByTarget();
-        }
         
         $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);
         $scope.newConstraint.position_2 = $scope.genPosition($scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
@@ -587,13 +567,8 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
         if ($scope.newConstraint.position_1 != null) {
         	var positionPath = $scope.selectedNode.position + '[1]';
         	var cp = $rootScope.generatePredicate(positionPath, $scope.newConstraint);
-            if($scope.constraintType === 'Plain'){
-            	cp.assertion = "<Condition>" + cp.assertion + "</Condition>";
-            	$scope.tempPredicates.push(cp);
-                $scope.changed = true;
-            }else if ($scope.constraintType === 'Complex'){
-            	$scope.newComplexConstraint.push(cp);
-            }
+            $scope.tempPredicates.push(cp);
+            $scope.changed = true;
         }
         $scope.initPredicate();
     };
