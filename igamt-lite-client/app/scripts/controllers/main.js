@@ -395,6 +395,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.generalInfo = {type: null, 'message': null};
         $rootScope.references = []; // collection of element referencing a datatype to delete
         $rootScope.section = {};
+        $rootScope.conformanceStatementIdList = [];
         $rootScope.parentsMap = {};
         $rootScope.igChanged = false;
 
@@ -468,6 +469,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.newConformanceStatementFakeId = 0;
             $rootScope.clearChanges();
             $rootScope.parentsMap = [];
+            $rootScope.conformanceStatementIdList = [];
 
             $rootScope.messageTree = null;
         };
@@ -697,11 +699,28 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             return $rootScope.datatypesMap && $rootScope.datatypesMap[id];
         };
 
+        $rootScope.calNextCSID = function () {
+        	if($rootScope.igdocument.metaData.ext != null){
+        		var maxIDNum = Number(0);
+        		angular.forEach($rootScope.conformanceStatementIdList, function (id) {
+        			var tempID = parseInt(id.replace($rootScope.igdocument.metaData.ext + "-", ""));
+        			
+        			if(tempID > maxIDNum) maxIDNum = tempID;
+        		});
+        		
+        		return $rootScope.igdocument.metaData.ext + "-" + (maxIDNum + 1);
+        	}else {
+        		return "";
+        	}
+        }
         $rootScope.processElement = function (element, parent) {
             try {
                 if(element != undefined && element != null) {
                     if (element.type === "message") {
                         element.children = $filter('orderBy')(element.children, 'position');
+                        angular.forEach(element.conformanceStatements, function (cs) {
+                        	if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+                        });
                         angular.forEach(element.children, function (segmentRefOrGroup) {
                             $rootScope.processElement(segmentRefOrGroup, element);
                         });
@@ -720,6 +739,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         $rootScope.processElement($rootScope.segmentsMap[element.ref], element);
                     } else if (element.type === "segment") {
                         element.fields = $filter('orderBy')(element.fields, 'position');
+                        angular.forEach(element.conformanceStatements, function (cs) {
+                        	if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+                        });
                         angular.forEach(element.fields, function (field) {
                             $rootScope.processElement(field, element);
                         });
@@ -731,6 +753,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
                     } else if (element.type === "datatype") {
                         element.components = $filter('orderBy')(element.components, 'position');
+                        angular.forEach(element.conformanceStatements, function (cs) {
+                        	if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+                        });
                         angular.forEach(element.components, function (component) {
                             $rootScope.processElement(component, element);
                         });

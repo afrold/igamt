@@ -985,7 +985,10 @@
 				<i class="fa fa-bullseye fa-lg" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
 			</td>
             <td class="col-md-2">
-				<input class="form-control" ng-model="c.constraintId" ng-change="setChanged()" type="text"/>
+				<input class="form-control form-control-short80" ng-model="c.constraintId" ng-change="setChanged(); targetId = c.constraintId;" type="text" ng-readonly="targetId !== c.constraintId"/>
+				<i class="fa fa-pencil" ng-hide="targetId == c.constraintId" ng-click="targetId = c.constraintId; conformanceStatementIdList.splice(conformanceStatementIdList.indexOf(c.constraintId), 1);"></i>
+				<i class="fa fa-paper-plane" ng-hide="targetId != c.constraintId || conformanceStatementIdList.indexOf(c.constraintId) != -1" ng-click="conformanceStatementIdList.push(c.constraintId); targetId = ''"></i>
+				<span style="color:red" ng-show="conformanceStatementIdList.indexOf(c.constraintId) != -1 && targetId == c.constraintId">Duplicated ID</span>
 			</td>
             <td class="col-md-8">
 				<input class="form-control" ng-model="c.description" ng-change="setChanged()" type="text"/>
@@ -1005,7 +1008,7 @@
     	<label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'" ng-class="{'active':constraintType === 'Plain'}">
         	<input type="radio" ng-value="constraintType">Plain
 		</label>
-		<label class="btn btn-primary btn-xs" ng-click="constraintType = 'Complex'" ng-class="{'active':constraintType === 'Complex'}">
+		<label class="btn btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID();" ng-class="{'active':constraintType === 'Complex'}">
         	<input type="radio" ng-value="constraintType">Complex
 		</label>
    	</div>
@@ -1028,8 +1031,10 @@
 					<button class="btn btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw"></i></span></button>
 	</td>
     <td class="col-md-2">
-        <input class="form-control" ng-model="newConstraint.constraintId" placeholder="Type ID"
-               type="text"/>
+		<input class="form-control form-control-short80" ng-model="newConstraint.constraintId" ng-change="setChanged(); targetId = newConstraint.constraintId;" type="text" ng-readonly="targetId !== newConstraint.constraintId"/>
+		<i class="fa fa-pencil" ng-hide="targetId == newConstraint.constraintId" ng-click="targetId = newConstraint.constraintId; conformanceStatementIdList.splice(conformanceStatementIdList.indexOf(newConstraint.constraintId), 1);"></i>
+		<i class="fa fa-paper-plane" ng-hide="targetId != newConstraint.constraintId || conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1" ng-click="conformanceStatementIdList.push(newConstraint.constraintId); targetId = ''"></i>
+		<span style="color:red" ng-show="conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1 && targetId == newConstraint.constraintId">Duplicated ID</span>
     </td>
 
     <td class="col-md-2">
@@ -1227,7 +1232,10 @@
 					<button class="btn btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw"></i></span></button>
 				</td>
 				<td class="col-md-2">
-					<input class="form-control" ng-model="newComplexConstraintId" placeholder="Type ID" type="text"/>
+					<input class="form-control form-control-short80" ng-model="newComplexConstraintId" ng-change="setChanged(); targetId = newComplexConstraintId;" type="text" ng-readonly="targetId !== newComplexConstraintId"/>
+					<i class="fa fa-pencil" ng-hide="targetId == newComplexConstraintId" ng-click="targetId = newComplexConstraintId; conformanceStatementIdList.splice(conformanceStatementIdList.indexOf(newComplexConstraintId), 1);"></i>
+					<i class="fa fa-paper-plane" ng-hide="targetId != newComplexConstraintId || conformanceStatementIdList.indexOf(newComplexConstraintId) != -1" ng-click="conformanceStatementIdList.push(newComplexConstraintId); targetId = ''"></i>
+					<span style="color:red" ng-show="conformanceStatementIdList.indexOf(newComplexConstraintId) != -1 && targetId == newComplexConstraintId">Duplicated ID</span>
     			</td>
 				<td class="col-md-2">
 					<select class="form-control" name="compositeTypeSelect" ng-model="compositeType">

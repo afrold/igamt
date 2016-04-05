@@ -409,7 +409,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
             component_2: null,
             subComponent_2: null,
             verb: null,
-            constraintId: null,
+            constraintId: $rootScope.calNextCSID(),
             contraintType: null,
             value: null,
             valueSetId: null,
@@ -508,6 +508,9 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     };
     
     $scope.saveclose = function () {
+    	angular.forEach($scope.tempComformanceStatements, function (cs) {
+    		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+    	});
     	angular.copy($scope.tempComformanceStatements, $rootScope.segment.conformanceStatements);
     	$rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);

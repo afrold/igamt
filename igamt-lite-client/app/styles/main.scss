@@ -406,6 +406,7 @@ select.form-control-short {
   display: initial !important;
 }
 
+
 select.form-control-warning {
   background-color: #B33A3A;
   cursor: pointer;
@@ -2072,6 +2073,11 @@ input.form-control {
 
 input.form-control-short {
   width: 100px !important;
+  display: initial !important;
+}
+
+input.form-control-short80 {
+  width: 80% !important;
   display: initial !important;
 }
 
