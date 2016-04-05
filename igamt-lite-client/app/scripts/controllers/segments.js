@@ -504,6 +504,14 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     };
 
     $scope.ok = function () {
+    	angular.forEach($scope.tempComformanceStatements, function (cs) {
+    		$rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf(cs.constraintId), 1);
+    	});
+    	
+    	angular.forEach($rootScope.datatype.conformanceStatements, function (cs) {
+    		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+    	});
+    	
         $modalInstance.close($scope.selectedNode);
     };
     
