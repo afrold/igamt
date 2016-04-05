@@ -17,15 +17,6 @@
         </div>
         <div ng-show="!loadingSelection">
             <div ng-show="datatype !== null" id="executionPanel">
-                <!--<accordion close-others="false">-->
-                <!--<accordion-group is-open="true" panel-class="panel-info">-->
-
-                <!--<accordion-heading>-->
-                <!--<i class="fa"-->
-                <!--ng-class="{'fa-caret-down': accordi.metaData, 'fa-caret-right': !accordi.metaData}"></i>-->
-                <!--MetaData-->
-                <!--</accordion-heading>-->
-
                 <form name="datatypeForm" novalidate class="form-horizontal">
                     <div class="row">
                     	<div class="col-md-12 igl-page-header">
@@ -112,17 +103,6 @@
                         <div class="col-md-12 igl-page-header">
 <span class="pull-left" >
     <span class="header5">Definition</span>
-                                    <!--<div  style="margin-left:15px" class="btn-group btn-group-xs" data-toggle="buttons">-->
-                                        <!--<label class="btn btn-primary" ng-click="viewSettings.setTableRelevance(true)"-->
-                                               <!--ng-class="{'active': viewSettings.tableRelevance}">-->
-                                            <!--<input type="radio" ng-model="viewSettings.tableRelevance" ng-click="viewSettings.setTableRelevance(viewSettings.tableRelevance)" autocomplete="off" checked>R,RE,C(only)-->
-                                        <!--</label>-->
-                                        <!--<label class="btn  btn-primary" ng-click="viewSettings.setTableRelevance(false)"-->
-                                               <!--ng-class="{'active': !viewSettings.tableRelevance}">-->
-                                            <!--<input type="radio" ng-model="viewSettings.tableRelevance"  autocomplete="off">R,RE,C,O,X (All)-->
-                                        <!--</label>-->
-                                    <!--</div>-->
-
                              </span>
                             <span class="pull-right">
                                      <div style="margin-right: 20px" ng-dropdown-multiselect="" options="viewSettings.columnOptions"
@@ -134,21 +114,6 @@
                      </div>
 
                          <div class="col-md-12">
-                            <!--</form>-->
-                            <!--&lt;!&ndash;</accordion-group>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<accordion-group is-open="true" panel-class="panel-info">&ndash;&gt;-->
-
-                            <!--&lt;!&ndash;<accordion-heading>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<i class="fa"&ndash;&gt;-->
-                            <!--&lt;!&ndash;ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i>&ndash;&gt;
-                            -->
-                            <!--&lt;!&ndash;Definition&ndash;&gt;-->
-
-                            <!--&lt;!&ndash;</accordion-heading>&ndash;&gt;-->
-
-                            <!--<form class="form-horizontal" name="datatypeForm">-->
-
-
                             <div class="table-responsive">
                                 <table tt-table tt-params="datatypesParams"
                                        class="table table-bordered table-fix-header table-condensed profile-table">
@@ -195,7 +160,6 @@
         </div>
     </div>
 </script>
-
 <script type="text/ng-template" id="ConfirmDatatypeDeleteCtrl.html">
     <div class="modal-header">
         <h3 class="modal-title">Delete Confirmation

@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils,AutoSaveService) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, FormsSelectSvc) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -152,7 +152,7 @@ angular.module('igl')
             });
 
             $scope.$on('event:openDatatype', function (event, datatype) {
-                $scope.selectDatatype(datatype); // Should we open in a dialog ??
+            		$scope.selectDatatype(datatype); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openSegment', function (event, segment) {
@@ -728,23 +728,17 @@ angular.module('igl')
         };
 
         $scope.selectDatatype = function (datatype) {
-            $scope.subview = "EditDatatypes.html";
-            if (datatype && datatype != null) {
-                $scope.loadingSelection = true;
-                $rootScope.datatype = datatype;
-                $rootScope.datatype["type"] = "datatype";
-                $timeout(
-                    function () {
-                        $scope.tableWidth = null;
-                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                        $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
-                        $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
-                        $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
-                        $scope.loadingSelection = false;
-                       if ($scope.datatypesParams)
-                            $scope.datatypesParams.refresh();
-                    }, 100);
-            }
+	        if (datatype && datatype != null) {
+	            $scope.loadingSelection = true;
+	            $rootScope.datatype = datatype;
+					$timeout(
+					function () {
+			            $scope.subview = FormsSelectSvc.selectDatatype(datatype);
+			            $scope.loadingSelection = false;
+		                if ($scope.datatypesParams)
+		                		$scope.datatypesParams.refresh();
+				}, 100);
+	        }
         };
 
         $scope.selectMessage = function (message) {
@@ -759,8 +753,6 @@ angular.module('igl')
                     $scope.predWidth = $scope.getDynamicWidth(1, 3, 630);
                     $scope.commentWidth = $scope.getDynamicWidth(1, 3, 630);
                     $scope.loadingSelection = false;
-//                   if ($scope.messagesParams)
-//                        $scope.messagesParams.refresh();
                 }, 100);
         };
 
@@ -792,7 +784,6 @@ angular.module('igl')
                     $scope.loadingSelection = false;
                 }, 100);
         };
-
 
         $scope.getTableWidth = function () {
             if ($scope.tableWidth === null || $scope.tableWidth == 0) {

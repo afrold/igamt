@@ -5,7 +5,7 @@ body {
 </style>
 <style>
 .new {
-	background-color : yellow;
+	background-color : pink;
 }
 .toggle {
   display: none;
@@ -38,6 +38,7 @@ label:hover {
         top.location = self.location;
     }
 </script>
+<ng-include src="'views/edit/editDatatypes.html'"></ng-include>
 <div ng-controller="MasterDatatypeLibraryCtl" ng-init="initDatatypeLibrary()">
     <div ng-show="loading" style="text-align: center">
         <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
@@ -55,22 +56,44 @@ label:hover {
         <table st-table="datatypeDisplay" st-safe-src="datatypeStruct.children" class="table table-bordered">
 <thead>
             <tr class="row">
-               <th class="col-lg-1">Select</th>
-               <th st-sort="getDisplayLabel(dt)" st-sort-default="true" class="col-lg-2">Label</th> 
                 <th class="col-lg-1">Published</th>
-               <th class="col-lg-8">Description</th>
+               <th st-sort="getDisplayLabel(dt)" st-sort-default="true" class="col-lg-2">Label</th> 
+               <th class="col-lg-3">Description</th>
             </tr>
 			<tr>
-				<th colspan="3"><input st-search="label" class="input-sm form-control" placeholder="Search Label ..." type="search"/></th>
+				<th colspan="2"><input st-search="label" class="input-sm form-control" placeholder="Search Label ..." type="search"/></th>
 			</tr>				
 </thead>
 <tbody>
 	<tr class="row" ng-class="{'new' : dt.new}" ng-repeat="dt in datatypeDisplay">
-        <td class="col-lg-1"><input class="btn toggle" name="dts" id="dt.id" type="radio" ng-click="openDatatype(dt)"/><label for ="dt.id"/></span></td>
-        <td class="col-lg-2">{{ getDisplayLabel(dt) }}</td>
         <td class="col-lg-1"><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, dt)"></input><span ng-bind="dt.selection" style="margin-left : 7px;"></span></td>
-        <td class="col-lg-8">{{dt.description}}</td>
-    </tr>
+        <td class="col-lg-2">{{ getDisplayLabel(dt) }}</td>
+        <td class="col-lg-3">{{dt.description}}</td>
+       <td st-ratio="30">
+           <button
+                   title="Edit"
+                   type="button" class="btn btn-xs btn-primary"
+                   ng-click="edit(dt)">
+                       <span><i
+                               class="fa fa-pencil fa-fw"></i> Edit</span>
+           </button>
+           <button
+                   title="View Readonly"
+                   type="button" class="btn btn-xs btn-warning"
+                   ng-click="view(dt)">
+               <span><i class="fa fa-eye"></i> Read</span>
+           </button>
+           <button
+                   title="Create Copy" type="button" class="btn btn-xs btn-info"
+                   ng-click="copy(dt)">
+               <span><i class="fa fa-plus fa-fw"></i> Copy</span>
+           </button>
+           <button title="Delete" type="button" class="btn btn-xs btn-danger"
+                   ng-click="delete(dt)">
+               <span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
+           </button>
+       </td>    
+	</tr>
 </tbody>
         </table>
 </form>
@@ -80,6 +103,16 @@ label:hover {
          Save
      </button>
     </div>
+<div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Edit Area</div>
+        <div class="panel-body" style="padding-bottom:100px">
+            <div id="edit"  ng-show="subview !== undefined" style="width:100%">
+               <ng-include src="subview"></ng-include>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
 
 <script type="text/ng-template" id="standardDatatypeDlg.html">

@@ -95,7 +95,7 @@ angular
 						var rval = new entry(igdocument.profile.id,
 								igdocument.profile.sectionTitle,
 								igdocument.profile.sectionPosition, igdocument.profile.type,
-								igdocument.profile);
+								0, igdocument.profile);
 						var children = [];
 						children.push(getMetadata(igdocument.profile,
 								"profileMetadata"));

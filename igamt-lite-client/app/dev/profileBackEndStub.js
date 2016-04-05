@@ -180,6 +180,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [200, {}, {}];
     });
 
+  //  $httpBackend.whenGET(/\//).passThrough();
 
     $httpBackend.whenGET(/views\//).passThrough();
 
