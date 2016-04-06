@@ -14,7 +14,8 @@ angular
 						this.type = type;
 						this.parent = parent;
 						this.reference = reference;
-					};
+					}
+					;
 
 					svc.currentLeaf = {
 						selected : false
@@ -34,14 +35,16 @@ angular
 										rval = svc.findEntryFromRefId(refId,
 												entry.children);
 									}
-								} 
+								}
 							});
 						}
 						return rval;
 					};
 
 					svc.getToC = function(igdocument) {
-						console.log("Getting toc... version=" + igdocument.profile.metaData.hl7Version  + " " + igdocument.id);
+						console.log("Getting toc... version="
+								+ igdocument.profile.metaData.hl7Version + " "
+								+ igdocument.id);
 						toc = [];
 
 						// console.log("childSections=" +
@@ -63,7 +66,8 @@ angular
 						var rval = new entry(type, "Metadata", 0, type, parent,
 								parent.metaData);
 						return rval;
-					};
+					}
+					;
 
 					function getSections(childSections, parentType, parent) {
 
@@ -94,8 +98,8 @@ angular
 					function getMessageInfrastructure(igdocument) {
 						var rval = new entry(igdocument.profile.id,
 								igdocument.profile.sectionTitle,
-								igdocument.profile.sectionPosition, igdocument.profile.type,
-								0, igdocument.profile);
+								igdocument.profile.sectionPosition,
+								igdocument.profile.type, 0, igdocument.profile);
 						var children = [];
 						children.push(getMetadata(igdocument.profile,
 								"profileMetadata"));
@@ -116,8 +120,9 @@ angular
 					// cannot be
 					// dragged.
 					function getTopEntry(child, parent) {
-//						console.log("getTopEntry sectionTitle=" + child.sectionTitle);
-//						console.log("getTopEntry type=" + child.type);
+						// console.log("getTopEntry sectionTitle=" +
+						// child.sectionTitle);
+						// console.log("getTopEntry type=" + child.type);
 						var children = [];
 						var rval = new entry(child.id, child.sectionTitle,
 								child.sectionPosition, child.type, parent,
@@ -147,7 +152,13 @@ angular
 											if (parentType === "message") {
 												entry = createEntry(child,
 														child.name, parent);
-// console.log("createEntries entry.reference.name=" + entry.reference.name + "entry.parent=" + rval.parent);
+//												console
+//														.log("createEntries entry.reference.id="
+//																+ entry.reference.id
+//																+ " entry.reference.name="
+//																+ entry.reference.name
+//																+ "entry.parent="
+//																+ rval.parent);
 											} else if (parentType === "table") {
 												entry = createEntry(
 														child,
@@ -159,11 +170,7 @@ angular
 											}
 											rval.push(entry);
 										});
-						if (parent === "message") {
-							return rval;
-						} else {
-							return _.sortBy(rval, "label");
-						}
+						return _.sortBy(rval, "reference.position");
 					}
 					;
 
