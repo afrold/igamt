@@ -71,7 +71,7 @@ public class WebBeanConfig {
 				"YYYYMMDDhhmm", "YYYYMMDDhhmmss", "YYYYMMDDhhmmss.sss",
 				"YYYY+-ZZZZ", "YYYYMM+-ZZZZ", "YYYYMMDD+-ZZZZ",
 				"YYYYMMDDhh+-ZZZZ", "YYYYMMDDhhmm+-ZZZZ",
-				"YYYYMMDDhhmmss+-ZZZZ", "YYYYMMDDhhmmss.sss+-ZZZZ" }));
+				"YYYYMMDDhhmmss+-ZZZZ", "YYYYMMDDhhmmss.sss+-ZZZZ", "Regular expression"}));
 		return config;
 	}
 	
