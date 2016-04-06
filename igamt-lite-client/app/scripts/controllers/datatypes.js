@@ -356,7 +356,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
             component_2: null,
             subComponent_2: null,
             verb: null,
-            constraintId: null,
+            constraintId: $rootScope.calNextCSID(),
             contraintType: null,
             value: null,
             valueSetId: null,
@@ -414,6 +414,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
     $scope.addComplexConformanceStatement = function(){
     	$scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
     	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+    	if($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
     	$scope.tempComformanceStatements.push($scope.complexConstraint);
     	$scope.initComplexStatement();
         $scope.changed = true;
@@ -431,15 +432,29 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
         	var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
             $scope.tempComformanceStatements.push(cs);
             $scope.changed = true;
+            if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
         }
         $scope.initConformanceStatement();
+        
+        
     };
 
     $scope.ok = function () {
+    	angular.forEach($scope.tempComformanceStatements, function (cs) {
+    		$rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf(cs.constraintId), 1);
+    	});
+    	
+    	angular.forEach($rootScope.datatype.conformanceStatements, function (cs) {
+    		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+    	});
+    	
         $modalInstance.close($scope.selectedNode);
     };
     
     $scope.saveclose = function () {
+    	angular.forEach($scope.tempComformanceStatements, function (cs) {
+    		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+    	});
     	angular.copy($scope.tempComformanceStatements, $rootScope.datatype.conformanceStatements);
     	$rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);

@@ -439,7 +439,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             childNodes_1: [],
             childNodes_2: [],
             verb: null,
-            constraintId: null,
+            constraintId: $rootScope.calNextCSID(),
             contraintType: null,
             value: null,
 	        valueSetId: null,
@@ -628,10 +628,21 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     };
 
     $scope.ok = function () {
+    	angular.forEach($scope.tempComformanceStatements, function (cs) {
+    		$rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf(cs.constraintId), 1);
+    	});
+    	
+    	angular.forEach($rootScope.datatype.conformanceStatements, function (cs) {
+    		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+    	});
+    	
         $modalInstance.close($scope.selectedNode);
     };
     
     $scope.saveclose = function () {
+    	angular.forEach($scope.tempComformanceStatements, function (cs) {
+    		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+    	});
     	angular.copy($scope.tempComformanceStatements, $scope.selectedMessage.conformanceStatements);
     	$rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);
