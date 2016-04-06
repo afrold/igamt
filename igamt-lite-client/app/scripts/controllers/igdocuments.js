@@ -226,8 +226,19 @@ angular.module('igl')
             });
 
             $rootScope.$on('event:IgsPushed', function (event, igdocument) {
-                if ($scope.igDocumentConfig.selectedType === 'USER') {
-                    $rootScope.igs.push(igdocument);
+        		console.log("event:IgsPushed=" + igdocument)
+               if ($scope.igDocumentConfig.selectedType === 'USER') {
+	                	var found = _.find($rootScope.igs, function(igd) {
+	            			return igd.id === igdocument.id;
+	            		});
+                		if(found) {
+    	                		console.log("b found=" + found.profile.messages.children.length)
+                			found = igdocument;
+    	                		console.log("a found=" + found.profile.messages.children.length)
+              		} else {
+              			console.log("pushed=>")
+                			$rootScope.igs.push(igdocument);
+                		}
                 } else {
                     $scope.igDocumentConfig.selectedType = 'USER';
                     $scope.loadIGDocuments();
