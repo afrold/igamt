@@ -34,14 +34,12 @@ public class Table extends SectionModel implements Serializable,
 	private String oid;
 	private Stability stability;
 	private Extensibility extensibility;
+	private String tabLibExt;
 	private ContentDefinition contentDefinition;
 	private String group;
 	private int order;
 
 	private List<Code> codes = new ArrayList<Code>();
-
-	// @DBRef
-	// private Tables tables;
 
 	public Table() {
 		super();
@@ -143,6 +141,14 @@ public class Table extends SectionModel implements Serializable,
 
 	public void setExtensibility(Extensibility extensibility) {
 		this.extensibility = extensibility;
+	}
+
+	public String getTabLibExt() {
+		return tabLibExt;
+	}
+
+	public void setTabLibExt(String tabLibExt) {
+		this.tabLibExt = tabLibExt;
 	}
 
 	public ContentDefinition getContentDefinition() {
