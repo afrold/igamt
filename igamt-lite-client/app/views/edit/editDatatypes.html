@@ -844,10 +844,11 @@
                                    placeholder="Comma-Separated Values(CSV)" type="text"/>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'formatted value'">
-                			<select name="format" class="form-control"
+							<select class="form-control" name="format"
                                     ng-model="newConstraint.value"
-                                    ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats">
+                                    ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats | orderBy:'toString()'">
                             </select>
+							<input class="form-control" ng-show="newConstraint.value === 'Regular expression'" ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
                 		</span>
 						<span ng-show="newConstraint.contraintType == 'identical to another node'">
                 			<span>{{newConstraint.datatype}}.</span>
@@ -1177,10 +1178,11 @@
                 			<input class="form-control" ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'formatted value'">
-                			<select class="form-control form-control-short" name="format"
+                			<select class="form-control" name="format"
                                     ng-model="newConstraint.value"
-                                    ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats">
+                                    ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats | orderBy:'toString()'">
                             </select>
+							<input class="form-control" ng-show="newConstraint.value === 'Regular expression'" ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'identical to another node'">
                 			<span>{{newConstraint.datatype}}.</span>

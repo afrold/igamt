@@ -1075,14 +1075,25 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     assertion: '<Assertion><ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'formatted value') {
-                cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: newConstraint.constraintClassification,
-                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
-                    assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Assertion>'
-                };
+            	if(newConstraint.value === 'Regular expression'){
+            		cs = {
+                            id: new ObjectId().toString(),
+                            constraintId: newConstraint.constraintId,
+                            constraintTarget: positionPath,
+                            constraintClassification: newConstraint.constraintClassification,
+                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
+                            assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Assertion>'
+            		};
+            	}else {
+            		cs = {
+                            id: new ObjectId().toString(),
+                            constraintId: newConstraint.constraintId,
+                            constraintTarget: positionPath,
+                            constraintClassification: newConstraint.constraintClassification,
+                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                            assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Assertion>'
+                    };
+            	}
             } else if (newConstraint.contraintType === 'identical to another node') {
                 cs = {
                     id: new ObjectId().toString(),
@@ -1252,16 +1263,29 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     assertion: '<Condition><ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'formatted value') {
-                cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                    constraintTarget: positionPath,
-                    constraintClassification: newConstraint.constraintClassification,
-                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
-                    trueUsage: newConstraint.trueUsage,
-                    falseUsage: newConstraint.falseUsage,
-                    assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Condition>'
-                };
+            	if(newConstraint.value === 'Regular expression'){
+            		cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                            constraintTarget: positionPath,
+                            constraintClassification: newConstraint.constraintClassification,
+                            description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
+                            trueUsage: newConstraint.trueUsage,
+                            falseUsage: newConstraint.falseUsage,
+                            assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Condition>'
+                        };
+            	}else{
+            		cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                            constraintTarget: positionPath,
+                            constraintClassification: newConstraint.constraintClassification,
+                            description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                            trueUsage: newConstraint.trueUsage,
+                            falseUsage: newConstraint.falseUsage,
+                            assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Condition>'
+                        };
+            	}
             } else if (newConstraint.contraintType === 'identical to another node') {
                 cp = {
                     id: new ObjectId().toString(),
