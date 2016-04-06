@@ -412,7 +412,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraintId = $rootScope.calNextCSID();
     
     $scope.changed = false;
     $scope.tempComformanceStatements = [];
@@ -426,7 +426,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     	$scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = '';
+        $scope.newComplexConstraintId = $rootScope.calNextCSID();
     }
     
     $scope.initConformanceStatement = function (){
@@ -612,6 +612,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     $scope.addComplexConformanceStatement = function(){
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
     	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+    	if($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
     	$scope.tempComformanceStatements.push($scope.complexConstraint);
     	$scope.initComplexStatement();
         $scope.changed = true;
@@ -623,6 +624,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
         	var positionPath = selectedNode.path;
         	var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
             $scope.tempComformanceStatements.push(cs);
+            if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
             $scope.changed = true;
         }
         

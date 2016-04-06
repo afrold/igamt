@@ -264,8 +264,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
             falseUsage: null,
             valueSetId: null,
             bindingStrength: 'R',
-            bindingLocation: '1',
-            constraintClassification: 'E'
+            bindingLocation: '1'
         });
         $scope.newConstraint.segment = $rootScope.segment.name;
     }
@@ -385,7 +384,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraintId = $rootScope.calNextCSID();
     $scope.newComplexConstraint = [];
     
     $scope.changed = false;
@@ -416,8 +415,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
             value2: null,
             valueSetId: null,
             bindingStrength: 'R',
-            bindingLocation: '1',
-            constraintClassification: 'E'
+            bindingLocation: '1'
         });
         $scope.newConstraint.segment = $rootScope.segment.name;
     }
@@ -426,7 +424,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     	$scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = '';
+        $scope.newComplexConstraintId = $rootScope.calNextCSID();
     }
     
     $scope.initConformanceStatement();
@@ -483,6 +481,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     $scope.addComplexConformanceStatement = function(){
     	$scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
     	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+    	if($rootScope.conformanceStatementIdList.indexOf($scope.complexConstraint.constraintId) == -1) $rootScope.conformanceStatementIdList.push($scope.complexConstraint.constraintId);
     	$scope.tempComformanceStatements.push($scope.complexConstraint);
     	$scope.initComplexStatement();
         $scope.changed = true;
@@ -500,6 +499,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
         	var positionPath = $scope.selectedNode.position + '[1]';
         	var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
             $scope.tempComformanceStatements.push(cs);
+            if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
             $scope.changed = true;
         }
         $scope.initConformanceStatement();

@@ -754,7 +754,7 @@
         <thead>
         <tr class="tbl-header">
 			<th class="col-md-1" style="width: 4.1667%">Draggable</th>
-            <th class="col-md-8">Desciption</th>
+			<th class="col-md-8">Desciption ( <input type="checkbox" ng-model="viewAssertion"> view assertion )</th>
             <th class="col-md-1">True Usage</th>
             <th class="col-md-1">False Usage</th>
             <th class="col-md-1"></th>
@@ -767,6 +767,7 @@
 			</td>
             <td class="col-md-8">
 				<input class="form-control" ng-model="p.description" ng-change="setChanged()" type="text"/>
+				<span ng-show="viewAssertion">{{p.assertion}}</span>
 			</td>
             <td class="col-md-1">
 				<select class="form-control" ng-model="p.trueUsage" ng-change="setChanged()" ng-options="usage for usage in config.usages" />
@@ -775,7 +776,7 @@
 				<select class="form-control" ng-model="p.falseUsage" ng-change="setChanged()" ng-options="usage for usage in config.usages" />
 			</td>
             <td class="col-md-1" align="center">
-				<button class="btn btn-warning btn-xxs" ng-click="deletePredicate(p)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
+				<button class="btn btn-danger btn-xxs" ng-click="deletePredicate(p)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
             </td>
         </tr>
         </tbody>
@@ -810,7 +811,7 @@
 		<tbody>
 			<tr>
 				<td class="col-md-1" align="center" style="width: 4.1667%">
-					<button class="btn btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw"></i></span></button>
+					<button class="btn btn-info btn-xxs" ng-click="initPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
 				</td>
 				<td class="col-md-2">
     				<span>{{newConstraint.datatype}}.</span>
@@ -1009,7 +1010,7 @@
 				</td>
 
 				<td class="col-md-1" align="center">
-    				<button class="btn btn-primary btn-xxs" ng-click="updatePredicate()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add</span></button>
+    				<button class="btn btn-primary btn-xxs" ng-click="updatePredicate()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Plain Predicate</span></button>
 				</td>
 			</tr>
 		</tbody>
@@ -1032,7 +1033,7 @@
 		<tbody>
 			<tr>
 				<td class="col-md-1" style="width: 4.1667%" align="center">
-					<button class="btn btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw"></i></span></button>
+					<button class="btn btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
 				</td>
 				<td class="col-md-2">
 					<select class="form-control" name="compositeTypeSelect" ng-model="compositeType">
@@ -1064,7 +1065,7 @@
 					<select class="form-control" ng-model="complexConstraintFalseUsage" ng-options="usage for usage in config.usages"/>
 				</td>
 				<td class="col-md-1" align="center">
-					<button class="btn btn-primary btn-xxs" ng-click="addComplexPredicate()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span></button>
+					<button class="btn btn-primary btn-xxs" ng-click="addComplexPredicate()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Complex Predicate</span></button>
 				</td>
 			</tr>
 		</tbody>
@@ -1094,7 +1095,7 @@
         <tr class="tbl-header">
 			<th class="col-md-1" style="width: 4.1667%">Draggable</th>
             <th class="col-md-2">ID</th>
-            <th class="col-md-8">Desciption</th>
+            <th class="col-md-8">Desciption ( <input type="checkbox" ng-model="viewAssertion"> view assertion )</th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
@@ -1111,9 +1112,10 @@
 			</td>
             <td class="col-md-8">
 				<input class="form-control" ng-model="c.description" ng-change="setChanged()" type="text"/>
+				<span ng-show="viewAssertion">{{c.assertion}}</span>
 			</td>
             <td class="col-md-1" align="center">
-				<button class="btn btn-warning btn-xxs" ng-click="deleteConformanceStatement(c)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
+				<button class="btn btn-danger btn-xxs" ng-click="deleteConformanceStatement(c)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
             </td>
         </tr>
         </tbody>
@@ -1147,10 +1149,10 @@
 		<tbody>
 			<tr>
 				<td class="col-md-1" style="width: 4.1667%" align="center">
-					<button class="btn btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw"></i></span></button>
+					<button class="btn btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
 				</td>
     			<td class="col-md-2">
-        			<input class="form-control form-control-short80" ng-model="newConstraint.constraintId" ng-change="setChanged(); targetId = newConstraint.constraintId;" type="text" ng-readonly="targetId !== newConstraint.constraintId"/>
+        			<input class="form-control form-control-short80" ng-model="newConstraint.constraintId" ng-change="setChanged(); targetId = newConstraint.constraintId;" ng-required="true" type="text" ng-readonly="targetId !== newConstraint.constraintId"/>
 					<i class="fa fa-pencil" ng-hide="targetId == newConstraint.constraintId" ng-click="targetId = newConstraint.constraintId; conformanceStatementIdList.splice(conformanceStatementIdList.indexOf(newConstraint.constraintId), 1);"></i>
 					<i class="fa fa-paper-plane" ng-hide="targetId != newConstraint.constraintId || conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1" ng-click="conformanceStatementIdList.push(newConstraint.constraintId); targetId = ''"></i>
 					<span style="color:red" ng-show="conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1 && targetId == newConstraint.constraintId">Duplicated ID</span>
@@ -1322,7 +1324,7 @@
 
     			</td>
     			<td class="col-md-1" align="center">
-					<button class="btn btn-primary btn-xxs" ng-click="addConformanceStatement()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span></button>
+					<button class="btn btn-primary btn-xxs" ng-click="addConformanceStatement()" ng-disabled="checkDisabilityForConfStatement(newConstraint);"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Plain Conf.Statement</span></button>
     			</td>
 			</tr>
 		</tbody>
@@ -1343,7 +1345,7 @@
 		<tbody>
 			<tr>
 				<td class="col-md-1" style="width: 4.1667%" align="center">
-					<button class="btn btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw"></i></span></button>
+					<button class="btn btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
 				</td>
 				<td class="col-md-2">
 					<input class="form-control form-control-short80" ng-model="newComplexConstraintId" ng-change="setChanged(); targetId = newComplexConstraintId;" type="text" ng-readonly="targetId !== newComplexConstraintId"/>
@@ -1375,7 +1377,7 @@
 					<span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
 				</td>
 				<td class="col-md-1" align="center">
-					<button class="btn btn-primary btn-xxs" ng-click="addComplexConformanceStatement()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span></button>
+					<button class="btn btn-primary btn-xxs" ng-click="addComplexConformanceStatement()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Complex Conf.Statement</span></button>
 				</td>
 			</tr>
 		</tbody>

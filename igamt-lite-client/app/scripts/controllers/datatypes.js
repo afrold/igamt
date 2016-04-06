@@ -332,7 +332,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
     $scope.secondConstraint = null;
     $scope.compositeType = null;
     $scope.complexConstraint = null;
-    $scope.newComplexConstraintId = '';
+    $scope.newComplexConstraintId = $rootScope.calNextCSID();
     $scope.newComplexConstraint = [];
     
     $scope.changed = false;
@@ -362,8 +362,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
             value2: null,
             valueSetId: null,
             bindingStrength: 'R',
-            bindingLocation: '1',
-            constraintClassification: 'E'
+            bindingLocation: '1'
         });
         $scope.newConstraint.datatype = $rootScope.datatype.name;
     }
@@ -372,7 +371,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
     	$scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
-        $scope.newComplexConstraintId = '';
+        $scope.newComplexConstraintId = $rootScope.calNextCSID();
     }
     
     $scope.initConformanceStatement();
