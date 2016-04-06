@@ -632,7 +632,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     		$rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf(cs.constraintId), 1);
     	});
     	
-    	angular.forEach($rootScope.datatype.conformanceStatements, function (cs) {
+    	angular.forEach($scope.selectedMessage.conformanceStatements, function (cs) {
     		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
     	});
     	
