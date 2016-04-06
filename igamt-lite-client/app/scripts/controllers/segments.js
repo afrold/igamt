@@ -510,7 +510,7 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
     		$rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf(cs.constraintId), 1);
     	});
     	
-    	angular.forEach($rootScope.datatype.conformanceStatements, function (cs) {
+    	angular.forEach($rootScope.segment.conformanceStatements, function (cs) {
     		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
     	});
     	
