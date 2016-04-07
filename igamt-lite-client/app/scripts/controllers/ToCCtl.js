@@ -15,14 +15,14 @@ angular
 							$scope.collapsed = [];
 							$scope.yesDrop = false;
 							$scope.noDrop = true;
-							$scope.$watch('tocData', function(newValue,
-									oldValue) {
-								if (!oldValue && newValue) {
-									_.each($scope.tocData, function(head) {
-										$scope.collapsed[head] = false;
-									});
-								}
-							});
+//							$scope.$watch('tocData', function(newValue,
+//									oldValue) {
+//								if (!oldValue && newValue) {
+//									_.each($scope.tocData, function(head) {
+//										$scope.collapsed[head] = false;
+//									});
+//								}
+//							});
 							
 							$scope.moved = function (index, leaf) {
 								var idx = _.findLastIndex($scope.$parent.drop, function(leaf1) {
