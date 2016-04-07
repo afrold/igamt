@@ -12,18 +12,17 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,6 +37,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
@@ -146,7 +146,19 @@ public class IGDocumentCreationServiceTest {
 		try {
 			pNew = igDocumentCreation.createIntegratedIGDocument(msgEvts5, hl7Version, accountId);
 			assertEquals(5, pNew.getProfile().getMessages().getChildren().size());
+			int maxPos = 1;
+			int maxPosNew = 1;
+			for (Message msg : pNew.getProfile().getMessages().getChildren()) {
+				maxPos = Math.max(maxPos, msg.getPosition());
+			}
+			assertTrue(isSequential(pNew.getProfile().getMessages()));
 			pNewNew = igDocumentCreation.updateIntegratedIGDocument(msgEvts2, pNew);
+			for (Message msg : pNewNew.getProfile().getMessages().getChildren()) {
+				maxPosNew = Math.max(maxPosNew, msg.getPosition());
+			}
+			assertTrue(isSequential(pNewNew.getProfile().getMessages()));
+			assertTrue(maxPos < maxPosNew);
+			assertEquals(maxPos +2, maxPosNew);
 			assertEquals(7, pNewNew.getProfile().getMessages().getChildren().size());
 			refIneteg.testMessagesVsSegments(pNewNew.getProfile());
 			refIneteg.testFieldDatatypes(pNewNew.getProfile());
@@ -156,6 +168,19 @@ public class IGDocumentCreationServiceTest {
 		}
 	}
 
+	private boolean isSequential(Messages msgs) {
+		List<Integer> pos = new ArrayList<Integer>();
+		for (Message msg : msgs.getChildren()) {
+			pos.add(msg.getPosition());
+		}
+		Collections.sort(pos);
+		boolean rval = false;
+		for(int i = 0; i < pos.size() -1; i++) {
+			rval = (pos.get(i).intValue() + 1) == (pos.get(i + 1).intValue());
+		}
+		return rval;
+	}
+	
 	// Create and update are made with MessageEvents that have only one event, 
 	// which is selected by the user in the UI.  This function returns the kind of 
 	// terse objects the UI submits.

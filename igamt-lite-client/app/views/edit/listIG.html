@@ -56,7 +56,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="row in tmpIgs"
+                    <tr ng-repeat="row in tmpIgs | orderBy:'metaData.date'"
                         ng-class="{'current': igdocument != null && row.id === igdocument.id}">
                         <td st-ratio="5">{{$index + 1}}</td>
                         <td st-ratio="25" ng-bind="row.metaData.title"></td>

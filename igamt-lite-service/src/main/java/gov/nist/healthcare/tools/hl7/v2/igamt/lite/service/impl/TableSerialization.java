@@ -30,4 +30,8 @@ public interface TableSerialization {
 	Document serializeTableLibraryToDoc(Tables tableLibrary);
 	
 	Document serializeTableLibraryToDoc(Profile profile);
+
+	String serializeTableLibraryToGazelleXML(Profile profile);
+	
+	Document serializeTableLibraryToGazelleDoc(Profile profile);
 }

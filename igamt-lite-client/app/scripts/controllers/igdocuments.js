@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, FormsSelectSvc) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils,AutoSaveService) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -122,7 +122,7 @@ angular.module('igl')
 	            }
 	        });
         };
- 
+
         /**
          * init the controller
          */
@@ -152,7 +152,7 @@ angular.module('igl')
             });
 
             $scope.$on('event:openDatatype', function (event, datatype) {
-            		$scope.selectDatatype(datatype); // Should we open in a dialog ??
+                $scope.selectDatatype(datatype); // Should we open in a dialog ??
             });
 
             $scope.$on('event:openSegment', function (event, segment) {
@@ -186,8 +186,28 @@ angular.module('igl')
             });
 
             $rootScope.$on('event:IgsPushed', function (event, igdocument) {
-                if ($scope.igDocumentConfig.selectedType === 'USER') {
-                    $rootScope.igs.push(igdocument);
+        		console.log("event:IgsPushed=" + igdocument)
+               if ($scope.igDocumentConfig.selectedType === 'USER') {
+	                	var idx = $rootScope.igs.findIndex(function(igd) {
+	            			return igd.id === igdocument.id;
+	            		});
+                		if(idx > -1) {
+                			$timeout(function() {
+    	                		_.each($rootScope.igs, function(igd) {
+        	                		console.log("b msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
+    	                		});
+	                			$rootScope.igs.splice(idx, 1);
+	                	        $scope.tmpIgs = [].concat($rootScope.igs);
+	    	                		_.each($scope.tmpIgs, function(igd) {
+	        	                		console.log("a msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
+	        	                		console.log("msgs=" + igd.metaData.title + " len=" + igd.profile.messages.children.length);
+	    	                		});  
+                			}, 100);
+                			$rootScope.igs.push(igdocument);                			
+              		} else {
+              			console.log("pushed=>")
+                			$rootScope.igs.push(igdocument);
+                		}
                 } else {
                     $scope.igDocumentConfig.selectedType = 'USER';
                     $scope.loadIGDocuments();
@@ -207,6 +227,7 @@ angular.module('igl')
         };
 
         $scope.selectIGDocumentType = function (selectedType) {
+    			console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
             $scope.igDocumentConfig.selectedType = selectedType;
             StorageService.setSelectedIgDocumentType(selectedType);
             $scope.loadIGDocuments();
@@ -299,6 +320,7 @@ angular.module('igl')
         };
 
         $scope.edit = function (igdocument) {
+			console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
             $scope.viewSettings.setTableReadonly(false);
             $scope.show(igdocument);
         };
@@ -732,17 +754,23 @@ angular.module('igl')
         };
 
         $scope.selectDatatype = function (datatype) {
-	        if (datatype && datatype != null) {
-	            $scope.loadingSelection = true;
-	            $rootScope.datatype = datatype;
-					$timeout(
-					function () {
-			            $scope.subview = FormsSelectSvc.selectDatatype(datatype);
-			            $scope.loadingSelection = false;
-		                if ($scope.datatypesParams)
-		                		$scope.datatypesParams.refresh();
-				}, 100);
-	        }
+            $scope.subview = "EditDatatypes.html";
+            if (datatype && datatype != null) {
+                $scope.loadingSelection = true;
+                $rootScope.datatype = datatype;
+                $rootScope.datatype["type"] = "datatype";
+                $timeout(
+                    function () {
+                        $scope.tableWidth = null;
+                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                        $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
+                        $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
+                        $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
+                        $scope.loadingSelection = false;
+                       if ($scope.datatypesParams)
+                            $scope.datatypesParams.refresh();
+                    }, 100);
+            }
         };
 
         $scope.selectMessage = function (message) {
@@ -757,6 +785,8 @@ angular.module('igl')
                     $scope.predWidth = $scope.getDynamicWidth(1, 3, 630);
                     $scope.commentWidth = $scope.getDynamicWidth(1, 3, 630);
                     $scope.loadingSelection = false;
+//                   if ($scope.messagesParams)
+//                        $scope.messagesParams.refresh();
                 }, 100);
         };
 
@@ -788,6 +818,7 @@ angular.module('igl')
                     $scope.loadingSelection = false;
                 }, 100);
         };
+
 
         $scope.getTableWidth = function () {
             if ($scope.tableWidth === null || $scope.tableWidth == 0) {

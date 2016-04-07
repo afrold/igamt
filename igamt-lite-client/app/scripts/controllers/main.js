@@ -395,6 +395,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         $rootScope.generalInfo = {type: null, 'message': null};
         $rootScope.references = []; // collection of element referencing a datatype to delete
         $rootScope.section = {};
+        $rootScope.conformanceStatementIdList = [];
         $rootScope.parentsMap = {};
         $rootScope.igChanged = false;
 
@@ -468,6 +469,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             $rootScope.newConformanceStatementFakeId = 0;
             $rootScope.clearChanges();
             $rootScope.parentsMap = [];
+            $rootScope.conformanceStatementIdList = [];
 
             $rootScope.messageTree = null;
         };
@@ -697,11 +699,28 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             return $rootScope.datatypesMap && $rootScope.datatypesMap[id];
         };
 
+        $rootScope.calNextCSID = function () {
+        	if($rootScope.igdocument.metaData.ext != null){
+        		var maxIDNum = Number(0);
+        		angular.forEach($rootScope.conformanceStatementIdList, function (id) {
+        			var tempID = parseInt(id.replace($rootScope.igdocument.metaData.ext + "-", ""));
+        			
+        			if(tempID > maxIDNum) maxIDNum = tempID;
+        		});
+        		
+        		return $rootScope.igdocument.metaData.ext + "-" + (maxIDNum + 1);
+        	}else {
+        		return "";
+        	}
+        }
         $rootScope.processElement = function (element, parent) {
             try {
                 if(element != undefined && element != null) {
                     if (element.type === "message") {
                         element.children = $filter('orderBy')(element.children, 'position');
+                        angular.forEach(element.conformanceStatements, function (cs) {
+                        	if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+                        });
                         angular.forEach(element.children, function (segmentRefOrGroup) {
                             $rootScope.processElement(segmentRefOrGroup, element);
                         });
@@ -720,6 +739,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         $rootScope.processElement($rootScope.segmentsMap[element.ref], element);
                     } else if (element.type === "segment") {
                         element.fields = $filter('orderBy')(element.fields, 'position');
+                        angular.forEach(element.conformanceStatements, function (cs) {
+                        	if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+                        });
                         angular.forEach(element.fields, function (field) {
                             $rootScope.processElement(field, element);
                         });
@@ -731,6 +753,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                         $rootScope.processElement($rootScope.datatypesMap[element.datatype], element);
                     } else if (element.type === "datatype") {
                         element.components = $filter('orderBy')(element.components, 'position');
+                        angular.forEach(element.conformanceStatements, function (cs) {
+                        	if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+                        });
                         angular.forEach(element.components, function (component) {
                             $rootScope.processElement(component, element);
                         });
@@ -935,6 +960,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         };
 
         $rootScope.generateCompositeConformanceStatement = function (compositeType, firstConstraint, secondConstraint) {
+        	var firstConstraintAssertion = firstConstraint.assertion.replace("<Assertion>", "");
+        	firstConstraintAssertion = firstConstraintAssertion.replace("</Assertion>", "");
+        	var secondConstraintAssertion = secondConstraint.assertion.replace("<Assertion>", "");
+        	secondConstraintAssertion = secondConstraintAssertion.replace("</Assertion>", "");
+        	
             var cs = null;
             if (compositeType === 'AND') {
                 cs = {
@@ -942,7 +972,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'AND(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
-                    assertion: '<AND>' + firstConstraint.assertion + secondConstraint.assertion + '</AND>'
+                    assertion: '<Assertion><AND>' + firstConstraintAssertion + secondConstraintAssertion + '</AND></Assertion>'
                 };
             } else if (compositeType === 'OR') {
                 cs = {
@@ -950,7 +980,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'OR(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
-                    assertion: '<OR>' + firstConstraint.assertion + secondConstraint.assertion + '</OR>'
+                    assertion: '<Assertion><OR>' + firstConstraintAssertion + secondConstraintAssertion + '</OR></Assertion>'
                 };
             } else if (compositeType === 'IFTHEN') {
                 cs = {
@@ -958,7 +988,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintId: 'IFTHEN(' + firstConstraint.constraintId + ',' + secondConstraint.constraintId + ')',
                     constraintTarget: firstConstraint.constraintTarget,
                     description: 'IF [' + firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
-                    assertion: '<IMPLY>' + firstConstraint.assertion + secondConstraint.assertion + '</IMPLY>'
+                    assertion: '<Assertion><IMPLY>' + firstConstraintAssertion + secondConstraintAssertion + '</IMPLY></Assertion>'
                 };
             }
             return cs;
@@ -966,6 +996,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
 
         $rootScope.generateCompositePredicate = function (compositeType, firstConstraint, secondConstraint) {
+        	var firstConstraintAssertion = firstConstraint.assertion.replace("<Condition>", "");
+        	firstConstraintAssertion = firstConstraintAssertion.replace("</Condition>", "");
+        	var secondConstraintAssertion = secondConstraint.assertion.replace("<Condition>", "");
+        	secondConstraintAssertion = secondConstraintAssertion.replace("</Condition>", "");
+        	
             var cp = null;
             if (compositeType === 'AND') {
                 cp = {
@@ -975,7 +1010,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: '[' + firstConstraint.description + '] ' + 'AND' + ' [' + secondConstraint.description + ']',
                     trueUsage: '',
                     falseUsage: '',
-                    assertion: '<AND>' + firstConstraint.assertion + secondConstraint.assertion + '</AND>'
+                    assertion: '<Condition><AND>' + firstConstraintAssertion + secondConstraintAssertion + '</AND></Condition>'
                 };
             } else if (compositeType === 'OR') {
                 cp = {
@@ -985,7 +1020,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: '[' + firstConstraint.description + '] ' + 'OR' + ' [' + secondConstraint.description + ']',
                     trueUsage: '',
                     falseUsage: '',
-                    assertion: '<OR>' + firstConstraint.assertion + secondConstraint.assertion + '</OR>'
+                    assertion: '<Condition><OR>' + firstConstraintAssertion + secondConstraintAssertion + '</OR></Condition>'
                 };
             } else if (compositeType === 'IFTHEN') {
                 cp = {
@@ -995,7 +1030,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'IF [' + firstConstraint.description + '] ' + 'THEN ' + ' [' + secondConstraint.description + ']',
                     trueUsage: '',
                     falseUsage: '',
-                    assertion: '<IMPLY>' + firstConstraint.assertion + secondConstraint.assertion + '</IMPLY>'
+                    assertion: '<Condition><IMPLY>' + firstConstraintAssertion + secondConstraintAssertion + '</IMPLY></Condition>'
                 };
             }
             return cp;
@@ -1010,7 +1045,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + '.',
-                    assertion: '<Presence Path=\"' + newConstraint.position_1 + '\"/>'
+                    assertion: '<Assertion><Presence Path=\"' + newConstraint.position_1 + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'a literal value') {
                 cs = {
@@ -1019,7 +1054,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
-                    assertion: '<PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/>'
+                    assertion: '<Assertion><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'one of list values') {
                 cs = {
@@ -1028,7 +1063,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.value + '.',
-                    assertion: '<StringList Path=\"' + newConstraint.position_1 + '\" CSV=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Assertion><StringList Path=\"' + newConstraint.position_1 + '\" CSV=\"' + newConstraint.value + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'one of codes in ValueSet') {
                 cs = {
@@ -1037,17 +1072,28 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.valueSetId + '.',
-                    assertion: '<ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/>'
+                    assertion: '<Assertion><ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'formatted value') {
-                cs = {
-                    id: new ObjectId().toString(),
-                    constraintId: newConstraint.constraintId,
-                    constraintTarget: positionPath,
-                    constraintClassification: newConstraint.constraintClassification,
-                    description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
-                    assertion: '<Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/>'
-                };
+            	if(newConstraint.value === 'Regular expression'){
+            		cs = {
+                            id: new ObjectId().toString(),
+                            constraintId: newConstraint.constraintId,
+                            constraintTarget: positionPath,
+                            constraintClassification: newConstraint.constraintClassification,
+                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
+                            assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Assertion>'
+            		};
+            	}else {
+            		cs = {
+                            id: new ObjectId().toString(),
+                            constraintId: newConstraint.constraintId,
+                            constraintTarget: positionPath,
+                            constraintClassification: newConstraint.constraintClassification,
+                            description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                            assertion: '<Assertion><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Assertion>'
+                    };
+            	}
             } else if (newConstraint.contraintType === 'identical to another node') {
                 cs = {
                     id: new ObjectId().toString(),
@@ -1055,7 +1101,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' identical to the value of ' + newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'equal to another node') {
                 cs = {
@@ -1064,7 +1110,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to the value of ' + newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'not-equal to another node') {
                 cs = {
@@ -1073,7 +1119,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with the value of ' + newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="NE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="NE" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'greater than another node') {
                 cs = {
@@ -1082,7 +1128,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than the value of ' + newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GT" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GT" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'equal to or greater than another node') {
                 cs = {
@@ -1091,7 +1137,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than the value of ' + newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GE" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'less than another node') {
                 cs = {
@@ -1100,7 +1146,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than the value of ' + newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LT" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LT" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'equal to or less than another node') {
                 cs = {
@@ -1109,7 +1155,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than the value of ' + newConstraint.location_2 + '.',
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Assertion><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LE" Path2=\"' + newConstraint.position_2 + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'equal to') {
                 cs = {
@@ -1118,7 +1164,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to ' + newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="EQ" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="EQ" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'not-equal to') {
                 cs = {
@@ -1127,7 +1173,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with ' + newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="NE" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="NE" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'greater than') {
                 cs = {
@@ -1136,7 +1182,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than ' + newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GT" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GT" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'equal to or greater than') {
                 cs = {
@@ -1145,7 +1191,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than ' + newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GE" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GE" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'less than') {
                 cs = {
@@ -1154,7 +1200,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than ' + newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LT" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LT" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
             } else if (newConstraint.contraintType === 'equal to or less than') {
                 cs = {
@@ -1163,13 +1209,12 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     constraintTarget: positionPath,
                     constraintClassification: newConstraint.constraintClassification,
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than ' + newConstraint.value + '.',
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LE" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Assertion><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LE" Value=\"' + newConstraint.value + '\"/></Assertion>'
                 };
             }
 
             return cs;
         }
-
 
         $rootScope.generatePredicate = function (positionPath, newConstraint) {
             var cp = null;
@@ -1182,7 +1227,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType,
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<Presence Path=\"' + newConstraint.position_1 + '\"/>'
+                    assertion: '<Condition><Presence Path=\"' + newConstraint.position_1 + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'a literal value') {
                 cp = {
@@ -1193,7 +1238,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' \'' + newConstraint.value + '\'.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/>'
+                    assertion: '<Condition><PlainText Path=\"' + newConstraint.position_1 + '\" Text=\"' + newConstraint.value + '\" IgnoreCase="false"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'one of list values') {
                 cp = {
@@ -1204,7 +1249,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.value + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<StringList Path=\"' + newConstraint.position_1 + '\" CSV=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Condition><StringList Path=\"' + newConstraint.position_1 + '\" CSV=\"' + newConstraint.value + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'one of codes in ValueSet') {
                 cp = {
@@ -1215,19 +1260,32 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' ' + newConstraint.contraintType + ': ' + newConstraint.valueSetId + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/>'
+                    assertion: '<Condition><ValueSet Path=\"' + newConstraint.position_1 + '\" ValueSetID=\"' + newConstraint.valueSetId + '\" BindingStrength=\"' + newConstraint.bindingStrength + '\" BindingLocation=\"' + newConstraint.bindingLocation + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'formatted value') {
-                cp = {
-                    id: new ObjectId().toString(),
-                    constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
-                    constraintTarget: positionPath,
-                    constraintClassification: newConstraint.constraintClassification,
-                    description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
-                    trueUsage: newConstraint.trueUsage,
-                    falseUsage: newConstraint.falseUsage,
-                    assertion: '<Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/>'
-                };
+            	if(newConstraint.value === 'Regular expression'){
+            		cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                            constraintTarget: positionPath,
+                            constraintClassification: newConstraint.constraintClassification,
+                            description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value2 + '\'.',
+                            trueUsage: newConstraint.trueUsage,
+                            falseUsage: newConstraint.falseUsage,
+                            assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + newConstraint.value2 + '\"/></Condition>'
+                        };
+            	}else{
+            		cp = {
+                            id: new ObjectId().toString(),
+                            constraintId: 'CP_' + positionPath + '_' + $rootScope.newPredicateFakeId,
+                            constraintTarget: positionPath,
+                            constraintClassification: newConstraint.constraintClassification,
+                            description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' valid in format: \'' + newConstraint.value + '\'.',
+                            trueUsage: newConstraint.trueUsage,
+                            falseUsage: newConstraint.falseUsage,
+                            assertion: '<Condition><Format Path=\"' + newConstraint.position_1 + '\" Regex=\"' + $rootScope.genRegex(newConstraint.value) + '\"/></Condition>'
+                        };
+            	}
             } else if (newConstraint.contraintType === 'identical to another node') {
                 cp = {
                     id: new ObjectId().toString(),
@@ -1237,7 +1295,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'The value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' identical to the value of ' + newConstraint.location_2 + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Condition><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'equal to another node') {
                 cp = {
@@ -1248,7 +1306,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to the value of ' + newConstraint.location_2 + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Condition><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="EQ" Path2=\"' + newConstraint.position_2 + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'not-equal to another node') {
                 cp = {
@@ -1259,7 +1317,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with the value of ' + newConstraint.location_2 + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="NE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Condition><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="NE" Path2=\"' + newConstraint.position_2 + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'greater than another node') {
                 cp = {
@@ -1270,7 +1328,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than the value of ' + newConstraint.location_2 + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GT" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Condition><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GT" Path2=\"' + newConstraint.position_2 + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'equal to or greater than another node') {
                 cp = {
@@ -1281,7 +1339,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than the value of ' + newConstraint.location_2 + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Condition><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="GE" Path2=\"' + newConstraint.position_2 + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'less than another node') {
                 cp = {
@@ -1292,7 +1350,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than the value of ' + newConstraint.location_2 + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LT" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Condition><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LT" Path2=\"' + newConstraint.position_2 + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'equal to or less than another node') {
                 cp = {
@@ -1303,7 +1361,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than the value of ' + newConstraint.location_2 + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LE" Path2=\"' + newConstraint.position_2 + '\"/>'
+                    assertion: '<Condition><PathValue Path1=\"' + newConstraint.position_1 + '\" Operator="LE" Path2=\"' + newConstraint.position_2 + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'equal to') {
                 cp = {
@@ -1314,7 +1372,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to ' + newConstraint.value + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="EQ" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Condition><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="EQ" Value=\"' + newConstraint.value + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'not-equal to') {
                 cp = {
@@ -1325,7 +1383,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' different with ' + newConstraint.value + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="NE" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Condition><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="NE" Value=\"' + newConstraint.value + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'greater than') {
                 cp = {
@@ -1336,7 +1394,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' greater than ' + newConstraint.value + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GT" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Condition><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GT" Value=\"' + newConstraint.value + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'equal to or greater than') {
                 cp = {
@@ -1347,7 +1405,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or greater than ' + newConstraint.value + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GE" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Condition><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="GE" Value=\"' + newConstraint.value + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'less than') {
                 cp = {
@@ -1358,7 +1416,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' less than ' + newConstraint.value + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LT" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Condition><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LT" Value=\"' + newConstraint.value + '\"/></Condition>'
                 };
             } else if (newConstraint.contraintType === 'equal to or less than') {
                 cp = {
@@ -1369,7 +1427,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
                     description: 'If the value of ' + newConstraint.location_1 + ' ' + newConstraint.verb + ' equal to or less than ' + newConstraint.value + '.',
                     trueUsage: newConstraint.trueUsage,
                     falseUsage: newConstraint.falseUsage,
-                    assertion: '<SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LE" Value=\"' + newConstraint.value + '\"/>'
+                    assertion: '<Condition><SimpleValue Path=\"' + newConstraint.position_1 + '\" Operator="LE" Value=\"' + newConstraint.value + '\"/></Condition>'
                 };
             }
 
