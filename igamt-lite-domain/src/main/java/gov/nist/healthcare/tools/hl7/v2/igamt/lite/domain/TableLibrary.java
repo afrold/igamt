@@ -7,21 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-
-@Document(collection = "datatype-library")
+@Document(collection = "valueset-library")
 public class TableLibrary extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -116,12 +106,12 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		return null;
 	}
 
-	public Table findOneByNameAndByLabel(String name, String label) {
+	public Table findOneByNameAndByBindingIdentifier(String name, String bindngIdentifier) {
 		if (this.children != null) {
-			for (Table dt : this.children) {
-				if (dt.getName().equals(name) 
-						&& dt.getLabel().equals(label)) {
-					return dt;
+			for (Table tab : this.children) {
+				if (tab.getName().equals(name) 
+						&& tab.getBindingIdentifier().equals(bindngIdentifier)) {
+					return tab;
 				}
 			}
 		}
@@ -145,186 +135,87 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 			for (Code c : datatype.getCodes()) {
 				if (c.getId().equals(id)) {
 					return c;
-				} else {
-					Code r = findOneCode(id,
-							this.findOneCode(c.));
-					if (r != null) {
-						return r;
-					}
 				}
 			}
 		}
 		return null;
 	}
 
-	public Table findOneDatatypeByLabel(String label) {
-		if (this.children != null)
-			for (Table d : this.children) {
-				if (d.getLabel().equals(label)) {
-					return d;
-				}
-			}
-		return null;
-	}
-	
-	public Table findOneDatatypeByBase(String baseName){
-		if (this.children != null)
-			for (Table d : this.children){
-				if(d.getName().equals(baseName)) {
-					return d;
-				}
-			}
-		return null;
-	}
-
-	public Predicate findOnePredicate(String predicateId) {
-		for (Datatype datatype : this.getChildren()) {
-			Predicate predicate = datatype.findOnePredicate(predicateId);
-			if (predicate != null) {
-				return predicate;
-			}
-		}
-		return null;
-	}
-
-	public ConformanceStatement findOneConformanceStatement(
-			String conformanceStatementId) {
-		for (Datatype datatype : this.getChildren()) {
-			ConformanceStatement conf = datatype
-					.findOneConformanceStatement(conformanceStatementId);
-			if (conf != null) {
-				return conf;
-			}
-		}
-		return null;
-	}
-
-	public boolean deletePredicate(String predicateId) {
-		for (Datatype datatype : this.getChildren()) {
-			if (datatype.deletePredicate(predicateId)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean deleteConformanceStatement(String confStatementId) {
-		for (Datatype datatype : this.getChildren()) {
-			if (datatype.deleteConformanceStatement(confStatementId)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public TableLibrary clone(HashMap<String, Datatype> dtRecords,
-			HashMap<String, Table> tableRecords)
+	public TableLibrary clone(HashMap<String, Table> tabRecords)
 			throws CloneNotSupportedException {
 		TableLibrary clonedDatatypes = new TableLibrary();
-		clonedDatatypes.setChildren(new HashSet<Datatype>());
-		for (Datatype dt : this.children) {
-			if (dtRecords.containsKey(dt.getId())) {
-				clonedDatatypes.addDatatype(dtRecords.get(dt.getId()));
+		clonedDatatypes.setChildren(new HashSet<Table>());
+		for (Table tab : this.children) {
+			if (tabRecords.containsKey(tab.getId())) {
+				clonedDatatypes.addTable(tabRecords.get(tab.getId()));
 			} else {
-				Datatype clone = dt.clone();
-				clone.setId(dt.getId());
-				dtRecords.put(dt.getId(), clone);
-				clonedDatatypes.addDatatype(clone);
+				Table clone = tab.clone();
+				clone.setId(tab.getId());
+				tabRecords.put(tab.getId(), clone);
+				clonedDatatypes.addTable(clone);
 			}
 		}
 
 		return clonedDatatypes;
 	}
 	
-	public void merge(TableLibrary dts){
-		for (Datatype dt : dts.getChildren()){
-			if (this.findOneByNameAndByLabel(dt.getName(), dt.getLabel()) == null){
-				this.addDatatype(dt);
-			} else {
-				dt.setId(this.findOneByNameAndByLabel(dt.getName(), dt.getLabel()).getId()); //FIXME Probably useless...
+	public void merge(TableLibrary tabs){
+		for (Table tab : tabs.getChildren()){
+			if (this.findOneByNameAndByBindingIdentifier(tab.getName(), tab.getBindingIdentifier()) == null){
+				this.addTable(tab);
 			}
 		}
-		
 	}
 	
 	public void setPositionsOrder(){
-		List<Datatype> sortedList = new ArrayList<Datatype>(this.getChildren());
+		List<Table> sortedList = new ArrayList<Table>(this.getChildren());
 		Collections.sort(sortedList);
-		for (Datatype elt: sortedList) {
+		for (Table elt: sortedList) {
 			elt.setSectionPosition(sortedList.indexOf(elt));
 		}
 	}
 	
-	@JsonIgnore
-	public Constraints getConformanceStatements() {
-		//TODO Only byID constraints are considered; might want to consider byName
-		Constraints constraints = new Constraints();
-		Context dtContext = new Context();
+//	@JsonIgnore
+//	public Code getCode() {
+//		//TODO Only byID constraints are considered; might want to consider byName
+//		Constraints constraints = new Constraints();
+//		Context tabContext = new Context();
+//
+//		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+//		byNameOrByIDs = new HashSet<ByNameOrByID>();
+//		for (Table d : this.getChildren()) {
+//			ByID byID = new ByID();
+//			byID.setByID(d.getLabel());
+//			if (d.getConformanceStatements().size() > 0) {
+//				byID.setConformanceStatements(d.getConformanceStatements());
+//				byNameOrByIDs.add(byID);
+//			}
+//		}
+//		tabContext.setByNameOrByIDs(byNameOrByIDs);
+//
+//		constraints.setDatatypes(tabContext);
+//		return constraints;
+//	}
 
-		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
-		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for (Datatype d : this.getChildren()) {
-			ByID byID = new ByID();
-			byID.setByID(d.getLabel());
-			if (d.getConformanceStatements().size() > 0) {
-				byID.setConformanceStatements(d.getConformanceStatements());
-				byNameOrByIDs.add(byID);
-			}
-		}
-		dtContext.setByNameOrByIDs(byNameOrByIDs);
-
-		constraints.setDatatypes(dtContext);
-		return constraints;
-	}
-	
-	@JsonIgnore
-	public Constraints getPredicates() {
-		//TODO Only byID constraints are considered; might want to consider byName
-		Constraints constraints = new Constraints();
-		Context dtContext = new Context();
-
-		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
-		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for (Datatype d : this.getChildren()) {
-			ByID byID = new ByID();
-			byID.setByID(d.getLabel());
-			if (d.getPredicates().size() > 0) {
-				byID.setPredicates(d.getPredicates());
-				byNameOrByIDs.add(byID);
-			}
-		}
-		dtContext.setByNameOrByIDs(byNameOrByIDs);
-
-		constraints.setDatatypes(dtContext);
-		return constraints;
-	}
-
-	public DatatypeLibraryMetaData getMetaData() {
+	public TableLibraryMetaData getMetaData() {
 		return metaData;
 	}
 
-	public void setMetaData(DatatypeLibraryMetaData metaData) {
+	public void setMetaData(TableLibraryMetaData metaData) {
 		this.metaData = metaData;
 	}
 
 	public Set<Table> getTables() {
-		return tables;
+		return children;
 	}
 
-	public void setTables(Set<Table> tables) {
-		this.tables = tables;
-	}
-	
-	public Table addTable(Table t){
-		if (!this.tables.contains(t)) {
-			this.tables.add(t);
-		}
-		return t;
+	public void setTables(Set<Table> children) {
+		this.children = children;
 	}
 	
 	public Table findTableById(String id) {
-		if (this.tables != null) {
-			for (Table t : this.tables) {
+		if (this.children != null) {
+			for (Table t : this.children) {
 				if (t.getId().equals(id)) {
 					return t;
 				}
@@ -335,8 +226,8 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 	}
 	
 	public Table findTableByBindingIdentifier(String bindingIdentifier) {
-		if (this.tables != null) {
-			for (Table t : this.tables) {
+		if (this.children != null) {
+			for (Table t : this.children) {
 				if (t.getBindingIdentifier().equals(bindingIdentifier)) {
 					return t;
 				}
@@ -344,6 +235,4 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		}
 		return null;
 	}
-	
-
 }
