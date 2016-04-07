@@ -401,6 +401,11 @@ select.form-control {
   cursor: pointer;
 }
 
+select.form-control-invalid {
+  background-color: #FA787E !important;
+}
+
+
 select.form-control-short {
   width: 100px !important;
   display: initial !important;
@@ -2069,6 +2074,10 @@ div.col-margin{
 
 input.form-control {
   padding: 0px;
+}
+
+input.form-control-invalid {
+  background-color: #FA787E !important;
 }
 
 input.form-control-short {

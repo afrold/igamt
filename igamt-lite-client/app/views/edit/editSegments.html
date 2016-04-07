@@ -777,7 +777,7 @@
     </div>
 
 	<div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-    	<label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'" ng-class="{'active':constraintType === 'Plain'}">
+    	<label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID();" ng-class="{'active':constraintType === 'Plain'}">
         	<input type="radio" ng-value="constraintType">Plain
 		</label>
 		<label class="btn btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID();" ng-class="{'active':constraintType === 'Complex'}">
@@ -792,7 +792,7 @@
     			<th class="col-md-2">ID</th>
 				<th class="col-md-2">Node</th>
     			<th class="col-md-2">Verb</th>
-    			<th class="col-md-2">Constraint</th>
+    			<th class="col-md-2">Constraint Pattern</th>
     			<th class="col-md-2">Value</th>
     			<th class="col-md-1"></th>
 			</tr>
@@ -802,244 +802,118 @@
 				<td class="col-md-1" style="width: 4.1667%" align="center">
 					<button class="btn btn-info btn-xxs" ng-click="initConformanceStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
 				</td>
-				<td class="col-md-2">
-    				<input class="form-control form-control-short80" ng-model="newConstraint.constraintId" ng-change="setChanged(); targetId = newConstraint.constraintId;" type="text" ng-readonly="targetId !== newConstraint.constraintId"/>
-					<i class="fa fa-pencil" ng-hide="targetId == newConstraint.constraintId" ng-click="targetId = newConstraint.constraintId; conformanceStatementIdList.splice(conformanceStatementIdList.indexOf(newConstraint.constraintId), 1);"></i>
-					<i class="fa fa-paper-plane" ng-hide="targetId != newConstraint.constraintId || conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1" ng-click="conformanceStatementIdList.push(newConstraint.constraintId); targetId = ''"></i>
-					<span style="color:red" ng-show="conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1 && targetId == newConstraint.constraintId">Duplicated ID</span>
-				</td>
-				<td class="col-md-2">
-    				<span>{{newConstraint.segment}}-</span>
-    					<select class="form-control form-control-short" name="field" ng-change="updateField_1()" ng-model="newConstraint.field_1" placeholder="Field" ng-options="field as field.position for field in segment.fields">
-    					</select>
-        				<span ng-show="datatypesMap[newConstraint.field_1.datatype].components.length > 0">.
-        					<select class="form-control form-control-short" name="component" "
+    			<td class="col-md-2">
+					<input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyConstraintID(newConstraint) || isDuplicatedConstraintID(newConstraint, targetPlainId)}" 
+						ng-model="newConstraint.constraintId" ng-change="targetPlainId = newConstraint.constraintId;" type="text" ng-readonly="targetPlainId !== newConstraint.constraintId"/>
+					<i class="fa fa-pencil" ng-hide="targetPlainId == newConstraint.constraintId" ng-click="targetPlainId = newConstraint.constraintId;"></i>
+					<i class="fa fa-paper-plane" ng-hide="targetPlainId != newConstraint.constraintId || conformanceStatementIdList.indexOf(newConstraint.constraintId) != -1" ng-click="conformanceStatementIdList.push(newConstraint.constraintId); targetPlainId = ''"></i>
+    			</td>
+    			<td class="col-md-2">
+					<span>{{newConstraint.segment}}-</span>
+    				<select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintNode(newConstraint, "segment")}" ng-change="updateField_1()" ng-model="newConstraint.field_1" placeholder="Field" ng-options="field as field.position for field in segment.fields"/>
+        			<span ng-show="datatypesMap[newConstraint.field_1.datatype].components.length > 0">.
+        				<select class="form-control form-control-short"
                                     placeholder="Component"
                                     ng-change="updateComponent_1()"
                                     ng-model="newConstraint.component_1"
                                     ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype].components">
-                            </select>
-    					</span>
-    					<span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
-        					<select class="form-control form-control-short" name="subComponent" "
+                        </select>
+    				</span>
+    				<span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
+        				<select class="form-control form-control-short"
                                     placeholder="SubComponent"
                                     ng-model="newConstraint.subComponent_1"
                                     ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components">
+                        </select>
+    				</span>
+    			</td>
+    			<td class="col-md-2">
+        			<select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintVerb(newConstraint)}" 
+						ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'"  />
+    			</td>
+    			<td class="col-md-2">
+        			<select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintPattern(newConstraint)}" 
+						ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'" />
+    			</td>
+   				<td class="col-md-2">
+                	<span ng-show="newConstraint.contraintType == 'a literal value' || 
+								   newConstraint.contraintType == 'equal to' ||
+								   newConstraint.contraintType == 'not-equal to' ||
+								   newConstraint.contraintType == 'greater than' ||
+								   newConstraint.contraintType == 'equal to or greater than' ||
+								   newConstraint.contraintType == 'less than' ||
+								   newConstraint.contraintType == 'equal to or less than'">
+                		<input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"  
+							ng-model="newConstraint.value" type="text"/>
+                	</span>
+
+					<span ng-show="newConstraint.contraintType == 'one of list values'">
+                		<input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}"  
+							ng-model="newConstraint.value" placeholder="Comma-Separated Values(CSV)" type="text"/>
+                	</span>
+
+					<span ng-show="newConstraint.contraintType == 'formatted value'">
+                		<select class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue(newConstraint)}" 
+							ng-model="newConstraint.value" ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats | orderBy:'toString()'" />
+						<div ng-show="newConstraint.value === 'Regular expression'">
+							<input class="form-control" ng-class="{'form-control-invalid': isEmptyConstraintValue2(newConstraint)}"
+								ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
+						</div>
+                	</span>
+
+					<span ng-show="newConstraint.contraintType == 'identical to another node' ||
+								   newConstraint.contraintType == 'equal to another node' ||
+								   newConstraint.contraintType == 'not-equal to another node' ||
+								   newConstraint.contraintType == 'greater than another node' ||
+								   newConstraint.contraintType == 'equal to or greater than another node' ||
+							       newConstraint.contraintType == 'less than another node' ||
+								   newConstraint.contraintType == 'equal to or less than another node'">
+						<span>{{newConstraint.segment}}-</span>
+        				<select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintAnotherNode(newConstraint, "segment")}"
+                                    ng-change="updateField_2()"
+                                    ng-model="newConstraint.field_2"
+                                    ng-options="field as field.position for field in segment.fields">
+                        </select>
+        				<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
+        					<select class="form-control form-control-short"
+                                        ng-change="updateComponent_2()"
+                                        ng-model="newConstraint.component_2"
+                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
                             </select>
     					</span>
-				</td>
-				<td class="col-md-2">
-    				<select name="verb" class="form-control" ng-change="" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'">
-    				</select>
-				</td>
-				<td class="col-md-2">
-    				<select name="contraintType" class="form-control" ng-change="" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'">
-    				</select>
-				</td>
-				<td class="col-md-2">
-                		<span ng-show="newConstraint.contraintType == 'a literal value'">
-                			<input class="form-control" ng-model="newConstraint.value"
-                                   placeholder="Literal Value" type="text"/>
-                		</span>
-                		<span ng-show="newConstraint.contraintType == 'one of list values'">
-                			<input class="form-control" ng-model="newConstraint.value"
-                                   placeholder="Comma-Separated Values(CSV)" type="text"/>
-                		</span>
-                		<span ng-show="newConstraint.contraintType == 'formatted value'">
-                			<select class="form-control" name="format"
-                                    ng-model="newConstraint.value"
-                                    ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats | orderBy:'toString()'">
-                            </select>
-							<input class="form-control" ng-show="newConstraint.value === 'Regular expression'" ng-model="newConstraint.value2" placeholder="Regular expression" type="text"/>
-                		</span>
-                		<span ng-show="newConstraint.contraintType == 'identical to another node'">
-							<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
-                                    ng-change="updateField_2()"
-                                    ng-model="newConstraint.field_2"
-                                    ng-options="field as field.position for field in segment.fields">
-                            </select>
-        					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
-                                        ng-change="updateComponent_2()"
-                                        ng-model="newConstraint.component_2"
-                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
-                                </select>
-    						</span>
-    						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
+    					<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
+        					<select class="form-control form-control-short"
                                         ng-model="newConstraint.subComponent_2"
                                         ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
-                                </select>
-    						</span>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'equal to another node'">
-                			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
-                                    ng-change="updateField_2()"
-                                    ng-model="newConstraint.field_2"
-                                    ng-options="field as field.position for field in segment.fields">
                             </select>
-        					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
-                                        ng-change="updateComponent_2()"
-                                        ng-model="newConstraint.component_2"
-                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
-                                </select>
-    						</span>
-    						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
-                                        ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
-                                </select>
-    						</span>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'not-equal to another node'">
-                			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
-                                    ng-change="updateField_2()"
-                                    ng-model="newConstraint.field_2"
-                                    ng-options="field as field.position for field in segment.fields">
-                            </select>
-        					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
-                                        ng-change="updateComponent_2()"
-                                        ng-model="newConstraint.component_2"
-                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
-                                </select>
-    						</span>
-    						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
-                                        ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
-                                </select>
-    						</span>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'greater than another node'">
-                			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
-                                    ng-change="updateField_2()"
-                                    ng-model="newConstraint.field_2"
-                                    ng-options="field as field.position for field in segment.fields">
-                            </select>
-        					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
-                                        ng-change="updateComponent_2()"
-                                        ng-model="newConstraint.component_2"
-                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
-                                </select>
-    						</span>
-    						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
-                                        ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
-                                </select>
-    						</span>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'equal to or greater than another node'">
-                			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
-                                    ng-change="updateField_2()"
-                                    ng-model="newConstraint.field_2"
-                                    ng-options="field as field.position for field in segment.fields">
-                            </select>
-        					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
-                                        ng-change="updateComponent_2()"
-                                        ng-model="newConstraint.component_2"
-                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
-                                </select>
-    						</span>
-    						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
-                                        ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
-                                </select>
-    						</span>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'less than another node'">
-                			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
-                                    ng-change="updateField_2()"
-                                    ng-model="newConstraint.field_2"
-                                    ng-options="field as field.position for field in segment.fields">
-                            </select>
-        					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
-                                        ng-change="updateComponent_2()"
-                                        ng-model="newConstraint.component_2"
-                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
-                                </select>
-    						</span>
-    						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
-                                        ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
-                                </select>
-    						</span>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'equal to or less than another node'">
-                			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
-                                    ng-change="updateField_2()"
-                                    ng-model="newConstraint.field_2"
-                                    ng-options="field as field.position for field in segment.fields">
-                            </select>
-        					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
-                                        ng-change="updateComponent_2()"
-                                        ng-model="newConstraint.component_2"
-                                        ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
-                                </select>
-    						</span>
-    						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
-                                        ng-model="newConstraint.subComponent_2"
-                                        ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
-                                </select>
-    						</span>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'equal to'">
-                			<input class="form-control" ng-model="newConstraint.value" type="text"/>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'not-equal to'">
-                			<input class="form-control" ng-model="newConstraint.value" type="text"/>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'greater than'">
-                			<input class="form-control" ng-model="newConstraint.value" type="text"/>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'equal to or greater than'">
-                			<input class="form-control" ng-model="newConstraint.value" type="text"/>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'less than'">
-                			<input class="form-control" ng-model="newConstraint.value" type="text"/>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'equal to or less than'">
-                			<input class="form-control" ng-model="newConstraint.value" type="text"/>
-                		</span>
-						<span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
-                			<span>ValueSet ID: </span>
-							<select class="form-control form-control-short" name="valueSetId" " ng-model="newConstraint.valueSetId">
-                                <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'"
-                                        value="{{table.bindingIdentifier}}">
-                                    {{table.bindingIdentifier}}
-                                </option>
-                            </select>
-                            <br/>
-							<span>BindingStrength: </span>
-							<select class="form-control form-control-short" name="bindingStrength" " ng-model="newConstraint.bindingStrength">
-                                <option value="R">R</option>
-                                <option value="S">S</option>
-                                <option value="U">U</option>
-                            </select>
-                            <br/>
-							<span>BindingLocation: </span>
-							<input class="form-control form-control-short" ng-model="newConstraint.bindingLocation" type="text"/>
-                		</span>
-				</td>
-				<td class="col-md-1" align="center">
-					<button class="btn btn-primary btn-xxs" ng-click="addConformanceStatement()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Plain Conf.Statement</span></button>
-				</td>
+    					</span>
+                	</span>
+												
+					<span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
+                		<span>ValueSet ID: </span>
+						<select class="form-control form-control-short" ng-class="{'form-control-invalid': isEmptyConstraintValueSet(newConstraint)}" ng-model="newConstraint.valueSetId">
+                        	<option ng-repeat="table in tables|orderBy:'+bindingIdentifier'" value="{{table.bindingIdentifier}}">
+                            	{{table.bindingIdentifier}}
+                            </option>
+                        </select>
+						<br/>
+						<span>BindingStrength: </span>
+						<select class="form-control form-control-short" ng-model="newConstraint.bindingStrength">
+                        	<option value="R">R</option>
+                        	<option value="S">S</option>
+                        	<option value="U">U</option>
+                        </select>
+						<br/>
+						<span>BindingLocation: </span>
+						<input class="form-control form-control-short" ng-model="newConstraint.bindingLocation" type="text"/>
+                	</span>
+    			</td>
+    			<td class="col-md-1" align="center">
+					<button class="btn btn-primary btn-xxs" ng-click="addConformanceStatement();" ng-disabled="erorrForConfStatement(newConstraint, targetPlainId).length > 0"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Plain Conf.Statement</span></button>
+					<div ng-repeat="e in erorrForConfStatement(newConstraint, targetPlainId)">
+						<span style="color:red;">{{e}}</span>
+					</div>
+    			</td>
 			</tr>
 		</tbody>
 	</table>
@@ -1050,9 +924,9 @@
 				<th class="col-md-1" style="width: 4.1667%"></th>
     			<th class="col-md-2">ID</th>
 				<th class="col-md-2">Complex Type</th>
-    			<th class="col-md-1"></th>
+    			<th class="col-md-1" style="width: 4.1667%"></th>
     			<th class="col-md-2">First Constraint</th>
-    			<th class="col-md-1"></th>
+    			<th class="col-md-1" style="width: 4.1667%"></th>
 				<th class="col-md-2">Second Constraint</th>
     			<th class="col-md-1"></th>
 			</tr>
@@ -1063,36 +937,39 @@
 					<button class="btn btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
 				</td>
 				<td class="col-md-2">
-					<input class="form-control form-control-short80" ng-model="newComplexConstraintId" ng-change="setChanged(); targetId = newComplexConstraintId;" type="text" ng-readonly="targetId !== newComplexConstraintId"/>
-					<i class="fa fa-pencil" ng-hide="targetId == newComplexConstraintId" ng-click="targetId = newComplexConstraintId; conformanceStatementIdList.splice(conformanceStatementIdList.indexOf(newComplexConstraintId), 1);"></i>
-					<i class="fa fa-paper-plane" ng-hide="targetId != newComplexConstraintId || conformanceStatementIdList.indexOf(newComplexConstraintId) != -1" ng-click="conformanceStatementIdList.push(newComplexConstraintId); targetId = ''"></i>
-					<span style="color:red" ng-show="conformanceStatementIdList.indexOf(newComplexConstraintId) != -1 && targetId == newComplexConstraintId">Duplicated ID</span>
+					<input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyComplexConstraintID(newComplexConstraintId) || isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId)}" 
+						ng-model="newComplexConstraintId" ng-change="targetComplexId = newComplexConstraintId;" type="text" ng-readonly="targetComplexId !== newComplexConstraintId"/>
+					<i class="fa fa-pencil" ng-hide="targetComplexId == newComplexConstraintId" ng-click="targetComplexId = newComplexConstraintId;"></i>
+					<i class="fa fa-paper-plane" ng-hide="targetComplexId != newComplexConstraintId || conformanceStatementIdList.indexOf(newComplexConstraintId) != -1" ng-click="conformanceStatementIdList.push(newComplexConstraintId); targetComplexId = ''"></i>
     			</td>
 				<td class="col-md-2">
-					<select class="form-control" name="compositeTypeSelect" ng-model="compositeType">
+					<select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
                     	<option value="AND">AND</option>
                     	<option value="OR">OR</option>
                     	<option value="IFTHEN">IFTHEN</option>
                 	</select>
 				</td>
-				<td class="col-md-1" align="center">
+				<td class="col-md-1" align="center" style="width: 4.1667%">
 					<span ng-show="compositeType == 'IFTHEN'">IF</span>
 				</td>
 				<td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
-					<span ng-hide="firstConstraint">Drop the first constraint here!</span>
+					<span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
 					<span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
 				</td>
-				<td class="col-md-1" align="center">
+				<td class="col-md-1" align="center" style="width: 4.1667%">
 					<span ng-show="compositeType == 'AND'">AND</span>
 					<span ng-show="compositeType == 'OR'">OR</span>
 					<span ng-show="compositeType == 'IFTHEN'">THEN</span>
 				</td>
 				<td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
-					<span ng-hide="secondConstraint">Drop the second constraint here!</span>
+					<span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
 					<span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
 				</td>
 				<td class="col-md-1" align="center">
-					<button class="btn btn-primary btn-xxs" ng-click="addComplexConformanceStatement()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Complex Conf.Statement</span></button>
+					<button class="btn btn-primary btn-xxs" ng-click="addComplexConformanceStatement()" ng-disabled="erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint).length > 0"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Complex Conf.Statement</span></button>
+					<div ng-repeat="e in erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint)">
+						<span style="color:red;">{{e}}</span>
+					</div>
 				</td>
 			</tr>
 		</tbody>
@@ -1169,7 +1046,7 @@
 				<th class="col-md-1" style="width: 4.1667%"></th>
 				<th class="col-md-2">Node</th>
     			<th class="col-md-2">Verb</th>
-    			<th class="col-md-2">Constraint</th>
+    			<th class="col-md-2">Constraint Pattern</th>
     			<th class="col-md-2">Value</th>
 				<th class="col-md-1">True Usage</th>
 				<th class="col-md-1">False Usage<</th>
@@ -1183,23 +1060,23 @@
 				</td>
 				<td class="col-md-2">
     				<span>{{newConstraint.segment}}-</span>
-    				<select class="form-control form-control-short" name="field" ng-change="updateField_1()" ng-model="newConstraint.field_1" ng-options="field as field.position for field in segment.fields">
+    				<select class="form-control form-control-short" ng-change="updateField_1()" ng-model="newConstraint.field_1" ng-options="field as field.position for field in segment.fields">
     				</select>
         			<span ng-show="datatypesMap[newConstraint.field_1.datatype].components.length > 0">.
-        				<select class="form-control form-control-short" name="component" ng-change="updateComponent_1()" ng-model="newConstraint.component_1" ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype].components">
+        				<select class="form-control form-control-short" ng-change="updateComponent_1()" ng-model="newConstraint.component_1" ng-options="component as component.position for component in datatypesMap[newConstraint.field_1.datatype].components">
                     	</select>
     				</span>
     				<span ng-show="datatypesMap[newConstraint.component_1.datatype].components.length > 0">.
-        				<select class="form-control form-control-short" name="subComponent" ng-model="newConstraint.subComponent_1" ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components">
+        				<select class="form-control form-control-short" ng-model="newConstraint.subComponent_1" ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_1.datatype].components">
                         </select>
     				</span>
 				</td>
 				<td class="col-md-2">
-    				<select name="verb" class="form-control" ng-change="" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'">
+    				<select class="form-control" ng-change="" ng-model="newConstraint.verb" ng-options="constraintVerb for constraintVerb in config.constraintVerbs | orderBy:'toString()'">
     				</select>
 				</td>
 				<td class="col-md-2">
-    				<select name="contraintType" class="form-control" ng-change="" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'">
+    				<select class="form-control" ng-change="" ng-model="newConstraint.contraintType" ng-options="contraintType for contraintType in config.constraintTypes | orderBy:'toString()'">
     				</select>
 				</td>
 				<td class="col-md-2">
@@ -1212,7 +1089,7 @@
                                    placeholder="Comma-Separated Values(CSV)" type="text"/>
                 		</span>
                 		<span ng-show="newConstraint.contraintType == 'formatted value'">
-                			<select class="form-control" name="format"
+                			<select class="form-control"
                                     ng-model="newConstraint.value"
                                     ng-options="predefinedFormat for predefinedFormat in config.predefinedFormats | orderBy:'toString()'">
                             </select>
@@ -1221,20 +1098,19 @@
                 		<span ng-show="newConstraint.contraintType == 'identical to another node'">
                 			<span>{{newConstraint.segment}}-</span>
         					<select class="form-control form-control-short"
-									name="field_2" "
                                     ng-change="updateField_2()"
                                     ng-model="newConstraint.field_2"
                                     ng-options="field as field.position for field in segment.fields">
                             </select>
         					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
+        						<select class="form-control form-control-short"
                                         ng-change="updateComponent_2()"
                                         ng-model="newConstraint.component_2"
                                         ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
                                 </select>
     						</span>
     						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
+        						<select class="form-control form-control-short"
                                         ng-model="newConstraint.subComponent_2"
                                         ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
@@ -1242,20 +1118,20 @@
                 		</span>
 						<span ng-show="newConstraint.contraintType == 'equal to another node'">
                 			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
+        					<select class="form-control form-control-short"
                                     ng-change="updateField_2()"
                                     ng-model="newConstraint.field_2"
                                     ng-options="field as field.position for field in segment.fields">
                             </select>
         					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
+        						<select class="form-control form-control-short"
                                         ng-change="updateComponent_2()"
                                         ng-model="newConstraint.component_2"
                                         ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
                                 </select>
     						</span>
     						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
+        						<select class="form-control form-control-short"
                                         ng-model="newConstraint.subComponent_2"
                                         ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
@@ -1263,20 +1139,20 @@
                 		</span>
 						<span ng-show="newConstraint.contraintType == 'not-equal to another node'">
                 			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
+        					<select class="form-control form-control-short"
                                     ng-change="updateField_2()"
                                     ng-model="newConstraint.field_2"
                                     ng-options="field as field.position for field in segment.fields">
                             </select>
         					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
+        						<select class="form-control form-control-short"
                                         ng-change="updateComponent_2()"
                                         ng-model="newConstraint.component_2"
                                         ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
                                 </select>
     						</span>
     						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
+        						<select class="form-control form-control-short"
                                         ng-model="newConstraint.subComponent_2"
                                         ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
@@ -1284,20 +1160,20 @@
                 		</span>
 						<span ng-show="newConstraint.contraintType == 'greater than another node'">
                 			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
+        					<select class="form-control form-control-short"
                                     ng-change="updateField_2()"
                                     ng-model="newConstraint.field_2"
                                     ng-options="field as field.position for field in segment.fields">
                             </select>
         					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
+        						<select class="form-control form-control-short"
                                         ng-change="updateComponent_2()"
                                         ng-model="newConstraint.component_2"
                                         ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
                                 </select>
     						</span>
     						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
+        						<select class="form-control form-control-short"
                                         ng-model="newConstraint.subComponent_2"
                                         ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
@@ -1305,20 +1181,20 @@
                 		</span>
 						<span ng-show="newConstraint.contraintType == 'equal to or greater than another node'">
                 			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
+        					<select class="form-control form-control-short"
                                     ng-change="updateField_2()"
                                     ng-model="newConstraint.field_2"
                                     ng-options="field as field.position for field in segment.fields">
                             </select>
         					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
+        						<select class="form-control form-control-short"
                                         ng-change="updateComponent_2()"
                                         ng-model="newConstraint.component_2"
                                         ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
                                 </select>
     						</span>
     						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
+        						<select class="form-control form-control-short"
                                         ng-model="newConstraint.subComponent_2"
                                         ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
@@ -1326,20 +1202,20 @@
                 		</span>
 						<span ng-show="newConstraint.contraintType == 'less than another node'">
                 			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
+        					<select class="form-control form-control-short"
                                     ng-change="updateField_2()"
                                     ng-model="newConstraint.field_2"
                                     ng-options="field as field.position for field in segment.fields">
                             </select>
         					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
+        						<select class="form-control form-control-short"
                                         ng-change="updateComponent_2()"
                                         ng-model="newConstraint.component_2"
                                         ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
                                 </select>
     						</span>
     						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
+        						<select class="form-control form-control-short"
                                         ng-model="newConstraint.subComponent_2"
                                         ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
@@ -1347,20 +1223,20 @@
                 		</span>
 						<span ng-show="newConstraint.contraintType == 'equal to or less than another node'">
                 			<span>{{newConstraint.segment}}-</span>
-        					<select class="form-control form-control-short" name="field_2" "
+        					<select class="form-control form-control-short"
                                     ng-change="updateField_2()"
                                     ng-model="newConstraint.field_2"
                                     ng-options="field as field.position for field in segment.fields">
                             </select>
         					<span ng-show="datatypesMap[newConstraint.field_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="component" "
+        						<select class="form-control form-control-short"
                                         ng-change="updateComponent_2()"
                                         ng-model="newConstraint.component_2"
                                         ng-options="component as component.position for component in datatypesMap[newConstraint.field_2.datatype].components">
                                 </select>
     						</span>
     						<span ng-show="datatypesMap[newConstraint.component_2.datatype].components.length > 0">.
-        						<select class="form-control form-control-short" name="subComponent" "
+        						<select class="form-control form-control-short"
                                         ng-model="newConstraint.subComponent_2"
                                         ng-options="subComponent as subComponent.position for subComponent in datatypesMap[newConstraint.component_2.datatype].components">
                                 </select>
@@ -1386,7 +1262,7 @@
                 		</span>
 						<span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
                 			<span>ValueSet ID: </span>
-							<select class="form-control form-control-short" name="valueSetId" " ng-model="newConstraint.valueSetId">
+							<select class="form-control form-control-short" ng-model="newConstraint.valueSetId">
                                 <option ng-repeat="table in tables|orderBy:'+bindingIdentifier'"
                                         value="{{table.bindingIdentifier}}">
                                     {{table.bindingIdentifier}}
@@ -1394,7 +1270,7 @@
                             </select>
                             <br/>
 							<span>BindingStrength: </span>
-							<select class="form-control form-control-short" name="bindingStrength" " ng-model="newConstraint.bindingStrength">
+							<select class="form-control form-control-short" ng-model="newConstraint.bindingStrength">
                                 <option value="R">R</option>
                                 <option value="S">S</option>
                                 <option value="U">U</option>
@@ -1406,14 +1282,14 @@
 					</td>
 
 					<td class="col-md-1">
-    					<select name="trueUsage" class="form-control"
+    					<select class="form-control"
             				ng-model="newConstraint.trueUsage"
             				ng-options="usage for usage in config.usages">
     					</select>
 					</td>
 
 					<td class="col-md-1">
-    					<select name="falseUsage" class="form-control"
+    					<select class="form-control"
             				ng-model="newConstraint.falseUsage"
             				ng-options="usage for usage in config.usages">
     					</select>
@@ -1446,7 +1322,7 @@
 					<button class="btn btn-info btn-xxs" ng-click="initComplexPredicate()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
 				</td>
 				<td class="col-md-2">
-					<select class="form-control" name="compositeTypeSelect" ng-model="compositeType">
+					<select class="form-control" ng-model="compositeType">
                     	<option value="AND">AND</option>
                     	<option value="OR">OR</option>
                     	<option value="IFTHEN">IFTHEN</option>

@@ -769,7 +769,7 @@
 				<th class="col-md-1" style="width: 4.1667%"></th>
 				<th class="col-md-2">Node</th>
     			<th class="col-md-2">Verb</th>
-    			<th class="col-md-2">Constraint</th>
+    			<th class="col-md-2">Constraint Pattern</th>
     			<th class="col-md-2">Value</th>
 				<th class="col-md-1">True Usage</th>
 				<th class="col-md-1">False Usage<</th>
@@ -1009,7 +1009,7 @@
     </div>
 
 	<div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-    	<label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'" ng-class="{'active':constraintType === 'Plain'}">
+    	<label class="btn btn-primary btn-xs" ng-click="constraintType = 'Plain'; newConstraint.constraintId = calNextCSID();" ng-class="{'active':constraintType === 'Plain'}">
         	<input type="radio" ng-value="constraintType">Plain
 		</label>
 		<label class="btn btn-primary btn-xs" ng-click="constraintType = 'Complex'; newComplexConstraintId = calNextCSID();" ng-class="{'active':constraintType === 'Complex'}">
@@ -1024,7 +1024,7 @@
     			<th class="col-md-2">ID</th>
 				<th class="col-md-2">Node</th>
     			<th class="col-md-2">Verb</th>
-    			<th class="col-md-2">Constraint</th>
+    			<th class="col-md-2">Constraint Pattern</th>
     			<th class="col-md-2">Value</th>
     			<th class="col-md-1"></th>
 			</tr>
@@ -1225,9 +1225,9 @@
 				<th class="col-md-1" style="width: 4.1667%"></th>
     			<th class="col-md-2">ID</th>
 				<th class="col-md-2">Complex Type</th>
-    			<th class="col-md-1"></th>
+    			<th class="col-md-1" style="width: 4.1667%"></th>
     			<th class="col-md-2">First Constraint</th>
-    			<th class="col-md-1"></th>
+    			<th class="col-md-1" style="width: 4.1667%"></th>
 				<th class="col-md-2">Second Constraint</th>
     			<th class="col-md-1"></th>
 			</tr>
@@ -1238,36 +1238,39 @@
 					<button class="btn btn-info btn-xxs" ng-click="initComplexStatement()"><span><i class="fa fa-refresh fa-fw">&nbsp; </i>Reset</span></button>
 				</td>
 				<td class="col-md-2">
-					<input class="form-control form-control-short80" ng-model="newComplexConstraintId" ng-change="setChanged(); targetId = newComplexConstraintId;" type="text" ng-readonly="targetId !== newComplexConstraintId"/>
-					<i class="fa fa-pencil" ng-hide="targetId == newComplexConstraintId" ng-click="targetId = newComplexConstraintId; conformanceStatementIdList.splice(conformanceStatementIdList.indexOf(newComplexConstraintId), 1);"></i>
-					<i class="fa fa-paper-plane" ng-hide="targetId != newComplexConstraintId || conformanceStatementIdList.indexOf(newComplexConstraintId) != -1" ng-click="conformanceStatementIdList.push(newComplexConstraintId); targetId = ''"></i>
-					<span style="color:red" ng-show="conformanceStatementIdList.indexOf(newComplexConstraintId) != -1 && targetId == newComplexConstraintId">Duplicated ID</span>
+					<input class="form-control form-control-short80" ng-class="{'form-control-invalid': isEmptyComplexConstraintID(newComplexConstraintId) || isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId)}" 
+						ng-model="newComplexConstraintId" ng-change="targetComplexId = newComplexConstraintId;" type="text" ng-readonly="targetComplexId !== newComplexConstraintId"/>
+					<i class="fa fa-pencil" ng-hide="targetComplexId == newComplexConstraintId" ng-click="targetComplexId = newComplexConstraintId;"></i>
+					<i class="fa fa-paper-plane" ng-hide="targetComplexId != newComplexConstraintId || conformanceStatementIdList.indexOf(newComplexConstraintId) != -1" ng-click="conformanceStatementIdList.push(newComplexConstraintId); targetComplexId = ''"></i>
     			</td>
 				<td class="col-md-2">
-					<select class="form-control" name="compositeTypeSelect" ng-model="compositeType">
+					<select class="form-control" ng-class="{'form-control-invalid': isEmptyCompositeType(compositeType)}" ng-model="compositeType">
                     	<option value="AND">AND</option>
                     	<option value="OR">OR</option>
                     	<option value="IFTHEN">IFTHEN</option>
                 	</select>
 				</td>
-				<td class="col-md-1" align="center">
+				<td class="col-md-1" align="center" style="width: 4.1667%">
 					<span ng-show="compositeType == 'IFTHEN'">IF</span>
 				</td>
 				<td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="firstConstraint" jqyoui-droppable>
-					<span ng-hide="firstConstraint">Drop the first constraint here!</span>
+					<span style="color:red;" ng-hide="firstConstraint">Drop the first constraint here!</span>
 					<span data-drag="false" data-jqyoui-options ng-model="firstConstraint" jqyoui-draggable ng-hide="!firstConstraint">{{firstConstraint.description}}</span>
 				</td>
-				<td class="col-md-1" align="center">
+				<td class="col-md-1" align="center" style="width: 4.1667%">
 					<span ng-show="compositeType == 'AND'">AND</span>
 					<span ng-show="compositeType == 'OR'">OR</span>
 					<span ng-show="compositeType == 'IFTHEN'">THEN</span>
 				</td>
 				<td class="col-md-2" data-drop="true" data-jqyoui-options ng-model="secondConstraint" jqyoui-droppable>
-					<span ng-hide="secondConstraint">Drop the second constraint here!</span>
+					<span style="color:red;" ng-hide="secondConstraint">Drop the second constraint here!</span>
 					<span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
 				</td>
 				<td class="col-md-1" align="center">
-					<button class="btn btn-primary btn-xxs" ng-click="addComplexConformanceStatement()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Complex Conf.Statement</span></button>
+					<button class="btn btn-primary btn-xxs" ng-click="addComplexConformanceStatement()" ng-disabled="erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint).length > 0"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Complex Conf.Statement</span></button>
+					<div ng-repeat="e in erorrForComplexConfStatement(newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint)">
+						<span style="color:red;">{{e}}</span>
+					</div>
 				</td>
 			</tr>
 		</tbody>
