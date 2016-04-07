@@ -147,7 +147,7 @@ angular
 //							console.log("leafSection=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent);
 						} else if (scope.leaf.type === "message") {
 							element.html(leafMessage).show();
-//							console.log("leafMessage=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent + " leaf.reference.name=" + scope.leaf.reference.name);
+//							console.log("leafMessage=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent + " leaf.reference.id=" + scope.leaf.reference.id + " leaf.reference.position=" + scope.leaf.reference.position);
 						} else if (scope.leaf.type === "table") {
 							element.html(leafValueSet).show();
 //								console.log("leafTable=" + scope.leaf.label + " type=" + scope.leaf.type  + " parent=" + scope.leaf.parent);

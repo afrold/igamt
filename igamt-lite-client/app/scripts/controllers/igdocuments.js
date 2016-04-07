@@ -122,46 +122,6 @@ angular.module('igl')
 	            }
 	        });
         };
- 
-//        $scope.messagesParams = $scope.getMessageParams();
-    	
-//        $scope.messagesParams = new ngTreetableParams({
-//            getNodes: function (parent) {
-//                if (!parent || parent == null) {
-//                    return $rootScope.messageTree.children;
-//                } else {
-//                    return parent.children;
-//                }
-//            },
-//            getTemplate: function (node) {
-//                if ($scope.viewSettings.tableReadonly) {
-//
-//                    if (node.obj.type === 'segmentRef') {
-//                        return 'MessageSegmentRefReadTree.html';
-//                    } else if (node.obj.type === 'group') {
-//                        return 'MessageGroupReadTree.html';
-//                    } else if (node.obj.type === 'field') {
-//                        return 'MessageFieldViewTree.html';
-//                    } else if (node.obj.type === 'component') {
-//                        return 'MessageComponentViewTree.html';
-//                    } else {
-//                        return 'MessageReadTree.html';
-//                    }
-//                } else {
-//                    if (node.obj.type === 'segmentRef') {
-//                        return 'MessageSegmentRefEditTree.html';
-//                    } else if (node.obj.type === 'group') {
-//                        return 'MessageGroupEditTree.html';
-//                    } else if (node.obj.type === 'field') {
-//                        return 'MessageFieldViewTree.html';
-//                    } else if (node.obj.type === 'component') {
-//                        return 'MessageComponentViewTree.html';
-//                    } else {
-//                        return 'MessageEditTree.html';
-//                    }
-//                }
-//            }
-//        });
 
         /**
          * init the controller
@@ -226,8 +186,28 @@ angular.module('igl')
             });
 
             $rootScope.$on('event:IgsPushed', function (event, igdocument) {
-                if ($scope.igDocumentConfig.selectedType === 'USER') {
-                    $rootScope.igs.push(igdocument);
+        		console.log("event:IgsPushed=" + igdocument)
+               if ($scope.igDocumentConfig.selectedType === 'USER') {
+	                	var idx = $rootScope.igs.findIndex(function(igd) {
+	            			return igd.id === igdocument.id;
+	            		});
+                		if(idx > -1) {
+                			$timeout(function() {
+    	                		_.each($rootScope.igs, function(igd) {
+        	                		console.log("b msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
+    	                		});
+	                			$rootScope.igs.splice(idx, 1);
+	                	        $scope.tmpIgs = [].concat($rootScope.igs);
+	    	                		_.each($scope.tmpIgs, function(igd) {
+	        	                		console.log("a msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
+	        	                		console.log("msgs=" + igd.metaData.title + " len=" + igd.profile.messages.children.length);
+	    	                		});  
+                			}, 100);
+                			$rootScope.igs.push(igdocument);                			
+              		} else {
+              			console.log("pushed=>")
+                			$rootScope.igs.push(igdocument);
+                		}
                 } else {
                     $scope.igDocumentConfig.selectedType = 'USER';
                     $scope.loadIGDocuments();
@@ -247,6 +227,7 @@ angular.module('igl')
         };
 
         $scope.selectIGDocumentType = function (selectedType) {
+    			console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
             $scope.igDocumentConfig.selectedType = selectedType;
             StorageService.setSelectedIgDocumentType(selectedType);
             $scope.loadIGDocuments();
@@ -339,6 +320,7 @@ angular.module('igl')
         };
 
         $scope.edit = function (igdocument) {
+			console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
             $scope.viewSettings.setTableReadonly(false);
             $scope.show(igdocument);
         };

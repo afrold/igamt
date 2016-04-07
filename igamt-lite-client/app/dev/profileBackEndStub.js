@@ -4,6 +4,10 @@
 
 angular.module('igl').run(function ($httpBackend, $q, $http) {
 
+	$httpBackend.whenGET('api/session/keepAlive').respond(function (method, url, data, headers) {
+        return [200, {}, {}];
+    });
+
     $httpBackend.whenGET('api/igdocuments').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/profile4.json', false);
@@ -214,15 +218,6 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [200, ["2.5.1","2.6","2.7"], {}];
     });
     
-//    $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
-//        var msgList = [["5665cee2d4c613e7b531be55", "P11", "DFT_P11", "Detail financial transactions"], 
-//         ["5665cee2d4c613e7b531b7ba", "A24", "ADT_A24", "ADT messagee"], 
-//         ["5665cee2d4c613e7b531be18", "I08", "RPA_I08", "Request patient authorization"],
-//        ["5665cee2d4c613e7b531be4e", "Q16", "QSB_Q16", "Create subscription"],
-//        ["5665cee2d4c613e7b531bbbb", "B08", "PMU_B08", "Add personnel record"]]
-//        return [200, msgList, {}];
-//    });
-    
     $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/igdocuments/messageListByVersion start' + ' data=' + data);
@@ -252,10 +247,10 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
     	console.log('api/igdocuments/hl7/updateIntegrationProfile start');
         var profile = null;
         var request = new XMLHttpRequest();
-        request.open('GET', '../../igDocuments/igdocument-2.7-HL7STANDARD-.json', false);
+        request.open('GET', '../../resources/igDocuments/igdocument-2.6.1-USER-ABC2.json', false);
         request.send(null);
         var profile = angular.fromJson(request.response);
-        console.log('api/igdocuments/createIntegrationProfile end');
+        console.log('api/igdocuments/updateIntegrationProfile end');
         return [request.status, profile, {}];
     });
 

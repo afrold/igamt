@@ -127,6 +127,8 @@ angular.module('igl').controller(
 											.$broadcast(
 													'event:openIGDocumentRequest',
 													igdocument);
+									$rootScope.$broadcast('event:IgsPushed',
+											igdocument);
 								});
 			};
 
