@@ -323,7 +323,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
         $scope.changed = true;
     };
     
-    $scope.updatePredicate = function () {
+    $scope.addPredicate = function () {
         $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
 
         $scope.newConstraint.position_1 = $scope.genPosition($scope.newConstraint.field_1, $scope.newConstraint.component_1, $scope.newConstraint.subComponent_1);

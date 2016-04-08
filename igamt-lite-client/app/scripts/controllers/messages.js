@@ -219,6 +219,14 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
             }
         }
     }
+    
+    $scope.initComplexPredicate = function () {
+    	$scope.firstConstraint = null;
+        $scope.secondConstraint = null;
+        $scope.compositeType = null;
+        $scope.complexConstraintTrueUsage = null;
+        $scope.complexConstraintFalseUsage = null;
+    }
 
     $scope.deletePredicate = function (predicate) {
         $scope.tempPredicates.splice($scope.tempPredicates.indexOf(predicate), 1);
