@@ -196,9 +196,7 @@ body {
     							<span class="header5">Conformance Statements</span>
                         	</span>
                             <span class="pull-right">
-								<select class="form-control input-sm" ng-model="dtNode" ng-change="manageConformanceStatement(dtNode); dtNode = null;" ng-options="component as (component.position + '. ' + component.name) for component in datatype.components">
-									<option value="">-- Add Conf.Statement --</option>
-								</select>
+								<button class="btn btn-primary btn-xs" ng-click="manageConformanceStatement(null);" ng-disabled="viewSettings.tableReadonly"><span><i class="fa fa-plus fa-fw">&nbsp; </i>Add Conf.Statement</span></button>
                             </span>
 						</div>
 
@@ -1070,10 +1068,16 @@ body {
 
 <script type="text/ng-template" id="ConformanceStatementDatatypeCtrl.html">
 <div class="modal-header">
-    <h3 class="header4">Conformance statement for {{datatype.name}}-{{selectedNode.position}}</h3>
+	<h3 ng-show="selectedNode === null" class="header4">Conformance statement for {{datatype.name}}</h3>
+	<h3 ng-show="selectedNode !== null" class="header4">Conformance statement for {{datatype.name}}-{{selectedNode.position}}</h3>
 </div>
 <div class="modal-body">
 <form role="form">
+	<span class="pull-right">
+		<select class="form-control input-sm" ng-model="selectedNode" ng-options="component as (component.position + '. ' + component.name) for component in datatype.components">
+			<option value="null">-- Root of {{datatype.name}} --</option>
+		</select>
+	</span>
 <div class="table-responsive">
 	<div class="page-header">
         <span class="header5">List of conformance statments</span>
@@ -1088,7 +1092,7 @@ body {
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="c in tempComformanceStatements | filter:{constraintTarget:selectedNode.position + '[1]'}:true">
+        <tr ng-repeat="c in tempComformanceStatements | filter:{constraintTarget:selectedNode == null ? '.' : selectedNode.position + '[1]'}:true">
 			<td class="col-md-1" align="center" style="width: 4.1667%">
 				<i class="fa fa-bullseye fa-lg" data-drag="true" data-jqyoui-options="{revert: 'invalid',helper:'clone'}" ng-model="c" jqyoui-draggable="{placeholder:'keep',animate:true}"></i>
 			</td>
