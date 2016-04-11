@@ -112,4 +112,9 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 			return thatDt.getLabel().compareTo(thisDt.getLabel());
 		}
 	}
+
+	@Override
+	public DatatypeLibrary findById(String id) {
+		return datatypeLibraryRepository.findById(id);
+	}
 }

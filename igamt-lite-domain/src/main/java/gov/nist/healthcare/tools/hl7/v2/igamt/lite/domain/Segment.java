@@ -7,10 +7,13 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
+@Document(collection = "segment")
 public class Segment extends SectionModelWithConstraints implements java.io.Serializable,
 Cloneable, Comparable<Segment> {
 
@@ -22,20 +25,15 @@ Cloneable, Comparable<Segment> {
 		this.id = ObjectId.get().toString();
 	}
 
+	@Id
 	private String id;
 
-	//
-	// @DBRef
-	// private Segments segments;
-
-	// //@NotNull
 	private String label;
 
 	private List<Field> fields = new ArrayList<Field>();
 
 	private DynamicMapping dynamicMapping = new DynamicMapping();
 
-	// //@NotNull
 	private String name;
 
 	private String description;
@@ -129,6 +127,7 @@ Cloneable, Comparable<Segment> {
 		}
 		return null;
 	}
+	
 	public String getComment() {
 		return comment;
 	}

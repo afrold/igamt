@@ -13,6 +13,7 @@ import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
@@ -21,7 +22,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileConversionException;
 
 @ReadingConverter
-public class DatatypeReadConverter implements Converter<DBObject, Datatype> {
+public class DatatypeReadConverter  extends AbstractReadConverter<DBObject, Datatype> {
 
 	private static final Logger log = LoggerFactory.getLogger(DatatypeReadConverter.class);
 	
@@ -34,16 +35,16 @@ public class DatatypeReadConverter implements Converter<DBObject, Datatype> {
 		log.info("convert==>");
 		Datatype dt = new Datatype();
 		dt.setId(readMongoId(source));
-		dt.setType(((String) source.get("type")));
-		dt.setLabel((String) source.get("label"));
-		dt.setName(((String) source.get("name")));
-		dt.setDescription((String) source.get("description"));
-		dt.setComment(readString(source, "comment"));
-		dt.setUsageNote(readString(source, "usageNote"));
+		dt.setType((String) source.get(TYPE));
+		dt.setLabel((String) source.get(LABEL));
+		dt.setName(((String) source.get(NAME)));
+		dt.setDescription((String) source.get(DESCRIPTION));
+		dt.setComment(readString(source, COMMENT));
+		dt.setUsageNote(readString(source, USAGE_NOTE));
 		dt.setComponents(new ArrayList<Component>());
-		dt.setSectionPosition((Integer) source.get("sectionPosition"));
+		dt.setSectionPosition((Integer) source.get(SECTION_POSITION));
 		
-		BasicDBList componentObjects = (BasicDBList) source.get("components");
+		BasicDBList componentObjects = (BasicDBList) source.get(COMPONENTS);
 		if (componentObjects != null) {
 			List<Component> components = new ArrayList<Component>();
 			for (Object compObj : componentObjects) {
@@ -55,7 +56,7 @@ public class DatatypeReadConverter implements Converter<DBObject, Datatype> {
 		}
 
 		BasicDBList confStsObjects = (BasicDBList) source
-				.get("conformanceStatements");
+				.get(CONFORMANCE_STATEMENTS);
 		if (confStsObjects != null) {
 			List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
 			for (Object confStObj : confStsObjects) {
@@ -66,7 +67,7 @@ public class DatatypeReadConverter implements Converter<DBObject, Datatype> {
 			dt.setConformanceStatements(confStatements);
 		}
 
-		BasicDBList predDBObjects = (BasicDBList) source.get("predicates");
+		BasicDBList predDBObjects = (BasicDBList) source.get(PREDICATES);
 		if (predDBObjects != null) {
 			List<Predicate> predicates = new ArrayList<Predicate>();
 			for (Object predObj : predDBObjects) {
@@ -84,10 +85,10 @@ public class DatatypeReadConverter implements Converter<DBObject, Datatype> {
 	private Reference reference(DBObject source) {
 		if (source != null) {
 			Reference reference = new Reference();
-			reference.setChapter(((String) source.get("chapter")));
-			reference.setSection(((String) source.get("section")));
-			reference.setPage((Integer) source.get("page"));
-			reference.setUrl((String) source.get("url"));
+			reference.setChapter(((String) source.get(CHAPTER)));
+			reference.setSection(((String) source.get(SECTION)));
+			reference.setPage((Integer) source.get(PAGE));
+			reference.setUrl((String) source.get(URL));
 			return reference;
 		}
 		return null;
@@ -96,24 +97,24 @@ public class DatatypeReadConverter implements Converter<DBObject, Datatype> {
 	private ConformanceStatement conformanceStatement(DBObject source) {
 		ConformanceStatement cs = new ConformanceStatement();
 		cs.setId(readMongoId(source));
-		cs.setConstraintId(((String) source.get("constraintId")));
-		cs.setConstraintTarget(((String) source.get("constraintTarget")));
-		cs.setDescription((String) source.get("description"));
-		cs.setAssertion(((String) source.get("assertion")));
-		cs.setReference(reference(((DBObject) source.get("reference"))));
+		cs.setConstraintId(((String) source.get(CONSTRAINT_ID)));
+		cs.setConstraintTarget(((String) source.get(CONSTRAINT_TARGET)));
+		cs.setDescription((String) source.get(DESCRIPTION));
+		cs.setAssertion(((String) source.get(ASSERTION)));
+		cs.setReference(reference(((DBObject) source.get(REFERENCE))));
 		return cs;
 	}
 
 	private Predicate predicate(DBObject source) {
 		Predicate p = new Predicate();
 		p.setId(readMongoId(source));
-		p.setConstraintId(((String) source.get("constraintId")));
-		p.setConstraintTarget(((String) source.get("constraintTarget")));
-		p.setDescription((String) source.get("description"));
-		p.setAssertion(((String) source.get("assertion")));
-		p.setReference(reference(((DBObject) source.get("reference"))));
-		p.setFalseUsage(source.get("falseUsage") != null ? Usage.valueOf(((String) source.get("falseUsage"))):null);
-		p.setTrueUsage(source.get("trueUsage") != null ?Usage.valueOf(((String) source.get("trueUsage"))):null);
+		p.setConstraintId(((String) source.get(CONSTRAINT_ID)));
+		p.setConstraintTarget(((String) source.get(CONSTRAINT_TARGET)));
+		p.setDescription((String) source.get(DESCRIPTION));
+		p.setAssertion(((String) source.get(ASSERTION)));
+		p.setReference(reference(((DBObject) source.get(REFERENCE))));
+		p.setFalseUsage(source.get(FALSE_USAGE) != null ? Usage.valueOf(((String) source.get(FALSE_USAGE))):null);
+		p.setTrueUsage(source.get(TRUE_USAGE) != null ?Usage.valueOf(((String) source.get(TRUE_USAGE))):null);
 		return p;
 	}
 
@@ -121,64 +122,18 @@ public class DatatypeReadConverter implements Converter<DBObject, Datatype> {
 					throws ProfileConversionException {
 		Component c = new Component();
 		c.setId(readMongoId(source));
-		c.setType(((String) source.get("type")));
-		c.setName(((String) source.get("name")));
-		c.setComment(readString(source, "comment"));
+		c.setType(((String) source.get(TYPE)));
+		c.setName(((String) source.get(NAME)));
+		c.setComment(readString(source, COMMENT));
 		c.setMinLength(getMinLength(source));
-		c.setMaxLength((String) source.get("maxLength"));
+		c.setMaxLength((String) source.get(MAX_LENGTH));
 		c.setConfLength(getConfLength(source));
-		c.setPosition((Integer) source.get("position"));
-		c.setTable(((String) source.get("table")));
-		c.setUsage(Usage.valueOf((String) source.get("usage")));
-		c.setBindingLocation((String) source.get("bindingLocation"));
-		c.setBindingStrength((String) source.get("bindingStrength"));
-		c.setDatatype(((String) source.get("datatype")));
+		c.setPosition((Integer) source.get(POSITION));
+		c.setTable(((String) source.get(Constant.TABLE)));
+		c.setUsage(Usage.valueOf((String) source.get(USAGE)));
+		c.setBindingLocation((String) source.get(BINDING_LOCATION));
+		c.setBindingStrength((String) source.get(BINDING_STRENGTH));
+		c.setDatatype(((String) source.get(Constant.DATATYPE)));
 		return c;
 	}
-
-	private String readMongoId(DBObject source){
-		if ( source.get("_id") != null){
-			if (source.get("_id") instanceof ObjectId){
-				return ((ObjectId) source.get("_id")).toString();
-			} else {
-				return (String) source.get("_id");
-			}
-		} else if ( source.get("id") != null){
-			if (source.get("id") instanceof ObjectId){
-				return ((ObjectId) source.get("id")).toString();
-			} else {
-				return (String) source.get("id");
-			}
-		}
-		return null;
-	}
-
-	private Long readLong(DBObject source, String tag){
-		if ( source.get(tag) != null){
-			if (source.get(tag) instanceof Integer){
-				return Long.valueOf((Integer) source.get(tag));
-			} else if (source.get(tag) instanceof String) {
-				return Long.valueOf((String)source.get(tag));
-			} else if (source.get(tag) instanceof Long) {
-				return Long.valueOf((Long)source.get(tag));
-			}
-		}
-		return Long.valueOf(0);
-	}
-
-	private String readString(DBObject source, String tag){
-		if ( source.get(tag) != null){
-				return String.valueOf((String) source.get(tag));
-			}
-		return "";
-	} 
-	
-	private Integer getMinLength(DBObject source){
-		return ((Integer) source.get("minLength") == -1 ? 0:((Integer) source.get("minLength")));
-	} 
-	
-	private String getConfLength(DBObject source){
-		return "-1".equals((String) source.get("confLength")) ? "":(String) source.get("confLength");
-	} 
-
 }

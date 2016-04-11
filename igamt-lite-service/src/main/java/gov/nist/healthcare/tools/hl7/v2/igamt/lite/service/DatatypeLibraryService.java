@@ -21,6 +21,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 public interface DatatypeLibraryService {
 
 	List<DatatypeLibrary> findAll();
+	
+	DatatypeLibrary findById(String id);
 
 	DatatypeLibrary findByScope(Constant.SCOPE scope);
 

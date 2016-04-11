@@ -30,5 +30,4 @@ public class SegmentLibraryMetaData extends MetaData{
 	public void setDatatypLibId(String datatypLibId) {
 		this.datatypLibId = datatypLibId;
 	}
-
 }
