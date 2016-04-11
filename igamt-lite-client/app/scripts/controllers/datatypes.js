@@ -327,6 +327,7 @@ angular.module('igl').controller('TableMappingDatatypeCtrl', function ($scope, $
 });
 
 angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+	$scope.constraintType = 'Plain';
 	$scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -467,6 +468,7 @@ angular.module('igl').controller('ConformanceStatementDatatypeCtrl', function ($
 
 
 angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+	$scope.constraintType = 'Plain';
 	$scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -570,7 +572,13 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
         $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
         $scope.complexConstraint.falseUsage = $scope.complexConstraintFalseUsage;
-    	$scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
+        
+        if($scope.selectedNode === null) {
+        	$scope.complexConstraint.constraintId = '.';
+    	}else {
+    		$scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
+    	}
+        
     	$scope.tempPredicates.push($scope.complexConstraint);
     	$scope.initComplexPredicate();
         $scope.changed = true;
@@ -585,8 +593,12 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
         $scope.newConstraint.location_2 = $scope.genLocation($scope.newConstraint.datatype, $scope.newConstraint.component_2, $scope.newConstraint.subComponent_2);
 
         if ($scope.newConstraint.position_1 != null) {
-        	var positionPath = $scope.selectedNode.position + '[1]';
-        	var cp = $rootScope.generatePredicate(positionPath, $scope.newConstraint);
+        	var cp = null;
+        	if($scope.selectedNode === null) {
+        		var cp = $rootScope.generatePredicate(".", $scope.newConstraint);
+        	}else {
+        		var cp = $rootScope.generatePredicate($scope.selectedNode.position + '[1]', $scope.newConstraint);
+        	}
             $scope.tempPredicates.push(cp);
             $scope.changed = true;
         }

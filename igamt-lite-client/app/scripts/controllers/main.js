@@ -1468,31 +1468,27 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
         
         
         $rootScope.erorrForComplexConfStatement = function (newComplexConstraintId, targetComplexId, compositeType, firstConstraint, secondConstraint) {
-        	var erorrList = [];
-        	
-        	if($rootScope.isEmptyComplexConstraintID(newComplexConstraintId)) erorrList.push('Empty ID');
-        	if($rootScope.isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId)) erorrList.push('Duplicated ID');
-        	if($rootScope.isEmptyCompositeType(compositeType)) erorrList.push('Empty compositeType');
-        	if(firstConstraint == null) erorrList.push('Empty first constraint');
-        	if(secondConstraint == null) erorrList.push('Empty second constraint');
-        	return erorrList;
+        	if($rootScope.isEmptyComplexConstraintID(newComplexConstraintId)) return true;
+        	if($rootScope.isDuplicatedComplexConstraintID(newComplexConstraintId, targetComplexId))  return true;
+        	if($rootScope.isEmptyCompositeType(compositeType))  return true;
+        	if(firstConstraint == null) return true;
+        	if(secondConstraint == null) return true;
+        	 return false;
         };
         
         $rootScope.erorrForComplexPredicate = function (compositeType, firstConstraint, secondConstraint, complexConstraintTrueUsage, complexConstraintFalseUsage) {
-        	var erorrList = [];
-        	if($rootScope.isEmptyCompositeType(compositeType)) erorrList.push('Empty compositeType');
-        	if(firstConstraint == null) erorrList.push('Empty first constraint');
-        	if(secondConstraint == null) erorrList.push('Empty second constraint');
-        	if(complexConstraintTrueUsage == null) erorrList.push('Empty true usage');
-        	if(complexConstraintFalseUsage == null) erorrList.push('Empty false usage');
-        	return erorrList;
+        	if($rootScope.isEmptyCompositeType(compositeType)) return true;
+        	if(firstConstraint == null) return true;
+        	if(secondConstraint == null) return true;
+        	if(complexConstraintTrueUsage == null) return true;
+        	if(complexConstraintFalseUsage == null) return true;
+        	return false;
         };
         
         $rootScope.erorrForPredicate = function (newConstraint, type) {
-        	var erorrList = [];
-        	if($rootScope.isEmptyConstraintNode(newConstraint, type)) erorrList.push('Empty Node');
-        	if($rootScope.isEmptyConstraintVerb(newConstraint)) erorrList.push('Empty Verb');
-        	if($rootScope.isEmptyConstraintPattern(newConstraint)) erorrList.push('Empty Pattern');
+        	if($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
+        	if($rootScope.isEmptyConstraintVerb(newConstraint)) return true;
+        	if($rootScope.isEmptyConstraintPattern(newConstraint)) return true;
         	if(newConstraint.contraintType == 'a literal value' || 
 			   newConstraint.contraintType == 'equal to' ||
 			   newConstraint.contraintType == 'not-equal to' ||
@@ -1502,9 +1498,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 			   newConstraint.contraintType == 'equal to or less than' ||
 			   newConstraint.contraintType == 'one of list values' ||
 			   newConstraint.contraintType == 'formatted value'){
-        		if($rootScope.isEmptyConstraintValue(newConstraint)) erorrList.push('Empty Value');
+        		if($rootScope.isEmptyConstraintValue(newConstraint)) return true;
         		if(newConstraint.value == 'Regular expression'){
-        			if($rootScope.isEmptyConstraintValue2(newConstraint)) erorrList.push('Empty regex');
+        			if($rootScope.isEmptyConstraintValue2(newConstraint)) return true;
         		}
         	}else if(newConstraint.contraintType == 'identical to another node' ||
 			   newConstraint.contraintType == 'equal to another node' ||
@@ -1513,24 +1509,23 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 			   newConstraint.contraintType == 'equal to or greater than another node' ||
 			   newConstraint.contraintType == 'less than another node' ||
 			   newConstraint.contraintType == 'equal to or less than another node'){
-        		if($rootScope.isEmptyConstraintAnotherNode(newConstraint)) erorrList.push('Empty another node');
+        		if($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
         	}else if(newConstraint.contraintType == 'one of codes in ValueSet'){
-        		if($rootScope.isEmptyConstraintValueSet(newConstraint, type)) erorrList.push('Empty value set');
+        		if($rootScope.isEmptyConstraintValueSet(newConstraint, type)) return true;
         	}
-        	if(newConstraint.trueUsage == null) erorrList.push('Empty true usage');
-        	if(newConstraint.falseUsage == null) erorrList.push('Empty false usage');
+        	if(newConstraint.trueUsage == null) return true;
+        	if(newConstraint.falseUsage == null) return true;
         	
-        	return erorrList;
+        	return false;
         }
         
         
         $rootScope.erorrForConfStatement = function (newConstraint, targetId, type) {
-        	var erorrList = [];
-        	if($rootScope.isEmptyConstraintID(newConstraint)) erorrList.push('Empty ID');
-        	if($rootScope.isDuplicatedConstraintID(newConstraint, targetId)) erorrList.push('Duplicated ID');
-        	if($rootScope.isEmptyConstraintNode(newConstraint, type)) erorrList.push('Empty Node');
-        	if($rootScope.isEmptyConstraintVerb(newConstraint)) erorrList.push('Empty Verb');
-        	if($rootScope.isEmptyConstraintPattern(newConstraint)) erorrList.push('Empty Pattern');
+        	if($rootScope.isEmptyConstraintID(newConstraint)) return true;
+        	if($rootScope.isDuplicatedConstraintID(newConstraint, targetId)) return true;
+        	if($rootScope.isEmptyConstraintNode(newConstraint, type)) return true;
+        	if($rootScope.isEmptyConstraintVerb(newConstraint)) return true;
+        	if($rootScope.isEmptyConstraintPattern(newConstraint)) return true;
         	if(newConstraint.contraintType == 'a literal value' || 
 			   newConstraint.contraintType == 'equal to' ||
 			   newConstraint.contraintType == 'not-equal to' ||
@@ -1540,9 +1535,9 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 			   newConstraint.contraintType == 'equal to or less than' ||
 			   newConstraint.contraintType == 'one of list values' ||
 			   newConstraint.contraintType == 'formatted value'){
-        		if($rootScope.isEmptyConstraintValue(newConstraint)) erorrList.push('Empty Value');
+        		if($rootScope.isEmptyConstraintValue(newConstraint)) return true;
         		if(newConstraint.value == 'Regular expression'){
-        			if($rootScope.isEmptyConstraintValue2(newConstraint)) erorrList.push('Empty regex');
+        			if($rootScope.isEmptyConstraintValue2(newConstraint)) return true;
         		}
         	}else if(newConstraint.contraintType == 'identical to another node' ||
 			   newConstraint.contraintType == 'equal to another node' ||
@@ -1551,11 +1546,11 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 			   newConstraint.contraintType == 'equal to or greater than another node' ||
 			   newConstraint.contraintType == 'less than another node' ||
 			   newConstraint.contraintType == 'equal to or less than another node'){
-        		if($rootScope.isEmptyConstraintAnotherNode(newConstraint)) erorrList.push('Empty another node');
+        		if($rootScope.isEmptyConstraintAnotherNode(newConstraint)) return true;
         	}else if(newConstraint.contraintType == 'one of codes in ValueSet'){
-        		if($rootScope.isEmptyConstraintValueSet(newConstraint, type)) erorrList.push('Empty value set');
+        		if($rootScope.isEmptyConstraintValueSet(newConstraint, type)) return true;
         	}
-        	return erorrList;
+        	return false;
         };
         
         $rootScope.isEmptyConstraintID = function (newConstraint) {

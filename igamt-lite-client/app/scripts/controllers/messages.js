@@ -159,6 +159,7 @@ angular.module('igl')
     });
 
 angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $modalInstance, selectedNode, selectedMessage, $rootScope) {
+	$scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.selectedMessage = selectedMessage;
     $scope.firstConstraint = null;
@@ -414,6 +415,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
 
 
 angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($scope, $modalInstance, selectedMessage, selectedNode, $rootScope) {
+	$scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.selectedMessage = selectedMessage;
     $scope.firstConstraint = null;

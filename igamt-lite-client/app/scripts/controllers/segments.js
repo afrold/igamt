@@ -227,6 +227,7 @@ angular.module('igl').controller('TableMappingSegmentCtrl', function ($scope, $m
 });
 
 angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+	$scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
@@ -379,6 +380,7 @@ angular.module('igl').controller('PredicateSegmentCtrl', function ($scope, $moda
 });
 
 angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($scope, $modalInstance, selectedNode, $rootScope) {
+	$scope.constraintType = 'Plain';
     $scope.selectedNode = selectedNode;
     $scope.firstConstraint = null;
     $scope.secondConstraint = null;
