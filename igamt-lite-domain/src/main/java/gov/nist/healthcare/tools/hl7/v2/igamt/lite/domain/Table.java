@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author Harold Affo (harold.affo@nist.gov) Feb 26, 2015
  * 
  */
-@Document(collection = "valueset")
+@Document(collection = "table")
 public class Table extends SectionModel implements Serializable,
 		Comparable<Table>, Cloneable {
 
@@ -27,6 +27,10 @@ public class Table extends SectionModel implements Serializable,
 	@Id
 	private String id;
 
+	protected String hl7Version;
+
+	protected String libId;
+
 	private String bindingIdentifier;
 
  	private String name;
@@ -36,7 +40,7 @@ public class Table extends SectionModel implements Serializable,
 	private String oid;
 	private Stability stability;
 	private Extensibility extensibility;
-	private String tabLibExt;
+
 	private ContentDefinition contentDefinition;
 	private String group;
 	private int order;
@@ -57,12 +61,36 @@ public class Table extends SectionModel implements Serializable,
 		this.id = id;
 	}
 
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
+
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getLibId() {
+		return libId;
+	}
+
+	public void setLibId(String libId) {
+		this.libId = libId;
 	}
 
 	public String getBindingIdentifier() {
@@ -143,14 +171,6 @@ public class Table extends SectionModel implements Serializable,
 
 	public void setExtensibility(Extensibility extensibility) {
 		this.extensibility = extensibility;
-	}
-
-	public String getTabLibExt() {
-		return tabLibExt;
-	}
-
-	public void setTabLibExt(String tabLibExt) {
-		this.tabLibExt = tabLibExt;
 	}
 
 	public ContentDefinition getContentDefinition() {

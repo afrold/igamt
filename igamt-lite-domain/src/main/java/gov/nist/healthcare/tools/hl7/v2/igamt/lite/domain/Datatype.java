@@ -35,25 +35,17 @@ Cloneable, Comparable<Datatype> {
 
 	private String ext;
 
-	private String dtLibExt;
-
 	protected List<Component> components = new ArrayList<Component>();
 
 	private String name;
 
 	private String description;
 
-	private String hl7Version;
-
-	private Constant.SCOPE scope;
-
 	private STATUS status;
 	
 	protected String comment = "";
 
 	protected String usageNote = "";
-	
-	private Long accountId;
 	
 	public String getId() {
 		return id;
@@ -67,6 +59,14 @@ Cloneable, Comparable<Datatype> {
 		return label;
 	}
 
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
+	}
+
 	public void setLabel(String label) {
 		this.label = label;
 	}
@@ -77,14 +77,6 @@ Cloneable, Comparable<Datatype> {
 
 	public void setExt(String ext) {
 		this.ext = ext;
-	}
-
-	public String getDtLibExt() {
-		return dtLibExt;
-	}
-
-	public void setDtLibExt(String dtLibExt) {
-		this.dtLibExt = dtLibExt;
 	}
 
 	public List<Component> getComponents() {
@@ -119,22 +111,6 @@ Cloneable, Comparable<Datatype> {
 		this.description = description;
 	}
 
-	public String getHl7Version() {
-		return hl7Version;
-	}
-
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
-	}
-
-	public Constant.SCOPE getScope() {
-		return scope;
-	}
-
-	public void setScope(Constant.SCOPE scope) {
-		this.scope = scope;
-	}
-
 	public STATUS getStatus() {
 		return status;
 	}
@@ -164,14 +140,6 @@ Cloneable, Comparable<Datatype> {
 		this.usageNote = usageNote;
 	}
 	
-	public Long getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(Long accountId) {
-		this.accountId = accountId;
-	}
-
 	@Override
 	public String toString() {
 		return "Datatype [id=" + id + ", label=" + label + ", name=" + name

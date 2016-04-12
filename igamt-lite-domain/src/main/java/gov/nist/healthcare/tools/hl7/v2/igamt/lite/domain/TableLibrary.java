@@ -30,16 +30,6 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 	public TableLibrary() {
 		super();
 	}
-	
-	private Constant.SCOPE scope;
-
-	public Constant.SCOPE getScope() {
-		return scope;
-	}
-
-	public void setScope(Constant.SCOPE scope) {
-		this.scope = scope;
-	}
 
 	@DBRef
 	private Set<Table> children = new HashSet<Table>();
@@ -76,9 +66,9 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		this.children = children;
 	}
 
-	public void addTable(Table d) {
-		d.setTabLibExt(ext);
-		children.add(d);
+	public void addTable(Table t) {
+		t.setLibId(this.id);
+		children.add(t);
 	}
 
 	public Table save(Table d) {

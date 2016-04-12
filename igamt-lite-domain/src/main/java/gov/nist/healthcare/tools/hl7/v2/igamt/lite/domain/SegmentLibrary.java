@@ -39,16 +39,6 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	public SegmentLibrary() {
 		super();
 	}
-	
-	private Constant.SCOPE scope;
-
-	public Constant.SCOPE getScope() {
-		return scope;
-	}
-
-	public void setScope(Constant.SCOPE scope) {
-		this.scope = scope;
-	}
 
 	@DBRef
 	private Set<Segment> children = new HashSet<Segment>();
@@ -86,7 +76,7 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	}
 
 	public void addSegment(Segment seg) {
-		seg.setSegLibExt(ext);
+		seg.setLibId(ext);
 		children.add(seg);
 	}
 

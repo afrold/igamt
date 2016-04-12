@@ -40,16 +40,6 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	public DatatypeLibrary() {
 		super();
 	}
-	
-	private Constant.SCOPE scope;
-
-	public Constant.SCOPE getScope() {
-		return scope;
-	}
-
-	public void setScope(Constant.SCOPE scope) {
-		this.scope = scope;
-	}
 
 	@DBRef
 	private Set<Datatype> children = new HashSet<Datatype>();
@@ -90,7 +80,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	}
 
 	public void addDatatype(Datatype d) {
-		d.setDtLibExt(ext);
+		d.setLibId(this.id);
 		children.add(d);
 	}
 

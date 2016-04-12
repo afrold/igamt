@@ -38,15 +38,11 @@ Cloneable, Comparable<Segment> {
 
 	private String description;
 
-	private String hl7Version;
-
 	protected String comment = "";
 
 	private String text1 = "";
 
 	private String text2 = "";
-
-	private String segLibExt;
 
 	public String getId() {
 		return id;
@@ -58,6 +54,14 @@ Cloneable, Comparable<Segment> {
 	
 	public String getLabel() {
 		return label;
+	}
+
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
 	}
 
 	public void setLabel(String label) {
@@ -78,14 +82,6 @@ Cloneable, Comparable<Segment> {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getHl7Version() {
-		return hl7Version;
-	}
-
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
 	}
 
 	public List<Field> getFields() {
@@ -162,14 +158,6 @@ Cloneable, Comparable<Segment> {
 		this.text2 = text2;
 	}
 	
-	public String getSegLibExt() {
-		return segLibExt;
-	}
-
-	public void setSegLibExt(String segLibExt) {
-		this.segLibExt = segLibExt;
-	}
-
 	public DynamicMapping getDynamicMapping() {
 		return dynamicMapping;
 	}

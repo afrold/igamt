@@ -1,10 +1,19 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+public abstract class SectionModel extends DataModel {
 
-public abstract class SectionModel extends DataModel{
+	int sectionPosition;
+
+	protected Constant.SCOPE scope;
 	
-	protected int sectionPosition;
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
 
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
+	}
+	
 	public int getSectionPosition() {
 		return sectionPosition;
 	}
@@ -12,5 +21,4 @@ public abstract class SectionModel extends DataModel{
 	public void setSectionPosition(int sectionPosition) {
 		this.sectionPosition = sectionPosition;
 	}
-	
 }

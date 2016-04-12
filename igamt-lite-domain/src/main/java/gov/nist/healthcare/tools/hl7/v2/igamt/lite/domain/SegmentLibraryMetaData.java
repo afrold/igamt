@@ -1,7 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 
-public class SegmentLibraryMetaData extends MetaData{
+public class SegmentLibraryMetaData extends MetaData {
 
 	private static final long serialVersionUID = 1L;
 	
