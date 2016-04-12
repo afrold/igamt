@@ -424,6 +424,9 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     $scope.complexConstraint = null;
     $scope.newComplexConstraintId = $rootScope.calNextCSID();
     
+    $scope.childNodes_Target = [];
+    $scope.currentNode_Target = null;
+    
     $scope.changed = false;
     $scope.tempComformanceStatements = [];
     angular.copy($scope.selectedMessage.conformanceStatements, $scope.tempComformanceStatements);
@@ -481,6 +484,153 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             }
         }
     }
+    
+    $scope.initConformanceStatement();
+    
+    if($scope.selectedNode !== null){
+    	if ($scope.selectedNode.obj.type === 'group') {
+    		for (var i = 0, len1 = $scope.selectedNode.obj.children.length; i < len1; i++) {
+    			if ($scope.selectedNode.obj.children[i].type === 'group') {
+                    var groupModel = {
+                    	name: $scope.selectedNode.obj.children[i].name,
+                        position: $scope.selectedNode.obj.children[i].position,
+                        type: 'group',
+                        node: $scope.selectedNode.obj.children[i]
+                    };
+                    $scope.childNodes_Target.push(groupModel);
+                } else if ($scope.selectedNode.obj.children[i].type === 'segmentRef') {
+                    var segmentModel = {
+                    	name: $rootScope.segmentsMap[$scope.selectedNode.obj.children[i].ref].name,
+                        position: $scope.selectedNode.obj.children[i].position,
+                        type: 'segmentRef',
+                        node: $scope.selectedNode.obj.children[i]
+                    };
+                    $scope.childNodes_Target.push(segmentModel);
+                }
+    		}
+    	} else if ($scope.selectedNode.obj.type === 'segmentRef') {
+    		for (var i = 0, len1 = $rootScope.segmentsMap[$scope.selectedNode.obj.ref].fields.length; i < len1; i++) {
+                var fieldModel = {
+                	name: $rootScope.segmentsMap[$scope.selectedNode.obj.ref].fields[i].name,
+                    position: $rootScope.segmentsMap[$scope.selectedNode.obj.ref].fields[i].position,
+                    type: 'field',
+                    node: $rootScope.segmentsMap[$scope.selectedNode.obj.ref].fields[i]
+                };
+                $scope.childNodes_Target.push(fieldModel);
+            }
+    	} else if ($scope.selectedNode.obj.type === 'field') {
+    		for (var i = 0, len1 = $rootScope.datatypesMap[$scope.selectedNode.obj.datatype].components.length; i < len1; i++) {
+                var componentModel = {
+                	name: $rootScope.datatypesMap[$scope.selectedNode.obj.datatype].components[i].name,
+                    position: $rootScope.datatypesMap[$scope.selectedNode.obj.datatype].components[i].position,
+                    type: 'component',
+                    node: $rootScope.datatypesMap[$scope.selectedNode.obj.datatype].components[i]
+                };
+                $scope.childNodes_Target.push(componentModel);
+            }
+    	} else if ($scope.selectedNode.obj.type === 'component') {
+    		for (var i = 0, len1 = $rootScope.datatypesMap[$scope.selectedNode.obj.datatype].components.length; i < len1; i++) {
+                var componentModel = {
+                	name: $rootScope.datatypesMap[$scope.selectedNode.obj.datatype].components[i].name,
+                    position: $rootScope.datatypesMap[$scope.selectedNode.obj.datatype].components[i].position,
+                    type: 'subComponent',
+                    node: null
+                };
+                $scope.childNodes_Target.push(componentModel);
+            }
+    	}
+    }else {
+    	$scope.selectedNode = angular.fromJson({
+            path: null,
+            obj: null
+    	});
+    	
+    	for (var i = 0, len1 = $scope.selectedMessage.children.length; i < len1; i++) {
+            if ($scope.selectedMessage.children[i].type === 'group') {
+                var groupModel = {
+                    name: $scope.selectedMessage.children[i].name,
+                    position: $scope.selectedMessage.children[i].position,
+                    type: 'group',
+                    node: $scope.selectedMessage.children[i]
+                };
+                $scope.childNodes_Target.push(groupModel);
+            } else if ($scope.selectedMessage.children[i].type === 'segmentRef') {
+                var segmentModel = {
+                    name: $rootScope.segmentsMap[$scope.selectedMessage.children[i].ref].name,
+                    position: $scope.selectedMessage.children[i].position,
+                    type: 'segmentRef',
+                    node: $scope.selectedMessage.children[i]
+                };
+                $scope.childNodes_Target.push(segmentModel);
+            }
+        }
+    }
+    
+    $scope.updateLocationTarget = function () {
+//    	$scope.selectedNode.obj = $scope.currentNode_Target.node;
+        if ($scope.selectedNode.path != null) {
+        	$scope.selectedNode.path = $scope.selectedNode.path + '.' + $scope.currentNode_Target.position + '[1]';
+        } else {
+        	$scope.selectedNode.path = $scope.currentNode_Target.position + '[1]';
+        }
+
+        $scope.childNodes_Target = [];
+
+        if ($scope.currentNode_Target.type === 'group') {
+            for (var i = 0, len1 = $scope.currentNode_Target.node.children.length; i < len1; i++) {
+                if ($scope.currentNode_Target.node.children[i].type === 'group') {
+                    var groupModel = {
+                    	name: $scope.currentNode_Target.node.children[i].name,
+                        position: $scope.currentNode_Target.node.children[i].position,
+                        type: 'group',
+                        node: $scope.currentNode_Target.node.children[i]
+                    };
+                    $scope.childNodes_Target.push(groupModel);
+                } else if ($scope.currentNode_Target.node.children[i].type === 'segmentRef') {
+                    var segmentModel = {
+                    	name: $rootScope.segmentsMap[$scope.currentNode_Target.node.children[i].ref].name,
+                        position: $scope.currentNode_Target.node.children[i].position,
+                        type: 'segmentRef',
+                        node: $scope.currentNode_Target.node.children[i]
+                    };
+                    $scope.childNodes_Target.push(segmentModel);
+                }
+            }
+        } else if ($scope.currentNode_Target.type === 'segmentRef') {
+            for (var i = 0, len1 = $rootScope.segmentsMap[$scope.currentNode_Target.node.ref].fields.length; i < len1; i++) {
+                var fieldModel = {
+                	name: $rootScope.segmentsMap[$scope.currentNode_Target.node.ref].fields[i].name,
+                    position: $rootScope.segmentsMap[$scope.currentNode_Target.node.ref].fields[i].position,
+                    type: 'field',
+                    node: $rootScope.segmentsMap[$scope.currentNode_Target.node.ref].fields[i]
+                };
+                $scope.childNodes_Target.push(fieldModel);
+            }
+        } else if ($scope.currentNode_Target.type === 'field') {
+            for (var i = 0, len1 = $rootScope.datatypesMap[$scope.currentNode_Target.node.datatype].components.length; i < len1; i++) {
+                var componentModel = {
+                	name: $rootScope.datatypesMap[$scope.currentNode_Target.node.datatype].components[i].name,
+                    position: $rootScope.datatypesMap[$scope.currentNode_Target.node.datatype].components[i].position,
+                    type: 'component',
+                    node: $rootScope.datatypesMap[$scope.currentNode_Target.node.datatype].components[i]
+                };
+                $scope.childNodes_Target.push(componentModel);
+            }
+        } else if ($scope.currentNode_Target.type === 'component') {
+            for (var i = 0, len1 = $rootScope.datatypesMap[$scope.currentNode_Target.node.datatype].components.length; i < len1; i++) {
+                var componentModel = {
+                	name: $rootScope.datatypesMap[$scope.currentNode_Target.node.datatype].components[i].name,
+                    position: $rootScope.datatypesMap[$scope.currentNode_Target.node.datatype].components[i].position,
+                    type: 'subComponent',
+                    node: null
+                };
+                $scope.childNodes_Target.push(componentModel);
+            }
+        }
+
+//        $scope.currentNode_Target = null;
+
+    };
 
     $scope.updateLocation1 = function () {
         $scope.newConstraint.location_1 = $scope.newConstraint.currentNode_1.name;
@@ -527,12 +677,12 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var componentModel = {
                     name: $scope.newConstraint.location_1 + '.' + $scope.newConstraint.currentNode_1.node.components[i].position,
                     position: $scope.newConstraint.currentNode_1.node.components[i].position,
-                    type: 'subComponent',
+                    type: 'component',
                     node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_1.node.components[i].datatype]
                 };
                 $scope.newConstraint.childNodes_1.push(componentModel);
             }
-        } else if ($scope.newConstraint.currentNode_1.type === 'subComponent') {
+        } else if ($scope.newConstraint.currentNode_1.type === 'component') {
             for (var i = 0, len1 = $scope.newConstraint.currentNode_1.node.components.length; i < len1; i++) {
                 var componentModel = {
                     name: $scope.newConstraint.location_1 + '.' + $scope.newConstraint.currentNode_1.node.components[i].position,
@@ -593,12 +743,12 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
                 var componentModel = {
                     name: $scope.newConstraint.location_2 + '.' + $scope.newConstraint.currentNode_2.node.components[i].position,
                     position: $scope.newConstraint.currentNode_2.node.components[i].position,
-                    type: 'subComponent',
+                    type: 'component',
                     node: $rootScope.datatypesMap[$scope.newConstraint.currentNode_2.node.components[i].datatype]
                 };
                 $scope.newConstraint.childNodes_2.push(componentModel);
             }
-        } else if ($scope.newConstraint.currentNode_2.type === 'subComponent') {
+        } else if ($scope.newConstraint.currentNode_2.type === 'component') {
             for (var i = 0, len1 = $scope.newConstraint.currentNode_2.node.components.length; i < len1; i++) {
                 var componentModel = {
                     name: $scope.newConstraint.location_2 + '.' + $scope.newConstraint.currentNode_2.node.components[i].position,
@@ -661,8 +811,6 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     	$rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);
     };
-
-    $scope.initConformanceStatement();
 });
 
 
