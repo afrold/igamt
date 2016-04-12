@@ -1,5 +1,14 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
@@ -7,16 +16,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.bson.types.ObjectId;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-public class Profile extends TextbasedSectionModel implements java.io.Serializable,
-		Cloneable {
+public class Profile extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,6 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		scope = IGDocumentScope.PRELOADED;
 		this.id = ObjectId.get().toString();
 	}
-	
 
 	private IGDocumentScope scope;
 
@@ -34,13 +33,16 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 
 	private ProfileMetaData metaData;
 
-	private Segments segments;
-
-	private Datatypes datatypes;
+	@DBRef
+	private SegmentLibrary segmentLibrary;
+	
+	@DBRef
+	private DatatypeLibrary datatypeLibrary;
 
 	private Messages messages;
 
-	private Tables tables;
+	@DBRef
+	private TableLibrary tableLibrary;
 
 	private Long accountId;
 
@@ -54,7 +56,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 									// profile that was cloned
 
 	private String constraintId;
-	
+
 	private String sourceId;
 
 	public String getBaseId() {
@@ -81,20 +83,28 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		this.metaData = metaData;
 	}
 
-	public Segments getSegments() {
-		return segments;
+	public SegmentLibrary getSegmentLibrary() {
+		return segmentLibrary;
 	}
 
-	public void setSegments(Segments segments) {
-		this.segments = segments;
+	public void setSegmentLibrary(SegmentLibrary segmentLibrary) {
+		this.segmentLibrary = segmentLibrary;
 	}
 
-	public Datatypes getDatatypes() {
-		return datatypes;
+	public DatatypeLibrary getDatatypeLibrary() {
+		return datatypeLibrary;
 	}
 
-	public void setDatatypes(Datatypes datatypes) {
-		this.datatypes = datatypes;
+	public void setDatatypeLibrary(DatatypeLibrary datatypeLibrary) {
+		this.datatypeLibrary = datatypeLibrary;
+	}
+
+	public TableLibrary getTableLibrary() {
+		return tableLibrary;
+	}
+
+	public void setTableLibrary(TableLibrary tableLibrary) {
+		this.tableLibrary = tableLibrary;
 	}
 
 	public Messages getMessages() {
@@ -104,7 +114,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 	public void setMessages(Messages messages) {
 		this.messages = messages;
 	}
-	
+
 	public String getConstraintId() {
 		return constraintId;
 	}
@@ -143,14 +153,6 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		this.changes = changes;
 	}
 
-	public Tables getTables() {
-		return tables;
-	}
-
-	public void setTables(Tables tables) {
-		this.tables = tables;
-	}
-
 	public IGDocumentScope getScope() {
 		return scope;
 	}
@@ -184,7 +186,8 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 
 	@JsonIgnore
 	public Constraints getConformanceStatements() {
-		//TODO Only byID constraints are considered; might want to consider byName
+		// TODO Only byID constraints are considered; might want to consider
+		// byName
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
@@ -205,9 +208,9 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Message m : this.getMessages().getChildren()) {
-			for (SegmentRefOrGroup srog: m.getChildren()){
+			for (SegmentRefOrGroup srog : m.getChildren()) {
 				if (srog instanceof Group) {
-					Group g = (Group)srog;
+					Group g = (Group) srog;
 					ByID byID = new ByID();
 					byID.setByID("" + g.getName());
 					if (g.getConformanceStatements().size() > 0) {
@@ -218,9 +221,9 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 			}
 		}
 		gContext.setByNameOrByIDs(byNameOrByIDs);
-		
+
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for (Segment s : this.getSegments().getChildren()) {
+		for (Segment s : this.getSegmentLibrary().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID(s.getLabel());
 			if (s.getConformanceStatements().size() > 0) {
@@ -231,7 +234,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		sContext.setByNameOrByIDs(byNameOrByIDs);
 
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for (Datatype d : this.getDatatypes().getChildren()) {
+		for (Datatype d : this.getDatatypeLibrary().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID(d.getLabel());
 			if (d.getConformanceStatements().size() > 0) {
@@ -250,7 +253,8 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 
 	@JsonIgnore
 	public Constraints getPredicates() {
-		//TODO Only byID constraints are considered; might want to consider byName
+		// TODO Only byID constraints are considered; might want to consider
+		// byName
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 		Context sContext = new Context();
@@ -271,9 +275,9 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
 		for (Message m : this.getMessages().getChildren()) {
-			for (SegmentRefOrGroup srog: m.getChildren()){
+			for (SegmentRefOrGroup srog : m.getChildren()) {
 				if (srog instanceof Group) {
-					Group g = (Group)srog;
+					Group g = (Group) srog;
 					ByID byID = new ByID();
 					byID.setByID(g.getName());
 					if (g.getPredicates().size() > 0) {
@@ -286,7 +290,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		gContext.setByNameOrByIDs(byNameOrByIDs);
 
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for (Segment s : this.getSegments().getChildren()) {
+		for (Segment s : this.getSegmentLibrary().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID(s.getLabel());
 			if (s.getPredicates().size() > 0) {
@@ -297,7 +301,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		sContext.setByNameOrByIDs(byNameOrByIDs);
 
 		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for (Datatype d : this.getDatatypes().getChildren()) {
+		for (Datatype d : this.getDatatypeLibrary().getChildren()) {
 			ByID byID = new ByID();
 			byID.setByID(d.getLabel());
 			if (d.getPredicates().size() > 0) {
@@ -315,69 +319,68 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 	}
 
 	public Predicate findOnePredicate(String predicateId) {
-		for (Message m : this.messages.getChildren()){
-			if (m.findOnePredicate(predicateId) != null){
+		for (Message m : this.messages.getChildren()) {
+			if (m.findOnePredicate(predicateId) != null) {
 				return m.findOnePredicate(predicateId);
 			}
-			for (SegmentRefOrGroup srog: m.getChildren()){
-				//TODO Check depth of search
+			for (SegmentRefOrGroup srog : m.getChildren()) {
+				// TODO Check depth of search
 				if (srog instanceof Group) {
-					if (((Group) srog).findOnePredicate(predicateId) != null){
+					if (((Group) srog).findOnePredicate(predicateId) != null) {
 						return ((Group) srog).findOnePredicate(predicateId);
-					}		
+					}
 				}
 			}
 		}
-		if (this.getSegments().findOnePredicate(predicateId) != null){
-			return this.getSegments().findOnePredicate(predicateId);
-		} else if (this.getDatatypes().findOnePredicate(predicateId) != null){
-			return this.getDatatypes().findOnePredicate(predicateId);
-		} 
+		if (this.getSegmentLibrary().findOnePredicate(predicateId) != null) {
+			return this.getSegmentLibrary().findOnePredicate(predicateId);
+		} else if (this.getDatatypeLibrary().findOnePredicate(predicateId) != null) {
+			return this.getDatatypeLibrary().findOnePredicate(predicateId);
+		}
 		return null;
 	}
-	
-	public ConformanceStatement findOneConformanceStatement(
-			String conformanceStatementId) {
-		for (Message m : this.messages.getChildren()){
-			if (m.findOneConformanceStatement(conformanceStatementId) != null){
+
+	public ConformanceStatement findOneConformanceStatement(String conformanceStatementId) {
+		for (Message m : this.messages.getChildren()) {
+			if (m.findOneConformanceStatement(conformanceStatementId) != null) {
 				return m.findOneConformanceStatement(conformanceStatementId);
 			}
-			for (SegmentRefOrGroup srog: m.getChildren()){
-				//TODO Check depth of search
+			for (SegmentRefOrGroup srog : m.getChildren()) {
+				// TODO Check depth of search
 				if (srog instanceof Group) {
-					if (((Group) srog).findOneConformanceStatement(conformanceStatementId) != null){
+					if (((Group) srog).findOneConformanceStatement(conformanceStatementId) != null) {
 						return ((Group) srog).findOneConformanceStatement(conformanceStatementId);
-					}		
+					}
 				}
 			}
 		}
-		if (this.getSegments().findOneConformanceStatement(conformanceStatementId) != null){
-			return this.getSegments().findOneConformanceStatement(conformanceStatementId);
-		} else if (this.getDatatypes().findOneConformanceStatement(conformanceStatementId) != null){
-			return this.getDatatypes().findOneConformanceStatement(conformanceStatementId);
-		} 
+		if (this.getSegmentLibrary().findOneConformanceStatement(conformanceStatementId) != null) {
+			return this.getSegmentLibrary().findOneConformanceStatement(conformanceStatementId);
+		} else if (this.getDatatypeLibrary().findOneConformanceStatement(conformanceStatementId) != null) {
+			return this.getDatatypeLibrary().findOneConformanceStatement(conformanceStatementId);
+		}
 		return null;
 	}
 
 	public boolean deletePredicate(String predicateId) {
-		for (Message m : this.messages.getChildren()){
-			if (m.deletePredicate(predicateId)){
+		for (Message m : this.messages.getChildren()) {
+			if (m.deletePredicate(predicateId)) {
 				return true;
 			}
-			for (SegmentRefOrGroup srog: m.getChildren()){
-				//TODO Check depth of search
+			for (SegmentRefOrGroup srog : m.getChildren()) {
+				// TODO Check depth of search
 				if (srog instanceof Group) {
-					if (((Group) srog).deletePredicate(predicateId)){
+					if (((Group) srog).deletePredicate(predicateId)) {
 						return true;
-					}		
+					}
 				}
 			}
 		}
-		if (this.getSegments().deletePredicate(predicateId)) {
+		if (this.getSegmentLibrary().deletePredicate(predicateId)) {
 			return true;
 		}
 
-		if (this.getDatatypes().deletePredicate(predicateId)) {
+		if (this.getDatatypeLibrary().deletePredicate(predicateId)) {
 			return true;
 		}
 
@@ -385,24 +388,24 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 	}
 
 	public boolean deleteConformanceStatement(String confStatementId) {
-		for (Message m : this.messages.getChildren()){
-			if (m.deleteConformanceStatement(confStatementId)){
+		for (Message m : this.messages.getChildren()) {
+			if (m.deleteConformanceStatement(confStatementId)) {
 				return true;
 			}
-			for (SegmentRefOrGroup srog: m.getChildren()){
-				//TODO Check depth of search
+			for (SegmentRefOrGroup srog : m.getChildren()) {
+				// TODO Check depth of search
 				if (srog instanceof Group) {
-					if (((Group) srog).deleteConformanceStatement(confStatementId)){
+					if (((Group) srog).deleteConformanceStatement(confStatementId)) {
 						return true;
-					}		
+					}
 				}
 			}
 		}
-		if (this.getSegments().deleteConformanceStatement(confStatementId)) {
+		if (this.getSegmentLibrary().deleteConformanceStatement(confStatementId)) {
 			return true;
 		}
 
-		if (this.getDatatypes().deleteConformanceStatement(confStatementId)) {
+		if (this.getDatatypeLibrary().deleteConformanceStatement(confStatementId)) {
 			return true;
 		}
 
@@ -413,18 +416,16 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 	public Profile clone() throws CloneNotSupportedException {
 		Profile clonedProfile = new Profile();
 		HashMap<String, Datatype> dtRecords = new HashMap<String, Datatype>();
-		HashMap<String, Segment> segmentRecords = new HashMap<String, Segment>();
-		HashMap<String, Table> tableRecords = new HashMap<String, Table>();
+		HashMap<String, Segment> segRecords = new HashMap<String, Segment>();
+		HashMap<String, Table> tabRecords = new HashMap<String, Table>();
 
 		clonedProfile.setChanges(changes);
 		clonedProfile.setComment(comment);
-		clonedProfile.setDatatypes(datatypes.clone(dtRecords, tableRecords));
-		clonedProfile.setSegments(segments.clone(dtRecords, segmentRecords,
-				tableRecords));
-		clonedProfile.setTables(tables.clone());
+		clonedProfile.setDatatypeLibrary(datatypeLibrary.clone(dtRecords, tabRecords));
+		clonedProfile.setSegmentLibrary(segmentLibrary.clone(segRecords, dtRecords, tabRecords));
+		clonedProfile.setTableLibrary(tableLibrary.clone(tabRecords));
 
-		clonedProfile.setMessages(messages.clone(dtRecords, segmentRecords,
-				tableRecords));
+		clonedProfile.setMessages(messages.clone(dtRecords, segRecords, tabRecords));
 		clonedProfile.setMetaData(metaData.clone());
 		clonedProfile.setUsageNote(usageNote);
 		clonedProfile.setAccountId(accountId);
@@ -436,16 +437,16 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 		return clonedProfile;
 	}
 
-	
-	public void merge(Profile p){
-		//Note: merge is used for creation of new profiles do we don't consider constraints and annotations
-		//in each profile, there is one message library with one message
-		this.tables.merge(p.getTables());
-		this.datatypes.merge(p.getDatatypes());
-		this.segments.merge(p.getSegments());
+	public void merge(Profile p) {
+		// Note: merge is used for creation of new profiles do we don't consider
+		// constraints and annotations
+		// in each profile, there is one message library with one message
+		this.tableLibrary.merge(p.getTableLibrary());
+		this.datatypeLibrary.merge(p.getDatatypeLibrary());
+		this.segmentLibrary.merge(p.getSegmentLibrary());
 
-		for (Message m : p.getMessages().getChildren()){
-			this.messages.addMessage(m);	
+		for (Message m : p.getMessages().getChildren()) {
+			this.messages.addMessage(m);
 		}
 	}
 }

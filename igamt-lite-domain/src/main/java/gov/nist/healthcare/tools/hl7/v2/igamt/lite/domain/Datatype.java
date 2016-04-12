@@ -47,6 +47,8 @@ Cloneable, Comparable<Datatype> {
 
 	protected String usageNote = "";
 	
+	private Constant.SCOPE scope;
+	
 	public String getId() {
 		return id;
 	}

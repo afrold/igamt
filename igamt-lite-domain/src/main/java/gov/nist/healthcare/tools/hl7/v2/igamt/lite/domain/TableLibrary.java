@@ -11,7 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "valueset-library")
+@Document(collection = "table-library")
 public class TableLibrary extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
@@ -25,7 +25,23 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 	
 	private String ext;
 
+	private String valueSetLibraryIdentifier;
+
+	private String status;
+
+	private String valueSetLibraryVersion;
+
+	private String organizationName;
+
+	private String description;
+	
+	private String dateCreated;
+
+	private String profileName = "";
+	
 	private TableLibraryMetaData metaData;
+	
+	private Constant.SCOPE scope;
 	
 	public TableLibrary() {
 		super();
@@ -58,12 +74,84 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		this.date = date;
 	}
 
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
+
+	public String getValueSetLibraryIdentifier() {
+		return valueSetLibraryIdentifier;
+	}
+
+	public void setValueSetLibraryIdentifier(String valueSetLibraryIdentifier) {
+		this.valueSetLibraryIdentifier = valueSetLibraryIdentifier;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getValueSetLibraryVersion() {
+		return valueSetLibraryVersion;
+	}
+
+	public void setValueSetLibraryVersion(String valueSetLibraryVersion) {
+		this.valueSetLibraryVersion = valueSetLibraryVersion;
+	}
+
+	public String getOrganizationName() {
+		return organizationName;
+	}
+
+	public void setOrganizationName(String organizationName) {
+		this.organizationName = organizationName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(String dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public String getProfileName() {
+		return profileName;
+	}
+
+	public void setProfileName(String profileName) {
+		this.profileName = profileName;
+	}
+
 	public Set<Table> getChildren() {
 		return children;
 	}
 
 	public void setChildren(Set<Table> children) {
 		this.children = children;
+	}
+
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
 	}
 
 	public void addTable(Table t) {
@@ -133,20 +221,20 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 
 	public TableLibrary clone(HashMap<String, Table> tabRecords)
 			throws CloneNotSupportedException {
-		TableLibrary clonedDatatypes = new TableLibrary();
-		clonedDatatypes.setChildren(new HashSet<Table>());
+		TableLibrary clonedTables = new TableLibrary();
+		clonedTables.setChildren(new HashSet<Table>());
 		for (Table tab : this.children) {
 			if (tabRecords.containsKey(tab.getId())) {
-				clonedDatatypes.addTable(tabRecords.get(tab.getId()));
+				clonedTables.addTable(tabRecords.get(tab.getId()));
 			} else {
 				Table clone = tab.clone();
 				clone.setId(tab.getId());
 				tabRecords.put(tab.getId(), clone);
-				clonedDatatypes.addTable(clone);
+				clonedTables.addTable(clone);
 			}
 		}
 
-		return clonedDatatypes;
+		return clonedTables;
 	}
 	
 	public void merge(TableLibrary tabs){

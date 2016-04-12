@@ -47,6 +47,8 @@ public class Table extends SectionModel implements Serializable,
 
 	private List<Code> codes = new ArrayList<Code>();
 
+	private Constant.SCOPE scope;
+	
 	public Table() {
 		super();
 		this.type = Constant.TABLE;

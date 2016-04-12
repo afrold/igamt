@@ -44,6 +44,8 @@ Cloneable, Comparable<Segment> {
 
 	private String text2 = "";
 
+	private Constant.SCOPE scope;
+	
 	public String getId() {
 		return id;
 	}

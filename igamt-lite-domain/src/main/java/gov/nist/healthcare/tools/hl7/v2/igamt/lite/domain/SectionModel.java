@@ -4,16 +4,16 @@ public abstract class SectionModel extends DataModel {
 
 	int sectionPosition;
 
-	protected Constant.SCOPE scope;
-	
-	public Constant.SCOPE getScope() {
-		return scope;
-	}
-
-	public void setScope(Constant.SCOPE scope) {
-		this.scope = scope;
-	}
-	
+//	protected Constant.SCOPE scope;
+//	
+//	public Constant.SCOPE getScope() {
+//		return scope;
+//	}
+//
+//	public void setScope(Constant.SCOPE scope) {
+//		this.scope = scope;
+//	}
+//	
 	public int getSectionPosition() {
 		return sectionPosition;
 	}

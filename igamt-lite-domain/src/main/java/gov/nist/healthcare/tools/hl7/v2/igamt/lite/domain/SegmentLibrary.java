@@ -29,12 +29,14 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	private String id;
 
 	private Long accountId;
-	
+
 	private String date;
-	
+
 	private String ext;
 
 	private SegmentLibraryMetaData metaData;
+
+	private Constant.SCOPE scope;
 	
 	public SegmentLibrary() {
 		super();
@@ -75,6 +77,14 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		this.children = children;
 	}
 
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
+	}
+
 	public void addSegment(Segment seg) {
 		seg.setLibId(ext);
 		children.add(seg);
@@ -108,8 +118,7 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	public Segment findOneByNameAndByLabel(String name, String label) {
 		if (this.children != null) {
 			for (Segment seg : this.children) {
-				if (seg.getName().equals(name) 
-						&& seg.getLabel().equals(label)) {
+				if (seg.getName().equals(name) && seg.getLabel().equals(label)) {
 					return seg;
 				}
 			}
@@ -137,11 +146,11 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 			}
 		return null;
 	}
-	
-	public Segment findOneSegmentByBase(String baseName){
+
+	public Segment findOneSegmentByBase(String baseName) {
 		if (this.children != null)
-			for (Segment seg : this.children){
-				if(seg.getName().equals(baseName)) {
+			for (Segment seg : this.children) {
+				if (seg.getName().equals(baseName)) {
 					return seg;
 				}
 			}
@@ -158,11 +167,9 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		return null;
 	}
 
-	public ConformanceStatement findOneConformanceStatement(
-			String conformanceStatementId) {
+	public ConformanceStatement findOneConformanceStatement(String conformanceStatementId) {
 		for (Segment seg : this.getChildren()) {
-			ConformanceStatement conf = seg
-					.findOneConformanceStatement(conformanceStatementId);
+			ConformanceStatement conf = seg.findOneConformanceStatement(conformanceStatementId);
 			if (conf != null) {
 				return conf;
 			}
@@ -189,8 +196,7 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	}
 
 	public SegmentLibrary clone(HashMap<String, Segment> segRecords, HashMap<String, Datatype> dtRecords,
-			HashMap<String, Table> tabRecords)
-			throws CloneNotSupportedException {
+			HashMap<String, Table> tabRecords) throws CloneNotSupportedException {
 		SegmentLibrary clonedSegments = new SegmentLibrary();
 		clonedSegments.setChildren(new HashSet<Segment>());
 		for (Segment seg : this.children) {
@@ -206,29 +212,32 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 
 		return clonedSegments;
 	}
-	
-	public void merge(SegmentLibrary segLib){
-		for (Segment seg : segLib.getChildren()){
-			if (this.findOneByNameAndByLabel(seg.getName(), seg.getLabel()) == null){
+
+	public void merge(SegmentLibrary segLib) {
+		for (Segment seg : segLib.getChildren()) {
+			if (this.findOneByNameAndByLabel(seg.getName(), seg.getLabel()) == null) {
 				this.addSegment(seg);
 			} else {
-				seg.setId(this.findOneByNameAndByLabel(seg.getName(), seg.getLabel()).getId()); //FIXME Probably useless...
+				seg.setId(this.findOneByNameAndByLabel(seg.getName(), seg.getLabel()).getId()); // FIXME
+																								// Probably
+																								// useless...
 			}
 		}
-		
+
 	}
-	
-	public void setPositionsOrder(){
+
+	public void setPositionsOrder() {
 		List<Segment> sortedList = new ArrayList<Segment>(this.getChildren());
 		Collections.sort(sortedList);
-		for (Segment seg: sortedList) {
+		for (Segment seg : sortedList) {
 			seg.setSectionPosition(sortedList.indexOf(seg));
 		}
 	}
-	
+
 	@JsonIgnore
 	public Constraints getConformanceStatements() {
-		//TODO Only byID constraints are considered; might want to consider byName
+		// TODO Only byID constraints are considered; might want to consider
+		// byName
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 
