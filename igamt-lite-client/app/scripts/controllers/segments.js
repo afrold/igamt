@@ -498,8 +498,11 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 
         if ($scope.newConstraint.position_1 != null) {
         	$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
-        	var positionPath = $scope.selectedNode.position + '[1]';
-        	var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
+        	if($scope.selectedNode === null) {
+        		var cs = $rootScope.generateConformanceStatement(".", $scope.newConstraint);
+        	}else {
+        		var cs = $rootScope.generateConformanceStatement($scope.selectedNode.position + '[1]', $scope.newConstraint);
+        	}
             $scope.tempComformanceStatements.push(cs);
             if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
             $scope.changed = true;
