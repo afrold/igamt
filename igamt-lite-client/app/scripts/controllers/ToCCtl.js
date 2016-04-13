@@ -5,23 +5,24 @@ angular
 				[
 						'$scope',
 						'$rootScope',
+						'$timeout',
 						'ToCSvc',
 						'ContextMenuSvc',
 						'CloneDeleteSvc',
-						function($scope, $rootScope, ToCSvc,
+						function($scope, $rootScope, $timeout, ToCSvc,
 								ContextMenuSvc, CloneDeleteSvc) {
 							var ctl = this;
 							$scope.collapsed = [];
 							$scope.yesDrop = false;
 							$scope.noDrop = true;
-							$scope.$watch('tocData', function(newValue,
-									oldValue) {
-								if (!oldValue && newValue) {
-									_.each($scope.tocData, function(head) {
-										$scope.collapsed[head] = false;
-									});
-								}
-							});
+//							$scope.$watch('tocData', function(newValue,
+//									oldValue) {
+//								if (!oldValue && newValue) {
+//									_.each($scope.tocData, function(head) {
+//										$scope.collapsed[head] = false;
+//									});
+//								}
+//							});
 							
 							$scope.moved = function (index, leaf) {
 								var idx = _.findLastIndex($scope.$parent.drop, function(leaf1) {
@@ -33,6 +34,16 @@ angular
 								} else {
 									$scope.$parent.drop.splice(index, 1);
 								}
+								$timeout(function(){
+									var pos = 0;
+									_.each($scope.$parent.drop, function(child){
+										pos++;							
+										var igdMsg = _.find($rootScope.igdocument.profile.messages.children, function(msg) {
+											return msg.id === child.reference.id;
+										})
+										igdMsg.position = pos;
+									});
+								}, 100);
 							};
 							
 							$scope.calcOffset = function(level) {

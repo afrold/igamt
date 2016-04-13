@@ -190,6 +190,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		try {
 			for (MessageEvents msgEvt : msgEvts) {
 				Message m = pSource.getMessages().findOne(msgEvt.getId());
+				int maxPos = findMaxPosition(pSource.getMessages());
 				Message m1 = null;
 				m1 = m.clone();
 				m1.setId(ObjectId.get().toString());
@@ -204,6 +205,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 				String name = m1.getMessageType() + "^" + m1.getEvent() + "^" + m1.getStructID();
 				log.debug("Message.name=" + name);
 				m1.setName(name);
+				m1.setPosition(++maxPos);
 				messages.addMessage(m1);
 				for (SegmentRefOrGroup sg : m.getChildren()) {
 					if (sg instanceof SegmentRef) {
@@ -217,6 +219,14 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 			log.error("Message error==>", e);
 			throw new IGDocumentException(e);
 		}
+	}
+	
+	int findMaxPosition(Messages msgs) {
+		int maxPos = 1;
+		for (Message msg : msgs.getChildren()) {
+			maxPos = Math.max(maxPos, msg.getPosition());
+		}
+		return maxPos;
 	}
 
 	private void addSegment(SegmentRef sref, Profile pSource, Profile pTarget) {

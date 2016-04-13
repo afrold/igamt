@@ -551,7 +551,7 @@ angular.module('igl').controller('PredicateDatatypeCtrl', function ($scope, $mod
         if (component != null && subComponent == null) {
         	position = component.position + '[1]';
         } else if (component != null && subComponent != null) {
-        	Position = component.position + '[1]' + '.' + subComponent.position + '[1]';
+            position = component.position + '[1]' + '.' + subComponent.position + '[1]';
         }
 
         return position;

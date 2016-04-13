@@ -19,7 +19,7 @@
             <form name="sectionForm" id="sectionForm" class="form-horizontal" novalidate>
                 <div class="row">
                     <div class="col-md-12 igl-page-header">
-                        <div class="form-group control-group pull-left"
+                        <div class="form-group control-group pull-left"  ng-hide="viewSettings.tableReadonly || isFixedSectionTitle(section)"
                              ng-class="{'igl-has-error has-feedback' : sectionForm.title.$invalid}">
                             <input type="text"
                                    style="width:500px"
@@ -27,11 +27,14 @@
                                    name="title" id="title" class="form-control"
                                    ng-model="section.sectionTitle"
                                    required
-                                   ng-disabled="viewSettings.tableReadonly"
+
                                    aria-describedby="helpBlock2">
                             <span id="helpBlock2" class="help-block" style="color:red"
                                   ng-show="isDuplicated(section,'title', sections)">Label already used</span>
+
                         </div>
+
+                        <span ng-show="viewSettings.tableReadonly || isFixedSectionTitle(section)" class="header4 pull-left">{{section.sectionTitle}}</span>
 
                     </div>
 
