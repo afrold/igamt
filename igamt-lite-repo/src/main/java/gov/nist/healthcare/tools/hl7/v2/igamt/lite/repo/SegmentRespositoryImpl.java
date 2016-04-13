@@ -8,47 +8,24 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoOperations;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 
-/**
- * @author gcr1
- *
- */
-@Service
-public class DataypeServiceImpl implements DatatypeService {
-	
-	Logger log = LoggerFactory.getLogger(DataypeServiceImpl.class);
+public class SegmentRespositoryImpl implements SegmentOperations {
 
-	@Autowired
-	private DatatypeRepository datatypeRepository;
-	
-	@Override
-	public List<Datatype> findAll() {
-		List<Datatype> datatypes = datatypeRepository.findAll();
-		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
-		return datatypes;
-	}
-	
-	@Override
-	public Datatype findById(String id) {
-		log.info("DataypeServiceImpl.findById=" + id);
-		return datatypeRepository.findOne(id);
-	}
-	
-	@Override
-	public Datatype save(Datatype datatype) {
-		log.info("DataypeServiceImpl.save=" + datatype.getLabel());
-		return datatypeRepository.save(datatype);
-	}
+	private Logger log = LoggerFactory.getLogger(SegmentRespositoryImpl.class);
+
+	 @Autowired
+	 private MongoOperations mongo;
 }

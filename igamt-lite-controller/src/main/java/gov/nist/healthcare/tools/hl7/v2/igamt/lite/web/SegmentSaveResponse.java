@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 16, 2015
  */
-public class DatatypeSaveResponse extends ResponseMessage {
+public class SegmentSaveResponse extends ResponseMessage {
 
 	private List<DatatypeSaveError> errors = null;
 
@@ -36,13 +36,15 @@ public class DatatypeSaveResponse extends ResponseMessage {
 	 * @param date
 	 * @param version
 	 */
-	public DatatypeSaveResponse(String date, String scope, String version) {
-		this(date, scope);
+	public SegmentSaveResponse(String date, String scope, String version) {
+		super(Type.success, "segmentSaved");
+		this.date = date;
+		this.scope = scope;
 		this.version = version;
 	}
 
-	public DatatypeSaveResponse(String date, String scope) {
-		super(Type.success, "datatypeSaved");
+	public SegmentSaveResponse(String date, String scope) {
+		super(Type.success, "segmentSaved");
 		this.date = date;
 		this.scope = scope;
 		this.version = null;
@@ -52,23 +54,23 @@ public class DatatypeSaveResponse extends ResponseMessage {
 	 * @param type
 	 * @param text
 	 */
-	public DatatypeSaveResponse(Type type, String text) {
+	public SegmentSaveResponse(Type type, String text) {
 		super(type, text);
 	}
 
-	public DatatypeSaveResponse(Type type, String text, String resourceId,
+	public SegmentSaveResponse(Type type, String text, String resourceId,
 			String manualHandle, List<DatatypeSaveError> errors) {
 		super(type, text, resourceId, manualHandle);
 		this.errors = errors;
 	}
 
-	public DatatypeSaveResponse(Type type, String text, String resourceId,
+	public SegmentSaveResponse(Type type, String text, String resourceId,
 			List<DatatypeSaveError> errors) {
 		super(type, text, resourceId);
 		this.errors = errors;
 	}
 
-	public DatatypeSaveResponse(Type type, String text,
+	public SegmentSaveResponse(Type type, String text,
 			List<DatatypeSaveError> errors) {
 		super(type, text);
 		this.errors = errors;

@@ -11,8 +11,17 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.Version;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
@@ -22,7 +31,19 @@ public abstract class SectionModelWithConstraints extends SectionModel {
 
 	protected Long accountId;
 	
-	protected String libId;
+	private  STATUS status;
+
+	protected String libId;  
+	
+	private Constant.SCOPE scope;
+	
+		
+	@Version
+	private String version; 
+	
+ 	private String date;
+	
+	protected Set<Long> participants = new HashSet<Long>();
 
 	protected List<Predicate> predicates = new ArrayList<Predicate>();
 
@@ -103,7 +124,47 @@ public abstract class SectionModelWithConstraints extends SectionModel {
 		ConformanceStatement c = findOneConformanceStatement(cId);
 		return c != null && this.getConformanceStatements().remove(c);
 	}
+
+	public Set<Long> getParticipants() {
+		return participants;
+	}
+
+	public void setParticipants(Set<Long> participants) {
+		this.participants = participants;
+	} 
 	
+	public STATUS getStatus() {
+		return status;
+	}
+
+	public void setStatus(STATUS status) {
+		this.status = status;
+	}
+
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 	
 
 }

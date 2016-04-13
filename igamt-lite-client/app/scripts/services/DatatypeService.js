@@ -25,7 +25,7 @@ angular.module('igl').factory('DatatypeService',
                 return $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
             },
             getTemplate: function (node) {
-                if (ViewSettings.tableReadonly) {
+                if (ViewSettings.tableReadonly || $rootScope.datatype != null && $rootScope.datatype.scope === 'HL7STANDARD' || $rootScope.datatype.scope === null) {
                     return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node) ? 'DatatypeSubComponentReadTree.html' : '';
                 } else {
                     return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node) ? 'DatatypeSubComponentEditTree.html' : '';
@@ -88,7 +88,7 @@ angular.module('igl').factory('DatatypeService',
             },
             get: function (id) {
                 var delay = $q.defer();
-                $http.post('api/datatypes/' + id).then(function (response) {
+                $http.get('api/datatypes/' + id).then(function (response) {
                     var datatype = angular.fromJson(response.data);
                     delay.resolve(datatype);
                 }, function (error) {
@@ -107,10 +107,14 @@ angular.module('igl').factory('DatatypeService',
                 to.scope = from.scope;
                 to.hl7Version = from.hl7Version;
                 to.accountId = from.accountId;
+                to.participants =  from.participants;
                 to.libId = from.libId;
                 to.predicates = from.predicates;
                 to.conformanceStatements = from.conformanceStatements;
                 to.sectionPosition = from.sectionPosition;
+                to.components = from.components;
+                to.version = from.version;
+                to.date = from.date;
                 return to;
             }
         };

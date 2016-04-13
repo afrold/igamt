@@ -298,7 +298,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
     });
 
-    $httpBackend.whenGET('api/datatypes/{id}').respond(function (method, url, data, headers) {
+    $httpBackend.whenGET('api/datatypes/565f3ab5d4c6e52cfd43b928').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/datatypes/datatype1.json', false);
         request.send(null);
@@ -308,10 +308,25 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenPOST('api/datatypes/save').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
-        if(data.id === null || !data.id)
-            data.id = new ObjectId.toString();
-        return [200, {}, {}];
+        data.version = "4";
+        return [200, data, {}];
     });
+
+    $httpBackend.whenGET('api/segments/565f3ab5d4c6e52cfd43be67').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/segments/segment1.json', false);
+        request.send(null);
+        var segment1 = angular.fromJson(request.response);
+        return [request.status, segment1, {}];
+    });
+
+    $httpBackend.whenPOST('api/segments/save').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        data.version = "4";
+        return [200, data, {}];
+    });
+
+
 
 
 });

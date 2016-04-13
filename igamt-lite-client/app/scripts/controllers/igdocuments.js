@@ -719,20 +719,27 @@ angular.module('igl')
             $scope.subview = "EditSegments.html";
             if (segment && segment != null) {
                 $scope.loadingSelection = true;
-                $rootScope.segment = segment;
-                $rootScope.segment["type"] = "segment";
-                $timeout(
-                    function () {
-                        $scope.tableWidth = null;
-                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                        $scope.csWidth = $scope.getDynamicWidth(1, 3, 990);
-                        $scope.predWidth = $scope.getDynamicWidth(1, 3, 990);
-                        $scope.commentWidth = $scope.getDynamicWidth(1, 3, 990);
-                        $scope.loadingSelection = false;
-                        if ($scope.segmentsParams)
-                            $scope.segmentsParams.refresh();
-                    }, 100);
+                SegmentService.get(segment.id).then(function (result) {
+                    $rootScope.segment = segment;
+                    $rootScope.segment["type"] = "segment";
+                    $scope.tableWidth = null;
+                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                    $scope.csWidth = $scope.getDynamicWidth(1, 3, 990);
+                    $scope.predWidth = $scope.getDynamicWidth(1, 3, 990);
+                    $scope.commentWidth = $scope.getDynamicWidth(1, 3, 990);
+                    $scope.loadingSelection = false;
+                    if ($scope.segmentsParams)
+                        $scope.segmentsParams.refresh();
+                    $scope.loadingSelection = false;
+                }, function (error) {
+                    $scope.loadingSelection = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
             }
+
+
         };
 
         $scope.selectDocumentMetaData = function () {

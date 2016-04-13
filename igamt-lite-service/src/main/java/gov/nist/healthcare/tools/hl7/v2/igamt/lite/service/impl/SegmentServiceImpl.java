@@ -17,38 +17,31 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 
 /**
  * @author gcr1
  *
  */
 @Service
-public class DataypeServiceImpl implements DatatypeService {
+public class SegmentServiceImpl implements SegmentService {
 	
-	Logger log = LoggerFactory.getLogger(DataypeServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(SegmentServiceImpl.class);
 
 	@Autowired
-	private DatatypeRepository datatypeRepository;
-	
-	@Override
-	public List<Datatype> findAll() {
-		List<Datatype> datatypes = datatypeRepository.findAll();
-		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
-		return datatypes;
+	private SegmentRepository segmentRepository;
+ 	
+	@Override 
+	public Segment findById(String id) {
+		log.info("SegmentServiceImpl.findById=" + id);
+		return segmentRepository.findOne(id);
 	}
 	
 	@Override
-	public Datatype findById(String id) {
-		log.info("DataypeServiceImpl.findById=" + id);
-		return datatypeRepository.findOne(id);
-	}
-	
-	@Override
-	public Datatype save(Datatype datatype) {
-		log.info("DataypeServiceImpl.save=" + datatype.getLabel());
-		return datatypeRepository.save(datatype);
+	public Segment save(Segment segment) {
+		log.info("SegmentServiceImpl.save=" + segment.getLabel());
+		return segmentRepository.save(segment);
 	}
 }

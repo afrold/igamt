@@ -38,6 +38,7 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 	@DBRef
 	private SegmentLibrary segmentLibrary;
 	
+	@JsonIgnoreProperties(value= {"accountId", "date"})
 	@DBRef
 	private DatatypeLibrary datatypeLibrary;
 

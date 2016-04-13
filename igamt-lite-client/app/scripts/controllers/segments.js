@@ -3,12 +3,14 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService) {
+    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService) {
 //        $scope.loading = false;
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
         $scope.segmentCopy = null;
+        $scope.selectedChildren = [];
+        $scope.saving = false;
 
         $scope.reset = function () {
 //            $scope.loadingSelection = true;
@@ -192,6 +194,136 @@ angular.module('igl')
 
         $scope.getSegmentLevelPredicates = function (element) {
             return SegmentService.getSegmentLevelPredicates(element);
+        };
+
+
+        $scope.isChildSelected = function (component) {
+            return  $scope.selectedChildren.indexOf(component) >= 0;
+        };
+
+        $scope.isChildNew = function (component) {
+            return component && component != null && component.status === 'DRAFT';
+        };
+
+
+        $scope.selectChild = function ($event, child) {
+            var checkbox = $event.target;
+            var action = (checkbox.checked ? 'add' : 'remove');
+            updateSelected(action, child);
+        };
+
+
+        $scope.selectAllChildren = function ($event) {
+            var checkbox = $event.target;
+            var action = (checkbox.checked ? 'add' : 'remove');
+            for (var i = 0; i < $rootScope.segment.fields.length; i++) {
+                var component = $rootScope.segment.fields[i];
+                updateSelected(action, component);
+            }
+        };
+
+        var updateSelected = function (action, child) {
+            if (action === 'add' && !$scope.isChildSelected(child)) {
+                $scope.selectedChildren.push(child);
+            }
+            if (action === 'remove' && $scope.isChildSelected(child)) {
+                $scope.selectedChildren.splice($scope.selectedChildren.indexOf(child), 1);
+            }
+        };
+
+        //something extra I couldn't resist adding :)
+        $scope.isSelectedAllChildren = function () {
+            return $rootScope.segment && $rootScope.segment != null && $rootScope.segment.fields && $scope.selectedChildren.length === $rootScope.segment.fields.length;
+        };
+
+
+        /**
+         * TODO: update master map
+         */
+        $scope.createNewField = function () {
+            if ($rootScope.segment != null) {
+                if (!$rootScope.segment.fields || $rootScope.segment.fields === null)
+                    $rootScope.segment.fields = [];
+                var child = FieldService.create($rootScope.segment.fields.length + 1);
+                $rootScope.segment.fields.push(child);
+                //TODO update master map
+                //TODO:remove as legacy code
+                $rootScope.parentsMap[child.id] = $rootScope.segment;
+                if ($scope.segmentsParams)
+                    $scope.segmentsParams.refresh();
+            }
+        };
+
+        /**
+         * TODO: update master map
+         */
+        $scope.deleteFields = function () {
+            if ($rootScope.segment != null && $scope.selectedChildren != null && $scope.selectedChildren.length > 0) {
+                FieldService.deleteList($scope.selectedChildren, $rootScope.segment);
+                //TODO update master map
+                //TODO:remove as legacy code
+                angular.forEach($scope.selectedChildren, function (child) {
+                    delete $rootScope.parentsMap[child.id];
+                });
+                $scope.selectedChildren = [];
+                if ($scope.segmentsParams)
+                    $scope.segmentsParams.refresh();
+            }
+        };
+
+        $scope.save = function () {
+            $scope.saving = true;
+            SegmentService.save($rootScope.segment).then(function (result) {
+                var index = indexOf(result.id);
+                if (index === -1) { // new segment
+                    $rootScope.igdocument.profile.segments.children.push(result);
+                } else {
+                    SegmentService.merge($rootScope.igdocument.profile.segments.children[index], result);
+                }
+                $scope.saving = false;
+                $scope.selectedChildren = [];
+                if ($scope.segmentsParams)
+                    $scope.segmentsParams.refresh();
+                //TODO update Toc
+            }, function (error) {
+                $scope.saving = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
+            });
+        };
+
+        $scope.cancel = function () {
+            //TODO: remove changes from master ma
+            angular.forEach($rootScope.segment.fields, function (child) {
+                if ($scope.isChildNew(child.status)) {
+                    delete $rootScope.parentsMap[child.id];
+                }
+            });
+            $rootScope.segment = null;
+            $scope.selectedChildren = [];
+            // revert
+        };
+
+        var searchById = function (id) {
+            var children = $rootScope.igdocument.profile.segments.children;
+            for (var i = 0; i < $rootScope.igdocument.profile.segments.children; i++) {
+                if (children[i].id === id) {
+                    return children[i];
+                }
+            }
+            return null;
+        };
+
+        var indexOf = function (id) {
+            var children = $rootScope.igdocument.profile.segments.children;
+            for (var i = 0; i < children; i++) {
+                if (children[i].id === id) {
+                    return i;
+                }
+            }
+            return -1;
+
         };
 
     });

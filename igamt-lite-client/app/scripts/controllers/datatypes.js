@@ -197,7 +197,7 @@ angular.module('igl')
         };
 
         $scope.isChildNew = function (component) {
-            return  component.status === 'DRAFT';
+            return component && component != null && component.status === 'DRAFT';
         };
 
 
@@ -228,7 +228,7 @@ angular.module('igl')
 
         //something extra I couldn't resist adding :)
         $scope.isSelectedAllChildren = function () {
-            return $rootScope.datatype.components && $scope.selectedChildren.length === $rootScope.datatype.components.length;
+            return $rootScope.datatype && $rootScope.datatype != null && $rootScope.datatype.components && $scope.selectedChildren.length === $rootScope.datatype.components.length;
         };
 
 
@@ -279,6 +279,7 @@ angular.module('igl')
                 $scope.selectedChildren = [];
                 if ($scope.datatypesParams)
                     $scope.datatypesParams.refresh();
+                //TODO update Toc
             }, function (error) {
                 $scope.saving = false;
                 $rootScope.msg().text = error.data.text;

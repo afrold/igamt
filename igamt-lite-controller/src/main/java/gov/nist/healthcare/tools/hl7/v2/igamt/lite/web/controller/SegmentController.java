@@ -14,14 +14,12 @@ import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeSaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DateUtils;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
-
-import java.util.List;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.SegmentSaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentSaveException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +36,13 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 @RestController
-@RequestMapping("/datatypes")
-public class DatatypeController extends CommonController {
+@RequestMapping("/segments")
+public class SegmentController extends CommonController {
 
-	Logger log = LoggerFactory.getLogger(DatatypeController.class);
+	Logger log = LoggerFactory.getLogger(SegmentController.class);
 
 	@Autowired
-	private DatatypeService datatypeService;
+	private SegmentService segmentService;
 
 	@Autowired
 	UserService userService;
@@ -52,39 +50,33 @@ public class DatatypeController extends CommonController {
 	@Autowired
 	AccountRepository accountRepository;
 
-	public List<Datatype> datatypes() {
-		log.info("Fetching all Datatypes...");
-		List<Datatype> result = datatypeService.findAll();
-		return result;
-	}
-
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-	public Datatype getDatatypeById(@PathVariable("id") String id) {
-		log.info("Fetching datatypeById..." + id);
-		Datatype result = datatypeService.findById(id);
+	public Segment getSegmentById(@PathVariable("id") String id) {
+		log.info("Fetching segmentById..." + id);
+		Segment result = segmentService.findById(id);
 		return result;
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public DatatypeSaveResponse save(@RequestBody Datatype datatype)
-			throws DatatypeSaveException, ForbiddenOperationException {
-		log.debug("datatype=" + datatype);
-		log.debug("datatype.getId()=" + datatype.getId());
-		log.info("Saving the " + datatype.getScope() + " datatype.");
+	public SegmentSaveResponse save(@RequestBody Segment segment)
+			throws SegmentSaveException, ForbiddenOperationException {
+		log.debug("segment=" + segment);
+		log.debug("segment.getId()=" + segment.getId());
+		log.info("Saving the " + segment.getScope() + " segment.");
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u
 				.getUsername());
-		if (datatype.getAccountId() == null)
-			datatype.setAccountId(account.getId());
-		if (account.getId().equals(datatype.getAccountId())
-				|| datatype.getParticipants().contains(account.getId())) {
-			if (datatype.getScope() == null)
-				datatype.setScope(SCOPE.USER);
-			datatype.setDate(DateUtils.getCurrentTime());
-			Datatype saved = datatypeService.save(datatype);
+		if (segment.getAccountId() == null)
+			segment.setAccountId(account.getId());
+		if (account.getId().equals(segment.getAccountId())
+				|| segment.getParticipants().contains(account.getId())) {
+			if (segment.getScope() == null)
+				segment.setScope(SCOPE.USER);
+			segment.setDate(DateUtils.getCurrentTime());
+			Segment saved = segmentService.save(segment);
 			log.debug("saved.getId()=" + saved.getId());
 			log.debug("saved.getScope()=" + saved.getScope());
-			return new DatatypeSaveResponse(saved.getDate(), saved.getVersion());
+			return new SegmentSaveResponse(saved.getDate(), saved.getVersion());
 		} else {
 			throw new ForbiddenOperationException();
 		}
