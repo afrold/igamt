@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.bson.types.ObjectId;
 
+@Deprecated
 public class Tables extends TextbasedSectionModel implements Serializable, Cloneable {
 
 	/**

@@ -112,15 +112,15 @@ public class ProfileServiceDeltaTest {
 				.toArray(new Message[] {})[0];
 		SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
 		Group group = (Group) message.getChildren().get(5);
-		Segment segment = p2.getSegments().findOneSegmentById(segmentRef.getRef());
+		Segment segment = p2.getSegmentLibrary().findOneSegmentById(segmentRef.getRef());
 		Field field = segment.getFields().get(0);
-		Datatype datatype = p2.getDatatypes().getChildren()
+		Datatype datatype = p2.getDatatypeLibrary().getChildren()
 				.toArray(new Datatype[] {})[0];
 
 		//Fake addition
 		SegmentRef segmentRef3 = (SegmentRef) message.getChildren().get(2);
-		Segment segment3 = p1.getSegments().findOneSegmentById(segmentRef3.getRef());
-		p1.getSegments().delete(segment3.getId());
+		Segment segment3 = p1.getSegmentLibrary().findOneSegmentById(segmentRef3.getRef());
+		p1.getSegmentLibrary().delete(segment3.getId());
 
 
 		segmentRef.setMin(3);

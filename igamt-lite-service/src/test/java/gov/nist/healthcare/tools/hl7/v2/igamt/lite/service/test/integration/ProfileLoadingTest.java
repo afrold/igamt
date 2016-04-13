@@ -88,13 +88,13 @@ public class ProfileLoadingTest {
 			assertEquals(msgs.size(), profileSaved.getMessages().getChildren().size());
 			
 			List<Object> sgts  = JsonPath.read(profileJson, "$.segments.children");
-			assertEquals(sgts.size(), profileSaved.getSegments().getChildren().size());			
+			assertEquals(sgts.size(), profileSaved.getSegmentLibrary().getChildren().size());			
 			
 			List<Object> dts  = JsonPath.read(profileJson, "$.datatypes.children");
-			assertEquals(dts.size(), profileSaved.getDatatypes().getChildren().size());			
+			assertEquals(dts.size(), profileSaved.getDatatypeLibrary().getChildren().size());			
 
 			List<Object> vsl  = JsonPath.read(profileJson, "$.tables.children");
-			assertEquals(vsl.size(), profileSaved.getTables().getChildren().size());
+			assertEquals(vsl.size(), profileSaved.getTableLibrary().getChildren().size());
 
 		}
 	}

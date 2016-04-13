@@ -3,7 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.unit;
 import static org.junit.Assert.*;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
@@ -59,7 +59,7 @@ public class SerializationTest {
 	ProfileExportService profileExport;
 
 	@SuppressWarnings("unused")
-	private Datatype getDatatype(String key, Datatypes datatypes) {
+	private Datatype getDatatype(String key, DatatypeLibrary datatypes) {
 		for (Datatype dt : datatypes.getChildren()) {
 			if (dt.getLabel().equals(key)) {
 				return dt;
@@ -88,22 +88,22 @@ public class SerializationTest {
 		.deserializeXMLToProfile(p, v, c);
 
 		Set<Datatype> datatypeSet = new HashSet<Datatype>();
-		collectDatatype(profile, datatypeSet, profile.getDatatypes());
-		assertEquals(profile.getDatatypes().getChildren().size(),
+		collectDatatype(profile, datatypeSet, profile.getDatatypeLibrary());
+		assertEquals(profile.getDatatypeLibrary().getChildren().size(),
 				datatypeSet.size());
 
-		// assertEquals(4, profile.getPredicates().getSegments()
+		// assertEquals(4, profile.getPredicates().getSegmentLibrary()
 		// .getByNameOrByIDs().size());
-		// assertEquals(15, profile.getConformanceStatements().getDatatypes()
+		// assertEquals(15, profile.getConformanceStatements().getDatatypeLibrary()
 		// .getByNameOrByIDs().size());
-		// assertEquals(5, profile.getConformanceStatements().getSegments()
+		// assertEquals(5, profile.getConformanceStatements().getSegmentLibrary()
 		// .getByNameOrByIDs().size());
 		// assertEquals(1, profile.getMessages().getMessages().size());
 	}
 
 	private void collectDatatype(Profile p, Set<Datatype> set,
-			Datatypes datatypes) {
-		for (Segment s : p.getSegments().getChildren()) {
+			DatatypeLibrary datatypes) {
+		for (Segment s : p.getSegmentLibrary().getChildren()) {
 			for (Field f : s.getFields()) {
 				Datatype d = datatypes.findOne(f.getDatatype());
 				collectDatatype(d, set, datatypes);
@@ -112,7 +112,7 @@ public class SerializationTest {
 	}
 
 	private void collectDatatype(Datatype d, Set<Datatype> set,
-			Datatypes datatypes) {
+			DatatypeLibrary datatypes) {
 		if (!set.contains(d)) {
 			set.add(d);
 		}
@@ -175,7 +175,7 @@ public class SerializationTest {
 
 		TableSerializationImpl tableSerializationImpl = new
 				TableSerializationImpl();
-		String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTables());
+		String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTableLibrary());
 
 		try {
 			// parse an XML document into a DOM tree

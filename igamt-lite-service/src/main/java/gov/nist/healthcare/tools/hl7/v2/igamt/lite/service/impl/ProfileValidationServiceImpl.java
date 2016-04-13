@@ -58,7 +58,7 @@ public class ProfileValidationServiceImpl implements ProfileValidationService {
 		
 		TableSerializationImpl tableSerializationImpl = new
 				TableSerializationImpl();
-		String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTables());
+		String tS = tableSerializationImpl.serializeTableLibraryToXML(p.getTableLibrary());
 		schemaPath = "validation/profilesSchema/ValueSets.xsd";
 		validate(tS, schemaPath);
 		

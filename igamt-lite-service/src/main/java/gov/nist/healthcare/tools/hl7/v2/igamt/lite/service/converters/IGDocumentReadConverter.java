@@ -82,7 +82,8 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		igd.setComment(readString(source, "comment"));
 		igd.setId(readMongoId(source));
 		igd.setMetaData(documentMetaData((DBObject) source.get("metaData")));
-		igd.setProfile(profile((DBObject) source.get("profile")));
+		ProfileReadConverter cnvProf = new ProfileReadConverter();
+		igd.setProfile(cnvProf.convert((DBObject) source.get("profile")));
 		igd.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
 		igd.setType(((String) source.get("type")));
 		igd.setUsageNote(readString(source, "usageNote"));

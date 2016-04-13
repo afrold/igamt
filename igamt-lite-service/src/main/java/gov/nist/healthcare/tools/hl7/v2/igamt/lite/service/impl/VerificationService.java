@@ -3,7 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerificationResult;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
@@ -105,7 +105,7 @@ public class VerificationService {
 
 	public ElementVerification verifySegments(Profile p, Profile baseP, String id, String type) {
 		ElementVerification evsLib = new ElementVerification(id, type);
-		for (Segment s : p.getSegments().getChildren()){
+		for (Segment s : p.getSegmentLibrary().getChildren()){
 			ElementVerification evs = verifySegment(p, baseP, s.getId(), s.getType());
 			evs.addChildrenVerification(evsLib);
 		}
@@ -114,7 +114,7 @@ public class VerificationService {
 
 	public ElementVerification verifySegment(Profile p, Profile baseP, String id, String type) {
 		ElementVerification evs = new ElementVerification(id, type);
-		Segment s = p.getSegments().findOneSegmentById(id);
+		Segment s = p.getSegmentLibrary().findOneSegmentById(id);
 		for (Field f : s.getFields()){
 			ElementVerification evf = verifyField(p, baseP, f.getId(), f.getType());
 			evs.addChildrenVerification(evf);
@@ -124,7 +124,7 @@ public class VerificationService {
 
 	public InputStream verifySegment2(Profile p, Profile baseP, String id, String type) {
 		String result = "";
-		Segment s = p.getSegments().findOneSegmentById(id);
+		Segment s = p.getSegmentLibrary().findOneSegmentById(id);
 
 		try {
 			//Create temporary file
@@ -147,8 +147,8 @@ public class VerificationService {
 				generator.writeStringField("eltName", "usage");
 				generator.writeStringField("eltAtt", f.getUsage().value());
 				result = this.validateChangeUsage(p.getMetaData().getHl7Version(), 
-						baseP.getSegments().findOneField(f.getId()).getUsage(), 
-						p.getSegments().findOneField(f.getId()).getUsage());
+						baseP.getSegmentLibrary().findOneField(f.getId()).getUsage(), 
+						p.getSegmentLibrary().findOneField(f.getId()).getUsage());
 				generator.writeStringField("result", result);
 				generator.writeEndObject();
 
@@ -196,7 +196,7 @@ public class VerificationService {
 	public ElementVerification verifyField(Profile p, Profile baseP, String id, String type) {
 		String result = "";
 		ElementVerification evc = new ElementVerification(id, type);
-		Field f = p.getSegments().findOneField(id);
+		Field f = p.getSegmentLibrary().findOneField(id);
 
 		ElementVerificationResult evcRst = new ElementVerificationResult("usage", f.getUsage().value(), result);
 		evc.addElementVerifications(evcRst);
@@ -223,7 +223,7 @@ public class VerificationService {
 
 
 	public ElementVerification verifyDatatypes(Profile p, Profile baseP, String id, String type) {
-		Datatypes dtLib = p.getDatatypes();
+		DatatypeLibrary dtLib = p.getDatatypeLibrary();
 		ElementVerification evdtLib = new ElementVerification(id, type);
 		for (Datatype dt : dtLib.getChildren()){
 			evdtLib.addChildrenVerification(verifyDatatype(p, baseP, dt.getId(), dt.getType()));
@@ -232,7 +232,7 @@ public class VerificationService {
 	}
 
 	public ElementVerification verifyDatatype(Profile p, Profile baseP, String id, String type) {
-		Datatype dt = p.getDatatypes().findOne(id); 
+		Datatype dt = p.getDatatypeLibrary().findOne(id); 
 		ElementVerification evdt = new ElementVerification(id, type);
 		for (Component c : dt.getComponents()){
 			evdt.addChildrenVerification(verifyComponent(p, baseP, c.getId(), c.getType()));
@@ -242,7 +242,7 @@ public class VerificationService {
 
 	public InputStream verifyDatatype2(Profile p, Profile baseP, String id, String type) {
 		String result = "";
-		Datatype dt = p.getDatatypes().findOne(id);
+		Datatype dt = p.getDatatypeLibrary().findOne(id);
 
 		try {
 			//Create temporary file
@@ -265,8 +265,8 @@ public class VerificationService {
 				generator.writeStringField("eltName", "usage");
 				generator.writeStringField("eltAtt", c.getUsage().value());
 				result = this.validateChangeUsage(p.getMetaData().getHl7Version(), 
-						baseP.getDatatypes().findOneComponent(c.getId()).getUsage(), 
-						p.getDatatypes().findOneComponent(c.getId()).getUsage());
+						baseP.getDatatypeLibrary().findOneComponent(c.getId()).getUsage(), 
+						p.getDatatypeLibrary().findOneComponent(c.getId()).getUsage());
 				generator.writeStringField("result", result);
 				generator.writeEndObject();
 
@@ -300,7 +300,7 @@ public class VerificationService {
 	public ElementVerification verifyComponent(Profile p, Profile baseP, String id, String type) {
 		String result = "";
 		ElementVerification evc = new ElementVerification(id, type);
-		Component c = p.getDatatypes().findOneComponent(id);
+		Component c = p.getDatatypeLibrary().findOneComponent(id);
 
 		ElementVerificationResult evcRst = new ElementVerificationResult("usage", c.getUsage().value(), result);
 		evc.addElementVerifications(evcRst);
@@ -313,10 +313,10 @@ public class VerificationService {
 		evcRst = new ElementVerificationResult("maxLength", String.valueOf(c.getMaxLength()), result);
 		evc.addElementVerifications(evcRst);
 
-		Datatype dt = p.getDatatypes().findOneDatatypeByLabel(c.getDatatype());
+		Datatype dt = p.getDatatypeLibrary().findOneDatatypeByLabel(c.getDatatype());
 		evc.addChildrenVerification(verifyDatatype(p, baseP, dt.getId(), dt.getType()));
 
-		Table t = p.getTables().findOneTableById(c.getTable());
+		Table t = p.getTableLibrary().findOneTableById(c.getTable());
 		evc.addChildrenVerification(verifyValueSet(p, baseP, t.getId(), t.getType()));
 
 		return evc;
@@ -325,7 +325,7 @@ public class VerificationService {
 	public ElementVerification verifyValueSetLibrary(Profile p, Profile baseP, String id, String type) {
 		// Type is ValueSet (or Table)
 		ElementVerification evTLib = new ElementVerification(id, type);
-		for (Table t : p.getTables().getChildren()){
+		for (Table t : p.getTableLibrary().getChildren()){
 			evTLib.addChildrenVerification(verifyValueSet(p, baseP, t.getId(), t.getType()));
 		}
 		return evTLib;
@@ -335,12 +335,12 @@ public class VerificationService {
 	public ElementVerification verifyValueSet(Profile p, Profile baseP, String id, String type) {
 		// Type is ValueSet (or Table)
 		String result = "";
-		Table t = p.getTables().findOneTableById(id);
+		Table t = p.getTableLibrary().findOneTableById(id);
 		ElementVerification evt = new ElementVerification(id, type);
 		for (Code c : t.getCodes()){
 			result = this.validateChangeUsage(p.getMetaData().getHl7Version(), 
-					Usage.fromValue(baseP.getTables().findOneCodeById(id).getCodeUsage()), 
-					Usage.fromValue(p.getTables().findOneCodeById(id).getCodeUsage()));
+					Usage.fromValue(baseP.getTableLibrary().findOneCodeById(id).getCodeUsage()), 
+					Usage.fromValue(p.getTableLibrary().findOneCodeById(id).getCodeUsage()));
 			ElementVerification evc = new ElementVerification(c.getId(), c.getType());
 			ElementVerificationResult evcRst = new ElementVerificationResult("usage", c.getCodeUsage(), result);
 			evc.addElementVerifications(evcRst);
@@ -353,7 +353,7 @@ public class VerificationService {
 	public InputStream verifyValueSet2(Profile p, Profile baseP, String id, String type) {
 		// Type is ValueSet (or Table)
 		String result = "";
-		Table t = p.getTables().findOneTableById(id);
+		Table t = p.getTableLibrary().findOneTableById(id);
 
 		try {
 			//Create temporary file
@@ -377,8 +377,8 @@ public class VerificationService {
 				generator.writeStringField("eltName", "usage");
 				generator.writeStringField("eltAtt", c.getCodeUsage());
 				result = this.validateChangeUsage(p.getMetaData().getHl7Version(), 
-						Usage.fromValue(baseP.getTables().findOneCodeById(id).getCodeUsage()), 
-						Usage.fromValue(p.getTables().findOneCodeById(id).getCodeUsage()));
+						Usage.fromValue(baseP.getTableLibrary().findOneCodeById(id).getCodeUsage()), 
+						Usage.fromValue(p.getTableLibrary().findOneCodeById(id).getCodeUsage()));
 				generator.writeStringField("result", result);
 				generator.writeEndObject();
 
@@ -417,21 +417,21 @@ public class VerificationService {
 			referenceUsage = basesrog_.getUsage(); 
 			break;
 		case "field":
-			Field f = p.getSegments().findOneField(id);
+			Field f = p.getSegmentLibrary().findOneField(id);
 			currentUsage = f.getUsage();
-			Field basef = baseP.getSegments().findOneField(id);
+			Field basef = baseP.getSegmentLibrary().findOneField(id);
 			referenceUsage = basef.getUsage(); 
 			break;
 		case "component":
-			Component c = p.getDatatypes().findOneComponent(id);
+			Component c = p.getDatatypeLibrary().findOneComponent(id);
 			currentUsage = c.getUsage();
-			Component basec = baseP.getDatatypes().findOneComponent(id);
+			Component basec = baseP.getDatatypeLibrary().findOneComponent(id);
 			referenceUsage = basec.getUsage();
 			break;
 		case "code":
-			Code cd = p.getTables().findOneCodeById(id);
+			Code cd = p.getTableLibrary().findOneCodeById(id);
 			currentUsage = Usage.fromValue(cd.getCodeUsage());
-			Code basecd = baseP.getTables().findOneCodeById(id);
+			Code basecd = baseP.getTableLibrary().findOneCodeById(id);
 			referenceUsage = Usage.fromValue(basecd.getCodeUsage());
 			break;
 		}
@@ -459,21 +459,21 @@ public class VerificationService {
 			referenceUsage = basesrog.getUsage(); 
 			break;
 		case "field":
-			Field f = p.getSegments().findOneField(id);
+			Field f = p.getSegmentLibrary().findOneField(id);
 			currentUsage = f.getUsage();
-			Field basef = baseP.getSegments().findOneField(id);
+			Field basef = baseP.getSegmentLibrary().findOneField(id);
 			referenceUsage = basef.getUsage(); 
 			break;
 		case "component":
-			Component c = p.getDatatypes().findOneComponent(id);
+			Component c = p.getDatatypeLibrary().findOneComponent(id);
 			currentUsage = c.getUsage();
-			Component basec = baseP.getDatatypes().findOneComponent(id);
+			Component basec = baseP.getDatatypeLibrary().findOneComponent(id);
 			referenceUsage = basec.getUsage();
 			break;
 		case "code":
-			Code cd = p.getTables().findOneCodeById(id);
+			Code cd = p.getTableLibrary().findOneCodeById(id);
 			currentUsage = Usage.fromValue(cd.getCodeUsage());
-			Code basecd = baseP.getTables().findOneCodeById(id);
+			Code basecd = baseP.getTableLibrary().findOneCodeById(id);
 			referenceUsage = Usage.fromValue(basecd.getCodeUsage());
 			break;
 		}
@@ -486,7 +486,7 @@ public class VerificationService {
 		//Type can be Field
 		//EltName can be cardMin or cardMax
 
-		Field f = p.getSegments().findOneField(id);
+		Field f = p.getSegmentLibrary().findOneField(id);
 
 		String currentMin = (String) (eltName.equalsIgnoreCase("min") ? eltValue : f.getMin());
 		String currentMax = (String) (eltName.equalsIgnoreCase("max") ? eltValue : f.getMax());
@@ -504,7 +504,7 @@ public class VerificationService {
 		//Type can be Field
 		//EltName can be cardMin or cardMax
 
-		Field f = p.getSegments().findOneField(id);
+		Field f = p.getSegmentLibrary().findOneField(id);
 
 		String currentMin = (String) (eltName.equalsIgnoreCase("min") ? eltValue : f.getMin());
 		String currentMax = (String) (eltName.equalsIgnoreCase("max") ? eltValue : f.getMax());
@@ -522,7 +522,7 @@ public class VerificationService {
 		String currentMaxLength = "";
 		Field f; Component c;
 		if (type.equalsIgnoreCase("field")){
-			f = p.getSegments().findOneField(id);
+			f = p.getSegmentLibrary().findOneField(id);
 			switch(eltName){
 			case "minLength":
 				currentMinLength = eltValue;
@@ -536,7 +536,7 @@ public class VerificationService {
 		}
 
 		if (type.equalsIgnoreCase("component")){
-			c = p.getDatatypes().findOneComponent(id);
+			c = p.getDatatypeLibrary().findOneComponent(id);
 
 			switch(eltName){
 			case "minLength":
@@ -564,7 +564,7 @@ public class VerificationService {
 		String currentMaxLength = "";
 		Field f; Component c;
 		if (type.equalsIgnoreCase("field")){
-			f = p.getSegments().findOneField(id);
+			f = p.getSegmentLibrary().findOneField(id);
 			switch(eltName){
 			case "minLength":
 				currentMinLength = eltValue;
@@ -578,7 +578,7 @@ public class VerificationService {
 		}
 
 		if (type.equalsIgnoreCase("component")){
-			c = p.getDatatypes().findOneComponent(id);
+			c = p.getDatatypeLibrary().findOneComponent(id);
 
 			switch(eltName){
 			case "minLength":

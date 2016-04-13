@@ -167,12 +167,24 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 	}
 
 	public void delete(String id) {
-		Table d = findOne(id);
+		Table d = findOneTableById(id);
 		if (d != null)
 			this.children.remove(d);
 	}
 
-	public Table findOne(String id) {
+	public boolean deleteCode(String id) {
+		if (this.children != null) {
+			for (Table m : this.children) {
+				Code c = m.findOneCodeById(id);
+				if (c != null) {
+					return m.deleteCode(c);
+				}
+			}
+		}
+		return false;
+	}
+	
+	public Table findOneTableById(String id) {
 		if (this.children != null) {
 			for (Table m : this.children) {
 				if (m.getId().equals(id)) {
@@ -196,7 +208,7 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		return null;
 	}
 	
-	public Code findOneCode(String id) {
+	public Code findOneCodeById(String id) {
 		if (this.children != null)
 			for (Table m : this.children) {
 				Code c = findOneCode(id, m);
@@ -313,4 +325,15 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		}
 		return null;
 	}
+	
+	public Table findOneTableByName(String name) {
+		if (this.children != null) {
+			for (Table t: this.children){
+				if (t.getName().equals(name)){
+					return t;
+				}
+			}
+		}
+		return null;
+	}	
 }

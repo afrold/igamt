@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.bson.types.ObjectId;
 
+@Deprecated
 public class Datatypes extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;

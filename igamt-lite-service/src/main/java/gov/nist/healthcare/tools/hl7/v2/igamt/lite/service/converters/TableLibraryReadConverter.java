@@ -56,7 +56,7 @@ public class TableLibraryReadConverter extends AbstractReadConverter<DBObject, T
 		if (tabLibDBObjects != null) {
 			for (Object childObj : tabLibDBObjects) {
 				DBObject child = (DBObject) childObj;
-				if (tabLib.findOne(readMongoId(child)) == null) {
+				if (tabLib.findTableById(readMongoId(child)) == null) {
 					tabLib.addTable(tabCnv.convert(child));
 				}
 			}

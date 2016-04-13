@@ -46,8 +46,6 @@ import nu.xom.ValidityException;
 
 import org.apache.commons.lang3.StringUtils;
 
-
-
 public class ProfileDiffSerializationImpl {
 
 	private ProfileDiffImpl diff;
@@ -130,7 +128,7 @@ public class ProfileDiffSerializationImpl {
 		// Segments 
 		nu.xom.Element ss = new nu.xom.Element("Segments");
 
-		for (Segment s1: p1.getSegments().getChildren()){
+		for (Segment s1: p1.getSegmentLibrary().getChildren()){
 			if (this.diff.findOneBySegmentId(s1.getId()) != null 
 					| this.diff.findOneByFieldParentId(s1.getId()) != null){
 
@@ -176,7 +174,7 @@ public class ProfileDiffSerializationImpl {
 		//Datatypes
 		nu.xom.Element ds = new nu.xom.Element("Datatypes");
 
-		for (Datatype d : p1.getDatatypes().getChildren()) {
+		for (Datatype d : p1.getDatatypeLibrary().getChildren()) {
 			//FIXME Check if necessary			if (d.getLabel().contains("_")) {
 			if (this.diff.findOneByDatatypeId(d.getId()) != null |
 					this.diff.findOneByComponentParentId(d.getId()) != null){
@@ -223,7 +221,7 @@ public class ProfileDiffSerializationImpl {
 
 
 		nu.xom.Element ts = new nu.xom.Element("Tables");
-		for (Table t : p1.getTables().getChildren()) {
+		for (Table t : p1.getTableLibrary().getChildren()) {
 
 			if (this.diff.findOneByTableId(t.getId()) != null | 
 					this.diff.findOneByCodeParentId(t.getId()) != null){
@@ -307,7 +305,7 @@ public class ProfileDiffSerializationImpl {
 		nu.xom.Element elmf = new nu.xom.Element("Field");
 
 		if (ec.getChangeType().equals("edit")){
-			Field f = p1.getSegments().findOneField(ec.getId());
+			Field f = p1.getSegmentLibrary().findOneField(ec.getId());
 			elmf.addAttribute(new Attribute("Name", f.getName()));
 			elmf.addAttribute(new Attribute("Position", String.valueOf(f.getPosition())));
 
@@ -320,7 +318,7 @@ public class ProfileDiffSerializationImpl {
 			}
 		}
 		if (ec.getChangeType().equals("del")){
-			Field f = p1.getSegments().findOneField(ec.getId());
+			Field f = p1.getSegmentLibrary().findOneField(ec.getId());
 
 			System.out.println("Diff=del");
 			System.out.println(ec.getChange().get("deleted").get("basevalue"));
@@ -329,7 +327,7 @@ public class ProfileDiffSerializationImpl {
 			elmf.addAttribute(new Attribute("Position", String.valueOf(f.getPosition())));
 		}
 		if (ec.getChangeType().equals("add")){
-			Field f = p2.getSegments().findOneField(ec.getId());
+			Field f = p2.getSegmentLibrary().findOneField(ec.getId());
 
 			System.out.println("Diff=add");
 			System.out.println(ec.getChange().get("added").get("newvalue"));
@@ -370,7 +368,7 @@ public class ProfileDiffSerializationImpl {
 
 
 		if (ec.getChangeType().equals("edit")){
-			Component c = p1.getDatatypes().findOneComponent(ec.getId());
+			Component c = p1.getDatatypeLibrary().findOneComponent(ec.getId());
 			elmc.addAttribute(new Attribute("Name", c.getName()));
 			elmc.addAttribute(new Attribute("Position", String.valueOf(c.getPosition())));
 			elmc.addAttribute(new Attribute("Diff", "edit"));
@@ -381,13 +379,13 @@ public class ProfileDiffSerializationImpl {
 			}
 		}
 		if (ec.getChangeType().equals("del")){
-			Component c = p1.getDatatypes().findOneComponent(ec.getId());
+			Component c = p1.getDatatypeLibrary().findOneComponent(ec.getId());
 			elmc.addAttribute(new Attribute("Name", c.getName()));
 			elmc.addAttribute(new Attribute("Position", String.valueOf(c.getPosition())));
 			elmc.addAttribute(new Attribute("Diff", "del"));
 		}
 		if (ec.getChangeType().equals("add")){
-			Component c = p2.getDatatypes().findOneComponent(ec.getId());
+			Component c = p2.getDatatypeLibrary().findOneComponent(ec.getId());
 			elmc.addAttribute(new Attribute("Name", c.getName()));
 			elmc.addAttribute(new Attribute("Position", String.valueOf(c.getPosition())));
 			elmc.addAttribute(new Attribute("Diff", "add"));
@@ -425,7 +423,7 @@ public class ProfileDiffSerializationImpl {
 		nu.xom.Element elmc = new nu.xom.Element("TableElement");
 
 		if (ec.getChangeType().equals("edit")){
-			Code c = p1.getTables().findOneCodeById(ec.getId());
+			Code c = p1.getTableLibrary().findOneCodeById(ec.getId());
 			elmc.addAttribute(new Attribute("Id", c.getId()));
 			elmc.addAttribute(new Attribute("Diff", "edit"));
 
@@ -434,13 +432,13 @@ public class ProfileDiffSerializationImpl {
 			}
 		}
 		if (ec.getChangeType().equals("del")){
-			Code c = p1.getTables().findOneCodeById(ec.getId());
+			Code c = p1.getTableLibrary().findOneCodeById(ec.getId());
 			elmc.addAttribute(new Attribute("Id", c.getId()));
 			elmc.addAttribute(new Attribute("Diff", "del"));
 			elmc.addAttribute(new Attribute("Name", ec.getChange().get("deleted").get("basevalue")));
 		}
 		if (ec.getChangeType().equals("add")){
-			Code c = p2.getTables().findOneCodeById(ec.getId());
+			Code c = p2.getTableLibrary().findOneCodeById(ec.getId());
 			elmc.addAttribute(new Attribute("Id", c.getId()));
 			elmc.addAttribute(new Attribute("Name", ec.getChange().get("added").get("newvalue")));
 			elmc.addAttribute(new Attribute("Diff", "add"));
@@ -488,19 +486,19 @@ public class ProfileDiffSerializationImpl {
 					.toArray(new Message[] {})[0];
 			SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
 			Group group = (Group) message.getChildren().get(5);
-			Segment segment = p2.getSegments().findOneSegmentById(segmentRef.getRef());
+			Segment segment = p2.getSegmentLibrary().findOneSegmentById(segmentRef.getRef());
 			Field field = segment.getFields().get(0);
-			Datatype datatype = p2.getDatatypes().getChildren()
+			Datatype datatype = p2.getDatatypeLibrary().getChildren()
 					.toArray(new Datatype[] {})[0];
 			Component component = datatype.getComponents().get(0);
-			Table table = p2.getTables().getChildren().toArray(new Table[] {})[0];
+			Table table = p2.getTableLibrary().getChildren().toArray(new Table[] {})[0];
 			Code code = table.getCodes().get(0);
 
 
 			//Fake addition
 			SegmentRef segmentRef3 = (SegmentRef) message.getChildren().get(4);
-			Segment segment3 = p1.getSegments().findOneSegmentById(segmentRef3.getRef());
-			p1.getSegments().delete(segment3.getId());
+			Segment segment3 = p1.getSegmentLibrary().findOneSegmentById(segmentRef3.getRef());
+			p1.getSegmentLibrary().delete(segment3.getId());
 
 
 			segmentRef.setMin(456);

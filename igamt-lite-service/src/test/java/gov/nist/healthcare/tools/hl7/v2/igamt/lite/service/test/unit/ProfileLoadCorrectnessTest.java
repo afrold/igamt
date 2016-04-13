@@ -59,7 +59,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileExportService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
@@ -195,7 +195,7 @@ public class ProfileLoadCorrectnessTest {
 		if (segmentsDBObjects != null) {
 			for (Object child : segmentsDBObjects) {
 				String id = (String) ((DBObject) child).get("id");
-				Segment seg = p.getSegments().findOneSegmentById(id);
+				Segment seg = p.getSegmentLibrary().findOneSegmentById(id);
 				if (seg == null){
 					fail("Segment not found");
 				} else {
@@ -255,7 +255,7 @@ public class ProfileLoadCorrectnessTest {
 			for (Object childObj : datatypesDBObjects) {
 				DBObject child = (DBObject) childObj;
 				String label = (String) ((DBObject) child).get("label");
-				Datatype dt = p.getDatatypes().findOneDatatypeByLabel(label);
+				Datatype dt = p.getDatatypeLibrary().findOneDatatypeByLabel(label);
 
 				if (dt == null){
 					fail("Datatype not found");
@@ -272,7 +272,7 @@ public class ProfileLoadCorrectnessTest {
 					if (componentsObjects != null) {
 						for (Object componentObject : componentsObjects) {
 							String id = (String) ((DBObject) componentObject).get("id");
-							Component c = p.getDatatypes().findOneComponent(id);
+							Component c = p.getDatatypeLibrary().findOneComponent(id);
 
 							assertEquals((String) ((DBObject) componentObject).get("type"), c.getType());
 							assertEquals((String) ((DBObject) componentObject).get("name"), c.getName());
@@ -299,14 +299,13 @@ public class ProfileLoadCorrectnessTest {
 	public void testTables() {
 
 		DBObject tablesJson = (DBObject) jsonObject.get("tables");
-		Tables vsd = p.getTables();
+		TableLibrary vsd = p.getTableLibrary();
 
 		assertEquals((String) ((DBObject) tablesJson).get("valueSetLibraryIdentifier"), vsd.getValueSetLibraryIdentifier());
 		assertEquals((String) ((DBObject) tablesJson).get("valueSetLibraryVersion"), vsd.getValueSetLibraryVersion());
 		assertEquals((String) ((DBObject) tablesJson).get("valueSetLibraryStatus"), vsd.getStatus());
 		assertEquals((String) ((DBObject) tablesJson).get("organizationName"), vsd.getOrganizationName());
 		assertEquals((String) ((DBObject) tablesJson).get("description"), vsd.getDescription());
-		assertEquals((String) ((DBObject) tablesJson).get("name"), vsd.getName());
 		assertEquals((String) ((DBObject) tablesJson).get("dateCreated"), vsd.getDateCreated());
 
 		BasicDBList valueSetsDBObjects = (BasicDBList) tablesJson.get("children");
@@ -314,7 +313,7 @@ public class ProfileLoadCorrectnessTest {
 			for (Object childObj : valueSetsDBObjects) {
 				DBObject child = (DBObject) childObj;
 				String name = (String) ((DBObject) child).get("name");
-				Table vs = p.getTables().findOneTableByName(name);
+				Table vs = p.getTableLibrary().findOneTableByName(name);
 
 				if (vs == null){
 					fail("ValueSet not found");
@@ -338,7 +337,7 @@ public class ProfileLoadCorrectnessTest {
 							DBObject codeElm = (DBObject) codeObject;
 
 							String id = (String) ((DBObject) codeElm).get("id");
-							Code c = p.getTables().findOneCodeById(id);
+							Code c = p.getTableLibrary().findOneCodeById(id);
 
 							assertEquals((String) ((DBObject) codeElm).get("type"), c.getType());
 							assertEquals((String) ((DBObject) codeElm).get("comment"), c.getComments());

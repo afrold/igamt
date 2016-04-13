@@ -14,7 +14,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementChange;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
@@ -27,9 +27,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SchemaVersion;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
@@ -308,7 +308,7 @@ public class ProfileDiffImpl {
 							.findOneSegmentRefOrGroup(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
 					if (srog instanceof SegmentRef) {
-						Segment s = p1.getSegments().findOneSegmentById(
+						Segment s = p1.getSegmentLibrary().findOneSegmentById(
 								((SegmentRef) srog).getRef());
 						deltaDocument.add(new Paragraph(s.getLabel()
 								+ " edited", eltNameFont));
@@ -350,7 +350,7 @@ public class ProfileDiffImpl {
 				deltaDocument.add(new Paragraph("No changes", valueFont));
 			for (ElementChange ec : this.segmentsChanges) {
 				if (ec.getChangeType().equals("edit")) {
-					Segment s = p1.getSegments().findOneSegmentById(ec.getId());
+					Segment s = p1.getSegmentLibrary().findOneSegmentById(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
 					deltaDocument.add(new Paragraph(s.getLabel() + " edited",
 							eltNameFont));
@@ -368,12 +368,12 @@ public class ProfileDiffImpl {
 				}
 				if (ec.getChangeType().equals("del")) {
 					deltaDocument.add(Chunk.NEWLINE);
-					Segment s = p1.getSegments().findOneSegmentById(ec.getId());
+					Segment s = p1.getSegmentLibrary().findOneSegmentById(ec.getId());
 					deltaDocument.add(new Paragraph(s.getLabel() + " deleted",
 							eltNameFont));
 				}
 				if (ec.getChangeType().equals("add")) {
-					Segment s = p2.getSegments().findOneSegmentById(ec.getId());
+					Segment s = p2.getSegmentLibrary().findOneSegmentById(ec.getId());
 					deltaDocument.add(new Paragraph(s.getLabel() + " added",
 							eltNameFont));
 				}
@@ -386,7 +386,7 @@ public class ProfileDiffImpl {
 			}
 			for (ElementChange ec : this.fieldsChanges) {
 				if (ec.getChangeType().equals("edit")) {
-					Field f = p1.getSegments().findOneField(ec.getId());
+					Field f = p1.getSegmentLibrary().findOneField(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
 					deltaDocument.add(new Paragraph(f.getName() + " edited",
 							eltNameFont));
@@ -403,13 +403,13 @@ public class ProfileDiffImpl {
 					}
 				}
 				if (ec.getChangeType().equals("del")) {
-					Field f = p1.getSegments().findOneField(ec.getId());
+					Field f = p1.getSegmentLibrary().findOneField(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
 					deltaDocument.add(new Paragraph(f.getName() + " deleted",
 							eltNameFont));
 				}
 				if (ec.getChangeType().equals("add")) {
-					Field f = p2.getSegments().findOneField(ec.getId());
+					Field f = p2.getSegmentLibrary().findOneField(ec.getId());
 					deltaDocument.add(new Paragraph(f.getName() + " added",
 							eltNameFont));
 				}
@@ -421,7 +421,7 @@ public class ProfileDiffImpl {
 				deltaDocument.add(new Paragraph("No changes", valueFont));
 			for (ElementChange ec : this.datatypesChanges) {
 				if (ec.getChangeType().equals("edit")) {
-					Datatype d = p1.getDatatypes().findOne(ec.getId());
+					Datatype d = p1.getDatatypeLibrary().findOne(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
 					deltaDocument.add(new Paragraph(d.getLabel() + " edited",
 							eltNameFont));
@@ -438,13 +438,13 @@ public class ProfileDiffImpl {
 					}
 				}
 				if (ec.getChangeType().equals("del")) {
-					Datatype d = p1.getDatatypes().findOne(ec.getId());
+					Datatype d = p1.getDatatypeLibrary().findOne(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
 					deltaDocument.add(new Paragraph(d.getLabel() + " deleted",
 							eltNameFont));
 				}
 				if (ec.getChangeType().equals("add")) {
-					Datatype d = p1.getDatatypes().findOne(ec.getId());
+					Datatype d = p1.getDatatypeLibrary().findOne(ec.getId());
 					deltaDocument.add(new Paragraph(d.getLabel() + " added",
 							eltNameFont));
 				}
@@ -457,7 +457,7 @@ public class ProfileDiffImpl {
 				deltaDocument.add(new Paragraph("No changes", valueFont));
 			for (ElementChange ec : this.componentsChanges) {
 				if (ec.getChangeType().equals("edit")) {
-					Component c = p1.getDatatypes()
+					Component c = p1.getDatatypeLibrary()
 							.findOneComponent(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
 					deltaDocument.add(new Paragraph(c.getName() + " edited",
@@ -475,14 +475,14 @@ public class ProfileDiffImpl {
 					}
 				}
 				if (ec.getChangeType().equals("del")) {
-					Component c = p1.getDatatypes()
+					Component c = p1.getDatatypeLibrary()
 							.findOneComponent(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
 					deltaDocument.add(new Paragraph(c.getName() + " deleted",
 							eltNameFont));
 				}
 				if (ec.getChangeType().equals("add")) {
-					Component c = p1.getDatatypes()
+					Component c = p1.getDatatypeLibrary()
 							.findOneComponent(ec.getId());
 					deltaDocument.add(Chunk.NEWLINE);
 					deltaDocument.add(new Paragraph(c.getName() + " added",
@@ -752,7 +752,7 @@ public class ProfileDiffImpl {
 	}
 
 	private void compareMessages(Messages mlib1, Messages mlib2,
-			Segments slib1, Segments slib2) {
+			SegmentLibrary slib1, SegmentLibrary slib2) {
 		for (Message m : mlib1.getChildren()) {
 			for (SegmentRefOrGroup srog : m.getChildren()) {
 				ElementChange ec = new ElementChange(srog.getId(), m.getId());
@@ -807,7 +807,7 @@ public class ProfileDiffImpl {
 		}
 	}
 
-	private void compareSegRef(SegmentRefOrGroup sr, Segments s1, Messages mlib2) {
+	private void compareSegRef(SegmentRefOrGroup sr, SegmentLibrary s1, Messages mlib2) {
 		ElementChange ec = new ElementChange(sr.getId(), s1.getId());
 		if (mlib2.findOneSegmentRefOrGroup(sr.getId()) == null) {
 			Segment s = s1.findOneSegmentById(((SegmentRef) sr).getRef());
@@ -837,7 +837,7 @@ public class ProfileDiffImpl {
 		// TODO add added segrefs (case when srog had been added)
 	}
 
-	private void compareGroups(SegmentRefOrGroup g, Segments slib1,
+	private void compareGroups(SegmentRefOrGroup g, SegmentLibrary slib1,
 			Messages mlib2) {
 		ElementChange ec = new ElementChange(g.getId(), slib1.getId());
 		if (mlib2.findOneSegmentRefOrGroup(g.getId()) == null) {
@@ -874,7 +874,7 @@ public class ProfileDiffImpl {
 		}
 	}
 
-	private void compareSegments(Segments slib1, Segments slib2) {
+	private void compareSegments(SegmentLibrary slib1, SegmentLibrary slib2) {
 		for (Segment s : slib1.getChildren()) {
 			ElementChange ec = new ElementChange(s.getId(), slib1.getId());
 			if (slib2.findOneSegmentById(s.getId()) == null) {
@@ -994,7 +994,7 @@ public class ProfileDiffImpl {
 		}
 	}
 
-	private void compareFields(Segments slib1, Segments slib2) {
+	private void compareFields(SegmentLibrary slib1, SegmentLibrary slib2) {
 		for (Segment s : slib1.getChildren()) {
 			for (Field f : s.getFields()) {
 				ElementChange ec = new ElementChange(f.getId(), s.getId());
@@ -1084,7 +1084,7 @@ public class ProfileDiffImpl {
 		}
 	}
 
-	private void compareDatatypes(Datatypes dlib1, Datatypes dlib2) {
+	private void compareDatatypes(DatatypeLibrary dlib1, DatatypeLibrary dlib2) {
 		for (Datatype dt : dlib1.getChildren()) {
 			ElementChange ec = new ElementChange(dt.getId(), dlib1.getId());
 			if (dlib2.findOne(dt.getId()) == null) {
@@ -1189,7 +1189,7 @@ public class ProfileDiffImpl {
 		}
 	}
 
-	private void compareComponents(Datatypes dlib1, Datatypes dlib2) {
+	private void compareComponents(DatatypeLibrary dlib1, DatatypeLibrary dlib2) {
 		for (Datatype dt : dlib1.getChildren()) {
 			for (Component c : dt.getComponents()) {
 				ElementChange ec = new ElementChange(c.getId(), dt.getId());
@@ -1263,7 +1263,7 @@ public class ProfileDiffImpl {
 		}
 	}
 
-	private void compareTables(Tables tables, Tables tables2) {
+	private void compareTables(TableLibrary tables, TableLibrary tables2) {
 		for (Table t : tables.getChildren()) {
 			ElementChange ec = new ElementChange(t.getId(), tables.getId());
 			if (tables2.findOneTableById(t.getId()) == null) {
@@ -1289,7 +1289,7 @@ public class ProfileDiffImpl {
 		}
 	}
 
-	private void compareCodes(Tables tables, Tables tables2) {
+	private void compareCodes(TableLibrary tables, TableLibrary tables2) {
 		for (Table t : tables.getChildren()) {
 			for (Code c : t.getCodes()) {
 				ElementChange ec = new ElementChange(c.getId(), t.getId());
@@ -1335,15 +1335,15 @@ public class ProfileDiffImpl {
 		this.compareMetaData(p1.getMetaData(), p2.getMetaData());
 		this.compareMessageDefinition(p1.getMessages(), p2.getMessages());
 		this.compareMessages(p1.getMessages(), p2.getMessages(),
-				p1.getSegments(), p2.getSegments());
-		this.compareSegments(p1.getSegments(), p2.getSegments()); // includes
+				p1.getSegmentLibrary(), p2.getSegmentLibrary());
+		this.compareSegments(p1.getSegmentLibrary(), p2.getSegmentLibrary()); // includes
 																	// constraints
-		this.compareFields(p1.getSegments(), p2.getSegments());
-		this.compareDatatypes(p1.getDatatypes(), p2.getDatatypes()); // includes
+		this.compareFields(p1.getSegmentLibrary(), p2.getSegmentLibrary());
+		this.compareDatatypes(p1.getDatatypeLibrary(), p2.getDatatypeLibrary()); // includes
 																		// constraints
-		this.compareComponents(p1.getDatatypes(), p2.getDatatypes());
-		this.compareTables(p1.getTables(), p2.getTables());
-		this.compareCodes(p1.getTables(), p2.getTables());
+		this.compareComponents(p1.getDatatypeLibrary(), p2.getDatatypeLibrary());
+		this.compareTables(p1.getTableLibrary(), p2.getTableLibrary());
+		this.compareCodes(p1.getTableLibrary(), p2.getTableLibrary());
 	}
 
 	private void clear() {
@@ -1881,15 +1881,15 @@ public class ProfileDiffImpl {
 					.toArray(new Message[] {})[0];
 			SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
 			Group group = (Group) message.getChildren().get(5);
-			Segment segment = p2.getSegments().findOneSegmentById(segmentRef.getRef());
+			Segment segment = p2.getSegmentLibrary().findOneSegmentById(segmentRef.getRef());
 			Field field = segment.getFields().get(0);
-			Datatype datatype = p2.getDatatypes().getChildren()
+			Datatype datatype = p2.getDatatypeLibrary().getChildren()
 					.toArray(new Datatype[] {})[0];
 
 			// Fake addition
 			SegmentRef segmentRef3 = (SegmentRef) message.getChildren().get(4);
-			Segment segment3 = p1.getSegments().findOneSegmentById(segmentRef3.getRef());
-			p1.getSegments().delete(segment3.getId());
+			Segment segment3 = p1.getSegmentLibrary().findOneSegmentById(segmentRef3.getRef());
+			p1.getSegmentLibrary().delete(segment3.getId());
 
 			segmentRef.setMin(3);
 			segmentRef.setMax("94969");

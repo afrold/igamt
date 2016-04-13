@@ -135,7 +135,7 @@ public class IGExportTest {
 		try {
 			igs = igService.findAll();
 			ig = igs.get(0);
-			Datatype d = (Datatype) ig.getProfile().getDatatypes().getChildren().toArray()[0];
+			Datatype d = (Datatype) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
 
 			content = igExport.exportAsHtmlDatatype(d, ig);
 			assertNotNull(content);
@@ -154,7 +154,7 @@ public class IGExportTest {
 		try {
 			igs = igService.findAll();
 			ig = igs.get(0);
-			Datatype d = (Datatype) ig.getProfile().getDatatypes().getChildren().toArray()[0];
+			Datatype d = (Datatype) ig.getProfile().getDatatypeLibrary().getChildren().toArray()[0];
 
 			content = igExport.exportAsDocxDatatype(d, ig);
 			assertNotNull(content);
