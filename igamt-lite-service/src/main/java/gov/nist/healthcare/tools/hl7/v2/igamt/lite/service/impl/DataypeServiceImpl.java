@@ -31,12 +31,17 @@ public class DataypeServiceImpl implements DatatypeService {
 	Logger log = LoggerFactory.getLogger(DataypeServiceImpl.class);
 
 	@Autowired
-	private DatatypeRepository datatypesRepository;
+	private DatatypeRepository datatypeRepository;
 
 	@Override
 	public List<Datatype> findAll() {
-		List<Datatype> datatypes = datatypesRepository.findAll();
+		List<Datatype> datatypes = datatypeRepository.findAll();
 		log.info("datatypes=" + datatypes.size());
 		return datatypes;
+	}
+	
+	@Override
+	public Datatype save(Datatype datatype) {
+		return datatypeRepository.save(datatype);
 	}
 }

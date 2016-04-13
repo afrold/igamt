@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
@@ -25,34 +27,27 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
 	private String id;
 
 	private Long accountId;
-	
+
 	private String date;
-	
+
+	private String ext;
+
 	private DatatypeLibraryMetaData metaData;
+
+	private Constant.SCOPE scope;
 	
-	public enum SCOPE {HL7STANDARD, MASTER, USER};
- 
 	public DatatypeLibrary() {
 		super();
-		this.id = ObjectId.get().toString();
-	}
-	
-	private SCOPE scope;
-
-	public SCOPE getScope() {
-		return scope;
 	}
 
-	public void setScope(SCOPE scope) {
-		this.scope = scope;
-	}
-
+	@JsonIgnoreProperties(value= {"components", "usageNote","predicates","conformanceStatements","accountId"})
 	@DBRef
 	private Set<Datatype> children = new HashSet<Datatype>();
-	
+
 	@DBRef
 	private Set<Table> tables = new HashSet<Table>();
 
@@ -88,7 +83,16 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.children = children;
 	}
 
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
+	}
+
 	public void addDatatype(Datatype d) {
+		d.setLibId(this.id);
 		children.add(d);
 	}
 
@@ -120,15 +124,14 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	public Datatype findOneByNameAndByLabel(String name, String label) {
 		if (this.children != null) {
 			for (Datatype dt : this.children) {
-				if (dt.getName().equals(name) 
-						&& dt.getLabel().equals(label)) {
+				if (dt.getName().equals(name) && dt.getLabel().equals(label)) {
 					return dt;
 				}
 			}
 		}
 		return null;
 	}
-	
+
 	public Component findOneComponent(String id) {
 		if (this.children != null)
 			for (Datatype m : this.children) {
@@ -147,8 +150,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 				if (c.getId().equals(id)) {
 					return c;
 				} else {
-					Component r = findOneComponent(id,
-							this.findOne(c.getDatatype()));
+					Component r = findOneComponent(id, this.findOne(c.getDatatype()));
 					if (r != null) {
 						return r;
 					}
@@ -167,11 +169,11 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 			}
 		return null;
 	}
-	
-	public Datatype findOneDatatypeByBase(String baseName){
+
+	public Datatype findOneDatatypeByBase(String baseName) {
 		if (this.children != null)
-			for (Datatype d : this.children){
-				if(d.getName().equals(baseName)) {
+			for (Datatype d : this.children) {
+				if (d.getName().equals(baseName)) {
 					return d;
 				}
 			}
@@ -188,11 +190,9 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		return null;
 	}
 
-	public ConformanceStatement findOneConformanceStatement(
-			String conformanceStatementId) {
+	public ConformanceStatement findOneConformanceStatement(String conformanceStatementId) {
 		for (Datatype datatype : this.getChildren()) {
-			ConformanceStatement conf = datatype
-					.findOneConformanceStatement(conformanceStatementId);
+			ConformanceStatement conf = datatype.findOneConformanceStatement(conformanceStatementId);
 			if (conf != null) {
 				return conf;
 			}
@@ -218,8 +218,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		return false;
 	}
 
-	public DatatypeLibrary clone(HashMap<String, Datatype> dtRecords,
-			HashMap<String, Table> tableRecords)
+	public DatatypeLibrary clone(HashMap<String, Datatype> dtRecords, HashMap<String, Table> tableRecords)
 			throws CloneNotSupportedException {
 		DatatypeLibrary clonedDatatypes = new DatatypeLibrary();
 		clonedDatatypes.setChildren(new HashSet<Datatype>());
@@ -236,29 +235,32 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 		return clonedDatatypes;
 	}
-	
-	public void merge(DatatypeLibrary dts){
-		for (Datatype dt : dts.getChildren()){
-			if (this.findOneByNameAndByLabel(dt.getName(), dt.getLabel()) == null){
+
+	public void merge(DatatypeLibrary dts) {
+		for (Datatype dt : dts.getChildren()) {
+			if (this.findOneByNameAndByLabel(dt.getName(), dt.getLabel()) == null) {
 				this.addDatatype(dt);
 			} else {
-				dt.setId(this.findOneByNameAndByLabel(dt.getName(), dt.getLabel()).getId()); //FIXME Probably useless...
+				dt.setId(this.findOneByNameAndByLabel(dt.getName(), dt.getLabel()).getId()); // FIXME
+																								// Probably
+																								// useless...
 			}
 		}
-		
+
 	}
-	
-	public void setPositionsOrder(){
+
+	public void setPositionsOrder() {
 		List<Datatype> sortedList = new ArrayList<Datatype>(this.getChildren());
 		Collections.sort(sortedList);
-		for (Datatype elt: sortedList) {
+		for (Datatype elt : sortedList) {
 			elt.setSectionPosition(sortedList.indexOf(elt));
 		}
 	}
-	
+
 	@JsonIgnore
 	public Constraints getConformanceStatements() {
-		//TODO Only byID constraints are considered; might want to consider byName
+		// TODO Only byID constraints are considered; might want to consider
+		// byName
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 
@@ -277,10 +279,11 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		constraints.setDatatypes(dtContext);
 		return constraints;
 	}
-	
+
 	@JsonIgnore
 	public Constraints getPredicates() {
-		//TODO Only byID constraints are considered; might want to consider byName
+		// TODO Only byID constraints are considered; might want to consider
+		// byName
 		Constraints constraints = new Constraints();
 		Context dtContext = new Context();
 
@@ -315,14 +318,14 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	public void setTables(Set<Table> tables) {
 		this.tables = tables;
 	}
-	
-	public Table addTable(Table t){
+
+	public Table addTable(Table t) {
 		if (!this.tables.contains(t)) {
 			this.tables.add(t);
 		}
 		return t;
 	}
-	
+
 	public Table findTableById(String id) {
 		if (this.tables != null) {
 			for (Table t : this.tables) {
@@ -334,7 +337,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 
 		return null;
 	}
-	
+
 	public Table findTableByBindingIdentifier(String bindingIdentifier) {
 		if (this.tables != null) {
 			for (Table t : this.tables) {
@@ -345,6 +348,5 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		}
 		return null;
 	}
-	
 
 }

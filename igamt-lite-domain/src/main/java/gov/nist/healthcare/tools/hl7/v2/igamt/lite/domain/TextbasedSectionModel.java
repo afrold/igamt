@@ -1,7 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 
-public abstract class TextbasedSectionModel extends SectionModel{
+public abstract class TextbasedSectionModel extends SectionModel {
 
 	protected String sectionTitle;
 	protected String sectionDescription;
@@ -30,5 +30,4 @@ public abstract class TextbasedSectionModel extends SectionModel{
 	public void setSectionContents(String sectionContents) {
 		this.sectionContents = sectionContents;
 	}
-
 }

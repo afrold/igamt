@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEventFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
@@ -47,16 +48,16 @@ public class MessageEventFactoryTest {
 
 	// @Test
 	public void testCreateMessageEvents() {
-//		List<IGDocument> igds = igDocumentRepository
-//				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
-//		IGDocument igd = igds.get(0);
-//		List<Message> msgs = new ArrayList<Message>();
-//		Collections.addAll(msgs, igd.getProfile().getMessages().getChildren()
-//				.toArray(new Message[igd.getProfile().getMessages().getChildren().size()]));
-//		MessageEventFactory sut = new MessageEventFactory(igd);
-//		List<MessageEvents> mes = sut.createMessageEvents(msgs);
-//		assertNotNull(mes);
-//		assertEquals(msgs.size(), mes.size());
+		List<IGDocument> igds = igDocumentRepository
+				.findByScopeAndProfile_MetaData_Hl7Version(IGDocumentScope.HL7STANDARD, "2.5.1");
+		IGDocument igd = igds.get(0);
+		Messages msgs = new Messages();
+		Collections.addAll(msgs.getChildren(), igd.getProfile().getMessages().getChildren()
+				.toArray(new Message[igd.getProfile().getMessages().getChildren().size()]));
+		MessageEventFactory sut = new MessageEventFactory(igd);
+		List<MessageEvents> mes = sut.createMessageEvents(msgs);
+		assertNotNull(mes);
+		assertEquals(msgs.getChildren().size(), mes.size());
 	}
 
 //	@Test

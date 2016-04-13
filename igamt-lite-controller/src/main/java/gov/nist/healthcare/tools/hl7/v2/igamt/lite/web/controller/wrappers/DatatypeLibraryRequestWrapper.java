@@ -20,7 +20,7 @@ public class DatatypeLibraryRequestWrapper {
 
 	private String scope;
 
-	private DatatypeLibrary dtLib;
+	private DatatypeLibrary datatypeLibrary;
 
 	public String getScope() {
 		return scope;
@@ -30,11 +30,12 @@ public class DatatypeLibraryRequestWrapper {
 		this.scope = scope;
 	}
 
-	public DatatypeLibrary getDtLib() {
-		return dtLib;
+	public DatatypeLibrary getDatatypeLibrary() {
+		return datatypeLibrary;
 	}
 
-	public void setDtLib(DatatypeLibrary dtLib) {
-		this.dtLib = dtLib;
+	public void setDatatypeLibrary(DatatypeLibrary datatypeLibrary) {
+		this.datatypeLibrary = datatypeLibrary;
 	}
+
 }

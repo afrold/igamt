@@ -16,11 +16,41 @@ import java.util.List;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
-public abstract class SectionModelWithConstraints extends SectionModel{
+public abstract class SectionModelWithConstraints extends SectionModel {
 	
+	protected String hl7Version;
+
+	protected Long accountId;
+	
+	protected String libId;
+
 	protected List<Predicate> predicates = new ArrayList<Predicate>();
 
 	protected List<ConformanceStatement> conformanceStatements = new ArrayList<ConformanceStatement>();
+
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
+
+	public Long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
+
+	public String getLibId() {
+		return libId;
+	}
+
+	public void setLibId(String libId) {
+		this.libId = libId;
+	}
 
 	public List<Predicate> getPredicates() {
 		return predicates;

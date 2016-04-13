@@ -1,7 +1,7 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 
-public class DatatypeLibraryMetaData extends MetaData{
+public class DatatypeLibraryMetaData extends MetaData {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -9,7 +9,7 @@ public class DatatypeLibraryMetaData extends MetaData{
 		super();
 	}
 
-	private String datatypLibId = ""; 				//ConformanceProfile/@ID
+	private String datatypLibId = "";
 	
 	@Override
 	public DatatypeLibraryMetaData clone() throws CloneNotSupportedException {

@@ -8,8 +8,7 @@
     }
 </script>
 <!-- <!-- Fixed navbar -->
-<!--<div class="navbar navbar-default navbar-static-top" role="navigation">-->
-    <div class="navbar navbar-default" role="navigation">
+<div class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="brand" id="appheader">
         <a style="display: inline-block; text-shadow:none" href="#">
             <div id="apptitle"><div><span msg key="app.title"></span><span style='color:red; font-size:12px'> <span style='color:red; font-size:12px'> {{appInfo.version}}</span></span></div></div>
@@ -34,28 +33,8 @@
             </li>
             <li ng-class="activeWhen(path()=='/ig')"><a class="point" href="#/ig"><i class="fa fa-book"></i>&nbsp;<span msg class="msg" key="navbar.igs"></span></a></li>
 
-            <!--<li ng-show="isAuthenticated() && isAdmin()" ng-class="activeWhen(path()=='/masterDTLib')"><a class="point" href="#/masterDTLib"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.masterDTLib"></span></a></li>-->
-
-
-            <!--<li ng-class="activeWhen(path()=='/contact')"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>-->
-            <!--<li ng-class="activeWhen(language()=='en')" ng-show="false">-->
-            <!--<a class="point" ng-click="setLanguage('en')"><div msg class="msg" key="navbar.lang.english"></div></a>-->
-            <!--</li>-->
-
-            <li ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
-            <li ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info"></i>&nbsp;About</a></li>
-            <li ng-class="activeWhen(path()=='/glossary')"><a class="point" href="#/glossary"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.glossary"></span></a></li>
-            <li ng-class="activeWhen(path()=='/issue')"><a class="point" href="#/issue"><i class="fa fa-question"></i>&nbsp;Issues</a></li>
-            <li ng-show='showSpinner()' ><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
-
-            <!--<li ng-class="activeWhen(path()=='/registerUser')" ng-show="isAdmin()">-->
-            <!--<a href="#/registerUser"><div msg key="navbar.registerUser"></div></a>-->
-            <!--</li>-->
-        </ul>
-
-        <ul class="nav navbar-nav navbar-right" style="margin-right: 2px">
-
-            <li ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()"  >
+            <li ng-show="true || isAuthenticated() || isAdmin()" ng-class="activeWhen(path()=='/datatypeLibrary')"><a class="point" href="#/datatypeLibrary"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.datatypeLibrary"></span></a></li>
+             <li ng-class="activeWhen(path()=='/registration')" ng-show="!isAuthenticated()">
                 <a href="#/registration"><div msg key="navbar.registration"></div></a>
             </li>
 
@@ -63,12 +42,28 @@
                 <a href="#/forgotten"><div msg key="navbar.forgotten"></div></a>
             </li>
 
-            <li    ng-show="isAuthenticated()" ng-class="activeWhen(path()=='/useraccount')"><a class="point" href="#/useraccount"><i class="fa fa-user"></i>&nbsp;My Account</a></li>
+            <!--<li ng-class="activeWhen(path()=='/contact')"><a href="#/contact"><i class="glyphicon glyphicon-earphone"></i>Contact Us</a></li>-->
+            <!--<li ng-class="activeWhen(language()=='en')" ng-show="false">-->
+            <!--<a class="point" ng-click="setLanguage('en')"><div msg class="msg" key="navbar.lang.english"></div></a>-->
+            <!--</li>-->
 
-            <li class="" ng-show="isAuthenticated()">
+            <li ng-class="activeWhen(path()=='/doc')"><a class="point" href="#/doc"><i class="fa fa-file-text"></i>&nbsp;<span msg class="msg" key="navbar.documentation"></span></a></li>
+            <li ng-class="activeWhen(path()=='/about')"><a class="point" href="#/about"><i class="fa fa-info-circle"></i>&nbsp;About</a></li>
+            <li ng-show='showSpinner()' ><i class="fa fa-spinner fa-pulse fa-align-center"></i></li>
+
+            <!--<li ng-class="activeWhen(path()=='/registerUser')" ng-show="isAdmin()">-->
+            <!--<a href="#/registerUser"><div msg key="navbar.registerUser"></div></a>-->
+            <!--</li>-->
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right" style="margin-right: 5px">
+
+            <li  ng-show="isAuthenticated()" ng-class="activeWhen(path()=='/useraccount')"><a class="point" href="#/useraccount"><i class="fa fa-user"></i>&nbsp;My Account</a></li>
+
+            <li class="" style="margin-right: 5em" ng-show="isAuthenticated()">
                 <a class="point" ng-click="logout()"><i class="fa fa-sign-out"></i>&nbsp;<span msg class="msg" key="navbar.logout"></span></a>
             </li>
-            <li class=""  ng-show="!isAuthenticated()">
+            <li class="" style="margin-right: 5em" ng-show="!isAuthenticated()">
                 <a class="point" ng-click="loginReq()"><i class="fa fa-sign-in"></i>&nbsp;<span msg class="msg" key="navbar.login"></span></a>
             </li>
         </ul>

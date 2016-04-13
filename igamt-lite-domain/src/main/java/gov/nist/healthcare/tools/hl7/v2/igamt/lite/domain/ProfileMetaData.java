@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class ProfileMetaData extends MetaData{
+public class ProfileMetaData extends MetaData {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -18,8 +18,6 @@ public class ProfileMetaData extends MetaData{
 	private String profileID = ""; 				//ConformanceProfile/@ID
 	
 	private String type = ""; 					//ConformanceProfile/@Type
-	
-	private String hl7Version = ""; 			//ConformanceProfile/@HL7Version
 	
 	private String schemaVersion = ""; 			//ConformanceProfile/@SchemaVersion
 	
@@ -65,14 +63,6 @@ public class ProfileMetaData extends MetaData{
 		this.type = type;
 	}
 
-	public String getHl7Version() {
-		return hl7Version;
-	}
-
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
-	}
-
 	public String getSchemaVersion() {
 		return schemaVersion;
 	}
@@ -114,7 +104,7 @@ public class ProfileMetaData extends MetaData{
 			clonedProfileMetaData.getEncodings().add(s);
 		}
 
-		clonedProfileMetaData.setHl7Version(hl7Version);
+		clonedProfileMetaData.setHl7Version(getHl7Version());
 		clonedProfileMetaData.setProfileID(profileID);
 		clonedProfileMetaData.setName(this.getName());
 		clonedProfileMetaData.setOrgName(this.getOrgName());
@@ -125,7 +115,7 @@ public class ProfileMetaData extends MetaData{
 		clonedProfileMetaData.setDate(this.getDate());
 		clonedProfileMetaData.setVersion(this.getVersion());
 		clonedProfileMetaData.setSubTitle(subTitle);
-		clonedProfileMetaData.setVersion(hl7Version);
+		clonedProfileMetaData.setVersion(getHl7Version());
 		return clonedProfileMetaData;
 	}
 

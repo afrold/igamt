@@ -11,7 +11,6 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
@@ -21,6 +20,8 @@ Cloneable, Comparable<Datatype> {
 
 	private static final long serialVersionUID = 1L;
 
+	public enum STATUS { PUBLISHED, UNPUBLISHED };
+	
 	public Datatype() {
 		super();
 		this.type = Constant.DATATYPE;
@@ -32,20 +33,22 @@ Cloneable, Comparable<Datatype> {
 
 	private String label;
 
+	private String ext;
+
 	protected List<Component> components = new ArrayList<Component>();
 
 	private String name;
 
 	private String description;
 
-	private String hl7Version;
-
-	private SCOPE scope;
+	private STATUS status;
 	
 	protected String comment = "";
 
 	protected String usageNote = "";
-
+	
+	private Constant.SCOPE scope;
+	
 	public String getId() {
 		return id;
 	}
@@ -58,8 +61,24 @@ Cloneable, Comparable<Datatype> {
 		return label;
 	}
 
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
+	}
+
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
 	}
 
 	public List<Component> getComponents() {
@@ -94,12 +113,12 @@ Cloneable, Comparable<Datatype> {
 		this.description = description;
 	}
 
-	public String getHl7Version() {
-		return hl7Version;
+	public STATUS getStatus() {
+		return status;
 	}
 
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
+	public void setStatus(STATUS status) {
+		this.status = status;
 	}
 
 	public void addComponent(Component c) {
@@ -122,7 +141,7 @@ Cloneable, Comparable<Datatype> {
 	public void setUsageNote(String usageNote) {
 		this.usageNote = usageNote;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Datatype [id=" + id + ", label=" + label + ", name=" + name

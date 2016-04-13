@@ -7,12 +7,15 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 
  * @author Harold Affo (harold.affo@nist.gov) Feb 26, 2015
  * 
  */
+@Document(collection = "table")
 public class Table extends SectionModel implements Serializable,
 		Comparable<Table>, Cloneable {
 
@@ -21,28 +24,31 @@ public class Table extends SectionModel implements Serializable,
 	 */
 	private static final long serialVersionUID = 734059059225906039L;
 
+	@Id
 	private String id;
 
-	// @NotNull
+	protected String hl7Version;
+
+	protected String libId;
+
 	private String bindingIdentifier;
 
-	// @NotNull
-	private String name;
+ 	private String name;
 
 	private String description;
 	private String version;
 	private String oid;
 	private Stability stability;
 	private Extensibility extensibility;
+
 	private ContentDefinition contentDefinition;
 	private String group;
 	private int order;
 
 	private List<Code> codes = new ArrayList<Code>();
 
-	// @DBRef
-	// private Tables tables;
-
+	private Constant.SCOPE scope;
+	
 	public Table() {
 		super();
 		this.type = Constant.TABLE;
@@ -57,12 +63,36 @@ public class Table extends SectionModel implements Serializable,
 		this.id = id;
 	}
 
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
+
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getLibId() {
+		return libId;
+	}
+
+	public void setLibId(String libId) {
+		this.libId = libId;
 	}
 
 	public String getBindingIdentifier() {

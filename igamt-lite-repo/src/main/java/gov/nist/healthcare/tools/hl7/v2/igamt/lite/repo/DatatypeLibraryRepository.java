@@ -21,15 +21,17 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary.SCOPE;
 
 public interface DatatypeLibraryRepository extends MongoRepository<DatatypeLibrary, String> {
 	
 	@Override
 	public List<DatatypeLibrary> findAll();
-
-	public List<DatatypeLibrary> findByScope(DatatypeLibrary.SCOPE scope);
-
+	
+	public DatatypeLibrary findById(String id);
+	
 	public List<DatatypeLibrary> findByAccountId(Long accountId);
+
+	public List<DatatypeLibrary> findByScope(Constant.SCOPE scope);
 } 

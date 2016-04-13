@@ -27,10 +27,8 @@ public class Field extends DataElement implements java.io.Serializable,
 
 	private String itemNo;
 
-	// @NotNull
 	private Integer min;
 
-	// @NotNull
 	private String max;
 
 	public String getItemNo() {

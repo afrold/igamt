@@ -139,11 +139,11 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 			messagePositionNum = messagePositionNum + 1;
 		}
 		
-		p.getSegments().setSectionPosition(1);
-		p.getSegments().setSectionTitle("Segments and Field Descriptions");
-		p.getSegments().setType("segments");
+		p.getSegmentLibrary().setSectionPosition(1);
+		p.getSegmentLibrary().setSectionTitle("Segments and Field Descriptions");
+		p.getSegmentLibrary().setType("segments");
 		int segmentPositionNum = 0;
-		for(Segment s:p.getSegments().getChildren()){
+		for(Segment s:p.getSegmentLibrary().getChildren()){
 			s.setSectionPosition(segmentPositionNum);
 			segmentPositionNum = segmentPositionNum + 1;
 			
@@ -159,11 +159,11 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 			}
 		}
 		
-		p.getDatatypes().setSectionPosition(2);
-		p.getDatatypes().setSectionTitle("Datatypes");
-		p.getDatatypes().setType("datatypes");
+		p.getDatatypeLibrary().setSectionPosition(2);
+		p.getDatatypeLibrary().setSectionTitle("Datatypes");
+		p.getDatatypeLibrary().setType("datatypes");
 		int datatypePositionNum = 0;
-		for(Datatype d:p.getDatatypes().getChildren()){
+		for(Datatype d:p.getDatatypeLibrary().getChildren()){
 			d.setSectionPosition(datatypePositionNum);
 			datatypePositionNum = datatypePositionNum + 1;
 			
@@ -178,11 +178,11 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 			}
 		}
 		
-		p.getTables().setSectionPosition(3);
-		p.getTables().setSectionTitle("Value Sets");
-		p.getTables().setType("tables");
+		p.getTableLibrary().setSectionPosition(3);
+		p.getTableLibrary().setSectionTitle("Value Sets");
+		p.getTableLibrary().setType("tables");
 		int tablePositionNum = 0;
-		for(Table t:p.getTables().getChildren()){
+		for(Table t : p.getTableLibrary().getChildren()){
 			t.setSectionPosition(tablePositionNum);
 			tablePositionNum = tablePositionNum + 1;
 		}

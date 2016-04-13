@@ -21,4 +21,5 @@ public interface DatatypeService {
 
 	List<Datatype> findAll();
 
+	Datatype save(Datatype datatype);
 }

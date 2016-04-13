@@ -17,6 +17,8 @@ public class MetaData implements java.io.Serializable, Cloneable {
 	
 	private String version = ""; 				//ConformanceProfile/MetaData/@Version
 	
+	private String hl7Version = ""; 				//ConformanceProfile/MetaData/@Version
+	
 	private String date = ""; 					//ConformanceProfile/MetaData/@Date
 	
 	public String getName() {
@@ -41,6 +43,14 @@ public class MetaData implements java.io.Serializable, Cloneable {
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
 	}
 
 	public String getDate() {

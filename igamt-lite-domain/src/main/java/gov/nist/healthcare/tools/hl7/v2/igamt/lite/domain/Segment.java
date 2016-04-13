@@ -7,10 +7,13 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
+@Document(collection = "segment")
 public class Segment extends SectionModelWithConstraints implements java.io.Serializable,
 Cloneable, Comparable<Segment> {
 
@@ -22,25 +25,18 @@ Cloneable, Comparable<Segment> {
 		this.id = ObjectId.get().toString();
 	}
 
+	@Id
 	private String id;
 
-	//
-	// @DBRef
-	// private Segments segments;
-
-	// //@NotNull
 	private String label;
 
 	private List<Field> fields = new ArrayList<Field>();
 
 	private DynamicMapping dynamicMapping = new DynamicMapping();
 
-	// //@NotNull
 	private String name;
 
 	private String description;
-
-	private String hl7Version;
 
 	protected String comment = "";
 
@@ -48,6 +44,8 @@ Cloneable, Comparable<Segment> {
 
 	private String text2 = "";
 
+	private Constant.SCOPE scope;
+	
 	public String getId() {
 		return id;
 	}
@@ -58,6 +56,14 @@ Cloneable, Comparable<Segment> {
 	
 	public String getLabel() {
 		return label;
+	}
+
+	public Constant.SCOPE getScope() {
+		return scope;
+	}
+
+	public void setScope(Constant.SCOPE scope) {
+		this.scope = scope;
 	}
 
 	public void setLabel(String label) {
@@ -78,14 +84,6 @@ Cloneable, Comparable<Segment> {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public String getHl7Version() {
-		return hl7Version;
-	}
-
-	public void setHl7Version(String hl7Version) {
-		this.hl7Version = hl7Version;
 	}
 
 	public List<Field> getFields() {
@@ -127,6 +125,7 @@ Cloneable, Comparable<Segment> {
 		}
 		return null;
 	}
+	
 	public String getComment() {
 		return comment;
 	}

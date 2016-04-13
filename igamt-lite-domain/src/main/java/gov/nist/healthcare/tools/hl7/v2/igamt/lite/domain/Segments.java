@@ -20,9 +20,6 @@ public class Segments extends TextbasedSectionModel implements java.io.Serializa
 
 	private Set<Segment> children = new HashSet<Segment>();
 
-	/**
-	 * 
-	 */
 	public Segments() {
 		super();
 		this.id = ObjectId.get().toString();
@@ -44,10 +41,6 @@ public class Segments extends TextbasedSectionModel implements java.io.Serializa
 		this.children = children;
 	}
 
-	/**
-	 * 
-	 * @param s
-	 */
 	public void addSegment(Segment s) {
 		children.add(s);
 	}

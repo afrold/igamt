@@ -24,7 +24,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 
 /**
  * @author gcr1
@@ -34,12 +34,12 @@ public class MessageEventFactory {
 	
 	private static Logger log = LoggerFactory.getLogger(MessageEventFactory.class);
 
-	private Tables tables;
+	private TableLibrary tableLibrary;
 	
 	private Table tab0354;
 	
 	public MessageEventFactory(IGDocument igdocument) {
-		tables = igdocument.getProfile().getTables();
+		tableLibrary = igdocument.getProfile().getTableLibrary();
 	}
 	
 	public List<MessageEvents> createMessageEvents(Messages msgs) {
@@ -69,7 +69,7 @@ public class MessageEventFactory {
 		return events;
 	}
 
-	String fixUnderscore (String structID) {
+	public String fixUnderscore (String structID) {
 		if (structID.endsWith("_")) {
 			int pos = structID.length();
 			return structID.substring(0, pos -1);
@@ -80,7 +80,7 @@ public class MessageEventFactory {
 	
 	public Table get0354Table() {
 		if (tab0354 == null) {
-			for (Table tab : tables.getChildren()) {
+			for (Table tab : tableLibrary.getChildren()) {
 				if ("0354".equals(tab.getBindingIdentifier())) {
 					tab0354 = tab;
 					break;

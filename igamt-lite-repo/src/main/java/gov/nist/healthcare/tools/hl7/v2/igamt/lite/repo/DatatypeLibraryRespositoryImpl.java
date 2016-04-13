@@ -10,16 +10,10 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 
 public class DatatypeLibraryRespositoryImpl implements DatatypeLibraryOperations {
 
@@ -27,24 +21,4 @@ public class DatatypeLibraryRespositoryImpl implements DatatypeLibraryOperations
 
 	 @Autowired
 	 private MongoOperations mongo;
-	 
-//	@Override
-//	public List<DatatypeLibrary> findAll() {
-//	    return mongo.findAll(DatatypeLibrary.class);
-//	}
-	 
-//	@Override
-//	public List<DatatypeLibrary> findByScope(DatatypeLibrary.SCOPE scope) {
-// 	    Criteria where = Criteria.where("scope").is(scope);
-//	    Query query = Query.query(where);
-//	    return mongo.find(query, DatatypeLibrary.class);
-//	}
-	 
-//	@Override
-//	public List<DatatypeLibrary> findByAccountId(Long accountId) {
-//	    Criteria where = Criteria.where("scope").is(DatatypeLibrary.SCOPE.USER)
-//	    	.andOperator(Criteria.where("accountId").is(accountId));
-//	    Query query = Query.query(where);
-//	    return mongo.find(query, DatatypeLibrary.class);
-//	}
 }
