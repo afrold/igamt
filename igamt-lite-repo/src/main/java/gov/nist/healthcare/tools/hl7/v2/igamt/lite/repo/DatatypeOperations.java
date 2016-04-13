@@ -19,9 +19,4 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
  *
  */
 public interface DatatypeOperations {
-
-	/**
-	 * @return
-	 */
-	List<Datatype> findAll();
 }

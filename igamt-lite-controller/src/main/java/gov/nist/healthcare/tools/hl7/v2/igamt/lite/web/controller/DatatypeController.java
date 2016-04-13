@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -49,8 +50,15 @@ public class DatatypeController extends CommonController {
 	AccountRepository accountRepository;
 
 	public List<Datatype> datatypes() {
-		log.info("Fetching all preloaded IGDocuments...");
+		log.info("Fetching all Datatypes...");
 		List<Datatype> result = datatypeService.findAll();
+		return result;
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+	public Datatype getDatatypeById(@PathVariable("id") String id) {
+		log.info("Fetching datatypeById..." + id);
+		Datatype result = datatypeService.findById(id);
 		return result;
 	}
 
