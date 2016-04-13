@@ -2,13 +2,14 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, ViewSettings,DatatypeService) {
+    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, ViewSettings,DatatypeService,ComponentService ) {
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
         $scope.datatypeCopy = null;
         $scope.viewSettings = ViewSettings;
-
+        $scope.selectedChildren = [];
+        $scope.saving = false;
         $scope.init = function () {
        };
 
@@ -190,6 +191,138 @@ angular.module('igl')
         $scope.getDatatypeLevelPredicates = function (element) {
             return DatatypeService.getDatatypeLevelPredicates(element);
         };
+
+        $scope.isChildSelected = function(component){
+            return  $scope.selectedChildren.indexOf(component) >= 0;
+        };
+
+        $scope.isChildNew = function(component){
+            return  component.status === 'DRAFT';
+        };
+
+
+        $scope.selectChild = function($event, child) {
+            var checkbox = $event.target;
+            var action = (checkbox.checked ? 'add' : 'remove');
+            updateSelected(action, child);
+        };
+
+
+        $scope.selectAllChildren = function($event) {
+            var checkbox = $event.target;
+            var action = (checkbox.checked ? 'add' : 'remove');
+            for ( var i = 0; i < $rootScope.datatype.components.length; i++) {
+                var component = $rootScope.datatype.components[i];
+                updateSelected(action, component);
+            }
+        };
+
+        var updateSelected = function(action, child) {
+            if (action === 'add' && !$scope.isChildSelected(child)) {
+                $scope.selectedChildren.push(child);
+            }
+            if (action === 'remove' && $scope.isChildSelected(child)) {
+                $scope.selectedChildren.splice($scope.selectedChildren.indexOf(child), 1);
+            }
+        };
+
+        //something extra I couldn't resist adding :)
+        $scope.isSelectedAllChildren = function() {
+            return $rootScope.datatype.components && $scope.selectedChildren.length === $rootScope.datatype.components.length;
+        };
+
+
+        /**
+         * TODO: update master map
+         */
+        $scope.createNewComponent =  function(){
+            if($rootScope.datatype != null){
+                if(!$rootScope.datatype.components || $rootScope.datatype.components === null)
+                    $rootScope.datatype.components = [];
+                var child = ComponentService.create($rootScope.datatype.components.length +1);
+                $rootScope.datatype.components.push(child);
+                //TODO update master map
+                //TODO:remove as legacy code
+                $rootScope.parentsMap[child.id] = $rootScope.datatype;
+                if ($scope.datatypesParams)
+                    $scope.datatypesParams.refresh();
+            }
+        };
+
+        /**
+         * TODO: update master map
+         */
+        $scope.deleteComponents =  function(){
+            if($rootScope.datatype != null && $scope.selectedChildren != null && $scope.selectedChildren.length > 0){
+                ComponentService.deleteList($scope.selectedChildren, $rootScope.datatype);
+                //TODO update master map
+                //TODO:remove as legacy code
+                angular.forEach($scope.selectedChildren, function (child) {
+                    delete $rootScope.parentsMap[child.id];
+                });
+                $scope.selectedChildren = [];
+                if ($scope.datatypesParams)
+                    $scope.datatypesParams.refresh();
+            }
+        };
+
+        $scope.save = function(){
+            $scope.saving = true;
+            DatatypeService.save($rootScope.datatype).then(function(result){
+                var index = indexOf(result.id);
+                if(index === -1){ // new datatype
+                    $rootScope.igdocument.profile.datatypes.children.push(result);
+                }else{
+                    $scope.merge($rootScope.igdocument.profile.datatypes.children[index], result);
+                 }
+                $scope.saving = false;
+                $scope.selectedChildren = [];
+                if ($scope.datatypesParams)
+                    $scope.datatypesParams.refresh();
+            }, function(error){
+                $scope.saving = false;
+            });
+        };
+
+        $scope.cancel = function(){
+            //TODO: remove changes from master ma
+            angular.forEach($rootScope.datatype.components, function (child) {
+                if($scope.isChildNew(child.status)){
+                    delete $rootScope.parentsMap[child.id];
+                }
+            });
+            $rootScope.datatype = null;
+            $scope.selectedChildren = [];
+            // revert
+        };
+
+        $scope.merge = function(to,from){
+            to.name = from.name;
+            to.components = from.components;
+        };
+
+
+        var searchById = function(id){
+            var children = $rootScope.igdocument.profile.datatypes.children;
+            for(var i=0; i < $rootScope.igdocument.profile.datatypes.children; i++){
+                if(children[i].id === id){
+                    return children[i];
+                }
+            }
+            return null;
+        };
+
+        var indexOf = function(id){
+            var children = $rootScope.igdocument.profile.datatypes.children;
+            for(var i=0; i < children; i++){
+                if(children[i].id === id){
+                    return i;
+                }
+            }
+            return -1;
+
+        };
+
 
     });
 

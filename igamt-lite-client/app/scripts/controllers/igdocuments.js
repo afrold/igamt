@@ -136,7 +136,7 @@ angular.module('igl')
                             $scope.selectIGDocument(igdocument);
                         }
                     }
-                }, 500);
+                }, 1000);
             });
 
             $scope.getScrollbarWidth();
@@ -757,7 +757,7 @@ angular.module('igl')
             $scope.subview = "EditDatatypes.html";
             if (datatype && datatype != null) {
                 $scope.loadingSelection = true;
-                $rootScope.datatype = datatype;
+                $rootScope.datatype = angular.copy(datatype);
                 $rootScope.datatype["type"] = "datatype";
                 $timeout(
                     function () {

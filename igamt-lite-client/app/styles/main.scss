@@ -2060,8 +2060,17 @@ li.active {
 
 
 tr.current {
-  background-color: #ffef8f;
+  background-color: #fff1c8;
 }
+
+tr.selected {
+  background-color: #fff1c8;
+}
+
+tr.new {
+  background-color: #dcffd1;
+}
+
 
 div.col-margin{
   margin-right:15px;
@@ -2226,4 +2235,6 @@ table.conformance-profiles-table td {
     border-radius: 3px !important;
     margin: 0px !important;
 }
+
+
 
