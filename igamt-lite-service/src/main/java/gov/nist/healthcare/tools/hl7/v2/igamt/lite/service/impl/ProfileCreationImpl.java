@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
@@ -39,9 +39,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.ProfileRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileException;
@@ -109,13 +109,13 @@ public class ProfileCreationImpl implements ProfileCreationService {
 
 		// Filling libraries--was
 		Messages msgsTarget = new Messages();
-		Segments sgtsTarget = new Segments();
-		Datatypes dtsTarget = new Datatypes();
-		Tables tabTarget = new Tables();
+		SegmentLibrary sgtsTarget = new SegmentLibrary();
+		DatatypeLibrary dtsTarget = new DatatypeLibrary();
+		TableLibrary tabTarget = new TableLibrary();
 		pTarget.setMessages(msgsTarget);
-		pTarget.setSegments(sgtsTarget);
-		pTarget.setDatatypes(dtsTarget);
-		pTarget.setTables(tabTarget);
+		pTarget.setSegmentLibrary(sgtsTarget);
+		pTarget.setDatatypeLibrary(dtsTarget);
+		pTarget.setTableLibrary(tabTarget);
 
 		addMessages(msgIds, pSource, pTarget);
 		return pTarget;
@@ -147,12 +147,12 @@ public class ProfileCreationImpl implements ProfileCreationService {
 	}
 
 	private void addSegment(SegmentRef sref, Profile pSource, Profile pTarget) {
-		Segments sgtsTarget = pTarget.getSegments();
-		Segment sgt = pSource.getSegments().findOneSegmentById(sref.getRef());
+		SegmentLibrary sgtsTarget = pTarget.getSegmentLibrary();
+		Segment sgt = pSource.getSegmentLibrary().findOneSegmentById(sref.getRef());
 		sgtsTarget.addSegment(sgt);
 		for (Field f : sgt.getFields()) {
-			Datatype dt = pSource.getDatatypes().findOne(f.getDatatype());
-			Table vsd = pSource.getTables().findOneTableById(f.getTable());
+			Datatype dt = pSource.getDatatypeLibrary().findOne(f.getDatatype());
+			Table vsd = pSource.getTableLibrary().findOneTableById(f.getTable());
 			addDatatype(dt, pSource, pTarget);
 			addTable(vsd, pSource, pTarget);
 		}
@@ -169,9 +169,9 @@ public class ProfileCreationImpl implements ProfileCreationService {
 	}
 
 	private void addDatatype(Datatype dt, Profile pSource, Profile pTarget) {
-		Datatypes dtsSource= pSource.getDatatypes();
-		Datatypes dtsTarget = pTarget.getDatatypes();
-		Tables vsdTarget = pTarget.getTables();
+		DatatypeLibrary dtsSource= pSource.getDatatypeLibrary();
+		DatatypeLibrary dtsTarget = pTarget.getDatatypeLibrary();
+		TableLibrary vsdTarget = pTarget.getTableLibrary();
 		if (dt != null && !dtsTarget.getChildren().contains(dt)){
 			dtsTarget.addDatatype(dt);
 			for (Component cpt: dt.getComponents()){
@@ -182,7 +182,7 @@ public class ProfileCreationImpl implements ProfileCreationService {
 	}
 
 	private void addTable(Table vsd, Profile pSource, Profile pTarget) {
-		Tables vsdTarget = pTarget.getTables();
+		TableLibrary vsdTarget = pTarget.getTableLibrary();
 		if (vsd != null && !vsdTarget.getChildren().contains(vsd)){
 			vsdTarget.addTable(vsd);
 		}

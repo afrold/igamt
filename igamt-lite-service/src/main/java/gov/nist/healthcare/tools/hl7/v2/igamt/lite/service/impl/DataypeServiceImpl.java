@@ -32,16 +32,23 @@ public class DataypeServiceImpl implements DatatypeService {
 
 	@Autowired
 	private DatatypeRepository datatypeRepository;
-
+	
 	@Override
 	public List<Datatype> findAll() {
 		List<Datatype> datatypes = datatypeRepository.findAll();
-		log.info("datatypes=" + datatypes.size());
+		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
 		return datatypes;
 	}
 	
 	@Override
+	public Datatype findById(String id) {
+		log.info("DataypeServiceImpl.findById=" + id);
+		return datatypeRepository.findById(id);
+	}
+	
+	@Override
 	public Datatype save(Datatype datatype) {
+		log.info("DataypeServiceImpl.save=" + datatype.getLabel());
 		return datatypeRepository.save(datatype);
 	}
 }

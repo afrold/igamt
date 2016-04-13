@@ -32,7 +32,7 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
@@ -45,9 +45,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEventFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
@@ -142,25 +142,25 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		msgsTarget.setSectionContents(dSource.getProfile().getMessages().getSectionContents());
 		msgsTarget.setSectionDescription(dSource.getProfile().getMessages().getSectionDescription());
 		msgsTarget.setSectionPosition(dSource.getProfile().getMessages().getSectionPosition());
-		Segments sgtsTarget = new Segments();
-		sgtsTarget.setSectionTitle(dSource.getProfile().getSegments().getSectionTitle());
-		sgtsTarget.setSectionContents(dSource.getProfile().getSegments().getSectionContents());
-		sgtsTarget.setSectionDescription(dSource.getProfile().getSegments().getSectionDescription());
-		sgtsTarget.setSectionPosition(dSource.getProfile().getSegments().getSectionPosition());
-		Datatypes dtsTarget = new Datatypes();
-		dtsTarget.setSectionTitle(dSource.getProfile().getDatatypes().getSectionTitle());
-		dtsTarget.setSectionContents(dSource.getProfile().getDatatypes().getSectionContents());
-		dtsTarget.setSectionDescription(dSource.getProfile().getDatatypes().getSectionDescription());
-		dtsTarget.setSectionPosition(dSource.getProfile().getDatatypes().getSectionPosition());
-		Tables tabTarget = new Tables();
-		tabTarget.setSectionTitle(dSource.getProfile().getTables().getSectionTitle());
-		tabTarget.setSectionContents(dSource.getProfile().getTables().getSectionContents());
-		tabTarget.setSectionDescription(dSource.getProfile().getTables().getSectionDescription());
-		tabTarget.setSectionPosition(dSource.getProfile().getTables().getSectionPosition());
+		SegmentLibrary sgtsTarget = new SegmentLibrary();
+		sgtsTarget.setSectionTitle(dSource.getProfile().getSegmentLibrary().getSectionTitle());
+		sgtsTarget.setSectionContents(dSource.getProfile().getSegmentLibrary().getSectionContents());
+		sgtsTarget.setSectionDescription(dSource.getProfile().getSegmentLibrary().getSectionDescription());
+		sgtsTarget.setSectionPosition(dSource.getProfile().getSegmentLibrary().getSectionPosition());
+		DatatypeLibrary dtsTarget = new DatatypeLibrary();
+		dtsTarget.setSectionTitle(dSource.getProfile().getDatatypeLibrary().getSectionTitle());
+		dtsTarget.setSectionContents(dSource.getProfile().getDatatypeLibrary().getSectionContents());
+		dtsTarget.setSectionDescription(dSource.getProfile().getDatatypeLibrary().getSectionDescription());
+		dtsTarget.setSectionPosition(dSource.getProfile().getDatatypeLibrary().getSectionPosition());
+		TableLibrary tabTarget = new TableLibrary();
+		tabTarget.setSectionTitle(dSource.getProfile().getTableLibrary().getSectionTitle());
+		tabTarget.setSectionContents(dSource.getProfile().getTableLibrary().getSectionContents());
+		tabTarget.setSectionDescription(dSource.getProfile().getTableLibrary().getSectionDescription());
+		tabTarget.setSectionPosition(dSource.getProfile().getTableLibrary().getSectionPosition());
 		pTarget.setMessages(msgsTarget);
-		pTarget.setSegments(sgtsTarget);
-		pTarget.setDatatypes(dtsTarget);
-		pTarget.setTables(tabTarget);
+		pTarget.setSegmentLibrary(sgtsTarget);
+		pTarget.setDatatypeLibrary(dtsTarget);
+		pTarget.setTableLibrary(tabTarget);
 
 		addSections(dSource, dTarget);
 		addMessages(msgEvts, dSource.getProfile(), pTarget);
@@ -230,13 +230,13 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	private void addSegment(SegmentRef sref, Profile pSource, Profile pTarget) {
-		Segments sgtsTarget = pTarget.getSegments();
-		sgtsTarget.setType(pSource.getSegments().getType());
-		Segment sgt = pSource.getSegments().findOneSegmentById(sref.getRef());
+		SegmentLibrary sgtsTarget = pTarget.getSegmentLibrary();
+		sgtsTarget.setType(pSource.getSegmentLibrary().getType());
+		Segment sgt = pSource.getSegmentLibrary().findOneSegmentById(sref.getRef());
 		sgtsTarget.addSegment(sgt);
 		for (Field f : sgt.getFields()) {
-			Datatype dt = pSource.getDatatypes().findOne(f.getDatatype());
-			Table vsd = pSource.getTables().findOneTableById(f.getTable());
+			Datatype dt = pSource.getDatatypeLibrary().findOne(f.getDatatype());
+			Table vsd = pSource.getTableLibrary().findOneTableById(f.getTable());
 			addDatatype(dt, pSource, pTarget);
 			addTable(vsd, pSource, pTarget);
 		}
@@ -253,10 +253,10 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	private void addDatatype(Datatype dt, Profile pSource, Profile pTarget) {
-		Datatypes dtsSource = pSource.getDatatypes();
-		Datatypes dtsTarget = pTarget.getDatatypes();
+		DatatypeLibrary dtsSource = pSource.getDatatypeLibrary();
+		DatatypeLibrary dtsTarget = pTarget.getDatatypeLibrary();
 		dtsTarget.setType(dtsSource.getType());
-		Tables vsdTarget = pTarget.getTables();
+		TableLibrary vsdTarget = pTarget.getTableLibrary();
 		if (dt != null && !dtsTarget.getChildren().contains(dt)) {
 			dtsTarget.addDatatype(dt);
 			for (Component cpt : dt.getComponents()) {
@@ -267,8 +267,8 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	}
 
 	private void addTable(Table vsd, Profile pSource, Profile pTarget) {
-		Tables vsdTarget = pTarget.getTables();
-		vsdTarget.setType(pSource.getTables().getType());
+		TableLibrary vsdTarget = pTarget.getTableLibrary();
+		vsdTarget.setType(pSource.getTableLibrary().getType());
 		if (vsd != null && !vsdTarget.getChildren().contains(vsd)) {
 			vsdTarget.addTable(vsd);
 		}

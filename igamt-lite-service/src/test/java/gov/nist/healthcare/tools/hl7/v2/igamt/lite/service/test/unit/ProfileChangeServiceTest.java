@@ -104,9 +104,9 @@ public class ProfileChangeServiceTest {
 				.toArray(new Message[] {})[0];
 		SegmentRef segmentRef = (SegmentRef) message.getChildren().get(0);
 		Group group = (Group) message.getChildren().get(5);
-		Segment segment = p1.getSegments().findOneSegmentById(segmentRef.getRef());
+		Segment segment = p1.getSegmentLibrary().findOneSegmentById(segmentRef.getRef());
 		Field field = segment.getFields().get(0);
-		Datatype datatype = p1.getDatatypes().getChildren()
+		Datatype datatype = p1.getDatatypeLibrary().getChildren()
 				.toArray(new Datatype[] {})[0];
 		String jsonChanges = "{\r\n  \"segmentRef\": {\r\n    \"edit\": [\r\n      {\r\n        \"id\": \""
 				+ segmentRef.getId()

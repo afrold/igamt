@@ -16,10 +16,11 @@ import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
-@Service
 public interface DatatypeService {
 
 	List<Datatype> findAll();
-
+	
+	Datatype findById(String id);
+	
 	Datatype save(Datatype datatype);
 }

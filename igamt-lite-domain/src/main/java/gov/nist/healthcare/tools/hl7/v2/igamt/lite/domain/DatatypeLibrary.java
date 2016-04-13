@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -246,7 +245,6 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 																								// useless...
 			}
 		}
-
 	}
 
 	public void setPositionsOrder() {

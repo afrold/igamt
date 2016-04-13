@@ -23,7 +23,9 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.ReadingConverter;
 
 import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mongodb.DBRef;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
@@ -53,7 +55,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.View.Library;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
@@ -63,6 +64,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileConversionExce
  * @author Harold Affo (harold.affo@nist.gov) Mar 31, 2015
  */
 @ReadingConverter
+@SuppressWarnings("deprecation")
 public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> {
 
 	private static final Logger log = LoggerFactory.getLogger(IGDocumentReadConverter.class);
@@ -80,7 +82,8 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		igd.setComment(readString(source, "comment"));
 		igd.setId(readMongoId(source));
 		igd.setMetaData(documentMetaData((DBObject) source.get("metaData")));
-		igd.setProfile(profile((DBObject) source.get("profile")));
+		ProfileReadConverter cnvProf = new ProfileReadConverter();
+		igd.setProfile(cnvProf.convert((DBObject) source.get("profile")));
 		igd.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
 		igd.setType(((String) source.get("type")));
 		igd.setUsageNote(readString(source, "usageNote"));
@@ -98,10 +101,12 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		profile.setChanges(((String) source.get("changes")));
 		profile.setAccountId(readLong(source, "accountId"));
 		profile.setMetaData(profileMetaData((DBObject) source.get("metaData")));
-		DBObject obj = (DBObject) source.get("segmentLibrary");
-		profile.setSegmentLibrary(segments(obj, profile));
-		profile.setDatatypeLibrary(datatypes((DBObject) source.get("datatypeLibrary"), profile));
-		profile.setTableLibrary(tables((DBObject) source.get("tableLibrary")));
+		DBObject objSegments = ((DBRef) source.get("segmentLibrary")).fetch();
+		profile.setSegmentLibrary(segments(objSegments, profile));
+		DBObject objDatatypes = ((DBRef) source.get("datatypeLibrary")).fetch();
+		profile.setDatatypeLibrary(datatypes(objDatatypes, profile));
+		DBObject objTables = ((DBRef) source.get("tableLibrary")).fetch();
+		profile.setTableLibrary(tables(objTables));
 		profile.setMessages(messages((DBObject) source.get("messages"), profile));
 		
 		profile.setSectionContents((String) source.get("sectionContents"));
@@ -193,8 +198,9 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		BasicDBList segmentsDBObjects = (BasicDBList) source.get("children");
 		if (segmentsDBObjects != null) {
 			Set<Segment> children = new HashSet<Segment>();
-			for (Object child : segmentsDBObjects) {
-				children.add(segment((DBObject) child, profile.getDatatypeLibrary(),
+			for (Object childObj : segmentsDBObjects) {
+				DBObject segmentObject = ((DBRef)childObj).fetch();
+				children.add(segment((DBObject) segmentObject, profile.getDatatypeLibrary(),
 						profile.getTableLibrary()));
 			}
 			segments.setChildren(children);
@@ -268,12 +274,11 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 		BasicDBList datatypesDBObjects = (BasicDBList) source.get("children");
 		datatypes.setChildren(new HashSet<Datatype>());
 		
-		
 		if (datatypesDBObjects != null) {
 			for (Object childObj : datatypesDBObjects) {
-				DBObject child = (DBObject) childObj;
-				if (datatypes.findOne(readMongoId(child)) == null) {
-					datatypes.addDatatype(datatype(child, datatypes,
+				DBObject datatypeObject = ((DBRef)childObj).fetch();
+				if (datatypes.findOne(readMongoId(datatypeObject)) == null) {
+					datatypes.addDatatype(datatype(datatypeObject, datatypes,
 							profile.getTableLibrary(), datatypesDBObjects));
 				}
 			}
@@ -482,8 +487,8 @@ public class IGDocumentReadConverter implements Converter<DBObject, IGDocument> 
 
 		BasicDBList childrenDBObjects = (BasicDBList) source.get("children");
 		if (childrenDBObjects != null)
-			for (Object tableObj : childrenDBObjects) {
-				DBObject tableObject = (DBObject) tableObj;
+			for (Object childObj : childrenDBObjects) {
+				DBObject tableObject = ((DBRef)childObj).fetch();
 				Table table = new Table();
 				table.setType("table");
 				table.setSectionPosition((Integer) tableObject.get("sectionPosition"));

@@ -100,12 +100,12 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	}
 
 	public void delete(String id) {
-		Segment seg = findOne(id);
+		Segment seg = findOneSegmentById(id);
 		if (seg != null)
 			this.children.remove(seg);
 	}
 
-	public Segment findOne(String id) {
+	public Segment findOneSegmentById(String id) {
 		if (this.children != null) {
 			for (Segment seg : this.children) {
 				if (seg.getId().equals(id)) {
@@ -149,6 +149,16 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		return null;
 	}
 
+	public Segment findOneSegmentByName(String name) {
+		if (this.children != null)
+			for (Segment s : this.children) {
+				if (s.getName().equals(name)) {
+					return s;
+				}
+			}
+		return null;
+	}
+
 	public Segment findOneSegmentByBase(String baseName) {
 		if (this.children != null)
 			for (Segment seg : this.children) {
@@ -168,6 +178,20 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		}
 		return null;
 	}
+	
+	public Component findOneComponent(String id, DatatypeLibrary datatypes) {
+		if (this.children != null) {
+			for (Segment m : this.children) {
+				for (Field f : m.getFields()) {
+					Component c = datatypes.findOneComponent(f.getDatatype());
+					if (c != null) {
+						return c;
+					}
+				}
+			}
+		}
+		return null;
+	}
 
 	public ConformanceStatement findOneConformanceStatement(String conformanceStatementId) {
 		for (Segment seg : this.getChildren()) {
@@ -179,6 +203,18 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		return null;
 	}
 
+	public Field findOneField(String id) {
+		if (this.children != null) {
+			for (Segment m : this.children) {
+				Field c = m.findOneField(id);
+				if (c != null) {
+					return c;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public boolean deletePredicate(String predicateId) {
 		for (Segment seg : this.getChildren()) {
 			if (seg.deletePredicate(predicateId)) {

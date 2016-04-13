@@ -32,7 +32,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 
 /**
  * Not a standalone test.
@@ -52,7 +52,7 @@ public class ProfileCreationReferentialIntegrityTest {
 
 		log.info("Running testMessagesVsSegments...");
 
-		Segments segs = profile.getSegments();
+		SegmentLibrary segs = profile.getSegmentLibrary();
 
 		// First we list all the Segment ids.
 		List<String> segIds = new ArrayList<String>();
@@ -102,10 +102,10 @@ public class ProfileCreationReferentialIntegrityTest {
 
 		List<String> dts = new ArrayList<String>();
 		Set<Component> cts = new HashSet<Component>();
-		for (Datatype dt : profile.getDatatypes().getChildren()) {
+		for (Datatype dt : profile.getDatatypeLibrary().getChildren()) {
 			dts.add(dt.getId());
 		}
-		for (Datatype dt : profile.getDatatypes().getChildren()) {
+		for (Datatype dt : profile.getDatatypeLibrary().getChildren()) {
 			for (Component ct : dt.getComponents()) {
 				cts.add(ct);
 			}
@@ -118,10 +118,10 @@ public class ProfileCreationReferentialIntegrityTest {
 	public void testFieldDatatypes(Profile profile) {
 		log.info("Running testFieldDatatypes...");
 		List<String> dts = new ArrayList<String>();
-		for (Datatype dt : profile.getDatatypes().getChildren()) {
+		for (Datatype dt : profile.getDatatypeLibrary().getChildren()) {
 			dts.add(dt.getId());
 		}
-		for (Segment seg : profile.getSegments().getChildren()) {
+		for (Segment seg : profile.getSegmentLibrary().getChildren()) {
 			for (Field fld : seg.getFields()) {
 				assertTrue(dts.contains(fld.getDatatype()));
 			}

@@ -57,7 +57,7 @@ public class SegmentLibraryReadConverter extends AbstractReadConverter<DBObject,
 		if (segLibDBObjects != null) {
 			for (Object childObj : segLibDBObjects) {
 				DBObject child = (DBObject) childObj;
-				if (segLib.findOne(readMongoId(child)) == null) {
+				if (segLib.findOneSegmentById(readMongoId(child)) == null) {
 					segLib.addSegment(segCnv.convert(child));
 				}
 			}

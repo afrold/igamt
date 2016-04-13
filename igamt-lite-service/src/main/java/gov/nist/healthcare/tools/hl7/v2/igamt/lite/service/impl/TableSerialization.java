@@ -13,21 +13,21 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import nu.xom.Document;
 
 public interface TableSerialization {
-	Tables deserializeXMLToTableLibrary(String xmlContents);
+	TableLibrary deserializeXMLToTableLibrary(String xmlContents);
 
-	Tables deserializeXMLToTableLibrary(Document xmlDoc);
+	TableLibrary deserializeXMLToTableLibrary(Document xmlDoc);
 
-	String serializeTableLibraryToXML(Tables tableLibrary);
+	String serializeTableLibraryToXML(TableLibrary tableLibrary);
 	
 	String serializeTableLibraryToXML(Profile profile);
 	
 	String serializeTableLibraryToXML(DatatypeLibrary datatypeLibrary);
 
-	Document serializeTableLibraryToDoc(Tables tableLibrary);
+	Document serializeTableLibraryToDoc(TableLibrary tableLibrary);
 	
 	Document serializeTableLibraryToDoc(Profile profile);
 

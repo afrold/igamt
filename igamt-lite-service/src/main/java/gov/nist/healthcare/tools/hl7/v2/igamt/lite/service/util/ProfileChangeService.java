@@ -167,7 +167,7 @@ public class ProfileChangeService {
 	}
 
 	private void resolveReferences() {
-		for (Segment segment : p.getSegments().getChildren()) {
+		for (Segment segment : p.getSegmentLibrary().getChildren()) {
 			for (Field f : segment.getFields()) {
 				if (newDatatypesMap.containsKey(f.getDatatype())) {
 					f.setDatatype(newDatatypesMap.get(f.getDatatype()).getId());
@@ -178,7 +178,7 @@ public class ProfileChangeService {
 					}
 				}
 
-				resolveReferences(p.getDatatypes().findOne(f.getDatatype()));
+				resolveReferences(p.getDatatypeLibrary().findOne(f.getDatatype()));
 			}
 		}
 	}
@@ -198,7 +198,7 @@ public class ProfileChangeService {
 								component.getTable()).getId());
 					}
 				}
-				resolveReferences(p.getDatatypes().findOne(
+				resolveReferences(p.getDatatypeLibrary().findOne(
 						component.getDatatype()));
 			}
 		}
@@ -320,7 +320,7 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Iterator<Entry<String, JsonNode>> fields = newValue
 							.fields();
-					Table target = p.getTables().findOneTableById(id);
+					Table target = p.getTableLibrary().findOneTableById(id);
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
@@ -342,7 +342,7 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Table t = toTable(newValue);
 					newTablesMap.put(id, t);
-					p.getTables().addTable(t);
+					p.getTableLibrary().addTable(t);
 				}
 			} else if (node.getKey().equals(DELETE_NODE)) {
 				JsonNode individualChanges = node.getValue();
@@ -350,7 +350,7 @@ public class ProfileChangeService {
 				while (contentIt.hasNext()) {
 					JsonNode newValue = contentIt.next();
 					String id = newValue.findValue("id").asText();
-					p.getTables().delete(id);
+					p.getTableLibrary().delete(id);
 				}
 			}
 		}
@@ -369,7 +369,7 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Iterator<Entry<String, JsonNode>> fields = newValue
 							.fields();
-					Code target = p.getTables().findOneCodeById(id);
+					Code target = p.getTableLibrary().findOneCodeById(id);
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
@@ -391,7 +391,7 @@ public class ProfileChangeService {
 					JsonNode objectNode = newValue.findValue("obj");
 					String id = objectNode.findValue("id").asText();
 					Code code = toCode(objectNode);
-					Table table = p.getTables().findOneTableById(targetId);
+					Table table = p.getTableLibrary().findOneTableById(targetId);
 					if (table != null) {
 						table.addCode(code);
 					} else {
@@ -413,7 +413,7 @@ public class ProfileChangeService {
 				while (contentIt.hasNext()) {
 					JsonNode newValue = contentIt.next();
 					String id = newValue.findValue("id").asText();
-					if (!p.getTables().deleteCode(id)) {
+					if (!p.getTableLibrary().deleteCode(id)) {
 						errors.add(new ProfilePropertySaveError(id,
 								"predicate", "Failed to delete code with id="
 										+ id));
@@ -462,10 +462,10 @@ public class ProfileChangeService {
 					JsonNode objectNode = newValue.findValue("obj");
 					Predicate predicate = toPredicate(objectNode);
 					if ("segment".equals(targetType)) {
-						Segment segment = p.getSegments().findOneSegmentById(targetId);
+						Segment segment = p.getSegmentLibrary().findOneSegmentById(targetId);
 						segment.addPredicate(predicate);
 					} else if ("datatype".equals(targetType)) {
-						Datatype d = p.getDatatypes().findOne(targetId);
+						Datatype d = p.getDatatypeLibrary().findOne(targetId);
 						d.addPredicate(predicate);
 					}
 				}
@@ -526,10 +526,10 @@ public class ProfileChangeService {
 					JsonNode objectNode = newValue.findValue("obj");
 					ConformanceStatement conf = toConformanceStatement(objectNode);
 					if ("segment".equals(targetType)) {
-						Segment segment = p.getSegments().findOneSegmentById(targetId);
+						Segment segment = p.getSegmentLibrary().findOneSegmentById(targetId);
 						segment.addConformanceStatement(conf);
 					} else if ("datatype".equals(targetType)) {
-						Datatype d = p.getDatatypes().findOne(targetId);
+						Datatype d = p.getDatatypeLibrary().findOne(targetId);
 						d.addConformanceStatement(conf);
 					}
 				}
@@ -646,7 +646,7 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Iterator<Entry<String, JsonNode>> fields = newValue
 							.fields();
-					Segment target = p.getSegments().findOneSegmentById(id);
+					Segment target = p.getSegmentLibrary().findOneSegmentById(id);
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
@@ -671,7 +671,7 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Iterator<Entry<String, JsonNode>> fields = newValue
 							.fields();
-					Field target = p.getSegments().findOneField(id);
+					Field target = p.getSegmentLibrary().findOneField(id);
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
@@ -701,7 +701,7 @@ public class ProfileChangeService {
 						wrapper.setPropertyValue(key, value.asInt());
 					} else if (key.equals("datatype")) {
 						String datatypeId = value.findValue("id").asText();
-						Datatype datatype = p.getDatatypes()
+						Datatype datatype = p.getDatatypeLibrary()
 								.findOne(datatypeId);
 						if (datatype == null) {
 							datatype = new Datatype();
@@ -713,7 +713,7 @@ public class ProfileChangeService {
 							wrapper.setPropertyValue(key, null);
 						} else {
 							String tableId = value.asText();
-							Table table = p.getTables().findOneTableById(tableId);
+							Table table = p.getTableLibrary().findOneTableById(tableId);
 							if (table == null) {
 								table = new Table();
 								table.setId(tableId);
@@ -746,8 +746,8 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Iterator<Entry<String, JsonNode>> fields = newValue
 							.fields();
-					Component target = p.getSegments().findOneComponent(id,
-							p.getDatatypes());
+					Component target = p.getSegmentLibrary().findOneComponent(id,
+							p.getDatatypeLibrary());
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
@@ -778,7 +778,7 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Iterator<Entry<String, JsonNode>> fields = newValue
 							.fields();
-					Datatype target = p.getDatatypes().findOne(id);
+					Datatype target = p.getDatatypeLibrary().findOne(id);
 					if (target != null) {
 						setEditValues(fields, new BeanWrapperImpl(target));
 					} else {
@@ -800,7 +800,7 @@ public class ProfileChangeService {
 					String id = newValue.findValue("id").asText();
 					Datatype dt = toDatatype(newValue);
 					newDatatypesMap.put(id, dt);
-					p.getDatatypes().addDatatype(dt);
+					p.getDatatypeLibrary().addDatatype(dt);
 				}
 			} else if (node.getKey().equals(DELETE_NODE)) {
 				JsonNode individualChanges = node.getValue();
@@ -808,7 +808,7 @@ public class ProfileChangeService {
 				while (contentIt.hasNext()) {
 					JsonNode newValue = contentIt.next();
 					String id = newValue.findValue("id").asText();
-					p.getDatatypes().delete(id);
+					p.getDatatypeLibrary().delete(id);
 				}
 			}
 		}
