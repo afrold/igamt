@@ -8,6 +8,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentConfiguration;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
@@ -460,14 +461,15 @@ public class IGDocumentController extends CommonController {
 	}
 
 	@RequestMapping(value = "/{hl7Version}/tables", method = RequestMethod.GET, produces = "application/json")
-	public Tables findHl7Tables(@PathVariable("hl7Version") String hl7Version) {
+	public TableLibrary findHl7Tables(
+			@PathVariable("hl7Version") String hl7Version) {
 		log.info("Fetching all Tables for " + hl7Version);
 		List<IGDocument> igDocuments = igDocumentCreation
 				.findIGDocumentsByHl7Versions();
 		for (IGDocument igd : igDocuments) {
 			if (igd.getProfile().getMetaData().getHl7Version()
 					.equals(hl7Version))
-				return igd.getProfile().getTables();
+				return igd.getProfile().getTableLibrary();
 		}
 		return null;
 	}

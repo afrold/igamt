@@ -15,7 +15,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
@@ -94,7 +94,7 @@ public class Bootstrap implements InitializingBean {
 
 		for (IGDocument igd : igDocuments) {
 			boolean ischanged = false;
-			Tables tables = igd.getProfile().getTables();
+			TableLibrary tables = igd.getProfile().getTableLibrary();
 
 			for (Table t : tables.getChildren()) {
 				if (t.getName() == null || t.getName().equals("")) {
