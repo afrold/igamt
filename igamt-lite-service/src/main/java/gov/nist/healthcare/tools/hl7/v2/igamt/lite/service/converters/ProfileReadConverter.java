@@ -46,7 +46,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segments;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -74,7 +74,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		profile.setChanges(((String) source.get("changes")));
 		profile.setAccountId(readLong(source, "accountId"));
 		profile.setMetaData(metaData((DBObject) source.get("metaData")));
-		profile.setTables(tables((DBObject) source.get("tables")));
+		profile.setTableLibrary(tables((DBObject) source.get("tables")));
 		profile.setDatatypes(datatypes((DBObject) source.get("datatypes"),
 				profile));
 		profile.setSegments(segments((DBObject) source.get("segments"), profile));
@@ -124,14 +124,14 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			Set<Segment> children = new HashSet<Segment>();
 			for (Object child : segmentsDBObjects) {
 				children.add(segment((DBObject) child, profile.getDatatypes(),
-						profile.getTables()));
+						profile.getTableLibrary()));
 			}
 			segments.setChildren(children);
 		}
 		return segments;
 	}
 
-	private Segment segment(DBObject source, Datatypes datatypes, Tables tables) {
+	private Segment segment(DBObject source, Datatypes datatypes, TableLibrary tables) {
 		Segment seg = new Segment();
 		seg.setId(readMongoId(source)); 
 		seg.setType(((String) source.get("type")));
@@ -193,7 +193,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 				DBObject child = (DBObject) childObj;
 				if (datatypes.findOne(readMongoId(child)) == null) {
 					datatypes.addDatatype(datatype(child, datatypes,
-							profile.getTables(), datatypesDBObjects));
+							profile.getTableLibrary(), datatypesDBObjects));
 				}
 			}
 		}
@@ -202,7 +202,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	}
 
 	private Datatype datatype(DBObject source, Datatypes datatypes,
-			Tables tables, BasicDBList datatypesDBObjects)
+			TableLibrary tables, BasicDBList datatypesDBObjects)
 					throws ProfileConversionException {
 		Datatype segRef = new Datatype();
 		segRef.setId(readMongoId(source));
@@ -337,7 +337,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return p;
 	}
 
-	private Field field(DBObject source, Datatypes datatypes, Tables tables) {
+	private Field field(DBObject source, Datatypes datatypes, TableLibrary tables) {
 		Field f = new Field();
 		f.setId(readMongoId(source));
 		f.setType(((String) source.get("type")));
@@ -360,7 +360,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	}
 
 	private Component component(DBObject source, Datatypes datatypes,
-			Tables tables, BasicDBList datatypesDBObjects)
+			TableLibrary tables, BasicDBList datatypesDBObjects)
 					throws ProfileConversionException {
 		Component c = new Component();
 		c.setId(readMongoId(source));
@@ -379,8 +379,8 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return c;
 	}
 
-	private Tables tables(DBObject source) {
-		Tables tables = new Tables();
+	private TableLibrary tables(DBObject source) {
+		TableLibrary tables = new TableLibrary();
 		tables.setId(readMongoId(source));
 		tables.setValueSetLibraryIdentifier(((String) source
 				.get("valueSetLibraryIdentifier")));
@@ -623,7 +623,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	// + " not found");
 	// }
 	//
-	// private Table findTableById(String id, Tables tables) {
+	// private Table findTableById(String id, TableLibrary tables) {
 	// if (id == null) {
 	// return null;
 	// }
