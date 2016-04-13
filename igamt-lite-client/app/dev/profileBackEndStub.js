@@ -290,5 +290,21 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
     });
 
+    $httpBackend.whenGET('api/datatypes/{id}').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/datatypes/datatype1.json', false);
+        request.send(null);
+        var datatype = angular.fromJson(request.response);
+        return [request.status, datatype, {}];
+    });
+
+    $httpBackend.whenPOST('api/datatypes/save').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        if(data.id === null || !data.id)
+            data.id = new ObjectId.toString();
+        return [200, {}, {}];
+    });
+
+
 });
 

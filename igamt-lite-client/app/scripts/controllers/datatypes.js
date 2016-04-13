@@ -273,7 +273,7 @@ angular.module('igl')
                 if (index === -1) { // new datatype
                     $rootScope.igdocument.profile.datatypes.children.push(result);
                 } else {
-                    $scope.merge($rootScope.igdocument.profile.datatypes.children[index], result);
+                    DatatypeService.merge($rootScope.igdocument.profile.datatypes.children[index], result);
                 }
                 $scope.saving = false;
                 $scope.selectedChildren = [];
@@ -281,6 +281,9 @@ angular.module('igl')
                     $scope.datatypesParams.refresh();
             }, function (error) {
                 $scope.saving = false;
+                $rootScope.msg().text = error.data.text;
+                $rootScope.msg().type = error.data.type;
+                $rootScope.msg().show = true;
             });
         };
 
@@ -295,12 +298,6 @@ angular.module('igl')
             $scope.selectedChildren = [];
             // revert
         };
-
-        $scope.merge = function (to, from) {
-            to.name = from.name;
-            to.components = from.components;
-        };
-
 
         var searchById = function (id) {
             var children = $rootScope.igdocument.profile.datatypes.children;

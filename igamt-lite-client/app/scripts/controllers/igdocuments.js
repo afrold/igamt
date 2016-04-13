@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils,AutoSaveService) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -83,44 +83,44 @@ angular.module('igl')
             AutoSaveService.stop();
         };
 
-        $scope.getMessageParams = function() {
-	        return new ngTreetableParams({
-	            getNodes: function (parent) {
-	                if (!parent || parent == null) {
-	                    return $rootScope.messageTree.children;
-	                } else {
-	                    return parent.children;
-	                }
-	            },
-	            getTemplate: function (node) {
-	                if ($scope.viewSettings.tableReadonly) {
-	
-	                    if (node.obj.type === 'segmentRef') {
-	                        return 'MessageSegmentRefReadTree.html';
-	                    } else if (node.obj.type === 'group') {
-	                        return 'MessageGroupReadTree.html';
-	                    } else if (node.obj.type === 'field') {
-	                        return 'MessageFieldViewTree.html';
-	                    } else if (node.obj.type === 'component') {
-	                        return 'MessageComponentViewTree.html';
-	                    } else {
-	                        return 'MessageReadTree.html';
-	                    }
-	                } else {
-	                    if (node.obj.type === 'segmentRef') {
-	                        return 'MessageSegmentRefEditTree.html';
-	                    } else if (node.obj.type === 'group') {
-	                        return 'MessageGroupEditTree.html';
-	                    } else if (node.obj.type === 'field') {
-	                        return 'MessageFieldViewTree.html';
-	                    } else if (node.obj.type === 'component') {
-	                        return 'MessageComponentViewTree.html';
-	                    } else {
-	                        return 'MessageEditTree.html';
-	                    }
-	                }
-	            }
-	        });
+        $scope.getMessageParams = function () {
+            return new ngTreetableParams({
+                getNodes: function (parent) {
+                    if (!parent || parent == null) {
+                        return $rootScope.messageTree.children;
+                    } else {
+                        return parent.children;
+                    }
+                },
+                getTemplate: function (node) {
+                    if ($scope.viewSettings.tableReadonly) {
+
+                        if (node.obj.type === 'segmentRef') {
+                            return 'MessageSegmentRefReadTree.html';
+                        } else if (node.obj.type === 'group') {
+                            return 'MessageGroupReadTree.html';
+                        } else if (node.obj.type === 'field') {
+                            return 'MessageFieldViewTree.html';
+                        } else if (node.obj.type === 'component') {
+                            return 'MessageComponentViewTree.html';
+                        } else {
+                            return 'MessageReadTree.html';
+                        }
+                    } else {
+                        if (node.obj.type === 'segmentRef') {
+                            return 'MessageSegmentRefEditTree.html';
+                        } else if (node.obj.type === 'group') {
+                            return 'MessageGroupEditTree.html';
+                        } else if (node.obj.type === 'field') {
+                            return 'MessageFieldViewTree.html';
+                        } else if (node.obj.type === 'component') {
+                            return 'MessageComponentViewTree.html';
+                        } else {
+                            return 'MessageEditTree.html';
+                        }
+                    }
+                }
+            });
         };
 
         /**
@@ -186,28 +186,28 @@ angular.module('igl')
             });
 
             $rootScope.$on('event:IgsPushed', function (event, igdocument) {
-        		console.log("event:IgsPushed=" + igdocument)
-               if ($scope.igDocumentConfig.selectedType === 'USER') {
-	                	var idx = $rootScope.igs.findIndex(function(igd) {
-	            			return igd.id === igdocument.id;
-	            		});
-                		if(idx > -1) {
-                			$timeout(function() {
-    	                		_.each($rootScope.igs, function(igd) {
-        	                		console.log("b msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
-    	                		});
-	                			$rootScope.igs.splice(idx, 1);
-	                	        $scope.tmpIgs = [].concat($rootScope.igs);
-	    	                		_.each($scope.tmpIgs, function(igd) {
-	        	                		console.log("a msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
-	        	                		console.log("msgs=" + igd.metaData.title + " len=" + igd.profile.messages.children.length);
-	    	                		});  
-                			}, 100);
-                			$rootScope.igs.push(igdocument);                			
-              		} else {
-              			console.log("pushed=>")
-                			$rootScope.igs.push(igdocument);
-                		}
+                console.log("event:IgsPushed=" + igdocument)
+                if ($scope.igDocumentConfig.selectedType === 'USER') {
+                    var idx = $rootScope.igs.findIndex(function (igd) {
+                        return igd.id === igdocument.id;
+                    });
+                    if (idx > -1) {
+                        $timeout(function () {
+                            _.each($rootScope.igs, function (igd) {
+                                console.log("b msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
+                            });
+                            $rootScope.igs.splice(idx, 1);
+                            $scope.tmpIgs = [].concat($rootScope.igs);
+                            _.each($scope.tmpIgs, function (igd) {
+                                console.log("a msgs=" + igd.metaData.title + " eq=" + (igd === igdocument));
+                                console.log("msgs=" + igd.metaData.title + " len=" + igd.profile.messages.children.length);
+                            });
+                        }, 100);
+                        $rootScope.igs.push(igdocument);
+                    } else {
+                        console.log("pushed=>")
+                        $rootScope.igs.push(igdocument);
+                    }
                 } else {
                     $scope.igDocumentConfig.selectedType = 'USER';
                     $scope.loadIGDocuments();
@@ -227,7 +227,7 @@ angular.module('igl')
         };
 
         $scope.selectIGDocumentType = function (selectedType) {
-    			console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
+            console.log("selectIGDocumentType msgs=" + selectedType.metaData.title + " len=" + selectedType.profile.messages.children.length);
             $scope.igDocumentConfig.selectedType = selectedType;
             StorageService.setSelectedIgDocumentType(selectedType);
             $scope.loadIGDocuments();
@@ -320,7 +320,7 @@ angular.module('igl')
         };
 
         $scope.edit = function (igdocument) {
-			console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
+            console.log("edit msgs=" + igdocument.metaData.title + " len=" + igdocument.profile.messages.children.length);
             $scope.viewSettings.setTableReadonly(false);
             $scope.show(igdocument);
         };
@@ -331,7 +331,7 @@ angular.module('igl')
         };
 
         $scope.openIGDocument = function (igdocument) {
-           if (igdocument != null) {
+            if (igdocument != null) {
                 waitingDialog.show('Opening IG Document...', {dialogSize: 'xs', progressType: 'info'});
                 $scope.selectIgTab(1);
                 $timeout(function () {
@@ -429,7 +429,7 @@ angular.module('igl')
                 this[child.id] = child;
                 var cnt = 0;
                 angular.forEach(child.children, function (segmentRefOrGroup) {
-                	$rootScope.processElement(segmentRefOrGroup);
+                    $rootScope.processElement(segmentRefOrGroup);
                 });
             }, $rootScope.messagesMap);
         };
@@ -537,7 +537,7 @@ angular.module('igl')
             }, function () {
             });
         };
-        
+
         $scope.addTable = function (igdocument) {
             var modalInstance = $modal.open({
                 templateUrl: 'AddTableOpenCtrl.html',
@@ -553,7 +553,7 @@ angular.module('igl')
             }, function () {
             });
         };
-        
+
         $scope.exportAsMessages = function (id, mids) {
             var form = document.createElement("form");
             form.action = $rootScope.api('api/igdocuments/' + id + '/export/pdf/' + mids);
@@ -729,7 +729,7 @@ angular.module('igl')
                         $scope.predWidth = $scope.getDynamicWidth(1, 3, 990);
                         $scope.commentWidth = $scope.getDynamicWidth(1, 3, 990);
                         $scope.loadingSelection = false;
-                       if ($scope.segmentsParams)
+                        if ($scope.segmentsParams)
                             $scope.segmentsParams.refresh();
                     }, 100);
             }
@@ -757,19 +757,24 @@ angular.module('igl')
             $scope.subview = "EditDatatypes.html";
             if (datatype && datatype != null) {
                 $scope.loadingSelection = true;
-                $rootScope.datatype = angular.copy(datatype);
-                $rootScope.datatype["type"] = "datatype";
-                $timeout(
-                    function () {
-                        $scope.tableWidth = null;
-                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                        $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
-                        $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
-                        $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
-                        $scope.loadingSelection = false;
-                       if ($scope.datatypesParams)
-                            $scope.datatypesParams.refresh();
-                    }, 100);
+                DatatypeService.get(datatype.id).then(function (result) {
+                    $rootScope.datatype = result;
+                    $scope.loadingSelection = false;
+                    $rootScope.datatype["type"] = "datatype";
+                    $scope.tableWidth = null;
+                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                    $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
+                    $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
+                    $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
+                    $scope.loadingSelection = false;
+                    if ($scope.datatypesParams)
+                        $scope.datatypesParams.refresh();
+                }, function (error) {
+                    $scope.loadingSelection = false;
+                    $rootScope.msg().text = error.data.text;
+                    $rootScope.msg().type = error.data.type;
+                    $rootScope.msg().show = true;
+                });
             }
         };
 
@@ -891,11 +896,11 @@ angular.module('igl')
         };
 
         $scope.getSegmentRefNodeName = function (node) {
-	        	if(!$rootScope.segmentsMap[node.ref]) {
-	        		console.log("igdoc.id=" + $rootScope.igdocument.id);
-	        		console.log("node.id=" + node.id);
-	        		console.log("node.ref=" + node.ref);
-	        	}
+            if (!$rootScope.segmentsMap[node.ref]) {
+                console.log("igdoc.id=" + $rootScope.igdocument.id);
+                console.log("node.id=" + node.id);
+                console.log("node.ref=" + node.ref);
+            }
             return node.position + "." + $rootScope.segmentsMap[node.ref].name + ":" + $rootScope.segmentsMap[node.ref].description;
         };
 
@@ -1144,57 +1149,57 @@ angular.module('igl').controller('SelectMessagesOpenCtrl', function ($scope, $mo
 });
 
 angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalInstance, igdocumentToSelect, $rootScope, $http, $cookies) {
-	$scope.loading = false;
-	$scope.igdocumentToSelect = igdocumentToSelect;
-	$scope.source = '';
-	$scope.selectedHL7Version = '';
-	$scope.searchText = '';
-	$scope.hl7Versions = [];
-	$scope.hl7Tables = null;
-	$scope.phinvadsTables = null;
-	$scope.selectedTables = [];
-	
-	$scope.cancel = function () {
+    $scope.loading = false;
+    $scope.igdocumentToSelect = igdocumentToSelect;
+    $scope.source = '';
+    $scope.selectedHL7Version = '';
+    $scope.searchText = '';
+    $scope.hl7Versions = [];
+    $scope.hl7Tables = null;
+    $scope.phinvadsTables = null;
+    $scope.selectedTables = [];
+
+    $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
-    
-    $scope.listHL7Versions = function() {
-		return $http.get('api/igdocuments/findVersions', {
-			timeout : 60000
-		}).then(function(response) {
-			var hl7Versions = [];
-			var length = response.data.length;
-			for (var i = 0; i < length; i++) {
-				hl7Versions.push(response.data[i]);
-			}
-			$scope.hl7Versions = hl7Versions;
-		});
-	};
-	
-	$scope.loadTablesByVersion = function(hl7Version) {
-		$scope.loading = true;
-		$scope.selectedHL7Version = hl7Version;
-		return $http.get('api/igdocuments/' + hl7Version + "/tables", {
-			timeout : 60000
-		}).then(function(response) {
-			$scope.hl7Tables = response.data;
-			$scope.loading = false;
-		});
-	};
-	
-	$scope.searchPhinvads = function(searchText) {
-		$scope.loading = true;
-		$scope.searchText = searchText;
-		return $http.get('api/igdocuments/' + searchText + "/PHINVADS/tables", {
-			timeout : 600000
-		}).then(function(response) {
-			$scope.phinvadsTables = response.data;
-			$scope.loading = false;
-		});
-	}
-	
-	$scope.addTable = function(table) {
-		var newTable = angular.fromJson({
+
+    $scope.listHL7Versions = function () {
+        return $http.get('api/igdocuments/findVersions', {
+            timeout: 60000
+        }).then(function (response) {
+            var hl7Versions = [];
+            var length = response.data.length;
+            for (var i = 0; i < length; i++) {
+                hl7Versions.push(response.data[i]);
+            }
+            $scope.hl7Versions = hl7Versions;
+        });
+    };
+
+    $scope.loadTablesByVersion = function (hl7Version) {
+        $scope.loading = true;
+        $scope.selectedHL7Version = hl7Version;
+        return $http.get('api/igdocuments/' + hl7Version + "/tables", {
+            timeout: 60000
+        }).then(function (response) {
+            $scope.hl7Tables = response.data;
+            $scope.loading = false;
+        });
+    };
+
+    $scope.searchPhinvads = function (searchText) {
+        $scope.loading = true;
+        $scope.searchText = searchText;
+        return $http.get('api/igdocuments/' + searchText + "/PHINVADS/tables", {
+            timeout: 600000
+        }).then(function (response) {
+            $scope.phinvadsTables = response.data;
+            $scope.loading = false;
+        });
+    }
+
+    $scope.addTable = function (table) {
+        var newTable = angular.fromJson({
             id: new ObjectId().toString(),
             type: 'table',
             bindingIdentifier: $rootScope.createNewFlavorName(table.bindingIdentifier),
@@ -1208,45 +1213,45 @@ angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalIns
             source: $scope.source + " " + $scope.selectedHL7Version,
             codes: []
         });
-	    
-	    for (var i = 0, len1 = table.codes.length; i < len1; i++) {
-	    	var newValue = {
-	    			id: new ObjectId().toString(),
-	                type: 'value',
-	                value: table.codes[i].value,
-	                label: table.codes[i].label,
-	                codeSystem: table.codes[i].codeSystem,
-	                codeUsage: table.codes[i].codeUsage
-	        };
-	            
-	        newTable.codes.push(newValue);
-	    }
-		$scope.selectedTables.push(newTable);
-	};
-	
-	$scope.deleteTable = function(table) {
-		var index = $scope.selectedTables.indexOf(table);
-		if (index > -1) $scope.selectedTables.splice(index, 1);
-	};
-	
-	$scope.save = function() {
-		for (var i = 0; i < $scope.selectedTables.length; i++) {
-			var v = $scope.selectedTables[i];
-			$rootScope.tablesMap[v.id] = v;
-	        $rootScope.igdocument.profile.tables.children.splice(0, 0, v);	
-		}
+
+        for (var i = 0, len1 = table.codes.length; i < len1; i++) {
+            var newValue = {
+                id: new ObjectId().toString(),
+                type: 'value',
+                value: table.codes[i].value,
+                label: table.codes[i].label,
+                codeSystem: table.codes[i].codeSystem,
+                codeUsage: table.codes[i].codeUsage
+            };
+
+            newTable.codes.push(newValue);
+        }
+        $scope.selectedTables.push(newTable);
+    };
+
+    $scope.deleteTable = function (table) {
+        var index = $scope.selectedTables.indexOf(table);
+        if (index > -1) $scope.selectedTables.splice(index, 1);
+    };
+
+    $scope.save = function () {
+        for (var i = 0; i < $scope.selectedTables.length; i++) {
+            var v = $scope.selectedTables[i];
+            $rootScope.tablesMap[v.id] = v;
+            $rootScope.igdocument.profile.tables.children.splice(0, 0, v);
+        }
         $rootScope.igdocument.profile.tables.children = positionElements($rootScope.igdocument.profile.tables.children);
         $rootScope.recordChanged();
-		$rootScope.$broadcast('event:SetToC');	
-		$modalInstance.dismiss('cancel');
-	};
-	
-	function positionElements(chidren) {
-		var sorted = _.sortBy(chidren, "sectionPosition");
-		var start = sorted[0].sectionPosition;
-		_.each(sorted, function(sortee) {
-			sortee.sectionPosition = start++;
-		});
-		return sorted;
-	}
+        $rootScope.$broadcast('event:SetToC');
+        $modalInstance.dismiss('cancel');
+    };
+
+    function positionElements(chidren) {
+        var sorted = _.sortBy(chidren, "sectionPosition");
+        var start = sorted[0].sectionPosition;
+        _.each(sorted, function (sortee) {
+            sortee.sectionPosition = start++;
+        });
+        return sorted;
+    }
 });

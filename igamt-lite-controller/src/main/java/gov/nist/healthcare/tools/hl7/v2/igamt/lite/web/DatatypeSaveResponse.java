@@ -10,10 +10,10 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web;
 
-import java.util.List;
-
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DatatypeSaveError;
+
+import java.util.List;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 16, 2015
@@ -26,6 +26,8 @@ public class DatatypeSaveResponse extends ResponseMessage {
 
 	private String scope;
 
+	private String version;
+
 	/**
 	 * @param type
 	 * @param text
@@ -34,10 +36,18 @@ public class DatatypeSaveResponse extends ResponseMessage {
 	 * @param date
 	 * @param version
 	 */
-	public DatatypeSaveResponse(String date, String version) {
-		super(Type.success, "DatatypeLibrarySaved");
+	public DatatypeSaveResponse(String date, String scope, String version) {
+		super(Type.success, "DatatypeSaved");
 		this.date = date;
 		this.scope = scope;
+		this.version = version;
+	}
+
+	public DatatypeSaveResponse(String date, String scope) {
+		super(Type.success, "DatatypeSaved");
+		this.date = date;
+		this.scope = scope;
+		this.version = null;
 	}
 
 	/**
@@ -48,18 +58,20 @@ public class DatatypeSaveResponse extends ResponseMessage {
 		super(type, text);
 	}
 
-	public DatatypeSaveResponse(Type type, String text, String resourceId, String manualHandle,
-			List<DatatypeSaveError> errors) {
+	public DatatypeSaveResponse(Type type, String text, String resourceId,
+			String manualHandle, List<DatatypeSaveError> errors) {
 		super(type, text, resourceId, manualHandle);
 		this.errors = errors;
 	}
 
-	public DatatypeSaveResponse(Type type, String text, String resourceId, List<DatatypeSaveError> errors) {
+	public DatatypeSaveResponse(Type type, String text, String resourceId,
+			List<DatatypeSaveError> errors) {
 		super(type, text, resourceId);
 		this.errors = errors;
 	}
 
-	public DatatypeSaveResponse(Type type, String text, List<DatatypeSaveError> errors) {
+	public DatatypeSaveResponse(Type type, String text,
+			List<DatatypeSaveError> errors) {
 		super(type, text);
 		this.errors = errors;
 	}
@@ -87,4 +99,13 @@ public class DatatypeSaveResponse extends ResponseMessage {
 	public void setScope(String scope) {
 		this.scope = scope;
 	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 }

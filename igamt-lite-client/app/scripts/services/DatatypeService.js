@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http','$q',function ($rootScope, ViewSettings, ElementUtils,$http,$q) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', function ($rootScope, ViewSettings, ElementUtils, $http, $q) {
         var DatatypeService = {
             getNodes: function (parent) {
                 if (parent && parent != null) {
@@ -76,7 +76,7 @@ angular.module('igl').factory('DatatypeService',
             },
             save: function (datatype) {
                 var delay = $q.defer();
-                $http.post('api/datatypes/update', datatype).then(function (response) {
+                $http.post('api/datatypes/save', datatype).then(function (response) {
                     var saveResponse = angular.fromJson(response.data);
                     datatype.date = saveResponse.date;
                     datatype.version = saveResponse.version;
@@ -86,7 +86,7 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
-            findOne: function (id) {
+            get: function (id) {
                 var delay = $q.defer();
                 $http.post('api/datatypes/' + id).then(function (response) {
                     var datatype = angular.fromJson(response.data);
@@ -95,7 +95,25 @@ angular.module('igl').factory('DatatypeService',
                     delay.reject(error);
                 });
                 return delay.promise;
+            },
+            merge: function (to, from) {
+                to.name = from.name;
+                to.ext = from.ext;
+                to.label = from.label;
+                to.description = from.description;
+                to.status = from.status;
+                to.comment = from.comment;
+                to.usageNote = from.usageNote;
+                to.scope = from.scope;
+                to.hl7Version = from.hl7Version;
+                to.accountId = from.accountId;
+                to.libId = from.libId;
+                to.predicates = from.predicates;
+                to.conformanceStatements = from.conformanceStatements;
+                to.sectionPosition = from.sectionPosition;
+                return to;
             }
         };
         return DatatypeService;
-    }]);
+    }])
+;
