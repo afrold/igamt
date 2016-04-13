@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', function ($rootScope, ViewSettings, ElementUtils) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http','$q',function ($rootScope, ViewSettings, ElementUtils,$http,$q) {
         var DatatypeService = {
             getNodes: function (parent) {
                 if (parent && parent != null) {
@@ -73,6 +73,28 @@ angular.module('igl').factory('DatatypeService',
                     return ElementUtils.filterConstraints(element, datatype.predicates);
                 }
                 return predicates;
+            },
+            save: function (datatype) {
+                var delay = $q.defer();
+                $http.post('api/datatypes/update', datatype).then(function (response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    datatype.date = saveResponse.date;
+                    datatype.version = saveResponse.version;
+                    delay.resolve(saveResponse);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            findOne: function (id) {
+                var delay = $q.defer();
+                $http.post('api/datatypes/' + id).then(function (response) {
+                    var datatype = angular.fromJson(response.data);
+                    delay.resolve(datatype);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
         };
         return DatatypeService;

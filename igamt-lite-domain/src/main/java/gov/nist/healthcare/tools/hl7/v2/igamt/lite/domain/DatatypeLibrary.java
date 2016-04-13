@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
@@ -42,6 +43,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		super();
 	}
 
+	@JsonIgnoreProperties(value= {"components", "usageNote","predicates","conformanceStatements","accountId"})
 	@DBRef
 	private Set<Datatype> children = new HashSet<Datatype>();
 

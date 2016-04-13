@@ -11,6 +11,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Document(collection = "table-library")
 public class TableLibrary extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
 
@@ -47,6 +49,7 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		super();
 	}
 
+	@JsonIgnoreProperties(value= {"codes", "contentDefinition","stability","extensibility","group","accountId"})
 	@DBRef
 	private Set<Table> children = new HashSet<Table>();
 

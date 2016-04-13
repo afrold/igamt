@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
@@ -42,6 +43,7 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		super();
 	}
 
+	@JsonIgnoreProperties(value= {"fields", "dynamicMapping","text1","text2","predicates","conformanceStatements","accountId"})
 	@DBRef
 	private Set<Segment> children = new HashSet<Segment>();
 
