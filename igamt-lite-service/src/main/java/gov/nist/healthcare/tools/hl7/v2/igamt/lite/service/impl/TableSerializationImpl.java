@@ -66,7 +66,7 @@ public class TableSerializationImpl implements TableSerialization {
 	@Override
 	public String serializeTableLibraryToXML(DatatypeLibrary datatypeLibrary) {
 		TableLibrary tables = new TableLibrary();
-		tables.setChildren(datatypeLibrary.getTables());
+//		tables.setChildren(datatypeLibrary.getTables());
 		return this.serializeTableLibraryToDoc(tables).toXML();
 	}
 

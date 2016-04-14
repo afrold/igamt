@@ -34,15 +34,15 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 	private ProfileMetaData metaData;
 
 	@DBRef
-	private SegmentLibrary segmentLibrary;
+	private SegmentLibrary segmentLibrary = new SegmentLibrary();
 	
 	@DBRef
-	private DatatypeLibrary datatypeLibrary;
+	private DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
 
 	private Messages messages;
 
 	@DBRef
-	private TableLibrary tableLibrary;
+	private TableLibrary tableLibrary = new TableLibrary();
 
 	private Long accountId;
 

@@ -43,7 +43,7 @@ public class DataypeServiceImpl implements DatatypeService {
 	@Override
 	public Datatype findById(String id) {
 		log.info("DataypeServiceImpl.findById=" + id);
-		return datatypeRepository.findById(id);
+		return datatypeRepository.findOne(id);
 	}
 	
 	@Override

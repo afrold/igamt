@@ -86,7 +86,7 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	}
 
 	public void addSegment(Segment seg) {
-		seg.setLibId(ext);
+		seg.setLibId(this.id);
 		children.add(seg);
 	}
 
