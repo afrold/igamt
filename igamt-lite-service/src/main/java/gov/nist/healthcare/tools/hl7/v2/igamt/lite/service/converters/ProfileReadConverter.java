@@ -24,15 +24,10 @@ import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 import com.mongodb.DBRef;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
@@ -42,10 +37,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileConversionException;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 31, 2015
@@ -142,118 +134,6 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return null;
 	}
 
-	private ConformanceStatement conformanceStatement(DBObject source) {
-		ConformanceStatement cs = new ConformanceStatement();
-		cs.setId(readMongoId(source));
-		cs.setConstraintId(((String) source.get("constraintId")));
-		cs.setConstraintTarget(((String) source.get("constraintTarget")));
-		cs.setDescription((String) source.get("description"));
-		cs.setAssertion(((String) source.get("assertion")));
-		cs.setReference(reference(((DBObject) source.get("reference"))));
-		return cs;
-	}
-
-	private Predicate predicate(DBObject source) {
-		Predicate p = new Predicate();
-		p.setId(readMongoId(source));
-		p.setConstraintId(((String) source.get("constraintId")));
-		p.setConstraintTarget(((String) source.get("constraintTarget")));
-		p.setDescription((String) source.get("description"));
-		p.setAssertion(((String) source.get("assertion")));
-		p.setReference(reference(((DBObject) source.get("reference"))));
-		p.setFalseUsage(getFalseUsage(source));
-		p.setTrueUsage(getTrueUsage(source));
-		return p;
-	}
-
-	private DynamicMapping dynamicMapping(DBObject source, DatatypeLibrary datatypes) {
-		DynamicMapping p = new DynamicMapping();
-		p.setId(readMongoId(source));
-		BasicDBList mappingsDBObjects = (BasicDBList) source.get("mappings");
-		if (mappingsDBObjects != null) {
-			List<Mapping> mappings = new ArrayList<Mapping>();
-			for (Object compObj : mappingsDBObjects) {
-				DBObject compObject = (DBObject) compObj;
-				Mapping m = mapping(compObject, datatypes);
-				mappings.add(m);
-			}
-			p.setMappings(mappings);
-		}
-		return p;
-	}
-
-	private Mapping mapping(DBObject source, DatatypeLibrary datatypes) {
-		Mapping p = new Mapping();
-		p.setId(readMongoId(source));
-		p.setReference(((Integer) source.get("reference")));
-		p.setPosition(((Integer) source.get("position")));
-		BasicDBList mappingsDBObjects = (BasicDBList) source.get("cases");
-		if (mappingsDBObjects != null) {
-			List<Case> cases = new ArrayList<Case>();
-			for (Object compObj : mappingsDBObjects) {
-				DBObject compObject = (DBObject) compObj;
-				Case m = toCase(compObject, datatypes);
-				cases.add(m);
-			}
-			p.setCases(cases);
-		}
-
-		return p;
-	}
-
-	private Case toCase(DBObject source, DatatypeLibrary datatypes) {
-		Case p = new Case();
-		p.setId(readMongoId(source));
-		p.setValue(((String) source.get("value")));
-		String d = findDatatypeById(((String) source.get("datatype")), datatypes);
-		if (d == null) {
-			throw new ProfileConversionException("Datatype " + ((String) source.get("datatype")) + " not found");
-		}
-		p.setDatatype(d);
-		return p;
-	}
-
-	private Field field(DBObject source, DatatypeLibrary datatypes, TableLibrary tables) {
-		Field f = new Field();
-		f.setId(readMongoId(source));
-		f.setType(((String) source.get("type")));
-		f.setName(((String) source.get("name")));
-		f.setComment(readString(source, "comment"));
-		f.setMinLength(((Integer) source.get("minLength")));
-		f.setMaxLength((String) source.get("maxLength"));
-		f.setConfLength((String) source.get("confLength"));
-		f.setPosition((Integer) source.get("position"));
-		f.setTable(((String) source.get("table")));
-		f.setUsage(Usage.valueOf((String) source.get("usage")));
-		f.setBindingLocation((String) source.get("bindingLocation"));
-		f.setBindingStrength((String) source.get("bindingStrength"));
-		f.setItemNo((String) source.get("itemNo"));
-		f.setMin((Integer) source.get("min"));
-		f.setMax((String) source.get("max"));
-		f.setText(readString(source, "text"));
-		f.setDatatype(((String) source.get("datatype")));
-		return f;
-	}
-
-	private Component component(DBObject source, DatatypeLibrary datatypes, TableLibrary tables,
-			BasicDBList datatypesDBObjects) throws ProfileConversionException {
-		Component c = new Component();
-		c.setId(readMongoId(source));
-		c.setType(((String) source.get("type")));
-		c.setName(((String) source.get("name")));
-		c.setComment(readString(source, "comment"));
-		c.setMinLength(((Integer) source.get("minLength")));
-		c.setMaxLength((String) source.get("maxLength"));
-		c.setConfLength((String) source.get("confLength"));
-		c.setPosition((Integer) source.get("position"));
-		c.setTable(((String) source.get("table")));
-		c.setUsage(Usage.valueOf((String) source.get("usage")));
-		c.setBindingLocation((String) source.get("bindingLocation"));
-		c.setBindingStrength((String) source.get("bindingStrength"));
-		c.setDatatype(((String) source.get("datatype")));
-		return c;
-	}
-
 	private TableLibrary tables(DBObject source) {
 		TableLibraryReadConverter cnvTab = new TableLibraryReadConverter();
 		TableLibrary tabLib = cnvTab.convert(source);
@@ -340,29 +220,6 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		}
 		group.setChildren(segOrGroups);
 		return group;
-	}
-
-	@SuppressWarnings("unused")
-	private String findSegmentById(String id, SegmentLibrary segments) {
-		if (segments != null) {
-			for (String s : segments.getChildren()) {
-				if (s.equals(id)) {
-					return s;
-				}
-			}
-		}
-		throw new IllegalArgumentException("Segment " + id + " not found in the profile");
-	}
-
-	private String findDatatypeById(String id, DatatypeLibrary datatypes) {
-		if (datatypes != null) {
-			String d = datatypes.findOne(id);
-			if (d != null) {
-				return d;
-			}
-		}
-
-		return null;
 	}
 
 	private String readMongoId(DBObject source) {
