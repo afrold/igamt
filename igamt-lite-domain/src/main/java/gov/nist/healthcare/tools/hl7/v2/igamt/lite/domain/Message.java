@@ -9,7 +9,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "message")
 public class Message extends SectionModel implements java.io.Serializable,
 Cloneable, Comparable<Message> {
 

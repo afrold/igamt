@@ -21,9 +21,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEventFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageEventFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)

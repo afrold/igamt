@@ -10,10 +10,19 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 
 public class DatatypeLibraryRespositoryImpl implements DatatypeLibraryOperations {
 
@@ -21,4 +30,25 @@ public class DatatypeLibraryRespositoryImpl implements DatatypeLibraryOperations
 
 	 @Autowired
 	 private MongoOperations mongo;
+
+		public List<DatatypeLibrary> findByScopeAndMetaData_Hl7Version(Constant.SCOPE scope, String hl7version) {
+			log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion=" + hl7version);
+			Criteria where = Criteria.where("scope").is(scope).andOperator(Criteria.where("metaData.hl7Version").is(hl7version));
+			Query query = Query.query(where);
+			List<DatatypeLibrary> list =  mongo.find(query, DatatypeLibrary.class);
+			log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion list.size()=" + list.size());
+		    return list;
+	 	}
+
+		@Override
+		public DatatypeLibrary findById(String id) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public List<DatatypeLibrary> findByAccountId(Long accountId) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 }

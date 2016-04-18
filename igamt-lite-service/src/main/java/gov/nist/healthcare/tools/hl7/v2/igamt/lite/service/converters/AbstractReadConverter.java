@@ -23,7 +23,7 @@ public abstract class AbstractReadConverter<S, T> implements Converter<S, T> {
 	public final static String COMMENTS = "comments";
 	public final static String TEXT_1 = "text1";
 	public final static String TEXT_2 = "text2";
-	public final static String LIB_ID = "libId";
+	public final static String LIB_IDS = "libIds";
 	public final static String FIELDS = "fields";
 	public final static String CONFORMANCE_STATEMENTS = "conformanceStatements";
 	public final static String PREDICATES = "predicates";
@@ -94,6 +94,19 @@ public abstract class AbstractReadConverter<S, T> implements Converter<S, T> {
 			return String.valueOf((String) source.get(tag));
 		}
 		return "";
+	}
+
+	protected Long readLong(DBObject source, String tag){
+		if ( source.get(tag) != null){
+			if (source.get(tag) instanceof Integer){
+				return Long.valueOf((Integer) source.get(tag));
+			} else if (source.get(tag) instanceof String) {
+				return Long.valueOf((String)source.get(tag));
+			} else if (source.get(tag) instanceof Long) {
+				return Long.valueOf((Long)source.get(tag));
+			}
+		}
+		return Long.valueOf(0);
 	}
 
 	protected Integer getMinLength(DBObject source) {

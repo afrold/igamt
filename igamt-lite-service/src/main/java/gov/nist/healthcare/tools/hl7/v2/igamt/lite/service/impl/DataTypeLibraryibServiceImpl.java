@@ -47,8 +47,8 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public DatatypeLibrary findByScope(Constant.SCOPE scope) {
-		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryRepository.findByScope(scope);
+	public DatatypeLibrary findByScopeAndVersion(Constant.SCOPE scope, String hl7Version) {
+		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryRepository.findByScopeAndMetaData_Hl7Version(scope, hl7Version);
 		log.info("datatypeLibraries=" + datatypeLibraries.size());
 		DatatypeLibrary datatypeLibrary = null;
 		if (datatypeLibraries.size() > 0) {
@@ -74,7 +74,7 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 
 	@Override
 	public DatatypeLibrary createFrom(Long accountId, DatatypeLibrary datatypeLibrary) {
-		DatatypeLibrary existing = findByScope(datatypeLibrary.getScope());
+		DatatypeLibrary existing = findByScopeAndVersion(datatypeLibrary.getScope(), datatypeLibrary.getMetaData().getHl7Version());
 		if (existing != null) {
 			for (Datatype dt : datatypeLibrary.getChildren()) {
 				existing.addDatatype(dt);

@@ -23,5 +23,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface TableRepository extends MongoRepository<Table, String> {
 
+	public Table findByBindingIdentifier(String bindingIdentifier);
 } 
  

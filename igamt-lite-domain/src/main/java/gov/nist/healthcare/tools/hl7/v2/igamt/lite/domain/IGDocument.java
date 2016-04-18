@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,6 +16,7 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 	public IGDocument() {
 		super();
 		this.type = Constant.Document;
+		this.id = ObjectId.get().toString();
 	}
 
 	@Id
@@ -142,51 +144,15 @@ public class IGDocument extends DataModel implements java.io.Serializable,
 		p.getSegmentLibrary().setSectionPosition(1);
 		p.getSegmentLibrary().setSectionTitle("Segments and Field Descriptions");
 		p.getSegmentLibrary().setType("segments");
-		int segmentPositionNum = 0;
-		for(Segment s:p.getSegmentLibrary().getChildren()){
-			s.setSectionPosition(segmentPositionNum);
-			segmentPositionNum = segmentPositionNum + 1;
-			
-			
-			for(Field f:s.getFields()){
-				if(f.getConfLength().equals("-1")){
-					f.setConfLength("");
-				}
-				
-				if(f.getMinLength().equals(-1)){
-					f.setMinLength(0);
-				}
-			}
-		}
+
 		
 		p.getDatatypeLibrary().setSectionPosition(2);
 		p.getDatatypeLibrary().setSectionTitle("Datatypes");
 		p.getDatatypeLibrary().setType("datatypes");
-		int datatypePositionNum = 0;
-		for(Datatype d:p.getDatatypeLibrary().getChildren()){
-			d.setSectionPosition(datatypePositionNum);
-			datatypePositionNum = datatypePositionNum + 1;
-			
-			for(Component c:d.getComponents()){
-				if(c.getConfLength().equals("-1")){
-					c.setConfLength("");
-				}
-				
-				if(c.getMinLength().equals(-1)){
-					c.setMinLength(0);
-				}
-			}
-		}
 		
 		p.getTableLibrary().setSectionPosition(3);
 		p.getTableLibrary().setSectionTitle("Value Sets");
 		p.getTableLibrary().setType("tables");
-		int tablePositionNum = 0;
-		for(Table t : p.getTableLibrary().getChildren()){
-			t.setSectionPosition(tablePositionNum);
-			tablePositionNum = tablePositionNum + 1;
-		}
-		
 		this.setProfile(p);
 	}
 

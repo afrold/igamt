@@ -27,12 +27,12 @@ public class DatatypeReadConverter  extends AbstractReadConverter<DBObject, Data
 	private static final Logger log = LoggerFactory.getLogger(DatatypeReadConverter.class);
 	
 	public DatatypeReadConverter() {
-		log.info("Datatype Read Converter Created");
+		log.info("DatatypeReadConverter Created...");
 	}
 	
 	@Override
 	public Datatype convert(DBObject source) {
-		log.info("convert==>");
+		log.info("Datatype.convert==>");
 		Datatype dt = new Datatype();
 		dt.setId(readMongoId(source));
 		dt.setType((String) source.get(TYPE));

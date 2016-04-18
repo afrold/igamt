@@ -10,9 +10,20 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.List;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+
 /**
  * @author gcr1
  *
  */
 public interface DatatypeLibraryOperations {
+	
+	public DatatypeLibrary findById(String id);
+	
+	public List<DatatypeLibrary> findByAccountId(Long accountId);
+
+	public List<DatatypeLibrary> findByScopeAndMetaData_Hl7Version(Constant.SCOPE scope, String hl7version);
 }
