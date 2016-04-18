@@ -326,6 +326,22 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [200, data, {}];
     });
 
+    $httpBackend.whenGET('api/datatypes/searchByLabel?search=X').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/datatypes/searchResults.json', false);
+        request.send(null);
+        var results = angular.fromJson(request.response);
+        return [request.status, results, {}];
+    });
+
+    $httpBackend.whenGET('api/datatypes/1').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/datatypes/datatype1.json', false);
+        request.send(null);
+        var datatype = angular.fromJson(request.response);
+        return [request.status, datatype, {}];
+    });
+
 
 
 

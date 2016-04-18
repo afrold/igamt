@@ -321,6 +321,39 @@ angular.module('igl')
 
         };
 
+        $scope.showSelectDatatypeDlg = function(node){
+            var modalInstance = $modal.open({
+                templateUrl: 'SelectDatatype.html',
+                controller: 'SelectDatatypeCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    currentNode: function () {
+                        return node;
+                    },
+                    hl7Version: function () {
+                        return $rootScope.igdocument.metaData.hl7Version;
+                    }
+                }
+            });
+            modalInstance.result.then(function (selected) {
+                node.datatype = selected.id;
+                //TODO: load master map
+                if(!$rootScope.datatypesMap[node.datatype] || $rootScope.datatypesMap[node.datatype] == null){
+                    DatatypeService.get(selected.id).then(function(result) {
+                        $rootScope.datatypesMap[node.datatype] = result;
+                        if ($scope.datatypesParams)
+                            $scope.datatypesParams.refresh();
+                    },function(error){
+
+                    });
+                }else{
+                    if ($scope.datatypesParams)
+                        $scope.datatypesParams.refresh();
+                }
+            });
+
+        };
+
 
     });
 
@@ -329,6 +362,53 @@ angular.module('igl')
     .controller('DatatypeRowCtrl', function ($scope, $filter) {
         $scope.formName = "form_" + new Date().getTime();
     });
+
+angular.module('igl')
+    .controller('SelectDatatypeCtrl', function ($scope, $filter,$modalInstance, $rootScope, $http,currentNode,DatatypeService,$rootScope, hl7Version) {
+        $scope.error = null;
+        $scope.searching = null;
+        $scope.results = [];
+        $scope.tmpResults = [].concat($scope.results);
+        $scope.selected = null;
+        $scope.hl7Version = hl7Version;
+        $scope.currentNode = currentNode;
+        $scope.currentDatatype = $rootScope.datatypesMap[currentNode.datatype];
+        $scope.scope = $scope.currentDatatype != null && $scope.currentDatatype  ? $scope.currentDatatype.scope : null;
+        $scope.name = $scope.currentDatatype != null && $scope.currentDatatype  ? $scope.currentDatatype.name : null;
+
+        $scope.loadDatatype = function(){
+            $scope.error = null;
+            $scope.searching = true;
+            $scope.results = [];
+            $scope.tmpResults = [].concat($scope.results);
+            if($scope.name != null && $scope.scope != null) {
+                DatatypeService.searchByNameVersionAndScope($scope.name, $scope.scope,$scope.hl7Version).then(function (results) {
+                    $scope.results = results;
+                    $scope.tmpResults = [].concat($scope.results);
+                    $scope.searching = false;
+                }, function (error) {
+                    $scope.error = null;
+                    $scope.searching = false;
+                });
+            }
+        };
+
+        $scope.isSelected = function (datatype) {
+            return  $scope.selected != null && datatype != null && $scope.selected.id == datatype.id;
+        };
+
+        $scope.selectDatatype = function($event, datatype){
+            $scope.selected = datatype;
+        };
+
+        $scope.submit = function () {
+            $modalInstance.close($scope.selected);
+        };
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    });
+
 
 
 angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete, $rootScope) {

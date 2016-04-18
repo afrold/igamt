@@ -27,7 +27,8 @@ var app = angular
         'angularjs-dropdown-multiselect',
         'dndLists',
         'froala',
-        'ngNotificationsBar'
+        'ngNotificationsBar',
+        'ui.select'
         ,
         'ngMockE2E'
     ]);
@@ -49,7 +50,7 @@ var
 var msg = {};
 
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider,notificationsConfigProvider) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider,notificationsConfigProvider,uiSelectConfig) {
 
     app.requires.push('ngMockE2E');
 
@@ -313,6 +314,8 @@ app.config(function ($routeProvider, RestangularProvider, $httpProvider, Keepali
     $httpProvider.defaults.transformRequest.push(spinnerStarter);
 
     httpHeaders = $httpProvider.defaults.headers;
+
+//    uiSelectConfig.theme = 'bootstrap';
 
 
 });
