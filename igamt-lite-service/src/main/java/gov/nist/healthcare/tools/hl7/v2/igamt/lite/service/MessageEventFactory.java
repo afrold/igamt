@@ -8,7 +8,7 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +18,7 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -25,6 +26,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 
 /**
  * @author gcr1
@@ -34,6 +37,9 @@ public class MessageEventFactory {
 	
 	private static Logger log = LoggerFactory.getLogger(MessageEventFactory.class);
 
+	@Autowired
+	private TableRepository tableRepository;
+	
 	private TableLibrary tableLibrary;
 	
 	private Table tab0354;
@@ -79,15 +85,6 @@ public class MessageEventFactory {
 	}
 	
 	public Table get0354Table() {
-		if (tab0354 == null) {
-			for (String tabId : tableLibrary.getChildren()) {
-				Table tab = tableLibrary.findOneTableById(tabId);
-				if ("0354".equals(tab.getBindingIdentifier())) {
-					tab0354 = tab;
-					break;
-				}
-			}
-		}
-		return tab0354;
+		return tableRepository.findByBindingIdentifier("0354");
 	}
 }
