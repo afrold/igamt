@@ -96,6 +96,19 @@ public abstract class AbstractReadConverter<S, T> implements Converter<S, T> {
 		return "";
 	}
 
+	protected Long readLong(DBObject source, String tag){
+		if ( source.get(tag) != null){
+			if (source.get(tag) instanceof Integer){
+				return Long.valueOf((Integer) source.get(tag));
+			} else if (source.get(tag) instanceof String) {
+				return Long.valueOf((String)source.get(tag));
+			} else if (source.get(tag) instanceof Long) {
+				return Long.valueOf((Long)source.get(tag));
+			}
+		}
+		return Long.valueOf(0);
+	}
+
 	protected Integer getMinLength(DBObject source) {
 		return ((Integer) source.get("minLength") == -1 ? 0 : ((Integer) source.get("minLength")));
 	}
