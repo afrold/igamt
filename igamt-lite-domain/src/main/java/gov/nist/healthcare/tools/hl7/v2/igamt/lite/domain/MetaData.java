@@ -1,5 +1,6 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
+import org.bson.types.ObjectId;
 
 public class MetaData implements java.io.Serializable, Cloneable {
 
@@ -7,9 +8,11 @@ public class MetaData implements java.io.Serializable, Cloneable {
 	
 	public MetaData() {
 		super();
+		this.id = ObjectId.get().toString();
 	}
 
 	/* XSD Attributes */
+	private String id;
 	
 	private String name; 						//ConformanceProfile/MetaData/@Name
 	
@@ -21,6 +24,14 @@ public class MetaData implements java.io.Serializable, Cloneable {
 	
 	private String date = ""; 					//ConformanceProfile/MetaData/@Date
 	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}

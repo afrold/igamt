@@ -80,7 +80,8 @@ public class MessageEventFactory {
 	
 	public Table get0354Table() {
 		if (tab0354 == null) {
-			for (Table tab : tableLibrary.getChildren()) {
+			for (String tabId : tableLibrary.getChildren()) {
+				Table tab = tableLibrary.findOneTableById(tabId);
 				if ("0354".equals(tab.getBindingIdentifier())) {
 					tab0354 = tab;
 					break;

@@ -11,7 +11,9 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
@@ -22,7 +24,7 @@ public abstract class SectionModelWithConstraints extends SectionModel {
 
 	protected Long accountId;
 	
-	protected String libId;
+	private Set<String> libIds = new HashSet<String>();
 
 	protected List<Predicate> predicates = new ArrayList<Predicate>();
 
@@ -44,12 +46,15 @@ public abstract class SectionModelWithConstraints extends SectionModel {
 		this.accountId = accountId;
 	}
 
-	public String getLibId() {
-		return libId;
+	public Set<String> getLibIds() {
+		if (libIds == null) {
+			libIds = new HashSet<String>();
+		}
+		return libIds;
 	}
 
-	public void setLibId(String libId) {
-		this.libId = libId;
+	public void setLibId(Set<String> libIds) {
+		this.libIds = libIds;
 	}
 
 	public List<Predicate> getPredicates() {

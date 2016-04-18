@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -40,10 +41,10 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	
 	public SegmentLibrary() {
 		super();
+		this.id = ObjectId.get().toString();
 	}
 
-	@DBRef
-	private Set<Segment> children = new HashSet<Segment>();
+	private Set<String> children = new HashSet<String>();
 
 	public String getId() {
 		return id;
@@ -69,11 +70,11 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		this.date = date;
 	}
 
-	public Set<Segment> getChildren() {
+	public Set<String> getChildren() {
 		return children;
 	}
 
-	public void setChildren(Set<Segment> children) {
+	public void setChildren(Set<String> children) {
 		this.children = children;
 	}
 
@@ -85,12 +86,11 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 		this.scope = scope;
 	}
 
-	public void addSegment(Segment seg) {
-		seg.setLibId(this.id);
+	public void addSegment(String seg) {
 		children.add(seg);
 	}
 
-	public Segment save(Segment seg) {
+	public String save(String seg) {
 		if (!this.children.contains(seg)) {
 			children.add(seg);
 		}
@@ -98,15 +98,15 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	}
 
 	public void delete(String id) {
-		Segment seg = findOneSegmentById(id);
+		String seg = findOneSegmentById(id);
 		if (seg != null)
 			this.children.remove(seg);
 	}
 
-	public Segment findOneSegmentById(String id) {
+	public String findOneSegmentById(String id) {
 		if (this.children != null) {
-			for (Segment seg : this.children) {
-				if (seg.getId().equals(id)) {
+			for (String seg : this.children) {
+				if (seg.equals(id)) {
 					return seg;
 				}
 			}
@@ -114,183 +114,14 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 
 		return null;
 	}
-
-	public Segment findOneByNameAndByLabel(String name, String label) {
-		if (this.children != null) {
-			for (Segment seg : this.children) {
-				if (seg.getName().equals(name) && seg.getLabel().equals(label)) {
-					return seg;
-				}
-			}
-		}
-		return null;
-	}
-
-	public Field findOneField(String id, Segment seg) {
-		if (seg.getFields() != null) {
-			for (Field fld : seg.getFields()) {
-				if (fld.getId().equals(id)) {
-					return fld;
-				}
-			}
-		}
-		return null;
-	}
-
-	public Segment findOneSegmentByLabel(String label) {
-		if (this.children != null)
-			for (Segment seg : this.children) {
-				if (seg.getLabel().equals(label)) {
-					return seg;
-				}
-			}
-		return null;
-	}
-
-	public Segment findOneSegmentByName(String name) {
-		if (this.children != null)
-			for (Segment s : this.children) {
-				if (s.getName().equals(name)) {
-					return s;
-				}
-			}
-		return null;
-	}
-
-	public Segment findOneSegmentByBase(String baseName) {
-		if (this.children != null)
-			for (Segment seg : this.children) {
-				if (seg.getName().equals(baseName)) {
-					return seg;
-				}
-			}
-		return null;
-	}
-
-	public Predicate findOnePredicate(String predicateId) {
-		for (Segment seg : this.getChildren()) {
-			Predicate predicate = seg.findOnePredicate(predicateId);
-			if (predicate != null) {
-				return predicate;
-			}
-		}
-		return null;
-	}
-	
-	public Component findOneComponent(String id, DatatypeLibrary datatypes) {
-		if (this.children != null) {
-			for (Segment m : this.children) {
-				for (Field f : m.getFields()) {
-					Component c = datatypes.findOneComponent(f.getDatatype());
-					if (c != null) {
-						return c;
-					}
-				}
-			}
-		}
-		return null;
-	}
-
-	public ConformanceStatement findOneConformanceStatement(String conformanceStatementId) {
-		for (Segment seg : this.getChildren()) {
-			ConformanceStatement conf = seg.findOneConformanceStatement(conformanceStatementId);
-			if (conf != null) {
-				return conf;
-			}
-		}
-		return null;
-	}
-
-	public Field findOneField(String id) {
-		if (this.children != null) {
-			for (Segment m : this.children) {
-				Field c = m.findOneField(id);
-				if (c != null) {
-					return c;
-				}
-			}
-		}
-		return null;
-	}
-	
-	public boolean deletePredicate(String predicateId) {
-		for (Segment seg : this.getChildren()) {
-			if (seg.deletePredicate(predicateId)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean deleteConformanceStatement(String confStatementId) {
-		for (Segment seg : this.getChildren()) {
-			if (seg.deleteConformanceStatement(confStatementId)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public SegmentLibrary clone(HashMap<String, Segment> segRecords, HashMap<String, Datatype> dtRecords,
-			HashMap<String, Table> tabRecords) throws CloneNotSupportedException {
+// TODO gcr not working
+	public SegmentLibrary clone() throws CloneNotSupportedException {
 		SegmentLibrary clonedSegments = new SegmentLibrary();
-		clonedSegments.setChildren(new HashSet<Segment>());
-		for (Segment seg : this.children) {
-			if (segRecords.containsKey(seg.getId())) {
-				clonedSegments.addSegment(segRecords.get(seg.getId()));
-			} else {
-				Segment clone = seg.clone(dtRecords, tabRecords);
-				clone.setId(seg.getId());
-				segRecords.put(seg.getId(), clone);
-				clonedSegments.addSegment(clone);
-			}
-		}
-
 		return clonedSegments;
 	}
 
 	public void merge(SegmentLibrary segLib) {
-		for (Segment seg : segLib.getChildren()) {
-			if (this.findOneByNameAndByLabel(seg.getName(), seg.getLabel()) == null) {
-				this.addSegment(seg);
-			} else {
-				seg.setId(this.findOneByNameAndByLabel(seg.getName(), seg.getLabel()).getId()); // FIXME
-																								// Probably
-																								// useless...
-			}
-		}
-
-	}
-
-	public void setPositionsOrder() {
-		List<Segment> sortedList = new ArrayList<Segment>(this.getChildren());
-		Collections.sort(sortedList);
-		for (Segment seg : sortedList) {
-			seg.setSectionPosition(sortedList.indexOf(seg));
-		}
-	}
-
-	@JsonIgnore
-	public Constraints getConformanceStatements() {
-		// TODO Only byID constraints are considered; might want to consider
-		// byName
-		Constraints constraints = new Constraints();
-		Context dtContext = new Context();
-
-		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
-		byNameOrByIDs = new HashSet<ByNameOrByID>();
-		for (Segment seg : this.getChildren()) {
-			ByID byID = new ByID();
-			byID.setByID(seg.getLabel());
-			if (seg.getConformanceStatements().size() > 0) {
-				byID.setConformanceStatements(seg.getConformanceStatements());
-				byNameOrByIDs.add(byID);
-			}
-		}
-		dtContext.setByNameOrByIDs(byNameOrByIDs);
-
-		constraints.setSegments(dtContext);
-		return constraints;
+		segLib.getChildren().addAll(segLib.getChildren());
 	}
 
 	public SegmentLibraryMetaData getMetaData() {

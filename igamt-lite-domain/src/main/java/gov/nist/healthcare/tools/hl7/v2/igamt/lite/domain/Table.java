@@ -2,7 +2,9 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -10,12 +12,15 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * 
  * @author Harold Affo (harold.affo@nist.gov) Feb 26, 2015
  * 
  */
 @Document(collection = "table")
+@JsonIgnoreProperties({"libId", "libIds"})
 public class Table extends SectionModel implements Serializable,
 		Comparable<Table>, Cloneable {
 
@@ -27,9 +32,9 @@ public class Table extends SectionModel implements Serializable,
 	@Id
 	private String id;
 
-	protected String hl7Version;
+	private String hl7Version;
 
-	protected String libId;
+	private Set<String> libIds = new HashSet<String>();
 
 	private String bindingIdentifier;
 
@@ -87,12 +92,12 @@ public class Table extends SectionModel implements Serializable,
 		this.name = name;
 	}
 
-	public String getLibId() {
-		return libId;
+	public Set<String> getLibIds() {
+		return libIds;
 	}
 
-	public void setLibId(String libId) {
-		this.libId = libId;
+	public void setLibIds(Set<String> libIds) {
+		this.libIds = libIds;
 	}
 
 	public String getBindingIdentifier() {

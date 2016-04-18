@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import org.bson.types.ObjectId;
 
-//@Entity
-//@javax.persistence.Table(name = "CODE")
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 public class Code extends DataModel implements Serializable, Cloneable,Comparable<Code> {
 	/**
 	 * 

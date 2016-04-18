@@ -24,14 +24,8 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 
-public interface DatatypeLibraryRepository extends MongoRepository<DatatypeLibrary, String> {
+public interface DatatypeLibraryRepository extends MongoRepository<DatatypeLibrary, String>, DatatypeLibraryOperations {
 	
 	@Override
 	public List<DatatypeLibrary> findAll();
-	
-	public DatatypeLibrary findById(String id);
-	
-	public List<DatatypeLibrary> findByAccountId(Long accountId);
-
-	public List<DatatypeLibrary> findByScope(Constant.SCOPE scope);
 } 

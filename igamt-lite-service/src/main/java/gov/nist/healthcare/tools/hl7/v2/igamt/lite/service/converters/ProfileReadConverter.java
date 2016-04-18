@@ -25,15 +25,10 @@ import com.mongodb.DBObject;
 import com.mongodb.DBRef;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatypes;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
@@ -42,13 +37,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
@@ -83,13 +74,14 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		profile.setDatatypeLibrary(datatypes(objDatatypes));
 		DBObject objTables = ((DBRef) source.get("tableLibrary")).fetch();
 		profile.setTableLibrary(tables(objTables));
-		profile.setMessages(messages((DBObject) source.get("messages"), profile));
-		
+		DBObject objMessages = ((DBObject) source.get("messages"));
+		profile.setMessages(messages(objMessages));
+
 		profile.setSectionContents((String) source.get("sectionContents"));
 		profile.setSectionDescription((String) source.get("sectionDescription"));
 		profile.setSectionPosition((Integer) source.get("sectionPosition"));
 		profile.setSectionTitle((String) source.get("sectionTitle"));
-		
+
 		profile.setConstraintId((String) source.get("constraintId"));
 
 		Object baseId = source.get("baseId");
@@ -114,8 +106,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		metaData.setSubTitle(((String) source.get("subTitle")));
 		metaData.setVersion(((String) source.get("version")));
 		metaData.setDate(((String) source.get("date")));
-		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext"))
-				: null);
+		metaData.setExt(source.get("ext") != null ? ((String) source.get("ext")) : null);
 		Set<String> encodings = new HashSet<String>();
 		Object encodingObj = source.get("encodings");
 		BasicDBList encodingDBObjects = (BasicDBList) encodingObj;
@@ -133,114 +124,11 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return segLib;
 	}
 
-//	private Segment segment(DBObject source, Datatypes datatypes, TableLibrary tables) {
-//		Segment seg = new Segment();
-//		seg.setId(readMongoId(source)); 
-//		seg.setType(((String) source.get("type")));
-//		seg.setLabel((String) source.get("label"));
-//		seg.setName(((String) source.get("name")));
-//		seg.setDescription((String) source.get("description"));
-//		seg.setComment(readString(source, "comment"));
-//		seg.setText1(readString(source, "text1"));
-//		seg.setText2(readString(source, "text2"));
-//
-//		BasicDBList fieldObjects = (BasicDBList) source.get("fields");
-//		if (fieldObjects != null) {
-//			List<Field> fields = new ArrayList<Field>();
-//			for (Object fieldObject : fieldObjects) {
-//				Field f = field((DBObject) fieldObject, datatypes, tables);
-//				fields.add(f);
-//			}
-//			seg.setFields(fields);
-//		}
-//
-//		BasicDBList confStsObjects = (BasicDBList) source
-//				.get("conformanceStatements");
-//		if (confStsObjects != null) {
-//			List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
-//			for (Object confStObject : confStsObjects) {
-//				ConformanceStatement cs = conformanceStatement((DBObject) confStObject);
-//				confStatements.add(cs);
-//			}
-//			seg.setConformanceStatements(confStatements);
-//		}
-//
-//		BasicDBList predDBObjects = (BasicDBList) source.get("predicates");
-//		if (predDBObjects != null) {
-//			List<Predicate> predicates = new ArrayList<Predicate>();
-//			for (Object predObj : predDBObjects) {
-//				DBObject predObject = (DBObject) predObj;
-//				Predicate pred = predicate(predObject);
-//				predicates.add(pred);
-//			}
-//			seg.setPredicates(predicates);
-//		}
-//
-//		DBObject dynamicMappingDBObject = (DBObject) source.get("dynamicMapping");
-//		if (dynamicMappingDBObject != null) {
-//			DynamicMapping dyn = dynamicMapping(dynamicMappingDBObject, datatypes);
-//			seg.setDynamicMapping(dyn);
-//		}
-//
-//		return seg;
-//	}
-
 	private DatatypeLibrary datatypes(DBObject source) {
 		DatatypeLibraryReadConverter cnvDts = new DatatypeLibraryReadConverter();
 		DatatypeLibrary dtLib = cnvDts.convert(source);
 		return dtLib;
 	}
-
-//	private Datatype datatype(DBObject source, Datatypes datatypes,
-//			TableLibrary tables, BasicDBList datatypesDBObjects)
-//					throws ProfileConversionException {
-//		Datatype segRef = new Datatype();
-//		segRef.setId(readMongoId(source));
-//		segRef.setType(((String) source.get("type")));
-//		segRef.setLabel((String) source.get("label"));
-//		segRef.setName(((String) source.get("name")));
-//		segRef.setHl7Version(((String) source.get("hl7Version")));
-//		segRef.setDescription((String) source.get("description"));
-//		segRef.setComment(readString(source, "comment"));
-//		segRef.setUsageNote(readString(source, "usageNote"));
-//		segRef.setComponents(new ArrayList<Component>());
-//		BasicDBList componentObjects = (BasicDBList) source.get("components");
-//		if (componentObjects != null) {
-//			List<Component> components = new ArrayList<Component>();
-//			for (Object compObj : componentObjects) {
-//				DBObject compObject = (DBObject) compObj;
-//				Component c = component(compObject, datatypes, tables,
-//						datatypesDBObjects);
-//				components.add(c);
-//			}
-//			segRef.setComponents(components);
-//		}
-//
-//		BasicDBList confStsObjects = (BasicDBList) source
-//				.get("conformanceStatements");
-//		if (confStsObjects != null) {
-//			List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
-//			for (Object confStObj : confStsObjects) {
-//				DBObject confStObject = (DBObject) confStObj;
-//				ConformanceStatement cs = conformanceStatement(confStObject);
-//				confStatements.add(cs);
-//			}
-//			segRef.setConformanceStatements(confStatements);
-//		}
-//
-//		BasicDBList predDBObjects = (BasicDBList) source.get("predicates");
-//		if (predDBObjects != null) {
-//			List<Predicate> predicates = new ArrayList<Predicate>();
-//			for (Object predObj : predDBObjects) {
-//				DBObject predObject = (DBObject) predObj;
-//				Predicate pred = predicate(predObject);
-//				predicates.add(pred);
-//			}
-//			segRef.setPredicates(predicates);
-//		}
-//
-//		return segRef;
-//	}
 
 	private Reference reference(DBObject source) {
 		if (source != null) {
@@ -278,7 +166,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return p;
 	}
 
-	private DynamicMapping dynamicMapping(DBObject source, Datatypes datatypes) {
+	private DynamicMapping dynamicMapping(DBObject source, DatatypeLibrary datatypes) {
 		DynamicMapping p = new DynamicMapping();
 		p.setId(readMongoId(source));
 		BasicDBList mappingsDBObjects = (BasicDBList) source.get("mappings");
@@ -294,7 +182,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return p;
 	}
 
-	private Mapping mapping(DBObject source, Datatypes datatypes) {
+	private Mapping mapping(DBObject source, DatatypeLibrary datatypes) {
 		Mapping p = new Mapping();
 		p.setId(readMongoId(source));
 		p.setReference(((Integer) source.get("reference")));
@@ -313,21 +201,19 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return p;
 	}
 
-	private Case toCase(DBObject source, Datatypes datatypes) {
+	private Case toCase(DBObject source, DatatypeLibrary datatypes) {
 		Case p = new Case();
 		p.setId(readMongoId(source));
 		p.setValue(((String) source.get("value")));
-		Datatype d = findDatatypeById(((String) source.get("datatype")),
-				datatypes);
+		String d = findDatatypeById(((String) source.get("datatype")), datatypes);
 		if (d == null) {
-			throw new ProfileConversionException("Datatype "
-					+ ((String) source.get("datatype")) + " not found");
+			throw new ProfileConversionException("Datatype " + ((String) source.get("datatype")) + " not found");
 		}
-		p.setDatatype(d.getId());
+		p.setDatatype(d);
 		return p;
 	}
 
-	private Field field(DBObject source, Datatypes datatypes, TableLibrary tables) {
+	private Field field(DBObject source, DatatypeLibrary datatypes, TableLibrary tables) {
 		Field f = new Field();
 		f.setId(readMongoId(source));
 		f.setType(((String) source.get("type")));
@@ -349,9 +235,8 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return f;
 	}
 
-	private Component component(DBObject source, Datatypes datatypes,
-			TableLibrary tables, BasicDBList datatypesDBObjects)
-					throws ProfileConversionException {
+	private Component component(DBObject source, DatatypeLibrary datatypes, TableLibrary tables,
+			BasicDBList datatypesDBObjects) throws ProfileConversionException {
 		Component c = new Component();
 		c.setId(readMongoId(source));
 		c.setType(((String) source.get("type")));
@@ -372,88 +257,20 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	private TableLibrary tables(DBObject source) {
 		TableLibraryReadConverter cnvTab = new TableLibraryReadConverter();
 		TableLibrary tabLib = cnvTab.convert(source);
-//		tables.setId(readMongoId(source));
-//		tables.setValueSetLibraryIdentifier(((String) source
-//				.get("valueSetLibraryIdentifier")));
-//		tables.setStatus(((String) source.get("status")));
-//		tables.setValueSetLibraryVersion(((String) source
-//				.get("valueSetLibraryVersion")));
-//		tables.setOrganizationName(((String) source.get("organizationName")));
-//		tables.setName(((String) source.get("name")));
-//		tables.setDescription(((String) source.get("description")));
-//		tables.setDateCreated(((String) source.get("dateCreated")));
-//
-//		tables.setChildren(new HashSet<Table>());
-//
-//		BasicDBList childrenDBObjects = (BasicDBList) source.get("children");
-//		if (childrenDBObjects != null)
-//			for (Object tableObj : childrenDBObjects) {
-//				DBObject tableObject = (DBObject) tableObj;
-//				Table table = new Table();
-//				table.setCodes(new ArrayList<Code>());
-//				table.setId(readMongoId(tableObject));
-//				table.setBindingIdentifier(((String) tableObject.get("bindingIdentifier")));
-//				//Nullity tests added for retro compatibility
-//				if (tableObject.get("bindingIdentifier") == null){
-//					table.setBindingIdentifier(((String) tableObject.get("mappingId")));
-//				}
-//				table.setName(((String) tableObject.get("name")));
-//				table.setDescription(((String) tableObject.get("description")));
-//				//Nullity tests added for retro compatibility
-//				if (tableObject.get("description") == null){
-//					table.setDescription((String) tableObject.get("name"));
-//				}
-//				table.setOrder(tableObject.get("order") != null ? ((Integer) tableObject.get("order")): 0);
-//				table.setGroup(((String) tableObject.get("group")));
-//				table.setVersion(((String) tableObject.get("version")));
-//				table.setOid(((String) tableObject.get("oid")));
-//				//Nullity tests added for retro compatibility
-//				table.setStability(tableObject.get("stability") == null || "".equals(tableObject.get("stability")) ? Stability.Dynamic : Stability.fromValue((String) tableObject.get("stability")));
-//				table.setExtensibility(tableObject.get("extensibility") == null || "".equals(tableObject.get("extensibility")) ? Extensibility.Open : Extensibility.fromValue((String) tableObject.get("extensibility")));
-//				table.setContentDefinition(tableObject.get("contentDefinition") == null || "".equals(tableObject.get("extensibility")) ? ContentDefinition.Intensional : ContentDefinition.fromValue((String) tableObject.get("contentDefinition")));
-//				BasicDBList codesDBObjects = (BasicDBList) tableObject
-//						.get("codes");
-//				if (codesDBObjects != null)
-//					for (Object codeObj : codesDBObjects) {
-//						DBObject codeObject = (DBObject) codeObj;
-//						Code code = new Code();
-//						code.setId(readMongoId(codeObject));
-//						code.setValue(((String) codeObject.get("value")));
-//						code.setCodeSystem(((String) codeObject.get("codeSystem")));
-//						code.setCodeSystemVersion(((String) codeObject.get("codeSystemVersion")));
-//						code.setCodeUsage(((String) codeObject.get("codeUsage")));
-//						code.setType(((String) codeObject.get("type")));
-//						code.setLabel(((String) codeObject.get("label")));
-//						code.setComments(readString(codeObject, "comments"));
-//						//Added for retro compatibility
-//						if (codeObject.get("value") == null){
-//							code.setValue(((String) codeObject.get("code")));
-//						}
-//						if (codeObject.get("codeSystem") == null){
-//							code.setCodeSystem((String) codeObject.get("codesys"));
-//						}
-//						table.addCode(code);
-//					}
-//
-//				tables.addTable(table);
-//
-//			}
-
 		return tabLib;
-
 	}
 
-	private Messages messages(DBObject source, Profile profile) {
+	private Messages messages(DBObject source) {
 		Messages messages = new Messages();
 		messages.setId(readMongoId(source));
 		BasicDBList messagesDBObjects = (BasicDBList) source.get("children");
 		messages.setChildren(new HashSet<Message>());
 		for (Object childObj : messagesDBObjects) {
 			Message message = new Message();
-			DBObject child = (DBObject) childObj;
+			DBObject child = ((DBRef) childObj).fetch();
 			message.setId(readMongoId(child));
 			message.setName((String) child.get("name"));
-			if (child.get("name") == null){
+			if (child.get("name") == null) {
 				message.setName((String) child.get("messageType") + "_" + (String) child.get("event"));
 			}
 			message.setMessageType((String) child.get("messageType"));
@@ -465,18 +282,15 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			message.setStructID((String) child.get("structID"));
 			message.setType((String) child.get("type"));
 
-			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child
-					.get("children");
+			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child.get("children");
 			for (Object segmentRefOrGroupObject : segmentRefOrGroupDBObjects) {
 				DBObject segmentRefOrGroupDBObject = (DBObject) segmentRefOrGroupObject;
 				String type = (String) segmentRefOrGroupDBObject.get("type");
 				if (Constant.SEGMENTREF.equals(type)) {
-					SegmentRef segRef = segmentRef(segmentRefOrGroupDBObject,
-							profile.getSegmentLibrary());
+					SegmentRef segRef = segmentRef(segmentRefOrGroupDBObject);
 					message.addSegmentRefOrGroup(segRef);
 				} else {
-					Group group = group(segmentRefOrGroupDBObject,
-							profile.getSegmentLibrary());
+					Group group = group(segmentRefOrGroupDBObject);
 					message.addSegmentRefOrGroup(group);
 				}
 			}
@@ -486,7 +300,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return messages;
 	}
 
-	private SegmentRef segmentRef(DBObject source, SegmentLibrary segments) {
+	private SegmentRef segmentRef(DBObject source) {
 		SegmentRef segRef = new SegmentRef();
 		segRef.setId(readMongoId(source));
 		segRef.setType(((String) source.get("type")));
@@ -499,7 +313,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return segRef;
 	}
 
-	private Group group(DBObject source, SegmentLibrary segments) {
+	private Group group(DBObject source) {
 		Group group = new Group();
 		group.setId(readMongoId(source));
 		group.setType(((String) source.get("type")));
@@ -509,8 +323,7 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		group.setMin((Integer) source.get("min"));
 		group.setMax((String) source.get("max"));
 		group.setName(((String) source.get("name")));
-		BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) source
-				.get("children");
+		BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) source.get("children");
 
 		List<SegmentRefOrGroup> segOrGroups = new ArrayList<SegmentRefOrGroup>();
 
@@ -518,11 +331,10 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 			DBObject segmentRefOrGroupDBObject = (DBObject) segmentRefOrGroupObject;
 			String type = (String) segmentRefOrGroupDBObject.get("type");
 			if (Constant.SEGMENTREF.equals(type)) {
-				SegmentRef segRef = segmentRef(segmentRefOrGroupDBObject,
-						segments);
+				SegmentRef segRef = segmentRef(segmentRefOrGroupDBObject);
 				segOrGroups.add(segRef);
 			} else {
-				Group subGroup = group(segmentRefOrGroupDBObject, segments);
+				Group subGroup = group(segmentRefOrGroupDBObject);
 				segOrGroups.add(subGroup);
 			}
 		}
@@ -531,21 +343,20 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 	}
 
 	@SuppressWarnings("unused")
-	private Segment findSegmentById(String id, SegmentLibrary segments) {
+	private String findSegmentById(String id, SegmentLibrary segments) {
 		if (segments != null) {
-			for (Segment s : segments.getChildren()) {
-				if (s.getId().equals(id)) {
+			for (String s : segments.getChildren()) {
+				if (s.equals(id)) {
 					return s;
 				}
 			}
 		}
-		throw new IllegalArgumentException("Segment " + id
-				+ " not found in the profile");
+		throw new IllegalArgumentException("Segment " + id + " not found in the profile");
 	}
 
-	private Datatype findDatatypeById(String id, Datatypes datatypes) {
+	private String findDatatypeById(String id, DatatypeLibrary datatypes) {
 		if (datatypes != null) {
-			Datatype d = datatypes.findOne(id);
+			String d = datatypes.findOne(id);
 			if (d != null) {
 				return d;
 			}
@@ -554,15 +365,15 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return null;
 	}
 
-	private String readMongoId(DBObject source){
-		if ( source.get("_id") != null){
-			if (source.get("_id") instanceof ObjectId){
+	private String readMongoId(DBObject source) {
+		if (source.get("_id") != null) {
+			if (source.get("_id") instanceof ObjectId) {
 				return ((ObjectId) source.get("_id")).toString();
 			} else {
 				return (String) source.get("_id");
 			}
-		} else if ( source.get("id") != null){
-			if (source.get("id") instanceof ObjectId){
+		} else if (source.get("id") != null) {
+			if (source.get("id") instanceof ObjectId) {
 				return ((ObjectId) source.get("id")).toString();
 			} else {
 				return (String) source.get("id");
@@ -571,33 +382,33 @@ public class ProfileReadConverter implements Converter<DBObject, Profile> {
 		return null;
 	}
 
-	private Long readLong(DBObject source, String tag){
-		if ( source.get(tag) != null){
-			if (source.get(tag) instanceof Integer){
+	private Long readLong(DBObject source, String tag) {
+		if (source.get(tag) != null) {
+			if (source.get(tag) instanceof Integer) {
 				return Long.valueOf((Integer) source.get(tag));
 			} else if (source.get(tag) instanceof String) {
-				return Long.valueOf((String)source.get(tag));
+				return Long.valueOf((String) source.get(tag));
 			} else if (source.get(tag) instanceof Long) {
-				return Long.valueOf((Long)source.get(tag));
+				return Long.valueOf((Long) source.get(tag));
 			}
 		}
 		return Long.valueOf(0);
 	}
 
-	private String readString(DBObject source, String tag){
-		if ( source.get(tag) != null){
-				return String.valueOf((String) source.get(tag));
-			}
+	private String readString(DBObject source, String tag) {
+		if (source.get(tag) != null) {
+			return String.valueOf((String) source.get(tag));
+		}
 		return "";
-	} 
-	
-	private Usage getTrueUsage(DBObject source){
-		return source.get("trueUsage") != null ? Usage.valueOf((String) source.get("trueUsage")):Usage.C;
 	}
-	private Usage getFalseUsage(DBObject source){
-		return source.get("falseUsage") != null ? Usage.valueOf((String) source.get("falseUsage")):Usage.C;
+
+	private Usage getTrueUsage(DBObject source) {
+		return source.get("trueUsage") != null ? Usage.valueOf((String) source.get("trueUsage")) : Usage.C;
 	}
-	
+
+	private Usage getFalseUsage(DBObject source) {
+		return source.get("falseUsage") != null ? Usage.valueOf((String) source.get("falseUsage")) : Usage.C;
+	}
 
 	// private DBObject findDatatypeById(String id, BasicDBList datatypes)
 	// throws ProfileConversionException {

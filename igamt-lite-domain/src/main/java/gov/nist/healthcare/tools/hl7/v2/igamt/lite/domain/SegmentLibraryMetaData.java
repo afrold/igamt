@@ -9,7 +9,7 @@ public class SegmentLibraryMetaData extends MetaData {
 		super();
 	}
 
-	private String datatypLibId = ""; 				//ConformanceProfile/@ID
+	private String segmentLibId = ""; 				//ConformanceProfile/@ID
 	
 	@Override
 	public SegmentLibraryMetaData clone() throws CloneNotSupportedException {
@@ -19,15 +19,15 @@ public class SegmentLibraryMetaData extends MetaData {
 		clonedProfileMetaData.setOrgName(this.getOrgName());
 		clonedProfileMetaData.setDate(this.getDate());
 		clonedProfileMetaData.setVersion(this.getVersion());
-		clonedProfileMetaData.setDatatypLibId(datatypLibId);
+		clonedProfileMetaData.setSegmentLibId(segmentLibId);
 		return clonedProfileMetaData;
 	}
 
-	public String getDatatypLibId() {
-		return datatypLibId;
+	public String getSegmentLibId() {
+		return segmentLibId;
 	}
 
-	public void setDatatypLibId(String datatypLibId) {
-		this.datatypLibId = datatypLibId;
+	public void setSegmentLibId(String segmentLibId) {
+		this.segmentLibId = segmentLibId;
 	}
 }

@@ -31,12 +31,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileConversionExce
 public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segment> {
 
 	private static final Logger log = LoggerFactory.getLogger(SegmentReadConverter.class);
-	
-	@Autowired
-	DatatypeLibraryService datatypeLibraryService;
-	
-	DatatypeLibrary dtLib;
-	
+		
 	public SegmentReadConverter() {
 		log.info("SegmentReadConverter Read Converter Created");
 	}
@@ -53,8 +48,10 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 		seg.setText1(readString(source, TEXT_1));
 		seg.setText2(readString(source, TEXT_2));
 		seg.setSectionPosition((Integer) source.get(SECTION_POSITION));
-		seg.getLibIds().add((String) source.get(LIB_ID));
-// not working		dtLib = datatypeLibraryService.findById(seg.getLibId());
+		BasicDBList libIdsObjects = (BasicDBList) source.get(LIB_IDS);
+		for (Object libIdObj : libIdsObjects) {
+			seg.getLibIds().add((String) libIdObj);
+		}
 
 		BasicDBList fieldObjects = (BasicDBList) source.get(FIELDS);
 		if (fieldObjects != null) {
@@ -90,14 +87,14 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 
 		DBObject dynamicMappingDBObject = (DBObject) source.get(DYNAMIC_MAPPING);
 		if (dynamicMappingDBObject != null) {
-			DynamicMapping dyn = dynamicMapping(dynamicMappingDBObject, dtLib);
+			DynamicMapping dyn = dynamicMapping(dynamicMappingDBObject);
 			seg.setDynamicMapping(dyn);
 		}
 
 		return seg;
 	}
 
-	private DynamicMapping dynamicMapping(DBObject source, DatatypeLibrary dtLib) {
+	private DynamicMapping dynamicMapping(DBObject source) {
 		DynamicMapping p = new DynamicMapping();
 		p.setId(readMongoId(source));
 		BasicDBList mappingsDBObjects = (BasicDBList) source.get(MAPPINGS);
@@ -105,7 +102,7 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 			List<Mapping> mappings = new ArrayList<Mapping>();
 			for (Object compObj : mappingsDBObjects) {
 				DBObject compObject = (DBObject) compObj;
-				Mapping m = mapping(compObject, dtLib);
+				Mapping m = mapping(compObject);
 				mappings.add(m);
 			}
 			p.setMappings(mappings);
@@ -113,7 +110,7 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 		return p;
 	}
 
-	private Mapping mapping(DBObject source, DatatypeLibrary dtLib) {
+	private Mapping mapping(DBObject source) {
 		Mapping p = new Mapping();
 		p.setId(readMongoId(source));
 		p.setReference(((Integer) source.get(REFERENCE)));
@@ -123,7 +120,7 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 			List<Case> cases = new ArrayList<Case>();
 			for (Object compObj : mappingsDBObjects) {
 				DBObject compObject = (DBObject) compObj;
-				Case m = toCase(compObject, dtLib);
+				Case m = toCase(compObject);
 				cases.add(m);
 			}
 			p.setCases(cases);
@@ -132,30 +129,31 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 		return p;
 	}
 
-	private Case toCase(DBObject source, DatatypeLibrary dtLib) {
+	private Case toCase(DBObject source) {
 		Case p = new Case();
 		p.setId(readMongoId(source));
 		p.setValue(((String) source.get(VALUE)));
-		Datatype d = findDatatypeById(((String) source.get(Constant.DATATYPE)),
-				dtLib);
-		if (d == null) {
-			throw new ProfileConversionException("Datatype "
-					+ ((String) source.get(Constant.DATATYPE)) + " not found");
-		}
-		p.setDatatype(d.getId());
+		p.setDatatype((String) source.get(Constant.DATATYPE));
+//		Datatype d = findDatatypeById(((String) source.get(Constant.DATATYPE)),
+//				dtLib);
+//		if (d == null) {
+//			throw new ProfileConversionException("Datatype "
+//					+ ((String) source.get(Constant.DATATYPE)) + " not found");
+//		}
+//		p.setDatatype(d.getId());
 		return p;
 	}
 
-	private Datatype findDatatypeById(String id, DatatypeLibrary dtLib) {
-		if (dtLib != null) {
-			Datatype d = dtLib.findOne(id);
-			if (d != null) {
-				return d;
-			}
-		}
-
-		return null;
-	}
+//	private Datatype findDatatypeById(String id, DatatypeLibrary dtLib) {
+//		if (dtLib != null) {
+//			Datatype d = dtLib.findOne(id);
+//			if (d != null) {
+//				return d;
+//			}
+//		}
+//
+//		return null;
+//	}
 
 	private Field field(DBObject source) {
 		Field f = new Field();
