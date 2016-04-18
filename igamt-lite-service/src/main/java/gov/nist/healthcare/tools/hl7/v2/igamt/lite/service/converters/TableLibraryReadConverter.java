@@ -50,15 +50,11 @@ public class TableLibraryReadConverter extends AbstractReadConverter<DBObject, T
 		tabLib.setSectionPosition((Integer) source.get(SECTION_POSITION));
 		tabLib.setSectionTitle((String) source.get(SECTION_TITLE));
 		BasicDBList tabLibDBObjects = (BasicDBList) source.get(CHILDREN);
-		tabLib.setChildren(new HashSet<Table>());
+		tabLib.setChildren(new HashSet<String>());
 		
-		TableReadConverter tabCnv = new TableReadConverter();
 		if (tabLibDBObjects != null) {
 			for (Object childObj : tabLibDBObjects) {
-				DBObject child = (DBObject) childObj;
-				if (tabLib.findTableById(readMongoId(child)) == null) {
-					tabLib.addTable(tabCnv.convert(child));
-				}
+				tabLib.addTable((String)childObj);
 			}
 		}
 

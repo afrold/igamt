@@ -51,15 +51,12 @@ public class SegmentLibraryReadConverter extends AbstractReadConverter<DBObject,
 		segLib.setSectionPosition((Integer) source.get(SECTION_POSITION));
 		segLib.setSectionTitle((String) source.get(SECTION_TITLE));
 		BasicDBList segLibDBObjects = (BasicDBList) source.get(CHILDREN);
-		segLib.setChildren(new HashSet<Segment>());
+		segLib.setChildren(new HashSet<String>());
 		
 		SegmentReadConverter segCnv = new SegmentReadConverter();
 		if (segLibDBObjects != null) {
 			for (Object childObj : segLibDBObjects) {
-				DBObject child = (DBObject) childObj;
-				if (segLib.findOneSegmentById(readMongoId(child)) == null) {
-					segLib.addSegment(segCnv.convert(child));
-				}
+				segLib.addSegment((String)childObj);
 			}
 		}
 

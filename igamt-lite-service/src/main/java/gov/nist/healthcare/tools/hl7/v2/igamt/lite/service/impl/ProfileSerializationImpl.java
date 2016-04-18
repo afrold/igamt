@@ -169,7 +169,7 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 		
 		
 		TableLibrary tables = new TableLibrary();
-		tables.setChildren(datatypeLibrary.getTables());
+//		tables.setChildren(datatypeLibrary.getTables());
 		
 		nu.xom.Element ds = new nu.xom.Element("Datatypes");
 		for (Datatype d : datatypeLibrary.getChildren()) {

@@ -24,12 +24,8 @@ public class Case implements Serializable, Cloneable {
 
 	private String id;
 
-	// //@NotNull
-	// //@Column(nullable = false, name = "VALUE")
 	protected String value;
 
-	// //@OneToOne
-	// //@JoinColumn(nullable = false)
 	protected String datatype;
 
 	public String getValue() {
