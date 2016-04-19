@@ -30,8 +30,6 @@ public interface DatatypeLibraryService {
 
 	DatatypeLibrary save(DatatypeLibrary library);
 
-	DatatypeLibrary createFrom(Long accountId, DatatypeLibrary datatypeLibrary);
-
 	DatatypeLibrary create(DatatypeLibrary library);
 
 	void delete(DatatypeLibrary library);

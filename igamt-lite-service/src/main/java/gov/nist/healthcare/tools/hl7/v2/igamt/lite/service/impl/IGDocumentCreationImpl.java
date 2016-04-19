@@ -43,14 +43,15 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
@@ -66,7 +67,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	private IGDocumentRepository igdocumentRepository;
 
 	@Autowired
-	private IGDocumentService igdocumentService;
+	private TableRepository tableRepository;
 
 	@Override
 	public List<String> findHl7Versions() {
@@ -81,7 +82,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		List<MessageEvents> messageEvents = new ArrayList<MessageEvents>();
 		if (!igds.isEmpty()) {
 			IGDocument igd = igds.get(0);
-			MessageEventFactory mef = new MessageEventFactory(igd);
+			MessageEventFactory mef = new MessageEventFactory(igd, tableRepository);
 			Messages msgs = igd.getProfile().getMessages();
 			messageEvents = mef.createMessageEvents(msgs);
 		} else {

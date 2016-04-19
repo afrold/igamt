@@ -53,8 +53,6 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 		DatatypeLibrary datatypeLibrary = null;
 		if (datatypeLibraries.size() > 0) {
 			datatypeLibrary = datatypeLibraries.get(0);
-		} else {
-			datatypeLibrary = new DatatypeLibrary();
 		}
 		return datatypeLibrary;
 	}
@@ -70,20 +68,6 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 	public DatatypeLibrary save(DatatypeLibrary library) {
 		DatatypeLibrary datatypeLibrary = datatypeLibraryRepository.save(library);
 		return datatypeLibrary;
-	}
-
-	@Override
-	public DatatypeLibrary createFrom(Long accountId, DatatypeLibrary datatypeLibrary) {
-		DatatypeLibrary existing = findByScopeAndVersion(datatypeLibrary.getScope(), datatypeLibrary.getMetaData().getHl7Version());
-		if (existing != null) {
-			for (Datatype dt : datatypeLibrary.getChildren()) {
-				existing.addDatatype(dt);
-				save(existing);
-			}
-			return existing;
-		} else {
-			return create(datatypeLibrary);
-		}
 	}
 
 	DatatypeLibraryMetaData defaultMetadata() {

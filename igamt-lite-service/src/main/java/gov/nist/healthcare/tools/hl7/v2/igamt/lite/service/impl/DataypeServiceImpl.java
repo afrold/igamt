@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -27,25 +28,35 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
  */
 @Service
 public class DataypeServiceImpl implements DatatypeService {
-	
+
 	Logger log = LoggerFactory.getLogger(DataypeServiceImpl.class);
 
 	@Autowired
 	private DatatypeRepository datatypeRepository;
-	
+
 	@Override
-	public List<Datatype> findAll() {
-		List<Datatype> datatypes = datatypeRepository.findAll();
+	public List<Datatype> findAll(Constant.EXTENT extent, String dtLibId) {
+		List<Datatype> datatypes;
+		switch (extent) {
+		case BREVIS:
+			datatypes = datatypeRepository.findAllBrevis(dtLibId);
+			break;
+		case SUMMA:
+			datatypes = datatypeRepository.findAllSumma(dtLibId);
+			break;
+		}
 		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
 		return datatypes;
 	}
-	
+
 	@Override
-	public Datatype findById(String id) {
+	public Datatype findById(String id, Constant.EXTENT extent) {
 		log.info("DataypeServiceImpl.findById=" + id);
-		return datatypeRepository.findOne(id);
+		Datatype datatype;
+		datatype = datatypeRepository.findById(id, extent);
+		return datatype;
 	}
-	
+
 	@Override
 	public Datatype save(Datatype datatype) {
 		log.info("DataypeServiceImpl.save=" + datatype.getLabel());

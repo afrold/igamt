@@ -42,7 +42,9 @@ import com.mongodb.MongoException;
 
 @Service
 public class IGDocumentServiceImpl implements IGDocumentService {
+
 	Logger log = LoggerFactory.getLogger(IGDocumentServiceImpl.class);
+
 	@Autowired
 	private IGDocumentRepository documentRepository;
 

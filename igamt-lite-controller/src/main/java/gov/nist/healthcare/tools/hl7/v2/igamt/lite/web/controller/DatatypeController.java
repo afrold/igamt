@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeSaveResponse;
@@ -49,9 +50,11 @@ public class DatatypeController extends CommonController {
 	@Autowired
 	AccountRepository accountRepository;
 
-	public List<Datatype> datatypes() {
+	@RequestMapping(value = "/{extent}", method = RequestMethod.GET, produces = "application/json")
+	public List<Datatype> datatypes(@PathVariable("extent") String extent) {
 		log.info("Fetching all Datatypes...");
-		List<Datatype> result = datatypeService.findAll();
+		Constant.EXTENT extent1 = Constant.EXTENT.valueOf(extent);
+		List<Datatype> result = datatypeService.findAll(extent1);
 		return result;
 	}
 

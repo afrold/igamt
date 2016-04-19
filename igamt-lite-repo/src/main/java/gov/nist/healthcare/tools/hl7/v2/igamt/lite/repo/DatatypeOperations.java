@@ -12,6 +12,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.List;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.EXTENT;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 /**
@@ -19,4 +20,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
  *
  */
 public interface DatatypeOperations {
+
+	List<Datatype> findAll(String dtLibId, EXTENT extent);
 }

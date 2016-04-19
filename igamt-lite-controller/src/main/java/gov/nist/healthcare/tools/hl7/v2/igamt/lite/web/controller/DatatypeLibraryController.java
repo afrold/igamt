@@ -26,6 +26,7 @@ import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeLibrarySaveResponse;
@@ -61,21 +62,20 @@ public class DatatypeLibraryController extends CommonController {
 	}
 
 	@RequestMapping(value = "/getDataTypeLibraryByScope", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public DatatypeLibrary getDataTypeLibraryByScope(@RequestBody String scope) {
-		log.info("Fetching the " + scope + " datatype library.");
+	public DatatypeLibrary getDataTypeLibraryByScope(@RequestBody String scope, @RequestBody String hl7Version) {
+		log.info("Fetching the datatype library. scope=" + scope + " hl7Version=" + hl7Version);
 		Constant.SCOPE scope1 = Constant.SCOPE.valueOf(scope);
-		DatatypeLibrary datatypeLibrary = datatypeLibraryService.findByScope(scope1);
+		DatatypeLibrary datatypeLibrary = null;
+		try {
+			datatypeLibrary = datatypeLibraryService.findByScopeAndVersion(scope1, hl7Version);
+			if (datatypeLibrary == null) {
+				throw new DatatypeLibraryNotFoundException("scope=" + scope + " hl7Version=" + hl7Version);
+			}
+		} catch (DatatypeLibraryNotFoundException e) {
+			log.error("", e);
+		}
 		log.debug("datatypeLibrary.getId()=" + datatypeLibrary.getId());
 		return datatypeLibrary;
-	}
-
-	@RequestMapping(value = "/createUpdate", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public DatatypeLibrary createUpdate(@RequestBody DatatypeLibrary datatypeLibrary) {
-		log.info("Creating of updating the " + datatypeLibrary.getScope() + " datatype library.");
-		User u = userService.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-		DatatypeLibrary createdUpdated = datatypeLibraryService.createFrom(account.getId(), datatypeLibrary);
-		return createdUpdated;
 	}
 
 	// gcr not used at present but MIGHT be in the future.

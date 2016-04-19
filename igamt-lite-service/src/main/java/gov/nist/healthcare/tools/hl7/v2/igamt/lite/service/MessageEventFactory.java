@@ -18,7 +18,6 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
@@ -36,16 +35,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 public class MessageEventFactory {
 	
 	private static Logger log = LoggerFactory.getLogger(MessageEventFactory.class);
-
-	@Autowired
+	
 	private TableRepository tableRepository;
 	
-	private TableLibrary tableLibrary;
-	
-	private Table tab0354;
-	
-	public MessageEventFactory(IGDocument igdocument) {
-		tableLibrary = igdocument.getProfile().getTableLibrary();
+	public MessageEventFactory(TableRepository tableRepository) {
+		this.tableRepository = tableRepository;
 	}
 	
 	public List<MessageEvents> createMessageEvents(Messages msgs) {
@@ -64,7 +58,7 @@ public class MessageEventFactory {
 	public Set<String> findEvents(String structID) {
 		Set<String> events = new HashSet<String>();
 		String structID1 = fixUnderscore(structID);
-		Code code = get0354Table().findOneCodeByValue(structID1);
+		Code code = (Code) get0354Table().findOneCodeByValue(structID1);
 		if (code != null) {
 			String label = code.getLabel();
 			String[] ss = label.split(",");

@@ -10,15 +10,47 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Query;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 public class DatatypeRespositoryImpl implements DatatypeOperations {
 
 	private Logger log = LoggerFactory.getLogger(DatatypeRespositoryImpl.class);
 
-	 @Autowired
-	 private MongoOperations mongo;
+	@Autowired
+	private MongoOperations mongo;
+
+	@Override
+	public List<Datatype> findAll(String dtLibId, Constant.EXTENT extent) {
+		Query qry = new Query();
+		switch (extent) {
+		case BREVIS:
+			qry.fields().include("_id");
+			qry.fields().include("label");
+			qry.fields().include("status");
+			qry.fields().include("description");
+			break;
+		case SUMMA:
+			break;
+		}
+		return mongo.find(qry, Datatype.class);
+	}
+	
+	@Override
+	public List<Datatype> findAll(String dtLibId) {
+		return mongo.findAll(Datatype.class);
+	}
+	
+	@Override
+	public Datatype findById(String id, Constant.EXTENT extent) {
+		
+	}
 }
