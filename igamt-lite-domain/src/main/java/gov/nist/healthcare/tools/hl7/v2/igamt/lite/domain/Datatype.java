@@ -19,8 +19,6 @@ public class Datatype extends SectionModelWithConstraints implements java.io.Ser
 Cloneable, Comparable<Datatype> {
 
 	private static final long serialVersionUID = 1L;
-
-	public enum STATUS { PUBLISHED, UNPUBLISHED };
 	
 	public Datatype() {
 		super();
@@ -41,13 +39,9 @@ Cloneable, Comparable<Datatype> {
 
 	private String description;
 
-	private STATUS status;
-	
 	protected String comment = "";
 
 	protected String usageNote = "";
-	
-	private Constant.SCOPE scope;
 	
 	public String getId() {
 		return id;
@@ -61,13 +55,6 @@ Cloneable, Comparable<Datatype> {
 		return label;
 	}
 
-	public Constant.SCOPE getScope() {
-		return scope;
-	}
-
-	public void setScope(Constant.SCOPE scope) {
-		this.scope = scope;
-	}
 
 	public void setLabel(String label) {
 		this.label = label;
@@ -113,14 +100,7 @@ Cloneable, Comparable<Datatype> {
 		this.description = description;
 	}
 
-	public STATUS getStatus() {
-		return status;
-	}
-
-	public void setStatus(STATUS status) {
-		this.status = status;
-	}
-
+	
 	public void addComponent(Component c) {
 		c.setPosition(components.size() + 1);
 		components.add(c);

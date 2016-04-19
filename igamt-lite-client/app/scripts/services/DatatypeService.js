@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', function ($rootScope, ViewSettings, ElementUtils) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', function ($rootScope, ViewSettings, ElementUtils, $http, $q) {
         var DatatypeService = {
             getNodes: function (parent) {
                 if (parent && parent != null) {
@@ -25,7 +25,7 @@ angular.module('igl').factory('DatatypeService',
                 return $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
             },
             getTemplate: function (node) {
-                if (ViewSettings.tableReadonly) {
+                if (ViewSettings.tableReadonly || $rootScope.datatype != null && $rootScope.datatype.scope === 'HL7STANDARD' || $rootScope.datatype.scope === null) {
                     return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node) ? 'DatatypeSubComponentReadTree.html' : '';
                 } else {
                     return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node) ? 'DatatypeSubComponentEditTree.html' : '';
@@ -73,7 +73,61 @@ angular.module('igl').factory('DatatypeService',
                     return ElementUtils.filterConstraints(element, datatype.predicates);
                 }
                 return predicates;
+            },
+            save: function (datatype) {
+                var delay = $q.defer();
+                $http.post('api/datatypes/save', datatype).then(function (response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    datatype.date = saveResponse.date;
+                    datatype.version = saveResponse.version;
+                    delay.resolve(saveResponse);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            get: function (id) {
+                var delay = $q.defer();
+                $http.get('api/datatypes/' + id).then(function (response) {
+                    var datatype = angular.fromJson(response.data);
+                    delay.resolve(datatype);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+            merge: function (to, from) {
+                to.name = from.name;
+                to.ext = from.ext;
+                to.label = from.label;
+                to.description = from.description;
+                to.status = from.status;
+                to.comment = from.comment;
+                to.usageNote = from.usageNote;
+                to.scope = from.scope;
+                to.hl7Version = from.hl7Version;
+                to.accountId = from.accountId;
+                to.participants =  from.participants;
+                to.libId = from.libId;
+                to.predicates = from.predicates;
+                to.conformanceStatements = from.conformanceStatements;
+                to.sectionPosition = from.sectionPosition;
+                to.components = from.components;
+                to.version = from.version;
+                to.date = from.date;
+                return to;
+            },
+            searchByNameVersionAndScope: function(searchName, searchScope,searchHl7Version){
+                var delay = $q.defer();
+                $http.get('api/datatypes/search', {params:{"searchName": searchName,"searchScope": searchScope,"searchHl7Version":searchHl7Version}}).then(function (response) {
+                    var datatypes = angular.fromJson(response.data);
+                    delay.resolve(datatypes);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
         };
         return DatatypeService;
-    }]);
+    }])
+;

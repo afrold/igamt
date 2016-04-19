@@ -11,12 +11,16 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
 import gov.nist.healthcare.nht.acmgt.dto.ResponseMessage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ForbiddenOperationException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentDeleteException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentListException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.OperationNotAllowException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.SegmentSaveException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.TableSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UploadImageFileException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
@@ -93,6 +97,26 @@ public class JsonExceptionHandler implements HandlerExceptionResolver {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				mapper.writeValue(response.getWriter(), new ResponseMessage(
 						ResponseMessage.Type.danger, ex.getMessage()));
+			} else if (ex instanceof SegmentSaveException) {
+				logger.error("ERROR: Failed to save the segment", ex);
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				mapper.writeValue(response.getWriter(), new ResponseMessage(
+						ResponseMessage.Type.danger, "segmentSaveFailed"));
+			} else if (ex instanceof TableSaveException) {
+				logger.error("ERROR: Failed to save the table", ex);
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				mapper.writeValue(response.getWriter(), new ResponseMessage(
+						ResponseMessage.Type.danger, "tableSaveFailed"));
+			} else if (ex instanceof DatatypeSaveException) {
+				logger.error("ERROR: Failed to save the datatype", ex);
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				mapper.writeValue(response.getWriter(), new ResponseMessage(
+						ResponseMessage.Type.danger, "datatypeSaveFailed"));
+			} else if (ex instanceof ForbiddenOperationException) {
+				logger.error("ERROR: Failed to execute operation", ex);
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				mapper.writeValue(response.getWriter(), new ResponseMessage(
+						ResponseMessage.Type.danger, "forbiddenOperation"));
 			} else {
 				logger.error("ERROR: " + ex.getMessage(), ex);
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

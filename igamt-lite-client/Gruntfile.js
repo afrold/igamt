@@ -183,7 +183,7 @@ module.exports = function(grunt) {
 				includeSource : {
 					// Task to include files into index.html
 					options : {
-						basePath : 'app',
+						basePath : 'app'
 					},
 					dev : {
 						files : {

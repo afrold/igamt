@@ -1692,7 +1692,7 @@ table.table-fix-header tfoot td {
 }
 
 table.profile-table {
-  max-height: 800px !important;
+  max-height: 100% !important;
 }
 
 table.profile-table td {
@@ -2060,8 +2060,17 @@ li.active {
 
 
 tr.current {
-  background-color: #ffef8f;
+  background-color: #fff1c8;
 }
+
+tr.selected {
+  background-color: #fff1c8;
+}
+
+tr.new {
+  background-color: #dcffd1;
+}
+
 
 div.col-margin{
   margin-right:15px;
@@ -2227,3 +2236,28 @@ table.conformance-profiles-table td {
     margin: 0px !important;
 }
 
+.select2 > .select2-choice.ui-select-match {
+  /* Because of the inclusion of Bootstrap */
+  height: 29px;
+}
+
+.selectize-control > .selectize-dropdown {
+  top: 36px;
+}
+/* Some additional styling to demonstrate that append-to-body helps achieve the proper z-index layering. */
+.select-box {
+  background: #fff;
+  position: relative;
+  z-index: 1;
+}
+.alert-info.positioned {
+  margin-top: 1em;
+  position: relative;
+  z-index: 10000; /* The select2 dropdown has a z-index of 9999 */
+}
+
+.search-modal-window .modal-dialog {
+  width: 50%;
+  height: 500px;
+  overflow-y: auto;
+}

@@ -44,8 +44,7 @@ Cloneable, Comparable<Segment> {
 
 	private String text2 = "";
 
-	private Constant.SCOPE scope;
-	
+ 	
 	public String getId() {
 		return id;
 	}
@@ -58,14 +57,7 @@ Cloneable, Comparable<Segment> {
 		return label;
 	}
 
-	public Constant.SCOPE getScope() {
-		return scope;
-	}
-
-	public void setScope(Constant.SCOPE scope) {
-		this.scope = scope;
-	}
-
+	 
 	public void setLabel(String label) {
 		this.label = label;
 	}

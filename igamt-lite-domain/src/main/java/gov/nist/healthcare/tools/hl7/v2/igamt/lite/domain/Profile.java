@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
@@ -33,9 +34,11 @@ public class Profile extends TextbasedSectionModel implements java.io.Serializab
 
 	private ProfileMetaData metaData;
 
+	@JsonIgnoreProperties(value= {"accountId", "date"})
 	@DBRef
 	private SegmentLibrary segmentLibrary = new SegmentLibrary();
 	
+	@JsonIgnoreProperties(value= {"accountId", "date"})
 	@DBRef
 	private DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
 
