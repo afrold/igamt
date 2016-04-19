@@ -15,13 +15,16 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 public interface DatatypeService {
 
-	List<Datatype> findAll(Constant.EXTENT extent, String dtLibId);
-	
-	Datatype findById(String id, Constant.EXTENT extent);
+	Datatype findById(String id, QUANTUM quantum);
 	
 	Datatype save(Datatype datatype);
+
+	List<Datatype> findAll(QUANTUM quantum);
+
+	List<Datatype> findByLibrary(String dtLibId, QUANTUM quantum);
 }

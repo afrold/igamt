@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
@@ -35,29 +36,28 @@ public class DataypeServiceImpl implements DatatypeService {
 	private DatatypeRepository datatypeRepository;
 
 	@Override
-	public List<Datatype> findAll(Constant.EXTENT extent, String dtLibId) {
-		List<Datatype> datatypes;
-		switch (extent) {
-		case BREVIS:
-			datatypes = datatypeRepository.findAllBrevis(dtLibId);
-			break;
-		case SUMMA:
-			datatypes = datatypeRepository.findAllSumma(dtLibId);
-			break;
-		}
+	public List<Datatype> findAll(QUANTUM quantum) {
+		List<Datatype> datatypes = datatypeRepository.findAll(quantum);
 		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
 		return datatypes;
 	}
 
 	@Override
-	public Datatype findById(String id, Constant.EXTENT extent) {
+	public Datatype findById(String id, QUANTUM quantum) {
 		log.info("DataypeServiceImpl.findById=" + id);
 		Datatype datatype;
-		datatype = datatypeRepository.findById(id, extent);
+		datatype = datatypeRepository.findById(id, quantum);
 		return datatype;
 	}
 
 	@Override
+	public List<Datatype> findByLibrary(String dtLibId, Constant.QUANTUM quantum) {
+		List<Datatype> datatypes = datatypeRepository.findByLibrary(dtLibId, quantum);
+		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
+		return datatypes;
+	}
+
+		@Override
 	public Datatype save(Datatype datatype) {
 		log.info("DataypeServiceImpl.save=" + datatype.getLabel());
 		return datatypeRepository.save(datatype);

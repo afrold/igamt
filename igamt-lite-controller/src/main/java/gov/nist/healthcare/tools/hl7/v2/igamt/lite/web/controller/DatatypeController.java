@@ -50,18 +50,28 @@ public class DatatypeController extends CommonController {
 	@Autowired
 	AccountRepository accountRepository;
 
-	@RequestMapping(value = "/{extent}", method = RequestMethod.GET, produces = "application/json")
-	public List<Datatype> datatypes(@PathVariable("extent") String extent) {
+	@RequestMapping(value = "/{quantum}", method = RequestMethod.GET, produces = "application/json")
+	public List<Datatype> datatypes(@PathVariable("quantum") String quantum) {
 		log.info("Fetching all Datatypes...");
-		Constant.EXTENT extent1 = Constant.EXTENT.valueOf(extent);
-		List<Datatype> result = datatypeService.findAll(extent1);
+		Constant.QUANTUM quantum1 = Constant.QUANTUM.valueOf(quantum);
+		List<Datatype> result = datatypeService.findAll(quantum1);
 		return result;
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-	public Datatype getDatatypeById(@PathVariable("id") String id) {
+	@RequestMapping(value = "/{dtLibId}/{quantum}", method = RequestMethod.GET, produces = "application/json")
+	public Datatype getDatatypeByLibrary(@PathVariable("dtLibId") String dtLibId,
+			@PathVariable("quantum") String quantum) {
+		log.info("Fetching datatypeByLibrary..." + dtLibId);
+		Constant.QUANTUM quantum1 = Constant.QUANTUM.valueOf(quantum);
+		Datatype result = datatypeService.findById(dtLibId, quantum1);
+		return result;
+	}
+
+	@RequestMapping(value = "/{id}/{quantum}", method = RequestMethod.GET, produces = "application/json")
+	public Datatype getDatatypeById(@PathVariable("id") String id, @PathVariable("quantum") String quantum) {
 		log.info("Fetching datatypeById..." + id);
-		Datatype result = datatypeService.findById(id);
+		Constant.QUANTUM quantum1 = Constant.QUANTUM.valueOf(quantum);
+		Datatype result = datatypeService.findById(id, quantum1);
 		return result;
 	}
 

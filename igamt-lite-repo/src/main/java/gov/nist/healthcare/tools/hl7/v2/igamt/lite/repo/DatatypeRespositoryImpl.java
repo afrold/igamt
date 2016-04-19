@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
@@ -29,14 +30,12 @@ public class DatatypeRespositoryImpl implements DatatypeOperations {
 	private MongoOperations mongo;
 
 	@Override
-	public List<Datatype> findAll(String dtLibId, Constant.EXTENT extent) {
-		Query qry = new Query();
-		switch (extent) {
+	public List<Datatype> findByLibrary(String dtLibId, Constant.QUANTUM quantum) {
+ 	    Criteria where = Criteria.where("dtLibId").in(dtLibId);
+		Query qry = Query.query(where);
+		switch (quantum) {
 		case BREVIS:
-			qry.fields().include("_id");
-			qry.fields().include("label");
-			qry.fields().include("status");
-			qry.fields().include("description");
+			qry = set4Brevis(qry);
 			break;
 		case SUMMA:
 			break;
@@ -45,12 +44,41 @@ public class DatatypeRespositoryImpl implements DatatypeOperations {
 	}
 	
 	@Override
-	public List<Datatype> findAll(String dtLibId) {
-		return mongo.findAll(Datatype.class);
+	public List<Datatype> findAll(Constant.QUANTUM quantum) {
+		Query qry = new Query();
+		switch (quantum) {
+		case BREVIS:
+			qry = set4Brevis(qry);
+			break;
+		case SUMMA:
+			break;
+		}
+		return mongo.find(qry, Datatype.class);
 	}
 	
 	@Override
-	public Datatype findById(String id, Constant.EXTENT extent) {
-		
+	public Datatype findById(String id, Constant.QUANTUM quantum) {
+		Query qry = new Query();
+		switch (quantum) {
+		case BREVIS:
+			qry = set4Brevis(qry);
+			break;
+		case SUMMA:
+			break;
+		}
+		Datatype datatype = null;
+		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
+		if (datatypes != null && datatypes.size() > 0) {
+			datatype = datatypes.get(0);
+		}
+		return datatype;
+	}
+	
+	Query set4Brevis(Query qry) {
+		qry.fields().include("_id");
+		qry.fields().include("label");
+		qry.fields().include("status");
+		qry.fields().include("description");
+		return qry;
 	}
 }

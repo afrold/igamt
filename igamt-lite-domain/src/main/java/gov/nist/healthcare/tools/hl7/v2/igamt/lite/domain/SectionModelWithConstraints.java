@@ -18,7 +18,6 @@ import java.util.Set;
 import org.springframework.data.annotation.Version;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.STATUS;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
@@ -29,8 +28,6 @@ public abstract class SectionModelWithConstraints extends SectionModel {
 	protected Long accountId; 
 	
 	protected SCOPE scope; 
-	
-	protected STATUS status; 
 	
 	protected String date;
 	
@@ -130,14 +127,6 @@ public abstract class SectionModelWithConstraints extends SectionModel {
 
 	public void setScope(SCOPE scope) {
 		this.scope = scope;
-	}
-
-	public STATUS getStatus() {
-		return status;
-	}
-
-	public void setStatus(STATUS status) {
-		this.status = status;
 	}
 
 	public Set<String> getParticipants() {
