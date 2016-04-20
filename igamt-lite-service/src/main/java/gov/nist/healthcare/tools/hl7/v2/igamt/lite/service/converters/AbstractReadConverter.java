@@ -71,19 +71,22 @@ public abstract class AbstractReadConverter<S, T> implements Converter<S, T> {
 	public final static String CODE_SYSTEM_VERSION = "codeSystemVersion";
 	public final static String CODE_USAGE = "codeUsage";
 	public final static String CODE_SYS = "codeSystemVersion";
+	public final static String SCOPE = "scope";
+	public final static String STATUS = "status";
+	public final static String HL7_VERSION = "hl7Version";
 	
 	protected String readMongoId(DBObject source) {
-		if (source.get("_ID") != null) {
-			if (source.get("_ID") instanceof ObjectId) {
-				return ((ObjectId) source.get("_ID")).toString();
+		if (source.get("_id") != null) {
+			if (source.get("_id") instanceof ObjectId) {
+				return ((ObjectId) source.get("_id")).toString();
 			} else {
-				return (String) source.get("_ID");
+				return (String) source.get("_id");
 			}
-		} else if (source.get("ID") != null) {
-			if (source.get("ID") instanceof ObjectId) {
-				return ((ObjectId) source.get("ID")).toString();
+		} else if (source.get("id") != null) {
+			if (source.get("id") instanceof ObjectId) {
+				return ((ObjectId) source.get("id")).toString();
 			} else {
-				return (String) source.get("ID");
+				return (String) source.get("id");
 			}
 		}
 		return null;

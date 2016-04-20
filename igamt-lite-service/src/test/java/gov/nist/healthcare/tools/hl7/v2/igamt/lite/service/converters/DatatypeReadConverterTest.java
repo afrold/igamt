@@ -14,6 +14,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
@@ -31,6 +33,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
  */
 public class DatatypeReadConverterTest {
 
+	private static Logger log = LoggerFactory.getLogger(DatatypeReadConverterTest.class);
+	
 	static MongoOperations mongoOps;
 	static DBCollection coll;
 	
@@ -47,6 +51,7 @@ public class DatatypeReadConverterTest {
 		while(cur.hasNext()) {
 			DBObject source = cur.next();
 			Datatype sut = cnv.convert(source);
+			log.info("dt.hl7Version=" + sut.getHl7Version());
 			assertNotNull(sut);
 		}
 	}

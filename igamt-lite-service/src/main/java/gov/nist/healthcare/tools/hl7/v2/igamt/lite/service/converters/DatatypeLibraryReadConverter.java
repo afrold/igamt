@@ -23,6 +23,7 @@ import com.mongodb.DBRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 
 /**
  * @author gcr1 12.Feb.16
@@ -54,6 +55,7 @@ public class DatatypeLibraryReadConverter extends AbstractReadConverter<DBObject
 		dtLib.setSectionTitle((String) source.get(SECTION_TITLE));
 		BasicDBList datatypesDBObjects = (BasicDBList) source.get(CHILDREN);
 		dtLib.setChildren(new HashSet<String>());
+		dtLib.setScope(Constant.SCOPE.valueOf(((String) source.get(SCOPE))));
 		
 		DatatypeReadConverter dtCnv = new DatatypeReadConverter();
 		if (datatypesDBObjects != null) {

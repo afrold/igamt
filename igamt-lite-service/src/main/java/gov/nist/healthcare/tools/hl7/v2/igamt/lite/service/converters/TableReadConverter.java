@@ -49,6 +49,7 @@ public class TableReadConverter extends AbstractReadConverter<DBObject, Table> {
 		table.setGroup(((String) source.get(GROUP)));
 		table.setVersion(((String) source.get(VERSION)));
 		table.setOid(((String) source.get(OID)));
+		table.setScope(Constant.SCOPE.valueOf((String) source.get(SCOPE)));
 		// Nullity tests added for retro compatibility
 		table.setStability(source.get(STABILITY) == null ? Stability.Dynamic
 				: Stability.fromValue((String) source.get(STABILITY)));

@@ -26,11 +26,13 @@ public interface DatatypeLibraryService {
 
 	DatatypeLibrary findByScopeAndVersion(Constant.SCOPE scope, String hl7Version);
 
-	List<DatatypeLibrary> findByAccountId(Long accountId);
+	List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version);
 
 	DatatypeLibrary save(DatatypeLibrary library);
 
 	DatatypeLibrary create(DatatypeLibrary library);
 
 	void delete(DatatypeLibrary library);
+
+	List<String> findHl7Versions();
 }

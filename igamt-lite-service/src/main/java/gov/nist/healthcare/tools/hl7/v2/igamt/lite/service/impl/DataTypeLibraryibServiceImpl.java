@@ -17,6 +17,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
@@ -24,7 +25,6 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 
 /**
@@ -45,6 +45,16 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 		log.info("datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;
 	}
+	
+	@Override
+	public List<String> findHl7Versions() {
+		return datatypeLibraryRepository.findHl7Versions();
+	}
+	
+	@Override
+	public DatatypeLibrary findById(String id) {
+		return datatypeLibraryRepository.findById(id);
+	}
 
 	@Override
 	public DatatypeLibrary findByScopeAndVersion(Constant.SCOPE scope, String hl7Version) {
@@ -58,8 +68,8 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public List<DatatypeLibrary> findByAccountId(Long accountId) {
-		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByAccountId(accountId);
+	public List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version) {
+		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByAccountId(accountId, hl7Version);
 		log.info("datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;
 	}
@@ -95,10 +105,5 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 		public int compare(Datatype thisDt, Datatype thatDt) {
 			return thatDt.getLabel().compareTo(thisDt.getLabel());
 		}
-	}
-
-	@Override
-	public DatatypeLibrary findById(String id) {
-		return datatypeLibraryRepository.findById(id);
 	}
 }

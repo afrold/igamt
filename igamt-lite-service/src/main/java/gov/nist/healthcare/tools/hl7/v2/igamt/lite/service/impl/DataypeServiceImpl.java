@@ -36,8 +36,8 @@ public class DataypeServiceImpl implements DatatypeService {
 	private DatatypeRepository datatypeRepository;
 
 	@Override
-	public List<Datatype> findAll(QUANTUM quantum) {
-		List<Datatype> datatypes = datatypeRepository.findAll(quantum);
+	public List<Datatype> findAll() {
+		List<Datatype> datatypes = datatypeRepository.findAll();
 		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
 		return datatypes;
 	}
@@ -51,8 +51,14 @@ public class DataypeServiceImpl implements DatatypeService {
 	}
 
 	@Override
-	public List<Datatype> findByLibrary(String dtLibId, Constant.QUANTUM quantum) {
-		List<Datatype> datatypes = datatypeRepository.findByLibrary(dtLibId, quantum);
+	public List<Datatype> findByIds(List<String> ids, QUANTUM quantum) {
+		log.info("DataypeServiceImpl.findByIds=" + ids);
+		return datatypeRepository.findByIds(ids, quantum);
+	}
+
+	@Override
+	public List<Datatype> findByLibIds(String dtLibId, Constant.QUANTUM quantum) {
+		List<Datatype> datatypes = datatypeRepository.findByLibIds(dtLibId, quantum);
 		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
 		return datatypes;
 	}

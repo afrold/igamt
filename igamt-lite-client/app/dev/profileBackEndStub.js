@@ -212,12 +212,16 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, userDocs, {}];
     });
 
-    
     $httpBackend.whenGET('api/igdocuments/findVersions').respond(function (method, url, data, headers) {
     	console.log('api/igdocuments/hl7/findVersions');
         return [200, ["2.5.1","2.6","2.7"], {}];
     });
-    
+
+    $httpBackend.whenGET('api/datatype-library/findVersions').respond(function (method, url, data, headers) {
+    	console.log('api/igdocuments/hl7/findVersions');
+        return [200, ["2.5.1","2.6","2.7"], {}];
+    });
+
     $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/igdocuments/messageListByVersion start' + ' data=' + data);
@@ -229,8 +233,8 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
         return [200, d, {}];
     });
-    
-    
+
+
     $httpBackend.whenPOST('api/igdocuments/createIntegrationProfile').respond(function (method, url, data, headers) {
     	console.log('api/igdocuments/hl7/createIntegrationProfile start' + ' data=' + data);
         var profile = null;

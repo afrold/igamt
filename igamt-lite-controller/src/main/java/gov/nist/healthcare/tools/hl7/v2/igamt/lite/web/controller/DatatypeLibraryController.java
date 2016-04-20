@@ -61,6 +61,13 @@ public class DatatypeLibraryController extends CommonController {
 		return datatypeLibraries;
 	}
 
+	@RequestMapping(value = "/findVersions", method = RequestMethod.GET, produces = "application/json")
+	public List<String> findHl7Versions() {
+		log.info("Fetching all HL7 versions.");
+		List<String> result = datatypeLibraryService.findHl7Versions();
+		return result;
+	}
+
 	@RequestMapping(value = "/getDataTypeLibraryByScope", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	public DatatypeLibrary getDataTypeLibraryByScope(@RequestBody String scope, @RequestBody String hl7Version) {
 		log.info("Fetching the datatype library. scope=" + scope + " hl7Version=" + hl7Version);

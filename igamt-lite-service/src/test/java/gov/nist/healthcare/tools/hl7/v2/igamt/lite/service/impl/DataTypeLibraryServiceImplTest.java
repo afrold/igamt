@@ -29,20 +29,25 @@ public class DataTypeLibraryServiceImplTest {
 		assertNotNull(dtl);
 	}
 
+	@Test 
+	public void testFindHl7Versions() {
+		List<DatatypeLibrary> dtl = dtlService.findAll();
+		List<String> versions = dtlService.findHl7Versions();
+		assertNotNull(versions);
+		assertEquals(dtl.size(), versions.size());
+	}
+	
 	@Test
 	public void testFindByScopeAndVersion() {
 		DatatypeLibrary dtlH = dtlService.findByScopeAndVersion(Constant.SCOPE.HL7STANDARD, "2.5.1");
 		assertNotNull(dtlH);
 		assertEquals(91, dtlH.getChildren().size());
-		DatatypeLibrary dtlM = dtlService.findByScopeAndVersion(Constant.SCOPE.MASTER, "2.5.1");
-		assertNotNull(dtlM);
-		assertEquals(0, dtlM.getChildren().size());
 	}
 	
-//	@Test
+	@Test
 	public void saveTest() {
 		List<DatatypeLibrary> dtls = dtlService.findAll();
-		assertEquals(1, dtls.size());
+		assertEquals(9, dtls.size());
 		DatatypeLibrary dtlH;
 		dtlH = dtlService.findByScopeAndVersion(Constant.SCOPE.HL7STANDARD, "2.5.1");
 		assertNotNull(dtlH);
@@ -50,13 +55,13 @@ public class DataTypeLibraryServiceImplTest {
 		dtlH.setScope(Constant.SCOPE.USER);
 		dtlService.save(dtlH);
 		dtls = dtlService.findAll();
-		assertEquals(2, dtls.size());
-//		DatatypeLibrary dtlU = dtlService.findByScopeAndVersion(Constant.SCOPE.USER);
-//		assertNotNull(dtlU);
-//		assertEquals(91, dtlU.getChildren().size());
-//		assertEquals(Constant.SCOPE.USER, dtlU.getScope());
-//		dtlService.delete(dtlU);
-//		dtls = dtlService.findAll();
-//		assertEquals(1, dtls.size());
+		assertEquals(10, dtls.size());
+		DatatypeLibrary dtlU = dtlService.findByScopeAndVersion(Constant.SCOPE.USER, "2.5.1");
+		assertNotNull(dtlU);
+		assertEquals(91, dtlU.getChildren().size());
+		assertEquals(Constant.SCOPE.USER, dtlU.getScope());
+		dtlService.delete(dtlU);
+		dtls = dtlService.findAll();
+		assertEquals(9, dtls.size());
 	}
 }

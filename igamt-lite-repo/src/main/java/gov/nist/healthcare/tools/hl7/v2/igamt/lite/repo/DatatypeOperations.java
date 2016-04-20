@@ -21,9 +21,11 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
  */
 public interface DatatypeOperations {
 
-	List<Datatype> findByLibrary(String dtLibId, QUANTUM quantum);
+	List<Datatype> findByLibIds(String dtLibId, QUANTUM quantum);
 
-	List<Datatype> findAll(QUANTUM quantum);
+	List<Datatype> findAll();
 
 	Datatype findById(String id, QUANTUM quantum);
+	
+	List<Datatype> findByIds(List<String> ids, QUANTUM quantum);
 }

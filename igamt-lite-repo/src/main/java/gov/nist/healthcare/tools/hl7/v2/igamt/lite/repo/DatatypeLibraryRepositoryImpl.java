@@ -10,6 +10,7 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,13 +21,12 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 
-public class DatatypeLibraryRespositoryImpl implements DatatypeLibraryOperations {
-
-	private Logger log = LoggerFactory.getLogger(DatatypeLibraryRespositoryImpl.class);
+public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations {
+	
+	private Logger log = LoggerFactory.getLogger(DatatypeLibraryRepositoryImpl.class);
 
 	 @Autowired
 	 private MongoOperations mongo;
@@ -34,21 +34,46 @@ public class DatatypeLibraryRespositoryImpl implements DatatypeLibraryOperations
 		public List<DatatypeLibrary> findByScopeAndMetaData_Hl7Version(Constant.SCOPE scope, String hl7version) {
 			log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion=" + hl7version);
 			Criteria where = Criteria.where("scope").is(scope).andOperator(Criteria.where("metaData.hl7Version").is(hl7version));
-			Query query = Query.query(where);
-			List<DatatypeLibrary> list =  mongo.find(query, DatatypeLibrary.class);
+			Query qry = Query.query(where);
+			List<DatatypeLibrary> list =  mongo.find(qry, DatatypeLibrary.class);
 			log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion list.size()=" + list.size());
 		    return list;
 	 	}
 
 		@Override
-		public DatatypeLibrary findById(String id) {
-			// TODO Auto-generated method stub
-			return null;
+		public List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version) {
+			log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion=" + hl7Version);
+			Criteria where = Criteria.where("accountId").is(accountId)
+					.andOperator(Criteria.where("scope").is(SCOPE.USER))
+					.andOperator(Criteria.where("metaData.hl7Version").is(hl7Version));
+			Query qry = Query.query(where);
+			List<DatatypeLibrary> list =  mongo.find(qry, DatatypeLibrary.class);
+			log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion list.size()=" + list.size());
+		    return list;
 		}
 
 		@Override
-		public List<DatatypeLibrary> findByAccountId(Long accountId) {
-			// TODO Auto-generated method stub
-			return null;
+		public List<String> findHl7Versions() {
+			Query qry = new Query();
+			qry.fields().include("metaData.hl7Version");
+			List<DatatypeLibrary> dtLibs = mongo.findAll(DatatypeLibrary.class);
+			List<String> versions = new ArrayList<String>();
+			for (DatatypeLibrary dtLib : dtLibs) {
+				versions.add(dtLib.getMetaData().getHl7Version());
+			}
+			return versions;
+		}
+
+		@Override
+		public DatatypeLibrary findById(String id) {
+			log.debug("DatatypeLibraryRespositoryImpl.findById=" + id);
+			Criteria where = Criteria.where("id").is(id);
+			Query qry = Query.query(where);
+			DatatypeLibrary datatypeLibrary = null;
+			List<DatatypeLibrary> datatypeLibraries = mongo.find(qry, DatatypeLibrary.class);
+			if (datatypeLibraries != null && datatypeLibraries.size() > 0) {
+				datatypeLibrary = datatypeLibraries.get(0);
+			}
+			return datatypeLibrary;
 		}
 }

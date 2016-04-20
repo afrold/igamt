@@ -22,15 +22,15 @@ import org.springframework.data.mongodb.core.query.Query;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
-public class DatatypeRespositoryImpl implements DatatypeOperations {
+public class DatatypeRepositoryImpl implements DatatypeOperations {
 
-	private Logger log = LoggerFactory.getLogger(DatatypeRespositoryImpl.class);
+	private Logger log = LoggerFactory.getLogger(DatatypeRepositoryImpl.class);
 
 	@Autowired
 	private MongoOperations mongo;
 
 	@Override
-	public List<Datatype> findByLibrary(String dtLibId, Constant.QUANTUM quantum) {
+	public List<Datatype> findByLibIds(String dtLibId, Constant.QUANTUM quantum) {
  	    Criteria where = Criteria.where("dtLibId").in(dtLibId);
 		Query qry = Query.query(where);
 		switch (quantum) {
@@ -44,15 +44,9 @@ public class DatatypeRespositoryImpl implements DatatypeOperations {
 	}
 	
 	@Override
-	public List<Datatype> findAll(Constant.QUANTUM quantum) {
+	public List<Datatype> findAll() {
 		Query qry = new Query();
-		switch (quantum) {
-		case BREVIS:
-			qry = set4Brevis(qry);
-			break;
-		case SUMMA:
-			break;
-		}
+		qry = set4Brevis(qry);
 		return mongo.find(qry, Datatype.class);
 	}
 	
@@ -73,6 +67,21 @@ public class DatatypeRespositoryImpl implements DatatypeOperations {
 		}
 		return datatype;
 	}
+	
+	@Override
+	public List<Datatype> findByIds(List<String> ids, Constant.QUANTUM quantum) {
+ 	    Criteria where = Criteria.where("id").in(ids);
+ 	    Query qry = Query.query(where);
+		switch (quantum) {
+		case BREVIS:
+			qry = set4Brevis(qry);
+			break;
+		case SUMMA:
+			break;
+		}
+		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
+		return datatypes;
+	}	
 	
 	Query set4Brevis(Query qry) {
 		qry.fields().include("_id");

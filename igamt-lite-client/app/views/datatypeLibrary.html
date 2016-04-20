@@ -56,13 +56,13 @@ label:hover {
         <table st-table="datatypeDisplay" st-safe-src="datatypeStruct.children" class="table table-bordered">
 <thead>
             <tr class="row">
-               <th st-sort="getDisplayLabel(dt)" st-sort-default="true" class="col-lg-2">Label</th> 
+               <th st-sort="getDisplayLabel(dt)" st-sort-default="true" class="col-lg-2">Label</th>
                <th class="col-lg-3">Description</th>
                  <th class="col-lg-1">Published</th>
             </tr>
 			<tr>
 				<th colspan="2"><input st-search="label" class="input-sm form-control" placeholder="Search Label ..." type="search"/></th>
-			</tr>				
+			</tr>
 </thead>
 <tbody>
 	<tr class="row" ng-class="{'new' : dt.new}" ng-repeat="dt in datatypeDisplay">
@@ -92,7 +92,7 @@ label:hover {
                    ng-click="delete(dt)">
                <span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
            </button>
-       </td>    
+       </td>
 	</tr>
 </tbody>
         </table>
@@ -127,6 +127,16 @@ label:hover {
     <div class="modal-header">
         <h3 class="modal-title">HL7 Standard Data Type Library</h3>
     </div>
+      <div class="col-md-12">
+        <div ng-show="!igdocument" class="btn-group btn-group-sm pull-left" data-toggle="buttons">
+                        <label class="btn btn-primary btn-xs" ng-click="$parent.hl7Version = vr; loadDatatypesByVersion()"
+                               ng-class="{'active':vr === hl7Version}"
+                               ng-repeat="vr in hl7Versions">
+                            <input ng-disabled="loading" type="radio" ng-value="vr"
+                                   ng-model="$parent.hl7Version">{{vr}}></input>
+                        </label>
+                    </div>
+                </div>
     <div class="container modal-body">
     <form>
         <div class="container" style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
@@ -134,12 +144,12 @@ label:hover {
 <thead>
                 <tr class="row">
                    <th class="col-lg-1">Master</th>
-                   <th st-sort="getDisplayLabel(dt)" st-sort-default="true" class="col-lg-2">Label</th> 
+                   <th st-sort="getDisplayLabel(dt)" st-sort-default="true" class="col-lg-2">Label</th>
                    <th class="col-lg-4">Description</th>
                 </tr>
 			<tr>
 				<th colspan="3"><input st-search="label" class="form-control" placeholder="Search Label..." type="search"/></th>
-			</tr>				
+			</tr>
 </thead>
 <tbody>
 	<tr class="row" ng-repeat="dt in datatypeDisplay">

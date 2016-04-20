@@ -50,20 +50,28 @@ public class DatatypeController extends CommonController {
 	@Autowired
 	AccountRepository accountRepository;
 
-	@RequestMapping(value = "/{quantum}", method = RequestMethod.GET, produces = "application/json")
-	public List<Datatype> datatypes(@PathVariable("quantum") String quantum) {
+	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
+	public List<Datatype> datatypes() {
 		log.info("Fetching all Datatypes...");
-		Constant.QUANTUM quantum1 = Constant.QUANTUM.valueOf(quantum);
-		List<Datatype> result = datatypeService.findAll(quantum1);
+		List<Datatype> result = datatypeService.findAll();
 		return result;
 	}
 
 	@RequestMapping(value = "/{dtLibId}/{quantum}", method = RequestMethod.GET, produces = "application/json")
-	public Datatype getDatatypeByLibrary(@PathVariable("dtLibId") String dtLibId,
+	public List<Datatype> getDatatypesByLibrary(@PathVariable("dtLibId") String dtLibId,
 			@PathVariable("quantum") String quantum) {
 		log.info("Fetching datatypeByLibrary..." + dtLibId);
 		Constant.QUANTUM quantum1 = Constant.QUANTUM.valueOf(quantum);
-		Datatype result = datatypeService.findById(dtLibId, quantum1);
+		List<Datatype> result = datatypeService.findByLibIds(dtLibId, quantum1);
+		return result;
+	}
+
+	@RequestMapping(value = "/{ids}/{quantum}", method = RequestMethod.GET, produces = "application/json")
+	public List<Datatype> getDatatypeById(@PathVariable("ids") List<String> ids,
+			@PathVariable("quantum") String quantum) {
+		log.info("Fetching datatypeByIds..." + ids);
+		Constant.QUANTUM quantum1 = Constant.QUANTUM.valueOf(quantum);
+		List<Datatype> result = datatypeService.findByIds(ids, quantum1);
 		return result;
 	}
 
