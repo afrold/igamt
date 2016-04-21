@@ -43,22 +43,22 @@ public class DataypeServiceImpl implements DatatypeService {
 	}
 
 	@Override
-	public Datatype findById(String id, QUANTUM quantum) {
+	public Datatype findById(String id) {
 		log.info("DataypeServiceImpl.findById=" + id);
 		Datatype datatype;
-		datatype = datatypeRepository.findById(id, quantum);
+		datatype = datatypeRepository.findById(id);
 		return datatype;
 	}
 
 	@Override
-	public List<Datatype> findByIds(List<String> ids, QUANTUM quantum) {
+	public List<Datatype> findByIds(List<String> ids) {
 		log.info("DataypeServiceImpl.findByIds=" + ids);
-		return datatypeRepository.findByIds(ids, quantum);
+		return datatypeRepository.findByIds(ids);
 	}
 
 	@Override
-	public List<Datatype> findByLibIds(String dtLibId, Constant.QUANTUM quantum) {
-		List<Datatype> datatypes = datatypeRepository.findByLibIds(dtLibId, quantum);
+	public List<Datatype> findByLibIds(String dtLibId) {
+		List<Datatype> datatypes = datatypeRepository.findByLibIds(dtLibId);
 		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
 		return datatypes;
 	}

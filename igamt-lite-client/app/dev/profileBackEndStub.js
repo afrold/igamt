@@ -215,10 +215,15 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenGET('api/igdocuments/findVersions').respond(function (method, url, data, headers) {
     	console.log('api/igdocuments/hl7/findVersions');
-        return [200, ["2.5.1","2.6","2.7"], {}];
+        return [200, ["2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"], {}];
     });
 
-    $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
+     $httpBackend.whenGET('api/datatype-library/getHL7Versions').respond(function (method, url, data, headers) {
+    	console.log('api/igdocuments/hl7/findVersions');
+        return [200, ["2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"], {}];
+    });
+
+   $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/igdocuments/messageListByVersion start' + ' data=' + data);
         request.open('GET', '../../resources/igDocuments/mes-hl7Version-USER-1.0.json', false);
@@ -272,10 +277,12 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
     });
 
-    $httpBackend.whenPOST('api/datatype-library/getDataTypeLibraryByScope').respond(function (method, url, data, headers) {
+    $httpBackend.whenPOST('api/datatype-library/getDataTypeLibrary').respond(function (method, url, data, headers) {
          var request = new XMLHttpRequest();
-         console.log('api/datatype-library/getDataTypeLibraryByScope begin');
-         var scope = data;
+          var a = angular.fromJson(data);
+          var scope = a[0];
+         var hl7Version = a[1];
+        console.log('api/datatype-library/getDataTypeLibrary begin scope=' + scope + ' hl7Version=' + hl7Version);
          var d = null;
          if (scope === 'MASTER') {
         	 	request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
@@ -286,7 +293,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
              request.send(null);
              d = angular.fromJson(request.response);
          }
-        console.log('api/datatype-library/getDataTypeLibraryByScope end');
+      console.log('api/datatype-library/getDataTypeLibrary end');
         return [request.status, d, {}];
     });
 

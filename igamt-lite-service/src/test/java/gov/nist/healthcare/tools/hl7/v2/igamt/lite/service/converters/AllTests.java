@@ -8,24 +8,19 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
 
-import java.util.List;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * @author gcr1
  *
  */
-public interface DatatypeOperations {
+@RunWith(Suite.class)
+@SuiteClasses({ DatatypeLibraryReadConverterTest.class, DatatypeReadConverterTest.class,
+		SegmentLibraryReadConverterTest.class })
+public class AllTests {
 
-	List<Datatype> findByLibIds(String dtLibId);
-
-	List<Datatype> findAll();
-
-	Datatype findById(String id);
-	
-	List<Datatype> findByIds(List<String> ids);
 }

@@ -4,7 +4,7 @@ public abstract class SectionModel extends DataModel {
 
 	Integer sectionPosition;
 
-	public int getSectionPosition() {
+	public Integer getSectionPosition() {
 		return sectionPosition;
 	}
 

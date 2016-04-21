@@ -8,24 +8,15 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
-
-import java.util.List;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception;
 
 /**
  * @author gcr1
  *
  */
-public interface DatatypeOperations {
+public class InvalidParameterException extends Exception {
 
-	List<Datatype> findByLibIds(String dtLibId);
-
-	List<Datatype> findAll();
-
-	Datatype findById(String id);
-	
-	List<Datatype> findByIds(List<String> ids);
+	public InvalidParameterException(String error) {
+		super(error);
+	}
 }

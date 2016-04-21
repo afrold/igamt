@@ -17,13 +17,13 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 public interface DatatypeService {
 
-	Datatype findById(String id, QUANTUM quantum);
+	Datatype findById(String id);
 	
 	Datatype save(Datatype datatype);
 
 	List<Datatype> findAll();
 
-	List<Datatype> findByLibIds(String dtLibId, QUANTUM quantum);
+	List<Datatype> findByLibIds(String dtLibId);
 
-	List<Datatype> findByIds(List<String> ids, QUANTUM quantum);
+	List<Datatype> findByIds(List<String> ids);
 }

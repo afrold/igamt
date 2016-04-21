@@ -12,8 +12,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
@@ -75,8 +74,9 @@ public class DataypeServiceImplTest {
 	public void testFindById() {
 		List<Datatype> dts = datatypeService.findAll();
 		String id = dts.get(0).getId();
-		Datatype sut = datatypeService.findById(id, QUANTUM.BREVIS);
+		Datatype sut = datatypeService.findById(id);
 		assertNotNull(sut);
+		assertNotNull(sut.getSectionPosition());
 	}
 
 	/**
@@ -88,8 +88,10 @@ public class DataypeServiceImplTest {
 	public void testFindLibIds() {
 		dtLib = datatypeLibraryService.findByScopeAndVersion(SCOPE.HL7STANDARD, "2.5.1");
 		String id = dtLib.getId();
-		List<Datatype> sut = datatypeService.findByLibIds(id, QUANTUM.BREVIS);
+		List<Datatype> sut = datatypeService.findByLibIds(id);
 		assertNotNull(sut);
+		assertTrue(sut.size() > 0);
+		assertNull(sut.get(0).getSectionPosition());
 	}
 
 	@Test
@@ -99,7 +101,8 @@ public class DataypeServiceImplTest {
 		Set<String> children = dtLib.getChildren();
 		List<String> ids = new ArrayList<String>();
 		ids.addAll(children);
-		List<Datatype> datatypes = datatypeService.findByIds(ids, QUANTUM.BREVIS);
-		assertEquals(ids.size(), datatypes.size());
+		List<Datatype> sut = datatypeService.findByIds(ids);
+		assertEquals(ids.size(), sut.size());
+		assertNull(sut.get(0).getSectionPosition());
 	}
 }

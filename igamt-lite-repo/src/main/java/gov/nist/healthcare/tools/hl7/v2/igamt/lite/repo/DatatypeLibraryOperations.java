@@ -13,7 +13,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 import java.util.List;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 
 /**
@@ -23,6 +23,8 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 public interface DatatypeLibraryOperations {
 	
 	public DatatypeLibrary findById(String id);
+
+	public List<DatatypeLibrary> findByScopes(List<SCOPE> scopes);
 	
 	public List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version);
 

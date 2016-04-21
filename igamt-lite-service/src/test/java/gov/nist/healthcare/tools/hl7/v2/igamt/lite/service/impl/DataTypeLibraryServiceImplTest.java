@@ -3,6 +3,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -12,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
@@ -29,6 +31,29 @@ public class DataTypeLibraryServiceImplTest {
 		assertNotNull(dtl);
 	}
 
+	@Test
+	public void testFindByScopes() {
+		DatatypeLibrary dtlM;
+		dtlM = dtlService.findByScopeAndVersion(Constant.SCOPE.HL7STANDARD, "2.5.1");
+		assertNotNull(dtlM);
+		dtlM.setId(null);
+		dtlM.setScope(Constant.SCOPE.MASTER);
+		dtlService.save(dtlM);
+		
+		DatatypeLibrary dtlU;
+		dtlU = dtlService.findByScopeAndVersion(Constant.SCOPE.HL7STANDARD, "2.5.1");
+		assertNotNull(dtlU);
+		dtlU.setId(null);
+		dtlU.setScope(Constant.SCOPE.USER);
+		dtlService.save(dtlU);
+
+		List<SCOPE> scopes = new ArrayList<SCOPE>();
+		scopes.add(SCOPE.MASTER);
+		scopes.add(SCOPE.USER);
+		List<DatatypeLibrary> dtl = dtlService.findByScopes(scopes);
+		assertNotNull(dtl);
+	}
+	
 	@Test 
 	public void testFindHl7Versions() {
 		List<DatatypeLibrary> dtl = dtlService.findAll();

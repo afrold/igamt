@@ -96,9 +96,9 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
-            getAll: function (ids) {
+            get4Lib: function (dtLibId) {
               var delay = $q.defer();
-              $http.get('api/datatypes/' + ids).then(function (response) {
+              $http.get('api/datatypes/datatypesByLibrary/' + dtLibId).then(function (response) {
                 var datatype = angular.fromJson(response.data);
                 delay.resolve(datatype);
               }, function (error) {

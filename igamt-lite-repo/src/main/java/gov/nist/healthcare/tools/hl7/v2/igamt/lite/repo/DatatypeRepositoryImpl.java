@@ -30,16 +30,10 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 	private MongoOperations mongo;
 
 	@Override
-	public List<Datatype> findByLibIds(String dtLibId, Constant.QUANTUM quantum) {
- 	    Criteria where = Criteria.where("dtLibId").in(dtLibId);
+	public List<Datatype> findByLibIds(String dtLibId) {
+ 	    Criteria where = Criteria.where("libIds").in(dtLibId);
 		Query qry = Query.query(where);
-		switch (quantum) {
-		case BREVIS:
-			qry = set4Brevis(qry);
-			break;
-		case SUMMA:
-			break;
-		}
+		qry = set4Brevis(qry);
 		return mongo.find(qry, Datatype.class);
 	}
 	
@@ -51,16 +45,9 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 	}
 	
 	@Override
-	public Datatype findById(String id, Constant.QUANTUM quantum) {
+	public Datatype findById(String id) {
 		Query qry = new Query();
-		switch (quantum) {
-		case BREVIS:
-			qry = set4Brevis(qry);
-			break;
-		case SUMMA:
-			break;
-		}
-		Datatype datatype = null;
+   		Datatype datatype = null;
 		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
 		if (datatypes != null && datatypes.size() > 0) {
 			datatype = datatypes.get(0);
@@ -69,16 +56,10 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 	}
 	
 	@Override
-	public List<Datatype> findByIds(List<String> ids, Constant.QUANTUM quantum) {
+	public List<Datatype> findByIds(List<String> ids) {
  	    Criteria where = Criteria.where("id").in(ids);
  	    Query qry = Query.query(where);
-		switch (quantum) {
-		case BREVIS:
-			qry = set4Brevis(qry);
-			break;
-		case SUMMA:
-			break;
-		}
+		qry = set4Brevis(qry);
 		List<Datatype> datatypes = mongo.find(qry, Datatype.class);
 		return datatypes;
 	}	

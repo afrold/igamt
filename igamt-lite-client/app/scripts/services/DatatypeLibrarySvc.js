@@ -13,10 +13,24 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
 		this.children = children;
 	};
 
-	svc.getDataTypeLibrary = function(scope) {
-		console.log("datatype-library/getDataTypeLibraryByScope scope=" + scope);
+  svc.getHL7Versions = function() {
+		return $http.get(
+				'api/datatype-library/getHL7Versions')
+				.then(function(response) {
+					console.log("response" + JSON.stringify(response));
+					return angular.fromJson(response.data);
+				});
+  };
+
+	svc.getDataTypeLibrary = function(scope, hl7Version) {
+		console.log("datatype-library/getDataTypeLibrary scope=" + scope + " hl7Version=" + hl7Version);
+        var scopeAndVersion = [];
+        scopeAndVersion.push(scope);
+        if (hl7Version) {
+          scopeAndVersion.push(hl7Version);
+        }
 		return $http.post(
-				'api/datatype-library/getDataTypeLibraryByScope', scope)
+				'api/datatype-library/getDataTypeLibrary', angular.toJson(scopeAndVersion))
 				.then(function(response) {
 //					console.log("response" + JSON.stringify(response));
 					return angular.fromJson(response.data);
