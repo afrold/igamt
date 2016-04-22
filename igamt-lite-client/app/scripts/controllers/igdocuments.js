@@ -342,6 +342,7 @@ angular.module('igl')
                     StorageService.setIgDocument($rootScope.igdocument);
                     $scope.sortByLabels();
                     $rootScope.initMaps();
+                    $scope.loadFiter();
                     $scope.loadToc();
                     $scope.collectDatatypes();
                     $scope.collectSegments();
@@ -383,6 +384,10 @@ angular.module('igl')
 
         $scope.loadToc = function () {
             $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);
+        };
+
+        $scope.loadFiter = function () {
+          $rootScope.$emit('event:loadFilter', $rootScope.igdocument);
         };
 
         $scope.collectDatatypes = function () {
