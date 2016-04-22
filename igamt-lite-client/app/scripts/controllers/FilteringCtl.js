@@ -3,31 +3,11 @@ angular
   .controller(
       'FilteringCtl',
           function ($scope, $rootScope, FilteringSvc) {
-              var ctl = this;
+            var ctl = this;
 
-            /*
-                $scope.filtermsgmodel = [];
-
-                $scope.filtermsgsettings = {
-                scrollableHeight: '200px',
-                scrollable: true,
-                enableSearch: true,
-                displayProp: 'label'
-              };
-
-            $scope.filtermsgdata = [];
-
-            $rootScope.$on('event:loadFilter', function (event, igdocument) {
-                $scope.filtermsgdata = FilteringSvc.getMessages(igdocument);
-            });
-
-            */
-/*                 $scope.filtermsgmodel = function(){
-                  return FilteringSvc.filtermsgmodels;
-                }
- */
-
-                $scope.filtermsgmodel = [];
+            $scope.filtermsgmodel = function(){
+             return FilteringSvc.getmodel();
+            };
 
                 $scope.filtermsgsettings = {
                 scrollableHeight: '200px',

@@ -51,12 +51,12 @@
                                                 class="fa fa-pencil fa-fw"></i>Edit</span>
                     </button>
                 <div ng-controller="FilteringCtl">
-                  <div ng-dropdown-multiselect="" options="filtermsgdata" selected-model="filtermsgmodel" extra-settings="filtermsgsettings">
+                  <div ng-dropdown-multiselect="" options="filtermsgdata" selected-model="filtermsgmodel()" extra-settings="filtermsgsettings">
 
                   </div>
-                  <!--<pre>
-                      {{filtermsgmodel}}
-                  </pre>-->
+                  <pre>
+                      {{filtermsgmodel()}}
+                  </pre>
                        </div>
                     <div class="btn-group">
                         <button type="button"
