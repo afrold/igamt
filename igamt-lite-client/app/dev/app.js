@@ -28,8 +28,6 @@ var app = angular
         'dndLists',
         'froala',
         'ngNotificationsBar',
-        'ui.select'
-        ,
         'ngMockE2E'
     ]);
 
@@ -50,7 +48,7 @@ var
 var msg = {};
 
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider,notificationsConfigProvider,uiSelectConfig) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider,notificationsConfigProvider) {
 
     app.requires.push('ngMockE2E');
 
