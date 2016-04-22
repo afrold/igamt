@@ -17,8 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -60,6 +59,13 @@ public class DataypeServiceImpl implements DatatypeService {
 	public List<Datatype> findByLibIds(String dtLibId) {
 		List<Datatype> datatypes = datatypeRepository.findByLibIds(dtLibId);
 		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
+		return datatypes;
+	}
+
+	@Override
+	public List<Datatype> findByScopeAndVersion(SCOPE scope, String hl7Version) {
+		List<Datatype> datatypes = datatypeRepository.findByScopeAndVersion(scope, hl7Version);
+		log.info("DataypeServiceImpl.findByScopeAndVersion=" + datatypes.size());
 		return datatypes;
 	}
 

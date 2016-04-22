@@ -27,6 +27,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
@@ -79,6 +80,14 @@ public class DataypeServiceImplTest {
 		assertNotNull(sut.getSectionPosition());
 	}
 
+
+	@Test
+	public void testFindByScopeAndVersion() {	
+		List<Datatype> sut = datatypeService.findByScopeAndVersion(Constant.SCOPE.HL7STANDARD, "2.5.1");
+		assertNotNull(sut);
+		assertTrue(sut.size() > 0);
+	}
+	
 	/**
 	 * Test method for
 	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DataypeServiceImpl#findByLibrary(java.lang.String, gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}

@@ -13,6 +13,7 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 import java.util.List;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 public interface DatatypeService {
@@ -26,4 +27,6 @@ public interface DatatypeService {
 	List<Datatype> findByLibIds(String dtLibId);
 
 	List<Datatype> findByIds(List<String> ids);
+
+	List<Datatype> findByScopeAndVersion(SCOPE scope, String hl7Version);
 }

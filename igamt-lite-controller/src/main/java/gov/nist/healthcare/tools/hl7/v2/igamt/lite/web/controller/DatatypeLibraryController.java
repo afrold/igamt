@@ -34,8 +34,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryNotFou
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeLibrarySaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.DatatypeLibraryCreateWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeLibrarySaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.InvalidParameterException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeNotFoundException;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
@@ -77,16 +78,37 @@ public class DatatypeLibraryController extends CommonController {
 	public List<DatatypeLibrary> findByScopes(@RequestBody List<String> scopes) {
 		log.info("Fetching datatype libraries.");
 		List<SCOPE> scopes1 = new ArrayList<SCOPE>();
-		for (String s : scopes) {
-			SCOPE scope = SCOPE.valueOf(s);
-			if (scope != null) {
-				scopes1.add(scope);
-			} else {
-				throw new InvalidParameterException("Invalid parameter scope=" + scope);
+		try {
+			for (String s : scopes) {
+				SCOPE scope = SCOPE.valueOf(s);
+				if (scope != null) {
+					scopes1.add(scope);
+				}
 			}
+		} catch (Exception e) {
+			log.error("", e);
 		}
-		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryService.findAll();
+		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryService.findByScopes(scopes1);
 		return datatypeLibraries;
+	}
+
+	@RequestMapping(value = "/findByScopeAndVersion", method = RequestMethod.POST, produces = "application/json")
+	public List<Datatype> findByScopeAndVersion(@RequestBody List<String> scopeAndVersion) {
+		String scope = scopeAndVersion.get(0);
+		String hl7Version = scopeAndVersion.get(1);
+		log.info("Fetching the datatype library. scope=" + scope + " hl7Version=" + hl7Version);
+		Constant.SCOPE scope1 = Constant.SCOPE.valueOf(scope);
+		List<Datatype> datatypes = null;
+		try {
+			datatypes = datatypeService.findByScopeAndVersion(scope1, hl7Version);
+			if (datatypes == null) {
+				throw new DatatypeNotFoundException(
+						"Datatype not found for scope=" + scope + " hl7Version=" + hl7Version);
+			}
+		} catch (Exception e) {
+			log.error("", e);
+		}
+		return datatypes;
 	}
 
 	@RequestMapping(value = "/findHl7Versions", method = RequestMethod.GET, produces = "application/json")
@@ -96,8 +118,8 @@ public class DatatypeLibraryController extends CommonController {
 		return result;
 	}
 
-	@RequestMapping(value = "/getDataTypeLibrary", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public DatatypeLibrary getDataTypeLibrary(@RequestBody List<String> scopeAndVersion) {
+	@RequestMapping(value = "/findLibraryByScopeAndVersion", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	public DatatypeLibrary findLibraryByScopeAndVersion(@RequestBody List<String> scopeAndVersion) {
 		String scope = scopeAndVersion.get(0);
 		String hl7Version = (scopeAndVersion.size() > 1 ? scopeAndVersion.get(1) : null);
 		log.info("Fetching the datatype library. scope=" + scopeAndVersion.get(0) + " hl7Version=" + hl7Version);
@@ -126,6 +148,13 @@ public class DatatypeLibraryController extends CommonController {
 	// datatypeLibraryService.findByAccountId(accountId);
 	// return result;
 	// }
+
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+	public DatatypeLibrary create(@RequestBody DatatypeLibraryCreateWrapper dtlcw) {
+		SCOPE scope = SCOPE.valueOf(dtlcw.getScope());
+
+		return datatypeLibraryService.create(scope, dtlcw.getHl7Version(), dtlcw.getAccountId());
+	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public DatatypeLibrarySaveResponse save(@RequestBody DatatypeLibrary datatypeLibrary)

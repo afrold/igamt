@@ -64,7 +64,7 @@ public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations 
 			log.debug("DatatypeLibraryRespositoryImpl.findStandardByVersion list.size()=" + list.size());
 		    return list;
 		}
-
+		
 		@Override
 		public List<String> findHl7Versions() {
 			Query qry = new Query();

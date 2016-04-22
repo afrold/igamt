@@ -96,8 +96,19 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public DatatypeLibrary create(DatatypeLibrary datatypeLibrary) {
+	public DatatypeLibrary create(SCOPE scope, String hl7Version, Long accountId) {
+		DatatypeLibraryMetaData metaData = defaultMetadata();
+		metaData.setHl7Version(hl7Version);
+		DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
+		datatypeLibrary.setMetaData(metaData);
+		datatypeLibrary.setScope(scope);
+		datatypeLibrary.setAccountId(accountId);
+		datatypeLibrary.setDate(Constant.mdy.format(new Date()));
+		datatypeLibrary.setSectionDescription("Default description");
+		datatypeLibrary.setSectionTitle("Default title");
+		datatypeLibrary.setSectionContents("Default contents");
 		datatypeLibrary = datatypeLibraryRepository.insert(datatypeLibrary);
+		datatypeLibrary.getMetaData().setDatatypLibId(datatypeLibrary.getId());
 		return datatypeLibrary;
 	}
 

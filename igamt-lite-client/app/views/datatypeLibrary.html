@@ -39,64 +39,57 @@ label:hover {
     }
 </script>
 <ng-include src="'views/edit/editDatatypes.html'"></ng-include>
-<div ng-controller="MasterDatatypeLibraryCtl" ng-init="initDatatypeLibrary()">
-    <div ng-show="loading" style="text-align: center">
+<div class="container" ng-controller="MasterDatatypeLibraryCtl" ng-init="initDatatypeLibrary()">
+
+<div class="row">
+    <div class="col-md-12">
+        <form id="selectDtTypeForm" class="form-horizontal">
+            <div class="form-group">
+    <div ng-hide="loading" style="text-align: center">
         <img class="ajax-loading" ng-src="images/ajax.gif" alt="loading..."/>
     </div>
     <div ng-show="!loading">
     <div class="page-header">
         <h3> Master Data Type Library</h3>
     </div>
-    <button type="button" class="btn btn-primary btn-sm"
-            ng-click="openStandardDataypes()"><i class="fa fa-plus"></i>
-        Select HL7 Standard Data Types
-    </button>
-    <div class="container" style="max-width: 100%; overflow-x: scroll; max-height: 400px; overflow-y: scroll;white-space:nowrap;">
+     <div class="pull-right" style="margin-right:20px">
+      <button type="button" class="btn btn-primary btn-sm"
+              ng-click="openStandardDataypes()"><i class="fa fa-plus"></i>
+          Create Master Data Type Library
+      </button>
+    </div>
+    </div>
+          </div>
+        </form>
+    </div>
 
+<div ng-show="datatypeLibsStruct">
 <form>
-      <table st-table="datatypeDisplay" st-safe-src="datatypeStruct.children" class="table table-bordered">
+  <div class="form-group">
+      <table st-table="datatypeLibsDisplay" st-safe-src="datatypeLibsStruct" class="table table-bordered table-fix-header">
           <thead>
-            <tr class="row">
-               <th st-sort="getDisplayLabel(dt)" st-sort-default="true" class="col-lg-2">Label</th>
-               <th class="col-lg-3">Description</th>
-               <th class="col-lg-2"></th>
-               <th class="col-lg-1">Published</th>
-            </tr>
-            <tr>
-              <th colspan="2"><input st-search="label" class="input-sm form-control" placeholder="Search Label ..." type="search"/></th>
-            </tr>
-        </thead>
-      </table>
-<!---  List of datatypes in the library saved for later.
-        <table st-table="datatypeDisplay" st-safe-src="datatypeStruct.children" class="table table-bordered">
-          <thead>
-            <tr class="row">
-               <th st-sort="getDisplayLabel(dt)" st-sort-default="true" class="col-lg-2">Label</th>
-               <th class="col-lg-3">Description</th>
-               <th class="col-lg-2"></th>
-               <th class="col-lg-1">Published</th>
-            </tr>
-            <tr>
-              <th colspan="2"><input st-search="label" class="input-sm form-control" placeholder="Search Label ..." type="search"/></th>
+            <tr class="tbl-header" style="margin-right: {{scrollbarWidth}}px;">
+               <th st-ratio="5" style="text-align : center;">#</th>
+               <th st-ratio="10" st-sort="datatypeLibsDisplay(dt)" st-sort-default="true">Label</th>
+               <th st-ratio="30">Description</th>
+               <th st-ratio="10">Scope</th>
+               <th st-ratio="10">HL7 Version</th>
+               <th st-ratio="35">Actions</th>
             </tr>
         </thead>
         <tbody>
-          <tr class="row" ng-class="{'new' : dt.new}" ng-repeat="dt in datatypeDisplay">
-                <td class="col-lg-2">{{ getDisplayLabel(dt) }}</td>
-                <td class="col-lg-3">{{dt.description}}</td>
-              <td st-ratio="30">
+             <tr ng-class="{'new' : dt.new}" ng-repeat="dt in datatypeLibsDisplay">
+                <td st-ratio="5" style="text-align : right;">{{$index + 1}}</td>
+                <td st-ratio="10">{{dt.sectionTitle}}</td>
+                <td st-ratio="30">{{dt.sectionDescription}}</td>
+                <td st-ratio="10">{{dt.scope}}</td>
+                <td st-ratio="10">{{dt.metaData.hl7Version}}</td>
+           <td st-ratio="35">
                    <button
                            title="Edit"
                            type="button" class="btn btn-xs btn-primary"
                            ng-click="edit(dt)">
-                               <span><i
-                                       class="fa fa-pencil fa-fw"></i> Edit</span>
-                   </button>
-                   <button
-                           title="View Readonly"
-                           type="button" class="btn btn-xs btn-warning"
-                           ng-click="view(dt)">
-                       <span><i class="fa fa-eye"></i> Read</span>
+                               <span><i class="fa fa-pencil fa-fw"></i> Edit</span>
                    </button>
                    <button
                            title="Create Copy" type="button" class="btn btn-xs btn-info"
@@ -108,14 +101,19 @@ label:hover {
                        <span><i class="fa fa-trash-o fa-fw"></i> Delete</span>
                    </button>
                </td>
-               <td class="col-lg-1"><span class=" fa fa-check fa-2x" ng-bind="dt.selection" ng-show="!dt.published" style="margin-left : 7px; color: #5a5;"></span></td>
-          </tr>
+            </tr>
         </tbody>
       </table>
--->
+  </div>
 </form>
+  <tabset>
+      <tab index="0" heading="Metadata">Metadata</tab>
+      <tab index="1" heading="Static title">Data Types</tab>
+    </tabset>
+</div>
     </div>
-    </div>
+  </div>
+</div>
 <div>
     <div class="panel panel-primary">
         <div class="panel-heading">Edit Area</div>
@@ -129,29 +127,46 @@ label:hover {
 </div>
 
 <script type="text/ng-template" id="standardDatatypeDlg.html">
-<style>
-.modal-dialog {
-  left : 50%;
-  width : 900px;
-  margin-left : -450px;
-}
-</style>
-    <div class="modal-dialog">
-    <div class="modal-header">
-        <h3 class="modal-title">HL7 Standard Data Type Library</h3>
-    </div>
-    <div class="container modal-body">
-    <div class="row">
-      <div class="col-md-12">
+<div id="standard-datatypelibrary-dialog">
+  <div class="modal-header">
+    <h3 class="modal-title">HL7 Standard Data Type Libraryyy</h3>
+  </div>
+  <form>
+  <div class="form-group">
+  <div class="modal-body">
+      <div class="col-sm-6">
+        <label class="control-label">Name</label>
+          <input type="text"
+                 name="name" class="form-control" ng-model="datatype-library-name"
+                         required>
+      </div>
+      <div class="col-sm-8">
         <div class="btn-group btn-group-sm pull-left" data-toggle="buttons">
-        <label class="btn btn-primary btn-xs" ng-click="$parent.hl7Version = vr; loadDatatypesByVersion()"
-                               ng-class="{'active':vr === hl7Version}"
-                               ng-repeat="vr in hl7Versions" style="width : 50px; height : 30px;">
-                            <input ng-disabled="loading" type="radio" ng-value="vr"
-                                   ng-model="$parent.hl7Version">{{vr}}</input>
+          <label class="btn btn-primary btn-xs" ng-click="$parent.hl7Version = vr; loadDatatypesByScopeAndVersion()"
+                 ng-class="{'active':vr === hl7Version}"
+                 ng-repeat="vr in hl7Versions" style="width : 50px; height : 30px;">
+            <input ng-disabled="loading" type="radio" ng-value="vr"
+                   ng-model="$parent.hl7Version">{{vr}}</input>
           </label>
+      </div>
+      <div class="col-sm-6">
+       <label class="control-label">Ext</label>
+          <input type="text"
+                 name="ext" class="form-control" ng-model="datatype-library-ext"
+                         required>
         </div>
       </div>
+  </div>
+  </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-disabled="okDisabled" type="button" ng-click="ok()">Ok</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+  </form>
+</div>
+</script>
+<script type="text/ng-template" id="datatypeListDlg.html">
+<div class="row">
     <form>
         <div class="container" style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
 <pre>{{datatypeStruct.children.length}}</pre>
@@ -173,12 +188,12 @@ label:hover {
         <td class="col-lg-1"><input type="checkbox" ng-model="bool" ng-change="trackSelections(bool, dt)"></input><span ng-bind="dt.selection" style="margin-left : 7px;"></span></td>
     </tr>
 </tbody>
-            </table>
+</table>
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" ng-disabled="okDisabled" type="button" ng-click="ok()">Ok</button>
             <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
         </div>
     </form>
-</div></div>
+</div>
 </script>

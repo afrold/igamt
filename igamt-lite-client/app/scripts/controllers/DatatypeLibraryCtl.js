@@ -4,6 +4,7 @@
 angular.module('igl').controller('MasterDatatypeLibraryCtl',
 		function($scope, $rootScope, $modal, $timeout, ngTreetableParams, DatatypeService, DatatypeLibrarySvc, FormsSelectSvc, ViewSettings) {
 
+      $scope.datatypeLibsStruct = false;
 			$scope.datatypeStruct = false;
 			$scope.loadingSelection = true;
 			$scope.publishSelections = [];
@@ -14,7 +15,19 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 
 			$scope.initDatatypeLibrary = function() {
 				$scope.start = false;
-				getDataTypeLibrary("MASTER");
+        var scopes = ["USER"];
+        if (true) { //($scope.isAuthenticated() && $scope.isAdmin()) {
+          scopes.push("MASTER");
+        }
+				getDataTypeLibraryByScopes(scopes);
+			};
+
+			function getDataTypeLibraryByScopes(scopes) {
+				DatatypeLibrarySvc.getDataTypeLibraryByScopes(scopes).then(function(data) {
+						$scope.datatypeLibsStruct =  data;
+				}).catch( function (error) {
+					console.log(error);
+				});
 			};
 
 			function getDataTypeLibrary(scope, hl7Version) {
@@ -61,7 +74,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				}, 100);
 			};
 
-	        $scope.datatypesParams = new ngTreetableParams({
+/* 	        $scope.datatypesParams = new ngTreetableParams({
 	            getNodes: function (parent) {
 	                return DatatypeService.getNodes(parent);
 	            },
@@ -69,7 +82,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 	                return DatatypeService.getTemplate(node);
 	            }
 	        });
-
+ */
 			$scope.openStandardDataypes = function() {
 					var standardDatatypesInstance = $modal.open({
 						templateUrl : 'standardDatatypeDlg.html',
@@ -85,14 +98,12 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 						var decoratedSelections1 = decoratedSelections(standardSelections);
 					    // Push them on to the scope.
             if (!$scope.datatypeStruct) {
-              $scope.datatypeStruct = {};
+              $scope.datatypeStruct = [];
             }
-            if (!$scope.datatypeStruct.children) {
-              $scope.datatypeStruct.children = [];
-            }
+            var datatypeLibrary = DatatypeLibrarySvc.create();
 						angular.forEach(decoratedSelections1, function(child) {
 							child.new = true;
-							$scope.datatypeStruct.children.push(child);
+							$scope.datatypeStruct.push(child);
 						});
 						console.log("$scope.datatypeStruct.children=" + $scope.datatypeStruct.children.length);
           });
@@ -113,6 +124,7 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 
 			$scope.okDisabled = true;
 
+      $scope.scope = "HL7STANDARD";
 			$scope.hl7Versions = hl7Versions;
 			$scope.standardSelections = [];
 
@@ -135,10 +147,9 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 				$scope.okDisabled = $scope.standardSelections.length === 0;
 			};
 
-      $scope.loadDatatypesByVersion = function() {
+      $scope.loadDatatypesByScopeAndVersion = function() {
         $scope.loading = true;
-        var dtLib;
-          DatatypeService.get4Lib(dtLib.id).then(function(response){
+            DatatypeLibrarySvc.getDatatypesByScopeAndVersion($scope.scope, $scope.hl7Version).then(function(response){
             $scope.datatypeStruct = response;
           });
           $scope.loading = false;

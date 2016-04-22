@@ -218,7 +218,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [200, ["2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"], {}];
     });
 
-     $httpBackend.whenGET('api/datatype-library/getHL7Versions').respond(function (method, url, data, headers) {
+     $httpBackend.whenGET('api/datatype-library/findHl7Versions').respond(function (method, url, data, headers) {
     	console.log('api/igdocuments/hl7/findVersions');
         return [200, ["2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"], {}];
     });
@@ -277,23 +277,35 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
     });
 
-    $httpBackend.whenPOST('api/datatype-library/getDataTypeLibrary').respond(function (method, url, data, headers) {
-         var request = new XMLHttpRequest();
-          var a = angular.fromJson(data);
-          var scope = a[0];
-         var hl7Version = a[1];
-        console.log('api/datatype-library/getDataTypeLibrary begin scope=' + scope + ' hl7Version=' + hl7Version);
-         var d = null;
-         if (scope === 'MASTER') {
-        	 	request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
-         	request.send(null);
-        		d = angular.fromJson(request.response);
-         } else {
-             request.open('GET', '../../resources/datatypes/dtLib-2.5.1-HL7STANDARD.json', false);
-             request.send(null);
-             d = angular.fromJson(request.response);
-         }
-      console.log('api/datatype-library/getDataTypeLibrary end');
+  $httpBackend.whenPOST('api/datatype-library/findByScopes').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        var scopes = angular.fromJson(data);
+        console.log('api/datatype-library/findByScopes begin scopes=' + scopes);
+        var d = [];
+        request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
+        request.send(null);
+        d.push(angular.fromJson(request.response));
+        request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
+        request.send(null);
+        d.push(angular.fromJson(request.response));
+        request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
+        request.send(null);
+        d.push(angular.fromJson(request.response));
+        console.log('api/datatype-library/findByScopes end ' + d.length);
+        return [request.status, d, {}];
+    });
+
+  $httpBackend.whenPOST('api/datatype-library/findByScopeAndVersion').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        var a = angular.fromJson(data);
+        var scope = a[0];
+        var hl7Version = a[1];
+        console.log('api/datatype-library/findByScopeAndVersion begin scope=' + scope + ' hl7Version=' + hl7Version);
+        var d = null;
+        request.open('GET', '../../resources/datatypes/dtLib-2.5.1-HL7STANDARD.json', false);
+        request.send(null);
+        d = angular.fromJson(request.response);
+        console.log('api/datatype-library/findByScopeAndVersion end');
         return [request.status, d, {}];
     });
 
