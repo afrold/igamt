@@ -45,7 +45,7 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		this.id = ObjectId.get().toString();
 	}
 
-	private Set<String> children = new HashSet<String>();
+	private Set<TableLink> children = new HashSet<TableLink>();
 
 	public String getId() {
 		return id;
@@ -135,11 +135,11 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		this.profileName = profileName;
 	}
 
-	public Set<String> getChildren() {
+	public Set<TableLink> getChildren() {
 		return children;
 	}
 
-	public void setChildren(Set<String> children) {
+	public void setChildren(Set<TableLink> children) {
 		this.children = children;
 	}
 
@@ -151,28 +151,27 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		this.scope = scope;
 	}
 
-	public void addTable(String t) {
-		children.add(t);
+	public void addTable(TableLink tl) {
+		if (tl != null)
+			children.add(tl);
 	}
 
-	public String save(String d) {
-		if (!this.children.contains(d)) {
-			children.add(d);
-		}
-		return d;
+	public TableLink save(TableLink tl) {
+		if (tl != null)
+			children.add(tl);
+		return tl;
 	}
 
-	public void delete(String id) {
-		String d = findOneTableById(id);
-		if (d != null)
-			this.children.remove(d);
+	public void delete(TableLink tl) {
+		if (tl != null)
+			this.children.remove(tl);
 	}
 	
-	public String findOneTableById(String id) {
+	public TableLink findOneTableById(String id) {
 		if (this.children != null) {
-			for (String m : this.children) {
-				if (m.equals(id)) {
-					return m;
+			for (TableLink tl : this.children) {
+				if (id.equals(tl.getId())) {
+					return tl;
 				}
 			}
 		}
@@ -232,11 +231,11 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 		this.metaData = metaData;
 	}
 
-	public Set<String> getTables() {
+	public Set<TableLink> getTables() {
 		return children;
 	}
 
-	public void setTables(Set<String> children) {
+	public void setTables(Set<TableLink> children) {
 		this.children = children;
 	}
 }
