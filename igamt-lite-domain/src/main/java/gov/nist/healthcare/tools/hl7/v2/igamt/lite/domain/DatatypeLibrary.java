@@ -31,7 +31,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.id = ObjectId.get().toString();
 	}
 
-	private Set<String> children = new HashSet<String>();
+	private Set<DatatypeLink> children = new HashSet<DatatypeLink>();
 
 	public String getId() {
 		return id;
@@ -57,11 +57,11 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.date = date;
 	}
 
-	public Set<String> getChildren() {
+	public Set<DatatypeLink> getChildren() {
 		return children;
 	}
 
-	public void setChildren(Set<String> children) {
+	public void setChildren(Set<DatatypeLink> children) {
 		this.children = children;
 	}
 
@@ -73,28 +73,24 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.scope = scope;
 	}
 
-	public void addDatatype(String d) {
-		children.add(d);
+	public void addDatatype(DatatypeLink dtl) {
+		children.add(dtl);
 	}
 
-	public String save(String d) {
-		if (!this.children.contains(d)) {
-			children.add(d);
-		}
-		return d;
+	public DatatypeLink save(DatatypeLink dtl) {
+		children.add(dtl);
+		return dtl;
 	}
 
-	public void delete(String id) {
-		String d = findOne(id);
-		if (d != null)
-			this.children.remove(d);
+	public void delete(DatatypeLink dtl) {
+		this.children.remove(dtl);
 	}
 
-	public String findOne(String id) {
+	public DatatypeLink findOne(DatatypeLink dtl) {
 		if (this.children != null) {
-			for (String m : this.children) {
-				if (m.equals(id)) {
-					return m;
+			for (DatatypeLink dtl1 : this.children) {
+				if (dtl1.equals(dtl)) {
+					return dtl1;
 				}
 			}
 		}

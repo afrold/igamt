@@ -295,6 +295,32 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
     });
 
+  $httpBackend.whenGET('api/datatype-library/45/2.5.1/findByAccountId').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        var scopes = angular.fromJson(data);
+        console.log('api/datatype-library/findByScopes begin scopes=' + scopes);
+        var d = [];
+        request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
+        request.send(null);
+        d.push(angular.fromJson(request.response));
+        request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
+        request.send(null);
+        d.push(angular.fromJson(request.response));
+        request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
+        request.send(null);
+        d.push(angular.fromJson(request.response));
+        console.log('api/datatype-library/findByScopes end ' + d.length);
+        return [request.status, d, {}];
+    });
+
+    $httpBackend.whenGET('api/datatype-library/565f3ab6d4c6e52cfd43ec4a/datatypes').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
+        request.send(null);
+        var datatype = angular.fromJson(request.response);
+        return [request.status, datatype.children, {}];
+    });
+
   $httpBackend.whenPOST('api/datatype-library/findByScopeAndVersion').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         var a = angular.fromJson(data);
@@ -360,9 +386,5 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         var datatype = angular.fromJson(request.response);
         return [request.status, datatype, {}];
     });
-
-
-
-
 });
 

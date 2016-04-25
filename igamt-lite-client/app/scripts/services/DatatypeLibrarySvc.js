@@ -47,6 +47,15 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
             });
 	};
 
+  svc.getDatatypesByLibrary = function(dtLibId) {
+        return $http.get(
+            'api/datatype-library/' + dtLibId + '/datatypes')
+            .then(function(response) {
+    //					console.log("response" + JSON.stringify(response));
+              return angular.fromJson(response.data);
+            });
+  }
+
   svc.getDatatypesByScopeAndVersion = function(scope, hl7Version) {
         var scopeAndVersion = [];
         scopeAndVersion.push(scope);

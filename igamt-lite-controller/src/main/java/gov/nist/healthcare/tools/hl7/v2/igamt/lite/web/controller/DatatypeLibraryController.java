@@ -30,6 +30,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -37,6 +38,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeLibrarySaveRespon
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.DatatypeLibraryCreateWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeLibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
@@ -137,17 +139,14 @@ public class DatatypeLibraryController extends CommonController {
 		return datatypeLibrary;
 	}
 
-	// gcr not used at present but MIGHT be in the future.
-	// @RequestMapping(value = "/{accountId}", method = RequestMethod.POST)
-	// public List<DatatypeLibrary>
-	// getDatatypeLibraryByAccountId(@PathVariable("accountId") Long accountId)
-	// throws DatatypeLibraryNotFoundException, UserAccountNotFoundException,
-	// DatatypeLibraryException {
-	// log.info("Fetching the USER datatype library...");
-	// List<DatatypeLibrary> result =
-	// datatypeLibraryService.findByAccountId(accountId);
-	// return result;
-	// }
+	@RequestMapping(value = "/{accountId}/{hl7Version}/findByAccountId", method = RequestMethod.GET)
+	public List<DatatypeLibrary> findByAccountId(@PathVariable("accountId") Long accountId,
+			@PathVariable("hl7Version") String hl7Version)
+			throws DatatypeLibraryNotFoundException, UserAccountNotFoundException, DatatypeLibraryException {
+		log.info("Fetching the datatype libraries...");
+		List<DatatypeLibrary> result = datatypeLibraryService.findByAccountId(accountId, hl7Version);
+		return result;
+	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public DatatypeLibrary create(@RequestBody DatatypeLibraryCreateWrapper dtlcw) {
