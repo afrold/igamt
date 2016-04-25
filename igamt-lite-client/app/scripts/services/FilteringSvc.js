@@ -8,15 +8,11 @@ angular
             var svc = {};
 
             svc.filtermsgmodel = [];
-
-            svc.getmodel = function(){
-              return svc.filtermsgmodel;
-            };
+            svc.filtermsgdata = [];
 
             svc.getMessages = function(igdocument){
                   if (igdocument !== null && igdocument !== undefined){
                       var msgHolder = [];
-                    svc.addCodes(123);
                       _.each(igdocument.profile.messages.children, function(msg) {
                          msgHolder.push({"label": msg.name, "id": msg.id});
                     });
@@ -25,16 +21,21 @@ angular
                   return [];
             }
 
-            svc.getFiltermsgmodel = function(){
+            svc.getMsgmodel = function(){
                 return this.filtermsgmodel;
-            }
+            };
 
-            svc.addCodes = function(code) {
-              console.log("Processing code " + code);
-              _.each(svc.filtermsgmodel, function(tt){
-                console.log(tt)
-              })
-        }
+            svc.setMsgmodel = function(msgmodel){
+                this.filtermsgmodel = msgmodel;
+            };
+
+            svc.getMsgdata = function(){
+                return this.filtermsgdata;
+            };
+
+            svc.setMsgdata = function(msgdata){
+                this.filtermsgdata = msgdata;
+            };
 
 					return svc;
 }]);

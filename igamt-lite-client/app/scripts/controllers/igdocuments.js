@@ -343,6 +343,7 @@ angular.module('igl')
                     $scope.sortByLabels();
                     $rootScope.initMaps();
                     $scope.loadFilter();
+                    $scope.loadMastermap();
                     $scope.loadToc();
                     $scope.collectDatatypes();
                     $scope.collectSegments();
@@ -388,6 +389,10 @@ angular.module('igl')
 
         $scope.loadFilter = function () {
           $rootScope.$emit('event:loadFilter', $rootScope.igdocument);
+        };
+
+        $scope.loadMastermap = function () {
+          $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
         };
 
         $scope.collectDatatypes = function () {

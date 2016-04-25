@@ -10,8 +10,9 @@ angular
 						'ContextMenuSvc',
 						'CloneDeleteSvc',
             'FilteringSvc',
+            'MastermapSvc',
 						function($scope, $rootScope, $timeout, ToCSvc,
-								ContextMenuSvc, CloneDeleteSvc, FilteringSvc) {
+								ContextMenuSvc, CloneDeleteSvc, FilteringSvc, MastermapSvc) {
 							var ctl = this;
 							$scope.collapsed = [];
 							$scope.yesDrop = false;
@@ -24,11 +25,6 @@ angular
 //									});
 //								}
 //							});
-
-            $scope.isShowable = function(elementId, filterId, filterType){
-              return FilteringSvc.getMastermap.get(entry.id).get('msg').has(filterId);
-            }
-
 
 							$scope.moved = function (index, leaf) {
 								var idx = _.findLastIndex($scope.$parent.drop, function(leaf1) {
@@ -162,4 +158,23 @@ angular
 								}
 								$rootScope.$broadcast('event:SetToC');
 							};
-						} ])
+
+
+              $scope.show = function(leaf){
+
+                var rst = false;
+                _.each(FilteringSvc.getMsgmodel(), function(filterElt){
+//                   console.log("filter => " + filterElt.id);
+//                   console.log("leaf => " +leaf.id);
+                  rst = rst || (MastermapSvc.getMastermap()[leaf.id]['msg'].indexOf(filterElt.id) !== -1);
+                });
+                return rst;
+              };
+
+
+            $rootScope.$on('event:loadMastermap', function (event, igdocument) {
+//               $scope.mastermap = MastermapSvc.parseIg(igdocument);
+              MastermapSvc.parseIg(igdocument);
+            });
+
+            }])
