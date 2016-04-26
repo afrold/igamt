@@ -81,7 +81,6 @@ public class ProfileReadConverter  extends AbstractReadConverter<DBObject, Profi
 	private ProfileMetaData metaData(DBObject source) {
 		ProfileMetaData metaData = new ProfileMetaData();
 		metaData.setName(((String) source.get("name")));
-		metaData.setProfileID(((String) source.get("profileID")));
 		metaData.setOrgName(((String) source.get("orgName")));
 		metaData.setStatus(((String) source.get("status")));
 		metaData.setTopics(((String) source.get("topics")));

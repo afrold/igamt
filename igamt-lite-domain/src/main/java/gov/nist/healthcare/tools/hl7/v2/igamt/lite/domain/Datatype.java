@@ -23,7 +23,6 @@ Cloneable, Comparable<Datatype> {
 	public Datatype() {
 		super();
 		this.type = Constant.DATATYPE;
-		this.id = ObjectId.get().toString();
 	}
 
 	@Id

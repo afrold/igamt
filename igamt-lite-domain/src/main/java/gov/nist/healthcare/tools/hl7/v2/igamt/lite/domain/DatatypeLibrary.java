@@ -28,7 +28,6 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	
 	public DatatypeLibrary() {
 		super();
-		this.id = ObjectId.get().toString();
 	}
 
 	private Set<DatatypeLink> children = new HashSet<DatatypeLink>();

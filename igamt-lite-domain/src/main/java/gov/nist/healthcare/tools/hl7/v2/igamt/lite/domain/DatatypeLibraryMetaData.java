@@ -9,8 +9,6 @@ public class DatatypeLibraryMetaData extends MetaData {
 		super();
 	}
 
-	private String datatypLibId = "";
-	
 	@Override
 	public DatatypeLibraryMetaData clone() throws CloneNotSupportedException {
 		DatatypeLibraryMetaData clonedProfileMetaData = new DatatypeLibraryMetaData();
@@ -19,16 +17,6 @@ public class DatatypeLibraryMetaData extends MetaData {
 		clonedProfileMetaData.setOrgName(this.getOrgName());
 		clonedProfileMetaData.setDate(this.getDate());
 		clonedProfileMetaData.setVersion(this.getVersion());
-		clonedProfileMetaData.setDatatypLibId(datatypLibId);
 		return clonedProfileMetaData;
 	}
-
-	public String getDatatypLibId() {
-		return datatypLibId;
-	}
-
-	public void setDatatypLibId(String datatypLibId) {
-		this.datatypLibId = datatypLibId;
-	}
-
 }

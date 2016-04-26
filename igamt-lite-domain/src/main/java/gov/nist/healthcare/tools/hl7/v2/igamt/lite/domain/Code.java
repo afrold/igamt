@@ -5,17 +5,13 @@ import java.io.Serializable;
 import org.bson.types.ObjectId;
 
 public class Code extends DataModel implements Serializable, Cloneable,Comparable<Code> {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 410373025762745686L;
 
 	private String id;
 
-	// @NotNull
 	private String value;
 
-	// @NotNull
 	private String label;
 
 	private String codeSystem;
@@ -43,8 +39,6 @@ public class Code extends DataModel implements Serializable, Cloneable,Comparabl
 	public void setValue(String value) {
 		this.value = value;
 	}
-
- 
 
 	public String getLabel() {
 		return label;

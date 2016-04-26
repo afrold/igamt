@@ -22,7 +22,6 @@ Cloneable, Comparable<Segment> {
 	public Segment() {
 		super();
 		type = Constant.SEGMENT;
-		this.id = ObjectId.get().toString();
 	}
 
 	@Id
