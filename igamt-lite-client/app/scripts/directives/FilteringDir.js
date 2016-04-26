@@ -75,7 +75,7 @@ function ($filter, $document, $compile, $parse) {
             };
 
             $scope.settings = {
-                dynamicTitle: false,
+                dynamicTitle: true,
                 scrollable: false,
                 scrollableHeight: '300px',
                 closeOnBlur: true,
@@ -89,7 +89,7 @@ function ($filter, $document, $compile, $parse) {
                 closeOnSelect: false,
                 buttonClasses: 'btn btn-default',
                 closeOnDeselect: false,
-                groupBy: $attrs.groupBy || undefined,
+                 groupBy: $attrs.groupBy || undefined,
                 groupByTextProvider: null,
                 smartButtonMaxItems: 0,
                 smartButtonTextConverter: angular.noop
@@ -101,7 +101,7 @@ function ($filter, $document, $compile, $parse) {
                 selectionCount: 'checked',
                 selectionOf: '/',
                 searchPlaceholder: 'Search...',
-                buttonDefaultText: 'Conf. profile',
+                buttonDefaultText: 'Select',
                 dynamicButtonTextSuffix: 'checked'
             };
 
@@ -206,6 +206,8 @@ function ($filter, $document, $compile, $parse) {
 
                         if (totalSelected === 0) {
                             return $scope.texts.buttonDefaultText;
+                        } else if (totalSelected === $scope.options.length) {
+                            return 'All selected';
                         } else {
                             return totalSelected + ' ' + $scope.texts.dynamicButtonTextSuffix;
                         }
