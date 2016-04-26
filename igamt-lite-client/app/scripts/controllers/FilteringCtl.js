@@ -13,41 +13,41 @@ angular
                 return FilteringSvc.getMsgdata();
             };
 
-            $scope.filtermsgsettings = {
-                scrollableHeight: '200px',
-                scrollable: true,
-                enableSearch: true,
-                buttonClasses: 'btn btn-xs',
-                displayProp: 'label'
+            $scope.filtermsgsettings = function(){
+                return FilteringSvc.getMsgsettings();
             };
 
+            $scope.filtermsgsettings = function(){
+                return FilteringSvc.getMsgsettings();
+            };
 
-            $scope.texts = {
-                checkAll: 'Check All',
-                uncheckAll: 'Uncheck All',
-                selectionCount: 'checked',
-                selectionOf: '/',
-                searchPlaceholder: 'Search...',
-                buttonDefaultText: 'Conf. profile',
-                dynamicButtonTextSuffix: 'checked'
+            $scope.filterusagesmodel = function(){
+                return FilteringSvc.getUsagesmodel();
+            };
+
+            $scope.filterusagesdata = function(){
+                return FilteringSvc.getUsagesdata();
+            };
+
+            $scope.filterusagessettings = function(){
+                return FilteringSvc.getUsagessettings();
+            };
+
+            $scope.filterusagetexts = function(){
+                return FilteringSvc.getUsagestexts();
             };
 
             $rootScope.$on('event:loadFilter', function (event, igdocument) {
                 FilteringSvc.setMsgdata(FilteringSvc.getMessages(igdocument));
                 FilteringSvc.setMsgmodel(FilteringSvc.getMessages(igdocument));
+                FilteringSvc.setMsgsettings(FilteringSvc.getSettings());
+                FilteringSvc.setMsgtexts(FilteringSvc.getTexts("Conf. profiles"));
+
+                FilteringSvc.setUsagesdata(FilteringSvc.getUsages());
+                FilteringSvc.setUsagesmodel(FilteringSvc.getUsages());
+                FilteringSvc.setUsagessettings(FilteringSvc.getSettings());
+                FilteringSvc.setUsagestexts(FilteringSvc.getTexts("Usages"));
             });
-
-/*             function isShowable(elementId, filterId, filterType){
-              return mastermap.get(elementId).get(filterType).has(filterId);
-            }
-
-            function isOptional(elementId){
-              return mastermap.get(elementId).get('usage').has('O');
-            }
-
-            function isRequired(elementId){
-              return (mastermap.get(elementId).get('usage').has('R') || mastermap.get(elementId).get('usage').has('RE'));
-            } */
 
   }
 );
