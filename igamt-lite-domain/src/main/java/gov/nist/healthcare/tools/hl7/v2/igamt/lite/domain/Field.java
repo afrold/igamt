@@ -63,7 +63,6 @@ public class Field extends DataElement implements java.io.Serializable,
 		this.id = id;
 	}
 
-	
 
 	@Override
 	public String toString() {
