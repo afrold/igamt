@@ -96,9 +96,11 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public DatatypeLibrary create(SCOPE scope, String hl7Version, Long accountId) {
+	public DatatypeLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId) {
 		DatatypeLibraryMetaData metaData = defaultMetadata();
+		metaData.setName(name);
 		metaData.setHl7Version(hl7Version);
+		metaData.setExt(ext);
 		DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
 		datatypeLibrary.setMetaData(metaData);
 		datatypeLibrary.setScope(scope);

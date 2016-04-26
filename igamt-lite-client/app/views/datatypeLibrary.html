@@ -108,7 +108,7 @@
                          required style="width : 250px; height : 30px;"/>
 
         <div class="btn-group btn-group-sm" data-toggle="buttons">
-          <label class="btn btn-primary btn-xs" ng-click="$parent.hl7Version = vr; loadDatatypesByScopeAndVersion()"
+          <label class="btn btn-primary btn-xs" ng-click="$parent.hl7Version = vr; $parent.okDisabled = false"
                  ng-class="{'active':vr === hl7Version}"
                  ng-repeat="vr in hl7Versions" style="width : 50px; height : 30px;">
             <input ng-disabled="loading" type="radio" ng-value="vr"

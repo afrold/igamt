@@ -16,11 +16,31 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers;
  */
 public class DatatypeLibraryCreateWrapper {
 
+	private String name;
+
+	private String ext;
+
 	private String scope;
 
 	private String hl7Version;
 
 	private Long accountId;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
+	}
 
 	public String getScope() {
 		return scope;

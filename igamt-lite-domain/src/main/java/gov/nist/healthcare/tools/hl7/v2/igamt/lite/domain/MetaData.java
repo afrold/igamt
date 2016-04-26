@@ -22,7 +22,9 @@ public class MetaData implements java.io.Serializable, Cloneable {
 	
 	private String hl7Version = ""; 				//ConformanceProfile/MetaData/@Version
 	
-	private String date = ""; 					//ConformanceProfile/MetaData/@Date
+	private String date = ""; 	 				//ConformanceProfile/MetaData/@Date
+
+	private String ext = "";
 	
 	public String getId() {
 		return id;
@@ -70,6 +72,14 @@ public class MetaData implements java.io.Serializable, Cloneable {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
 	}
 
 	@Override

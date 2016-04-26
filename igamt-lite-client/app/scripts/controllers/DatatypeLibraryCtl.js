@@ -4,18 +4,19 @@
 angular.module('igl').controller('MasterDatatypeLibraryCtl',
 		function($scope, $rootScope, $modal, $timeout, ngTreetableParams, DatatypeService, DatatypeLibrarySvc, FormsSelectSvc, ViewSettings) {
 
-      $scope.datatypeLibsStruct = false;
-      $scope.datatypeLibStruct = false;
-			$scope.datatypeStruct = false;
+      $scope.datatypeLibsStruct = [];
+      $scope.datatypeLibStruct = null;
+			$scope.datatypeStruct = null;
 			$scope.loadingSelection = true;
 			$scope.publishSelections = [];
 			$scope.datatypeDisplay	= [];
 	    $scope.viewSettings = ViewSettings;
-      $scope.metaDataView = undefined;
-      $scope.datatypeListView = false;
+      $scope.metaDataView = null;
+      $scope.datatypeListView = null;
 
 	    $scope.tableWidth = null;
       $scope.datatypeLibrary = "";
+      $scope.hl7Version = null;
 
 			$scope.initDatatypeLibrary = function() {
 				$scope.start = false;
@@ -113,19 +114,14 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
                 return DatatypeLibrarySvc.getHL7Versions();
               }
 						}
-					}).result.then(function(standardSelections) {
-						console.log("standardSelections=" + standardSelections.length);
+					}).result.then(function(hl7Version, name, ext) {
+						console.log( "hl7Version=" + hl7Version + " name=" + name + " ext=" ext);
+            $scope.hl7Version = hl7Version;
 					    // Decorate the user selections.
 						var decoratedSelections1 = decoratedSelections(standardSelections);
 					    // Push them on to the scope.
-            if (!$scope.datatypeStruct) {
-              $scope.datatypeStruct = [];
-            }
-            var datatypeLibrary = DatatypeLibrarySvc.create();
-						angular.forEach(decoratedSelections1, function(child) {
-							child.new = true;
-							$scope.datatypeStruct.push(child);
-						});
+            var datatypeLibrary = DatatypeLibrarySvc.create(hl7Version, scope, name, ext);
+            $scope.datatypeLibsStruct.push(datatypeLibrary);
 						console.log("$scope.datatypeStruct.children=" + $scope.datatypeStruct.children.length);
           });
 		};
@@ -159,7 +155,10 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 			$scope.okDisabled = true;
 
       $scope.scope = "HL7STANDARD";
-//			$scope.hl7Versions = hl7Versions;
+      $scope.hl7Versions = hl7Versions;
+      $scope.name = null;
+      $scope.ext = null;
+      $scope.hl7Version = null;
 			$scope.standardSelections = [];
 
 			$scope.getDisplayLabel = function(dt) {
@@ -190,7 +189,7 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
       };
 
 			$scope.ok = function() {
-				$modalInstance.close($scope.standardSelections);
+				$modalInstance.close($scope.hl7Version, $scope.name, $scope.ext);
 			};
 
 			$scope.cancel = function() {

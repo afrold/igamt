@@ -152,7 +152,8 @@ public class DatatypeLibraryController extends CommonController {
 	public DatatypeLibrary create(@RequestBody DatatypeLibraryCreateWrapper dtlcw) {
 		SCOPE scope = SCOPE.valueOf(dtlcw.getScope());
 
-		return datatypeLibraryService.create(scope, dtlcw.getHl7Version(), dtlcw.getAccountId());
+		return datatypeLibraryService.create(dtlcw.getName(), dtlcw.getExt(), scope, dtlcw.getHl7Version(),
+				dtlcw.getAccountId());
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)

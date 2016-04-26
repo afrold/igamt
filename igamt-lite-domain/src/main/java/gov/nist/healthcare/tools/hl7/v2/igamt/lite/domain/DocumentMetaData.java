@@ -4,9 +4,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 public class DocumentMetaData extends DataModel implements java.io.Serializable, Cloneable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private String subTitle;
@@ -19,8 +16,6 @@ public class DocumentMetaData extends DataModel implements java.io.Serializable,
 	private String topics;
 	private String specificationName;
 	private String identifier;
-	
-	
 	
 	public String getVersion() {
 		return version;

@@ -11,8 +11,6 @@ import java.io.Serializable;
 
 import org.bson.types.ObjectId;
 
-////@Entity
-////@Table(name = "CASE")
 public class Case implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;

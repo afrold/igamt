@@ -34,9 +34,6 @@ public class ProfileMetaData extends MetaData {
 	@JsonIgnore
 	private String subTitle = "";
 
-	@JsonIgnore
-	private String ext = "";
-
 	private Set<String> encodings = new HashSet<String>();
 
 	public String getStatus() {
@@ -85,14 +82,6 @@ public class ProfileMetaData extends MetaData {
 
 	public void setSubTitle(String subTitle) {
 		this.subTitle = subTitle;
-	}
-
-	public String getExt() {
-		return ext;
-	}
-
-	public void setExt(String ext) {
-		this.ext = ext;
 	}
 
 	@Override

@@ -79,10 +79,12 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
 		var dtlrw = new dtLibStruct(scope, sortedChildren);
 	};
 
-	svc.create = function(scope, hl7Version) {
-    var dtlcw = { "scope" : scope,
-                 "hl7Version" : hl7Version,
-                 "accountId" : userInfoService.getAccountID()};
+	svc.create = function(hl7Version, scope, name, ext) {
+    var dtlcw = { "hl7Version" : hl7Version,
+                  "scope" : scope,
+                  "name" : name,
+                  "ext" : ext,
+                  "accountId" : userInfoService.getAccountID()};
 		return $http.post(
 			'api/datatype-library/create', dtlcw).then(function(response) {
 			return angular.fromJson(response.data.children)});

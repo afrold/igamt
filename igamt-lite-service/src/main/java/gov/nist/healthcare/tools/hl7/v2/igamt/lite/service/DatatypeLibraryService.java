@@ -33,7 +33,7 @@ public interface DatatypeLibraryService {
 
 	DatatypeLibrary save(DatatypeLibrary library);
 
-	DatatypeLibrary create(SCOPE scope, String hl7Version, Long accountId);
+	DatatypeLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
 
 	void delete(DatatypeLibrary library);
 
