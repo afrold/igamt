@@ -13,7 +13,4 @@ public enum HL7Version {
 	public String value() {
 		return value;
 	}
-
- 
-
 }

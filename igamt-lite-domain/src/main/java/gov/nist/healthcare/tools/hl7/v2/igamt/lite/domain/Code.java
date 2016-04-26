@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import org.bson.types.ObjectId;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 public class Code extends DataModel implements Serializable, Cloneable,Comparable<Code> {
 	/**
 	 * 
