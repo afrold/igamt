@@ -31,7 +31,6 @@ angular
                 buttonDefaultText: 'Conf. profile',
                 dynamicButtonTextSuffix: 'checked'
             };
-            angular.extend($scope.texts, $scope.translationTexts);
 
             $rootScope.$on('event:loadFilter', function (event, igdocument) {
                 FilteringSvc.setMsgdata(FilteringSvc.getMessages(igdocument));

@@ -82,7 +82,7 @@ function ($filter, $document, $compile, $parse) {
                 displayProp: 'label',
                 idProp: 'id',
                 externalIdProp: 'id',
-                enableSearch: false,
+                enableSearch: true,
                 selectionLimit: 0,
                 showCheckAll: true,
                 showUncheckAll: true,

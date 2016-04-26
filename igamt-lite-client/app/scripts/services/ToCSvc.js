@@ -2,7 +2,7 @@ angular
 		.module('igl')
 		.factory(
 				'ToCSvc',
-				function() {
+				function(FilteringSvc, MastermapSvc) {
 
 					var svc = this;
 
@@ -183,5 +183,19 @@ angular
 					}
 					;
 
-					return svc;
+          svc.show = function(leaf){
+            var rst = false;
+            _.each(FilteringSvc.getMsgmodel(), function(filterElt){
+              //                   console.log("filter => " + filterElt.id);
+              //                   console.log("leaf => " +leaf.id);
+              rst = rst || showByMsg(leaf, filterElt);
+            });
+            return rst;
+          };
+
+          showByMsg = function(leaf, filterElt){
+            return (MastermapSvc.getMastermap()[leaf.id]['msg'].indexOf(filterElt.id) !== -1);
+          }
+
+          return svc;
 				})
