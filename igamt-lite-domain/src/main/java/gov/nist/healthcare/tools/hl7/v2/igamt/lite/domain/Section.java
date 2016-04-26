@@ -27,9 +27,7 @@ public class Section extends TextbasedSectionModel implements java.io.Serializab
 		this.sectionTitle = title;
 	}
 	
-	@Id
 	private String id;
-	
 	
 	protected Set<?> childSections = new HashSet<Section>();
 
