@@ -36,6 +36,8 @@ public class Constant {
 	public final static String TABLES = "tables";
 	public final static String TABLE = "table";
 	public final static String CODE = "code";
+	public final static String ID = "id";
+	public final static String LABEL = "label";
 	
 	public final static String SECTION = "section";
 	public final static String Document = "document";

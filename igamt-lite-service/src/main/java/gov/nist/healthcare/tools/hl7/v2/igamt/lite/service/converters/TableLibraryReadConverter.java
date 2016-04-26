@@ -19,8 +19,8 @@ import org.springframework.data.convert.ReadingConverter;
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 
 /**
  * @author gcr1 12.Feb.16
@@ -50,11 +50,11 @@ public class TableLibraryReadConverter extends AbstractReadConverter<DBObject, T
 		tabLib.setSectionPosition((Integer) source.get(SECTION_POSITION));
 		tabLib.setSectionTitle((String) source.get(SECTION_TITLE));
 		BasicDBList tabLibDBObjects = (BasicDBList) source.get(CHILDREN);
-		tabLib.setChildren(new HashSet<String>());
+		tabLib.setChildren(new HashSet<TableLink>());
 		
 		if (tabLibDBObjects != null) {
 			for (Object childObj : tabLibDBObjects) {
-				tabLib.addTable((String)childObj);
+				tabLib.addTable((TableLink)childObj);
 			}
 		}
 
