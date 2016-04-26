@@ -9,8 +9,6 @@ public class SegmentLibraryMetaData extends MetaData {
 		super();
 	}
 
-	private String segmentLibId = ""; 				//ConformanceProfile/@ID
-	
 	@Override
 	public SegmentLibraryMetaData clone() throws CloneNotSupportedException {
 		SegmentLibraryMetaData clonedProfileMetaData = new SegmentLibraryMetaData();
@@ -19,15 +17,6 @@ public class SegmentLibraryMetaData extends MetaData {
 		clonedProfileMetaData.setOrgName(this.getOrgName());
 		clonedProfileMetaData.setDate(this.getDate());
 		clonedProfileMetaData.setVersion(this.getVersion());
-		clonedProfileMetaData.setSegmentLibId(segmentLibId);
 		return clonedProfileMetaData;
-	}
-
-	public String getSegmentLibId() {
-		return segmentLibId;
-	}
-
-	public void setSegmentLibId(String segmentLibId) {
-		this.segmentLibId = segmentLibId;
 	}
 }

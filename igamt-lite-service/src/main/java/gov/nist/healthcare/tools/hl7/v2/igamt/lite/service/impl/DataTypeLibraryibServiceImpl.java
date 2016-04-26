@@ -64,8 +64,8 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public DatatypeLibrary findByScopeAndVersion(Constant.SCOPE scope, String hl7Version) {
-		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryRepository.findByScopeAndMetaData_Hl7Version(scope, hl7Version);
+	public DatatypeLibrary findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryRepository.findByScopesAndMetaData_Hl7Version(scopes, hl7Version);
 		log.info("DataTypeLibraryibServiceImpl.findByScopeAndVersion datatypeLibraries=" + datatypeLibraries.size());
 		DatatypeLibrary datatypeLibrary = null;
 		if (datatypeLibraries.size() > 0) {

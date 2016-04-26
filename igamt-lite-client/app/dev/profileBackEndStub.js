@@ -215,15 +215,10 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
 
     $httpBackend.whenGET('api/igdocuments/findVersions').respond(function (method, url, data, headers) {
     	console.log('api/igdocuments/hl7/findVersions');
-        return [200, ["2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"], {}];
+        return [200, ["2.5.1","2.6","2.7"], {}];
     });
 
-     $httpBackend.whenGET('api/datatype-library/findHl7Versions').respond(function (method, url, data, headers) {
-    	console.log('api/igdocuments/hl7/findVersions');
-        return [200, ["2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"], {}];
-    });
-
-   $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
+    $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/igdocuments/messageListByVersion start' + ' data=' + data);
         request.open('GET', '../../resources/igDocuments/mes-hl7Version-USER-1.0.json', false);
@@ -277,6 +272,11 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
     });
 
+    $httpBackend.whenGET('api/datatype-library/findHl7Versions').respond(function (method, url, data, headers) {
+    	console.log('api/igdocuments/hl7/findVersions');
+        return [200, ["2.1","2.2","2.3","2.3.1","2.4","2.5","2.5.1","2.6","2.7"], {}];
+    });
+
   $httpBackend.whenPOST('api/datatype-library/findByScopes').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         var scopes = angular.fromJson(data);
@@ -295,10 +295,10 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
     });
 
-  $httpBackend.whenGET('api/datatype-library/45/2.5.1/findByAccountId').respond(function (method, url, data, headers) {
+   $httpBackend.whenPOST('api/datatype-library/findLibraryByScopesAndVersion').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         var scopes = angular.fromJson(data);
-        console.log('api/datatype-library/findByScopes begin scopes=' + scopes);
+        console.log('api/datatype-library/findLibraryByScopesAndVersion begin scopesNversion=' + data);
         var d = [];
         request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
         request.send(null);
@@ -309,33 +309,11 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
         request.send(null);
         d.push(angular.fromJson(request.response));
-        console.log('api/datatype-library/findByScopes end ' + d.length);
+        console.log('api/datatype-library/findLibraryByScopesAndVersion end ' + d.length);
         return [request.status, d, {}];
     });
 
-    $httpBackend.whenGET('api/datatype-library/565f3ab6d4c6e52cfd43ec4a/datatypes').respond(function (method, url, data, headers) {
-        var request = new XMLHttpRequest();
-        request.open('GET', '../../resources/datatypes/datatypes-MASTER.json', false);
-        request.send(null);
-        var datatype = angular.fromJson(request.response);
-        return [request.status, datatype.children, {}];
-    });
-
-  $httpBackend.whenPOST('api/datatype-library/findByScopeAndVersion').respond(function (method, url, data, headers) {
-        var request = new XMLHttpRequest();
-        var a = angular.fromJson(data);
-        var scope = a[0];
-        var hl7Version = a[1];
-        console.log('api/datatype-library/findByScopeAndVersion begin scope=' + scope + ' hl7Version=' + hl7Version);
-        var d = null;
-        request.open('GET', '../../resources/datatypes/dtLib-2.5.1-HL7STANDARD.json', false);
-        request.send(null);
-        d = angular.fromJson(request.response);
-        console.log('api/datatype-library/findByScopeAndVersion end');
-        return [request.status, d, {}];
-    });
-
-    $httpBackend.whenGET('api/appInfo').respond(function (method, url, data, headers) {
+   $httpBackend.whenGET('api/appInfo').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         request.open('GET', '../../resources/appInfo/appInfo.json', false);
         request.send(null);
@@ -386,5 +364,9 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         var datatype = angular.fromJson(request.response);
         return [request.status, datatype, {}];
     });
+
+
+
+
 });
 

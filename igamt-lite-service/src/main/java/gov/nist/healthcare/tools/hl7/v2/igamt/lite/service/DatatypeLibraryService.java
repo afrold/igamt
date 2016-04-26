@@ -27,7 +27,7 @@ public interface DatatypeLibraryService {
 
 	DatatypeLibrary findById(String id);
 
-	DatatypeLibrary findByScopeAndVersion(Constant.SCOPE scope, String hl7Version);
+	DatatypeLibrary findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 
 	List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version);
 

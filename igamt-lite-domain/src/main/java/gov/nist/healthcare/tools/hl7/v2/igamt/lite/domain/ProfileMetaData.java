@@ -15,8 +15,6 @@ public class ProfileMetaData extends MetaData {
 
 	/* XSD Attributes */
 	
-	private String profileID = ""; 				//ConformanceProfile/@ID
-	
 	private String type = ""; 					//ConformanceProfile/@Type
 	
 	private String schemaVersion = ""; 			//ConformanceProfile/@SchemaVersion
@@ -94,7 +92,6 @@ public class ProfileMetaData extends MetaData {
 		}
 
 		clonedProfileMetaData.setHl7Version(getHl7Version());
-		clonedProfileMetaData.setProfileID(profileID);
 		clonedProfileMetaData.setName(this.getName());
 		clonedProfileMetaData.setOrgName(this.getOrgName());
 		clonedProfileMetaData.setSchemaVersion(schemaVersion);
@@ -115,13 +112,4 @@ public class ProfileMetaData extends MetaData {
 	public void setSpecificationName(String specificationName) {
 		this.specificationName = specificationName;
 	}
-
-	public String getProfileID() {
-		return profileID;
-	}
-
-	public void setProfileID(String profileID) {
-		this.profileID = profileID;
-	}
-
 }

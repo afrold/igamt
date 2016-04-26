@@ -36,6 +36,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryServic
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeLibrarySaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.DatatypeLibraryCreateWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeLibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
@@ -94,15 +95,14 @@ public class DatatypeLibraryController extends CommonController {
 		return datatypeLibraries;
 	}
 
-	@RequestMapping(value = "/findByScopeAndVersion", method = RequestMethod.POST, produces = "application/json")
-	public List<Datatype> findByScopeAndVersion(@RequestBody List<String> scopeAndVersion) {
-		String scope = scopeAndVersion.get(0);
-		String hl7Version = scopeAndVersion.get(1);
-		log.info("Fetching the datatype library. scope=" + scope + " hl7Version=" + hl7Version);
-		Constant.SCOPE scope1 = Constant.SCOPE.valueOf(scope);
+	@RequestMapping(value = "/findByScopesAndVersion", method = RequestMethod.POST, produces = "application/json")
+	public List<Datatype> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
+		log.info("Fetching the datatype library. scope=" + scopesAndVersion.getScopes() + " hl7Version="
+				+ scopesAndVersion.getHl7Version());
 		List<Datatype> datatypes = null;
 		try {
-			datatypes = datatypeService.findByScopeAndVersion(scope1, hl7Version);
+			datatypes = datatypeService.findByScopesAndVersion(scopesAndVersion.getScopes(),
+					scopesAndVersion.getHl7Version());
 			if (datatypes == null) {
 				throw new DatatypeNotFoundException(
 						"Datatype not found for scope=" + scope + " hl7Version=" + hl7Version);

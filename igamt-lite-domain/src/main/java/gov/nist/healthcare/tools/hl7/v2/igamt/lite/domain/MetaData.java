@@ -8,32 +8,20 @@ public class MetaData implements java.io.Serializable, Cloneable {
 	
 	public MetaData() {
 		super();
-		this.id = ObjectId.get().toString();
 	}
 
-	/* XSD Attributes */
-	private String id;
-	
 	private String name; 						//ConformanceProfile/MetaData/@Name
 	
-	private String orgName = ""; 				//ConformanceProfile/MetaData/@OrgName
+	private String orgName; 				//ConformanceProfile/MetaData/@OrgName
 	
-	private String version = ""; 				//ConformanceProfile/MetaData/@Version
+	private String version; 				//ConformanceProfile/MetaData/@Version
 	
-	private String hl7Version = ""; 				//ConformanceProfile/MetaData/@Version
+	private String hl7Version; 				//ConformanceProfile/MetaData/@Version
 	
-	private String date = ""; 	 				//ConformanceProfile/MetaData/@Date
+	private String date; 	 				//ConformanceProfile/MetaData/@Date
 
-	private String ext = "";
+	private String ext;
 	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 	public String getName() {
 		return name;
 	}

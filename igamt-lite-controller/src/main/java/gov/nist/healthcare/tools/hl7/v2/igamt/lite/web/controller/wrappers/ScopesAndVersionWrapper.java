@@ -8,27 +8,41 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers;
 
 import java.util.List;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 
 /**
  * @author gcr1
  *
  */
-public interface DatatypeLibraryOperations {
-	
-	public DatatypeLibrary findById(String id);
+public class ScopesAndVersionWrapper {
 
-	public List<DatatypeLibrary> findByScopes(List<SCOPE> scopes);
-	
-	public List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version);
+	private static final long serialVersionUID = -8337269625916897011L;
 
-	public List<DatatypeLibrary> findByScopesAndMetaData_Hl7Version(List<SCOPE> scopes, String hl7version);
+	public ScopesAndVersionWrapper() {
+		super();
+	}
 
-	public List<String> findHl7Versions();
+	private List<SCOPE> scopes;
+
+	private String hl7Version;
+
+	public List<SCOPE> getScopes() {
+		return scopes;
+	}
+
+	public void setScopes(List<SCOPE> scopes) {
+		this.scopes = scopes;
+	}
+
+	public String getHl7Version() {
+		return hl7Version;
+	}
+
+	public void setHl7Version(String hl7Version) {
+		this.hl7Version = hl7Version;
+	}
 }

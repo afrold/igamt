@@ -32,15 +32,14 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
             });
 	};
 
-	svc.getDataTypeLibrary = function(scope, hl7Version) {
-		console.log("datatype-library/findLibraryByScopeAndVersion scope=" + scope + " hl7Version=" + hl7Version);
-        var scopeAndVersion = [];
-        scopeAndVersion.push(scope);
-        if (hl7Version) {
-          scopeAndVersion.push(hl7Version);
-        }
+	svc.getDataTypeLibraryByScopesAndVersion = function(scope, hl7Version) {
+		console.log("datatype-library/findLibraryByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
+        var scopesAndVersion = {
+          "scopes" : [scopes],
+          "hl7Version" : hl7Version
+        };
         return $http.post(
-            'api/datatype-library/findLibraryByScopeAndVersion', angular.toJson(scopeAndVersion))
+            'api/datatype-library/findLibraryByScopesAndVersion', angular.toJson(scopesAndVersion))
             .then(function(response) {
     //					console.log("response" + JSON.stringify(response));
               return angular.fromJson(response.data);

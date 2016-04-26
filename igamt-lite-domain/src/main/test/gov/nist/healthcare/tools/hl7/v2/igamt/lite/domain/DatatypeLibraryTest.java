@@ -12,10 +12,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-<<<<<<< HEAD
-import static org.junit.Assert.fail;
-=======
->>>>>>> all-lib
 
 import java.util.Iterator;
 

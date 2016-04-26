@@ -42,8 +42,7 @@ public class TableLibrary extends TextbasedSectionModel implements java.io.Seria
 	
 	public TableLibrary() {
 		super();
-		this.id = ObjectId.get().toString();
-	}
+		}
 
 	private Set<TableLink> children = new HashSet<TableLink>();
 

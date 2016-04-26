@@ -115,7 +115,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
               }
 						}
 					}).result.then(function(hl7Version, name, ext) {
-						console.log( "hl7Version=" + hl7Version + " name=" + name + " ext=" ext);
+//						console.log( "hl7Version=" + hl7Version + " name=" + name + " ext=" ext);
             $scope.hl7Version = hl7Version;
 					    // Decorate the user selections.
 						var decoratedSelections1 = decoratedSelections(standardSelections);
@@ -131,7 +131,8 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 						templateUrl : 'datatypeListDlg.html',
 						controller : 'DatatypeListInstanceDlgCtl',
 						resolve : {
-              hl7Version : hl7Version
+              hl7Version : $scope.hl7Version,
+              datatypeLibsStruct : DatatypeLibrarySvc.getDataTypeLibraryByScopesAndVersion
               }
       }).result.then(function() {
 
@@ -199,7 +200,10 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 		});
 
 angular.module('igl').controller('DatatypeListInstanceDlgCtl',
-		function($scope, $rootScope, $modalInstance, hl7Version, DatatypeLibrarySvc, DatatypeService) {
+		function($scope, $rootScope, $modalInstance, hl7Version, datatypeLibsStruct, DatatypeLibrarySvc, DatatypeService) {
+
+      $scope.hl7Version = hl7Version;
+      $scope.datatypeLibsStruct = datatypeLibsStruct;
 
 			$scope.ok = function() {
 				$modalInstance.close($scope.standardSelections);
