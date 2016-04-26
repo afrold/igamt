@@ -27,8 +27,7 @@ var app = angular
         'angularjs-dropdown-multiselect',
         'dndLists',
         'froala',
-        'ngNotificationsBar',
-        'ui.select'
+        'ngNotificationsBar'
         ,
         'ngMockE2E'
     ]);
@@ -50,7 +49,7 @@ var
 var msg = {};
 
 
-app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider,notificationsConfigProvider,uiSelectConfig) {
+app.config(function ($routeProvider, RestangularProvider, $httpProvider, KeepaliveProvider, IdleProvider,notificationsConfigProvider) {
 
     app.requires.push('ngMockE2E');
 
