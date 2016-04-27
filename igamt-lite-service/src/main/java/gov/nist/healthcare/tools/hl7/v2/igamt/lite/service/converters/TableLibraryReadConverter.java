@@ -54,7 +54,11 @@ public class TableLibraryReadConverter extends AbstractReadConverter<DBObject, T
 		
 		if (tabLibDBObjects != null) {
 			for (Object childObj : tabLibDBObjects) {
-				tabLib.addTable((TableLink)childObj);
+				DBObject dbObj = (DBObject)childObj;
+				String id = readMongoId(dbObj);
+				String label = (String)dbObj.get("bindingIdentifier");
+				TableLink tbl = new TableLink(id, label);
+				tabLib.addTable(tbl);
 			}
 		}
 

@@ -20,6 +20,7 @@ import com.mongodb.DBObject;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 
 /**
  * @author gcr1 12.Feb.16
@@ -54,8 +55,11 @@ public class DatatypeLibraryReadConverter extends AbstractReadConverter<DBObject
 		DatatypeReadConverter dtCnv = new DatatypeReadConverter();
 		if (datatypesDBObjects != null) {
 			for (Object childObj : datatypesDBObjects) {
-				DBObject dtLink = (DBObject)childObj;
-				dtLib.addDatatype(datatypeLink(dtLink));
+				DBObject dbObj = (DBObject)childObj;
+				String id = readMongoId(dbObj);
+				String label = (String)dbObj.get(LABEL);
+				DatatypeLink dtl = new DatatypeLink(id, label);
+				dtLib.addDatatype(dtl);
 			}
 		}
 

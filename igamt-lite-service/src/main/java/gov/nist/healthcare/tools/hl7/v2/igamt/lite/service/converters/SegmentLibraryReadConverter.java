@@ -22,6 +22,7 @@ import com.mongodb.DBObject;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 
 /**
  * @author gcr1 12.Feb.16
@@ -56,7 +57,11 @@ public class SegmentLibraryReadConverter extends AbstractReadConverter<DBObject,
 		SegmentReadConverter segCnv = new SegmentReadConverter();
 		if (segLibDBObjects != null) {
 			for (Object childObj : segLibDBObjects) {
-				segLib.addSegment((SegmentLink)childObj);
+				DBObject dbObj = (DBObject)childObj;
+				String id = readMongoId(dbObj);
+				String label = (String)dbObj.get(LABEL);
+				SegmentLink sgl = new SegmentLink(id, label);
+				segLib.addSegment(sgl);
 			}
 		}
 

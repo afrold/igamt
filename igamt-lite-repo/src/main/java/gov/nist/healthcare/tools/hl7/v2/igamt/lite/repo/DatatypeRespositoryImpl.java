@@ -58,7 +58,8 @@ public class DatatypeRespositoryImpl implements DatatypeOperations {
 	
 	@Override
 	public Datatype findById(String id, Constant.QUANTUM quantum) {
-		Query qry = new Query();
+ 	    Criteria where = Criteria.where("id").is(id);
+		Query qry = new Query(where);
 		switch (quantum) {
 		case BREVIS:
 			qry = set4Brevis(qry);
