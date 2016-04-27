@@ -188,13 +188,22 @@ angular
             _.each(FilteringSvc.getMsgmodel(), function(filterElt){
               //                   console.log("filter => " + filterElt.id);
               //                   console.log("leaf => " +leaf.id);
-              rst = rst || showByMsg(leaf, filterElt);
+              rst = rst || filterByMsg(leaf, filterElt);
             });
             return rst;
           };
 
-          showByMsg = function(leaf, filterElt){
+          filterByMsg = function(leaf, filterElt){
             return (MastermapSvc.getMastermap()[leaf.id]['msg'].indexOf(filterElt.id) !== -1);
+          }
+
+          filterByUsage = function(leaf){
+            var mm = MastermapSvc.getMastermap()[leaf.id];
+            if (mm["type"] === "segment"){
+              return true; //(mm['msg'].indexOf(filterElt.id) !== -1);
+            } else {
+              return false;
+            }
           }
 
           return svc;

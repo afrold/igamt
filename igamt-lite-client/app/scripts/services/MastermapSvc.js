@@ -28,6 +28,7 @@ angular
             var table = tableLibrary[tableId];
             svc.createMMElement(table.id);
             svc.addParentsId(table.id, "table", parent);
+            svc.mastermap[table.id]["type"] = "table";
 
             _.each(table.codes, function(c) {
               svc.addCodes(c, parent.concat([[table.id, 'table']]));
@@ -40,6 +41,7 @@ angular
 
           svc.createMMElement(code.id);
           svc.addParentsId(code.id, "code", parent);
+          svc.mastermap[code.id]["type"] = "code";
         }
 
 
@@ -52,6 +54,7 @@ angular
             if (dt !== undefined){
               svc.createMMElement(dt.id);
               svc.addParentsId(dt.id, "datatype",parent);
+              svc.mastermap[dt.id]["type"] = "datatype";
 
               dt.components.forEach( function(c) {
                 svc.createMMElement(c.id);
@@ -69,6 +72,7 @@ angular
 
           svc.createMMElement(field.id);
           svc.addParentsId(field.id, "field", parent);
+          svc.mastermap[field.id]["type"] = "field";
 
           svc.addValueSet(field.table, parent.concat([[field.id, 'field']]), segmentLibrary, datatypeLibrary, tableLibrary);
           svc.addDatatype(field.datatype, parent.concat([[field.id, 'field']]), segmentLibrary, datatypeLibrary, tableLibrary);
@@ -82,6 +86,7 @@ angular
           if (segment !== undefined){
             svc.createMMElement(segment.id);
             svc.addParentsId(segment.id, "sgt", parent);
+          svc.mastermap[segment.id]["type"] = "segment";
 
             _.each(segment.fields, function(f) {
               svc.addField(f, parent.concat([[segment.id, 'sgt']]), segmentLibrary, datatypeLibrary, tableLibrary);
@@ -96,6 +101,7 @@ angular
 
           svc.createMMElement(message.id);
           svc.addParentsId(message.id, "msg", parent);
+          svc.mastermap[message.id]["type"] = "msg";
 
           _.each(message.children, function(n) {
             if (n.type === "segmentRef"){
@@ -113,6 +119,8 @@ angular
           var segRef = segmentRef.ref;
 
           svc.createMMElement(segRefId);
+          svc.mastermap[segRefId]["usage"] = segmentRef["usage"];
+          svc.mastermap[segRefId]["type"] = "segmentRef";
           svc.addParentsId(segRefId, "segmentRef", parent);
 
           svc.addSegment(segRef, parent.concat([[segRefId + "", 'segmentRef']]), segmentLibrary, datatypeLibrary, tableLibrary);
@@ -122,6 +130,8 @@ angular
 //           console.log("Processing group " + group.id);
 
           svc.createMMElement(group.id);
+          svc.mastermap[group.id]["usage"] = group["usage"];
+          svc.mastermap[group.id]["type"] = "group";
           svc.createMMElement(group.id, "group", parent);
 
           _.each(group.children, function(n) {
@@ -150,6 +160,7 @@ angular
           _.each(profile.messages.children, function(m) {
             var parentsList = [[profile.id, 'ig']];
             svc.createMMElement(profile.id, "ig", parentsList);
+            svc.mastermap[profile.id]["type"] = "ig";
 
             svc.addMessage(m, parentsList, segmentLibrary, datatypeLibrary, tableLibrary);
           });
@@ -189,6 +200,7 @@ angular
             eltColl["component"] =[];
             eltColl["code"] =[];
             eltColl["usage"] =[];
+            eltColl["type"] = "";
 
             svc.mastermap[elementId] = eltColl;
           }
