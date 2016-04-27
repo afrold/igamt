@@ -31,8 +31,23 @@
     <!--</div>-->
     <!---->
     <div class="col-md-12 igl-page-header">
-        <span class="header4 pull-left">IG Document: {{igdocument.metaData.title}}
-            <span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>
+      <span class="header4 pull-left">
+        <div ng-controller="FilteringCtl">
+          <div class="row" style="margin:10px">
+            <label class="col-md-4 label label-default">Filters:</label>
+            <div class="col-md-4">Conf Profiles</div>
+            <div class="col-md-4">Usages</label>
+          </div>
+          <div class="row" style="margin:10px">
+            <div class="col-md-4" />
+            <div class="col-md-4" ng-dropdown-multiselect="" options="filtermsgdata()" selected-model="filtermsgmodel()" extra-settings="filtermsgsettings()" translation-texts="filtermsgtexts()">
+            </div>
+            <div class="col-md-4" ng-dropdown-multiselect="" options="filterusagesdata()" selected-model="filterusagesmodel()" extra-settings="filterusagessettings()" translation-texts="filterusagestexts()">
+            </div>
+          </div>
+        </div>
+
+      <span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>
             <span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>
         </span>
                      <span class="pull-right">
@@ -79,27 +94,6 @@
                          <span><i class="fa fa-trash-o fa-fw"></i>Delete</span>
                        </button>
       </span>
-
-      <div class="row" style="margin:10px">
-        <div ng-controller="FilteringCtl">
-<!--           <span class="label label-icon">Filters:</span> -->
-          <div class="col-md-2 col-margin">
-            <div class="form-group">
-              <label class="control-label">Conf Profiles</label>
-              <div ng-dropdown-multiselect="" options="filtermsgdata()" selected-model="filtermsgmodel()" extra-settings="filtermsgsettings()" translation-texts="filtermsgtexts()">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-2 col-margin">
-            <div class="form-group">
-              <label class="control-label">Usages</label>
-              <div ng-dropdown-multiselect="" options="filterusagesdata()" selected-model="filterusagesmodel()" extra-settings="filterusagessettings()" translation-texts="filterusagestexts()">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-  </div>
 
   <div class="col-md-12">
                 <span>version: {{igdocument.metaData.version}}
