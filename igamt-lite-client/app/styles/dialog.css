@@ -1,7 +1,6 @@
 #standard-datatypelibrary-dialog {
   left : 50%;
   width : 900px;
-<<<<<<< HEAD
   margin-left : -250px;
 }
 .new {
@@ -28,7 +27,5 @@ label {
 
 label:hover {
     cursor: pointer;
-=======
-  margin-left : -150px;
->>>>>>> all-lib
+
 }
