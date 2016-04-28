@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 18,
+  "id" : "569eac0dd4c623dc6550836d",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0218",
+  "name" : "Patient Charge Adjustment",
+  "description" : "Patient Charge Adjustment",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550836e",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70218",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

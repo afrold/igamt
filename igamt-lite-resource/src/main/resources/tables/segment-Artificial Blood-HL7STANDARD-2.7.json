@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 36,
+  "id" : "569eac0dd4c623dc655075a5",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0375",
+  "name" : "Artificial Blood",
+  "description" : "Artificial Blood",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655075a6",
+    "value" : "FLUR",
+    "label" : "Fluorocarbons",
+    "codeSystem" : "HL70375",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655075a7",
+    "value" : "SFHB",
+    "label" : "Stromal free hemoglobin preparations",
+    "codeSystem" : "HL70375",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

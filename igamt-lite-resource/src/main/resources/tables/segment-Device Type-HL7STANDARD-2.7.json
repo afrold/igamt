@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 91,
+  "id" : "569eac0dd4c623dc65507dde",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0657",
+  "name" : "Device Type",
+  "description" : "Device Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ddf",
+    "value" : "1",
+    "label" : "EO Gas Sterilizer",
+    "codeSystem" : "HL70657",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507de0",
+    "value" : "2",
+    "label" : "Steam Sterilizer",
+    "codeSystem" : "HL70657",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507de1",
+    "value" : "3",
+    "label" : "Peracetic Acid",
+    "codeSystem" : "HL70657",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

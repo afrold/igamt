@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 282,
+  "id" : "565f3ab7d4c6e52cfd445a80",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0147",
+  "name" : "Policy type",
+  "description" : "Policy type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a81",
+    "value" : "2ANC",
+    "label" : "Second ancillary",
+    "codeSystem" : "HL70147",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a82",
+    "value" : "2MMD",
+    "label" : "Second major medical",
+    "codeSystem" : "HL70147",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a83",
+    "value" : "3MMD",
+    "label" : "Third major medical",
+    "codeSystem" : "HL70147",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a84",
+    "value" : "ANC",
+    "label" : "Ancillary",
+    "codeSystem" : "HL70147",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a85",
+    "value" : "MMD",
+    "label" : "Major medical",
+    "codeSystem" : "HL70147",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 104,
+  "id" : "569eac0dd4c623dc65507d12",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0757",
+  "name" : "Status Respiration Minutes",
+  "description" : "Status Respiration Minutes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d13",
+    "value" : "0",
+    "label" : "Respiration minutes not used for grouping",
+    "codeSystem" : "HL70757",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d14",
+    "value" : "1",
+    "label" : "Listed respiration minutes used for grouping",
+    "codeSystem" : "HL70757",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d15",
+    "value" : "2",
+    "label" : "OPS code value used for grouping",
+    "codeSystem" : "HL70757",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

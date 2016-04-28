@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 394,
+  "id" : "565f3ab6d4c6e52cfd443d08",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0230",
+  "name" : "Procedure functional type",
+  "description" : "Procedure functional type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d09",
+    "value" : "A",
+    "label" : "Anesthesia",
+    "codeSystem" : "HL70230",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d0a",
+    "value" : "D",
+    "label" : "Diagnostic procedure",
+    "codeSystem" : "HL70230",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d0b",
+    "value" : "I",
+    "label" : "Invasive procedure not classified elsewhere (e.g., IV, catheter, etc.)",
+    "codeSystem" : "HL70230",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d0c",
+    "value" : "P",
+    "label" : "Procedure for treatment (therapeutic, including operations)",
+    "codeSystem" : "HL70230",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

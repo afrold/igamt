@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 109,
+  "id" : "565f3ab6d4c6e52cfd441581",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0233",
+  "name" : "Non-Concur Code/Description",
+  "description" : "Non-Concur Code/Description",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.233",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

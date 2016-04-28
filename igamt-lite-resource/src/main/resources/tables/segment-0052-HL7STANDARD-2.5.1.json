@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 471,
+  "id" : "569eac0fd4c623dc6550e0d4",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0052",
+  "name" : "Diagnosis Type",
+  "description" : "Diagnosis Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.52",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0d5",
+    "value" : "A",
+    "label" : "Admitting",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0d6",
+    "value" : "F",
+    "label" : "Final",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0d7",
+    "value" : "W",
+    "label" : "Working",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

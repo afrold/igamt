@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 157,
+  "id" : "565f3ab7d4c6e52cfd446f39",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0001",
+  "name" : "Sex",
+  "description" : "Sex",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f3a",
+    "value" : "F",
+    "label" : "Female",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f3b",
+    "value" : "M",
+    "label" : "Male",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f3c",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f3d",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70001",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

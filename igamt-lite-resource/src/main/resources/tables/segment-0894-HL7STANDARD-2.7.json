@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 45,
+  "id" : "569eac0dd4c623dc65507db0",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0894",
+  "name" : "Side of body",
+  "description" : "Side of body",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507db1",
+    "value" : "L",
+    "label" : "Left",
+    "codeSystem" : "HL70894",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507db2",
+    "value" : "R",
+    "label" : "Right",
+    "codeSystem" : "HL70894",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 230,
+  "id" : "569eac0dd4c623dc65507d9a",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0895",
+  "name" : "Present On Admission (POA) Indicator",
+  "description" : "Present On Admission (POA) Indicator",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d9b",
+    "value" : "E",
+    "label" : "Exempt",
+    "codeSystem" : "HL70895",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d9c",
+    "value" : "N",
+    "label" : "No",
+    "codeSystem" : "HL70895",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d9d",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70895",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d9e",
+    "value" : "W",
+    "label" : "Not applicable",
+    "codeSystem" : "HL70895",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d9f",
+    "value" : "Y",
+    "label" : "Yes",
+    "codeSystem" : "HL70895",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

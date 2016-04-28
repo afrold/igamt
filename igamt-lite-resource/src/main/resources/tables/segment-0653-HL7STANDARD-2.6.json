@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 102,
+  "id" : "569eac0ed4c623dc6550b2cf",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0653",
+  "name" : "Date Format",
+  "description" : "Date Format",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.653",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2d0",
+    "value" : "1",
+    "label" : "mm/dd/yy",
+    "codeSystem" : "HL70653",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2d1",
+    "value" : "2",
+    "label" : "yy.mm.dd",
+    "codeSystem" : "HL70653",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2d2",
+    "value" : "3",
+    "label" : "dd/mm/yy",
+    "codeSystem" : "HL70653",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2d3",
+    "value" : "4",
+    "label" : "dd.mm.yy",
+    "codeSystem" : "HL70653",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2d4",
+    "value" : "5",
+    "label" : "yy/mm/dd",
+    "codeSystem" : "HL70653",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2d5",
+    "value" : "6",
+    "label" : "Yymmdd",
+    "codeSystem" : "HL70653",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

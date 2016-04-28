@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 125,
+  "id" : "569eac0dd4c623dc6550752b",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0374",
+  "name" : "System Induced Contaminants",
+  "description" : "System Induced Contaminants",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550752c",
+    "value" : "CNTM",
+    "label" : "Present, type of contamination unspecified",
+    "codeSystem" : "HL70374",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

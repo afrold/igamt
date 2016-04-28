@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 21,
+  "id" : "565f3ab7d4c6e52cfd4460df",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0356",
+  "name" : "Alternate character set handling scheme",
+  "description" : "Alternate character set handling scheme",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460e0",
+    "value" : "<null>",
+    "label" : "This is the default, indicating that there is no character set switching occurring in this message.",
+    "codeSystem" : "HL70356",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4460e1",
+    "value" : "ISO 2022-199",
+    "label" : "This standard is titled \"Information Technology - Character Code Structure  and Extension Technique\". This standard specifies an escape sequence from basic one byte character set to specified other character set, and  vice versa.  The escape sequence expl",
+    "codeSystem" : "HL70356",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

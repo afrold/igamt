@@ -1,0 +1,288 @@
+{
+  "type" : "table",
+  "sectionPosition" : 269,
+  "id" : "565f3ab7d4c6e52cfd44744f",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0227",
+  "name" : "Manufacturers of Vaccines",
+  "description" : "Manufacturers of Vaccines",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447450",
+    "value" : "AB",
+    "label" : "Abbott",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447451",
+    "value" : "AD",
+    "label" : "Adams",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447452",
+    "value" : "ALP",
+    "label" : "Alpha",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447453",
+    "value" : "AR",
+    "label" : "Armour",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447454",
+    "value" : "BA",
+    "label" : "Baxter",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447455",
+    "value" : "BAY",
+    "label" : "Bayer",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447456",
+    "value" : "BP",
+    "label" : "Berna",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447457",
+    "value" : "CON",
+    "label" : "Connaught",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447458",
+    "value" : "EVN",
+    "label" : "Evans",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447459",
+    "value" : "GRE",
+    "label" : "Greer",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44745a",
+    "value" : "IM",
+    "label" : "Merieux",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44745b",
+    "value" : "IUS",
+    "label" : "Immuno-US",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44745c",
+    "value" : "JPN",
+    "label" : "Microbial Dis/Osaka U",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44745d",
+    "value" : "KGC",
+    "label" : "Korea Green Cross",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44745e",
+    "value" : "LED",
+    "label" : "Lederle",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44745f",
+    "value" : "MA",
+    "label" : "Massachusetts Public Health",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447460",
+    "value" : "MIL",
+    "label" : "Miles",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447461",
+    "value" : "MIP",
+    "label" : "Michigan Dept Public Health",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447462",
+    "value" : "MSD",
+    "label" : "Merck",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447463",
+    "value" : "NAB",
+    "label" : "North American Biologicals, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447464",
+    "value" : "NYB",
+    "label" : "New York Blood Center",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447465",
+    "value" : "OTC",
+    "label" : "Organon Teknika",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447466",
+    "value" : "OTH",
+    "label" : "Other",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447467",
+    "value" : "PD",
+    "label" : "Parke Davis",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447468",
+    "value" : "PRX",
+    "label" : "Praxis Biologics",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447469",
+    "value" : "SCL",
+    "label" : "Sclavo",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44746a",
+    "value" : "SI",
+    "label" : "Swiss Serum and Vaccine Inst.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44746b",
+    "value" : "SKB",
+    "label" : "SmithKline",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44746c",
+    "value" : "UNK",
+    "label" : "Unknown manufacturer",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44746d",
+    "value" : "WA",
+    "label" : "Wyeth-Ayerst",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 210,
+  "id" : "569eac0dd4c623dc655074b0",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0258",
+  "name" : "Relationship Modifier",
+  "description" : "Relationship Modifier",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074b1",
+    "value" : "BPU",
+    "label" : "Blood product unit",
+    "codeSystem" : "HL70258",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074b2",
+    "value" : "CONTROL",
+    "label" : "Control",
+    "codeSystem" : "HL70258",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074b3",
+    "value" : "DONOR",
+    "label" : "Donor",
+    "codeSystem" : "HL70258",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074b4",
+    "value" : "PATIENT",
+    "label" : "Patient",
+    "codeSystem" : "HL70258",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

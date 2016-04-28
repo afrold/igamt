@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 165,
+  "id" : "565f3ab7d4c6e52cfd44743f",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0217",
+  "name" : "Visit Priority",
+  "description" : "Visit Priority",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

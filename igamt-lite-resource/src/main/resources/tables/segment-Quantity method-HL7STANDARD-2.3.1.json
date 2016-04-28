@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 52,
+  "id" : "565f3ab7d4c6e52cfd445f38",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0329",
+  "name" : "Quantity method",
+  "description" : "Quantity method",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f39",
+    "value" : "A",
+    "label" : "Actual count",
+    "codeSystem" : "HL70329",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f3a",
+    "value" : "E",
+    "label" : "Estimated (see comment)",
+    "codeSystem" : "HL70329",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

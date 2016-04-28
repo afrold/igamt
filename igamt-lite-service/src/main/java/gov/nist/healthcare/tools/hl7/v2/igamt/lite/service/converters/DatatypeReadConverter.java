@@ -16,6 +16,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
@@ -43,6 +44,8 @@ public class DatatypeReadConverter  extends AbstractReadConverter<DBObject, Data
 		dt.setUsageNote(readString(source, USAGE_NOTE));
 		dt.setComponents(new ArrayList<Component>());
 		dt.setSectionPosition((Integer) source.get(SECTION_POSITION));
+		dt.setScope(SCOPE.valueOf((String)source.get(SCOPE_)));
+		dt.setHl7Version((String)source.get(HL7_VERSION));
 		
 		BasicDBList componentObjects = (BasicDBList) source.get(COMPONENTS);
 		if (componentObjects != null) {

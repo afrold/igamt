@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 220,
+  "id" : "565f3ab6d4c6e52cfd443a2a",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0413",
+  "name" : "Consent identifier",
+  "description" : "Consent identifier",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 189,
+  "id" : "569eac0dd4c623dc65507eb2",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0557",
+  "name" : "Payee Type",
+  "description" : "Payee Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507eb3",
+    "value" : "EMPL",
+    "label" : "Employer",
+    "codeSystem" : "HL70557",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507eb4",
+    "value" : "ORG",
+    "label" : "Payee Organization",
+    "codeSystem" : "HL70557",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507eb5",
+    "value" : "PERS",
+    "label" : "Person",
+    "codeSystem" : "HL70557",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507eb6",
+    "value" : "PPER",
+    "label" : "Pay Person",
+    "codeSystem" : "HL70557",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

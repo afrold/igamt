@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 414,
+  "id" : "565f3ab6d4c6e52cfd440675",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0263",
+  "name" : "Level of Care",
+  "description" : "Level of Care",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.263",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440676",
+    "value" : "A",
+    "label" : "Ambulatory",
+    "codeSystem" : "HL70263",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440677",
+    "value" : "C",
+    "label" : "Critical care",
+    "codeSystem" : "HL70263",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440678",
+    "value" : "E",
+    "label" : "Emergency",
+    "codeSystem" : "HL70263",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440679",
+    "value" : "F",
+    "label" : "Isolation",
+    "codeSystem" : "HL70263",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44067a",
+    "value" : "N",
+    "label" : "Intensive care",
+    "codeSystem" : "HL70263",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44067b",
+    "value" : "R",
+    "label" : "Routine",
+    "codeSystem" : "HL70263",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44067c",
+    "value" : "S",
+    "label" : "Surgery",
+    "codeSystem" : "HL70263",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 163,
+  "id" : "565f3ab7d4c6e52cfd445a90",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0148",
+  "name" : "Penalty type",
+  "description" : "Penalty type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a91",
+    "value" : "AT",
+    "label" : "Currency amount",
+    "codeSystem" : "HL70148",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445a92",
+    "value" : "PC",
+    "label" : "Percentage",
+    "codeSystem" : "HL70148",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

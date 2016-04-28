@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 266,
+  "id" : "569eac0dd4c623dc6550845b",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0362",
+  "name" : "Facility",
+  "description" : "Facility",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550845c",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70362",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

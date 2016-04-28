@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 212,
+  "id" : "565f3ab7d4c6e52cfd446ff4",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0274",
+  "name" : "Document Modification Status",
+  "description" : "Document Modification Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ff5",
+    "value" : "IN",
+    "label" : "Incremental",
+    "codeSystem" : "HL70274",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ff6",
+    "value" : "RP",
+    "label" : "Replacement",
+    "codeSystem" : "HL70274",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

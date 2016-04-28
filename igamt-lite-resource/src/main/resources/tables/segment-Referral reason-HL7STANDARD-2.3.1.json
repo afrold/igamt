@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 291,
+  "id" : "565f3ab7d4c6e52cfd445f52",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0336",
+  "name" : "Referral reason",
+  "description" : "Referral reason",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f53",
+    "value" : "O",
+    "label" : "Provider Ordered",
+    "codeSystem" : "HL70336",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f54",
+    "value" : "P",
+    "label" : "Patient Preference",
+    "codeSystem" : "HL70336",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f55",
+    "value" : "S",
+    "label" : "Second Opinion",
+    "codeSystem" : "HL70336",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f56",
+    "value" : "W",
+    "label" : "Work Load",
+    "codeSystem" : "HL70336",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

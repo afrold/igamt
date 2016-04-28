@@ -1,0 +1,99 @@
+{
+  "type" : "table",
+  "sectionPosition" : 200,
+  "id" : "565f3ab7d4c6e52cfd446fb1",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0018",
+  "name" : "Patient Type",
+  "description" : "Patient Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fb2",
+    "value" : "B",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70018",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fb3",
+    "value" : "E",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70018",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fb4",
+    "value" : "F",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70018",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fb5",
+    "value" : "G",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70018",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fb6",
+    "value" : "J",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70018",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fb7",
+    "value" : "K",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70018",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fb8",
+    "value" : "N",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70018",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fb9",
+    "value" : "P",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70018",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fba",
+    "value" : "S",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70018",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

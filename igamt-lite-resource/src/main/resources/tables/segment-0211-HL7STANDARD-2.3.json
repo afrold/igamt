@@ -1,0 +1,135 @@
+{
+  "type" : "table",
+  "sectionPosition" : 204,
+  "id" : "565f3ab7d4c6e52cfd44741c",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0211",
+  "name" : "Alternate Character Sets",
+  "description" : "Alternate Character Sets",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44741d",
+    "value" : "8859/1",
+    "label" : "The printable characters from the ISO 8859/1 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44741e",
+    "value" : "8859/2",
+    "label" : "The printable characters from the ISO 8859/2 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44741f",
+    "value" : "8859/3",
+    "label" : "The printable characters from the ISO 8859/3 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447420",
+    "value" : "8859/4",
+    "label" : "The printable characters from the ISO 8859/4 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447421",
+    "value" : "8859/5",
+    "label" : "The printable characters from the ISO 8859/5 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447422",
+    "value" : "8859/6",
+    "label" : "The printable characters from the ISO 8859/6 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447423",
+    "value" : "8859/7",
+    "label" : "The printable characters from the ISO 8859/7 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447424",
+    "value" : "8859/8",
+    "label" : "The printable characters from the ISO 8859/8 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447425",
+    "value" : "8859/9",
+    "label" : "The printable characters from the ISO 8859/9 Character set",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447426",
+    "value" : "ASCII",
+    "label" : "The printable 7-bit ASCII character set . (This is the default if this field is omitted)",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447427",
+    "value" : "JAS2020",
+    "label" : "A subset of ISO2020 used for most Kanjii transmissions",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447428",
+    "value" : "JIS X 0202",
+    "label" : "ISO 2022 with escape sequences for Kanjii",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447429",
+    "value" : "UNICODE",
+    "label" : "<needs document reference>",
+    "codeSystem" : "HL70211",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

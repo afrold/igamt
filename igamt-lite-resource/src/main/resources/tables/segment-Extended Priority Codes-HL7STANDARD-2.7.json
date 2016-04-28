@@ -1,0 +1,135 @@
+{
+  "type" : "table",
+  "sectionPosition" : 311,
+  "id" : "569eac0dd4c623dc655073fb",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0485",
+  "name" : "Extended Priority Codes",
+  "description" : "Extended Priority Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073fc",
+    "value" : "A",
+    "label" : "ASAP",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073fd",
+    "value" : "C",
+    "label" : "Callback",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073fe",
+    "value" : "P",
+    "label" : "Preop",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655073ff",
+    "value" : "PRN",
+    "label" : "As needed",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507400",
+    "value" : "R",
+    "label" : "Routine",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507401",
+    "value" : "S",
+    "label" : "Stat",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507402",
+    "value" : "T",
+    "label" : "Timing critical",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507403",
+    "value" : "TD<integer>",
+    "label" : "",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507404",
+    "value" : "TH<integer>",
+    "label" : "",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507405",
+    "value" : "TL<integer>",
+    "label" : "",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507406",
+    "value" : "TM<integer>",
+    "label" : "",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507407",
+    "value" : "TS<integer>",
+    "label" : "",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507408",
+    "value" : "TW<integer>",
+    "label" : "",
+    "codeSystem" : "HL70485",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

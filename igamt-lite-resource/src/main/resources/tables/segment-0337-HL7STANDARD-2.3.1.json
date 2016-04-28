@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 229,
+  "id" : "565f3ab7d4c6e52cfd445f58",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0337",
+  "name" : "Certification Status",
+  "description" : "Certification Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f59",
+    "value" : "C",
+    "label" : "Certified",
+    "codeSystem" : "HL70337",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f5a",
+    "value" : "E",
+    "label" : "Eligible",
+    "codeSystem" : "HL70337",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

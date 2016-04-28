@@ -1,0 +1,135 @@
+{
+  "type" : "table",
+  "sectionPosition" : 229,
+  "id" : "565f3ab6d4c6e52cfd44155c",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0357",
+  "name" : "Message error condition codes",
+  "description" : "Message error condition codes",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.357",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44155d",
+    "value" : "0",
+    "label" : "Message accepted",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44155e",
+    "value" : "100",
+    "label" : "Segment sequence error",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44155f",
+    "value" : "101",
+    "label" : "Required field missing",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441560",
+    "value" : "102",
+    "label" : "Data type error",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441561",
+    "value" : "103",
+    "label" : "Table value not found",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441562",
+    "value" : "200",
+    "label" : "Unsupported message type",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441563",
+    "value" : "201",
+    "label" : "Unsupported event code",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441564",
+    "value" : "202",
+    "label" : "Unsupported processing id",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441565",
+    "value" : "203",
+    "label" : "Unsupported version id",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441566",
+    "value" : "204",
+    "label" : "Unknown key identifier",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441567",
+    "value" : "205",
+    "label" : "Duplicate key identifier",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441568",
+    "value" : "206",
+    "label" : "Application record locked",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441569",
+    "value" : "207",
+    "label" : "Application internal error",
+    "codeSystem" : "HL70357",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

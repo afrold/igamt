@@ -18,9 +18,10 @@ import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 
 /**
  * @author gcr1 12.Feb.16
@@ -37,36 +38,45 @@ public class DatatypeLibraryReadConverter extends AbstractReadConverter<DBObject
 	@Override
 	public DatatypeLibrary convert(DBObject source) {
 		log.info("DatatypeLibrary.convert==>");
-		DatatypeLibrary dtLib = new DatatypeLibrary();
-		return datatypes(source, dtLib);
+		DatatypeLibrary lib = new DatatypeLibrary();
+		return datatypes(source, lib);
 	} 
 	
-	private DatatypeLibrary datatypes(DBObject source, DatatypeLibrary dtLib) {
-		dtLib.setId(readMongoId(source));
-		dtLib.setType(Constant.DATATYPES);
-		dtLib.setAccountId((Long) source.get(ACCOUNT_ID));
+	private DatatypeLibrary datatypes(DBObject source, DatatypeLibrary lib) {
+		lib.setId(readMongoId(source));
+		lib.setType(Constant.DATATYPES);
+		lib.setAccountId((Long) source.get(ACCOUNT_ID));
+		lib.setScope(SCOPE.valueOf((String) source.get(SCOPE_)));
+		lib.setMetaData(metaData((DBObject)source.get(METADATA)));
 		
-		dtLib.setSectionContents((String) source.get(SECTION_COMMENTS));
-		dtLib.setSectionDescription((String) source.get(SECTION_DESCRIPTION));
-		dtLib.setSectionPosition((Integer) source.get(SECTION_POSITION));
-		dtLib.setSectionTitle((String) source.get(SECTION_TITLE));
+		lib.setSectionContents((String) source.get(SECTION_COMMENTS));
+		lib.setSectionDescription((String) source.get(SECTION_DESCRIPTION));
+		lib.setSectionPosition((Integer) source.get(SECTION_POSITION));
+		lib.setSectionTitle((String) source.get(SECTION_TITLE));
 		BasicDBList datatypesDBObjects = (BasicDBList) source.get(CHILDREN);
 		
-		DatatypeReadConverter dtCnv = new DatatypeReadConverter();
 		if (datatypesDBObjects != null) {
 			for (Object childObj : datatypesDBObjects) {
 				DBObject dbObj = (DBObject)childObj;
 				String id = readMongoId(dbObj);
 				String label = (String)dbObj.get(LABEL);
-				DatatypeLink dtl = new DatatypeLink(id, label);
-				dtLib.addDatatype(dtl);
+				String ext = (String)dbObj.get(EXTENSION);
+				DatatypeLink dtl = new DatatypeLink(id, label, ext);
+				lib.addDatatype(dtl);
 			}
 		}
 
-		return dtLib;
+		return lib;
 	}
 	
-	public DatatypeLink datatypeLink(DBObject source) {
-		return new DatatypeLink(readMongoId(source), (String)source.get(LABEL));
+	DatatypeLibraryMetaData metaData(DBObject source) {
+		DatatypeLibraryMetaData metaData = new DatatypeLibraryMetaData();
+		metaData.setDate((String)source.get(DATE));
+		metaData.setExt((String)source.get(EXTENSION));
+		metaData.setHl7Version((String)source.get(HL7_VERSION));
+		metaData.setName((String)source.get(NAME));
+		metaData.setOrgName((String)source.get(ORG_NAME));
+		metaData.setVersion((String)source.get(VERSION));
+		return metaData;
 	}
 }

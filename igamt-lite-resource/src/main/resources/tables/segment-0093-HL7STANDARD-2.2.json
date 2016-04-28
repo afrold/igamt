@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 76,
+  "id" : "565f3ab7d4c6e52cfd447bdb",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0093",
+  "name" : "RELEASE OF INFORMATION",
+  "description" : "RELEASE OF INFORMATION",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447bdc",
+    "value" : "N",
+    "label" : "No",
+    "codeSystem" : "HL70093",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447bdd",
+    "value" : "Y",
+    "label" : "Yes",
+    "codeSystem" : "HL70093",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

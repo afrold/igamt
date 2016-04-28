@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 295,
+  "id" : "569eac0ed4c623dc6550ade9",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0295",
+  "name" : "Handicap",
+  "description" : "Handicap",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.295",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550adea",
+    "value" : "...",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70295",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

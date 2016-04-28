@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 49,
+  "id" : "565f3ab6d4c6e52cfd443db8",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0220",
+  "name" : "Living arrangement",
+  "description" : "Living arrangement",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443db9",
+    "value" : "A",
+    "label" : "Alone",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dba",
+    "value" : "F",
+    "label" : "Family",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dbb",
+    "value" : "I",
+    "label" : "Institution",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dbc",
+    "value" : "R",
+    "label" : "Relative",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dbd",
+    "value" : "S",
+    "label" : "Spouse Only",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dbe",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70220",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 169,
+  "id" : "569eac0dd4c623dc65507b8f",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0092",
+  "name" : "Re-Admission Indicator",
+  "description" : "Re-Admission Indicator",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507b90",
+    "value" : "R",
+    "label" : "Re-admission",
+    "codeSystem" : "HL70092",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

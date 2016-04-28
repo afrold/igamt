@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 77,
+  "id" : "565f3ab7d4c6e52cfd447c73",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0089",
+  "name" : "PROCEDURE CODING METHOD",
+  "description" : "PROCEDURE CODING METHOD",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c74",
+    "value" : "ICPM",
+    "label" : "ICPM",
+    "codeSystem" : "HL70089",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c75",
+    "value" : "IKPM",
+    "label" : "IKPM",
+    "codeSystem" : "HL70089",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c76",
+    "value" : "VESKA",
+    "label" : "VESKA classification",
+    "codeSystem" : "HL70089",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 334,
+  "id" : "569eac0dd4c623dc65507b47",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0086",
+  "name" : "Plan ID",
+  "description" : "Plan ID",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507b48",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70086",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

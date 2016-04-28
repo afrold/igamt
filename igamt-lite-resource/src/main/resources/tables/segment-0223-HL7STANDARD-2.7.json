@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 4,
+  "id" : "569eac0dd4c623dc65508404",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0223",
+  "name" : "Living Dependency",
+  "description" : "Living Dependency",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508405",
+    "value" : "C",
+    "label" : "Small Children Dependent",
+    "codeSystem" : "HL70223",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508406",
+    "value" : "M",
+    "label" : "Medical Supervision Required",
+    "codeSystem" : "HL70223",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508407",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70223",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508408",
+    "value" : "S",
+    "label" : "Spouse Dependent",
+    "codeSystem" : "HL70223",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508409",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70223",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

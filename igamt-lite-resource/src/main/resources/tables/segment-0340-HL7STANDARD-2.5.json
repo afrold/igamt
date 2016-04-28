@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 154,
+  "id" : "565f3ab6d4c6e52cfd441337",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0340",
+  "name" : "Procedure Code Modifier",
+  "description" : "Procedure Code Modifier",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.340",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 137,
+  "id" : "569eac0dd4c623dc65507c35",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0836",
+  "name" : "Problem Severity",
+  "description" : "Problem Severity",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c36",
+    "value" : "No Values Defined",
+    "label" : "",
+    "codeSystem" : "HL70836",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

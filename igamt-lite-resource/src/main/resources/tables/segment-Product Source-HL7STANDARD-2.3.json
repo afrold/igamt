@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 272,
+  "id" : "565f3ab7d4c6e52cfd446e11",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0248",
+  "name" : "Product Source",
+  "description" : "Product Source",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e12",
+    "value" : "A",
+    "label" : "Actual product involved in incident was evaluated",
+    "codeSystem" : "HL70248",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e13",
+    "value" : "L",
+    "label" : "A product from the same lot as the the actual product involved was evaluated",
+    "codeSystem" : "HL70248",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e14",
+    "value" : "N",
+    "label" : "A product from a controlled/non-related inventory was evaluated",
+    "codeSystem" : "HL70248",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e15",
+    "value" : "R",
+    "label" : "A product from a reserve sample was evaluated",
+    "codeSystem" : "HL70248",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

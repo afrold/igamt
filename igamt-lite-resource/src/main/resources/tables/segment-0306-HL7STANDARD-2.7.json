@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 401,
+  "id" : "569eac0dd4c623dc65507e7c",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0306",
+  "name" : "Location Status",
+  "description" : "Location Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e7d",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70306",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

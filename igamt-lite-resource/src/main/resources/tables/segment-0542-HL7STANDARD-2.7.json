@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 476,
+  "id" : "569eac0dd4c623dc65507e3e",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0542",
+  "name" : "Specimen Source Type Modifier",
+  "description" : "Specimen Source Type Modifier",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e3f",
+    "value" : "�",
+    "label" : "No suggested values",
+    "codeSystem" : "HL70542",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

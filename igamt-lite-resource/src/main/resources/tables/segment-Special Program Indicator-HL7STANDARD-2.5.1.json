@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 380,
+  "id" : "569eac0fd4c623dc6550ea11",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0348",
+  "name" : "Special Program Indicator",
+  "description" : "Special Program Indicator",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.348",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550ea12",
+    "value" : "...",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70348",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 532,
+  "id" : "569eac0dd4c623dc65507475",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0382",
+  "name" : "Drug Interference",
+  "description" : "Drug Interference",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507476",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70382",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

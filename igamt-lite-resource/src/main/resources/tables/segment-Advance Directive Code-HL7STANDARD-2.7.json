@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 375,
+  "id" : "569eac0dd4c623dc65507ea0",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0435",
+  "name" : "Advance Directive Code",
+  "description" : "Advance Directive Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ea1",
+    "value" : "DNR",
+    "label" : "Do not resuscitate",
+    "codeSystem" : "HL70435",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ea2",
+    "value" : "N",
+    "label" : "No directive",
+    "codeSystem" : "HL70435",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

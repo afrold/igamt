@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 115,
+  "id" : "565f3ab7d4c6e52cfd447dca",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0053",
+  "name" : "DIAGNOSIS CODING METHOD",
+  "description" : "DIAGNOSIS CODING METHOD",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dcb",
+    "value" : "I9",
+    "label" : "ICD9",
+    "codeSystem" : "HL70053",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

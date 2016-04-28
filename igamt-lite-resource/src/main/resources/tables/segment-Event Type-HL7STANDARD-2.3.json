@@ -1,0 +1,1665 @@
+{
+  "type" : "table",
+  "sectionPosition" : 31,
+  "id" : "565f3ab7d4c6e52cfd446e6d",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0003",
+  "name" : "Event Type",
+  "description" : "Event Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e6e",
+    "value" : "A01",
+    "label" : "ADT/ACK - Admit a patient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e6f",
+    "value" : "A02",
+    "label" : "ADT/ACK -  Transfer a patient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e70",
+    "value" : "A03",
+    "label" : "ADT/ACK -  Discharge a patient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e71",
+    "value" : "A04",
+    "label" : "ADT/ACK -  Register a patient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e72",
+    "value" : "A05",
+    "label" : "ADT/ACK -  Preadmit a patient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e73",
+    "value" : "A06",
+    "label" : "ADT/ACK -  Transfer an outpatient to inpatient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e74",
+    "value" : "A07",
+    "label" : "ADT/ACK -  Transfer an inpatient to outpatient",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e75",
+    "value" : "A08",
+    "label" : "ADT/ACK -  Update patient information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e76",
+    "value" : "A09",
+    "label" : "ADT/ACK -  Patient departing",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e77",
+    "value" : "A10",
+    "label" : "ADT/ACK -  Patient arriving",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e78",
+    "value" : "A11",
+    "label" : "ADT/ACK -  Cancel admit",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e79",
+    "value" : "A12",
+    "label" : "ADT/ACK -  Cancel transfer",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e7a",
+    "value" : "A13",
+    "label" : "ADT/ACK -  Cancel discharge",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e7b",
+    "value" : "A14",
+    "label" : "ADT/ACK -  Pending admit",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e7c",
+    "value" : "A15",
+    "label" : "ADT/ACK -  Pending transfer",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e7d",
+    "value" : "A16",
+    "label" : "ADT/ACK -  Pending discharge",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e7e",
+    "value" : "A17",
+    "label" : "ADT/ACK -  Swap patients",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e7f",
+    "value" : "A18",
+    "label" : "ADT/ACK -  Merge patient information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e80",
+    "value" : "A19",
+    "label" : "QRY/ACK -  Patient query",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e81",
+    "value" : "A20",
+    "label" : "ADT/ACK -  Nursing/Census application updates",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e82",
+    "value" : "A21",
+    "label" : "ADT/ACK -  Leave of absence - out (leaving)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e83",
+    "value" : "A22",
+    "label" : "ADT/ACK -  Leave of absence - in (returning)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e84",
+    "value" : "A23",
+    "label" : "ADT/ACK -  Delete a patient record",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e85",
+    "value" : "A24",
+    "label" : "ADT/ACK -  Link patient information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e86",
+    "value" : "A25",
+    "label" : "ADT/ACK -  Cancel pending discharge",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e87",
+    "value" : "A26",
+    "label" : "ADT/ACK -  Cancel pending transfer",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e88",
+    "value" : "A27",
+    "label" : "ADT/ACK -  Cancel pending admit",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e89",
+    "value" : "A28",
+    "label" : "ADT/ACK -  Add person information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e8a",
+    "value" : "A29",
+    "label" : "ADT/ACK -  Delete person information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e8b",
+    "value" : "A30",
+    "label" : "ADT/ACK -  Merge person information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e8c",
+    "value" : "A31",
+    "label" : "ADT/ACK -  Update person information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e8d",
+    "value" : "A32",
+    "label" : "ADT/ACK -  Cancel patient arriving",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e8e",
+    "value" : "A33",
+    "label" : "ADT/ACK -  Cancel patient departing",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e8f",
+    "value" : "A34",
+    "label" : "ADT/ACK -  Merge patient information - patient ID only",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e90",
+    "value" : "A35",
+    "label" : "ADT/ACK -  Merge patient information - account number only",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e91",
+    "value" : "A36",
+    "label" : "ADT/ACK -  Merge patient information - patient ID and account number",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e92",
+    "value" : "A37",
+    "label" : "ADT/ACK -  Unlink patient information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e93",
+    "value" : "A38",
+    "label" : "ADT/ACK - Cancel pre-admit",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e94",
+    "value" : "A39",
+    "label" : "ADT/ACK - Merge person - external ID",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e95",
+    "value" : "A40",
+    "label" : "ADT/ACK - Merge patient - internal ID",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e96",
+    "value" : "A41",
+    "label" : "ADT/ACK - Merge account - patient account number",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e97",
+    "value" : "A42",
+    "label" : "ADT/ACK - Merge visit - visit number",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e98",
+    "value" : "A43",
+    "label" : "ADT/ACK - Move patient information - internal ID",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e99",
+    "value" : "A44",
+    "label" : "ADT/ACK - Move account information - internal ID",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e9a",
+    "value" : "A45",
+    "label" : "ADT/ACK - Move visit information - visit number",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e9b",
+    "value" : "A46",
+    "label" : "ADT/ACK - Change external ID",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e9c",
+    "value" : "A47",
+    "label" : "ADT/ACK - Change internal ID",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e9d",
+    "value" : "A48",
+    "label" : "ADT/ACK - Change alternate patient ID",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e9e",
+    "value" : "A49",
+    "label" : "ADT/ACK - Change patient account number",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e9f",
+    "value" : "A50",
+    "label" : "ADT/ACK - Change visit number",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ea0",
+    "value" : "A51",
+    "label" : "ADT/ACK - Change alternate visit ID",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ea1",
+    "value" : "C01",
+    "label" : "SRM - Register a patient on a clinical trial",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ea2",
+    "value" : "C02",
+    "label" : "SRM - Cancel a patient registration on clinical trial (for clerical mistakes only)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ea3",
+    "value" : "C03",
+    "label" : "SRM - Correct/update registration information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ea4",
+    "value" : "C04",
+    "label" : "SRM - Patient has gone off a clinical trial",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ea5",
+    "value" : "C05",
+    "label" : "SRM - Patient enters phase of clinical trial",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ea6",
+    "value" : "C06",
+    "label" : "SRM - Cancel patient entering a phase (clerical mistake)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ea7",
+    "value" : "C07",
+    "label" : "SRM - Correct/update phase information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ea8",
+    "value" : "C08",
+    "label" : "SRM - Patient has gone off phase of clinical trial",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ea9",
+    "value" : "C09",
+    "label" : "CSU - Automated time intervals for reporting, like monthly",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eaa",
+    "value" : "C10",
+    "label" : "CSU - Patient completes the clinical trial",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eab",
+    "value" : "C11",
+    "label" : "CSU - Patient completes a phase of the clinical trial",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eac",
+    "value" : "C12",
+    "label" : "CSU - Update/correction of patient order/result information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ead",
+    "value" : "CNQ",
+    "label" : "QRY/EQQ/SPQ/VQQ/RQQ - Cancel query",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eae",
+    "value" : "I01",
+    "label" : "RQI/RPI - Request for insurance information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eaf",
+    "value" : "I02",
+    "label" : "RQI/RPL - Request/receipt of patient selection display list",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eb0",
+    "value" : "I03",
+    "label" : "RQI/RPR - Request/receipt of patient selection list",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eb1",
+    "value" : "I04",
+    "label" : "RQD/RPI - Request for patient demographic data",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eb2",
+    "value" : "I05",
+    "label" : "RQC/RCI - Request for patient clinical information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eb3",
+    "value" : "I06",
+    "label" : "RQC/RCL - Request/receipt of clinical data listing",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eb4",
+    "value" : "I07",
+    "label" : "PIN/ACK - Unsolicited insurance information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eb5",
+    "value" : "I08",
+    "label" : "RQA/RPA - Request for treatment authorization information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eb6",
+    "value" : "I09",
+    "label" : "RQA/RPA - Request for modification to an authorization",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eb7",
+    "value" : "I10",
+    "label" : "RQA/RPA - Request for resubmission of an authorization",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eb8",
+    "value" : "I11",
+    "label" : "RQA/RPA - Request for cancellation of an authorization",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eb9",
+    "value" : "I12",
+    "label" : "REF/RRI -  Patient referral",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eba",
+    "value" : "I13",
+    "label" : "REF/RRI - Modify patient referral",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ebb",
+    "value" : "I14",
+    "label" : "REF/RRI - Cancel patient referral",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ebc",
+    "value" : "I15",
+    "label" : "REF/RRI - Request patient referral status",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ebd",
+    "value" : "M01",
+    "label" : "MFN/MFK - Master file not otherwise specified (for backward compatibility only)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ebe",
+    "value" : "M02",
+    "label" : "MFN/MFK - Master file - Staff Practioner",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ebf",
+    "value" : "M03",
+    "label" : "MFN/MFK - Master file - Test/Observation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ec0",
+    "value" : "M04",
+    "label" : "MFD/ACK - Master files delayed application acknowledgement",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ec1",
+    "value" : "M05",
+    "label" : "MFN/MFK - Patient location master file",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ec2",
+    "value" : "M06",
+    "label" : "MFN/MFK - Charge description master file",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ec3",
+    "value" : "M07",
+    "label" : "MFN/MFK - Clinical study without phases but with schedules master file",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ec4",
+    "value" : "M08",
+    "label" : "MFN/MFK - Test/Observation (Nurmeric) master file",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ec5",
+    "value" : "M09",
+    "label" : "MFN/MFK - Test/Observation (Categorical) master file",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ec6",
+    "value" : "M10",
+    "label" : "MFN/MFK - Test/Observation batteries master file",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ec7",
+    "value" : "M11",
+    "label" : "MFN/MFK - Test/calculated observation master file",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ec8",
+    "value" : "O01",
+    "label" : "ORM - Order message (also RDE, RDS, RGV, RAS,",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ec9",
+    "value" : "O02",
+    "label" : "ORR - Order response (also RRE, RRD, RRG, RRA,",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eca",
+    "value" : "P01",
+    "label" : "BAR/ACK - Add and update patient account",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ecb",
+    "value" : "P02",
+    "label" : "BAR/ACK - Purge patient account",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ecc",
+    "value" : "P03",
+    "label" : "DFT/ACK - Post detail financial transaction",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ecd",
+    "value" : "P04",
+    "label" : "QRY/DSP - Generate bill and A/R statements",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ece",
+    "value" : "P05",
+    "label" : "BAR/ACK - Update account",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ecf",
+    "value" : "P06",
+    "label" : "BAR/ACK - End account",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ed0",
+    "value" : "P07",
+    "label" : "PEX - Unsolicited initial individual product experience report",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ed1",
+    "value" : "P08",
+    "label" : "PEX - Unsolicited update individual product experience report",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ed2",
+    "value" : "P09",
+    "label" : "SUR - Summary product experience report",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ed3",
+    "value" : "PC1",
+    "label" : "PPR - PC/Problem Add",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ed4",
+    "value" : "PC2",
+    "label" : "PPR - PC/Problem Update",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ed5",
+    "value" : "PC3",
+    "label" : "PPR - PC/Problem Delete",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ed6",
+    "value" : "PC4",
+    "label" : "PPR - PC/Problem Query",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ed7",
+    "value" : "PC5",
+    "label" : "PPR - PC/Problem Reponse",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ed8",
+    "value" : "PC6",
+    "label" : "PGL - PC/Goal Add",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ed9",
+    "value" : "PC7",
+    "label" : "PGL - PC/Goal Update",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eda",
+    "value" : "PC8",
+    "label" : "PGL - PC/Goal Delete",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446edb",
+    "value" : "PC9",
+    "label" : "PGL - PC/Goal Query",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446edc",
+    "value" : "PCA",
+    "label" : "PGL - PC/Goal Response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446edd",
+    "value" : "PCB",
+    "label" : "PPP - PC/Pathway (Problem Oriented) Add",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ede",
+    "value" : "PCC",
+    "label" : "PPP - PC/Pathway (Problem Oriented) Update",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446edf",
+    "value" : "PCD",
+    "label" : "PPP - PC/Pathway (Problem Oriented) Delete",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ee0",
+    "value" : "PCE",
+    "label" : "PPP - PC/Pathway (Problem Oriented) Query",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ee1",
+    "value" : "PCF",
+    "label" : "PPP - PC/Pathway (Problem Oriented) Query Response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ee2",
+    "value" : "PCG",
+    "label" : "PPP - PC/Pathway (Goal Oriented) Add",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ee3",
+    "value" : "PCH",
+    "label" : "PPP - PC/Pathway (Goal Oriented) Update",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ee4",
+    "value" : "PCJ",
+    "label" : "PPP - PC/Pathway (Goal Oriented) Delete",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ee5",
+    "value" : "PCK",
+    "label" : "PPP - PC/Pathway (Goal Oriented) Query",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ee6",
+    "value" : "PCL",
+    "label" : "PPP - PC/Pathway (Goal Oriented) Query Response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ee7",
+    "value" : "Q01",
+    "label" : "QRY/DSR - Query sent for immediate response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ee8",
+    "value" : "Q02",
+    "label" : "QRY/ACK - Query sent for deferred response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ee9",
+    "value" : "Q03",
+    "label" : "DSR/ACK - Deferred response to a query",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eea",
+    "value" : "Q05",
+    "label" : "UDM/ACK - Unsolicited display update",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eeb",
+    "value" : "Q06",
+    "label" : "OSQ/OSR - Query for order status",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eec",
+    "value" : "R01",
+    "label" : "ORU/ACK - Unsolicited transmission of an observation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eed",
+    "value" : "R02",
+    "label" : "QRY - Query for results of observation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eee",
+    "value" : "R03",
+    "label" : "Display-oriented results, query/unsol. update (for backward compatibility only)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eef",
+    "value" : "R04",
+    "label" : "ORF - Response to query; transmission of requested observation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ef0",
+    "value" : "R05",
+    "label" : "QRY/DSR- query für display results",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ef1",
+    "value" : "R06",
+    "label" : "UDM-unsolicited update/display results",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ef2",
+    "value" : "RAR",
+    "label" : "RAR - Pharmacy administration information query response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ef3",
+    "value" : "RDR",
+    "label" : "RDR - Pharmacy dispense information query response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ef4",
+    "value" : "RER",
+    "label" : "RER - Pharmacy encoded order information query response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ef5",
+    "value" : "RGR",
+    "label" : "RGR - Pharmacy dose information query response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ef6",
+    "value" : "ROR",
+    "label" : "ROR - Pharmacy prescription order query response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ef7",
+    "value" : "S01",
+    "label" : "SRM/SRR - Request new appointment booking",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ef8",
+    "value" : "S02",
+    "label" : "SRM/SRR - Request appointment rescheduling",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446ef9",
+    "value" : "S03",
+    "label" : "SRM/SRR - Request appointment modification",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446efa",
+    "value" : "S04",
+    "label" : "SRM/SRR - Request appointment cancellation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446efb",
+    "value" : "S05",
+    "label" : "SRM/SRR - Request appointment discontinuation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446efc",
+    "value" : "S06",
+    "label" : "SRM/SRR - Request appointment deletion",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446efd",
+    "value" : "S07",
+    "label" : "SRM/SRR - Request addition of service/resource on appointment",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446efe",
+    "value" : "S08",
+    "label" : "SRM/SRR - Request modification of service/resource on appointment",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446eff",
+    "value" : "S09",
+    "label" : "SRM/SRR - Request cancellation of servic/resource on appointment",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f00",
+    "value" : "S10",
+    "label" : "SRM/SRR - Request discontinuation of servic/resource on appointment",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f01",
+    "value" : "S11",
+    "label" : "SRM/SRR - Request deletion of servic/resource on appointment",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f02",
+    "value" : "S12",
+    "label" : "SIU/ACK - Notification of new appointment booking",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f03",
+    "value" : "S13",
+    "label" : "SIU/ACK - Notification of appointment rescheduling",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f04",
+    "value" : "S14",
+    "label" : "SIU/ACK - Notification of appointment modification",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f05",
+    "value" : "S15",
+    "label" : "SIU/ACK - Notification of appointment cancellation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f06",
+    "value" : "S16",
+    "label" : "SIU/ACK - Notification of appointment discontinuation",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f07",
+    "value" : "S17",
+    "label" : "SIU/ACK - Notification of appointmentdeletion",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f08",
+    "value" : "S18",
+    "label" : "SIU/ACK - Notification of addition of service/resource on appointment",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f09",
+    "value" : "S19",
+    "label" : "SIU/ACK - Notification ofmodification of service/resource on appointment",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f0a",
+    "value" : "S20",
+    "label" : "SIU/ACK - Notification of cancellation of service/resource on appointment",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f0b",
+    "value" : "S21",
+    "label" : "SIU/ACK - Notification of discontinuation of service/resource on appointment",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f0c",
+    "value" : "S22",
+    "label" : "SIU/ACK - Notification of deletion of service/resource on appointment",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f0d",
+    "value" : "S23",
+    "label" : "SIU/ACK - Notification of blocked schedule time slot(s)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f0e",
+    "value" : "S24",
+    "label" : "SIU/ACK - Notification of open (“unblocked”) schedule time slot(s)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f0f",
+    "value" : "S25",
+    "label" : "SQM/SQR - Query schedule information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f10",
+    "value" : "S26",
+    "label" : "notification that patient did not show up for schedule appointment",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f11",
+    "value" : "T01",
+    "label" : "MDM/ACK - Original document notification",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f12",
+    "value" : "T02",
+    "label" : "MDM/ACK - Original document notification and content",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f13",
+    "value" : "T03",
+    "label" : "MDM/ACK - Document status change notification",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f14",
+    "value" : "T04",
+    "label" : "MDM/ACK - Document status change notification and content",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f15",
+    "value" : "T05",
+    "label" : "MDM/ACK - Document addendum notification",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f16",
+    "value" : "T06",
+    "label" : "MDM/ACK - Document addendum notification and content",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f17",
+    "value" : "T07",
+    "label" : "MDM/ACK - Document replace notification",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f18",
+    "value" : "T08",
+    "label" : "MDM/ACK - Document replace notification and content",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f19",
+    "value" : "T09",
+    "label" : "MDM/ACK - Document cancel notification",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f1a",
+    "value" : "T10",
+    "label" : "MDM/ACK - Document replacement notification and content",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f1b",
+    "value" : "T11",
+    "label" : "MDM/ACK - Document cancel notification",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f1c",
+    "value" : "T12",
+    "label" : "QRY/DOC - Document query",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f1d",
+    "value" : "V01",
+    "label" : "VXQ - Query for vaccination record",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f1e",
+    "value" : "V02",
+    "label" : "VXX - Response to vaccination query returning multiple PID matches",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f1f",
+    "value" : "V03",
+    "label" : "VXR - Vaccination record response",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f20",
+    "value" : "V04",
+    "label" : "VXU - Unsolicited vaccination record update",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f21",
+    "value" : "varies",
+    "label" : "MFQ/MFR - Master files query (use event same as asking for e.g., M05 - location)",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f22",
+    "value" : "W01",
+    "label" : "ORU - Waveform result, unsolicited transmission of requested information",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f23",
+    "value" : "W02",
+    "label" : "QRF - Waveform result, response to query",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f24",
+    "value" : "X01",
+    "label" : "PEX - Product experience",
+    "codeSystem" : "HL70003",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

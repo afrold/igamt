@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 47,
+  "id" : "569eac0fd4c623dc6550e8d3",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0209",
+  "name" : "Relational operator",
+  "description" : "Relational operator",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.209",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8d4",
+    "value" : "CT",
+    "label" : "Contains",
+    "codeSystem" : "HL70209",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8d5",
+    "value" : "EQ",
+    "label" : "Equal",
+    "codeSystem" : "HL70209",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8d6",
+    "value" : "GE",
+    "label" : "Greater than or equal",
+    "codeSystem" : "HL70209",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8d7",
+    "value" : "GN",
+    "label" : "Generic",
+    "codeSystem" : "HL70209",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8d8",
+    "value" : "GT",
+    "label" : "Greater than",
+    "codeSystem" : "HL70209",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8d9",
+    "value" : "LE",
+    "label" : "Less than or equal",
+    "codeSystem" : "HL70209",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8da",
+    "value" : "LT",
+    "label" : "Less than",
+    "codeSystem" : "HL70209",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8db",
+    "value" : "NE",
+    "label" : "Not Equal",
+    "codeSystem" : "HL70209",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

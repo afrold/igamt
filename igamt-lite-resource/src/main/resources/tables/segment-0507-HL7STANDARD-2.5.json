@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 325,
+  "id" : "565f3ab6d4c6e52cfd440e65",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0507",
+  "name" : "Observation Result Handling",
+  "description" : "Observation Result Handling",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.507",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e66",
+    "value" : "F",
+    "label" : "Film-with-patient",
+    "codeSystem" : "HL70507",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e67",
+    "value" : "N",
+    "label" : "Notify provider when ready",
+    "codeSystem" : "HL70507",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

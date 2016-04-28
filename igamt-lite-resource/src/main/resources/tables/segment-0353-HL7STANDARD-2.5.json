@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 377,
+  "id" : "565f3ab6d4c6e52cfd44166a",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0353",
+  "name" : "CWE statuses",
+  "description" : "CWE statuses",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.353",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44166b",
+    "value" : "NA",
+    "label" : "Not applicable",
+    "codeSystem" : "HL70353",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44166c",
+    "value" : "NASK",
+    "label" : "Not asked",
+    "codeSystem" : "HL70353",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44166d",
+    "value" : "NAV",
+    "label" : "Not available",
+    "codeSystem" : "HL70353",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44166e",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70353",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44166f",
+    "value" : "UASK",
+    "label" : "Asked but Unknown",
+    "codeSystem" : "HL70353",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

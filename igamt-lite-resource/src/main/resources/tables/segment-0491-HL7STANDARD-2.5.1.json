@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 184,
+  "id" : "569eac0fd4c623dc6550d87a",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0491",
+  "name" : "Specimen Quality",
+  "description" : "Specimen Quality",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.491",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d87b",
+    "value" : "E",
+    "label" : "Excellent",
+    "codeSystem" : "HL70491",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d87c",
+    "value" : "F",
+    "label" : "Fair",
+    "codeSystem" : "HL70491",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d87d",
+    "value" : "G",
+    "label" : "Good",
+    "codeSystem" : "HL70491",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550d87e",
+    "value" : "P",
+    "label" : "Poor",
+    "codeSystem" : "HL70491",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

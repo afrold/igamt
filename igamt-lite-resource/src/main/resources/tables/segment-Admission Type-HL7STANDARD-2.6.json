@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 7,
+  "id" : "569eac0ed4c623dc6550a5b5",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0007",
+  "name" : "Admission Type",
+  "description" : "Admission Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.7",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5b6",
+    "value" : "A",
+    "label" : "Accident",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5b7",
+    "value" : "C",
+    "label" : "Elective",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5b8",
+    "value" : "E",
+    "label" : "Emergency",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5b9",
+    "value" : "L",
+    "label" : "Labor and Delivery",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5ba",
+    "value" : "N",
+    "label" : "Newborn (Birth in healthcare facility)",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5bb",
+    "value" : "R",
+    "label" : "Routine",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a5bc",
+    "value" : "U",
+    "label" : "Urgent",
+    "codeSystem" : "HL70007",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

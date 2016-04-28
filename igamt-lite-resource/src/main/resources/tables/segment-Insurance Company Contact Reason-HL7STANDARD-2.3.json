@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 60,
+  "id" : "565f3ab7d4c6e52cfd44701e",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0149",
+  "name" : "Insurance Company Contact Reason",
+  "description" : "Insurance Company Contact Reason",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44701f",
+    "value" : "AP",
+    "label" : "Approved",
+    "codeSystem" : "HL70149",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447020",
+    "value" : "DE",
+    "label" : "Denied",
+    "codeSystem" : "HL70149",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447021",
+    "value" : "PE",
+    "label" : "Pending",
+    "codeSystem" : "HL70149",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

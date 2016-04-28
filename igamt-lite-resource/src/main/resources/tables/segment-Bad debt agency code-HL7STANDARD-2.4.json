@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 317,
+  "id" : "565f3ab6d4c6e52cfd44321b",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0021",
+  "name" : "Bad debt agency code",
+  "description" : "Bad debt agency code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

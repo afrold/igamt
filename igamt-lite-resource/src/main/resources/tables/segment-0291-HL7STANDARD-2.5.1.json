@@ -1,0 +1,153 @@
+{
+  "type" : "table",
+  "sectionPosition" : 307,
+  "id" : "569eac0fd4c623dc6550e0e9",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0291",
+  "name" : "Subtype of referenced data",
+  "description" : "Subtype of referenced data",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.291",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0ea",
+    "value" : "BASIC",
+    "label" : "ISDN PCM audio data",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0eb",
+    "value" : "DICOM",
+    "label" : "Digital Imaging and Communications in Medicine",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0ec",
+    "value" : "FAX",
+    "label" : "Facsimile data",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0ed",
+    "value" : "GIF",
+    "label" : "Graphics Interchange Format",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0ee",
+    "value" : "HTML",
+    "label" : "Hypertext Markup Language",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0ef",
+    "value" : "JOT",
+    "label" : "Electronic ink data (Jot 1.0 standard)",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0f0",
+    "value" : "JPEG",
+    "label" : "Joint Photographic Experts Group",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0f1",
+    "value" : "Octet-stream",
+    "label" : "Uninterpreted binary data",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0f2",
+    "value" : "PICT",
+    "label" : "PICT format image data",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0f3",
+    "value" : "PostScript",
+    "label" : "PostScript program",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0f4",
+    "value" : "RTF",
+    "label" : "Rich Text Format",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0f5",
+    "value" : "SGML",
+    "label" : "Standard Generalized Markup Language (HL7 V2.3.1 and later)",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0f6",
+    "value" : "TIFF",
+    "label" : "TIFF image data",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0f7",
+    "value" : "x-hl7-cda-level-one",
+    "label" : "HL7 Clinical Document Architecture Level One document",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e0f8",
+    "value" : "XML",
+    "label" : "Extensible Markup Language (HL7 V2.3.1 and later)",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

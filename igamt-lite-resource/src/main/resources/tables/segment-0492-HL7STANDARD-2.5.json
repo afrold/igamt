@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 374,
+  "id" : "565f3ab6d4c6e52cfd440387",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0492",
+  "name" : "Specimen Appropriateness",
+  "description" : "Specimen Appropriateness",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.492",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440388",
+    "value" : "??",
+    "label" : "Inappropriate due to _",
+    "codeSystem" : "HL70492",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440389",
+    "value" : "A",
+    "label" : "Appropriate",
+    "codeSystem" : "HL70492",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44038a",
+    "value" : "I",
+    "label" : "Inappropriate",
+    "codeSystem" : "HL70492",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44038b",
+    "value" : "P",
+    "label" : "Preferred",
+    "codeSystem" : "HL70492",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

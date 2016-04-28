@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 279,
+  "id" : "565f3ab7d4c6e52cfd44715b",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0175",
+  "name" : "Master File Identifier Code",
+  "description" : "Master File Identifier Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44715c",
+    "value" : "CDM",
+    "label" : "Charge description master file (see Chapter 6, Appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44715d",
+    "value" : "CM0",
+    "label" : "Clinical study master",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44715e",
+    "value" : "CM1",
+    "label" : "Clinical study phase master",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44715f",
+    "value" : "CM2",
+    "label" : "Clinical study Data Schedule Master",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447160",
+    "value" : "LOC",
+    "label" : "Location master file (see Chapter 3, Appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447161",
+    "value" : "OM1-OM6",
+    "label" : "Observation text master file segments (e.g., Lab) (see Chapter 87, Appendix B):",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447162",
+    "value" : "PRA",
+    "label" : "Practitioner master file (see Chapter 8, Appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447163",
+    "value" : "STF",
+    "label" : "Staff Master File (see Chapter 8, Appendix)",
+    "codeSystem" : "HL70175",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

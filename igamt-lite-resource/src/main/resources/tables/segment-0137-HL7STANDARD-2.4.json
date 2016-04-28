@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 177,
+  "id" : "565f3ab6d4c6e52cfd443289",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0137",
+  "name" : "Mail claim party",
+  "description" : "Mail claim party",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44328a",
+    "value" : "E",
+    "label" : "Employer",
+    "codeSystem" : "HL70137",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44328b",
+    "value" : "G",
+    "label" : "Guarantor",
+    "codeSystem" : "HL70137",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44328c",
+    "value" : "I",
+    "label" : "Insurance company",
+    "codeSystem" : "HL70137",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44328d",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70137",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44328e",
+    "value" : "P",
+    "label" : "Patient",
+    "codeSystem" : "HL70137",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

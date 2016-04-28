@@ -1,0 +1,207 @@
+{
+  "type" : "table",
+  "sectionPosition" : 478,
+  "id" : "569eac0dd4c623dc65507e20",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0544",
+  "name" : "Container Condition",
+  "description" : "Container Condition",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e21",
+    "value" : "CC",
+    "label" : "Container Cracked",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e22",
+    "value" : "CL",
+    "label" : "Container Leaking",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e23",
+    "value" : "CT",
+    "label" : "Container Torn",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e24",
+    "value" : "SB",
+    "label" : "Seal Broken",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e25",
+    "value" : "XAMB",
+    "label" : "Not Ambient temperature",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e26",
+    "value" : "XC37",
+    "label" : "Not Body temperature",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e27",
+    "value" : "XCAMB",
+    "label" : "Not Critical ambient temperature",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e28",
+    "value" : "XCATM",
+    "label" : "Exposed to Air",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e29",
+    "value" : "XCFRZ",
+    "label" : "Not Critical frozen temperature",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e2a",
+    "value" : "XCREF",
+    "label" : "Not Critical refrigerated temperature",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e2b",
+    "value" : "XDFRZ",
+    "label" : "Not Deep frozen",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e2c",
+    "value" : "XDRY",
+    "label" : "Not Dry",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e2d",
+    "value" : "XFRZ",
+    "label" : "Not Frozen temperature",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e2e",
+    "value" : "XMTLF",
+    "label" : "Metal Exposed",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e2f",
+    "value" : "XNTR",
+    "label" : "Not Liquid nitrogen",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e30",
+    "value" : "XPRTL",
+    "label" : "Not Protected from light",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e31",
+    "value" : "XPSA",
+    "label" : "Shaken",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e32",
+    "value" : "XPSO",
+    "label" : "Exposed to shock",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e33",
+    "value" : "XREF",
+    "label" : "Not Refrigerated temperature",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e34",
+    "value" : "XUFRZ",
+    "label" : "Not Ultra frozen",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e35",
+    "value" : "XUPR",
+    "label" : "Not Upright",
+    "codeSystem" : "HL70544",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

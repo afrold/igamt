@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 99,
+  "id" : "569eac0ed4c623dc6550b24e",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0402",
+  "name" : "School type",
+  "description" : "School type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.402",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b24f",
+    "value" : "D",
+    "label" : "Dental",
+    "codeSystem" : "HL70402",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b250",
+    "value" : "G",
+    "label" : "Graduate",
+    "codeSystem" : "HL70402",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b251",
+    "value" : "M",
+    "label" : "Medical",
+    "codeSystem" : "HL70402",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b252",
+    "value" : "U",
+    "label" : "Undergraduate",
+    "codeSystem" : "HL70402",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

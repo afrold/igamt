@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 11,
+  "id" : "565f3ab7d4c6e52cfd447cd9",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0133",
+  "name" : "PROCEDURE PRACTITIONER TYPE",
+  "description" : "PROCEDURE PRACTITIONER TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cda",
+    "value" : "AN",
+    "label" : "Anästhesist",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cdb",
+    "value" : "CM",
+    "label" : "Hebamme",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cdc",
+    "value" : "NP",
+    "label" : "Krankenschwester",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cdd",
+    "value" : "PR",
+    "label" : "Chirurg",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cde",
+    "value" : "RD",
+    "label" : "Radiologe",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cdf",
+    "value" : "RS",
+    "label" : "Krankenhausarzt",
+    "codeSystem" : "HL70133",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

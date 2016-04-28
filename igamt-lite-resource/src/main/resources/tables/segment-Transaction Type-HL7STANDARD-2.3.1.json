@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 81,
+  "id" : "565f3ab7d4c6e52cfd445924",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0017",
+  "name" : "Transaction Type",
+  "description" : "Transaction Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445925",
+    "value" : "AJ",
+    "label" : "Adjustment",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445926",
+    "value" : "CD",
+    "label" : "Credit",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445927",
+    "value" : "CG",
+    "label" : "Charge",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445928",
+    "value" : "PY",
+    "label" : "Payment",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

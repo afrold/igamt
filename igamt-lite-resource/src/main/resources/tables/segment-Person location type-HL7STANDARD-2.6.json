@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 429,
+  "id" : "569eac0ed4c623dc6550b385",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0305",
+  "name" : "Person location type",
+  "description" : "Person location type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.305",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b386",
+    "value" : "C",
+    "label" : "Clinic",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b387",
+    "value" : "D",
+    "label" : "Department",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b388",
+    "value" : "H",
+    "label" : "Home",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b389",
+    "value" : "N",
+    "label" : "Nursing Unit",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b38a",
+    "value" : "O",
+    "label" : "Provider's Office",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b38b",
+    "value" : "P",
+    "label" : "Phone",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b38c",
+    "value" : "S",
+    "label" : "SNF",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

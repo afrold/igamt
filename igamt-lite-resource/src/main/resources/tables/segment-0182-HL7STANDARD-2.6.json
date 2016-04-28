@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 443,
+  "id" : "569eac0ed4c623dc6550af4b",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0182",
+  "name" : "Staff type",
+  "description" : "Staff type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.182",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550af4c",
+    "value" : "...",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70182",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

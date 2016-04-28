@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 437,
+  "id" : "569eac0ed4c623dc6550b86f",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0459",
+  "name" : "Reimbursement Action Code",
+  "description" : "Reimbursement Action Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.459",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b870",
+    "value" : "0",
+    "label" : "OCE line item denial or rejection is not ignored",
+    "codeSystem" : "HL70459",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b871",
+    "value" : "1",
+    "label" : "OCE line item denial or rejection is ignored",
+    "codeSystem" : "HL70459",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b872",
+    "value" : "2",
+    "label" : "External line item denial. Line item is denied even if no OCE edits",
+    "codeSystem" : "HL70459",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b873",
+    "value" : "3",
+    "label" : "External line item rejection. Line item is rejected even if no OCE edits",
+    "codeSystem" : "HL70459",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

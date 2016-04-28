@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 29,
+  "id" : "565f3ab7d4c6e52cfd4473f1",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0322",
+  "name" : "Completion Status",
+  "description" : "Completion Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473f2",
+    "value" : "CP",
+    "label" : "Complete",
+    "codeSystem" : "HL70322",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473f3",
+    "value" : "NA",
+    "label" : "Not Administered",
+    "codeSystem" : "HL70322",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473f4",
+    "value" : "PA",
+    "label" : "Partially Administered",
+    "codeSystem" : "HL70322",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4473f5",
+    "value" : "RE",
+    "label" : "Refused",
+    "codeSystem" : "HL70322",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

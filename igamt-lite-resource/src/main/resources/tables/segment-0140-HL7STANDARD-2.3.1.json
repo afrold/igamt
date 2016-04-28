@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 254,
+  "id" : "565f3ab7d4c6e52cfd445912",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0140",
+  "name" : "Military service",
+  "description" : "Military service",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445913",
+    "value" : "NATO",
+    "label" : "North Atlantic Treaty Organization",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445914",
+    "value" : "NOAA",
+    "label" : "National Oceanic and Atmospheric Administration",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445915",
+    "value" : "USA",
+    "label" : "U.S. Army",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445916",
+    "value" : "USAF",
+    "label" : "U.S. Air Force",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445917",
+    "value" : "USCG",
+    "label" : "U.S. Coast Guard",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445918",
+    "value" : "USMC",
+    "label" : "U.S. Marines",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445919",
+    "value" : "USN",
+    "label" : "U.S. Navy",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44591a",
+    "value" : "USPHS",
+    "label" : "U.S. Public Health Service",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

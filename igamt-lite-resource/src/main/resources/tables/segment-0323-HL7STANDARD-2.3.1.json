@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 44,
+  "id" : "565f3ab7d4c6e52cfd445edc",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0323",
+  "name" : "Action code",
+  "description" : "Action code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445edd",
+    "value" : "A",
+    "label" : "Add",
+    "codeSystem" : "HL70323",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ede",
+    "value" : "D",
+    "label" : "Delete",
+    "codeSystem" : "HL70323",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445edf",
+    "value" : "U",
+    "label" : "Update",
+    "codeSystem" : "HL70323",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

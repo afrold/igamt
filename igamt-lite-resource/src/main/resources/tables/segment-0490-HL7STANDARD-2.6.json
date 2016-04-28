@@ -1,0 +1,144 @@
+{
+  "type" : "table",
+  "sectionPosition" : 41,
+  "id" : "569eac0ed4c623dc6550a536",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0490",
+  "name" : "Specimen Reject Reason",
+  "description" : "Specimen Reject Reason",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.490",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a537",
+    "value" : "EX",
+    "label" : "Expired",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a538",
+    "value" : "QS",
+    "label" : "Quantity not sufficient",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a539",
+    "value" : "RA",
+    "label" : "Missing patient ID number",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a53a",
+    "value" : "RB",
+    "label" : "Broken container",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a53b",
+    "value" : "RC",
+    "label" : "Clotting",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a53c",
+    "value" : "RD",
+    "label" : "Missing collection date",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a53d",
+    "value" : "RE",
+    "label" : "Missing patient name",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a53e",
+    "value" : "RH",
+    "label" : "Hemolysis",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a53f",
+    "value" : "RI",
+    "label" : "Identification problem",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a540",
+    "value" : "RM",
+    "label" : "Labeling",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a541",
+    "value" : "RN",
+    "label" : "Contamination",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a542",
+    "value" : "RP",
+    "label" : "Missing phlebotomist ID",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a543",
+    "value" : "RR",
+    "label" : "Improper storage",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a544",
+    "value" : "RS",
+    "label" : "Name misspelling",
+    "codeSystem" : "HL70490",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

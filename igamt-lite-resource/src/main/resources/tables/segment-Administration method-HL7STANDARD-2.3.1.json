@@ -1,0 +1,153 @@
+{
+  "type" : "table",
+  "sectionPosition" : 188,
+  "id" : "565f3ab7d4c6e52cfd445cc7",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0165",
+  "name" : "Administration method",
+  "description" : "Administration method",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cc8",
+    "value" : "CH",
+    "label" : "Chew",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cc9",
+    "value" : "DI",
+    "label" : "Dissolve",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cca",
+    "value" : "DU",
+    "label" : "Dust",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ccb",
+    "value" : "IF",
+    "label" : "Infiltrate",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ccc",
+    "value" : "IR",
+    "label" : "Irrigate",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ccd",
+    "value" : "IS",
+    "label" : "Insert",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cce",
+    "value" : "IVP",
+    "label" : "IV Push",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ccf",
+    "value" : "IVPB",
+    "label" : "IV Piggyback",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cd0",
+    "value" : "NB",
+    "label" : "Nebulized",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cd1",
+    "value" : "PF",
+    "label" : "Perfuse",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cd2",
+    "value" : "PT",
+    "label" : "Pain",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cd3",
+    "value" : "SH",
+    "label" : "Shampoo",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cd4",
+    "value" : "SO",
+    "label" : "Soak",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cd5",
+    "value" : "WA",
+    "label" : "Wash",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cd6",
+    "value" : "WI",
+    "label" : "Wipe",
+    "codeSystem" : "HL70165",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

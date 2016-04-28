@@ -1,0 +1,405 @@
+{
+  "type" : "table",
+  "sectionPosition" : 374,
+  "id" : "569eac0ed4c623dc6550b7c8",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0458",
+  "name" : "OCE Edit Code",
+  "description" : "OCE Edit Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.458",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7c9",
+    "value" : "...",
+    "label" : "",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7ca",
+    "value" : "1",
+    "label" : "Invalid diagnosis code",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7cb",
+    "value" : "10",
+    "label" : "Non-covered  service submitted for verification of denial (condition code 21 from header information on claim)",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7cc",
+    "value" : "11",
+    "label" : "Non-covered service submitted for FI review (condition code 20 from header information on claim)",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7cd",
+    "value" : "12",
+    "label" : "Questionable covered service",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7ce",
+    "value" : "13",
+    "label" : "Additional payment for service not provided by Medicare",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7cf",
+    "value" : "14",
+    "label" : "Code indicates a site of service not included in OPPS",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7d0",
+    "value" : "15",
+    "label" : "Service unit out of range for procedure",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7d1",
+    "value" : "16",
+    "label" : "Multiple bilateral procedures without modifier 50 (see Appendix A)",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7d2",
+    "value" : "17",
+    "label" : "Multiple bilateral procedures with modifier 50 (see Appendix A)",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7d3",
+    "value" : "18",
+    "label" : "Inpatient procedure",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7d4",
+    "value" : "19",
+    "label" : "Mutually exclusive procedure that is not allowed even if appropriate modifier present",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7d5",
+    "value" : "2",
+    "label" : "Diagnosis and age conflict",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7d6",
+    "value" : "20",
+    "label" : "Component of a comprehensive procedure that is not allowed even if appropriate modifier present",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7d7",
+    "value" : "21",
+    "label" : "Medical visit on same day as a type \"T\" or \"S\" procedure without modifier 25 (see Appendix B)",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7d8",
+    "value" : "22",
+    "label" : "Invalid modifier",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7d9",
+    "value" : "23",
+    "label" : "Invalid date",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7da",
+    "value" : "24",
+    "label" : "Date out of OCE range",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7db",
+    "value" : "25",
+    "label" : "Invalid age",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7dc",
+    "value" : "26",
+    "label" : "Invalid sex",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7dd",
+    "value" : "27",
+    "label" : "Only incidental services reported",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7de",
+    "value" : "28",
+    "label" : "Code not recognized by Medicare; alternate code for same service available",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7df",
+    "value" : "29",
+    "label" : "Partial hospitalization service for non-mental health diagnosis",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7e0",
+    "value" : "3",
+    "label" : "Diagnosis and sex conflict",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7e1",
+    "value" : "30",
+    "label" : "Insufficient services on day of partial hospitalization",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7e2",
+    "value" : "31",
+    "label" : "Partial hospitalization on same day as ECT or type \"T\" procedure",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7e3",
+    "value" : "32",
+    "label" : "Partial hospitalization claim spans 3 or less days with in-sufficient services, or ECT or significant procedure on at least one of the days",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7e4",
+    "value" : "33",
+    "label" : "Partial hospitalization claim spans more than 3 days with insufficient number of days having mental health services",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7e5",
+    "value" : "34",
+    "label" : "Partial hospitalization claim spans more than 3 days with insufficient number of days meeting partial hospitalization criteria",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7e6",
+    "value" : "35",
+    "label" : "Only activity therapy and/or occupational therapy services provided",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7e7",
+    "value" : "36",
+    "label" : "Extensive mental health services provided on day of ECT or significant procedure",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7e8",
+    "value" : "37",
+    "label" : "Terminated bilateral procedure or terminated procedure with units greater than one",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7e9",
+    "value" : "38",
+    "label" : "Inconsistency between implanted device and implantation procedure",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7ea",
+    "value" : "39",
+    "label" : "Mutually exclusive procedure that would be allowed if appropriate modifier were present",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7eb",
+    "value" : "4",
+    "label" : "Medicare secondary payer alert",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7ec",
+    "value" : "40.",
+    "label" : "Component of a comprehensive procedure that would be allowed if appropriate modifier were present",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7ed",
+    "value" : "41.",
+    "label" : "Invalid revenue code",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7ee",
+    "value" : "42.",
+    "label" : "Multiple medical visits on same day with same revenue code without condition code G0 (see Appendix B)",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7ef",
+    "value" : "5",
+    "label" : "E-code as reason for visit",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7f0",
+    "value" : "6",
+    "label" : "Invalid procedure code",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7f1",
+    "value" : "7",
+    "label" : "Procedure and age conflict",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7f2",
+    "value" : "8",
+    "label" : "Procedure and sex conflict",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b7f3",
+    "value" : "9",
+    "label" : "Nov-covered service",
+    "codeSystem" : "HL70458",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,99 @@
+{
+  "type" : "table",
+  "sectionPosition" : 64,
+  "id" : "565f3ab7d4c6e52cfd447d5e",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0164",
+  "name" : "ADMINISTRATION DEVICE",
+  "description" : "ADMINISTRATION DEVICE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d5f",
+    "value" : "AP",
+    "label" : "Applikator",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d60",
+    "value" : "BT",
+    "label" : "Buretrol",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d61",
+    "value" : "HL",
+    "label" : "Infusionskanüle",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d62",
+    "value" : "IPPB",
+    "label" : "Intermittierende Überdruckbeatmung",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d63",
+    "value" : "IVP",
+    "label" : "Perfusor",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d64",
+    "value" : "IVS",
+    "label" : "Infusionsbesteck",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d65",
+    "value" : "MI",
+    "label" : "Inhalator",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d66",
+    "value" : "NEB",
+    "label" : "Vernebler",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d67",
+    "value" : "PCA",
+    "label" : "Patientengesteuerte Analgesiepumpe",
+    "codeSystem" : "HL70164",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

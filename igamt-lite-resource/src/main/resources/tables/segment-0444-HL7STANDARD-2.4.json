@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 72,
+  "id" : "565f3ab6d4c6e52cfd443b4c",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0444",
+  "name" : "Name assembly order",
+  "description" : "Name assembly order",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b4d",
+    "value" : "F",
+    "label" : "Prefix Family Middle Given Suffix",
+    "codeSystem" : "HL70444",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b4e",
+    "value" : "G",
+    "label" : "Prefix Given Middle Family Suffix",
+    "codeSystem" : "HL70444",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}
