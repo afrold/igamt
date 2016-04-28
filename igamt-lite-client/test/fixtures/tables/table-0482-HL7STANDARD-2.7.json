@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 319,
+  "id" : "569eac0dd4c623dc65508450",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0482",
+  "name" : "Order Type",
+  "description" : "Order Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508451",
+    "value" : "I",
+    "label" : "Inpatient Order",
+    "codeSystem" : "HL70482",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508452",
+    "value" : "O",
+    "label" : "Outpatient Order",
+    "codeSystem" : "HL70482",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 99,
+  "id" : "565f3ab7d4c6e52cfd445f7d",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0330",
+  "name" : "Marketing basis",
+  "description" : "Marketing basis",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f7e",
+    "value" : "510E",
+    "label" : "510 (K) exempt",
+    "codeSystem" : "HL70330",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f7f",
+    "value" : "510K",
+    "label" : "510 (K)",
+    "codeSystem" : "HL70330",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f80",
+    "value" : "522S",
+    "label" : "Post marketing study (522)",
+    "codeSystem" : "HL70330",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f81",
+    "value" : "PMA",
+    "label" : "Premarketing authorization",
+    "codeSystem" : "HL70330",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f82",
+    "value" : "PRE",
+    "label" : "Preamendment",
+    "codeSystem" : "HL70330",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f83",
+    "value" : "TXN",
+    "label" : "Transitional",
+    "codeSystem" : "HL70330",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 130,
+  "id" : "565f3ab7d4c6e52cfd447ce3",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0032",
+  "name" : "CHARGE/PRICE INDICATOR",
+  "description" : "CHARGE/PRICE INDICATOR",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ce4",
+    "value" : "K",
+    "label" : "Kasse",
+    "codeSystem" : "HL70032",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ce5",
+    "value" : "S",
+    "label" : "Selbstzahler",
+    "codeSystem" : "HL70032",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

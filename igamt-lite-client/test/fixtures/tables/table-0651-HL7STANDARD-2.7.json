@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 366,
+  "id" : "569eac0dd4c623dc65507dab",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0651",
+  "name" : "Labor Calculation Type",
+  "description" : "Labor Calculation Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507dac",
+    "value" : "CST",
+    "label" : "Cost",
+    "codeSystem" : "HL70651",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507dad",
+    "value" : "TME",
+    "label" : "Time",
+    "codeSystem" : "HL70651",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

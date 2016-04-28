@@ -1,0 +1,252 @@
+{
+  "type" : "table",
+  "sectionPosition" : 83,
+  "id" : "565f3ab7d4c6e52cfd447eb8",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0048",
+  "name" : "WHAT SUBJECT FILTER",
+  "description" : "WHAT SUBJECT FILTER",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eb9",
+    "value" : "ADV",
+    "label" : "Advice / diagnosis",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eba",
+    "value" : "ANU",
+    "label" : "Nursing unit lookup (returns patients in beds, excluding empty beds)",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ebb",
+    "value" : "APA",
+    "label" : "Krankenhausaufenthalt (Falldaten) zu gegebener Abrechnungsnummer",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ebc",
+    "value" : "APM",
+    "label" : "Krankenhausaufenthalte (Fälle) des spezifizierten Patienten",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ebd",
+    "value" : "APN",
+    "label" : "Patient name lookup",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ebe",
+    "value" : "APP",
+    "label" : "Physician lookup",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ebf",
+    "value" : "ARN",
+    "label" : "Stationsinformation (einschließlich freier Betten)",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ec0",
+    "value" : "CAN",
+    "label" : "Cancel (used to cancel a query)",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ec1",
+    "value" : "DEM",
+    "label" : "Demographics",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ec2",
+    "value" : "FIN",
+    "label" : "Financial",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ec3",
+    "value" : "MFQ",
+    "label" : "Master file query",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ec4",
+    "value" : "MRI",
+    "label" : "Most recent inpatient",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ec5",
+    "value" : "MRO",
+    "label" : "Most recent outpatient",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ec6",
+    "value" : "NCK",
+    "label" : "Netzwerk-Uhrzeit",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ec7",
+    "value" : "NSC",
+    "label" : "Änderung des Netzwerkstatus",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ec8",
+    "value" : "NST",
+    "label" : "Netzwerkstatistik",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ec9",
+    "value" : "ORD",
+    "label" : "Order",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447eca",
+    "value" : "OTH",
+    "label" : "Other",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ecb",
+    "value" : "PRO",
+    "label" : "Procedure",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ecc",
+    "value" : "RAR",
+    "label" : "Erfolgte Verabreichung von Medikamenten",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ecd",
+    "value" : "RDR",
+    "label" : "Abgabe von Medikamenten",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ece",
+    "value" : "RER",
+    "label" : "Medikamentenverordnung (Apotheke)",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ecf",
+    "value" : "RES",
+    "label" : "Result",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ed0",
+    "value" : "RGR",
+    "label" : "Verabreichunsgsvorschrift für Medikamente",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ed1",
+    "value" : "ROR",
+    "label" : "Medikamentenverordnung",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ed2",
+    "value" : "STA",
+    "label" : "Status",
+    "codeSystem" : "HL70048",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

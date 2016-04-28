@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 255,
+  "id" : "565f3ab6d4c6e52cfd443b8b",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0445",
+  "name" : "Identity Reliability Code",
+  "description" : "Identity Reliability Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b8c",
+    "value" : "AL",
+    "label" : "Patient/Person Name is an Alias",
+    "codeSystem" : "HL70445",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b8d",
+    "value" : "UA",
+    "label" : "Unknown/Default Address",
+    "codeSystem" : "HL70445",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b8e",
+    "value" : "UD",
+    "label" : "Unknown/Default Date of Birth",
+    "codeSystem" : "HL70445",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b8f",
+    "value" : "US",
+    "label" : "Unknown/Default Social Security Number",
+    "codeSystem" : "HL70445",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

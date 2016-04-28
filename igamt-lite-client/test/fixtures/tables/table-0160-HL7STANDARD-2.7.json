@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 451,
+  "id" : "569eac0dd4c623dc655077f0",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0160",
+  "name" : "Tray Type",
+  "description" : "Tray Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077f1",
+    "value" : "EARLY",
+    "label" : "Early tray",
+    "codeSystem" : "HL70160",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077f2",
+    "value" : "GUEST",
+    "label" : "Guest tray",
+    "codeSystem" : "HL70160",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077f3",
+    "value" : "LATE",
+    "label" : "Late tray",
+    "codeSystem" : "HL70160",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077f4",
+    "value" : "MSG",
+    "label" : "Tray message only",
+    "codeSystem" : "HL70160",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077f5",
+    "value" : "NO",
+    "label" : "No tray",
+    "codeSystem" : "HL70160",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

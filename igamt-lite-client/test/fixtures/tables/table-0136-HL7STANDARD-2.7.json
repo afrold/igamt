@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 24,
+  "id" : "569eac0dd4c623dc6550749e",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0136",
+  "name" : "Yes/no Indicator",
+  "description" : "Yes/no Indicator",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550749f",
+    "value" : "N",
+    "label" : "No",
+    "codeSystem" : "HL70136",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655074a0",
+    "value" : "Y",
+    "label" : "Yes",
+    "codeSystem" : "HL70136",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

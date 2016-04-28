@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 98,
+  "id" : "569eac0fd4c623dc6550ec3c",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0473",
+  "name" : "Formulary Status",
+  "description" : "Formulary Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.473",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550ec3d",
+    "value" : "G",
+    "label" : "This observation/service is on the formulary, and has guidelines",
+    "codeSystem" : "HL70473",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550ec3e",
+    "value" : "N",
+    "label" : "This observation/service is not on the formulary",
+    "codeSystem" : "HL70473",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550ec3f",
+    "value" : "R",
+    "label" : "This observation/service is on the formulary, but is restricted",
+    "codeSystem" : "HL70473",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550ec40",
+    "value" : "Y",
+    "label" : "This observation/service is on the formulary",
+    "codeSystem" : "HL70473",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

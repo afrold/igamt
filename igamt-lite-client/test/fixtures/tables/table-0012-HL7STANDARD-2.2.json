@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 74,
+  "id" : "565f3ab7d4c6e52cfd447cd6",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0012",
+  "name" : "STOCK LOCATION",
+  "description" : "STOCK LOCATION",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cd7",
+    "value" : "AN",
+    "label" : "Filled from ancillary department stock",
+    "codeSystem" : "HL70012",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cd8",
+    "value" : "FL",
+    "label" : "Filled from floor stock",
+    "codeSystem" : "HL70012",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

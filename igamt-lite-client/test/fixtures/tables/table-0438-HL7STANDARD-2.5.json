@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 258,
+  "id" : "565f3ab6d4c6e52cfd4411e0",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0438",
+  "name" : "Allergy Clinical Status",
+  "description" : "Allergy Clinical Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.438",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411e1",
+    "value" : "C",
+    "label" : "Confirmed or verified",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411e2",
+    "value" : "D",
+    "label" : "Doubt raised",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411e3",
+    "value" : "E",
+    "label" : "Erroneous",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411e4",
+    "value" : "I",
+    "label" : "Confirmed but inactive",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411e5",
+    "value" : "P",
+    "label" : "Pending",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411e6",
+    "value" : "S",
+    "label" : "Suspect",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411e7",
+    "value" : "U",
+    "label" : "Unconfirmed",
+    "codeSystem" : "HL70438",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,117 @@
+{
+  "type" : "table",
+  "sectionPosition" : 164,
+  "id" : "565f3ab6d4c6e52cfd44308f",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0123",
+  "name" : "Result status",
+  "description" : "Result status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443090",
+    "value" : "A",
+    "label" : "Some, but not all, results available",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443091",
+    "value" : "C",
+    "label" : "Correction to results",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443092",
+    "value" : "F",
+    "label" : "Final results; results stored and verified.  Can only be changed with a corrected result.",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443093",
+    "value" : "I",
+    "label" : "No results available; specimen received, procedure incomplete",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443094",
+    "value" : "O",
+    "label" : "Order received; specimen not yet received",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443095",
+    "value" : "P",
+    "label" : "Preliminary: A verified early result is available, final results not yet obtained",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443096",
+    "value" : "R",
+    "label" : "Results stored; not yet verified",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443097",
+    "value" : "S",
+    "label" : "No results available; procedure scheduled, but not done",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443098",
+    "value" : "X",
+    "label" : "No results available; Order canceled.",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443099",
+    "value" : "Y",
+    "label" : "No order on record for this test.  (Used only on queries)",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44309a",
+    "value" : "Z",
+    "label" : "No record of this patient. (Used only on queries)",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

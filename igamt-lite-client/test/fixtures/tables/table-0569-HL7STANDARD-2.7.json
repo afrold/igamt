@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 175,
+  "id" : "569eac0dd4c623dc65508296",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0569",
+  "name" : "Adjustment Action",
+  "description" : "Adjustment Action",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508297",
+    "value" : "EOB",
+    "label" : "Print on EOB",
+    "codeSystem" : "HL70569",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508298",
+    "value" : "PAT",
+    "label" : "Inform Patient",
+    "codeSystem" : "HL70569",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508299",
+    "value" : "PRO",
+    "label" : "Inform Provider",
+    "codeSystem" : "HL70569",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

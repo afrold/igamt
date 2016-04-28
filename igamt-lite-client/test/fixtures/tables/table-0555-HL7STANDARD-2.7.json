@@ -1,0 +1,108 @@
+{
+  "type" : "table",
+  "sectionPosition" : 119,
+  "id" : "569eac0dd4c623dc65507ed0",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0555",
+  "name" : "Invoice Type",
+  "description" : "Invoice Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ed1",
+    "value" : "BK",
+    "label" : "Block",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ed2",
+    "value" : "FN",
+    "label" : "Final",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ed3",
+    "value" : "FS",
+    "label" : "Fee for Service",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ed4",
+    "value" : "GP",
+    "label" : "Group",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ed5",
+    "value" : "IN",
+    "label" : "Information Only",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ed6",
+    "value" : "NP",
+    "label" : "Non Patient",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ed7",
+    "value" : "PA",
+    "label" : "Partial",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ed8",
+    "value" : "SL",
+    "label" : "Salary",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ed9",
+    "value" : "SS",
+    "label" : "By Session",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507eda",
+    "value" : "SU",
+    "label" : "Supplemental",
+    "codeSystem" : "HL70555",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

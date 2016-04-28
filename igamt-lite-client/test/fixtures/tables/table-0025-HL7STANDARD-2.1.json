@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 51,
+  "id" : "565f3ab7d4c6e52cfd4482e3",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0025",
+  "name" : "CONFIRMATION CODE",
+  "description" : "CONFIRMATION CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

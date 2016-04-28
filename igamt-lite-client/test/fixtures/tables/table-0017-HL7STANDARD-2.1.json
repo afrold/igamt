@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 126,
+  "id" : "565f3ab7d4c6e52cfd4482ba",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0017",
+  "name" : "TRANSACTION TYPE",
+  "description" : "TRANSACTION TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482bb",
+    "value" : "1",
+    "label" : "Zwischenrechnung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482bc",
+    "value" : "2",
+    "label" : "Schlußrechnung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482bd",
+    "value" : "3",
+    "label" : "Nachtragsrechnung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482be",
+    "value" : "4",
+    "label" : "Gutschrift",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482bf",
+    "value" : "5",
+    "label" : "Stornierung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482c0",
+    "value" : "6",
+    "label" : "Zahlungserinnerung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482c1",
+    "value" : "7",
+    "label" : "1. Mahnung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482c2",
+    "value" : "8",
+    "label" : "2. Mahnung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

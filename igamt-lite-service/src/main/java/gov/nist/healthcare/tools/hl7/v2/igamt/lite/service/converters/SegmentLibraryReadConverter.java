@@ -21,7 +21,9 @@ import com.mongodb.DBObject;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 
 /**
  * @author gcr1 12.Feb.16
@@ -37,29 +39,46 @@ public class SegmentLibraryReadConverter extends AbstractReadConverter<DBObject,
 
 	@Override
 	public SegmentLibrary convert(DBObject source) {
-		SegmentLibrary segLib = new SegmentLibrary();
-		return segLib(source, segLib);
+		SegmentLibrary lib = new SegmentLibrary();
+		return lib(source, lib);
 	} 
 	
-	private SegmentLibrary segLib(DBObject source, SegmentLibrary segLib) {
-		segLib.setId(readMongoId(source));
-		segLib.setType(Constant.SEGMENTS);
-		segLib.setAccountId((Long) source.get(ACCOUNT_ID));
+	private SegmentLibrary lib(DBObject source, SegmentLibrary lib) {
+		lib.setId(readMongoId(source));
+		lib.setType(Constant.SEGMENTS);
+		lib.setAccountId((Long) source.get(ACCOUNT_ID));
+		lib.setMetaData(metaData((DBObject)source.get(METADATA)));
+		lib.setScope(SCOPE.valueOf((String) source.get(SCOPE_)));
 		
-		segLib.setSectionContents((String) source.get(SECTION_COMMENTS));
-		segLib.setSectionDescription((String) source.get(SECTION_DESCRIPTION));
-		segLib.setSectionPosition((Integer) source.get(SECTION_POSITION));
-		segLib.setSectionTitle((String) source.get(SECTION_TITLE));
-		BasicDBList segLibDBObjects = (BasicDBList) source.get(CHILDREN);
-		segLib.setChildren(new HashSet<SegmentLink>());
+		lib.setSectionContents((String) source.get(SECTION_COMMENTS));
+		lib.setSectionDescription((String) source.get(SECTION_DESCRIPTION));
+		lib.setSectionPosition((Integer) source.get(SECTION_POSITION));
+		lib.setSectionTitle((String) source.get(SECTION_TITLE));
+		BasicDBList libDBObjects = (BasicDBList) source.get(CHILDREN);
+		lib.setChildren(new HashSet<SegmentLink>());
 		
 		SegmentReadConverter segCnv = new SegmentReadConverter();
-		if (segLibDBObjects != null) {
-			for (Object childObj : segLibDBObjects) {
-				segLib.addSegment((SegmentLink)childObj);
+		if (libDBObjects != null) {
+			for (Object childObj : libDBObjects) {
+				DBObject dbObj = (DBObject)childObj;
+				String id = readMongoId(dbObj);
+				String label = (String)dbObj.get(LABEL);
+				SegmentLink sgl = new SegmentLink(id, label);
+				lib.addSegment(sgl);
 			}
 		}
 
-		return segLib;
+		return lib;
+	}
+	
+	SegmentLibraryMetaData metaData(DBObject source) {
+		SegmentLibraryMetaData metaData = new SegmentLibraryMetaData();
+		metaData.setDate((String)source.get(DATE));
+		metaData.setExt((String)source.get(EXTENSION));
+		metaData.setHl7Version((String)source.get(HL7_VERSION));
+		metaData.setName((String)source.get(NAME));
+		metaData.setOrgName((String)source.get(ORG_NAME));
+		metaData.setVersion((String)source.get(VERSION));
+		return metaData;
 	}
 }

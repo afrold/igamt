@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 269,
+  "id" : "565f3ab6d4c6e52cfd4432e8",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0377",
+  "name" : "Other environmental factors",
+  "description" : "Other environmental factors",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4432e9",
+    "value" : "A60",
+    "label" : "Opened container, indoor atmosphere, 60 minutes duration",
+    "codeSystem" : "HL70377",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4432ea",
+    "value" : "ATM",
+    "label" : "Opened container, atmosphere/duration unspecified",
+    "codeSystem" : "HL70377",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

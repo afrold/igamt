@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 121,
+  "id" : "565f3ab7d4c6e52cfd4482e2",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0145",
+  "name" : "Room Type",
+  "description" : "Room Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 15,
+  "hl7Version" : "2.2",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd4480f7",
+  "label" : "CK",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "CK",
+  "description" : "composite ID with check digit",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : null
+}

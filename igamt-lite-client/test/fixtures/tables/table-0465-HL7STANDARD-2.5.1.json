@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 86,
+  "id" : "569eac0fd4c623dc6550ea5c",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0465",
+  "name" : "Name/address representation",
+  "description" : "Name/address representation",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.465",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550ea5d",
+    "value" : "A",
+    "label" : "Alphabetic (i.e., Default or some single-byte)",
+    "codeSystem" : "HL70465",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550ea5e",
+    "value" : "I",
+    "label" : "Ideographic (i.e., Kanji)",
+    "codeSystem" : "HL70465",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550ea5f",
+    "value" : "P",
+    "label" : "Phonetic (i.e., ASCII, Katakana, Hiragana, etc.)",
+    "codeSystem" : "HL70465",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,7 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import org.bson.types.ObjectId;
-
 public class MetaData implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;

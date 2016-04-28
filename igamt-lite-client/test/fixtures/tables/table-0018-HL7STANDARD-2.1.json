@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 125,
+  "id" : "565f3ab7d4c6e52cfd4482c3",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0018",
+  "name" : "PATIENT TYPE",
+  "description" : "PATIENT TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

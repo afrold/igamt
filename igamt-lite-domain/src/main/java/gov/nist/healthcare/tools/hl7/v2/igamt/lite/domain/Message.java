@@ -1,15 +1,15 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 @Document(collection = "message")
 public class Message extends SectionModel implements java.io.Serializable,
@@ -20,9 +20,9 @@ Cloneable, Comparable<Message> {
 	public Message() {
 		super();
 		this.type = Constant.MESSAGE;
-		this.id = ObjectId.get().toString();
 	}
 
+	@Id
 	private String id;
 
 	private String identifier;																//Message/@Identifier
@@ -41,10 +41,6 @@ Cloneable, Comparable<Message> {
 
 	private List<SegmentRefOrGroup> children = new ArrayList<SegmentRefOrGroup>();
 
-	// @DBRef
-	// private Messages messages;
-
-	// @NotNull
 	protected Integer position = 0;
 
 	protected String comment = "";

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 415,
+  "id" : "569eac0dd4c623dc65507bec",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0910",
+  "name" : "Acquisition Modality",
+  "description" : "Acquisition Modality",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bed",
+    "value" : "�",
+    "label" : "Acquisition Modality codes, Context Group 29, Digital Imaging and Communications in Medicine (DICOM) - Part 16: Content Mapping Resource (PS3.16), available free at http://dicom.nema.org",
+    "codeSystem" : "HL70910",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -15,6 +15,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ContentDefinition;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Extensibility;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Stability;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 
 @ReadingConverter
 public class TableReadConverter extends AbstractReadConverter<DBObject, Table> {
@@ -28,9 +29,12 @@ public class TableReadConverter extends AbstractReadConverter<DBObject, Table> {
 	@Override
 	public Table convert(DBObject source) {
 
+		log.info("Table.convert==>");
 		Table table = new Table();
 		table.setType((String) source.get(TYPE));
 		table.setSectionPosition((Integer) source.get(SECTION_POSITION));
+		table.setScope(SCOPE.valueOf((String)source.get(SCOPE_)));
+		table.setHl7Version((String)source.get(HL7_VERSION));
 
 		table.setCodes(new ArrayList<Code>());
 		table.setId(readMongoId(source));
@@ -79,6 +83,7 @@ public class TableReadConverter extends AbstractReadConverter<DBObject, Table> {
 				}
 				table.addCode(code);
 			}
+		log.info("<==convert");
 		return table;
 	}
 }

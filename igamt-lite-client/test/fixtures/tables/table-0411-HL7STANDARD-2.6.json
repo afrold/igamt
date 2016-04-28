@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 161,
+  "id" : "569eac0ed4c623dc6550b2c3",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0411",
+  "name" : "Supplemental Service Information Values",
+  "description" : "Supplemental Service Information Values",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.411",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2c4",
+    "value" : "...",
+    "label" : "No suggested values<p>Individual implementations may use vocabularies such as the SNOMED DICOM Micro-glossary (SDM) or private (local) entries.",
+    "codeSystem" : "HL70411",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

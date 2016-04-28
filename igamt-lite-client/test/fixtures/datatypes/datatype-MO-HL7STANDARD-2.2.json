@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 58,
+  "hl7Version" : "2.2",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd4480ca",
+  "label" : "MO",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "MO",
+  "description" : "money",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : null
+}

@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 159,
+  "id" : "565f3ab6d4c6e52cfd44323e",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0381",
+  "name" : "Cap type",
+  "description" : "Cap type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

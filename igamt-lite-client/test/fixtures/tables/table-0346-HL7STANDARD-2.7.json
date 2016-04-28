@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 315,
+  "id" : "569eac0dd4c623dc655083f5",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0346",
+  "name" : "Certification Agency",
+  "description" : "Certification Agency",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083f6",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70346",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

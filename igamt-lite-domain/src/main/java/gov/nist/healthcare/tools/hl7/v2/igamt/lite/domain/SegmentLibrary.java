@@ -83,12 +83,24 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 	public void delete(SegmentLink sgl) {
 		this.children.remove(sgl);
 	}
-
-	public SegmentLink findOne(SegmentLink dtl) {
+	
+	public SegmentLink findOneSegmentById(String id) {
 		if (this.children != null) {
-			for (SegmentLink dtl1 : this.children) {
-				if (dtl1.equals(dtl)) {
-					return dtl1;
+			for (SegmentLink segl : this.children) {
+				if (segl.getId().equals(id)) {
+					return segl;
+				}
+			}
+		}
+
+		return null;
+	}
+	
+	public SegmentLink findOne(SegmentLink segl) {
+		if (this.children != null) {
+			for (SegmentLink segl1 : this.children) {
+				if (segl.equals(segl1)) {
+					return segl1;
 				}
 			}
 		}

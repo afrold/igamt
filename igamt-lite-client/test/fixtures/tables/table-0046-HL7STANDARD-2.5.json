@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 273,
+  "id" : "565f3ab6d4c6e52cfd440b3f",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0046",
+  "name" : "Credit Rating",
+  "description" : "Credit Rating",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.46",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

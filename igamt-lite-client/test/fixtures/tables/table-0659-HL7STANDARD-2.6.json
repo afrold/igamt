@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 280,
+  "id" : "569eac0ed4c623dc6550b304",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0659",
+  "name" : "Lot Control",
+  "description" : "Lot Control",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.659",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b305",
+    "value" : "1",
+    "label" : "OR Mode Without Operator",
+    "codeSystem" : "HL70659",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b306",
+    "value" : "2",
+    "label" : "OR Mode with Operator",
+    "codeSystem" : "HL70659",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b307",
+    "value" : "3",
+    "label" : "CPD Mode Without Operator",
+    "codeSystem" : "HL70659",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b308",
+    "value" : "4",
+    "label" : "CPD Mode With Operator",
+    "codeSystem" : "HL70659",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b309",
+    "value" : "5",
+    "label" : "Offline Mode",
+    "codeSystem" : "HL70659",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

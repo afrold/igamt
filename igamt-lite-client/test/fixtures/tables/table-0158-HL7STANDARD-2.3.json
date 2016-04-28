@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 126,
+  "id" : "565f3ab7d4c6e52cfd44710c",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0158",
+  "name" : "Date/Time Selection Qualifier",
+  "description" : "Date/Time Selection Qualifier",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44710d",
+    "value" : "1ST",
+    "label" : "First value within range",
+    "codeSystem" : "HL70158",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44710e",
+    "value" : "ALL",
+    "label" : "All values within the range",
+    "codeSystem" : "HL70158",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44710f",
+    "value" : "LST",
+    "label" : "Last value within the range",
+    "codeSystem" : "HL70158",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447110",
+    "value" : "REV",
+    "label" : "All values within the range returned in reverse chronological order (Default if not otherwise specified.)",
+    "codeSystem" : "HL70158",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

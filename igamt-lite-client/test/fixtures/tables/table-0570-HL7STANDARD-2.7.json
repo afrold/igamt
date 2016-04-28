@@ -1,0 +1,108 @@
+{
+  "type" : "table",
+  "sectionPosition" : 81,
+  "id" : "569eac0dd4c623dc655080ed",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0570",
+  "name" : "Payment Method Code",
+  "description" : "Payment Method Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080ee",
+    "value" : "CASH",
+    "label" : "Cash",
+    "codeSystem" : "HL70570",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080ef",
+    "value" : "CCCA",
+    "label" : "Credit Card",
+    "codeSystem" : "HL70570",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080f0",
+    "value" : "CCHK",
+    "label" : "Cashier's Check",
+    "codeSystem" : "HL70570",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080f1",
+    "value" : "CDAC",
+    "label" : "Credit/Debit Account",
+    "codeSystem" : "HL70570",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080f2",
+    "value" : "CHCK",
+    "label" : "Check",
+    "codeSystem" : "HL70570",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080f3",
+    "value" : "DDPO",
+    "label" : "Direct Deposit",
+    "codeSystem" : "HL70570",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080f4",
+    "value" : "DEBC",
+    "label" : "Debit Card",
+    "codeSystem" : "HL70570",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080f5",
+    "value" : "SWFT",
+    "label" : "Society for Worldwide Interbank Financial Telecommunications (S.W.I.F.T.)",
+    "codeSystem" : "HL70570",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080f6",
+    "value" : "TRAC",
+    "label" : "Traveler's Check",
+    "codeSystem" : "HL70570",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080f7",
+    "value" : "VISN",
+    "label" : "VISA Special Electronic Funds Transfer Network",
+    "codeSystem" : "HL70570",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

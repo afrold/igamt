@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 247,
+  "id" : "565f3ab6d4c6e52cfd443dcc",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0107",
+  "name" : "Deferred response type",
+  "description" : "Deferred response type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dcd",
+    "value" : "B",
+    "label" : "Before the Date/Time specified",
+    "codeSystem" : "HL70107",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443dce",
+    "value" : "L",
+    "label" : "Later than the Date/Time specified",
+    "codeSystem" : "HL70107",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

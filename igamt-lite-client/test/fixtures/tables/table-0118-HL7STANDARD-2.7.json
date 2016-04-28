@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 472,
+  "id" : "569eac0dd4c623dc6550861d",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0118",
+  "name" : "Major Diagnostic Category",
+  "description" : "Major Diagnostic Category",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550861e",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70118",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

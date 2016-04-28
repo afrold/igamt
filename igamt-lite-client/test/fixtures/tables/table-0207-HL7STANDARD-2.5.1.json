@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 25,
+  "id" : "569eac0fd4c623dc6550e8e4",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0207",
+  "name" : "Processing mode",
+  "description" : "Processing mode",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.207",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8e5",
+    "value" : "A",
+    "label" : "Archive",
+    "codeSystem" : "HL70207",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8e6",
+    "value" : "I",
+    "label" : "Initial load",
+    "codeSystem" : "HL70207",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8e7",
+    "value" : "Not present",
+    "label" : "Not present (the default, meaning current  processing)",
+    "codeSystem" : "HL70207",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8e8",
+    "value" : "R",
+    "label" : "Restore from archive",
+    "codeSystem" : "HL70207",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e8e9",
+    "value" : "T",
+    "label" : "Current processing, transmitted at intervals (scheduled or on demand)",
+    "codeSystem" : "HL70207",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

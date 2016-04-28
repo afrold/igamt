@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 418,
+  "id" : "565f3ab6d4c6e52cfd4414a0",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0341",
+  "name" : "Guarantor Credit Rating Code",
+  "description" : "Guarantor Credit Rating Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.341",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

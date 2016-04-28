@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 502,
+  "id" : "569eac0dd4c623dc65507b49",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0087",
+  "name" : "Pre-Admit Test Indicator",
+  "description" : "Pre-Admit Test Indicator",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507b4a",
+    "value" : "�",
+    "label" : "no suggested values",
+    "codeSystem" : "HL70087",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

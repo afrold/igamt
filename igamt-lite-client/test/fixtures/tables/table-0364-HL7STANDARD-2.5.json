@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 265,
+  "id" : "565f3ab6d4c6e52cfd440629",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0364",
+  "name" : "Comment type",
+  "description" : "Comment type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.364",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44062a",
+    "value" : "1R",
+    "label" : "Primary Reason",
+    "codeSystem" : "HL70364",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44062b",
+    "value" : "2R",
+    "label" : "Secondary Reason",
+    "codeSystem" : "HL70364",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44062c",
+    "value" : "AI",
+    "label" : "Ancillary Instructions",
+    "codeSystem" : "HL70364",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44062d",
+    "value" : "DR",
+    "label" : "Duplicate/Interaction Reason",
+    "codeSystem" : "HL70364",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44062e",
+    "value" : "GI",
+    "label" : "General Instructions",
+    "codeSystem" : "HL70364",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44062f",
+    "value" : "GR",
+    "label" : "General Reason",
+    "codeSystem" : "HL70364",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440630",
+    "value" : "PI",
+    "label" : "Patient Instructions",
+    "codeSystem" : "HL70364",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440631",
+    "value" : "RE",
+    "label" : "Remark",
+    "codeSystem" : "HL70364",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

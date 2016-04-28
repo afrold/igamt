@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 123,
+  "id" : "569eac0ed4c623dc6550b84f",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0572",
+  "name" : "Tax status",
+  "description" : "Tax status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.572",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b850",
+    "value" : "RVAT",
+    "label" : "Registered in VAT register",
+    "codeSystem" : "HL70572",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b851",
+    "value" : "UVAT",
+    "label" : "Unregistered in VAT register",
+    "codeSystem" : "HL70572",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

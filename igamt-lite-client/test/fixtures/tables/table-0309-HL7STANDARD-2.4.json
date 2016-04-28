@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 272,
+  "id" : "565f3ab6d4c6e52cfd443a8d",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0309",
+  "name" : "Coverage type",
+  "description" : "Coverage type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a8e",
+    "value" : "B",
+    "label" : "Both hospital and physician",
+    "codeSystem" : "HL70309",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a8f",
+    "value" : "H",
+    "label" : "Hospital/institutional",
+    "codeSystem" : "HL70309",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a90",
+    "value" : "P",
+    "label" : "Physician/professional",
+    "codeSystem" : "HL70309",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

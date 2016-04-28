@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 225,
+  "id" : "569eac0dd4c623dc655077ec",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0280",
+  "name" : "Referral Priority",
+  "description" : "Referral Priority",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077ed",
+    "value" : "A",
+    "label" : "ASAP",
+    "codeSystem" : "HL70280",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077ee",
+    "value" : "R",
+    "label" : "Routine",
+    "codeSystem" : "HL70280",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077ef",
+    "value" : "S",
+    "label" : "STAT",
+    "codeSystem" : "HL70280",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

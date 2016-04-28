@@ -1,0 +1,351 @@
+{
+  "type" : "table",
+  "sectionPosition" : 37,
+  "id" : "565f3ab7d4c6e52cfd448091",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0119",
+  "name" : "ORDER CONTROL",
+  "description" : "ORDER CONTROL",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448092",
+    "value" : "CA",
+    "label" : "Auftrag stornieren",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448093",
+    "value" : "CH",
+    "label" : "Child order",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448094",
+    "value" : "CN",
+    "label" : "Kumulatives Ergebnis (zu mehreren Aufträgen)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448095",
+    "value" : "CR",
+    "label" : "Auftrag anweisungsgemäß storniert",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448096",
+    "value" : "DC",
+    "label" : "Auftragsausführung abbrechen",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448097",
+    "value" : "DE",
+    "label" : "Datenfehler",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448098",
+    "value" : "DR",
+    "label" : "Auftragsausführung anweisungsgemäß abgebrochen",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448099",
+    "value" : "HD",
+    "label" : "Auftragsbearbeitung aussetzen",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44809a",
+    "value" : "HR",
+    "label" : "Auftragsbearbeitung anweisungsgemäß ausgesetzt",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44809b",
+    "value" : "NA",
+    "label" : "Nummer zugewiesen",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44809c",
+    "value" : "NW",
+    "label" : "Neuer Auftrag",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44809d",
+    "value" : "OC",
+    "label" : "Auftrag storniert",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44809e",
+    "value" : "OD",
+    "label" : "Auftragsausführung abgebrochen",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44809f",
+    "value" : "OH",
+    "label" : "Auftragsbearbeitung ausgesetzt",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480a0",
+    "value" : "OK",
+    "label" : "Auftrag akzeptiert",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480a1",
+    "value" : "OR",
+    "label" : "Auftragsbearbeitung anweisungsgemäß wiederaufgenommen",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480a2",
+    "value" : "PA",
+    "label" : "Parent order",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480a3",
+    "value" : "RE",
+    "label" : "Untersuchungsergebnisse folgen (in späteren Segmenten dieser Nachricht)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480a4",
+    "value" : "RL",
+    "label" : "Auftragsberabeitung wiederaufnehmen",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480a5",
+    "value" : "RO",
+    "label" : "Ersatzauftrag",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480a6",
+    "value" : "RP",
+    "label" : "Auftrag ersetzen",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480a7",
+    "value" : "RQ",
+    "label" : "Auftrag anweisungsgemäß ersetzt",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480a8",
+    "value" : "RR",
+    "label" : "Anforderung erhalten (veraltet)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480a9",
+    "value" : "RU",
+    "label" : "Auftrag ersetzt (ohne Anweisung)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480aa",
+    "value" : "SC",
+    "label" : "Statusänderung",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480ab",
+    "value" : "SN",
+    "label" : "Auftrags- bzw. Bearbeitungsnummer zuweisen / übermitteln",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480ac",
+    "value" : "SR",
+    "label" : "Response to send order status request",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480ad",
+    "value" : "SS",
+    "label" : "Send order status request",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480ae",
+    "value" : "UC",
+    "label" : "Auftragsstornierung nicht möglich",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480af",
+    "value" : "UD",
+    "label" : "Abbrechen nicht möglich",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480b0",
+    "value" : "UH",
+    "label" : "Aussetzen nicht möglich",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480b1",
+    "value" : "UM",
+    "label" : "Ersetzen nicht möglich",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480b2",
+    "value" : "UR",
+    "label" : "Wiederaufnahme nicht möglich",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480b3",
+    "value" : "UX",
+    "label" : "Änderung nicht möglich",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480b4",
+    "value" : "XO",
+    "label" : "Auftrag ändern",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480b5",
+    "value" : "XR",
+    "label" : "Auftrag anweisungsgemäß geändert",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4480b6",
+    "value" : "XX",
+    "label" : "Auftrag geändert (ohne Anweisung)",
+    "codeSystem" : "HL70119",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

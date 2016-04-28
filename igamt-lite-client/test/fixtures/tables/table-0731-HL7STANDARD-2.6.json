@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 397,
+  "id" : "569eac0ed4c623dc6550b187",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0731",
+  "name" : "DRG Diagnosis Determination Status",
+  "description" : "DRG Diagnosis Determination Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.731",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b188",
+    "value" : "0",
+    "label" : "Valid code",
+    "codeSystem" : "HL70731",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b189",
+    "value" : "1",
+    "label" : "Invalid code",
+    "codeSystem" : "HL70731",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b18a",
+    "value" : "2",
+    "label" : "Two primary diagnosis codes",
+    "codeSystem" : "HL70731",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b18b",
+    "value" : "3",
+    "label" : "Invalid for this gender",
+    "codeSystem" : "HL70731",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b18c",
+    "value" : "4",
+    "label" : "Invalid for this age",
+    "codeSystem" : "HL70731",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

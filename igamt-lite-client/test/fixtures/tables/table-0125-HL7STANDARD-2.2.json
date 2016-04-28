@@ -1,0 +1,207 @@
+{
+  "type" : "table",
+  "sectionPosition" : 62,
+  "id" : "565f3ab7d4c6e52cfd447bfd",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0125",
+  "name" : "VALUE TYPE",
+  "description" : "VALUE TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447bfe",
+    "value" : "AD",
+    "label" : "Address",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447bff",
+    "value" : "CE",
+    "label" : "Coded element",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c00",
+    "value" : "CF",
+    "label" : "Coded element with formatted values",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c01",
+    "value" : "CK",
+    "label" : "Composite ID with check digit",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c02",
+    "value" : "CM",
+    "label" : "Composite",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c03",
+    "value" : "CN",
+    "label" : "Composite ID and name",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c04",
+    "value" : "CQ",
+    "label" : "Composite quantity with units",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c05",
+    "value" : "DT",
+    "label" : "Date",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c06",
+    "value" : "FT",
+    "label" : "Formatted text (display)",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c07",
+    "value" : "ID",
+    "label" : "Coded value",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c08",
+    "value" : "MO",
+    "label" : "Money",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c09",
+    "value" : "NM",
+    "label" : "Numeric",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c0a",
+    "value" : "PN",
+    "label" : "Person name",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c0b",
+    "value" : "RP",
+    "label" : "Reference pointer",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c0c",
+    "value" : "SI",
+    "label" : "Sequence ID",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c0d",
+    "value" : "ST",
+    "label" : "String data",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c0e",
+    "value" : "TM",
+    "label" : "Time",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c0f",
+    "value" : "TN",
+    "label" : "Telephone number",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c10",
+    "value" : "TQ",
+    "label" : "Timing / quantity",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c11",
+    "value" : "TS",
+    "label" : "Time stamp ( date & time)",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c12",
+    "value" : "TX",
+    "label" : "Text data (display)",
+    "codeSystem" : "HL70125",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

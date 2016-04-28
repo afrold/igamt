@@ -1,0 +1,126 @@
+{
+  "type" : "table",
+  "sectionPosition" : 479,
+  "id" : "569eac0dd4c623dc6550835b",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0338",
+  "name" : "Practitioner ID Number Type",
+  "description" : "Practitioner ID Number Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550835c",
+    "value" : "CY",
+    "label" : "County number",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550835d",
+    "value" : "DEA",
+    "label" : "Drug Enforcement Agency no.",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550835e",
+    "value" : "GL",
+    "label" : "General ledger number",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550835f",
+    "value" : "L&I",
+    "label" : "Labor and industries number",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508360",
+    "value" : "LI",
+    "label" : "Labor and industries number",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508361",
+    "value" : "MCD",
+    "label" : "Medicaid number",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508362",
+    "value" : "MCR",
+    "label" : "Medicare number",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508363",
+    "value" : "QA",
+    "label" : "QA number",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508364",
+    "value" : "SL",
+    "label" : "State license number",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508365",
+    "value" : "TAX",
+    "label" : "Tax ID number",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508366",
+    "value" : "TRL",
+    "label" : "Training license number",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508367",
+    "value" : "UPIN",
+    "label" : "Unique physician ID no.",
+    "codeSystem" : "HL70338",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}
