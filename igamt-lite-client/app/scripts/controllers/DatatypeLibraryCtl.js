@@ -10,13 +10,9 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 			$scope.loadingSelection = true;
 			$scope.publishSelections = [];
 			$scope.datatypeDisplay	= [];
-<<<<<<< HEAD
 	    $scope.viewSettings = ViewSettings;
       $scope.metaDataView = null;
       $scope.datatypeListView = null;
-=======
-	        $scope.viewSettings = ViewSettings;
->>>>>>> all-lib
 
 	    $scope.tableWidth = null;
       $scope.datatypeLibrary = "";
@@ -24,7 +20,6 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 
 			$scope.initDatatypeLibrary = function() {
 				$scope.start = false;
-<<<<<<< HEAD
         var scopes = ["USER"];
         if (true) { //($scope.isAuthenticated() && $scope.isAdmin()) {
           scopes.push("MASTER");
@@ -60,16 +55,6 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 
 			function getDataTypeLibrary(scope, hl7Version) {
 				DatatypeLibrarySvc.getDataTypeLibrary(scope, hl7Version).then(function(data) {
-=======
-				getDataTypeLibrary("MASTER");
-/*         $http.get('api/datatypes/12345').then(function(response){
-          console.log(JSONStingify(response));
-        }); */
-			};
-
-			function getDataTypeLibrary(scope) {
-				DatatypeLibrarySvc.getDataTypeLibrary(scope).then(function(data) {
->>>>>>> all-lib
 						$scope.datatypeStruct =  data;
 						if (!$scope.datatypeStruct.scope) {
 							$scope.datatypeStruct.scope = scope;
@@ -84,11 +69,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				if(dt) {
 					return (dt.ext) ? dt.label + "_" + dt.ext : dt.label;
 				}
-<<<<<<< HEAD
 			};
-=======
-			}
->>>>>>> all-lib
 
 			$scope.trackSelections = function(bool, selection) {
 				if (bool) {
@@ -105,11 +86,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				DatatypeLibrarySvc.save($scope.datatypeStruct);
 			};
 
-<<<<<<< HEAD
 			$scope.edit = function(datatypeLibrary) {
-=======
-			$scope.edit = function(datatype) {
->>>>>>> all-lib
 				$scope.loadingSelection = true;
 				$timeout(
 					function () {
@@ -128,54 +105,6 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				}, 100);
 			};
 
-<<<<<<< HEAD
-=======
-	        $scope.datatypesParams = new ngTreetableParams({
-	            getNodes: function (parent) {
-	                return DatatypeService.getNodes(parent);
-	            },
-	            getTemplate: function (node) {
-	                return DatatypeService.getTemplate(node);
-	            }
-	        });
-
-//	        $scope.selectDatatype = function (datatype) {
-//	            $scope.subview = "EditDatatypes.html";
-//	            if (datatype && datatype != null) {
-//	                $scope.loadingSelection = true;
-//	                $rootScope.datatype = datatype;
-//	                $rootScope.datatype["type"] = "datatype";
-//	                $timeout(
-//	                    function () {
-//	                        $scope.tableWidth = null;
-//	                        $scope.scrollbarWidth = $scope.getScrollbarWidth();
-//	                        $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
-//	                        $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
-//	                        $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
-//	                        $scope.loadingSelection = false;
-//	                        if ($scope.datatypesParams)
-//	                            $scope.datatypesParams.refresh();
-//	                    }, 100);
-//	            }
-//	        };
-
-//	        $scope.getTableWidth = function () {
-//	            if ($scope.tableWidth === null || $scope.tableWidth == 0) {
-//	                $scope.tableWidth = $("#nodeDetailsPanel").width();
-//	            }
-//	            return $scope.tableWidth;
-//	        };
-
-//	        $scope.getDynamicWidth = function (a, b, otherColumsWidth) {
-//	            var tableWidth = $scope.getTableWidth();
-//	            if (tableWidth > 0) {
-//	                var left = tableWidth - otherColumsWidth;
-//	                return {"width": a * parseInt(left / b) + "px"};
-//	            }
-//	            return "";
-//	        };
-
->>>>>>> all-lib
 			$scope.openStandardDataypes = function() {
 					var standardDatatypesInstance = $modal.open({
 						templateUrl : 'standardDatatypeDlg.html',
@@ -197,7 +126,6 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
           });
 		};
 
-<<<<<<< HEAD
     $scope.openDataypeList = function(hl7Version) {
       var datatypesListInstance = $modal.open({
 						templateUrl : 'datatypeListDlg.html',
@@ -212,8 +140,6 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 
     }
 
-=======
->>>>>>> all-lib
 		function decoratedSelections(datatypes) {
 			angular.forEach(datatypes, function(child) {
 				child.ext = Math.floor(Math.random() * 100);
@@ -225,7 +151,6 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 });
 
 angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
-<<<<<<< HEAD
 		function($scope, $rootScope, $modalInstance, $timeout, hl7Versions, DatatypeLibrarySvc, DatatypeService) {
 
 			$scope.okDisabled = true;
@@ -235,13 +160,6 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
       $scope.name = null;
       $scope.ext = null;
       $scope.hl7Version = null;
-=======
-		function($scope, $modalInstance, datatypeStruct, DatatypeLibrarySvc) {
-
-			$scope.okDisabled = true;
-
-			$scope.datatypeStruct = datatypeStruct;
->>>>>>> all-lib
 			$scope.standardSelections = [];
 
 			$scope.getDisplayLabel = function(dt) {
