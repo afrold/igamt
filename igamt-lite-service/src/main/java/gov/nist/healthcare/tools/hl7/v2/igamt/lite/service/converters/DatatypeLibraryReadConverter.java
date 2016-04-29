@@ -18,20 +18,16 @@ import org.springframework.data.convert.ReadingConverter;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
-import com.mongodb.DBRef;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 
-/**
- * @author gcr1 12.Feb.16
- */
+
 @ReadingConverter
 public class DatatypeLibraryReadConverter extends AbstractReadConverter<DBObject, DatatypeLibrary> {
-
-	private static final Logger log = LoggerFactory.getLogger(DatatypeLibraryReadConverter.class);
+	
+final Logger log = LoggerFactory.getLogger(DatatypeLibraryReadConverter.class);
 
 	public DatatypeLibraryReadConverter() {
 		log.info("DatatypeLibraryReadConverter Created...");
@@ -54,13 +50,13 @@ public class DatatypeLibraryReadConverter extends AbstractReadConverter<DBObject
 		dtLib.setSectionPosition((Integer) source.get(SECTION_POSITION));
 		dtLib.setSectionTitle((String) source.get(SECTION_TITLE));
 		BasicDBList datatypesDBObjects = (BasicDBList) source.get(CHILDREN);
-		dtLib.setChildren(new HashSet<String>());
-		dtLib.setScope(Constant.SCOPE.valueOf(((String) source.get(SCOPE))));
+		dtLib.setChildren(new HashSet<DatatypeLink>());
+		dtLib.setScope(Constant.SCOPE.valueOf(((String) source.get(SCOPE_))));
 		
 		DatatypeReadConverter dtCnv = new DatatypeReadConverter();
 		if (datatypesDBObjects != null) {
 			for (Object childObj : datatypesDBObjects) {
-				dtLib.addDatatype((String)childObj);
+				dtLib.addDatatype((DatatypeLink)childObj);
 			}
 		}
 

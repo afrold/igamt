@@ -42,7 +42,7 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 		seg.setText1(readString(source, TEXT_1));
 		seg.setText2(readString(source, TEXT_2));
 		seg.setSectionPosition((Integer) source.get(SECTION_POSITION));
-		seg.setScope(Constant.SCOPE.valueOf((String) source.get(SCOPE)));
+		seg.setScope(Constant.SCOPE.valueOf((String) source.get(SCOPE_)));
 		BasicDBList libIdsObjects = (BasicDBList) source.get(LIB_IDS);
 		for (Object libIdObj : libIdsObjects) {
 			seg.getLibIds().add((String) libIdObj);

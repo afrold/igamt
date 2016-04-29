@@ -44,8 +44,8 @@ public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datat
 			dt.setComment(readString(source, COMMENT));
 			dt.setUsageNote(readString(source, USAGE_NOTE));
 			dt.setSectionPosition((Integer) source.get(SECTION_POSITION));
-			dt.setScope(source.get(SCOPE) != null ? Constant.SCOPE.valueOf((String) source.get(SCOPE)) : null);
-			dt.setStatus(source.get(STATUS) != null ? Datatype.STATUS.valueOf((String) source.get(STATUS)) : null);
+			dt.setScope(source.get(SCOPE_) != null ? Constant.SCOPE.valueOf((String) source.get(SCOPE_)) : null);
+			dt.setStatus(source.get(STATUS_) != null ? Datatype.STATUS.valueOf((String) source.get(STATUS_)) : null);
 
 			BasicDBList componentObjects = (BasicDBList) source.get(COMPONENTS);
 			if (componentObjects != null) {
