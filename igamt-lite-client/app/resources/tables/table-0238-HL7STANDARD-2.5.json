@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 5,
+  "id" : "565f3ab6d4c6e52cfd441537",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0238",
+  "name" : "Event Seriousness",
+  "description" : "Event Seriousness",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.238",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441538",
+    "value" : "N",
+    "label" : "No",
+    "codeSystem" : "HL70238",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441539",
+    "value" : "S",
+    "label" : "Significant",
+    "codeSystem" : "HL70238",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44153a",
+    "value" : "Y",
+    "label" : "Yes",
+    "codeSystem" : "HL70238",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

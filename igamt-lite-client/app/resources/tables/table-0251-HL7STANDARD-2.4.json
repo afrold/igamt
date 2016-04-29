@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 187,
+  "id" : "565f3ab6d4c6e52cfd442f6c",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0251",
+  "name" : "Action taken in response to the event",
+  "description" : "Action taken in response to the event",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442f6d",
+    "value" : "DI",
+    "label" : "Product dose or frequency of use increased",
+    "codeSystem" : "HL70251",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442f6e",
+    "value" : "DR",
+    "label" : "Product dose or frequency of use reduced",
+    "codeSystem" : "HL70251",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442f6f",
+    "value" : "N",
+    "label" : "None",
+    "codeSystem" : "HL70251",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442f70",
+    "value" : "OT",
+    "label" : "Other",
+    "codeSystem" : "HL70251",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442f71",
+    "value" : "WP",
+    "label" : "Product withdrawn permanently",
+    "codeSystem" : "HL70251",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442f72",
+    "value" : "WT",
+    "label" : "Product withdrawn temporarily",
+    "codeSystem" : "HL70251",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

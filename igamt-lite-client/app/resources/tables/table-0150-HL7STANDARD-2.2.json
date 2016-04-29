@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 2,
+  "id" : "565f3ab7d4c6e52cfd447ce7",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0150",
+  "name" : "PRECERTIFICATION PATIENT TYPE",
+  "description" : "PRECERTIFICATION PATIENT TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ce8",
+    "value" : "ER",
+    "label" : "(Tabelle 150 wird nicht verwendet)",
+    "codeSystem" : "HL70150",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ce9",
+    "value" : "IPE",
+    "label" : "Inpatient elective",
+    "codeSystem" : "HL70150",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cea",
+    "value" : "OPE",
+    "label" : "Outpatient elective",
+    "codeSystem" : "HL70150",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ceb",
+    "value" : "UR",
+    "label" : "Urgent",
+    "codeSystem" : "HL70150",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

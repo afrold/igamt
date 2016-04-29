@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 216,
+  "id" : "565f3ab6d4c6e52cfd4433e0",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0149",
+  "name" : "Day type",
+  "description" : "Day type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433e1",
+    "value" : "AP",
+    "label" : "Approved",
+    "codeSystem" : "HL70149",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433e2",
+    "value" : "DE",
+    "label" : "Denied",
+    "codeSystem" : "HL70149",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433e3",
+    "value" : "PE",
+    "label" : "Pending",
+    "codeSystem" : "HL70149",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

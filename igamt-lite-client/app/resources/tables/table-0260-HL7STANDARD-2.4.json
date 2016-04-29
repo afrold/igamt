@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 34,
+  "id" : "565f3ab6d4c6e52cfd443235",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0260",
+  "name" : "Patient location type",
+  "description" : "Patient location type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443236",
+    "value" : "B",
+    "label" : "Bed",
+    "codeSystem" : "HL70260",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443237",
+    "value" : "C",
+    "label" : "Clinic",
+    "codeSystem" : "HL70260",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443238",
+    "value" : "D",
+    "label" : "Department",
+    "codeSystem" : "HL70260",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443239",
+    "value" : "E",
+    "label" : "Exam Room",
+    "codeSystem" : "HL70260",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44323a",
+    "value" : "L",
+    "label" : "Other Location",
+    "codeSystem" : "HL70260",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44323b",
+    "value" : "N",
+    "label" : "Nursing Unit",
+    "codeSystem" : "HL70260",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44323c",
+    "value" : "O",
+    "label" : "Operating Room",
+    "codeSystem" : "HL70260",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44323d",
+    "value" : "R",
+    "label" : "Room",
+    "codeSystem" : "HL70260",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

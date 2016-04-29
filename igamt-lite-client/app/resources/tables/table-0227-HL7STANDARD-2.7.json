@@ -1,0 +1,513 @@
+{
+  "type" : "table",
+  "sectionPosition" : 423,
+  "id" : "569eac0dd4c623dc6550839a",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0227",
+  "name" : "Manufacturers of Vaccines (code=MVX)",
+  "description" : "Manufacturers of Vaccines (code=MVX)",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550839b",
+    "value" : "AB",
+    "label" : "Abbott Laboratories",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550839c",
+    "value" : "AD",
+    "label" : "Adams Laboratories, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550839d",
+    "value" : "ALP",
+    "label" : "Alpha Therapeutic Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550839e",
+    "value" : "AR",
+    "label" : "Armour",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550839f",
+    "value" : "AVB",
+    "label" : "Aventis Behring L.L.C.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083a0",
+    "value" : "AVI",
+    "label" : "Aviron",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083a1",
+    "value" : "BA",
+    "label" : "Baxter Healthcare Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083a2",
+    "value" : "BAH",
+    "label" : "Baxter Healthcare Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083a3",
+    "value" : "BAY",
+    "label" : "Bayer Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083a4",
+    "value" : "BP",
+    "label" : "Berna Products",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083a5",
+    "value" : "BPC",
+    "label" : "Berna Products Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083a6",
+    "value" : "CEN",
+    "label" : "Centeon L.L.C.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083a7",
+    "value" : "CHI",
+    "label" : "Chiron Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083a8",
+    "value" : "CMP",
+    "label" : "Celltech Medeva Pharmaceuticals",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083a9",
+    "value" : "CNJ",
+    "label" : "Cangene Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083aa",
+    "value" : "CON",
+    "label" : "Connaught",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083ab",
+    "value" : "DVC",
+    "label" : "DynPort Vaccine Company, LLC",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083ac",
+    "value" : "EVN",
+    "label" : "Evans Medical Limited",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083ad",
+    "value" : "GEO",
+    "label" : "GeoVax Labs, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083ae",
+    "value" : "GRE",
+    "label" : "Greer Laboratories, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083af",
+    "value" : "IAG",
+    "label" : "Immuno International AG",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083b0",
+    "value" : "IM",
+    "label" : "Merieux",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083b1",
+    "value" : "IUS",
+    "label" : "Immuno-U.S., Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083b2",
+    "value" : "JPN",
+    "label" : "The Research Foundation for Microbial Diseases of Osaka University",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083b3",
+    "value" : "KGC",
+    "label" : "Korea Green Cross Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083b4",
+    "value" : "LED",
+    "label" : "Lederle",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083b5",
+    "value" : "MA",
+    "label" : "Massachusetts Public Health Biologic Laboratories",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083b6",
+    "value" : "MBL",
+    "label" : "Massachusetts Biologic Laboratories",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083b7",
+    "value" : "MED",
+    "label" : "MedImmune, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083b8",
+    "value" : "MIL",
+    "label" : "Miles",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083b9",
+    "value" : "MIP",
+    "label" : "Bioport Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083ba",
+    "value" : "MSD",
+    "label" : "Merck & Co., Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083bb",
+    "value" : "NAB",
+    "label" : "NABI",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083bc",
+    "value" : "NAV",
+    "label" : "North American Vaccine, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083bd",
+    "value" : "NOV",
+    "label" : "Novartis Pharmaceutical Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083be",
+    "value" : "NVX",
+    "label" : "Novavax, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083bf",
+    "value" : "NYB",
+    "label" : "New York Blood Center",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083c0",
+    "value" : "ORT",
+    "label" : "Ortho-Clinical Diagnostics",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083c1",
+    "value" : "OTC",
+    "label" : "Organon Teknika Corporation",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083c2",
+    "value" : "OTH",
+    "label" : "Other manufacturer",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083c3",
+    "value" : "PD",
+    "label" : "Parkedale Pharmaceuticals",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083c4",
+    "value" : "PMC",
+    "label" : "sanofi pasteur",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083c5",
+    "value" : "PRX",
+    "label" : "Praxis Biologics",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083c6",
+    "value" : "PWJ",
+    "label" : "PowderJect Pharmaceuticals",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083c7",
+    "value" : "SCL",
+    "label" : "Sclavo, Inc.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083c8",
+    "value" : "SI",
+    "label" : "Swiss Serum and Vaccine Inst.",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083c9",
+    "value" : "SKB",
+    "label" : "GlaxoSmithKline",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083ca",
+    "value" : "SOL",
+    "label" : "Solvay Pharmaceuticals",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083cb",
+    "value" : "TAL",
+    "label" : "Talecris Biotherapeutics",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083cc",
+    "value" : "UNK",
+    "label" : "Unknown manufacturer",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083cd",
+    "value" : "USA",
+    "label" : "United States Army Medical Research and Material Command",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083ce",
+    "value" : "VXG",
+    "label" : "VaxGen",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083cf",
+    "value" : "WA",
+    "label" : "Wyeth-Ayerst",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083d0",
+    "value" : "WAL",
+    "label" : "Wyeth-Ayerst",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083d1",
+    "value" : "ZLB",
+    "label" : "ZLB Behring",
+    "codeSystem" : "HL70227",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

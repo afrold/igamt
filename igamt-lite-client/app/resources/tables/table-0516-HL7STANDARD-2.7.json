@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 327,
+  "id" : "569eac0dd4c623dc65507ceb",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0516",
+  "name" : "Error Severity",
+  "description" : "Error Severity",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cec",
+    "value" : "E",
+    "label" : "Error",
+    "codeSystem" : "HL70516",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ced",
+    "value" : "F",
+    "label" : "Fatal Error",
+    "codeSystem" : "HL70516",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cee",
+    "value" : "I",
+    "label" : "Information",
+    "codeSystem" : "HL70516",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cef",
+    "value" : "W",
+    "label" : "Warning",
+    "codeSystem" : "HL70516",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

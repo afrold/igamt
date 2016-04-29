@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 74,
+  "id" : "569eac0dd4c623dc65507a4f",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0298",
+  "name" : "CP Range Type",
+  "description" : "CP Range Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a50",
+    "value" : "F",
+    "label" : "Flat-rate. Apply the entire price to this interval, do not pro-rate the price if the full interval has not occurred/been consumed",
+    "codeSystem" : "HL70298",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a51",
+    "value" : "P",
+    "label" : "Pro-rate. Apply this price to this interval, pro-rated by whatever portion of the interval has occurred/been consumed",
+    "codeSystem" : "HL70298",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

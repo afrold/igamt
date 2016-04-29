@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 26,
+  "id" : "565f3ab6d4c6e52cfd440e5c",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0502",
+  "name" : "Non-Subject Consenter Reason",
+  "description" : "Non-Subject Consenter Reason",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.502",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e5d",
+    "value" : "LM",
+    "label" : "Legally mandated",
+    "codeSystem" : "HL70502",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e5e",
+    "value" : "MIN",
+    "label" : "Subject is a minor",
+    "codeSystem" : "HL70502",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e5f",
+    "value" : "NC",
+    "label" : "Subject is not competent to consent",
+    "codeSystem" : "HL70502",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

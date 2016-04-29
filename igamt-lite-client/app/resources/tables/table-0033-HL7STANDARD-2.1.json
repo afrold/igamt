@@ -1,0 +1,270 @@
+{
+  "type" : "table",
+  "sectionPosition" : 63,
+  "id" : "565f3ab7d4c6e52cfd448300",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0033",
+  "name" : "ROUTE",
+  "description" : "ROUTE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448301",
+    "value" : "AP",
+    "label" : "Apply externally",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448302",
+    "value" : "CH",
+    "label" : "Chew",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448303",
+    "value" : "DU",
+    "label" : "Dust",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448304",
+    "value" : "EA",
+    "label" : "Ear",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448305",
+    "value" : "EY",
+    "label" : "Eye",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448306",
+    "value" : "IA",
+    "label" : "Intro-arterial",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448307",
+    "value" : "ID",
+    "label" : "Intra-dermal",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448308",
+    "value" : "IF",
+    "label" : "Infiltrate",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448309",
+    "value" : "IH",
+    "label" : "Inhalation",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44830a",
+    "value" : "IM",
+    "label" : "Intra-muscular",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44830b",
+    "value" : "IN",
+    "label" : "Intra-nasal",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44830c",
+    "value" : "IR",
+    "label" : "Irrigate",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44830d",
+    "value" : "IS",
+    "label" : "Inserted",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44830e",
+    "value" : "IT",
+    "label" : "Intrathecal",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44830f",
+    "value" : "IV",
+    "label" : "Intravenous",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448310",
+    "value" : "NB",
+    "label" : "Nebulized",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448311",
+    "value" : "NG",
+    "label" : "Nathogasic",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448312",
+    "value" : "PA",
+    "label" : "Peri-anally",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448313",
+    "value" : "PT",
+    "label" : "Paint",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448314",
+    "value" : "PU",
+    "label" : "IV push",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448315",
+    "value" : "RC",
+    "label" : "Rectally",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448316",
+    "value" : "SH",
+    "label" : "Shampoo",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448317",
+    "value" : "SL",
+    "label" : "Sublingual",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448318",
+    "value" : "SO",
+    "label" : "Soak",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448319",
+    "value" : "SS",
+    "label" : "IV soluset",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44831a",
+    "value" : "TP",
+    "label" : "Topically",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44831b",
+    "value" : "WA",
+    "label" : "Wash",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44831c",
+    "value" : "WI",
+    "label" : "Wipe",
+    "codeSystem" : "HL70033",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

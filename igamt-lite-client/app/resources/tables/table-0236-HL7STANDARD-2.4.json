@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 167,
+  "id" : "565f3ab6d4c6e52cfd443e4f",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0236",
+  "name" : "Event reported to",
+  "description" : "Event reported to",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e50",
+    "value" : "D",
+    "label" : "Distributor",
+    "codeSystem" : "HL70236",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e51",
+    "value" : "L",
+    "label" : "Local facility/user facility",
+    "codeSystem" : "HL70236",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e52",
+    "value" : "M",
+    "label" : "Manufacturer",
+    "codeSystem" : "HL70236",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443e53",
+    "value" : "R",
+    "label" : "Regulatory agency",
+    "codeSystem" : "HL70236",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

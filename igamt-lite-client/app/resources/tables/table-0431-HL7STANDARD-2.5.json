@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 285,
+  "id" : "565f3ab6d4c6e52cfd440ff5",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0431",
+  "name" : "Recreational Drug Use Code",
+  "description" : "Recreational Drug Use Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.431",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ff6",
+    "value" : "A",
+    "label" : "Alcohol",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ff7",
+    "value" : "C",
+    "label" : "Tobacco - chewed",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ff8",
+    "value" : "K",
+    "label" : "Kava",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ff9",
+    "value" : "M",
+    "label" : "Marijuana",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ffa",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ffb",
+    "value" : "T",
+    "label" : "Tobacco - smoked",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ffc",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70431",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

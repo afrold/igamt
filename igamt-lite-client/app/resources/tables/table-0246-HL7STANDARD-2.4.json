@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 184,
+  "id" : "565f3ab6d4c6e52cfd44304a",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0246",
+  "name" : "Product available for inspection",
+  "description" : "Product available for inspection",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

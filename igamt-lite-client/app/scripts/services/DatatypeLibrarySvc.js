@@ -1,10 +1,10 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend, ngTreetableParams, userInfoService) {
-	
+angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend, userInfoService) {
+
 	var svc = this;
-	
+
 	var dtLibStruct = function(scope, children) {
 		this.id = null;
 		this.scope = scope;
@@ -12,29 +12,61 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
 	    this.sectionContents = null;
 		this.children = children;
 	};
-	
-	svc.getDataTypeLibrary = function(scope) {
-		console.log("datatype-library/getDataTypeLibraryByScope scope=" + scope);
-		return $http.post(
-				'api/datatype-library/getDataTypeLibraryByScope', scope)
+
+  svc.getHL7Versions = function() {
+		return $http.get(
+				'api/datatype-library/findHl7Versions')
 				.then(function(response) {
-//					console.log("response" + JSON.stringify(response));
+					console.log("response" + JSON.stringify(response));
 					return angular.fromJson(response.data);
 				});
+  };
+
+	svc.getDataTypeLibraryByScopes = function(scopes) {
+		console.log("datatype-library/findByScopes scopes=" + scopes);
+        return $http.post(
+            'api/datatype-library/findByScopes', angular.toJson(scopes))
+            .then(function(response) {
+    //					console.log("response" + JSON.stringify(response));
+              return angular.fromJson(response.data);
+            });
 	};
-	
-//	svc.assembleDatatypeLibrary = function(datatypeStruct) {
-//		return new ngTreetableParams({
-//			getNodes : function(parent) {
-//				return _.sortBy(datatypeStruct.children, 'label');
-//
-//			},
-//	        getTemplate : function(node) {
-//	            return 'dataTypeNode.html';
-//	        }
-//		});
-//	};
-	
+
+	svc.getDataTypeLibraryByScopesAndVersion = function(scope, hl7Version) {
+		console.log("datatype-library/findLibraryByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
+        var scopesAndVersion = {
+          "scopes" : [scopes],
+          "hl7Version" : hl7Version
+        };
+        return $http.post(
+            'api/datatype-library/findLibraryByScopesAndVersion', angular.toJson(scopesAndVersion))
+            .then(function(response) {
+    //					console.log("response" + JSON.stringify(response));
+              return angular.fromJson(response.data);
+            });
+	};
+
+  svc.getDatatypesByLibrary = function(dtLibId) {
+        return $http.get(
+            'api/datatype-library/' + dtLibId + '/datatypes')
+            .then(function(response) {
+    //					console.log("response" + JSON.stringify(response));
+              return angular.fromJson(response.data);
+            });
+  }
+
+  svc.getDatatypesByScopeAndVersion = function(scope, hl7Version) {
+        var scopeAndVersion = [];
+        scopeAndVersion.push(scope);
+        scopeAndVersion.push(hl7Version);
+          return $http.post(
+              'api/datatype-library/findByScopeAndVersion', angular.toJson(scopeAndVersion))
+              .then(function(response) {
+      //					console.log("response" + JSON.stringify(response));
+                return angular.fromJson(response.data);
+				});
+  }
+
 	svc.append = function(fromchildren, toChildren) {
 		angular.foreach(fromchildren, function(child) {
 			toChildren.push(child);
@@ -45,12 +77,23 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
 	svc.createUpdate = function(scope, children) {
 		var dtlrw = new dtLibStruct(scope, sortedChildren);
 	};
-	
+
+	svc.create = function(hl7Version, scope, name, ext) {
+    var dtlcw = { "hl7Version" : hl7Version,
+                  "scope" : scope,
+                  "name" : name,
+                  "ext" : ext,
+                  "accountId" : userInfoService.getAccountID()};
+		return $http.post(
+			'api/datatype-library/create', dtlcw).then(function(response) {
+			return angular.fromJson(response.data.children)});
+	};
+
 	svc.save = function(datatypeLibrary) {
 		return $http.post(
 			'api/datatype-library/save', datatypeLibrary).then(function(response) {
 			return angular.fromJson(response.data.children)});
 	};
-	
+
 	return svc;
 });

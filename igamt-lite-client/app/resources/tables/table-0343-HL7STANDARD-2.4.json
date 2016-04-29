@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 89,
+  "id" : "565f3ab6d4c6e52cfd443d92",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0343",
+  "name" : "Military handicapped program code",
+  "description" : "Military handicapped program code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

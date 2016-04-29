@@ -1,11 +1,13 @@
 {
   "type" : "datatypes",
   "sectionPosition" : 2,
-  "sectionTitle" : "Datatypes",
-  "sectionDescription" : null,
-  "sectionContents" : null,
+  "sectionTitle" : "Title",
+  "sectionDescription" : "Desc",
+  "sectionContents" : "Contents",
   "id" : "565f3ab6d4c6e52cfd43ec4a",
   "accountId" : null,
+  "metaData" : { "hl7Version" : "2.2.2" },
+  "scope" : "MASTER",
   "children" : [ {
     "type" : "datatype",
     "sectionPosition" : 46,

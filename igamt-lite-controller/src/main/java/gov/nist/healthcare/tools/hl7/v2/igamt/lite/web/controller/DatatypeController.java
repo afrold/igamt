@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeSaveResponse;
@@ -50,28 +49,24 @@ public class DatatypeController extends CommonController {
 	@Autowired
 	AccountRepository accountRepository;
 
-	@RequestMapping(value = "/{quantum}", method = RequestMethod.GET, produces = "application/json")
-	public List<Datatype> datatypes(@PathVariable("quantum") String quantum) {
+	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
+	public List<Datatype> datatypes() {
 		log.info("Fetching all Datatypes...");
-		Constant.QUANTUM quantum1 = Constant.QUANTUM.valueOf(quantum);
-		List<Datatype> result = datatypeService.findAll(quantum1);
+		List<Datatype> result = datatypeService.findAll();
 		return result;
 	}
 
-	@RequestMapping(value = "/{dtLibId}/{quantum}", method = RequestMethod.GET, produces = "application/json")
-	public Datatype getDatatypeByLibrary(@PathVariable("dtLibId") String dtLibId,
-			@PathVariable("quantum") String quantum) {
-		log.info("Fetching datatypeByLibrary..." + dtLibId);
-		Constant.QUANTUM quantum1 = Constant.QUANTUM.valueOf(quantum);
-		Datatype result = datatypeService.findById(dtLibId, quantum1);
+	@RequestMapping(value = "/findByIds", method = RequestMethod.POST, produces = "application/json")
+	public List<Datatype> findByIds(@RequestBody List<String> ids) {
+		log.info("Fetching datatypeByIds..." + ids);
+		List<Datatype> result = datatypeService.findByIds(ids);
 		return result;
 	}
 
-	@RequestMapping(value = "/{id}/{quantum}", method = RequestMethod.GET, produces = "application/json")
-	public Datatype getDatatypeById(@PathVariable("id") String id, @PathVariable("quantum") String quantum) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+	public Datatype getDatatypeById(@PathVariable("id") String id) {
 		log.info("Fetching datatypeById..." + id);
-		Constant.QUANTUM quantum1 = Constant.QUANTUM.valueOf(quantum);
-		Datatype result = datatypeService.findById(id, quantum1);
+		Datatype result = datatypeService.findById(id);
 		return result;
 	}
 

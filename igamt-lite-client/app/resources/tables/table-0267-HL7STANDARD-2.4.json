@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 351,
+  "id" : "565f3ab6d4c6e52cfd443413",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0267",
+  "name" : "Days of the week",
+  "description" : "Days of the week",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443414",
+    "value" : "FRI",
+    "label" : "Friday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443415",
+    "value" : "MON",
+    "label" : "Monday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443416",
+    "value" : "SAT",
+    "label" : "Saturday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443417",
+    "value" : "SUN",
+    "label" : "Sunday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443418",
+    "value" : "THU",
+    "label" : "Thursday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443419",
+    "value" : "TUE",
+    "label" : "Tuesday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44341a",
+    "value" : "WED",
+    "label" : "Wednesday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

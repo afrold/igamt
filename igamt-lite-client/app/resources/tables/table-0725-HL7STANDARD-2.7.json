@@ -1,0 +1,99 @@
+{
+  "type" : "table",
+  "sectionPosition" : 410,
+  "id" : "569eac0dd4c623dc65507c45",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0725",
+  "name" : "Mood Codes",
+  "description" : "Mood Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c46",
+    "value" : "APT",
+    "label" : "Appointment",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c47",
+    "value" : "ARQ",
+    "label" : "Appointment Request",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c48",
+    "value" : "EVN",
+    "label" : "Event",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c49",
+    "value" : "EVN.CRT",
+    "label" : "Event Criterion",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c4a",
+    "value" : "EXP",
+    "label" : "Expectation",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c4b",
+    "value" : "INT",
+    "label" : "Intent",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c4c",
+    "value" : "PRMS",
+    "label" : "Promise",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c4d",
+    "value" : "PRP",
+    "label" : "Proposal",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c4e",
+    "value" : "RQO",
+    "label" : "Request-Order",
+    "codeSystem" : "HL70725",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

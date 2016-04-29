@@ -1,0 +1,144 @@
+{
+  "type" : "table",
+  "sectionPosition" : 419,
+  "id" : "569eac0dd4c623dc65507661",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0270",
+  "name" : "Document Type",
+  "description" : "Document Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507662",
+    "value" : "AR",
+    "label" : "Autopsy report",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507663",
+    "value" : "CD",
+    "label" : "Cardiodiagnostics",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507664",
+    "value" : "CN",
+    "label" : "Consultation",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507665",
+    "value" : "DI",
+    "label" : "Diagnostic imaging",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507666",
+    "value" : "DS",
+    "label" : "Discharge summary",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507667",
+    "value" : "ED",
+    "label" : "Emergency department report",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507668",
+    "value" : "HP",
+    "label" : "History and physical examination",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507669",
+    "value" : "OP",
+    "label" : "Operative report",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550766a",
+    "value" : "PC",
+    "label" : "Psychiatric consultation",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550766b",
+    "value" : "PH",
+    "label" : "Psychiatric history and physical examination",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550766c",
+    "value" : "PN",
+    "label" : "Procedure note",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550766d",
+    "value" : "PR",
+    "label" : "Progress note",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550766e",
+    "value" : "SP",
+    "label" : "Surgical pathology",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550766f",
+    "value" : "TS",
+    "label" : "Transfer summary",
+    "codeSystem" : "HL70270",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

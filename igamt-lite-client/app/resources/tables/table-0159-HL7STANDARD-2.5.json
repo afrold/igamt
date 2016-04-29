@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 376,
+  "id" : "565f3ab6d4c6e52cfd4409c6",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0159",
+  "name" : "Diet Code Specification Type",
+  "description" : "Diet Code Specification Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.159",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409c7",
+    "value" : "D",
+    "label" : "Diet",
+    "codeSystem" : "HL70159",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409c8",
+    "value" : "P",
+    "label" : "Preference",
+    "codeSystem" : "HL70159",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409c9",
+    "value" : "S",
+    "label" : "Supplement",
+    "codeSystem" : "HL70159",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

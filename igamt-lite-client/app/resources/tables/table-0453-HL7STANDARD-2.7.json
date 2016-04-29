@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 454,
+  "id" : "569eac0dd4c623dc65508337",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0453",
+  "name" : "Health Care Provider Classification",
+  "description" : "Health Care Provider Classification",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508338",
+    "value" : "SUGGESTION",
+    "label" : "ANSI ASC X12 Health Care Provider Taxonomy, Level 2 -  Classification",
+    "codeSystem" : "HL70453",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

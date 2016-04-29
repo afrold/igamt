@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 333,
+  "id" : "565f3ab6d4c6e52cfd441349",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0216",
+  "name" : "Patient Status Code",
+  "description" : "Patient Status Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.216",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44134a",
+    "value" : "AI",
+    "label" : "Active Inpatient",
+    "codeSystem" : "HL70216",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44134b",
+    "value" : "DI",
+    "label" : "Discharged Inpatient",
+    "codeSystem" : "HL70216",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

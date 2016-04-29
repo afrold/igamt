@@ -1,0 +1,720 @@
+{
+  "type" : "table",
+  "sectionPosition" : 398,
+  "id" : "565f3ab6d4c6e52cfd443648",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0396",
+  "name" : "Coding System",
+  "description" : "Coding System",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443649",
+    "value" : "99zzz or L",
+    "label" : "Local general code (where z is an alphanumeric character)",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44364a",
+    "value" : "ACR",
+    "label" : "American College of Radiology finding codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44364b",
+    "value" : "ART",
+    "label" : "WHO Adverse Reaction Terms",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44364c",
+    "value" : "AS4",
+    "label" : "ASTM E1238/ E1467 Universal",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44364d",
+    "value" : "AS4E",
+    "label" : "AS4 Neurophysiology Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44364e",
+    "value" : "ATC",
+    "label" : "American Type Culture Collection",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44364f",
+    "value" : "C4",
+    "label" : "CPT-4",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443650",
+    "value" : "C5",
+    "label" : "CPT-5",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443651",
+    "value" : "CAS",
+    "label" : "Chemical abstract codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443652",
+    "value" : "CD2",
+    "label" : "CDT-2 Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443653",
+    "value" : "CDCA",
+    "label" : "CDC Analyte Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443654",
+    "value" : "CDCM",
+    "label" : "CDC Methods/Instruments Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443655",
+    "value" : "CDS",
+    "label" : "CDC Surveillance",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443656",
+    "value" : "CE",
+    "label" : "CEN ECG diagnostic codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443657",
+    "value" : "CLP",
+    "label" : "CLIP",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443658",
+    "value" : "CPTM",
+    "label" : "CPT Modifier Code",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443659",
+    "value" : "CST",
+    "label" : "COSTART",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44365a",
+    "value" : "CVX",
+    "label" : "CDC Vaccine Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44365b",
+    "value" : "DCL",
+    "label" : "DICOM Class Label",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44365c",
+    "value" : "DCM",
+    "label" : "DICOM modality codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44365d",
+    "value" : "DQL",
+    "label" : "DICOM Query Label",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44365e",
+    "value" : "E",
+    "label" : "EUCLIDES",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44365f",
+    "value" : "E5",
+    "label" : "Euclides  quantity codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443660",
+    "value" : "E6",
+    "label" : "Euclides Lab method codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443661",
+    "value" : "E7",
+    "label" : "Euclides Lab equipment codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443662",
+    "value" : "ENZC",
+    "label" : "Enzyme Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443663",
+    "value" : "FDDC",
+    "label" : "First DataBank Drug Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443664",
+    "value" : "FDDX",
+    "label" : "First DataBank Diagnostic Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443665",
+    "value" : "FDK",
+    "label" : "FDA K10",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443666",
+    "value" : "HB",
+    "label" : "HIBCC",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443667",
+    "value" : "HCPCS",
+    "label" : "HCFA Common Procedure Coding System",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443668",
+    "value" : "HHC",
+    "label" : "Home Health Care",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443669",
+    "value" : "HI",
+    "label" : "Health Outcomes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44366a",
+    "value" : "HL7nnnn",
+    "label" : "HL7 Defined Codes where nnnn is the HL7 table number",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44366b",
+    "value" : "HPC",
+    "label" : "HCFA Procedure Codes (HCPCS)",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44366c",
+    "value" : "I10",
+    "label" : "ICD-10",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44366d",
+    "value" : "I10P",
+    "label" : "ICD-10  Procedure Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44366e",
+    "value" : "I9",
+    "label" : "ICD9",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44366f",
+    "value" : "I9C",
+    "label" : "ICD-9CM",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443670",
+    "value" : "IBT",
+    "label" : "ISBT",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443671",
+    "value" : "IC2",
+    "label" : "ICHPPC-2",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443672",
+    "value" : "ICDO",
+    "label" : "International Classification of Diseases for Oncology",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443673",
+    "value" : "ICS",
+    "label" : "ICCS",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443674",
+    "value" : "ICSD",
+    "label" : "International Classification of Sleep Disorders",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443675",
+    "value" : "ISOnnnn",
+    "label" : "ISO Defined Codes where nnnn is the ISO table number",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443676",
+    "value" : "IUPC",
+    "label" : "IUPAC/IFCC Component Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443677",
+    "value" : "IUPP",
+    "label" : "IUPAC/IFCC Property Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443678",
+    "value" : "JC8",
+    "label" : "Japanese Chemistry",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443679",
+    "value" : "LB",
+    "label" : "Local billing code",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44367a",
+    "value" : "LN",
+    "label" : "Logical Observation Identifier Names and Codes (LOINC(r))",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44367b",
+    "value" : "MCD",
+    "label" : "Medicaid",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44367c",
+    "value" : "MCR",
+    "label" : "Medicare",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44367d",
+    "value" : "MDDX",
+    "label" : "Medispan Diagnostic Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44367e",
+    "value" : "MEDC",
+    "label" : "Medical Economics Drug Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44367f",
+    "value" : "MEDR",
+    "label" : "Medical Dictionary for Drug Regulatory Affairs (MEDDRA)",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443680",
+    "value" : "MEDX",
+    "label" : "Medical Economics Diagnostic Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443681",
+    "value" : "MGPI",
+    "label" : "Medispan GPI",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443682",
+    "value" : "MVX",
+    "label" : "CDC Vaccine Manufacturer Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443683",
+    "value" : "NDA",
+    "label" : "NANDA",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443684",
+    "value" : "NDC",
+    "label" : "National drug codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443685",
+    "value" : "NIC",
+    "label" : "Nursing Interventions Classification",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443686",
+    "value" : "NPI",
+    "label" : "National Provider Identifier",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443687",
+    "value" : "OHA",
+    "label" : "Omaha System",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443688",
+    "value" : "POS",
+    "label" : "POS Codes",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443689",
+    "value" : "RC",
+    "label" : "Read Classification",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44368a",
+    "value" : "SDM",
+    "label" : "SNOMED- DICOM Microglossary",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44368b",
+    "value" : "SNM",
+    "label" : "Systemized Nomenclature of Medicine (SNOMED)",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44368c",
+    "value" : "SNM3",
+    "label" : "SNOMED International",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44368d",
+    "value" : "SNT",
+    "label" : "SNOMED topology codes (anatomic sites)",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44368e",
+    "value" : "UC",
+    "label" : "UCDS",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44368f",
+    "value" : "UMD",
+    "label" : "MDNS",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443690",
+    "value" : "UML",
+    "label" : "Unified Medical Language",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443691",
+    "value" : "UPC",
+    "label" : "Universal Product Code",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443692",
+    "value" : "UPIN",
+    "label" : "UPIN",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443693",
+    "value" : "W1",
+    "label" : "WHO record # drug codes (6 digit)",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443694",
+    "value" : "W2",
+    "label" : "WHO record # drug codes (8 digit)",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443695",
+    "value" : "W4",
+    "label" : "WHO record # code with ASTM extension",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443696",
+    "value" : "WC",
+    "label" : "WHO ATC",
+    "codeSystem" : "HL70396",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

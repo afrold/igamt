@@ -1,0 +1,171 @@
+{
+  "type" : "table",
+  "sectionPosition" : 292,
+  "id" : "569eac0ed4c623dc6550ba13",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0112",
+  "name" : "Discharge Disposition",
+  "description" : "Discharge Disposition",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.112",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba14",
+    "value" : "01",
+    "label" : "Discharged to home or self care (routine discharge)",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba15",
+    "value" : "02",
+    "label" : "Discharged/transferred to another short term general hospital for inpatient care",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba16",
+    "value" : "03",
+    "label" : "Discharged/transferred to skilled nursing facility (SNF)",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba17",
+    "value" : "04",
+    "label" : "Discharged/transferred to an intermediate care facility (ICF)",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba18",
+    "value" : "05",
+    "label" : "Discharged/transferred to another type of institution for inpatient care or referred for outpatient services to another institution",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba19",
+    "value" : "06",
+    "label" : "Discharged/transferred to home under care of organized home health service organization",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba1a",
+    "value" : "07",
+    "label" : "Left against medical advice or discontinued care",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba1b",
+    "value" : "08",
+    "label" : "Discharged/transferred to home under care of Home IV provider",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba1c",
+    "value" : "09",
+    "label" : "Admitted as an inpatient to this hospital",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba1d",
+    "value" : "10 ... 19",
+    "label" : "Discharge to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba1e",
+    "value" : "20",
+    "label" : "Expired (i.e. dead)",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba1f",
+    "value" : "21 ... 29",
+    "label" : "Expired to be defined at state level, if necessary",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba20",
+    "value" : "30",
+    "label" : "Still patient or expected to return for outpatient services (i.e. still a patient)",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba21",
+    "value" : "31 ... 39",
+    "label" : "Still patient to be defined at state level, if necessary  (i.e. still a patient)",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba22",
+    "value" : "40",
+    "label" : "Expired (i.e. died) at home",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba23",
+    "value" : "41",
+    "label" : "Expired (i.e. died) in a medical facility; e.g., hospital, SNF, ICF, or free standing hospice",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ba24",
+    "value" : "42",
+    "label" : "Expired (i.e. died)  - place unknown",
+    "codeSystem" : "HL70112",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

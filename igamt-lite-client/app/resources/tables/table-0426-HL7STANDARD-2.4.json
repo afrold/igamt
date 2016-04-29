@@ -1,0 +1,153 @@
+{
+  "type" : "table",
+  "sectionPosition" : 242,
+  "id" : "565f3ab6d4c6e52cfd443aac",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0426",
+  "name" : "Blood product code",
+  "description" : "Blood product code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443aad",
+    "value" : "CRYO",
+    "label" : "Cryoprecipitated AHF",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443aae",
+    "value" : "CRYOP",
+    "label" : "Pooled Cryopecipitate",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443aaf",
+    "value" : "FFP",
+    "label" : "Fresh Frozen Plasma",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ab0",
+    "value" : "FFPTH",
+    "label" : "Fresh Frozen Plasma - Thawed",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ab1",
+    "value" : "PC",
+    "label" : "Packed Cells",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ab2",
+    "value" : "PCA",
+    "label" : "Autologous Packed Cells",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ab3",
+    "value" : "PCNEO",
+    "label" : "Packed Cells - Neonatal",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ab4",
+    "value" : "PCW",
+    "label" : "Washed Packed Cells",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ab5",
+    "value" : "PLT",
+    "label" : "Platelet Concentrate",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ab6",
+    "value" : "PLTNEO",
+    "label" : "Reduced Volume Platelets",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ab7",
+    "value" : "PLTP",
+    "label" : "Pooled Platelets",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ab8",
+    "value" : "PLTPH",
+    "label" : "Platelet Pheresis",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ab9",
+    "value" : "PLTPHLR",
+    "label" : "Leukoreduced Platelet Pheresis",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443aba",
+    "value" : "RWB",
+    "label" : "Reconstituted Whole Blood",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443abb",
+    "value" : "WBA",
+    "label" : "Autologous Whole Blood",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

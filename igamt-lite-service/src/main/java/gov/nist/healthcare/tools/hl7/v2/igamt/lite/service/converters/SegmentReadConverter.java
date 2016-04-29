@@ -12,7 +12,6 @@ import com.mongodb.DBObject;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Case;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DynamicMapping;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Mapping;
@@ -33,7 +32,6 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 	
 	@Override
 	public Segment convert(DBObject source) {
-		log.info("Segment.convert==>");
 		Segment seg = new Segment();
 		seg.setId(readMongoId(source)); 
 		seg.setType((String) source.get(TYPE));
@@ -44,8 +42,7 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 		seg.setText1(readString(source, TEXT_1));
 		seg.setText2(readString(source, TEXT_2));
 		seg.setSectionPosition((Integer) source.get(SECTION_POSITION));
-		seg.setScope(SCOPE.valueOf((String)source.get(SCOPE_)));
-		seg.setHl7Version((String)source.get(HL7_VERSION));
+		seg.setScope(Constant.SCOPE.valueOf((String) source.get(SCOPE_)));
 		BasicDBList libIdsObjects = (BasicDBList) source.get(LIB_IDS);
 		for (Object libIdObj : libIdsObjects) {
 			seg.getLibIds().add((String) libIdObj);
@@ -88,7 +85,6 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 			DynamicMapping dyn = dynamicMapping(dynamicMappingDBObject);
 			seg.setDynamicMapping(dyn);
 		}
-		log.info("<==convert");
 
 		return seg;
 	}

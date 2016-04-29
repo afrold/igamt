@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 188,
+  "id" : "565f3ab7d4c6e52cfd447c80",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0008",
+  "name" : "ACKNOWLEDGMENT CODE",
+  "description" : "ACKNOWLEDGMENT CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c81",
+    "value" : "AA",
+    "label" : "Application accept (original mode) / Application acknowledgement: accept (enhanced mode)",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c82",
+    "value" : "AE",
+    "label" : "Application error (original mode) / Application acknowledgement: error (enhanced mode)",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c83",
+    "value" : "AR",
+    "label" : "Application reject (original mode) / Application acknowledgement: reject (enhanced mode)",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c84",
+    "value" : "CA",
+    "label" : "Bei Eingangsprüfung akzeptiert (\"committed\")",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c85",
+    "value" : "CE",
+    "label" : "Fehler bei Eingangsprüfung",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c86",
+    "value" : "CR",
+    "label" : "Bei Eingangsprüfung abgelehnt",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

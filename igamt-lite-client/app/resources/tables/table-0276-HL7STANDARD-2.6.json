@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 219,
+  "id" : "569eac0ed4c623dc6550add7",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0276",
+  "name" : "Appointment reason codes",
+  "description" : "Appointment reason codes",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.276",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550add8",
+    "value" : "CHECKUP",
+    "label" : "A routine check-up, such as an annual physical",
+    "codeSystem" : "HL70276",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550add9",
+    "value" : "EMERGENCY",
+    "label" : "Emergency appointment",
+    "codeSystem" : "HL70276",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550adda",
+    "value" : "FOLLOWUP",
+    "label" : "A follow up visit from a previous appointment",
+    "codeSystem" : "HL70276",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550addb",
+    "value" : "ROUTINE",
+    "label" : "Routine appointment - default if not valued",
+    "codeSystem" : "HL70276",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550addc",
+    "value" : "WALKIN",
+    "label" : "A previously unscheduled walk-in visit",
+    "codeSystem" : "HL70276",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

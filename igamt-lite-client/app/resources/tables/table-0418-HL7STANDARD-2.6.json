@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 238,
+  "id" : "569eac0ed4c623dc6550b30a",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0418",
+  "name" : "Procedure Priority",
+  "description" : "Procedure Priority",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.418",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b30b",
+    "value" : "...",
+    "label" : "",
+    "codeSystem" : "HL70418",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b30c",
+    "value" : "0",
+    "label" : "the admitting procedure",
+    "codeSystem" : "HL70418",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b30d",
+    "value" : "1",
+    "label" : "the primary procedure",
+    "codeSystem" : "HL70418",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b30e",
+    "value" : "2",
+    "label" : "for ranked secondary procedures",
+    "codeSystem" : "HL70418",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

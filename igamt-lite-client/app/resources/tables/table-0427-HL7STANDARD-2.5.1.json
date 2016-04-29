@@ -1,0 +1,144 @@
+{
+  "type" : "table",
+  "sectionPosition" : 56,
+  "id" : "569eac0fd4c623dc6550e56f",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0427",
+  "name" : "Risk Management Incident Code",
+  "description" : "Risk Management Incident Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.427",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e570",
+    "value" : "B",
+    "label" : "Body fluid exposure",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e571",
+    "value" : "C",
+    "label" : "Contaminated Substance",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e572",
+    "value" : "D",
+    "label" : "Diet Errors",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e573",
+    "value" : "E",
+    "label" : "Equipment problem",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e574",
+    "value" : "F",
+    "label" : "Patient fell (not from bed)",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e575",
+    "value" : "H",
+    "label" : "Patient fell from bed",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e576",
+    "value" : "I",
+    "label" : "Infusion error",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e577",
+    "value" : "J",
+    "label" : "Foreign object left during surgery",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e578",
+    "value" : "K",
+    "label" : "Sterile precaution violated",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e579",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e57a",
+    "value" : "P",
+    "label" : "Procedure error",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e57b",
+    "value" : "R",
+    "label" : "Pharmaceutical error",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e57c",
+    "value" : "S",
+    "label" : "Suicide Attempt",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e57d",
+    "value" : "T",
+    "label" : "Transfusion error",
+    "codeSystem" : "HL70427",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

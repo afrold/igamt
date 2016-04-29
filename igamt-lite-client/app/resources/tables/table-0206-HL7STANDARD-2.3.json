@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 184,
+  "id" : "565f3ab7d4c6e52cfd447406",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0206",
+  "name" : "Segment Action Code",
+  "description" : "Segment Action Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447407",
+    "value" : "A",
+    "label" : "Add/Insert",
+    "codeSystem" : "HL70206",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447408",
+    "value" : "D",
+    "label" : "Delete",
+    "codeSystem" : "HL70206",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447409",
+    "value" : "U",
+    "label" : "Update",
+    "codeSystem" : "HL70206",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

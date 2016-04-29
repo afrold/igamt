@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 28,
+  "id" : "565f3ab7d4c6e52cfd4483c9",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0085",
+  "name" : "OBSERVATION RESULT STATUS",
+  "description" : "OBSERVATION RESULT STATUS",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483ca",
+    "value" : "D",
+    "label" : "Delete previously transmitted observation",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483cb",
+    "value" : "F",
+    "label" : "Complete/final results (entered and verified)",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483cc",
+    "value" : "I",
+    "label" : "Specimen in lab--results pending",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483cd",
+    "value" : "R",
+    "label" : "Results entered - not verified",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483ce",
+    "value" : "S",
+    "label" : "Partial results",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

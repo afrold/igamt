@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 150,
+  "id" : "565f3ab6d4c6e52cfd443af4",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0311",
+  "name" : "Job status",
+  "description" : "Job status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443af5",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70311",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443af6",
+    "value" : "P",
+    "label" : "Permanent",
+    "codeSystem" : "HL70311",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443af7",
+    "value" : "T",
+    "label" : "Temporary",
+    "codeSystem" : "HL70311",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443af8",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70311",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

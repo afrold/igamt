@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 76,
+  "id" : "569eac0ed4c623dc6550b983",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0480",
+  "name" : "Pharmacy Order Types",
+  "description" : "Pharmacy Order Types",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.480",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b984",
+    "value" : "M",
+    "label" : "Medication",
+    "codeSystem" : "HL70480",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b985",
+    "value" : "O",
+    "label" : "Other solution as medication orders",
+    "codeSystem" : "HL70480",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b986",
+    "value" : "S",
+    "label" : "IV Large Volume Solutions",
+    "codeSystem" : "HL70480",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 525,
+  "id" : "569eac0ed4c623dc6550a8d5",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0242",
+  "name" : "Primary Observer's Qualification",
+  "description" : "Primary Observer's Qualification",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.242",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8d6",
+    "value" : "C",
+    "label" : "Health care consumer/patient",
+    "codeSystem" : "HL70242",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8d7",
+    "value" : "H",
+    "label" : "Other health professional",
+    "codeSystem" : "HL70242",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8d8",
+    "value" : "L",
+    "label" : "Lawyer/attorney",
+    "codeSystem" : "HL70242",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8d9",
+    "value" : "M",
+    "label" : "Mid-level professional (nurse, nurse practitioner, physician's assistant)",
+    "codeSystem" : "HL70242",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8da",
+    "value" : "O",
+    "label" : "Other non-health professional",
+    "codeSystem" : "HL70242",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8db",
+    "value" : "P",
+    "label" : "Physician (osteopath, homeopath)",
+    "codeSystem" : "HL70242",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a8dc",
+    "value" : "R",
+    "label" : "Pharmacist",
+    "codeSystem" : "HL70242",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

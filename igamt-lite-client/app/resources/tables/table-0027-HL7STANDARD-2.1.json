@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 120,
+  "id" : "565f3ab7d4c6e52cfd4482dd",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0027",
+  "name" : "PRIORITY (COMPONENT 6 QTY/TIMING[735])",
+  "description" : "PRIORITY (COMPONENT 6 QTY/TIMING[735])",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482de",
+    "value" : "A",
+    "label" : "ASAP. Fill after STAT orders.",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482df",
+    "value" : "S",
+    "label" : "Stat. Required immediately.",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482e0",
+    "value" : "T",
+    "label" : "Timed collection",
+    "codeSystem" : "HL70027",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 351,
+  "id" : "569eac0fd4c623dc6550e3e9",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0089",
+  "name" : "Procedure Coding Method",
+  "description" : "Procedure Coding Method",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.89",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e3ea",
+    "value" : "......",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70089",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 91,
+  "id" : "565f3ab7d4c6e52cfd4483a6",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0106",
+  "name" : "QUERY FORMAT CODE",
+  "description" : "QUERY FORMAT CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4483a7",
+    "value" : "R",
+    "label" : "Response in Record-oriented format",
+    "codeSystem" : "HL70106",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

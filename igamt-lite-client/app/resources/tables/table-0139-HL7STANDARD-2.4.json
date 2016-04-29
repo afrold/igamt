@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 29,
+  "id" : "565f3ab6d4c6e52cfd443280",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0139",
+  "name" : "Employer information data",
+  "description" : "Employer information data",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

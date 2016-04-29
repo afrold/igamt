@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 0,
+  "id" : "565f3ab7d4c6e52cfd446fdc",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0253",
+  "name" : "Indirect Exposure Mechanism",
+  "description" : "Indirect Exposure Mechanism",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fdd",
+    "value" : "B",
+    "label" : "Breast milk",
+    "codeSystem" : "HL70253",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fde",
+    "value" : "F",
+    "label" : "Father",
+    "codeSystem" : "HL70253",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fdf",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70253",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fe0",
+    "value" : "P",
+    "label" : "Transplacental",
+    "codeSystem" : "HL70253",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446fe1",
+    "value" : "X",
+    "label" : "Blood product",
+    "codeSystem" : "HL70253",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

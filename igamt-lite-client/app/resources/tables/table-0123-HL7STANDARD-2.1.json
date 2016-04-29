@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 5,
+  "id" : "565f3ab7d4c6e52cfd448265",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0123",
+  "name" : "RESULT STATUS - OBR",
+  "description" : "RESULT STATUS - OBR",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448266",
+    "value" : "C",
+    "label" : "Correction of previously transmitted results",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448267",
+    "value" : "F",
+    "label" : "Final results - results stored & verified",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448268",
+    "value" : "I",
+    "label" : "Specimen in lab, not yet processed.",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448269",
+    "value" : "P",
+    "label" : "Preliminary results",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44826a",
+    "value" : "R",
+    "label" : "Results stored - not yet verified",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44826b",
+    "value" : "S",
+    "label" : "Procedure scheduled, not done",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44826c",
+    "value" : "Y",
+    "label" : "No order on record for this test",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44826d",
+    "value" : "Z",
+    "label" : "No record of this patient",
+    "codeSystem" : "HL70123",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

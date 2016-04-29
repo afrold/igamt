@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 202,
+  "id" : "565f3ab6d4c6e52cfd443f4e",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0239",
+  "name" : "Event expected",
+  "description" : "Event expected",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f4f",
+    "value" : "N",
+    "label" : "No",
+    "codeSystem" : "HL70239",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f50",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70239",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f51",
+    "value" : "Y",
+    "label" : "Yes",
+    "codeSystem" : "HL70239",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

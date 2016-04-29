@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 337,
+  "id" : "569eac0ed4c623dc6550b256",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0403",
+  "name" : "Language Ability",
+  "description" : "Language Ability",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.403",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b257",
+    "value" : "1",
+    "label" : "Read",
+    "codeSystem" : "HL70403",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b258",
+    "value" : "2",
+    "label" : "Write",
+    "codeSystem" : "HL70403",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b259",
+    "value" : "3",
+    "label" : "Speak",
+    "codeSystem" : "HL70403",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b25a",
+    "value" : "4",
+    "label" : "Understand",
+    "codeSystem" : "HL70403",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b25b",
+    "value" : "5",
+    "label" : "Sign",
+    "codeSystem" : "HL70403",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

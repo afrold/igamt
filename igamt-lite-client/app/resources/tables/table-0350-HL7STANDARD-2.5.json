@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 199,
+  "id" : "565f3ab6d4c6e52cfd4413f9",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0350",
+  "name" : "Occurrence code",
+  "description" : "Occurrence code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.350",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

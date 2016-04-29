@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 2,
+  "id" : "565f3ab7d4c6e52cfd4482d9",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0030",
+  "name" : "FREQUENCY CODE",
+  "description" : "FREQUENCY CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

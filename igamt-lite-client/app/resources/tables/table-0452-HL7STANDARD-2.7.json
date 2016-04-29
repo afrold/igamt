@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 462,
+  "id" : "569eac0dd4c623dc65508353",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0452",
+  "name" : "Health Care Provider Type Code",
+  "description" : "Health Care Provider Type Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508354",
+    "value" : "SUGGESTION",
+    "label" : "ANSI ASC X12 Health Care Provider Taxonomy, Level 1 - Type",
+    "codeSystem" : "HL70452",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

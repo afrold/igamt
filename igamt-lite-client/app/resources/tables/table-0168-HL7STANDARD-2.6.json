@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 411,
+  "id" : "569eac0ed4c623dc6550aed5",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0168",
+  "name" : "Processing priority",
+  "description" : "Processing priority",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.168",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aed6",
+    "value" : "A",
+    "label" : "As soon as possible (a priority lower than stat)",
+    "codeSystem" : "HL70168",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aed7",
+    "value" : "B",
+    "label" : "Do at bedside or portable (may be used with other codes)",
+    "codeSystem" : "HL70168",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aed8",
+    "value" : "C",
+    "label" : "Measure continuously (e.g., arterial line blood pressure)",
+    "codeSystem" : "HL70168",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aed9",
+    "value" : "P",
+    "label" : "Preoperative (to be done prior to surgery)",
+    "codeSystem" : "HL70168",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aeda",
+    "value" : "R",
+    "label" : "Routine",
+    "codeSystem" : "HL70168",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aedb",
+    "value" : "S",
+    "label" : "Stat (do immediately)",
+    "codeSystem" : "HL70168",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aedc",
+    "value" : "T",
+    "label" : "Timing critical (do as near as possible to requested time)",
+    "codeSystem" : "HL70168",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}
