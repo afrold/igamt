@@ -7,7 +7,7 @@
   "date" : null,
   "version" : null,
   "participants" : [ ],
-  "libIds" : [ "57212934d4c64f1ebfd3a6ca" ],
+  "libIds" : [ "5723765dda0805ce1eabda1c" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab7d4c6e52cfd4475ac",
@@ -66,5 +66,5 @@
   "description" : "daily deductible",
   "comment" : "",
   "usageNote" : "",
-  "status" : null
+  "status" : "PUBLISHED"
 }

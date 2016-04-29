@@ -7,7 +7,7 @@
   "date" : null,
   "version" : null,
   "participants" : [ ],
-  "libIds" : [ "57212935d4c64f1ebfd499c1" ],
+  "libIds" : [ "57237657da0805ce1eab6b54" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0dd4c623dc65508668",
@@ -18,5 +18,5 @@
   "description" : "Coded Value for User-Defined Tables",
   "comment" : "",
   "usageNote" : "",
-  "status" : null
+  "status" : "PUBLISHED"
 }

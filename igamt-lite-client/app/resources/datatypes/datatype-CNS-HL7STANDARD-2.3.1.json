@@ -7,7 +7,7 @@
   "date" : null,
   "version" : null,
   "participants" : [ ],
-  "libIds" : [ "57212934d4c64f1ebfd3bb5d" ],
+  "libIds" : [ "5723765cda0805ce1eabce35" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab7d4c6e52cfd446221",
@@ -194,5 +194,5 @@
   "description" : "Composite ID number and Name simplified",
   "comment" : "",
   "usageNote" : "",
-  "status" : null
+  "status" : "PUBLISHED"
 }

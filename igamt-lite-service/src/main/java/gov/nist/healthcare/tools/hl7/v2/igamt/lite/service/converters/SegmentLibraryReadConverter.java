@@ -57,7 +57,6 @@ public class SegmentLibraryReadConverter extends AbstractReadConverter<DBObject,
 		BasicDBList libDBObjects = (BasicDBList) source.get(CHILDREN);
 		lib.setChildren(new HashSet<SegmentLink>());
 		
-		SegmentReadConverter segCnv = new SegmentReadConverter();
 		if (libDBObjects != null) {
 			for (Object childObj : libDBObjects) {
 				DBObject dbObj = (DBObject)childObj;

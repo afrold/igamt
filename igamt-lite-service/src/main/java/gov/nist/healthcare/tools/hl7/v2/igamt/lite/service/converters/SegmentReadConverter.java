@@ -22,18 +22,18 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
 
 @ReadingConverter
-public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segment> {
+public class SegmentReadConverter extends AbstractReadConverter<DBObject, Segment> {
 
 	private static final Logger log = LoggerFactory.getLogger(SegmentReadConverter.class);
-		
+
 	public SegmentReadConverter() {
 		log.info("SegmentReadConverter Read Converter Created");
 	}
-	
+
 	@Override
 	public Segment convert(DBObject source) {
 		Segment seg = new Segment();
-		seg.setId(readMongoId(source)); 
+		seg.setId(readMongoId(source));
 		seg.setType((String) source.get(TYPE));
 		seg.setLabel((String) source.get(LABEL));
 		seg.setName(((String) source.get(NAME)));
@@ -43,9 +43,12 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 		seg.setText2(readString(source, TEXT_2));
 		seg.setSectionPosition((Integer) source.get(SECTION_POSITION));
 		seg.setScope(Constant.SCOPE.valueOf((String) source.get(SCOPE_)));
+
 		BasicDBList libIdsObjects = (BasicDBList) source.get(LIB_IDS);
-		for (Object libIdObj : libIdsObjects) {
-			seg.getLibIds().add((String) libIdObj);
+		if (libIdsObjects != null) {
+			for (Object libIdObj : libIdsObjects) {
+				seg.getLibIds().add((String) libIdObj);
+			}
 		}
 
 		BasicDBList fieldObjects = (BasicDBList) source.get(FIELDS);
@@ -58,8 +61,7 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 			seg.setFields(fields);
 		}
 
-		BasicDBList confStsObjects = (BasicDBList) source
-				.get(CONFORMANCE_STATEMENTS);
+		BasicDBList confStsObjects = (BasicDBList) source.get(CONFORMANCE_STATEMENTS);
 		if (confStsObjects != null) {
 			List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
 			for (Object confStObject : confStsObjects) {
@@ -129,26 +131,27 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 		p.setId(readMongoId(source));
 		p.setValue(((String) source.get(VALUE)));
 		p.setDatatype((String) source.get(Constant.DATATYPE));
-//		Datatype d = findDatatypeById(((String) source.get(Constant.DATATYPE)),
-//				dtLib);
-//		if (d == null) {
-//			throw new ProfileConversionException("Datatype "
-//					+ ((String) source.get(Constant.DATATYPE)) + " not found");
-//		}
-//		p.setDatatype(d.getId());
+		// Datatype d = findDatatypeById(((String)
+		// source.get(Constant.DATATYPE)),
+		// dtLib);
+		// if (d == null) {
+		// throw new ProfileConversionException("Datatype "
+		// + ((String) source.get(Constant.DATATYPE)) + " not found");
+		// }
+		// p.setDatatype(d.getId());
 		return p;
 	}
 
-//	private Datatype findDatatypeById(String id, DatatypeLibrary dtLib) {
-//		if (dtLib != null) {
-//			Datatype d = dtLib.findOne(id);
-//			if (d != null) {
-//				return d;
-//			}
-//		}
-//
-//		return null;
-//	}
+	// private Datatype findDatatypeById(String id, DatatypeLibrary dtLib) {
+	// if (dtLib != null) {
+	// Datatype d = dtLib.findOne(id);
+	// if (d != null) {
+	// return d;
+	// }
+	// }
+	//
+	// return null;
+	// }
 
 	private Field field(DBObject source) {
 		Field f = new Field();
@@ -171,7 +174,7 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 		f.setDatatype(((String) source.get(Constant.DATATYPE)));
 		return f;
 	}
-	
+
 	private Reference reference(DBObject source) {
 		if (source != null) {
 			Reference reference = new Reference();
@@ -203,8 +206,8 @@ public class SegmentReadConverter  extends AbstractReadConverter<DBObject, Segme
 		p.setDescription((String) source.get(DESCRIPTION));
 		p.setAssertion(((String) source.get(ASSERTION)));
 		p.setReference(reference(((DBObject) source.get(REFERENCE))));
-		p.setFalseUsage(source.get(FALSE_USAGE) != null ? Usage.valueOf(((String) source.get(FALSE_USAGE))):null);
-		p.setTrueUsage(source.get(TRUE_USAGE) != null ?Usage.valueOf(((String) source.get(TRUE_USAGE))):null);
+		p.setFalseUsage(source.get(FALSE_USAGE) != null ? Usage.valueOf(((String) source.get(FALSE_USAGE))) : null);
+		p.setTrueUsage(source.get(TRUE_USAGE) != null ? Usage.valueOf(((String) source.get(TRUE_USAGE))) : null);
 		return p;
 	}
 }

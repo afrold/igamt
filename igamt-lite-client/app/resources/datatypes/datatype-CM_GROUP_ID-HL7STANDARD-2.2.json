@@ -7,7 +7,7 @@
   "date" : null,
   "version" : null,
   "participants" : [ ],
-  "libIds" : [ "57212933d4c64f1ebfd39ac7" ],
+  "libIds" : [ "5723765eda0805ce1eabdf8d" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab7d4c6e52cfd4480c5",
@@ -50,5 +50,5 @@
   "description" : "Auftragsgruppennummer",
   "comment" : "",
   "usageNote" : "",
-  "status" : null
+  "status" : "PUBLISHED"
 }

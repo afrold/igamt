@@ -7,7 +7,7 @@
   "date" : null,
   "version" : null,
   "participants" : [ ],
-  "libIds" : [ "57212934d4c64f1ebfd40afc" ],
+  "libIds" : [ "57237659da0805ce1eab94f9" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab6d4c6e52cfd4416c3",
@@ -66,5 +66,5 @@
   "description" : "Row Column Definition",
   "comment" : "",
   "usageNote" : "",
-  "status" : null
+  "status" : "PUBLISHED"
 }

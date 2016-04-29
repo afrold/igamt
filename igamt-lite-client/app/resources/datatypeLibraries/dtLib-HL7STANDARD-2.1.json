@@ -4,7 +4,7 @@
   "sectionTitle" : "Datatypes",
   "sectionDescription" : null,
   "sectionContents" : null,
-  "id" : "57212933d4c64f1ebfd39556",
+  "id" : "5723765eda0805ce1eabe128",
   "accountId" : null,
   "date" : null,
   "metaData" : {
@@ -12,7 +12,7 @@
     "orgName" : "NIST",
     "version" : null,
     "hl7Version" : "2.1",
-    "date" : "April 27, 2016",
+    "date" : "April 29, 2016",
     "ext" : null
   },
   "scope" : "HL7STANDARD",

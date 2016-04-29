@@ -21,7 +21,9 @@ import com.mongodb.DBObject;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibraryMetaData;
 
 
 @ReadingConverter
@@ -44,6 +46,7 @@ final Logger log = LoggerFactory.getLogger(DatatypeLibraryReadConverter.class);
 		dtLib.setId(readMongoId(source));
 		dtLib.setType(Constant.DATATYPES);
 		dtLib.setAccountId((Long) source.get(ACCOUNT_ID));
+		dtLib.setMetaData(metaData((DBObject)source.get(METADATA)));
 		
 		dtLib.setSectionContents((String) source.get(SECTION_COMMENTS));
 		dtLib.setSectionDescription((String) source.get(SECTION_DESCRIPTION));
@@ -53,13 +56,30 @@ final Logger log = LoggerFactory.getLogger(DatatypeLibraryReadConverter.class);
 		dtLib.setChildren(new HashSet<DatatypeLink>());
 		dtLib.setScope(Constant.SCOPE.valueOf(((String) source.get(SCOPE_))));
 		
-		DatatypeReadConverter dtCnv = new DatatypeReadConverter();
 		if (datatypesDBObjects != null) {
 			for (Object childObj : datatypesDBObjects) {
-				dtLib.addDatatype((DatatypeLink)childObj);
+				dtLib.addDatatype(link((DBObject)childObj, dtLib));
 			}
 		}
 
 		return dtLib;
+	}
+	
+	private DatatypeLink link(DBObject source, DatatypeLibrary dtLib) {
+		String id = readMongoId(source);
+		String label = (String)source.get(LABEL);
+		String ext = (String)source.get(EXTENSION);
+		return new DatatypeLink(id, label, ext);
+	}
+	
+	DatatypeLibraryMetaData metaData(DBObject source) {
+		DatatypeLibraryMetaData metaData = new DatatypeLibraryMetaData();
+		metaData.setDate((String)source.get(DATE));
+		metaData.setExt((String)source.get(EXTENSION));
+		metaData.setHl7Version((String)source.get(HL7_VERSION));
+		metaData.setName((String)source.get(NAME));
+		metaData.setOrgName((String)source.get(ORG_NAME));
+		metaData.setVersion((String)source.get(VERSION));
+		return metaData;
 	}
 }

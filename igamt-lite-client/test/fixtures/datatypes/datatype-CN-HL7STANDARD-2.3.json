@@ -7,7 +7,7 @@
   "date" : null,
   "version" : null,
   "participants" : [ ],
-  "libIds" : [ ],
+  "libIds" : [ "5723765dda0805ce1eabda1c" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "565f3ab7d4c6e52cfd447578",
@@ -162,5 +162,5 @@
   "description" : "Composite ID number and name (2.8.7)",
   "comment" : "",
   "usageNote" : "",
-  "status" : null
+  "status" : "PUBLISHED"
 }

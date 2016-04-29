@@ -7,7 +7,7 @@
   "date" : null,
   "version" : null,
   "participants" : [ ],
-  "libIds" : [ "57212935d4c64f1ebfd466e4" ],
+  "libIds" : [ "57237656da0805ce1eab391d" ],
   "predicates" : [ ],
   "conformanceStatements" : [ ],
   "id" : "569eac0ed4c623dc6550bba8",
@@ -274,5 +274,5 @@
   "description" : "Location with Address Variation 2",
   "comment" : "",
   "usageNote" : "",
-  "status" : null
+  "status" : "PUBLISHED"
 }
