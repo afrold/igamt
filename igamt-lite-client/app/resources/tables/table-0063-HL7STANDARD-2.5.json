@@ -1,0 +1,306 @@
+{
+  "type" : "table",
+  "sectionPosition" : 277,
+  "id" : "565f3ab6d4c6e52cfd440b92",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0063",
+  "name" : "Relationship",
+  "description" : "Relationship",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.63",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b93",
+    "value" : "ASC",
+    "label" : "Associate",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b94",
+    "value" : "BRO",
+    "label" : "Brother",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b95",
+    "value" : "CGV",
+    "label" : "Care giver",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b96",
+    "value" : "CHD",
+    "label" : "Child",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b97",
+    "value" : "DEP",
+    "label" : "Handicapped dependent",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b98",
+    "value" : "DOM",
+    "label" : "Life partner",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b99",
+    "value" : "EMC",
+    "label" : "Emergency contact",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b9a",
+    "value" : "EME",
+    "label" : "Employee",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b9b",
+    "value" : "EMR",
+    "label" : "Employer",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b9c",
+    "value" : "EXF",
+    "label" : "Extended family",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b9d",
+    "value" : "FCH",
+    "label" : "Foster child",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b9e",
+    "value" : "FND",
+    "label" : "Friend",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b9f",
+    "value" : "FTH",
+    "label" : "Father",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ba0",
+    "value" : "GCH",
+    "label" : "Grandchild",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ba1",
+    "value" : "GRD",
+    "label" : "Guardian",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ba2",
+    "value" : "GRP",
+    "label" : "Grandparent",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ba3",
+    "value" : "MGR",
+    "label" : "Manager",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ba4",
+    "value" : "MTH",
+    "label" : "Mother",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ba5",
+    "value" : "NCH",
+    "label" : "Natural child",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ba6",
+    "value" : "NON",
+    "label" : "None",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ba7",
+    "value" : "OAD",
+    "label" : "Other adult",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ba8",
+    "value" : "OTH",
+    "label" : "Other",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ba9",
+    "value" : "OWN",
+    "label" : "Owner",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440baa",
+    "value" : "PAR",
+    "label" : "Parent",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440bab",
+    "value" : "SCH",
+    "label" : "Stepchild",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440bac",
+    "value" : "SEL",
+    "label" : "Self",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440bad",
+    "value" : "SIB",
+    "label" : "Sibling",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440bae",
+    "value" : "SIS",
+    "label" : "Sister",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440baf",
+    "value" : "SPO",
+    "label" : "Spouse",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440bb0",
+    "value" : "TRA",
+    "label" : "Trainer",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440bb1",
+    "value" : "UNK",
+    "label" : "Unknown",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440bb2",
+    "value" : "WRD",
+    "label" : "Ward of court",
+    "codeSystem" : "HL70063",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

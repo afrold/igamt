@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 9,
+  "id" : "565f3ab7d4c6e52cfd4472a1",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0190",
+  "name" : "Address Type",
+  "description" : "Address Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4472a2",
+    "value" : "B",
+    "label" : "Business",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4472a3",
+    "value" : "C",
+    "label" : "Current or Temporary",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4472a4",
+    "value" : "F",
+    "label" : "County of Origin",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4472a5",
+    "value" : "H",
+    "label" : "Home",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4472a6",
+    "value" : "M",
+    "label" : "Mailing",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4472a7",
+    "value" : "O",
+    "label" : "Office",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4472a8",
+    "value" : "P",
+    "label" : "Permanent",
+    "codeSystem" : "HL70190",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 448,
+  "id" : "565f3ab6d4c6e52cfd440659",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0141",
+  "name" : "Military Rank/Grade",
+  "description" : "Military Rank/Grade",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.141",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44065a",
+    "value" : "E1... E9",
+    "label" : "Enlisted",
+    "codeSystem" : "HL70141",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44065b",
+    "value" : "O1 ... O9",
+    "label" : "Officers",
+    "codeSystem" : "HL70141",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44065c",
+    "value" : "W1 ... W4",
+    "label" : "Warrant Officers",
+    "codeSystem" : "HL70141",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

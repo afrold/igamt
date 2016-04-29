@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 12,
+  "id" : "565f3ab6d4c6e52cfd4406a0",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0261",
+  "name" : "Location Equipment",
+  "description" : "Location Equipment",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.261",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406a1",
+    "value" : "EEG",
+    "label" : "Electro-Encephalogram",
+    "codeSystem" : "HL70261",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406a2",
+    "value" : "EKG",
+    "label" : "Electro-Cardiogram",
+    "codeSystem" : "HL70261",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406a3",
+    "value" : "INF",
+    "label" : "Infusion pump",
+    "codeSystem" : "HL70261",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406a4",
+    "value" : "IVP",
+    "label" : "IV pump",
+    "codeSystem" : "HL70261",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406a5",
+    "value" : "OXY",
+    "label" : "Oxygen",
+    "codeSystem" : "HL70261",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406a6",
+    "value" : "SUC",
+    "label" : "Suction",
+    "codeSystem" : "HL70261",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406a7",
+    "value" : "VEN",
+    "label" : "Ventilator",
+    "codeSystem" : "HL70261",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4406a8",
+    "value" : "VIT",
+    "label" : "Vital signs monitor",
+    "codeSystem" : "HL70261",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 7,
+  "id" : "565f3ab7d4c6e52cfd4474ac",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0229",
+  "name" : "Outlier Type",
+  "description" : "Outlier Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474ad",
+    "value" : "C",
+    "label" : "Champus",
+    "codeSystem" : "HL70229",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474ae",
+    "value" : "G",
+    "label" : "Managed Care Organization",
+    "codeSystem" : "HL70229",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474af",
+    "value" : "M",
+    "label" : "Medicare",
+    "codeSystem" : "HL70229",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

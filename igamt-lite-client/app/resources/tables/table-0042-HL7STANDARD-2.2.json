@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 20,
+  "id" : "565f3ab7d4c6e52cfd447d25",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0042",
+  "name" : "INS. COMPANY PLAN CODE",
+  "description" : "INS. COMPANY PLAN CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

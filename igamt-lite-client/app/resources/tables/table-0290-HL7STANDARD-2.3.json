@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 218,
+  "id" : "565f3ab7d4c6e52cfd44718b",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0290",
+  "name" : "MIME base64 encoding Characters",
+  "description" : "MIME base64 encoding Characters",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

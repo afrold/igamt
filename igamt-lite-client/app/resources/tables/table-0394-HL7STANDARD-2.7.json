@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 19,
+  "id" : "569eac0dd4c623dc6550763b",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0394",
+  "name" : "Response Modality",
+  "description" : "Response Modality",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550763c",
+    "value" : "B",
+    "label" : "Batch",
+    "codeSystem" : "HL70394",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550763d",
+    "value" : "R",
+    "label" : "Real Time",
+    "codeSystem" : "HL70394",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550763e",
+    "value" : "T",
+    "label" : "Bolus (a series of responses sent at the same time without use of batch formatting)",
+    "codeSystem" : "HL70394",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

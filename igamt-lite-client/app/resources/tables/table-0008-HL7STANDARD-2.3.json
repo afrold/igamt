@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 43,
+  "id" : "565f3ab7d4c6e52cfd446f4b",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0008",
+  "name" : "Acknowledgement Code",
+  "description" : "Acknowledgement Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f4c",
+    "value" : "AA",
+    "label" : "Original mode:  Application Accept / Enhanced mode:  Application acknowledgement:  Accept",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f4d",
+    "value" : "AE",
+    "label" : "Original mode:  Application Error / Enhanced mode:  Application acknowledgement:  Error",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f4e",
+    "value" : "AR",
+    "label" : "Original mode:  Application Reject / Enhanced mode:  Application acknowledgement:  Reject",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f4f",
+    "value" : "CA",
+    "label" : "Enhanced mode:  Application acknowledgement:  Commit Accept",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f50",
+    "value" : "CE",
+    "label" : "Enhanced mode:  Application acknowledgement:  Commit Error",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446f51",
+    "value" : "CR",
+    "label" : "Enhanced mode:  Application acknowledgement:  Commit Reject",
+    "codeSystem" : "HL70008",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

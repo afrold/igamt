@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 370,
+  "id" : "565f3ab6d4c6e52cfd441463",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0104",
+  "name" : "Version ID",
+  "description" : "Version ID",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.104",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441464",
+    "value" : "2.0",
+    "label" : "Release 2.0",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441465",
+    "value" : "2.0D",
+    "label" : "Demo 2.0",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441466",
+    "value" : "2.1",
+    "label" : "Release 2. 1",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441467",
+    "value" : "2.2",
+    "label" : "Release 2.2",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441468",
+    "value" : "2.3",
+    "label" : "Release 2.3",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441469",
+    "value" : "2.3.1",
+    "label" : "Release 2.3.1",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44146a",
+    "value" : "2.4",
+    "label" : "Release 2.4",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44146b",
+    "value" : "2.5",
+    "label" : "Release 2.5",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 134,
+  "id" : "569eac0fd4c623dc6550e5b0",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0552",
+  "name" : "Advanced beneficiary notice override reason",
+  "description" : "Advanced beneficiary notice override reason",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.552",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

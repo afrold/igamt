@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 117,
+  "id" : "565f3ab7d4c6e52cfd4482d6",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0019",
+  "name" : "ANESTHESIA CODE",
+  "description" : "ANESTHESIA CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

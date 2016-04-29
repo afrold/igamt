@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 73,
+  "id" : "569eac0dd4c623dc65508374",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0350",
+  "name" : "Occurrence Code",
+  "description" : "Occurrence Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508375",
+    "value" : "�",
+    "label" : "Use NUBC codes",
+    "codeSystem" : "HL70350",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

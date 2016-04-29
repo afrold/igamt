@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 222,
+  "id" : "569eac0ed4c623dc6550b1f6",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0513",
+  "name" : "Blood Product Transfusion/Disposition Status",
+  "description" : "Blood Product Transfusion/Disposition Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.513",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1f7",
+    "value" : "RA",
+    "label" : "Returned unused/no longer needed",
+    "codeSystem" : "HL70513",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1f8",
+    "value" : "RL",
+    "label" : "Returned unused/keep linked to patient for possible use later",
+    "codeSystem" : "HL70513",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1f9",
+    "value" : "TR",
+    "label" : "Transfused with adverse reaction",
+    "codeSystem" : "HL70513",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1fa",
+    "value" : "TX",
+    "label" : "Transfused",
+    "codeSystem" : "HL70513",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1fb",
+    "value" : "WA",
+    "label" : "Wasted (product no longer viable)",
+    "codeSystem" : "HL70513",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

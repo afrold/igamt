@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 381,
+  "id" : "569eac0dd4c623dc65508113",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0205",
+  "name" : "Price Type",
+  "description" : "Price Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508114",
+    "value" : "AP",
+    "label" : "administrative price or handling fee",
+    "codeSystem" : "HL70205",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508115",
+    "value" : "DC",
+    "label" : "direct unit cost",
+    "codeSystem" : "HL70205",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508116",
+    "value" : "IC",
+    "label" : "indirect unit cost",
+    "codeSystem" : "HL70205",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508117",
+    "value" : "PF",
+    "label" : "professional fee for performing provider",
+    "codeSystem" : "HL70205",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508118",
+    "value" : "TF",
+    "label" : "technology fee for use of equipment",
+    "codeSystem" : "HL70205",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508119",
+    "value" : "TP",
+    "label" : "total price",
+    "codeSystem" : "HL70205",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550811a",
+    "value" : "UP",
+    "label" : "unit price, may be based on length of procedure or service",
+    "codeSystem" : "HL70205",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

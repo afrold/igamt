@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 133,
+  "id" : "565f3ab7d4c6e52cfd4474c2",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0116",
+  "name" : "Bed Status",
+  "description" : "Bed Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474c3",
+    "value" : "C",
+    "label" : "No suggested values",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474c4",
+    "value" : "H",
+    "label" : "Housekeeping",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474c5",
+    "value" : "I",
+    "label" : "Isolated",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474c6",
+    "value" : "K",
+    "label" : "Contaminated",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474c7",
+    "value" : "O",
+    "label" : "Occupied",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474c8",
+    "value" : "U",
+    "label" : "Unoccupied",
+    "codeSystem" : "HL70116",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 131,
+  "id" : "565f3ab7d4c6e52cfd44802e",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0104",
+  "name" : "VERSION ID",
+  "description" : "VERSION ID",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44802f",
+    "value" : "2.0",
+    "label" : "Version 2.0, September 1988",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448030",
+    "value" : "2.0D",
+    "label" : "Version 2.0, October 1988 (nur zu Demonstrationszwecken)",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448031",
+    "value" : "2.1",
+    "label" : "Version 2.1, März 1990",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448032",
+    "value" : "2.2",
+    "label" : "Version 2.2, Dezember 1994",
+    "codeSystem" : "HL70104",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

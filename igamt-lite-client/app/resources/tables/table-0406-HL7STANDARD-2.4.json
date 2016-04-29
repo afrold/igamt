@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 365,
+  "id" : "565f3ab6d4c6e52cfd443a1a",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0406",
+  "name" : "Organization unit type",
+  "description" : "Organization unit type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a1b",
+    "value" : "1",
+    "label" : "Hospital",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a1c",
+    "value" : "2",
+    "label" : "Physician Clinic",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a1d",
+    "value" : "3",
+    "label" : "Long Term Care",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a1e",
+    "value" : "4",
+    "label" : "Acute Care",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a1f",
+    "value" : "5",
+    "label" : "Other",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a20",
+    "value" : "H",
+    "label" : "Home",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a21",
+    "value" : "O",
+    "label" : "Office",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

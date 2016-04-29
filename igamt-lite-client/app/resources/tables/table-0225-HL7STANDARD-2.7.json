@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 299,
+  "id" : "569eac0dd4c623dc655083f1",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0225",
+  "name" : "Escort Required",
+  "description" : "Escort Required",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083f2",
+    "value" : "N",
+    "label" : "Not Required",
+    "codeSystem" : "HL70225",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083f3",
+    "value" : "R",
+    "label" : "Required",
+    "codeSystem" : "HL70225",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655083f4",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70225",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

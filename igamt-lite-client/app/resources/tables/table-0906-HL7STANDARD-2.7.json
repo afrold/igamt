@@ -1,0 +1,153 @@
+{
+  "type" : "table",
+  "sectionPosition" : 100,
+  "id" : "569eac0dd4c623dc65507bb4",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0906",
+  "name" : "ActPriority",
+  "description" : "ActPriority",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bb5",
+    "value" : "A",
+    "label" : "ASAP - As soon as possible, next highest priority after stat",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bb6",
+    "value" : "CR",
+    "label" : "Callback results - filler should contact the placer as soon as results are available, even for preliminary results",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bb7",
+    "value" : "CS",
+    "label" : "Callback for scheduling - Filler should contact the placer (or target) to schedule the service.",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bb8",
+    "value" : "CSP",
+    "label" : "Callback placer for scheduling - filler should contact the placer to schedule the service",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bb9",
+    "value" : "CSR",
+    "label" : "Contact recipient for scheduling - Filler should contact the service recipient (target) to schedule the service",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bba",
+    "value" : "EL",
+    "label" : "Elective - Beneficial to the patient but not essential for survival.",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bbb",
+    "value" : "EM",
+    "label" : "Emergency - An unforeseen combination of circumstances or the resulting state that calls for immediate action",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bbc",
+    "value" : "P",
+    "label" : "Preop - Used to indicate that a service is to be performed prior to a scheduled surgery.  When ordering a service and using the pre-op priority, a check is done to see the amount of time that must be allowed for performance of the service.  When the order",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bbd",
+    "value" : "PRN",
+    "label" : "As needed - An \"as needed\" order should be accompanied by a description of what constitutes a need.  This description is represented by an observation service predicate as a precondition.",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bbe",
+    "value" : "R",
+    "label" : "Routine - Routine service, do at usual work hours",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bbf",
+    "value" : "RR",
+    "label" : "Rush reporting - A report should be prepared and sent as quickly as possible",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bc0",
+    "value" : "S",
+    "label" : "Stat - With highest priority (e.g. emergency).",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bc1",
+    "value" : "T",
+    "label" : "Timing critical - It is critical to come as close as possible to the requested time (e.g. for a through antimicrobial level).",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bc2",
+    "value" : "UD",
+    "label" : "Use as directed - Drug is to be used as directed by the prescriber.",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bc3",
+    "value" : "UR",
+    "label" : "Urgent - Calls for prompt action",
+    "codeSystem" : "HL70906",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

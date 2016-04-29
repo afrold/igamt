@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 441,
+  "id" : "569eac0dd4c623dc65507e1e",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0423",
+  "name" : "Case Category Code",
+  "description" : "Case Category Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e1f",
+    "value" : "D",
+    "label" : "Doctor's Office Closed",
+    "codeSystem" : "HL70423",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

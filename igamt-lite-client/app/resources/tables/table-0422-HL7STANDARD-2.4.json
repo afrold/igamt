@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 312,
+  "id" : "565f3ab6d4c6e52cfd443a7e",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0422",
+  "name" : "Triage code",
+  "description" : "Triage code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a7f",
+    "value" : "1",
+    "label" : "Non-acute",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a80",
+    "value" : "2",
+    "label" : "Acute",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a81",
+    "value" : "3",
+    "label" : "Urgent",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a82",
+    "value" : "4",
+    "label" : "Severe",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a83",
+    "value" : "5",
+    "label" : "Dead on Arrival (DOA)",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a84",
+    "value" : "99",
+    "label" : "Other",
+    "codeSystem" : "HL70422",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

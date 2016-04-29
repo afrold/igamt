@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 231,
+  "id" : "565f3ab7d4c6e52cfd44716c",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0173",
+  "name" : "Coordination of Benefits",
+  "description" : "Coordination of Benefits",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44716d",
+    "value" : "CO",
+    "label" : "Coordination",
+    "codeSystem" : "HL70173",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44716e",
+    "value" : "IN",
+    "label" : "Independent",
+    "codeSystem" : "HL70173",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

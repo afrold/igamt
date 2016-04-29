@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 208,
+  "id" : "569eac0ed4c623dc6550b27c",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0881",
+  "name" : "Role Executing Physician",
+  "description" : "Role Executing Physician",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.881",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b27d",
+    "value" : "B",
+    "label" : "Both",
+    "codeSystem" : "HL70881",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b27e",
+    "value" : "P",
+    "label" : "Professional Part",
+    "codeSystem" : "HL70881",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b27f",
+    "value" : "T",
+    "label" : "Technical Part",
+    "codeSystem" : "HL70881",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 140,
+  "id" : "569eac0ed4c623dc6550b1eb",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0504",
+  "name" : "Sequence Condition Code",
+  "description" : "Sequence Condition Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.504",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1ec",
+    "value" : "EE",
+    "label" : "End related service request(s), end current service request.",
+    "codeSystem" : "HL70504",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1ed",
+    "value" : "ES",
+    "label" : "End related service request(s), start current service request.",
+    "codeSystem" : "HL70504",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1ee",
+    "value" : "SE",
+    "label" : "Start related service request(s), end current service request.",
+    "codeSystem" : "HL70504",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1ef",
+    "value" : "SS",
+    "label" : "Start related service request(s), start current service request.",
+    "codeSystem" : "HL70504",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

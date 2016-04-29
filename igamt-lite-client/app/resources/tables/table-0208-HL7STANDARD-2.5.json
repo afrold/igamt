@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 221,
+  "id" : "565f3ab6d4c6e52cfd441315",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0208",
+  "name" : "Query Response Status",
+  "description" : "Query Response Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.208",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441316",
+    "value" : "AE",
+    "label" : "Application error",
+    "codeSystem" : "HL70208",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441317",
+    "value" : "AR",
+    "label" : "Application reject",
+    "codeSystem" : "HL70208",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441318",
+    "value" : "NF",
+    "label" : "No data found, no errors",
+    "codeSystem" : "HL70208",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441319",
+    "value" : "OK",
+    "label" : "Data found, no errors (this is the default)",
+    "codeSystem" : "HL70208",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

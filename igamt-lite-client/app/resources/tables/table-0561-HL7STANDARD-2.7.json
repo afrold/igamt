@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 249,
+  "id" : "569eac0dd4c623dc65508260",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0561",
+  "name" : "Product/Services Clarification Codes",
+  "description" : "Product/Services Clarification Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508261",
+    "value" : "CLCTR",
+    "label" : "Claim Center",
+    "codeSystem" : "HL70561",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508262",
+    "value" : "DGAPP",
+    "label" : "Diagnostic Approval Number",
+    "codeSystem" : "HL70561",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508263",
+    "value" : "DTCTR",
+    "label" : "Data Center Number",
+    "codeSystem" : "HL70561",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508264",
+    "value" : "ENC",
+    "label" : "Encounter Number",
+    "codeSystem" : "HL70561",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508265",
+    "value" : "GFTH",
+    "label" : "Good Faith Indicator",
+    "codeSystem" : "HL70561",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508266",
+    "value" : "OOP",
+    "label" : "Out of Province Indicator",
+    "codeSystem" : "HL70561",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65508267",
+    "value" : "SEQ",
+    "label" : "Sequence Number",
+    "codeSystem" : "HL70561",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

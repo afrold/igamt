@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 57,
+  "id" : "565f3ab7d4c6e52cfd446e05",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0250",
+  "name" : "Relatedness Assessment",
+  "description" : "Relatedness Assessment",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e06",
+    "value" : "H",
+    "label" : "Highly probable",
+    "codeSystem" : "HL70250",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e07",
+    "value" : "I",
+    "label" : "Improbable",
+    "codeSystem" : "HL70250",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e08",
+    "value" : "M",
+    "label" : "Moderately probable",
+    "codeSystem" : "HL70250",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e09",
+    "value" : "N",
+    "label" : "Not related",
+    "codeSystem" : "HL70250",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e0a",
+    "value" : "S",
+    "label" : "Somewhat probable",
+    "codeSystem" : "HL70250",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

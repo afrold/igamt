@@ -1,0 +1,99 @@
+{
+  "type" : "table",
+  "sectionPosition" : 117,
+  "id" : "565f3ab6d4c6e52cfd4408ec",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0023",
+  "name" : "Admit Source",
+  "description" : "Admit Source",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.23",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408ed",
+    "value" : "1",
+    "label" : "Physician referral",
+    "codeSystem" : "HL70023",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408ee",
+    "value" : "2",
+    "label" : "Clinic referral",
+    "codeSystem" : "HL70023",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408ef",
+    "value" : "3",
+    "label" : "HMO referral",
+    "codeSystem" : "HL70023",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408f0",
+    "value" : "4",
+    "label" : "Transfer from a hospital",
+    "codeSystem" : "HL70023",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408f1",
+    "value" : "5",
+    "label" : "Transfer from a skilled nursing facility",
+    "codeSystem" : "HL70023",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408f2",
+    "value" : "6",
+    "label" : "Transfer from another health care facility",
+    "codeSystem" : "HL70023",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408f3",
+    "value" : "7",
+    "label" : "Emergency room",
+    "codeSystem" : "HL70023",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408f4",
+    "value" : "8",
+    "label" : "Court/law enforcement",
+    "codeSystem" : "HL70023",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408f5",
+    "value" : "9",
+    "label" : "Information not available",
+    "codeSystem" : "HL70023",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

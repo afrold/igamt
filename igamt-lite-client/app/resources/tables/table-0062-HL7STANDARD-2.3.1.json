@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 275,
+  "id" : "565f3ab7d4c6e52cfd445cf9",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0062",
+  "name" : "Event reason",
+  "description" : "Event reason",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cfa",
+    "value" : "01",
+    "label" : "Patient request",
+    "codeSystem" : "HL70062",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cfb",
+    "value" : "02",
+    "label" : "Physician order",
+    "codeSystem" : "HL70062",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445cfc",
+    "value" : "03",
+    "label" : "Census management",
+    "codeSystem" : "HL70062",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 60,
+  "id" : "569eac0ed4c623dc6550bb2a",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0474",
+  "name" : "Organization Unit Type",
+  "description" : "Organization Unit Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.474",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb2b",
+    "value" : "D",
+    "label" : "Department",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb2c",
+    "value" : "F",
+    "label" : "Facility",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb2d",
+    "value" : "S",
+    "label" : "Subdivision",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb2e",
+    "value" : "U",
+    "label" : "Subdepartment",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550bb2f",
+    "value" : "V",
+    "label" : "Division",
+    "codeSystem" : "HL70474",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 12,
+  "id" : "565f3ab7d4c6e52cfd448366",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0073",
+  "name" : "INTEREST RATE CODE",
+  "description" : "INTEREST RATE CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 151,
+  "id" : "565f3ab7d4c6e52cfd447da7",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0156",
+  "name" : "DATE/TIME QUALIFIER",
+  "description" : "DATE/TIME QUALIFIER",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447da8",
+    "value" : "ANY",
+    "label" : "Any date / time within a range",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447da9",
+    "value" : "CAN",
+    "label" : "Cancellation date / time",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447daa",
+    "value" : "COL",
+    "label" : "Collection date / time (equivalent to film or sample collection date / time)",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dab",
+    "value" : "ORD",
+    "label" : "Order date / time",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dac",
+    "value" : "RCT",
+    "label" : "Specimen receipt date / time (receipt of specimen in filling ancillary (lab))",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dad",
+    "value" : "REP",
+    "label" : "Report date / time (report date / time at filling ancillary (i.e., lab))",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dae",
+    "value" : "SCHED",
+    "label" : "Schedule date / time",
+    "codeSystem" : "HL70156",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

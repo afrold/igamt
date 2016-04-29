@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 224,
+  "id" : "569eac0fd4c623dc6550e3ed",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "9999",
+  "name" : "#FIXME#",
+  "description" : "#FIXME#",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

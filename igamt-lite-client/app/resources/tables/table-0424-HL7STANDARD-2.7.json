@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 333,
+  "id" : "569eac0dd4c623dc65507df5",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0424",
+  "name" : "Gestation Category Code",
+  "description" : "Gestation Category Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507df6",
+    "value" : "1",
+    "label" : "Premature / Pre-term",
+    "codeSystem" : "HL70424",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507df7",
+    "value" : "2",
+    "label" : "Full Term",
+    "codeSystem" : "HL70424",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507df8",
+    "value" : "3",
+    "label" : "Overdue / Post-term",
+    "codeSystem" : "HL70424",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

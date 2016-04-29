@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 285,
+  "id" : "565f3ab7d4c6e52cfd4458fd",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0142",
+  "name" : "Military status",
+  "description" : "Military status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4458fe",
+    "value" : "ACT",
+    "label" : "Active duty",
+    "codeSystem" : "HL70142",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4458ff",
+    "value" : "DEC",
+    "label" : "Deceased",
+    "codeSystem" : "HL70142",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445900",
+    "value" : "RET",
+    "label" : "Retired",
+    "codeSystem" : "HL70142",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

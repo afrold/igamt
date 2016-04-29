@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 178,
+  "id" : "565f3ab6d4c6e52cfd443050",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0005",
+  "name" : "Race",
+  "description" : "Race",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443051",
+    "value" : "1002-5",
+    "label" : "American Indian or Alaska Native",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443052",
+    "value" : "2028-9",
+    "label" : "Asian",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443053",
+    "value" : "2054-5",
+    "label" : "Black or African American",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443054",
+    "value" : "2076-8",
+    "label" : "Native Hawaiian or Other Pacific Islander",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443055",
+    "value" : "2106-3",
+    "label" : "White",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443056",
+    "value" : "2131-1",
+    "label" : "Other Race",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

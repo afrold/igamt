@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 34,
+  "id" : "569eac0dd4c623dc65507c1d",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0719",
+  "name" : "Access Restriction Reason Code",
+  "description" : "Access Restriction Reason Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c1e",
+    "value" : "DIA",
+    "label" : "Diagnosis-related",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c1f",
+    "value" : "EMP",
+    "label" : "Employee of this organization",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c20",
+    "value" : "ORG",
+    "label" : "Organizational policy or requirement",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c21",
+    "value" : "PAT",
+    "label" : "Patient Request",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c22",
+    "value" : "PHY",
+    "label" : "Physician Request",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c23",
+    "value" : "REG",
+    "label" : "Regulatory requirement",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c24",
+    "value" : "VIP",
+    "label" : "Very important person or celebrity",
+    "codeSystem" : "HL70719",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

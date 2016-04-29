@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 331,
+  "id" : "565f3ab6d4c6e52cfd440f7f",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0300",
+  "name" : "Namespace ID",
+  "description" : "Namespace ID",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.300",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

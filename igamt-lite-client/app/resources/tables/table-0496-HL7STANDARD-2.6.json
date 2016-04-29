@@ -1,0 +1,1251 @@
+{
+  "type" : "table",
+  "sectionPosition" : 239,
+  "id" : "569eac0ed4c623dc6550aab3",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0496",
+  "name" : "Consent Type",
+  "description" : "Consent Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.496",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aab4",
+    "value" : "001",
+    "label" : "Release of Information/MR / Authorization to Disclosure Protected Health Information",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aab5",
+    "value" : "002",
+    "label" : "Medical Procedure (invasive)",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aab6",
+    "value" : "003",
+    "label" : "Acknowledge Receipt of Privacy Notice",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aab7",
+    "value" : "004",
+    "label" : "Abortion",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aab8",
+    "value" : "005",
+    "label" : "Abortion/Laminaria",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aab9",
+    "value" : "006",
+    "label" : "Accutane - Information",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaba",
+    "value" : "007",
+    "label" : "Accutane - Woman",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aabb",
+    "value" : "008",
+    "label" : "Advanced Beneficiary Notice",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aabc",
+    "value" : "009",
+    "label" : "AFP (Alpha Fetoprotein) Screening",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aabd",
+    "value" : "010",
+    "label" : "Amniocentesis (consent & refusal)",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aabe",
+    "value" : "011",
+    "label" : "Anatomical Gift (organ donation)",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aabf",
+    "value" : "012",
+    "label" : "Anesthesia - Complications",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aac0",
+    "value" : "013",
+    "label" : "Anesthesia - Questionnaire",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aac1",
+    "value" : "014",
+    "label" : "Angiogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aac2",
+    "value" : "015",
+    "label" : "Angioplasty",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aac3",
+    "value" : "016",
+    "label" : "Anticancer Drugs",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aac4",
+    "value" : "017",
+    "label" : "Antipsychotic Medications",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aac5",
+    "value" : "018",
+    "label" : "Arthrogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aac6",
+    "value" : "019",
+    "label" : "Autopsy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aac7",
+    "value" : "020",
+    "label" : "AZT Therapy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aac8",
+    "value" : "021",
+    "label" : "Biliary Drainage",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aac9",
+    "value" : "022",
+    "label" : "Biliary Stone Extraction",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaca",
+    "value" : "023",
+    "label" : "Biopsy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aacb",
+    "value" : "024",
+    "label" : "Bleeding Time Test",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aacc",
+    "value" : "025",
+    "label" : "Bronchogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aacd",
+    "value" : "026",
+    "label" : "Cardiac Catheterization",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aace",
+    "value" : "027",
+    "label" : "Coronary Angiography",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aacf",
+    "value" : "028",
+    "label" : "\"\"      \"\" w/o Surgery Capability",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aad0",
+    "value" : "029",
+    "label" : "Cataract Op/Implant of FDA Aprvd Lens",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aad1",
+    "value" : "030",
+    "label" : "Cataract Op/Implant of Investigational Lens",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aad2",
+    "value" : "031",
+    "label" : "Cataract Surgery",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aad3",
+    "value" : "032",
+    "label" : "Cholera Immunization",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aad4",
+    "value" : "033",
+    "label" : "Cholesterol Screening",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aad5",
+    "value" : "034",
+    "label" : "Circumcision - Newborn",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aad6",
+    "value" : "035",
+    "label" : "Colonoscopy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aad7",
+    "value" : "036",
+    "label" : "Contact Lenses",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aad8",
+    "value" : "037",
+    "label" : "CT Scan - Cervical & Lumbar",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aad9",
+    "value" : "038",
+    "label" : "CT Scan w/ IV Contrast Media into Vein",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aada",
+    "value" : "039",
+    "label" : "CVS (Chorionic Villus) Sampling",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aadb",
+    "value" : "040",
+    "label" : "Cystospy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aadc",
+    "value" : "041",
+    "label" : "Disclosure of Protected Health Information to Family/Friends",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aadd",
+    "value" : "042",
+    "label" : "D & C and Conization",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aade",
+    "value" : "043",
+    "label" : "Dacryocystogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aadf",
+    "value" : "044",
+    "label" : "Diagnostic Isotope",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aae0",
+    "value" : "045",
+    "label" : "Drainage of an Abscess",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aae1",
+    "value" : "046",
+    "label" : "Drug Screening",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aae2",
+    "value" : "047",
+    "label" : "Electronic Monitoring of Labor - Refusal",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aae3",
+    "value" : "048",
+    "label" : "Endometrial Biopsy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aae4",
+    "value" : "049",
+    "label" : "Endoscopy/Sclerosis of Esophageal Varices",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aae5",
+    "value" : "050",
+    "label" : "ERCP",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aae6",
+    "value" : "051",
+    "label" : "Exposure to reportable Communicable Disease",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aae7",
+    "value" : "052",
+    "label" : "External Version",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aae8",
+    "value" : "053",
+    "label" : "Fluorescein Angioscopy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aae9",
+    "value" : "054",
+    "label" : "Hepatitis B - Consent/Declination",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaea",
+    "value" : "055",
+    "label" : "Herniogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaeb",
+    "value" : "056",
+    "label" : "HIV Test - Consent Refusal",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaec",
+    "value" : "057",
+    "label" : "HIV Test - Disclosure",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaed",
+    "value" : "058",
+    "label" : "HIV Test - Prenatal",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaee",
+    "value" : "059",
+    "label" : "Home IV Treatment Program",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaef",
+    "value" : "060",
+    "label" : "Home Parenteral Treatment Program",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaf0",
+    "value" : "061",
+    "label" : "Hysterectomy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaf1",
+    "value" : "062",
+    "label" : "Hysterosalpingogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaf2",
+    "value" : "063",
+    "label" : "Injection Slip/ Consent",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaf3",
+    "value" : "064",
+    "label" : "Intrauterine Device",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaf4",
+    "value" : "065",
+    "label" : "Intrauterine Device/Sterilization",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaf5",
+    "value" : "066",
+    "label" : "Intravascular Infusion of Streptokinase/Urokinase",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaf6",
+    "value" : "067",
+    "label" : "Intravenous Cholangiogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaf7",
+    "value" : "068",
+    "label" : "Intravenous Digital Angiography",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaf8",
+    "value" : "069",
+    "label" : "Iodine Administration",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaf9",
+    "value" : "070",
+    "label" : "ISG",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aafa",
+    "value" : "071",
+    "label" : "IVP",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aafb",
+    "value" : "072",
+    "label" : "Laser Photocoagulation",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aafc",
+    "value" : "073",
+    "label" : "Laser treatment",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aafd",
+    "value" : "074",
+    "label" : "Lithium Carbonate",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aafe",
+    "value" : "075",
+    "label" : "Liver Biopsy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550aaff",
+    "value" : "076",
+    "label" : "Lumbar Puncture",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab00",
+    "value" : "077",
+    "label" : "Lymphangiogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab01",
+    "value" : "078",
+    "label" : "MAO Inhibitors",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab02",
+    "value" : "079",
+    "label" : "Med, Psych, and/or Drug/Alcohol",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab03",
+    "value" : "080",
+    "label" : "Medical Treatment - Refusal",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab04",
+    "value" : "081",
+    "label" : "Morning-after Pill",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab05",
+    "value" : "082",
+    "label" : "MRI - Adult",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab06",
+    "value" : "083",
+    "label" : "MRI - Pediatric",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab07",
+    "value" : "084",
+    "label" : "Myelogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab08",
+    "value" : "085",
+    "label" : "Needle Biopsy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab09",
+    "value" : "086",
+    "label" : "Needle Biopsy of Lung",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab0a",
+    "value" : "087",
+    "label" : "Newborn Treatment and Release",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab0b",
+    "value" : "088",
+    "label" : "Norplant Subdermal Birth Control Implant",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab0c",
+    "value" : "089",
+    "label" : "Operations, Anesthesia, Transfusions",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab0d",
+    "value" : "090",
+    "label" : "Oral Contraceptives",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab0e",
+    "value" : "091",
+    "label" : "Organ Donation",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab0f",
+    "value" : "092",
+    "label" : "Patient Permits, Consents",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab10",
+    "value" : "093",
+    "label" : "Patient Treatment Permit, Release & Admission",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab11",
+    "value" : "094",
+    "label" : "Penile Injections",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab12",
+    "value" : "095",
+    "label" : "Percutaneous Nephrostomy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab13",
+    "value" : "096",
+    "label" : "Percutaneous Transhepatic Cholangiogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab14",
+    "value" : "097",
+    "label" : "Photographs",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab15",
+    "value" : "098",
+    "label" : "Photographs - Employee",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab16",
+    "value" : "099",
+    "label" : "Photographs - Medical Research",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab17",
+    "value" : "100",
+    "label" : "Photographs - news Media",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab18",
+    "value" : "101",
+    "label" : "Psychiatric Admission - Next of Kin",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab19",
+    "value" : "102",
+    "label" : "Psychiatric Information During Hospital Stay",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab1a",
+    "value" : "103",
+    "label" : "Public Release of Information",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab1b",
+    "value" : "104",
+    "label" : "Radiologic Procedure",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab1c",
+    "value" : "105",
+    "label" : "Refusal of Treatment",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab1d",
+    "value" : "106",
+    "label" : "Release of Body",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab1e",
+    "value" : "107",
+    "label" : "Release of Limb",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab1f",
+    "value" : "108",
+    "label" : "Rh Immune Globulin",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab20",
+    "value" : "109",
+    "label" : "Rights of Medical Research Participants",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab21",
+    "value" : "110",
+    "label" : "Request to Restrict Access/Disclosure to Medical Record/Protected Health Information",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab22",
+    "value" : "111",
+    "label" : "Request for Remain Anonymous",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab23",
+    "value" : "112",
+    "label" : "Seat Belt Exemption",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab24",
+    "value" : "113",
+    "label" : "Sialogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab25",
+    "value" : "1137",
+    "label" : "Voiding Cystogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab26",
+    "value" : "114",
+    "label" : "Sigmoidoscopy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab27",
+    "value" : "115",
+    "label" : "Sterilization - Anesthesia & Medical Services",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab28",
+    "value" : "116",
+    "label" : "Sterilization -Federally Funded",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab29",
+    "value" : "117",
+    "label" : "Sterilization - Female",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab2a",
+    "value" : "118",
+    "label" : "Sterilization - Laparoscopy/Pomeroy",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab2b",
+    "value" : "119",
+    "label" : "Sterilization - Non-Federally Funded",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab2c",
+    "value" : "120",
+    "label" : "Sterilization - Secondary",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab2d",
+    "value" : "121",
+    "label" : "Tranquilizers",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab2e",
+    "value" : "122",
+    "label" : "Transfer - Acknowledgement",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab2f",
+    "value" : "123",
+    "label" : "Transfer - Authorization",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab30",
+    "value" : "124",
+    "label" : "Transfer Certification - Physician",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab31",
+    "value" : "125",
+    "label" : "Transfer/Discharge Request",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab32",
+    "value" : "126",
+    "label" : "Transfer for Non-Medical Reasons",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab33",
+    "value" : "127",
+    "label" : "Transfer - Interfaculty Neonatal",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab34",
+    "value" : "128",
+    "label" : "Transfer Refusal",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab35",
+    "value" : "129",
+    "label" : "Transfer Refusal of Further Treatment",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab36",
+    "value" : "130",
+    "label" : "Treadmill & EKG",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab37",
+    "value" : "131",
+    "label" : "Treadmill, Thallium-201",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab38",
+    "value" : "132",
+    "label" : "Typhoid",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab39",
+    "value" : "133",
+    "label" : "Use of Investigational Device",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab3a",
+    "value" : "134",
+    "label" : "Use of Investigational Drug",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab3b",
+    "value" : "135",
+    "label" : "Venogram",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ab3c",
+    "value" : "136",
+    "label" : "Videotape",
+    "codeSystem" : "HL70496",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

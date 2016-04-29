@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 233,
+  "id" : "565f3ab6d4c6e52cfd443ca9",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0454",
+  "name" : "Health care provider area of specialization",
+  "description" : "Health care provider area of specialization",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443caa",
+    "value" : "SUGGESTION",
+    "label" : "ANSI ASC X12 Health Care Provider Taxonomy, Level 3 - specialization",
+    "codeSystem" : "HL70454",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

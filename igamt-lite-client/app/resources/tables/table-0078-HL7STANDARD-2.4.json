@@ -1,0 +1,189 @@
+{
+  "type" : "table",
+  "sectionPosition" : 361,
+  "id" : "565f3ab6d4c6e52cfd4439e3",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0078",
+  "name" : "Abnormal flags",
+  "description" : "Abnormal flags",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439e4",
+    "value" : "<",
+    "label" : "Below absolute low-off instrument scale",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439e5",
+    "value" : ">",
+    "label" : "Above absolute high-off instrument scale",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439e6",
+    "value" : "A",
+    "label" : "Abnormal (applies to non-numeric results)",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439e7",
+    "value" : "AA",
+    "label" : "Very abnormal (applies to non-numeric units, analogous to panic limits for numeric units)",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439e8",
+    "value" : "B",
+    "label" : "Better--use when direction not relevant",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439e9",
+    "value" : "D",
+    "label" : "Significant change down",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439ea",
+    "value" : "H",
+    "label" : "Above high normal",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439eb",
+    "value" : "HH",
+    "label" : "Above upper panic limits",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439ec",
+    "value" : "I",
+    "label" : "Intermediate*",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439ed",
+    "value" : "L",
+    "label" : "Below low normal",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439ee",
+    "value" : "LL",
+    "label" : "Below lower panic limits",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439ef",
+    "value" : "MS",
+    "label" : "Moderately susceptible*",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439f0",
+    "value" : "N",
+    "label" : "Normal (applies to non-numeric results)",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439f1",
+    "value" : "null",
+    "label" : "No range defined, or normal ranges don't apply",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439f2",
+    "value" : "R",
+    "label" : "Resistant*",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439f3",
+    "value" : "S",
+    "label" : "Susceptible*",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439f4",
+    "value" : "U",
+    "label" : "Significant change up",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439f5",
+    "value" : "VS",
+    "label" : "Very susceptible*",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439f6",
+    "value" : "W",
+    "label" : "Worse--use when direction not relevant",
+    "codeSystem" : "HL70078",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 129,
+  "id" : "569eac0ed4c623dc6550b61f",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0571",
+  "name" : "Invoice Processing Results Status",
+  "description" : "Invoice Processing Results Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.571",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b620",
+    "value" : "ACK",
+    "label" : "Acknowledge",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b621",
+    "value" : "ADJ",
+    "label" : "Adjudicated with Adjustments",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b622",
+    "value" : "ADJSUB",
+    "label" : "Adjudicated as Submitted",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b623",
+    "value" : "ADJZER",
+    "label" : "Adjudicated to Zero",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b624",
+    "value" : "PAID",
+    "label" : "Paid",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b625",
+    "value" : "PEND",
+    "label" : "Pending",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b626",
+    "value" : "PRED",
+    "label" : "Pre-Determination",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b627",
+    "value" : "REJECT",
+    "label" : "Reject",
+    "codeSystem" : "HL70571",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}
