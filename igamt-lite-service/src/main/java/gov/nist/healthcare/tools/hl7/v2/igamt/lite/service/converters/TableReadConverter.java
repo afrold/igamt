@@ -61,6 +61,14 @@ public class TableReadConverter extends AbstractReadConverter<DBObject, Table> {
 				: Extensibility.fromValue((String) source.get(EXTENSIBILITY)));
 		table.setContentDefinition(source.get(CONTENT_DEFINITION) == null ? ContentDefinition.Intensional
 				: ContentDefinition.fromValue((String) source.get(CONTENT_DEFINITION)));
+	
+		BasicDBList libIds = (BasicDBList) source.get(LIB_IDS);
+		if (libIds != null) {
+			for(Object libIdObj : libIds) {
+				table.getLibIds().add((String)libIdObj);
+			}
+		}
+		
 		BasicDBList codesDBObjects = (BasicDBList) source.get(CODES);
 		if (codesDBObjects != null)
 			for (Object codeObj : codesDBObjects) {
