@@ -36,11 +36,14 @@ public class Constant {
 	public final static String TABLES = "tables";
 	public final static String TABLE = "table";
 	public final static String CODE = "code";
+	public final static String ID = "id";
+	public final static String LABEL = "label";
 	
 	public final static String SECTION = "section";
 	public final static String Document = "document";
 	public final static DateFormat mdy = new SimpleDateFormat("MMMM dd, yyyy");
 	public enum SCOPE {HL7STANDARD, MASTER, USER};
 	public enum QUANTUM {BREVIS, SUMMA};
+	public final static String ORG_NAME = "NIST";
 
 }

@@ -1,37 +1,25 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import org.bson.types.ObjectId;
-
 public class MetaData implements java.io.Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
 	
 	public MetaData() {
 		super();
-		this.id = ObjectId.get().toString();
 	}
 
-	/* XSD Attributes */
-	private String id;
-	
 	private String name; 						//ConformanceProfile/MetaData/@Name
 	
-	private String orgName = ""; 				//ConformanceProfile/MetaData/@OrgName
+	private String orgName; 				//ConformanceProfile/MetaData/@OrgName
 	
-	private String version = ""; 				//ConformanceProfile/MetaData/@Version
+	private String version; 				//ConformanceProfile/MetaData/@Version
 	
-	private String hl7Version = ""; 				//ConformanceProfile/MetaData/@Version
+	private String hl7Version; 				//ConformanceProfile/MetaData/@Version
 	
-	private String date = ""; 					//ConformanceProfile/MetaData/@Date
-	
-	public String getId() {
-		return id;
-	}
+	private String date; 	 				//ConformanceProfile/MetaData/@Date
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
+	private String ext;
+	
 	public String getName() {
 		return name;
 	}
@@ -70,6 +58,14 @@ public class MetaData implements java.io.Serializable, Cloneable {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
 	}
 
 	@Override

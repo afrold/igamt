@@ -1,9 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-////@Entity
-//@javax.persistence.Table(name = "DATAELEMENT")
-////@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-////@JsonIgnoreProperties({ "datatype" })
 public abstract class DataElement extends DataModel implements
 		java.io.Serializable, Cloneable, Comparable<DataElement> {
 

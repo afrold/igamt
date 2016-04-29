@@ -20,8 +20,9 @@ import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 
 /**
  * @author gcr1 12.Feb.16
@@ -51,12 +52,16 @@ public class SegmentLibraryReadConverter extends AbstractReadConverter<DBObject,
 		segLib.setSectionPosition((Integer) source.get(SECTION_POSITION));
 		segLib.setSectionTitle((String) source.get(SECTION_TITLE));
 		BasicDBList segLibDBObjects = (BasicDBList) source.get(CHILDREN);
-		segLib.setChildren(new HashSet<String>());
+		segLib.setChildren(new HashSet<SegmentLink>());
 		
 		SegmentReadConverter segCnv = new SegmentReadConverter();
 		if (segLibDBObjects != null) {
 			for (Object childObj : segLibDBObjects) {
-				segLib.addSegment((String)childObj);
+				DBObject dbObj = (DBObject)childObj;
+				String id = readMongoId(dbObj);
+				String label = (String)dbObj.get(LABEL);
+				SegmentLink sgl = new SegmentLink(id, label);
+				segLib.addSegment(sgl);
 			}
 		}
 

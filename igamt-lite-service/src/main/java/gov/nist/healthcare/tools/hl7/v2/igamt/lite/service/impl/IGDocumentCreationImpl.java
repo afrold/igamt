@@ -31,10 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
@@ -42,19 +41,18 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Messages;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.Event;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.messageevents.MessageEvents;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.IGDocumentRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentCreationService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.MessageEventFactory;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.EventNotSetException;
 
@@ -82,7 +80,7 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		List<MessageEvents> messageEvents = new ArrayList<MessageEvents>();
 		if (!igds.isEmpty()) {
 			IGDocument igd = igds.get(0);
-			MessageEventFactory mef = new MessageEventFactory(igd, tableRepository);
+			MessageEventFactory mef = new MessageEventFactory(tableRepository);
 			Messages msgs = igd.getProfile().getMessages();
 			messageEvents = mef.createMessageEvents(msgs);
 		} else {
@@ -233,14 +231,14 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 	private void addSegment(SegmentRef sref, Profile pSource, Profile pTarget) {
 		SegmentLibrary sgtsTarget = pTarget.getSegmentLibrary();
 		sgtsTarget.setType(pSource.getSegmentLibrary().getType());
-		Segment sgt = pSource.getSegmentLibrary().findOneSegmentById(sref.getRef());
+		SegmentLink sgt = pSource.getSegmentLibrary().findOneSegmentById(sref.getRef());
 		sgtsTarget.addSegment(sgt);
-		for (Field f : sgt.getFields()) {
-			Datatype dt = pSource.getDatatypeLibrary().findOne(f.getDatatype());
-			Table vsd = pSource.getTableLibrary().findOneTableById(f.getTable());
-			addDatatype(dt, pSource, pTarget);
-			addTable(vsd, pSource, pTarget);
-		}
+//		for (Field f : sgt.getFields()) {
+//			Datatype dt = pSource.getDatatypeLibrary().findOne(f.getDatatype());
+//			Table vsd = pSource.getTableLibrary().findOneTableById(f.getTable());
+//			addDatatype(dt, pSource, pTarget);
+//			addTable(vsd, pSource, pTarget);
+//		}
 	}
 
 	private void addGroup(Group g, Profile pSource, Profile pTarget) {
@@ -253,24 +251,24 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		}
 	}
 
-	private void addDatatype(Datatype dt, Profile pSource, Profile pTarget) {
+	private void addDatatype(DatatypeLink dt, Profile pSource, Profile pTarget) {
 		DatatypeLibrary dtsSource = pSource.getDatatypeLibrary();
 		DatatypeLibrary dtsTarget = pTarget.getDatatypeLibrary();
 		dtsTarget.setType(dtsSource.getType());
 		TableLibrary vsdTarget = pTarget.getTableLibrary();
 		if (dt != null && !dtsTarget.getChildren().contains(dt)) {
 			dtsTarget.addDatatype(dt);
-			for (Component cpt : dt.getComponents()) {
-				addDatatype(dtsSource.findOne(cpt.getDatatype()), pSource, pTarget);
-				addTable(vsdTarget.findOneTableById(cpt.getTable()), pSource, pTarget);
-			}
+//			for (Component cpt : dt.getComponents()) {
+//				addDatatype(dtsSource.findOne(cpt.getDatatype()), pSource, pTarget);
+//				addTable(vsdTarget.findOneTableById(cpt.getTable()), pSource, pTarget);
+//			}
 		}
 	}
 
-	private void addTable(Table vsd, Profile pSource, Profile pTarget) {
+	private void addTable(TableLink vsd, Profile pSource, Profile pTarget) {
 		TableLibrary vsdTarget = pTarget.getTableLibrary();
 		vsdTarget.setType(pSource.getTableLibrary().getType());
-		if (vsd != null && !vsdTarget.getChildren().contains(vsd)) {
+		if (vsd != null) {
 			vsdTarget.addTable(vsd);
 		}
 	}
@@ -280,5 +278,4 @@ public class IGDocumentCreationImpl implements IGDocumentCreationService {
 		// Fetching all HL7Standard profiles
 		return igdocumentRepository.findByScope(IGDocumentScope.HL7STANDARD);
 	}
-
 }

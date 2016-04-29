@@ -1,25 +1,12 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
 
 @Document(collection = "datatype-library")
 public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Serializable, Cloneable {
@@ -41,10 +28,9 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 	
 	public DatatypeLibrary() {
 		super();
-		this.id = ObjectId.get().toString();
 	}
 
-	private Set<String> children = new HashSet<String>();
+	private Set<DatatypeLink> children = new HashSet<DatatypeLink>();
 
 	public String getId() {
 		return id;
@@ -70,11 +56,11 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.date = date;
 	}
 
-	public Set<String> getChildren() {
+	public Set<DatatypeLink> getChildren() {
 		return children;
 	}
 
-	public void setChildren(Set<String> children) {
+	public void setChildren(Set<DatatypeLink> children) {
 		this.children = children;
 	}
 
@@ -86,28 +72,36 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		this.scope = scope;
 	}
 
-	public void addDatatype(String d) {
-		children.add(d);
+	public void addDatatype(DatatypeLink dtl) {
+		children.add(dtl);
 	}
 
-	public String save(String d) {
-		if (!this.children.contains(d)) {
-			children.add(d);
-		}
-		return d;
+	public DatatypeLink save(DatatypeLink dtl) {
+		children.add(dtl);
+		return dtl;
 	}
 
-	public void delete(String id) {
-		String d = findOne(id);
-		if (d != null)
-			this.children.remove(d);
+	public void delete(DatatypeLink dtl) {
+		this.children.remove(dtl);
 	}
 
-	public String findOne(String id) {
+	public DatatypeLink findOne(String dtId) {
 		if (this.children != null) {
-			for (String m : this.children) {
-				if (m.equals(id)) {
-					return m;
+			for (DatatypeLink dtl : this.children) {
+				if (dtl.equals(dtId)) {
+					return dtl;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public DatatypeLink findOne(DatatypeLink dtl) {
+		if (this.children != null) {
+			for (DatatypeLink dtl1 : this.children) {
+				if (dtl1.equals(dtl)) {
+					return dtl1;
 				}
 			}
 		}

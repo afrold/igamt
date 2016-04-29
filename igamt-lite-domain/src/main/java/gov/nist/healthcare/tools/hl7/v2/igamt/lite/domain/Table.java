@@ -57,7 +57,6 @@ public class Table extends SectionModel implements Serializable,
 	public Table() {
 		super();
 		this.type = Constant.TABLE;
-		this.id = ObjectId.get().toString();
 	}
 
 	public String getId() {

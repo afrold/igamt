@@ -33,10 +33,11 @@
     <div class="col-md-12 igl-page-header">
       <span class="header4 pull-left">
         <div ng-controller="FilteringCtl">
+          <span>
           <div class="row" style="margin:10px">
             <label class="col-md-4 label label-default">Filters:</label>
-            <div class="col-md-4">Conf Profiles</div>
-            <div class="col-md-4">Usages</label>
+            <div class="col-md-4" style="margin:10px">Conf Profiles</div>
+            <div class="col-md-4" style="margin:10px">Usages</div>
           </div>
           <div class="row" style="margin:10px">
             <div class="col-md-4" />
@@ -45,12 +46,13 @@
             <div class="col-md-4" ng-dropdown-multiselect="" options="filterusagesdata()" selected-model="filterusagesmodel()" extra-settings="filterusagessettings()" translation-texts="filterusagestexts()">
             </div>
           </div>
+          </span>
         </div>
 
-      <span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>
-            <span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>
-        </span>
-                     <span class="pull-right">
+        <span style="margin-left:10px; font-size:12px;font-weight: normal" ng-show="autoSaving && !saved">Saving....</span>
+        <span style="margin-left:10px; font-size:14px;font-weight: normal" ng-show="saved && !hasChanges()"><i class="fa fa-check fa-fw green"></i> Saved</span>
+      </span>
+      <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-hide="viewSettings.tableReadonly"
                  ng-show="igDocumentConfig.selectedType === 'USER'"

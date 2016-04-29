@@ -10,19 +10,17 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.converters;
 
-import java.util.HashSet;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.convert.ReadingConverter;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.DBObject;
-import com.mongodb.DBRef;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 
 /**
  * @author gcr1 12.Feb.16
@@ -53,15 +51,22 @@ public class DatatypeLibraryReadConverter extends AbstractReadConverter<DBObject
 		dtLib.setSectionPosition((Integer) source.get(SECTION_POSITION));
 		dtLib.setSectionTitle((String) source.get(SECTION_TITLE));
 		BasicDBList datatypesDBObjects = (BasicDBList) source.get(CHILDREN);
-		dtLib.setChildren(new HashSet<String>());
 		
 		DatatypeReadConverter dtCnv = new DatatypeReadConverter();
 		if (datatypesDBObjects != null) {
 			for (Object childObj : datatypesDBObjects) {
-				dtLib.addDatatype((String)childObj);
+				DBObject dbObj = (DBObject)childObj;
+				String id = readMongoId(dbObj);
+				String label = (String)dbObj.get(LABEL);
+				DatatypeLink dtl = new DatatypeLink(id, label);
+				dtLib.addDatatype(dtl);
 			}
 		}
 
 		return dtLib;
+	}
+	
+	public DatatypeLink datatypeLink(DBObject source) {
+		return new DatatypeLink(readMongoId(source), (String)source.get(LABEL));
 	}
 }
