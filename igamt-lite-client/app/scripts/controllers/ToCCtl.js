@@ -23,12 +23,12 @@ angular
 //									});
 //								}
 //							});
-							
+
 							$scope.moved = function (index, leaf) {
 								var idx = _.findLastIndex($scope.$parent.drop, function(leaf1) {
 									return leaf.id === leaf1.id;
 								});
-							
+
 								if (index === idx) {
 									$scope.$parent.drop.splice(index + 1, 1);
 								} else {
@@ -37,7 +37,7 @@ angular
 								$timeout(function(){
 									var pos = 0;
 									_.each($scope.$parent.drop, function(child){
-										pos++;							
+										pos++;
 										var igdMsg = _.find($rootScope.igdocument.profile.messages.children, function(msg) {
 											return msg.id === child.reference.id;
 										})
@@ -45,7 +45,7 @@ angular
 									});
 								}, 100);
 							};
-							
+
 							$scope.calcOffset = function(level) {
 								return "margin-left : " + level + "em";
 							};
@@ -53,7 +53,7 @@ angular
 							$scope.trackBy = function() {
 								return new ObjectId().toString();
 							}
-							
+
 							$scope.tocSelection = function(entry) {
 								// TODO gcr: See about refactoring this to
 								// eliminate the switch.
@@ -104,7 +104,7 @@ angular
 								}
 								return $scope.subview;
 							};
-							
+
 							$scope.closedCtxSubMenu = function(node, $index) {
 								var ctxMenuSelection = ContextMenuSvc.get();
 //								console.log("ctxMenuSelection=" + ctxMenuSelection);
@@ -154,6 +154,6 @@ angular
 													+ ctxMenuSelection
 													+ " Should be Add, Copy, or Delete.");
 								}
-								$rootScope.$broadcast('event:SetToC');	
+								$rootScope.$broadcast('event:SetToC');
 							};
 						} ])

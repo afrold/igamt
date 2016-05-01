@@ -98,7 +98,7 @@ angular.module('igl').factory('DatatypeService',
             },
             get: function (ids) {
                 var delay = $q.defer();
-                $http.post('api/datatype/findByIds', ids).then(function (response) {
+                $http.post('api/datatypes/findByIds', ids).then(function (response) {
                     var datatypes = angular.fromJson(response.data);
                     delay.resolve(datatypes);
                 }, function (error) {

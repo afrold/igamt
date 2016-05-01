@@ -13,8 +13,8 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
          console.log('api/findByScopes begin=' + data);
         request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
         request.send(null);
-        var datatype = angular.fromJson(request.response);
-        return [request.status, datatype, {}];
+        var datatypeLib = angular.fromJson(request.response);
+        return [request.status, datatypeLib, {}];
     });
 
    $httpBackend.whenPOST('api/datatype-library/findByScopesAndVersion').respond(function (method, url, data, headers) {
@@ -43,6 +43,15 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, datatype, {}];
     });
 
+   $httpBackend.whenPOST('api/datatype-library/create').respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+         console.log('api/findByScopes begin=' + data);
+        request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
+        request.send(null);
+        var datatypeLib = angular.fromJson(request.response);
+        return [request.status, datatypeLib, {}];
+    });
+
    $httpBackend.whenPOST('api/datatype-library/save').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
          console.log('api/save begin=' + data);
@@ -50,7 +59,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, response, {}];
     });
 
-   $httpBackend.whenPOST('api/datatype/findByIds').respond(function (method, url, data, headers) {
+   $httpBackend.whenPOST('api/datatypes/findByIds').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/datatype/findByIds begin=' + data);
         var datatypes = [];
@@ -65,5 +74,15 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         datatypes.push(angular.fromJson(request.response));
         return [request.status, datatypes, {}];
     });
+
+    $httpBackend.whenGET(/^api\/datatypes\/.*/).respond(function (method, url, data, headers) {
+        var request = new XMLHttpRequest();
+        console.log('/^api\/datatypes\/.*\/ begin=' + url);
+        request.open('GET', '../../resources/datatypes/datatype-AUI-HL7STANDARD-2.5.1.json', false);
+        request.send(null);
+        var datatype = angular.fromJson(request.response);
+        return [request.status, datatype, {}];
+    });
+
 
 });

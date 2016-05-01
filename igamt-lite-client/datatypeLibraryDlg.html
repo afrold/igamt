@@ -1,15 +1,15 @@
 <div id="datatypelibrary-dialog" class="modal-dialog">
-  <div class="modal-content">
+<div class="modal-content">
   <div class="modal-header">
     <h3 class="modal-title">Data Types</h3>
   </div>
   <form>
-  <div class="form-group">
   <div class="modal-body">
         <div class="container" style="max-width: 100%; overflow-x: scroll; max-height: 200px; overflow-y: scroll;white-space:nowrap;">
            <div class="row">HL7 Version:{{hl7Version}}</div>
         <div class="row">
             <div class="col-sm-6">
+              <div class="form-group">
 <table st-table="datatypeLibsDisplay" st-safe-src="datatypeLibsStruct" st-sticky-header class="table table-striped table-bordered">
 <thead>
   <tr class="row tbl-header">
@@ -26,6 +26,7 @@
   </tr>
 </tbody>
 </table>
+            </div>
            </div>
              <div class="col-sm-6" ng-show="selectedLib">
 <table st-table="datatypesDisplay" st-safe-src="selectedLib.children" st-sticky-header class="table table-striped table-bordered">
@@ -46,13 +47,12 @@
 </table>
            </div>
         </div>
+        </div>
+  </div>
         <div class="modal-footer">
             <button class="btn btn-primary" ng-disabled="okDisabled" type="button" ng-click="ok()">Ok</button>
             <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
         </div>
-</div>
-</div>
-</div>
-</form>
+    </form>
 </div>
 </div>
