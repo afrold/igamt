@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
@@ -104,8 +103,7 @@ public class DatatypeLibraryController extends CommonController {
 			datatypes = datatypeService.findByScopesAndVersion(scopesAndVersion.getScopes(),
 					scopesAndVersion.getHl7Version());
 			if (datatypes == null) {
-				throw new DatatypeNotFoundException(
-						"Datatype not found for scope=" + scope + " hl7Version=" + hl7Version);
+				throw new DatatypeNotFoundException("Datatype not found for scopesAndVersion=" + scopesAndVersion);
 			}
 		} catch (Exception e) {
 			log.error("", e);
@@ -118,25 +116,6 @@ public class DatatypeLibraryController extends CommonController {
 		log.info("Fetching all HL7 versions.");
 		List<String> result = datatypeLibraryService.findHl7Versions();
 		return result;
-	}
-
-	@RequestMapping(value = "/findLibraryByScopeAndVersion", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
-	public DatatypeLibrary findLibraryByScopeAndVersion(@RequestBody List<String> scopeAndVersion) {
-		String scope = scopeAndVersion.get(0);
-		String hl7Version = (scopeAndVersion.size() > 1 ? scopeAndVersion.get(1) : null);
-		log.info("Fetching the datatype library. scope=" + scopeAndVersion.get(0) + " hl7Version=" + hl7Version);
-		Constant.SCOPE scope1 = Constant.SCOPE.valueOf(scope);
-		DatatypeLibrary datatypeLibrary = null;
-		try {
-			datatypeLibrary = datatypeLibraryService.findByScopeAndVersion(scope1, hl7Version);
-			if (datatypeLibrary == null) {
-				throw new DatatypeLibraryNotFoundException("scope=" + scope + " hl7Version=" + hl7Version);
-			}
-		} catch (DatatypeLibraryNotFoundException e) {
-			log.error("", e);
-		}
-		log.debug("datatypeLibrary.getId()=" + datatypeLibrary.getId());
-		return datatypeLibrary;
 	}
 
 	@RequestMapping(value = "/{accountId}/{hl7Version}/findByAccountId", method = RequestMethod.GET)

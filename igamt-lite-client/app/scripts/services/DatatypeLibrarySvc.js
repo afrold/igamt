@@ -17,7 +17,7 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
 		return $http.get(
 				'api/datatype-library/findHl7Versions')
 				.then(function(response) {
-					console.log("response" + JSON.stringify(response));
+//					console.log("response" + JSON.stringify(response));
 					return angular.fromJson(response.data);
 				});
   };
@@ -27,21 +27,21 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
         return $http.post(
             'api/datatype-library/findByScopes', angular.toJson(scopes))
             .then(function(response) {
-    //					console.log("response" + JSON.stringify(response));
+//    					console.log("response" + JSON.stringify(response));
               return angular.fromJson(response.data);
             });
 	};
 
-	svc.getDataTypeLibraryByScopesAndVersion = function(scope, hl7Version) {
-		console.log("datatype-library/findLibraryByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
+	svc.getDataTypeLibraryByScopesAndVersion = function(scopes, hl7Version) {
+		console.log("datatype-library/findByScopesAndVersion scopes=" + scopes + " hl7Version=" + hl7Version);
         var scopesAndVersion = {
-          "scopes" : [scopes],
+          "scopes" : scopes,
           "hl7Version" : hl7Version
         };
         return $http.post(
-            'api/datatype-library/findLibraryByScopesAndVersion', angular.toJson(scopesAndVersion))
+            'api/datatype-library/findByScopesAndVersion', angular.toJson(scopesAndVersion))
             .then(function(response) {
-    //					console.log("response" + JSON.stringify(response));
+    					console.log("response" + JSON.stringify(response));
               return angular.fromJson(response.data);
             });
 	};
@@ -53,18 +53,6 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
     //					console.log("response" + JSON.stringify(response));
               return angular.fromJson(response.data);
             });
-  }
-
-  svc.getDatatypesByScopeAndVersion = function(scope, hl7Version) {
-        var scopeAndVersion = [];
-        scopeAndVersion.push(scope);
-        scopeAndVersion.push(hl7Version);
-          return $http.post(
-              'api/datatype-library/findByScopeAndVersion', angular.toJson(scopeAndVersion))
-              .then(function(response) {
-      //					console.log("response" + JSON.stringify(response));
-                return angular.fromJson(response.data);
-				});
   }
 
 	svc.append = function(fromchildren, toChildren) {
@@ -86,13 +74,13 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
                   "accountId" : userInfoService.getAccountID()};
 		return $http.post(
 			'api/datatype-library/create', dtlcw).then(function(response) {
-			return angular.fromJson(response.data.children)});
+			return angular.fromJson(response.data)});
 	};
 
 	svc.save = function(datatypeLibrary) {
 		return $http.post(
-			'api/datatype-library/save', datatypeLibrary).then(function(response) {
-			return angular.fromJson(response.data.children)});
+			'api/datatype-library/save', angular.toJson(datatypeLibrary)).then(function(response) {
+			return angular.fromJson(response.data)});
 	};
 
 	return svc;

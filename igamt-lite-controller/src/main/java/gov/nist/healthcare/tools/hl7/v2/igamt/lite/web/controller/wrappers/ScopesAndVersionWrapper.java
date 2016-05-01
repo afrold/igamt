@@ -45,4 +45,9 @@ public class ScopesAndVersionWrapper {
 	public void setHl7Version(String hl7Version) {
 		this.hl7Version = hl7Version;
 	}
+
+	@Override
+	public String toString() {
+		return scopes.toString() + " " + hl7Version;
+	}
 }

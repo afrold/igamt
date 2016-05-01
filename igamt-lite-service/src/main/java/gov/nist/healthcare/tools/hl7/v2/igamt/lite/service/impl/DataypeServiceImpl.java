@@ -63,8 +63,8 @@ public class DataypeServiceImpl implements DatatypeService {
 	}
 
 	@Override
-	public List<Datatype> findByScopeAndVersion(SCOPE scope, String hl7Version) {
-		List<Datatype> datatypes = datatypeRepository.findByScopeAndVersion(scope, hl7Version);
+	public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		List<Datatype> datatypes = datatypeRepository.findByScopesAndVersion(scopes, hl7Version);
 		log.info("DataypeServiceImpl.findByScopeAndVersion=" + datatypes.size());
 		return datatypes;
 	}

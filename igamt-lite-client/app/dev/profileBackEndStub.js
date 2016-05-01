@@ -217,11 +217,6 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [200, ["2.5.1","2.6","2.7"], {}];
     });
 
-    $httpBackend.whenGET('api/datatype-library/findVersions').respond(function (method, url, data, headers) {
-    	console.log('api/igdocuments/hl7/findVersions');
-        return [200, ["2.5.1","2.6","2.7"], {}];
-    });
-
     $httpBackend.whenPOST('api/igdocuments/messageListByVersion').respond(function (method, url, data, headers) {
         var request = new XMLHttpRequest();
         console.log('api/igdocuments/messageListByVersion start' + ' data=' + data);
@@ -348,13 +343,5 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, d, {}];
     });
 
-   $httpBackend.whenGET(new RegExp('api\\/datatypes\\?.*')).respond(function (method, url, data, headers) {
-        var request = new XMLHttpRequest();
-         console.log('api\\/datatypes\\?.* begin=' + data);
-        request.open('GET', '../../resources/datatypes/datatype-AD-HL7STANDARD-2.5.1.json', false);
-        request.send(null);
-        var datatype = angular.fromJson(request.response);
-        return [request.status, datatype, {}];
-    });
 });
 

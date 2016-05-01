@@ -2,10 +2,10 @@
   "type" : "datatypes",
   "sectionPosition" : 2,
   "sectionTitle" : "Datatypes",
-  "sectionDescription" : "Section description xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx yyyyyyyyyyyyyyyyyyyyyyyyyyyy",
+  "sectionDescription" : null,
   "sectionContents" : null,
   "id" : "572261c7a7c838861c8065ce",
-  "accountId" : null,
+  "accountId" : 45,
   "date" : null,
   "metaData" : {
     "name" : null,
@@ -15,7 +15,7 @@
     "date" : "April 27, 2016",
     "ext" : null
   },
-  "scope" : "MASTER",
+  "scope" : "USER",
   "children" : [ {
     "id" : "569eac0fd4c623dc6550ecc6",
     "label" : "XPN",

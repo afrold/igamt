@@ -110,7 +110,6 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 		datatypeLibrary.setSectionTitle("Default title");
 		datatypeLibrary.setSectionContents("Default contents");
 		datatypeLibrary = datatypeLibraryRepository.insert(datatypeLibrary);
-		datatypeLibrary.getMetaData().setDatatypLibId(datatypeLibrary.getId());
 		return datatypeLibrary;
 	}
 
