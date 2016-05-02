@@ -14,8 +14,8 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
@@ -96,14 +96,14 @@ public class Bootstrap implements InitializingBean {
 			boolean ischanged = false;
 			TableLibrary tables = igd.getProfile().getTableLibrary();
 
-			for (Table t : tables.getChildren()) {
-				if (t.getName() == null || t.getName().equals("")) {
-					if (t.getDescription() != null) {
-						t.setName(t.getDescription());
-						ischanged = true;
-					} else
-						t.setName("NONAME");
-				}
+			for (TableLink tl : tables.getChildren()) {
+//				if (t.getName() == null || t.getName().equals("")) {
+//					if (t.getDescription() != null) {
+//						t.setName(t.getDescription());
+//						ischanged = true;
+//					} else
+//						t.setName("NONAME");
+//				}
 			}
 
 			if (ischanged)
