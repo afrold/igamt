@@ -180,31 +180,7 @@ angular
 								child.sectionPosition, child.type, parent,
 								child);
 						return rval;
-					}
-					;
-
-          svc.show = function(leaf){
-            var rst = false;
-            _.each(FilteringSvc.getMsgmodel(), function(filterElt){
-              //                   console.log("filter => " + filterElt.id);
-              //                   console.log("leaf => " +leaf.id);
-              rst = rst || filterByMsg(leaf, filterElt);
-            });
-            return rst;
-          };
-
-          filterByMsg = function(leaf, filterElt){
-            return (MastermapSvc.getMastermap()[leaf.id]['msg'].indexOf(filterElt.id) !== -1);
-          }
-
-          filterByUsage = function(leaf){
-            var mm = MastermapSvc.getMastermap()[leaf.id];
-            if (mm["type"] === "segment"){
-              return true; //(mm['msg'].indexOf(filterElt.id) !== -1);
-            } else {
-              return false;
-            }
-          }
+					};
 
           return svc;
 				})

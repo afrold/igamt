@@ -1,9 +1,9 @@
-'use strict';
+// 'use strict';
 angular
 		.module('igl')
 		.factory(
 				'FilteringSvc',
-        ['$rootScope', function($rootScope) {
+        ['$rootScope', 'MastermapSvc', function($rootScope, MastermapSvc) {
 
             var svc = {};
 
@@ -93,7 +93,7 @@ angular
             };
 
             svc.getUsages = function(){
-              return [{"label":"R" , "id":1},{"label":"RE" , "id":2},{"label":"O" , "id":3},{"label":"X" , "id":4}]
+              return [{"label":"R" , "id":1},{"label":"RE" , "id":2},{"label":"O" , "id":3},{"label":"C" , "id":4},{"label":"X" , "id":5}]
             };
 
             svc.getSettings = function(){
@@ -117,6 +117,42 @@ angular
                 dynamicButtonTextSuffix: 'checked'
             }
             };
+
+          svc.show = function(leaf){
+            var rst = false;
+            _.each(svc.getMsgmodel(), function(filterElt){
+              //                   console.log("filter => " + filterElt.id);
+              //                   console.log("leaf => " +leaf.id);
+              rst = rst || filterByMsg(leaf, filterElt);
+            });
+            return rst;
+          };
+
+          filterByMsg = function(leaf, filterElt){
+//             if (MastermapSvc.getMastermap()[leaf.id] !== undefined){
+            if (leaf.id === filterElt.id){
+              return true;
+            }
+
+            console.log(MastermapSvc.getElement(leaf.id, leaf.type));
+            if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
+
+              return (MastermapSvc.getElement(leaf.id, leaf.type)["message"].indexOf(filterElt.id) !== -1);
+            } else {
+              console.log("Unfound in mastermap: ");
+              console.log(leaf);
+              //               return true;
+            }
+          }
+
+          filterByUsage = function(leaf){
+            var mm = MastermapSvc.getMastermap()[leaf.id];
+            if (mm["type"] === "segment"){
+              return true; //(mm['msg'].indexOf(filterElt.id) !== -1);
+            } else {
+              return false;
+            }
+          }
 
 					return svc;
 }]);
