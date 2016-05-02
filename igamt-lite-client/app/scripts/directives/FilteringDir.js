@@ -87,7 +87,7 @@ function ($filter, $document, $compile, $parse) {
                 showCheckAll: true,
                 showUncheckAll: true,
                 closeOnSelect: false,
-                buttonClasses: 'btn btn-default',
+                buttonClasses: 'btn btn-xs',
                 closeOnDeselect: false,
                  groupBy: $attrs.groupBy || undefined,
                 groupByTextProvider: null,

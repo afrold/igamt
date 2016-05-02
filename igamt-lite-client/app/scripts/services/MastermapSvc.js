@@ -286,18 +286,24 @@ angular
     }
 
     svc.getElement = function(id, type){
-       svc.getMastermap().forEach(function(n){
+/*        svc.getMastermap().forEach(function(n){
         if (n["id"] === id)
           if (n["type"] === type)
             return n;
-        });
+        }); */
+       for (var elt in svc.mastermap){
+        if (svc.mastermap[elt]["id"] === id && svc.mastermap[elt]["type"] === type){
+            return svc.mastermap[elt];}
+        };
+
       return undefined;
     }
 
-    svc.getusage = function (id, type){
-      elt = svc.getElement(id, type);
+    svc.getUsage = function (id, type){
+      var elt = svc.getElement(id, type);
       if (elt !== undefined){
         if (type === "message"){
+          //TBD
         }
         if (type === "field"){
           return svc.getElement(id, type)["usage"];
@@ -354,7 +360,6 @@ angular
         if (type === "code"){
           //TBD
         }
-
       }
 
     }
