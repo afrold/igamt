@@ -46,8 +46,8 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 	}
 
 	@Override
-	public List<Datatype> findByScopeAndVersion(SCOPE scope, String hl7Version) {
-		Criteria where = Criteria.where("scope").is(scope);
+	public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		Criteria where = Criteria.where("scope").in(scopes);
 		where.andOperator(Criteria.where("hl7Version").is(hl7Version));
 		Query qry = Query.query(where);
 		qry = set4Brevis(qry);
