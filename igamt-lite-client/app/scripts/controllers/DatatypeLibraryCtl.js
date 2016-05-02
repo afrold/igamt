@@ -49,15 +49,17 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 
 			function getDataTypeLibraryByScopes(scopes) {
 				DatatypeLibrarySvc.getDataTypeLibraryByScopes(scopes).then(function(data) {
-						$scope.datatypeLibStruct =  data;
-						$scope.datatypeLibsStruct.push($scope.datatypeLibStruct);
+          angular.forEach(data, function(datum){
+						$scope.datatypeLibsStruct.push(datum);
+          });
+            console.log("$scope.datatypeLibsStruct size=" + $scope.datatypeLibsStruct.length);
 				}).catch( function (error) {
 					console.log(error);
 				});
 			};
 
-			function getDataTypeLibrary(scope, hl7Version) {
-				DatatypeLibrarySvc.getDataTypeLibrary(scope, hl7Version).then(function(data) {
+			function getDataTypeLibraryByScopesAndVersion(scopes, hl7Version) {
+				DatatypeLibrarySvc.getDataTypeLibraryByScopesAndVersion(scopes, hl7Version).then(function(data) {
 						$scope.datatypeStruct =  data;
 						if (!$scope.datatypeStruct.scope) {
 							$scope.datatypeStruct.scope = scope;
@@ -224,7 +226,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
               hl7Version : function() {
                 return $scope.hl7Version;
               },
-              datatypeLibStruct : function() {
+              datatypeLibsStruct : function() {
                 return DatatypeLibrarySvc.getDataTypeLibraryByScopesAndVersion(scopes, $scope.hl7Version);
               }
             }
@@ -295,10 +297,10 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 		});
 
 angular.module('igl').controller('DatatypeListInstanceDlgCtl',
-		function($scope, $rootScope, $modalInstance, hl7Version, datatypeLibStruct, DatatypeLibrarySvc, DatatypeService) {
+		function($scope, $rootScope, $modalInstance, hl7Version, datatypeLibsStruct, DatatypeLibrarySvc, DatatypeService) {
 
       $scope.hl7Version = hl7Version;
-      $scope.datatypeLibStruct = datatypeLibStruct;
+      $scope.datatypesLibStruct = datatypeLibsStruct;
       $scope.selectedLib;
       $scope.dtSelections = [];
 

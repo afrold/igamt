@@ -26,10 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.test.integration.PersistenceContext;
@@ -83,7 +84,9 @@ public class DataypeServiceImplTest {
 
 	@Test
 	public void testFindByScopeAndVersion() {	
-		List<Datatype> sut = datatypeService.findByScopeAndVersion(Constant.SCOPE.HL7STANDARD, "2.5.1");
+		List<SCOPE> stdScope = new ArrayList<SCOPE>();
+		stdScope.add(Constant.SCOPE.HL7STANDARD);
+		List<Datatype> sut = datatypeService.findByScopesAndVersion(stdScope, "2.5.1");
 		assertNotNull(sut);
 		assertTrue(sut.size() > 0);
 	}
@@ -95,7 +98,9 @@ public class DataypeServiceImplTest {
 	 */
 	@Test
 	public void testFindLibIds() {
-		dtLib = datatypeLibraryService.findByScopeAndVersion(SCOPE.HL7STANDARD, "2.5.1");
+		List<SCOPE> stdScope = new ArrayList<SCOPE>();
+		stdScope.add(Constant.SCOPE.HL7STANDARD);
+		dtLib = datatypeLibraryService.findByScopesAndVersion(stdScope, "2.5.1");
 		String id = dtLib.getId();
 		List<Datatype> sut = datatypeService.findByLibIds(id);
 		assertNotNull(sut);
@@ -105,11 +110,15 @@ public class DataypeServiceImplTest {
 
 	@Test
 	public void testFindByIds() {
-		dtLib = datatypeLibraryService.findByScopeAndVersion(SCOPE.HL7STANDARD, "2.5.1");
-		DatatypeLibrary dtLib = datatypeLibraryService.findByScopeAndVersion(SCOPE.HL7STANDARD, "2.5.1");
-		Set<String> children = dtLib.getChildren();
+		List<SCOPE> stdScope = new ArrayList<SCOPE>();
+		stdScope.add(Constant.SCOPE.HL7STANDARD);
+		dtLib = datatypeLibraryService.findByScopesAndVersion(stdScope, "2.5.1");
+		DatatypeLibrary dtLib = datatypeLibraryService.findByScopesAndVersion(stdScope, "2.5.1");
+		Set<DatatypeLink> children = dtLib.getChildren();
 		List<String> ids = new ArrayList<String>();
-		ids.addAll(children);
+		for(DatatypeLink dtl : children) {
+			ids.add(dtl.getId());
+		}
 		List<Datatype> sut = datatypeService.findByIds(ids);
 		assertEquals(ids.size(), sut.size());
 		assertNull(sut.get(0).getSectionPosition());

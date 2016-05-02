@@ -28,7 +28,7 @@ public interface DatatypeLibraryOperations {
 	
 	public List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version);
 
-	public List<DatatypeLibrary> findByScopesAndMetaData_Hl7Version(List<SCOPE> scopes, String hl7version);
+	public List<DatatypeLibrary> findScopesNVersion(List<SCOPE> scopes, String hl7version);
 
 	public List<String> findHl7Versions();
 }

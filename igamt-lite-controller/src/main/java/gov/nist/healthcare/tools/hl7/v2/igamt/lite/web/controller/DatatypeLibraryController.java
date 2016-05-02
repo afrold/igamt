@@ -78,7 +78,7 @@ public class DatatypeLibraryController extends CommonController {
 
 	@RequestMapping(value = "/findByScopes", method = RequestMethod.POST, produces = "application/json")
 	public List<DatatypeLibrary> findByScopes(@RequestBody List<String> scopes) {
-		log.info("Fetching datatype libraries.");
+		log.info("Fetching datatype libraries...");
 		List<SCOPE> scopes1 = new ArrayList<SCOPE>();
 		try {
 			for (String s : scopes) {

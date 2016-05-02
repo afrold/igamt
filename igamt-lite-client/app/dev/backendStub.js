@@ -13,7 +13,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
          console.log('api/findByScopes begin=' + data);
         request.open('GET', '../../resources/datatypeLibraries/dtLib-MASTER-2.5.1.json', false);
         request.send(null);
-        var datatypeLib = angular.fromJson(request.response);
+        var datatypeLib = [angular.fromJson(request.response)];
         return [request.status, datatypeLib, {}];
     });
 

@@ -27,7 +27,7 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
         return $http.post(
             'api/datatype-library/findByScopes', angular.toJson(scopes))
             .then(function(response) {
-//    					console.log("response" + JSON.stringify(response));
+    					console.log("getDataTypeLibraryByScopes response=" + response.data.length);
               return angular.fromJson(response.data);
             });
 	};
@@ -41,7 +41,8 @@ angular.module('igl').factory('DatatypeLibrarySvc', function($http, $httpBackend
         return $http.post(
             'api/datatype-library/findByScopesAndVersion', angular.toJson(scopesAndVersion))
             .then(function(response) {
-    					console.log("response" + JSON.stringify(response));
+     					console.log("getDataTypeLibraryByScopesAndVersion response size=" + response.data.length);
+//   					  console.log("getDataTypeLibraryByScopesAndVersion response=" + JSON.stringify(response.data));
               return angular.fromJson(response.data);
             });
 	};

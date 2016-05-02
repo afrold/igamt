@@ -41,15 +41,15 @@ public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations 
 		}
 
 		@Override
-		public List<DatatypeLibrary> findByScopesAndMetaData_Hl7Version(List<SCOPE> scopes, String hl7Version) {
-			log.debug("DatatypeLibraryRespositoryImpl.findByScopesAndMetaData_Hl7Version=" + hl7Version);
+		public List<DatatypeLibrary> findScopesNVersion(List<SCOPE> scopes, String hl7Version) {
+			log.info("DatatypeLibraryRespositoryImpl.findByScopesAndVersion=" + hl7Version);
 			Criteria where = Criteria.where("scope").in(scopes);
 			if (hl7Version != null) {
 				where.andOperator(Criteria.where("metaData.hl7Version").is(hl7Version));
 			}
 			Query qry = Query.query(where);
 			List<DatatypeLibrary> list =  mongo.find(qry, DatatypeLibrary.class);
-			log.debug("DatatypeLibraryRespositoryImpl.findByScopesAndMetaData_Hl7Version list.size()=" + list.size());
+			log.info("DatatypeLibraryRespositoryImpl.findByScopesAndVersion list.size()=" + list.size());
 		    return list;
 	 	}
 
