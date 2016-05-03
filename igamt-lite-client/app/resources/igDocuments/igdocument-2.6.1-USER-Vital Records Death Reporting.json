@@ -39,8 +39,8 @@
       "topics" : "",
       "encodings" : [ ]
     },
-    "segments" : {
-      "type" : "segments",
+    "segmentLibrary" : {
+      "type" : "segmentLibrary",
       "sectionPosition" : 1,
       "sectionTitle" : "Segments and Field Descriptions",
       "sectionDescription" : null,
@@ -15516,8 +15516,8 @@
         "text2" : ""
       } ]
     },
-    "datatypes" : {
-      "type" : "datatypes",
+    "datatypeLibrary" : {
+      "type" : "datatypeLibrary",
       "sectionPosition" : 2,
       "sectionTitle" : "Datatypes",
       "sectionDescription" : null,
@@ -23399,8 +23399,8 @@
         "conformanceStatements" : [ ]
       } ]
     },
-    "tables" : {
-      "type" : "tables",
+    "tableLibrary" : {
+      "type" : "tableLibrary",
       "sectionPosition" : 3,
       "sectionTitle" : "Value Sets",
       "sectionDescription" : null,

@@ -98,6 +98,7 @@ angular.module('igl').factory('SegmentService',
                 to.fields = from.fields;
                 to.version = from.version;
                 to.date = from.date;
+                to.purposeAndUse = from.purposeAndUse;
                 return to;
             }
 
