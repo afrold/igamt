@@ -4,7 +4,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService,DatatypeLibrarySvc,SegmentLibrarySvc,TableLibrarySvc) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -341,6 +341,9 @@ angular.module('igl')
                     $rootScope.igdocument = igdocument;
                     $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
                     StorageService.setIgDocument($rootScope.igdocument);
+                    $scope.loadSegments();
+                    $scope.loadDatatypes();
+                    $scope.loadTables();
                     $scope.sortByLabels();
                     $rootScope.initMaps();
                     $scope.loadFilter();
@@ -383,6 +386,48 @@ angular.module('igl')
                 $scope.selectDocumentMetaData();
             }
         };
+
+        $scope.loadDatatypes = function () {
+            if ($rootScope.igdocument.profile.datatypeLibrary !== null) {
+                DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.igdocument.profile.datatypeLibrary.id).then(function(children){
+                    $rootScope.igdocument.profile.datatypes = {};
+                    $rootScope.igdocument.profile.datatypes.children = children;
+                },function(error){
+                    $rootScope.msg().text = "DatatypesLoadFailed";
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                });
+            }
+        };
+
+        $scope.loadSegments = function () {
+            if ($rootScope.igdocument.profile.segmentLibrary !== null) {
+                SegmentLibrarySvc.getSegmentsByLibrary($rootScope.igdocument.profile.segmentLibrary.id).then(function(children){
+                    $rootScope.igdocument.profile.segments = {};
+                    $rootScope.igdocument.profile.segments.children = children;
+                },function(error){
+                    $rootScope.msg().text = "SegmentsLoadFailed";
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                });
+            }
+        };
+
+
+        $scope.loadTables = function () {
+            if ($rootScope.igdocument.profile.tableLibrary !== null) {
+                TableLibrarySvc.getTablesByLibrary($rootScope.igdocument.profile.tableLibrary.id).then(function(children){
+                    $rootScope.igdocument.profile.tables = {};
+                    $rootScope.igdocument.profile.tables.children = children;
+                },function(error){
+                    $rootScope.msg().text = "TablesLoadFailed";
+                    $rootScope.msg().type = "danger";
+                    $rootScope.msg().show = true;
+                });
+            }
+        };
+
+
 
         $scope.loadToc = function () {
             $rootScope.tocData = ToCSvc.getToC($rootScope.igdocument);

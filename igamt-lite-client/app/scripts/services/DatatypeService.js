@@ -88,12 +88,16 @@ angular.module('igl').factory('DatatypeService',
             },
             getOne: function (id) {
                 var delay = $q.defer();
-                $http.get('api/datatypes/' + id).then(function (response) {
-                    var datatype = angular.fromJson(response.data);
-                    delay.resolve(datatype);
-                }, function (error) {
-                    delay.reject(error);
-                });
+                if($rootScope.datatypesMap[id] === undefined || $rootScope.datatypesMap[id] === undefined) {
+                    $http.get('api/datatypes/' + id).then(function (response) {
+                        var datatype = angular.fromJson(response.data);
+                        delay.resolve(datatype);
+                    }, function (error) {
+                        delay.reject(error);
+                    });
+                }else{
+                    delay.resolve($rootScope.datatypesMap[id]);
+                }
                 return delay.promise;
             },
             get: function (ids) {
