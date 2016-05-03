@@ -12,16 +12,23 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
 import java.util.List;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 
 /**
  * @author gcr1
  *
  */
-public interface SegmentOperations {
+public interface TableLibraryOperations {
+	
+	public TableLibrary findById(String id);
 
-	List<Segment> findByLibIds(String segLibId);
+	public List<TableLibrary> findByScopes(List<SCOPE> scopes);
+	
+	public List<TableLibrary> findByAccountId(Long accountId, String hl7Version);
 
-	List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	public List<TableLibrary> findScopesNVersion(List<SCOPE> scopes, String hl7version);
+
+	public List<String> findHl7Versions();
 }

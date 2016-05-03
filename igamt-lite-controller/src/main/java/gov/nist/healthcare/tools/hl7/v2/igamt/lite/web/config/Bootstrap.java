@@ -11,16 +11,6 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.config;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentSaveException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
-
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -29,6 +19,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocument;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.IGDocumentScope;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.IGDocumentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.ProfileSerializationImpl;
 
 @Service
 public class Bootstrap implements InitializingBean {
@@ -56,14 +53,10 @@ public class Bootstrap implements InitializingBean {
 	private void loadPreloadedIGDocuments() throws Exception {
 		IGDocument d = new IGDocument();
 
-		String p = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/IZ_Profile.xml"));
-		String v = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/IZ_ValueSetLibrary.xml"));
-		String c = IOUtils.toString(this.getClass().getResourceAsStream(
-				"/profiles/IZ_Constraints.xml"));
-		Profile profile = new ProfileSerializationImpl()
-				.deserializeXMLToProfile(p, v, c);
+		String p = IOUtils.toString(this.getClass().getResourceAsStream("/profiles/IZ_Profile.xml"));
+		String v = IOUtils.toString(this.getClass().getResourceAsStream("/profiles/IZ_ValueSetLibrary.xml"));
+		String c = IOUtils.toString(this.getClass().getResourceAsStream("/profiles/IZ_Constraints.xml"));
+		Profile profile = new ProfileSerializationImpl().deserializeXMLToProfile(p, v, c);
 
 		profile.setScope(IGDocumentScope.PRELOADED);
 
@@ -77,8 +70,7 @@ public class Bootstrap implements InitializingBean {
 		List<IGDocument> igDocuments = documentService.findAll();
 
 		for (IGDocument igd : igDocuments) {
-			if (igd.getScope().equals(IGDocumentScope.PRELOADED)
-					&& documentID.equals(igd.getMetaData().getIdentifier())
+			if (igd.getScope().equals(IGDocumentScope.PRELOADED) && documentID.equals(igd.getMetaData().getIdentifier())
 					&& documentVersion.equals(igd.getMetaData().getVersion())) {
 				existPreloadedDocument = true;
 			}
@@ -86,29 +78,29 @@ public class Bootstrap implements InitializingBean {
 		if (!existPreloadedDocument)
 			documentService.save(d);
 	}
-
-	private void checkTableNameForAllIGDocuments()
-			throws IGDocumentSaveException {
-
-		List<IGDocument> igDocuments = documentService.findAll();
-
-		for (IGDocument igd : igDocuments) {
-			boolean ischanged = false;
-			TableLibrary tables = igd.getProfile().getTableLibrary();
-
-			for (Table t : tables.getChildren()) {
-				if (t.getName() == null || t.getName().equals("")) {
-					if (t.getDescription() != null) {
-						t.setName(t.getDescription());
-						ischanged = true;
-					} else
-						t.setName("NONAME");
-				}
-			}
-
-			if (ischanged)
-				documentService.apply(igd);
-		}
-	}
+	// gcr This won't work with TableLink
+	// private void checkTableNameForAllIGDocuments()
+	// throws IGDocumentSaveException {
+	//
+	// List<IGDocument> igDocuments = documentService.findAll();
+	//
+	// for (IGDocument igd : igDocuments) {
+	// boolean ischanged = false;
+	// TableLibrary tables = igd.getProfile().getTableLibrary();
+	//
+	// for (Table t : tables.getChildren()) {
+	// if (t.getName() == null || t.getName().equals("")) {
+	// if (t.getDescription() != null) {
+	// t.setName(t.getDescription());
+	// ischanged = true;
+	// } else
+	// t.setName("NONAME");
+	// }
+	// }
+	//
+	// if (ischanged)
+	// documentService.apply(igd);
+	// }
+	// }
 
 }

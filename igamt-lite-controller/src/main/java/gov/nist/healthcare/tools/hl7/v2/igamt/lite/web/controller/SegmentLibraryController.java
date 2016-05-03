@@ -27,15 +27,16 @@ import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentLibraryService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.LibraryException;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.LibraryNotFoundException;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.exception.LibraryException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.LibrarySaveResponse;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.LibraryCreateWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.ScopesAndVersionWrapper;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibraryNotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.LibrarySaveException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.NotFoundException;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotFoundException;
@@ -45,16 +46,16 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.UserAccountNotF
  */
 
 @RestController
-@RequestMapping("/datatype-library")
-public class DatatypeLibraryController extends CommonController {
+@RequestMapping("/segment-library")
+public class SegmentLibraryController extends CommonController {
 
-	Logger log = LoggerFactory.getLogger(DatatypeLibraryController.class);
-
-	@Autowired
-	private DatatypeLibraryService datatypeLibraryService;
+	Logger log = LoggerFactory.getLogger(SegmentLibraryController.class);
 
 	@Autowired
-	private DatatypeService datatypeService;
+	private SegmentLibraryService segmentLibraryService;
+
+	@Autowired
+	private SegmentService segmentService;
 
 	@Autowired
 	UserService userService;
@@ -63,22 +64,22 @@ public class DatatypeLibraryController extends CommonController {
 	AccountRepository accountRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public List<DatatypeLibrary> getDatatypeLibraries() {
-		log.info("Fetching all datatype libraries.");
-		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryService.findAll();
-		return datatypeLibraries;
+	public List<SegmentLibrary> getSegmentLibraries() {
+		log.info("Fetching all segment libraries.");
+		List<SegmentLibrary> segmentLibraries = segmentLibraryService.findAll();
+		return segmentLibraries;
 	}
 
-	@RequestMapping(value = "/{dtLibId}/datatypes", method = RequestMethod.GET, produces = "application/json")
-	public List<Datatype> getDatatypesByLibrary(@PathVariable("dtLibId") String dtLibId) {
-		log.info("Fetching datatypeByLibrary..." + dtLibId);
-		List<Datatype> result = datatypeService.findByLibIds(dtLibId);
+	@RequestMapping(value = "/{segLibId}/segments", method = RequestMethod.GET, produces = "application/json")
+	public List<Segment> getSegmentByLibrary(@PathVariable("segLibId") String segLibId) {
+		log.info("Fetching segmentByLibrary..." + segLibId);
+		List<Segment> result = segmentService.findByLibIds(segLibId);
 		return result;
 	}
 
 	@RequestMapping(value = "/findByScopes", method = RequestMethod.POST, produces = "application/json")
-	public List<DatatypeLibrary> findByScopes(@RequestBody List<String> scopes) {
-		log.info("Fetching datatype libraries...");
+	public List<SegmentLibrary> findByScopes(@RequestBody List<String> scopes) {
+		log.info("Fetching segment libraries...");
 		List<SCOPE> scopes1 = new ArrayList<SCOPE>();
 		try {
 			for (String s : scopes) {
@@ -90,67 +91,66 @@ public class DatatypeLibraryController extends CommonController {
 		} catch (Exception e) {
 			log.error("", e);
 		}
-		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryService.findByScopes(scopes1);
-		return datatypeLibraries;
+		List<SegmentLibrary> segmentLibraries = segmentLibraryService.findByScopes(scopes1);
+		return segmentLibraries;
 	}
 
 	@RequestMapping(value = "/findByScopesAndVersion", method = RequestMethod.POST, produces = "application/json")
-	public List<Datatype> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
-		log.info("Fetching the datatype library. scope=" + scopesAndVersion.getScopes() + " hl7Version="
+	public List<Segment> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
+		log.info("Fetching the segment library. scope=" + scopesAndVersion.getScopes() + " hl7Version="
 				+ scopesAndVersion.getHl7Version());
-		List<Datatype> datatypes = null;
+		List<Segment> segments = null;
 		try {
-			datatypes = datatypeService.findByScopesAndVersion(scopesAndVersion.getScopes(),
+			segments = segmentService.findByScopesAndVersion(scopesAndVersion.getScopes(),
 					scopesAndVersion.getHl7Version());
-			if (datatypes == null) {
-				throw new NotFoundException("Datatype not found for scopesAndVersion=" + scopesAndVersion);
+			if (segments == null) {
+				throw new NotFoundException("Segment not found for scopesAndVersion=" + scopesAndVersion);
 			}
 		} catch (Exception e) {
 			log.error("", e);
 		}
-		return datatypes;
+		return segments;
 	}
 
 	@RequestMapping(value = "/findHl7Versions", method = RequestMethod.GET, produces = "application/json")
 	public List<String> findHl7Versions() {
 		log.info("Fetching all HL7 versions.");
-		List<String> result = datatypeLibraryService.findHl7Versions();
+		List<String> result = segmentLibraryService.findHl7Versions();
 		return result;
 	}
 
 	@RequestMapping(value = "/{accountId}/{hl7Version}/findByAccountId", method = RequestMethod.GET)
-	public List<DatatypeLibrary> findByAccountId(@PathVariable("accountId") Long accountId,
+	public List<SegmentLibrary> findByAccountId(@PathVariable("accountId") Long accountId,
 			@PathVariable("hl7Version") String hl7Version)
 			throws LibraryNotFoundException, UserAccountNotFoundException, LibraryException {
-		log.info("Fetching the datatype libraries...");
-		List<DatatypeLibrary> result = datatypeLibraryService.findByAccountId(accountId, hl7Version);
+		log.info("Fetching the segment libraries...");
+		List<SegmentLibrary> result = segmentLibraryService.findByAccountId(accountId, hl7Version);
 		return result;
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public DatatypeLibrary create(@RequestBody LibraryCreateWrapper dtlcw) {
+	public SegmentLibrary create(@RequestBody LibraryCreateWrapper dtlcw) {
 		SCOPE scope = SCOPE.valueOf(dtlcw.getScope());
 
-		return datatypeLibraryService.create(dtlcw.getName(), dtlcw.getExt(), scope, dtlcw.getHl7Version(),
+		return segmentLibraryService.create(dtlcw.getName(), dtlcw.getExt(), scope, dtlcw.getHl7Version(),
 				dtlcw.getAccountId());
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public LibrarySaveResponse save(@RequestBody DatatypeLibrary datatypeLibrary)
-			throws LibrarySaveException {
-		log.debug("datatypeLibrary=" + datatypeLibrary);
-		log.debug("datatypeLibrary.getId()=" + datatypeLibrary.getId());
-		log.info("Saving the " + datatypeLibrary.getScope() + " datatype library.");
+	public LibrarySaveResponse save(@RequestBody SegmentLibrary segmentLibrary) throws LibrarySaveException {
+		log.debug("segmentLibrary=" + segmentLibrary);
+		log.debug("segmentLibrary.getId()=" + segmentLibrary.getId());
+		log.info("Saving the " + segmentLibrary.getScope() + " segment library.");
 		User u = userService.getCurrentUser();
 		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-		datatypeLibrary.setAccountId(account.getId());
+		segmentLibrary.setAccountId(account.getId());
 		// TODO This is necessary for a cascading save. For now we are
 		// having the user save dts one at a time.
-		// for (Datatype dt : datatypeLibrary.getChildren()) {
+		// for (Segment dt : segmentLibrary.getChildren()) {
 		// dt.setAccountId(account.getId());
-		// datatypeService.save(dt);
+		// segmentService.save(dt);
 		// }
-		DatatypeLibrary saved = datatypeLibraryService.save(datatypeLibrary);
+		SegmentLibrary saved = segmentLibraryService.save(segmentLibrary);
 		log.debug("saved.getId()=" + saved.getId());
 		log.debug("saved.getScope()=" + saved.getScope());
 		return new LibrarySaveResponse(saved.getDate(), saved.getScope().name());

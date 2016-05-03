@@ -17,10 +17,13 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 
-public interface SegmentRepository extends MongoRepository<Segment, String>, SegmentOperations {
+public interface SegmentLibraryRepository extends MongoRepository<SegmentLibrary, String>, SegmentLibraryOperations {
 
+	public List<SegmentLibrary> findAll();
 } 

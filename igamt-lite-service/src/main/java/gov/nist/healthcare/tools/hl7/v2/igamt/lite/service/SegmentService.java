@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 
 public interface SegmentService {
@@ -21,4 +22,8 @@ public interface SegmentService {
 	Segment findById(String id);
 	
 	Segment save(Segment segment);
+
+	List<Segment> findByLibIds(String segLibId);
+
+	List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 }
