@@ -3,7 +3,7 @@ angular
 .module('igl')
 .factory(
   'FilteringSvc',
-  ['$rootScope', 'MastermapSvc', function($rootScope, MastermapSvc) {
+  function($rootScope, MastermapSvc) {
 
     var svc = {};
 
@@ -123,9 +123,21 @@ angular
       _.each(svc.getMsgmodel(), function(filterElt){
         rst = rst || filterByMsg(leaf, filterElt);
       });
+      console.log("check1");
+      console.log(rst);
       _.each(svc.getUsagesmodel(), function(filterElt){
         rst = rst || filterByUsage(leaf, filterElt);
       });
+      console.log("check2");
+      console.log(rst);
+      if (rst === undefined){
+        console.log(leaf)
+        console.log(MastermapSvc.getUsage(leaf.id, leaf.type));
+      }
+      if (rst === undefined){
+        rst = true;
+      }
+//       console.log(rst);
       return rst;
     };
 
@@ -146,9 +158,13 @@ angular
 
     filterByUsage = function(leaf, filterElt){
       if (MastermapSvc.getUsage(leaf.id, leaf.type) !== undefined){
-        return (MastermapSvc.getUsage(leaf.id, leaf.type).indexOf(filterElt.label) !== -1);
+        if (leaf.type !== "message"){
+          return true;
+        } else {
+          return (MastermapSvc.getUsage(leaf.id, leaf.type).indexOf(filterElt.label) !== -1);
+        }
       }
     }
 
     return svc;
-  }]);
+  });
