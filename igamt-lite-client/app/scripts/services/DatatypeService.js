@@ -129,7 +129,8 @@ angular.module('igl').factory('DatatypeService',
                 to.components = from.components;
                 to.version = from.version;
                 to.date = from.date;
-                return to;
+               to.purposeAndUse = from.purposeAndUse;
+               return to;
             },
             searchByNameVersionAndScope: function(searchName, searchScope,searchHl7Version){
                 var delay = $q.defer();
