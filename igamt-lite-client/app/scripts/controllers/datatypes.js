@@ -321,10 +321,10 @@ angular.module('igl')
 
         };
 
-        $scope.showSelectDatatypeDlg = function(node){
+        $scope.showSelectFlavorDlg = function(node){
             var modalInstance = $modal.open({
-                templateUrl: 'SelectDatatype.html',
-                controller: 'SelectDatatypeCtrl',
+                templateUrl: 'SelectDatatypeFlavor.html',
+                controller: 'SelectDatatypeFlavorCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
                     currentNode: function () {
@@ -339,7 +339,7 @@ angular.module('igl')
                 node.datatype = selected.id;
                 //TODO: load master map
                 if(!$rootScope.datatypesMap[node.datatype] || $rootScope.datatypesMap[node.datatype] == null){
-                    DatatypeService.get(selected.id).then(function(result) {
+                    DatatypeService.getOne(selected.id).then(function(result) {
                         $rootScope.datatypesMap[node.datatype] = result;
                         if ($scope.datatypesParams)
                             $scope.datatypesParams.refresh();
@@ -364,7 +364,7 @@ angular.module('igl')
     });
 
 angular.module('igl')
-    .controller('SelectDatatypeCtrl', function ($scope, $filter,$modalInstance, $rootScope, $http,currentNode,DatatypeService,$rootScope, hl7Version) {
+    .controller('SelectDatatypeFlavorCtrl', function ($scope, $filter,$modalInstance, $rootScope, $http,currentNode,DatatypeService,$rootScope, hl7Version) {
         $scope.error = null;
         $scope.searching = null;
         $scope.results = [];
@@ -382,7 +382,7 @@ angular.module('igl')
             $scope.results = [];
             $scope.tmpResults = [].concat($scope.results);
             if($scope.name != null && $scope.scope != null) {
-                DatatypeService.searchByNameVersionAndScope($scope.name, $scope.scope,$scope.hl7Version).then(function (results) {
+                DatatypeService.findFlavors($scope.name, $scope.scope,$scope.hl7Version).then(function (results) {
                     $scope.results = results;
                     $scope.tmpResults = [].concat($scope.results);
                     $scope.searching = false;

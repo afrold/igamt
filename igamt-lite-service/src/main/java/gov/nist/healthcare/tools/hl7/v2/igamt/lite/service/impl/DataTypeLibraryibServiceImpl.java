@@ -20,11 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibraryMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeLibraryRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 
 /**
@@ -42,24 +42,38 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 	@Override
 	public List<DatatypeLibrary> findAll() {
 		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findAll();
-		log.info("datatypeLibrary=" + datatypeLibrary.size());
+		log.debug("DatatypeLibraryRepository.findAll datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;
+	}
+	
+	@Override
+	public List<DatatypeLibrary> findByScopes(List<SCOPE> scopes) {
+		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByScopes(scopes);
+		log.debug("DatatypeLibraryRepository.findByScopes datatypeLibrary=" + datatypeLibrary.size());
+		return datatypeLibrary;
+	}
+	
+	@Override
+	public List<String> findHl7Versions() {
+		return datatypeLibraryRepository.findHl7Versions();
+	}
+	
+	@Override
+	public DatatypeLibrary findById(String id) {
+		return datatypeLibraryRepository.findById(id);
 	}
 
 	@Override
-	public DatatypeLibrary findByScopeAndVersion(Constant.SCOPE scope, String hl7Version) {
-		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryRepository.findByScopeAndMetaData_Hl7Version(scope, hl7Version);
-		log.info("datatypeLibraries=" + datatypeLibraries.size());
-		DatatypeLibrary datatypeLibrary = null;
-		if (datatypeLibraries.size() > 0) {
-			datatypeLibrary = datatypeLibraries.get(0);
-		}
-		return datatypeLibrary;
+	public List<DatatypeLibrary> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		log.info("DataTypeLibraryibServiceImpl.findByScopesAndVersion. start");
+		List<DatatypeLibrary> datatypeLibraries = datatypeLibraryRepository.findScopesNVersion(scopes, hl7Version);
+		log.info("DataTypeLibraryibServiceImpl.findByScopesAndVersion datatypeLibraries=" + datatypeLibraries.size());
+		return datatypeLibraries;
 	}
 
 	@Override
-	public List<DatatypeLibrary> findByAccountId(Long accountId) {
-		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByAccountId(accountId);
+	public List<DatatypeLibrary> findByAccountId(Long accountId, String hl7Version) {
+		List<DatatypeLibrary> datatypeLibrary = datatypeLibraryRepository.findByAccountId(accountId, hl7Version);
 		log.info("datatypeLibrary=" + datatypeLibrary.size());
 		return datatypeLibrary;
 	}
@@ -79,7 +93,19 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 	}
 
 	@Override
-	public DatatypeLibrary create(DatatypeLibrary datatypeLibrary) {
+	public DatatypeLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId) {
+		DatatypeLibraryMetaData metaData = defaultMetadata();
+		metaData.setName(name);
+		metaData.setHl7Version(hl7Version);
+		metaData.setExt(ext);
+		DatatypeLibrary datatypeLibrary = new DatatypeLibrary();
+		datatypeLibrary.setMetaData(metaData);
+		datatypeLibrary.setScope(scope);
+		datatypeLibrary.setAccountId(accountId);
+		datatypeLibrary.setDate(Constant.mdy.format(new Date()));
+		datatypeLibrary.setSectionDescription("Default description");
+		datatypeLibrary.setSectionTitle("Default title");
+		datatypeLibrary.setSectionContents("Default contents");
 		datatypeLibrary = datatypeLibraryRepository.insert(datatypeLibrary);
 		return datatypeLibrary;
 	}
@@ -95,10 +121,5 @@ public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
 		public int compare(Datatype thisDt, Datatype thatDt) {
 			return thatDt.getLabel().compareTo(thisDt.getLabel());
 		}
-	}
-
-	@Override
-	public DatatypeLibrary findById(String id) {
-		return datatypeLibraryRepository.findById(id);
 	}
 }

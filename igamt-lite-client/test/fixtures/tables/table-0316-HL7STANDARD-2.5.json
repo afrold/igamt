@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 28,
+  "id" : "565f3ab6d4c6e52cfd4411ce",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0316",
+  "name" : "Organ Donor Code",
+  "description" : "Organ Donor Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.316",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411cf",
+    "value" : "F",
+    "label" : "Yes, patient is a documented donor, but documentation is not on file",
+    "codeSystem" : "HL70316",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411d0",
+    "value" : "I",
+    "label" : "No, patient is not a documented donor, but information was provided",
+    "codeSystem" : "HL70316",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411d1",
+    "value" : "N",
+    "label" : "No, patient has not agreed to be a donor",
+    "codeSystem" : "HL70316",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411d2",
+    "value" : "P",
+    "label" : "Patient leaves organ donation decision to a specific person",
+    "codeSystem" : "HL70316",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411d3",
+    "value" : "R",
+    "label" : "Patient leaves organ donation decision to relatives",
+    "codeSystem" : "HL70316",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411d4",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70316",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411d5",
+    "value" : "Y",
+    "label" : "Yes, patient is a documented donor and documentation is on file",
+    "codeSystem" : "HL70316",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

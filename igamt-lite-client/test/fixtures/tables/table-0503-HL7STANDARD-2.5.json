@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 438,
+  "id" : "565f3ab6d4c6e52cfd440e7d",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0503",
+  "name" : "Sequence/Results Flag",
+  "description" : "Sequence/Results Flag",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.503",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e7e",
+    "value" : "C",
+    "label" : "Cyclical",
+    "codeSystem" : "HL70503",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e7f",
+    "value" : "R",
+    "label" : "Reserved for future use",
+    "codeSystem" : "HL70503",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e80",
+    "value" : "S",
+    "label" : "Sequential",
+    "codeSystem" : "HL70503",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

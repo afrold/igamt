@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 20,
+  "id" : "569eac0ed4c623dc6550b5e2",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0430",
+  "name" : "Mode of Arrival Code",
+  "description" : "Mode of Arrival Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.430",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5e3",
+    "value" : "A",
+    "label" : "Ambulance",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5e4",
+    "value" : "C",
+    "label" : "Car",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5e5",
+    "value" : "F",
+    "label" : "On foot",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5e6",
+    "value" : "H",
+    "label" : "Helicopter",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5e7",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5e8",
+    "value" : "P",
+    "label" : "Public Transport",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b5e9",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 231,
+  "id" : "565f3ab7d4c6e52cfd445cae",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0049",
+  "name" : "Department Code",
+  "description" : "Department Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

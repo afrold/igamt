@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 263,
+  "id" : "565f3ab7d4c6e52cfd447379",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0305",
+  "name" : "Person Location Type",
+  "description" : "Person Location Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

@@ -68,12 +68,16 @@ angular.module('igl').factory('SegmentService',
             },
             get: function (id) {
                 var delay = $q.defer();
-                $http.get('api/segments/' + id).then(function (response) {
-                    var segment = angular.fromJson(response.data);
-                    delay.resolve(segment);
-                }, function (error) {
-                    delay.reject(error);
-                });
+                if($rootScope.segmentsMap[id] === undefined || $rootScope.segmentsMap[id] === undefined) {
+                    $http.get('api/segments/' + id).then(function (response) {
+                        var segment = angular.fromJson(response.data);
+                        delay.resolve(segment);
+                    }, function (error) {
+                        delay.reject(error);
+                    });
+                }else{
+                    delay.resolve($rootScope.segmentsMap[id]);
+                }
                 return delay.promise;
             },
             merge: function (to, from) {
@@ -95,6 +99,7 @@ angular.module('igl').factory('SegmentService',
                 to.fields = from.fields;
                 to.version = from.version;
                 to.date = from.date;
+                to.purposeAndUse = from.purposeAndUse;
                 return to;
             }
 

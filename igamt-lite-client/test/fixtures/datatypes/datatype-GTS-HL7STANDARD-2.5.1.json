@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 40,
+  "hl7Version" : "2.5.1",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ "57237653da0805ce1eab08ad" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0fd4c623dc6550ec90",
+  "label" : "GTS",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "GTS",
+  "description" : "General Timing Specification",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : "PUBLISHED"
+}

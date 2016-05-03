@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 171,
+  "id" : "565f3ab7d4c6e52cfd447f31",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0183",
+  "name" : "Active/Inactive",
+  "description" : "Active/Inactive",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f32",
+    "value" : "A",
+    "label" : "Active staff",
+    "codeSystem" : "HL70183",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f33",
+    "value" : "I",
+    "label" : "Inactive staff",
+    "codeSystem" : "HL70183",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

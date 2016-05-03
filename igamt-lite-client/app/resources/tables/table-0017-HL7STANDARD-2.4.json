@@ -1,0 +1,135 @@
+{
+  "type" : "table",
+  "sectionPosition" : 407,
+  "id" : "565f3ab6d4c6e52cfd443256",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0017",
+  "name" : "Transaction type",
+  "description" : "Transaction type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443257",
+    "value" : "1",
+    "label" : "Zwischenrechnung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443258",
+    "value" : "2",
+    "label" : "Schlußrechnung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443259",
+    "value" : "3",
+    "label" : "Nachtragsrechnung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44325a",
+    "value" : "4",
+    "label" : "Gutschrift",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44325b",
+    "value" : "5",
+    "label" : "Stornierung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44325c",
+    "value" : "6",
+    "label" : "Zahlungserinnerung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44325d",
+    "value" : "7",
+    "label" : "1. Mahnung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44325e",
+    "value" : "8",
+    "label" : "2. Mahnung",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44325f",
+    "value" : "AJ",
+    "label" : "Adjustment",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443260",
+    "value" : "CD",
+    "label" : "Credit",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443261",
+    "value" : "CG",
+    "label" : "Charge",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443262",
+    "value" : "CO",
+    "label" : "Co-payment",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443263",
+    "value" : "PY",
+    "label" : "Payment",
+    "codeSystem" : "HL70017",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

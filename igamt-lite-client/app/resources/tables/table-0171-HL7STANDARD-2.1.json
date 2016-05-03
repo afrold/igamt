@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 58,
+  "id" : "565f3ab7d4c6e52cfd448331",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0171",
+  "name" : "Country Code",
+  "description" : "Country Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448332",
+    "value" : "D",
+    "label" : "Deutschland",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

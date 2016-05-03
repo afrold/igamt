@@ -39,6 +39,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -72,6 +73,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Conformanc
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
 import nu.xom.Attribute;
 import nu.xom.Builder;
@@ -80,6 +82,11 @@ import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
 public class ProfileSerializationImpl implements ProfileSerialization {
+	
+	@Autowired
+	private DatatypeLibraryService datatypeLibraryService;
+	
+	
 	Logger logger = LoggerFactory.getLogger( ProfileSerializationImpl.class );
 
 	private HashMap<String, Datatype> datatypesMap;
@@ -113,6 +120,15 @@ public class ProfileSerializationImpl implements ProfileSerialization {
 
 		DatatypeLibrary datatypes = new DatatypeLibrary();
 		for (String key : datatypesMap.keySet()) {
+			
+			if(key.contains("_")){
+				
+			}else{
+				
+			}
+			
+			
+			
 			datatypes.addDatatype(datatypesMap.get(key));
 		}
 		profile.setDatatypeLibrary(datatypes);

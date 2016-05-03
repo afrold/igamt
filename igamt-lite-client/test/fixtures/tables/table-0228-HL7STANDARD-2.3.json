@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 47,
+  "id" : "565f3ab7d4c6e52cfd44749e",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0228",
+  "name" : "Diagnosis Classification",
+  "description" : "Diagnosis Classification",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44749f",
+    "value" : "C",
+    "label" : "Consultation",
+    "codeSystem" : "HL70228",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474a0",
+    "value" : "D",
+    "label" : "Diagnosis",
+    "codeSystem" : "HL70228",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474a1",
+    "value" : "I",
+    "label" : "Invasive procedure not classified elsewhere (I.V., catheter, etc.)",
+    "codeSystem" : "HL70228",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474a2",
+    "value" : "M",
+    "label" : "Medication (antibiotic)",
+    "codeSystem" : "HL70228",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474a3",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70228",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474a4",
+    "value" : "R",
+    "label" : "Radiological scheduling (not using ICDA codes)",
+    "codeSystem" : "HL70228",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474a5",
+    "value" : "S",
+    "label" : "Sign and symptom",
+    "codeSystem" : "HL70228",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474a6",
+    "value" : "T",
+    "label" : "Tissue diagnosis",
+    "codeSystem" : "HL70228",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

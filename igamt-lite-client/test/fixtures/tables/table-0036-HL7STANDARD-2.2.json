@@ -1,0 +1,126 @@
+{
+  "type" : "table",
+  "sectionPosition" : 186,
+  "id" : "565f3ab7d4c6e52cfd447daf",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0036",
+  "name" : "UNITS OF MEASURE - ISO528,1977",
+  "description" : "UNITS OF MEASURE - ISO528,1977",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447db0",
+    "value" : "BT",
+    "label" : "Bottle",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447db1",
+    "value" : "EA",
+    "label" : "Each",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447db2",
+    "value" : "GM",
+    "label" : "Grams",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447db3",
+    "value" : "KG",
+    "label" : "Kilograms",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447db4",
+    "value" : "LB",
+    "label" : "Pounds",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447db5",
+    "value" : "MEQ",
+    "label" : "Milliequivalent",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447db6",
+    "value" : "MG",
+    "label" : "Milligrams",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447db7",
+    "value" : "ML",
+    "label" : "Milliliters",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447db8",
+    "value" : "OZ",
+    "label" : "Ounces",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447db9",
+    "value" : "SC",
+    "label" : "Square centimeters",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dba",
+    "value" : "TB",
+    "label" : "Tablet",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447dbb",
+    "value" : "VL",
+    "label" : "Vial",
+    "codeSystem" : "HL70036",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

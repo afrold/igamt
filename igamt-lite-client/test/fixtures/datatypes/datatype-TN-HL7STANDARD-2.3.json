@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 102,
+  "hl7Version" : "2.3",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ "5723765dda0805ce1eabda1c" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "565f3ab7d4c6e52cfd447584",
+  "label" : "TN",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "TN",
+  "description" : "telephone number",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : "PUBLISHED"
+}

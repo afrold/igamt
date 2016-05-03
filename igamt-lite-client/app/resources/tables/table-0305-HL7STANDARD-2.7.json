@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 196,
+  "id" : "569eac0dd4c623dc65507e60",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0305",
+  "name" : "Person Location Type",
+  "description" : "Person Location Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e61",
+    "value" : "C",
+    "label" : "Clinic",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e62",
+    "value" : "D",
+    "label" : "Department",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e63",
+    "value" : "H",
+    "label" : "Home",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e64",
+    "value" : "N",
+    "label" : "Nursing Unit",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e65",
+    "value" : "O",
+    "label" : "Provider's Office",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e66",
+    "value" : "P",
+    "label" : "Phone",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e67",
+    "value" : "S",
+    "label" : "SNF",
+    "codeSystem" : "HL70305",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

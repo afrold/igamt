@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 8,
+  "id" : "565f3ab7d4c6e52cfd448345",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0065",
+  "name" : "ACTION CODE",
+  "description" : "ACTION CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448346",
+    "value" : "A",
+    "label" : "Add ordered tests to the existing specimen",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448347",
+    "value" : "C",
+    "label" : "Cancel order for battery or tests named",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448348",
+    "value" : "G",
+    "label" : "Generated order",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448349",
+    "value" : "L",
+    "label" : "Lab to obtain specimen from patient.",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44834a",
+    "value" : "O",
+    "label" : "Specimen obtained by service other than Lab",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44834b",
+    "value" : "P",
+    "label" : "Pending specimen-Order sent prior to delivery",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44834c",
+    "value" : "S",
+    "label" : "Schedule the tests specified below",
+    "codeSystem" : "HL70065",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

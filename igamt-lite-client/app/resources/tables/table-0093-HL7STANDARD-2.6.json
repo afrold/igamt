@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 516,
+  "id" : "569eac0ed4c623dc6550b117",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0093",
+  "name" : "Release Information",
+  "description" : "Release Information",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.93",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b118",
+    "value" : "...",
+    "label" : "user-defined codes",
+    "codeSystem" : "HL70093",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b119",
+    "value" : "N",
+    "label" : "No",
+    "codeSystem" : "HL70093",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b11a",
+    "value" : "Y",
+    "label" : "Yes",
+    "codeSystem" : "HL70093",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

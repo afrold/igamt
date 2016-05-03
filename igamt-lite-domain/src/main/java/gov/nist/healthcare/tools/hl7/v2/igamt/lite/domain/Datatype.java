@@ -31,6 +31,8 @@ Cloneable, Comparable<Datatype> {
 	private String label;
 
 	private String ext;
+	
+	private String purposeAndUse;
 
 	protected List<Component> components = new ArrayList<Component>();
 

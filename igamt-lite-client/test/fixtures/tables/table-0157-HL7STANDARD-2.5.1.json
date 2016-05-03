@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 476,
+  "id" : "569eac0fd4c623dc6550e031",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0157",
+  "name" : "Which date/time status qualifier",
+  "description" : "Which date/time status qualifier",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.157",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e032",
+    "value" : "ANY",
+    "label" : "Any status",
+    "codeSystem" : "HL70157",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e033",
+    "value" : "CFN",
+    "label" : "Current final value, whether final or corrected",
+    "codeSystem" : "HL70157",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e034",
+    "value" : "COR",
+    "label" : "Corrected only (no final with corrections)",
+    "codeSystem" : "HL70157",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e035",
+    "value" : "FIN",
+    "label" : "Final only (no corrections)",
+    "codeSystem" : "HL70157",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e036",
+    "value" : "PRE",
+    "label" : "Preliminary",
+    "codeSystem" : "HL70157",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e037",
+    "value" : "REP",
+    "label" : "Report completion date/time",
+    "codeSystem" : "HL70157",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

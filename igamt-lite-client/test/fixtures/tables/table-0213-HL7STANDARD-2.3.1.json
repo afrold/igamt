@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 63,
+  "id" : "565f3ab7d4c6e52cfd445f5b",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0213",
+  "name" : "Purge status",
+  "description" : "Purge status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f5c",
+    "value" : "D",
+    "label" : "The visit is marked for deletion and the user cannot enter new data against it.",
+    "codeSystem" : "HL70213",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f5d",
+    "value" : "I",
+    "label" : "The visit is marked inactive and the user cannot enter new data against it.",
+    "codeSystem" : "HL70213",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f5e",
+    "value" : "P",
+    "label" : "Marked for purge.  User is no longer able to update the visit.",
+    "codeSystem" : "HL70213",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

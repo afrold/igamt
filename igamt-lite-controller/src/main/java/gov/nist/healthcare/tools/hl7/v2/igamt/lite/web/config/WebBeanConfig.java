@@ -37,8 +37,8 @@ public class WebBeanConfig {
 				"2.3", "2.3.1", "2.4", "2.5", "2.5.1", "2.6", "2.7", "2.8" }));
 		config.setSchemaVersions(toSet(new String[] { "1.0", "1.5", "2.0",
 				"2.5" }));
-		config.setUsages(toSet(new String[] { "R", "RE", "O", "C", "X", "B",
-				"W" }));
+		config.setUsages(toSet(new String[] { "R", "RE", "O", "C", "X" }));
+		config.setConditionalUsage(toSet(new String[] { "R", "RE", "O", "X" }));
 		config.setCodeUsages(toSet(new String[] { "R", "P", "E" }));
 		config.setCodeSources(toSet(new String[] { "HL7", "Local", "Redefined",
 				"SDO" }));

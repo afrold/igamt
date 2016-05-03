@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 206,
+  "id" : "569eac0dd4c623dc655077b2",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0282",
+  "name" : "Referral Disposition",
+  "description" : "Referral Disposition",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077b3",
+    "value" : "AM",
+    "label" : "Assume Management",
+    "codeSystem" : "HL70282",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077b4",
+    "value" : "RP",
+    "label" : "Return Patient After Evaluation",
+    "codeSystem" : "HL70282",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077b5",
+    "value" : "SO",
+    "label" : "Second Opinion",
+    "codeSystem" : "HL70282",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077b6",
+    "value" : "WR",
+    "label" : "Send Written Report",
+    "codeSystem" : "HL70282",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

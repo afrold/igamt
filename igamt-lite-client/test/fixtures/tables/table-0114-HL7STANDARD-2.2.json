@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 40,
+  "id" : "565f3ab7d4c6e52cfd448074",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0114",
+  "name" : "DIET TYPE",
+  "description" : "DIET TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

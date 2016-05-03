@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 172,
+  "id" : "565f3ab7d4c6e52cfd447d1c",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0023",
+  "name" : "ADMIT SOURCE",
+  "description" : "ADMIT SOURCE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

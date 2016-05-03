@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 222,
+  "id" : "569eac0dd4c623dc65507a39",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0179",
+  "name" : "Response Level",
+  "description" : "Response Level",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a3a",
+    "value" : "AL",
+    "label" : "Always.  All MFA segments (whether denoting errors or not) must be returned via the application-level acknowledgment message",
+    "codeSystem" : "HL70179",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a3b",
+    "value" : "ER",
+    "label" : "Error/Reject conditions only.  Only MFA segments denoting errors must be returned via the application-level acknowledgment for this message",
+    "codeSystem" : "HL70179",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a3c",
+    "value" : "NE",
+    "label" : "Never.  No application-level response needed",
+    "codeSystem" : "HL70179",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a3d",
+    "value" : "SU",
+    "label" : "Success.  Only MFA segments denoting success must be returned via the application-level acknowledgment for this message",
+    "codeSystem" : "HL70179",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

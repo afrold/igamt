@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 6,
+  "id" : "569eac0dd4c623dc65507ec3",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0554",
+  "name" : "Invoice Reason Codes",
+  "description" : "Invoice Reason Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ec4",
+    "value" : "LATE",
+    "label" : "Late Invoice",
+    "codeSystem" : "HL70554",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ec5",
+    "value" : "NORM",
+    "label" : "Normal submission",
+    "codeSystem" : "HL70554",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ec6",
+    "value" : "SUB",
+    "label" : "Subscriber coverage problem",
+    "codeSystem" : "HL70554",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 141,
+  "id" : "565f3ab6d4c6e52cfd443cb7",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0331",
+  "name" : "Facility type",
+  "description" : "Facility type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443cb8",
+    "value" : "A",
+    "label" : "Agent for a foreign manufacturer",
+    "codeSystem" : "HL70331",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443cb9",
+    "value" : "D",
+    "label" : "Distributor",
+    "codeSystem" : "HL70331",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443cba",
+    "value" : "M",
+    "label" : "Manufacturer",
+    "codeSystem" : "HL70331",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443cbb",
+    "value" : "U",
+    "label" : "User",
+    "codeSystem" : "HL70331",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

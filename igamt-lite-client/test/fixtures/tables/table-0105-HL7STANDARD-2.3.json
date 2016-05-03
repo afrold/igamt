@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 271,
+  "id" : "565f3ab7d4c6e52cfd447447",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0105",
+  "name" : "Source of Comment",
+  "description" : "Source of Comment",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447448",
+    "value" : "L",
+    "label" : "Ancillary (filler) department is source of comment",
+    "codeSystem" : "HL70105",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447449",
+    "value" : "O",
+    "label" : "Other system is source of comment",
+    "codeSystem" : "HL70105",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44744a",
+    "value" : "P",
+    "label" : "Orderer (placer) is source of comment",
+    "codeSystem" : "HL70105",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

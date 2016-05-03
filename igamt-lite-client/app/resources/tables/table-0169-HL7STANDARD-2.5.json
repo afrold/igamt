@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 437,
+  "id" : "565f3ab6d4c6e52cfd440b3b",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0169",
+  "name" : "Reporting priority",
+  "description" : "Reporting priority",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.169",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b3c",
+    "value" : "C",
+    "label" : "Call back results",
+    "codeSystem" : "HL70169",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440b3d",
+    "value" : "R",
+    "label" : "Rush reporting",
+    "codeSystem" : "HL70169",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

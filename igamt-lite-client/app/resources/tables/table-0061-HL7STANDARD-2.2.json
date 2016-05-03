@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 18,
+  "id" : "565f3ab7d4c6e52cfd447f3a",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0061",
+  "name" : "CHECK DIGIT SCHEME",
+  "description" : "CHECK DIGIT SCHEME",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f3b",
+    "value" : "M10",
+    "label" : "Mod 10 algorithm",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f3c",
+    "value" : "M11",
+    "label" : "Mod 11 algorithm",
+    "codeSystem" : "HL70061",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

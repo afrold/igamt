@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 302,
+  "id" : "569eac0fd4c623dc6550e57e",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0548",
+  "name" : "Signatory's Relationship to Subject",
+  "description" : "Signatory's Relationship to Subject",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.548",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e57f",
+    "value" : "1",
+    "label" : "Self",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e580",
+    "value" : "2",
+    "label" : "Parent",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e581",
+    "value" : "3",
+    "label" : "Next of Kin",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e582",
+    "value" : "4",
+    "label" : "Durable Power of Attorney in Healthcare Affairs",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e583",
+    "value" : "5",
+    "label" : "Conservator",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e584",
+    "value" : "6",
+    "label" : "Emergent Practitioner (practitioner judging case as emergency requiring care without a consent)",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e585",
+    "value" : "7",
+    "label" : "Non-Emergent Practitioner (i.e. medical ethics committee)",
+    "codeSystem" : "HL70548",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

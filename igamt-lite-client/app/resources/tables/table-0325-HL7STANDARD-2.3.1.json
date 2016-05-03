@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 15,
+  "id" : "565f3ab7d4c6e52cfd445ec1",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0325",
+  "name" : "Location relationship ID",
+  "description" : "Location relationship ID",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ec2",
+    "value" : "ALI",
+    "label" : "Location Alias(es)",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ec3",
+    "value" : "DTY",
+    "label" : "Nearest  dietary",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ec4",
+    "value" : "LAB",
+    "label" : "Nearest  lab",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ec5",
+    "value" : "LB2",
+    "label" : "Second lab",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ec6",
+    "value" : "PAR",
+    "label" : "Parent location",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ec7",
+    "value" : "RX",
+    "label" : "Nearest  pharmacy",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ec8",
+    "value" : "RX2",
+    "label" : "Second pharmacy",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

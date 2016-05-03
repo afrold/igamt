@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 314,
+  "id" : "569eac0fd4c623dc6550e532",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0540",
+  "name" : "Inactive Reason Code",
+  "description" : "Inactive Reason Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.540",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e533",
+    "value" : "L",
+    "label" : "Leave of Absence",
+    "codeSystem" : "HL70540",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e534",
+    "value" : "R",
+    "label" : "Retired",
+    "codeSystem" : "HL70540",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e535",
+    "value" : "T",
+    "label" : "Termination",
+    "codeSystem" : "HL70540",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

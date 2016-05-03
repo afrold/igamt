@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 289,
+  "id" : "565f3ab7d4c6e52cfd445c15",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0170",
+  "name" : "Derived specimen",
+  "description" : "Derived specimen",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c16",
+    "value" : "C",
+    "label" : "Child Observation",
+    "codeSystem" : "HL70170",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c17",
+    "value" : "N",
+    "label" : "Not Applicable",
+    "codeSystem" : "HL70170",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445c18",
+    "value" : "P",
+    "label" : "Parent Observation",
+    "codeSystem" : "HL70170",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

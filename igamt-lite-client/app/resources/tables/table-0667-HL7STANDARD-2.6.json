@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 46,
+  "id" : "569eac0ed4c623dc6550b33d",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0667",
+  "name" : "Device Data State",
+  "description" : "Device Data State",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.667",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b33e",
+    "value" : "0",
+    "label" : "Real Time Values",
+    "codeSystem" : "HL70667",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b33f",
+    "value" : "1",
+    "label" : "Historic Values",
+    "codeSystem" : "HL70667",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

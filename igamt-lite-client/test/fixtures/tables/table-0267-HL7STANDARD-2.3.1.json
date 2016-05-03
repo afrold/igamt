@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 137,
+  "id" : "565f3ab7d4c6e52cfd445aa4",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0267",
+  "name" : "Days of the Week",
+  "description" : "Days of the Week",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445aa5",
+    "value" : "FRI",
+    "label" : "Friday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445aa6",
+    "value" : "MON",
+    "label" : "Monday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445aa7",
+    "value" : "SAT",
+    "label" : "Saturday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445aa8",
+    "value" : "SUN",
+    "label" : "Sunday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445aa9",
+    "value" : "THU",
+    "label" : "Thursday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445aaa",
+    "value" : "TUE",
+    "label" : "Tuesday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445aab",
+    "value" : "WED",
+    "label" : "Wednesday",
+    "codeSystem" : "HL70267",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

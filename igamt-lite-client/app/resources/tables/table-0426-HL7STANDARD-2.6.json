@@ -1,0 +1,153 @@
+{
+  "type" : "table",
+  "sectionPosition" : 251,
+  "id" : "569eac0ed4c623dc6550b38d",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0426",
+  "name" : "Blood Product Code",
+  "description" : "Blood Product Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.426",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b38e",
+    "value" : "CRYO",
+    "label" : "Cryoprecipitated AHF",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b38f",
+    "value" : "CRYOP",
+    "label" : "Pooled Cryoprecipitate",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b390",
+    "value" : "FFP",
+    "label" : "Fresh Frozen Plasma",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b391",
+    "value" : "FFPTH",
+    "label" : "Fresh Frozen Plasma - Thawed",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b392",
+    "value" : "PC",
+    "label" : "Packed Cells",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b393",
+    "value" : "PCA",
+    "label" : "Autologous Packed Cells",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b394",
+    "value" : "PCNEO",
+    "label" : "Packed Cells - Neonatal",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b395",
+    "value" : "PCW",
+    "label" : "Washed Packed Cells",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b396",
+    "value" : "PLT",
+    "label" : "Platelet Concentrate",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b397",
+    "value" : "PLTNEO",
+    "label" : "Reduced Volume Platelets",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b398",
+    "value" : "PLTP",
+    "label" : "Pooled Platelets",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b399",
+    "value" : "PLTPH",
+    "label" : "Platelet Pheresis",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b39a",
+    "value" : "PLTPHLR",
+    "label" : "Leukoreduced Platelet Pheresis",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b39b",
+    "value" : "RWB",
+    "label" : "Reconstituted Whole Blood",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b39c",
+    "value" : "WBA",
+    "label" : "Autologous Whole Blood",
+    "codeSystem" : "HL70426",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

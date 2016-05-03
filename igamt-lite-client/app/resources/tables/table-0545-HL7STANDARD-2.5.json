@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 471,
+  "id" : "565f3ab6d4c6e52cfd440f5e",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0545",
+  "name" : "Language Translated To",
+  "description" : "Language Translated To",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.545",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

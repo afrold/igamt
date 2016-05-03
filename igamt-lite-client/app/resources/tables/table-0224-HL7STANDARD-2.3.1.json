@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 298,
+  "id" : "565f3ab7d4c6e52cfd44601f",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0224",
+  "name" : "Transport arranged",
+  "description" : "Transport arranged",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446020",
+    "value" : "A",
+    "label" : "Arranged",
+    "codeSystem" : "HL70224",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446021",
+    "value" : "N",
+    "label" : "Not Arranged",
+    "codeSystem" : "HL70224",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446022",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70224",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -17,8 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.DatatypeRepository;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
@@ -36,24 +35,37 @@ public class DataypeServiceImpl implements DatatypeService {
 	private DatatypeRepository datatypeRepository;
 
 	@Override
-	public List<Datatype> findAll(QUANTUM quantum) {
-		List<Datatype> datatypes = datatypeRepository.findAll(quantum);
+	public List<Datatype> findAll() {
+		List<Datatype> datatypes = datatypeRepository.findAll();
 		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
 		return datatypes;
 	}
 
 	@Override
-	public Datatype findById(String id, QUANTUM quantum) {
+	public Datatype findById(String id) {
 		log.info("DataypeServiceImpl.findById=" + id);
 		Datatype datatype;
-		datatype = datatypeRepository.findById(id, quantum);
+		datatype = datatypeRepository.findById(id);
 		return datatype;
 	}
 
 	@Override
-	public List<Datatype> findByLibrary(String dtLibId, Constant.QUANTUM quantum) {
-		List<Datatype> datatypes = datatypeRepository.findByLibrary(dtLibId, quantum);
+	public List<Datatype> findByIds(List<String> ids) {
+		log.info("DataypeServiceImpl.findByIds=" + ids);
+		return datatypeRepository.findByIds(ids);
+	}
+
+	@Override
+	public List<Datatype> findByLibIds(String dtLibId) {
+		List<Datatype> datatypes = datatypeRepository.findByLibIds(dtLibId);
 		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
+		return datatypes;
+	}
+
+	@Override
+	public List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		List<Datatype> datatypes = datatypeRepository.findByScopesAndVersion(scopes, hl7Version);
+		log.info("DataypeServiceImpl.findByScopeAndVersion=" + datatypes.size());
 		return datatypes;
 	}
 

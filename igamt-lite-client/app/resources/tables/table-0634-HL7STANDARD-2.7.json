@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 190,
+  "id" : "569eac0dd4c623dc65507cc4",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0634",
+  "name" : "Item Importance Codes",
+  "description" : "Item Importance Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507cc5",
+    "value" : "CRT",
+    "label" : "Critical",
+    "codeSystem" : "HL70634",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

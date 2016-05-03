@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 102,
+  "id" : "569eac0dd4c623dc655077ac",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0285",
+  "name" : "Insurance Company ID Codes",
+  "description" : "Insurance Company ID Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655077ad",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70285",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

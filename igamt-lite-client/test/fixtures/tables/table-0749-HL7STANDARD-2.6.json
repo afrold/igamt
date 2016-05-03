@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 187,
+  "id" : "569eac0ed4c623dc6550b1c7",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0749",
+  "name" : "DRG Grouping Status",
+  "description" : "DRG Grouping Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.749",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1c8",
+    "value" : "0",
+    "label" : "Valid code; not used for grouping",
+    "codeSystem" : "HL70749",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1c9",
+    "value" : "1",
+    "label" : "Valid code; used for grouping",
+    "codeSystem" : "HL70749",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1ca",
+    "value" : "2",
+    "label" : "Invalid code; not used for grouping",
+    "codeSystem" : "HL70749",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1cb",
+    "value" : "3",
+    "label" : "Invalid code; code is relevant for grouping",
+    "codeSystem" : "HL70749",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

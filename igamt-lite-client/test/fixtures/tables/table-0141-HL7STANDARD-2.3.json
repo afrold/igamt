@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 65,
+  "id" : "565f3ab7d4c6e52cfd446f64",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0141",
+  "name" : "Champus Rank/Grade",
+  "description" : "Champus Rank/Grade",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

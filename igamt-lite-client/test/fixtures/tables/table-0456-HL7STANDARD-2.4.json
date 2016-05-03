@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 354,
+  "id" : "565f3ab6d4c6e52cfd443c8b",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0456",
+  "name" : "Revenue code",
+  "description" : "Revenue code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c8c",
+    "value" : "...",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70456",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c8d",
+    "value" : "260",
+    "label" : "IV Therapy",
+    "codeSystem" : "HL70456",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c8e",
+    "value" : "280",
+    "label" : "Oncology",
+    "codeSystem" : "HL70456",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c8f",
+    "value" : "301",
+    "label" : "Lab/Chemistry",
+    "codeSystem" : "HL70456",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c90",
+    "value" : "991",
+    "label" : "Cafeteria /Guest Tray",
+    "codeSystem" : "HL70456",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c91",
+    "value" : "993",
+    "label" : "Telephone/Telegraph",
+    "codeSystem" : "HL70456",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443c92",
+    "value" : "994",
+    "label" : "TV/Radio",
+    "codeSystem" : "HL70456",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

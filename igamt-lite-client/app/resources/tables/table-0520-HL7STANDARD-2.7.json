@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 414,
+  "id" : "569eac0dd4c623dc65507d3a",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0520",
+  "name" : "Message Waiting Priority",
+  "description" : "Message Waiting Priority",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d3b",
+    "value" : "H",
+    "label" : "High",
+    "codeSystem" : "HL70520",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d3c",
+    "value" : "L",
+    "label" : "Low",
+    "codeSystem" : "HL70520",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d3d",
+    "value" : "M",
+    "label" : "Medium",
+    "codeSystem" : "HL70520",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

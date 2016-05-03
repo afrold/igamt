@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 301,
+  "id" : "565f3ab6d4c6e52cfd4439db",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0083",
+  "name" : "Outlier type",
+  "description" : "Outlier type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439dc",
+    "value" : "C",
+    "label" : "Outlier cost",
+    "codeSystem" : "HL70083",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4439dd",
+    "value" : "D",
+    "label" : "Outlier days",
+    "codeSystem" : "HL70083",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1485,7 +1485,7 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
 
 
         $rootScope.isDuplicated = function (obj, context, list) {
-            if (obj == null || obj == undefined) return false;
+//            if (obj == null || obj == undefined) return false;
 
             return _.find(_.without(list, obj), function (item) {
                 return item[context] == obj[context];

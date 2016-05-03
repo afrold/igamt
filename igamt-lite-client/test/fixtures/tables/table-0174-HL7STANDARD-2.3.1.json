@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 39,
+  "id" : "565f3ab7d4c6e52cfd445bee",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0174",
+  "name" : "Nature of test/observation",
+  "description" : "Nature of test/observation",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bef",
+    "value" : "A",
+    "label" : "Atomic test/observation (test code or treatment code)",
+    "codeSystem" : "HL70174",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bf0",
+    "value" : "C",
+    "label" : "Single observation calculated via a rule or formula from other independent observations (e.g., Alveolar--arterial ratio, cardiac output)",
+    "codeSystem" : "HL70174",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bf1",
+    "value" : "F",
+    "label" : "Functional procedure that may consist of one or more interrelated measures (e.g., glucose tolerance test, creatine clearance), usually done at different times and/or on different specimens",
+    "codeSystem" : "HL70174",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bf2",
+    "value" : "P",
+    "label" : "Profile or battery consisting of many independent atomic observations (e.g., SMA12, electrolytes), usually done at one instrument on one specimen",
+    "codeSystem" : "HL70174",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445bf3",
+    "value" : "S",
+    "label" : "Superset--a set of batteries or procedures ordered under a single code unit but processed as separate batteries (e.g., routines = CBC, UA, electrolytes)",
+    "codeSystem" : "HL70174",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -81,7 +81,7 @@ public class DatatypeLibrary extends TextbasedSectionModel implements java.io.Se
 		return dtl;
 	}
 
-	public void delete(DatatypeLink dtl) {
+	public void temp(DatatypeLink dtl) {
 		this.children.remove(dtl);
 	}
 

@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 185,
+  "id" : "569eac0fd4c623dc6550e4ad",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0534",
+  "name" : "Notify Clergy Code",
+  "description" : "Notify Clergy Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.534",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4ae",
+    "value" : "L",
+    "label" : "Last Rites only",
+    "codeSystem" : "HL70534",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4af",
+    "value" : "N",
+    "label" : "No",
+    "codeSystem" : "HL70534",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4b0",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70534",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4b1",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70534",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4b2",
+    "value" : "Y",
+    "label" : "Yes",
+    "codeSystem" : "HL70534",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

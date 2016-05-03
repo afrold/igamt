@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 182,
+  "id" : "565f3ab7d4c6e52cfd447f46",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0178",
+  "name" : "FILE-LEVEL EVENT CODE",
+  "description" : "FILE-LEVEL EVENT CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f47",
+    "value" : "REP",
+    "label" : "Replace current version of this master file with the version contained in this message",
+    "codeSystem" : "HL70178",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447f48",
+    "value" : "UPD",
+    "label" : "Change file records as defined in the record level event codes for each record that follows",
+    "codeSystem" : "HL70178",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

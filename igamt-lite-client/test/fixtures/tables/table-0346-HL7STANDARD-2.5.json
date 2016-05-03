@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 241,
+  "id" : "565f3ab6d4c6e52cfd441470",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0346",
+  "name" : "Certification Agency",
+  "description" : "Certification Agency",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.346",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

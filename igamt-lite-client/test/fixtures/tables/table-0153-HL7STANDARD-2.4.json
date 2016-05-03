@@ -1,0 +1,504 @@
+{
+  "type" : "table",
+  "sectionPosition" : 214,
+  "id" : "565f3ab6d4c6e52cfd443374",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0153",
+  "name" : "Value code",
+  "description" : "Value code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443375",
+    "value" : "01",
+    "label" : "Most common semi-private rate",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443376",
+    "value" : "02",
+    "label" : "Hospital has no semi-private rooms",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443377",
+    "value" : "04",
+    "label" : "Inpatient professional component charges which are combined billed",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443378",
+    "value" : "05",
+    "label" : "Professional component included in charges and also billed separate to carrier",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443379",
+    "value" : "06",
+    "label" : "Medicare blood deductible",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44337a",
+    "value" : "08",
+    "label" : "Medicare life time reserve amount in the first calendar year",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44337b",
+    "value" : "09",
+    "label" : "Medicare co-insurance amount in the first calendar year",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44337c",
+    "value" : "10",
+    "label" : "Lifetime reserve amount in the second calendar year",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44337d",
+    "value" : "11",
+    "label" : "Co-insurance amount in the second calendar year",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44337e",
+    "value" : "12",
+    "label" : "Working aged beneficiary/spouse with employer group health plan",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44337f",
+    "value" : "13",
+    "label" : "ESRD beneficiary in a Medicare coordination period with an employer group health plan",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443380",
+    "value" : "14",
+    "label" : "No Fault including auto/other",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443381",
+    "value" : "15",
+    "label" : "Worker's Compensation",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443382",
+    "value" : "16",
+    "label" : "PHS, or other federal agency",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443383",
+    "value" : "17",
+    "label" : "Payer code",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443384",
+    "value" : "21",
+    "label" : "Catastrophic",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443385",
+    "value" : "22",
+    "label" : "Surplus",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443386",
+    "value" : "23",
+    "label" : "Recurring monthly incode",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443387",
+    "value" : "24",
+    "label" : "Medicaid rate code",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443388",
+    "value" : "30",
+    "label" : "Pre-admission testing",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443389",
+    "value" : "31",
+    "label" : "Patient liability amount",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44338a",
+    "value" : "37",
+    "label" : "Pints of blood furnished",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44338b",
+    "value" : "38",
+    "label" : "Blood deductible pints",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44338c",
+    "value" : "39",
+    "label" : "Pints of blood replaced",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44338d",
+    "value" : "40",
+    "label" : "New coverage not implemented by HMO (for inpatient service only)",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44338e",
+    "value" : "41",
+    "label" : "Black lung",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44338f",
+    "value" : "42",
+    "label" : "VA",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443390",
+    "value" : "43",
+    "label" : "Disabled beneficiary under age 64 with LGHP",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443391",
+    "value" : "44",
+    "label" : "Amount provider agreed to accept from primary payer when this amount is less than charges but higher than payment received,, then a Medicare secondary payment is due",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443392",
+    "value" : "45",
+    "label" : "Accident hour",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443393",
+    "value" : "46",
+    "label" : "Number of grace days",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443394",
+    "value" : "47",
+    "label" : "Any liability insurance",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443395",
+    "value" : "48",
+    "label" : "Hemoglobin reading",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443396",
+    "value" : "49",
+    "label" : "Hematocrit reading",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443397",
+    "value" : "50",
+    "label" : "Physical therapy visits",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443398",
+    "value" : "51",
+    "label" : "Occupational therapy visits",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443399",
+    "value" : "52",
+    "label" : "Speech therapy visits",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44339a",
+    "value" : "53",
+    "label" : "Cardiac rehab visits",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44339b",
+    "value" : "56",
+    "label" : "Skilled nurse - home visit hours",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44339c",
+    "value" : "57",
+    "label" : "Home health aide - home visit hours",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44339d",
+    "value" : "58",
+    "label" : "Arterial blood gas",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44339e",
+    "value" : "59",
+    "label" : "Oxygen saturation",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44339f",
+    "value" : "60",
+    "label" : "HHA branch MSA",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433a0",
+    "value" : "67",
+    "label" : "Peritoneal dialysis",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433a1",
+    "value" : "68",
+    "label" : "EPO-drug",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433a2",
+    "value" : "70 ... 72",
+    "label" : "Payer codes",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433a3",
+    "value" : "75 ... 79",
+    "label" : "Payer codes",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433a4",
+    "value" : "80",
+    "label" : "Psychiatric visits",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433a5",
+    "value" : "81",
+    "label" : "Visits subject to co-payment",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433a6",
+    "value" : "A1",
+    "label" : "Deductible payer A",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433a7",
+    "value" : "A2",
+    "label" : "Coinsurance payer A",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433a8",
+    "value" : "A3",
+    "label" : "Estimated responsibility payer A",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433a9",
+    "value" : "X0",
+    "label" : "Service excluded on primary policy",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4433aa",
+    "value" : "X4",
+    "label" : "Supplemental coverage",
+    "codeSystem" : "HL70153",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

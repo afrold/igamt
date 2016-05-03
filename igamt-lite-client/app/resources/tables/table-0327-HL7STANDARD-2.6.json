@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 182,
+  "id" : "569eac0ed4c623dc6550b79a",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0327",
+  "name" : "Job code",
+  "description" : "Job code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.327",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b79b",
+    "value" : "...",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70327",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

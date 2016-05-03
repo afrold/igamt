@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 263,
+  "id" : "569eac0dd4c623dc655084b0",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0237",
+  "name" : "Event Qualification",
+  "description" : "Event Qualification",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084b1",
+    "value" : "A",
+    "label" : "Abuse",
+    "codeSystem" : "HL70237",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084b2",
+    "value" : "B",
+    "label" : "Unexpected beneficial effect",
+    "codeSystem" : "HL70237",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084b3",
+    "value" : "D",
+    "label" : "Dependency",
+    "codeSystem" : "HL70237",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084b4",
+    "value" : "I",
+    "label" : "Interaction",
+    "codeSystem" : "HL70237",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084b5",
+    "value" : "L",
+    "label" : "Lack of expect therapeutic effect",
+    "codeSystem" : "HL70237",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084b6",
+    "value" : "M",
+    "label" : "Misuse",
+    "codeSystem" : "HL70237",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084b7",
+    "value" : "O",
+    "label" : "Overdose",
+    "codeSystem" : "HL70237",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655084b8",
+    "value" : "W",
+    "label" : "Drug withdrawal",
+    "codeSystem" : "HL70237",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

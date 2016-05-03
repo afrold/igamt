@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 319,
+  "id" : "569eac0fd4c623dc6550e7a3",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0325",
+  "name" : "Location Relationship ID",
+  "description" : "Location Relationship ID",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.325",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7a4",
+    "value" : "ALI",
+    "label" : "Location Alias(es)",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7a5",
+    "value" : "DTY",
+    "label" : "Nearest  dietary location",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7a6",
+    "value" : "LAB",
+    "label" : "Nearest  lab",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7a7",
+    "value" : "LB2",
+    "label" : "Second nearest lab",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7a8",
+    "value" : "PAR",
+    "label" : "Parent location",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7a9",
+    "value" : "RX",
+    "label" : "Nearest  pharmacy",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e7aa",
+    "value" : "RX2",
+    "label" : "Second nearest pharmacy",
+    "codeSystem" : "HL70325",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

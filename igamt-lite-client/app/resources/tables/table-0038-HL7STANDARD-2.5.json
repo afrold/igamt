@@ -1,0 +1,99 @@
+{
+  "type" : "table",
+  "sectionPosition" : 373,
+  "id" : "565f3ab6d4c6e52cfd4409bc",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0038",
+  "name" : "Order status",
+  "description" : "Order status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.38",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409bd",
+    "value" : "A",
+    "label" : "Some, but not all, results available",
+    "codeSystem" : "HL70038",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409be",
+    "value" : "CA",
+    "label" : "Order was canceled",
+    "codeSystem" : "HL70038",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409bf",
+    "value" : "CM",
+    "label" : "Order is completed",
+    "codeSystem" : "HL70038",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409c0",
+    "value" : "DC",
+    "label" : "Order was discontinued",
+    "codeSystem" : "HL70038",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409c1",
+    "value" : "ER",
+    "label" : "Error, order not found",
+    "codeSystem" : "HL70038",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409c2",
+    "value" : "HD",
+    "label" : "Order is on hold",
+    "codeSystem" : "HL70038",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409c3",
+    "value" : "IP",
+    "label" : "In process, unspecified",
+    "codeSystem" : "HL70038",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409c4",
+    "value" : "RP",
+    "label" : "Order has been replaced",
+    "codeSystem" : "HL70038",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4409c5",
+    "value" : "SC",
+    "label" : "In process, scheduled",
+    "codeSystem" : "HL70038",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

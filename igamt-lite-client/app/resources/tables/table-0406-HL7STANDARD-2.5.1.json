@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 226,
+  "id" : "569eac0fd4c623dc6550e47f",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0406",
+  "name" : "Organization unit type",
+  "description" : "Organization unit type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.406",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e480",
+    "value" : "1",
+    "label" : "Hospital",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e481",
+    "value" : "2",
+    "label" : "Physician Clinic",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e482",
+    "value" : "3",
+    "label" : "Long Term Care",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e483",
+    "value" : "4",
+    "label" : "Acute Care",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e484",
+    "value" : "5",
+    "label" : "Other",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e485",
+    "value" : "H",
+    "label" : "Home",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e486",
+    "value" : "O",
+    "label" : "Office",
+    "codeSystem" : "HL70406",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,99 @@
+{
+  "type" : "table",
+  "sectionPosition" : 131,
+  "id" : "565f3ab7d4c6e52cfd446e20",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0004",
+  "name" : "Patient Class",
+  "description" : "Patient Class",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e21",
+    "value" : "B",
+    "label" : "Obstetrics",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e22",
+    "value" : "E",
+    "label" : "Emergency",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e23",
+    "value" : "I",
+    "label" : "Inpatient",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e24",
+    "value" : "O",
+    "label" : "Outpatient",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e25",
+    "value" : "P",
+    "label" : "Preadmit",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e26",
+    "value" : "R",
+    "label" : "Recurring Patient",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e27",
+    "value" : "TK",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e28",
+    "value" : "TS",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e29",
+    "value" : "VS",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70004",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

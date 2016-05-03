@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 334,
+  "id" : "565f3ab6d4c6e52cfd440dfd",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0189",
+  "name" : "Ethnic Group",
+  "description" : "Ethnic Group",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.189",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440dfe",
+    "value" : "...",
+    "label" : "see chapter 3",
+    "codeSystem" : "HL70189",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440dff",
+    "value" : "H",
+    "label" : "Hispanic or Latino",
+    "codeSystem" : "HL70189",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e00",
+    "value" : "N",
+    "label" : "Not Hispanic or Latino",
+    "codeSystem" : "HL70189",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440e01",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70189",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

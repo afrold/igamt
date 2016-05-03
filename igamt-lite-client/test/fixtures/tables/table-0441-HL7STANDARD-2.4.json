@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 323,
+  "id" : "565f3ab6d4c6e52cfd443bf7",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0441",
+  "name" : "Immunization registry status",
+  "description" : "Immunization registry status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443bf8",
+    "value" : "A",
+    "label" : "Active",
+    "codeSystem" : "HL70441",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443bf9",
+    "value" : "I",
+    "label" : "Inactive",
+    "codeSystem" : "HL70441",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443bfa",
+    "value" : "L",
+    "label" : "Inactive - Lost to follow-up (cancel contract)",
+    "codeSystem" : "HL70441",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443bfb",
+    "value" : "M",
+    "label" : "Inactive - Moved or gone elsewhere (cancel contract)",
+    "codeSystem" : "HL70441",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443bfc",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70441",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443bfd",
+    "value" : "P",
+    "label" : "Inactive - Permanently inactive (Do not reactivate or add new entries to the record)",
+    "codeSystem" : "HL70441",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443bfe",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70441",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

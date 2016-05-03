@@ -1,0 +1,380 @@
+{
+  "type" : "datatypes",
+  "sectionPosition" : 2,
+  "sectionTitle" : "Datatypes",
+  "sectionDescription" : null,
+  "sectionContents" : null,
+  "id" : "57237659da0805ce1eab94f9",
+  "accountId" : null,
+  "date" : null,
+  "metaData" : {
+    "name" : null,
+    "orgName" : "NIST",
+    "version" : null,
+    "hl7Version" : "2.5",
+    "date" : "April 29, 2016",
+    "ext" : null
+  },
+  "scope" : "HL7STANDARD",
+  "children" : [ {
+    "id" : "565f3ab6d4c6e52cfd4416f9",
+    "label" : "CP",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416b5",
+    "label" : "DR",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416b6",
+    "label" : "DT",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416f7",
+    "label" : "RMC",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416b3",
+    "label" : "SCV",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416f8",
+    "label" : "ICD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416b4",
+    "label" : "PRL",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416b1",
+    "label" : "SPD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416f5",
+    "label" : "CCD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416f6",
+    "label" : "DIN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416b2",
+    "label" : "GTS",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416f3",
+    "label" : "CF",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416b0",
+    "label" : "TX",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416f4",
+    "label" : "CSU",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416f1",
+    "label" : "ST",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416f2",
+    "label" : "CE",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416f0",
+    "label" : "OSD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416ef",
+    "label" : "CD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416ed",
+    "label" : "MSG",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416ee",
+    "label" : "QSC",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416eb",
+    "label" : "LA1",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416ec",
+    "label" : "MOC",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416ea",
+    "label" : "LA2",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416b9",
+    "label" : "SPS",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416b7",
+    "label" : "MA",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416b8",
+    "label" : "AUI",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416e8",
+    "label" : "XPN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416e9",
+    "label" : "SN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416e6",
+    "label" : "NDL",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416e7",
+    "label" : "RPT",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416e4",
+    "label" : "WVS",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416e5",
+    "label" : "SI",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416e2",
+    "label" : "XTN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416e3",
+    "label" : "SRT",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416e0",
+    "label" : "CWE",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416e1",
+    "label" : "PLN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416de",
+    "label" : "FT",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416df",
+    "label" : "PPN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416dc",
+    "label" : "WVI",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416dd",
+    "label" : "DLT",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416da",
+    "label" : "DDI",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416db",
+    "label" : "FN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416d7",
+    "label" : "UVC",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416d8",
+    "label" : "NR",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416d5",
+    "label" : "CNN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416d6",
+    "label" : "XCN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416d3",
+    "label" : "DTN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416d4",
+    "label" : "NM",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416d1",
+    "label" : "ERL",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416d2",
+    "label" : "RP",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416d0",
+    "label" : "FC",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd441708",
+    "label" : "TS",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd441706",
+    "label" : "PL",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd441707",
+    "label" : "TQ",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd441704",
+    "label" : "ELD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd441705",
+    "label" : "HD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416cf",
+    "label" : "DLD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416cd",
+    "label" : "PTA",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416ce",
+    "label" : "VR",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416cb",
+    "label" : "CNE",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416cc",
+    "label" : "DTM",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416ca",
+    "label" : "QIP",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416d9",
+    "label" : "DLN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416c6",
+    "label" : "XON",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416c7",
+    "label" : "RI",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416c4",
+    "label" : "VH",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416c5",
+    "label" : "NA",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416c2",
+    "label" : "EIP",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416c3",
+    "label" : "RCD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416c0",
+    "label" : "IS",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416c1",
+    "label" : "JCC",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416af",
+    "label" : "PT",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd441702",
+    "label" : "TM",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416be",
+    "label" : "AD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd441703",
+    "label" : "XAD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416bf",
+    "label" : "EI",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd441700",
+    "label" : "CX",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416bc",
+    "label" : "RFR",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd441701",
+    "label" : "PIP",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416bd",
+    "label" : "MO",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416fe",
+    "label" : "CCP",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416ba",
+    "label" : "ID",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416bb",
+    "label" : "ED",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416ff",
+    "label" : "OCD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416fc",
+    "label" : "MOP",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416fd",
+    "label" : "VID",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416fa",
+    "label" : "OSP",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416fb",
+    "label" : "CQ",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416c8",
+    "label" : "SAD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab6d4c6e52cfd4416c9",
+    "label" : "varies",
+    "ext" : null
+  } ]
+}

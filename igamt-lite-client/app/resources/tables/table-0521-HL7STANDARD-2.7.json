@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 268,
+  "id" : "569eac0dd4c623dc65507d24",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0521",
+  "name" : "Override Code",
+  "description" : "Override Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d25",
+    "value" : "�",
+    "label" : "No suggested values",
+    "codeSystem" : "HL70521",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

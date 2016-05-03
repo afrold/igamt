@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 19,
+  "id" : "565f3ab7d4c6e52cfd446df4",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0131",
+  "name" : "Contact Role",
+  "description" : "Contact Role",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446df5",
+    "value" : "BP",
+    "label" : "Billing contact person",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446df6",
+    "value" : "CP",
+    "label" : "Contact person",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446df7",
+    "value" : "EP",
+    "label" : "Emergency contact person",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446df8",
+    "value" : "PR",
+    "label" : "Person preparing referral",
+    "codeSystem" : "HL70131",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

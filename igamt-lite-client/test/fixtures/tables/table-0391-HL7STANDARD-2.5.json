@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 143,
+  "id" : "565f3ab6d4c6e52cfd4408a2",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0391",
+  "name" : "Segment group",
+  "description" : "Segment group",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.391",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408a3",
+    "value" : "OBRG",
+    "label" : "OBR group",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408a4",
+    "value" : "ORCG",
+    "label" : "ORC group",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408a5",
+    "value" : "PIDG",
+    "label" : "PID group",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408a6",
+    "value" : "RXAG",
+    "label" : "RXA group",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408a7",
+    "value" : "RXDG",
+    "label" : "RXD group",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408a8",
+    "value" : "RXEG",
+    "label" : "RXE group",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4408a9",
+    "value" : "RXOG",
+    "label" : "RXO group",
+    "codeSystem" : "HL70391",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

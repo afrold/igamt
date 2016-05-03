@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 473,
+  "id" : "565f3ab6d4c6e52cfd44153b",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0359",
+  "name" : "Diagnosis Priority",
+  "description" : "Diagnosis Priority",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.359",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44153c",
+    "value" : "0",
+    "label" : "Not included in diagnosis ranking",
+    "codeSystem" : "HL70359",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44153d",
+    "value" : "1",
+    "label" : "The primary diagnosis",
+    "codeSystem" : "HL70359",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44153e",
+    "value" : "2 ...",
+    "label" : "For ranked secondary diagnoses",
+    "codeSystem" : "HL70359",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

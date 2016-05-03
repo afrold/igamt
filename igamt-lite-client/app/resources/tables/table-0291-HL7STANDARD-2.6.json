@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 296,
+  "id" : "569eac0ed4c623dc6550ae16",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0291",
+  "name" : "Subtype of referenced data",
+  "description" : "Subtype of referenced data",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.291",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ae17",
+    "value" : "...",
+    "label" : "Source RFC 2046",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550ae18",
+    "value" : "x-hl7-cda-level-one",
+    "label" : "HL7 Clinical Document Architecture Level One document",
+    "codeSystem" : "HL70291",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

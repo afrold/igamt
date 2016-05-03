@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 484,
+  "id" : "569eac0dd4c623dc65507a42",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0056",
+  "name" : "DRG Grouper Review Code",
+  "description" : "DRG Grouper Review Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a43",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70056",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

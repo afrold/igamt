@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 482,
+  "id" : "569eac0dd4c623dc65507c59",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0618",
+  "name" : "Protection Code",
+  "description" : "Protection Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c5a",
+    "value" : "LI",
+    "label" : "Listed",
+    "codeSystem" : "HL70618",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c5b",
+    "value" : "UL",
+    "label" : "Unlisted (Should not appear in directories)",
+    "codeSystem" : "HL70618",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c5c",
+    "value" : "UP",
+    "label" : "Unpublished",
+    "codeSystem" : "HL70618",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

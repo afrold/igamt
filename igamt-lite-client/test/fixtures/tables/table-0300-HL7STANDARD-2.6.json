@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 489,
+  "id" : "569eac0ed4c623dc6550b35d",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0300",
+  "name" : "Namespace ID",
+  "description" : "Namespace ID",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.300",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b35e",
+    "value" : "...",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70300",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

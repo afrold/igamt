@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 254,
+  "id" : "565f3ab6d4c6e52cfd4437fa",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0287",
+  "name" : "Problem/goal action code",
+  "description" : "Problem/goal action code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4437fb",
+    "value" : "AD",
+    "label" : "ADD",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4437fc",
+    "value" : "CO",
+    "label" : "CORRECT",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4437fd",
+    "value" : "DE",
+    "label" : "DELETE",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4437fe",
+    "value" : "LI",
+    "label" : "LINK",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4437ff",
+    "value" : "UC",
+    "label" : "UNCHANGED *",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443800",
+    "value" : "UN",
+    "label" : "UNLINK",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443801",
+    "value" : "UP",
+    "label" : "UPDATE",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -737,10 +737,10 @@
 				<input class="form-control" ng-model="p.description" ng-change="setChanged()" type="text"/>
 			</td>
             <td class="col-md-1">
-				<select class="form-control" ng-model="p.trueUsage" ng-change="setChanged()" ng-options="usage for usage in config.usages" />
+				<select class="form-control" ng-model="p.trueUsage" ng-change="setChanged()" ng-options="usage for usage in config.conditionalUsage" />
 			</td>
             <td class="col-md-1">
-				<select class="form-control" ng-model="p.falseUsage" ng-change="setChanged()" ng-options="usage for usage in config.usages" />
+				<select class="form-control" ng-model="p.falseUsage" ng-change="setChanged()" ng-options="usage for usage in config.conditionalUsage" />
 			</td>
             <td class="col-md-1" align="center">
 				<button class="btn btn-warning btn-xxs" ng-click="deletePredicate(p)"><span><i class="fa fa-trash fa-fw">&nbsp; </i>Del</span></button>
@@ -873,13 +873,13 @@
 
 			<td class="col-md-1">
     			<select name="trueUsage" class="form-control" ng-model="newConstraint.trueUsage"
-            			ng-options="usage for usage in config.usages">
+            			ng-options="usage for usage in config.conditionalUsage">
     			</select>
 			</td>
 
 			<td class="col-md-1">
     			<select name="falseUsage" class="form-control" ng-model="newConstraint.falseUsage"
-            			ng-options="usage for usage in config.usages">
+            			ng-options="usage for usage in config.conditionalUsage">
     			</select>
 			</td>
 
@@ -933,10 +933,10 @@
 					<span data-drag="false" data-jqyoui-options ng-model="secondConstraint" jqyoui-draggable ng-hide="!secondConstraint">{{secondConstraint.description}}</span>
 				</td>
 				<td class="col-md-1">
-					<select class="form-control" ng-model="complexConstraintTrueUsage" ng-options="usage for usage in config.usages"/>
+					<select class="form-control" ng-model="complexConstraintTrueUsage" ng-options="usage for usage in config.conditionalUsage"/>
 				</td>
 				<td class="col-md-1">
-					<select class="form-control" ng-model="complexConstraintFalseUsage" ng-options="usage for usage in config.usages"/>
+					<select class="form-control" ng-model="complexConstraintFalseUsage" ng-options="usage for usage in config.conditionalUsage"/>
 				</td>
 				<td class="col-md-1" align="center">
 					<button class="btn btn-primary btn-xxs" ng-click="addComplexPredicate()"><span><i class="fa fa-plus fa-fw">&nbsp; </i>ADD</span></button>

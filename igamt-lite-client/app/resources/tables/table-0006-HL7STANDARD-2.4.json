@@ -1,0 +1,765 @@
+{
+  "type" : "table",
+  "sectionPosition" : 79,
+  "id" : "565f3ab6d4c6e52cfd442fab",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0006",
+  "name" : "Religion",
+  "description" : "Religion",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fac",
+    "value" : "ABC",
+    "label" : "Christian: American Baptist Church",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fad",
+    "value" : "AGN",
+    "label" : "Agnostic",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fae",
+    "value" : "AME",
+    "label" : "Christian: African Methodist Episcopal Zion",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442faf",
+    "value" : "AMT",
+    "label" : "Christian: African Methodist Episcopal",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fb0",
+    "value" : "ANG",
+    "label" : "Christian: Anglican",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fb1",
+    "value" : "AOG",
+    "label" : "Christian: Assembly of God",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fb2",
+    "value" : "ATH",
+    "label" : "Atheist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fb3",
+    "value" : "BAH",
+    "label" : "Baha'i",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fb4",
+    "value" : "BAP",
+    "label" : "Christian: Baptist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fb5",
+    "value" : "BMA",
+    "label" : "Buddhist: Mahayana",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fb6",
+    "value" : "BOT",
+    "label" : "Buddhist: Other",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fb7",
+    "value" : "BTA",
+    "label" : "Buddhist: Tantrayana",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fb8",
+    "value" : "BTH",
+    "label" : "Buddhist: Theravada",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fb9",
+    "value" : "BUD",
+    "label" : "Buddhist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fba",
+    "value" : "CAT",
+    "label" : "Christian: Roman Catholic",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fbb",
+    "value" : "CFR",
+    "label" : "Chinese Folk Religionist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fbc",
+    "value" : "CHR",
+    "label" : "Christian",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fbd",
+    "value" : "CHS",
+    "label" : "Christian: Christian Science",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fbe",
+    "value" : "CMA",
+    "label" : "Christian: Christian Missionary Alliance",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fbf",
+    "value" : "CNF",
+    "label" : "Confucian",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fc0",
+    "value" : "COC",
+    "label" : "Christian: Church of Christ",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fc1",
+    "value" : "COG",
+    "label" : "Christian: Church of God",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fc2",
+    "value" : "COI",
+    "label" : "Christian: Church of God in Christ",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fc3",
+    "value" : "COL",
+    "label" : "Christian: Congregational",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fc4",
+    "value" : "COM",
+    "label" : "Christian: Community",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fc5",
+    "value" : "COP",
+    "label" : "Christian: Other Pentecostal",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fc6",
+    "value" : "COT",
+    "label" : "Christian: Other",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fc7",
+    "value" : "CRR",
+    "label" : "Christian: Christian Reformed",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fc8",
+    "value" : "EOT",
+    "label" : "Christian: Eastern Orthodox",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fc9",
+    "value" : "EPI",
+    "label" : "Christian: Episcopalian",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fca",
+    "value" : "ERL",
+    "label" : "Ethnic Religionist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fcb",
+    "value" : "EVC",
+    "label" : "Christian: Evangelical Church",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fcc",
+    "value" : "FRQ",
+    "label" : "Christian: Friends",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fcd",
+    "value" : "FWB",
+    "label" : "Christian: Free Will Baptist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fce",
+    "value" : "GRE",
+    "label" : "Christian: Greek Orthodox",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fcf",
+    "value" : "HIN",
+    "label" : "Hindu",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fd0",
+    "value" : "HOT",
+    "label" : "Hindu: Other",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fd1",
+    "value" : "HSH",
+    "label" : "Hindu: Shaivites",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fd2",
+    "value" : "HVA",
+    "label" : "Hindu: Vaishnavites",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fd3",
+    "value" : "JAI",
+    "label" : "Jain",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fd4",
+    "value" : "JCO",
+    "label" : "Jewish: Conservative",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fd5",
+    "value" : "JEW",
+    "label" : "Jewish",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fd6",
+    "value" : "JOR",
+    "label" : "Jewish: Orthodox",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fd7",
+    "value" : "JOT",
+    "label" : "Jewish: Other",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fd8",
+    "value" : "JRC",
+    "label" : "Jewish: Reconstructionist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fd9",
+    "value" : "JRF",
+    "label" : "Jewish: Reform",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fda",
+    "value" : "JRN",
+    "label" : "Jewish: Renewal",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fdb",
+    "value" : "JWN",
+    "label" : "Christian: Jehovah's Witness",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fdc",
+    "value" : "LMS",
+    "label" : "Christian: Lutheran Missouri Synod",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fdd",
+    "value" : "LUT",
+    "label" : "Christian: Lutheran",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fde",
+    "value" : "MEN",
+    "label" : "Christian: Mennonite",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fdf",
+    "value" : "MET",
+    "label" : "Christian: Methodist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fe0",
+    "value" : "MOM",
+    "label" : "Christian: Latter-day Saints",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fe1",
+    "value" : "MOS",
+    "label" : "Muslim",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fe2",
+    "value" : "MOT",
+    "label" : "Muslim: Other",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fe3",
+    "value" : "MSH",
+    "label" : "Muslim: Shiite",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fe4",
+    "value" : "MSU",
+    "label" : "Muslim: Sunni",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fe5",
+    "value" : "NAM",
+    "label" : "Native American",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fe6",
+    "value" : "NAZ",
+    "label" : "Christian: Church of the Nazarene",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fe7",
+    "value" : "NOE",
+    "label" : "Nonreligious",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fe8",
+    "value" : "NRL",
+    "label" : "New Religionist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fe9",
+    "value" : "ORT",
+    "label" : "Christian: Orthodox",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fea",
+    "value" : "OTH",
+    "label" : "Other",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442feb",
+    "value" : "PEN",
+    "label" : "Christian: Pentecostal",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fec",
+    "value" : "PRC",
+    "label" : "Christian: Other Protestant",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fed",
+    "value" : "PRE",
+    "label" : "Christian: Presbyterian",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fee",
+    "value" : "PRO",
+    "label" : "Christian: Protestant",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442fef",
+    "value" : "QUA",
+    "label" : "Christian: Friends",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ff0",
+    "value" : "REC",
+    "label" : "Christian: Reformed Church",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ff1",
+    "value" : "REO",
+    "label" : "Christian: Reorganized Church of Jesus Christ-LDS",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ff2",
+    "value" : "SAA",
+    "label" : "Christian: Salvation Army",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ff3",
+    "value" : "SEV",
+    "label" : "Christian: Seventh Day Adventist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ff4",
+    "value" : "SHN",
+    "label" : "Shintoist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ff5",
+    "value" : "SIK",
+    "label" : "Sikh",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ff6",
+    "value" : "SOU",
+    "label" : "Christian: Southern Baptist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ff7",
+    "value" : "SPI",
+    "label" : "Spiritist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ff8",
+    "value" : "UCC",
+    "label" : "Christian: United Church of Christ",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ff9",
+    "value" : "UMD",
+    "label" : "Christian: United Methodist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ffa",
+    "value" : "UNI",
+    "label" : "Christian: Unitarian",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ffb",
+    "value" : "UNU",
+    "label" : "Christian: Unitarian Universalist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ffc",
+    "value" : "VAR",
+    "label" : "Unknown",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ffd",
+    "value" : "WES",
+    "label" : "Christian: Wesleyan",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd442ffe",
+    "value" : "WMC",
+    "label" : "Christian: Wesleyan Methodist",
+    "codeSystem" : "HL70006",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

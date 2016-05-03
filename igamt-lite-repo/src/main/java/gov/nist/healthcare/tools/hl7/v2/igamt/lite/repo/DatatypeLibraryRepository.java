@@ -21,9 +21,9 @@ import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
 
 public interface DatatypeLibraryRepository extends MongoRepository<DatatypeLibrary, String>, DatatypeLibraryOperations {
-	
+
+	public List<DatatypeLibrary> findAll();
 } 

@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 78,
+  "id" : "565f3ab7d4c6e52cfd448356",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0058",
+  "name" : "UNUSED TABLE",
+  "description" : "UNUSED TABLE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

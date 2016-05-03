@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 32,
+  "id" : "565f3ab7d4c6e52cfd4483c5",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0086",
+  "name" : "INS. PLAN TYPE",
+  "description" : "INS. PLAN TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

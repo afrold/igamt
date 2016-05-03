@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 134,
+  "id" : "565f3ab6d4c6e52cfd4411eb",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0204",
+  "name" : "Organizational name type",
+  "description" : "Organizational name type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.204",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411ec",
+    "value" : "A",
+    "label" : "Alias name",
+    "codeSystem" : "HL70204",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411ed",
+    "value" : "D",
+    "label" : "Display name",
+    "codeSystem" : "HL70204",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411ee",
+    "value" : "L",
+    "label" : "Legal name",
+    "codeSystem" : "HL70204",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4411ef",
+    "value" : "SL",
+    "label" : "Stock exchange listing name",
+    "codeSystem" : "HL70204",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

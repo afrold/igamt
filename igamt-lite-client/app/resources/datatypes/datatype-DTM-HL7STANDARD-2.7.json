@@ -1,0 +1,22 @@
+{
+  "type" : "datatype",
+  "sectionPosition" : 25,
+  "hl7Version" : "2.7",
+  "accountId" : null,
+  "scope" : "HL7STANDARD",
+  "date" : null,
+  "version" : null,
+  "participants" : [ ],
+  "libIds" : [ "57237657da0805ce1eab6b54" ],
+  "predicates" : [ ],
+  "conformanceStatements" : [ ],
+  "id" : "569eac0dd4c623dc65508675",
+  "label" : "DTM",
+  "ext" : null,
+  "components" : [ ],
+  "name" : "DTM",
+  "description" : "Date/Time",
+  "comment" : "",
+  "usageNote" : "",
+  "status" : "PUBLISHED"
+}

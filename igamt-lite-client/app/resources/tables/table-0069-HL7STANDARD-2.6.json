@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 131,
+  "id" : "569eac0ed4c623dc6550b0c9",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0069",
+  "name" : "Hospital Service",
+  "description" : "Hospital Service",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.69",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0ca",
+    "value" : "CAR",
+    "label" : "Cardiac Service",
+    "codeSystem" : "HL70069",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0cb",
+    "value" : "MED",
+    "label" : "Medical Service",
+    "codeSystem" : "HL70069",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0cc",
+    "value" : "PUL",
+    "label" : "Pulmonary Service",
+    "codeSystem" : "HL70069",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0cd",
+    "value" : "SUR",
+    "label" : "Surgical Service",
+    "codeSystem" : "HL70069",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b0ce",
+    "value" : "URO",
+    "label" : "Urology Service",
+    "codeSystem" : "HL70069",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,162 @@
+{
+  "type" : "table",
+  "sectionPosition" : 113,
+  "id" : "565f3ab7d4c6e52cfd447c88",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0009",
+  "name" : "AMBULATORY STATUS",
+  "description" : "AMBULATORY STATUS",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c89",
+    "value" : "A0",
+    "label" : "No functional limitations",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c8a",
+    "value" : "A1",
+    "label" : "Ambulates with assistive device",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c8b",
+    "value" : "A2",
+    "label" : "Wheelchair / stretcher bound",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c8c",
+    "value" : "A3",
+    "label" : "Comatose; non-responsive",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c8d",
+    "value" : "A4",
+    "label" : "Disoriented",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c8e",
+    "value" : "A5",
+    "label" : "Vision impaired",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c8f",
+    "value" : "A6",
+    "label" : "Hearing impaired",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c90",
+    "value" : "A7",
+    "label" : "Speech impaired",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c91",
+    "value" : "A8",
+    "label" : "Nonenglish speaking",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c92",
+    "value" : "A9",
+    "label" : "Functional level unknown",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c93",
+    "value" : "B1",
+    "label" : "Oxygen Therapy",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c94",
+    "value" : "B2",
+    "label" : "Special equipment (tubes, Ivs, catheters)",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c95",
+    "value" : "B3",
+    "label" : "Amputee",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c96",
+    "value" : "B4",
+    "label" : "Mastectomy",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c97",
+    "value" : "B5",
+    "label" : "Paraplegic",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c98",
+    "value" : "B6",
+    "label" : "Pregnant",
+    "codeSystem" : "HL70009",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

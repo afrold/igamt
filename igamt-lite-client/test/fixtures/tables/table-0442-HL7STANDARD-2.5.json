@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 345,
+  "id" : "565f3ab6d4c6e52cfd441292",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0442",
+  "name" : "Location Service Code",
+  "description" : "Location Service Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.442",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441293",
+    "value" : "D",
+    "label" : "Diagnostic",
+    "codeSystem" : "HL70442",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441294",
+    "value" : "E",
+    "label" : "Emergency Room Casualty",
+    "codeSystem" : "HL70442",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441295",
+    "value" : "P",
+    "label" : "Primary Care",
+    "codeSystem" : "HL70442",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441296",
+    "value" : "T",
+    "label" : "Therapeutic",
+    "codeSystem" : "HL70442",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

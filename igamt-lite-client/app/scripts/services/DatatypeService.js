@@ -87,17 +87,31 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
-            get: function (id) {
+            getOne: function (id) {
                 var delay = $q.defer();
-                $http.get('api/datatypes/' + id).then(function (response) {
-                    var datatype = angular.fromJson(response.data);
-                    delay.resolve(datatype);
+                if($rootScope.datatypesMap[id] === undefined || $rootScope.datatypesMap[id] === undefined) {
+                    $http.get('api/datatypes/' + id).then(function (response) {
+                        var datatype = angular.fromJson(response.data);
+                        delay.resolve(datatype);
+                    }, function (error) {
+                        delay.reject(error);
+                    });
+                }else{
+                    delay.resolve($rootScope.datatypesMap[id]);
+                }
+                return delay.promise;
+            },
+            get: function (ids) {
+                var delay = $q.defer();
+                $http.post('api/datatypes/findByIds', ids).then(function (response) {
+                    var datatypes = angular.fromJson(response.data);
+                    delay.resolve(datatypes);
                 }, function (error) {
                     delay.reject(error);
                 });
                 return delay.promise;
             },
-            merge: function (to, from) {
+           merge: function (to, from) {
                 to.name = from.name;
                 to.ext = from.ext;
                 to.label = from.label;
@@ -116,11 +130,12 @@ angular.module('igl').factory('DatatypeService',
                 to.components = from.components;
                 to.version = from.version;
                 to.date = from.date;
-                return to;
+               to.purposeAndUse = from.purposeAndUse;
+               return to;
             },
-            searchByNameVersionAndScope: function(searchName, searchScope,searchHl7Version){
+            findFlavors: function(searchName, searchScope,searchHl7Version){
                 var delay = $q.defer();
-                $http.get('api/datatypes/search', {params:{"searchName": searchName,"searchScope": searchScope,"searchHl7Version":searchHl7Version}}).then(function (response) {
+                $http.get('api/datatypes/findFlavors', {params:{"searchName": searchName,"searchScope": searchScope,"searchHl7Version":searchHl7Version}}).then(function (response) {
                     var datatypes = angular.fromJson(response.data);
                     delay.resolve(datatypes);
                 }, function (error) {

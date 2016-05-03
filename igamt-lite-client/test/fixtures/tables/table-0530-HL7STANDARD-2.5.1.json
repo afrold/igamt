@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 472,
+  "id" : "569eac0fd4c623dc6550e4ca",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0530",
+  "name" : "Organization, agency, department\t",
+  "description" : "Organization, agency, department\t",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.530",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4cb",
+    "value" : "AE",
+    "label" : "American Express",
+    "codeSystem" : "HL70530",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4cc",
+    "value" : "DEA",
+    "label" : "Drug Enforcement Agency",
+    "codeSystem" : "HL70530",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4cd",
+    "value" : "DOD",
+    "label" : "Department of Defense",
+    "codeSystem" : "HL70530",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4ce",
+    "value" : "MC",
+    "label" : "Master Card",
+    "codeSystem" : "HL70530",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4cf",
+    "value" : "VA",
+    "label" : "Veterans Affairs",
+    "codeSystem" : "HL70530",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e4d0",
+    "value" : "VI",
+    "label" : "Visa",
+    "codeSystem" : "HL70530",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

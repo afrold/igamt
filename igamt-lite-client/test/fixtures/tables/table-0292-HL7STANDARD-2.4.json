@@ -1,0 +1,936 @@
+{
+  "type" : "table",
+  "sectionPosition" : 145,
+  "id" : "565f3ab6d4c6e52cfd4436f2",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0292",
+  "name" : "Vaccines administered (code = CVX)(parenteral, unless oral is noted)",
+  "description" : "Vaccines administered (code = CVX)(parenteral, unless oral is noted)",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436f3",
+    "value" : "01",
+    "label" : "diphtheria, tetanus toxoids and pertussis vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436f4",
+    "value" : "02",
+    "label" : "poliovirus vaccine, live, oral",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436f5",
+    "value" : "03",
+    "label" : "measles, mumps and rubella virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436f6",
+    "value" : "04",
+    "label" : "measles and rubella virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436f7",
+    "value" : "05",
+    "label" : "measles virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436f8",
+    "value" : "06",
+    "label" : "rubella virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436f9",
+    "value" : "07",
+    "label" : "mumps virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436fa",
+    "value" : "08",
+    "label" : "hepatitis B vaccine, pediatric or pediatric/adolescent dosage",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436fb",
+    "value" : "09",
+    "label" : "tetanus and diphtheria toxoids, adsorbed for adult use",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436fc",
+    "value" : "10",
+    "label" : "poliovirus vaccine, inactivated",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436fd",
+    "value" : "100",
+    "label" : "pneumococcal conjugate vaccine, polyvalent",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436fe",
+    "value" : "101",
+    "label" : "Typhoid Vi capsular polysaccharide vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4436ff",
+    "value" : "11",
+    "label" : "pertussis vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443700",
+    "value" : "12",
+    "label" : "diphtheria antitoxin",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443701",
+    "value" : "13",
+    "label" : "tetanus immune globulin",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443702",
+    "value" : "14",
+    "label" : "immune globulin, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443703",
+    "value" : "15",
+    "label" : "influenza virus vaccine, split virus (incl. purified surface antigen)",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443704",
+    "value" : "16",
+    "label" : "influenza virus vaccine, whole virus",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443705",
+    "value" : "17",
+    "label" : "Haemophilus influenzae type b vaccine, conjugate NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443706",
+    "value" : "18",
+    "label" : "rabies vaccine, for intramuscular injection",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443707",
+    "value" : "19",
+    "label" : "Bacillus Calmette-Guerin vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443708",
+    "value" : "20",
+    "label" : "diphtheria, tetanus toxoids and acellular pertussis vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443709",
+    "value" : "21",
+    "label" : "varicella virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44370a",
+    "value" : "22",
+    "label" : "DTP-Haemophilus influenzae type b conjugate vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44370b",
+    "value" : "23",
+    "label" : "plague vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44370c",
+    "value" : "24",
+    "label" : "anthrax vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44370d",
+    "value" : "25",
+    "label" : "typhoid vaccine, live, oral",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44370e",
+    "value" : "26",
+    "label" : "cholera vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44370f",
+    "value" : "27",
+    "label" : "botulinum antitoxin",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443710",
+    "value" : "28",
+    "label" : "diphtheria and tetanus toxoids, adsorbed for pediatric use",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443711",
+    "value" : "29",
+    "label" : "cytomegalovirus immune globulin, intravenous",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443712",
+    "value" : "30",
+    "label" : "hepatitis B immune globulin",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443713",
+    "value" : "31",
+    "label" : "hepatitis A vaccine, pediatric dosage, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443714",
+    "value" : "32",
+    "label" : "meningococcal polysaccharide vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443715",
+    "value" : "33",
+    "label" : "pneumococcal  polysaccharide vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443716",
+    "value" : "34",
+    "label" : "rabies immune globulin",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443717",
+    "value" : "35",
+    "label" : "tetanus toxoid",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443718",
+    "value" : "36",
+    "label" : "varicella zoster immune globulin",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443719",
+    "value" : "37",
+    "label" : "yellow fever vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44371a",
+    "value" : "38",
+    "label" : "rubella and mumps virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44371b",
+    "value" : "39",
+    "label" : "Japanese encephalitis vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44371c",
+    "value" : "40",
+    "label" : "rabies vaccine, for intradermal injection",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44371d",
+    "value" : "41",
+    "label" : "typhoid vaccine, parenteral, other than acetone-killed, dried",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44371e",
+    "value" : "42",
+    "label" : "hepatitis B vaccine, adolescent/high risk infant dosage",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44371f",
+    "value" : "43",
+    "label" : "hepatitis B vaccine, adult dosage",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443720",
+    "value" : "44",
+    "label" : "hepatitis B vaccine, dialysis patient dosage",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443721",
+    "value" : "45",
+    "label" : "hepatitis B vaccine, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443722",
+    "value" : "46",
+    "label" : "Haemophilus influenzae type b vaccine, PRP-D conjugate",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443723",
+    "value" : "47",
+    "label" : "Haemophilus influenzae type b vaccine, HbOC conjugate",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443724",
+    "value" : "48",
+    "label" : "Haemophilus influenzae type b vaccine, PRP-T conjugate",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443725",
+    "value" : "49",
+    "label" : "Haemophilus influenzae type b vaccine, PRP-OMP conjugate",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443726",
+    "value" : "50",
+    "label" : "DTaP-Haemophilus influenzae type b conjugate vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443727",
+    "value" : "51",
+    "label" : "Haemophilus influenzae type b conjugate and Hepatitis B vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443728",
+    "value" : "52",
+    "label" : "hepatitis A vaccine, adult dosage",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443729",
+    "value" : "53",
+    "label" : "typhoid vaccine, parenteral, acetone-killed, dried (U.S. military)",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44372a",
+    "value" : "54",
+    "label" : "adenovirus vaccine, type 4, live, oral",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44372b",
+    "value" : "55",
+    "label" : "adenovirus vaccine, type 7, live, oral",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44372c",
+    "value" : "56",
+    "label" : "dengue fever vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44372d",
+    "value" : "57",
+    "label" : "hantavirus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44372e",
+    "value" : "58",
+    "label" : "hepatitis C vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44372f",
+    "value" : "59",
+    "label" : "hepatitis E vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443730",
+    "value" : "60",
+    "label" : "herpes simplex virus, type 2 vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443731",
+    "value" : "61",
+    "label" : "human immunodeficiency virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443732",
+    "value" : "62",
+    "label" : "human papilloma virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443733",
+    "value" : "63",
+    "label" : "Junin virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443734",
+    "value" : "64",
+    "label" : "leishmaniasis vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443735",
+    "value" : "65",
+    "label" : "leprosy vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443736",
+    "value" : "66",
+    "label" : "Lyme disease vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443737",
+    "value" : "67",
+    "label" : "malaria vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443738",
+    "value" : "68",
+    "label" : "melanoma vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443739",
+    "value" : "69",
+    "label" : "parainfluenza-3 virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44373a",
+    "value" : "70",
+    "label" : "Q fever vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44373b",
+    "value" : "71",
+    "label" : "respiratory syncytial virus immune globulin, intravenous",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44373c",
+    "value" : "72",
+    "label" : "rheumatic fever vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44373d",
+    "value" : "73",
+    "label" : "Rift Valley fever vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44373e",
+    "value" : "74",
+    "label" : "rotavirus vaccine, tetravalent, live, oral",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44373f",
+    "value" : "75",
+    "label" : "smallpox vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443740",
+    "value" : "76",
+    "label" : "Staphylococcus bacteriophage lysate",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443741",
+    "value" : "77",
+    "label" : "tick-borne encephalitis vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443742",
+    "value" : "78",
+    "label" : "tularemia vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443743",
+    "value" : "79",
+    "label" : "vaccinia immune globulin",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443744",
+    "value" : "80",
+    "label" : "Venezuelan equine encephalitis, live, attenuated",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443745",
+    "value" : "81",
+    "label" : "Venezuelan equine encephalitis, inactivated",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443746",
+    "value" : "82",
+    "label" : "adenovirus vaccine, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443747",
+    "value" : "83",
+    "label" : "hepatitis A vaccine, pediatric/adolescent dosage, 2 dose schedule",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443748",
+    "value" : "84",
+    "label" : "hepatitis A vaccine, pediatric/adolescent dosage, 3 dose schedule",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443749",
+    "value" : "85",
+    "label" : "hepatitis A vaccine, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44374a",
+    "value" : "86",
+    "label" : "immune globulin, intramuscular",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44374b",
+    "value" : "87",
+    "label" : "immune globulin, intravenous",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44374c",
+    "value" : "88",
+    "label" : "influenza virus vaccine, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44374d",
+    "value" : "89",
+    "label" : "poliovirus vaccine, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44374e",
+    "value" : "90",
+    "label" : "rabies vaccine, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44374f",
+    "value" : "91",
+    "label" : "typhoid vaccine, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443750",
+    "value" : "92",
+    "label" : "Venezuelan equine encephalitis vaccine, NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443751",
+    "value" : "93",
+    "label" : "respiratory syncytial virus monoclonal antibody (palivizumab), intramuscular",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443752",
+    "value" : "94",
+    "label" : "measles, mumps, rubella, and varicella virus vaccine",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443753",
+    "value" : "95",
+    "label" : "tuberculin skin test; old tuberculin, multipuncture device",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443754",
+    "value" : "96",
+    "label" : "tuberculin skin test; purified protein derivative solution, intradermal",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443755",
+    "value" : "97",
+    "label" : "tuberculin skin test; purified protein derivative, multipuncture device",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443756",
+    "value" : "98",
+    "label" : "tuberculin skin test; NOS",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443757",
+    "value" : "99",
+    "label" : "RESERVED - do not use",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443758",
+    "value" : "999",
+    "label" : "unknown vaccine or immune globulin",
+    "codeSystem" : "HL70292",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

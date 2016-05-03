@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 141,
+  "id" : "565f3ab7d4c6e52cfd445e7e",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0098",
+  "name" : "Type of agreement",
+  "description" : "Type of agreement",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e7f",
+    "value" : "M",
+    "label" : "Maternity",
+    "codeSystem" : "HL70098",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e80",
+    "value" : "S",
+    "label" : "Standard",
+    "codeSystem" : "HL70098",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445e81",
+    "value" : "U",
+    "label" : "Unified",
+    "codeSystem" : "HL70098",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}
