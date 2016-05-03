@@ -173,7 +173,7 @@ angular.module('igl')
 
 
         $scope.isVisible = function (node) {
-            return DatatypeService.isVisible(node) && FilteringSvc.show(node);
+            return DatatypeService.isVisible(node);
         };
 
         $scope.children = function (node) {
