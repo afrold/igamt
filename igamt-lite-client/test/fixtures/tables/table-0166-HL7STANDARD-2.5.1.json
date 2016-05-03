@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 231,
+  "id" : "569eac0fd4c623dc6550e1cb",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0166",
+  "name" : "RX Component Type",
+  "description" : "RX Component Type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.166",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e1cc",
+    "value" : "A",
+    "label" : "Additive",
+    "codeSystem" : "HL70166",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e1cd",
+    "value" : "B",
+    "label" : "Base",
+    "codeSystem" : "HL70166",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

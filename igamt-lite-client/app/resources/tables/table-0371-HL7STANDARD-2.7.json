@@ -1,0 +1,531 @@
+{
+  "type" : "table",
+  "sectionPosition" : 171,
+  "id" : "569eac0dd4c623dc65506fbd",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0371",
+  "name" : "Additive/Preservative",
+  "description" : "Additive/Preservative",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fbe",
+    "value" : "ACDA",
+    "label" : "ACD Solution A",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fbf",
+    "value" : "ACDB",
+    "label" : "ACD Solution B",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fc0",
+    "value" : "ACET",
+    "label" : "Acetic Acid",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fc1",
+    "value" : "AMIES",
+    "label" : "Amies transport medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fc2",
+    "value" : "BACTM",
+    "label" : "Bacterial Transport medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fc3",
+    "value" : "BF10",
+    "label" : "Buffered 10% formalin",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fc4",
+    "value" : "BOR",
+    "label" : "Borate Boric Acid",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fc5",
+    "value" : "BOUIN",
+    "label" : "Bouin's solution",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fc6",
+    "value" : "BSKM",
+    "label" : "Buffered skim milk",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fc7",
+    "value" : "C32",
+    "label" : "3.2%  Citrate",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fc8",
+    "value" : "C38",
+    "label" : "3.8% Citrate",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fc9",
+    "value" : "CARS",
+    "label" : "Carson's Modified 10% formalin",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fca",
+    "value" : "CARY",
+    "label" : "Cary Blair Medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fcb",
+    "value" : "CHLTM",
+    "label" : "Chlamydia transport medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fcc",
+    "value" : "CTAD",
+    "label" : "CTAD (this should be spelled out if not universally understood)",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fcd",
+    "value" : "EDTK",
+    "label" : "Potassium/K EDTA",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fce",
+    "value" : "EDTK15",
+    "label" : "Potassium/K EDTA 15%",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fcf",
+    "value" : "EDTK75",
+    "label" : "Potassium/K EDTA 7.5%",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fd0",
+    "value" : "EDTN",
+    "label" : "Sodium/Na EDTA",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fd1",
+    "value" : "ENT",
+    "label" : "Enteric bacteria transport medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fd2",
+    "value" : "ENT+",
+    "label" : "Enteric plus",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fd3",
+    "value" : "F10",
+    "label" : "10% Formalin",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fd4",
+    "value" : "FDP",
+    "label" : "Thrombin NIH; soybean trypsin inhibitor (Fibrin Degradation Products)",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fd5",
+    "value" : "FL10",
+    "label" : "Sodium Fluoride, 10mg",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fd6",
+    "value" : "FL100",
+    "label" : "Sodium Fluoride, 100mg",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fd7",
+    "value" : "HCL6",
+    "label" : "6N HCL",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fd8",
+    "value" : "HEPA",
+    "label" : "Ammonium heparin",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fd9",
+    "value" : "HEPL",
+    "label" : "Lithium/Li  Heparin",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fda",
+    "value" : "HEPN",
+    "label" : "Sodium/Na  Heparin",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fdb",
+    "value" : "HNO3",
+    "label" : "Nitric Acid",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fdc",
+    "value" : "JKM",
+    "label" : "Jones Kendrick Medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fdd",
+    "value" : "KARN",
+    "label" : "Karnovsky's fixative",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fde",
+    "value" : "KOX",
+    "label" : "Potassium Oxalate",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fdf",
+    "value" : "LIA",
+    "label" : "Lithium iodoacetate",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fe0",
+    "value" : "M4",
+    "label" : "M4",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fe1",
+    "value" : "M4RT",
+    "label" : "M4-RT",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fe2",
+    "value" : "M5",
+    "label" : "M5",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fe3",
+    "value" : "MICHTM",
+    "label" : "Michel's transport medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fe4",
+    "value" : "MMDTM",
+    "label" : "MMD transport medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fe5",
+    "value" : "NAF",
+    "label" : "Sodium Fluoride",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fe6",
+    "value" : "NAPS",
+    "label" : "Sodium polyanethol sulfonate 0.35% in 0.85% sodium chloride",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fe7",
+    "value" : "NONE",
+    "label" : "None",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fe8",
+    "value" : "PAGE",
+    "label" : "Pages's Saline",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fe9",
+    "value" : "PHENOL",
+    "label" : "Phenol",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fea",
+    "value" : "PVA",
+    "label" : "PVA (polyvinylalcohol)",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506feb",
+    "value" : "RLM",
+    "label" : "Reagan Lowe Medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fec",
+    "value" : "SILICA",
+    "label" : "Siliceous earth, 12 mg",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fed",
+    "value" : "SPS",
+    "label" : "SPS(this should be spelled out if not universally understood)",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fee",
+    "value" : "SST",
+    "label" : "Serum Separator Tube (Polymer Gel)",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506fef",
+    "value" : "STUTM",
+    "label" : "Stuart transport medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506ff0",
+    "value" : "THROM",
+    "label" : "Thrombin",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506ff1",
+    "value" : "THYMOL",
+    "label" : "Thymol",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506ff2",
+    "value" : "THYO",
+    "label" : "Thyoglycollate broth",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506ff3",
+    "value" : "TOLU",
+    "label" : "Toluene",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506ff4",
+    "value" : "URETM",
+    "label" : "Ureaplasma transport medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506ff5",
+    "value" : "VIRTM",
+    "label" : "Viral Transport medium",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65506ff6",
+    "value" : "WEST",
+    "label" : "Buffered Citrate (Westergren Sedimentation Rate)",
+    "codeSystem" : "HL70371",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

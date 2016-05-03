@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 172,
+  "id" : "569eac0dd4c623dc6550791e",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0171",
+  "name" : "Citizenship",
+  "description" : "Citizenship",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550791f",
+    "value" : "�",
+    "label" : "no suggested values",
+    "codeSystem" : "HL70171",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

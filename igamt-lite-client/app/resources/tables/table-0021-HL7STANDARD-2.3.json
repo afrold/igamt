@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 79,
+  "id" : "565f3ab7d4c6e52cfd446f6c",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0021",
+  "name" : "Bad Dept Agency Code",
+  "description" : "Bad Dept Agency Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

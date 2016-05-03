@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 288,
+  "id" : "569eac0dd4c623dc655085ed",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0113",
+  "name" : "Discharged to Location",
+  "description" : "Discharged to Location",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655085ee",
+    "value" : "�",
+    "label" : "no suggested values",
+    "codeSystem" : "HL70113",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

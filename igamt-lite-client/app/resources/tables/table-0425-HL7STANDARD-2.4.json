@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 387,
+  "id" : "565f3ab6d4c6e52cfd443a6d",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0425",
+  "name" : "Newborn code",
+  "description" : "Newborn code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a6e",
+    "value" : "1",
+    "label" : "Born in facility",
+    "codeSystem" : "HL70425",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a6f",
+    "value" : "2",
+    "label" : "Transfer in",
+    "codeSystem" : "HL70425",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a70",
+    "value" : "3",
+    "label" : "Born en route",
+    "codeSystem" : "HL70425",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a71",
+    "value" : "4",
+    "label" : "Other",
+    "codeSystem" : "HL70425",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a72",
+    "value" : "5",
+    "label" : "Born at home",
+    "codeSystem" : "HL70425",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

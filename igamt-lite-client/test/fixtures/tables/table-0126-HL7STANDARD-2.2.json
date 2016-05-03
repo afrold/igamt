@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 54,
+  "id" : "565f3ab7d4c6e52cfd447c14",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0126",
+  "name" : "QUANTITY LIMITED REQUEST",
+  "description" : "QUANTITY LIMITED REQUEST",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c15",
+    "value" : "CH",
+    "label" : "Characters",
+    "codeSystem" : "HL70126",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c16",
+    "value" : "LI",
+    "label" : "Lines",
+    "codeSystem" : "HL70126",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c17",
+    "value" : "PG",
+    "label" : "Pages",
+    "codeSystem" : "HL70126",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c18",
+    "value" : "RD",
+    "label" : "Records",
+    "codeSystem" : "HL70126",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447c19",
+    "value" : "ZO",
+    "label" : "Locally defined",
+    "codeSystem" : "HL70126",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 118,
+  "id" : "565f3ab7d4c6e52cfd4470b6",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0284",
+  "name" : "Referral Category",
+  "description" : "Referral Category",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470b7",
+    "value" : "A",
+    "label" : "Ambulatory",
+    "codeSystem" : "HL70284",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470b8",
+    "value" : "E",
+    "label" : "Emergency",
+    "codeSystem" : "HL70284",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470b9",
+    "value" : "I",
+    "label" : "Inpatient",
+    "codeSystem" : "HL70284",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4470ba",
+    "value" : "O",
+    "label" : "Outpatient",
+    "codeSystem" : "HL70284",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

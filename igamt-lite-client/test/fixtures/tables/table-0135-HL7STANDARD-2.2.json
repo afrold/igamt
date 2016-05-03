@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 142,
+  "id" : "565f3ab7d4c6e52cfd447ccd",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0135",
+  "name" : "ASSIGNMENT OF BENEFITS",
+  "description" : "ASSIGNMENT OF BENEFITS",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cce",
+    "value" : "M",
+    "label" : "Sonderabmachung",
+    "codeSystem" : "HL70135",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ccf",
+    "value" : "N",
+    "label" : "Nein",
+    "codeSystem" : "HL70135",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447cd0",
+    "value" : "Y",
+    "label" : "Ja",
+    "codeSystem" : "HL70135",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

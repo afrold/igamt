@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 424,
+  "id" : "565f3ab6d4c6e52cfd440ed6",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0521",
+  "name" : "Override code",
+  "description" : "Override code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.521",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

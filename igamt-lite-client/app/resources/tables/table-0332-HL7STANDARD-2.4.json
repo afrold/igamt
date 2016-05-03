@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 188,
+  "id" : "565f3ab6d4c6e52cfd443ca2",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0332",
+  "name" : "Source type",
+  "description" : "Source type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ca3",
+    "value" : "A",
+    "label" : "Accept",
+    "codeSystem" : "HL70332",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ca4",
+    "value" : "I",
+    "label" : "Initiate",
+    "codeSystem" : "HL70332",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

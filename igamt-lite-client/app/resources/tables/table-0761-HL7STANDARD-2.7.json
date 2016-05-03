@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 431,
+  "id" : "569eac0dd4c623dc65507d31",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0761",
+  "name" : "DRG Procedure Determination Status",
+  "description" : "DRG Procedure Determination Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d32",
+    "value" : "0",
+    "label" : "Valid code",
+    "codeSystem" : "HL70761",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d33",
+    "value" : "1",
+    "label" : "Invalid code",
+    "codeSystem" : "HL70761",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d34",
+    "value" : "2",
+    "label" : "Not used",
+    "codeSystem" : "HL70761",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d35",
+    "value" : "3",
+    "label" : "Invalid for this gender",
+    "codeSystem" : "HL70761",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d36",
+    "value" : "4",
+    "label" : "Invalid for this age",
+    "codeSystem" : "HL70761",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,5 +1,10 @@
 #standard-datatypelibrary-dialog {
   left : 50%;
-  width : 900px;
-  margin-left : -150px;
+  width : 500px;
+}
+.new {
+	background-color : pink;
+}
+.toggle {
+  display: none;
 }

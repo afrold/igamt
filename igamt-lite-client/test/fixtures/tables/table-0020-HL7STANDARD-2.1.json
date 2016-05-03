@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 46,
+  "id" : "565f3ab7d4c6e52cfd4482b6",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0020",
+  "name" : "UNUSED TABLE",
+  "description" : "UNUSED TABLE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482b7",
+    "value" : "2",
+    "label" : "Moderate Manifestation",
+    "codeSystem" : "HL70020",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4482b8",
+    "value" : "3",
+    "label" : "Major Manifestation",
+    "codeSystem" : "HL70020",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

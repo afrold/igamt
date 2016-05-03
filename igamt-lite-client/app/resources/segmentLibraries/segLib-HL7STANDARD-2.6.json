@@ -1,0 +1,506 @@
+{
+  "type" : "segments",
+  "sectionPosition" : 1,
+  "sectionTitle" : "Segments and Field Descriptions",
+  "sectionDescription" : null,
+  "sectionContents" : null,
+  "id" : "57237656da0805ce1eab391c",
+  "accountId" : null,
+  "date" : null,
+  "metaData" : {
+    "name" : null,
+    "orgName" : "NIST",
+    "version" : null,
+    "hl7Version" : "2.6",
+    "date" : "April 29, 2016",
+    "ext" : null
+  },
+  "scope" : "HL7STANDARD",
+  "children" : [ {
+    "id" : "569eac0ed4c623dc6550c4c7",
+    "label" : "ORC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c5e8",
+    "label" : "CSP"
+  }, {
+    "id" : "569eac0ed4c623dc6550c24e",
+    "label" : "DSC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c4c1",
+    "label" : "AFF"
+  }, {
+    "id" : "569eac0ed4c623dc6550c00b",
+    "label" : "QRF"
+  }, {
+    "id" : "569eac0ed4c623dc6550c2fd",
+    "label" : "IN1"
+  }, {
+    "id" : "569eac0ed4c623dc6550bdcb",
+    "label" : "CM0"
+  }, {
+    "id" : "569eac0ed4c623dc6550bfa6",
+    "label" : "TXA"
+  }, {
+    "id" : "569eac0ed4c623dc6550c667",
+    "label" : "FAC"
+  }, {
+    "id" : "569eac0ed4c623dc6550be4e",
+    "label" : "NK1"
+  }, {
+    "id" : "569eac0ed4c623dc6550c028",
+    "label" : "ARV"
+  }, {
+    "id" : "569eac0ed4c623dc6550c267",
+    "label" : "DSP"
+  }, {
+    "id" : "569eac0ed4c623dc6550c542",
+    "label" : "BPX"
+  }, {
+    "id" : "569eac0ed4c623dc6550c37e",
+    "label" : "SAC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c25c",
+    "label" : "AUT"
+  }, {
+    "id" : "569eac0ed4c623dc6550c25b",
+    "label" : "ED"
+  }, {
+    "id" : "569eac0ed4c623dc6550c1f4",
+    "label" : "PRD"
+  }, {
+    "id" : "569eac0ed4c623dc6550bde5",
+    "label" : "CDM"
+  }, {
+    "id" : "569eac0ed4c623dc6550bfa1",
+    "label" : "BLG"
+  }, {
+    "id" : "569eac0ed4c623dc6550c428",
+    "label" : "PCR"
+  }, {
+    "id" : "569eac0ed4c623dc6550c09c",
+    "label" : "ISD"
+  }, {
+    "id" : "569eac0ed4c623dc6550c41e",
+    "label" : "RXC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c5f7",
+    "label" : "CSR"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf07",
+    "label" : "AIL"
+  }, {
+    "id" : "569eac0ed4c623dc6550c3b4",
+    "label" : "TCC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c53b",
+    "label" : "MFA"
+  }, {
+    "id" : "569eac0ed4c623dc6550c13d",
+    "label" : "PR1"
+  }, {
+    "id" : "569eac0ed4c623dc6550c5f3",
+    "label" : "CSS"
+  }, {
+    "id" : "569eac0ed4c623dc6550c154",
+    "label" : "RMI"
+  }, {
+    "id" : "569eac0ed4c623dc6550bddc",
+    "label" : "IPR"
+  }, {
+    "id" : "569eac0ed4c623dc6550c558",
+    "label" : "PDA"
+  }, {
+    "id" : "569eac0ed4c623dc6550c158",
+    "label" : "DB1"
+  }, {
+    "id" : "569eac0ed4c623dc6550c3ab",
+    "label" : "TCD"
+  }, {
+    "id" : "569eac0ed4c623dc6550c5ed",
+    "label" : "DMI"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf92",
+    "label" : "UAC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c674",
+    "label" : "PV1"
+  }, {
+    "id" : "569eac0ed4c623dc6550bdf3",
+    "label" : "DG1"
+  }, {
+    "id" : "569eac0ed4c623dc6550c26d",
+    "label" : "PSH"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf7d",
+    "label" : "IAM"
+  }, {
+    "id" : "569eac0ed4c623dc6550c717",
+    "label" : "CTI"
+  }, {
+    "id" : "569eac0ed4c623dc6550c081",
+    "label" : "RDF"
+  }, {
+    "id" : "569eac0ed4c623dc6550c62d",
+    "label" : "GT1"
+  }, {
+    "id" : "569eac0ed4c623dc6550c10f",
+    "label" : "GP1"
+  }, {
+    "id" : "569eac0ed4c623dc6550c4a2",
+    "label" : "RXG"
+  }, {
+    "id" : "569eac0ed4c623dc6550c6e4",
+    "label" : "SCD"
+  }, {
+    "id" : "569eac0ed4c623dc6550c34e",
+    "label" : "IN3"
+  }, {
+    "id" : "569eac0ed4c623dc6550bd98",
+    "label" : "STF"
+  }, {
+    "id" : "569eac0ed4c623dc6550c0a5",
+    "label" : "PYE"
+  }, {
+    "id" : "569eac0ed4c623dc6550c22b",
+    "label" : "SPM"
+  }, {
+    "id" : "569eac0ed4c623dc6550c46d",
+    "label" : "RGS"
+  }, {
+    "id" : "569eac0ed4c623dc6550c084",
+    "label" : "TQ1"
+  }, {
+    "id" : "569eac0ed4c623dc6550bece",
+    "label" : "NSC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c249",
+    "label" : "RFI"
+  }, {
+    "id" : "569eac0ed4c623dc6550c6dc",
+    "label" : "CTD"
+  }, {
+    "id" : "569eac0ed4c623dc6550c368",
+    "label" : "SID"
+  }, {
+    "id" : "569eac0ed4c623dc6550c3ff",
+    "label" : "EVN"
+  }, {
+    "id" : "569eac0ed4c623dc6550bd8e",
+    "label" : "APR"
+  }, {
+    "id" : "569eac0ed4c623dc6550bdc0",
+    "label" : "CM1"
+  }, {
+    "id" : "569eac0ed4c623dc6550c59d",
+    "label" : "NPU"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf4a",
+    "label" : "QID"
+  }, {
+    "id" : "569eac0ed4c623dc6550bdc4",
+    "label" : "VAR"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf4d",
+    "label" : "NST"
+  }, {
+    "id" : "569eac0ed4c623dc6550bee7",
+    "label" : "FT1"
+  }, {
+    "id" : "569eac0ed4c623dc6550c407",
+    "label" : "PD1"
+  }, {
+    "id" : "569eac0ed4c623dc6550be46",
+    "label" : "OM3"
+  }, {
+    "id" : "569eac0ed4c623dc6550c75b",
+    "label" : "PES"
+  }, {
+    "id" : "569eac0ed4c623dc6550c1d6",
+    "label" : "ITM"
+  }, {
+    "id" : "569eac0ed4c623dc6550c0b4",
+    "label" : "ACC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c373",
+    "label" : "PSS"
+  }, {
+    "id" : "569eac0ed4c623dc6550c251",
+    "label" : "EDU"
+  }, {
+    "id" : "569eac0ed4c623dc6550c493",
+    "label" : "BPO"
+  }, {
+    "id" : "569eac0ed4c623dc6550bedd",
+    "label" : "LOC"
+  }, {
+    "id" : "569eac0ed4c623dc6550bffe",
+    "label" : "ERR"
+  }, {
+    "id" : "569eac0ed4c623dc6550c093",
+    "label" : "MSA"
+  }, {
+    "id" : "569eac0ed4c623dc6550be3e",
+    "label" : "SDD"
+  }, {
+    "id" : "569eac0ed4c623dc6550c016",
+    "label" : "UB2"
+  }, {
+    "id" : "569eac0ed4c623dc6550c379",
+    "label" : "PCE"
+  }, {
+    "id" : "569eac0ed4c623dc6550c0ad",
+    "label" : "SFT"
+  }, {
+    "id" : "569eac0ed4c623dc6550c36d",
+    "label" : "LCH"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf5d",
+    "label" : "CER"
+  }, {
+    "id" : "569eac0ed4c623dc6550c0c0",
+    "label" : "MSH"
+  }, {
+    "id" : "569eac0ed4c623dc6550bdd7",
+    "label" : "CM2"
+  }, {
+    "id" : "569eac0ed4c623dc6550bfcf",
+    "label" : "ARQ"
+  }, {
+    "id" : "569eac0ed4c623dc6550c1a6",
+    "label" : "PRC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c5a0",
+    "label" : "RQ1"
+  }, {
+    "id" : "569eac0ed4c623dc6550c4fc",
+    "label" : "IVT"
+  }, {
+    "id" : "569eac0ed4c623dc6550c100",
+    "label" : "GP2"
+  }, {
+    "id" : "569eac0ed4c623dc6550c067",
+    "label" : "ABS"
+  }, {
+    "id" : "569eac0ed4c623dc6550c187",
+    "label" : "LAN"
+  }, {
+    "id" : "569eac0ed4c623dc6550c220",
+    "label" : "ILT"
+  }, {
+    "id" : "569eac0ed4c623dc6550c340",
+    "label" : "ROL"
+  }, {
+    "id" : "569eac0ed4c623dc6550c581",
+    "label" : "INV"
+  }, {
+    "id" : "569eac0ed4c623dc6550c063",
+    "label" : "QRI"
+  }, {
+    "id" : "569eac0ed4c623dc6550c5a8",
+    "label" : "LDP"
+  }, {
+    "id" : "569eac0ed4c623dc6550c062",
+    "label" : "Hxx"
+  }, {
+    "id" : "569eac0ed4c623dc6550c0fa",
+    "label" : "ECD"
+  }, {
+    "id" : "569eac0ed4c623dc6550bead",
+    "label" : "STZ"
+  }, {
+    "id" : "569eac0ed4c623dc6550bfe9",
+    "label" : "QRD"
+  }, {
+    "id" : "569eac0ed4c623dc6550c622",
+    "label" : "RQD"
+  }, {
+    "id" : "569eac0ed4c623dc6550c05b",
+    "label" : "CNS"
+  }, {
+    "id" : "569eac0ed4c623dc6550be0e",
+    "label" : "OM1"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf2d",
+    "label" : "AIS"
+  }, {
+    "id" : "569eac0ed4c623dc6550bebf",
+    "label" : "AIG"
+  }, {
+    "id" : "569eac0ed4c623dc6550c1b9",
+    "label" : "PRB"
+  }, {
+    "id" : "569eac0ed4c623dc6550c5b5",
+    "label" : "OBR"
+  }, {
+    "id" : "569eac0ed4c623dc6550bd85",
+    "label" : "SCP"
+  }, {
+    "id" : "569eac0ed4c623dc6550c21a",
+    "label" : "VND"
+  }, {
+    "id" : "569eac0ed4c623dc6550c199",
+    "label" : "PRA"
+  }, {
+    "id" : "569eac0ed4c623dc6550c076",
+    "label" : "TQ2"
+  }, {
+    "id" : "569eac0ed4c623dc6550c471",
+    "label" : "RXD"
+  }, {
+    "id" : "569eac0ed4c623dc6550bebb",
+    "label" : "ODT"
+  }, {
+    "id" : "569eac0ed4c623dc6550bed8",
+    "label" : "ODS"
+  }, {
+    "id" : "569eac0ed4c623dc6550c115",
+    "label" : "PID"
+  }, {
+    "id" : "569eac0ed4c623dc6550c751",
+    "label" : "IPC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c596",
+    "label" : "MFI"
+  }, {
+    "id" : "569eac0ed4c623dc6550bd94",
+    "label" : "QPD"
+  }, {
+    "id" : "569eac0ed4c623dc6550c0a0",
+    "label" : "NDS"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf3a",
+    "label" : "IIM"
+  }, {
+    "id" : "569eac0ed4c623dc6550bff6",
+    "label" : "MRG"
+  }, {
+    "id" : "569eac0ed4c623dc6550c18c",
+    "label" : "RF1"
+  }, {
+    "id" : "569eac0ed4c623dc6550c517",
+    "label" : "RXO"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf14",
+    "label" : "EQP"
+  }, {
+    "id" : "569eac0ed4c623dc6550c70a",
+    "label" : "PMT"
+  }, {
+    "id" : "569eac0ed4c623dc6550c4e7",
+    "label" : "ORG"
+  }, {
+    "id" : "569eac0ed4c623dc6550be76",
+    "label" : "OM2"
+  }, {
+    "id" : "569eac0ed4c623dc6550c02f",
+    "label" : "UB1"
+  }, {
+    "id" : "569eac0ed4c623dc6550c3c3",
+    "label" : "IVC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c562",
+    "label" : "MFE"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf95",
+    "label" : "NCK"
+  }, {
+    "id" : "569eac0ed4c623dc6550c440",
+    "label" : "RXE"
+  }, {
+    "id" : "569eac0ed4c623dc6550c165",
+    "label" : "DRG"
+  }, {
+    "id" : "569eac0ed4c623dc6550c0dc",
+    "label" : "GOL"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf97",
+    "label" : "BLC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c6a9",
+    "label" : "PV2"
+  }, {
+    "id" : "569eac0ed4c623dc6550c283",
+    "label" : "PSL"
+  }, {
+    "id" : "569eac0ed4c623dc6550c0da",
+    "label" : "RDT"
+  }, {
+    "id" : "569eac0ed4c623dc6550c161",
+    "label" : "ECR"
+  }, {
+    "id" : "569eac0ed4c623dc6550bfc7",
+    "label" : "RCP"
+  }, {
+    "id" : "569eac0ed4c623dc6550c203",
+    "label" : "ADJ"
+  }, {
+    "id" : "569eac0ed4c623dc6550c047",
+    "label" : "BTX"
+  }, {
+    "id" : "569eac0ed4c623dc6550be81",
+    "label" : "OM5"
+  }, {
+    "id" : "569eac0ed4c623dc6550c27c",
+    "label" : "PSG"
+  }, {
+    "id" : "569eac0ed4c623dc6550c608",
+    "label" : "OBX"
+  }, {
+    "id" : "569eac0ed4c623dc6550c0f3",
+    "label" : "AL1"
+  }, {
+    "id" : "569eac0ed4c623dc6550bfbe",
+    "label" : "NTE"
+  }, {
+    "id" : "569eac0ed4c623dc6550c71b",
+    "label" : "SCH"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf27",
+    "label" : "EQU"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf9a",
+    "label" : "QAK"
+  }, {
+    "id" : "569eac0ed4c623dc6550c2b4",
+    "label" : "IN2"
+  }, {
+    "id" : "569eac0ed4c623dc6550be85",
+    "label" : "OM4"
+  }, {
+    "id" : "569eac0ed4c623dc6550c4f4",
+    "label" : "PTH"
+  }, {
+    "id" : "569eac0ed4c623dc6550c571",
+    "label" : "PDC"
+  }, {
+    "id" : "569eac0ed4c623dc6550c338",
+    "label" : "PKG"
+  }, {
+    "id" : "569eac0ed4c623dc6550c213",
+    "label" : "LRL"
+  }, {
+    "id" : "569eac0ed4c623dc6550c333",
+    "label" : "LCC"
+  }, {
+    "id" : "569eac0ed4c623dc6550be94",
+    "label" : "OM7"
+  }, {
+    "id" : "569eac0ed4c623dc6550c3e2",
+    "label" : "RXA"
+  }, {
+    "id" : "569eac0ed4c623dc6550c56a",
+    "label" : "RXR"
+  }, {
+    "id" : "569eac0ed4c623dc6550beb2",
+    "label" : "OM6"
+  }, {
+    "id" : "569eac0ed4c623dc6550bf1a",
+    "label" : "AIP"
+  }, {
+    "id" : "569eac0ed4c623dc6550c737",
+    "label" : "PEO"
+  }, {
+    "id" : "569eac0ed4c623dc6550beb5",
+    "label" : "SLT"
+  } ]
+}

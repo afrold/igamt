@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 88,
+  "id" : "565f3ab6d4c6e52cfd443b11",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0437",
+  "name" : "Alert device code",
+  "description" : "Alert device code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b12",
+    "value" : "B",
+    "label" : "Bracelet",
+    "codeSystem" : "HL70437",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b13",
+    "value" : "N",
+    "label" : "Necklace",
+    "codeSystem" : "HL70437",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b14",
+    "value" : "W",
+    "label" : "Wallet Card",
+    "codeSystem" : "HL70437",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

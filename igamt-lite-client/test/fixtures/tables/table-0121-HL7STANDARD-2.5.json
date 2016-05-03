@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 128,
+  "id" : "565f3ab6d4c6e52cfd4405fc",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0121",
+  "name" : "Response flag",
+  "description" : "Response flag",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.121",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4405fd",
+    "value" : "D",
+    "label" : "Same as R, also other associated segments",
+    "codeSystem" : "HL70121",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4405fe",
+    "value" : "E",
+    "label" : "Report exceptions only",
+    "codeSystem" : "HL70121",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd4405ff",
+    "value" : "F",
+    "label" : "Same as D, plus confirmations explicitly",
+    "codeSystem" : "HL70121",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440600",
+    "value" : "N",
+    "label" : "Only the MSA segment is returned",
+    "codeSystem" : "HL70121",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440601",
+    "value" : "R",
+    "label" : "Same as E, also Replacement and Parent-Child",
+    "codeSystem" : "HL70121",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

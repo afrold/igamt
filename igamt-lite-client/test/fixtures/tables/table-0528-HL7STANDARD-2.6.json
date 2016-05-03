@@ -1,0 +1,135 @@
+{
+  "type" : "table",
+  "sectionPosition" : 375,
+  "id" : "569eac0ed4c623dc6550b295",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0528",
+  "name" : "Event related period",
+  "description" : "Event related period",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.528",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b296",
+    "value" : "AC",
+    "label" : "before meal (from lat. ante cibus)",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b297",
+    "value" : "ACD",
+    "label" : "before lunch (from lat. ante cibus diurnus)",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b298",
+    "value" : "ACM",
+    "label" : "before breakfast (from lat. ante cibus matutinus)",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b299",
+    "value" : "ACV",
+    "label" : "before dinner (from lat. ante cibus vespertinus)",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b29a",
+    "value" : "HS",
+    "label" : "the hour of sleep (e.g., H18-22)",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b29b",
+    "value" : "IC",
+    "label" : "between meals (from lat. inter cibus)",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b29c",
+    "value" : "ICD",
+    "label" : "between lunch and dinner",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b29d",
+    "value" : "ICM",
+    "label" : "between breakfast and lunch",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b29e",
+    "value" : "ICV",
+    "label" : "between dinner and the hour of sleep",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b29f",
+    "value" : "PC",
+    "label" : "after meal (from lat. post cibus)",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2a0",
+    "value" : "PCD",
+    "label" : "after lunch (from lat. post cibus diurnus)",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2a1",
+    "value" : "PCM",
+    "label" : "after breakfast (from lat. post cibus matutinus)",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b2a2",
+    "value" : "PCV",
+    "label" : "after dinner (from lat. post cibus vespertinus)",
+    "codeSystem" : "HL70528",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

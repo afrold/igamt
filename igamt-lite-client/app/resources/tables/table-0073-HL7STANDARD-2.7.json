@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 211,
+  "id" : "569eac0dd4c623dc65507adb",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0073",
+  "name" : "Interest Rate Code",
+  "description" : "Interest Rate Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507adc",
+    "value" : "�",
+    "label" : "no suggested values",
+    "codeSystem" : "HL70073",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

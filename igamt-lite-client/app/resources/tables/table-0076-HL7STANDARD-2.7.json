@@ -1,0 +1,1242 @@
+{
+  "type" : "table",
+  "sectionPosition" : 444,
+  "id" : "569eac0dd4c623dc65507a52",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0076",
+  "name" : "Message Type",
+  "description" : "Message Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a53",
+    "value" : "ACK",
+    "label" : "General acknowledgment message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a54",
+    "value" : "ADR",
+    "label" : "ADT response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a55",
+    "value" : "ADT",
+    "label" : "ADT message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a56",
+    "value" : "BAR",
+    "label" : "Add/change billing account",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a57",
+    "value" : "BPS",
+    "label" : "Blood product dispense status message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a58",
+    "value" : "BRP",
+    "label" : "Blood product dispense status acknowledgement message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a59",
+    "value" : "BRT",
+    "label" : "Blood product transfusion/disposition acknowledgement message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a5a",
+    "value" : "BTS",
+    "label" : "Blood product transfusion/disposition message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a5b",
+    "value" : "CCF",
+    "label" : "Collaborative Care Fetch",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a5c",
+    "value" : "CCI",
+    "label" : "Collaborative Care Information",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a5d",
+    "value" : "CCM",
+    "label" : "Collaborative Care Message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a5e",
+    "value" : "CCQ",
+    "label" : "Collaborative Care Referral",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a5f",
+    "value" : "CCU",
+    "label" : "Collaborative Care Referral",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a60",
+    "value" : "CQU",
+    "label" : "Collaborative Care Referral",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a61",
+    "value" : "CRM",
+    "label" : "Clinical study registration message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a62",
+    "value" : "CSU",
+    "label" : "Unsolicited study data message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a63",
+    "value" : "DFT",
+    "label" : "Detail financial transactions",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a64",
+    "value" : "DOC",
+    "label" : "Document response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a65",
+    "value" : "DSR",
+    "label" : "Display response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a66",
+    "value" : "EAC",
+    "label" : "Automated equipment command message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a67",
+    "value" : "EAN",
+    "label" : "Automated equipment notification message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a68",
+    "value" : "EAR",
+    "label" : "Automated equipment response message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a69",
+    "value" : "EHC",
+    "label" : "Health Care Invoice",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a6a",
+    "value" : "ESR",
+    "label" : "Automated equipment status update acknowledgment message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a6b",
+    "value" : "ESU",
+    "label" : "Automated equipment status update message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a6c",
+    "value" : "INR",
+    "label" : "Automated equipment inventory request message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a6d",
+    "value" : "INU",
+    "label" : "Automated equipment inventory update message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a6e",
+    "value" : "LSR",
+    "label" : "Automated equipment log/service request message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a6f",
+    "value" : "LSU",
+    "label" : "Automated equipment log/service update message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a70",
+    "value" : "MDM",
+    "label" : "Medical document management",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a71",
+    "value" : "MFD",
+    "label" : "Master files delayed application acknowledgment",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a72",
+    "value" : "MFK",
+    "label" : "Master files application acknowledgment",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a73",
+    "value" : "MFN",
+    "label" : "Master files notification",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a74",
+    "value" : "MFQ",
+    "label" : "Master files query",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a75",
+    "value" : "MFR",
+    "label" : "Master files response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a76",
+    "value" : "NMD",
+    "label" : "Application management data message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a77",
+    "value" : "NMQ",
+    "label" : "Application management query message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a78",
+    "value" : "NMR",
+    "label" : "Application management response message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a79",
+    "value" : "OMB",
+    "label" : "Blood product order message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a7a",
+    "value" : "OMD",
+    "label" : "Dietary order",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a7b",
+    "value" : "OMG",
+    "label" : "General clinical order message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a7c",
+    "value" : "OMI",
+    "label" : "Imaging order",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a7d",
+    "value" : "OML",
+    "label" : "Laboratory order message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a7e",
+    "value" : "OMN",
+    "label" : "Non-stock requisition order message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a7f",
+    "value" : "OMP",
+    "label" : "Pharmacy/treatment order message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a80",
+    "value" : "OMS",
+    "label" : "Stock requisition order message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a81",
+    "value" : "OPL",
+    "label" : "Population/Location-Based Laboratory Order Message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a82",
+    "value" : "OPR",
+    "label" : "Population/Location-Based Laboratory Order Acknowledgment Message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a83",
+    "value" : "OPU",
+    "label" : "Unsolicited Population/Location-Based Laboratory Observation Message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a84",
+    "value" : "ORA",
+    "label" : "Observation Report  Acknowledgment",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a85",
+    "value" : "ORB",
+    "label" : "Blood product order acknowledgement message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a86",
+    "value" : "ORD",
+    "label" : "Dietary order acknowledgment message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a87",
+    "value" : "ORF",
+    "label" : "Query for results of observation",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a88",
+    "value" : "ORG",
+    "label" : "General clinical order acknowledgment message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a89",
+    "value" : "ORI",
+    "label" : "Imaging order acknowledgement message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a8a",
+    "value" : "ORL",
+    "label" : "Laboratory acknowledgment message (unsolicited)",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a8b",
+    "value" : "ORM",
+    "label" : "Pharmacy/treatment order message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a8c",
+    "value" : "ORN",
+    "label" : "Non-stock requisition - General order acknowledgment message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a8d",
+    "value" : "ORP",
+    "label" : "Pharmacy/treatment order acknowledgment message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a8e",
+    "value" : "ORR",
+    "label" : "General order response message response to any ORM",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a8f",
+    "value" : "ORS",
+    "label" : "Stock requisition - Order acknowledgment message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a90",
+    "value" : "ORU",
+    "label" : "Unsolicited transmission of an observation message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a91",
+    "value" : "OSM",
+    "label" : "Specimen Shipment Message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a92",
+    "value" : "OSQ",
+    "label" : "Query response for order status",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a93",
+    "value" : "OSR",
+    "label" : "Query response for order status",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a94",
+    "value" : "OUL",
+    "label" : "Unsolicited laboratory observation message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a95",
+    "value" : "PEX",
+    "label" : "Product experience message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a96",
+    "value" : "PGL",
+    "label" : "Patient goal message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a97",
+    "value" : "PIN",
+    "label" : "Patient insurance information",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a98",
+    "value" : "PMU",
+    "label" : "Add personnel record",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a99",
+    "value" : "PPG",
+    "label" : "Patient pathway message (goal-oriented)",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a9a",
+    "value" : "PPP",
+    "label" : "Patient pathway message (problem-oriented)",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a9b",
+    "value" : "PPR",
+    "label" : "Patient problem message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a9c",
+    "value" : "PPT",
+    "label" : "Patient pathway goal-oriented response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a9d",
+    "value" : "PPV",
+    "label" : "Patient goal response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a9e",
+    "value" : "PRR",
+    "label" : "Patient problem response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507a9f",
+    "value" : "PTR",
+    "label" : "Patient pathway problem-oriented response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aa0",
+    "value" : "QBP",
+    "label" : "Query by parameter",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aa1",
+    "value" : "QCK",
+    "label" : "Deferred query",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aa2",
+    "value" : "QCN",
+    "label" : "Cancel query",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aa3",
+    "value" : "QRY",
+    "label" : "Query, original mode",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aa4",
+    "value" : "QSB",
+    "label" : "Create subscription",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aa5",
+    "value" : "QSX",
+    "label" : "Cancel subscription/acknowledge message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aa6",
+    "value" : "QVR",
+    "label" : "Query for previous events",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aa7",
+    "value" : "RAR",
+    "label" : "Pharmacy/treatment administration information",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aa8",
+    "value" : "RAS",
+    "label" : "Pharmacy/treatment administration message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aa9",
+    "value" : "RCI",
+    "label" : "Return clinical information",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aaa",
+    "value" : "RCL",
+    "label" : "Return clinical list",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aab",
+    "value" : "RDE",
+    "label" : "Pharmacy/treatment encoded order message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aac",
+    "value" : "RDR",
+    "label" : "Pharmacy/treatment dispense information",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aad",
+    "value" : "RDS",
+    "label" : "Pharmacy/treatment dispense message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aae",
+    "value" : "RDY",
+    "label" : "Display based response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aaf",
+    "value" : "REF",
+    "label" : "Patient referral",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ab0",
+    "value" : "RER",
+    "label" : "Pharmacy/treatment encoded order information",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ab1",
+    "value" : "RGR",
+    "label" : "Pharmacy/treatment dose information",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ab2",
+    "value" : "RGV",
+    "label" : "Pharmacy/treatment give message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ab3",
+    "value" : "ROR",
+    "label" : "Pharmacy/treatment order response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ab4",
+    "value" : "RPA",
+    "label" : "Return patient authorization",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ab5",
+    "value" : "RPI",
+    "label" : "Return patient information",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ab6",
+    "value" : "RPL",
+    "label" : "Return patient display list",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ab7",
+    "value" : "RPR",
+    "label" : "Return patient list",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ab8",
+    "value" : "RQA",
+    "label" : "Request patient authorization",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ab9",
+    "value" : "RQC",
+    "label" : "Request clinical information",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aba",
+    "value" : "RQI",
+    "label" : "Request patient information",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507abb",
+    "value" : "RQP",
+    "label" : "Request patient demographics",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507abc",
+    "value" : "RRA",
+    "label" : "Pharmacy/treatment administration acknowledgment message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507abd",
+    "value" : "RRD",
+    "label" : "Pharmacy/treatment dispense acknowledgment message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507abe",
+    "value" : "RRE",
+    "label" : "Pharmacy/treatment encoded order acknowledgment message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507abf",
+    "value" : "RRG",
+    "label" : "Pharmacy/treatment give acknowledgment message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ac0",
+    "value" : "RRI",
+    "label" : "Return referral information",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ac1",
+    "value" : "RSP",
+    "label" : "Segment pattern response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ac2",
+    "value" : "RTB",
+    "label" : "Tabular response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ac3",
+    "value" : "SCN",
+    "label" : "Notification of Anti-Microbial Device Cycle Data",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ac4",
+    "value" : "SDN",
+    "label" : "Notification of Anti-Microbial Device Data",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ac5",
+    "value" : "SDR",
+    "label" : "Sterilization anti-microbial device data request",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ac6",
+    "value" : "SIU",
+    "label" : "Schedule information unsolicited",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ac7",
+    "value" : "SLN",
+    "label" : "Notification of New Sterilization Lot",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ac8",
+    "value" : "SLR",
+    "label" : "Sterilization lot request",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ac9",
+    "value" : "SMD",
+    "label" : "Sterilization anti-microbial device cycle data request",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507aca",
+    "value" : "SQM",
+    "label" : "Schedule query message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507acb",
+    "value" : "SQR",
+    "label" : "Schedule query response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507acc",
+    "value" : "SRM",
+    "label" : "Schedule request message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507acd",
+    "value" : "SRR",
+    "label" : "Scheduled request response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ace",
+    "value" : "SSR",
+    "label" : "Specimen status request message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507acf",
+    "value" : "SSU",
+    "label" : "Specimen status update message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ad0",
+    "value" : "STC",
+    "label" : "Notification of Sterilization Configuration",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ad1",
+    "value" : "STI",
+    "label" : "Sterilization item request",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ad2",
+    "value" : "SUR",
+    "label" : "Summary product experience report",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ad3",
+    "value" : "TBR",
+    "label" : "Tabular data response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ad4",
+    "value" : "TCR",
+    "label" : "Automated equipment test code settings request message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ad5",
+    "value" : "TCU",
+    "label" : "Automated equipment test code settings update message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ad6",
+    "value" : "UDM",
+    "label" : "Unsolicited display update message",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ad7",
+    "value" : "VXQ",
+    "label" : "Query for vaccination record",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ad8",
+    "value" : "VXR",
+    "label" : "Vaccination record response",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ad9",
+    "value" : "VXU",
+    "label" : "Unsolicited vaccination record update",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ada",
+    "value" : "VXX",
+    "label" : "Response for vaccination query with multiple PID matches",
+    "codeSystem" : "HL70076",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

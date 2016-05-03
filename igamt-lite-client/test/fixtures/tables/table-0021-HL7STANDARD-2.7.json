@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 486,
+  "id" : "569eac0dd4c623dc6550743a",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0021",
+  "name" : "Bad Debt Agency Code",
+  "description" : "Bad Debt Agency Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550743b",
+    "value" : "�",
+    "label" : "no suggested values",
+    "codeSystem" : "HL70021",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

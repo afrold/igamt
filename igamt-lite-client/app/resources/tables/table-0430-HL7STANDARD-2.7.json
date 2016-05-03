@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 418,
+  "id" : "569eac0dd4c623dc655080be",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0430",
+  "name" : "Mode of Arrival Code",
+  "description" : "Mode of Arrival Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080bf",
+    "value" : "A",
+    "label" : "Ambulance",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080c0",
+    "value" : "C",
+    "label" : "Car",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080c1",
+    "value" : "F",
+    "label" : "On foot",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080c2",
+    "value" : "H",
+    "label" : "Helicopter",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080c3",
+    "value" : "O",
+    "label" : "Other",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080c4",
+    "value" : "P",
+    "label" : "Public Transport",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655080c5",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70430",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

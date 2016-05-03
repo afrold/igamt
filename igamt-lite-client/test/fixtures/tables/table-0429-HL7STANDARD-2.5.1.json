@@ -1,0 +1,126 @@
+{
+  "type" : "table",
+  "sectionPosition" : 376,
+  "id" : "569eac0fd4c623dc6550e544",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0429",
+  "name" : "Production Class Code",
+  "description" : "Production Class Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.429",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e545",
+    "value" : "BR",
+    "label" : "Breeding/genetic stock",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e546",
+    "value" : "DA",
+    "label" : "Dairy",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e547",
+    "value" : "DR",
+    "label" : "Draft",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e548",
+    "value" : "DU",
+    "label" : "Dual Purpose",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e549",
+    "value" : "LY",
+    "label" : "Layer, Includes Multiplier flocks",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e54a",
+    "value" : "MT",
+    "label" : "Meat",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e54b",
+    "value" : "NA",
+    "label" : "Not Applicable",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e54c",
+    "value" : "OT",
+    "label" : "Other",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e54d",
+    "value" : "PL",
+    "label" : "Pleasure",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e54e",
+    "value" : "RA",
+    "label" : "Racing",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e54f",
+    "value" : "SH",
+    "label" : "Show",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e550",
+    "value" : "U",
+    "label" : "Unknown",
+    "codeSystem" : "HL70429",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

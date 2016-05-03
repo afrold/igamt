@@ -22,66 +22,78 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.ProfileConversionException;
 
 @ReadingConverter
-public class DatatypeReadConverter  extends AbstractReadConverter<DBObject, Datatype> {
+public class DatatypeReadConverter extends AbstractReadConverter<DBObject, Datatype> {
 
 	private static final Logger log = LoggerFactory.getLogger(DatatypeReadConverter.class);
-	
+
 	public DatatypeReadConverter() {
 		log.info("DatatypeReadConverter Created...");
 	}
-	
+
 	@Override
 	public Datatype convert(DBObject source) {
 		log.info("Datatype.convert==>");
 		Datatype dt = new Datatype();
-		dt.setId(readMongoId(source));
-		dt.setType((String) source.get(TYPE));
-		dt.setLabel((String) source.get(LABEL));
-		dt.setName(((String) source.get(NAME)));
-		dt.setDescription((String) source.get(DESCRIPTION));
-		dt.setComment(readString(source, COMMENT));
-		dt.setUsageNote(readString(source, USAGE_NOTE));
-		dt.setComponents(new ArrayList<Component>());
-		dt.setSectionPosition((Integer) source.get(SECTION_POSITION));
-		
-		BasicDBList componentObjects = (BasicDBList) source.get(COMPONENTS);
-		if (componentObjects != null) {
-			List<Component> components = new ArrayList<Component>();
-			for (Object compObj : componentObjects) {
-				DBObject compObject = (DBObject) compObj;
-				Component c = component(compObject);
-				components.add(c);
-			}
-			dt.setComponents(components);
-		}
+		try {
+			dt.setId(readMongoId(source));
+			dt.setHl7Version((String) source.get(HL7_VERSION));
+			dt.setType((String) source.get(TYPE));
+			dt.setName(((String) source.get(NAME)));
+			dt.setLabel((String) source.get(LABEL));
+			dt.setDescription((String) source.get(DESCRIPTION));
+			dt.setComment(readString(source, COMMENT));
+			dt.setUsageNote(readString(source, USAGE_NOTE));
+			dt.setSectionPosition((Integer) source.get(SECTION_POSITION));
+			dt.setScope(source.get(SCOPE_) != null ? Constant.SCOPE.valueOf((String) source.get(SCOPE_)) : null);
+			dt.setStatus(source.get(STATUS_) != null ? Datatype.STATUS.valueOf((String) source.get(STATUS_)) : null);
 
-		BasicDBList confStsObjects = (BasicDBList) source
-				.get(CONFORMANCE_STATEMENTS);
-		if (confStsObjects != null) {
-			List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
-			for (Object confStObj : confStsObjects) {
-				DBObject confStObject = (DBObject) confStObj;
-				ConformanceStatement cs = conformanceStatement(confStObject);
-				confStatements.add(cs);
+			BasicDBList libIds = (BasicDBList) source.get(LIB_IDS);
+			if (libIds != null) {
+				for(Object libIdObj : libIds) {
+					dt.getLibIds().add((String)libIdObj);
+				}
 			}
-			dt.setConformanceStatements(confStatements);
-		}
+			
+			BasicDBList componentObjects = (BasicDBList) source.get(COMPONENTS);
+			if (componentObjects != null) {
+				List<Component> components = new ArrayList<Component>();
+				for (Object compObj : componentObjects) {
+					DBObject compObject = (DBObject) compObj;
+					Component c = component(compObject);
+					components.add(c);
+				}
+				dt.setComponents(components);
+			}
 
-		BasicDBList predDBObjects = (BasicDBList) source.get(PREDICATES);
-		if (predDBObjects != null) {
-			List<Predicate> predicates = new ArrayList<Predicate>();
-			for (Object predObj : predDBObjects) {
-				DBObject predObject = (DBObject) predObj;
-				Predicate pred = predicate(predObject);
-				predicates.add(pred);
+			BasicDBList confStsObjects = (BasicDBList) source.get(CONFORMANCE_STATEMENTS);
+			if (confStsObjects != null) {
+				List<ConformanceStatement> confStatements = new ArrayList<ConformanceStatement>();
+				for (Object confStObj : confStsObjects) {
+					DBObject confStObject = (DBObject) confStObj;
+					ConformanceStatement cs = conformanceStatement(confStObject);
+					confStatements.add(cs);
+				}
+				dt.setConformanceStatements(confStatements);
 			}
-			dt.setPredicates(predicates);
+
+			BasicDBList predDBObjects = (BasicDBList) source.get(PREDICATES);
+			if (predDBObjects != null) {
+				List<Predicate> predicates = new ArrayList<Predicate>();
+				for (Object predObj : predDBObjects) {
+					DBObject predObject = (DBObject) predObj;
+					Predicate pred = predicate(predObject);
+					predicates.add(pred);
+				}
+				dt.setPredicates(predicates);
+			}
+		} catch (Exception e) {
+			log.error(dt.toString(), e);
 		}
 		log.info("<==convert");
 
 		return dt;
-	} 
-	
+	}
+
 	private Reference reference(DBObject source) {
 		if (source != null) {
 			Reference reference = new Reference();
@@ -113,13 +125,12 @@ public class DatatypeReadConverter  extends AbstractReadConverter<DBObject, Data
 		p.setDescription((String) source.get(DESCRIPTION));
 		p.setAssertion(((String) source.get(ASSERTION)));
 		p.setReference(reference(((DBObject) source.get(REFERENCE))));
-		p.setFalseUsage(source.get(FALSE_USAGE) != null ? Usage.valueOf(((String) source.get(FALSE_USAGE))):null);
-		p.setTrueUsage(source.get(TRUE_USAGE) != null ?Usage.valueOf(((String) source.get(TRUE_USAGE))):null);
+		p.setFalseUsage(source.get(FALSE_USAGE) != null ? Usage.valueOf(((String) source.get(FALSE_USAGE))) : null);
+		p.setTrueUsage(source.get(TRUE_USAGE) != null ? Usage.valueOf(((String) source.get(TRUE_USAGE))) : null);
 		return p;
 	}
 
-	private Component component(DBObject source)
-					throws ProfileConversionException {
+	private Component component(DBObject source) throws ProfileConversionException {
 		Component c = new Component();
 		c.setId(readMongoId(source));
 		c.setType(((String) source.get(TYPE)));

@@ -1,0 +1,117 @@
+{
+  "type" : "table",
+  "sectionPosition" : 515,
+  "id" : "569eac0dd4c623dc65507c94",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0508",
+  "name" : "Blood Product Processing Requirements",
+  "description" : "Blood Product Processing Requirements",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c95",
+    "value" : "AU",
+    "label" : "Autologous Unit",
+    "codeSystem" : "HL70508",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c96",
+    "value" : "CM",
+    "label" : "CMV Negative",
+    "codeSystem" : "HL70508",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c97",
+    "value" : "CS",
+    "label" : "CMV Safe",
+    "codeSystem" : "HL70508",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c98",
+    "value" : "DI",
+    "label" : "Directed Unit",
+    "codeSystem" : "HL70508",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c99",
+    "value" : "FR",
+    "label" : "Fresh unit",
+    "codeSystem" : "HL70508",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c9a",
+    "value" : "HB",
+    "label" : "Hemoglobin S Negative",
+    "codeSystem" : "HL70508",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c9b",
+    "value" : "HL",
+    "label" : "HLA Matched",
+    "codeSystem" : "HL70508",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c9c",
+    "value" : "IG",
+    "label" : "IgA Deficient",
+    "codeSystem" : "HL70508",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c9d",
+    "value" : "IR",
+    "label" : "Irradiated",
+    "codeSystem" : "HL70508",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c9e",
+    "value" : "LR",
+    "label" : "Leukoreduced",
+    "codeSystem" : "HL70508",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c9f",
+    "value" : "WA",
+    "label" : "Washed",
+    "codeSystem" : "HL70508",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

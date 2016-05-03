@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 205,
+  "id" : "565f3ab6d4c6e52cfd443c14",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0327",
+  "name" : "Job code/class",
+  "description" : "Job code/class",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

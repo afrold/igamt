@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 226,
+  "id" : "565f3ab7d4c6e52cfd447035",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0269",
+  "name" : "Charge on Indicator",
+  "description" : "Charge on Indicator",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447036",
+    "value" : "O",
+    "label" : "Charge on order",
+    "codeSystem" : "HL70269",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447037",
+    "value" : "R",
+    "label" : "Charge on result",
+    "codeSystem" : "HL70269",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

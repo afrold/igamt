@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 271,
+  "id" : "569eac0dd4c623dc65507d7c",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0776",
+  "name" : "Item Status",
+  "description" : "Item Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d7d",
+    "value" : "A",
+    "label" : "Active",
+    "codeSystem" : "HL70776",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d7e",
+    "value" : "I",
+    "label" : "Inactive",
+    "codeSystem" : "HL70776",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507d7f",
+    "value" : "P",
+    "label" : "Pending Inactive",
+    "codeSystem" : "HL70776",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

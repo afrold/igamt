@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 113,
+  "id" : "565f3ab7d4c6e52cfd445f75",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0332",
+  "name" : "Network source type",
+  "description" : "Network source type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f76",
+    "value" : "A",
+    "label" : "Accept",
+    "codeSystem" : "HL70332",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445f77",
+    "value" : "I",
+    "label" : "Initiate",
+    "codeSystem" : "HL70332",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

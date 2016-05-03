@@ -339,7 +339,7 @@ angular.module('igl')
                 node.datatype = selected.id;
                 //TODO: load master map
                 if(!$rootScope.datatypesMap[node.datatype] || $rootScope.datatypesMap[node.datatype] == null){
-                    DatatypeService.get(selected.id).then(function(result) {
+                    DatatypeService.getOne(selected.id).then(function(result) {
                         $rootScope.datatypesMap[node.datatype] = result;
                         if ($scope.datatypesParams)
                             $scope.datatypesParams.refresh();

@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 118,
+  "id" : "565f3ab6d4c6e52cfd443697",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0155",
+  "name" : "Accept/application acknowledgment conditions",
+  "description" : "Accept/application acknowledgment conditions",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443698",
+    "value" : "AL",
+    "label" : "Always",
+    "codeSystem" : "HL70155",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443699",
+    "value" : "ER",
+    "label" : "Error/reject conditions only",
+    "codeSystem" : "HL70155",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44369a",
+    "value" : "NE",
+    "label" : "Never",
+    "codeSystem" : "HL70155",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44369b",
+    "value" : "SU",
+    "label" : "Successful completion only",
+    "codeSystem" : "HL70155",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

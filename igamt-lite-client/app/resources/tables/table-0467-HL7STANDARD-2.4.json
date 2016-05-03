@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 209,
+  "id" : "565f3ab6d4c6e52cfd443d8a",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0467",
+  "name" : "Modifier edit code",
+  "description" : "Modifier edit code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d8b",
+    "value" : "0",
+    "label" : "Modifier does NOT exist",
+    "codeSystem" : "HL70467",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d8c",
+    "value" : "1",
+    "label" : "Modifier present, no errors",
+    "codeSystem" : "HL70467",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d8d",
+    "value" : "2",
+    "label" : "Modifier invalid",
+    "codeSystem" : "HL70467",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d8e",
+    "value" : "3",
+    "label" : "Modifier NOT approved for ASC/HOPD use",
+    "codeSystem" : "HL70467",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d8f",
+    "value" : "4",
+    "label" : "Modifier approved for ASC/HOPD use, inappropriate for code",
+    "codeSystem" : "HL70467",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443d90",
+    "value" : "U",
+    "label" : "Modifer edit code unknown",
+    "codeSystem" : "HL70467",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

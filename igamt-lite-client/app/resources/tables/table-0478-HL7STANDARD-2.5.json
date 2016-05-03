@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 213,
+  "id" : "565f3ab6d4c6e52cfd44156a",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0478",
+  "name" : "Formulary Status",
+  "description" : "Formulary Status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.478",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44156b",
+    "value" : "G",
+    "label" : "Pharmaceutical substance is in the formulary, but guidelines apply",
+    "codeSystem" : "HL70478",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44156c",
+    "value" : "N",
+    "label" : "Pharmaceutical substance is NOT in the formulary",
+    "codeSystem" : "HL70478",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44156d",
+    "value" : "R",
+    "label" : "Pharmaceutical substance is in the formulary, but restrictions apply",
+    "codeSystem" : "HL70478",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44156e",
+    "value" : "Y",
+    "label" : "Pharmaceutical substance is in the formulary",
+    "codeSystem" : "HL70478",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

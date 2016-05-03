@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 292,
+  "id" : "565f3ab6d4c6e52cfd443a5e",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0415",
+  "name" : "DRG transfer type",
+  "description" : "DRG transfer type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a5f",
+    "value" : "E",
+    "label" : "DRG Exempt",
+    "codeSystem" : "HL70415",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a60",
+    "value" : "N",
+    "label" : "DRG Non Exempt",
+    "codeSystem" : "HL70415",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

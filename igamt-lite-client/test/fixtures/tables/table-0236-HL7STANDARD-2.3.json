@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 189,
+  "id" : "565f3ab7d4c6e52cfd4474e4",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0236",
+  "name" : "Reported To",
+  "description" : "Reported To",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474e5",
+    "value" : "D",
+    "label" : "Distributor",
+    "codeSystem" : "HL70236",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474e6",
+    "value" : "L",
+    "label" : "Local facility/user facility",
+    "codeSystem" : "HL70236",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474e7",
+    "value" : "M",
+    "label" : "Manufacturer",
+    "codeSystem" : "HL70236",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4474e8",
+    "value" : "R",
+    "label" : "Regulatory agency",
+    "codeSystem" : "HL70236",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

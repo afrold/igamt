@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 100,
+  "id" : "569eac0fd4c623dc6550e99a",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0217",
+  "name" : "Visit Priority Code",
+  "description" : "Visit Priority Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.217",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e99b",
+    "value" : "1",
+    "label" : "Emergency",
+    "codeSystem" : "HL70217",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e99c",
+    "value" : "2",
+    "label" : "Urgent",
+    "codeSystem" : "HL70217",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550e99d",
+    "value" : "3",
+    "label" : "Elective",
+    "codeSystem" : "HL70217",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

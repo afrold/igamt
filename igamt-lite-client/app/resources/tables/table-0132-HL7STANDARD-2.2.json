@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 26,
+  "id" : "565f3ab7d4c6e52cfd447cd5",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0132",
+  "name" : "TRANSACTION CODE",
+  "description" : "TRANSACTION CODE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

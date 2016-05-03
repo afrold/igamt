@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 241,
+  "id" : "569eac0dd4c623dc65507e78",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0547",
+  "name" : "Jurisdictional Breadth",
+  "description" : "Jurisdictional Breadth",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e79",
+    "value" : "C",
+    "label" : "County/Parish",
+    "codeSystem" : "HL70547",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e7a",
+    "value" : "N",
+    "label" : "Country",
+    "codeSystem" : "HL70547",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507e7b",
+    "value" : "S",
+    "label" : "State/Province",
+    "codeSystem" : "HL70547",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,315 @@
+{
+  "type" : "table",
+  "sectionPosition" : 122,
+  "id" : "569eac0dd4c623dc65507bc8",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0912",
+  "name" : "Participation",
+  "description" : "Participation",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bc9",
+    "value" : "AD",
+    "label" : "Admitting Provider",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bca",
+    "value" : "AI",
+    "label" : "Assistant/Alternate Interpreter",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bcb",
+    "value" : "AP",
+    "label" : "Administering Provider",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bcc",
+    "value" : "ARI",
+    "label" : "Assistant Result Interpreter",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bcd",
+    "value" : "AT",
+    "label" : "Attending Provider",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bce",
+    "value" : "AUT",
+    "label" : "AUT Author/Event Initiator",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bcf",
+    "value" : "CP",
+    "label" : "Consulting Provider",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bd0",
+    "value" : "DP",
+    "label" : "Dispensing Provider",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bd1",
+    "value" : "EP",
+    "label" : "Entering Provider (probably not the same as transcriptionist)",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bd2",
+    "value" : "EQUIP",
+    "label" : "Equipment",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bd3",
+    "value" : "FHCP",
+    "label" : "Family Health Care Professional",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bd4",
+    "value" : "MDIR",
+    "label" : "Medical Director",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bd5",
+    "value" : "OP",
+    "label" : "Ordering Provider",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bd6",
+    "value" : "PB",
+    "label" : "Packed by",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bd7",
+    "value" : "PH",
+    "label" : "Pharmacist   (not sure how to dissect Pharmacist/Treatment Supplier's Verifier ID)",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bd8",
+    "value" : "PI",
+    "label" : "Primary Interpreter",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bd9",
+    "value" : "PO",
+    "label" : "Performing Organization",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bda",
+    "value" : "POMD",
+    "label" : "Performing Organization Medical Director",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bdb",
+    "value" : "PP",
+    "label" : "Primary Care Provider",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bdc",
+    "value" : "PRI",
+    "label" : "Principal Result Interpreter",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bdd",
+    "value" : "RCT",
+    "label" : "Results Copies To",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bde",
+    "value" : "RO",
+    "label" : "Responsible Observer",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507bdf",
+    "value" : "RP",
+    "label" : "Referring Provider",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507be0",
+    "value" : "RT",
+    "label" : "Referred to Provider",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507be1",
+    "value" : "SB",
+    "label" : "Send by",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507be2",
+    "value" : "SC",
+    "label" : "Specimen Collector",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507be3",
+    "value" : "TN",
+    "label" : "Technician",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507be4",
+    "value" : "TR",
+    "label" : "Transcriptionist",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507be5",
+    "value" : "VP",
+    "label" : "Verifying Provider",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507be6",
+    "value" : "VPS",
+    "label" : "Verifying Pharmaceutical Supplier   (not sure how to dissect Pharmacist/Treatment Supplier's Verifier ID)",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507be7",
+    "value" : "VTS",
+    "label" : "Verifying Treatment Supplier   (not sure how to dissect Pharmacist/Treatment Supplier's Verifier ID)",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507be8",
+    "value" : "WAY",
+    "label" : "Waypoint",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507be9",
+    "value" : "WAYR",
+    "label" : "Waypoint Recipient",
+    "codeSystem" : "HL70912",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,99 @@
+{
+  "type" : "table",
+  "sectionPosition" : 154,
+  "id" : "565f3ab7d4c6e52cfd447dde",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0052",
+  "name" : "DIAGNOSIS TYPE",
+  "description" : "DIAGNOSIS TYPE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447ddf",
+    "value" : "AD",
+    "label" : "Aufnahmediagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447de0",
+    "value" : "BD",
+    "label" : "Behandlungsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447de1",
+    "value" : "ED",
+    "label" : "Einweisungsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447de2",
+    "value" : "EL",
+    "label" : "Entlassungs-/Verlegungsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447de3",
+    "value" : "ND",
+    "label" : "Nachfolgediagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447de4",
+    "value" : "NO",
+    "label" : "Nachfolgediagnose ambulantes Operieren",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447de5",
+    "value" : "NU",
+    "label" : "Nachfolgediagnose, die die Arbeitsunfähigkeit allein begründet hat",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447de6",
+    "value" : "UD",
+    "label" : "Überweisungsdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447de7",
+    "value" : "ZD",
+    "label" : "Neben- / Zusatzdiagnose",
+    "codeSystem" : "HL70052",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

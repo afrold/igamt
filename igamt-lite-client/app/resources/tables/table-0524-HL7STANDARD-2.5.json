@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 387,
+  "id" : "565f3ab6d4c6e52cfd440ed2",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0524",
+  "name" : "Sequence condition",
+  "description" : "Sequence condition",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.524",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ed3",
+    "value" : "C",
+    "label" : "Repeating cycle of orders",
+    "codeSystem" : "HL70524",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ed4",
+    "value" : "R",
+    "label" : "Reserved for possible future use",
+    "codeSystem" : "HL70524",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ed5",
+    "value" : "S",
+    "label" : "Sequence conditions",
+    "codeSystem" : "HL70524",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

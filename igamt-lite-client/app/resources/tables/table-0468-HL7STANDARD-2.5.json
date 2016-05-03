@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 222,
+  "id" : "565f3ab6d4c6e52cfd441417",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0468",
+  "name" : "Payment Adjustment Code",
+  "description" : "Payment Adjustment Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.468",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441418",
+    "value" : "1",
+    "label" : "No payment adjustment",
+    "codeSystem" : "HL70468",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441419",
+    "value" : "2",
+    "label" : "Designated current drug or biological payment adjustment applies to APC (status indicator G)",
+    "codeSystem" : "HL70468",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44141a",
+    "value" : "3",
+    "label" : "Designated new device payment adjustment applies to APC (status indicator H)",
+    "codeSystem" : "HL70468",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44141b",
+    "value" : "4",
+    "label" : "Designated new drug or new biological payment adjustment applies to APC (status indicator J)",
+    "codeSystem" : "HL70468",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44141c",
+    "value" : "5",
+    "label" : "Deductible not applicable (specific list of HCPCS codes)",
+    "codeSystem" : "HL70468",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

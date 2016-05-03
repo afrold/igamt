@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 149,
+  "id" : "565f3ab6d4c6e52cfd443a61",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0416",
+  "name" : "Procedure DRG type",
+  "description" : "Procedure DRG type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a62",
+    "value" : "1",
+    "label" : "1st non-Operative",
+    "codeSystem" : "HL70416",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a63",
+    "value" : "2",
+    "label" : "2nd non-Operative",
+    "codeSystem" : "HL70416",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a64",
+    "value" : "3",
+    "label" : "Major Operative",
+    "codeSystem" : "HL70416",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a65",
+    "value" : "4",
+    "label" : "2nd Operative",
+    "codeSystem" : "HL70416",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443a66",
+    "value" : "5",
+    "label" : "3rd Operative",
+    "codeSystem" : "HL70416",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

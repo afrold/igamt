@@ -71,6 +71,13 @@ public abstract class AbstractReadConverter<S, T> implements Converter<S, T> {
 	public final static String CODE_SYSTEM_VERSION = "codeSystemVersion";
 	public final static String CODE_USAGE = "codeUsage";
 	public final static String CODE_SYS = "codeSystemVersion";
+	public final static String SCOPE_ = "scope";
+	public final static String STATUS_ = "status";
+	public final static String HL7_VERSION = "hl7Version";
+	public final static String METADATA = "metaData";
+	public final static String DATE = "date";
+	public final static String EXTENSION = "ext";
+	public final static String ORG_NAME = "orgName";
 	
 	protected String readMongoId(DBObject source) {
 		if (source.get("_id") != null) {

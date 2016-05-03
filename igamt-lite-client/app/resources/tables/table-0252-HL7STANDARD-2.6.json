@@ -1,0 +1,117 @@
+{
+  "type" : "table",
+  "sectionPosition" : 327,
+  "id" : "569eac0ed4c623dc6550a4ca",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0252",
+  "name" : "Causality Observations",
+  "description" : "Causality Observations",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.252",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4cb",
+    "value" : "AW",
+    "label" : "Abatement of event after product withdrawn",
+    "codeSystem" : "HL70252",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4cc",
+    "value" : "BE",
+    "label" : "Event recurred after product reintroduced",
+    "codeSystem" : "HL70252",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4cd",
+    "value" : "DR",
+    "label" : "Dose response observed",
+    "codeSystem" : "HL70252",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4ce",
+    "value" : "EX",
+    "label" : "Alternative explanations for the event available",
+    "codeSystem" : "HL70252",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4cf",
+    "value" : "IN",
+    "label" : "Event occurred after product introduced",
+    "codeSystem" : "HL70252",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4d0",
+    "value" : "LI",
+    "label" : "Literature reports association of product with event",
+    "codeSystem" : "HL70252",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4d1",
+    "value" : "OE",
+    "label" : "Occurrence of event was confirmed by objective evidence",
+    "codeSystem" : "HL70252",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4d2",
+    "value" : "OT",
+    "label" : "Other",
+    "codeSystem" : "HL70252",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4d3",
+    "value" : "PL",
+    "label" : "Effect observed when patient receives placebo",
+    "codeSystem" : "HL70252",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4d4",
+    "value" : "SE",
+    "label" : "Similar events in past for this patient",
+    "codeSystem" : "HL70252",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a4d5",
+    "value" : "TC",
+    "label" : "Toxic levels of product documented in blood or body fluids",
+    "codeSystem" : "HL70252",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

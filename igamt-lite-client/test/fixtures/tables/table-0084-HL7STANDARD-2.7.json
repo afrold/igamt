@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 55,
+  "id" : "569eac0dd4c623dc65507b4b",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0084",
+  "name" : "Performed by",
+  "description" : "Performed by",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507b4c",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70084",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

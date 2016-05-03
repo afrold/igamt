@@ -1,0 +1,108 @@
+{
+  "type" : "table",
+  "sectionPosition" : 161,
+  "id" : "569eac0dd4c623dc65507c69",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0734",
+  "name" : "Grouper Status",
+  "description" : "Grouper Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c6a",
+    "value" : "0",
+    "label" : "Normal grouping",
+    "codeSystem" : "HL70734",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c6b",
+    "value" : "1",
+    "label" : "Invalid or missing primary diagnosis",
+    "codeSystem" : "HL70734",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c6c",
+    "value" : "2",
+    "label" : "Diagnosis is not allowed to be primary",
+    "codeSystem" : "HL70734",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c6d",
+    "value" : "3",
+    "label" : "Data does not fulfill DRG criteria",
+    "codeSystem" : "HL70734",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c6e",
+    "value" : "4",
+    "label" : "Invalid age, admission date, date of birth or discharge date",
+    "codeSystem" : "HL70734",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c6f",
+    "value" : "5",
+    "label" : "Invalid gender",
+    "codeSystem" : "HL70734",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c70",
+    "value" : "6",
+    "label" : "Invalid discharge status",
+    "codeSystem" : "HL70734",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c71",
+    "value" : "7",
+    "label" : "Invalid weight ad admission",
+    "codeSystem" : "HL70734",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c72",
+    "value" : "8",
+    "label" : "Invalid length of stay",
+    "codeSystem" : "HL70734",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c73",
+    "value" : "9",
+    "label" : "Invalid field \"same day\"",
+    "codeSystem" : "HL70734",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

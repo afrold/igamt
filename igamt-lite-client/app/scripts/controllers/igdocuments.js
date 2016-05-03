@@ -1,3 +1,4 @@
+
 /**
  * Created by haffo on 1/12/15.
  */
@@ -774,7 +775,7 @@ angular.module('igl')
             $scope.subview = "EditDatatypes.html";
             if (datatype && datatype != null) {
                 $scope.loadingSelection = true;
-                DatatypeService.get(datatype.id).then(function (result) {
+                DatatypeService.getOne(datatype.id).then(function (result) {
                     $rootScope.datatype = result;
                     $scope.loadingSelection = false;
                     $rootScope.datatype["type"] = "datatype";

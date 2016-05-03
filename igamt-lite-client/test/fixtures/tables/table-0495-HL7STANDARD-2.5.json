@@ -1,0 +1,162 @@
+{
+  "type" : "table",
+  "sectionPosition" : 169,
+  "id" : "565f3ab6d4c6e52cfd44075a",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0495",
+  "name" : "Body Site Modifier",
+  "description" : "Body Site Modifier",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.495",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44075b",
+    "value" : " UPP",
+    "label" : "Upper",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44075c",
+    "value" : "ANT",
+    "label" : "Anterior",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44075d",
+    "value" : "BIL",
+    "label" : "Bilateral",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44075e",
+    "value" : "DIS",
+    "label" : "Distal",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44075f",
+    "value" : "EXT",
+    "label" : "External",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440760",
+    "value" : "L",
+    "label" : "Left",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440761",
+    "value" : "LAT",
+    "label" : "Lateral",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440762",
+    "value" : "LLQ",
+    "label" : "Quadrant, Left Lower",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440763",
+    "value" : "LOW",
+    "label" : "Lower",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440764",
+    "value" : "LUQ",
+    "label" : "Quadrant, Left Upper",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440765",
+    "value" : "MED",
+    "label" : "Medial",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440766",
+    "value" : "POS",
+    "label" : "Posterior",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440767",
+    "value" : "PRO",
+    "label" : "Proximal",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440768",
+    "value" : "R",
+    "label" : "Right",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440769",
+    "value" : "RLQ",
+    "label" : "Quadrant, Right Lower",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44076a",
+    "value" : "RUQ",
+    "label" : "Quadrant, Right Upper",
+    "codeSystem" : "HL70495",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

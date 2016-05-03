@@ -1,0 +1,99 @@
+{
+  "type" : "table",
+  "sectionPosition" : 9,
+  "id" : "565f3ab7d4c6e52cfd44805a",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0085",
+  "name" : "OBSERVATION RESULT STATUS CODES INTERPRETATION",
+  "description" : "OBSERVATION RESULT STATUS CODES INTERPRETATION",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44805b",
+    "value" : "C",
+    "label" : "Record coming over is a correction and thus replaces a result",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44805c",
+    "value" : "D",
+    "label" : "Deletes the OBX record",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44805d",
+    "value" : "F",
+    "label" : "Final results (can only be changed with a corrected result)",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44805e",
+    "value" : "I",
+    "label" : "Specimen in lab - results pending",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44805f",
+    "value" : "P",
+    "label" : "Preliminary results",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448060",
+    "value" : "R",
+    "label" : "Results entered - not verified",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448061",
+    "value" : "S",
+    "label" : "Partial results",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448062",
+    "value" : "U",
+    "label" : "Results status change to Final - results did not change ( don't transmit test)",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448063",
+    "value" : "X",
+    "label" : "Results cannot be obtained for this observation",
+    "codeSystem" : "HL70085",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

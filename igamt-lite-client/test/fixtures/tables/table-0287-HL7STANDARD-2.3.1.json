@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 174,
+  "id" : "565f3ab7d4c6e52cfd445ce0",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0287",
+  "name" : "Problem/Goal Action code",
+  "description" : "Problem/Goal Action code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ce1",
+    "value" : "AD",
+    "label" : "ADD",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ce2",
+    "value" : "CO",
+    "label" : "CORRECT",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ce3",
+    "value" : "DE",
+    "label" : "DELETE",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ce4",
+    "value" : "LI",
+    "label" : "LINK",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ce5",
+    "value" : "UC",
+    "label" : "UNCHANGED *",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ce6",
+    "value" : "UN",
+    "label" : "UNLINK",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445ce7",
+    "value" : "UP",
+    "label" : "UPDATE",
+    "codeSystem" : "HL70287",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,99 @@
+{
+  "type" : "table",
+  "sectionPosition" : 411,
+  "id" : "569eac0fd4c623dc6550d9ff",
+  "hl7Version" : "2.5.1",
+  "bindingIdentifier" : "0365",
+  "name" : "Equipment state",
+  "description" : "Equipment state",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.365",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550da00",
+    "value" : "CL",
+    "label" : "Clearing",
+    "codeSystem" : "HL70365",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550da01",
+    "value" : "CO",
+    "label" : "Configuring",
+    "codeSystem" : "HL70365",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550da02",
+    "value" : "ES",
+    "label" : "E-stopped",
+    "codeSystem" : "HL70365",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550da03",
+    "value" : "ID",
+    "label" : "Idle",
+    "codeSystem" : "HL70365",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550da04",
+    "value" : "IN",
+    "label" : "Initializing",
+    "codeSystem" : "HL70365",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550da05",
+    "value" : "OP",
+    "label" : "Normal Operation",
+    "codeSystem" : "HL70365",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550da06",
+    "value" : "PA",
+    "label" : "Pausing",
+    "codeSystem" : "HL70365",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550da07",
+    "value" : "PD",
+    "label" : "Paused",
+    "codeSystem" : "HL70365",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0fd4c623dc6550da08",
+    "value" : "PU",
+    "label" : "Powered Up",
+    "codeSystem" : "HL70365",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

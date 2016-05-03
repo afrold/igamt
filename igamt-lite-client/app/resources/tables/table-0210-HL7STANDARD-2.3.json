@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 45,
+  "id" : "565f3ab7d4c6e52cfd447436",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0210",
+  "name" : "Relational Conjunction",
+  "description" : "Relational Conjunction",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447437",
+    "value" : "AND",
+    "label" : "Default",
+    "codeSystem" : "HL70210",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447438",
+    "value" : "OR",
+    "label" : "#FIXME#",
+    "codeSystem" : "HL70210",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

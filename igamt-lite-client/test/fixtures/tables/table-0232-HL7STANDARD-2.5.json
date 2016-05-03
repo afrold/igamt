@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 31,
+  "id" : "565f3ab6d4c6e52cfd441666",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0232",
+  "name" : "Insurance Company Contact Reason",
+  "description" : "Insurance Company Contact Reason",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.232",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441667",
+    "value" : "01",
+    "label" : "Medicare claim status",
+    "codeSystem" : "HL70232",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441668",
+    "value" : "02",
+    "label" : "Medicaid claim status",
+    "codeSystem" : "HL70232",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441669",
+    "value" : "03",
+    "label" : "Name/address change",
+    "codeSystem" : "HL70232",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

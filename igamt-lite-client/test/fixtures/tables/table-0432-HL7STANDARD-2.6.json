@@ -1,0 +1,72 @@
+{
+  "type" : "table",
+  "sectionPosition" : 225,
+  "id" : "569eac0ed4c623dc6550b40e",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0432",
+  "name" : "Admission Level of Care Code",
+  "description" : "Admission Level of Care Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.432",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b40f",
+    "value" : "AC",
+    "label" : "Acute",
+    "codeSystem" : "HL70432",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b410",
+    "value" : "CH",
+    "label" : "Chronic",
+    "codeSystem" : "HL70432",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b411",
+    "value" : "CO",
+    "label" : "Comatose",
+    "codeSystem" : "HL70432",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b412",
+    "value" : "CR",
+    "label" : "Critical",
+    "codeSystem" : "HL70432",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b413",
+    "value" : "IM",
+    "label" : "Improved",
+    "codeSystem" : "HL70432",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b414",
+    "value" : "MO",
+    "label" : "Moribund",
+    "codeSystem" : "HL70432",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

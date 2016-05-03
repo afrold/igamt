@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 173,
+  "id" : "565f3ab7d4c6e52cfd4470c6",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0285",
+  "name" : "Insurance Company ID Codes",
+  "description" : "Insurance Company ID Codes",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

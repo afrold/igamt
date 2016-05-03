@@ -86,7 +86,7 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
-            get: function (id) {
+            getOne: function (id) {
                 var delay = $q.defer();
                 $http.get('api/datatypes/' + id).then(function (response) {
                     var datatype = angular.fromJson(response.data);
@@ -96,7 +96,17 @@ angular.module('igl').factory('DatatypeService',
                 });
                 return delay.promise;
             },
-            merge: function (to, from) {
+            get: function (ids) {
+                var delay = $q.defer();
+                $http.post('api/datatypes/findByIds', ids).then(function (response) {
+                    var datatypes = angular.fromJson(response.data);
+                    delay.resolve(datatypes);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+           merge: function (to, from) {
                 to.name = from.name;
                 to.ext = from.ext;
                 to.label = from.label;

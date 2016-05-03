@@ -1,0 +1,117 @@
+{
+  "type" : "table",
+  "sectionPosition" : 171,
+  "id" : "569eac0ed4c623dc6550a939",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0383",
+  "name" : "Substance status",
+  "description" : "Substance status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.383",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a93a",
+    "value" : "CE",
+    "label" : "Calibration Error",
+    "codeSystem" : "HL70383",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a93b",
+    "value" : "CW",
+    "label" : "Calibration Warning",
+    "codeSystem" : "HL70383",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a93c",
+    "value" : "EE",
+    "label" : "Expired Error",
+    "codeSystem" : "HL70383",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a93d",
+    "value" : "EW",
+    "label" : "Expired Warning",
+    "codeSystem" : "HL70383",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a93e",
+    "value" : "NE",
+    "label" : "Not Available Error",
+    "codeSystem" : "HL70383",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a93f",
+    "value" : "NW",
+    "label" : "Not Available Warning",
+    "codeSystem" : "HL70383",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a940",
+    "value" : "OE",
+    "label" : "Other Error",
+    "codeSystem" : "HL70383",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a941",
+    "value" : "OK",
+    "label" : "OK Status",
+    "codeSystem" : "HL70383",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a942",
+    "value" : "OW",
+    "label" : "Other Warning",
+    "codeSystem" : "HL70383",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a943",
+    "value" : "QE",
+    "label" : "QC Error",
+    "codeSystem" : "HL70383",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a944",
+    "value" : "QW",
+    "label" : "QC Warning",
+    "codeSystem" : "HL70383",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

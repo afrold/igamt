@@ -18,14 +18,17 @@ public class DatatypeLink extends AbstractLink {
 
 	private String label;
 
+	private String ext;
+	
 	public DatatypeLink() {
 		super();
 	}
 
-	public DatatypeLink(String id, String label) {
+	public DatatypeLink(String id, String label, String ext) {
 		super();
 		this.setId(id);
 		this.label = label;
+		this.setExt(ext);
 	}	
 	
 	public String getLabel() {
@@ -34,5 +37,13 @@ public class DatatypeLink extends AbstractLink {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
 	}
 }

@@ -1,0 +1,171 @@
+{
+  "type" : "table",
+  "sectionPosition" : 323,
+  "id" : "569eac0ed4c623dc6550b415",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0553",
+  "name" : "Invoice Control Code",
+  "description" : "Invoice Control Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.553",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b416",
+    "value" : "AA",
+    "label" : "Authorization request for inpatient admission",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b417",
+    "value" : "AI",
+    "label" : "Combined Authorization and Adjudication request",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b418",
+    "value" : "CA",
+    "label" : "Cancel Authorization request",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b419",
+    "value" : "CG",
+    "label" : "Cancel Invoice Product/Service Group",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b41a",
+    "value" : "CL",
+    "label" : "Cancel Invoice Product/Service Line Item",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b41b",
+    "value" : "CN",
+    "label" : "Cancel Invoice",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b41c",
+    "value" : "CP",
+    "label" : "Copy of Invoice",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b41d",
+    "value" : "CQ",
+    "label" : "Coverage Register Query",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b41e",
+    "value" : "EA",
+    "label" : "Authorization request for inpatient stay extension",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b41f",
+    "value" : "OA",
+    "label" : "Original Authorization",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b420",
+    "value" : "OR",
+    "label" : "Original Invoice",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b421",
+    "value" : "PA",
+    "label" : "Pre-Authorization",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b422",
+    "value" : "PD",
+    "label" : "Pre-Determination Invoice",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b423",
+    "value" : "RA",
+    "label" : "Re-Assessment",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b424",
+    "value" : "RC",
+    "label" : "Referral Pre-Authorization",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b425",
+    "value" : "RU",
+    "label" : "Referral authorization",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b426",
+    "value" : "SA",
+    "label" : "Special Authorization",
+    "codeSystem" : "HL70553",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

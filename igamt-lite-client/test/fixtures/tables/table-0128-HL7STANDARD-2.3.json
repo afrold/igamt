@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 32,
+  "id" : "565f3ab7d4c6e52cfd446e1b",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0128",
+  "name" : "Allergy Severity",
+  "description" : "Allergy Severity",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e1c",
+    "value" : "MI",
+    "label" : "Mild",
+    "codeSystem" : "HL70128",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e1d",
+    "value" : "MO",
+    "label" : "Moderate",
+    "codeSystem" : "HL70128",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd446e1e",
+    "value" : "SV",
+    "label" : "Severe",
+    "codeSystem" : "HL70128",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

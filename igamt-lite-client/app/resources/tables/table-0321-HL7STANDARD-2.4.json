@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 27,
+  "id" : "565f3ab6d4c6e52cfd443b9e",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0321",
+  "name" : "Dispense method",
+  "description" : "Dispense method",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443b9f",
+    "value" : "AD",
+    "label" : "Automatic Dispensing",
+    "codeSystem" : "HL70321",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ba0",
+    "value" : "F",
+    "label" : "Floor Stock",
+    "codeSystem" : "HL70321",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ba1",
+    "value" : "TR",
+    "label" : "Traditional",
+    "codeSystem" : "HL70321",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443ba2",
+    "value" : "UD",
+    "label" : "Unit Dose",
+    "codeSystem" : "HL70321",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

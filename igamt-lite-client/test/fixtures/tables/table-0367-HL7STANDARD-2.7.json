@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 312,
+  "id" : "569eac0dd4c623dc655070b6",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0367",
+  "name" : "Alert Level",
+  "description" : "Alert Level",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070b7",
+    "value" : "�",
+    "label" : "(null) No level change",
+    "codeSystem" : "HL70367",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070b8",
+    "value" : "C",
+    "label" : "Critical",
+    "codeSystem" : "HL70367",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070b9",
+    "value" : "N",
+    "label" : "Normal",
+    "codeSystem" : "HL70367",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070ba",
+    "value" : "S",
+    "label" : "Serious",
+    "codeSystem" : "HL70367",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655070bb",
+    "value" : "W",
+    "label" : "Warning",
+    "codeSystem" : "HL70367",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

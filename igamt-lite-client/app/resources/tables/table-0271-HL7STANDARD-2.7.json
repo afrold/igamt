@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 71,
+  "id" : "569eac0dd4c623dc6550764b",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0271",
+  "name" : "Document Completion Status",
+  "description" : "Document Completion Status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550764c",
+    "value" : "AU",
+    "label" : "Authenticated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550764d",
+    "value" : "DI",
+    "label" : "Dictated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550764e",
+    "value" : "DO",
+    "label" : "Documented",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc6550764f",
+    "value" : "IN",
+    "label" : "Incomplete",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507650",
+    "value" : "IP",
+    "label" : "In Progress",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507651",
+    "value" : "LA",
+    "label" : "Legally authenticated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507652",
+    "value" : "PA",
+    "label" : "Pre-authenticated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

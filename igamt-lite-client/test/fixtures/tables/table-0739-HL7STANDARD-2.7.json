@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 392,
+  "id" : "569eac0dd4c623dc65507c5d",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0739",
+  "name" : "Status Patient",
+  "description" : "Status Patient",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c5e",
+    "value" : "1",
+    "label" : "Normal length of stay",
+    "codeSystem" : "HL70739",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c5f",
+    "value" : "2",
+    "label" : "Short length of stay",
+    "codeSystem" : "HL70739",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c60",
+    "value" : "3",
+    "label" : "Long length of stay",
+    "codeSystem" : "HL70739",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

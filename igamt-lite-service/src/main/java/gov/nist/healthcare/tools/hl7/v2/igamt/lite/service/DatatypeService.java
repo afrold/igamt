@@ -12,19 +12,21 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 
 public interface DatatypeService {
 
-	Datatype findById(String id, QUANTUM quantum);
+	Datatype findById(String id);
 	
 	Datatype save(Datatype datatype);
 
-	List<Datatype> findAll(QUANTUM quantum);
+	List<Datatype> findAll();
 
-	List<Datatype> findByLibrary(String dtLibId, QUANTUM quantum);
+	List<Datatype> findByLibIds(String dtLibId);
+
+	List<Datatype> findByIds(List<String> ids);
+
+	List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 }

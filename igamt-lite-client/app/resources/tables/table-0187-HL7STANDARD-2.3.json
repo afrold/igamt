@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 217,
+  "id" : "565f3ab7d4c6e52cfd447333",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0187",
+  "name" : "Provider Billing",
+  "description" : "Provider Billing",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447334",
+    "value" : "I",
+    "label" : "Institution bills for provider",
+    "codeSystem" : "HL70187",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447335",
+    "value" : "P",
+    "label" : "Provider does own billing",
+    "codeSystem" : "HL70187",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 378,
+  "id" : "569eac0ed4c623dc6550a9c0",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0379",
+  "name" : "Tray type",
+  "description" : "Tray type",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.379",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550a9c1",
+    "value" : "...",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70379",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 168,
+  "id" : "565f3ab7d4c6e52cfd447ce2",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0152",
+  "name" : "SECOND OPINION DOCUMENTATION RECEIVED",
+  "description" : "SECOND OPINION DOCUMENTATION RECEIVED",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

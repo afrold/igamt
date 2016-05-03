@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 8,
+  "id" : "565f3ab7d4c6e52cfd445973",
+  "hl7Version" : "2.3.1",
+  "bindingIdentifier" : "0135",
+  "name" : "Assignment of benefits",
+  "description" : "Assignment of benefits",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445974",
+    "value" : "M",
+    "label" : "Modified assignment",
+    "codeSystem" : "HL70135",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445975",
+    "value" : "N",
+    "label" : "No",
+    "codeSystem" : "HL70135",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd445976",
+    "value" : "Y",
+    "label" : "Yes",
+    "codeSystem" : "HL70135",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

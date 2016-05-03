@@ -1,0 +1,63 @@
+{
+  "type" : "table",
+  "sectionPosition" : 22,
+  "id" : "569eac0ed4c623dc6550b1db",
+  "hl7Version" : "2.6",
+  "bindingIdentifier" : "0868",
+  "name" : "Telecommunication expiration reason",
+  "description" : "Telecommunication expiration reason",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.868",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1dc",
+    "value" : "C",
+    "label" : "Corrected",
+    "codeSystem" : "HL70868",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1dd",
+    "value" : "E",
+    "label" : "Added in error",
+    "codeSystem" : "HL70868",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1de",
+    "value" : "M",
+    "label" : "Moved",
+    "codeSystem" : "HL70868",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1df",
+    "value" : "N",
+    "label" : "No longer in service",
+    "codeSystem" : "HL70868",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0ed4c623dc6550b1e0",
+    "value" : "R",
+    "label" : "On request",
+    "codeSystem" : "HL70868",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

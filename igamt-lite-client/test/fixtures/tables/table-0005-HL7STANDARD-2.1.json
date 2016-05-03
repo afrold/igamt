@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 62,
+  "id" : "565f3ab7d4c6e52cfd448255",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0005",
+  "name" : "ETHNIC GROUP",
+  "description" : "ETHNIC GROUP",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448256",
+    "value" : "B",
+    "label" : "Black",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448257",
+    "value" : "C",
+    "label" : "Caucasian",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448258",
+    "value" : "H",
+    "label" : "Hispanic",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd448259",
+    "value" : "R",
+    "label" : "Oriental",
+    "codeSystem" : "HL70005",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

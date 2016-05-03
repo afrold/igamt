@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 161,
+  "id" : "565f3ab6d4c6e52cfd440ed7",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0401",
+  "name" : "Government reimbursement program",
+  "description" : "Government reimbursement program",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.401",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ed8",
+    "value" : "C",
+    "label" : "Medi-Cal",
+    "codeSystem" : "HL70401",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ed9",
+    "value" : "MM",
+    "label" : "Medicare",
+    "codeSystem" : "HL70401",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

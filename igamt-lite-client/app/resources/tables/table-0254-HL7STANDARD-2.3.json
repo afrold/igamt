@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 195,
+  "id" : "565f3ab7d4c6e52cfd446fec",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0254",
+  "name" : "Kind of Quantity",
+  "description" : "Kind of Quantity",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

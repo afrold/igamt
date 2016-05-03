@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 157,
+  "id" : "565f3ab7d4c6e52cfd447d04",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0024",
+  "name" : "FEE SCHEDULE",
+  "description" : "FEE SCHEDULE",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d05",
+    "value" : "...",
+    "label" : "...",
+    "codeSystem" : "HL70024",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d06",
+    "value" : "D",
+    "label" : "DKG-NT",
+    "codeSystem" : "HL70024",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d07",
+    "value" : "E",
+    "label" : "EBM",
+    "codeSystem" : "HL70024",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d08",
+    "value" : "F",
+    "label" : "Fallpauschale",
+    "codeSystem" : "HL70024",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d09",
+    "value" : "G",
+    "label" : "GOÄ",
+    "codeSystem" : "HL70024",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d0a",
+    "value" : "H",
+    "label" : "Hauskatalog",
+    "codeSystem" : "HL70024",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d0b",
+    "value" : "S",
+    "label" : "Sonderentgelte",
+    "codeSystem" : "HL70024",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

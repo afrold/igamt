@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 85,
+  "id" : "569eac0dd4c623dc65507c82",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0742",
+  "name" : "DRG Status Financial Calculation",
+  "description" : "DRG Status Financial Calculation",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c83",
+    "value" : "00",
+    "label" : "Effective weight calculated",
+    "codeSystem" : "HL70742",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c84",
+    "value" : "01",
+    "label" : "Hospital specific contract",
+    "codeSystem" : "HL70742",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c85",
+    "value" : "03",
+    "label" : "Eeffective weight for transfer/referral calculated",
+    "codeSystem" : "HL70742",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c86",
+    "value" : "04",
+    "label" : "Referral from other hospital based on a cooperation (no DRG reimbursement)",
+    "codeSystem" : "HL70742",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c87",
+    "value" : "05",
+    "label" : "Invalid length of stay",
+    "codeSystem" : "HL70742",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c88",
+    "value" : "10",
+    "label" : "No information/entry in cost data for this DRG",
+    "codeSystem" : "HL70742",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507c89",
+    "value" : "11",
+    "label" : "No relative weight found for department (type)",
+    "codeSystem" : "HL70742",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

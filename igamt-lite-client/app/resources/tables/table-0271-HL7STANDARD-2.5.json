@@ -1,0 +1,81 @@
+{
+  "type" : "table",
+  "sectionPosition" : 231,
+  "id" : "565f3ab6d4c6e52cfd44087e",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0271",
+  "name" : "Document completion status",
+  "description" : "Document completion status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.271",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44087f",
+    "value" : "AU",
+    "label" : "Authenticated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440880",
+    "value" : "DI",
+    "label" : "Dictated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440881",
+    "value" : "DO",
+    "label" : "Documented",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440882",
+    "value" : "IN",
+    "label" : "Incomplete",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440883",
+    "value" : "IP",
+    "label" : "In Progress",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440884",
+    "value" : "LA",
+    "label" : "Legally authenticated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440885",
+    "value" : "PA",
+    "label" : "Pre-authenticated",
+    "codeSystem" : "HL70271",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

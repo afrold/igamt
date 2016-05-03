@@ -1,0 +1,36 @@
+{
+  "type" : "table",
+  "sectionPosition" : 367,
+  "id" : "565f3ab6d4c6e52cfd443f2d",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0355",
+  "name" : "Primary key value type",
+  "description" : "Primary key value type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f2e",
+    "value" : "CE",
+    "label" : "Coded element",
+    "codeSystem" : "HL70355",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f2f",
+    "value" : "PL",
+    "label" : "Person location",
+    "codeSystem" : "HL70355",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

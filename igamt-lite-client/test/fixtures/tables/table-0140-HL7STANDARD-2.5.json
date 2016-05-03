@@ -1,0 +1,117 @@
+{
+  "type" : "table",
+  "sectionPosition" : 364,
+  "id" : "565f3ab6d4c6e52cfd440694",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0140",
+  "name" : "Military Service",
+  "description" : "Military Service",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.140",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440695",
+    "value" : "AUSA",
+    "label" : "Australian Army",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440696",
+    "value" : "AUSAF",
+    "label" : "Australian Air Force",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440697",
+    "value" : "AUSN",
+    "label" : "Australian Navy",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440698",
+    "value" : "NATO",
+    "label" : "North Atlantic Treaty Organization",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440699",
+    "value" : "NOAA",
+    "label" : "National Oceanic and Atmospheric Administration",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44069a",
+    "value" : "USA",
+    "label" : "US Army",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44069b",
+    "value" : "USAF",
+    "label" : "US Air Force",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44069c",
+    "value" : "USCG",
+    "label" : "US Coast Guard",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44069d",
+    "value" : "USMC",
+    "label" : "US Marine Corps",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44069e",
+    "value" : "USN",
+    "label" : "US Navy",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44069f",
+    "value" : "USPHS",
+    "label" : "US Public Health Service",
+    "codeSystem" : "HL70140",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

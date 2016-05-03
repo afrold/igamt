@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 5,
+  "id" : "569eac0dd4c623dc655078fe",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0051",
+  "name" : "Diagnosis Code",
+  "description" : "Diagnosis Code",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc655078ff",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70051",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

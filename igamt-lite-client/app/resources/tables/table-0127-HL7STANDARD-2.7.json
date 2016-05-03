@@ -1,0 +1,90 @@
+{
+  "type" : "table",
+  "sectionPosition" : 507,
+  "id" : "569eac0dd4c623dc65507061",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0127",
+  "name" : "Allergen Type",
+  "description" : "Allergen Type",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507062",
+    "value" : "AA",
+    "label" : "Animal Allergy",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507063",
+    "value" : "DA",
+    "label" : "Drug allergy",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507064",
+    "value" : "EA",
+    "label" : "Environmental Allergy",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507065",
+    "value" : "FA",
+    "label" : "Food allergy",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507066",
+    "value" : "LA",
+    "label" : "Pollen Allergy",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507067",
+    "value" : "MA",
+    "label" : "Miscellaneous allergy",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507068",
+    "value" : "MC",
+    "label" : "Miscellaneous contraindication",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507069",
+    "value" : "PA",
+    "label" : "Plant Allergy",
+    "codeSystem" : "HL70127",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

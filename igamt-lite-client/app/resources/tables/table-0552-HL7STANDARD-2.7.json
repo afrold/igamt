@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 60,
+  "id" : "569eac0dd4c623dc65507ee3",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0552",
+  "name" : "Advanced Beneficiary Notice Override Reason",
+  "description" : "Advanced Beneficiary Notice Override Reason",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507ee4",
+    "value" : "�",
+    "label" : "No suggested values.",
+    "codeSystem" : "HL70552",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

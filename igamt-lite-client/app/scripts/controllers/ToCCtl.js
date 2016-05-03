@@ -159,7 +159,6 @@ angular
 								$rootScope.$broadcast('event:SetToC');
 							};
 
-
               $scope.show = function(leaf){
                 return ToCSvc.show(leaf);
               };

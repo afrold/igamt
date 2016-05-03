@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 314,
+  "id" : "565f3ab6d4c6e52cfd440ea6",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0516",
+  "name" : "Error severity",
+  "description" : "Error severity",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.516",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ea7",
+    "value" : "E",
+    "label" : "Error",
+    "codeSystem" : "HL70516",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ea8",
+    "value" : "I",
+    "label" : "Information",
+    "codeSystem" : "HL70516",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd440ea9",
+    "value" : "W",
+    "label" : "Warning",
+    "codeSystem" : "HL70516",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

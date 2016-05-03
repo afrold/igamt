@@ -1,0 +1,104 @@
+{
+  "type" : "segments",
+  "sectionPosition" : 1,
+  "sectionTitle" : "Segments and Field Descriptions",
+  "sectionDescription" : null,
+  "sectionContents" : null,
+  "id" : "5723765dda0805ce1eabda1b",
+  "accountId" : null,
+  "date" : null,
+  "metaData" : {
+    "name" : null,
+    "orgName" : "NIST",
+    "version" : null,
+    "hl7Version" : "2.3",
+    "date" : "April 29, 2016",
+    "ext" : null
+  },
+  "scope" : "HL7STANDARD",
+  "children" : [ {
+    "id" : "565f3ab7d4c6e52cfd447847",
+    "label" : "ORC"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478de",
+    "label" : "MSH"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447947",
+    "label" : "AL1"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a72",
+    "label" : "RXC"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447904",
+    "label" : "RQD"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478a9",
+    "label" : "OBR"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a5d",
+    "label" : "CTI"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a1d",
+    "label" : "PV2"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4479a2",
+    "label" : "IN2"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44794e",
+    "label" : "PID"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478a2",
+    "label" : "MSA"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44790f",
+    "label" : "GT1"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a43",
+    "label" : "IN3"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a65",
+    "label" : "PD1"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44796d",
+    "label" : "PV1"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a61",
+    "label" : "BLG"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447893",
+    "label" : "MFI"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4479eb",
+    "label" : "IN1"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447874",
+    "label" : "MFA"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478d5",
+    "label" : "ODT"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478d9",
+    "label" : "ODS"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd447a79",
+    "label" : "NTE"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44787a",
+    "label" : "RXR"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44789a",
+    "label" : "RQ1"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44785d",
+    "label" : "RXO"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44787f",
+    "label" : "DG1"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd4478f2",
+    "label" : "OBX"
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44785b",
+    "label" : "ERR"
+  } ]
+}

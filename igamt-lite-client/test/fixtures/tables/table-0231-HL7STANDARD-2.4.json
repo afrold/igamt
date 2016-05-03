@@ -1,0 +1,45 @@
+{
+  "type" : "table",
+  "sectionPosition" : 139,
+  "id" : "565f3ab6d4c6e52cfd443f31",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0231",
+  "name" : "Student status",
+  "description" : "Student status",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f32",
+    "value" : "F",
+    "label" : "Full-time student",
+    "codeSystem" : "HL70231",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f33",
+    "value" : "N",
+    "label" : "Not a student",
+    "codeSystem" : "HL70231",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd443f34",
+    "value" : "P",
+    "label" : "Part-time student",
+    "codeSystem" : "HL70231",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

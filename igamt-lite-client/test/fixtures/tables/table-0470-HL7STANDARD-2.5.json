@@ -1,0 +1,108 @@
+{
+  "type" : "table",
+  "sectionPosition" : 280,
+  "id" : "565f3ab6d4c6e52cfd441405",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0470",
+  "name" : "Reimbursement Type Code",
+  "description" : "Reimbursement Type Code",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.470",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441406",
+    "value" : "Crnl",
+    "label" : "Corneal Tissue APC",
+    "codeSystem" : "HL70470",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441407",
+    "value" : "DME",
+    "label" : "Durable Medical Equipment",
+    "codeSystem" : "HL70470",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441408",
+    "value" : "EPO",
+    "label" : "Epotein",
+    "codeSystem" : "HL70470",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd441409",
+    "value" : "Lab",
+    "label" : "Clinical Laboratory APC",
+    "codeSystem" : "HL70470",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44140a",
+    "value" : "Mamm",
+    "label" : "Screening Mammography APC",
+    "codeSystem" : "HL70470",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44140b",
+    "value" : "NoPay",
+    "label" : "This APC is not paid",
+    "codeSystem" : "HL70470",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44140c",
+    "value" : "OPPS",
+    "label" : "Outpatient Prospective Payment System",
+    "codeSystem" : "HL70470",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44140d",
+    "value" : "PartH",
+    "label" : "Partial Hospitalization APC",
+    "codeSystem" : "HL70470",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44140e",
+    "value" : "Pckg",
+    "label" : "Packaged APC",
+    "codeSystem" : "HL70470",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab6d4c6e52cfd44140f",
+    "value" : "Thrpy",
+    "label" : "Therapy APC",
+    "codeSystem" : "HL70470",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

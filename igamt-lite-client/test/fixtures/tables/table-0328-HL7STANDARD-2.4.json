@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 392,
+  "id" : "565f3ab6d4c6e52cfd443c1c",
+  "hl7Version" : "2.4",
+  "bindingIdentifier" : "0328",
+  "name" : "Employee classification",
+  "description" : "Employee classification",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

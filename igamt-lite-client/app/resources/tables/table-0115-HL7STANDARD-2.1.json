@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 118,
+  "id" : "565f3ab7d4c6e52cfd4483dd",
+  "hl7Version" : "2.1",
+  "bindingIdentifier" : "0115",
+  "name" : "SERVICING FACILITY",
+  "description" : "SERVICING FACILITY",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

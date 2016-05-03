@@ -1,0 +1,112 @@
+{
+  "type" : "datatypes",
+  "sectionPosition" : 2,
+  "sectionTitle" : "Datatypes",
+  "sectionDescription" : null,
+  "sectionContents" : null,
+  "id" : "5723765eda0805ce1eabe128",
+  "accountId" : null,
+  "date" : null,
+  "metaData" : {
+    "name" : null,
+    "orgName" : "NIST",
+    "version" : null,
+    "hl7Version" : "2.1",
+    "date" : "April 29, 2016",
+    "ext" : null
+  },
+  "scope" : "HL7STANDARD",
+  "children" : [ {
+    "id" : "565f3ab7d4c6e52cfd448419",
+    "label" : "CE_0057",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448418",
+    "label" : "CN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448417",
+    "label" : "CM",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448416",
+    "label" : "CK",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448427",
+    "label" : "TS",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448422",
+    "label" : "TN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448411",
+    "label" : "COMP_ID_DIGIT",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448421",
+    "label" : "TM",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448420",
+    "label" : "SI",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448426",
+    "label" : "NM",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448415",
+    "label" : "TX",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448425",
+    "label" : "PN",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448414",
+    "label" : "AD",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448424",
+    "label" : "ID",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448413",
+    "label" : "CE",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448423",
+    "label" : "CM_UNDEFINED",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd448412",
+    "label" : "ST",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841f",
+    "label" : "COMP_ID_NAME",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841a",
+    "label" : "COMP_QUANT",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841e",
+    "label" : "DT",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841d",
+    "label" : "SET_ID",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841c",
+    "label" : "FT",
+    "ext" : null
+  }, {
+    "id" : "565f3ab7d4c6e52cfd44841b",
+    "label" : "CQ",
+    "ext" : null
+  } ]
+}

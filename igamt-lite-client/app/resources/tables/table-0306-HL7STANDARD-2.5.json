@@ -1,0 +1,18 @@
+{
+  "type" : "table",
+  "sectionPosition" : 107,
+  "id" : "565f3ab6d4c6e52cfd440fbd",
+  "hl7Version" : "2.5",
+  "bindingIdentifier" : "0306",
+  "name" : "Location status",
+  "description" : "Location status",
+  "version" : null,
+  "oid" : "2.16.840.1.113883.12.306",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ ],
+  "scope" : "HL7STANDARD"
+}

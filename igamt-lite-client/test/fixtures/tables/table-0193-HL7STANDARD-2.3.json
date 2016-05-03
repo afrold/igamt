@@ -1,0 +1,54 @@
+{
+  "type" : "table",
+  "sectionPosition" : 108,
+  "id" : "565f3ab7d4c6e52cfd44729c",
+  "hl7Version" : "2.3",
+  "bindingIdentifier" : "0193",
+  "name" : "Amount Class",
+  "description" : "Amount Class",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44729d",
+    "value" : "AT",
+    "label" : "Amount",
+    "codeSystem" : "HL70193",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44729e",
+    "value" : "LM",
+    "label" : "Limit",
+    "codeSystem" : "HL70193",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd44729f",
+    "value" : "PC",
+    "label" : "Percentage",
+    "codeSystem" : "HL70193",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd4472a0",
+    "value" : "UL",
+    "label" : "Unlimited",
+    "codeSystem" : "HL70193",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

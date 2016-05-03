@@ -1,0 +1,279 @@
+{
+  "type" : "table",
+  "sectionPosition" : 116,
+  "id" : "565f3ab7d4c6e52cfd447d6e",
+  "hl7Version" : "2.2",
+  "bindingIdentifier" : "0162",
+  "name" : "ROUTE OF ADMINISTRATION",
+  "description" : "ROUTE OF ADMINISTRATION",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Closed",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d6f",
+    "value" : "AP",
+    "label" : "Apply Externally",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d70",
+    "value" : "B",
+    "label" : "Buccal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d71",
+    "value" : "DT",
+    "label" : "Dental",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d72",
+    "value" : "GTT",
+    "label" : "Gastronomy Tube",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d73",
+    "value" : "GU",
+    "label" : "Magenspülung",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d74",
+    "value" : "IA",
+    "label" : "Intra-arterial",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d75",
+    "value" : "IC",
+    "label" : "Intracardiac",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d76",
+    "value" : "ID",
+    "label" : "Intradermal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d77",
+    "value" : "IH",
+    "label" : "Inhalation",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d78",
+    "value" : "IM",
+    "label" : "Intramuscular",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d79",
+    "value" : "IN",
+    "label" : "Intranasal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d7a",
+    "value" : "IO",
+    "label" : "Intraocular",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d7b",
+    "value" : "IP",
+    "label" : "Intraperitoneal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d7c",
+    "value" : "IS",
+    "label" : "Intrasynovial",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d7d",
+    "value" : "IT",
+    "label" : "Intrathecal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d7e",
+    "value" : "IV",
+    "label" : "Intravenous",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d7f",
+    "value" : "NG",
+    "label" : "Nasogastric",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d80",
+    "value" : "NS",
+    "label" : "Nasal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d81",
+    "value" : "OP",
+    "label" : "Ophthalmic",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d82",
+    "value" : "OT",
+    "label" : "Otic",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d83",
+    "value" : "PO",
+    "label" : "Oral",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d84",
+    "value" : "PR",
+    "label" : "Rectal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d85",
+    "value" : "SC",
+    "label" : "Subcutaneous",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d86",
+    "value" : "SL",
+    "label" : "Sublingual",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d87",
+    "value" : "TD",
+    "label" : "Transdermal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d88",
+    "value" : "TL",
+    "label" : "Translingual",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d89",
+    "value" : "TP",
+    "label" : "Topical",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d8a",
+    "value" : "UR",
+    "label" : "Urethral",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  }, {
+    "type" : "code",
+    "id" : "565f3ab7d4c6e52cfd447d8b",
+    "value" : "VG",
+    "label" : "Vaginal",
+    "codeSystem" : "HL70162",
+    "codeSystemVersion" : null,
+    "codeUsage" : "P",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}

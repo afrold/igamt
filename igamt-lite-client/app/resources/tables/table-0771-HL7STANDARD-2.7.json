@@ -1,0 +1,27 @@
+{
+  "type" : "table",
+  "sectionPosition" : 322,
+  "id" : "569eac0dd4c623dc65507db3",
+  "hl7Version" : "2.7",
+  "bindingIdentifier" : "0771",
+  "name" : "Resource Type or Category",
+  "description" : "Resource Type or Category",
+  "version" : null,
+  "oid" : "UNSPECIFIED",
+  "stability" : "Static",
+  "extensibility" : "Open",
+  "contentDefinition" : "Extensional",
+  "group" : null,
+  "order" : 0,
+  "codes" : [ {
+    "type" : "code",
+    "id" : "569eac0dd4c623dc65507db4",
+    "value" : "�",
+    "label" : "No suggested values defined",
+    "codeSystem" : "HL70771",
+    "codeSystemVersion" : null,
+    "codeUsage" : "F",
+    "comments" : ""
+  } ],
+  "scope" : "HL7STANDARD"
+}
