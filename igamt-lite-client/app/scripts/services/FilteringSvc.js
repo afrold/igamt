@@ -119,52 +119,69 @@ angular
     };
 
     svc.show = function(leaf){
-      var rst = false;
+      var rst1 = false;
       _.each(svc.getMsgmodel(), function(filterElt){
-        rst = rst || filterByMsg(leaf, filterElt);
+        rst1 = rst1 || filterByMsg(leaf, filterElt);
       });
       console.log("check1");
-      console.log(rst);
-      _.each(svc.getUsagesmodel(), function(filterElt){
-        rst = rst || filterByUsage(leaf, filterElt);
-      });
-      console.log("check2");
-      console.log(rst);
-      if (rst === undefined){
-        console.log(leaf)
-        console.log(MastermapSvc.getUsage(leaf.id, leaf.type));
-      }
-      if (rst === undefined){
-        rst = true;
-      }
-//       console.log(rst);
-      return rst;
-    };
+      console.log(rst1);
 
-    filterByMsg = function(leaf, filterElt){
-      //             if (MastermapSvc.getMastermap()[leaf.id] !== undefined){
-      if (leaf.id === filterElt.id){
+      var rst2 = false;
+      rst2 = rst2 || filterByUsage(leaf, svc.getUsagesmodel());
+
+    console.log("check2");
+    console.log(rst2);
+
+    var rst = rst1 || rst2;
+    if (rst === undefined){
+      console.log(leaf)
+      console.log("elt: ".concat(MastermapSvc.getElement(leaf.id, leaf.type)));
+      console.log(MastermapSvc.getUsage(leaf.id, leaf.type));
+    }
+    if (rst === undefined){
+      rst = true;
+    }
+    //       console.log(rst);
+    return rst;
+  };
+
+  filterByMsg = function(leaf, filterElt){
+  if (leaf.id === filterElt.id){
+    return true;
+  }
+
+  if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
+    return (MastermapSvc.getElement(leaf.id, leaf.type)["message"].indexOf(filterElt.id) !== -1);
+  } else {
+    /*               console.log("Unfound in mastermap: ");
+                console.log(leaf); */
+  }
+}
+
+filterByUsage = function(leaf, filter){
+  if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
+    if (MastermapSvc.getUsage(leaf.id, leaf.type) !== undefined){
+      if (leaf.type === "message" || leaf.type === "table"){
         return true;
-      }
-
-      if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
-        return (MastermapSvc.getElement(leaf.id, leaf.type)["message"].indexOf(filterElt.id) !== -1);
       } else {
-        //             console.log(MastermapSvc.getElement(leaf.id, leaf.type));
-        /*               console.log("Unfound in mastermap: ");
-              console.log(leaf); */
-      }
-    }
-
-    filterByUsage = function(leaf, filterElt){
-      if (MastermapSvc.getUsage(leaf.id, leaf.type) !== undefined){
-        if (leaf.type !== "message"){
-          return true;
-        } else {
-          return (MastermapSvc.getUsage(leaf.id, leaf.type).indexOf(filterElt.label) !== -1);
+        console.log(filter)
+        console.log(MastermapSvc.mastermap)
+        console.log(MastermapSvc.getUsage(leaf.id, leaf.type));
+        var validUsages = [];
+        _.each(filter, function(filterElt){
+          validUsages.push(filterElt.label);
+        });
+        var leafUsages = MastermapSvc.getUsage(leaf.id, leaf.type);
+        var rst = false;
+        _.each(leafUsages, function(usg){
+          rst = rst || (validUsages.indexOf(usg) !== -1);
         }
+              );
+
+        return rst;
       }
     }
-
-    return svc;
-  });
+  }
+}
+return svc;
+});
