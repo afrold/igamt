@@ -162,6 +162,8 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [request.status, datatypes, {}];
     });
 
+
+
     $httpBackend.whenGET(/^api\/datatypes\/.*/).respond(function (method, url, data, headers) {
         var id = url.split('/')[1];
         return [200, findDatatype(id), {}];
@@ -178,7 +180,7 @@ angular.module('igl').run(function ($httpBackend, $q, $http) {
         return [200, findTables(id), {}];
     });
 
-
+ 
 
 
 

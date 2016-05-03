@@ -132,9 +132,9 @@ angular.module('igl').factory('DatatypeService',
                to.purposeAndUse = from.purposeAndUse;
                return to;
             },
-            searchByNameVersionAndScope: function(searchName, searchScope,searchHl7Version){
+            findFlavors: function(searchName, searchScope,searchHl7Version){
                 var delay = $q.defer();
-                $http.get('api/datatypes/search', {params:{"searchName": searchName,"searchScope": searchScope,"searchHl7Version":searchHl7Version}}).then(function (response) {
+                $http.get('api/datatypes/findFlavors', {params:{"searchName": searchName,"searchScope": searchScope,"searchHl7Version":searchHl7Version}}).then(function (response) {
                     var datatypes = angular.fromJson(response.data);
                     delay.resolve(datatypes);
                 }, function (error) {
