@@ -17,19 +17,19 @@
 </div>
 <div ng-show="!loadingSelection">
 <div ng-show="datatype !== null" id="executionPanel">
-    <!--<accordion close-others="false">-->
-    <!--<accordion-group is-open="true" panel-class="panel-info">-->
+<!--<accordion close-others="false">-->
+<!--<accordion-group is-open="true" panel-class="panel-info">-->
 
-    <!--<accordion-heading>-->
-    <!--<i class="fa"-->
-    <!--ng-class="{'fa-caret-down': accordi.metaData, 'fa-caret-right': !accordi.metaData}"></i>-->
-    <!--MetaData-->
-    <!--</accordion-heading>-->
+<!--<accordion-heading>-->
+<!--<i class="fa"-->
+<!--ng-class="{'fa-caret-down': accordi.metaData, 'fa-caret-right': !accordi.metaData}"></i>-->
+<!--MetaData-->
+<!--</accordion-heading>-->
 
-    <form name="datatypeForm" novalidate class="form-horizontal">
-        <div class="row">
-            <div class="col-md-12 igl-page-header">
-                <span class="header4 pull-left">Data Type: {{getLabel(datatype)}}</span>
+<form name="datatypeForm" novalidate class="form-horizontal">
+    <div class="row">
+        <div class="col-md-12 igl-page-header">
+            <span class="header4 pull-left">Data Type: {{getLabel(datatype)}}</span>
                      <span class="pull-right">
          <button title="Save Changes" type="button" class="btn btn-xs btn-success"
                  ng-disabled="datatypeForm.$invalid"
@@ -45,62 +45,50 @@
                          </button>
     </span>
 
-            </div>
-
-
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="page-header">
-                    <span class="header5">MetaData</span>
+
+
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <span class="header5">MetaData</span>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-2 col-margin">
+                <div class="form-group control-group"
+                     ng-class="{'igl-has-error has-feedback' : datatypeForm.name.$invalid}">
+                    <label class="control-label">Name</label>
+                    <input type="text" disabled
+                           name="name" class="form-control" ng-model="datatype.name"
+                           required>
                 </div>
             </div>
-            <div class="col-md-12">
 
-                <div class="col-md-4 col-margin">
-                    <div class="form-group control-group"
-                         ng-class="{'igl-has-error has-feedback' : datatypeForm.ext.$invalid}">
-                        <label class="control-label">Data Type Flavor</label>
-                        <span>{{datatype.name}}</span>
-                        <span>_</span>
-                        <input type="text" ng-disabled="viewSettings.tableReadonly"
-                               ng-change="recordChanged()"
-                               name="label" id="ext" class="form-control" ng-model="datatype.ext"
-                               required aria-describedby="helpBlock2">
+            <div class="col-md-2 col-margin">
+                <div class="form-group control-group"
+                     ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
+                    <label class="control-label">Description</label>
+                    <input type="text" disabled
+                           ng-change="recordChanged()"
+                           name="description" class="form-control" ng-model="datatype.description"
+                           required>
+                </div>
+            </div>
+
+            <div class="col-md-2 col-margin">
+                <div class="form-group control-group"
+                     ng-class="{'igl-has-error has-feedback' : datatypeForm.label.$invalid}">
+                    <label class="control-label">Extension</label>
+                    <input type="text" ng-disabled="viewSettings.tableReadonly"
+                           ng-change="recordChanged()"
+                           name="label" id="ext" class="form-control" ng-model="datatype.ext"
+                           required aria-describedby="helpBlock2">
                                     <span id="helpBlock2" class="help-block" style="color:red"
                                           ng-show="isDuplicated(datatype,'label', datatypes)">Extension already used</span>
-                    </div>
                 </div>
-
-                <div class="col-md-4 col-margin">
-                    <div class="form-group control-group"
-                         ng-class="{'igl-has-error has-feedback' : datatypeForm.description.$invalid}">
-                        <label class="control-label">Data Type Flavor Name</label>
-                        <input type="text" disabled
-                               ng-change="recordChanged()"
-                               name="description" class="form-control" ng-model="datatype.description"
-                               required>
-                    </div>
-                </div>
-
-
-                <div class="col-md-4 col-margin">
-                    <div class="form-group control-group"
-                         ng-class="{'igl-has-error has-feedback' : datatypeForm.name.$invalid}">
-                        <label class="control-label">Root Data Type</label>
-                        <input type="text" disabled
-                               name="name" class="form-control" ng-model="datatype.name"
-                               required>
-                    </div>
-                </div>
-
             </div>
-
-            <div class="col-md-12">
-
-
-            </div>
-
             <div class="col-md-2 col-margin">
                 <div class="form-group control-group"
                      ng-class="{'igl-has-error has-feedback' : datatypeForm.comment.$invalid}">
@@ -125,7 +113,12 @@
                               class="form-control"
                               ng-model="node.purposeAndUse">
                     </textarea>
+
+
+
                 </div>
+
+
             </div>
         </div>
 
@@ -152,9 +145,9 @@
         </div>
 
 
-</div>
-<div class="row" style="margin-top:20px">
-    <div class="col-md-12 igl-page-header">
+    </div>
+    <div class="row" style="margin-top:20px">
+        <div class="col-md-12 igl-page-header">
 <span class="pull-left">
     <span class="header5">Definition</span>
                                     <!--<div  style="margin-left:15px" class="btn-group btn-group-xs" data-toggle="buttons">-->
@@ -177,67 +170,67 @@
                                       translation-texts="viewSettings.translations"></span>
                             </span>
 
-    </div>
+        </div>
 
-    <div class="col-md-12">
-        <!--</form>-->
-        <!--&lt;!&ndash;</accordion-group>&ndash;&gt;-->
-        <!--&lt;!&ndash;<accordion-group is-open="true" panel-class="panel-info">&ndash;&gt;-->
+        <div class="col-md-12">
+            <!--</form>-->
+            <!--&lt;!&ndash;</accordion-group>&ndash;&gt;-->
+            <!--&lt;!&ndash;<accordion-group is-open="true" panel-class="panel-info">&ndash;&gt;-->
 
-        <!--&lt;!&ndash;<accordion-heading>&ndash;&gt;-->
-        <!--&lt;!&ndash;<i class="fa"&ndash;&gt;-->
-        <!--&lt;!&ndash;ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i>&ndash;&gt;
-        -->
-        <!--&lt;!&ndash;Definition&ndash;&gt;-->
+            <!--&lt;!&ndash;<accordion-heading>&ndash;&gt;-->
+            <!--&lt;!&ndash;<i class="fa"&ndash;&gt;-->
+            <!--&lt;!&ndash;ng-class="{'fa-caret-down': accordi.definition, 'fa-caret-right': !accordi.definition}"></i>&ndash;&gt;
+            -->
+            <!--&lt;!&ndash;Definition&ndash;&gt;-->
 
-        <!--&lt;!&ndash;</accordion-heading>&ndash;&gt;-->
+            <!--&lt;!&ndash;</accordion-heading>&ndash;&gt;-->
 
-        <!--<form class="form-horizontal" name="datatypeForm">-->
+            <!--<form class="form-horizontal" name="datatypeForm">-->
 
 
-        <div class="table-responsive">
-            <table tt-table tt-params="datatypesParams"
-                   class="table table-bordered table-fix-header table-condensed profile-table">
-                <thead>
-                <tr class="tbl-header"
-                    style="margin-right: {{scrollbarWidth}}px;">
-                    <th class="col-xs-2 col-fixed-250">
-                        Name
-                    </th>
-                    <th class="col-xs-1 col-fixed-80"
-                        ng-show="viewSettings.isVisibleColumn('usage')">Usage
-                    </th>
-                    <th class="col-xs-1 col-fixed-100"
-                        ng-show="viewSettings.isVisibleColumn('length')">Length
-                    </th>
-                    <th class="col-xs-1 col-fixed-80"
-                        ng-show="viewSettings.isVisibleColumn('confLength')">Conformance Length
-                    </th>
-                    <th class="col-xs-1 col-fixed-100"
-                        ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
-                    </th>
-                    <th class="col-xs-1 col-fixed-130"
-                        ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
-                    </th>
-                    <th class="col-xs-1" ng-style="predWidth"
-                        ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
-                    </th>
-                    <th class="col-xs-2" ng-style="csWidth"
-                        ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance Statement
-                    </th>
-                    <th class="col-xs-1 col-fixed-80"
-                        ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
-                    </th>
-                    <th class="col-xs-1" ng-style="commentWidth"
-                        ng-show="viewSettings.isVisibleColumn('comment')">Comment
-                    </th>
-                </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+            <div class="table-responsive">
+                <table tt-table tt-params="datatypesParams"
+                       class="table table-bordered table-fix-header table-condensed profile-table">
+                    <thead>
+                    <tr class="tbl-header"
+                        style="margin-right: {{scrollbarWidth}}px;">
+                        <th class="col-xs-2 col-fixed-250">
+                            Name
+                        </th>
+                        <th class="col-xs-1 col-fixed-80"
+                            ng-show="viewSettings.isVisibleColumn('usage')">Usage
+                        </th>
+                        <th class="col-xs-1 col-fixed-100"
+                            ng-show="viewSettings.isVisibleColumn('length')">Length
+                        </th>
+                        <th class="col-xs-1 col-fixed-80"
+                            ng-show="viewSettings.isVisibleColumn('confLength')">Conformance Length
+                        </th>
+                        <th class="col-xs-1 col-fixed-100"
+                            ng-show="viewSettings.isVisibleColumn('datatype')">Data Type
+                        </th>
+                        <th class="col-xs-1 col-fixed-130"
+                            ng-show="viewSettings.isVisibleColumn('valueSet')">Value Set
+                        </th>
+                        <th class="col-xs-1" ng-style="predWidth"
+                            ng-show="viewSettings.isVisibleColumn('predicate')">Predicate
+                        </th>
+                        <th class="col-xs-2" ng-style="csWidth"
+                            ng-show="viewSettings.isVisibleColumn('confStatement')">Conformance Statement
+                        </th>
+                        <th class="col-xs-1 col-fixed-80"
+                            ng-show="viewSettings.isVisibleColumn('defText')">Definition Text
+                        </th>
+                        <th class="col-xs-1" ng-style="commentWidth"
+                            ng-show="viewSettings.isVisibleColumn('comment')">Comment
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 </form>
 </div>
 </div>
