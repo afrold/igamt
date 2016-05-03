@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService) {
+    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService, FilteringSvc) {
 //        $scope.loading = false;
         $scope.readonly = false;
         $scope.saved = false;
@@ -177,7 +177,7 @@ angular.module('igl')
         };
 
         $scope.isVisible = function (node) {
-            return SegmentService.isVisible(node) && FilteringSvc.show(node);
+            return SegmentService.isVisible(node);
         };
 
         $scope.children = function (node) {

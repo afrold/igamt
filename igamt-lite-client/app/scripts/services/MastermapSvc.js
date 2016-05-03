@@ -66,7 +66,7 @@ angular
 
       if (tableId !== undefined && tableId !== "") {
         var table = svc.getTableLibrary()[tableId];
-        if (table != undefined){
+        if (table !== undefined){
           svc.createMMElement(table.id, "table");
           svc.addParentsId(table.id, "table", parent);
 
@@ -76,7 +76,7 @@ angular
         } else {
           svc.createMMElement(tableId, "table");
           svc.addParentsId(tableId, "table", parent);
-          console.log("!!! => table " + tableId + " not found in library");
+//           console.log("!!! => table " + tableId + " not found in library");
         }
       }
     }
@@ -104,7 +104,7 @@ angular
         } else {
           svc.createMMElement(datatype, "datatype");
           svc.addParentsId(datatype, "datatype", parent);
-          console.log("!!! => datatype " + datatype + " not found in library");
+//           console.log("!!! => datatype " + datatype + " not found in library");
         }
       }
     }
@@ -132,6 +132,8 @@ angular
           svc.addField(f, parent.concat([[segment.id, "segment"]]));
         });
       } else {
+          svc.createMMElement(segmentId, "segment");
+          svc.addParentsId(segmentId, "segment", parent);
         console.log("!!! => segment id " + segmentId + " not found");
       }
     }
@@ -169,6 +171,8 @@ angular
 
       svc.createMMElement(group.id, "group");
       svc.mastermap[group.id, "group"]["usage"] = group["usage"];
+      if (group["usage"] === undefined){
+        console.log("undefined group!!")}
       svc.addParentsId(group.id, "group", parent);
 
       _.each(group.children, function(n) {
@@ -195,11 +199,12 @@ angular
    */
 
       svc.createMMElement(profile.id, "ig");
-      svc.mastermap[profile.id, "ig"].concat(profile.id);
+//       svc.mastermap[profile.id, "ig"].concat(profile.id);
 
       _.each(profile.messages.children, function(m) {
         var parentsList = [[profile.id, "ig"]];
-        svc.createMMElement(profile.id, "ig", parentsList);
+//         svc.createMMElement(profile.id, "ig");
+//         vc.addParentsId(profile.id, "ig", []);
 
         svc.addMessage(m, parentsList);
       });
@@ -214,10 +219,14 @@ angular
       _.each(parentsList, function(parent) {
         var parentId = parent[0];
         var parentType = parent[1];
-        //Add parents reference in element
-        svc.mastermap[elementId, elementType][parentType] = svc.mastermap[elementId, elementType][parentType].concat(parentId);
-        // Add element reference in parents
-        svc.mastermap[parentId, parentType][elementType] = svc.mastermap[parentId, parentType].concat(elementId);
+        //Add parents reference in element if not present
+        if (svc.mastermap[elementId, elementType][parentType].indexOf(parentId) === -1){
+          svc.mastermap[elementId, elementType][parentType] = svc.mastermap[elementId, elementType][parentType].concat(parentId);
+        }
+        // Add element reference in parents if not already present
+        if (svc.mastermap[parentId, parentType][elementType].indexOf(elementId) === -1){
+          svc.mastermap[parentId, parentType][elementType] = svc.mastermap[parentId, parentType][parentType].concat(elementId);
+        }
       });
     }
 
@@ -290,70 +299,81 @@ angular
       if (elt !== undefined){
         if (type === "message"){
           //TBD
+          return [];
         }
         if (type === "field"){
-          return svc.getElement(id, type)["usage"];
+          return [svc.getElement(id, type)["usage"]];
         }
         if (type === "segment"){
           var sgt = svc.getElement(id, type);
           var rst = [];
-          sgt["group"].forEach(function(g){
-            if (rst.indexOf(svc.getElement(g, "group")["usage"]) === -1)
-              rst.push(svc.getElement(g, "group")["usage"]);
+          var usg = "";
+          sgt["group"].forEach(function(elt){
+            usg = svc.getElement(elt, "group")["usage"]
+            if (rst.indexOf(usg) === -1)
+              rst.push(usg);
           });
-          sgt["segmentRef"].forEach(function(g){
-            if (rst.indexOf(svc.getElement(g, "segmentRef")["usage"]) === -1)
-              rst.push(svc.getElement(g, "segmentRef")["usage"]);
+          sgt["segmentRef"].forEach(function(elt){
+            usg = svc.getElement(elt, "segmentRef")["usage"];
+            if (rst.indexOf(usg) === -1)
+              rst.push(usg);
           });
           return rst;
         }
         if (type === "segmentRef"){
-          return svc.getElement(id, type)["usage"];
+          return [svc.getElement(id, type)["usage"]];
         }
         if (type === "group"){
-          return svc.getElement(id, type)["usage"];
+          return [svc.getElement(id, type)["usage"]];
         }
         if (type === "table"){
           // => check sgt and datatypes
           var tbl = svc.getElement(id, type);
           var rst = [];
-          tbl["segment"].forEach(function(g){
-            if (rst.indexOf(svc.getElement(g, "segment")["usage"]) === -1){
-              rst.push(svc.getUsage(g, "segment"));
+          var usg = "";
+          tbl["segment"].forEach(function(elt){
+            usg = svc.getElement(elt, "segment")["usage"];
+            if (rst.indexOf(usg) === -1){
+              rst.push(usg);
             }
           });
-          tbl["datatype"].forEach(function(g){
-            if (rst.indexOf(svc.getElement(g, "datatype")["usage"]) === -1)
-              rst.push(svc.getUsage(g, "datatype"));
+          tbl["datatype"].forEach(function(elt){
+            usg = svc.getElement(elt, "datatype")["usage"];
+            if (rst.indexOf(usg) === -1)
+              rst.push(usg);
           });
           return rst;
         }
         if (type === "datatype"){
-          // => check sgt et dt
+          // => check sgt and dt
           var dt = svc.getElement(id, type);
           var rst = [];
-          dt["segment"].forEach(function(g){
-            if (rst.indexOf(svc.getElement(g, "segment")["usage"]) === -1){
-              rst.push(svc.getUsage(g, "segment"));
-            }
-          });
-          dt["datatype"].forEach(function(g){
-            if (rst.indexOf(svc.getElement(g, "datatype")["usage"]) === -1)
-              rst.push(svc.getUsage(g, "datatype"));
-          });
+          var usg = "";
+          if (dt["segment"] !== undefined){
+            dt["segment"].forEach(function(elt){
+              usg = svc.getElement(elt, "segment")["usage"];
+              if (rst.indexOf(usg) === -1){
+                rst.push(usg);
+              }
+            });
+          }
+          if (dt["datatype"] != undefined){
+            dt["datatype"].forEach(function(elt){
+              usg = svc.getElement(elt, "datatype")["usage"];
+              if (rst.indexOf(usg) === -1)
+                rst.push(usg);
+            });
+          }
           return rst;
         }
         if (type === "component"){
-          console.log();
-          console.log(svc.getElement(id, type));
-          return svc.getElement(id, "component")["usage"];
+          return [svc.getElement(id, "component")["usage"]];
         }
         if (type === "code"){
           //TBD
-
+          return [];
         }
       }
-
     }
 
     return svc;

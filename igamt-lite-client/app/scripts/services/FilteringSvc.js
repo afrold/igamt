@@ -129,59 +129,62 @@ angular
       var rst2 = false;
       rst2 = rst2 || filterByUsage(leaf, svc.getUsagesmodel());
 
-    console.log("check2");
-    console.log(rst2);
+      console.log("check2");
+      console.log(rst2);
 
-    var rst = rst1 || rst2;
-    if (rst === undefined){
-      console.log(leaf)
-      console.log("elt: ".concat(MastermapSvc.getElement(leaf.id, leaf.type)));
-      console.log(MastermapSvc.getUsage(leaf.id, leaf.type));
-    }
-    if (rst === undefined){
-      rst = true;
-    }
-    //       console.log(rst);
-    return rst;
-  };
-
-  filterByMsg = function(leaf, filterElt){
-  if (leaf.id === filterElt.id){
-    return true;
-  }
-
-  if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
-    return (MastermapSvc.getElement(leaf.id, leaf.type)["message"].indexOf(filterElt.id) !== -1);
-  } else {
-    /*               console.log("Unfound in mastermap: ");
-                console.log(leaf); */
-  }
-}
-
-filterByUsage = function(leaf, filter){
-  if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
-    if (MastermapSvc.getUsage(leaf.id, leaf.type) !== undefined){
-      if (leaf.type === "message" || leaf.type === "table"){
-        return true;
-      } else {
-        console.log(filter)
-        console.log(MastermapSvc.mastermap)
+      var rst = rst1 && rst2;
+      if (rst === undefined){
+        console.log(leaf)
+        console.log("elt: ".concat(MastermapSvc.getElement(leaf.id, leaf.type)));
         console.log(MastermapSvc.getUsage(leaf.id, leaf.type));
-        var validUsages = [];
-        _.each(filter, function(filterElt){
-          validUsages.push(filterElt.label);
-        });
-        var leafUsages = MastermapSvc.getUsage(leaf.id, leaf.type);
-        var rst = false;
-        _.each(leafUsages, function(usg){
-          rst = rst || (validUsages.indexOf(usg) !== -1);
-        }
-              );
+      }
+      if (rst === undefined){
+        rst = true;
+      }
+      //       console.log(rst);
+      return rst;
+    };
 
-        return rst;
+    filterByMsg = function(leaf, filterElt){
+      if (leaf.id === filterElt.id){
+        return true;
+      }
+
+      if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
+        return (MastermapSvc.getElement(leaf.id, leaf.type)["message"].indexOf(filterElt.id) !== -1);
+      } else {
+        /*               console.log("Unfound in mastermap: ");
+                console.log(leaf); */
       }
     }
-  }
-}
-return svc;
-});
+
+    filterByUsage = function(leaf, filter){
+      if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
+        if (MastermapSvc.getUsage(leaf.id, leaf.type) !== undefined){
+          if (leaf.type === "message" || leaf.type === "table"){
+            return true;
+          } else {
+            var validUsages = [];
+            _.each(filter, function(filterElt){
+              validUsages.push(filterElt.label);
+            });
+            var leafUsages = MastermapSvc.getUsage(leaf.id, leaf.type);
+            var rst = false;
+            _.each(leafUsages, function(usg){
+              console.log(usg);
+              rst = rst || (validUsages.indexOf(usg) !== -1);
+            });
+/*             console.log(leaf.id)
+            console.log(leaf.type)
+            console.log("valid")
+            console.log(validUsages)
+            console.log("leaf")
+            console.log(leafUsages)
+ */
+            return rst;
+          }
+        }
+      }
+    }
+    return svc;
+  });
