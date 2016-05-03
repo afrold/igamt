@@ -1,7 +1,7 @@
 /**
  * http://usejsdoc.org/
  */
-angular.module('igl').factory('SegmentLibrarySvc', function($http, $httpBackend, userInfoService) {
+angular.module('igl').factory('SegmentLibrarySvc', function($http, userInfoService) {
 
 	var svc = this;
 
@@ -64,7 +64,7 @@ angular.module('igl').factory('SegmentLibrarySvc', function($http, $httpBackend,
 	};
 
 	svc.createUpdate = function(scope, children) {
-		var dtlrw = new segLibStruct(scope, sortedChildren);
+		var dtlrw = new segLibStruct(scope, children);
 	};
 
 	svc.create = function(hl7Version, scope, name, ext) {
