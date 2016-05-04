@@ -164,20 +164,20 @@
 
                              </span>
                             <span class="pull-right">
-                                 <button type="button"
-                                         ng-click="createNewField()"
-                                         class="btn btn-primary btn-xs"><span><i
-                                         class="fa fa-plus fa-fw"></i> Create Field</span>
-                                 </button>
+                                 <!--<button type="button"-->
+                                         <!--ng-click="createNewField()"-->
+                                         <!--class="btn btn-primary btn-xs"><span><i-->
+                                         <!--class="fa fa-plus fa-fw"></i> Create Field</span>-->
+                                 <!--</button>-->
 
-                                <button type="button"
-                                        ng-click="deleteFields()"
-                                        ng-disabled="selectedChildren == null || selectedChildren.length === 0"
-                                        class="btn btn-danger btn-xs"><span>
-                                        <span class="badge" ng-show="selectedChildren.length > 0">{{selectedChildren.length}}</span>
-                                        <i
-                                                class="fa fa-trash fa-fw"></i> Delete Fields</span>
-                                </button>
+                                <!--<button type="button"-->
+                                        <!--ng-click="deleteFields()"-->
+                                        <!--ng-disabled="selectedChildren == null || selectedChildren.length === 0"-->
+                                        <!--class="btn btn-danger btn-xs"><span>-->
+                                        <!--<span class="badge" ng-show="selectedChildren.length > 0">{{selectedChildren.length}}</span>-->
+                                        <!--<i-->
+                                                <!--class="fa fa-trash fa-fw"></i> Delete Fields</span>-->
+                                <!--</button>-->
 
                                      <span style="margin-right: 20px" ng-dropdown-multiselect=""
                                           options="viewSettings.columnOptions"
@@ -195,12 +195,12 @@
                 <thead>
                 <tr class="tbl-header"
                     style="margin-right: {{scrollbarWidth}}px;">
-                    <th class="col-xs-2 col-fixed-250">
-                        <input type="checkbox" ng-checked="isSelectedAllChildren()"
-                               ng-click="selectAllChildren($event)">
+                    <!--<th class="col-xs-2 col-fixed-250">-->
+                        <!--<input type="checkbox" ng-checked="isSelectedAllChildren()"-->
+                               <!--ng-click="selectAllChildren($event)">-->
 
-                        Name
-                    </th>
+                        <!--Name-->
+                    <!--</th>-->
                     <th class="col-xs-1 col-fixed-80"
                         ng-show="viewSettings.isVisibleColumn('usage')">Usage
                     </th>
@@ -423,14 +423,19 @@
         </td>
 
         <td class="col-xs-1 col-fixed-100" ng-show="viewSettings.isVisibleColumn('datatype')" class="form-inline">
-            <select class="form-control input-sm"
-                    name="segment"
-                    ng-change="onDatatypeChange(node)"
-                    required
-                    ng-model="node.datatype"
-                    ng-selected="dt.id === node.datatype"
-                    ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype].name">
-            </select>
+            <!--<select class="form-control input-sm"-->
+                    <!--name="segment"-->
+                    <!--ng-change="onDatatypeChange(node)"-->
+                    <!--required-->
+                    <!--ng-model="node.datatype"-->
+                    <!--ng-selected="dt.id === node.datatype"-->
+                    <!--ng-options="dt.id as dt.label for dt in datatypes | flavors:datatypesMap[node.datatype].name">-->
+            <!--</select>-->
+
+            <a ng-click="showSelectDatatypeFlavorDlg(node)">
+                {{getLabel(datatypesMap[node.datatype])}}
+            </a>
+
         </td>
         <td class="col-xs-1 col-fixed-130" ng-show="viewSettings.isVisibleColumn('valueSet')" style="text-align:center">
             <div ng-show="node.table != undefined && node.table !== null">

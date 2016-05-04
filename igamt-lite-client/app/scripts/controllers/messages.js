@@ -27,6 +27,33 @@ angular.module('igl')
         $scope.goToSegment = function (segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
         };
+
+
+        $scope.showSelectSegmentFlavorDlg = function (node) {
+            var modalInstance = $modal.open({
+                templateUrl: 'SelectSegmentFlavor.html',
+                controller: 'SelectSegmentFlavorCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    currentNode: function () {
+                        return node;
+                    },
+                    hl7Version: function () {
+                        return $rootScope.igdocument.metaData.hl7Version;
+                    }
+                }
+            });
+            modalInstance.result.then(function (selected) {
+                node.ref = selected.id;
+                //TODO: load master map
+                if (!$rootScope.segmentsMap[node.ref] || $rootScope.segmentsMap[node.ref] == null) {
+                    $rootScope.segmentsMap[node.ref] = selected;
+                }
+                if ($scope.messagesParams)
+                    $scope.messagesParams.refresh();
+            });
+        };
+
         
         $scope.goToDatatype = function (datatype) {
             $scope.$emit('event:openDatatype', datatype);
@@ -116,6 +143,90 @@ angular.module('igl')
     .controller('MessageRowCtrl', function ($scope, $filter) {
         $scope.formName = "form_" + new Date().getTime();
     });
+
+
+
+angular.module('igl')
+    .controller('SelectSegmentFlavorCtrl', function ($scope, $filter, $modalInstance, $rootScope, $http, currentNode, SegmentService, $rootScope, hl7Version,ngTreetableParams,ViewSettings) {
+        $scope.resultsError = null;
+        $scope.viewSettings = ViewSettings;
+        $scope.resultsLoading = null;
+        $scope.results = [];
+        $scope.tmpResults = [].concat($scope.results);
+        $scope.selectedSegment = null;
+        $scope.hl7Version = hl7Version;
+        $scope.currentNode = currentNode;
+        $scope.currentSegment = $rootScope.datatypesMap[currentNode.datatype];
+        $scope.scope = $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.scope : null;
+        $scope.name = $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.name : null;
+
+
+        $scope.segmentFlavorParams = new ngTreetableParams({
+            getNodes: function (parent) {
+                return SegmentService.getNodes(parent,$scope.selectedSegment);
+            },
+            getTemplate: function (node) {
+                return SegmentService.getTemplate(node,$scope.selectedSegment);
+            }
+        });
+
+
+        $scope.findFlavors = function () {
+            $scope.resultsError = null;
+            $scope.resultsLoading = true;
+            $scope.results = [];
+            $scope.tmpResults = [].concat($scope.results);
+            SegmentService.findFlavors($scope.name, $scope.scope, $scope.hl7Version).then(function (results) {
+                $scope.results = results;
+                $scope.tmpResults = [].concat($scope.results);
+                $scope.resultsLoading = false;
+            }, function (error) {
+                $scope.resultsError = null;
+                $scope.resultsLoading = false;
+            });
+        };
+
+        $scope.isSegmentSubDT = function (component) {
+            return SegmentService.isSegmentSubDT(component,$scope.selectedSegment);
+        };
+
+        $scope.isSelected = function (segment) {
+            return  $scope.selectedSegment != null && segment != null && $scope.selectedSegment.id == segment.id;
+        };
+
+        $scope.showSegment = function (segment) {
+
+            if (segment && segment != null) {
+                $scope.segmentError = null;
+                $scope.loadingSelection = true;
+                SegmentService.getOne(segment.id).then(function (result) {
+                    $scope.selectedSegment = segment;
+                    $scope.selectedSegment["type"] = "segment";
+                    $scope.tableWidth = null;
+                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                    $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
+                    $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
+                    $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
+                    $scope.loadingSelection = false;
+                    if ($scope.segmentFlavorParams)
+                        $scope.segmentFlavorParams.refresh();
+                }, function (error) {
+                    $scope.loadingSelection = false;
+                    $scope.segmentError = error.data.text;
+
+                });
+            }
+        };
+
+        $scope.submit = function () {
+            $modalInstance.close($scope.selectedSegment);
+        };
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    });
+
+
 
 
 angular.module('igl')

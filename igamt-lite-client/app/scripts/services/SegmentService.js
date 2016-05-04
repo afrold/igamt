@@ -5,14 +5,14 @@
 angular.module('igl').factory('SegmentService',
     ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http',function ($rootScope, ViewSettings,ElementUtils,$q,$http) {
         var SegmentService = {
-            getNodes: function (parent) {
-                return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];
+            getNodes: function (parent,root) {
+                return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : root != null ? root.fields : [];
             },
             getParent: function (child) {
                 return $rootScope.parentsMap && $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
             },
-            getTemplate: function (node) {
-                if (ViewSettings.tableReadonly || $rootScope.segment != null && $rootScope.segment.scope === 'HL7STANDARD' || $rootScope.segment.scope === null) {
+            getTemplate: function (node,root) {
+                if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
                     return node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
                 } else {
                     return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';

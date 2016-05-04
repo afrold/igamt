@@ -53,25 +53,25 @@ angular.module('igl')
 
         $scope.segmentsParams = new ngTreetableParams({
             getNodes: function (parent) {
-                return SegmentService.getNodes(parent);
+                return SegmentService.getNodes(parent,$rootScope.segment);
             },
             getTemplate: function (node) {
-                return SegmentService.getTemplate(node);
+                return SegmentService.getTemplate(node,$rootScope.segment);
             }
         });
 
         $scope.datatypesParams = new ngTreetableParams({
             getNodes: function (parent) {
-                return DatatypeService.getNodes(parent);
+                return DatatypeService.getNodes(parent, $rootScope.datatype);
             },
             getTemplate: function (node) {
-                return DatatypeService.getTemplate(node);
+                return DatatypeService.getTemplate(node, $rootScope.datatype);
             }
         });
 
 
         $scope.isDatatypeSubDT = function (component) {
-            return DatatypeService.isDatatypeSubDT(component);
+            return DatatypeService.isDatatypeSubDT(component,$rootScope.datatype);
         };
 
         $rootScope.closeIGDocument = function () {
@@ -874,15 +874,6 @@ angular.module('igl')
 //                   if ($scope.messagesParams)
 //                        $scope.messagesParams.refresh();
                 }, 100);
-        };
-
-
-        $scope.getLabel = function (obj) {
-            if(obj.ext && obj.ext !== null && obj.ext !== ""){
-                return obj.name + "_" + obj.ext;
-            }else{
-                return obj.name;
-            }
         };
 
         $scope.selectTable = function (t) {

@@ -321,7 +321,7 @@ angular.module('igl')
 
         };
 
-        $scope.showSelectFlavorDlg = function(node){
+        $scope.showSelectFlavorDlg = function (node) {
             var modalInstance = $modal.open({
                 templateUrl: 'SelectDatatypeFlavor.html',
                 controller: 'SelectDatatypeFlavorCtrl',
@@ -338,15 +338,11 @@ angular.module('igl')
             modalInstance.result.then(function (selected) {
                 node.datatype = selected.id;
                 //TODO: load master map
-                if(!$rootScope.datatypesMap[node.datatype] || $rootScope.datatypesMap[node.datatype] == null){
-                    DatatypeService.getOne(selected.id).then(function(result) {
-                        $rootScope.datatypesMap[node.datatype] = result;
-                        if ($scope.datatypesParams)
-                            $scope.datatypesParams.refresh();
-                    },function(error){
-
-                    });
-                }else{
+                if (!$rootScope.datatypesMap[node.datatype] || $rootScope.datatypesMap[node.datatype] == null) {
+                    $rootScope.datatypesMap[node.datatype] = selected;
+                    if ($scope.datatypesParams)
+                        $scope.datatypesParams.refresh();
+                } else {
                     if ($scope.datatypesParams)
                         $scope.datatypesParams.refresh();
                 }
@@ -364,51 +360,84 @@ angular.module('igl')
     });
 
 angular.module('igl')
-    .controller('SelectDatatypeFlavorCtrl', function ($scope, $filter,$modalInstance, $rootScope, $http,currentNode,DatatypeService,$rootScope, hl7Version) {
-        $scope.error = null;
-        $scope.searching = null;
+    .controller('SelectDatatypeFlavorCtrl', function ($scope, $filter, $modalInstance, $rootScope, $http, currentNode, DatatypeService, $rootScope, hl7Version,ngTreetableParams,ViewSettings) {
+        $scope.resultsError = null;
+        $scope.viewSettings = ViewSettings;
+        $scope.resultsLoading = null;
         $scope.results = [];
         $scope.tmpResults = [].concat($scope.results);
-        $scope.selected = null;
+        $scope.selectedDatatype = null;
         $scope.hl7Version = hl7Version;
         $scope.currentNode = currentNode;
         $scope.currentDatatype = $rootScope.datatypesMap[currentNode.datatype];
-        $scope.scope = $scope.currentDatatype != null && $scope.currentDatatype  ? $scope.currentDatatype.scope : null;
-        $scope.name = $scope.currentDatatype != null && $scope.currentDatatype  ? $scope.currentDatatype.name : null;
+        $scope.scope = $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.scope : null;
+        $scope.name = $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.name : null;
 
-        $scope.loadDatatype = function(){
-            $scope.error = null;
-            $scope.searching = true;
+
+        $scope.datatypeFlavorParams = new ngTreetableParams({
+            getNodes: function (parent) {
+                return DatatypeService.getNodes(parent,$scope.selectedDatatype);
+            },
+            getTemplate: function (node) {
+                return DatatypeService.getTemplate(node,$scope.selectedDatatype);
+            }
+        });
+
+
+        $scope.findFlavors = function () {
+            $scope.resultsError = null;
+            $scope.resultsLoading = true;
             $scope.results = [];
             $scope.tmpResults = [].concat($scope.results);
-            if($scope.name != null && $scope.scope != null) {
-                DatatypeService.findFlavors($scope.name, $scope.scope,$scope.hl7Version).then(function (results) {
-                    $scope.results = results;
-                    $scope.tmpResults = [].concat($scope.results);
-                    $scope.searching = false;
+            DatatypeService.findFlavors($scope.name, $scope.scope, $scope.hl7Version).then(function (results) {
+                $scope.results = results;
+                $scope.tmpResults = [].concat($scope.results);
+                $scope.resultsLoading = false;
+            }, function (error) {
+                $scope.resultsError = null;
+                $scope.resultsLoading = false;
+            });
+        };
+
+        $scope.isDatatypeSubDT = function (component) {
+            return DatatypeService.isDatatypeSubDT(component,$scope.selectedDatatype);
+        };
+
+        $scope.isSelected = function (datatype) {
+            return  $scope.selectedDatatype != null && datatype != null && $scope.selectedDatatype.id == datatype.id;
+        };
+
+        $scope.showDatatype = function (datatype) {
+
+             if (datatype && datatype != null) {
+                 $scope.datatypeError = null;
+                 $scope.loadingSelection = true;
+                DatatypeService.getOne(datatype.id).then(function (result) {
+                    $scope.selectedDatatype = datatype;
+                    $scope.selectedDatatype["type"] = "datatype";
+                    $scope.tableWidth = null;
+                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
+                    $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
+                    $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
+                    $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
+                    $scope.loadingSelection = false;
+                    if ($scope.datatypeFlavorParams)
+                        $scope.datatypeFlavorParams.refresh();
                 }, function (error) {
-                    $scope.error = null;
-                    $scope.searching = false;
+                    $scope.loadingSelection = false;
+                    $scope.datatypeError = error.data.text;
+
                 });
             }
         };
 
-        $scope.isSelected = function (datatype) {
-            return  $scope.selected != null && datatype != null && $scope.selected.id == datatype.id;
-        };
-
-        $scope.selectDatatype = function($event, datatype){
-            $scope.selected = datatype;
-        };
-
         $scope.submit = function () {
-            $modalInstance.close($scope.selected);
+            $modalInstance.close($scope.selectedDatatype);
         };
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
     });
-
 
 
 angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete, $rootScope) {

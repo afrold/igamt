@@ -77,8 +77,13 @@ public class DatatypeRepositoryImpl implements DatatypeOperations {
 	Query set4Brevis(Query qry) {
 		qry.fields().include("_id");
 		qry.fields().include("label");
+		qry.fields().include("ext");
+		qry.fields().include("name");
 		qry.fields().include("status");
 		qry.fields().include("description");
+		qry.fields().include("data");
+		qry.fields().include("version");
+
 		return qry;
 	}
 }

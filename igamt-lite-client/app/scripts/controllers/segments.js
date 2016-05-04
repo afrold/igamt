@@ -326,6 +326,33 @@ angular.module('igl')
 
         };
 
+
+        $scope.showSelectDatatypeFlavorDlg = function (node) {
+            var modalInstance = $modal.open({
+                templateUrl: 'SelectDatatypeFlavor.html',
+                controller: 'SelectDatatypeFlavorCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    currentNode: function () {
+                        return node;
+                    },
+                    hl7Version: function () {
+                        return $rootScope.igdocument.metaData.hl7Version;
+                    }
+                }
+            });
+            modalInstance.result.then(function (selected) {
+                node.datatype = selected.id;
+                //TODO: load master map
+                if (!$rootScope.datatypesMap[node.datatype] || $rootScope.datatypesMap[node.datatype] == null) {
+                    $rootScope.datatypesMap[node.datatype] = selected;
+                }
+                if ($scope.segmentsParams)
+                    $scope.segmentsParams.refresh();
+            });
+
+        };
+
     });
 
 angular.module('igl')

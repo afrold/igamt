@@ -1518,6 +1518,18 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             return '';
         };
 
+        $rootScope.getLabel = function (obj) {
+            if(obj != undefined && obj != null) {
+                if (obj.ext && obj.ext !== null && obj.ext !== "") {
+                    return obj.name + "_" + obj.ext;
+                } else {
+                    return obj.name;
+                }
+            }
+            return "";
+        };
+
+
     }]);
 
 angular.module('igl').controller('LoginCtrl', ['$scope', '$modalInstance', 'user', function ($scope, $modalInstance, user) {
