@@ -165,10 +165,12 @@ angular
             return true;
           } else {
             var leafUsages = MastermapSvc.getUsage(leaf.id, leaf.type);
-            console.log("leaf usage")
+/*             console.log(leaf.id);
+            console.log(leaf.type);
+            console.log("leaf usage");
             console.log(leafUsages);
             console.log("filter")
-            console.log(filter);
+            console.log(filter); */
             var rst = false;
             _.each(leafUsages, function(usg){
               rst = rst || (filter.indexOf(usg) !== -1);
