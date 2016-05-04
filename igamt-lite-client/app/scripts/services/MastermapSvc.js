@@ -156,7 +156,7 @@ angular
       var segRef = segmentRef.ref;
 
       svc.createMMElement(segRefId, "segmentRef");
-      svc.mastermap[segRefId, "segmentRef"]["usage"] = segmentRef["usage"];
+      svc.setElement(segRefId, "segmentRef", "usage", segmentRef["usage"]);
       svc.addParentsId(segRefId, "segmentRef", parent);
 
       svc.addSegment(segRef, parent.concat([[segRefId, "segmentRef"]]));
@@ -236,7 +236,7 @@ angular
         eltColl["type"] = type;
         eltColl["id"] = id;
 
-        svc.mastermap[id, type] = eltColl;
+        svc.mastermap[id.concat(type)] = eltColl;
       }
     }
 
@@ -264,19 +264,16 @@ angular
     }
 
     svc.getElement = function(id, type){
-      var rst = svc.mastermap[id, type];
-//       if (rst === undefined){
-//         console.log(id, type, " not found")
-//       }
+      var rst = svc.mastermap[id.concat(type)];
       return rst;
     }
 
     svc.getElementByKey = function(id, type, key){
-      return svc.mastermap[id, type][key];
+      return svc.mastermap[id.concat(type)][key];
     }
 
     svc.setElement = function(id, type, key, value){
-      svc.mastermap[id, type][key] = value;
+      svc.mastermap[id.concat(type)][key] = value;
     }
 
     svc.getUsage = function (id, type){
