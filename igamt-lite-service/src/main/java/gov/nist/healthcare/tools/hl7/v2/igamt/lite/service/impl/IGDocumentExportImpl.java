@@ -200,6 +200,9 @@ public class IGDocumentExportImpl extends PdfPageEventHelper implements IGDocume
 	@Autowired
 	private TableService tableService;
 
+	//	@Autowired
+	//	private UserService userService;
+
 	static String constraintBackground = "#EDEDED";
 	static String headerBackground = "#F0F0F0";
 	static String headerFontColor = "#B21A1C";

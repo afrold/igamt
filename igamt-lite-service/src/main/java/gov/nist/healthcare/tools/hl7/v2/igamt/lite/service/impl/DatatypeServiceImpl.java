@@ -27,9 +27,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
  *
  */
 @Service
-public class DataypeServiceImpl implements DatatypeService {
+public class DatatypeServiceImpl implements DatatypeService {
 
-	Logger log = LoggerFactory.getLogger(DataypeServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(DatatypeServiceImpl.class);
 
 	@Autowired
 	private DatatypeRepository datatypeRepository;

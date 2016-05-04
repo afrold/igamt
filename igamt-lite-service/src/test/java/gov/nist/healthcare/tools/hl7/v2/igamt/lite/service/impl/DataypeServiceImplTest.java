@@ -57,7 +57,7 @@ public class DataypeServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DataypeServiceImpl#findAll(gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
+	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DatatypeServiceImpl#findAll(gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
 	 * .
 	 */
 	@Test
@@ -69,7 +69,7 @@ public class DataypeServiceImplTest {
 
 	/**
 	 * Test method for
-	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DataypeServiceImpl#findById(java.lang.String, gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
+	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DatatypeServiceImpl#findById(java.lang.String, gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
 	 * .
 	 */
 	@Test
@@ -93,7 +93,7 @@ public class DataypeServiceImplTest {
 	
 	/**
 	 * Test method for
-	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DataypeServiceImpl#findByLibrary(java.lang.String, gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
+	 * {@link gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl.DatatypeServiceImpl#findByLibrary(java.lang.String, gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.QUANTUM)}
 	 * .
 	 */
 	@Test

@@ -22,9 +22,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
-public class TableRespositoryImpl implements TableOperations {
+public class TableRepositoryImpl implements TableOperations {
 
-	private Logger log = LoggerFactory.getLogger(TableRespositoryImpl.class);
+	private Logger log = LoggerFactory.getLogger(TableRepositoryImpl.class);
 
 	 @Autowired
 	 private MongoOperations mongo;
