@@ -8,20 +8,20 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.List;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
-/**
- * @author gcr1
- *
- */
-public interface SegmentOperations {
+public interface TableService {
+	
+	Table findById(String id);
+	
+	Table save(Table table);
 
-	List<Segment> findByLibIds(String segLibId);
+	List<Table> findByLibIds(String segLibId);
 
-	List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
 }
