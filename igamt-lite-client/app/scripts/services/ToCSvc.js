@@ -59,7 +59,7 @@ angular
 						});
 						var conformanceProfile = getMessageInfrastructure(igdocument);
 						toc.push(conformanceProfile);
-            console.log(toc);
+//             console.log(toc);
 						return toc;
 					};
 

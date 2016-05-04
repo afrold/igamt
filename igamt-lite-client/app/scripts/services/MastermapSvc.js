@@ -192,8 +192,6 @@ angular
       svc.createTableLibrary(igdocument);
 
       svc.createMMElement(profile.id, "ig");
-      //         svc.addParentsId(profile.id, "ig", []);
-      console.log(svc.getElement("56e02c48e4b0a6810f5fdfbd", "ig"))
 
       _.each(profile.messages.children, function(m) {
         var parentsList = [[profile.id, "ig"]];
@@ -222,8 +220,8 @@ angular
     }
 
     svc.createMMElement = function (id, type) {
-      if (svc.getMastermap(id, type) === undefined) {
-        var eltColl = [];
+      if (svc.getElement(id, type) === undefined) {
+        var eltColl = new Array();
         eltColl["ig"] =[];
         eltColl["message"] =[];
         eltColl["field"] =[];
@@ -267,9 +265,9 @@ angular
 
     svc.getElement = function(id, type){
       var rst = svc.mastermap[id, type];
-      if (rst === undefined){
-        console.log(id, type, " not found")
-      }
+//       if (rst === undefined){
+//         console.log(id, type, " not found")
+//       }
       return rst;
     }
 
@@ -282,36 +280,36 @@ angular
     }
 
     svc.getUsage = function (id, type){
-      var elt = svc.getElement(id, type);
-      if (elt !== undefined){
+      var item = svc.getElement(id, type);
+      if (item !== undefined){
         if (type === "message"){
           //TBD
           return [];
         }
         if (type === "field"){
-          return [svc.getElement(id, type)["usage"]];
+          return [svc.getElementByKey(id, type, "usage")];
         }
         if (type === "segment"){
           var sgt = svc.getElement(id, type);
           var rst = [];
           var usg = "";
           sgt["group"].forEach(function(elt){
-            usg = svc.getElement(elt, "group")["usage"]
+            usg = svc.getElementByKey(elt, "group", "usage");
             if (rst.indexOf(usg) === -1)
               rst.push(usg);
           });
           sgt["segmentRef"].forEach(function(elt){
-            usg = svc.getElement(elt, "segmentRef")["usage"];
+            usg = svc.getElementByKey(elt, "segmentRef", "usage");
             if (rst.indexOf(usg) === -1)
               rst.push(usg);
           });
           return rst;
         }
         if (type === "segmentRef"){
-          return [svc.getElement(id, type)["usage"]];
+          return [svc.getElementByKey(id, type, "usage")];
         }
         if (type === "group"){
-          return [svc.getElement(id, type)["usage"]];
+          return [svc.getElementByKey(id, type, "usage")];
         }
         if (type === "table"){
           // => check sgt and datatypes
@@ -319,13 +317,13 @@ angular
           var rst = [];
           var usg = "";
           tbl["segment"].forEach(function(elt){
-            usg = svc.getElement(elt, "segment")["usage"];
+            usg = svc.getElementByKey(elt, "segment", "usage");
             if (rst.indexOf(usg) === -1){
               rst.push(usg);
             }
           });
           tbl["datatype"].forEach(function(elt){
-            usg = svc.getElement(elt, "datatype")["usage"];
+            usg = svc.getElementByKey(elt, "datatype", "usage");
             if (rst.indexOf(usg) === -1)
               rst.push(usg);
           });
@@ -338,7 +336,7 @@ angular
           var usg = "";
           if (dt["segment"] !== undefined){
             dt["segment"].forEach(function(elt){
-              usg = svc.getElement(elt, "segment")["usage"];
+              usg = svc.getElementByKey(elt, "segment", "usage");
               if (rst.indexOf(usg) === -1){
                 rst.push(usg);
               }
@@ -346,7 +344,7 @@ angular
           }
           if (dt["datatype"] != undefined){
             dt["datatype"].forEach(function(elt){
-              usg = svc.getElement(elt, "datatype")["usage"];
+              usg = svc.getElementByKey(elt, "datatype", "usage");
               if (rst.indexOf(usg) === -1)
                 rst.push(usg);
             });
@@ -354,7 +352,7 @@ angular
           return rst;
         }
         if (type === "component"){
-          return [svc.getElement(id, "component")["usage"]];
+          return [svc.getElementByKey(id, "component", "usage")];
         }
         if (type === "code"){
           //TBD

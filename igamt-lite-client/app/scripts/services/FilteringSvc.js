@@ -126,18 +126,22 @@ angular
       console.log("check1");
       console.log(rst1);
 
-      var rst2 = filterByUsage(leaf, svc.getUsagesmodel());
+      var validUsages = [];
+      _.each(svc.getUsagesmodel(), function(filterElt){
+        validUsages.push(filterElt.label);
+      });
+      var rst2 = filterByUsage(leaf, validUsages);
 
       console.log("check2");
       console.log(rst2);
 
       var rst = rst1 && rst2;
       if (rst === undefined){
+        console.log(leaf.type)
         console.log(leaf)
-        console.log("elt: ".concat(MastermapSvc.getElement(leaf.id, leaf.type)));
+        console.log(MastermapSvc.getElement(leaf.id, leaf.type));
         console.log(MastermapSvc.getUsage(leaf.id, leaf.type));
-      }
-      if (rst === undefined){
+
         rst = true;
       }
       //       console.log(rst);
@@ -150,10 +154,7 @@ angular
       }
 
       if (MastermapSvc.getElement(leaf.id, leaf.type) !== undefined){
-        return (MastermapSvc.getElement(leaf.id, leaf.type)["message"].indexOf(filterElt.id) !== -1);
-      } else {
-        /*               console.log("Unfound in mastermap: ");
-                console.log(leaf); */
+        return (MastermapSvc.getElementByKey(leaf.id, leaf.type, "message").indexOf(filterElt.id) !== -1);
       }
     }
 
@@ -163,23 +164,15 @@ angular
           if (leaf.type === "message" || leaf.type === "table"){
             return true;
           } else {
-            var validUsages = [];
-            _.each(filter, function(filterElt){
-              validUsages.push(filterElt.label);
-            });
             var leafUsages = MastermapSvc.getUsage(leaf.id, leaf.type);
+            console.log("leaf usage")
+            console.log(leafUsages);
+            console.log("filter")
+            console.log(filter);
             var rst = false;
             _.each(leafUsages, function(usg){
-              console.log(usg);
-              rst = rst || (validUsages.indexOf(usg) !== -1);
+              rst = rst || (filter.indexOf(usg) !== -1);
             });
-/*             console.log(leaf.id)
-            console.log(leaf.type)
-            console.log("valid")
-            console.log(validUsages)
-            console.log("leaf")
-            console.log(leafUsages)
- */
             return rst;
           }
         }
