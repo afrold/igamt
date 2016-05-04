@@ -45,7 +45,8 @@ angular.module('igl').factory('DatatypeService',
                 return children != null && children.length > 0;
             },
             isVisible: function (node) {
-                return  node ? DatatypeService.isRelevant(node) ? DatatypeService.isVisible(DatatypeService.getParent(node)) : false : true;
+                return FilteringSvc.show(node);
+//                 return  node ? DatatypeService.isRelevant(node) ? DatatypeService.isVisible(DatatypeService.getParent(node)) : false : true;
             },
             isRelevant: function (node) {
                 if (node === undefined || !ViewSettings.tableRelevance)
