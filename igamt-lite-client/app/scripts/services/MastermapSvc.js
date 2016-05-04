@@ -76,7 +76,7 @@ angular
         } else {
           svc.createMMElement(tableId, "table");
           svc.addParentsId(tableId, "table", parent);
-//           console.log("!!! => table " + tableId + " not found in library");
+          //           console.log("!!! => table " + tableId + " not found in library");
         }
       }
     }
@@ -97,14 +97,15 @@ angular
         if (dt !== undefined){
           svc.createMMElement(dt.id, "datatype");
           svc.addParentsId(dt.id, "datatype", parent);
-
+/*           console.log(svc.mastermap[dt.id, "datatype"])
+ */
           dt.components.forEach( function(c) {
             svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
           });
         } else {
           svc.createMMElement(datatype, "datatype");
           svc.addParentsId(datatype, "datatype", parent);
-//           console.log("!!! => datatype " + datatype + " not found in library");
+          //           console.log("!!! => datatype " + datatype + " not found in library");
         }
       }
     }
@@ -114,7 +115,7 @@ angular
 
       svc.createMMElement(field.id, "field");
       svc.addParentsId(field.id, "field", parent);
-      svc.mastermap[field.id, "usage"] = field["usage"];
+      svc.mastermap[field.id, "field"]["usage"] = field["usage"];
 
       svc.addValueSet(field.table, parent.concat([[field.id, "field"]]));
       svc.addDatatype(field.datatype, parent.concat([[field.id, "field"]]));
@@ -123,17 +124,15 @@ angular
 
     svc.addSegment = function (segmentId, parent) {
       //           console.log("Processing segment " + segmentId + "");
+      svc.createMMElement(segmentId, "segment");
+      svc.addParentsId(segmentId, "segment", parent);
+
       var segment = svc.getSegmentLibrary()[segmentId];
       if (segment !== undefined){
-        svc.createMMElement(segment.id, "segment");
-        svc.addParentsId(segment.id, "segment", parent);
-
         _.each(segment.fields, function(f) {
           svc.addField(f, parent.concat([[segment.id, "segment"]]));
         });
       } else {
-          svc.createMMElement(segmentId, "segment");
-          svc.addParentsId(segmentId, "segment", parent);
         console.log("!!! => segment id " + segmentId + " not found");
       }
     }
@@ -199,12 +198,12 @@ angular
    */
 
       svc.createMMElement(profile.id, "ig");
-//       svc.mastermap[profile.id, "ig"].concat(profile.id);
+      //       svc.mastermap[profile.id, "ig"].concat(profile.id);
 
       _.each(profile.messages.children, function(m) {
         var parentsList = [[profile.id, "ig"]];
-//         svc.createMMElement(profile.id, "ig");
-//         vc.addParentsId(profile.id, "ig", []);
+        //         svc.createMMElement(profile.id, "ig");
+        //         vc.addParentsId(profile.id, "ig", []);
 
         svc.addMessage(m, parentsList);
       });

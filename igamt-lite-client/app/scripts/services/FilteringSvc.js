@@ -93,7 +93,7 @@ angular
     };
 
     svc.getUsages = function(){
-      return [{"label":"R" , "id":1},{"label":"RE" , "id":2},{"label":"O" , "id":3},{"label":"C" , "id":4},{"label":"X" , "id":5}]
+      return [{"label":"R" , "id":1},{"label":"RE" , "id":2},{"label":"O" , "id":3},{"label":"C" , "id":4},{"label":"X" , "id":5},{"label":"B" , "id":6}]
     };
 
     svc.getSettings = function(){
@@ -101,7 +101,7 @@ angular
         scrollableHeight: '200px',
         scrollable: true,
         enableSearch: true,
-        buttonClasses: 'btn btn-xs',
+        buttonClasses: 'btn btn-xs btn-primary',
         displayProp: 'label'
       }
     };
@@ -126,8 +126,7 @@ angular
       console.log("check1");
       console.log(rst1);
 
-      var rst2 = false;
-      rst2 = rst2 || filterByUsage(leaf, svc.getUsagesmodel());
+      var rst2 = filterByUsage(leaf, svc.getUsagesmodel());
 
       console.log("check2");
       console.log(rst2);

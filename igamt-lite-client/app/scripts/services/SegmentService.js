@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('SegmentService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http',function ($rootScope, ViewSettings,ElementUtils,$q,$http) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http', 'FilteringSvc', function ($rootScope, ViewSettings,ElementUtils,$q,$http, FilteringSvc) {
         var SegmentService = {
             getNodes: function (parent) {
                 return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];

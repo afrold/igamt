@@ -346,8 +346,8 @@ angular.module('igl')
                             $scope.loadTables().then(function(){
                                 $scope.sortByLabels();
                                 $rootScope.initMaps();
-                                $scope.loadFilter();
                                 $scope.loadMastermap();
+                                $scope.loadFilter();
                                 $scope.loadToc();
                                 $scope.collectDatatypes();
                                 $scope.collectSegments();
