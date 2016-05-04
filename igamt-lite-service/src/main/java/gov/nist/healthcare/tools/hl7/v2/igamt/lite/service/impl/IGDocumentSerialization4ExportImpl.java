@@ -15,7 +15,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DocumentMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
@@ -25,14 +25,19 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ProfileMetaData;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Section;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLibrary;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -64,8 +69,18 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class IGDocumentSerialization4ExportImpl implements ProfileSerialization {
+	
+	@Autowired
+	private DatatypeService datatypeService;
+	
+	@Autowired
+	private SegmentService segmentService;
+	
+	@Autowired
+	private TableService tableService;
 
 	Logger logger = LoggerFactory.getLogger( IGDocumentSerialization4ExportImpl.class );
 
@@ -146,7 +161,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 	}
 
 	public nu.xom.Document serializeDatatypeToDoc(Datatype d, IGDocument igdoc) {
-		nu.xom.Element e = serializeDatatype(d, igdoc.getProfile().getTableLibrary(), igdoc.getProfile().getDatatypeLibrary(), "");
+		nu.xom.Element e = serializeDatatype(igdoc.getProfile().getDatatypeLibrary().findOne(d.getId()), igdoc.getProfile().getTableLibrary(), igdoc.getProfile().getDatatypeLibrary(), "");
 		nu.xom.Document doc = new nu.xom.Document(e);
 		return doc;
 	}
@@ -367,10 +382,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		}
 
 		//		profile.getSegmentLibrary().setPositionsOrder();
-		List<Segment> sgtList = new ArrayList<>(profile.getSegmentLibrary().getChildren());
-		Collections.sort(sgtList);
-		for (Segment s : sgtList) {
-			this.serializeSegment(ss, s, profile.getTableLibrary(), profile.getDatatypeLibrary(), prefix);
+		List<SegmentLink> sgtList = new ArrayList<>(profile.getSegmentLibrary().getChildren());
+		//TODO Need to revise Sorting
+//		Collections.sort(sgtList);
+		for (SegmentLink link : sgtList) {
+			this.serializeSegment(ss, link, profile.getTableLibrary(), profile.getDatatypeLibrary(), prefix);
 		}
 		xsect.appendChild(ss);
 
@@ -394,14 +410,15 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		}
 
 		//		profile.getDatatypeLibrary().setPositionsOrder();
-		List<Datatype> dtList = new ArrayList<>(profile.getDatatypeLibrary().getChildren());
-		Collections.sort(dtList);
-		for (Datatype d : dtList) {
+		List<DatatypeLink> dtList = new ArrayList<>(profile.getDatatypeLibrary().getChildren());
+		//TODO Need check Sort
+//		Collections.sort(dtList);
+		for (DatatypeLink dl : dtList) {
 			//Old condition to serialize only flavoured datatypes
 			//			if (d.getLabel().contains("_")) {
 			//				ds.appendChild(this.serializeDatatype(d, profile.getTableLibrary(), profile.getDatatypeLibrary()));
 			//			}
-			ds.appendChild(this.serializeDatatype(d, profile.getTableLibrary(), profile.getDatatypeLibrary(), prefix));
+			ds.appendChild(this.serializeDatatype(dl, profile.getTableLibrary(), profile.getDatatypeLibrary(), prefix));
 		}
 		xsect.appendChild(ds);
 
@@ -424,11 +441,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		}
 
 		//		profile.getTableLibrary().setPositionsOrder();
-		List<Table> tables = new ArrayList<Table>(profile.getTableLibrary()
-				.getChildren());
-		Collections.sort(tables);
-		for (Table t : tables) {
-			ts.appendChild(this.serializeTable(t, prefix));
+		List<TableLink> tables = new ArrayList<TableLink>(profile.getTableLibrary().getChildren());
+		//TODO Need check Sort
+//		Collections.sort(tables);
+		for (TableLink link : tables) {
+			ts.appendChild(this.serializeTable(link, prefix));
 		}
 		xsect.appendChild(ts);
 
@@ -535,14 +552,15 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		cpsg.addAttribute(new Attribute("title", "Segment level"));
 
 
-		for (Segment s : profile.getSegmentLibrary().getChildren()){
+		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()){
+			Segment s = segmentService.findById(sl.getId());
 			if (s.getFields() != null) {
 
 				nu.xom.Element csinfo = new nu.xom.Element("Constraints");
 				csinfo.addAttribute(new Attribute("id", UUID.randomUUID().toString()));
 				csinfo.addAttribute(new Attribute("position", String.valueOf(s.getSectionPosition())));
 				csinfo.addAttribute(new Attribute("h", String.valueOf(3)));
-				csinfo.addAttribute(new Attribute("title", s.getLabel()));
+				csinfo.addAttribute(new Attribute("title", sl.getLabel()));
 				csinfo.addAttribute(new Attribute("Type", "ConformanceStatement"));
 
 				nu.xom.Element cpinfo = new nu.xom.Element("Constraints");
@@ -602,7 +620,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		cpdt.addAttribute(new Attribute("title", "Datatype level"));
 
 
-		for (Datatype d : profile.getDatatypeLibrary().getChildren()){
+		for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()){
+			Datatype d = datatypeService.findById(dl.getId());
 			if (d.getComponents() != null) {
 
 				nu.xom.Element csinfo = new nu.xom.Element("Constraints");
@@ -748,16 +767,17 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		} else {
 			ds.addAttribute(new Attribute("title", ""));
 		}
-
-		profile.getDatatypeLibrary().setPositionsOrder();
-		List<Datatype> dtList = new ArrayList<>(profile.getDatatypeLibrary().getChildren());
-		Collections.sort(dtList);
-		for (Datatype d : dtList) {
+		//TODO check setPositionsOrder
+//		profile.getDatatypeLibrary().setPositionsOrder();
+		List<DatatypeLink> dtList = new ArrayList<>(profile.getDatatypeLibrary().getChildren());
+		//TODO check sort
+//		Collections.sort(dtList);
+		for (DatatypeLink dl : dtList) {
 			//Old condition to serialize only flavoured datatypes
 			//			if (d.getLabel().contains("_")) {
 			//				ds.appendChild(this.serializeDatatype(d, profile.getTableLibrary(), profile.getDatatypeLibrary()));
 			//			}
-			ds.appendChild(this.serializeDatatype(d, profile.getTableLibrary(), profile.getDatatypeLibrary(), prefix));
+			ds.appendChild(this.serializeDatatype(dl, profile.getTableLibrary(), profile.getDatatypeLibrary(), prefix));
 		}
 		xsect.appendChild(ds);
 
@@ -844,33 +864,35 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		e.appendChild(msd);
 
 		nu.xom.Element ss = new nu.xom.Element("Segments");
-		List<Segment> sgtList = new ArrayList<>(profile.getSegmentLibrary().getChildren());
-		Collections.sort(sgtList);
-		for (Segment s : sgtList) {
-			this.serializeSegment(ss, s, profile.getTableLibrary(), profile.getDatatypeLibrary(), "");
+		List<SegmentLink> sgtList = new ArrayList<>(profile.getSegmentLibrary().getChildren());
+		//TODO Check Sort
+		//Collections.sort(sgtList);
+		for (SegmentLink sl : sgtList) {
+			this.serializeSegment(ss, sl, profile.getTableLibrary(), profile.getDatatypeLibrary(), "");
 		}
 		e.appendChild(ss);
 
 
 		nu.xom.Element ds = new nu.xom.Element("Datatypes");
-		List<Datatype> dtList = new ArrayList<>(profile.getDatatypeLibrary().getChildren());
-		Collections.sort(dtList);
-		for (Datatype d : dtList) {
+		List<DatatypeLink> dtList = new ArrayList<>(profile.getDatatypeLibrary().getChildren());
+		//TODO Check Sort
+//		Collections.sort(dtList);
+		for (DatatypeLink dl : dtList) {
 			//Old condition to serialize only flavoured datatypes
 			//			if (d.getLabel().contains("_")) {
 			//				ds.appendChild(this.serializeDatatype(d, profile.getTableLibrary(), profile.getDatatypeLibrary()));
 			//			}
-			ds.appendChild(this.serializeDatatype(d, profile.getTableLibrary(), profile.getDatatypeLibrary(), ""));
+			ds.appendChild(this.serializeDatatype(dl, profile.getTableLibrary(), profile.getDatatypeLibrary(), ""));
 
 		}
 		e.appendChild(ds);
 
 		nu.xom.Element ts = new nu.xom.Element("ValueSets");
-		List<Table> tables = new ArrayList<Table>(profile.getTableLibrary()
+		List<TableLink> tables = new ArrayList<TableLink>(profile.getTableLibrary()
 				.getChildren());
-		Collections.sort(tables);
-		for (Table t : tables) {
-			ts.appendChild(this.serializeTable(t, ""));
+//		Collections.sort(tables);
+		for (TableLink tl : tables) {
+			ts.appendChild(this.serializeTable(tl, ""));
 		}
 		e.appendChild(ts);
 
@@ -880,7 +902,8 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		return doc;
 	}
 
-	private nu.xom.Element serializeTable(Table t, String prefix){
+	private nu.xom.Element serializeTable(TableLink tl, String prefix){
+		Table t = tableService.findById(tl.getId());
 		nu.xom.Element sect = new nu.xom.Element("Section");
 		sect.addAttribute(new Attribute("id", t.getId()));
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(t.getSectionPosition()+1)));
@@ -890,7 +913,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 
 		nu.xom.Element elmTableDefinition = new nu.xom.Element("ValueSetDefinition");
 		elmTableDefinition.addAttribute(new Attribute("Id", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
-		elmTableDefinition.addAttribute(new Attribute("BindingIdentifier", (t.getBindingIdentifier() == null) ? "" : t.getBindingIdentifier()));
+		elmTableDefinition.addAttribute(new Attribute("BindingIdentifier", (tl.getBindingIdentifier() == null) ? "" : tl.getBindingIdentifier()));
 		elmTableDefinition.addAttribute(new Attribute("Name",(t.getName() == null) ? "" : t.getName()));
 		elmTableDefinition.addAttribute(new Attribute("Description",(t.getDescription() == null) ? "" : t.getDescription()));
 		elmTableDefinition.addAttribute(new Attribute("Version", (t.getVersion() == null) ? "" : "" + t.getVersion()));
@@ -1004,10 +1027,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		nu.xom.Element elmSegment = new nu.xom.Element("Elt");
 		elmSegment.addAttribute(new Attribute("IDRef", segmentRef.getId()));
 		elmSegment.addAttribute(new Attribute("IDSeg", segmentRef.getRef()));
-		if (segments.findOneSegmentById(segmentRef.getRef()) != null && ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getName() != null) {
-			elmSegment.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getName()));
-			elmSegment.addAttribute(new Attribute("Label", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getLabel()));
-			elmSegment.addAttribute(new Attribute("Description", ((Segment)segments.findOneSegmentById(segmentRef.getRef())).getDescription()));
+		
+		if (segments.findOneSegmentById(segmentRef.getRef()) != null && segmentService.findById(segmentRef.getRef()).getName() != null) {
+			elmSegment.addAttribute(new Attribute("Ref", StringUtils.repeat(".", 4*depth) + segmentService.findById(segmentRef.getRef()).getName()));
+			elmSegment.addAttribute(new Attribute("Label", segments.findOneSegmentById(segmentRef.getRef()).getLabel()));
+			elmSegment.addAttribute(new Attribute("Description", segmentService.findById(segmentRef.getRef()).getDescription()));
 		}
 		elmSegment.addAttribute(new Attribute("Depth", String.valueOf(depth)));
 		elmSegment.addAttribute(new Attribute("Usage", segmentRef.getUsage()
@@ -1029,8 +1053,9 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 	}
 
 
-	private void serializeSegment(nu.xom.Element ss, Segment s, TableLibrary tables, DatatypeLibrary datatypes, String prefix) {
+	private void serializeSegment(nu.xom.Element ss, SegmentLink sl, TableLibrary tables, DatatypeLibrary datatypes, String prefix) {
 		nu.xom.Element sect = new nu.xom.Element("Section");
+		Segment s = segmentService.findById(sl.getId());
 
 		sect.addAttribute(new Attribute("id", s.getId()));
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(s.getSectionPosition()+1)));
@@ -1041,7 +1066,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		nu.xom.Element elmSegment = new nu.xom.Element("Segment");
 		elmSegment.addAttribute(new Attribute("ID", s.getId() + ""));
 		elmSegment.addAttribute(new Attribute("Name", s.getName()));
-		elmSegment.addAttribute(new Attribute("Label", s.getLabel()));
+		elmSegment.addAttribute(new Attribute("Label", sl.getLabel()));
 		elmSegment.addAttribute(new Attribute("Position", String.valueOf(s.getSectionPosition()+1)));
 		elmSegment
 		.addAttribute(new Attribute("Description", s.getDescription()));
@@ -1142,9 +1167,11 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		return constraints;
 	}
 
-	private nu.xom.Element serializeDatatype(Datatype d, TableLibrary tables, DatatypeLibrary datatypes, String prefix) {
+	private nu.xom.Element serializeDatatype(DatatypeLink dl, TableLibrary tables, DatatypeLibrary datatypes, String prefix) {
 		nu.xom.Element sect = new nu.xom.Element("Section");
 
+		Datatype d = datatypeService.findById(dl.getId());
+				
 		sect.addAttribute(new Attribute("id", d.getId()));
 		sect.addAttribute(new Attribute("prefix", prefix + "." + String.valueOf(d.getSectionPosition()+1)));
 		sect.addAttribute(new Attribute("position", String.valueOf(d.getSectionPosition()+1)));
@@ -1154,7 +1181,7 @@ public class IGDocumentSerialization4ExportImpl implements ProfileSerialization 
 		nu.xom.Element elmDatatype = new nu.xom.Element("Datatype");
 		elmDatatype.addAttribute(new Attribute("ID", d.getId() + ""));
 		elmDatatype.addAttribute(new Attribute("Name", d.getName()));
-		elmDatatype.addAttribute(new Attribute("Label", d.getLabel()));
+		elmDatatype.addAttribute(new Attribute("Label", d.getName() + dl.getExt()));
 		elmDatatype.addAttribute(new Attribute("Description", d
 				.getDescription()));
 		elmDatatype.addAttribute(new Attribute("Comment", d.getComment()));

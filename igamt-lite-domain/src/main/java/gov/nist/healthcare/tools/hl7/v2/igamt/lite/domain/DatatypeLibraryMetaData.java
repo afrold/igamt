@@ -5,6 +5,8 @@ public class DatatypeLibraryMetaData extends MetaData {
 
 	private static final long serialVersionUID = 1L;
 	
+	private String datatypLibId = "";
+	
 	public DatatypeLibraryMetaData() {
 		super();
 	}
@@ -18,5 +20,13 @@ public class DatatypeLibraryMetaData extends MetaData {
 		clonedProfileMetaData.setDate(this.getDate());
 		clonedProfileMetaData.setVersion(this.getVersion());
 		return clonedProfileMetaData;
+	}
+
+	public String getDatatypLibId() {
+		return datatypLibId;
+	}
+
+	public void setDatatypLibId(String datatypLibId) {
+		this.datatypLibId = datatypLibId;
 	}
 }
