@@ -107,6 +107,7 @@ public class SegmentLibrary extends TextbasedSectionModel implements java.io.Ser
 
 		return null;
 	}	
+
 // TODO gcr not working
 	public SegmentLibrary clone() throws CloneNotSupportedException {
 		SegmentLibrary clonedSegments = new SegmentLibrary();
