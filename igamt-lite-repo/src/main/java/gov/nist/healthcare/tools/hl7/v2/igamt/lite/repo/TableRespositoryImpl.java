@@ -19,29 +19,28 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
-public class SegmentRespositoryImpl implements SegmentOperations {
+public class TableRespositoryImpl implements TableOperations {
 
-	private Logger log = LoggerFactory.getLogger(SegmentRespositoryImpl.class);
+	private Logger log = LoggerFactory.getLogger(TableRespositoryImpl.class);
 
-	@Autowired
-	private MongoOperations mongo;
+	 @Autowired
+	 private MongoOperations mongo;
 
-	@Override
-	public List<Segment> findByLibIds(String segLibId) {
-		Criteria where = Criteria.where("libIds").in(segLibId);
-		Query qry = Query.query(where);
-		return mongo.find(qry, Segment.class);
-	}
+		@Override
+		public List<Table> findByLibIds(String tabLibId) {
+			Criteria where = Criteria.where("libIds").in(tabLibId);
+			Query qry = Query.query(where);
+			return mongo.find(qry, Table.class);
+		}
 
-	@Override
-	public List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
-		Criteria where = Criteria.where("scope").in(scopes);
-		where.andOperator(Criteria.where("hl7Version").is(hl7Version));
-		Query qry = Query.query(where);
-		return mongo.find(qry, Segment.class);
-	}
+		@Override
+		public List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+			Criteria where = Criteria.where("scope").in(scopes);
+			where.andOperator(Criteria.where("hl7Version").is(hl7Version));
+			Query qry = Query.query(where);
+			return mongo.find(qry, Table.class);
+		}
 }

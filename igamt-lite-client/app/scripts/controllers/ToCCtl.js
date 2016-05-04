@@ -160,7 +160,7 @@ angular
 							};
 
               $scope.show = function(leaf){
-                return ToCSvc.show(leaf);
+                return FilteringSvc.show(leaf);
               };
 
               $rootScope.$on('event:loadMastermap', function (event, igdocument) {

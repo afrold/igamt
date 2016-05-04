@@ -18,7 +18,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.DatatypeLibraryS
 /**
  * @author Harold Affo (harold.affo@nist.gov) Apr 16, 2015
  */
-public class DatatypeLibrarySaveResponse extends ResponseMessage {
+public class LibrarySaveResponse extends ResponseMessage {
 
 	private List<DatatypeLibrarySaveError> errors = null;
 
@@ -34,7 +34,7 @@ public class DatatypeLibrarySaveResponse extends ResponseMessage {
 	 * @param date
 	 * @param version
 	 */
-	public DatatypeLibrarySaveResponse(String date, String version) {
+	public LibrarySaveResponse(String date, String version) {
 		super(Type.success, "DatatypeLibrarySaved");
 		this.date = date;
 		this.scope = scope;
@@ -44,23 +44,23 @@ public class DatatypeLibrarySaveResponse extends ResponseMessage {
 	 * @param type
 	 * @param text
 	 */
-	public DatatypeLibrarySaveResponse(Type type, String text) {
+	public LibrarySaveResponse(Type type, String text) {
 		super(type, text);
 	}
 
-	public DatatypeLibrarySaveResponse(Type type, String text, String resourceId,
+	public LibrarySaveResponse(Type type, String text, String resourceId,
 			String manualHandle, List<DatatypeLibrarySaveError> errors) {
 		super(type, text, resourceId, manualHandle);
 		this.errors = errors;
 	}
 
-	public DatatypeLibrarySaveResponse(Type type, String text, String resourceId,
+	public LibrarySaveResponse(Type type, String text, String resourceId,
 			List<DatatypeLibrarySaveError> errors) {
 		super(type, text, resourceId);
 		this.errors = errors;
 	}
 
-	public DatatypeLibrarySaveResponse(Type type, String text,
+	public LibrarySaveResponse(Type type, String text,
 			List<DatatypeLibrarySaveError> errors) {
 		super(type, text);
 		this.errors = errors;

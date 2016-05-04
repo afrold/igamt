@@ -8,20 +8,33 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLibrary;
 
-/**
- * @author gcr1
- *
- */
-public interface SegmentOperations {
+@Service
+public interface TableLibraryService {
 
-	List<Segment> findByLibIds(String segLibId);
+	List<TableLibrary> findAll();
+	
+	List<TableLibrary> findByScopes(List<SCOPE> scopes);
 
-	List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+	TableLibrary findById(String id);
+
+	List<TableLibrary> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+
+	List<TableLibrary> findByAccountId(Long accountId, String hl7Version);
+
+	TableLibrary save(TableLibrary library);
+
+	TableLibrary create(String name, String ext, SCOPE scope, String hl7Version, Long accountId);
+
+	void delete(TableLibrary library);
+
+	List<String> findHl7Versions();
 }

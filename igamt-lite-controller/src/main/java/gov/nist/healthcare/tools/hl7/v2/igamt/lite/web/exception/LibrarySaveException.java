@@ -14,6 +14,6 @@ package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception;
  * @author gcr1
  *
  */
-public class DatatypeLibrarySaveException extends Exception {
+public class LibrarySaveException extends Exception {
 
 }

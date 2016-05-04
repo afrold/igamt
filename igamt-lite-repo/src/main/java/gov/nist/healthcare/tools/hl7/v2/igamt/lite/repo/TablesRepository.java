@@ -21,7 +21,7 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Tables;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface TablesRepository extends MongoRepository<Tables, String> {
+public interface TablesRepository extends MongoRepository<Tables, String>, SegmentOperations {
 
 }  
  

@@ -17,48 +17,47 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.TableRepository;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
 
 /**
  * @author gcr1
  *
  */
 @Service
-public class SegmentServiceImpl implements SegmentService {
+public class TableServiceImpl implements TableService {
 	
-	Logger log = LoggerFactory.getLogger(SegmentServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(TableServiceImpl.class);
 
 	@Autowired
-	private SegmentRepository segmentRepository;
+	private TableRepository tableRepository;
  	
 	@Override
-	public List<Segment> findByLibIds(String segLibId) {
-		List<Segment> datatypes = segmentRepository.findByLibIds(segLibId);
-		log.info("DataypeServiceImpl.findAll=" + datatypes.size());
-		return datatypes;
+	public List<Table> findByLibIds(String tabLibId) {
+		List<Table> tables = tableRepository.findByLibIds(tabLibId);
+		log.info("TableServiceImpl.findAll=" + tables.size());
+		return tables;
 	}
 	
 	@Override 
-	public Segment findById(String id) {
-		log.info("SegmentServiceImpl.findById=" + id);
-		return segmentRepository.findOne(id);
+	public Table findById(String id) {
+		log.info("TableServiceImpl.findById=" + id);
+		return tableRepository.findOne(id);
 	}
 	
 	@Override
-	public List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
-		List<Segment> segments = segmentRepository.findByScopesAndVersion(scopes, hl7Version);
-		log.info("SegmentServiceImpl.findByScopeAndVersion=" + segments.size());
-		return segments;
+	public List<Table> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version) {
+		List<Table> tables = tableRepository.findByScopesAndVersion(scopes, hl7Version);
+		log.info("TableServiceImpl.findByScopeAndVersion=" + tables.size());
+		return tables;
 	}
 	
 	@Override
-	public Segment save(Segment segment) {
-		log.info("SegmentServiceImpl.save=" + segment.getLabel());
-		return segmentRepository.save(segment);
+	public Table save(Table table) {
+		log.info("TableServiceImpl.save=" + table.getBindingIdentifier());
+		return tableRepository.save(table);
 	}
 }

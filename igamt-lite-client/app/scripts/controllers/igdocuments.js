@@ -4,7 +4,7 @@
  */
 
 angular.module('igl')
-    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService,DatatypeLibrarySvc,SegmentLibrarySvc,TableLibrarySvc) {
+    .controller('IGDocumentListCtrl', function ($scope, $rootScope, $templateCache, Restangular, $http, $filter, $modal, $cookies, $timeout, userInfoService, ToCSvc, ContextMenuSvc, ProfileAccessSvc, ngTreetableParams, $interval, ViewSettings, StorageService, $q, notifications, DatatypeService, SegmentService, IgDocumentService, ElementUtils, AutoSaveService, DatatypeLibrarySvc, SegmentLibrarySvc, TableLibrarySvc, MastermapSvc) {
         $scope.loading = false;
         $scope.uiGrid = {};
         $rootScope.igs = [];
@@ -346,8 +346,8 @@ angular.module('igl')
                             $scope.loadTables().then(function(){
                                 $scope.sortByLabels();
                                 $rootScope.initMaps();
-                                $scope.loadFilter();
                                 $scope.loadMastermap();
+                                $scope.loadFilter();
                                 $scope.loadToc();
                                 $scope.collectDatatypes();
                                 $scope.collectSegments();
@@ -1324,6 +1324,7 @@ angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalIns
         }
         $rootScope.igdocument.profile.tables.children = positionElements($rootScope.igdocument.profile.tables.children);
         $rootScope.recordChanged();
+        $rootScope.$emit('event:loadFilter', $rootScope.igdocument);
         $rootScope.$broadcast('event:SetToC');
         $modalInstance.dismiss('cancel');
     };

@@ -3,7 +3,7 @@
  */
 'use strict';
 angular.module('igl').factory('SegmentService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http',function ($rootScope, ViewSettings,ElementUtils,$q,$http) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http', 'FilteringSvc', function ($rootScope, ViewSettings,ElementUtils,$q,$http, FilteringSvc) {
         var SegmentService = {
             getNodes: function (parent,root) {
                 return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : root != null ? root.fields : [];
@@ -41,7 +41,8 @@ angular.module('igl').factory('SegmentService',
                 return children != null && children.length > 0;
             },
             isVisible: function (node) {
-                return  node ? SegmentService.isRelevant(node) ? SegmentService.isVisible(SegmentService.getParent(node)) : false : true;
+              return FilteringSvc.show(node);
+//                 return  node ? SegmentService.isRelevant(node) ? SegmentService.isVisible(SegmentService.getParent(node)) : false : true;
             },
             isRelevant: function (node) {
                 if (node === undefined || !ViewSettings.tableRelevance)

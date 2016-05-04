@@ -21,7 +21,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 
-public interface TableRepository extends MongoRepository<Table, String> {
+public interface TableRepository extends MongoRepository<Table, String>, TableOperations{
 
 	public Table findByBindingIdentifier(String bindingIdentifier);
 }

@@ -32,9 +32,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeLibraryServic
  *
  */
 @Service
-public class DataTypeLibraryibServiceImpl implements DatatypeLibraryService {
+public class DataTypeLibraryServiceImpl implements DatatypeLibraryService {
 
-	Logger log = LoggerFactory.getLogger(DataTypeLibraryibServiceImpl.class);
+	Logger log = LoggerFactory.getLogger(DataTypeLibraryServiceImpl.class);
 
 	@Autowired
 	private DatatypeLibraryRepository datatypeLibraryRepository;
