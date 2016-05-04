@@ -44,11 +44,12 @@ angular
       this.tableLibrary = tableLibrary;
     }
 
+
     svc.addComponent = function(c, parent){
       svc.createMMElement(c.id, "component");
       svc.addParentsId(c.id, "component", parent);
-      if (svc.mastermap[c.id, "component"]["usage"] === undefined){
-        svc.mastermap[c.id, "component"]["usage"] = c["usage"];
+      if (svc.getElementByKey(c.id, "component", "usage") === undefined){
+        svc.setElement(c.id, "component", "usage", c["usage"]);
       }
       if (c.datatype !== undefined){
         svc.addDatatype(c.datatype, parent.concat([[c.id, "component"]]));
@@ -58,12 +59,10 @@ angular
       }
 
       // svc.addDatatype(c.datatype, parent.concat(new  Array([dt.id, 'datatype']))); ?? nedd to process subcomponent without infinite loop
-
     }
 
-    svc.addValueSet = function(tableId, parent) {
-      //           console.log("Processing table " + tableId);
 
+    svc.addValueSet = function(tableId, parent) {
       if (tableId !== undefined && tableId !== "") {
         var table = svc.getTableLibrary()[tableId];
         if (table !== undefined){
@@ -81,24 +80,22 @@ angular
       }
     }
 
+
     svc.addCodes = function(code, parent) {
-      //           console.log("Processing code " + code.id);
+
       svc.createMMElement(code.id, "code");
       svc.addParentsId(code.id, "code", parent);
     }
 
 
     svc.addDatatype = function(datatype, parent) {
-      //           console.log("Processing datatype ");
 
       if (datatype !== undefined && datatype !== "") {
-
         var dt = svc.getDatatypeLibrary()[datatype];
         if (dt !== undefined){
           svc.createMMElement(dt.id, "datatype");
           svc.addParentsId(dt.id, "datatype", parent);
-/*           console.log(svc.mastermap[dt.id, "datatype"])
- */
+//           console.log(svc.mastermap[dt.id, "datatype"])
           dt.components.forEach( function(c) {
             svc.addComponent(c, parent.concat([[dt.id, "datatype"]]));
           });
@@ -110,12 +107,12 @@ angular
       }
     }
 
+
     svc.addField = function (field, parent) {
-      //           console.log("Processing field " + field.id);
 
       svc.createMMElement(field.id, "field");
       svc.addParentsId(field.id, "field", parent);
-      svc.mastermap[field.id, "field"]["usage"] = field["usage"];
+      svc.setElement(field.id, "field", "usage", field["usage"]);
 
       svc.addValueSet(field.table, parent.concat([[field.id, "field"]]));
       svc.addDatatype(field.datatype, parent.concat([[field.id, "field"]]));
@@ -123,7 +120,7 @@ angular
 
 
     svc.addSegment = function (segmentId, parent) {
-      //           console.log("Processing segment " + segmentId + "");
+
       svc.createMMElement(segmentId, "segment");
       svc.addParentsId(segmentId, "segment", parent);
 
@@ -138,7 +135,6 @@ angular
     }
 
     svc.addMessage = function (message, parent) {
-      //           console.log("processing message id : " + message.id);
 
       svc.createMMElement(message.id, "message");
       svc.addParentsId(message.id, "message", parent);
@@ -151,6 +147,7 @@ angular
         }
       });
     }
+
 
     svc.addSegmentRef = function (segmentRef, parent){
       //           console.log("Processing segment ref " + segmentRef.id);
@@ -165,13 +162,14 @@ angular
       svc.addSegment(segRef, parent.concat([[segRefId, "segmentRef"]]));
     }
 
+
     svc.addGroup = function (group, parent) {
       //           console.log("Processing group " + group.id);
 
       svc.createMMElement(group.id, "group");
-      svc.mastermap[group.id, "group"]["usage"] = group["usage"];
+      svc.setElement(group.id, "group", "usage", group["usage"]);
       if (group["usage"] === undefined){
-        console.log("undefined group!!")}
+        console.log("undefined usage for group!!")}
       svc.addParentsId(group.id, "group", parent);
 
       _.each(group.children, function(n) {
@@ -192,19 +190,13 @@ angular
       svc.createSegmentLibrary(igdocument);
       svc.createDatatypeLibrary(igdocument);
       svc.createTableLibrary(igdocument);
-      /*           svc.setSegmentLibrary(svc.createSegmentLibrary(igdocument));
-            svc.setDatatypeLibrary(svc.createDatatypeLibrary(igdocument));
-            svc.setTableLibrary(svc.createTableLibrary(igdocument));
-   */
 
       svc.createMMElement(profile.id, "ig");
-      //       svc.mastermap[profile.id, "ig"].concat(profile.id);
+      //         svc.addParentsId(profile.id, "ig", []);
+      console.log(svc.getElement("56e02c48e4b0a6810f5fdfbd", "ig"))
 
       _.each(profile.messages.children, function(m) {
         var parentsList = [[profile.id, "ig"]];
-        //         svc.createMMElement(profile.id, "ig");
-        //         vc.addParentsId(profile.id, "ig", []);
-
         svc.addMessage(m, parentsList);
       });
 
@@ -219,18 +211,18 @@ angular
         var parentId = parent[0];
         var parentType = parent[1];
         //Add parents reference in element if not present
-        if (svc.mastermap[elementId, elementType][parentType].indexOf(parentId) === -1){
-          svc.mastermap[elementId, elementType][parentType] = svc.mastermap[elementId, elementType][parentType].concat(parentId);
+        if (svc.getElementByKey(elementId, elementType, parentType).indexOf(parentId) === -1){
+          svc.setElement(elementId, elementType, parentType, svc.getElementByKey(elementId, elementType, parentType).concat(parentId));
         }
         // Add element reference in parents if not already present
-        if (svc.mastermap[parentId, parentType][elementType].indexOf(elementId) === -1){
-          svc.mastermap[parentId, parentType][elementType] = svc.mastermap[parentId, parentType][parentType].concat(elementId);
+        if (svc.getElementByKey(parentId, parentType, elementType).indexOf(elementId) === -1){
+          svc.setElement(parentId, parentType, elementType, svc.getElementByKey(parentId, parentType, elementType).concat(elementId));
         }
       });
     }
 
     svc.createMMElement = function (id, type) {
-      if (svc.mastermap[id, type] === undefined) {
+      if (svc.getMastermap(id, type) === undefined) {
         var eltColl = [];
         eltColl["ig"] =[];
         eltColl["message"] =[];
@@ -271,26 +263,22 @@ angular
       igdocument.profile.datatypes.children.forEach(function(n){
         svc.datatypeLibrary[n.id] = n;
       });
-
-    }
-
-    svc.getAllIndexes = function(arr, val){
-      var indexes = [], i;
-      for (var i = 0; i < arr.length; i++){
-        if (arr[i] === val){
-          indexes.push(i);
-        }
-      }
-      return indexes;
     }
 
     svc.getElement = function(id, type){
       var rst = svc.mastermap[id, type];
       if (rst === undefined){
         console.log(id, type, " not found")
-        //         console.log(id.concat(" ", type, " => not found"));
       }
       return rst;
+    }
+
+    svc.getElementByKey = function(id, type, key){
+      return svc.mastermap[id, type][key];
+    }
+
+    svc.setElement = function(id, type, key, value){
+      svc.mastermap[id, type][key] = value;
     }
 
     svc.getUsage = function (id, type){
