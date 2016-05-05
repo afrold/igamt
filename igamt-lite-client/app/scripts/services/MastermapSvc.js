@@ -286,6 +286,15 @@ angular
         if (type === "field"){
           return [svc.getElementByKey(id, type, "usage")];
         }
+        if (type === "segmentRef"){
+          return [svc.getElementByKey(id, type, "usage")];
+        }
+        if (type === "group"){
+          return [svc.getElementByKey(id, type, "usage")];
+        }
+        if (type === "component"){
+          return [svc.getElementByKey(id, "component", "usage")];
+        }
         if (type === "segment"){
           var sgt = svc.getElement(id, type);
           var rst = [];
@@ -302,28 +311,26 @@ angular
           });
           return rst;
         }
-        if (type === "segmentRef"){
-          return [svc.getElementByKey(id, type, "usage")];
-        }
-        if (type === "group"){
-          return [svc.getElementByKey(id, type, "usage")];
-        }
         if (type === "table"){
           // => check sgt and datatypes
           var tbl = svc.getElement(id, type);
           var rst = [];
-          var usg = "";
           tbl["segment"].forEach(function(elt){
-            usg = svc.getElementByKey(elt, "segment", "usage");
-            if (rst.indexOf(usg) === -1){
-              rst.push(usg);
-            }
+            var usgs = svc.getUsage(elt, "segment");
+            usgs.forEach(function(usg){
+              if (rst.indexOf(usg) === -1){
+                rst.push(usg);
+              }
+            });
           });
-          tbl["datatype"].forEach(function(elt){
-            usg = svc.getElementByKey(elt, "datatype", "usage");
-            if (rst.indexOf(usg) === -1)
-              rst.push(usg);
-          });
+/*           tbl["datatype"].forEach(function(elt){
+            var usgs = svc.getUsage(elt, "datatype");
+            usgs.forEach(function(usg){
+              if (rst.indexOf(usg) === -1){
+                rst.push(usg);
+              }
+            });
+          });*/
           return rst;
         }
         if (type === "datatype"){
@@ -333,23 +340,25 @@ angular
           var usg = "";
           if (dt["segment"] !== undefined){
             dt["segment"].forEach(function(elt){
-              usg = svc.getElementByKey(elt, "segment", "usage");
+              var usgs = svc.getUsage(elt, "segment");
+              usgs.forEach(function(usg){
               if (rst.indexOf(usg) === -1){
                 rst.push(usg);
               }
+              });
             });
           }
-          if (dt["datatype"] != undefined){
+/*           if (dt["datatype"] != undefined){
             dt["datatype"].forEach(function(elt){
-              usg = svc.getElementByKey(elt, "datatype", "usage");
-              if (rst.indexOf(usg) === -1)
+              var usgs = svc.getUsage(elt, "datatype");
+              usgs.forEach(function(usg){
+              if (rst.indexOf(usg) === -1){
                 rst.push(usg);
+              }
+              });
             });
-          }
+          } */
           return rst;
-        }
-        if (type === "component"){
-          return [svc.getElementByKey(id, "component", "usage")];
         }
         if (type === "code"){
           //TBD

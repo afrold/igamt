@@ -1200,6 +1200,7 @@ angular.module('igl').controller('AddTableOpenCtrl', function ($scope, $modalIns
         $rootScope.igdocument.profile.tables.children = positionElements($rootScope.igdocument.profile.tables.children);
         $rootScope.recordChanged();
         $rootScope.$emit('event:loadFilter', $rootScope.igdocument);
+        $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
         $rootScope.$broadcast('event:SetToC');
         $modalInstance.dismiss('cancel');
     };
