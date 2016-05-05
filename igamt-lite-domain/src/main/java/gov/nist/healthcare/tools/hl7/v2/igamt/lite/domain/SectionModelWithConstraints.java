@@ -31,7 +31,6 @@ public abstract class SectionModelWithConstraints extends SectionModel {
 	
 	protected String date;
 	
-	@Version 
 	protected String version;
 	
 	private Set<String> participants = new HashSet<String>();

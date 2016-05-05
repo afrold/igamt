@@ -31,41 +31,41 @@ public class MessagesReadConverter extends AbstractReadConverter<DBObject, Messa
 	@Override
 	public Messages convert(DBObject source) {
 		Messages messages = new Messages();
-		messages.setId(readMongoId(source));
-		BasicDBList messagesDBObjects = (BasicDBList) source.get("children");
-		messages.setChildren(new HashSet<Message>());
-		for (Object childObj : messagesDBObjects) {
-			Message message = new Message();
-			DBObject child = ((DBRef) childObj).fetch();
-			message.setId(readMongoId(child));
-			message.setName((String) child.get("name"));
-			if (child.get("name") == null) {
-				message.setName((String) child.get("messageType") + "_" + (String) child.get("event"));
-			}
-			message.setMessageType((String) child.get("messageType"));
-			message.setComment(readString(child, "comment"));
-			message.setDescription((String) child.get("description"));
-			message.setEvent((String) child.get("event"));
-			message.setIdentifier((String) child.get("identifier"));
-			message.setPosition((Integer) child.get("position"));
-			message.setStructID((String) child.get("structID"));
-			message.setType((String) child.get("type"));
-
-			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child.get("children");
-			for (Object segmentRefOrGroupObject : segmentRefOrGroupDBObjects) {
-				DBObject segmentRefOrGroupDBObject = (DBObject) segmentRefOrGroupObject;
-				String type = (String) segmentRefOrGroupDBObject.get("type");
-				if (Constant.SEGMENTREF.equals(type)) {
-					SegmentRef segRef = segmentRef(segmentRefOrGroupDBObject);
-					message.addSegmentRefOrGroup(segRef);
-				} else {
-					Group group = group(segmentRefOrGroupDBObject);
-					message.addSegmentRefOrGroup(group);
-				}
-			}
-			messages.getChildren().add(message);
-
-		}
+//		messages.setId(readMongoId(source));
+//		BasicDBList messagesDBObjects = (BasicDBList) source.get("children");
+//		messages.setChildren(new HashSet<Message>());
+//		for (Object childObj : messagesDBObjects) {
+//			Message message = new Message();
+//			DBObject child = ((Object) childObj).fetch();
+//			message.setId(readMongoId(child));
+//			message.setName((String) child.get("name"));
+//			if (child.get("name") == null) {
+//				message.setName((String) child.get("messageType") + "_" + (String) child.get("event"));
+//			}
+//			message.setMessageType((String) child.get("messageType"));
+//			message.setComment(readString(child, "comment"));
+//			message.setDescription((String) child.get("description"));
+//			message.setEvent((String) child.get("event"));
+//			message.setIdentifier((String) child.get("identifier"));
+//			message.setPosition((Integer) child.get("position"));
+//			message.setStructID((String) child.get("structID"));
+//			message.setType((String) child.get("type"));
+//
+//			BasicDBList segmentRefOrGroupDBObjects = (BasicDBList) child.get("children");
+//			for (Object segmentRefOrGroupObject : segmentRefOrGroupDBObjects) {
+//				DBObject segmentRefOrGroupDBObject = (DBObject) segmentRefOrGroupObject;
+//				String type = (String) segmentRefOrGroupDBObject.get("type");
+//				if (Constant.SEGMENTREF.equals(type)) {
+//					SegmentRef segRef = segmentRef(segmentRefOrGroupDBObject);
+//					message.addSegmentRefOrGroup(segRef);
+//				} else {
+//					Group group = group(segmentRefOrGroupDBObject);
+//					message.addSegmentRefOrGroup(group);
+//				}
+//			}
+//			messages.getChildren().add(message);
+//
+//		}
 		return messages;
 	}
 

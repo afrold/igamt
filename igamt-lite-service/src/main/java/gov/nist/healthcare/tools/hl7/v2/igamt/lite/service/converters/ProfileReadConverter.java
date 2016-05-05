@@ -45,36 +45,36 @@ public class ProfileReadConverter  extends AbstractReadConverter<DBObject, Profi
 	@Override
 	public Profile convert(DBObject source) {
 		Profile profile = new Profile();
-		profile.setId(readMongoId(source));
-		profile.setComment(readString(source, "comment"));
-		profile.setType(((String) source.get("type")));
-		profile.setUsageNote(readString(source, "usageNote"));
-		profile.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
-		profile.setChanges(((String) source.get("changes")));
-		profile.setAccountId(readLong(source, "accountId"));
-		profile.setMetaData(metaData((DBObject) source.get("metaData")));
-		DBObject objSegments = ((DBRef) source.get("segmentLibrary")).fetch();
-		profile.setSegmentLibrary(segments(objSegments));
-		DBObject objDatatypes = ((DBRef) source.get("datatypeLibrary")).fetch();
-		profile.setDatatypeLibrary(datatypes(objDatatypes));
-		DBObject objTables = ((DBRef) source.get("tableLibrary")).fetch();
-		profile.setTableLibrary(tables(objTables));
-		DBObject objMessages = ((DBObject) source.get("messages"));
-		profile.setMessages(messages(objMessages));
-
-		profile.setSectionContents((String) source.get("sectionContents"));
-		profile.setSectionDescription((String) source.get("sectionDescription"));
-		profile.setSectionPosition((Integer) source.get("sectionPosition"));
-		profile.setSectionTitle((String) source.get("sectionTitle"));
-
-		profile.setConstraintId((String) source.get("constraintId"));
-
-		Object baseId = source.get("baseId");
-		profile.setBaseId(baseId != null ? (String) baseId : null);
-
-		Object sourceId = source.get("sourceId");
-		profile.setSourceId(sourceId != null ? (String) sourceId : null);
-
+//		profile.setId(readMongoId(source));
+//		profile.setComment(readString(source, "comment"));
+//		profile.setType(((String) source.get("type")));
+//		profile.setUsageNote(readString(source, "usageNote"));
+//		profile.setScope(IGDocumentScope.valueOf(((String) source.get("scope"))));
+//		profile.setChanges(((String) source.get("changes")));
+//		profile.setAccountId(readLong(source, "accountId"));
+//		profile.setMetaData(metaData((DBObject) source.get("metaData")));
+//		DBObject objSegments = ((DBRef) source.get("segmentLibrary")).fetch();
+//		profile.setSegmentLibrary(segments(objSegments));
+//		DBObject objDatatypes = ((DBRef) source.get("datatypeLibrary")).fetch();
+//		profile.setDatatypeLibrary(datatypes(objDatatypes));
+//		DBObject objTables = ((DBRef) source.get("tableLibrary")).fetch();
+//		profile.setTableLibrary(tables(objTables));
+//		DBObject objMessages = ((DBObject) source.get("messages"));
+//		profile.setMessages(messages(objMessages));
+//
+//		profile.setSectionContents((String) source.get("sectionContents"));
+//		profile.setSectionDescription((String) source.get("sectionDescription"));
+//		profile.setSectionPosition((Integer) source.get("sectionPosition"));
+//		profile.setSectionTitle((String) source.get("sectionTitle"));
+//
+//		profile.setConstraintId((String) source.get("constraintId"));
+//
+//		Object baseId = source.get("baseId");
+//		profile.setBaseId(baseId != null ? (String) baseId : null);
+//
+//		Object sourceId = source.get("sourceId");
+//		profile.setSourceId(sourceId != null ? (String) sourceId : null);
+//
 		return profile;
 	}
 
