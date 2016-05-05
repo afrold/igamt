@@ -1,11 +1,17 @@
 'use strict';
 
-angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications', 'IdleService','AutoSaveService','StorageService',
-    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle,notifications,IdleService,AutoSaveService,StorageService) {
+angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$location', 'userInfoService', '$modal', 'Restangular', '$filter', 'base64', '$http', 'Idle', 'notifications', 'IdleService','AutoSaveService','StorageService','ViewSettings','DatatypeService','ElementUtils',
+    function ($scope, $rootScope, i18n, $location, userInfoService, $modal, Restangular, $filter, base64, $http, Idle,notifications,IdleService,AutoSaveService,StorageService,ViewSettings,DatatypeService,ElementUtils) {
         //This line fetches the info from the server if the user is currently logged in.
         //If success, the app is updated according to the role.
         userInfoService.loadFromServer();
         $rootScope.loginDialog = null;
+
+        $rootScope.csWidth = null;
+        $rootScope.predWidth = null;
+        $rootScope.tableWidth = null;
+        $rootScope.commentWidth = null;
+        $scope.viewSettings = ViewSettings;
 
         $scope.language = function () {
             return i18n.language;
@@ -1528,6 +1534,126 @@ angular.module('igl').controller('MainCtrl', ['$scope', '$rootScope', 'i18n', '$
             }
             return "";
         };
+
+        $rootScope.getDynamicWidth = function (a, b, otherColumsWidth) {
+            var tableWidth = $rootScope.getTableWidth();
+            if (tableWidth > 0) {
+                var left = tableWidth - otherColumsWidth;
+                return {"width": a * parseInt(left / b) + "px"};
+            }
+            return "";
+        };
+
+
+
+        $rootScope.getTableWidth = function () {
+            if ($rootScope.tableWidth === null || $scope.tableWidth == 0) {
+                $rootScope.tableWidth = $("#nodeDetailsPanel").width();
+            }
+            return $rootScope.tableWidth;
+        };
+
+
+        $rootScope.getConstraintAsString = function (constraint) {
+            return constraint.constraintId + " - " + constraint.description;
+        };
+
+        $rootScope.getConformanceStatementAsString = function (constraint) {
+            return "[" + constraint.constraintId + "]" + constraint.description;
+        };
+
+        $rootScope.getPredicateAsString = function (constraint) {
+            return constraint.description;
+        };
+
+        $rootScope.getConstraintsAsString = function (constraints) {
+            var str = '';
+            for (var index in constraints) {
+                str = str + "<p style=\"text-align: left\">" + constraints[index].id + " - " + constraints[index].description + "</p>";
+            }
+            return str;
+        };
+
+        $rootScope.getPredicatesAsMultipleLinesString = function (node) {
+            var html = "";
+            angular.forEach(node.predicates, function (predicate) {
+                html = html + "<p>" + predicate.description + "</p>";
+            });
+            return html;
+        };
+
+        $rootScope.getPredicatesAsOneLineString = function (node) {
+            var html = "";
+            angular.forEach(node.predicates, function (predicate) {
+                html = html + predicate.description;
+            });
+            return $sce.trustAsHtml(html);
+        };
+
+
+        $rootScope.getConfStatementsAsMultipleLinesString = function (node) {
+            var html = "";
+            angular.forEach(node.conformanceStatements, function (conStatement) {
+                html = html + "<p>" + conStatement.id + " : " + conStatement.description + "</p>";
+            });
+            return html;
+        };
+
+        $rootScope.getConfStatementsAsOneLineString = function (node) {
+            var html = "";
+            angular.forEach(node.conformanceStatements, function (conStatement) {
+                html = html + conStatement.id + " : " + conStatement.description;
+            });
+            return $sce.trustAsHtml(html);
+        };
+
+        $rootScope.getSegmentRefNodeName = function (node) {
+            if (!$rootScope.segmentsMap[node.ref]) {
+                console.log("igdoc.id=" + $rootScope.igdocument.id);
+                console.log("node.id=" + node.id);
+                console.log("node.ref=" + node.ref);
+            }
+            return node.position + "." + $rootScope.segmentsMap[node.ref].name + ":" + $rootScope.segmentsMap[node.ref].description;
+        };
+
+        $rootScope.getGroupNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $rootScope.getFieldNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $rootScope.getComponentNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $rootScope.getDatatypeNodeName = function (node) {
+            return node.position + "." + node.name;
+        };
+
+        $rootScope.onColumnToggle = function (item) {
+            $rootScope.viewSettings.save();
+        };
+
+        $rootScope.getDatatypeLevelConfStatements = function (element) {
+            return DatatypeService.getDatatypeLevelConfStatements(element);
+        };
+
+        $rootScope.getDatatypeLevelPredicates = function (element) {
+            return DatatypeService.getDatatypeLevelPredicates(element);
+        };
+
+        $rootScope.isDatatypeSubDT = function (component) {
+            return DatatypeService.isDatatypeSubDT(component,$rootScope.datatype);
+        };
+
+
+        $rootScope.setUsage = function (node) {
+            ElementUtils.setUsage(node);
+            $scope.recordChanged();
+        };
+
 
 
     }]);

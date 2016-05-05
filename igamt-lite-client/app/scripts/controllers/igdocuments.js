@@ -1,4 +1,3 @@
-
 /**
  * Created by haffo on 1/12/15.
  */
@@ -30,14 +29,10 @@ angular.module('igl')
         $scope.toEditIGDocumentId = null;
         $scope.verificationResult = null;
         $scope.verificationError = null;
-        $scope.csWidth = null;
-        $scope.predWidth = null;
-        $scope.tableWidth = null;
-        $scope.commentWidth = null;
         $scope.loadingSelection = false;
         $scope.accordi = {metaData: false, definition: true, igList: true, igDetails: false};
         $rootScope.autoSaving = false;
-        AutoSaveService.stop();
+//        AutoSaveService.stop();
         $rootScope.saved = false;
 
 
@@ -53,10 +48,10 @@ angular.module('igl')
 
         $scope.segmentsParams = new ngTreetableParams({
             getNodes: function (parent) {
-                return SegmentService.getNodes(parent,$rootScope.segment);
+                return SegmentService.getNodes(parent, $rootScope.segment);
             },
             getTemplate: function (node) {
-                return SegmentService.getTemplate(node,$rootScope.segment);
+                return SegmentService.getTemplate(node, $rootScope.segment);
             }
         });
 
@@ -69,11 +64,6 @@ angular.module('igl')
             }
         });
 
-
-        $scope.isDatatypeSubDT = function (component) {
-            return DatatypeService.isDatatypeSubDT(component,$rootScope.datatype);
-        };
-
         $rootScope.closeIGDocument = function () {
             $rootScope.igdocument = null;
             $rootScope.isEditing = false;
@@ -81,7 +71,6 @@ angular.module('igl')
             $rootScope.initMaps();
             StorageService.setIgDocument(null);
             $rootScope.clearChanges();
-            AutoSaveService.stop();
         };
 
         $scope.getMessageParams = function () {
@@ -341,9 +330,9 @@ angular.module('igl')
                     $rootScope.igdocument = igdocument;
                     $rootScope.hl7Version = igdocument.profile.metaData.hl7Version;
                     //StorageService.setIgDocument($rootScope.igdocument);
-                    $scope.loadSegments().then(function(){
-                        $scope.loadDatatypes().then(function(){
-                            $scope.loadTables().then(function(){
+                    $scope.loadSegments().then(function () {
+                        $scope.loadDatatypes().then(function () {
+                            $scope.loadTables().then(function () {
                                 $scope.sortByLabels();
                                 $rootScope.initMaps();
                                 $scope.loadMastermap();
@@ -355,11 +344,9 @@ angular.module('igl')
                                 $scope.collectMessages();
                                 $scope.messagesParams = $scope.getMessageParams();
                                 $scope.loadIgDocumentMetaData();
-//                    AutoSaveService.stop();
-//                    AutoSaveService.start();
                                 waitingDialog.hide();
                             });
-                         });
+                        });
                     });
                 }, 100);
             }
@@ -392,59 +379,58 @@ angular.module('igl')
 
         $scope.loadDatatypes = function () {
             var delay = $q.defer();
-                DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.igdocument.profile.datatypeLibrary.id).then(function(children){
-                    $rootScope.igdocument.profile.datatypes = {};
-                    $rootScope.igdocument.profile.datatypes.children = children;
-                    $rootScope.igdocument.profile.datatypes.type = "datatypes";
+            DatatypeLibrarySvc.getDatatypesByLibrary($rootScope.igdocument.profile.datatypeLibrary.id).then(function (children) {
+                $rootScope.igdocument.profile.datatypes = {};
+                $rootScope.igdocument.profile.datatypes.children = children;
+                $rootScope.igdocument.profile.datatypes.type = "datatypes";
 
-                    delay.resolve(true);
-                },function(error){
-                    $rootScope.msg().text = "DatatypesLoadFailed";
-                    $rootScope.msg().type = "danger";
-                    $rootScope.msg().show = true;
-                    delay.reject(false);
+                delay.resolve(true);
+            }, function (error) {
+                $rootScope.msg().text = "DatatypesLoadFailed";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                delay.reject(false);
 
-                });
-             return delay.promise;
+            });
+            return delay.promise;
         };
 
         $scope.loadSegments = function () {
             var delay = $q.defer();
-                 SegmentLibrarySvc.getSegmentsByLibrary($rootScope.igdocument.profile.segmentLibrary.id).then(function(children){
-                    $rootScope.igdocument.profile.segments = {};
-                    $rootScope.igdocument.profile.segments.children = children;
-                     $rootScope.igdocument.profile.segments.type = "segments";
-                    delay.resolve(true);
-                },function(error){
-                    $rootScope.msg().text = "SegmentsLoadFailed";
-                    $rootScope.msg().type = "danger";
-                    $rootScope.msg().show = true;
-                    delay.reject(false);
-                });
-             return delay.promise;
+            SegmentLibrarySvc.getSegmentsByLibrary($rootScope.igdocument.profile.segmentLibrary.id).then(function (children) {
+                $rootScope.igdocument.profile.segments = {};
+                $rootScope.igdocument.profile.segments.children = children;
+                $rootScope.igdocument.profile.segments.type = "segments";
+                delay.resolve(true);
+            }, function (error) {
+                $rootScope.msg().text = "SegmentsLoadFailed";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                delay.reject(false);
+            });
+            return delay.promise;
         };
 
 
         $scope.loadTables = function () {
             var delay = $q.defer();
-                 TableLibrarySvc.getTablesByLibrary($rootScope.igdocument.profile.tableLibrary.id).then(function(children){
-                    $rootScope.igdocument.profile.tables = {};
-                    $rootScope.igdocument.profile.tables.children = children;
-                     $rootScope.igdocument.profile.tables.type = "tables";
+            TableLibrarySvc.getTablesByLibrary($rootScope.igdocument.profile.tableLibrary.id).then(function (children) {
+                $rootScope.igdocument.profile.tables = {};
+                $rootScope.igdocument.profile.tables.children = children;
+                $rootScope.igdocument.profile.tables.type = "tables";
 
-                     delay.resolve(true);
+                delay.resolve(true);
 
-                },function(error){
-                    $rootScope.msg().text = "TablesLoadFailed";
-                    $rootScope.msg().type = "danger";
-                    $rootScope.msg().show = true;
-                    delay.reject(false);
+            }, function (error) {
+                $rootScope.msg().text = "TablesLoadFailed";
+                $rootScope.msg().type = "danger";
+                $rootScope.msg().show = true;
+                delay.reject(false);
 
-                });
-             return delay.promise;
+            });
+            return delay.promise;
 
         };
-
 
 
         $scope.loadToc = function () {
@@ -452,11 +438,11 @@ angular.module('igl')
         };
 
         $scope.loadFilter = function () {
-          $rootScope.$emit('event:loadFilter', $rootScope.igdocument);
+            $rootScope.$emit('event:loadFilter', $rootScope.igdocument);
         };
 
         $scope.loadMastermap = function () {
-          $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
+            $rootScope.$emit('event:loadMastermap', $rootScope.igdocument);
         };
 
         $scope.collectDatatypes = function () {
@@ -464,9 +450,6 @@ angular.module('igl')
             $rootScope.datatypes = $rootScope.igdocument.profile.datatypes.children;
             angular.forEach($rootScope.igdocument.profile.datatypes.children, function (child) {
                 this[child.id] = child;
-                if (child.displayName) {
-                    child.label = child.displayName;
-                }
             }, $rootScope.datatypesMap);
         };
 
@@ -475,9 +458,6 @@ angular.module('igl')
             $rootScope.segments = [];
             angular.forEach($rootScope.igdocument.profile.segments.children, function (child) {
                 this[child.id] = child;
-                if (child.displayName) {
-                    child.label = child.displayName;
-                }
             }, $rootScope.segmentsMap);
         };
 
@@ -796,11 +776,11 @@ angular.module('igl')
                 SegmentService.get(segment.id).then(function (result) {
                     $rootScope.segment = angular.copy(segment);
                     $rootScope.segment["type"] = "segment";
-                    $scope.tableWidth = null;
-                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                    $scope.csWidth = $scope.getDynamicWidth(1, 3, 990);
-                    $scope.predWidth = $scope.getDynamicWidth(1, 3, 990);
-                    $scope.commentWidth = $scope.getDynamicWidth(1, 3, 990);
+                    $rootScope.tableWidth = null;
+                    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                    $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                    $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 990);
+                    $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 990);
                     $scope.loadingSelection = false;
                     if ($scope.segmentsParams)
                         $scope.segmentsParams.refresh();
@@ -842,11 +822,11 @@ angular.module('igl')
                     $rootScope.datatype = angular.copy(result);
                     $scope.loadingSelection = false;
                     $rootScope.datatype["type"] = "datatype";
-                    $scope.tableWidth = null;
-                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                    $scope.csWidth = $scope.getDynamicWidth(1, 3, 890);
-                    $scope.predWidth = $scope.getDynamicWidth(1, 3, 890);
-                    $scope.commentWidth = $scope.getDynamicWidth(1, 3, 890);
+                    $rootScope.tableWidth = null;
+                    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                    $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                    $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                    $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 890);
                     $scope.loadingSelection = false;
                     if ($scope.datatypesParams)
                         $scope.datatypesParams.refresh();
@@ -865,11 +845,11 @@ angular.module('igl')
             $rootScope.message = message;
             $timeout(
                 function () {
-                    $scope.tableWidth = null;
-                    $scope.scrollbarWidth = $scope.getScrollbarWidth();
-                    $scope.csWidth = $scope.getDynamicWidth(1, 3, 630);
-                    $scope.predWidth = $scope.getDynamicWidth(1, 3, 630);
-                    $scope.commentWidth = $scope.getDynamicWidth(1, 3, 630);
+                    $rootScope.tableWidth = null;
+                    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                    $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                    $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 630);
+                    $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 630);
                     $scope.loadingSelection = false;
 //                   if ($scope.messagesParams)
 //                        $scope.messagesParams.refresh();
@@ -906,116 +886,11 @@ angular.module('igl')
                 }, 100);
         };
 
-
-        $scope.getTableWidth = function () {
-            if ($scope.tableWidth === null || $scope.tableWidth == 0) {
-                $scope.tableWidth = $("#nodeDetailsPanel").width();
-            }
-            return $scope.tableWidth;
-        };
-
-        $scope.getDynamicWidth = function (a, b, otherColumsWidth) {
-            var tableWidth = $scope.getTableWidth();
-            if (tableWidth > 0) {
-                var left = tableWidth - otherColumsWidth;
-                return {"width": a * parseInt(left / b) + "px"};
-            }
-            return "";
-        };
-
-
-        $scope.getConstraintAsString = function (constraint) {
-            return constraint.constraintId + " - " + constraint.description;
-        };
-
-        $scope.getConformanceStatementAsString = function (constraint) {
-            return "[" + constraint.constraintId + "]" + constraint.description;
-        };
-
-        $scope.getPredicateAsString = function (constraint) {
-            return constraint.description;
-        };
-
-        $scope.getConstraintsAsString = function (constraints) {
-            var str = '';
-            for (var index in constraints) {
-                str = str + "<p style=\"text-align: left\">" + constraints[index].id + " - " + constraints[index].description + "</p>";
-            }
-            return str;
-        };
-
-        $scope.getPredicatesAsMultipleLinesString = function (node) {
-            var html = "";
-            angular.forEach(node.predicates, function (predicate) {
-                html = html + "<p>" + predicate.description + "</p>";
-            });
-            return html;
-        };
-
-        $scope.getPredicatesAsOneLineString = function (node) {
-            var html = "";
-            angular.forEach(node.predicates, function (predicate) {
-                html = html + predicate.description;
-            });
-            return $sce.trustAsHtml(html);
-        };
-
-
-        $scope.getConfStatementsAsMultipleLinesString = function (node) {
-            var html = "";
-            angular.forEach(node.conformanceStatements, function (conStatement) {
-                html = html + "<p>" + conStatement.id + " : " + conStatement.description + "</p>";
-            });
-            return html;
-        };
-
-        $scope.getConfStatementsAsOneLineString = function (node) {
-            var html = "";
-            angular.forEach(node.conformanceStatements, function (conStatement) {
-                html = html + conStatement.id + " : " + conStatement.description;
-            });
-            return $sce.trustAsHtml(html);
-        };
-
-        $scope.getSegmentRefNodeName = function (node) {
-            if (!$rootScope.segmentsMap[node.ref]) {
-                console.log("igdoc.id=" + $rootScope.igdocument.id);
-                console.log("node.id=" + node.id);
-                console.log("node.ref=" + node.ref);
-            }
-            return node.position + "." + $rootScope.segmentsMap[node.ref].name + ":" + $rootScope.segmentsMap[node.ref].description;
-        };
-
-        $scope.getGroupNodeName = function (node) {
-            return node.position + "." + node.name;
-        };
-
-        $scope.getFieldNodeName = function (node) {
-            return node.position + "." + node.name;
-        };
-
-        $scope.getComponentNodeName = function (node) {
-            return node.position + "." + node.name;
-        };
-
-        $scope.getDatatypeNodeName = function (node) {
-            return node.position + "." + node.name;
-        };
-
-        $scope.onColumnToggle = function (item) {
-            $scope.viewSettings.save();
-        };
-
         $scope.getFullName = function () {
             if (userInfoService.isAuthenticated() === true) {
                 return userInfoService.getFullName();
             }
             return '';
-        };
-
-        $scope.setUsage = function (node) {
-            ElementUtils.setUsage(node);
-            $scope.recordChanged();
         };
 
 

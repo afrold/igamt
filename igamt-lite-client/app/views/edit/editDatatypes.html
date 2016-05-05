@@ -1681,26 +1681,28 @@
 <div class="modal-body">
     <div class="row">
         <div class="col-md-12">
-            <h4>Current Datatype: {{getLabel(currentDatatype)}}</h4>
+            <div class="col-md-12">
+                <h4>Current Datatype: {{getLabel(currentDatatype)}}</h4>
 
-            <div class="form-inline">
+                <div class="form-inline">
                  <span class="btn-group btn-group-sm pull-left" data-toggle="buttons">
                     <label class="btn  btn-primary btn-sm" ng-click="findFlavors()"
                            ng-class="{'active':scope === 'USER'}">
                         <input ng-disabled="resultsLoading" type="radio" value="USER"
-                               ng-model="$parent.scope"><i class="fa fa-th-list"></i>MY DATA TYPES
+                               ng-model="scope"><i class="fa fa-th-list"></i>MY DATA TYPES
                     </label>
                     <label class="btn  btn-primary btn-sm" ng-click="findFlavors()"
                            ng-class="{'active':scope === 'HL7STANDARD'}">
                         <input ng-disabled="resultsLoading" type="radio" value="HL7STANDARD"
-                               ng-model="$parent.scope"><i class="fa fa-th-list"></i>HL7 DATA TYPES
+                               ng-model="scope"><i class="fa fa-th-list"></i>HL7 DATA TYPES
                     </label>
                     <label class="btn  btn-primary btn-sm" ng-click="findFlavors()"
                            ng-class="{'active':scope === 'MASTER'}">
                         <input ng-disabled="resultsLoading" type="radio" value="MASTER"
-                               ng-model="$parent.scope"><i class="fa fa-th-list"></i>MASTER DATA TYPES
+                               ng-model="scope"><i class="fa fa-th-list"></i>MASTER DATA TYPES
                     </label>
                 </span>
+                </div>
             </div>
         </div>
     </div>
@@ -1860,7 +1862,7 @@
                     </div>
                 </div>
                 <!--<div ng-show="loadingSelection" style="text-align:center">-->
-                    <!--<i class="fa fa-circle-o-notch fa-spin fa-2x"></i>-->
+                <!--<i class="fa fa-circle-o-notch fa-spin fa-2x"></i>-->
                 <!--</div>-->
             </div>
         </div>

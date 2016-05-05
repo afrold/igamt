@@ -3,37 +3,46 @@
  */
 'use strict';
 angular.module('igl').factory('DatatypeService',
-    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q', function ($rootScope, ViewSettings, ElementUtils, $http, $q) {
+    ['$rootScope', 'ViewSettings', 'ElementUtils', '$http', '$q','FilteringSvc', function ($rootScope, ViewSettings, ElementUtils, $http, $q,FilteringSvc) {
         var DatatypeService = {
-
-
-
             getNodes: function (parent, root) {
+                var children = [];
                 if (parent && parent != null) {
                     if (parent.datatype) {
                         var dt = $rootScope.datatypesMap[parent.datatype];
-                        return dt.components;
+                        children = dt.components;
                     } else {
-                        return parent.components;
+                        children = parent.components;
                     }
                 } else {
                     if (root != null) {
-                        return root.components;
+                        children = root.components;
                     } else {
-                        return [];
+                        children = [];
                     }
                 }
+                return children;
             },
             getParent: function (child) {
-                return $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
+                var template =  $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
+                return template;
             },
             getTemplate: function (node, root) {
                 if (ViewSettings.tableReadonly || root != null && root.scope === 'HL7STANDARD' || root.scope === null) {
-                    return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeSubComponentReadTree.html' : '';
+                    return DatatypeService.getReadTemplate(node,root);
                 } else {
-                    return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeSubComponentEditTree.html' : '';
+                    return DatatypeService.getEditTemplate(node,root);
                 }
             },
+
+            getReadTemplate: function (node, root) {
+               return node.type === 'Datatype' ? 'DatatypeReadTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeComponentReadTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeSubComponentReadTree.html' : '';
+            },
+
+            getEditTemplate: function (node, root) {
+                return node.type === 'Datatype' ? 'DatatypeEditTree.html' : node.type === 'component' && !DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeComponentEditTree.html' : node.type === 'component' && DatatypeService.isDatatypeSubDT(node,root) ? 'DatatypeSubComponentEditTree.html' : '';
+            },
+
             isDatatypeSubDT: function (component,root) {
                 if (root != null) {
                     for (var i = 0, len = root.components.length; i < len; i++) {
@@ -48,8 +57,8 @@ angular.module('igl').factory('DatatypeService',
                 return children != null && children.length > 0;
             },
             isVisible: function (node) {
-                return FilteringSvc.show(node);
-//                 return  node ? DatatypeService.isRelevant(node) ? DatatypeService.isVisible(DatatypeService.getParent(node)) : false : true;
+//                return FilteringSvc.show(node);
+                 return  node ? DatatypeService.isRelevant(node) ? DatatypeService.isVisible(DatatypeService.getParent(node)) : false : true;
             },
             isRelevant: function (node) {
                 if (node === undefined || !ViewSettings.tableRelevance)
