@@ -3,6 +3,8 @@
 *target*
 *.project*
 *.classpath*
+.metadata
+Servers
 *bower-components*
 *node_modules*
 *.tmp*
