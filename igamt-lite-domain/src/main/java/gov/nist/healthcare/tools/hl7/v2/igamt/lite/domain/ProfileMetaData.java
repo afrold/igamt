@@ -25,6 +25,8 @@ public class ProfileMetaData extends MetaData {
 	
 	private String topics = ""; 				//ConformanceProfile/MetaData/@Topics
 	
+	private String profileID = "";
+	
 	/* XSD Attributes END */
 	
 	
@@ -111,5 +113,13 @@ public class ProfileMetaData extends MetaData {
 
 	public void setSpecificationName(String specificationName) {
 		this.specificationName = specificationName;
+	}
+
+	public String getProfileID() {
+		return profileID;
+	}
+
+	public void setProfileID(String profileID) {
+		this.profileID = profileID;
 	}
 }

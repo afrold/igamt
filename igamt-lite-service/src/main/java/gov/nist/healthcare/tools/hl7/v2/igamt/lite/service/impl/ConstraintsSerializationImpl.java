@@ -11,9 +11,35 @@
 
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.SegmentService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.TableService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -26,6 +52,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import nu.xom.Attribute;
+import nu.xom.Builder;
+import nu.xom.NodeFactory;
+import nu.xom.ParsingException;
+import nu.xom.ValidityException;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -33,27 +66,18 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByName;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ByNameOrByID;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.ConformanceStatement;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraint;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Constraints;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Context;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Predicate;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.constraints.Reference;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.util.ExportUtil;
-import nu.xom.Attribute;
-import nu.xom.Builder;
-import nu.xom.NodeFactory;
-import nu.xom.ParsingException;
-import nu.xom.ValidityException;
 
 public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 
+	@Autowired
+	private DatatypeService datatypeService;
+	
+	@Autowired
+	private SegmentService segmentService;
+	
+	@Autowired
+	private TableService tableService;
+	
 	public String releaseConstraintId(String xmlConstraints){
 		if(xmlConstraints != null){
 			Document conformanceContextDoc = this.stringToDom(xmlConstraints);
@@ -129,8 +153,8 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 	
 	@Override
 	public nu.xom.Document serializeConstraintsToDoc(Profile profile) {
-		Constraints predicates = profile.getPredicates();
-		Constraints conformanceStatements = profile.getConformanceStatements();
+		Constraints predicates = findAllPredicates(profile);
+		Constraints conformanceStatements = findAllConformanceStatement(profile);
 		
 		
 		nu.xom.Element e = new nu.xom.Element("ConformanceContext");
@@ -163,10 +187,10 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 		
 		return new nu.xom.Document(e);
 	}
-	
+
 	private nu.xom.Document serializeConstraintsToDoc(DatatypeLibrary datatypeLibrary) {
-		Constraints predicates = datatypeLibrary.getPredicates();
-		Constraints conformanceStatements = datatypeLibrary.getConformanceStatements();
+		Constraints predicates = findAllPredicates(datatypeLibrary);
+		Constraints conformanceStatements = findAllConformanceStatement(datatypeLibrary);
 		
 		
 		nu.xom.Element e = new nu.xom.Element("ConformanceContext");
@@ -492,6 +516,195 @@ public class ConstraintsSerializationImpl implements ConstraintsSerialization {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	
+	private Constraints findAllConformanceStatement(Profile profile) {
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+		Context sContext = new Context();
+		Context gContext = new Context();
+		Context mContext = new Context();
+
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Message m : profile.getMessages().getChildren()) {
+			ByID byID = new ByID();
+			byID.setByID(m.getMessageID());
+			if (m.getConformanceStatements().size() > 0) {
+				byID.setConformanceStatements(m.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		mContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Message m : profile.getMessages().getChildren()) {
+			for (SegmentRefOrGroup srog: m.getChildren()){
+				if (srog instanceof Group) {
+					Group g = (Group)srog;
+					ByID byID = new ByID();
+					byID.setByID("" + g.getName());
+					if (g.getConformanceStatements().size() > 0) {
+						byID.setConformanceStatements(g.getConformanceStatements());
+						byNameOrByIDs.add(byID);
+					}
+				}
+			}
+		}
+		gContext.setByNameOrByIDs(byNameOrByIDs);
+				
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
+			Segment s = segmentService.findById(sl.getId());
+			ByID byID = new ByID();
+			byID.setByID(sl.getLabel());
+			if (s.getConformanceStatements().size() > 0) {
+				byID.setConformanceStatements(s.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		sContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
+			Datatype d = datatypeService.findById(dl.getId());
+			ByID byID = new ByID();
+			byID.setByID(dl.getLabel());
+			if (d.getConformanceStatements().size() > 0) {
+				byID.setConformanceStatements(d.getConformanceStatements());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+		constraints.setDatatypes(dtContext);
+		constraints.setSegments(sContext);
+		constraints.setGroups(gContext);
+		constraints.setMessages(mContext);
+		return constraints;
+	}
+
+	private Constraints findAllPredicates(Profile profile) {
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+		Context sContext = new Context();
+		Context gContext = new Context();
+		Context mContext = new Context();
+
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Message m : profile.getMessages().getChildren()) {
+			ByID byID = new ByID();
+			byID.setByID(m.getMessageID());
+			if (m.getPredicates().size() > 0) {
+				byID.setPredicates(m.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		mContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (Message m : profile.getMessages().getChildren()) {
+			for (SegmentRefOrGroup srog: m.getChildren()){
+				if (srog instanceof Group) {
+					Group g = (Group)srog;
+					ByID byID = new ByID();
+					byID.setByID(g.getName());
+					if (g.getPredicates().size() > 0) {
+						byID.setPredicates(g.getPredicates());
+						byNameOrByIDs.add(byID);
+					}
+				}
+			}
+		}
+		gContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (SegmentLink sl : profile.getSegmentLibrary().getChildren()) {
+			Segment s = segmentService.findById(sl.getId());
+			ByID byID = new ByID();
+			byID.setByID(sl.getLabel());
+			if (s.getPredicates().size() > 0) {
+				byID.setPredicates(s.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		sContext.setByNameOrByIDs(byNameOrByIDs);
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (DatatypeLink dl : profile.getDatatypeLibrary().getChildren()) {
+			Datatype d = datatypeService.findById(dl.getId());
+			ByID byID = new ByID();
+			byID.setByID(dl.getLabel());
+			if (d.getPredicates().size() > 0) {
+				byID.setPredicates(d.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+		constraints.setDatatypes(dtContext);
+		constraints.setSegments(sContext);
+		constraints.setGroups(gContext);
+		constraints.setMessages(mContext);
+		return constraints;
+	}
+	
+	
+	private Constraints findAllConformanceStatement(DatatypeLibrary datatypeLibrary) {
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+		Context sContext = new Context();
+		Context gContext = new Context();
+		Context mContext = new Context();
+		
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+
+		byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (DatatypeLink dl : datatypeLibrary.getChildren()) {
+			Datatype d = datatypeService.findById(dl.getId());
+			ByID byID = new ByID();
+			byID.setByID(dl.getLabel());
+			if (d.getPredicates().size() > 0) {
+				byID.setPredicates(d.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+
+		constraints.setDatatypes(dtContext);
+		constraints.setSegments(sContext);
+		constraints.setGroups(gContext);
+		constraints.setMessages(mContext);
+		return constraints;
+	}
+
+	private Constraints findAllPredicates(DatatypeLibrary datatypeLibrary) {
+		Constraints constraints = new Constraints();
+		Context dtContext = new Context();
+		Context sContext = new Context();
+		Context gContext = new Context();
+		Context mContext = new Context();
+		
+		Set<ByNameOrByID> byNameOrByIDs = new HashSet<ByNameOrByID>();
+		for (DatatypeLink dl : datatypeLibrary.getChildren()) {
+			Datatype d = datatypeService.findById(dl.getId());
+			ByID byID = new ByID();
+			byID.setByID(dl.getLabel());
+			if (d.getPredicates().size() > 0) {
+				byID.setPredicates(d.getPredicates());
+				byNameOrByIDs.add(byID);
+			}
+		}
+		dtContext.setByNameOrByIDs(byNameOrByIDs);
+		
+		
+		constraints.setDatatypes(dtContext);
+		constraints.setSegments(sContext);
+		constraints.setGroups(gContext);
+		constraints.setMessages(mContext);
+		return constraints;
 	}
 
 }

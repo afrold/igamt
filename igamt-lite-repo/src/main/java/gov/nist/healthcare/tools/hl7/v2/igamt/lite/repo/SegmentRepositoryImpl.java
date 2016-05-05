@@ -23,9 +23,9 @@ import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
 
-public class SegmentRespositoryImpl implements SegmentOperations {
+public class SegmentRepositoryImpl implements SegmentOperations {
 
-	private Logger log = LoggerFactory.getLogger(SegmentRespositoryImpl.class);
+	private Logger log = LoggerFactory.getLogger(SegmentRepositoryImpl.class);
 
 	@Autowired
 	private MongoOperations mongo;
