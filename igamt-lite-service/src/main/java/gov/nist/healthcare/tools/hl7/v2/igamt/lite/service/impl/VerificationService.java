@@ -1,21 +1,5 @@
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.impl;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerificationResult;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
@@ -30,6 +14,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.NullInputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -38,11 +23,35 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Code;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Component;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.DatatypeLibrary;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerification;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.ElementVerificationResult;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Field;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Group;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Message;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Profile;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRef;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.SegmentRefOrGroup;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Table;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.TableLink;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Usage;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.repo.SegmentRepository;
+
 
 @Service
 public class VerificationService {
 
-
+	@Autowired
+	private SegmentRepository segmentRepository;
+	
+	@Autowired
+	private TabelRepository tableRepository;
+	
 	public VerificationService() {
 		super();
 	}
@@ -105,7 +114,8 @@ public class VerificationService {
 
 	public ElementVerification verifySegments(Profile p, Profile baseP, String id, String type) {
 		ElementVerification evsLib = new ElementVerification(id, type);
-		for (Segment s : p.getSegmentLibrary().getChildren()){
+		for (SegmentLink sl : p.getSegmentLibrary().getChildren()){
+			Segment s = segmentRepository.findOne(sl.getId());
 			ElementVerification evs = verifySegment(p, baseP, s.getId(), s.getType());
 			evs.addChildrenVerification(evsLib);
 		}
@@ -114,7 +124,7 @@ public class VerificationService {
 
 	public ElementVerification verifySegment(Profile p, Profile baseP, String id, String type) {
 		ElementVerification evs = new ElementVerification(id, type);
-		Segment s = p.getSegmentLibrary().findOneSegmentById(id);
+		Segment s = segmentRepository.findOne(id);
 		for (Field f : s.getFields()){
 			ElementVerification evf = verifyField(p, baseP, f.getId(), f.getType());
 			evs.addChildrenVerification(evf);
@@ -124,7 +134,7 @@ public class VerificationService {
 
 	public InputStream verifySegment2(Profile p, Profile baseP, String id, String type) {
 		String result = "";
-		Segment s = p.getSegmentLibrary().findOneSegmentById(id);
+		Segment s = segmentRepository.findOne(id);
 
 		try {
 			//Create temporary file
@@ -335,7 +345,7 @@ public class VerificationService {
 	public ElementVerification verifyValueSet(Profile p, Profile baseP, String id, String type) {
 		// Type is ValueSet (or Table)
 		String result = "";
-		Table t = p.getTableLibrary().findOneTableById(id);
+		TableLink t = p.getTableLibrary().findOneTableById(id);
 		ElementVerification evt = new ElementVerification(id, type);
 		for (Code c : t.getCodes()){
 			result = this.validateChangeUsage(p.getMetaData().getHl7Version(), 

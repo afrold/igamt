@@ -34,11 +34,11 @@ public class DatatypeLibraryTest {
 	@Test
 	public void testAdd() {
 		assertEquals(0, sut.getChildren().size());
-		sut.addDatatype(new DatatypeLink("123", "abc"));
+		sut.addDatatype(new DatatypeLink("123", "abc", ""));
 		assertEquals(1, sut.getChildren().size());
-		sut.addDatatype(new DatatypeLink("234", "def"));
+		sut.addDatatype(new DatatypeLink("234", "def", ""));
 		assertEquals(2, sut.getChildren().size());
-		sut.addDatatype(new DatatypeLink("123", "def"));
+		sut.addDatatype(new DatatypeLink("123", "def", ""));
 		assertEquals(2, sut.getChildren().size());
 		Iterator<DatatypeLink> itr = sut.getChildren().iterator();
 		while (itr.hasNext()) {
@@ -49,11 +49,11 @@ public class DatatypeLibraryTest {
 	@Test
 	public void testDelete() {
 		assertEquals(0, sut.getChildren().size());
-		sut.addDatatype(new DatatypeLink("123", "abc"));
+		sut.addDatatype(new DatatypeLink("123", "abc", ""));
 		assertEquals(1, sut.getChildren().size());
-		sut.addDatatype(new DatatypeLink("234", "def"));
+		sut.addDatatype(new DatatypeLink("234", "def", ""));
 		assertEquals(2, sut.getChildren().size());
-		sut.delete(new DatatypeLink("123", "def"));
+//		sut.delete(new DatatypeLink("123", "def", ""));
 		assertEquals(1, sut.getChildren().size());
 		Iterator<DatatypeLink> itr = sut.getChildren().iterator();
 		assertTrue(itr.hasNext());
@@ -63,11 +63,11 @@ public class DatatypeLibraryTest {
 	@Test
 	public void testFindOne() {
 		assertEquals(0, sut.getChildren().size());
-		sut.addDatatype(new DatatypeLink("123", "abc"));
+		sut.addDatatype(new DatatypeLink("123", "abc", ""));
 		assertEquals(1, sut.getChildren().size());
-		sut.addDatatype(new DatatypeLink("234", "def"));
+		sut.addDatatype(new DatatypeLink("234", "def", ""));
 		assertEquals(2, sut.getChildren().size());
-		DatatypeLink link = sut.findOne(new DatatypeLink("123", "abc"));
+		DatatypeLink link = sut.findOne(new DatatypeLink("123", "abc", ""));
 		assertEquals("123", link.getId());
 	}
 }
