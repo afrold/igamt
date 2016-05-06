@@ -118,33 +118,39 @@ angular
       }
     };
 
-    svc.show = function(leaf){
+    svc.showToC = function(leaf){
       var rst1 = false;
       _.each(svc.getMsgmodel(), function(filterElt){
         rst1 = rst1 || svc.filterByMsg(leaf, filterElt);
       });
-      console.log("check1");
-      console.log(rst1);
+//       console.log("show toc");
+//       console.log(rst1);
+      return rst1;
+    };
+
+    svc.show = function(leaf){
+    // Attention
+    return true;
+      if (leaf === undefined) {
+        console.log("undefined");
+        return true;
+      }
+      var rst1 = false;
+      _.each(svc.getMsgmodel(), function(filterElt){
+        rst1 = rst1 || svc.filterByMsg(leaf, filterElt);
+      });
 
       var validUsages = [];
       _.each(svc.getUsagesmodel(), function(filterElt){
         validUsages.push(filterElt.label);
-      });
-      var rst2 = svc.filterByUsage(leaf, validUsages);
+        });
+       var rst2 = svc.filterByUsage(leaf, validUsages);
 
-      console.log("check2");
-      console.log(rst2);
-
-      var rst = rst1 && rst2;
-      if (rst === undefined){
-        console.log(leaf.type)
-        console.log(leaf)
-        console.log(MastermapSvc.getElement(leaf.id, leaf.type));
-        console.log(MastermapSvc.getUsage(leaf.id, leaf.type));
-
+       var rst = rst2; //!!!
+//       var rst = rst1 && rst2;
+       if (rst === undefined){
         rst = true;
       }
-      //       console.log(rst);
       return rst;
     };
 
@@ -165,12 +171,6 @@ angular
             return true;
           } else {
             var leafUsages = MastermapSvc.getUsage(leaf.id, leaf.type);
-/*             console.log(leaf.id);
-            console.log(leaf.type);
-            console.log("leaf usage");
-            console.log(leafUsages);
-            console.log("filter")
-            console.log(filter); */
             var rst = false;
             _.each(leafUsages, function(usg){
               rst = rst || (filter.indexOf(usg) !== -1);

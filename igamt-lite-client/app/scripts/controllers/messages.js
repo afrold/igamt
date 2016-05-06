@@ -3,16 +3,16 @@
  */
 
 angular.module('igl')
-    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
+    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, FilteringSvc) {
 
     	$scope.init = function () {
         };
-        
+
         $scope.copy = function(message) {
         		CloneDeleteSvc.copyMessage(message);
     			$rootScope.$broadcast('event:SetToC');
         }
-        
+
         $scope.close = function () {
             $rootScope.message = null;
             if ($scope.messagesParams)
@@ -23,15 +23,15 @@ angular.module('igl')
     			CloneDeleteSvc.deleteMessage(message);
 			$rootScope.$broadcast('event:SetToC');
          }
-        
+
         $scope.goToSegment = function (segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
         };
-        
+
         $scope.goToDatatype = function (datatype) {
             $scope.$emit('event:openDatatype', datatype);
         };
-        
+
         $scope.goToTable = function (table) {
             $scope.$emit('event:openTable', table);
         };
@@ -49,9 +49,9 @@ angular.module('igl')
           }else {
           	return false;
           }
-          
+
         };
-        
+
         $scope.isSub = function (component) {
             return $scope.isSubDT(component);
         };
@@ -99,7 +99,7 @@ angular.module('igl')
             }, function () {
             });
         };
-        
+
         $scope.countPredicate = function (position) {
             if ($rootScope.message != null) {
                 for (var i = 0, len1 = $rootScope.message.predicates.length; i < len1; i++) {
@@ -108,6 +108,14 @@ angular.module('igl')
                 }
             }
             return 0;
+        };
+
+        $scope.isVisible = function(node){
+          if(node && node != null){
+            return FilteringSvc.show(node);
+          } else {
+            return true;
+          }
         };
     });
 
@@ -167,15 +175,15 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     $scope.complexConstraint = null;
     $scope.complexConstraintTrueUsage = null;
     $scope.complexConstraintFalseUsage = null;
-    
+
     $scope.changed = false;
     $scope.tempPredicates = [];
     angular.copy($scope.selectedMessage.predicates, $scope.tempPredicates);
-    
+
     $scope.setChanged = function () {
     	$scope.changed = true;
     }
-       
+
     $scope.initPredicate = function(){
     	$scope.newConstraint = angular.fromJson({
             position_1: null,
@@ -224,8 +232,8 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         $scope.tempPredicates.splice($scope.tempPredicates.indexOf(predicate), 1);
         $scope.changed = true;
     };
-    
-    
+
+
     $scope.deletePredicateByTarget = function () {
         for (var i = 0, len1 = $scope.tempPredicates.length; i < len1; i++) {
             if ($scope.tempPredicates[i].constraintTarget === $scope.selectedNode.path) {
@@ -367,7 +375,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         $scope.newConstraint.currentNode_2 = null;
 
     };
-    
+
     $scope.addComplexPredicate = function(){
         $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
@@ -377,7 +385,7 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     	$scope.initComplexPredicate();
         $scope.changed = true;
     };
-    
+
 
     $scope.addPredicate = function () {
         if ($scope.newConstraint.position_1 != null) {
@@ -393,13 +401,13 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     $scope.ok = function () {
         $modalInstance.close($scope.selectedNode);
     };
-    
+
     $scope.saveclose = function () {
     	angular.copy($scope.tempPredicates, $scope.selectedMessage.predicates);
     	$rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);
     };
-    
+
     $scope.initPredicate();
 
 });
@@ -413,22 +421,22 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     $scope.compositeType = null;
     $scope.complexConstraint = null;
     $scope.newComplexConstraintId = '';
-    
+
     $scope.changed = false;
     $scope.tempComformanceStatements = [];
     angular.copy($scope.selectedMessage.conformanceStatements, $scope.tempComformanceStatements);
-    
+
     $scope.setChanged = function () {
     	$scope.changed = true;
     }
-    
+
     $scope.initComplexStatement = function () {
     	$scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
         $scope.newComplexConstraintId = '';
     }
-    
+
     $scope.initConformanceStatement = function (){
     	$scope.newConstraint = angular.fromJson({
             position_1: null,
@@ -608,7 +616,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     	$scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
         $scope.changed = true;
     };
-    
+
     $scope.addComplexConformanceStatement = function(){
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
     	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
@@ -616,7 +624,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     	$scope.initComplexStatement();
         $scope.changed = true;
     };
-    
+
     $scope.addConformanceStatement = function () {
         if ($scope.newConstraint.position_1 != null) {
         	$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
@@ -625,7 +633,7 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             $scope.tempComformanceStatements.push(cs);
             $scope.changed = true;
         }
-        
+
         $scope.initConformanceStatement();
     };
 
@@ -633,14 +641,14 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     	angular.forEach($scope.tempComformanceStatements, function (cs) {
     		$rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf(cs.constraintId), 1);
     	});
-    	
+
     	angular.forEach($scope.selectedMessage.conformanceStatements, function (cs) {
     		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
     	});
-    	
+
         $modalInstance.close($scope.selectedNode);
     };
-    
+
     $scope.saveclose = function () {
     	angular.forEach($scope.tempComformanceStatements, function (cs) {
     		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);

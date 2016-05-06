@@ -237,7 +237,7 @@
 </script>
 
 <script type="text/ng-template" id="MessageSegmentRefEditTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisible(node.obj)">
         <td class="col-xs-2 col-fixed-250">
             <span class="label label-segment label-icon">S</span>
             <a ng-click="goToSegment(node.obj.ref)" class="point"
@@ -338,7 +338,7 @@
 </script>
 
 <script type="text/ng-template" id="MessageGroupEditTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisible(node.obj)">
         <td class="col-xs-2 col-fixed-250">
         	<span>
             	<span class="label label-success label-icon">G</span>
@@ -445,7 +445,7 @@
 </script>
 
 <script type="text/ng-template" id="MessageFieldViewTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisible(node.obj)">
         <td class="col-xs-2 col-fixed-250">
             <span class="label label-field label-icon" ng-show="node.obj.type === 'field'">F</span>
             <span class="label label-sub-component label-icon" ng-show="node.obj.type === 'subcomponent'">S</span>
@@ -571,7 +571,7 @@
 </script>
 
 <script type="text/ng-template" id="MessageComponentViewTree.html">
-    <tr tt-node is-branch="hasChildren(node.obj)">
+    <tr tt-node is-branch="hasChildren(node.obj)" ng-show="isVisible(node.obj)">
         <td class="col-xs-2 col-fixed-250">
         	<span>
 <span class="label label-field label-icon" ng-show="node.obj.type === 'field'">F</span>
@@ -783,7 +783,7 @@
             <td class="col-md-2">
                 <span>{{newConstraint.location_1}}</span>
 				<span ng-show="newConstraint.childNodes_1 != null && newConstraint.childNodes_1.length > 0">
-					<select class="form-control form-control-short" name="child" 
+					<select class="form-control form-control-short" name="child"
                             ng-change="updateLocation1()"
                             ng-model="newConstraint.currentNode_1"
                             ng-options="child as child.name for child in newConstraint.childNodes_1"/>
@@ -807,7 +807,7 @@
             </td>
 
             <td class="col-md-2">
-                								<span ng-show="newConstraint.contraintType == 'a literal value' || 
+                								<span ng-show="newConstraint.contraintType == 'a literal value' ||
 															   newConstraint.contraintType == 'equal to' ||
 															   newConstraint.contraintType == 'not-equal to' ||
 															   newConstraint.contraintType == 'greater than' ||
@@ -841,7 +841,7 @@
 															   newConstraint.contraintType == 'equal to or less than another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
-														<select class="form-control form-control-short" name="child" 
+														<select class="form-control form-control-short" name="child"
                                                                 ng-change="updateLocation2()"
                                                                 ng-model="newConstraint.currentNode_2"
                                                                 ng-options="child as child.name for child in newConstraint.childNodes_2"/>
@@ -1015,7 +1015,7 @@
 		</label>
    	</div>
 
-	<table class="table table-striped table-bordered" ng-show="constraintType === 'Plain'">	
+	<table class="table table-striped table-bordered" ng-show="constraintType === 'Plain'">
 		<thead>
 			<tr class="tbl-header">
 				<th class="col-md-1" style="width: 4.1667%"></th>
@@ -1105,7 +1105,7 @@
                                                                 ng-options="child as child.name for child in newConstraint.childNodes_2"/>
 													</span>
                 								</span>
-										
+
 												<span ng-show="newConstraint.contraintType == 'not-equal to another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
@@ -1115,7 +1115,7 @@
                                                                 ng-options="child as child.name for child in newConstraint.childNodes_2"/>
 													</span>
                 								</span>
-	
+
 												<span ng-show="newConstraint.contraintType == 'greater than another node'">
 													<span>{{newConstraint.location_2}}</span>
 													<span ng-show="newConstraint.childNodes_2 != null && newConstraint.childNodes_2.length > 0">
@@ -1155,7 +1155,7 @@
                                                                 ng-options="child as child.name for child in newConstraint.childNodes_2"/>
 													</span>
                 								</span>
-												
+
 												<span ng-show="newConstraint.contraintType == 'equal to'">
                 									<input class="form-control"
                                                            ng-model="newConstraint.value" type="text"/>
@@ -1175,7 +1175,7 @@
                 									<input class="form-control"
                                                            ng-model="newConstraint.value" type="text"/>
                 								</span>
-											
+
 												<span ng-show="newConstraint.contraintType == 'less than'">
                 									<input class="form-control"
                                                            ng-model="newConstraint.value" type="text"/>
@@ -1185,7 +1185,7 @@
                 									<input class="form-control"
                                                            ng-model="newConstraint.value" type="text"/>
                 								</span>
-						
+
 												<span ng-show="newConstraint.contraintType == 'one of codes in ValueSet'">
                 									<span>ValueSet ID: </span>
 													<select class="form-control form-control-short" name="valueSetId" class="form-control"
@@ -1216,7 +1216,7 @@
 </tr>
 </tbody>
 </table>
-	
+
 	<table class="table table-striped table-bordered" ng-show="constraintType === 'Complex'">
 		<thead>
 			<tr class="tbl-header">
