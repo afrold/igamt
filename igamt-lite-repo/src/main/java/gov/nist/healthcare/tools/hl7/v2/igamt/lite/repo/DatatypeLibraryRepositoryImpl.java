@@ -67,9 +67,10 @@ public class DatatypeLibraryRepositoryImpl implements DatatypeLibraryOperations 
 		
 		@Override
 		public List<String> findHl7Versions() {
-			Query qry = new Query();
+			Criteria where = Criteria.where("scope").is(SCOPE.HL7STANDARD);
+			Query qry = Query.query(where);
 			qry.fields().include("metaData.hl7Version");
-			List<DatatypeLibrary> dtLibs = mongo.findAll(DatatypeLibrary.class);
+			List<DatatypeLibrary> dtLibs = mongo.find(qry, DatatypeLibrary.class);
 			List<String> versions = new ArrayList<String>();
 			for (DatatypeLibrary dtLib : dtLibs) {
 				versions.add(dtLib.getMetaData().getHl7Version());

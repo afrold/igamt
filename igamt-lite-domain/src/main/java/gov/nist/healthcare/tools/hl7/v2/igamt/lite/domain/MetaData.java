@@ -8,15 +8,15 @@ public class MetaData implements java.io.Serializable, Cloneable {
 		super();
 	}
 
-	private String name; 						//ConformanceProfile/MetaData/@Name
+	private String name;
 	
-	private String orgName; 				//ConformanceProfile/MetaData/@OrgName
+	private String orgName;
 	
-	private String version; 				//ConformanceProfile/MetaData/@Version
+	private String version;
 	
-	private String hl7Version; 				//ConformanceProfile/MetaData/@Version
+	private String hl7Version;
 	
-	private String date; 	 				//ConformanceProfile/MetaData/@Date
+	private String date; 	 			
 
 	private String ext;
 	

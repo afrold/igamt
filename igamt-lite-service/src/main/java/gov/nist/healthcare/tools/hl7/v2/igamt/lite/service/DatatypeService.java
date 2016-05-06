@@ -29,4 +29,6 @@ public interface DatatypeService {
 	List<Datatype> findByIds(List<String> ids);
 
 	List<Datatype> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
+
+	List<Datatype> bindDatatypes(List<String> datatypeIds, String datatyeLibraryId);
 }

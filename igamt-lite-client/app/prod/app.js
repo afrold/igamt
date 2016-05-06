@@ -360,7 +360,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
     $rootScope.requests401 = [];
 
     $rootScope.$on('event:loginRequired', function () {
-//            console.log("in loginRequired event");
+            console.log("in loginRequired event");
         $rootScope.showLoginDialog();
     });
 
@@ -368,6 +368,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
      * On 'event:loginConfirmed', resend all the 401 requests.
      */
     $rootScope.$on('event:loginConfirmed', function () {
+//    	console.log("event:loginConfirmed 0");
         var i,
             requests = $rootScope.requests401,
             retry = function (req) {
@@ -380,7 +381,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
             retry(requests[i]);
         }
         $rootScope.requests401 = [];
-
+//console.log("event:loginConfirmed 1");
         $location.url('/ig');
     });
 
@@ -389,7 +390,8 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
      * On 'event:loginRequest' send credentials to the server.
      */
     $rootScope.$on('event:loginRequest', function (event, username, password) {
-        httpHeaders.common['Accept'] = 'application/json';
+//       	console.log("event:loginRequest 0");
+       httpHeaders.common['Accept'] = 'application/json';
         httpHeaders.common['Authorization'] = 'Basic ' + base64.encode(username + ':' + password);
 //        httpHeaders.common['withCredentials']=true;
 //        httpHeaders.common['Origin']="http://localhost:9000";
@@ -409,6 +411,7 @@ app.run(function ($rootScope, $location, Restangular, $modal, $filter, base64, u
                 userInfoService.setCurrentUser(null);
             });
         });
+//       	console.log("event:loginRequest 1");
     });
 
     /**
