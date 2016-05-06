@@ -8,25 +8,21 @@
  * modified freely provided that any derivative works bear some notice that they are derived from it, and any
  * modified versions bear some notice that they have been modified.
  */
-package gov.nist.healthcare.tools.hl7.v2.igamt.lite.service;
+package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception;
 
-import java.util.List;
+/**
+ * @author gcr1
+ * 
+ */
+public class SegmentDeleteException extends Exception {
 
-import org.springframework.stereotype.Service;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Segment;
-
-public interface SegmentService {
-	
-	Segment findById(String id);
-	
-	Segment save(Segment segment);
-
-	List<Segment> findByLibIds(String segLibId);
-
-	List<Segment> findByScopesAndVersion(List<SCOPE> scopes, String hl7Version);
-	
-	void delete(Segment segment);
+	public SegmentDeleteException(String error) {
+		super(error);
+	}
 
 }

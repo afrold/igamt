@@ -84,5 +84,17 @@ angular.module('igl').factory('SegmentLibrarySvc', function($http, userInfoServi
 			return angular.fromJson(response.data)});
 	};
 
+    svc.addSegment = function(segmentLibrary, segment) {
+
+
+
+
+        return $http.post(
+
+            'api/segment-library/save', angular.toJson(segmentLibrary)).then(function(response) {
+                return angular.fromJson(response.data)});
+    };
+
+
 	return svc;
 });

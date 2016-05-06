@@ -45,5 +45,6 @@ public class Constant {
 	public enum SCOPE {HL7STANDARD, MASTER, USER};
 	public enum QUANTUM {BREVIS, SUMMA};
 	public final static String ORG_NAME = "NIST";
+	public static enum STATUS {PUBLISHED, UNPUBLISHED};
 
 }

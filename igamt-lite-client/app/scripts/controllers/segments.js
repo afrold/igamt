@@ -3,7 +3,7 @@
  */
 
 angular.module('igl')
-    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService, FilteringSvc) {
+    .controller('SegmentListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, CloneDeleteSvc, $filter, $http, $modal, $timeout,SegmentService,FieldService, FilteringSvc, MastermapSvc) {
 //        $scope.loading = false;
         $scope.readonly = false;
         $scope.saved = false;
@@ -276,9 +276,9 @@ angular.module('igl')
             SegmentService.save($rootScope.segment).then(function (result) {
                 var index = indexOf(result.id);
                 if (index === -1) { // new segment
-                    $rootScope.igdocument.profile.segments.children.push(result);
+                    $rootScope.igdocument.profile.segmentLibrary.children.push(result);
                 } else {
-                    SegmentService.merge($rootScope.igdocument.profile.segments.children[index], result);
+                    SegmentService.merge($rootScope.igdocument.profile.segmentLibrary.children[index], result);
                 }
                 $scope.saving = false;
                 $scope.selectedChildren = [];
@@ -306,8 +306,8 @@ angular.module('igl')
         };
 
         var searchById = function (id) {
-            var children = $rootScope.igdocument.profile.segments.children;
-            for (var i = 0; i < $rootScope.igdocument.profile.segments.children; i++) {
+            var children = $rootScope.igdocument.profile.segmentLibrary.children;
+            for (var i = 0; i < $rootScope.igdocument.profile.segmentLibrary.children; i++) {
                 if (children[i].id === id) {
                     return children[i];
                 }
@@ -316,13 +316,41 @@ angular.module('igl')
         };
 
         var indexOf = function (id) {
-            var children = $rootScope.igdocument.profile.segments.children;
+            var children = $rootScope.igdocument.profile.segmentLibrary.children;
             for (var i = 0; i < children; i++) {
                 if (children[i].id === id) {
                     return i;
                 }
             }
             return -1;
+
+        };
+
+
+        $scope.showSelectDatatypeFlavorDlg = function (field) {
+            var modalInstance = $modal.open({
+                templateUrl: 'SelectDatatypeFlavor.html',
+                controller: 'SelectDatatypeFlavorCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    currentNode: function () {
+                        return field;
+                    },
+                    hl7Version: function () {
+                        return $rootScope.igdocument.metaData.hl7Version;
+                    }
+                }
+            });
+            modalInstance.result.then(function (datatype) {
+                field.datatype = datatype.id;
+                //TODO: load master map
+                if (!$rootScope.datatypesMap[field.datatype] || $rootScope.datatypesMap[field.datatype] == null) {
+                    $rootScope.datatypesMap[field.datatype] = datatype;
+                }
+                MastermapSvc.addDatatype(datatype.id, [field.id,field.type]);
+                if ($scope.segmentsParams)
+                    $scope.segmentsParams.refresh();
+            });
 
         };
 
@@ -661,95 +689,43 @@ angular.module('igl').controller('ConformanceStatementSegmentCtrl', function ($s
 });
 
 
-angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $modalInstance, segToDelete, $rootScope) {
+angular.module('igl').controller('ConfirmSegmentDeleteCtrl', function ($scope, $rootScope, $modalInstance, segToDelete, $rootScope, SegmentService) {
     $scope.segToDelete = segToDelete;
     $scope.loading = false;
-
     $scope.delete = function () {
         $scope.loading = true;
-        // Contrary to popular belief, we must remove the segment from both places.
-        var index = _.findIndex($rootScope.igdocument.profile.segments.children, function(child) {
-        		return child.id === $scope.segToDelete.id;
-	    });
-	    if (index > -1) $rootScope.igdocument.profile.segments.children.splice(index, 1);
-        var index = _.findIndex($rootScope.segments, function(child) {
-        		return child.id === $scope.segToDelete.id;
+        SegmentService.delete($scope.segToDelete.id, $rootScope.igdocument.profile.segmentLibrary.id).then(function(result){
+            // Contrary to popular belief, we must remove the segment from both places.
+            var index = _.findIndex($rootScope.igdocument.profile.segmentLibrary.children, function(child) {
+                return child.id === $scope.segToDelete.id;
+            });
+            if (index > -1) $rootScope.igdocument.profile.segmentLibrary.children.splice(index, 1);
+            var index = _.findIndex($rootScope.segments, function(child) {
+                return child.id === $scope.segToDelete.id;
+            });
+            if (index > -1) $rootScope.segments.splice(index, 1);
+
+            if ($rootScope.segment === $scope.segToDelete) {
+                $rootScope.segment = null;
+            }
+            $rootScope.segmentsMap[$scope.segToDelete.id] = null;
+            $rootScope.references = [];
+            if ($scope.segToDelete.id >= 0) {
+                 $rootScope.recordDelete("segment", "edit", $scope.segToDelete.id);
+            }
+            $rootScope.msg().text = "segDeleteSuccess";
+            $rootScope.msg().type = "success";
+            $rootScope.msg().show = true;
+            $rootScope.manualHandle = true;
+            $scope.loading = false;
+            $rootScope.$broadcast('event:SetToC');
+            $modalInstance.close($scope.segToDelete);
+        },function(error){
+            $rootScope.msg().text = error.text;
+            $rootScope.msg().type = "danger";
+            $rootScope.msg().show = true;
+            $rootScope.manualHandle = true;
         });
-        if (index > -1) $rootScope.segments.splice(index, 1);
-
-        if ($rootScope.segment === $scope.segToDelete) {
-            $rootScope.segment = null;
-        }
-        $rootScope.segmentsMap[$scope.segToDelete.id] = null;
-        $rootScope.references = [];
-        if ($scope.segToDelete.id < 0) {
-//            var index = $rootScope.changes["segment"]["add"].indexOf($scope.segToDelete);
-//            if (index > -1) $rootScope.changes["segment"]["add"].splice(index, 1);
-//            if ($rootScope.changes["segment"]["add"] && $rootScope.changes["segment"]["add"].length === 0) {
-//                delete  $rootScope.changes["segment"]["add"];
-//            }
-//            if ($rootScope.changes["segment"] && Object.getOwnPropertyNames($rootScope.changes["segment"]).length === 0) {
-//                delete  $rootScope.changes["segment"];
-//            }
-        } else {
-            $rootScope.recordDelete("segment", "edit", $scope.segToDelete.id);
-//            if ($scope.segToDelete.components != undefined && $scope.segToDelete.components != null && $scope.segToDelete.components.length > 0) {
-//
-//                //clear components changes
-//                angular.forEach($scope.dtToDelete.components, function (component) {
-//                    $rootScope.recordDelete("component", "edit", component.id);
-//                    $rootScope.removeObjectFromChanges("component", "delete", component.id);
-//                });
-//                if ($rootScope.changes["component"]["delete"] && $rootScope.changes["component"]["delete"].length === 0) {
-//                    delete  $rootScope.changes["component"]["delete"];
-//                }
-//
-//                if ($rootScope.changes["component"] && Object.getOwnPropertyNames($rootScope.changes["component"]).length === 0) {
-//                    delete  $rootScope.changes["component"];
-//                }
-//
-//            }
-//
-//            if ($scope.segToDelete.predicates != undefined && $scope.segToDelete.predicates != null && $scope.segToDelete.predicates.length > 0) {
-//                //clear predicates changes
-//                angular.forEach($scope.segToDelete.predicates, function (predicate) {
-//                    $rootScope.recordDelete("predicate", "edit", predicate.id);
-//                    $rootScope.removeObjectFromChanges("predicate", "delete", predicate.id);
-//                });
-//                if ($rootScope.changes["predicate"]["delete"] && $rootScope.changes["predicate"]["delete"].length === 0) {
-//                    delete  $rootScope.changes["predicate"]["delete"];
-//                }
-//
-//                if ($rootScope.changes["predicate"] && Object.getOwnPropertyNames($rootScope.changes["predicate"]).length === 0) {
-//                    delete  $rootScope.changes["predicate"];
-//                }
-//
-//            }
-//
-//            if ($scope.dtToDelete.conformanceStatements != undefined && $scope.dtToDelete.conformanceStatements != null && $scope.dtToDelete.conformanceStatements.length > 0) {
-//                //clear conforamance statement changes
-//                angular.forEach($scope.dtToDelete.conformanceStatements, function (confStatement) {
-//                    $rootScope.recordDelete("conformanceStatement", "edit", confStatement.id);
-//                    $rootScope.removeObjectFromChanges("conformanceStatement", "delete", confStatement.id);
-//                });
-//                if ($rootScope.changes["conformanceStatement"]["delete"] && $rootScope.changes["conformanceStatement"]["delete"].length === 0) {
-//                    delete  $rootScope.changes["conformanceStatement"]["delete"];
-//                }
-//
-//                if ($rootScope.changes["conformanceStatement"] && Object.getOwnPropertyNames($rootScope.changes["conformanceStatement"]).length === 0) {
-//                    delete  $rootScope.changes["conformanceStatement"];
-//                }
-//            }
-        }
-
-
-        $rootScope.msg().text = "segDeleteSuccess";
-        $rootScope.msg().type = "success";
-        $rootScope.msg().show = true;
-        $rootScope.manualHandle = true;
-		$rootScope.$broadcast('event:SetToC');
-        $modalInstance.close($scope.segToDelete);
-
     };
 
     $scope.cancel = function () {

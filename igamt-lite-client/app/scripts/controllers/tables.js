@@ -194,8 +194,8 @@ angular.module('igl').controller('ConfirmValueSetDeleteCtrl', function ($scope, 
         // We must delete from two collections.
         var index = $rootScope.tables.indexOf(tableToDelete)
         $rootScope.tables.splice(index, 1);
-        var index = $rootScope.igdocument.profile.tables.children.indexOf($scope.tableToDelete);
-        if (index > -1) $rootScope.igdocument.profile.tables.children.splice(index, 1);
+        var index = $rootScope.igdocument.profile.tableLibrary.children.indexOf($scope.tableToDelete);
+        if (index > -1) $rootScope.igdocument.profile.tableLibrary.children.splice(index, 1);
         $rootScope.tablesMap[tableToDelete.id] = undefined;
         
         $rootScope.generalInfo.type = 'info';

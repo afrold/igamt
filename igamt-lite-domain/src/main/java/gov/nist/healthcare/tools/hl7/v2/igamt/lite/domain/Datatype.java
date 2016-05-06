@@ -43,10 +43,7 @@ Cloneable, Comparable<Datatype> {
 	protected String comment = "";
 
 	protected String usageNote = "";
-	
-	public static enum STATUS {PUBLISHED, UNPUBLISHED};
-	
-	protected STATUS status; 
+
 	
 	public String getId() {
 		return id;
@@ -127,13 +124,7 @@ Cloneable, Comparable<Datatype> {
 		this.usageNote = usageNote;
 	}
 	
-	public STATUS getStatus() {
-		return status;
-	}
-
-	public void setStatus(STATUS status) {
-		this.status = status;
-	}
+ 
 
 	@Override
 	public String toString() {

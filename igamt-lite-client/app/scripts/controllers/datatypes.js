@@ -2,7 +2,7 @@
  * Created by haffo on 2/13/15.
  */
 angular.module('igl')
-    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService) {
+    .controller('DatatypeListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, ViewSettings, DatatypeService, ComponentService,MastermapSvc) {
         $scope.readonly = false;
         $scope.saved = false;
         $scope.message = false;
@@ -271,9 +271,9 @@ angular.module('igl')
             DatatypeService.save($rootScope.datatype).then(function (result) {
                 var index = indexOf(result.id);
                 if (index === -1) { // new datatype
-                    $rootScope.igdocument.profile.datatypes.children.push(result);
+                    $rootScope.igdocument.profile.datatypeLibrary.children.push(result);
                 } else {
-                    DatatypeService.merge($rootScope.igdocument.profile.datatypes.children[index], result);
+                    DatatypeService.merge($rootScope.igdocument.profile.datatypeLibrary.children[index], result);
                 }
                 $scope.saving = false;
                 $scope.selectedChildren = [];
@@ -301,8 +301,8 @@ angular.module('igl')
         };
 
         var searchById = function (id) {
-            var children = $rootScope.igdocument.profile.datatypes.children;
-            for (var i = 0; i < $rootScope.igdocument.profile.datatypes.children; i++) {
+            var children = $rootScope.igdocument.profile.datatypeLibrary.children;
+            for (var i = 0; i < $rootScope.igdocument.profile.datatypeLibrary.children; i++) {
                 if (children[i].id === id) {
                     return children[i];
                 }
@@ -311,7 +311,7 @@ angular.module('igl')
         };
 
         var indexOf = function (id) {
-            var children = $rootScope.igdocument.profile.datatypes.children;
+            var children = $rootScope.igdocument.profile.datatypeLibrary.children;
             for (var i = 0; i < children; i++) {
                 if (children[i].id === id) {
                     return i;
@@ -321,35 +321,27 @@ angular.module('igl')
 
         };
 
-        $scope.showSelectFlavorDlg = function(node){
+        $scope.showSelectDatatypeFlavorDlg = function (component) {
             var modalInstance = $modal.open({
                 templateUrl: 'SelectDatatypeFlavor.html',
                 controller: 'SelectDatatypeFlavorCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
                     currentNode: function () {
-                        return node;
+                        return component;
                     },
                     hl7Version: function () {
                         return $rootScope.igdocument.metaData.hl7Version;
                     }
                 }
             });
-            modalInstance.result.then(function (selected) {
-                node.datatype = selected.id;
+            modalInstance.result.then(function (datatype) {
+                component.datatype = datatype.id;
                 //TODO: load master map
-                if(!$rootScope.datatypesMap[node.datatype] || $rootScope.datatypesMap[node.datatype] == null){
-                    DatatypeService.getOne(selected.id).then(function(result) {
-                        $rootScope.datatypesMap[node.datatype] = result;
-                        if ($scope.datatypesParams)
-                            $scope.datatypesParams.refresh();
-                    },function(error){
-
-                    });
-                }else{
-                    if ($scope.datatypesParams)
-                        $scope.datatypesParams.refresh();
-                }
+                $rootScope.datatypesMap[component.datatype] = datatype;
+                MastermapSvc.addDatatype(datatype.id, [component.id,component.type]);
+                if ($scope.datatypesParams)
+                    $scope.datatypesParams.refresh();
             });
 
         };
@@ -364,51 +356,124 @@ angular.module('igl')
     });
 
 angular.module('igl')
-    .controller('SelectDatatypeFlavorCtrl', function ($scope, $filter,$modalInstance, $rootScope, $http,currentNode,DatatypeService,$rootScope, hl7Version) {
-        $scope.error = null;
-        $scope.searching = null;
+    .controller('SelectDatatypeFlavorCtrl', function ($scope, $filter, $modalInstance, $rootScope, $http, currentNode, DatatypeService, $rootScope, hl7Version,ngTreetableParams,ViewSettings) {
+        $scope.resultsError = null;
+        $scope.viewSettings = ViewSettings;
+        $scope.resultsLoading = null;
         $scope.results = [];
         $scope.tmpResults = [].concat($scope.results);
-        $scope.selected = null;
-        $scope.hl7Version = hl7Version;
         $scope.currentNode = currentNode;
-        $scope.currentDatatype = $rootScope.datatypesMap[currentNode.datatype];
-        $scope.scope = $scope.currentDatatype != null && $scope.currentDatatype  ? $scope.currentDatatype.scope : null;
-        $scope.name = $scope.currentDatatype != null && $scope.currentDatatype  ? $scope.currentDatatype.name : null;
+        $scope.currentDatatype =  $rootScope.datatypesMap[currentNode.datatype];
+        $scope.selection = {scope: $scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.scope : null, hl7Version:hl7Version, datatype: null, name:$scope.currentDatatype != null && $scope.currentDatatype ? $scope.currentDatatype.name:null};
 
-        $scope.loadDatatype = function(){
-            $scope.error = null;
-            $scope.searching = true;
+        $scope.datatypeFlavorParams = new ngTreetableParams({
+            getNodes: function (parent) {
+                return DatatypeService.getNodes(parent,$scope.selection.datatype);
+            },
+            getTemplate: function (node) {
+                return DatatypeService.getReadTemplate(node,$scope.selection.datatype);
+            }
+        });
+
+        $scope.isRelevant = function (node) {
+            var rel = DatatypeService.isRelevant(node);
+            return rel;
+        };
+
+        $scope.isBranch = function (node) {
+            var isBran = DatatypeService.isBranch(node);
+            return isBran;
+        };
+
+
+        $scope.isVisible = function (node) {
+            var isVis = DatatypeService.isVisible(node);
+            return isVis;
+        };
+
+        $scope.children = function (node) {
+            var chil = DatatypeService.getNodes(node);
+            return chil;
+        };
+
+        $scope.getParent = function (node) {
+            var par = DatatypeService.getParent(node);
+            return par;
+        };
+
+        $scope.isChildSelected = function (component) {
+            return  $scope.selectedChildren.indexOf(component) >= 0;
+        };
+
+        $scope.isChildNew = function (component) {
+            return component && component != null && component.status === 'DRAFT';
+        };
+
+
+        $scope.hasChildren = function (node) {
+            return node && node != null && node.datatype && $rootScope.getDatatype(node.datatype) != undefined && $rootScope.getDatatype(node.datatype).components != null && $rootScope.getDatatype(node.datatype).components.length > 0;
+        };
+
+        $scope.validateLabel = function (label, name) {
+            if (label && !label.startsWith(name)) {
+                return false;
+            }
+            return true;
+        };
+
+        $scope.findFlavors = function () {
+            $scope.resultsError = null;
+            $scope.resultsLoading = true;
             $scope.results = [];
             $scope.tmpResults = [].concat($scope.results);
-            if($scope.name != null && $scope.scope != null) {
-                DatatypeService.findFlavors($scope.name, $scope.scope,$scope.hl7Version).then(function (results) {
-                    $scope.results = results;
-                    $scope.tmpResults = [].concat($scope.results);
-                    $scope.searching = false;
+            DatatypeService.findFlavors($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (results) {
+                $scope.results = results;
+                $scope.tmpResults = [].concat($scope.results);
+                $scope.resultsLoading = false;
+            }, function (error) {
+                $scope.resultsError = null;
+                $scope.resultsLoading = false;
+            });
+        };
+
+        $scope.isDatatypeSubDT = function (component) {
+            return DatatypeService.isDatatypeSubDT(component,$scope.selection.datatype);
+        };
+
+        $scope.isSelected = function (datatype) {
+            return  $scope.selection.datatype != null && datatype != null && $scope.selection.datatype.id == datatype.id;
+        };
+
+        $scope.showDatatype = function (datatype) {
+             if (datatype && datatype != null) {
+                 $scope.datatypeError = null;
+                 $scope.loadingSelection = true;
+                DatatypeService.getOne(datatype.id).then(function (result) {
+                    $scope.selection.datatype = datatype;
+                    $scope.selection.datatype["type"] = "datatype";
+                    $rootScope.tableWidth = null;
+                    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                    $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                    $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                    $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                    $scope.loadingSelection = false;
+                    if ($scope.datatypeFlavorParams)
+                        $scope.datatypeFlavorParams.refresh();
                 }, function (error) {
-                    $scope.error = null;
-                    $scope.searching = false;
+                    $scope.loadingSelection = false;
+                    $scope.datatypeError = error.data.text;
+
                 });
             }
         };
 
-        $scope.isSelected = function (datatype) {
-            return  $scope.selected != null && datatype != null && $scope.selected.id == datatype.id;
-        };
-
-        $scope.selectDatatype = function($event, datatype){
-            $scope.selected = datatype;
-        };
-
         $scope.submit = function () {
-            $modalInstance.close($scope.selected);
+            $modalInstance.close($scope.$scope.selection.datatype);
         };
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
     });
-
 
 
 angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, $modalInstance, dtToDelete, $rootScope) {
@@ -422,8 +487,8 @@ angular.module('igl').controller('ConfirmDatatypeDeleteCtrl', function ($scope, 
         if ($rootScope.datatype === $scope.dtToDelete) {
             $rootScope.datatype = null;
         }
-        var index = $rootScope.igdocument.profile.datatypes.children.indexOf($scope.dtToDelete);
-        if (index > -1) $rootScope.igdocument.profile.datatypes.children.splice(index, 1);
+        var index = $rootScope.igdocument.profile.datatypeLibrary.children.indexOf($scope.dtToDelete);
+        if (index > -1) $rootScope.igdocument.profile.datatypeLibrary.children.splice(index, 1);
         $rootScope.datatypesMap[$scope.dtToDelete.id] = null;
         $rootScope.references = [];
         if ($scope.dtToDelete.id < 0) { //datatype flavor

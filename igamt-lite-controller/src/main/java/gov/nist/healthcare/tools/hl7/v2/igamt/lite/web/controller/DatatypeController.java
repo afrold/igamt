@@ -10,6 +10,14 @@
  */
 package gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller;
 
+import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
+import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
+import gov.nist.healthcare.nht.acmgt.service.UserService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeSaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
+
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,15 +28,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
-import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
-import gov.nist.healthcare.nht.acmgt.service.UserService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeSaveResponse;
-import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 
 /**
  * @author Harold Affo (harold.affo@nist.gov) Mar 17, 2015
@@ -71,16 +72,31 @@ public class DatatypeController extends CommonController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public DatatypeSaveResponse save(@RequestBody Datatype datatype) throws DatatypeSaveException {
+	public DatatypeSaveResponse save(@RequestBody Datatype datatype)
+			throws DatatypeSaveException {
 		log.debug("datatypeLibrary=" + datatype);
 		log.debug("datatypeLibrary.getId()=" + datatype.getId());
 		log.info("Saving the " + datatype.getScope() + " datatype library.");
 		User u = userService.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
+		Account account = accountRepository.findByTheAccountsUsername(u
+				.getUsername());
 		datatype.setAccountId(account.getId());
 		Datatype saved = datatypeService.save(datatype);
 		log.debug("saved.getId()=" + saved.getId());
 		log.debug("saved.getScope()=" + saved.getScope());
-		return new DatatypeSaveResponse(saved.getName(), saved.getScope().name());
+		return new DatatypeSaveResponse(saved.getName(), saved.getScope()
+				.name());
+	}
+
+	@RequestMapping(value = "/findFlavors", method = RequestMethod.GET, produces = "application/json")
+	public List<Datatype> findFlavors(@RequestParam("name") String name,
+			@RequestParam("hl7Version") String hl7Version,
+			@RequestParam("scope") String scope) {
+		log.info("Finding flavors of datatype, name=" + name + ", hl7Version="
+				+ hl7Version + ", scope=" + scope + "...");
+		List<Datatype> datatypes = 
+		
+		Datatype result = datatypeService.findById(id);
+		return result;
 	}
 }

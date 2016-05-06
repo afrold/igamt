@@ -3,55 +3,83 @@
  */
 
 angular.module('igl')
-    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc) {
+    .controller('MessageListCtrl', function ($scope, $rootScope, Restangular, ngTreetableParams, $filter, $http, $modal, $timeout, CloneDeleteSvc, MastermapSvc) {
 
-    	$scope.init = function () {
+        $scope.init = function () {
         };
-        
-        $scope.copy = function(message) {
-        		CloneDeleteSvc.copyMessage(message);
-    			$rootScope.$broadcast('event:SetToC');
+
+        $scope.copy = function (message) {
+            CloneDeleteSvc.copyMessage(message);
+            $rootScope.$broadcast('event:SetToC');
         }
-        
+
         $scope.close = function () {
             $rootScope.message = null;
             if ($scope.messagesParams)
                 $scope.messagesParams.refresh();
         };
 
-        $scope.delete = function(message) {
-    			CloneDeleteSvc.deleteMessage(message);
-			$rootScope.$broadcast('event:SetToC');
-         }
-        
+        $scope.delete = function (message) {
+            CloneDeleteSvc.deleteMessage(message);
+            $rootScope.$broadcast('event:SetToC');
+        }
+
         $scope.goToSegment = function (segmentId) {
             $scope.$emit('event:openSegment', $rootScope.segmentsMap[segmentId]);
         };
-        
+
+
+        $scope.showSelectSegmentFlavorDlg = function (segmentRef) {
+            var modalInstance = $modal.open({
+                templateUrl: 'SelectSegmentFlavor.html',
+                controller: 'SelectSegmentFlavorCtrl',
+                windowClass: 'app-modal-window',
+                resolve: {
+                    currentNode: function () {
+                        return segmentRef;
+                    },
+                    hl7Version: function () {
+                        return $rootScope.igdocument.metaData.hl7Version;
+                    }
+                }
+            });
+            modalInstance.result.then(function (segment) {
+                segmentRef.ref = segment.id;
+                //TODO: load master map
+                if (!$rootScope.segmentsMap[segmentRef.ref] || $rootScope.segmentsMap[segmentRef.ref] == null) {
+                    $rootScope.segmentsMap[segmentRef.ref] = segment;
+                }
+                MastermapSvc.addSegment(segment.id, [segmentRef.id, segmentRef.type]);
+                if ($scope.messagesParams)
+                    $scope.messagesParams.refresh();
+            });
+        };
+
+
         $scope.goToDatatype = function (datatype) {
             $scope.$emit('event:openDatatype', datatype);
         };
-        
+
         $scope.goToTable = function (table) {
             $scope.$emit('event:openTable', table);
         };
 
         $scope.hasChildren = function (node) {
-          if(node && node != null){
-          	if(node.type === 'group'){
-          		return node.children && node.children.length > 0;
-          	}else if(node.type === 'segmentRef'){
-          		return $rootScope.segmentsMap[node.ref].fields && $rootScope.segmentsMap[node.ref].fields.length > 0;
-          	}else if(node.type === 'field' || node.type === 'component'){
-          		return $rootScope.datatypesMap[node.datatype].components && $rootScope.datatypesMap[node.datatype].components.length > 0;
-          	}
-          	return false;
-          }else {
-          	return false;
-          }
-          
+            if (node && node != null) {
+                if (node.type === 'group') {
+                    return node.children && node.children.length > 0;
+                } else if (node.type === 'segmentRef') {
+                    return $rootScope.segmentsMap[node.ref].fields && $rootScope.segmentsMap[node.ref].fields.length > 0;
+                } else if (node.type === 'field' || node.type === 'component') {
+                    return $rootScope.datatypesMap[node.datatype].components && $rootScope.datatypesMap[node.datatype].components.length > 0;
+                }
+                return false;
+            } else {
+                return false;
+            }
+
         };
-        
+
         $scope.isSub = function (component) {
             return $scope.isSubDT(component);
         };
@@ -69,9 +97,9 @@ angular.module('igl')
                     selectedMessage: function () {
                         return message;
                     },
-            		selectedNode: function () {
-            			return node;
-            		}
+                    selectedNode: function () {
+                        return node;
+                    }
                 }
             });
             modalInstance.result.then(function (node) {
@@ -86,12 +114,12 @@ angular.module('igl')
                 controller: 'PredicateMessageCtrl',
                 windowClass: 'app-modal-window',
                 resolve: {
-                	selectedMessage: function () {
+                    selectedMessage: function () {
                         return message;
                     },
-            		selectedNode: function () {
-            			return node;
-            		}
+                    selectedNode: function () {
+                        return node;
+                    }
                 }
             });
             modalInstance.result.then(function (node) {
@@ -99,7 +127,7 @@ angular.module('igl')
             }, function () {
             });
         };
-        
+
         $scope.countPredicate = function (position) {
             if ($rootScope.message != null) {
                 for (var i = 0, len1 = $rootScope.message.predicates.length; i < len1; i++) {
@@ -115,6 +143,160 @@ angular.module('igl')
 angular.module('igl')
     .controller('MessageRowCtrl', function ($scope, $filter) {
         $scope.formName = "form_" + new Date().getTime();
+    });
+
+
+angular.module('igl')
+    .controller('SelectSegmentFlavorCtrl', function ($scope, $filter, $modalInstance, $rootScope, $http, currentNode, segmentLibrary, SegmentService, $rootScope, hl7Version, ngTreetableParams, ViewSettings, SegmentLibrarySvc) {
+        $scope.resultsError = null;
+        $scope.viewSettings = ViewSettings;
+        $scope.segmentLibrary = segmentLibrary;
+        $scope.resultsLoading = null;
+        $scope.results = [];
+        $scope.bindingError = null;
+        $scope.tmpResults = [].concat($scope.results);
+        $scope.currentNode = currentNode;
+        $scope.currentSegment = $rootScope.segmentsMap[currentNode.ref];
+        $scope.selection = {scope: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.scope : null, hl7Version: hl7Version, segment: null, name: $scope.currentSegment != null && $scope.currentSegment ? $scope.currentSegment.name : null};
+
+
+        $scope.segmentFlavorParams = new ngTreetableParams({
+            getNodes: function (parent) {
+                return SegmentService.getNodes(parent, $scope.selection.segment);
+            },
+            getTemplate: function (node) {
+                return SegmentService.getTemplate(node, $scope.selection.segment);
+            }
+        });
+
+        $scope.findFlavors = function () {
+            $scope.bindingError = null;
+            $scope.resultsError = null;
+            $scope.resultsLoading = true;
+            $scope.results = [];
+            $scope.tmpResults = [].concat($scope.results);
+            SegmentService.findFlavors($scope.selection.name, $scope.selection.scope, $scope.selection.hl7Version).then(function (results) {
+                $scope.results = results;
+                $scope.tmpResults = [].concat($scope.results);
+                $scope.resultsLoading = false;
+            }, function (error) {
+                $scope.resultsError = null;
+                $scope.resultsLoading = false;
+            });
+        };
+
+        $scope.showSegment = function (segment) {
+            $scope.bindingError = null;
+            if (segment && segment != null) {
+                $scope.segmentError = null;
+                $scope.loadingSelection = true;
+                SegmentService.getOne(segment.id).then(function (result) {
+                    $scope.selection.segment = segment;
+                    $scope.selection.segment["type"] = "segment";
+                    $rootScope.tableWidth = null;
+                    $rootScope.scrollbarWidth = $rootScope.getScrollbarWidth();
+                    $rootScope.csWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                    $rootScope.predWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                    $rootScope.commentWidth = $rootScope.getDynamicWidth(1, 3, 890);
+                    $scope.loadingSelection = false;
+                    if ($scope.segmentFlavorParams)
+                        $scope.segmentFlavorParams.refresh();
+                }, function (error) {
+                    $scope.loadingSelection = false;
+                    $scope.segmentError = error.data.text;
+
+                });
+            }
+        };
+
+        $scope.validateLabel = function (label, name) {
+            if (label && !label.startsWith(name)) {
+                return false;
+            }
+            return true;
+        };
+
+        $scope.findDTByComponentId = function (componentId) {
+            return $rootScope.parentsMap && $rootScope.parentsMap[componentId] ? $rootScope.parentsMap[componentId] : null;
+        };
+
+        $scope.isSub = function (component) {
+            return $scope.isSubDT(component);
+        };
+
+        $scope.isSubDT = function (component) {
+            return component.type === 'component' && $rootScope.parentsMap && $rootScope.parentsMap[component.id] && $rootScope.parentsMap[component.id].type === 'component';
+        };
+
+        $scope.hasChildren = function (node) {
+            return node && node != null && ((node.fields && node.fields.length > 0 ) || (node.datatype && $rootScope.getDatatype(node.datatype) && $rootScope.getDatatype(node.datatype).components && $rootScope.getDatatype(node.datatype).components.length > 0));
+        };
+
+        $scope.isRelevant = function (node) {
+            return SegmentService.isRelevant(node);
+        };
+
+        $scope.isBranch = function (node) {
+            SegmentService.isBranch(node);
+        };
+
+        $scope.isVisible = function (node) {
+            return SegmentService.isVisible(node);
+        };
+
+        $scope.children = function (node) {
+            return SegmentService.getNodes(node);
+        };
+
+        $scope.getParent = function (node) {
+            return SegmentService.getParent(node);
+        };
+
+        $scope.getSegmentLevelConfStatements = function (element) {
+            return SegmentService.getSegmentLevelConfStatements(element);
+        };
+
+        $scope.getSegmentLevelPredicates = function (element) {
+            return SegmentService.getSegmentLevelPredicates(element);
+        };
+
+
+        $scope.isChildSelected = function (component) {
+            return  $scope.selectedChildren.indexOf(component) >= 0;
+        };
+
+        $scope.isChildNew = function (component) {
+            return component && component != null && component.status === 'DRAFT';
+        };
+
+        var containsId = function (id, library) {
+            for (var i = 0; i < library.children.length; i++) {
+                if (library.children[i].id === id) {
+                    return  true;
+                }
+            }
+        };
+
+
+        $scope.submit = function () {
+            if (!containsId($scope.selection.segment.id, segmentLibrary)){
+                SegmentLibrarySvc.addSegment($scope.selection.segment.id, segmentLibrary).then(function (segmentLink) {
+                    segmentLibrary.children.push(segmentLink);
+                }, function (error) {
+                    $scope.bindingError = error.text;
+                });
+            } else {
+                $modalInstance.close($scope.selection.segment);
+            }
+        };
+
+
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+
+
+        var fu
     });
 
 
@@ -167,17 +349,17 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     $scope.complexConstraint = null;
     $scope.complexConstraintTrueUsage = null;
     $scope.complexConstraintFalseUsage = null;
-    
+
     $scope.changed = false;
     $scope.tempPredicates = [];
     angular.copy($scope.selectedMessage.predicates, $scope.tempPredicates);
-    
+
     $scope.setChanged = function () {
-    	$scope.changed = true;
+        $scope.changed = true;
     }
-       
-    $scope.initPredicate = function(){
-    	$scope.newConstraint = angular.fromJson({
+
+    $scope.initPredicate = function () {
+        $scope.newConstraint = angular.fromJson({
             position_1: null,
             position_2: null,
             location_1: null,
@@ -224,8 +406,8 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         $scope.tempPredicates.splice($scope.tempPredicates.indexOf(predicate), 1);
         $scope.changed = true;
     };
-    
-    
+
+
     $scope.deletePredicateByTarget = function () {
         for (var i = 0, len1 = $scope.tempPredicates.length; i < len1; i++) {
             if ($scope.tempPredicates[i].constraintTarget === $scope.selectedNode.path) {
@@ -367,23 +549,23 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
         $scope.newConstraint.currentNode_2 = null;
 
     };
-    
-    $scope.addComplexPredicate = function(){
+
+    $scope.addComplexPredicate = function () {
         $scope.complexConstraint = $rootScope.generateCompositePredicate($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
         $scope.complexConstraint.trueUsage = $scope.complexConstraintTrueUsage;
         $scope.complexConstraint.falseUsage = $scope.complexConstraintFalseUsage;
-    	$scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
-    	$scope.tempPredicates.push($scope.complexConstraint);
-    	$scope.initComplexPredicate();
+        $scope.complexConstraint.constraintId = $scope.newConstraint.datatype + '-' + $scope.selectedNode.position;
+        $scope.tempPredicates.push($scope.complexConstraint);
+        $scope.initComplexPredicate();
         $scope.changed = true;
     };
-    
+
 
     $scope.addPredicate = function () {
         if ($scope.newConstraint.position_1 != null) {
-        	$rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
-        	var positionPath = selectedNode.path;
-        	var cp = $rootScope.generatePredicate(positionPath, $scope.newConstraint);
+            $rootScope.newPredicateFakeId = $rootScope.newPredicateFakeId - 1;
+            var positionPath = selectedNode.path;
+            var cp = $rootScope.generatePredicate(positionPath, $scope.newConstraint);
             $scope.tempPredicates.push(cp);
             $scope.changed = true;
         }
@@ -393,13 +575,13 @@ angular.module('igl').controller('PredicateMessageCtrl', function ($scope, $moda
     $scope.ok = function () {
         $modalInstance.close($scope.selectedNode);
     };
-    
+
     $scope.saveclose = function () {
-    	angular.copy($scope.tempPredicates, $scope.selectedMessage.predicates);
-    	$rootScope.recordChanged();
+        angular.copy($scope.tempPredicates, $scope.selectedMessage.predicates);
+        $rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);
     };
-    
+
     $scope.initPredicate();
 
 });
@@ -413,24 +595,24 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     $scope.compositeType = null;
     $scope.complexConstraint = null;
     $scope.newComplexConstraintId = '';
-    
+
     $scope.changed = false;
     $scope.tempComformanceStatements = [];
     angular.copy($scope.selectedMessage.conformanceStatements, $scope.tempComformanceStatements);
-    
+
     $scope.setChanged = function () {
-    	$scope.changed = true;
+        $scope.changed = true;
     }
-    
+
     $scope.initComplexStatement = function () {
-    	$scope.firstConstraint = null;
+        $scope.firstConstraint = null;
         $scope.secondConstraint = null;
         $scope.compositeType = null;
         $scope.newComplexConstraintId = '';
     }
-    
-    $scope.initConformanceStatement = function (){
-    	$scope.newConstraint = angular.fromJson({
+
+    $scope.initConformanceStatement = function () {
+        $scope.newConstraint = angular.fromJson({
             position_1: null,
             position_2: null,
             location_1: null,
@@ -444,12 +626,12 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
             contraintType: null,
             value: null,
             value2: null,
-	        valueSetId: null,
-	        bindingStrength: 'R',
-	        bindingLocation: '1'
+            valueSetId: null,
+            bindingStrength: 'R',
+            bindingLocation: '1'
         });
 
-    	for (var i = 0, len1 = $scope.selectedMessage.children.length; i < len1; i++) {
+        for (var i = 0, len1 = $scope.selectedMessage.children.length; i < len1; i++) {
             if ($scope.selectedMessage.children[i].type === 'group') {
                 var groupModel = {
                     name: $scope.selectedMessage.children[i].name,
@@ -605,48 +787,48 @@ angular.module('igl').controller('ConformanceStatementMessageCtrl', function ($s
     };
 
     $scope.deleteConformanceStatement = function (conformanceStatement) {
-    	$scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
+        $scope.tempComformanceStatements.splice($scope.tempComformanceStatements.indexOf(conformanceStatement), 1);
         $scope.changed = true;
     };
-    
-    $scope.addComplexConformanceStatement = function(){
+
+    $scope.addComplexConformanceStatement = function () {
         $scope.complexConstraint = $rootScope.generateCompositeConformanceStatement($scope.compositeType, $scope.firstConstraint, $scope.secondConstraint);
-    	$scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
-    	$scope.tempComformanceStatements.push($scope.complexConstraint);
-    	$scope.initComplexStatement();
+        $scope.complexConstraint.constraintId = $scope.newComplexConstraintId;
+        $scope.tempComformanceStatements.push($scope.complexConstraint);
+        $scope.initComplexStatement();
         $scope.changed = true;
     };
-    
+
     $scope.addConformanceStatement = function () {
         if ($scope.newConstraint.position_1 != null) {
-        	$rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
-        	var positionPath = selectedNode.path;
-        	var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
+            $rootScope.newConformanceStatementFakeId = $rootScope.newConformanceStatementFakeId - 1;
+            var positionPath = selectedNode.path;
+            var cs = $rootScope.generateConformanceStatement(positionPath, $scope.newConstraint);
             $scope.tempComformanceStatements.push(cs);
             $scope.changed = true;
         }
-        
+
         $scope.initConformanceStatement();
     };
 
     $scope.ok = function () {
-    	angular.forEach($scope.tempComformanceStatements, function (cs) {
-    		$rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf(cs.constraintId), 1);
-    	});
-    	
-    	angular.forEach($scope.selectedMessage.conformanceStatements, function (cs) {
-    		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
-    	});
-    	
+        angular.forEach($scope.tempComformanceStatements, function (cs) {
+            $rootScope.conformanceStatementIdList.splice($rootScope.conformanceStatementIdList.indexOf(cs.constraintId), 1);
+        });
+
+        angular.forEach($scope.selectedMessage.conformanceStatements, function (cs) {
+            if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+        });
+
         $modalInstance.close($scope.selectedNode);
     };
-    
+
     $scope.saveclose = function () {
-    	angular.forEach($scope.tempComformanceStatements, function (cs) {
-    		if($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
-    	});
-    	angular.copy($scope.tempComformanceStatements, $scope.selectedMessage.conformanceStatements);
-    	$rootScope.recordChanged();
+        angular.forEach($scope.tempComformanceStatements, function (cs) {
+            if ($rootScope.conformanceStatementIdList.indexOf(cs.constraintId) == -1) $rootScope.conformanceStatementIdList.push(cs.constraintId);
+        });
+        angular.copy($scope.tempComformanceStatements, $scope.selectedMessage.conformanceStatements);
+        $rootScope.recordChanged();
         $modalInstance.close($scope.selectedNode);
     };
 

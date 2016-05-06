@@ -5,18 +5,22 @@
 angular.module('igl').factory('SegmentService',
     ['$rootScope', 'ViewSettings', 'ElementUtils','$q', '$http', 'FilteringSvc', function ($rootScope, ViewSettings,ElementUtils,$q,$http, FilteringSvc) {
         var SegmentService = {
-            getNodes: function (parent) {
-                return parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : $rootScope.segment != null ? $rootScope.segment.fields : [];
+            getNodes: function (parent,root) {
+                var children = parent ? parent.fields ? parent.fields : parent.datatype ? $rootScope.datatypesMap[parent.datatype].components : parent.children : root != null ? root.fields : [];
+                return children;
             },
             getParent: function (child) {
-                return $rootScope.parentsMap && $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
+                var parent = $rootScope.parentsMap && $rootScope.parentsMap[child.id] ? $rootScope.parentsMap[child.id] : null;
+                return parent;
             },
-            getTemplate: function (node) {
-                if (ViewSettings.tableReadonly || $rootScope.segment != null && $rootScope.segment.scope === 'HL7STANDARD' || $rootScope.segment.scope === null) {
-                    return node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
+            getTemplate: function (node,root) {
+                var template = null;
+                if (ViewSettings.tableReadonly || (root != null && root.scope === 'HL7STANDARD') || root.scope === null) {
+                    template = node.type === 'segment' ? 'SegmentReadTree.html' : node.type === 'field' ? 'SegmentFieldReadTree.html' : 'SegmentComponentReadTree.html';
                 } else {
-                    return node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
+                    template = node.type === 'segment' ? 'SegmentEditTree.html' : node.type === 'field' ? 'SegmentFieldEditTree.html' : 'SegmentComponentEditTree.html';
                 }
+                return template;
             },
             getSegmentLevelConfStatements: function (element) {
                 var parent = SegmentService.getParent(element.id);
@@ -101,6 +105,16 @@ angular.module('igl').factory('SegmentService',
                 to.date = from.date;
                 to.purposeAndUse = from.purposeAndUse;
                 return to;
+            },
+            delete: function (segmentId, libId) {
+                var delay = $q.defer();
+                $http.post('api/segments/'+ segmentId+ '/delete', {params:{"libId":libId}}).then(function (response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    delay.resolve(saveResponse);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
             }
 
         };
