@@ -93,8 +93,10 @@ angular
     };
 
     svc.getUsages = function(){
-      return [{"label":"R" , "id":1},{"label":"RE" , "id":2},{"label":"O" , "id":3},{"label":"C" , "id":4},{"label":"X" , "id":5},{"label":"B" , "id":6}]
+      return [{"label":"R" , "id":0},{"label":"RE" , "id":1},{"label":"O" , "id":2},{"label":"C" , "id":3},{"label":"X" , "id":4},{"label":"B" , "id":5}]
     };
+
+    svc.getUsageById = ["R", "RE", "O", "C", "X", "B"];
 
     svc.getSettings = function(){
       return {
@@ -123,14 +125,10 @@ angular
       _.each(svc.getMsgmodel(), function(filterElt){
         rst1 = rst1 || svc.filterByMsg(leaf, filterElt);
       });
-//       console.log("show toc");
-//       console.log(rst1);
       return rst1;
     };
 
     svc.show = function(leaf){
-    // Attention
-    return true;
       if (leaf === undefined) {
         console.log("undefined");
         return true;
@@ -141,13 +139,13 @@ angular
       });
 
       var validUsages = [];
+      console.log(svc.getUsagesmodel())
       _.each(svc.getUsagesmodel(), function(filterElt){
-        validUsages.push(filterElt.label);
+        validUsages.push(svc.getUsageById[filterElt.id]);
         });
        var rst2 = svc.filterByUsage(leaf, validUsages);
 
-       var rst = rst2; //!!!
-//       var rst = rst1 && rst2;
+       var rst = rst1 && rst2;
        if (rst === undefined){
         rst = true;
       }
