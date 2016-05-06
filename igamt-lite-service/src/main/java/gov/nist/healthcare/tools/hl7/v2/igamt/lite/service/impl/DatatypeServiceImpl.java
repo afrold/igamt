@@ -79,6 +79,8 @@ public class DatatypeServiceImpl implements DatatypeService {
 		public List<Datatype> bindDatatypes(List<String> datatypeIds, String datatyeLibraryId) {
 			List<Datatype> datatypes = datatypeRepository.findByIds(datatypeIds);
 			for(Datatype dt : datatypes) {
+				dt.setId(null);
+//				dt.setExt();
 				dt.getLibIds().add(datatyeLibraryId);
 			}
 			datatypeRepository.save(datatypes);
