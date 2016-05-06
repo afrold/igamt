@@ -136,7 +136,20 @@ angular.module('igl').factory('DatatypeService',
                     delay.reject(error);
                 });
                 return delay.promise;
-            }
+            },            
+            saveDatatypes: function (datatypes) {
+                var delay = $q.defer();
+                $http.post('api/datatypes/saveDatatypes', datatypes).then(function (response) {
+                    var saveResponse = angular.fromJson(response.data);
+                    datatype.date = saveResponse.date;
+                    datatype.version = saveResponse.version;
+                    delay.resolve(saveResponse);
+                }, function (error) {
+                    delay.reject(error);
+                });
+                return delay.promise;
+            },
+
         };
         return DatatypeService;
     }])

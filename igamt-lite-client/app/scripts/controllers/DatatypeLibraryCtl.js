@@ -30,7 +30,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 			};
 
       $scope.getMetaData = function(datatypeLibrary) {
-        $scope.metaDataView = "EditDocumentMetadata.html";
+        $scope.metaDataView = "LibraryMetaData.html";
         $scope.loadingSelection = true;
         $timeout(
           function () {
@@ -100,6 +100,7 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
                   DatatypeLibrarySvc.getDatatypesByLibrary($scope.datatypeLibStruct.id).then(function(response){
                     $scope.datatypeLibStruct.children = response;
                   });
+                  console.log("$scope.edit.datatypeLibStruct=" + JSON.stringify($scope.datatypeLibStruct.children.length));
                   $scope.metaDataView = "LibraryMetaData.html";
                   $scope.datatypeListView = "DatatypeList.html";
                  $timeout(
@@ -110,6 +111,12 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 				}, 100);
 			};
 
+	$scope.saveDatatype = function(datatype) {
+		DatatypeService.save(datatype).then(function(result){
+			console.log("saved datatype=" + JSONStringify(datatype));
+		});
+	};
+	
     $scope.editDatatype = function(datatype) {
       $scope.datatypeView = "EditDatatypes.html";
       if (datatype && datatype != null) {
@@ -215,10 +222,11 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
 		};
 
     $scope.openDataypeList = function(hl7Version) {
-      var scopes = ['USER'];
+      var scopes = ['USER', 'HL7STANDARD'];
       if (userInfoService.isAdmin()) {
             scopes.push('MASTER');
           }
+      console.log("openDataypeList scopes=" + scopes.length);
       var datatypesListInstance = $modal.open({
 						templateUrl : 'datatypeListDlg.html',
 						controller : 'DatatypeListInstanceDlgCtl',
@@ -236,11 +244,12 @@ angular.module('igl').controller('MasterDatatypeLibraryCtl',
              ids.push(result.id);
           });
 
-        DatatypeService.get(ids).then(function(results){
+        DatatypeService.bindDatatypes(ids, $scope.datatypeLibStruct.id).then(function(results) {
+        	console.log("$scope.openDataypeList.bindDatatypes results=" + results.length);
           angular.forEach(results, function(result){
             result.new = true;
             $scope.datatypeLibStruct.children.push(result);
-          });
+           });
         });
       });
 
@@ -254,6 +263,7 @@ angular.module('igl').controller('StandardDatatypeLibraryInstanceDlgCtl',
 
       $scope.scope = "HL7STANDARD";
       $scope.hl7Versions = hl7Versions;
+      console.log("StandardDatatypeLibraryInstanceDlgCtl hl7Versions" + JSON.stringify(hl7Versions));
       $scope.standard = {};
       $scope.standard.hl7Version = null;
       $scope.name = null;

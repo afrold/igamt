@@ -111,7 +111,6 @@
            ng-model="datatypeLibStruct.metaData.hl7Version"
            required/>
 </div>
-Something
 </form>
 </script>
 <script type="text/ng-template" id="DatatypeList.html">
@@ -142,12 +141,6 @@ Something
     <td st-ratio="25">{{getDisplayLabel(dt)}}</td>
     <td st-ratio="30" ng-bind="dt.description"></td>
     <td st-ratio="35">
-       <button
-              title="Save"
-              type="button" class="btn btn-xs btn-success"
-              ng-click="saveDatatype(dt)">
-        <span><i class="fa fa-pencil fa-fw"></i> Save</span>
-      </button>
      <button
               title="Edit"
               type="button" class="btn btn-xs btn-primary"
@@ -189,7 +182,7 @@ Something
         <div class="btn-group btn-group-sm" data-toggle="buttons">
           <label class="btn btn-primary btn-xs" ng-click="standard.hl7Version = vr; $parent.okDisabled = false"
                  ng-class="{'active':vr === hl7Version}"
-                 ng-repeat="vr in hl7Versions | orderBy:'toString()'" style="width : 50px; height : 30px;">
+                 ng-repeat="vr in hl7Versions | orderBy:'toString()' track by vr" style="width : 50px; height : 30px;">
             <input ng-disabled="loading" type="radio" ng-value="vr"
                    ng-model="$parent.hl7Version"/>{{vr}}
           </label>

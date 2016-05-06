@@ -15,19 +15,18 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Datatype;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.service.DatatypeService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.DatatypeSaveResponse;
+import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.controller.wrappers.BindingWrapper;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.web.exception.DatatypeSaveException;
 
 /**
@@ -75,12 +74,20 @@ public class DatatypeController extends CommonController {
 		log.debug("datatypeLibrary=" + datatype);
 		log.debug("datatypeLibrary.getId()=" + datatype.getId());
 		log.info("Saving the " + datatype.getScope() + " datatype library.");
-		User u = userService.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-		datatype.setAccountId(account.getId());
+		// User u = userService.getCurrentUser();
+		// Account account =
+		// accountRepository.findByTheAccountsUsername(u.getUsername());
+		// datatype.setAccountId(account.getId());
 		Datatype saved = datatypeService.save(datatype);
 		log.debug("saved.getId()=" + saved.getId());
 		log.debug("saved.getScope()=" + saved.getScope());
 		return new DatatypeSaveResponse(saved.getName(), saved.getScope().name());
+	}
+
+	@RequestMapping(value = "/bindDatatypes", method = RequestMethod.POST)
+	public List<Datatype> bindDatatypes(@RequestBody BindingWrapper binding) throws DatatypeSaveException {
+		log.debug("Binding datatypes=" + binding.getDatatypeIds().size());
+		List<Datatype> bound = datatypeService.bindDatatypes(binding.getDatatypeIds(), binding.getDatatypeLibraryId());
+		return bound;
 	}
 }

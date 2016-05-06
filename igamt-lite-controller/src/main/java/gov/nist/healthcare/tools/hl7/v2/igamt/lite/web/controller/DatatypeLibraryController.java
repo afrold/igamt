@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import gov.nist.healthcare.nht.acmgt.dto.domain.Account;
 import gov.nist.healthcare.nht.acmgt.repo.AccountRepository;
 import gov.nist.healthcare.nht.acmgt.service.UserService;
 import gov.nist.healthcare.tools.hl7.v2.igamt.lite.domain.Constant.SCOPE;
@@ -95,12 +94,12 @@ public class DatatypeLibraryController extends CommonController {
 	}
 
 	@RequestMapping(value = "/findByScopesAndVersion", method = RequestMethod.POST, produces = "application/json")
-	public List<Datatype> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
+	public List<DatatypeLibrary> findByScopesAndVersion(@RequestBody ScopesAndVersionWrapper scopesAndVersion) {
 		log.info("Fetching the datatype library. scope=" + scopesAndVersion.getScopes() + " hl7Version="
 				+ scopesAndVersion.getHl7Version());
-		List<Datatype> datatypes = null;
+		List<DatatypeLibrary> datatypes = null;
 		try {
-			datatypes = datatypeService.findByScopesAndVersion(scopesAndVersion.getScopes(),
+			datatypes = datatypeLibraryService.findByScopesAndVersion(scopesAndVersion.getScopes(),
 					scopesAndVersion.getHl7Version());
 			if (datatypes == null) {
 				throw new NotFoundException("Datatype not found for scopesAndVersion=" + scopesAndVersion);
@@ -136,14 +135,14 @@ public class DatatypeLibraryController extends CommonController {
 	}
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public LibrarySaveResponse save(@RequestBody DatatypeLibrary datatypeLibrary)
-			throws LibrarySaveException {
+	public LibrarySaveResponse save(@RequestBody DatatypeLibrary datatypeLibrary) throws LibrarySaveException {
 		log.debug("datatypeLibrary=" + datatypeLibrary);
 		log.debug("datatypeLibrary.getId()=" + datatypeLibrary.getId());
 		log.info("Saving the " + datatypeLibrary.getScope() + " datatype library.");
 		User u = userService.getCurrentUser();
-		Account account = accountRepository.findByTheAccountsUsername(u.getUsername());
-		datatypeLibrary.setAccountId(account.getId());
+		// Account account =
+		// accountRepository.findByTheAccountsUsername(u.getUsername());
+		// datatypeLibrary.setAccountId(account.getId());
 		// TODO This is necessary for a cascading save. For now we are
 		// having the user save dts one at a time.
 		// for (Datatype dt : datatypeLibrary.getChildren()) {
